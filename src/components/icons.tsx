@@ -1,0 +1,116 @@
+import React from "react";
+import styled from "@emotion/styled";
+import { withCss } from "./withCss";
+import {
+  MdAddCircleOutline,
+  MdArrowRightAlt,
+  MdBlock,
+  MdCheckCircle,
+  MdCheck,
+  MdClose,
+  MdOpenInNew,
+  MdUpdate,
+  MdEdit,
+  MdOutlineTipsAndUpdates,
+  MdOutlineInfo,
+  MdZoomIn,
+  MdZoomOut,
+  MdOutlineLightMode,
+  MdOutlineDarkMode,
+} from "react-icons/md";
+import { BiMessageAltError } from "react-icons/bi";
+import { TiWarningOutline } from "react-icons/ti";
+import { AiOutlineSearch } from "react-icons/ai";
+import { FaDiscord, FaRegCopy } from "react-icons/fa";
+import { IoLanguage, IoSparkles } from "react-icons/io5";
+import { PiPersonSimpleWalkBold, PiWarningOctagonBold } from "react-icons/pi";
+import { FaHeart, FaPlay, FaPatreon, FaArrowUp, FaStar } from "react-icons/fa6";
+import { TbEar, TbPokeball } from "react-icons/tb";
+import { IoIosInformationCircle } from "react-icons/io";
+import { BsTranslate } from "react-icons/bs";
+import { RiTreeLine, RiResetLeftLine } from "react-icons/ri";
+
+const icons = {
+  AddCircleOutline: MdAddCircleOutline,
+  ArrowRightAlt: MdArrowRightAlt,
+  Block: MdBlock,
+  Check: MdCheck,
+  CheckCircle: MdCheckCircle,
+  Close: MdClose,
+  Discord: FaDiscord,
+  Heart: FaHeart,
+  Language: IoLanguage,
+  PersonSimpleWalkBold: PiPersonSimpleWalkBold,
+  Sparkles: IoSparkles,
+  Star: FaStar,
+  Update: MdUpdate,
+  Play: FaPlay,
+  Pokeball: TbPokeball,
+  OutlineSearch: AiOutlineSearch,
+  InformationCircle: IoIosInformationCircle,
+  Patreon: FaPatreon,
+  Copy: FaRegCopy,
+  ArrowUp: FaArrowUp,
+  OpenInNew: MdOpenInNew,
+  Edit: MdEdit,
+  Translate: BsTranslate,
+  TipOutline: MdOutlineTipsAndUpdates,
+  InfoOutline: MdOutlineInfo,
+  WarningOutline: TiWarningOutline,
+  CautionOutline: PiWarningOctagonBold,
+  MessageOutline: BiMessageAltError,
+  Ear: TbEar,
+  TreeLine: RiTreeLine,
+  ZoomIn: MdZoomIn,
+  ZoomOut: MdZoomOut,
+  Reset: RiResetLeftLine,
+  LightMode: MdOutlineLightMode,
+  DarkMode: MdOutlineDarkMode,
+} as const;
+
+export type IconName = keyof typeof icons;
+
+type Props = Omit<React.ComponentProps<(typeof icons)[IconName]>, "style"> & {
+  name?: IconName;
+  extraAlignment?: number | string;
+  marginRight?: number;
+};
+
+const formatAlignment = (extraAlignment: number | string) => {
+  if (typeof extraAlignment === "number") {
+    return `${extraAlignment}px`;
+  }
+
+  return extraAlignment;
+};
+
+const IconContainer = styled.span<{
+  extraAlignment?: number | string;
+  marginRight?: number;
+}>(({ extraAlignment, marginRight }) => ({
+  display: "inline-flex",
+  justifyContent: "center",
+  alignItems: "center",
+  textAlign: "center",
+  verticalAlign: `calc(-0.125em + ${formatAlignment(extraAlignment ?? 0)})`,
+  marginRight,
+}));
+
+const BaseIcon = ({
+  name = "ArrowRightAlt",
+  extraAlignment,
+  marginRight,
+  ...props
+}: Props) => {
+  const IconComponent = icons[name] ?? icons["ArrowRightAlt"];
+  return (
+    <IconContainer extraAlignment={extraAlignment} marginRight={marginRight}>
+      <IconComponent {...props} />
+    </IconContainer>
+  );
+};
+
+export const Icon = withCss(BaseIcon);
+export const UserIcon = BaseIcon;
+
+export const IconNames = Object.keys(icons) as IconName[];

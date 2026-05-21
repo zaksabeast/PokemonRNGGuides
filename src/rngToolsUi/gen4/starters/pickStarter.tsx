@@ -1,0 +1,338 @@
+import {
+  Button,
+  Field,
+  FormFieldTable,
+  FormikNumberInput,
+  FormikSelect,
+  MinMaxContainer,
+  ResultColumn,
+  RngToolForm,
+} from "~/components";
+import {
+  multiWorkerRngTools,
+  Static4State,
+  SearchStatic4Opts,
+} from "~/rngTools";
+import { z } from "zod";
+import {
+  getPkmFilterFields,
+  getPkmFilterInitialValues,
+  pkmFilterSchema,
+  pkmFilterFieldsToRustInput,
+} from "~/components/pkmFilter";
+import {
+  flattenIvs,
+  FlattenIvs,
+  getIvColumns,
+} from "~/rngToolsUi/shared/ivColumns";
+import { toOptions } from "~/utils/options";
+import { useCurrentStep } from "~/components/stepper/state";
+import { match } from "ts-pattern";
+import {
+  dpptStarters,
+  hgssStarters,
+  Gen4Starter,
+  useStarterState,
+  allStarters,
+} from "./state";
+import { getStatRange } from "~/types/statRange";
+import { Gen4GameVersion } from "../gen4types";
+import { useBatchedTool } from "~/hooks/useBatchedTool";
+import { chunkIvs } from "~/utils/chunkIvs";
+import { RustOption } from "~/types";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { Translations } from "~/translations";
+import { MONTHS, MonthSchema, monthToRustFilter } from "~/utils/time";
+import { useWatch } from "~/hooks/form";
+
+type Result = FlattenIvs<
+  Static4State["state"] & {
+    seed_time: Static4State["seed_time"];
+    key: string;
+    second: number;
+    seed: number;
+    delay: number;
+  }
+>;
+
+type SelectButtonProps = {
+  target: Result;
+};
+
+const SelectButton = ({ target }: SelectButtonProps) => {
+  const [, setCurrentStep] = useCurrentStep();
+  const [, setState] = useStarterState();
+  return (
+    <Button
+      trackerId="select_gen4_starter"
+      onClick={() => {
+        setState((prev) => ({ ...prev, target }));
+        setCurrentStep((prev) => prev + 1);
+      }}
+    >
+      Select
+    </Button>
+  );
+};
+
+const Validator = z
+  .object({
+    tid: z.number().int().min(0).max(65535),
+    sid: z.number().int().min(0).max(65535),
+    year: z.number().int().min(2000).max(2100),
+    month: MonthSchema,
+    species: z.enum(allStarters),
+    min_delay: z.number().int().min(0),
+    max_delay: z.number().int().min(0),
+    platinum_target_advance: z.number().int().min(0),
+    force_second: z.number().int().min(0).max(59).nullable(),
+  })
+  .extend(pkmFilterSchema.shape);
+
+export type FormState = z.infer<typeof Validator>;
+
+const dpptInitialValues: FormState = {
+  tid: 0,
+  sid: 0,
+  year: 2000,
+  month: "Any",
+  species: "Turtwig",
+  min_delay: 600,
+  max_delay: 1000,
+  platinum_target_advance: 4,
+  force_second: null,
+  ...getPkmFilterInitialValues(),
+};
+
+const hgssInitialValues: FormState = {
+  ...dpptInitialValues,
+  species: "Chikorita",
+};
+
+const getStarterAdvance = ({
+  species,
+  game,
+  platinum_target_advance,
+}: {
+  species: Gen4Starter;
+  game: Gen4GameVersion;
+  platinum_target_advance: number;
+}): number => {
+  return match({ species, game })
+    .with({ game: "Platinum" }, () => platinum_target_advance)
+    .with({ game: "Diamond" }, () => 0)
+    .with({ game: "Pearl" }, () => 0)
+    .with({ species: "Chikorita" }, () => 0)
+    .with({ species: "Cyndaquil" }, () => 4)
+    .with({ species: "Totodile" }, () => 8)
+    .otherwise(() => 0);
+};
+
+const getColumns = (t: Translations): ResultColumn<Result>[] => [
+  {
+    title: t["Select"],
+    dataIndex: "key",
+    disableVerticalPadding: true,
+    render: (_, target) => <SelectButton target={target} />,
+  },
+  {
+    title: t["Shiny"],
+    dataIndex: "shiny",
+    render: (shiny: boolean) => (shiny ? "Yes" : "No"),
+  },
+  { title: t["Nature"], dataIndex: "nature" },
+  { title: t["Ability"], dataIndex: "ability" },
+  { title: t["Gender"], dataIndex: "gender" },
+  ...getIvColumns(t),
+  {
+    title: t["PID"],
+    dataIndex: "pid",
+    monospace: true,
+    render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
+  },
+  { title: t["Delay"], dataIndex: "delay" },
+  {
+    title: t["Second"],
+    dataIndex: "second",
+  },
+  {
+    title: t["Seed"],
+    dataIndex: "seed",
+    monospace: true,
+    render: (seed) => seed.toString(16).padStart(8, "0").toUpperCase(),
+  },
+];
+
+type FieldsProps = {
+  game: Gen4GameVersion;
+  t: Translations;
+};
+
+const Fields = ({ game, t }: FieldsProps) => {
+  const watched = useWatch({
+    validationSchema: Validator,
+    names: { species: true },
+  });
+
+  const starters = match(game)
+    .with("Diamond", "Pearl", "Platinum", () => dpptStarters)
+    .with("HeartGold", "SoulSilver", () => hgssStarters)
+    .exhaustive();
+
+  const fields: Field[] = [
+    {
+      label: t["TID / SID"],
+      input: (
+        <MinMaxContainer
+          min={<FormikNumberInput<FormState> name="tid" numType="decimal" />}
+          max={<FormikNumberInput<FormState> name="sid" numType="decimal" />}
+          delimeter="/"
+        />
+      ),
+    },
+    {
+      label: t["Year"],
+      input: <FormikNumberInput<FormState> name="year" numType="decimal" />,
+    },
+    {
+      label: t["Month"],
+      input: (
+        <FormikSelect<FormState, "month">
+          name="month"
+          options={toOptions(MONTHS, (month) => t[month])}
+        />
+      ),
+    },
+    {
+      label: t["Delay"],
+      input: (
+        <MinMaxContainer
+          min={
+            <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
+          }
+          max={
+            <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
+          }
+        />
+      ),
+    },
+    {
+      // Only Platinum has a variable advance
+      show: game === "Platinum",
+      label: t["Target Advance"],
+      input: (
+        <FormikNumberInput<FormState>
+          name="platinum_target_advance"
+          numType="decimal"
+        />
+      ),
+    },
+    {
+      label: t["Species"],
+      input: (
+        <FormikSelect<FormState, "species">
+          name="species"
+          options={toOptions(starters)}
+        />
+      ),
+    },
+    ...getPkmFilterFields({ species: watched.species ?? undefined }, t),
+    {
+      label: t["Force Second"],
+      input: (
+        <FormikNumberInput<FormState> name="force_second" numType="decimal" />
+      ),
+    },
+  ];
+
+  return <FormFieldTable fields={fields} />;
+};
+
+const mapResult = (res: Static4State): Result => {
+  const { state, seed_time } = res;
+  return {
+    ...flattenIvs(state),
+    seed_time,
+    key: `${seed_time.seed}-${state.pid}`,
+    second: seed_time.datetime.second,
+    seed: seed_time.seed,
+    delay: seed_time.delay,
+  };
+};
+
+export const PickStarter4 = () => {
+  const t = useActiveRouteTranslations();
+  const [state, setState] = useStarterState();
+  const {
+    run: searchStarterSeeds,
+    data: results,
+    progressPercent,
+    cancel,
+  } = useBatchedTool(multiWorkerRngTools.search_static4, {
+    map: mapResult,
+  });
+
+  const game = state.game;
+
+  const onSubmit = async (opts: FormState) => {
+    const minMaxStats = await getStatRange({
+      species: opts.species,
+      levelRange: [5, 6],
+    });
+    setState((prev) => ({ ...prev, species: opts.species, minMaxStats }));
+    const advance = getStarterAdvance({
+      game,
+      species: opts.species,
+      platinum_target_advance: opts.platinum_target_advance,
+    });
+    const baseOpts: RustOption<SearchStatic4Opts> = {
+      ...opts,
+      month: monthToRustFilter(opts.month),
+      min_advance: advance,
+      max_advance: advance,
+      encounter_max_level: 5,
+      encounter_min_level: 5,
+      force_second: opts.force_second,
+      filter: pkmFilterFieldsToRustInput(opts),
+      lead: "None",
+      offset: 0,
+      game,
+    };
+    const chunkedIvs = chunkIvs(opts.filter_min_ivs, opts.filter_max_ivs);
+    const searchOpts = chunkedIvs.map(([minIvs, maxIvs]) => ({
+      ...baseOpts,
+      filter: {
+        ...baseOpts.filter,
+        min_ivs: minIvs,
+        max_ivs: maxIvs,
+      },
+    }));
+    await searchStarterSeeds(searchOpts);
+  };
+
+  const initialValues = match(game)
+    .with("Diamond", "Pearl", "Platinum", () => dpptInitialValues)
+    .with("HeartGold", "SoulSilver", () => hgssInitialValues)
+    .exhaustive();
+
+  return (
+    <RngToolForm<FormState, Result>
+      getColumns={getColumns}
+      results={results}
+      initialValues={initialValues}
+      values={initialValues}
+      validationSchema={Validator}
+      onSubmit={onSubmit}
+      rowKey="key"
+      submitTrackerId="search_gen4_starters"
+      allowCancel
+      cancelTrackerId="cancel_gen4_starters"
+      submitButtonLabel={t["Generate"]}
+      cancelButtonLabel={t["Cancel"]}
+      onCancel={cancel}
+      progressPercent={progressPercent}
+    >
+      <Fields game={game} t={t} />
+    </RngToolForm>
+  );
+};

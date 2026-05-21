@@ -1,0 +1,54 @@
+# Dump Pokemon updates
+# Author: Subject21J
+# credits: D0k3 - for GM9 and script references
+
+set ERRORMSG "Something went wrong, \nmake sure that the update is installed!"
+
+# Game select
+echo "scroll Up or Down to select game"
+input "Enter the number for the game you want to dump\nGen6 - 1: X, 2: Y, 3: OR, 4: AS \nGen7 - 5: S, 6: M, 7: US, 8: UM" GAME
+
+# Set info
+if chk $[GAME] "1"
+set GAMENAME "Pokemon_X_Update"
+set TITLE "00055D00"
+
+elif chk $[GAME] "2"
+set GAMENAME "Pokemon_Y_Update"
+set TITLE "00055E00"
+
+elif chk $[GAME] "3"
+set GAMENAME "Pokemon_OR_Update"
+set TITLE "0011C400"
+
+elif chk $[GAME] "4"
+set GAMENAME "Pokemon_AS_Update"
+set TITLE "0011C500"
+
+elif chk $[GAME] "5"
+set GAMENAME "Pokemon_Sun_Update"
+set TITLE "00164800"
+
+elif chk $[GAME] "6"
+set GAMENAME "Pokemon_Moon_Update"
+set TITLE "00175E00"
+
+elif chk $[GAME] "7"
+set GAMENAME "Pokemon_US_Update"
+set TITLE "001B5000"
+
+elif chk $[GAME] "8"
+set GAMENAME "Pokemon_UM_Update"
+set TITLE "001B5100"
+
+end
+
+#Build cia
+find A:/title/0004000E/$[TITLE]/content/*.tmd TITLEPATH
+buildcia $[TITLEPATH]
+
+#Rename cia
+find $[GM9OUT]/0004000E$[TITLE]* CIAPATH
+mv -w $[CIAPATH] $[GM9OUT]/$[GAMENAME].cia
+
+echo "Update dumped to \n$[GM9OUT]/$[GAMENAME].cia"

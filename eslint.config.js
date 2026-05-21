@@ -1,0 +1,202 @@
+import js from "@eslint/js";
+import globals from "globals";
+import reactHooks from "eslint-plugin-react-hooks";
+import react from "eslint-plugin-react";
+import reactRefresh from "eslint-plugin-react-refresh";
+import noRelativeImportPaths from "eslint-plugin-no-relative-import-paths";
+import tseslint from "typescript-eslint";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const baseLanguageOptions = {
+  ecmaVersion: 2020,
+  globals: globals.browser,
+  parser: tseslint.parser,
+  parserOptions: {
+    sourceType: "module",
+  },
+};
+
+const getTypeCheckedLanguageOptions = (tsConfig) => ({
+  ...baseLanguageOptions,
+  parserOptions: {
+    ...baseLanguageOptions.parserOptions,
+    project: tsConfig,
+    tsconfigRootDir: __dirname,
+  },
+});
+
+const arrowFunctionRestrictions = [
+  {
+    selector: "VariableDeclarator > FunctionExpression",
+    message: "Use arrow functions instead of function expressions.",
+  },
+  {
+    selector: "Property > FunctionExpression",
+    message:
+      "Use arrow functions for object properties: prefer `prop: () => {}` instead of `prop: function() {}`.",
+  },
+  {
+    selector: "Property[method=true]",
+    message:
+      "Use arrow functions for object methods: prefer `prop: () => {}` instead of method shorthand `prop() {}`.",
+  },
+];
+
+const baseConfig = {
+  extends: [js.configs.recommended, ...tseslint.configs.recommended],
+  plugins: {
+    react,
+    tseslint,
+    "react-hooks": reactHooks,
+    "react-refresh": reactRefresh,
+    "no-relative-import-paths": noRelativeImportPaths,
+  },
+  rules: {
+    ...reactHooks.configs["recommended-latest"].rules,
+    "id-length": [
+      "error",
+      {
+        min: 2,
+        exceptions: [
+          "i", // index
+          "j", // index
+          "z", // zod
+          "_", // placeholder
+          "t", // translation
+          "x", // coordinates
+          "y", // coordinates
+        ],
+      },
+    ],
+    "no-relative-import-paths/no-relative-import-paths": [
+      "error",
+      { allowSameFolder: true, rootDir: "src", prefix: "~", allowedDepth: 1 },
+    ],
+    "@typescript-eslint/no-empty-object-type": "off",
+    "@typescript-eslint/consistent-type-definitions": ["error", "type"],
+    "react-refresh/only-export-components": [
+      "warn",
+      { allowConstantExport: true },
+    ],
+    curly: ["error", "all"],
+    "no-else-return": ["error", { allowElseIf: false }],
+    "no-duplicate-imports": "error",
+    "no-console": "error",
+    "prefer-arrow-callback": ["error"],
+    "func-style": ["error", "expression"],
+    "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+    "react/jsx-key": "error",
+    "react/jsx-boolean-value": ["error", "never"],
+    "no-restricted-syntax": [
+      "error",
+      ...arrowFunctionRestrictions,
+      {
+        selector: "Literal[value=/^#(?:[0-9a-fA-F]{3}){1,2}$/]",
+        message:
+          "Avoid hardcoded color strings. Use CSS variables or emotion theme values.",
+      },
+      {
+        selector: "CallExpression[callee.name=/^(rgb|rgba|hsl|hsla)$/]",
+        message:
+          "Avoid hardcoded color functions. Use CSS variables or emotion theme values.",
+      },
+    ],
+    eqeqeq: ["error", "always", { null: "ignore" }],
+    "no-restricted-imports": [
+      "error",
+      {
+        paths: [
+          {
+            name: "rng_tools",
+            message: 'Use `import { rngTools } from "~/rngTools";`',
+          },
+          {
+            name: "wouter",
+            importNames: ["useLocation"],
+            message:
+              'Use `import { useActiveRoute } from "~/hooks/useActiveRoute";`',
+          },
+          {
+            name: "wouter",
+            importNames: ["Link"],
+            message: 'Use `import { Link } from "~/components";`',
+          },
+          {
+            name: "antd",
+            importNames: ["theme"],
+            message: 'Use `import { useTheme } from "@emotion/react";`',
+          },
+          {
+            name: "antd",
+            importNames: ["Button"],
+            message: 'Use `import { Button } from "~/components";`',
+          },
+          {
+            name: "antd",
+            importNames: ["Alert"],
+            message: 'Use `import { Alert } from "~/components";`',
+          },
+          {
+            name: "@amplitude/analytics-browser",
+            message: "Import from `~/analytics`",
+          },
+        ],
+      },
+    ],
+    "react/jsx-curly-brace-presence": [
+      "error",
+      { props: "never", children: "ignore" },
+    ],
+    "@typescript-eslint/no-non-null-assertion": "error",
+    "@typescript-eslint/strict-boolean-expressions": [
+      "error",
+      {
+        allowString: false,
+        allowNumber: false,
+        allowNullableObject: false,
+        allowNullableBoolean: true,
+        allowNullableString: false,
+        allowNullableNumber: false,
+        allowAny: false,
+      },
+    ],
+    "no-param-reassign": [
+      "error",
+      {
+        props: true,
+        ignorePropertyModificationsFor: ["acc", "accumulator"],
+      },
+    ],
+  },
+};
+
+export default tseslint.config(
+  {
+    ignores: ["dist", "src/graphql/__generated__", "rng_tools"],
+  },
+  {
+    ...baseConfig,
+    files: ["src/**/*.{ts,tsx}"],
+    ignores: ["src/**/*.test.{ts,tsx}"],
+    languageOptions: getTypeCheckedLanguageOptions("./tsconfig.app.json"),
+  },
+  {
+    ...baseConfig,
+    files: ["src/**/*.test.{ts,tsx}"],
+    languageOptions: getTypeCheckedLanguageOptions("./tsconfig.test.json"),
+  },
+  {
+    ...baseConfig,
+    files: ["vite.config.ts"],
+    languageOptions: getTypeCheckedLanguageOptions("./tsconfig.node.json"),
+  },
+  {
+    files: ["src/theme/**/*.{ts,tsx}"],
+    rules: {
+      "no-restricted-syntax": ["error", ...arrowFunctionRestrictions],
+    },
+  },
+);

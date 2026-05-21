@@ -1,0 +1,27 @@
+use num_enum::FromPrimitive;
+use serde::{Deserialize, Serialize};
+use tsify::Tsify;
+
+#[derive(
+    Default, Clone, Copy, Debug, Eq, PartialEq, FromPrimitive, Tsify, Serialize, Deserialize,
+)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+#[repr(u8)]
+pub enum Gender {
+    #[default]
+    Male = 0,
+    Female = 1,
+    Genderless = 2,
+}
+
+impl Gender {
+    #[cfg(test)]
+    pub fn from_pokefinder_str(str: &str) -> Self {
+        match str {
+            "♀" => Self::Female,
+            "♂" => Self::Male,
+            "-" => Self::Genderless,
+            _ => panic!("Unknown gender string: {}", str),
+        }
+    }
+}

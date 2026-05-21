@@ -1,0 +1,13 @@
+diff --git a/dist/types/controller.d.ts b/dist/types/controller.d.ts
+index 98ee3396a93d08b2aef54ec9d7bf72c8defeaea8..0f7038cc7d8782cf2bee10ff7e808a59772aaf50 100644
+--- a/dist/types/controller.d.ts
++++ b/dist/types/controller.d.ts
+@@ -9,7 +9,7 @@ export type ControllerFieldState = {
+     error?: FieldError;
+ };
+ export type ControllerRenderProps<TFieldValues extends FieldValues = FieldValues, TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>> = {
+-    onChange: (...event: any[]) => void;
++    onChange: (value: FieldPathValue<TFieldValues, TName>) => void;
+     onBlur: Noop;
+     value: FieldPathValue<TFieldValues, TName>;
+     disabled?: boolean;

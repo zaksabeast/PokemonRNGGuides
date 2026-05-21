@@ -1,0 +1,19 @@
+type DataLayerProps = {
+  event: string;
+} & Record<string, string>;
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+interface Window {
+  dataLayer:
+    | undefined
+    | {
+        push: (props: DataLayerProps) => void;
+      };
+}
+
+declare const window: Window;
+
+declare module "*.mdx" {
+  import * as React from "react";
+  export default React.ComponentType<void>;
+}

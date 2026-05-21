@@ -1,0 +1,119 @@
+use num_enum::{FromPrimitive, IntoPrimitive};
+use serde::{Deserialize, Serialize};
+use tsify::Tsify;
+use wasm_bindgen::prelude::wasm_bindgen;
+
+use crate::gen3::Wild3Action;
+
+#[derive(
+    Clone, Copy, Debug, Eq, PartialEq, FromPrimitive, IntoPrimitive, Tsify, Serialize, Deserialize,
+)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+#[repr(u8)]
+pub enum EncounterSlot {
+    #[num_enum(default)]
+    Slot0 = 0,
+    Slot1 = 1,
+    Slot2 = 2,
+    Slot3 = 3,
+    Slot4 = 4,
+    Slot5 = 5,
+    Slot6 = 6,
+    Slot7 = 7,
+    Slot8 = 8,
+    Slot9 = 9,
+    Slot10 = 10,
+    Slot11 = 11,
+}
+
+impl EncounterSlot {
+    pub fn thresholds_land() -> &'static [(EncounterSlot, u8)] {
+        use EncounterSlot::*;
+        &[
+            (Slot0, 20),
+            (Slot1, 40),
+            (Slot2, 50),
+            (Slot3, 60),
+            (Slot4, 70),
+            (Slot5, 80),
+            (Slot6, 85),
+            (Slot7, 90),
+            (Slot8, 94),
+            (Slot9, 98),
+            (Slot10, 99),
+            (Slot11, 100),
+        ]
+    }
+
+    pub fn thresholds_water() -> &'static [(EncounterSlot, u8)] {
+        use EncounterSlot::*;
+        &[
+            (Slot0, 60),
+            (Slot1, 60 + 30),
+            (Slot2, 60 + 30 + 5),
+            (Slot3, 60 + 30 + 5 + 4),
+            (Slot4, 60 + 30 + 5 + 4 + 1),
+        ]
+    }
+
+    pub fn thresholds_rock_smash() -> &'static [(EncounterSlot, u8)] {
+        use EncounterSlot::*;
+        &[
+            (Slot0, 60),
+            (Slot1, 60 + 30),
+            (Slot2, 60 + 30 + 5),
+            (Slot3, 60 + 30 + 5 + 4),
+            (Slot4, 60 + 30 + 5 + 4 + 1),
+        ]
+    }
+
+    pub fn thresholds_old_rod() -> &'static [(EncounterSlot, u8)] {
+        use EncounterSlot::*;
+        &[(Slot0, 70), (Slot1, 70 + 30)]
+    }
+
+    pub fn thresholds_good_rod() -> &'static [(EncounterSlot, u8)] {
+        use EncounterSlot::*;
+        &[(Slot0, 60), (Slot1, 60 + 20), (Slot2, 60 + 20 + 20)]
+    }
+
+    pub fn thresholds_super_rod() -> &'static [(EncounterSlot, u8)] {
+        use EncounterSlot::*;
+        &[
+            (Slot0, 40),
+            (Slot1, 40 + 40),
+            (Slot2, 40 + 40 + 15),
+            (Slot3, 40 + 40 + 15 + 4),
+            (Slot4, 40 + 40 + 15 + 4 + 1),
+        ]
+    }
+
+    pub fn gen3_thresholds(action: Wild3Action) -> &'static [(EncounterSlot, u8)] {
+        match action {
+            Wild3Action::SweetScentLand => Self::thresholds_land(),
+            Wild3Action::SweetScentWater => Self::thresholds_water(),
+            Wild3Action::OldRod => Self::thresholds_old_rod(),
+            Wild3Action::GoodRod => Self::thresholds_good_rod(),
+            Wild3Action::SuperRod => Self::thresholds_super_rod(),
+            Wild3Action::RockSmash => Self::thresholds_rock_smash(),
+        }
+    }
+}
+
+impl EncounterSlot {
+    pub fn from_rand(rand: u8, thresholds: &[(EncounterSlot, u8)]) -> Self {
+        for (slot, threshold) in thresholds.iter() {
+            if rand < *threshold {
+                return *slot;
+            }
+        }
+        EncounterSlot::Slot0 // default to Slot0 if below first threshold
+    }
+
+    pub fn passes_filter(filter: Option<&[EncounterSlot]>, actual: EncounterSlot) -> bool {
+        match filter {
+            Some(slots) => slots.contains(&actual),
+            None => true,
+        }
+    }
+}

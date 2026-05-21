@@ -1,0 +1,418 @@
+import React from "react";
+import {
+  Field,
+  Flex,
+  FormikNumberInput,
+  ResultColumn,
+  RngToolForm,
+  Select,
+  Typography,
+} from "~/components";
+import { EvInput, Evs, EvsSchema } from "~/components/evInput";
+import { CalibrateTimerButton } from "~/components/calibrateTimerButton";
+import { PickupEggState, useHeldEggState, usePickupEggState } from "./state";
+import {
+  rngTools,
+  StatsValue,
+  Gen3PickupMethod,
+  InheritedIv,
+  InheritedIvs,
+  Ivs,
+  Species,
+  Nature,
+} from "~/rngTools";
+import { maxIvs, minIvs } from "~/types/ivs";
+import { getNullableIvColumns } from "~/rngToolsUi/shared/ivColumns";
+import { getStatFields } from "~/rngToolsUi/shared/statFields";
+import {
+  defaultMinMaxStats,
+  MinMaxStats,
+  StatFieldsSchema,
+} from "~/types/stat";
+import { getStatRange } from "~/types/statRange";
+import { z } from "zod";
+import { defaultHiddenPowerFilter } from "~/components/hiddenPowerInput";
+import pmap from "p-map";
+import { sortBy, startCase, mapValues } from "lodash-es";
+import { createGen3TimerAtom } from "~/hooks/useGen3Timer";
+import { ivMethods } from "./constants";
+import { Gen3Timer } from "~/components/gen3Timer";
+import { match, P } from "ts-pattern";
+import { Nullable } from "~/types/utils";
+import { getGen3SpeciesOptions } from "~/types/species";
+import { natureOptions } from "~/components/pkmFilter";
+import { atom, useAtom } from "jotai";
+import { formatOffset } from "~/utils/offsetSymbol";
+import { translateOptions, Translations } from "~/translations";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+
+type HeldEgg = {
+  species: Species;
+  nature: Nature;
+};
+
+const currentlyHeldEggAtom = atom<HeldEgg>({
+  species: "Bulbasaur",
+  nature: "Hardy",
+});
+
+// We use this separate from useHeldEggState
+// because some users will RNG IVs without shininess,
+// and need to manually set the species and nature.
+const useCurrentlyHeldEgg = () => useAtom(currentlyHeldEggAtom);
+
+const HeldEggSpeciesSelect = () => {
+  const [heldEgg, setHeldEgg] = useCurrentlyHeldEgg();
+
+  return (
+    <Select<Species>
+      name="species"
+      options={getGen3SpeciesOptions().byName}
+      value={heldEgg.species}
+      onChange={(value) => setHeldEgg((prev) => ({ ...prev, species: value }))}
+    />
+  );
+};
+
+const HeldEggNatureSelect = () => {
+  const t = useActiveRouteTranslations();
+  const [heldEgg, setHeldEgg] = useCurrentlyHeldEgg();
+
+  const options = translateOptions({
+    t,
+    options: natureOptions.required,
+    sort: true,
+  });
+
+  return (
+    <Select<Nature>
+      name="nature"
+      options={options}
+      value={heldEgg.nature}
+      onChange={(value) => setHeldEgg((prev) => ({ ...prev, nature: value }))}
+    />
+  );
+};
+
+const hasKnownIv = (iv: InheritedIv): boolean => {
+  return match(iv)
+    .with({ Random: P.number }, () => true)
+    .with({ Parent1: P.number }, () => true)
+    .with({ Parent2: P.number }, () => true)
+    .with({ Parent1: undefined }, () => false)
+    .with({ Parent2: undefined }, () => false)
+    .exhaustive();
+};
+
+const normalizeInheritedIv = <T,>({
+  iv,
+  ivDefault,
+}: {
+  iv: InheritedIv;
+  ivDefault: T;
+}): number | T => {
+  return (
+    match(iv)
+      .with({ Random: P.number }, (matched) => matched.Random)
+      .with({ Parent1: P.number }, (matched) => matched.Parent1)
+      .with({ Parent2: P.number }, (matched) => matched.Parent2)
+      // Assume 31 if we don't know the parent ivs.
+      .with({ Parent1: undefined }, () => ivDefault)
+      .with({ Parent2: undefined }, () => ivDefault)
+      .exhaustive()
+  );
+};
+
+const normalizeInheritedIvs = (ivs: InheritedIvs): Ivs => {
+  return mapValues(ivs, (iv) => normalizeInheritedIv({ iv, ivDefault: 31 }));
+};
+
+const timerAtom = createGen3TimerAtom();
+
+type Result = {
+  advance: number;
+  offset: number;
+  method: Gen3PickupMethod;
+  key: string;
+  ivs: InheritedIvs;
+} & Nullable<StatsValue>;
+
+const getColumns = (t: Translations): ResultColumn<Result>[] => [
+  {
+    title: t["Calibrate"],
+    dataIndex: "advance",
+    disableVerticalPadding: true,
+    render: (_, result) => (
+      <CalibrateTimerButton
+        type="gen3"
+        hitAdvance={result.advance}
+        timer={timerAtom}
+        trackerId="calibrate_retail_emerald_pickup_egg"
+      />
+    ),
+  },
+  {
+    title: t["Offset"],
+    dataIndex: "offset",
+    render: formatOffset,
+  },
+  {
+    title: t["Method"],
+    dataIndex: "method",
+    render: (method) => startCase(method),
+  },
+  ...getNullableIvColumns(t),
+];
+
+const getPotentialEggs = async (state: PickupEggState) => {
+  const results = await pmap(
+    ivMethods,
+    async (method) => {
+      const spreads = await rngTools.emerald_egg_pickup_states({
+        method,
+        seed: state.seed,
+        parent_ivs: state.parentIvs,
+        initial_advances: Math.max(state.targetAdvance - 100, 0),
+        max_advances: 200,
+        delay: 0,
+        filter_min_ivs: minIvs,
+        filter_max_ivs: maxIvs,
+        filter_hidden_power: defaultHiddenPowerFilter,
+      });
+      return spreads.map((spread) => ({ ...spread, method }));
+    },
+    { concurrency: 3 },
+  );
+  return results.flat();
+};
+
+const DEFAULT_EGG_LEVEL = 5;
+
+const Validator = StatFieldsSchema.extend({
+  level: z.number().int().min(1).max(100).nullable(),
+  evs: EvsSchema,
+});
+
+export type FormState = z.infer<typeof Validator>;
+
+const initialValues: FormState = {
+  hpStat: 0,
+  atkStat: 0,
+  defStat: 0,
+  spaStat: 0,
+  spdStat: 0,
+  speStat: 0,
+  level: DEFAULT_EGG_LEVEL,
+  evs: {
+    hp: 0,
+    atk: 0,
+    def: 0,
+    spa: 0,
+    spd: 0,
+    spe: 0,
+  },
+};
+
+export const CalibratePickupEgg = () => {
+  const t = useActiveRouteTranslations();
+  const [previouslyRngdEgg] = useHeldEggState();
+  const [heldEgg, setHeldEgg] = useCurrentlyHeldEgg();
+  const [state] = usePickupEggState();
+  const [potentialEggs, setPotentialEggs] = React.useState<Result[]>([]);
+  const [filters, setFilters] = React.useState<FormState>(initialValues);
+
+  // If the user previously RNGd an egg, use those values.
+  const previouslyRngdSpecies = previouslyRngdEgg.eggSettings.egg_species;
+  const previouslyRngdNature = previouslyRngdEgg.target?.nature ?? "Hardy";
+  React.useEffect(() => {
+    setHeldEgg({
+      species: previouslyRngdSpecies,
+      nature: previouslyRngdNature,
+    });
+  }, [previouslyRngdSpecies, previouslyRngdNature, setHeldEgg]);
+
+  const [minMaxStats, setMinMaxStats] =
+    React.useState<MinMaxStats>(defaultMinMaxStats);
+
+  const targetSpecies = heldEgg.species;
+  const targetNature = heldEgg.nature;
+  const targetAdvance = state.targetAdvance;
+  const eggLevel =
+    filters.level == null || filters.level > 100 || filters.level < 1
+      ? null
+      : filters.level;
+
+  React.useEffect(() => {
+    const runAsync = async () => {
+      if (eggLevel == null) {
+        return;
+      }
+
+      const stats = await getStatRange({
+        species: targetSpecies,
+        levelRange: [eggLevel, eggLevel],
+        evs: filters.evs,
+      });
+      setMinMaxStats(stats);
+    };
+    runAsync();
+  }, [targetSpecies, eggLevel, filters.evs]);
+
+  React.useEffect(() => {
+    const runAsync = async () => {
+      if (eggLevel == null) {
+        return;
+      }
+
+      const potentialEggs = await getPotentialEggs(state);
+      const formattedResults = await pmap(potentialEggs, async (result) => {
+        const stats = await rngTools.calculate_stats(
+          targetSpecies,
+          eggLevel,
+          targetNature,
+          normalizeInheritedIvs(result.ivs),
+          filters.evs,
+        );
+        return {
+          key: `${result.advance}-${result.method}`,
+          advance: result.advance,
+          offset: result.advance - targetAdvance,
+          method: result.method,
+          ivs: result.ivs,
+          hp: hasKnownIv(result.ivs.hp) ? stats.hp : null,
+          atk: hasKnownIv(result.ivs.atk) ? stats.atk : null,
+          def: hasKnownIv(result.ivs.def) ? stats.def : null,
+          spa: hasKnownIv(result.ivs.spa) ? stats.spa : null,
+          spd: hasKnownIv(result.ivs.spd) ? stats.spd : null,
+          spe: hasKnownIv(result.ivs.spe) ? stats.spe : null,
+        };
+      });
+
+      const results = sortBy(formattedResults, (result) => result.advance);
+      setPotentialEggs(results);
+    };
+
+    runAsync();
+  }, [
+    state,
+    targetAdvance,
+    targetSpecies,
+    targetNature,
+    eggLevel,
+    filters.evs,
+  ]);
+
+  const updateLevelFilter = (level: number | null) =>
+    setFilters((prev) => ({ ...prev, level }));
+  const updateEvFilters = (evs: Evs) =>
+    setFilters((prev) => ({ ...prev, evs }));
+
+  const fields: Field[] = [
+    {
+      label: t["Species"],
+      input: <HeldEggSpeciesSelect />,
+    },
+    {
+      label: t["Nature"],
+      input: <HeldEggNatureSelect />,
+    },
+    {
+      label: t["Level"],
+      input: (
+        <FormikNumberInput
+          name="level"
+          numType="decimal"
+          onChange={updateLevelFilter}
+        />
+      ),
+    },
+    {
+      label: t["EVs"],
+      input: <EvInput<FormState> name="evs" onChange={updateEvFilters} />,
+    },
+    ...getStatFields<FormState>(minMaxStats, t),
+  ];
+
+  const dataSource = potentialEggs.filter((result) => {
+    return (
+      (result.hp === filters.hpStat || !hasKnownIv(result.ivs.hp)) &&
+      (result.atk === filters.atkStat || !hasKnownIv(result.ivs.atk)) &&
+      (result.def === filters.defStat || !hasKnownIv(result.ivs.def)) &&
+      (result.spa === filters.spaStat || !hasKnownIv(result.ivs.spa)) &&
+      (result.spd === filters.spdStat || !hasKnownIv(result.ivs.spd)) &&
+      (result.spe === filters.speStat || !hasKnownIv(result.ivs.spe))
+    );
+  });
+
+  const onSubmit = async (opts: FormState) => setFilters(opts);
+
+  const target = potentialEggs.find(
+    (egg) => egg.advance === targetAdvance && egg.method === state.targetMethod,
+  );
+  const targetStats =
+    target == null
+      ? "Unknown"
+      : [
+          target.hp ?? "?",
+          target.atk ?? "?",
+          target.def ?? "?",
+          target.spa ?? "?",
+          target.spd ?? "?",
+          target.spe ?? "?",
+        ].join(" / ");
+
+  const targetIvs =
+    target == null
+      ? null
+      : [
+          target.ivs.hp,
+          target.ivs.atk,
+          target.ivs.def,
+          target.ivs.spa,
+          target.ivs.spd,
+          target.ivs.spe,
+        ]
+          .map((iv) => normalizeInheritedIv({ iv, ivDefault: "?" }))
+          .join(" / ");
+
+  return (
+    <Flex vertical gap={16} width="100%">
+      <Flex vertical gap={8}>
+        <Typography.Title level={5} mv={0}>
+          {t["Target Method"]}: {startCase(target?.method)}
+        </Typography.Title>
+        <Typography.Title level={5} mv={0}>
+          {t["Target Stats"]}: {targetStats}
+        </Typography.Title>
+        <Typography.Title level={5} mv={0}>
+          {t["Target IVs"]}: {targetIvs}
+        </Typography.Title>
+      </Flex>
+
+      <RngToolForm<FormState, Result>
+        fields={fields}
+        getColumns={getColumns}
+        validationSchema={Validator}
+        results={dataSource}
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        submitTrackerId="generate_retail_emerald_pickup_egg"
+        submitButtonLabel="Find advances matching hatched egg"
+        rowKey="key"
+      />
+    </Flex>
+  );
+};
+
+export const CalibratePickupEggTimer = () => {
+  const [state] = usePickupEggState();
+  const targetAdvance = state.targetAdvance;
+
+  return (
+    <Gen3Timer
+      trackerId="retail_emerald_pickup_egg"
+      targetAdvance={targetAdvance}
+      timer={timerAtom}
+    />
+  );
+};

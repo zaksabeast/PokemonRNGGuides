@@ -1,0 +1,162 @@
+import React from "react";
+import {
+  Typography,
+  Flex,
+  Header,
+  DesktopDrawer,
+  List,
+  ListItem,
+  Icon,
+  IconName,
+} from "~/components";
+import { useScreenViewed } from "~/hooks/useScreenViewed";
+import { useActiveRoute } from "~/hooks/useActiveRoute";
+import { settings } from "~/settings";
+import { match } from "ts-pattern";
+import { Color } from "@emotion/react";
+import { useMaxWidthEnabled } from "~/state/contentMaxWidth";
+import styled from "@emotion/styled";
+import { styledPropGuard } from "~/utils/styled";
+
+type SupporterType = (typeof settings)["hallOfFameSupporters"][number]["type"];
+
+type IconProps = { name: IconName; color: Color };
+
+const DISCORD_SUPPORTER_PROPS: IconProps = {
+  name: "Discord",
+  color: "Primary",
+};
+const PATREON_SUPPORTER_PROPS: IconProps = { name: "Patreon", color: "Error" };
+
+const getSupporterIconProps = (type: SupporterType): IconProps => {
+  return match(type)
+    .with("discord", () => DISCORD_SUPPORTER_PROPS)
+    .with("patreon", () => PATREON_SUPPORTER_PROPS)
+    .exhaustive();
+};
+
+type Props = {
+  children: React.ReactNode;
+  trackerName?: string;
+};
+
+export const SIDE_MARGIN = 24;
+
+const ContentLayout = styled.div(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  height: `calc(100% - ${theme.token.layoutHeaderHeight})`,
+  width: "100%",
+  gap: 24,
+  boxSizing: "border-box",
+  paddingLeft: SIDE_MARGIN,
+  paddingRight: SIDE_MARGIN,
+  overflowY: "scroll",
+  marginTop: theme.token.layoutHeaderHeight,
+}));
+
+const Main = styled.main({
+  display: "flex",
+  flexDirection: "column",
+  width: "100%",
+  gap: 24,
+});
+
+const DesktopNavDrawerContainer = styled.div(({ theme }) => ({
+  display: "none",
+  flexDirection: "column",
+  height: `calc(100% - ${theme.token.layoutHeaderHeight})`,
+  width: "100%",
+  marginTop: theme.token.layoutHeaderHeight,
+  maxWidth: 300,
+  backgroundColor: "var(--ant-color-bg-container)",
+  borderRight: `1px solid ${theme.token.colorBorder}`,
+  [theme.mediaQueries.up("desktop")]: {
+    display: "flex",
+  },
+}));
+
+const BodyContainer = styled.div({
+  height: "100%",
+  width: "100%",
+  display: "flex",
+});
+
+const ContentContainer = styled(
+  "div",
+  styledPropGuard,
+)<{ $useMaxWidth: boolean }>(({ theme, $useMaxWidth }) => ({
+  height: "100%",
+  width: "100%",
+  maxWidth: $useMaxWidth ? 750 : "none",
+  display: "flex",
+  flexDirection: "column",
+  gap: 32,
+  paddingTop: 24,
+  [theme.mediaQueries.up("tablet")]: {
+    width: $useMaxWidth ? "90%" : "100%",
+  },
+  [theme.mediaQueries.up("desktop")]: {
+    width: $useMaxWidth ? "80%" : "100%",
+  },
+}));
+
+const BottomSpace = styled.div({
+  paddingBottom: 32,
+});
+
+const Footer = styled.footer(({ theme }) => ({
+  width: "100%",
+  paddingTop: 24,
+  paddingBottom: 36,
+  backgroundColor: "unset",
+  borderTop: `1px solid ${theme.token.colorBorder}`,
+}));
+
+export const MainLayout = ({ children, trackerName }: Props) => {
+  const route = useActiveRoute();
+  const [maxWidthEnabled, setMaxWidthEnabled] = useMaxWidthEnabled();
+  useScreenViewed(trackerName ?? route);
+
+  React.useEffect(() => {
+    setMaxWidthEnabled(true);
+  }, [route, setMaxWidthEnabled]);
+
+  return (
+    <>
+      <Header />
+
+      <BodyContainer>
+        <DesktopNavDrawerContainer>
+          <Flex flex={1} vertical p={16} overflowY="auto">
+            <DesktopDrawer />
+          </Flex>
+        </DesktopNavDrawerContainer>
+        <ContentLayout>
+          <ContentContainer $useMaxWidth={maxWidthEnabled}>
+            <Main>{children}</Main>
+            {settings.hallOfFameSupporters.length === 0 && <BottomSpace />}
+            {settings.hallOfFameSupporters.length > 0 && (
+              <Footer>
+                <Typography.Text strong fontSize={20}>
+                  Special thanks to our Hall of Fame supporters!
+                </Typography.Text>
+                <List ml={24} pv={12}>
+                  {settings.hallOfFameSupporters.map((supporter) => (
+                    <ListItem fontSize={18} key={supporter.name}>
+                      <Flex gap={8} align="center">
+                        <Icon {...getSupporterIconProps(supporter.type)} />
+                        {supporter.name}
+                      </Flex>
+                    </ListItem>
+                  ))}
+                </List>
+              </Footer>
+            )}
+          </ContentContainer>
+        </ContentLayout>
+      </BodyContainer>
+    </>
+  );
+};

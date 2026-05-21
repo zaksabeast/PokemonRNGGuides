@@ -1,0 +1,201 @@
+0	E	L 0	D3C5AA89	No	Hardy	1: Static	10	31	16	22	0	25	Poison	42	-	Likes to thrash about
+1	P	ML 29	3080375D	No	Quirky	1: Static	28	3	16	7	18	27	Ghost	66	-	Scatters things often
+2	E	M 57	FC3367DB	No	Bold	1: Static	12	25	27	2	31	30	Water	68	-	Somewhat vain
+3	E	M 55	60A1E414	No	Calm	0: Soundproof	11	25	10	25	3	24	Psychic	53	-	Highly curious
+4	K	M 44	639E3D69	No	Bashful	1: Static	9	9	7	20	26	13	Ground	52	-	Somewhat vain
+5	K	L 8	AD05863A	No	Timid	0: Soundproof	18	14	4	0	12	25	Flying	31	-	Likes to run
+6	E	M 49	945CE0C6	No	Sassy	0: Soundproof	27	17	19	18	22	31	Ground	68	-	Alert to sounds
+7	K	ML 24	91785DD6	No	Serious	0: Soundproof	6	29	9	12	24	13	Ground	30	-	Quick tempered
+8	E	H 88	DFC5706A	No	Jolly	0: Soundproof	4	20	14	0	25	20	Steel	32	-	Strong willed
+9	K	M 47	618D27A6	No	Adamant	0: Soundproof	18	20	5	29	19	24	Psychic	50	-	Very finicky
+10	K	H 88	1692618D	No	Docile	1: Static	24	29	19	26	13	29	Grass	42	-	Quick tempered
+11	E	ML 33	6E031C49	No	Lax	1: Static	10	13	12	20	10	9	Poison	50	-	Highly curious
+12	P	ML 36	7ABC993D	No	Quirky	1: Static	7	29	18	14	23	22	Fire	68	-	Quick tempered
+13	K	MH 78	47441306	No	Naughty	0: Soundproof	18	23	21	4	0	12	Flying	31	-	Likes to fight
+14	K	H 83	B54BF009	No	Calm	1: Static	14	16	9	21	13	8	Psychic	30	-	Mischievous
+15	K	ML 36	AD05863A	No	Timid	0: Soundproof	18	14	4	0	12	25	Flying	31	-	Likes to run
+16	K	H 93	945CE0C6	No	Sassy	0: Soundproof	27	17	19	18	22	31	Ground	68	-	Alert to sounds
+17	K	M 54	7B43B6A8	No	Modest	0: Soundproof	11	14	30	7	26	15	Bug	70	-	Sturdy body
+18	K	ML 23	D3C5AA89	No	Hardy	1: Static	10	31	16	22	0	25	Poison	42	-	Likes to thrash about
+19	K	L 4	4160B6A0	No	Careful	0: Soundproof	22	17	5	0	28	9	Ground	30	-	Hates to lose
+20	E	MH 70	1C5CA855	No	Adamant	1: Static	2	18	8	17	1	26	Electric	36	-	Alert to sounds
+21	K	M 49	24285A5F	No	Lonely	1: Static	19	29	30	31	15	1	Dragon	63	-	Mischievous
+22	K	MH 73	2B2B60A1	No	Careful	1: Static	24	25	3	21	13	0	Psychic	32	-	Proud of its power
+23	P	M 51	AA8931AA	No	Mild	0: Soundproof	5	30	20	31	16	10	Rock	46	-	Mischievous
+24	P	L 1	B7A2A7C4	No	Impish	0: Soundproof	21	2	10	2	7	28	Steel	64	-	Somewhat of a clown
+25	P	ML 28	A855B7A2	No	Impish	0: Soundproof	28	2	7	18	8	2	Fighting	49	-	Scatters things often
+26	E	M 56	ABD4EBA6	No	Rash	0: Soundproof	9	29	1	7	17	5	Dark	40	-	Quick tempered
+27	P	H 96	8F382B2B	No	Bold	1: Static	0	21	13	11	16	0	Bug	40	-	Likes to thrash about
+28	P	H 98	7B8EBFE1	No	Lonely	1: Static	31	3	0	6	16	4	Fighting	42	-	Takes plenty of siestas
+29	K	H 91	79F040EC	No	Gentle	0: Soundproof	17	13	1	5	23	21	Dark	50	-	Hates to lose
+30	P	L 11	BFD1C848	No	Brave	0: Soundproof	22	5	14	1	4	27	Ghost	38	-	Impetuous and silly
+31	K	H 91	7B43B6A8	No	Modest	0: Soundproof	11	14	30	7	26	15	Bug	70	-	Sturdy body
+32	E	ML 32	B54BF009	No	Calm	1: Static	14	16	9	21	13	8	Psychic	30	-	Mischievous
+33	P	L 8	BA84DFC5	No	Jolly	1: Static	20	0	25	5	24	1	Ghost	30	-	Sturdy body
+34	K	M 57	1C49A397	No	Bold	1: Static	3	16	27	13	12	10	Bug	38	-	Highly persistent
+35	P	L 11	47441306	No	Naughty	0: Soundproof	18	23	21	4	0	12	Flying	31	-	Likes to fight
+36	P	H 88	FBB32428	No	Mild	0: Soundproof	1	31	15	28	30	14	Flying	59	-	Likes to thrash about
+37	P	M 43	BA84DFC5	No	Jolly	1: Static	20	0	25	5	24	1	Ghost	30	-	Sturdy body
+38	E	M 55	2843F223	No	Naive	1: Static	20	18	9	27	18	0	Rock	61	-	Thoroughly cunning
+39	K	ML 32	C3EAD3C5	No	Relaxed	1: Static	25	22	0	6	24	6	Fighting	46	-	Loves to eat
+40	E	MH 61	DFC5706A	No	Jolly	0: Soundproof	4	20	14	0	25	20	Steel	32	-	Strong willed
+41	E	L 12	47441306	No	Naughty	0: Soundproof	18	23	21	4	0	12	Flying	31	-	Likes to fight
+42	P	L 8	945CE0C6	No	Sassy	0: Soundproof	27	17	19	18	22	31	Ground	68	-	Alert to sounds
+43	P	L 2	246211BA	No	Quiet	0: Soundproof	0	4	19	30	9	4	Fire	42	-	Highly curious
+44	E	MH 63	DA00BE34	No	Bold	0: Soundproof	10	3	28	30	23	5	Grass	62	-	Highly curious
+45	P	M 44	007F7B8E	No	Brave	0: Soundproof	4	6	16	2	18	8	Fighting	61	-	Hates to lose
+46	P	H 82	52181D87	No	Timid	1: Static	28	2	16	25	13	30	Electric	36	-	Likes to run
+47	K	L 12	BE037D3A	No	Docile	0: Soundproof	12	7	16	15	30	16	Rock	61	-	Strong willed
+48	K	H 86	52181D87	No	Timid	1: Static	28	2	16	25	13	30	Electric	36	-	Likes to run
+49	P	H 99	79F040EC	No	Gentle	0: Soundproof	17	13	1	5	23	21	Dark	50	-	Hates to lose
+50	K	H 86	DA00BE34	No	Bold	0: Soundproof	10	3	28	30	23	5	Grass	62	-	Highly curious
+51	K	L 1	2C6F809F	No	Brave	1: Static	15	28	18	18	28	17	Poison	43	-	Likes to fight
+52	P	L 2	DA00BE34	No	Bold	0: Soundproof	10	3	28	30	23	5	Grass	62	-	Highly curious
+53	P	ML 25	BE347D23	No	Sassy	1: Static	0	16	22	3	28	10	Ground	47	-	Hates to lose
+54	K	H 99	DA00BE34	No	Bold	0: Soundproof	10	3	28	30	23	5	Grass	62	-	Highly curious
+55	K	MH 77	3DCD8D5B	No	Bashful	1: Static	19	28	1	5	8	17	Ghost	30	-	Likes to fight
+56	P	M 50	2B2B60A1	No	Careful	1: Static	24	25	3	21	13	0	Psychic	32	-	Proud of its power
+57	K	H 84	706ADA00	No	Mild	0: Soundproof	5	30	23	20	14	4	Flying	54	-	Proud of its power
+58	K	H 91	52181D87	No	Timid	1: Static	28	2	16	25	13	30	Electric	36	-	Likes to run
+59	P	H 94	246211BA	No	Quiet	0: Soundproof	0	4	19	30	9	4	Fire	42	-	Highly curious
+60	P	H 81	B7A2A7C4	No	Impish	0: Soundproof	21	2	10	2	7	28	Steel	64	-	Somewhat of a clown
+61	P	M 51	A2421C5C	No	Adamant	0: Soundproof	26	17	1	8	11	5	Grass	50	-	Takes plenty of siestas
+62	E	H 99	52181D87	No	Timid	1: Static	28	2	16	25	13	30	Electric	36	-	Likes to run
+63	E	H 82	4160B6A0	No	Careful	0: Soundproof	22	17	5	0	28	9	Ground	30	-	Hates to lose
+64	P	L 12	40ECBE03	No	Jolly	1: Static	16	15	30	13	1	17	Ice	33	-	Sturdy body
+65	P	L 1	A1E0112D	No	Serious	1: Static	20	19	16	30	28	4	Fighting	41	-	Highly curious
+66	P	ML 34	C3BE745F	No	Lonely	1: Static	1	3	24	4	6	21	Poison	51	-	Good perseverance
+67	K	M 47	A0B18793	No	Naive	1: Static	25	8	4	22	31	25	Water	60	-	Somewhat vain
+68	E	MH 70	B6A8260E	No	Brave	0: Soundproof	3	26	30	14	30	11	Poison	70	-	Sturdy body
+69	P	L 4	E061C3BE	No	Hasty	0: Soundproof	21	4	6	7	1	17	Ice	42	-	Takes plenty of siestas
+70	K	MH 69	CC802462	No	Hasty	0: Soundproof	4	30	9	29	13	2	Psychic	36	-	Proud of its power
+71	E	M 50	84F19895	No	Quirky	1: Static	26	13	4	3	9	2	Electric	45	-	Takes plenty of siestas
+72	K	MH 66	CC802462	No	Hasty	0: Soundproof	4	30	9	29	13	2	Psychic	36	-	Proud of its power
+73	K	L 18	246211BA	No	Quiet	0: Soundproof	0	4	19	30	9	4	Fire	42	-	Highly curious
+74	P	MH 70	52181D87	No	Timid	1: Static	28	2	16	25	13	30	Electric	36	-	Likes to run
+75	K	H 85	A7C4CC80	No	Bold	0: Soundproof	2	29	13	2	10	21	Ground	61	-	Quick tempered
+76	P	H 80	4274A1E0	No	Sassy	0: Soundproof	4	30	28	24	10	11	Flying	56	-	Proud of its power
+77	K	ML 27	745FAFD4	No	Jolly	0: Soundproof	30	29	16	3	24	1	Ghost	40	-	Loves to eat
+78	E	M 49	9895E061	No	Serious	1: Static	17	7	1	13	4	26	Bug	36	-	Alert to sounds
+79	K	MH 63	008CD6F2	No	Mild	0: Soundproof	30	1	30	29	8	22	Rock	38	-	Sturdy body
+80	K	L 11	52181D87	No	Timid	1: Static	28	2	16	25	13	30	Electric	36	-	Likes to run
+81	E	L 1	008CD6F2	No	Mild	0: Soundproof	30	1	30	29	8	22	Rock	38	-	Sturdy body
+82	K	MH 76	CC802462	No	Hasty	0: Soundproof	4	30	9	29	13	2	Psychic	36	-	Proud of its power
+83	K	L 15	A855B7A2	No	Impish	0: Soundproof	28	2	7	18	8	2	Fighting	49	-	Scatters things often
+84	P	M 55	40ECBE03	No	Jolly	1: Static	16	15	30	13	1	17	Ice	33	-	Sturdy body
+85	P	L 13	A0B18793	No	Naive	1: Static	25	8	4	22	31	25	Water	60	-	Somewhat vain
+86	P	ML 39	8ADFA38A	No	Brave	0: Soundproof	14	1	29	15	3	5	Dragon	61	-	Good perseverance
+87	E	ML 24	6AC05DE8	No	Careful	0: Soundproof	7	31	26	17	28	13	Ghost	34	-	Likes to thrash about
+88	E	MH 73	52181D87	No	Timid	1: Static	28	2	16	25	13	30	Electric	36	-	Likes to run
+89	K	ML 26	3DCD8D5B	No	Bashful	1: Static	19	28	1	5	8	17	Ghost	30	-	Likes to fight
+90	E	H 88	52181D87	No	Timid	1: Static	28	2	16	25	13	30	Electric	36	-	Likes to run
+91	E	L 7	451BBA60	No	Jolly	0: Soundproof	14	25	5	5	13	9	Dragon	30	-	Proud of its power
+92	E	L 19	A1DA46F3	No	Serious	1: Static	21	7	23	8	3	4	Water	54	-	Good endurance
+93	K	M 40	3DCD8D5B	No	Bashful	1: Static	19	28	1	5	8	17	Ghost	30	-	Likes to fight
+94	P	M 55	A1DA46F3	No	Serious	1: Static	21	7	23	8	3	4	Water	54	-	Good endurance
+95	E	M 50	BE037D3A	No	Docile	0: Soundproof	12	7	16	15	30	16	Rock	61	-	Strong willed
+96	K	MH 74	B4667ED9	No	Hardy	1: Static	25	20	29	9	31	26	Psychic	55	-	Somewhat vain
+97	P	M 46	F2232B0B	No	Lonely	1: Static	3	2	10	18	9	20	Steel	44	-	Likes to run
+98	E	H 82	A1DA46F3	No	Serious	1: Static	21	7	23	8	3	4	Water	54	-	Good endurance
+99	E	L 15	008CD6F2	No	Mild	0: Soundproof	30	1	30	29	8	22	Rock	38	-	Sturdy body
+100	E	MH 72	CB60A654	No	Lax	0: Soundproof	2	2	16	19	21	2	Electric	47	-	Somewhat vain
+101	P	MH 64	BE037D3A	No	Docile	0: Soundproof	12	7	16	15	30	16	Rock	61	-	Strong willed
+102	E	M 42	7D3AF699	No	Quiet	1: Static	3	16	15	7	16	12	Bug	43	-	Somewhat vain
+103	E	ML 29	BE037D3A	No	Docile	0: Soundproof	12	7	16	15	30	16	Rock	61	-	Strong willed
+104	P	M 53	4274A1E0	No	Sassy	0: Soundproof	4	30	28	24	10	11	Flying	56	-	Proud of its power
+105	K	L 5	ECB46C56	No	Modest	0: Soundproof	4	22	17	4	14	9	Poison	51	-	A little quick tempered
+106	P	L 7	A1DA46F3	No	Serious	1: Static	21	7	23	8	3	4	Water	54	-	Good endurance
+107	P	MH 61	DCB585B1	No	Hasty	1: Static	16	13	20	14	30	9	Poison	60	-	Strong willed
+108	E	ML 34	ABD4EBA6	No	Rash	0: Soundproof	9	29	1	7	17	5	Dark	40	-	Quick tempered
+109	K	M 56	A6542843	No	Serious	1: Static	0	27	18	2	16	2	Fighting	49	-	A little quick tempered
+110	P	ML 25	BDF24106	No	Relaxed	0: Soundproof	2	9	17	31	2	23	Steel	66	-	Mischievous
+111	K	L 19	7ED91119	No	Bold	1: Static	6	3	13	20	29	25	Grass	31	-	Somewhat stubborn
+112	P	ML 35	8BF74522	No	Naive	0: Soundproof	1	5	25	31	17	10	Ice	45	-	Mischievous
+113	E	L 0	3DCD8D5B	No	Bashful	1: Static	19	28	1	5	8	17	Ghost	30	-	Likes to fight
+114	E	MH 69	BDF24106	No	Relaxed	0: Soundproof	2	9	17	31	2	23	Steel	66	-	Mischievous
+115	P	M 54	480E24D3	No	Impish	1: Static	0	0	31	6	28	11	Poison	47	-	Capable of taking hits
+116	K	M 41	A1DA46F3	No	Serious	1: Static	21	7	23	8	3	4	Water	54	-	Good endurance
+117	P	H 93	79F040EC	No	Gentle	0: Soundproof	17	13	1	5	23	21	Dark	50	-	Hates to lose
+118	E	ML 23	BDF24106	No	Relaxed	0: Soundproof	2	9	17	31	2	23	Steel	66	-	Mischievous
+119	K	L 2	70CBFC00	No	Serious	0: Soundproof	31	4	0	3	11	15	Ice	66	-	Takes plenty of siestas
+120	E	M 53	8ADFA38A	No	Brave	0: Soundproof	14	1	29	15	3	5	Dragon	61	-	Good perseverance
+121	K	H 96	6AC05DE8	No	Careful	0: Soundproof	7	31	26	17	28	13	Ghost	34	-	Likes to thrash about
+122	E	MH 63	BDF24106	No	Relaxed	0: Soundproof	2	9	17	31	2	23	Steel	66	-	Mischievous
+123	E	MH 70	47441306	No	Naughty	0: Soundproof	18	23	21	4	0	12	Flying	31	-	Likes to fight
+124	E	H 91	4F33F251	No	Impish	1: Static	6	20	26	24	18	9	Flying	53	-	Capable of taking hits
+125	K	H 93	70F74B09	No	Bashful	1: Static	8	15	23	22	26	0	Flying	64	-	Somewhat vain
+126	E	L 2	C6C4ECB4	No	Calm	0: Soundproof	9	4	14	23	12	25	Bug	42	-	Likes to run
+127	K	H 81	008CD6F2	No	Mild	0: Soundproof	30	1	30	29	8	22	Rock	38	-	Sturdy body
+128	K	L 17	12A55395	No	Hardy	1: Static	24	4	11	2	19	25	Grass	63	-	Likes to run
+129	P	H 89	DFBEF7BA	No	Lonely	0: Soundproof	20	14	1	11	15	10	Psychic	66	-	Loves to eat
+130	K	M 55	CB0507D2	No	Bold	0: Soundproof	30	20	29	6	9	19	Grass	45	-	Loves to eat
+131	E	H 80	6A864F33	No	Calm	1: Static	9	24	18	7	28	23	Bug	47	-	Hates to lose
+132	E	ML 37	44E587A9	No	Hasty	1: Static	18	30	1	24	18	5	Poison	52	-	Proud of its power
+133	E	L 11	6A864F33	No	Calm	1: Static	9	24	18	7	28	23	Bug	47	-	Hates to lose
+134	E	H 87	ABD4EBA6	No	Rash	0: Soundproof	9	29	1	7	17	5	Dark	40	-	Quick tempered
+135	P	ML 36	DFBEF7BA	No	Lonely	0: Soundproof	20	14	1	11	15	10	Psychic	66	-	Loves to eat
+136	P	ML 36	85D4DFBE	No	Jolly	0: Soundproof	10	11	15	24	28	15	Ground	39	-	Hates to lose
+137	K	ML 23	47441306	No	Naughty	0: Soundproof	18	23	21	4	0	12	Flying	31	-	Likes to fight
+138	E	L 15	A1DA46F3	No	Serious	1: Static	21	7	23	8	3	4	Water	54	-	Good endurance
+139	K	ML 24	2C6F809F	No	Brave	1: Static	15	28	18	18	28	17	Poison	43	-	Likes to fight
+140	K	ML 34	D217F7E4	No	Careful	0: Soundproof	17	23	4	24	20	14	Fighting	36	-	Very finicky
+141	P	MH 70	184330AF	No	Lax	1: Static	7	23	10	30	3	1	Grass	64	-	Highly curious
+142	K	L 15	8ADFA38A	No	Brave	0: Soundproof	14	1	29	15	3	5	Dragon	61	-	Good perseverance
+143	P	ML 25	1240A58B	No	Gentle	1: Static	10	25	4	2	7	9	Grass	61	-	Proud of its power
+144	E	H 87	A1DA46F3	No	Serious	1: Static	21	7	23	8	3	4	Water	54	-	Good endurance
+145	E	M 52	704AB585	No	Hardy	1: Static	25	30	25	7	13	24	Psychic	41	-	Proud of its power
+146	P	L 1	8ADFA38A	No	Brave	0: Soundproof	14	1	29	15	3	5	Dragon	61	-	Good perseverance
+147	P	ML 38	704AB585	No	Hardy	1: Static	25	30	25	7	13	24	Psychic	41	-	Proud of its power
+148	K	ML 36	80973810	No	Hasty	0: Soundproof	13	10	31	22	29	3	Grass	49	-	Capable of taking hits
+149	P	M 57	6F38D13E	No	Impish	0: Soundproof	20	7	21	12	1	17	Grass	31	-	Capable of taking hits
+150	K	M 47	12A55395	No	Hardy	1: Static	24	4	11	2	19	25	Grass	63	-	Likes to run
+151	E	ML 32	C5CAF6C3	No	Calm	1: Static	16	20	29	17	27	3	Dragon	55	-	Good perseverance
+152	E	ML 34	5DE870F7	No	Lax	1: Static	0	22	26	31	26	7	Bug	69	-	Mischievous
+153	P	M 53	EBAF9DA7	No	Rash	1: Static	3	5	20	7	22	21	Ghost	61	-	Strongly defiant
+154	K	H 93	F83E008C	No	Modest	0: Soundproof	22	29	8	12	13	5	Grass	30	-	Quick tempered
+155	K	ML 33	E628323A	No	Adamant	0: Soundproof	8	2	5	7	25	17	Dragon	41	-	Strong willed
+156	K	ML 37	738764F1	No	Mild	1: Static	14	10	12	4	4	15	Flying	36	-	Likes to run
+157	E	M 56	47441306	No	Naughty	0: Soundproof	18	23	21	4	0	12	Flying	31	-	Likes to fight
+158	P	ML 25	4D34A5A5	No	Lax	1: Static	4	31	29	16	20	23	Ground	36	-	Likes to thrash about
+159	E	MH 75	64A18BF7	No	Brave	1: Static	10	31	17	25	4	1	Steel	31	-	Likes to thrash about
+160	E	L 1	B585A3B6	No	Rash	0: Soundproof	10	2	28	30	25	25	Water	42	-	Highly curious
+161	E	H 91	C5CAF6C3	No	Calm	1: Static	16	20	29	17	27	3	Dragon	55	-	Good perseverance
+162	E	MH 71	109FD8F5	No	Gentle	1: Static	8	25	1	21	14	13	Steel	50	-	Proud of its power
+163	E	L 18	184330AF	No	Lax	1: Static	7	23	10	30	3	1	Grass	64	-	Highly curious
+164	K	MH 70	8ADFA38A	No	Brave	0: Soundproof	14	1	29	15	3	5	Dragon	61	-	Good perseverance
+165	K	M 44	34F867D9	No	Calm	1: Static	11	12	9	18	4	0	Flying	40	-	Often lost in thought
+166	K	MH 79	9DA7AFD1	No	Impish	1: Static	15	29	26	5	20	3	Ghost	38	-	Quick tempered
+167	E	M 49	184330AF	No	Lax	1: Static	7	23	10	30	3	1	Grass	64	-	Highly curious
+168	E	H 92	4D34A5A5	No	Lax	1: Static	4	31	29	16	20	23	Ground	36	-	Likes to thrash about
+169	P	ML 36	A3B6F83E	No	Timid	0: Soundproof	5	12	13	2	28	10	Flying	45	-	Hates to lose
+170	E	M 51	7C831511	No	Bashful	1: Static	28	17	20	9	20	30	Rock	35	-	Likes to run
+171	P	MH 77	008CD6F2	No	Mild	0: Soundproof	30	1	30	29	8	22	Rock	38	-	Sturdy body
+172	K	M 51	D6F24744	No	Bold	0: Soundproof	12	4	0	1	30	30	Ground	55	-	Strong willed
+173	K	ML 22	704AB585	No	Hardy	1: Static	25	30	25	7	13	24	Psychic	41	-	Proud of its power
+174	P	H 83	8BF74522	No	Naive	0: Soundproof	1	5	25	31	17	10	Ice	45	-	Mischievous
+175	K	ML 36	184330AF	No	Lax	1: Static	7	23	10	30	3	1	Grass	64	-	Highly curious
+176	K	M 59	C6C4ECB4	No	Calm	0: Soundproof	9	4	14	23	12	25	Bug	42	-	Likes to run
+177	K	ML 22	C7902FF4	No	Rash	0: Soundproof	27	0	8	29	13	5	Ice	30	-	Very finicky
+178	E	MH 71	8F468A41	No	Lonely	1: Static	16	8	22	21	16	0	Ground	32	-	Highly persistent
+179	P	L 1	ECB46C56	No	Modest	0: Soundproof	4	22	17	4	14	9	Poison	51	-	A little quick tempered
+180	K	MH 75	12A55395	No	Hardy	1: Static	24	4	11	2	19	25	Grass	63	-	Likes to run
+181	E	L 11	B889C6C4	No	Timid	0: Soundproof	25	23	12	23	17	19	Dragon	46	-	Loves to eat
+182	P	MH 67	C7EA64A1	No	Rash	1: Static	1	25	4	0	4	30	Fighting	35	-	Likes to run
+183	E	M 50	1240A58B	No	Gentle	1: Static	10	25	4	2	7	9	Grass	61	-	Proud of its power
+184	P	ML 24	52181D87	No	Timid	1: Static	28	2	16	25	13	30	Electric	36	-	Likes to run
+185	E	MH 65	B889C6C4	No	Timid	0: Soundproof	25	23	12	23	17	19	Dragon	46	-	Loves to eat
+186	K	L 17	6C56A63B	No	Naughty	1: Static	20	5	27	22	17	4	Water	42	-	Highly persistent
+187	K	M 57	E7F93018	No	Sassy	0: Soundproof	1	26	8	13	9	5	Ice	31	-	Likes to thrash about
+188	E	M 59	530E92F1	No	Quirky	1: Static	27	17	9	2	27	22	Water	66	-	Strongly defiant
+189	K	H 88	184330AF	No	Lax	1: Static	7	23	10	30	3	1	Grass	64	-	Highly curious
+190	K	MH 71	4D34A5A5	No	Lax	1: Static	4	31	29	16	20	23	Ground	36	-	Likes to thrash about
+191	E	M 45	A5A5A341	No	Careful	1: Static	20	9	19	31	29	4	Psychic	42	-	Mischievous
+192	E	M 50	A1DA46F3	No	Serious	1: Static	21	7	23	8	3	4	Water	54	-	Good endurance
+193	E	ML 24	B889C6C4	No	Timid	0: Soundproof	25	23	12	23	17	19	Dragon	46	-	Loves to eat
+194	E	L 10	7C831511	No	Bashful	1: Static	28	17	20	9	20	30	Rock	35	-	Likes to run
+195	E	L 17	10610999	No	Bold	1: Static	16	18	18	20	2	11	Flying	59	-	Highly curious
+196	E	M 41	8BF74522	No	Naive	0: Soundproof	1	5	25	31	17	10	Ice	45	-	Mischievous
+197	K	MH 74	B889C6C4	No	Timid	0: Soundproof	25	23	12	23	17	19	Dragon	46	-	Loves to eat
+198	P	M 56	101E1321	No	Impish	1: Static	12	10	17	28	19	27	Grass	56	-	Often lost in thought
+199	E	M 59	A63B530E	No	Quiet	0: Soundproof	22	2	27	5	27	20	Psychic	54	-	Strongly defiant
+200	K	M 59	A1DA46F3	No	Serious	1: Static	21	7	23	8	3	4	Water	54	-	Good endurance

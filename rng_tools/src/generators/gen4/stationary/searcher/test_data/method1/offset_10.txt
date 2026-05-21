@@ -1,0 +1,282 @@
+AD010373	18	51F91528	No	Lonely	0: Overgrow	30	30	30	20	27	27	Water	59	♂	Loves to eat
+2D010373	18	D1F99528	No	Quiet	0: Overgrow	30	30	30	20	27	27	Water	59	♂	Sturdy body
+060F0325	18	D767D4F9	No	Rash	1: Overgrow	30	30	30	20	31	31	Water	59	♂	Somewhat vain
+860F0325	18	576754F9	No	Adamant	1: Overgrow	30	30	30	20	31	31	Water	59	♂	Alert to sounds
+E0030380	12	62145156	No	Timid	0: Overgrow	30	30	30	22	24	24	Fighting	44	♂	Loves to eat
+60030380	12	E214D156	No	Lonely	0: Overgrow	30	30	30	22	24	24	Fighting	44	♂	Loves to eat
+5F0B033D	13	42974038	No	Relaxed	0: Overgrow	30	30	30	22	27	26	Steel	70	♂	Loves to eat
+DF0B033D	13	C297C038	No	Careful	0: Overgrow	30	30	30	22	27	26	Steel	70	♂	Sturdy body
+CE120321	9	7C61CCEC	No	Hasty	0: Overgrow	30	30	30	22	29	28	Steel	44	♂	Loves to eat
+4E120321	9	FC614CEC	No	Mild	0: Overgrow	30	30	30	22	29	28	Steel	44	♂	Loves to eat
+2C05036D	17	6EDC48C0	No	Naughty	0: Overgrow	30	30	30	24	23	25	Water	54	♂	Loves to eat
+AC05036D	17	EEDCC8C0	No	Calm	0: Overgrow	30	30	30	24	23	25	Water	54	♂	Loves to eat
+C7000360	3	94AE624F	No	Quirky	1: Overgrow	30	30	30	24	24	26	Fighting	39	♂	Proud of its power
+47000360	3	14AEE24F	No	Rash	1: Overgrow	30	30	30	24	24	26	Fighting	39	♂	Proud of its power
+430A0366	13	7252FF40	No	Calm	0: Overgrow	30	30	30	25	26	22	Ground	59	♂	Sturdy body
+C30A0366	13	F2527F40	No	Hardy	0: Overgrow	30	30	30	25	26	22	Ground	59	♂	Sturdy body
+DB0F0352	1	2007429A	No	Naive	0: Overgrow	30	30	30	25	28	28	Ground	34	♂	Loves to eat
+5B0F0352	1	A007C29A	No	Bold	0: Overgrow	30	30	30	25	28	28	Ground	34	♂	Sturdy body
+5B060384	12	6B982AFF	No	Mild	1: Overgrow	30	30	30	26	22	25	Flying	64	♂	Proud of its power
+DB060384	12	EB98AAFF	No	Relaxed	1: Overgrow	30	30	30	26	22	25	Flying	64	♂	Loves to eat
+54070372	1	AA2DF078	No	Hardy	0: Overgrow	30	30	30	26	26	22	Fighting	70	♂	Sturdy body
+D4070372	1	2A2D7078	No	Lax	0: Overgrow	30	30	30	26	26	22	Fighting	70	♂	Loves to eat
+4217036A	20	62124F86	No	Quirky	0: Overgrow	30	30	30	27	25	27	Ice	49	♂	Sturdy body
+C217036A	20	E212CF86	No	Modest	0: Overgrow	30	30	30	27	25	27	Ice	49	♂	Loves to eat
+9D160366	17	5913428C	No	Rash	0: Overgrow	30	30	30	29	23	27	Ice	59	♂	Sturdy body
+1D160366	17	D913C28C	No	Timid	0: Overgrow	30	30	30	29	23	27	Ice	59	♂	Loves to eat
+3B080364	2	CB0FCCC4	No	Impish	0: Overgrow	30	30	30	29	31	24	Electric	54	♂	Somewhat vain
+BB080364	2	4B0F4CC4	No	Quiet	0: Overgrow	30	30	30	29	31	24	Electric	54	♂	Somewhat vain
+1F0E037C	6	AB73F273	No	Bashful	1: Overgrow	30	30	31	20	20	26	Fighting	39	♂	Capable of taking hits
+9F0E037C	6	2B737273	No	Brave	1: Overgrow	30	30	31	20	20	26	Fighting	39	♂	Capable of taking hits
+B40A0346	14	CBAC8E84	No	Quirky	0: Overgrow	30	30	31	21	25	28	Psychic	34	♂	Capable of taking hits
+340A0346	14	4BAC0E84	No	Impish	0: Overgrow	30	30	31	21	25	28	Psychic	34	♂	Capable of taking hits
+C70D0330	12	173DE5F6	No	Lax	0: Overgrow	30	30	31	21	29	20	Psychic	34	♂	Capable of taking hits
+470D0330	12	973D65F6	No	Naive	0: Overgrow	30	30	31	21	29	20	Psychic	34	♂	Capable of taking hits
+530C0327	4	E1F9D074	No	Adamant	0: Overgrow	30	30	31	21	31	22	Psychic	59	♂	Capable of taking hits
+D30C0327	4	61F95074	No	Serious	0: Overgrow	30	30	31	21	31	22	Psychic	59	♂	Capable of taking hits
+D1070322	9	8C488452	No	Docile	0: Overgrow	30	30	31	22	27	28	Fire	64	♂	Capable of taking hits
+51070322	9	0C480452	No	Modest	0: Overgrow	30	30	31	22	27	28	Fire	64	♂	Capable of taking hits
+B0080378	22	E3F892F4	No	Bold	0: Overgrow	30	30	31	22	30	20	Fighting	64	♂	Capable of taking hits
+30080378	22	63F812F4	No	Naive	0: Overgrow	30	30	31	22	30	20	Fighting	64	♂	Capable of taking hits
+510F033F	0	FCCEAB7C	No	Careful	0: Overgrow	30	30	31	23	21	31	Dragon	49	♂	Capable of taking hits
+D10F033F	0	7CCE2B7C	No	Relaxed	0: Overgrow	30	30	31	23	21	31	Dragon	49	♂	Capable of taking hits
+98060381	20	DCA5A57C	No	Quirky	0: Overgrow	30	30	31	23	23	20	Psychic	64	♂	Capable of taking hits
+18060381	20	5CA5257C	No	Impish	0: Overgrow	30	30	31	23	23	20	Psychic	64	♂	Capable of taking hits
+5B050323	4	DC60E3E9	No	Gentle	1: Overgrow	30	30	31	23	25	29	Dragon	44	♂	Capable of taking hits
+DB050323	4	5C6063E9	No	Bold	1: Overgrow	30	30	31	23	25	29	Dragon	44	♂	Capable of taking hits
+0108037B	10	9AFF1738	No	Jolly	0: Overgrow	30	30	31	23	28	31	Ghost	49	♂	Capable of taking hits
+8108037B	10	1AFF9738	No	Impish	0: Overgrow	30	30	31	23	28	31	Ghost	49	♂	Capable of taking hits
+ED17034F	2	93AB98CD	No	Hardy	1: Overgrow	30	30	31	23	31	25	Dragon	64	♂	Somewhat vain
+6D17034F	2	13AB18CD	No	Lax	1: Overgrow	30	30	31	23	31	25	Dragon	64	♂	Somewhat vain
+110B0381	24	1BD4151F	No	Gentle	1: Overgrow	30	30	31	24	20	26	Fighting	39	♂	Capable of taking hits
+910B0381	24	9BD4951F	No	Serious	1: Overgrow	30	30	31	24	20	26	Fighting	39	♂	Capable of taking hits
+CC000380	28	099511F3	No	Adamant	1: Overgrow	30	30	31	24	30	27	Poison	59	♂	Capable of taking hits
+4C000380	28	899591F3	No	Rash	1: Overgrow	30	30	31	24	30	27	Poison	59	♂	Capable of taking hits
+D1120350	6	ABF82E30	No	Jolly	0: Overgrow	30	30	31	25	26	22	Rock	59	♂	Capable of taking hits
+51120350	6	2BF8AE30	No	Impish	0: Overgrow	30	30	31	25	26	22	Rock	59	♂	Capable of taking hits
+990D035F	15	6F622B36	No	Mild	0: Overgrow	30	30	31	26	21	24	Fire	44	♂	Capable of taking hits
+190D035F	15	EF62AB36	No	Relaxed	0: Overgrow	30	30	31	26	21	24	Fire	44	♂	Capable of taking hits
+7707036C	6	506C57A4	No	Naughty	0: Overgrow	30	30	31	26	29	20	Fire	44	♂	Capable of taking hits
+F707036C	6	D06CD7A4	No	Calm	0: Overgrow	30	30	31	26	29	20	Fire	44	♂	Capable of taking hits
+7C100364	10	60776CCE	No	Quirky	0: Overgrow	30	30	31	26	29	21	Grass	44	♂	Capable of taking hits
+FC100364	10	E077ECCE	No	Modest	0: Overgrow	30	30	31	26	29	21	Grass	44	♂	Capable of taking hits
+2005035A	26	8802874A	No	Relaxed	0: Overgrow	30	30	31	27	31	30	Psychic	70	♂	Capable of taking hits
+A005035A	26	0802074A	No	Mild	0: Overgrow	30	30	31	27	31	30	Psychic	70	♂	Somewhat vain
+AB120335	3	416F015C	No	Lax	0: Overgrow	30	30	31	30	31	30	Fire	70	♂	Capable of taking hits
+2B120335	3	C16F815C	No	Hardy	0: Overgrow	30	30	31	30	31	30	Fire	70	♂	Capable of taking hits
+44110326	23	3368890C	No	Rash	0: Overgrow	30	31	30	20	24	29	Poison	34	♀	Likes to thrash about
+C4110326	23	B368090C	No	Quirky	0: Overgrow	30	31	30	20	24	29	Poison	34	♀	Likes to thrash about
+FF12035D	16	6CBB6E45	No	Naive	1: Overgrow	30	31	30	21	28	27	Ghost	39	♂	Likes to thrash about
+7F12035D	16	ECBBEE45	No	Bold	1: Overgrow	30	31	30	21	28	27	Ghost	39	♂	Likes to thrash about
+F1000347	15	228FC01B	No	Gentle	1: Overgrow	30	31	30	22	20	30	Fighting	49	♀	Likes to thrash about
+71000347	15	A28F401B	No	Lonely	1: Overgrow	30	31	30	22	20	30	Fighting	49	♀	Likes to thrash about
+E1020338	30	B0B516AD	No	Serious	1: Overgrow	30	31	30	22	27	28	Fire	64	♂	Likes to thrash about
+61020338	30	30B596AD	No	Relaxed	1: Overgrow	30	31	30	22	27	28	Fire	64	♂	Likes to thrash about
+5F010336	7	629B7995	No	Careful	1: Overgrow	30	31	30	22	28	25	Poison	44	♂	Likes to thrash about
+DF010336	7	E29BF995	No	Naive	1: Overgrow	30	31	30	22	28	25	Poison	44	♂	Likes to thrash about
+04030377	27	C2371FD8	No	Hasty	0: Overgrow	30	31	30	22	31	28	Fire	64	♂	Somewhat vain
+84030377	27	42379FD8	No	Docile	0: Overgrow	30	31	30	22	31	28	Fire	64	♂	Somewhat vain
+2C02036B	17	649A3C15	No	Hardy	1: Overgrow	30	31	30	23	27	23	Ice	70	♀	Likes to thrash about
+AC02036B	17	E49ABC15	No	Mild	1: Overgrow	30	31	30	23	27	23	Ice	70	♀	Likes to thrash about
+450B035F	8	A92DFDB3	No	Gentle	1: Overgrow	30	31	30	24	29	28	Fire	34	♂	Likes to thrash about
+C50B035F	8	292D7DB3	No	Bold	1: Overgrow	30	31	30	24	29	28	Fire	34	♂	Likes to thrash about
+A00F036D	16	AD2A82B2	No	Jolly	0: Overgrow	30	31	30	26	27	24	Fire	64	♂	Likes to thrash about
+200F036D	16	2D2A02B2	No	Sassy	0: Overgrow	30	31	30	26	27	24	Fire	64	♂	Likes to thrash about
+49130357	20	42A357AE	No	Calm	0: Overgrow	30	31	30	26	31	28	Fire	64	♂	Somewhat vain
+C9130357	20	C2A3D7AE	No	Hasty	0: Overgrow	30	31	30	26	31	28	Fire	64	♂	Somewhat vain
+3E030334	16	BF8BF79A	No	Gentle	0: Overgrow	30	31	30	27	22	23	Ghost	70	♂	Likes to thrash about
+BE030334	16	3F8B779A	No	Bold	0: Overgrow	30	31	30	27	22	23	Ghost	70	♂	Likes to thrash about
+040E0329	12	05733B7D	No	Quirky	1: Overgrow	30	31	30	27	23	26	Electric	70	♂	Likes to thrash about
+840E0329	12	8573BB7D	No	Modest	1: Overgrow	30	31	30	27	23	26	Electric	70	♂	Likes to thrash about
+EF17032C	15	8028ED68	No	Naive	0: Overgrow	30	31	30	28	24	23	Poison	39	♂	Likes to thrash about
+6F17032C	15	00286D68	No	Careful	0: Overgrow	30	31	30	28	24	23	Poison	39	♂	Likes to thrash about
+9D130364	17	4ED135E1	No	Modest	1: Overgrow	30	31	30	28	27	25	Grass	54	♂	Likes to thrash about
+1D130364	17	CED1B5E1	No	Docile	1: Overgrow	30	31	30	28	27	25	Grass	54	♂	Likes to thrash about
+AB0B0362	18	0A61E5FE	No	Bold	0: Overgrow	30	31	30	28	30	22	Fighting	59	♂	Likes to thrash about
+2B0B0362	18	8A6165FE	No	Timid	0: Overgrow	30	31	30	28	30	22	Fighting	59	♂	Likes to thrash about
+31040379	12	E44A0ADD	No	Bashful	1: Overgrow	30	31	30	28	31	30	Fire	59	♂	Somewhat vain
+B1040379	12	644A8ADD	No	Jolly	1: Overgrow	30	31	30	28	31	30	Fire	59	♂	Somewhat vain
+B30D0380	19	6486EF8D	No	Quirky	1: Overgrow	30	31	30	29	20	21	Ghost	34	♂	Likes to thrash about
+330D0380	19	E4866F8D	No	Naughty	1: Overgrow	30	31	30	29	20	21	Ghost	34	♂	Likes to thrash about
+5011036C	27	4AB03D56	No	Sassy	0: Overgrow	30	31	30	30	25	31	Grass	49	♂	Likes to thrash about
+D011036C	27	CAB0BD56	No	Jolly	0: Overgrow	30	31	30	30	25	31	Grass	49	♂	Alert to sounds
+E00E0374	30	7E05B75D	No	Serious	1: Overgrow	30	31	30	31	21	27	Ice	49	♂	Likes to thrash about
+600E0374	30	FE05375D	No	Quiet	1: Overgrow	30	31	30	31	21	27	Ice	49	♂	Likes to thrash about
+CE170332	19	E6F20D97	No	Gentle	1: Overgrow	30	31	30	31	30	28	Rock	64	♂	Mischievous
+4E170332	19	66F28D97	No	Mild	1: Overgrow	30	31	30	31	30	28	Rock	64	♂	Mischievous
+B1050376	22	B08191E5	No	Lax	1: Overgrow	30	31	31	20	28	31	Ground	39	♂	Likes to thrash about
+31050376	22	308111E5	No	Bashful	1: Overgrow	30	31	31	20	28	31	Ground	39	♂	Alert to sounds
+BF010368	14	45604DAA	No	Quiet	0: Overgrow	30	31	31	20	29	31	Grass	39	♂	Likes to thrash about
+3F010368	14	C560CDAA	No	Impish	0: Overgrow	30	31	31	20	29	31	Grass	39	♂	Capable of taking hits
+BC09036C	4	BE9D0B93	No	Bold	1: Overgrow	30	31	31	21	26	30	Bug	59	♂	Likes to thrash about
+3C09036C	4	3E9D8B93	No	Hardy	1: Overgrow	30	31	31	21	26	30	Bug	59	♂	Likes to thrash about
+4A16035F	30	460A8DE4	No	Naughty	0: Overgrow	30	31	31	22	29	31	Grass	49	♂	Capable of taking hits
+CA16035F	30	C60A0DE4	No	Lax	0: Overgrow	30	31	31	22	29	31	Grass	49	♂	Capable of taking hits
+9C080376	4	D6E91003	No	Hasty	1: Overgrow	30	31	31	22	31	22	Water	70	♀	Likes to thrash about
+1C080376	4	56E99003	No	Docile	1: Overgrow	30	31	31	22	31	22	Water	70	♀	Likes to thrash about
+C70E0337	0	21030467	No	Jolly	1: Overgrow	30	31	31	23	21	21	Dragon	44	♂	Likes to thrash about
+470E0337	0	A1038467	No	Naughty	1: Overgrow	30	31	31	23	21	21	Dragon	44	♂	Likes to thrash about
+2D05036D	12	32860D92	No	Careful	0: Overgrow	30	31	31	23	25	20	Psychic	44	♂	Likes to thrash about
+AD05036D	12	B2868D92	No	Naive	0: Overgrow	30	31	31	23	25	20	Psychic	44	♂	Capable of taking hits
+3A0B034C	28	AAF73B6A	No	Sassy	0: Overgrow	30	31	31	23	29	28	Psychic	44	♂	Likes to thrash about
+BA0B034C	28	2AF7BB6A	No	Quiet	0: Overgrow	30	31	31	23	29	28	Psychic	44	♂	Likes to thrash about
+B40F0381	25	81D2DD18	No	Quirky	0: Overgrow	30	31	31	23	30	31	Steel	70	♀	Capable of taking hits
+340F0381	25	01D25D18	No	Impish	0: Overgrow	30	31	31	23	30	31	Steel	70	♀	Likes to thrash about
+A4010372	4	D1502378	No	Naughty	0: Overgrow	30	31	31	24	25	29	Grass	34	♂	Likes to thrash about
+24010372	4	5150A378	No	Quirky	0: Overgrow	30	31	31	24	25	29	Grass	34	♂	Likes to thrash about
+DD120374	25	98A77E79	No	Gentle	1: Overgrow	30	31	31	25	21	30	Psychic	39	♂	Likes to thrash about
+5D120374	25	18A7FE79	No	Mild	1: Overgrow	30	31	31	25	21	30	Psychic	39	♂	Likes to thrash about
+860A034E	22	115D6DE4	No	Brave	0: Overgrow	30	31	31	25	23	29	Dragon	54	♂	Likes to thrash about
+060A034E	22	915DEDE4	No	Bashful	0: Overgrow	30	31	31	25	23	29	Dragon	54	♂	Likes to thrash about
+480A036B	10	C344D0CD	No	Gentle	1: Overgrow	30	31	31	25	24	26	Bug	39	♂	Likes to thrash about
+C80A036B	10	434450CD	No	Bold	1: Overgrow	30	31	31	25	24	26	Bug	39	♂	Likes to thrash about
+D5060359	13	C7CA47FF	No	Serious	1: Overgrow	30	31	31	25	28	30	Bug	39	♂	Likes to thrash about
+55060359	13	47CAC7FF	No	Relaxed	1: Overgrow	30	31	31	25	28	30	Bug	39	♂	Likes to thrash about
+ED120372	19	66D91F77	No	Quirky	1: Overgrow	30	31	31	26	26	30	Flying	70	♂	Likes to thrash about
+6D120372	19	E6D99F77	No	Modest	1: Overgrow	30	31	31	26	26	30	Flying	70	♂	Likes to thrash about
+2B03037B	17	9B0D7447	No	Modest	1: Overgrow	30	31	31	27	23	20	Psychic	64	♂	Likes to thrash about
+AB03037B	17	1B0DF447	No	Timid	1: Overgrow	30	31	31	27	23	20	Psychic	64	♂	Likes to thrash about
+A8080371	12	3C0BE73C	No	Brave	0: Overgrow	30	31	31	27	23	21	Dragon	64	♂	Capable of taking hits
+28080371	12	BC0B673C	No	Relaxed	0: Overgrow	30	31	31	27	23	21	Dragon	64	♂	Capable of taking hits
+7F120354	28	E2AFB917	No	Quirky	1: Overgrow	30	31	31	28	25	30	Water	39	♀	Likes to thrash about
+FF120354	28	62AF3917	No	Impish	1: Overgrow	30	31	31	28	25	30	Water	39	♀	Likes to thrash about
+970A0360	26	9142D73C	No	Gentle	0: Overgrow	30	31	31	28	28	31	Ground	39	♂	Likes to thrash about
+170A0360	26	1142573C	No	Bold	0: Overgrow	30	31	31	28	28	31	Ground	39	♂	Capable of taking hits
+F512034B	30	56EF5854	No	Quiet	0: Overgrow	30	31	31	30	20	21	Ground	44	♂	Capable of taking hits
+7512034B	30	D6EFD854	No	Impish	0: Overgrow	30	31	31	30	20	21	Ground	44	♂	Likes to thrash about
+6D16036D	6	8699F058	No	Bold	0: Overgrow	30	31	31	31	22	20	Bug	64	♂	Likes to thrash about
+ED16036D	6	06997058	No	Naive	0: Overgrow	30	31	31	31	22	20	Bug	64	♂	Capable of taking hits
+C2040342	5	E5C8103B	No	Rash	1: Overgrow	31	30	30	21	27	20	Electric	54	♂	Takes plenty of siestas
+42040342	5	65C8903B	No	Naive	1: Overgrow	31	30	30	21	27	20	Electric	54	♂	Takes plenty of siestas
+FE0A0320	0	EAA624AB	No	Relaxed	1: Overgrow	31	30	30	21	27	25	Ice	54	♂	Takes plenty of siestas
+7E0A0320	0	6AA6A4AB	No	Brave	1: Overgrow	31	30	30	21	27	25	Ice	54	♂	Takes plenty of siestas
+BE160327	0	66584C8F	No	Quirky	1: Overgrow	31	30	30	22	21	25	Water	44	♂	Takes plenty of siestas
+3E160327	0	E658CC8F	No	Modest	1: Overgrow	31	30	30	22	21	25	Water	44	♂	Takes plenty of siestas
+BF100360	1	222A0998	No	Serious	0: Overgrow	31	30	30	23	21	30	Electric	49	♂	Takes plenty of siestas
+3F100360	1	A22A8998	No	Adamant	0: Overgrow	31	30	30	23	21	30	Electric	49	♂	Takes plenty of siestas
+A7050322	11	E052956C	No	Jolly	0: Overgrow	31	30	30	24	26	28	Fighting	54	♂	Takes plenty of siestas
+27050322	11	6052156C	No	Sassy	0: Overgrow	31	30	30	24	26	28	Fighting	54	♂	Takes plenty of siestas
+9B170342	19	9B8A393E	No	Brave	0: Overgrow	31	30	30	25	23	29	Ice	54	♂	Takes plenty of siestas
+1B170342	19	1B8AB93E	No	Sassy	0: Overgrow	31	30	30	25	23	29	Ice	54	♂	Takes plenty of siestas
+AD140377	9	7FFA861B	No	Jolly	1: Overgrow	31	30	30	25	27	31	Ice	59	♀	Alert to sounds
+2D140377	9	FFFA061B	No	Bashful	1: Overgrow	31	30	30	25	27	31	Ice	59	♀	Alert to sounds
+1000036C	15	0D7478BD	No	Bashful	1: Overgrow	31	30	30	26	23	21	Water	64	♂	Takes plenty of siestas
+9000036C	15	8D74F8BD	No	Lax	1: Overgrow	31	30	30	26	23	21	Water	64	♂	Takes plenty of siestas
+2A03035C	28	F0904356	No	Serious	0: Overgrow	31	30	30	27	28	26	Rock	49	♂	Takes plenty of siestas
+AA03035C	28	7090C356	No	Relaxed	0: Overgrow	31	30	30	27	28	26	Rock	49	♂	Takes plenty of siestas
+DC02036A	10	82096F9E	No	Adamant	0: Overgrow	31	30	30	28	23	26	Steel	59	♂	Takes plenty of siestas
+5C02036A	10	0209EF9E	No	Careful	0: Overgrow	31	30	30	28	23	26	Steel	59	♂	Takes plenty of siestas
+65120350	19	2D366D53	No	Lonely	1: Overgrow	31	30	30	28	30	20	Fighting	54	♂	Takes plenty of siestas
+E5120350	19	AD36ED53	No	Quiet	1: Overgrow	31	30	30	28	30	20	Fighting	54	♂	Takes plenty of siestas
+320C0353	30	141C242B	No	Serious	1: Overgrow	31	30	30	28	31	24	Steel	54	♂	Somewhat vain
+B20C0353	30	941CA42B	No	Adamant	1: Overgrow	31	30	30	28	31	24	Steel	54	♂	Somewhat vain
+B7030324	9	C6E1F2D0	No	Adamant	0: Overgrow	31	30	30	29	23	21	Ice	54	♂	Takes plenty of siestas
+37030324	9	46E172D0	No	Serious	0: Overgrow	31	30	30	29	23	21	Ice	54	♂	Takes plenty of siestas
+000B035A	23	10B694AE	No	Calm	0: Overgrow	31	30	30	29	25	24	Electric	34	♂	Takes plenty of siestas
+800B035A	23	90B614AE	No	Hardy	0: Overgrow	31	30	30	29	25	24	Electric	34	♂	Takes plenty of siestas
+BB05033C	13	B5C3D75A	No	Gentle	0: Overgrow	31	30	30	30	31	26	Steel	70	♂	Takes plenty of siestas
+3B05033C	13	35C3575A	No	Bold	0: Overgrow	31	30	30	30	31	26	Steel	70	♂	Somewhat vain
+DF12037B	18	0335DCC0	No	Bashful	0: Overgrow	31	30	31	20	21	29	Grass	34	♂	Takes plenty of siestas
+5F12037B	18	83355CC0	No	Careful	0: Overgrow	31	30	31	20	21	29	Grass	34	♂	Takes plenty of siestas
+E515037C	24	33378110	No	Hasty	0: Overgrow	31	30	31	20	29	23	Grass	39	♀	Capable of taking hits
+6515037C	24	B3370110	No	Mild	0: Overgrow	31	30	31	20	29	23	Grass	39	♀	Capable of taking hits
+4711036E	1	B84D3496	No	Adamant	0: Overgrow	31	30	31	21	27	31	Dragon	59	♂	Takes plenty of siestas
+C711036E	1	384DB496	No	Careful	0: Overgrow	31	30	31	21	27	31	Dragon	59	♂	Takes plenty of siestas
+21140366	25	03DF8C08	No	Quirky	0: Overgrow	31	30	31	21	31	23	Dragon	59	♀	Capable of taking hits
+A1140366	25	83DF0C08	No	Naughty	0: Overgrow	31	30	31	21	31	23	Dragon	59	♀	Capable of taking hits
+A00D0325	15	5AC39B8B	No	Naughty	1: Overgrow	31	30	31	21	31	31	Dragon	59	♂	Alert to sounds
+200D0325	15	DAC31B8B	No	Lax	1: Overgrow	31	30	31	21	31	31	Dragon	59	♂	Alert to sounds
+3B000340	10	27C20A1B	No	Calm	1: Overgrow	31	30	31	22	30	22	Flying	70	♀	Takes plenty of siestas
+BB000340	10	A7C28A1B	No	Hasty	1: Overgrow	31	30	31	22	30	22	Flying	70	♀	Capable of taking hits
+4A170359	25	1AB32D69	No	Timid	1: Overgrow	31	30	31	23	22	22	Bug	70	♂	Capable of taking hits
+CA170359	25	9AB3AD69	No	Lonely	1: Overgrow	31	30	31	23	22	22	Bug	70	♂	Takes plenty of siestas
+6B080383	26	78FA5167	No	Lax	1: Overgrow	31	30	31	24	26	27	Ground	59	♂	Takes plenty of siestas
+EB080383	26	F8FAD167	No	Hardy	1: Overgrow	31	30	31	24	26	27	Ground	59	♂	Takes plenty of siestas
+11010337	26	0A747DB0	No	Serious	0: Overgrow	31	30	31	25	21	27	Dragon	39	♂	Takes plenty of siestas
+91010337	26	8A74FDB0	No	Adamant	0: Overgrow	31	30	31	25	21	27	Dragon	39	♂	Capable of taking hits
+B0090378	9	8FE23D81	No	Rash	1: Overgrow	31	30	31	25	25	31	Dragon	39	♂	Capable of taking hits
+30090378	9	0FE2BD81	No	Naive	1: Overgrow	31	30	31	25	25	31	Dragon	39	♂	Capable of taking hits
+42100334	12	20C1BFA0	No	Mild	0: Overgrow	31	30	31	25	27	21	Dragon	54	♂	Takes plenty of siestas
+C2100334	12	A0C13FA0	No	Gentle	0: Overgrow	31	30	31	25	27	21	Dragon	54	♂	Takes plenty of siestas
+310A0375	14	432E49B2	No	Rash	0: Overgrow	31	30	31	26	22	22	Flying	70	♂	Takes plenty of siestas
+B10A0375	14	C32EC9B2	No	Timid	0: Overgrow	31	30	31	26	22	22	Flying	70	♂	Capable of taking hits
+CA130358	24	BBE4391D	No	Gentle	1: Overgrow	31	30	31	26	24	21	Ground	44	♀	Takes plenty of siestas
+4A130358	24	3BE4B91D	No	Mild	1: Overgrow	31	30	31	26	24	21	Ground	44	♀	Takes plenty of siestas
+BD130338	12	2A469949	No	Impish	1: Overgrow	31	30	31	29	25	23	Dragon	39	♂	Takes plenty of siestas
+3D130338	12	AA461949	No	Jolly	1: Overgrow	31	30	31	29	25	23	Dragon	39	♂	Takes plenty of siestas
+0508037C	30	63324B34	No	Hasty	0: Overgrow	31	30	31	29	26	30	Bug	59	♂	Takes plenty of siestas
+8508037C	30	E332CB34	No	Brave	0: Overgrow	31	30	31	29	26	30	Bug	59	♂	Takes plenty of siestas
+22150341	13	E0B37364	No	Bashful	0: Overgrow	31	30	31	29	30	23	Ghost	59	♂	Takes plenty of siestas
+A2150341	13	60B3F364	No	Jolly	0: Overgrow	31	30	31	29	30	23	Ghost	59	♂	Takes plenty of siestas
+E30E0329	18	6FB735B2	No	Timid	0: Overgrow	31	30	31	30	28	22	Flying	49	♂	Takes plenty of siestas
+630E0329	18	EFB7B5B2	No	Lonely	0: Overgrow	31	30	31	30	28	22	Flying	49	♂	Takes plenty of siestas
+FC050346	0	4F4AFF12	No	Lonely	0: Overgrow	31	30	31	31	22	25	Ghost	64	♀	Takes plenty of siestas
+7C050346	0	CF4A7F12	No	Docile	0: Overgrow	31	30	31	31	22	25	Ghost	64	♀	Takes plenty of siestas
+B60E0367	19	A2CDC880	No	Hardy	0: Overgrow	31	31	30	20	20	29	Poison	34	♂	Takes plenty of siestas
+360E0367	19	22CD4880	No	Lax	0: Overgrow	31	31	30	20	20	29	Poison	34	♂	Takes plenty of siestas
+470D0322	5	B5B57AF4	No	Jolly	0: Overgrow	31	31	30	21	20	23	Ghost	39	♂	Takes plenty of siestas
+C70D0322	5	35B5FAF4	No	Impish	0: Overgrow	31	31	30	21	20	23	Ghost	39	♂	Takes plenty of siestas
+4715035B	14	3258C85A	No	Impish	0: Overgrow	31	31	30	21	23	22	Psychic	59	♂	Takes plenty of siestas
+C715035B	14	B258485A	No	Jolly	0: Overgrow	31	31	30	21	23	22	Psychic	59	♂	Takes plenty of siestas
+9005034A	4	DC20ADB9	No	Calm	1: Overgrow	31	31	30	21	24	28	Rock	34	♂	Likes to thrash about
+1005034A	4	5C202DB9	No	Naughty	1: Overgrow	31	31	30	21	24	28	Rock	34	♂	Takes plenty of siestas
+53070320	28	5A3BEF21	No	Docile	1: Overgrow	31	31	30	21	31	25	Dragon	54	♂	Likes to thrash about
+D3070320	28	DA3B6F21	No	Hasty	1: Overgrow	31	31	30	21	31	25	Dragon	54	♂	Likes to thrash about
+9D060324	16	7F1CE32D	No	Sassy	1: Overgrow	31	31	30	22	23	27	Grass	70	♂	Likes to thrash about
+1D060324	16	FF1C632D	No	Brave	1: Overgrow	31	31	30	22	23	27	Grass	70	♂	Likes to thrash about
+70040354	4	F46CB229	No	Lonely	1: Overgrow	31	31	30	22	29	20	Fire	44	♂	Likes to thrash about
+F0040354	4	746C3229	No	Timid	1: Overgrow	31	31	30	22	29	20	Fire	44	♂	Takes plenty of siestas
+C70B0350	7	222B6359	No	Hardy	1: Overgrow	31	31	30	22	30	31	Poison	70	♂	Likes to thrash about
+470B0350	7	A22BE359	No	Mild	1: Overgrow	31	31	30	22	30	31	Poison	70	♂	Takes plenty of siestas
+80090375	19	3479FC96	No	Hardy	0: Overgrow	31	31	30	23	27	21	Dragon	64	♂	Takes plenty of siestas
+00090375	19	B4797C96	No	Bold	0: Overgrow	31	31	30	23	27	21	Dragon	64	♂	Takes plenty of siestas
+E213033D	23	C537BFD0	No	Hasty	0: Overgrow	31	31	30	25	26	27	Ghost	59	♂	Takes plenty of siestas
+6213033D	23	45373FD0	No	Calm	0: Overgrow	31	31	30	25	26	27	Ghost	59	♂	Takes plenty of siestas
+9F16036F	0	C5BE8E4F	No	Careful	1: Overgrow	31	31	30	26	21	26	Fire	49	♂	Takes plenty of siestas
+1F16036F	0	45BE0E4F	No	Relaxed	1: Overgrow	31	31	30	26	21	26	Fire	49	♂	Likes to thrash about
+E8040337	11	F4483E9D	No	Hardy	1: Overgrow	31	31	30	26	25	22	Fire	49	♂	Likes to thrash about
+68040337	11	7448BE9D	No	Calm	1: Overgrow	31	31	30	26	25	22	Fire	49	♂	Likes to thrash about
+980E0328	28	91F26CCD	No	Timid	1: Overgrow	31	31	30	26	27	27	Grass	70	♂	Likes to thrash about
+180E0328	28	11F2ECCD	No	Bold	1: Overgrow	31	31	30	26	27	27	Grass	70	♂	Likes to thrash about
+56030348	18	D3C9DF2A	No	Quiet	0: Overgrow	31	31	30	30	23	31	Grass	70	♂	Alert to sounds
+D6030348	18	53C95F2A	No	Lonely	0: Overgrow	31	31	30	30	23	31	Grass	70	♂	Takes plenty of siestas
+7D0F0342	9	3CFBF6F7	No	Rash	1: Overgrow	31	31	30	30	30	24	Fighting	64	♂	Takes plenty of siestas
+FD0F0342	9	BCFB76F7	No	Quirky	1: Overgrow	31	31	30	30	30	24	Fighting	64	♂	Takes plenty of siestas
+8C17034F	4	DDF9FADE	No	Sassy	0: Overgrow	31	31	30	31	20	30	Rock	49	♂	Takes plenty of siestas
+0C17034F	4	5DF97ADE	No	Docile	0: Overgrow	31	31	30	31	20	30	Rock	49	♂	Mischievous
+7F11032D	12	0EF81527	No	Quiet	1: Overgrow	31	31	30	31	21	27	Dragon	49	♂	Likes to thrash about
+FF11032D	12	8EF89527	No	Impish	1: Overgrow	31	31	30	31	21	27	Dragon	49	♂	Takes plenty of siestas
+DD150330	28	C9A9EA7A	No	Lonely	0: Overgrow	31	31	30	31	23	29	Dragon	64	♂	Takes plenty of siestas
+5D150330	28	49A96A7A	No	Timid	0: Overgrow	31	31	30	31	23	29	Dragon	64	♂	Mischievous
+C1080340	6	14F58059	No	Sassy	1: Overgrow	31	31	30	31	29	30	Psychic	49	♂	Takes plenty of siestas
+41080340	6	94F50059	No	Brave	1: Overgrow	31	31	30	31	29	30	Psychic	49	♂	Takes plenty of siestas
+A405035D	11	C12805E0	No	Relaxed	0: Overgrow	31	31	31	20	22	23	Ground	59	♂	Takes plenty of siestas
+2405035D	11	412885E0	No	Brave	0: Overgrow	31	31	31	20	22	23	Ground	59	♂	Takes plenty of siestas
+560B0372	23	05BBC77F	No	Impish	1: Overgrow	31	31	31	21	24	28	Bug	34	♂	Takes plenty of siestas
+D60B0372	23	85BB477F	No	Jolly	1: Overgrow	31	31	31	21	24	28	Bug	34	♂	Takes plenty of siestas
+5012037B	2	93E11E10	No	Careful	0: Overgrow	31	31	31	21	31	26	Ice	59	♀	Somewhat vain
+D012037B	2	13E19E10	No	Bashful	0: Overgrow	31	31	31	21	31	26	Ice	59	♀	Somewhat vain
+57060343	7	D663D277	No	Quiet	1: Overgrow	31	31	31	22	26	28	Flying	64	♂	Takes plenty of siestas
+D7060343	7	56635277	No	Lonely	1: Overgrow	31	31	31	22	26	28	Flying	64	♂	Takes plenty of siestas
+07020330	0	A551DC83	No	Relaxed	1: Overgrow	31	31	31	22	27	21	Electric	64	♂	Takes plenty of siestas
+87020330	0	25515C83	No	Mild	1: Overgrow	31	31	31	22	27	21	Electric	64	♂	Takes plenty of siestas
+6005033E	8	5949DD96	No	Adamant	0: Overgrow	31	31	31	23	25	26	Ice	49	♂	Capable of taking hits
+E005033E	8	D9495D96	No	Impish	0: Overgrow	31	31	31	23	25	26	Ice	49	♂	Capable of taking hits
+0808037D	22	AD4E9B28	No	Gentle	0: Overgrow	31	31	31	24	24	27	Ground	39	♂	Capable of taking hits
+8808037D	22	2D4E1B28	No	Bold	0: Overgrow	31	31	31	24	24	27	Ground	39	♂	Takes plenty of siestas
+97040367	27	36A9B8F4	No	Gentle	0: Overgrow	31	31	31	24	29	31	Electric	39	♂	Takes plenty of siestas
+17040367	27	B6A938F4	No	Lonely	0: Overgrow	31	31	31	24	29	31	Electric	39	♂	Takes plenty of siestas
+EE0A0339	15	463A02EF	No	Lax	1: Overgrow	31	31	31	28	20	20	Flying	34	♂	Takes plenty of siestas
+6E0A0339	15	C63A82EF	No	Hardy	1: Overgrow	31	31	31	28	20	20	Flying	34	♂	Likes to thrash about
+5F0B0384	22	AA1BA46B	No	Impish	1: Overgrow	31	31	31	28	20	24	Flying	34	♂	Takes plenty of siestas
+DF0B0384	22	2A1B246B	No	Quiet	1: Overgrow	31	31	31	28	20	24	Flying	34	♂	Takes plenty of siestas
+D10A0373	8	796E2D1F	No	Sassy	1: Overgrow	31	31	31	30	23	26	Water	70	♂	Likes to thrash about
+510A0373	8	F96EAD1F	No	Jolly	1: Overgrow	31	31	31	30	23	26	Water	70	♂	Takes plenty of siestas
+80040343	9	4CE2AE5D	No	Naive	1: Overgrow	31	31	31	30	28	23	Ground	49	♂	Takes plenty of siestas
+00040343	9	CCE22E5D	No	Rash	1: Overgrow	31	31	31	30	28	23	Ground	49	♂	Takes plenty of siestas
+A708035E	13	3584ABBB	No	Jolly	1: Overgrow	31	31	31	31	21	22	Ice	49	♂	Mischievous
+2708035E	13	B5842BBB	No	Bashful	1: Overgrow	31	31	31	31	21	22	Ice	49	♂	Mischievous
+230B0375	12	458FC0E5	No	Impish	1: Overgrow	31	31	31	31	21	23	Dark	49	♂	Mischievous
+A30B0375	12	C58F40E5	No	Jolly	1: Overgrow	31	31	31	31	21	23	Dark	49	♂	Mischievous
+3701034F	25	08B46B66	No	Brave	0: Overgrow	31	31	31	31	28	28	Bug	44	♂	Mischievous
+B701034F	25	88B4EB66	No	Bashful	0: Overgrow	31	31	31	31	28	28	Bug	44	♂	Capable of taking hits

@@ -1,0 +1,28 @@
+import React from "react";
+import { Button } from "./button";
+
+type Props = {
+  data: Uint8Array;
+  trackerId: string;
+};
+
+export const DownloadButton = ({ data, trackerId }: Props) => {
+  const url = React.useMemo(() => {
+    const blob = new Blob([new Uint8Array(data)], {
+      type: "application/octet-stream",
+    });
+    return URL.createObjectURL(blob);
+  }, [data]);
+
+  React.useEffect(() => {
+    return () => {
+      URL.revokeObjectURL(url);
+    };
+  }, [url]);
+
+  return (
+    <Button trackerId={trackerId} download="merged.ips" href={url}>
+      Download Merged Ips
+    </Button>
+  );
+};

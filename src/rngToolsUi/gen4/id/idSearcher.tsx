@@ -1,0 +1,409 @@
+import React from "react";
+import { message } from "antd";
+import {
+  FormikNumberInput,
+  ResultColumn,
+  RngToolForm,
+  RngToolSubmit,
+  Field,
+  Button,
+  FormikSelect,
+  FormikSwitch,
+  FormFieldTable,
+  FormikIdFilter,
+  MinMaxContainer,
+} from "~/components";
+import { useBatchedTool } from "~/hooks/useBatchedTool";
+import {
+  rngTools,
+  Id4,
+  GenderRatio,
+  Nature,
+  IdFilter,
+  Id4SearchOptions,
+  multiWorkerRngTools,
+} from "~/rngTools";
+import { z } from "zod";
+import { useId4State } from "./state";
+import { useCurrentStep } from "~/components/stepper/state";
+import { useFormContext } from "~/hooks/form";
+import { nature } from "~/types/nature";
+import { getGen4SpeciesOptions, species } from "~/types/species";
+import { natureOptions } from "~/components/pkmFilter";
+import { toOptions } from "~/utils/options";
+import {
+  getCuteCharmTsvProps,
+  getCuteCharmTsvs,
+  maxShinyOddsCuteCharmTsvs,
+} from "./tsvs";
+import { FormikRadio } from "~/components/radio";
+import { denormalizeIdFilterOrDefault, IdFilterSchema } from "~/types/id";
+import { match, P } from "ts-pattern";
+import { chunkRange } from "~/utils/chunkRange";
+import { RustOption } from "~/types";
+import { Translations } from "~/translations";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { useWatch } from "react-hook-form";
+
+const idTypes = ["Cute Charm", "Any TID"] as const;
+type IdType = (typeof idTypes)[number];
+const defaultIdType: IdType = "Cute Charm";
+
+const CuteCharmGenders = ["Male", "Female"] as const;
+type CuteCharmGender = (typeof CuteCharmGenders)[number];
+
+type SelectButtonProps = {
+  target: Id4;
+};
+
+const SelectButton = ({ target }: SelectButtonProps) => {
+  const [, setState] = useId4State();
+  const [, setCurrentStep] = useCurrentStep();
+  return (
+    <Button
+      trackerId="select_id4_target"
+      onClick={() => {
+        setState((state) => ({
+          ...state,
+          target,
+        }));
+        setCurrentStep((step) => step + 1);
+      }}
+    >
+      Select
+    </Button>
+  );
+};
+
+type Result = Id4 & {
+  seed: number;
+  targetGender: CuteCharmGender;
+  natures: Nature[];
+  genderRatios: GenderRatio[];
+  delay: number;
+  seconds: number;
+};
+
+const formatGenderRatio = (genderRatio: GenderRatio) => {
+  return match(genderRatio)
+    .with("FemaleOnly", () => "0% Male")
+    .with("MaleOnly", () => "100% Male")
+    .with("Genderless", () => "Genderless")
+    .with("OneToOne", () => "50% Male")
+    .with("OneToSeven", () => "87.5% Male")
+    .with("OneToThree", () => "75% Male")
+    .with("ThreeToOne", () => "25% Male")
+    .with("SevenToOne", () => "12.5% Male")
+    .exhaustive();
+};
+
+const getColumns = ({
+  t,
+  idType,
+}: {
+  t: Translations;
+  idType: IdType;
+}): ResultColumn<Result>[] => {
+  const startColumns: ResultColumn<Result>[] = [
+    {
+      title: t["Select"],
+      dataIndex: "seed",
+      disableVerticalPadding: true,
+      render: (_, target) => <SelectButton target={target} />,
+    },
+    {
+      title: t["TID"],
+      dataIndex: "tid",
+    },
+    {
+      title: t["SID"],
+      dataIndex: "sid",
+    },
+    {
+      title: t["TSV"],
+      dataIndex: "tsv",
+    },
+  ];
+  const endColumns: ResultColumn<Result>[] = [
+    {
+      title: t["Delay"],
+      dataIndex: "delay",
+    },
+    {
+      title: t["Seconds"],
+      dataIndex: "seconds",
+    },
+  ];
+
+  if (idType === "Any TID") {
+    return [...startColumns, ...endColumns];
+  }
+
+  return [
+    ...startColumns,
+    {
+      title: t["Target Gender"],
+      dataIndex: "targetGender",
+    },
+    {
+      title: t["Gender Ratios"],
+      dataIndex: "genderRatios",
+      render: (genderRatios) =>
+        genderRatios.length === 0
+          ? "All"
+          : genderRatios.map(formatGenderRatio).join(", "),
+    },
+    {
+      title: t["Natures"],
+      dataIndex: "natures",
+      render: (natures) => natures.join(", "),
+    },
+    ...endColumns,
+  ];
+};
+
+const Validator = z.object({
+  year: z.number().int().min(2000).max(2100),
+  min_delay: z.number().int().min(5000),
+  max_delay: z.number().int().min(5000),
+  id_type: z.enum(idTypes),
+  max_shiny_odds: z.boolean(),
+  target_gender: z.enum(CuteCharmGenders),
+  target_nature: z.enum(["None", ...nature]),
+  target_species: z.enum(species),
+  tid: z.number().int().min(0).max(65535).nullable(),
+  force_second: z.number().int().min(0).max(59).nullable(),
+  id_filter: IdFilterSchema,
+});
+
+export type FormState = z.infer<typeof Validator>;
+
+const initialValues: FormState = {
+  year: 2000,
+  min_delay: 5000,
+  max_delay: 5200,
+  id_type: defaultIdType,
+  max_shiny_odds: true,
+  target_gender: "Female",
+  target_nature: "None",
+  target_species: "None",
+  tid: null,
+  force_second: null,
+  id_filter: {
+    type: "tid",
+    value0: 0,
+    value1: null,
+  },
+};
+
+const getFields = ({
+  t,
+  idType,
+  maxShinyOdds,
+  reset,
+}: {
+  t: Translations;
+  idType: IdType;
+  maxShinyOdds: boolean;
+  reset: () => void;
+}): Field[] => {
+  const baseFields = [
+    {
+      label: t["Year"],
+      input: <FormikNumberInput<FormState> name="year" numType="decimal" />,
+    },
+    {
+      label: t["Delay"],
+      input: (
+        <MinMaxContainer
+          min={
+            <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
+          }
+          max={
+            <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
+          }
+        />
+      ),
+    },
+    {
+      label: t["ID Type"],
+      input: (
+        <FormikRadio<FormState> name="id_type" options={toOptions(idTypes)} />
+      ),
+    },
+  ];
+
+  if (idType === "Any TID") {
+    return [
+      ...baseFields,
+      {
+        label: t["Filter"],
+        input: <FormikIdFilter<FormState> name="id_filter" />,
+      },
+    ];
+  }
+
+  return [
+    ...baseFields,
+    {
+      label: t["Max Shiny Odds"],
+      input: (
+        <FormikSwitch<FormState>
+          name="max_shiny_odds"
+          onChange={(checked: boolean) => {
+            if (checked) {
+              reset();
+            }
+          }}
+        />
+      ),
+    },
+    {
+      label: t["Target Gender"],
+      input: (
+        <FormikSelect<FormState, "target_gender">
+          name="target_gender"
+          options={toOptions(CuteCharmGenders)}
+          disabled={maxShinyOdds}
+        />
+      ),
+    },
+    {
+      label: t["Target Nature"],
+      input: (
+        <FormikSelect<FormState, "target_nature">
+          name="target_nature"
+          options={natureOptions.required}
+          disabled={maxShinyOdds}
+        />
+      ),
+    },
+    {
+      label: t["Target Species"],
+      input: (
+        <FormikSelect<FormState, "target_species">
+          name="target_species"
+          options={getGen4SpeciesOptions().byNameOptional}
+          disabled={maxShinyOdds}
+        />
+      ),
+    },
+    {
+      label: t["Optional TID"],
+      input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
+    },
+    {
+      label: t["Force Second"],
+      input: (
+        <FormikNumberInput<FormState> name="force_second" numType="decimal" />
+      ),
+    },
+  ];
+};
+
+const Id4SearcherFields = () => {
+  const t = useActiveRouteTranslations();
+  const { reset } = useFormContext<FormState>();
+  const maxShinyOdds = useWatch<FormState, "max_shiny_odds">({
+    name: "max_shiny_odds",
+  });
+  const idType = useWatch<FormState, "id_type">({
+    name: "id_type",
+  });
+  const fields = getFields({
+    t,
+    idType,
+    maxShinyOdds,
+    reset,
+  });
+  return <FormFieldTable fields={fields} />;
+};
+
+const mapResult = (res: Id4): Result => ({
+  ...res,
+  seed: res.seed_time.seed,
+  delay: res.seed_time.delay,
+  seconds: res.seed_time.datetime.second,
+  ...getCuteCharmTsvProps(res.tsv),
+});
+
+export const Id4Searcher = () => {
+  const t = useActiveRouteTranslations();
+  const [messageApi, contextHolder] = message.useMessage();
+  const {
+    run: searchDpptIds,
+    data: results,
+    progressPercent,
+    cancel,
+  } = useBatchedTool(multiWorkerRngTools.search_dppt_ids, { map: mapResult });
+
+  const [idType, setIdType] = React.useState<IdType>(defaultIdType);
+
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+    try {
+      const interestedTsvs = opts.max_shiny_odds
+        ? maxShinyOddsCuteCharmTsvs
+        : getCuteCharmTsvs({
+            targetGender: opts.target_gender,
+            ratio:
+              opts.target_species === "None"
+                ? null
+                : await rngTools.get_species_gender_ratio(opts.target_species),
+            nature: opts.target_nature === "None" ? null : opts.target_nature,
+          });
+
+      const idFilter = match<FormState, IdFilter>(opts)
+        .with({ id_type: "Cute Charm", tid: null }, () => ({
+          Tsvs: interestedTsvs,
+        }))
+        .with({ id_type: "Cute Charm", tid: P.not(null) }, (matched) => ({
+          TidTsvs: {
+            tid: matched.tid,
+            tsvs: interestedTsvs,
+          },
+        }))
+        .with({ id_type: "Any TID" }, () =>
+          denormalizeIdFilterOrDefault(opts.id_filter),
+        )
+        .exhaustive();
+
+      const chunked = chunkRange([opts.min_delay, opts.max_delay], 200);
+      const searchOpts: RustOption<Id4SearchOptions>[] = chunked.map(
+        ([min_delay, max_delay]) => ({
+          year: opts.year,
+          min_delay,
+          max_delay,
+          filter: idFilter,
+          force_second: opts.force_second,
+        }),
+      );
+      await searchDpptIds(searchOpts);
+
+      setIdType(opts.id_type);
+    } catch (error) {
+      messageApi.error(
+        `Error: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
+    }
+  };
+
+  const columns = getColumns({ t, idType });
+
+  return (
+    <RngToolForm<FormState, Result>
+      columns={columns}
+      results={results}
+      initialValues={initialValues}
+      validationSchema={Validator}
+      onSubmit={onSubmit}
+      submitTrackerId="search_dppt_id"
+      allowCancel
+      cancelTrackerId="cancel_dppt_id"
+      onCancel={cancel}
+      progressPercent={progressPercent}
+    >
+      {contextHolder}
+      <Id4SearcherFields />
+    </RngToolForm>
+  );
+};

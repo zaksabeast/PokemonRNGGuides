@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta
+      name="google-site-verification"
+      content="y0s_GsSJnKW7nQicBVIGViPtYEdn-eydEeL4Kmn63r0"
+    />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script>
+      (() => {
+        const theme =
+          localStorage.getItem("theme") === "dark" ? "dark" : "light";
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+
+    <!--injected-meta-tags-->
+
+    <!--injected-styles-->
+  </head>
+  <body>
+    <div id="root"><!--app-html--></div>
+    <script type="module" src="/src/entry-client.tsx"></script>
+  </body>
+</html>

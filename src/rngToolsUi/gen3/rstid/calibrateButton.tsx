@@ -1,0 +1,27 @@
+import { Button } from "~/components";
+import { message } from "antd";
+import { Gen3TimerAtom, useGen3Timer } from "~/hooks/useGen3Timer";
+
+type Props = {
+  hitAdvance: number;
+  timer: Gen3TimerAtom;
+};
+
+export const CalibrateButton = ({ hitAdvance, timer }: Props) => {
+  const [messageApi, contextHolder] = message.useMessage();
+  const { calibrate } = useGen3Timer(timer);
+
+  const onClick = async () => {
+    await calibrate(hitAdvance);
+    messageApi.success("Calibrated timer");
+  };
+
+  return (
+    <>
+      {contextHolder}
+      <Button trackerId="calibrate_obtained_retail_tid" onClick={onClick}>
+        Calibrate
+      </Button>
+    </>
+  );
+};

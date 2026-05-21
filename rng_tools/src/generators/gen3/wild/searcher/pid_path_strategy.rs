@@ -27,11 +27,11 @@ pub enum PidPathStrategy {
 /** To improve performance, we want to apply the most restrictive criterias of the filter first.
 
 ByStep:
-    Pros: Returns results with lowest advance first.
-    Cons: If filter is very restrictive, the performance is bad.
+    Pros: Returns results with lowest advance first, so no sorting is required.
+    Cons: If the filter is very restrictive, most seeds are tested for nothing.
 Reverse:
-    Pros: Fastest
-    Cons: To guarantee results with lowest advance, all possible IVs must be explored. With a loose filter, it can be impossible to explore them all.
+    Pros: Fastest because only promising seeds are tested.
+    Cons: To guarantee results with lowest advance, all possibilities must be tested then sorted. With a loose filter, the performance deteriorates.
 */
 pub fn determine_best_pid_path_strategy(opts: &FindPidPathsOptions) -> PidPathStrategy {
     if let Some(forced_search_strategy) = opts.forced_search_strategy {

@@ -40,12 +40,7 @@ Technical approach:
   2- Extend the PID paths until reaching the start of the wild encounter (start of Sweet Scent).
 
 Finding PID paths:
-  - The most efficient strategy is used, depending on the user-provided filter.
-    - ByStepIv1: Filter by iv1 first
-    - ByStepIv2: Filter by iv2 first
-    - ByStepPid: Filter by PID first
-    - ReverseIv: Reverse search from the wanted IVs
-    - ReversePidCycleSpeed: Reverse search from the wanted PID
+  - The most efficient strategy is used, depending on the user-provided filter. See determine_best_pid_path_strategy().
 */
 
 /*

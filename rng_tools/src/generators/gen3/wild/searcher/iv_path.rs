@@ -2,9 +2,9 @@ use arrayvec::ArrayVec;
 use itertools::iproduct;
 
 use crate::{
-    gen3::wild::searcher::FindPidPathsOptions,
-    rng::{lcrng::Pokerng, Rng},
     HiddenPowerFilter, Ivs,
+    gen3::wild::searcher::FindPidPathsOptions,
+    rng::{Rng, lcrng::Pokerng},
 };
 
 use super::pid_low_path::is_considered_method;
@@ -213,8 +213,6 @@ fn passes_iv2_filter(min_ivs: &Ivs, max_ivs: &Ivs, iv2: u16) -> bool {
     }
     true
 }
-
-//NO_PROD const fn rng jump(CONSTANT)
 
 // Used by ByStep only
 pub fn find_iv_paths_from_iv1_seed<const METHODS: u8>(

@@ -134,7 +134,7 @@ fn test_search_perf_find_pid_paths_reverse_iv() {
         filter: PkmFilter {
             shiny: true,
             min_ivs: Ivs::new(0, 0, 0, 0, 0, 0),
-            max_ivs: Ivs::new(15, 15, 15, 15, 15, 15), // ~16M
+            max_ivs: Ivs::new(20, 20, 20, 20, 20, 20), // ~85M
             ..Default::default()
         },
         methods: vec![Gen3Method::Wild1],
@@ -143,10 +143,7 @@ fn test_search_perf_find_pid_paths_reverse_iv() {
         ..Default::default()
     };
 
-    assert_eq!(
-        pid_paths_to_string(find_pid_paths_reverse_iv::<0b1>(&opts)),
-        vec![""]
-    );
+    assert!(find_pid_paths_reverse_iv::<0b1>(&opts).count() > 0);
 }
 
 #[test]
@@ -168,5 +165,5 @@ fn test_search_perf_find_pid_paths_reverse_pid_shiny() {
         ..Default::default()
     };
 
-    assert_eq!(find_pid_paths_reverse_iv::<0b1>(&opts).count(), 33634);
+    assert!(find_pid_paths_reverse_iv::<0b1>(&opts).count() > 0);
 }

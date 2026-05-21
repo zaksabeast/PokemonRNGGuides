@@ -41,9 +41,8 @@ fn test_find_iv_seeds() {
     let results = reverse_find_iv_paths_from_min_max_ivs::<0b1111>(
         Ivs::new(29, 31, 31, 31, 31, 31),
         Ivs::new(30, 31, 31, 31, 31, 31),
-        None,
+        &HiddenPowerFilter::default(),
     )
-    .iter()
     .map(|iv_seed| iv_seed.seed)
     .collect::<HashSet<_>>();
 

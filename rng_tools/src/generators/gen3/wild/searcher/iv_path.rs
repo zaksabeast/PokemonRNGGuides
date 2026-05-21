@@ -1,5 +1,5 @@
 use arrayvec::ArrayVec;
-use itertools::{Itertools, iproduct};
+use itertools::iproduct;
 
 use crate::{
     HiddenPowerFilter, Ivs,
@@ -32,8 +32,8 @@ pub enum IvFromStartArc {
 pub fn reverse_find_iv_paths_from_min_max_ivs<const METHODS: u8>(
     min_ivs: Ivs,
     max_ivs: Ivs,
-    hidden_power_filter: Option<&HiddenPowerFilter>,
-) -> Vec<IvPath> {
+    hidden_power_filter: &HiddenPowerFilter,
+) -> impl Iterator<Item = IvPath> {
     let iv_paths_it = iproduct!(
         min_ivs.hp..=max_ivs.hp,
         min_ivs.atk..=max_ivs.atk,
@@ -44,17 +44,11 @@ pub fn reverse_find_iv_paths_from_min_max_ivs<const METHODS: u8>(
     )
     .flat_map(|(hp, atk, def, spa, spd, spe)| {
         reverse_find_iv_paths_from_ivs::<METHODS>(hp, atk, def, spa, spd, spe)
+            .into_iter()
+            .filter(|iv_path| hidden_power_filter.pass_filter(&iv_path.ivs()))
     });
 
-    if let Some(hidden_power_filter) = hidden_power_filter {
-        if hidden_power_filter.active {
-            return iv_paths_it
-                .filter(|iv_path| hidden_power_filter.pass_filter(&iv_path.ivs()))
-                .collect_vec();
-        }
-    }
-
-    iv_paths_it.collect_vec()
+    iv_paths_it
 }
 
 pub fn reverse_find_iv_paths_from_ivs<const METHODS: u8>(
@@ -64,17 +58,17 @@ pub fn reverse_find_iv_paths_from_ivs<const METHODS: u8>(
     spa: u8,
     spd: u8,
     spe: u8,
-) -> Vec<IvPath> {
-    let mut iv_paths = Vec::new();
+) -> ArrayVec<IvPath, 12> {
+    let mut iv_paths: ArrayVec<IvPath, 12> = Default::default();
 
     if is_considered_method(METHODS, &[1, 2, 3]) {
         iv_paths.extend(
             reverse_find_iv1_seeds_from_ivs_values_no_vblank(hp, atk, def, spa, spd, spe)
-            .iter()
-            .map(|seed| IvPath {
-                seed: *seed,
-                iv_arc: IvFromStartArc::WithoutVBlank,
-            }),
+                .iter()
+                .map(|seed| IvPath {
+                    seed: *seed,
+                    iv_arc: IvFromStartArc::WithoutVBlank,
+                }),
         );
     }
 
@@ -234,7 +228,7 @@ fn passes_iv2_filter(min_ivs: &Ivs, max_ivs: &Ivs, iv2: u16) -> bool {
 //NO_PROD const fn rng jump(CONSTANT)
 
 // Used by ByStep only
-pub fn find_iv_paths_from_iv1_seed<const METHODS:u8>(
+pub fn find_iv_paths_from_iv1_seed<const METHODS: u8>(
     opts: &FindPidPathsOptions,
     rng: &mut Pokerng,
 ) -> Option<ArrayVec<IvPath, 2>> {
@@ -246,11 +240,11 @@ pub fn find_iv_paths_from_iv1_seed<const METHODS:u8>(
     let iv2_wild123 = rng.rand::<u16>();
     let iv2_wild4 = rng.rand::<u16>();
 
-    let wild123_good = is_considered_method(METHODS, &[1,2,3]) &&
-        passes_iv2_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv2_wild123);
+    let wild123_good = is_considered_method(METHODS, &[1, 2, 3])
+        && passes_iv2_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv2_wild123);
 
-    let wild4_good = is_considered_method(METHODS, &[4]) &&
-        passes_iv2_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv2_wild4);
+    let wild4_good = is_considered_method(METHODS, &[4])
+        && passes_iv2_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv2_wild4);
 
     if !wild123_good && !wild4_good {
         return None;
@@ -277,7 +271,7 @@ pub fn find_iv_paths_from_iv1_seed<const METHODS:u8>(
 }
 
 // Used by ByStep only
-pub fn find_iv_paths_from_iv2_seed<const METHODS:u8>(
+pub fn find_iv_paths_from_iv2_seed<const METHODS: u8>(
     opts: &FindPidPathsOptions,
     rng: &mut Pokerng,
 ) -> Option<ArrayVec<IvPath, 2>> {
@@ -290,11 +284,11 @@ pub fn find_iv_paths_from_iv2_seed<const METHODS:u8>(
     let iv1_wild123 = rng.prev_rand();
     let iv1_wild4 = rng.prev_rand();
 
-    let wild123_good = is_considered_method(METHODS, &[1,2,3]) &&
-        passes_iv1_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv1_wild123);
+    let wild123_good = is_considered_method(METHODS, &[1, 2, 3])
+        && passes_iv1_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv1_wild123);
 
-    let wild4_good = is_considered_method(METHODS, &[4]) &
-        passes_iv1_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv1_wild4);
+    let wild4_good = is_considered_method(METHODS, &[4])
+        & passes_iv1_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv1_wild4);
 
     if !wild123_good && !wild4_good {
         return None;

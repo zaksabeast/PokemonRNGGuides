@@ -1,8 +1,7 @@
 use crate::{
     gen3::{
-        FASTEST_DIVIDENDS_MOD_24, get_iv_filter_restrictiveness,
-        get_iv1_filter_restrictiveness, get_iv2_filter_restrictiveness,
-        get_pid_filter_restrictiveness, passes_pid_filter_internal,
+        FASTEST_DIVIDENDS_MOD_24, get_iv_filter_restrictiveness, get_iv1_filter_restrictiveness,
+        get_iv2_filter_restrictiveness, get_pid_filter_restrictiveness, passes_pid_filter_internal,
         wild::searcher::{
             FindPidPathsOptions, PidPath, extend_iv_path_to_pid_paths,
             extend_pid_low_path_to_pid_paths, find_iv_paths_from_iv1_seed,
@@ -14,7 +13,6 @@ use crate::{
 };
 
 use super::pid_path::{get_limited_valid_pids_for_cycle_speed_filter, sort_pid_paths};
-
 
 #[derive(PartialEq, Debug, Clone, Copy)]
 pub enum PidPathStrategy {
@@ -59,9 +57,8 @@ pub fn determine_best_pid_path_strategy(opts: &FindPidPathsOptions) -> PidPathSt
         return PidPathStrategy::ReversePidShiny;
     }
 
-    // With Reverse strategy, we must sort the possibilities to return those with lowest advance first.
-    // If the count is too large, the execution time becomes too long.
-    if iv_possibility_count < 1_000_000.0 {
+    // With Reverse strategy, if the count is too large, the execution time becomes too long.
+    if iv_possibility_count < 5_000_000.0 {
         return PidPathStrategy::ReverseIv;
     }
 
@@ -89,9 +86,8 @@ pub fn find_pid_paths_reverse_iv<const METHODS: u8>(
         reverse_find_iv_paths_from_min_max_ivs::<METHODS>(
             opts.filter.min_ivs,
             opts.filter.max_ivs,
-            Some(&opts.filter.hidden_power),
+            &opts.filter.hidden_power,
         )
-        .into_iter()
         .flat_map(|iv_path| extend_iv_path_to_pid_paths::<METHODS>(opts, iv_path)),
         opts,
     )
@@ -102,8 +98,7 @@ fn find_pid_paths_reverse_pid<const METHODS: u8>(
     opts: &FindPidPathsOptions,
     wanted_pids_it: impl Iterator<Item = u32>,
 ) -> impl Iterator<Item = PidPath> {
-    let wanted_pids = wanted_pids_it
-        .filter(|&pid| passes_pid_filter_internal(opts, pid));
+    let wanted_pids = wanted_pids_it.filter(|&pid| passes_pid_filter_internal(opts, pid));
 
     let it = reverse_find_pid_low_paths_from_pids::<METHODS>(wanted_pids)
         .flat_map(|pid_low_path| extend_pid_low_path_to_pid_paths::<METHODS>(opts, &pid_low_path));
@@ -130,8 +125,7 @@ pub fn find_pid_paths_reverse_pid_shiny<const METHODS: u8>(
 ) -> impl Iterator<Item = PidPath> {
     let full_tsv: u32 = (opts.tsv as u32) << 3;
 
-    let wanted_pids = (0..0x80000u32)
-        .map(move |partial| partial ^ ((partial ^ full_tsv) << 16));
+    let wanted_pids = (0..0x80000u32).map(move |partial| partial ^ ((partial ^ full_tsv) << 16));
 
     find_pid_paths_reverse_pid::<METHODS>(opts, wanted_pids)
 }

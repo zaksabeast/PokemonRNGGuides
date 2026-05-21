@@ -12,7 +12,7 @@ use crate::{
     rng::{StateIterator, lcrng::Pokerng},
 };
 
-use super::pid_path::{get_limited_valid_pids_for_cycle_speed_filter, sort_pid_paths};
+use super::pid_path::{get_limited_valid_pids_for_cycle_speed_filter, sort_and_take_pid_paths};
 
 #[derive(PartialEq, Debug, Clone, Copy)]
 pub enum PidPathStrategy {
@@ -82,7 +82,7 @@ pub fn determine_best_pid_path_strategy(opts: &FindPidPathsOptions) -> PidPathSt
 pub fn find_pid_paths_reverse_iv<const METHODS: u8>(
     opts: &FindPidPathsOptions,
 ) -> impl Iterator<Item = PidPath> {
-    sort_pid_paths(
+    sort_and_take_pid_paths(
         reverse_find_iv_paths_from_min_max_ivs::<METHODS>(
             opts.filter.min_ivs,
             opts.filter.max_ivs,
@@ -102,7 +102,7 @@ fn find_pid_paths_reverse_pid<const METHODS: u8>(
 
     let it = reverse_find_pid_low_paths_from_pids::<METHODS>(wanted_pids)
         .flat_map(|pid_low_path| extend_pid_low_path_to_pid_paths::<METHODS>(opts, &pid_low_path));
-    sort_pid_paths(it, opts)
+    sort_and_take_pid_paths(it, opts)
 }
 
 // PidPathStrategy::ReversePidCycleSpeed

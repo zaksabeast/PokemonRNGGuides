@@ -1,3 +1,5 @@
+use arrayvec::ArrayVec;
+
 use crate::{
     gen3::{
         Gen3Lead, lcrng_distance,
@@ -51,7 +53,10 @@ impl LvlPathGenerator {
         }
         Self { arcs }
     }
-    pub fn extend_path_for_all_arcs(&self, nature_gender_path: &NatureGenderPath) -> Vec<LvlPath> {
+    pub fn extend_path_for_all_arcs(
+        &self,
+        nature_gender_path: &NatureGenderPath,
+    ) -> ArrayVec<LvlPath, 2> {
         self.arcs
             .iter()
             .filter_map(|arc| {

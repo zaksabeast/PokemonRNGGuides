@@ -164,14 +164,14 @@ impl std::fmt::Display for PidPath {
     }
 }
 
-pub(super) fn sort_pid_paths(
+pub(super) fn sort_and_take_pid_paths(
     pid_paths: impl Iterator<Item = PidPath>,
     opts: &FindPidPathsOptions,
 ) -> impl Iterator<Item = PidPath> {
-    let take_count = std::cmp::max(500, opts.max_result_count.saturating_mul(50));
     // PidPath respects the Pokémon filter. However, we don't know yet if a setup exists that will trigger
     // that particular encounter.
-    // At worst, the odds are ~1%. For safety, we keep at least 500.
+    // At worst, the odds are ~1%. For safety, we keep at least 1000.
+    let take_count = std::cmp::max(1000, opts.max_result_count.saturating_mul(100));
 
     pid_paths.k_smallest_by_key(take_count, |pid_path| get_path_score(opts, pid_path))
 }

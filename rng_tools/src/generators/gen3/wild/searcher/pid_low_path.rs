@@ -3,7 +3,7 @@ use arrayvec::ArrayVec;
 use crate::{
     Ivs,
     gen3::{
-        IvPath, reverse_find_iv_paths_from_ivs,
+        IvPath,
         wild::{
             passes_pid_filter,
             searcher::{FindPidPathsOptions, IvFromStartArc, PidPath, PidToIvArc},
@@ -229,21 +229,6 @@ fn extend_pid_low_path_to_pid_path_wild4(
     } else {
         None
     }
-}
-
-#[allow(dead_code)] //NO_PROD
-fn reverse_find_pid_low_paths_from_pid_using_reverse_ivs<const METHODS: u8>(
-    pid: u32,
-) -> Vec<PidLowPath> {
-    // We reuse the existing reverse IV logic for PID. It's not ideal because the first bit of IV is ignored
-    // but not the first bit of PID. This means the IV logic returns correct values and incorrect values.
-    // However, it's easy to filter them afterwards. The performance is not important.
-    let ivs = Ivs::new_g3((pid & 0xFFFF) as u16, (pid >> 16) as u16);
-    reverse_find_iv_paths_from_ivs::<METHODS>(ivs.hp, ivs.atk, ivs.def, ivs.spa, ivs.spd, ivs.spe)
-        .iter()
-        .map(PidLowPath::from_iv_path)
-        .filter(|pid_low_path| pid_low_path.pid() == pid)
-        .collect::<Vec<_>>()
 }
 
 pub fn reverse_find_pid_low_paths_from_pids<const METHODS: u8>(

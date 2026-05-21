@@ -167,3 +167,95 @@ fn test_search_perf_find_pid_paths_reverse_pid_shiny() {
 
     assert!(find_pid_paths_reverse_iv::<0b1>(&opts).count() > 0);
 }
+
+#[test]
+fn test_search_perf_find_pid_paths_shiny_feebas() {
+    if cfg!(debug_assertions) {
+        return;
+    }
+    let mut options = Wild3SearcherOptions {
+        initial_seed: 0,
+        tid: 44772,
+        sid: 31562,
+        initial_advances: 1000,
+        max_advances: 10_000_000,
+        max_result_count: 2000,
+        filter: PkmFilter {
+            shiny: true,
+            nature: Some(Nature::Bold),
+            gender: Some(Gender::Female),
+            min_ivs: Ivs::new(25, 0, 25, 25, 25, 25),
+            max_ivs: Ivs::new(31, 31, 31, 31, 31, 31),
+            ..Default::default()
+        },
+        gen3_filter: Gen3PkmFilter {
+            species: Some(Species::Feebas),
+            ..Default::default()
+        },
+        leads: vec![
+            Gen3Lead::Vanilla,
+            Gen3Lead::Egg,
+            Gen3Lead::MagnetPull,
+            Gen3Lead::Static,
+            Gen3Lead::HustleVitalSpiritPressure,
+            Gen3Lead::CuteCharm(Gender::Male),
+            Gen3Lead::CuteCharm(Gender::Female),
+            Gen3Lead::Synchronize(Nature::Hardy),
+            Gen3Lead::Synchronize(Nature::Lonely),
+            Gen3Lead::Synchronize(Nature::Brave),
+            Gen3Lead::Synchronize(Nature::Adamant),
+            Gen3Lead::Synchronize(Nature::Naughty),
+            Gen3Lead::Synchronize(Nature::Bold),
+            Gen3Lead::Synchronize(Nature::Docile),
+            Gen3Lead::Synchronize(Nature::Relaxed),
+            Gen3Lead::Synchronize(Nature::Impish),
+            Gen3Lead::Synchronize(Nature::Lax),
+            Gen3Lead::Synchronize(Nature::Timid),
+            Gen3Lead::Synchronize(Nature::Hasty),
+            Gen3Lead::Synchronize(Nature::Serious),
+            Gen3Lead::Synchronize(Nature::Jolly),
+            Gen3Lead::Synchronize(Nature::Naive),
+            Gen3Lead::Synchronize(Nature::Modest),
+            Gen3Lead::Synchronize(Nature::Mild),
+            Gen3Lead::Synchronize(Nature::Quiet),
+            Gen3Lead::Synchronize(Nature::Bashful),
+            Gen3Lead::Synchronize(Nature::Rash),
+            Gen3Lead::Synchronize(Nature::Calm),
+            Gen3Lead::Synchronize(Nature::Gentle),
+            Gen3Lead::Synchronize(Nature::Sassy),
+            Gen3Lead::Synchronize(Nature::Careful),
+            Gen3Lead::Synchronize(Nature::Quirky),
+        ],
+        methods: vec![Gen3Method::Wild1, Gen3Method::Wild2, Gen3Method::Wild4],
+        consider_cycles: true,
+        using_white_flute: true,
+        considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt::SoloOnly,
+        ..Default::default()
+    };
+
+    options.map_setups[0].map_data.feebas = Some(Wild3EncounterGameData {
+        min_level: 20,
+        max_level: 25,
+        species_data: SpeciesData {
+            species: Species::Feebas,
+        },
+    });
+    options.map_setups[0].actions = vec![
+        Wild3Action::OldRod,
+        Wild3Action::GoodRod,
+        Wild3Action::SuperRod,
+    ];
+    options.map_setups[0].feebas_states = vec![Wild3FeebasState::OnFeebasTile];
+
+    let results = search_wild3_reverse(&options)
+        .into_iter()
+        .flatten()
+        .collect_vec();
+    assert!(!results.is_empty());
+
+    let first_result = &results[0];
+    assert_eq!(
+        (first_result.pid, first_result.ivs),
+        (2499166555, Ivs::new(31, 22, 25, 28, 26, 26))
+    );
+}

@@ -367,6 +367,7 @@ fn extend_path_for_arc(
     considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt,
     pid_path: &PidPath, // pid_path.seed is the AdvBefore at for last CreateMonWithGenderNatureLetter_pidlow
     arc: Ngpa,
+    // Very hard to cap the number of NatureGenderPath, so returning a Vec is really required.
 ) -> Vec<NatureGenderPath> {
     let mut nature_gender_seeds: Vec<u32> = vec![];
 

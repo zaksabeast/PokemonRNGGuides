@@ -34,10 +34,6 @@ Reverse:
     Cons: To guarantee results with lowest advance, all possibilities must be tested then sorted. With a loose filter, the performance deteriorates.
 */
 pub fn determine_best_pid_path_strategy(opts: &FindPidPathsOptions) -> PidPathStrategy {
-    if let Some(forced_search_strategy) = opts.forced_search_strategy {
-        return forced_search_strategy;
-    }
-
     if get_limited_valid_pids_for_cycle_speed_filter(&opts.gen3_filter.pid_speed).is_some() {
         return PidPathStrategy::ReversePidCycleSpeed;
     }

@@ -88,6 +88,7 @@ pub const METHOD_1: u8 = 0b0001;
 pub const METHOD_2: u8 = 0b0010;
 pub const METHOD_3: u8 = 0b0100;
 pub const METHOD_4: u8 = 0b1000;
+pub const METHODS_1234: u8 = METHOD_1 | METHOD_2 | METHOD_3 | METHOD_4;
 
 pub const fn is_considered_method(opts_methods: u8, methods_to_check: u8) -> bool {
     opts_methods & methods_to_check != 0
@@ -202,23 +203,22 @@ fn new_find_pid_paths_options(opts: &Wild3SearcherOptions) -> FindPidPathsOption
         max_result_count: opts.max_result_count,
         max_advances: opts.max_advances,
         painting_adv_finder: opts.painting_opts.as_ref().map(Wild3PaintingAdvFinder::new),
-        forced_search_strategy: None,
     }
 }
 
 pub fn search_wild3_reverse(opts: &Wild3SearcherOptions) -> Vec<Vec<Wild3SearcherResultMon>> {
     let mut methods_bits = 0;
     if opts.methods.contains(&Gen3Method::Wild1) {
-        methods_bits += 1 << 0;
+        methods_bits |= METHOD_1;
     }
     if opts.methods.contains(&Gen3Method::Wild2) {
-        methods_bits += 1 << 1;
+        methods_bits |= METHOD_2;
     }
     if opts.methods.contains(&Gen3Method::Wild3) {
-        methods_bits += 1 << 2;
+        methods_bits |= METHOD_3;
     }
     if opts.methods.contains(&Gen3Method::Wild4) {
-        methods_bits += 1 << 3;
+        methods_bits |= METHOD_4;
     }
 
     match methods_bits {

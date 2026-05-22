@@ -39,17 +39,17 @@ fn test_search_perf_find_pid_paths_by_step() {
     ]);
 
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_by_step_iv1::<0b1111>(&opts)),
+        pid_paths_to_string(find_pid_paths_by_step_iv1::<METHODS_1234>(&opts)),
         expected_results
     );
 
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_by_step_iv2::<0b1111>(&opts)),
+        pid_paths_to_string(find_pid_paths_by_step_iv2::<METHODS_1234>(&opts)),
         expected_results
     );
 
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_by_step_pid::<0b1111>(&opts)),
+        pid_paths_to_string(find_pid_paths_by_step_pid::<METHODS_1234>(&opts)),
         expected_results
     );
 }
@@ -139,11 +139,10 @@ fn test_search_perf_find_pid_paths_reverse_iv() {
         },
         methods: vec![Gen3Method::Wild1],
         tsv: 1234,
-        forced_search_strategy: Some(PidPathStrategy::ReverseIv),
         ..Default::default()
     };
 
-    assert!(find_pid_paths_reverse_iv::<0b1>(&opts).count() > 0);
+    assert!(find_pid_paths_reverse_iv::<METHOD_1>(&opts).count() > 0);
 }
 
 #[test]
@@ -161,11 +160,10 @@ fn test_search_perf_find_pid_paths_reverse_pid_shiny() {
         },
         methods: vec![Gen3Method::Wild1],
         tsv: 1234,
-        forced_search_strategy: Some(PidPathStrategy::ReversePidShiny),
         ..Default::default()
     };
 
-    assert!(find_pid_paths_reverse_iv::<0b1>(&opts).count() > 0);
+    assert!(find_pid_paths_reverse_iv::<METHOD_1>(&opts).count() > 0);
 }
 
 #[test]

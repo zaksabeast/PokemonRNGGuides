@@ -48,7 +48,6 @@ pub struct FindPidPathsOptions {
     pub initial_advances: usize,
     pub max_advances: usize,
     pub painting_adv_finder: Option<Wild3PaintingAdvFinder>,
-    pub forced_search_strategy: Option<PidPathStrategy>,
 }
 
 impl Default for FindPidPathsOptions {
@@ -69,7 +68,6 @@ impl Default for FindPidPathsOptions {
             initial_advances: Default::default(),
             max_advances: Default::default(),
             painting_adv_finder: None,
-            forced_search_strategy: None,
         }
     }
 }

@@ -2,6 +2,8 @@ use std::collections::HashSet;
 
 use arrayvec::ArrayVec;
 
+use crate::gen3::searcher_reverse::METHODS_1234;
+
 use super::*;
 
 #[test]
@@ -52,7 +54,7 @@ fn test_find_iv1_seeds_from_ivs_no_vblank() {
 
 #[test]
 fn test_find_iv_seeds() {
-    let results = reverse_find_iv_paths_from_min_max_ivs::<0b1111>(
+    let results = reverse_find_iv_paths_from_min_max_ivs::<METHODS_1234>(
         Ivs::new(29, 31, 31, 31, 31, 31),
         Ivs::new(30, 31, 31, 31, 31, 31),
         &HiddenPowerFilter::default(),

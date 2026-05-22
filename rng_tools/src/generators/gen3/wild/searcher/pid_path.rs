@@ -1,5 +1,3 @@
-use std::cmp::Ordering;
-
 use arrayvec::ArrayVec;
 use itertools::Itertools;
 
@@ -8,20 +6,18 @@ use crate::{
     gen3::{
         FASTEST_DIVIDENDS_MOD_24, FASTEST_DIVIDENDS_MOD_24_RANGE, Gen3Method, Gen3PidSpeedFilter,
         Gen3PkmFilter, SLOWEST_DIVIDENDS_MOD_24, SLOWEST_DIVIDENDS_MOD_24_RANGE,
-        calculate_pid_speed, get_iv_filter_restrictiveness, get_iv1_filter_restrictiveness,
-        get_iv2_filter_restrictiveness, get_pid_filter_restrictiveness, passes_pid_filter,
-        reverse_find_pid_low_paths_from_pids,
+        calculate_pid_speed, passes_pid_filter,
         searcher_painter::Wild3PaintingAdvFinder,
         wild::{
             lcrng_distance,
-            searcher::{
-                IvFromStartArc, IvPath, extend_pid_low_path_to_pid_paths,
-                find_iv_paths_from_iv1_seed, find_iv_paths_from_iv2_seed,
-                find_pid_low_paths_from_pid_low_seed, reverse_find_iv_paths_from_min_max_ivs,
-            },
+            searcher::{IvFromStartArc, IvPath},
         },
     },
-    rng::{Rng, StateIterator, lcrng::Pokerng},
+    rng::{Rng, lcrng::Pokerng},
+};
+
+use super::searcher_main::searcher_reverse::{
+    METHOD_1, METHOD_2, METHOD_3, METHOD_4, is_considered_method,
 };
 
 /**
@@ -43,8 +39,6 @@ pub struct FindPidPathsOptions {
     pub gen3_filter: Gen3PkmFilter,
     pub encounter_gender_ratio: GenderRatio,
     pub methods: Vec<Gen3Method>,
-    // explicit bool to improve performance, to avoid calling methods.contains() in the common case
-    pub consider_all_methods_124: bool,
     pub tsv: u16,
     pub initial_seed: u32,
     pub max_result_count: usize,
@@ -64,9 +58,7 @@ impl Default for FindPidPathsOptions {
                 Gen3Method::Wild2,
                 Gen3Method::Wild3,
                 Gen3Method::Wild4,
-                Gen3Method::Wild5,
             ],
-            consider_all_methods_124: true,
             tsv: Default::default(),
             initial_seed: Default::default(),
             max_result_count: 1,
@@ -172,59 +164,16 @@ impl std::fmt::Display for PidPath {
     }
 }
 
-pub enum PidPathStrategy {
-    ReverseIv,
-    ReversePid,
-    ByStepIv1,
-    ByStepIv2,
-    ByStepPid,
-}
-
-/** To improve performance, we want to apply the most restrictive criterias of the filter first. */
-pub fn determine_best_pid_path_strategy(opts: &FindPidPathsOptions) -> PidPathStrategy {
-    if get_limited_valid_pids(&opts.gen3_filter.pid_speed).is_some() {
-        return PidPathStrategy::ReversePid;
-    }
-
-    let iv1_restrict = get_iv1_filter_restrictiveness(&opts.filter);
-    let iv2_restrict = get_iv2_filter_restrictiveness(&opts.filter);
-    let iv_restrict = get_iv_filter_restrictiveness(&opts.filter);
-    let pid_restrict = get_pid_filter_restrictiveness(
-        &opts.filter,
-        &opts.gen3_filter,
-        Some(opts.encounter_gender_ratio),
-    );
-
-    if pid_restrict < iv_restrict {
-        return PidPathStrategy::ByStepPid;
-    }
-
-    if iv_restrict < 1f64 / 65_000_f64 {
-        return PidPathStrategy::ReverseIv;
-    }
-
-    if iv1_restrict < iv2_restrict {
-        PidPathStrategy::ByStepIv1
-    } else {
-        PidPathStrategy::ByStepIv2
-    }
-}
-
-// For all possible valid ivs, reverse-find the seeds that can generate them.
-// Very quick when they are few valid ivs (ex: 4+ perfect IVs)
-pub fn find_pid_paths_reverse_iv<const METHOD3: bool>(
+pub(super) fn sort_and_take_pid_paths(
+    pid_paths: impl Iterator<Item = PidPath>,
     opts: &FindPidPathsOptions,
 ) -> impl Iterator<Item = PidPath> {
-    reverse_find_iv_paths_from_min_max_ivs(
-        opts.filter.min_ivs,
-        opts.filter.max_ivs,
-        Some(&opts.filter.hidden_power),
-    )
-    .iter()
-    .flat_map(|iv_path| extend_iv_path_to_pid_paths::<METHOD3>(opts, *iv_path))
-    .sorted_by(|pid_path1, pid_path2| compare_paths(opts, pid_path1, pid_path2))
-    .collect::<Vec<_>>()
-    .into_iter()
+    // PidPath respects the Pokémon filter. However, we don't know yet if a setup exists that will trigger
+    // that particular encounter.
+    // At worst, the odds are ~1%. For safety, we keep at least 1000.
+    let take_count = std::cmp::max(1000, opts.max_result_count.saturating_mul(100));
+
+    pid_paths.k_smallest_by_key(take_count, |pid_path| get_path_score(opts, pid_path))
 }
 
 fn get_path_score(opts: &FindPidPathsOptions, pid_path: &PidPath) -> u32 {
@@ -242,16 +191,6 @@ fn get_path_score(opts: &FindPidPathsOptions, pid_path: &PidPath) -> u32 {
     }
 }
 
-fn compare_paths(opts: &FindPidPathsOptions, pid_path1: &PidPath, pid_path2: &PidPath) -> Ordering {
-    let dist1 = get_path_score(opts, pid_path1);
-
-    let dist2 = get_path_score(opts, pid_path2);
-
-    dist1
-        .cmp(&dist2)
-        .then_with(|| (pid_path1.method() as u8).cmp(&(pid_path2.method() as u8)))
-}
-
 fn is_subset(
     range: &std::ops::RangeInclusive<usize>,
     subset: &std::ops::RangeInclusive<usize>,
@@ -259,7 +198,9 @@ fn is_subset(
     range.contains(subset.start()) && range.contains(subset.end())
 }
 
-fn get_limited_valid_pids(pid_speed_filter: &Gen3PidSpeedFilter) -> Option<Vec<u32>> {
+pub(super) fn get_limited_valid_pids_for_cycle_speed_filter(
+    pid_speed_filter: &Gen3PidSpeedFilter,
+) -> Option<Vec<u32>> {
     match pid_speed_filter.cycle_count_range() {
         None => None,
         Some(wanted_range) => {
@@ -282,82 +223,43 @@ fn get_limited_valid_pids(pid_speed_filter: &Gen3PidSpeedFilter) -> Option<Vec<u
     }
 }
 
-// For all possible valid PIDs, reverse-find the seeds that can generate them.
-// Very quick when they are few valid PIDs
-// Limitation: Only supports when the filter is nearly the fastest or slowest PID modulo 24
-pub fn find_pid_paths_reverse_pid<const METHOD3: bool>(
-    opts: &FindPidPathsOptions,
-) -> impl Iterator<Item = PidPath> {
-    let wanted_pids = get_limited_valid_pids(&opts.gen3_filter.pid_speed)
-        .unwrap_or(FASTEST_DIVIDENDS_MOD_24.to_vec());
-
-    reverse_find_pid_low_paths_from_pids(&wanted_pids)
-        .iter()
-        .flat_map(|pid_low_path| extend_pid_low_path_to_pid_paths(opts, pid_low_path))
-        .sorted_by(|pid_path1, pid_path2| compare_paths(opts, pid_path1, pid_path2))
-        .collect::<Vec<_>>()
-        .into_iter()
-}
-
-// Progressively generate the seeds from advance 0, 1, 2 ... until enough are generated. Filter by iv1 first.
-pub fn find_pid_paths_by_step_iv1<const METHOD3: bool>(
-    opts: &FindPidPathsOptions,
-) -> impl Iterator<Item = PidPath> {
-    let base_rng = Pokerng::with_jump(opts.initial_seed, opts.initial_advances);
-    StateIterator::new(base_rng)
-        .take(opts.max_advances.saturating_add(1)) // missing +1 but overflows in wasm
-        .filter_map(|mut rng| find_iv_paths_from_iv1_seed(opts, &mut rng))
-        .flatten()
-        .flat_map(|iv_path| extend_iv_path_to_pid_paths::<METHOD3>(opts, iv_path))
-}
-
-// Progressively generate the seeds from advance 0, 1, 2 ... until enough are generated. Filter by iv2 first.
-pub fn find_pid_paths_by_step_iv2<const METHOD3: bool>(
-    opts: &FindPidPathsOptions,
-) -> impl Iterator<Item = PidPath> {
-    let base_rng = Pokerng::with_jump(opts.initial_seed, opts.initial_advances);
-    StateIterator::new(base_rng)
-        .take(opts.max_advances.saturating_add(1)) // missing +1 but overflows in wasm
-        .filter_map(|mut rng| find_iv_paths_from_iv2_seed(opts, &mut rng))
-        .flatten()
-        .flat_map(|iv_path| extend_iv_path_to_pid_paths::<METHOD3>(opts, iv_path))
-}
-
-// Progressively generate the seeds from advance 0, 1, 2 ... until enough are generated. Filter by pid first.
-pub fn find_pid_paths_by_step_pid<const METHOD3: bool>(
-    opts: &FindPidPathsOptions,
-) -> impl Iterator<Item = PidPath> {
-    let base_rng = Pokerng::with_jump(opts.initial_seed, opts.initial_advances);
-    StateIterator::new(base_rng)
-        .take(opts.max_advances.saturating_add(1)) // missing +1 but overflows in wasm
-        .filter_map(|rng| find_pid_low_paths_from_pid_low_seed::<METHOD3>(opts, rng))
-        .flatten()
-        .flat_map(|pid_low_path| extend_pid_low_path_to_pid_paths(opts, &pid_low_path))
-}
-
-pub fn extend_iv_path_to_pid_paths<const METHOD3: bool>(
+pub fn extend_iv_path_to_pid_paths<const METHODS: u8>(
     opts: &FindPidPathsOptions,
     iv_path: IvPath,
 ) -> ArrayVec<PidPath, 3> {
     let mut pid_paths: ArrayVec<PidPath, 3> = Default::default();
-    if let Some(no_vblank_pid_path) = extend_iv_path_to_pid_path_no_vblank(opts, iv_path) {
-        pid_paths.push(no_vblank_pid_path);
-    }
-    if iv_path.iv_arc == IvFromStartArc::WithoutVBlank {
-        if let Some(wild2_pid_path) = extend_iv_path_to_pid_path_wild2(opts, iv_path) {
-            pid_paths.push(wild2_pid_path);
+
+    match iv_path.iv_arc {
+        IvFromStartArc::WithoutVBlank => {
+            if is_considered_method(METHODS, METHOD_1) {
+                if let Some(no_vblank_pid_path) =
+                    extend_iv_path_to_pid_path_no_vblank(opts, iv_path)
+                {
+                    pid_paths.push(no_vblank_pid_path);
+                }
+            }
+            if is_considered_method(METHODS, METHOD_2) {
+                if let Some(wild2_pid_path) = extend_iv_path_to_pid_path_wild2(opts, iv_path) {
+                    pid_paths.push(wild2_pid_path);
+                }
+            }
+            if is_considered_method(METHODS, METHOD_3) {
+                if let Some(wild3_pid_path) = extend_iv_path_to_pid_path_wild3(opts, iv_path) {
+                    pid_paths.push(wild3_pid_path);
+                }
+            }
         }
-        if METHOD3 {
-            if let Some(wild3_pid_path) = extend_iv_path_to_pid_path_wild3(opts, iv_path) {
-                pid_paths.push(wild3_pid_path);
+        IvFromStartArc::WithVBlank => {
+            if is_considered_method(METHODS, METHOD_4) {
+                if let Some(no_vblank_pid_path) =
+                    extend_iv_path_to_pid_path_no_vblank(opts, iv_path)
+                {
+                    pid_paths.push(no_vblank_pid_path);
+                }
             }
         }
     }
 
-    // To improve performance for the common case, we previously assumed that consider_all_methods_124 was true. We need to filter here.
-    if !opts.consider_all_methods_124 {
-        pid_paths.retain(|pid_path| opts.methods.contains(&pid_path.method()));
-    }
     pid_paths
 }
 
@@ -378,7 +280,7 @@ fn extend_iv_path_to_pid_path_no_vblank(
     }
 }
 
-fn passes_pid_filter_internal(opts: &FindPidPathsOptions, pid: u32) -> bool {
+pub fn passes_pid_filter_internal(opts: &FindPidPathsOptions, pid: u32) -> bool {
     passes_pid_filter(
         &opts.filter,
         &opts.gen3_filter,
@@ -431,7 +333,6 @@ fn extend_iv_path_to_pid_path_wild3(
         None
     }
 }
-
 #[path = "tests/pid_path_tests.rs"]
 #[cfg(test)]
 mod tests;

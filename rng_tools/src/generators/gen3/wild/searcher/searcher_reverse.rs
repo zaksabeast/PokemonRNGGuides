@@ -5,7 +5,8 @@ use super::*;
 use crate::{
     GenderRatio,
     gen3::{
-        SpeciesData, Wild3InSafariMapStatus, create_pokeblock_gen_opt, find_pid_paths_reverse_pid,
+        SpeciesData, Wild3InSafariMapStatus, create_pokeblock_gen_opt,
+        find_pid_paths_reverse_pid_cycle_speed, find_pid_paths_reverse_pid_shiny,
         searcher_painter::Wild3PaintingAdvFinder,
         wild::{
             lcrng_distance,
@@ -39,12 +40,7 @@ Technical approach:
   2- Extend the PID paths until reaching the start of the wild encounter (start of Sweet Scent).
 
 Finding PID paths:
-  - The most efficient strategy is used, depending on the user-provided filter.
-    - ByStepIv1: Filter by iv1 first
-    - ByStepIv2: Filter by iv2 first
-    - ByStepPid: Filter by PID first
-    - ReverseIv: Reverse search from the wanted IVs
-    - ReversePid: Reverse search from the wanted PID
+  - The most efficient strategy is used, depending on the user-provided filter. See determine_best_pid_path_strategy().
 */
 
 /*
@@ -88,13 +84,20 @@ PidLowPath (doesn't know Iv arc)
     WithVBLank
 */
 
-fn extend_pid_paths_to_results<I>(
+pub const METHOD_1: u8 = 0b0001;
+pub const METHOD_2: u8 = 0b0010;
+pub const METHOD_3: u8 = 0b0100;
+pub const METHOD_4: u8 = 0b1000;
+pub const METHODS_1234: u8 = METHOD_1 | METHOD_2 | METHOD_3 | METHOD_4;
+
+pub const fn is_considered_method(opts_methods: u8, methods_to_check: u8) -> bool {
+    opts_methods & methods_to_check != 0
+}
+
+fn extend_pid_paths_to_results(
     opts: &Wild3SearcherOptions,
-    iter: I,
-) -> Vec<Vec<Wild3SearcherResultMon>>
-where
-    I: Iterator<Item = PidPath>,
-{
+    iter: impl Iterator<Item = PidPath>,
+) -> Vec<Vec<Wild3SearcherResultMon>> {
     let encounter_species_data = get_encounter_species_data(opts);
     let encounter_gender_ratio = encounter_species_data
         .as_ref()
@@ -194,9 +197,6 @@ fn new_find_pid_paths_options(opts: &Wild3SearcherOptions) -> FindPidPathsOption
         gen3_filter: opts.gen3_filter.clone(),
         encounter_gender_ratio,
         methods: opts.methods.clone(),
-        consider_all_methods_124: opts.methods.contains(&Gen3Method::Wild1)
-            && opts.methods.contains(&Gen3Method::Wild2)
-            && opts.methods.contains(&Gen3Method::Wild4),
         tsv: gen3_tsv(opts.tid, opts.sid),
         initial_seed: opts.initial_seed,
         initial_advances: opts.initial_advances,
@@ -207,44 +207,68 @@ fn new_find_pid_paths_options(opts: &Wild3SearcherOptions) -> FindPidPathsOption
 }
 
 pub fn search_wild3_reverse(opts: &Wild3SearcherOptions) -> Vec<Vec<Wild3SearcherResultMon>> {
+    let mut methods_bits = 0;
+    if opts.methods.contains(&Gen3Method::Wild1) {
+        methods_bits |= METHOD_1;
+    }
+    if opts.methods.contains(&Gen3Method::Wild2) {
+        methods_bits |= METHOD_2;
+    }
+    if opts.methods.contains(&Gen3Method::Wild3) {
+        methods_bits |= METHOD_3;
+    }
+    if opts.methods.contains(&Gen3Method::Wild4) {
+        methods_bits |= METHOD_4;
+    }
+
+    match methods_bits {
+        0 => search_wild3_reverse_with_methods::<0>(opts),
+        1 => search_wild3_reverse_with_methods::<1>(opts),
+        2 => search_wild3_reverse_with_methods::<2>(opts),
+        3 => search_wild3_reverse_with_methods::<3>(opts),
+        4 => search_wild3_reverse_with_methods::<4>(opts),
+        5 => search_wild3_reverse_with_methods::<5>(opts),
+        6 => search_wild3_reverse_with_methods::<6>(opts),
+        7 => search_wild3_reverse_with_methods::<7>(opts),
+        8 => search_wild3_reverse_with_methods::<8>(opts),
+        9 => search_wild3_reverse_with_methods::<9>(opts),
+        10 => search_wild3_reverse_with_methods::<10>(opts),
+        11 => search_wild3_reverse_with_methods::<11>(opts),
+        12 => search_wild3_reverse_with_methods::<12>(opts),
+        13 => search_wild3_reverse_with_methods::<13>(opts),
+        14 => search_wild3_reverse_with_methods::<14>(opts),
+        _ => search_wild3_reverse_with_methods::<15>(opts),
+    }
+}
+
+pub fn search_wild3_reverse_with_methods<const METHODS: u8>(
+    opts: &Wild3SearcherOptions,
+) -> Vec<Vec<Wild3SearcherResultMon>> {
     let find_opts = new_find_pid_paths_options(opts);
 
-    if find_opts.methods.contains(&Gen3Method::Wild3) {
-        match determine_best_pid_path_strategy(&find_opts) {
-            PidPathStrategy::ByStepIv1 => {
-                extend_pid_paths_to_results(opts, find_pid_paths_by_step_iv1::<true>(&find_opts))
-            }
-            PidPathStrategy::ByStepIv2 => {
-                extend_pid_paths_to_results(opts, find_pid_paths_by_step_iv2::<true>(&find_opts))
-            }
-            PidPathStrategy::ByStepPid => {
-                extend_pid_paths_to_results(opts, find_pid_paths_by_step_pid::<true>(&find_opts))
-            }
-            PidPathStrategy::ReverseIv => {
-                extend_pid_paths_to_results(opts, find_pid_paths_reverse_iv::<true>(&find_opts))
-            }
-            PidPathStrategy::ReversePid => {
-                extend_pid_paths_to_results(opts, find_pid_paths_reverse_pid::<true>(&find_opts))
-            }
+    let strategy = determine_best_pid_path_strategy(&find_opts);
+
+    match strategy {
+        PidPathStrategy::ByStepIv1 => {
+            extend_pid_paths_to_results(opts, find_pid_paths_by_step_iv1::<METHODS>(&find_opts))
         }
-    } else {
-        match determine_best_pid_path_strategy(&find_opts) {
-            PidPathStrategy::ByStepIv1 => {
-                extend_pid_paths_to_results(opts, find_pid_paths_by_step_iv1::<false>(&find_opts))
-            }
-            PidPathStrategy::ByStepIv2 => {
-                extend_pid_paths_to_results(opts, find_pid_paths_by_step_iv2::<false>(&find_opts))
-            }
-            PidPathStrategy::ByStepPid => {
-                extend_pid_paths_to_results(opts, find_pid_paths_by_step_pid::<false>(&find_opts))
-            }
-            PidPathStrategy::ReverseIv => {
-                extend_pid_paths_to_results(opts, find_pid_paths_reverse_iv::<false>(&find_opts))
-            }
-            PidPathStrategy::ReversePid => {
-                extend_pid_paths_to_results(opts, find_pid_paths_reverse_pid::<false>(&find_opts))
-            }
+        PidPathStrategy::ByStepIv2 => {
+            extend_pid_paths_to_results(opts, find_pid_paths_by_step_iv2::<METHODS>(&find_opts))
         }
+        PidPathStrategy::ByStepPid => {
+            extend_pid_paths_to_results(opts, find_pid_paths_by_step_pid::<METHODS>(&find_opts))
+        }
+        PidPathStrategy::ReverseIv => {
+            extend_pid_paths_to_results(opts, find_pid_paths_reverse_iv::<METHODS>(&find_opts))
+        }
+        PidPathStrategy::ReversePidCycleSpeed => extend_pid_paths_to_results(
+            opts,
+            find_pid_paths_reverse_pid_cycle_speed::<METHODS>(&find_opts),
+        ),
+        PidPathStrategy::ReversePidShiny => extend_pid_paths_to_results(
+            opts,
+            find_pid_paths_reverse_pid_shiny::<METHODS>(&find_opts),
+        ),
     }
 }
 

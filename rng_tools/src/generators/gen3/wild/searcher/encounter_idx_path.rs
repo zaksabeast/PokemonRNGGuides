@@ -224,7 +224,7 @@ impl<'a> EncounterIdxPathGenerator<'a> {
             .flat_map(|map_setup| map_setup.actions.iter().cloned())
             .sorted_by(|act1, act2| (*act1 as u8).cmp(&(*act2 as u8)))
             .dedup()
-            .collect_vec();
+            .collect();
 
         let mut arcs: Vec<EncounterIdxToLvlArc> = Vec::new();
 

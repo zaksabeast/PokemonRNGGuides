@@ -1,0 +1,1 @@
+import{t as e}from"./battleVideo-DrCGeGdZ.js";export{e as BattleVideo};

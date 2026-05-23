@@ -1,0 +1,1 @@
+import{n as e}from"./memoize-D29NuW_6.js";import{t}from"./jsx-runtime-DE3yYTa1.js";import{t as n}from"./chatterFilter-CMHsTPPV.js";var r=e(),i=t(),a=()=>{let e=(0,r.c)(1),t;return e[0]===Symbol.for(`react.memo_cache_sentinel`)?(t=(0,i.jsx)(n,{mode:`standalone`,submitTrackerId:`standalone_chatter_filter`}),e[0]=t):t=e[0],t};export{a as StandaloneChatterFilter};

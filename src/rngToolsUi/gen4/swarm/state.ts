@@ -1,6 +1,6 @@
 import { atom, useAtom } from "jotai";
 import { Gen4GameVersion } from "../gen4types";
-import { type SwarmRoute } from "~/rngTools";
+import { SwarmRoute } from "./constants";
 
 type State = {
   game: Gen4GameVersion;

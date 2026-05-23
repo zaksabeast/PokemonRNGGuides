@@ -112,10 +112,11 @@ fn extend_pid_paths_to_results(
         Wild3InSafariMapStatus::Sometimes
     };
 
+    let wanted_natures = opts.filter.permitted_natures_iter().collect_vec();
     let nature_gender_gen = NatureGenderSeedGenerator::new(
         &opts.leads,
         encounter_gender_ratio,
-        &opts.filter.nature,
+        &wanted_natures,
         opts.filter.gender,
         safari_status,
         opts.considered_safari_pokeblocks,

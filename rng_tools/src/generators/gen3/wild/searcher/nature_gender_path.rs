@@ -269,17 +269,9 @@ impl NatureGenderSeedGenerator {
 }
 
 fn has_all_synchronize_natures(leads: &[Gen3Lead], wanted_natures: &[Nature]) -> bool {
-    let needed_natures = if wanted_natures.is_empty() {
-        (0..=24u8)
-            .map(|nat_u8| nat_u8.into())
-            .collect::<Vec<Nature>>()
-    } else {
-        wanted_natures.to_vec()
-    };
-
-    needed_natures.into_iter().all(|nat| {
+    wanted_natures.iter().all(|nat| {
         leads.iter().any(|lead| match *lead {
-            Gen3Lead::Synchronize(sync_nat) => sync_nat == nat,
+            Gen3Lead::Synchronize(sync_nat) => sync_nat == *nat,
             _ => false,
         })
     })

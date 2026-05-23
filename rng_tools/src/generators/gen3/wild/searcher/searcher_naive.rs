@@ -38,9 +38,9 @@ fn search_wild3_naive_at_given_advance(
                     })
                 };
 
-                if !opts.filter.nature.is_empty() {
+                if opts.filter.has_nature_filter() {
                     std::iter::once(None)
-                        .chain(opts.filter.nature.iter().copied().map(to_pokeblock))
+                        .chain(opts.filter.permitted_natures_iter().map(to_pokeblock))
                         .collect_vec()
                 } else {
                     (0..NATURE_COUNT)

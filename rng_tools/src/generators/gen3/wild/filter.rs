@@ -49,11 +49,8 @@ pub fn passes_pid_filter(
         }
     }
 
-    if !filter.nature.is_empty() {
-        let nature = Nature::from_pid(pid);
-        if !filter.nature.contains(&nature) {
-            return false;
-        }
+    if !filter.nature_filter_allows(Nature::from_pid(pid)) {
+        return false;
     }
 
     if let Some(wanted_ability) = filter.ability {
@@ -120,7 +117,7 @@ pub fn get_pid_filter_restrictiveness(
         }
     }
 
-    if !filter.nature.is_empty() {
+    if filter.has_nature_filter() {
         prob /= 2_f64; //assuming synchronize lead
     }
 

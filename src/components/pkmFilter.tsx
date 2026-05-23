@@ -51,12 +51,24 @@ export const pkmFilterSchema = z.object({
   filter_hidden_power: HiddenPowerSchema,
 });
 
+export const pkmFilterNatureFieldToRustInput = (
+  natures: Nature[],
+): PkmFilter["nature"] => {
+  if (natures.length === 0) {
+    return null;
+  }
+
+  return nature.map((nat) => {
+    return natures.includes(nat);
+  });
+};
+
 export const pkmFilterFieldsToRustInput = (
   fields: PkmFilterFields,
 ): PkmFilter => {
   return {
     shiny: fields.filter_shiny,
-    nature: fields.filter_nature,
+    nature: pkmFilterNatureFieldToRustInput(fields.filter_nature),
     gender: fields.filter_gender,
     min_ivs: fields.filter_min_ivs,
     max_ivs: fields.filter_max_ivs,

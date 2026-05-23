@@ -14,7 +14,10 @@ import {
   StatsValue,
 } from "~/rngTools";
 import { z } from "zod";
-import { natureOptions } from "~/components/pkmFilter";
+import {
+  natureOptions,
+  pkmFilterNatureFieldToRustInput,
+} from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import { Gen4Starter, starterTimer, useStarterState } from "./state";
 import { maleFemale, nature, StatFieldsSchema } from "~/types";
@@ -239,7 +242,7 @@ export const CalibrateStarter4 = () => {
           shiny: false,
           ability: null,
           ...minMaxIvs,
-          nature: [opts.nature],
+          nature: pkmFilterNatureFieldToRustInput([opts.nature]),
           gender: opts.gender,
           hidden_power: defaultHiddenPowerFilter,
         },

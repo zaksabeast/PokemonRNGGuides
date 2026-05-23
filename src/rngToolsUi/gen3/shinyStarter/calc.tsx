@@ -4,6 +4,7 @@ import { rngTools } from "~/rngTools";
 import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
+  pkmFilterNatureFieldToRustInput,
 } from "~/components/pkmFilter";
 import { defaultHiddenPowerFilter } from "~/components/hiddenPowerInput";
 import { getIvRangeFromStats } from "~/types/statRange";
@@ -99,8 +100,8 @@ export const generateCaughtMonResults = async (
 
     method4: false,
     filter: {
-      nature: caughtMonValues.nature == null ? [] : [caughtMonValues.nature],
-      gender: caughtMonValues.gender ?? null,
+      nature: pkmFilterNatureFieldToRustInput([caughtMonValues.nature]),
+      gender: caughtMonValues.gender,
       ability: null,
       shiny: false,
       ...minMaxIvs,

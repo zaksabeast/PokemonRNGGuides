@@ -25,7 +25,7 @@ pub use hidden_power::*;
 pub use nature::*;
 pub use pokeblock::*;
 pub use pokemon_type::*;
-use serde::{Deserialize, Deserializer, Serialize, Serializer};
+use serde::{Deserialize, Serialize};
 pub use shiny::*;
 pub use size::*;
 pub use species::*;
@@ -36,55 +36,12 @@ use tsify::Tsify;
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct PkmFilter {
     pub shiny: bool,
-    #[tsify(type = "Nature[]")]
-    #[serde(
-        default,
-        serialize_with = "serialize_nature_filter",
-        deserialize_with = "deserialize_nature_filter"
-    )]
     pub nature: Option<[bool; NATURE_COUNT]>,
     pub gender: Option<Gender>,
     pub min_ivs: Ivs,
     pub max_ivs: Ivs,
     pub ability: Option<AbilityType>,
     pub hidden_power: HiddenPowerFilter,
-}
-
-fn serialize_nature_filter<S>(
-    value: &Option<[bool; NATURE_COUNT]>,
-    serializer: S,
-) -> Result<S::Ok, S::Error>
-where
-    S: Serializer,
-{
-    let natures = value
-        .iter()
-        .flat_map(|mask| {
-            mask.iter()
-                .enumerate()
-                .filter_map(|(idx, enabled)| enabled.then_some((idx as u8).into()))
-        })
-        .collect::<Vec<Nature>>();
-    natures.serialize(serializer)
-}
-
-fn deserialize_nature_filter<'de, D>(
-    deserializer: D,
-) -> Result<Option<[bool; NATURE_COUNT]>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let natures = Vec::<Nature>::deserialize(deserializer)?;
-    if natures.is_empty() {
-        return Ok(None);
-    }
-
-    let mut mask = [false; NATURE_COUNT];
-    for nature in natures {
-        let idx: u8 = nature.into();
-        mask[idx as usize] = true;
-    }
-    Ok(Some(mask))
 }
 
 impl Default for PkmFilter {

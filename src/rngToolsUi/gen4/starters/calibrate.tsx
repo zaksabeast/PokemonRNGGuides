@@ -239,7 +239,7 @@ export const CalibrateStarter4 = () => {
           shiny: false,
           ability: null,
           ...minMaxIvs,
-          nature: opts.nature,
+          nature: [opts.nature],
           gender: opts.gender,
           hidden_power: defaultHiddenPowerFilter,
         },

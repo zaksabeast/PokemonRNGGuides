@@ -115,7 +115,7 @@ fn extend_pid_paths_to_results(
     let nature_gender_gen = NatureGenderSeedGenerator::new(
         &opts.leads,
         encounter_gender_ratio,
-        opts.filter.nature,
+        &opts.filter.nature,
         opts.filter.gender,
         safari_status,
         opts.considered_safari_pokeblocks,

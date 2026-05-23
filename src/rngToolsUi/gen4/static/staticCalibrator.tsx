@@ -378,7 +378,7 @@ export const Static4Calibrator = () => {
         filter: {
           shiny: false,
           ability: null,
-          nature: opts.nature,
+          nature: [opts.nature],
           gender: state.target?.isFixedGender
             ? state.target?.gender
             : opts.gender,

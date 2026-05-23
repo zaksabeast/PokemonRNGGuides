@@ -38,8 +38,10 @@ fn search_wild3_naive_at_given_advance(
                     })
                 };
 
-                if let Some(nature) = opts.filter.nature {
-                    vec![None, to_pokeblock(nature)]
+                if !opts.filter.nature.is_empty() {
+                    std::iter::once(None)
+                        .chain(opts.filter.nature.iter().copied().map(to_pokeblock))
+                        .collect_vec()
                 } else {
                     (0..NATURE_COUNT)
                         .map(|i| to_pokeblock((i as u8).into()))

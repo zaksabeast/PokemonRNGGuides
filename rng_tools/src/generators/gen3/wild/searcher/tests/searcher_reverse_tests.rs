@@ -147,7 +147,7 @@ fn test_search_reverse_wild1_vanilla() {
         max_result_count: 1,
         leads: vec![Gen3Lead::Vanilla],
         filter: PkmFilter {
-            nature: Some(Nature::Adamant),
+            nature: vec![Nature::Adamant],
             gender: Some(Gender::Female),
             min_ivs: Ivs::new(12, 29, 23, 10, 14, 13),
             max_ivs: Ivs::new(12, 29, 23, 10, 14, 13),
@@ -195,7 +195,7 @@ fn test_search_reverse_wild2_synchronize_success() {
         max_result_count: 2,
         leads: vec![Gen3Lead::Synchronize(Nature::Quirky)],
         filter: PkmFilter {
-            nature: Some(Nature::Quirky),
+            nature: vec![Nature::Quirky],
             min_ivs: Ivs::new(6, 5, 5, 5, 5, 5),
             max_ivs: Ivs::new(8, 5, 5, 5, 5, 5),
             ..Default::default()
@@ -263,7 +263,7 @@ fn test_search_reverse_wild4_cute_charm_success() {
         max_result_count: 1,
         leads: vec![Gen3Lead::CuteCharm(Gender::Male)],
         filter: PkmFilter {
-            nature: Some(Nature::Mild),
+            nature: vec![Nature::Mild],
             min_ivs: Ivs::new(5, 5, 5, 5, 9, 5),
             max_ivs: Ivs::new(5, 5, 5, 5, 9, 5),
             ..Default::default()
@@ -312,7 +312,7 @@ fn test_search_reverse_wild3_mass_outbreak() {
         max_result_count: 1,
         leads: vec![Gen3Lead::Vanilla],
         filter: PkmFilter {
-            nature: Some(Nature::Jolly),
+            nature: vec![Nature::Jolly],
             min_ivs: Ivs::new(29, 22, 12, 6, 28, 10),
             max_ivs: Ivs::new(29, 22, 12, 6, 28, 10),
             ..Default::default()
@@ -425,7 +425,7 @@ fn test_search_reverse_pid_spd() {
         max_result_count: 1,
         leads: vec![Gen3Lead::Vanilla],
         filter: PkmFilter {
-            nature: Some(Nature::Gentle),
+            nature: vec![Nature::Gentle],
             ..Default::default()
         },
         gen3_filter: Gen3PkmFilter {
@@ -466,7 +466,7 @@ fn test_search_reverse_wild3_rock_smash() {
         max_result_count: 1,
         leads: vec![Gen3Lead::Vanilla],
         filter: PkmFilter {
-            nature: Some(Nature::Calm),
+            nature: vec![Nature::Calm],
             min_ivs: Ivs::new(11, 25, 10, 25, 3, 24),
             max_ivs: Ivs::new(11, 25, 10, 25, 3, 24),
             ..Default::default()
@@ -516,7 +516,7 @@ fn test_search_reverse_wild3_rock_smash_white_flute() {
         max_result_count: 1,
         leads: vec![Gen3Lead::Vanilla],
         filter: PkmFilter {
-            nature: Some(Nature::from_pid(662075637)),
+            nature: vec![Nature::from_pid(662075637)],
             min_ivs: Ivs::new(7, 25, 18, 3, 21, 6),
             max_ivs: Ivs::new(7, 25, 18, 3, 21, 6),
             ..Default::default()
@@ -588,7 +588,7 @@ fn test_search_reverse_wild3_safari_egg_gligar_has_result() {
         max_advances: 2000,
         max_result_count: 1,
         filter: PkmFilter {
-            nature: Some(Nature::from_pid(0xEEC476DC)),
+            nature: vec![Nature::from_pid(0xEEC476DC)],
             min_ivs: Ivs::new(10, 31, 28, 26, 0, 16),
             max_ivs: Ivs::new(10, 31, 28, 26, 0, 16),
             ..Default::default()
@@ -623,7 +623,7 @@ fn test_search_reverse_wild3_safari_cute_charm_pokeblock_hoothoot_has_result() {
         max_advances: 2000,
         max_result_count: 99999,
         filter: PkmFilter {
-            nature: Some(Nature::Jolly),
+            nature: vec![Nature::Jolly],
             gender: Some(Gender::Male),
             min_ivs: Ivs::new(30, 24, 3, 20, 14, 9),
             max_ivs: Ivs::new(30, 24, 3, 20, 14, 9),

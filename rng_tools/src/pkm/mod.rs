@@ -36,7 +36,7 @@ use tsify::Tsify;
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct PkmFilter {
     pub shiny: bool,
-    pub nature: Option<Nature>,
+    pub nature: Vec<Nature>,
     pub gender: Option<Gender>,
     pub min_ivs: Ivs,
     pub max_ivs: Ivs,
@@ -54,7 +54,7 @@ impl PkmFilter {
     pub fn new_allow_all() -> Self {
         Self {
             shiny: false,
-            nature: None,
+            nature: vec![],
             gender: None,
             min_ivs: Ivs::new_all0(),
             max_ivs: Ivs::new_all31(),
@@ -75,10 +75,8 @@ impl PkmFilter {
             return false;
         }
 
-        if let Some(nature) = self.nature {
-            if state.nature() != nature {
-                return false;
-            }
+        if !self.nature.is_empty() && !self.nature.contains(&state.nature()) {
+            return false;
         }
 
         if let Some(gender) = self.gender {

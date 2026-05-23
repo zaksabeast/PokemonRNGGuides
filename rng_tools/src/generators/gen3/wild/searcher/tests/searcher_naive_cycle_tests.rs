@@ -25,7 +25,7 @@ fn test_search_wild3_cycle_methods_1_2_4() {
         generate_even_if_impossible: true,
         leads: vec![Gen3Lead::Vanilla],
         filter: PkmFilter {
-            nature: Some(Nature::Naive),
+            nature: vec![Nature::Naive],
             gender: Some(Gender::Male),
             ..Default::default()
         },

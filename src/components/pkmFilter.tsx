@@ -38,15 +38,19 @@ export const natureOptions = {
   optional: optionalNatureOptions,
 };
 
-export type PkmFilterFields = {
+type BasePkmFilterFields = {
   [Key in keyof PkmFilter as `filter_${Key}`]: undefined extends PkmFilter[Key]
     ? tst.U.Exclude<PkmFilter[Key], undefined> | null
     : PkmFilter[Key];
 };
 
+export type PkmFilterFields = Omit<BasePkmFilterFields, "filter_nature"> & {
+  filter_nature: (typeof nature)[number][];
+};
+
 export const pkmFilterSchema = z.object({
   filter_shiny: z.boolean(),
-  filter_nature: z.enum(nature).nullable(),
+  filter_nature: z.array(z.enum(nature)),
   filter_ability: z.enum(ability12H).nullable(),
   filter_gender: z.enum(gender).nullable(),
   filter_min_ivs: IvsSchema,
@@ -83,7 +87,7 @@ export const getPkmFilterInitialValues = (): PkmFilterFields => ({
   filter_shiny: false,
   filter_min_ivs: minIvs,
   filter_max_ivs: maxIvs,
-  filter_nature: null,
+  filter_nature: [],
   filter_gender: null,
   filter_ability: null,
   filter_hidden_power: defaultHiddenPowerFilter,
@@ -100,7 +104,9 @@ const _getPkmFilterFields = (props: Props = {}, t?: Translations): Field[] =>
       input: (
         <FormikSelect<PkmFilterFields, "filter_nature">
           name="filter_nature"
-          options={natureOptions.optional}
+          mode="multiple"
+          options={natureOptions.required}
+          selectAllNoneButtons
         />
       ),
     }),

@@ -88,7 +88,7 @@ fn test_search_wild3_naive_with_filter() {
         max_result_count: 100,
         leads: vec![Gen3Lead::Vanilla],
         filter: PkmFilter {
-            nature: Some(Nature::Adamant),
+            nature: vec![Nature::Adamant],
             gender: Some(Gender::Female),
             min_ivs: Ivs::new(10, 10, 10, 10, 10, 10),
             ability: Some(AbilityType::Second),
@@ -186,7 +186,7 @@ fn test_search_wild3_naive_shiny() {
         leads: vec![Gen3Lead::Vanilla],
         filter: PkmFilter {
             shiny: true,
-            nature: Some(Nature::Naive),
+            nature: vec![Nature::Naive],
             gender: Some(Gender::Male),
             ability: Some(AbilityType::Second),
             ..Default::default()

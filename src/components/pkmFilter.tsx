@@ -33,7 +33,6 @@ export const natureOptions = toOptions(nature.toSorted());
 
 export type PkmFilterFields = {
   filter_shiny: boolean;
-  filter_nature_active: boolean;
   filter_nature: Nature[];
   filter_gender: Gender | null;
   filter_min_ivs: Ivs;
@@ -44,7 +43,6 @@ export type PkmFilterFields = {
 
 export const pkmFilterSchema = z.object({
   filter_shiny: z.boolean(),
-  filter_nature_active: z.boolean(),
   filter_nature: z.array(z.enum(nature)),
   filter_ability: z.enum(ability12H).nullable(),
   filter_gender: z.enum(gender).nullable(),
@@ -80,7 +78,6 @@ type Props = {
 
 export const getPkmFilterInitialValues = (): PkmFilterFields => ({
   filter_shiny: false,
-  filter_nature_active: false,
   filter_min_ivs: minIvs,
   filter_max_ivs: maxIvs,
   filter_nature: [],

@@ -1,20 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { natureOptions, type PkmFilterFields } from "./pkmFilter";
 import { Flex } from "./flex";
 import { FormikSelect } from "./select";
-import { FormikSwitch } from "./switch";
+import { Switch } from "./switch";
 import { useField } from "~/hooks/form";
 
 export const NatureFilterInput = () => {
-  const [{ value: isSpecific }] = useField<
-    PkmFilterFields["filter_nature_active"]
-  >("filter_nature_active");
+  const [active, setActive] = useState(false);
+
   const [{ value: selectedNatures }, , { setValue: setNature }] =
     useField<PkmFilterFields["filter_nature"]>("filter_nature");
   const lastSpecificNatures = React.useRef(selectedNatures);
 
-  const updateIsSpecific = (nextIsSpecific: boolean) => {
-    if (nextIsSpecific) {
+  const updateIsSpecific = (activeNewVal: boolean) => {
+    setActive(activeNewVal);
+    if (activeNewVal) {
       setNature(lastSpecificNatures.current);
     } else {
       lastSpecificNatures.current = selectedNatures;
@@ -23,12 +23,11 @@ export const NatureFilterInput = () => {
   };
 
   return (
-    <Flex gap={8} vertical>
-      <FormikSwitch<PkmFilterFields>
-        name="filter_nature_active"
-        onChange={updateIsSpecific}
-      />
-      {isSpecific && (
+    <Flex gap={20} vertical>
+      <Flex vertical align="start">
+        <Switch value={active} onChange={updateIsSpecific} />
+      </Flex>
+      {active && (
         <FormikSelect<PkmFilterFields, "filter_nature">
           name="filter_nature"
           mode="multiple"

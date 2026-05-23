@@ -51,7 +51,7 @@ const Validator = z.object({
   sid: z.number().int().min(0).max(65535),
   egg_species: z.enum(species),
   filter_shiny: z.boolean(),
-  filter_nature: z.enum(nature).nullable(),
+  filter_nature: z.array(z.enum(nature)),
   filter_gender: z.enum(gender).nullable(),
 });
 
@@ -71,7 +71,7 @@ const initialValues: FormState = {
   sid: 0,
   egg_species: "Bulbasaur",
   filter_shiny: false,
-  filter_nature: null,
+  filter_nature: [],
   filter_gender: null,
 };
 
@@ -180,11 +180,13 @@ const getFields = (t: Translations): Field[] => {
       input: (
         <FormikSelect<FormState, "filter_nature">
           name="filter_nature"
+          mode="multiple"
           options={translateOptions({
             t,
-            options: natureOptions.optional,
+            options: natureOptions.required,
             sort: true,
           })}
+          selectAllNoneButtons
         />
       ),
     },

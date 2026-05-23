@@ -1,4 +1,12 @@
-import { PkmFilter, Species } from "~/rngTools";
+import type {
+  AbilityType,
+  Gender,
+  HiddenPowerFilter,
+  Ivs,
+  Nature,
+  PkmFilter,
+  Species,
+} from "~/rngTools";
 import { Field } from "~/components/formFieldTable";
 import { FormikSwitch } from "~/components/switch";
 import { FormikSelect } from "~/components/select";
@@ -8,7 +16,6 @@ import { ability12H } from "~/types/ability";
 import { gender, getGenderFilterOptions } from "~/types/gender";
 import { maxIvs, minIvs } from "~/types/ivs";
 import { z } from "zod";
-import * as tst from "ts-toolbelt";
 import { toOptions, optOut } from "~/utils/options";
 import {
   defaultHiddenPowerFilter,
@@ -38,14 +45,14 @@ export const natureOptions = {
   optional: optionalNatureOptions,
 };
 
-type BasePkmFilterFields = {
-  [Key in keyof PkmFilter as `filter_${Key}`]: undefined extends PkmFilter[Key]
-    ? tst.U.Exclude<PkmFilter[Key], undefined> | null
-    : PkmFilter[Key];
-};
-
-export type PkmFilterFields = Omit<BasePkmFilterFields, "filter_nature"> & {
-  filter_nature: (typeof nature)[number][];
+export type PkmFilterFields = {
+  filter_shiny: boolean;
+  filter_nature: Nature[];
+  filter_gender: Gender | null;
+  filter_min_ivs: Ivs;
+  filter_max_ivs: Ivs;
+  filter_ability: AbilityType | null;
+  filter_hidden_power: HiddenPowerFilter;
 };
 
 export const pkmFilterSchema = z.object({

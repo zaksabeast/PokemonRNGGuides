@@ -154,10 +154,7 @@ const Validator = z
     sid: z.number().int().min(0).max(65535),
     egg_species: z.enum(species),
   })
-  .extend({
-    ...pkmFilterSchema.shape,
-    filter_nature: z.enum(nature).nullable(),
-  });
+  .extend(pkmFilterSchema.shape);
 
 export type FormState = z.infer<typeof Validator>;
 
@@ -173,7 +170,6 @@ const initialValues: FormState = {
   sid: 0,
   egg_species: "Bulbasaur",
   ...getPkmFilterInitialValues(),
-  filter_nature: null,
 };
 
 type FieldsProps = {
@@ -259,22 +255,8 @@ const Fields = ({ t }: FieldsProps) => {
       tooltip: t["Do not change. Only for advanced users."],
       input: <Calibration />,
     },
-    {
-      label: t["Nature"],
-      input: (
-        <FormikSelect<FormState, "filter_nature">
-          name="filter_nature"
-          options={translateOptions({
-            t,
-            sort: true,
-            options: natureOptions.optional,
-          })}
-        />
-      ),
-    },
     ...getPkmFilterFields(
       {
-        displayNature: false,
         displayIvs: false,
         displayHiddenPower: false,
         displayAbility: false,

@@ -336,7 +336,7 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
             filter_impossible_to_hit: false,
             filters: {
               shiny: false,
-              nature: filters.nature,
+              nature: [filters.nature],
               gender: filters.gender,
               match_call: filters.pokeNavCall,
             },

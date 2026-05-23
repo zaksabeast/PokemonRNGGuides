@@ -1,7 +1,10 @@
+use itertools::Itertools;
+
 use crate::{
     gen3::{
-        FASTEST_DIVIDENDS_MOD_24, get_iv_filter_restrictiveness, get_iv1_filter_restrictiveness,
-        get_iv2_filter_restrictiveness, get_pid_filter_restrictiveness, passes_pid_filter_internal,
+        FASTEST_DIVIDENDS_MOD_24, MOST_DENSE_PID_CHUNKS_BY_SPD, get_iv_filter_restrictiveness,
+        get_iv1_filter_restrictiveness, get_iv2_filter_restrictiveness,
+        get_pid_filter_restrictiveness, passes_pid_filter_internal,
         wild::searcher::{
             FindPidPathsOptions, PidPath, extend_iv_path_to_pid_paths,
             extend_pid_low_path_to_pid_paths, find_iv_paths_from_iv1_seed,
@@ -17,7 +20,8 @@ use super::pid_path::{get_limited_valid_pids_for_cycle_speed_filter, sort_and_ta
 #[derive(PartialEq, Debug, Clone, Copy)]
 pub enum PidPathStrategy {
     ReverseIv,
-    ReversePidCycleSpeed,
+    ReversePidCycleSpeedLowHigh,
+    ReversePidCycleSpeedMid,
     ReversePidShiny,
     ByStepIv1,
     ByStepIv2,
@@ -35,7 +39,7 @@ Reverse:
 */
 pub fn determine_best_pid_path_strategy(opts: &FindPidPathsOptions) -> PidPathStrategy {
     if get_limited_valid_pids_for_cycle_speed_filter(&opts.gen3_filter.pid_speed).is_some() {
-        return PidPathStrategy::ReversePidCycleSpeed;
+        return PidPathStrategy::ReversePidCycleSpeedLowHigh;
     }
 
     let iv_restrict = get_iv_filter_restrictiveness(&opts.filter);
@@ -48,9 +52,15 @@ pub fn determine_best_pid_path_strategy(opts: &FindPidPathsOptions) -> PidPathSt
     let iv_possibility_count = iv_restrict * 4294967296.0f64;
     let pid_possibility_count = pid_restrict * 4294967296.0f64;
 
-    if pid_possibility_count < iv_possibility_count && opts.filter.shiny {
-        // ReversePid only supports shiny. Shiny has ~500K possibilities.
-        return PidPathStrategy::ReversePidShiny;
+    if pid_possibility_count < iv_possibility_count {
+        if opts.filter.shiny {
+            // ReversePid only supports shiny. Shiny has ~500K possibilities.
+            return PidPathStrategy::ReversePidShiny;
+        }
+
+        if opts.gen3_filter.pid_speed.active {
+            return PidPathStrategy::ReversePidCycleSpeedMid;
+        }
     }
 
     // With Reverse strategy, if the count is too large, the execution time becomes too long.
@@ -101,16 +111,61 @@ fn find_pid_paths_reverse_pid<const METHODS: u8>(
     sort_and_take_pid_paths(it, opts)
 }
 
-// PidPathStrategy::ReversePidCycleSpeed
+// PidPathStrategy::ReversePidCycleSpeedLowHigh
 //    For all possible valid PIDs, reverse-find the seeds that can generate them.
 //    Limitation: Only supports when the filter is nearly the fastest or slowest PID modulo 24
-pub fn find_pid_paths_reverse_pid_cycle_speed<const METHODS: u8>(
+pub fn find_pid_paths_reverse_pid_cycle_speed_low_high<const METHODS: u8>(
     opts: &FindPidPathsOptions,
 ) -> impl Iterator<Item = PidPath> {
     let wanted_pids = get_limited_valid_pids_for_cycle_speed_filter(&opts.gen3_filter.pid_speed)
         .unwrap_or(FASTEST_DIVIDENDS_MOD_24.to_vec());
 
     find_pid_paths_reverse_pid::<METHODS>(opts, wanted_pids.into_iter())
+}
+
+// PidPathStrategy::ReversePidCycleSpeedMid
+//    For all possible valid PIDs, reverse-find the seeds that can generate them.
+//    Limitation: Only supports when filtering the PID speed
+pub fn find_pid_paths_reverse_pid_cycle_speed_mid<const METHODS: u8>(
+    opts: &FindPidPathsOptions,
+) -> impl Iterator<Item = PidPath> {
+    const CHUNK_SIZE: usize = 1 << 16;
+    const MAX_CONSIDERED_CHUNK_COUNT: usize = 10_000_000 / CHUNK_SIZE;
+
+    #[derive(Default, Debug, PartialEq, Clone, Copy)]
+    pub struct PidSpdChunk {
+        pub idx: usize,
+        pub count_in_chunk: usize,
+    }
+
+    let considered_pids = (opts.gen3_filter.pid_speed.min_cycle_count
+        ..=opts.gen3_filter.pid_speed.max_cycle_count)
+        .flat_map(|spd| {
+            MOST_DENSE_PID_CHUNKS_BY_SPD[spd as usize]
+                .iter()
+                .map(|(idx, count_in_chunk)| PidSpdChunk {
+                    idx: *idx,
+                    count_in_chunk: *count_in_chunk,
+                })
+                .collect_vec()
+        })
+        .into_grouping_map_by(|chunk| chunk.idx)
+        .aggregate(|acc, &chunk_idx, chunk| {
+            Some(PidSpdChunk {
+                idx: chunk_idx,
+                count_in_chunk: acc
+                    .map(|chunk: PidSpdChunk| chunk.count_in_chunk)
+                    .unwrap_or(0)
+                    + chunk.count_in_chunk,
+            })
+        })
+        .into_values()
+        .sorted_by_key(|chunk| std::cmp::Reverse(chunk.count_in_chunk))
+        .map(|chunk| chunk.idx)
+        .take(MAX_CONSIDERED_CHUNK_COUNT)
+        .flat_map(|chunk_id| (0..CHUNK_SIZE).map(move |i| (i + chunk_id * CHUNK_SIZE) as u32));
+
+    find_pid_paths_reverse_pid::<METHODS>(opts, considered_pids)
 }
 
 // PidPathStrategy::ByStepShiny

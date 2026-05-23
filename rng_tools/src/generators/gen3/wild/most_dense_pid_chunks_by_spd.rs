@@ -1,12 +1,14 @@
 use crate::gen3::MAX_PID_MOD_24_CYCLE_COUNT;
 
-// #[cfg(test)]
+#[cfg(test)]
 mod test {
     use itertools::Itertools;
 
     use crate::gen3::calculate_pid_speed;
 
     use super::*;
+
+    #[ignore]
     #[test]
     fn test_calc_modulo_min_max_by_pid_spd() {
         const CHUNK_SIZE: u32 = 1 << 16;

@@ -143,9 +143,15 @@ pub fn find_pid_paths_reverse_pid_cycle_speed_mid<const METHODS: u8>(
         .flat_map(|spd| {
             MOST_DENSE_PID_CHUNKS_BY_SPD[spd as usize]
                 .iter()
-                .map(|(idx, count_in_chunk)| PidSpdChunk {
-                    idx: *idx,
-                    count_in_chunk: *count_in_chunk,
+                .filter_map(|(idx, count_in_chunk)| {
+                    if *count_in_chunk == 0 {
+                        None
+                    } else {
+                        Some(PidSpdChunk {
+                            idx: *idx,
+                            count_in_chunk: *count_in_chunk,
+                        })
+                    }
                 })
                 .collect_vec()
         })

@@ -6,7 +6,8 @@ use crate::{
     GenderRatio,
     gen3::{
         SpeciesData, Wild3InSafariMapStatus, create_pokeblock_gen_opt,
-        find_pid_paths_reverse_pid_cycle_speed, find_pid_paths_reverse_pid_shiny,
+        find_pid_paths_reverse_pid_cycle_speed_low_high,
+        find_pid_paths_reverse_pid_cycle_speed_mid, find_pid_paths_reverse_pid_shiny,
         searcher_painter::Wild3PaintingAdvFinder,
         wild::{
             lcrng_distance,
@@ -261,9 +262,13 @@ pub fn search_wild3_reverse_with_methods<const METHODS: u8>(
         PidPathStrategy::ReverseIv => {
             extend_pid_paths_to_results(opts, find_pid_paths_reverse_iv::<METHODS>(&find_opts))
         }
-        PidPathStrategy::ReversePidCycleSpeed => extend_pid_paths_to_results(
+        PidPathStrategy::ReversePidCycleSpeedLowHigh => extend_pid_paths_to_results(
             opts,
-            find_pid_paths_reverse_pid_cycle_speed::<METHODS>(&find_opts),
+            find_pid_paths_reverse_pid_cycle_speed_low_high::<METHODS>(&find_opts),
+        ),
+        PidPathStrategy::ReversePidCycleSpeedMid => extend_pid_paths_to_results(
+            opts,
+            find_pid_paths_reverse_pid_cycle_speed_mid::<METHODS>(&find_opts),
         ),
         PidPathStrategy::ReversePidShiny => extend_pid_paths_to_results(
             opts,

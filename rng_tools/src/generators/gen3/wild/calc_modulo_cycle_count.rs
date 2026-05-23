@@ -1,6 +1,6 @@
 use wasm_bindgen::prelude::*;
 
-const MAX_PID_MOD_24_CYCLE_COUNT: usize = 1000; // min is 18 and max is 900
+pub const MAX_PID_MOD_24_CYCLE_COUNT: usize = 900; // min is 18 and max is 900
 
 // Calculate the number of cycles for unsigned modulo operation in Gen3 GBA games.
 // Original code by Shao
@@ -315,7 +315,7 @@ pub const SLOWEST_DIVIDENDS_MOD_24: &[u32] = &[
 // This range contains 99.9% of the values of DISTRIBUTION_CYCLE_COUNT_MODULO_24
 pub const COMMON_LEAD_RANGE: std::ops::Range<usize> = 608..868;
 
-const DISTRIBUTION_CYCLE_COUNT_MODULO_24: [u32; MAX_PID_MOD_24_CYCLE_COUNT] = [
+const DISTRIBUTION_CYCLE_COUNT_MODULO_24: [u32; MAX_PID_MOD_24_CYCLE_COUNT + 1] = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -371,10 +371,7 @@ const DISTRIBUTION_CYCLE_COUNT_MODULO_24: [u32; MAX_PID_MOD_24_CYCLE_COUNT] = [
     339724, 2758317, 1822455, 27669, 729455, 1992797, 301584, 82089, 915603, 779329, 4118, 180723,
     663561, 128089, 14146, 228273, 259692, 385, 31716, 165789, 42637, 1549, 40216, 64923, 17, 3515,
     29246, 10659, 81, 4465, 11457, 0, 185, 3249, 1881, 0, 235, 1273, 0, 0, 171, 209, 0, 0, 67, 0,
-    0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0,
+    0, 0, 11,
 ];
 
 #[wasm_bindgen]
@@ -447,7 +444,7 @@ mod test {
     }
 
     fn calculate_distribution_modulo_cycle_unsigned_24() -> Vec<u32> {
-        let mut res: [u32; MAX_PID_MOD_24_CYCLE_COUNT] = [0; MAX_PID_MOD_24_CYCLE_COUNT];
+        let mut res: [u32; MAX_PID_MOD_24_CYCLE_COUNT + 1] = [0; MAX_PID_MOD_24_CYCLE_COUNT + 1];
         for dividend in 0..=u32::MAX {
             let cycles = calc_modulo_cycle_unsigned(dividend, 24);
             res[cycles] += 1;

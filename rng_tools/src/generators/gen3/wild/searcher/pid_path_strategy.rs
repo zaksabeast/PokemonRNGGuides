@@ -54,7 +54,7 @@ pub fn determine_best_pid_path_strategy(opts: &FindPidPathsOptions) -> PidPathSt
 
     if pid_possibility_count < iv_possibility_count {
         if opts.filter.shiny {
-            // ReversePid only supports shiny. Shiny has ~500K possibilities.
+            // ReversePidShiny only supports shiny. Shiny has ~500K possibilities.
             return PidPathStrategy::ReversePidShiny;
         }
 
@@ -129,6 +129,22 @@ pub fn find_pid_paths_reverse_pid_cycle_speed_low_high<const METHODS: u8>(
 pub fn find_pid_paths_reverse_pid_cycle_speed_mid<const METHODS: u8>(
     opts: &FindPidPathsOptions,
 ) -> impl Iterator<Item = PidPath> {
+    /*
+    General idea:
+
+    MOST_DENSE_PID_CHUNKS_BY_SPD contains the chunks with the most PID for each speed.
+    For example, MOST_DENSE_PID_CHUNKS_BY_SPD[400] = [(0, 230), (1, 7), (143, 3), (95, 3), (179, 3)],
+    There are 230 PIDs with a speed of 400 in the chunk 0 (pids between 0 and 0x10000).
+    When searching for a PID with speed 400, we will look in chunk 0, then chunk 1, then chunk 143.
+
+    If we are searching for a range of pid_speed (ex: 400-401), then we merge the density together.
+    Ex: MOST_DENSE_PID_CHUNKS_BY_SPD[401] = [(1, 229), (8, 70), (0, 3) ...],
+    Chunk 0 contains (230 + 3 = 233 pids). Chunk 1 contains (229 + 7 = 236 pids). Chunk 8 contains 90 pids. Etc.
+    We will start searching in chunk 1 first because it has the most pids, then chunk 0, then chunk 8 etc.
+
+    There is a limit to the number of chunks we explore. We explore at most 10M PIDs.
+    */
+
     const CHUNK_SIZE: usize = 1 << 16;
     const MAX_CONSIDERED_CHUNK_COUNT: usize = 10_000_000 / CHUNK_SIZE;
 
@@ -140,6 +156,7 @@ pub fn find_pid_paths_reverse_pid_cycle_speed_mid<const METHODS: u8>(
 
     let considered_pids = (opts.gen3_filter.pid_speed.min_cycle_count
         ..=opts.gen3_filter.pid_speed.max_cycle_count)
+        // collect all relevant chunks
         .flat_map(|spd| {
             MOST_DENSE_PID_CHUNKS_BY_SPD[spd as usize]
                 .iter()
@@ -155,6 +172,7 @@ pub fn find_pid_paths_reverse_pid_cycle_speed_mid<const METHODS: u8>(
                 })
                 .collect_vec()
         })
+        // group similar chunk together, and sum their count
         .into_grouping_map_by(|chunk| chunk.idx)
         .aggregate(|acc, &chunk_idx, chunk| {
             Some(PidSpdChunk {
@@ -166,9 +184,11 @@ pub fn find_pid_paths_reverse_pid_cycle_speed_mid<const METHODS: u8>(
             })
         })
         .into_values()
+        // pick the chunks with most pids
         .sorted_by_key(|chunk| std::cmp::Reverse(chunk.count_in_chunk))
         .map(|chunk| chunk.idx)
         .take(MAX_CONSIDERED_CHUNK_COUNT)
+        // convert the chunk idx into actual pids
         .flat_map(|chunk_id| (0..CHUNK_SIZE).map(move |i| (i + chunk_id * CHUNK_SIZE) as u32));
 
     find_pid_paths_reverse_pid::<METHODS>(opts, considered_pids)

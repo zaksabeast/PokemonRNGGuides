@@ -48,6 +48,10 @@ mod test {
 
 // Generated from
 // cargo test --release test_calc_modulo_min_max_by_pid_spd -- --include-ignored
+
+// For example, MOST_DENSE_PID_CHUNKS_BY_SPD[400] = [(0, 230), (1, 7), (143, 3), (95, 3), (179, 3)],
+// This means that there are 230 PIDs with a speed of 400 in the chunk 0 (pids between 0 and 0x10000).
+// There are 7 PIDs with a speed of 400 in chunk 1 (pids between 0x10000 and 0x20000).
 pub static MOST_DENSE_PID_CHUNKS_BY_SPD: [[(usize, usize); 5]; MAX_PID_MOD_24_CYCLE_COUNT + 1] = [
     [(1, 0), (2, 0), (3, 0), (4, 0), (0, 0)],
     [(1, 0), (2, 0), (3, 0), (4, 0), (0, 0)],

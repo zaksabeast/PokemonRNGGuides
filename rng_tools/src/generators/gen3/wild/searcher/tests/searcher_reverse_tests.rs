@@ -650,3 +650,41 @@ fn test_search_reverse_wild3_safari_cute_charm_pokeblock_hoothoot_has_result() {
     let result = search_wild3_reverse_flatten(&options);
     assert!(!result.is_empty());
 }
+
+#[test]
+fn test_search_reverse_wild2_synchronize_multiple_natures() {
+    let mut options = Wild3SearcherOptions {
+        methods: vec![Gen3Method::Wild2],
+        max_result_count: 20,
+        leads: vec![
+            Gen3Lead::Synchronize(Nature::Lonely),
+            Gen3Lead::Synchronize(Nature::Quirky),
+        ],
+        filter: PkmFilter {
+            nature: vec![Nature::Lonely, Nature::Quirky],
+            min_ivs: Ivs::new(6, 5, 5, 5, 5, 5),
+            max_ivs: Ivs::new(8, 5, 5, 5, 5, 5),
+            ..Default::default()
+        },
+        gen3_filter: Gen3PkmFilter {
+            species: Some(Species::Pikachu),
+            ..Default::default()
+        },
+        ..Default::default()
+    };
+
+    let slots =
+        &mut options.map_setups[0].map_data.slots_by_action[Wild3Action::SweetScentLand as usize];
+    slots[EncounterSlot::Slot1 as usize].species_data.species = Species::Pikachu;
+    slots[EncounterSlot::Slot5 as usize].species_data.species = Species::Pikachu;
+
+    let result = search_wild3_reverse_flatten(&options);
+    assert!(result.iter().any(|mon| mon.nature == Nature::Lonely));
+    assert!(result.iter().any(|mon| mon.nature == Nature::Quirky));
+    assert!(result.iter().all(|mon| {
+        matches!(
+            mon.lead,
+            Gen3Lead::Synchronize(nature) if nature == mon.nature
+        )
+    }));
+}

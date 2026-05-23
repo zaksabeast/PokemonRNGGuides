@@ -341,8 +341,8 @@ fn test_find_pid_paths_reverse_pid_mid() {
         pid_paths_to_string(find_pid_paths_reverse_pid_cycle_speed_mid::<METHOD_1>(&opts).take(5)),
         vec![
             "Seed: DAE07302, Adv: 12779226, Method: Wild1, PID: 00000A27, Ivs: 18/28/3/13/8/18",
+            "Seed: EE39E587, Adv: 12926725, Method: Wild1, PID: 00BEE000, Ivs: 26/6/22/28/7/17",
             "Seed: 57BA84B6, Adv: 23515406, Method: Wild1, PID: 0000099E, Ivs: 4/29/7/9/23/13",
-            "Seed: 68B7A8E4, Adv: 35588868, Method: Wild1, PID: 00B31000, Ivs: 7/29/12/0/12/4",
             "Seed: 2483ACC8, Adv: 44989128, Method: Wild1, PID: 00001565, Ivs: 21/0/13/14/27/22",
             "Seed: F75CF67D, Adv: 83191115, Method: Wild1, PID: 0000075D, Ivs: 24/25/21/16/14/19"
         ]

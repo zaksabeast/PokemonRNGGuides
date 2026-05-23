@@ -145,7 +145,7 @@ pub fn find_pid_paths_reverse_pid_cycle_speed_mid<const METHODS: u8>(
     There is a limit to the number of chunks we explore. We explore at most 10M PIDs.
     */
 
-    const CHUNK_SIZE: usize = 1 << 16;
+    const CHUNK_SIZE: usize = 1 << 18;
     const MAX_CONSIDERED_CHUNK_COUNT: usize = 10_000_000 / CHUNK_SIZE;
 
     #[derive(Default, Debug, PartialEq, Clone, Copy)]

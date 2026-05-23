@@ -9,7 +9,6 @@ import type {
 } from "~/rngTools";
 import { Field } from "~/components/formFieldTable";
 import { FormikSwitch } from "~/components/switch";
-import { FormikSelect } from "~/components/select";
 import { nature } from "~/types/nature";
 import { IvInput, IvsSchema } from "~/components/ivInput";
 import { ability12H } from "~/types/ability";
@@ -28,25 +27,13 @@ import {
 import { Translations } from "~/translations";
 import { FormikAbilityFilter } from "./abilityFilter";
 import { FormikRadio } from "./radio";
+import { NatureFilterInput } from "./natureFilterInput";
 
-const sortedNatures = nature.toSorted();
-
-const requiredNatureOptions = toOptions(sortedNatures);
-const optionalNatureOptions = [
-  {
-    label: "Any" as const,
-    value: null,
-  },
-  ...requiredNatureOptions,
-];
-
-export const natureOptions = {
-  required: requiredNatureOptions,
-  optional: optionalNatureOptions,
-};
+export const natureOptions = toOptions(nature.toSorted());
 
 export type PkmFilterFields = {
   filter_shiny: boolean;
+  filter_nature_active: boolean;
   filter_nature: Nature[];
   filter_gender: Gender | null;
   filter_min_ivs: Ivs;
@@ -57,6 +44,7 @@ export type PkmFilterFields = {
 
 export const pkmFilterSchema = z.object({
   filter_shiny: z.boolean(),
+  filter_nature_active: z.boolean(),
   filter_nature: z.array(z.enum(nature)),
   filter_ability: z.enum(ability12H).nullable(),
   filter_gender: z.enum(gender).nullable(),
@@ -92,6 +80,7 @@ type Props = {
 
 export const getPkmFilterInitialValues = (): PkmFilterFields => ({
   filter_shiny: false,
+  filter_nature_active: false,
   filter_min_ivs: minIvs,
   filter_max_ivs: maxIvs,
   filter_nature: [],
@@ -108,14 +97,7 @@ const _getPkmFilterFields = (props: Props = {}, t?: Translations): Field[] =>
     }),
     optOut(props?.displayNature, {
       label: t?.["Nature"] ?? "Nature",
-      input: (
-        <FormikSelect<PkmFilterFields, "filter_nature">
-          name="filter_nature"
-          mode="multiple"
-          options={natureOptions.required}
-          selectAllNoneButtons
-        />
-      ),
+      input: <NatureFilterInput />,
     }),
     optOut(props?.displayAbility, {
       label: t?.["Ability"] ?? "Ability",

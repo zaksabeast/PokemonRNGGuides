@@ -168,7 +168,7 @@ const HatchedNatureField = ({ t }: { t: Translations }) => {
     names: { hasEgg: true },
     validationSchema: Validator,
   });
-  const hatchedNatureOptions = natureOptions.required.map((option) => ({
+  const hatchedNatureOptions = natureOptions.map((option) => ({
     label: t[option.label],
     value: option.value,
   }));

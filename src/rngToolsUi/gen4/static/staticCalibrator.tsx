@@ -204,7 +204,7 @@ const Fields = ({ t, target }: FieldProps) => {
       input: (
         <FormikSelect<FormState, "nature">
           name="nature"
-          options={natureOptions.required}
+          options={natureOptions}
         />
       ),
     },

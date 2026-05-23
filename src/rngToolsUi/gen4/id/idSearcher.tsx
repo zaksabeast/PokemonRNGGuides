@@ -273,7 +273,7 @@ const getFields = ({
       input: (
         <FormikSelect<FormState, "target_nature">
           name="target_nature"
-          options={natureOptions.required}
+          options={natureOptions}
           disabled={maxShinyOdds}
         />
       ),

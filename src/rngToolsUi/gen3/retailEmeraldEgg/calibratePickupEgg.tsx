@@ -80,7 +80,7 @@ const HeldEggNatureSelect = () => {
 
   const options = translateOptions({
     t,
-    options: natureOptions.required,
+    options: natureOptions,
     sort: true,
   });
 

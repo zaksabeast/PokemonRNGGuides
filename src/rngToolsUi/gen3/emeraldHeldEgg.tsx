@@ -88,7 +88,7 @@ const getFields = (t: Translations): Field[] => {
           name="female_nature"
           options={translateOptions({
             t,
-            options: natureOptions.required,
+            options: natureOptions,
             sort: true,
           })}
         />
@@ -183,7 +183,7 @@ const getFields = (t: Translations): Field[] => {
           mode="multiple"
           options={translateOptions({
             t,
-            options: natureOptions.required,
+            options: natureOptions,
             sort: true,
           })}
           selectAllNoneButtons

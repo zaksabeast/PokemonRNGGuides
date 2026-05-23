@@ -164,7 +164,7 @@ export const Fields = ({ hasSubmitted }: FieldsProps) => {
           name="nature"
           options={translateOptions({
             t,
-            options: natureOptions.required,
+            options: natureOptions,
             sort: true,
           })}
         />

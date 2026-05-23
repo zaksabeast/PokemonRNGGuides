@@ -213,7 +213,7 @@ const Fields = ({ t }: FieldsProps) => {
           options={translateOptions({
             t,
             sort: true,
-            options: natureOptions.required,
+            options: natureOptions,
           })}
         />
       ),

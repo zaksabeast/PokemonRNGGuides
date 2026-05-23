@@ -147,7 +147,7 @@ export const Fields = ({
           input: (
             <FormikSelect<FormState, "nature">
               name="nature"
-              options={natureOptions.required}
+              options={natureOptions}
             />
           ),
         },

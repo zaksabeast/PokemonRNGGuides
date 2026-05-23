@@ -112,7 +112,7 @@ export const CaughtMon = ({
       input: (
         <FormikSelect<FormState, "nature">
           name="nature"
-          options={natureOptions.required}
+          options={natureOptions}
         />
       ),
     },

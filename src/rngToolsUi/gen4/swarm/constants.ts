@@ -1,5 +1,56 @@
-import type { SwarmRoute, Species } from "~/rngTools";
+import { Species } from "~/rngTools";
 import { Gen4GameVersion } from "../gen4types";
+
+// Temporary until TS is updated with new rust changes
+export type SwarmRoute =
+  | "Route201"
+  | "Route202"
+  | "Route203"
+  | "Route206"
+  | "Route207"
+  | "Route208"
+  | "Route209"
+  | "Route213"
+  | "Route214"
+  | "Route215"
+  | "Route216"
+  | "Route217"
+  | "Route218"
+  | "Route221"
+  | "Route222"
+  | "Route224"
+  | "Route225"
+  | "Route226"
+  | "Route227"
+  | "Route228"
+  | "Route229"
+  | "Route230"
+  | "LakeVerity"
+  | "LakeValor"
+  | "LakeAcuity"
+  | "ValleyWindworks"
+  | "EternaForest"
+  | "FuegoIronworks"
+  | "Route1"
+  | "Route3"
+  | "Route9"
+  | "Route12"
+  | "Route13"
+  | "Route19"
+  | "Route32"
+  | "Route25"
+  | "Route27"
+  | "Route34"
+  | "Route35"
+  | "Route38"
+  | "Route44"
+  | "Route45"
+  | "Route47"
+  | "MtMortar"
+  | "DarkCave"
+  | "ViridianForest"
+  | "VermilionCity"
+  | "VioletCity";
 
 const dpRoutes = [
   "Route201",

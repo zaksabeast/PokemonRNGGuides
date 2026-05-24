@@ -7,7 +7,7 @@ export const formatStatRange = (stat: number[], na: string): string => {
     return na;
   }
 
-  const sorted = [...stat].sort((first, second) => first - second);
+  const sorted = [...new Set(stat)].sort((first, second) => first - second);
   const ranges: string[] = [];
   let rangeStart = sorted[0];
   let rangeEnd = sorted[0];

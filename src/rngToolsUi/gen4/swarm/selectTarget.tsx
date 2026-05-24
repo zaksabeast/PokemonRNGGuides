@@ -1,8 +1,8 @@
 import { AtomSelect, Field, FormFieldTable } from "~/components";
 import { swarmAtom, useSwarmState } from "./state";
-import { gameRoutes, gameMons } from "./constants";
+import { gameRoutes, gameMons, SwarmRoute } from "./constants";
 import { Gen4GameVersion, Gen4GameVersions } from "../gen4types";
-import type { Species, SwarmRoute } from "~/rngTools";
+import type { Species } from "~/rngTools";
 import { formatSpeciesLabel } from "~/types";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { type Translations } from "~/translations";

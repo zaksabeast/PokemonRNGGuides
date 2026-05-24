@@ -681,10 +681,14 @@ fn test_search_reverse_wild2_synchronize_multiple_natures() {
     let result = search_wild3_reverse_flatten(&options);
     assert!(result.iter().any(|mon| mon.nature == Nature::Lonely));
     assert!(result.iter().any(|mon| mon.nature == Nature::Quirky));
-    assert!(result.iter().all(|mon| {
-        matches!(
-            mon.lead,
-            Gen3Lead::Synchronize(nature) if nature == mon.nature
-        )
-    }));
+
+    assert!(
+        result.iter().all(|mon| {
+            matches!(
+                mon.lead,
+                Gen3Lead::Synchronize(nature) if nature == mon.nature
+            )
+        }),
+        "all results should use the synchronize lead matching their nature"
+    );
 }

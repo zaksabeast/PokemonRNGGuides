@@ -118,7 +118,7 @@ pub fn get_pid_filter_restrictiveness(
     }
 
     if filter.has_nature_filter() {
-        prob /= 2_f64; //assuming synchronize lead
+        prob /= 2_f64; // We assume the player will use a Synchronize lead to get the target nature.
     }
 
     if gen3_filter.pid_speed.active {

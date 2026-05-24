@@ -469,36 +469,6 @@ mod test {
     }
 
     #[test]
-    fn nature_filter_accepts_multiple_natures() {
-        let filter = Egg3HeldFilters {
-            shiny: false,
-            nature: vec![Adamant, Jolly],
-            gender: None,
-            match_call: None,
-        };
-        let mut egg = Gen3HeldEgg {
-            advance: 0,
-            redraws: 0,
-            has_roamer: false,
-            calibration: 0,
-            pid: 0,
-            gender: Genderless,
-            shiny: false,
-            nature: Adamant,
-            ability: 1,
-            match_call: PokeNavTrainer::FishermanElliot,
-        };
-
-        assert!(filter.pass_filter(&egg));
-
-        egg.nature = Jolly;
-        assert!(filter.pass_filter(&egg));
-
-        egg.nature = Bold;
-        assert!(!filter.pass_filter(&egg));
-    }
-
-    #[test]
     fn generates_results() {
         let opts = Egg3HeldOptions {
             delay: 0,

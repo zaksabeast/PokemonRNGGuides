@@ -63,6 +63,19 @@ impl PkmFilter {
         }
     }
 
+    pub fn new_nature_filter(natures: &[Nature]) -> Option<[bool; NATURE_COUNT]> {
+        if natures.is_empty() {
+            return None;
+        }
+
+        let mut nature_filter = [false; NATURE_COUNT];
+        for &nature in natures {
+            let idx: u8 = nature.into();
+            nature_filter[idx as usize] = true;
+        }
+        Some(nature_filter)
+    }
+
     pub fn has_nature_filter(&self) -> bool {
         self.nature.is_some()
     }

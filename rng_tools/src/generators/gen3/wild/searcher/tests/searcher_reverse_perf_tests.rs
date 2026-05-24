@@ -180,7 +180,7 @@ fn test_search_perf_find_pid_paths_shiny_feebas() {
         max_result_count: 2000,
         filter: PkmFilter {
             shiny: true,
-            nature: vec![Nature::Bold],
+            nature: PkmFilter::new_nature_filter(&[Nature::Bold]),
             gender: Some(Gender::Female),
             min_ivs: Ivs::new(25, 0, 25, 25, 25, 25),
             max_ivs: Ivs::new(31, 31, 31, 31, 31, 31),

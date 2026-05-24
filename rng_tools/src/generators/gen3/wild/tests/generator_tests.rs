@@ -36,7 +36,7 @@ fn test_generate_wild3_with_filter() {
     let options = Wild3GeneratorOptions {
         methods: vec![Gen3Method::Wild1],
         filter: PkmFilter {
-            nature: vec![Nature::Adamant],
+            nature: PkmFilter::new_nature_filter(&[Nature::Adamant]),
             gender: Some(Gender::Female),
             min_ivs: Ivs::new(10, 10, 10, 10, 10, 10),
             ability: Some(AbilityType::Second),
@@ -81,7 +81,7 @@ fn test_generate_wild3_shiny() {
         methods: vec![Gen3Method::Wild1],
         filter: PkmFilter {
             shiny: true,
-            nature: vec![Nature::Naive],
+            nature: PkmFilter::new_nature_filter(&[Nature::Naive]),
             gender: Some(Gender::Male),
             ability: Some(AbilityType::Second),
             ..Default::default()
@@ -650,7 +650,7 @@ fn test_generate_wild3_safari_pokeblock_from_nature() {
     let mut options = Wild3GeneratorOptions {
         methods: vec![Gen3Method::Wild1],
         filter: PkmFilter {
-            nature: vec![wanted_nature],
+            nature: PkmFilter::new_nature_filter(&[wanted_nature]),
             ..Default::default()
         },
         ..Default::default()

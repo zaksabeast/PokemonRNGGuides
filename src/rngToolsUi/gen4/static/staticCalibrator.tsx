@@ -36,7 +36,7 @@ import {
 import { formatOffset } from "~/utils/offsetSymbol";
 import { getStatFields } from "~/rngToolsUi/shared/statFields";
 import {
-  natureOptions,
+  getTranslatedNatureOptions,
   pkmFilterNatureFieldToRustInput,
 } from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
@@ -207,7 +207,7 @@ const Fields = ({ t, target }: FieldProps) => {
       input: (
         <FormikSelect<FormState, "nature">
           name="nature"
-          options={natureOptions}
+          options={getTranslatedNatureOptions(t)}
         />
       ),
     },

@@ -12,9 +12,9 @@ import { rngTools, Gen3HeldEgg } from "~/rngTools";
 import { getGen3SpeciesOptions, species } from "~/types/species";
 import { nature } from "~/types/nature";
 import { gender, genderOptions } from "~/types/gender";
-import { natureOptions } from "~/components/pkmFilter";
+import { getTranslatedNatureOptions } from "~/components/pkmFilter";
 import { z } from "zod";
-import { translateOptions, Translations } from "~/translations";
+import { Translations } from "~/translations";
 
 const getColumns = (t: Translations): ResultColumn<Gen3HeldEgg>[] => {
   return [
@@ -86,11 +86,7 @@ const getFields = (t: Translations): Field[] => {
       input: (
         <FormikSelect<FormState, "female_nature">
           name="female_nature"
-          options={translateOptions({
-            t,
-            options: natureOptions,
-            sort: true,
-          })}
+          options={getTranslatedNatureOptions(t)}
         />
       ),
     },
@@ -181,11 +177,7 @@ const getFields = (t: Translations): Field[] => {
         <FormikSelect<FormState, "filter_nature">
           name="filter_nature"
           mode="multiple"
-          options={translateOptions({
-            t,
-            options: natureOptions,
-            sort: true,
-          })}
+          options={getTranslatedNatureOptions(t)}
           selectAllNoneButtons
         />
       ),

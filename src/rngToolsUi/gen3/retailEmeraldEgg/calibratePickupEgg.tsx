@@ -40,10 +40,10 @@ import { Gen3Timer } from "~/components/gen3Timer";
 import { match, P } from "ts-pattern";
 import { Nullable } from "~/types/utils";
 import { getGen3SpeciesOptions } from "~/types/species";
-import { natureOptions } from "~/components/pkmFilter";
+import { getTranslatedNatureOptions } from "~/components/pkmFilter";
 import { atom, useAtom } from "jotai";
 import { formatOffset } from "~/utils/offsetSymbol";
-import { translateOptions, Translations } from "~/translations";
+import { Translations } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 type HeldEgg = {
@@ -78,16 +78,10 @@ const HeldEggNatureSelect = () => {
   const t = useActiveRouteTranslations();
   const [heldEgg, setHeldEgg] = useCurrentlyHeldEgg();
 
-  const options = translateOptions({
-    t,
-    options: natureOptions,
-    sort: true,
-  });
-
   return (
     <Select<Nature>
       name="nature"
-      options={options}
+      options={getTranslatedNatureOptions(t)}
       value={heldEgg.nature}
       onChange={(value) => setHeldEgg((prev) => ({ ...prev, nature: value }))}
     />

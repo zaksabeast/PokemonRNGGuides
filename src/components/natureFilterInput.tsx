@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { natureOptions, type PkmFilterFields } from "./pkmFilter";
+import { getTranslatedNatureOptions, type PkmFilterFields } from "./pkmFilter";
 import { Flex } from "./flex";
 import { FormikSelect } from "./select";
 import { Switch } from "./switch";
@@ -31,7 +31,8 @@ export const NatureFilterInput = () => {
         <FormikSelect<PkmFilterFields, "filter_nature">
           name="filter_nature"
           mode="multiple"
-          options={natureOptions}
+          options={getTranslatedNatureOptions()}
+          optionLabelProp="value"
           selectAllNoneButtons
         />
       )}

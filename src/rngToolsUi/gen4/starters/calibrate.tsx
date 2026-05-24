@@ -15,7 +15,7 @@ import {
 } from "~/rngTools";
 import { z } from "zod";
 import {
-  natureOptions,
+  getTranslatedNatureOptions,
   pkmFilterNatureFieldToRustInput,
 } from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
@@ -160,7 +160,7 @@ export const CalibrateStarter4 = () => {
       input: (
         <FormikSelect<FormState, "nature">
           name="nature"
-          options={natureOptions}
+          options={getTranslatedNatureOptions(t)}
         />
       ),
     },

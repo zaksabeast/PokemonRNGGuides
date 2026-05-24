@@ -16,7 +16,7 @@ import { Typography } from "~/components/typography";
 import { Button } from "~/components/button";
 import { toOptions } from "~/utils/options";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
-import { natureOptions } from "~/components/pkmFilter";
+import { getTranslatedNatureOptions } from "~/components/pkmFilter";
 import { getStatFields } from "~/rngToolsUi/shared/statFields";
 import { Gen3Method, Nature, rngTools, Species } from "~/rngTools";
 import type { TargetSetup } from "./wild3TargetSetupInput";
@@ -147,7 +147,7 @@ export const Fields = ({
           input: (
             <FormikSelect<FormState, "nature">
               name="nature"
-              options={natureOptions}
+              options={getTranslatedNatureOptions()}
             />
           ),
         },

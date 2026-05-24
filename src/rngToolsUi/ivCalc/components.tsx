@@ -16,8 +16,8 @@ import {
   MinMaxStats,
 } from "~/types";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
-import { translateOptions, Translations } from "~/translations";
-import { natureOptions } from "~/components/pkmFilter";
+import { Translations } from "~/translations";
+import { getTranslatedNatureOptions } from "~/components/pkmFilter";
 import { getStatFields } from "../shared/statFields";
 import { getStatRange } from "~/types/statRange";
 import {
@@ -162,11 +162,7 @@ export const Fields = ({ hasSubmitted }: FieldsProps) => {
         <FormikSelect<FormState, "nature">
           disabled={hasSubmitted}
           name="nature"
-          options={translateOptions({
-            t,
-            options: natureOptions,
-            sort: true,
-          })}
+          options={getTranslatedNatureOptions(t)}
         />
       ),
     },

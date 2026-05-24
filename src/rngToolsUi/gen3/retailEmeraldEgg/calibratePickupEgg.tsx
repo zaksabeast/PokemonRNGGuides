@@ -82,6 +82,7 @@ const HeldEggNatureSelect = () => {
     <Select<Nature>
       name="nature"
       options={getTranslatedNatureOptions(t)}
+      optionLabelProp="labelWhenSelected"
       value={heldEgg.nature}
       onChange={(value) => setHeldEgg((prev) => ({ ...prev, nature: value }))}
     />

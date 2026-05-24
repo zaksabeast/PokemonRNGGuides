@@ -163,6 +163,7 @@ export const Fields = ({ hasSubmitted }: FieldsProps) => {
           disabled={hasSubmitted}
           name="nature"
           options={getTranslatedNatureOptions(t)}
+          optionLabelProp="labelWhenSelected"
         />
       ),
     },

@@ -274,6 +274,7 @@ const getFields = ({
         <FormikSelect<FormState, "target_nature">
           name="target_nature"
           options={getTranslatedNatureOptions(t)}
+          optionLabelProp="labelWhenSelected"
           disabled={maxShinyOdds}
         />
       ),

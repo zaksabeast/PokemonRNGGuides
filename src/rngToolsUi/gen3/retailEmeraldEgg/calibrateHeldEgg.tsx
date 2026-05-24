@@ -174,6 +174,7 @@ const HatchedNatureField = ({ t }: { t: Translations }) => {
       name="nature"
       disabled={hasEgg !== "true"}
       options={getTranslatedNatureOptions(t)}
+      optionLabelProp="labelWhenSelected"
     />
   );
 };

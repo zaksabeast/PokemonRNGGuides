@@ -87,6 +87,7 @@ const getFields = (t: Translations): Field[] => {
         <FormikSelect<FormState, "female_nature">
           name="female_nature"
           options={getTranslatedNatureOptions(t)}
+          optionLabelProp="labelWhenSelected"
         />
       ),
     },
@@ -178,6 +179,7 @@ const getFields = (t: Translations): Field[] => {
           name="filter_nature"
           mode="multiple"
           options={getTranslatedNatureOptions(t)}
+          optionLabelProp="labelWhenSelected"
           selectAllNoneButtons
         />
       ),

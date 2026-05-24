@@ -113,6 +113,7 @@ export const CaughtMon = ({
         <FormikSelect<FormState, "nature">
           name="nature"
           options={getTranslatedNatureOptions()}
+          optionLabelProp="labelWhenSelected"
         />
       ),
     },

@@ -32,7 +32,7 @@ export const NatureFilterInput = () => {
           name="filter_nature"
           mode="multiple"
           options={getTranslatedNatureOptions()}
-          optionLabelProp="value"
+          optionLabelProp="labelWhenSelected"
           selectAllNoneButtons
         />
       )}

@@ -208,6 +208,7 @@ const Fields = ({ t, target }: FieldProps) => {
         <FormikSelect<FormState, "nature">
           name="nature"
           options={getTranslatedNatureOptions(t)}
+          optionLabelProp="labelWhenSelected"
         />
       ),
     },

@@ -161,6 +161,7 @@ export const CalibrateStarter4 = () => {
         <FormikSelect<FormState, "nature">
           name="nature"
           options={getTranslatedNatureOptions(t)}
+          optionLabelProp="labelWhenSelected"
         />
       ),
     },

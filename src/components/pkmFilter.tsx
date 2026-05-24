@@ -35,7 +35,7 @@ const toNatureLabel = (nat: string, up: string, down: string) => {
   return (
     <Flex>
       <Flex width={100}>{nat}</Flex>{" "}
-      <Flex width={60}>
+      <Flex width={80}>
         <Icon name="ArrowUp" /> {up.toUpperCase()}
       </Flex>{" "}
       <Flex>

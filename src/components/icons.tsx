@@ -24,7 +24,14 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { FaDiscord, FaRegCopy } from "react-icons/fa";
 import { IoLanguage, IoSparkles } from "react-icons/io5";
 import { PiPersonSimpleWalkBold, PiWarningOctagonBold } from "react-icons/pi";
-import { FaHeart, FaPlay, FaPatreon, FaArrowUp, FaStar } from "react-icons/fa6";
+import {
+  FaHeart,
+  FaPlay,
+  FaPatreon,
+  FaArrowUp,
+  FaArrowDown,
+  FaStar,
+} from "react-icons/fa6";
 import { TbEar, TbPokeball } from "react-icons/tb";
 import { IoIosInformationCircle } from "react-icons/io";
 import { BsTranslate } from "react-icons/bs";
@@ -51,6 +58,7 @@ const icons = {
   Patreon: FaPatreon,
   Copy: FaRegCopy,
   ArrowUp: FaArrowUp,
+  ArrowDown: FaArrowDown,
   OpenInNew: MdOpenInNew,
   Edit: MdEdit,
   Translate: BsTranslate,

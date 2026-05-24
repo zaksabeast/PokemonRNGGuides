@@ -169,7 +169,7 @@ const HatchedNatureField = ({ t }: { t: Translations }) => {
     validationSchema: Validator,
   });
   const hatchedNatureOptions = natureOptions.map((option) => ({
-    label: t[option.label],
+    label: option.label,
     value: option.value,
   }));
 

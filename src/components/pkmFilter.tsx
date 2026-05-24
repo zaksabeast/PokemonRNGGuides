@@ -15,7 +15,7 @@ import { ability12H } from "~/types/ability";
 import { gender, getGenderFilterOptions } from "~/types/gender";
 import { maxIvs, minIvs } from "~/types/ivs";
 import { z } from "zod";
-import { toOptions, optOut } from "~/utils/options";
+import { optOut } from "~/utils/options";
 import {
   defaultHiddenPowerFilter,
   HiddenPowerSchema,
@@ -28,8 +28,50 @@ import { Translations } from "~/translations";
 import { FormikAbilityFilter } from "./abilityFilter";
 import { FormikRadio } from "./radio";
 import { NatureFilterInput } from "./natureFilterInput";
+import { Flex } from "./flex";
+import { Icon } from "./icons";
 
-export const natureOptions = toOptions(nature.toSorted());
+const toNatureLabel = (nat: string, up: string, down: string) => {
+  return (
+    <Flex>
+      <Flex width={100}>{nat}</Flex>{" "}
+      <Flex width={60}>
+        <Icon name="ArrowUp" /> {up}
+      </Flex>{" "}
+      <Flex>
+        <Icon name="ArrowDown" /> {down}
+      </Flex>
+    </Flex>
+  );
+};
+
+export const natureOptions = [
+  { value: "Adamant", label: toNatureLabel("Adamant", "ATK", "SPA") },
+  { value: "Bashful", label: "Bashful" },
+  { value: "Bold", label: toNatureLabel("Bold", "DEF", "ATK") },
+  { value: "Brave", label: toNatureLabel("Brave", "ATK", "SPE") },
+  { value: "Calm", label: toNatureLabel("Calm", "SPD", "ATK") },
+  { value: "Careful", label: toNatureLabel("Careful", "SPD", "SPA") },
+  { value: "Docile", label: "Docile" },
+  { value: "Gentle", label: toNatureLabel("Gentle", "SPD", "DEF") },
+  { value: "Hardy", label: "Hardy" },
+  { value: "Hasty", label: toNatureLabel("Hasty", "SPE", "DEF") },
+  { value: "Impish", label: toNatureLabel("Impish", "DEF", "SPA") },
+  { value: "Jolly", label: toNatureLabel("Jolly", "SPE", "SPA") },
+  { value: "Lax", label: toNatureLabel("Lax", "DEF", "SPD") },
+  { value: "Lonely", label: toNatureLabel("Lonely", "ATK", "DEF") },
+  { value: "Mild", label: toNatureLabel("Mild", "SPA", "DEF") },
+  { value: "Modest", label: toNatureLabel("Modest", "SPA", "ATK") },
+  { value: "Naive", label: toNatureLabel("Naive", "SPE", "SPD") },
+  { value: "Naughty", label: toNatureLabel("Naughty", "ATK", "SPD") },
+  { value: "Quiet", label: toNatureLabel("Quiet", "SPA", "SPE") },
+  { value: "Quirky", label: "Quirky" },
+  { value: "Rash", label: toNatureLabel("Rash", "SPA", "SPD") },
+  { value: "Relaxed", label: toNatureLabel("Relaxed", "DEF", "SPE") },
+  { value: "Sassy", label: toNatureLabel("Sassy", "SPD", "SPE") },
+  { value: "Serious", label: "Serious" },
+  { value: "Timid", label: toNatureLabel("Timid", "SPE", "ATK") },
+] as const;
 
 export type PkmFilterFields = {
   filter_shiny: boolean;

@@ -78,7 +78,7 @@ type SingleFormikSelectValue<
 > =
   Path<FormState, FieldKey> extends string | number | null
     ? {
-        label: string;
+        label: React.ReactNode;
         value: Path<FormState, FieldKey>;
       }[]
     : never;
@@ -105,7 +105,7 @@ type MultiFormikSelectValue<
 > =
   Path<FormState, FieldKey> extends string[] | number[] | null
     ? {
-        label: string;
+        label: React.ReactNode;
         value: Path<FormState, FieldKey>[keyof Path<FormState, FieldKey>];
       }[]
     : never;

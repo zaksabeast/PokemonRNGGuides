@@ -36,7 +36,7 @@ use tsify::Tsify;
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct PkmFilter {
     pub shiny: bool,
-    pub nature: Option<Nature>,
+    pub nature: Option<[bool; NATURE_COUNT]>,
     pub gender: Option<Gender>,
     pub min_ivs: Ivs,
     pub max_ivs: Ivs,
@@ -62,6 +62,41 @@ impl PkmFilter {
             hidden_power: HiddenPowerFilter::default(),
         }
     }
+
+    pub fn new_nature_filter(natures: &[Nature]) -> Option<[bool; NATURE_COUNT]> {
+        if natures.is_empty() {
+            return None;
+        }
+
+        let mut nature_filter = [false; NATURE_COUNT];
+        for &nature in natures {
+            let idx: u8 = nature.into();
+            nature_filter[idx as usize] = true;
+        }
+        Some(nature_filter)
+    }
+
+    pub fn has_nature_filter(&self) -> bool {
+        self.nature.is_some()
+    }
+
+    pub fn nature_filter_allows(&self, nature: Nature) -> bool {
+        match self.nature {
+            Some(mask) => {
+                let idx: u8 = nature.into();
+                mask[idx as usize]
+            }
+            None => true,
+        }
+    }
+
+    pub fn permitted_natures_iter(&self) -> impl Iterator<Item = Nature> + '_ {
+        (0..NATURE_COUNT as u8).filter_map(|idx| {
+            let nature = idx.into();
+            self.nature_filter_allows(nature).then_some(nature)
+        })
+    }
+
     pub fn pass_filter(&self, state: &impl PkmState) -> bool {
         if !state.ivs().filter(&self.min_ivs, &self.max_ivs) {
             return false;
@@ -75,10 +110,8 @@ impl PkmFilter {
             return false;
         }
 
-        if let Some(nature) = self.nature {
-            if state.nature() != nature {
-                return false;
-            }
+        if !self.nature_filter_allows(state.nature()) {
+            return false;
         }
 
         if let Some(gender) = self.gender {

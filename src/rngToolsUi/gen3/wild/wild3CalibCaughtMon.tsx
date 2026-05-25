@@ -149,7 +149,7 @@ export const createWild3SearcherOptions = async (
     filter: {
       ...pkmFilterFieldsToRustInput({
         ...getPkmFilterInitialValues(),
-        filter_nature: values.nature,
+        filter_nature: [values.nature],
         filter_gender: values.gender,
         filter_ability: values.ability,
       }),

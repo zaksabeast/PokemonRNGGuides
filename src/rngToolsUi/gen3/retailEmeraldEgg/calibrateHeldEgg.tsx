@@ -22,7 +22,7 @@ import {
 } from "./state";
 import { rngTools, Gen3HeldEgg, PokeNavTrainer } from "~/rngTools";
 import { sortBy, uniqueId } from "lodash-es";
-import { natureOptions } from "~/components/pkmFilter";
+import { getNatureInputProps } from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import { useHydrate } from "~/hooks/useHydrate";
 import { Skeleton } from "antd";
@@ -168,16 +168,12 @@ const HatchedNatureField = ({ t }: { t: Translations }) => {
     names: { hasEgg: true },
     validationSchema: Validator,
   });
-  const hatchedNatureOptions = natureOptions.required.map((option) => ({
-    label: t[option.label],
-    value: option.value,
-  }));
 
   return (
     <FormikSelect<FormState, "nature">
       name="nature"
       disabled={hasEgg !== "true"}
-      options={hatchedNatureOptions}
+      {...getNatureInputProps(t)}
     />
   );
 };
@@ -336,7 +332,7 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
             filter_impossible_to_hit: false,
             filters: {
               shiny: false,
-              nature: filters.nature,
+              nature: [filters.nature],
               gender: filters.gender,
               match_call: filters.pokeNavCall,
             },

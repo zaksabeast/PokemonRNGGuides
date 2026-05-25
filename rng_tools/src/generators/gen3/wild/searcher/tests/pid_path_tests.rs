@@ -78,7 +78,7 @@ fn test_find_pid_paths_filter_nature() {
         filter: PkmFilter {
             min_ivs: Ivs::new(28, 31, 31, 31, 31, 31),
             max_ivs: Ivs::new(28, 31, 31, 31, 31, 31),
-            nature: Some(Nature::Adamant),
+            nature: PkmFilter::new_nature_filter(&[Nature::Adamant]),
             ..Default::default()
         },
         ..Default::default()
@@ -101,7 +101,7 @@ fn test_find_pid_paths_filter_gender() {
             min_ivs: Ivs::new(26, 0, 0, 0, 0, 0),
             max_ivs: Ivs::new(26, 0, 0, 0, 0, 0),
             gender: Some(Gender::Female),
-            nature: Some(Nature::Naughty),
+            nature: PkmFilter::new_nature_filter(&[Nature::Naughty]),
             ..Default::default()
         },
         ..Default::default()
@@ -120,7 +120,7 @@ fn test_find_pid_paths_filter_gender() {
 fn test_find_pid_paths_filter_restrictive() {
     let opts = FindPidPathsOptions {
         filter: PkmFilter {
-            nature: Some(Nature::Adamant),
+            nature: PkmFilter::new_nature_filter(&[Nature::Adamant]),
             gender: Some(Gender::Female),
             min_ivs: Ivs::new(12, 29, 23, 10, 14, 13),
             max_ivs: Ivs::new(12, 29, 23, 10, 14, 13),

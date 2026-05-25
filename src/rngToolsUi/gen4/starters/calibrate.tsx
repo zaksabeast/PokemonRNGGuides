@@ -14,7 +14,10 @@ import {
   StatsValue,
 } from "~/rngTools";
 import { z } from "zod";
-import { natureOptions } from "~/components/pkmFilter";
+import {
+  getNatureInputProps,
+  pkmFilterNatureFieldToRustInput,
+} from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import { Gen4Starter, starterTimer, useStarterState } from "./state";
 import { maleFemale, nature, StatFieldsSchema } from "~/types";
@@ -157,7 +160,7 @@ export const CalibrateStarter4 = () => {
       input: (
         <FormikSelect<FormState, "nature">
           name="nature"
-          options={natureOptions.required}
+          {...getNatureInputProps(t)}
         />
       ),
     },
@@ -239,7 +242,7 @@ export const CalibrateStarter4 = () => {
           shiny: false,
           ability: null,
           ...minMaxIvs,
-          nature: opts.nature,
+          nature: pkmFilterNatureFieldToRustInput([opts.nature]),
           gender: opts.gender,
           hidden_power: defaultHiddenPowerFilter,
         },

@@ -35,7 +35,10 @@ import {
 } from "~/components";
 import { formatOffset } from "~/utils/offsetSymbol";
 import { getStatFields } from "~/rngToolsUi/shared/statFields";
-import { natureOptions } from "~/components/pkmFilter";
+import {
+  getNatureInputProps,
+  pkmFilterNatureFieldToRustInput,
+} from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { Static4Target, useStatic4State, static4TimerAtom } from "./state";
@@ -204,7 +207,7 @@ const Fields = ({ t, target }: FieldProps) => {
       input: (
         <FormikSelect<FormState, "nature">
           name="nature"
-          options={natureOptions.required}
+          {...getNatureInputProps(t)}
         />
       ),
     },
@@ -378,7 +381,7 @@ export const Static4Calibrator = () => {
         filter: {
           shiny: false,
           ability: null,
-          nature: opts.nature,
+          nature: pkmFilterNatureFieldToRustInput([opts.nature]),
           gender: state.target?.isFixedGender
             ? state.target?.gender
             : opts.gender,

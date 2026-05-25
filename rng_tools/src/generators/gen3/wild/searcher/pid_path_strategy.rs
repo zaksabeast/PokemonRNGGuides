@@ -158,7 +158,7 @@ pub fn find_pid_paths_reverse_pid_cycle_speed_mid<const METHODS: u8>(
         ..=opts.gen3_filter.pid_speed.max_cycle_count)
         // collect all relevant chunks
         .flat_map(|spd| {
-            MOST_DENSE_PID_CHUNKS_BY_SPD[spd as usize]
+            MOST_DENSE_PID_CHUNKS_BY_SPD[spd]
                 .iter()
                 .filter_map(|(idx, count_in_chunk)| {
                     if *count_in_chunk == 0 {

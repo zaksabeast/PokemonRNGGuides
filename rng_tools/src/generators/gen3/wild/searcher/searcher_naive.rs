@@ -1,4 +1,4 @@
-use crate::{NATURE_COUNT, gen3::Wild3SafariPokeblockGenOpt};
+use crate::gen3::Wild3SafariPokeblockGenOpt;
 
 use super::*;
 
@@ -38,14 +38,9 @@ fn search_wild3_naive_at_given_advance(
                     })
                 };
 
-                if let Some(nature) = opts.filter.nature {
-                    vec![None, to_pokeblock(nature)]
-                } else {
-                    (0..NATURE_COUNT)
-                        .map(|i| to_pokeblock((i as u8).into()))
-                        .chain(std::iter::once(None))
-                        .collect_vec()
-                }
+                std::iter::once(None)
+                    .chain(opts.filter.permitted_natures_iter().map(to_pokeblock))
+                    .collect_vec()
             }
         }
     };

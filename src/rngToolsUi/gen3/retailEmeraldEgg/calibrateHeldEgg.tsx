@@ -22,7 +22,7 @@ import {
 } from "./state";
 import { rngTools, Gen3HeldEgg, PokeNavTrainer } from "~/rngTools";
 import { sortBy, uniqueId } from "lodash-es";
-import { getNatureLabelProps } from "~/components/pkmFilter";
+import { getNatureInputProps } from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import { useHydrate } from "~/hooks/useHydrate";
 import { Skeleton } from "antd";
@@ -173,7 +173,7 @@ const HatchedNatureField = ({ t }: { t: Translations }) => {
     <FormikSelect<FormState, "nature">
       name="nature"
       disabled={hasEgg !== "true"}
-      {...getNatureLabelProps(t)}
+      {...getNatureInputProps(t)}
     />
   );
 };

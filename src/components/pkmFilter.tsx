@@ -45,7 +45,7 @@ const toNatureLabel = (nat: string, up: string, down: string) => {
   );
 };
 
-export const getNatureLabelProps = (translations?: Translations) => {
+export const getNatureInputProps = (translations?: Translations) => {
   const t = (text: keyof Translations) => {
     return translations?.[text] ?? text;
   };

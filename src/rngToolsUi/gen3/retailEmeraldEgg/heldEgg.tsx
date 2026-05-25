@@ -19,7 +19,7 @@ import { nature } from "~/types/nature";
 import {
   getPkmFilterFields,
   getPkmFilterInitialValues,
-  getNatureLabelProps,
+  getNatureInputProps,
   pkmFilterSchema,
 } from "~/components/pkmFilter";
 import { z } from "zod";
@@ -206,7 +206,7 @@ const Fields = ({ t }: FieldsProps) => {
       input: (
         <FormikSelect<FormState, "female_nature">
           name="female_nature"
-          {...getNatureLabelProps(t)}
+          {...getNatureInputProps(t)}
         />
       ),
     },

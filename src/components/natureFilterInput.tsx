@@ -1,4 +1,4 @@
-import { getNatureLabelProps, type PkmFilterFields } from "./pkmFilter";
+import { getNatureInputProps, type PkmFilterFields } from "./pkmFilter";
 import { Flex } from "./flex";
 import { FormikSelect } from "./select";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
@@ -10,7 +10,7 @@ export const NatureFilterInput = () => {
       <FormikSelect<PkmFilterFields, "filter_nature">
         name="filter_nature"
         mode="multiple"
-        {...getNatureLabelProps(t)}
+        {...getNatureInputProps(t)}
         selectAllNoneButtons
         placeholder={t["Any"]}
       />

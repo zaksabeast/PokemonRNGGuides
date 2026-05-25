@@ -40,7 +40,7 @@ import { Gen3Timer } from "~/components/gen3Timer";
 import { match, P } from "ts-pattern";
 import { Nullable } from "~/types/utils";
 import { getGen3SpeciesOptions } from "~/types/species";
-import { getNatureLabelProps } from "~/components/pkmFilter";
+import { getNatureInputProps } from "~/components/pkmFilter";
 import { atom, useAtom } from "jotai";
 import { formatOffset } from "~/utils/offsetSymbol";
 import { Translations } from "~/translations";
@@ -81,7 +81,7 @@ const HeldEggNatureSelect = () => {
   return (
     <Select<Nature>
       name="nature"
-      {...getNatureLabelProps(t)}
+      {...getNatureInputProps(t)}
       value={heldEgg.nature}
       onChange={(value) => setHeldEgg((prev) => ({ ...prev, nature: value }))}
     />

@@ -29,7 +29,7 @@ import { useCurrentStep } from "~/components/stepper/state";
 import { useFormContext } from "~/hooks/form";
 import { nature } from "~/types/nature";
 import { getGen4SpeciesOptions, species } from "~/types/species";
-import { getNatureLabelProps } from "~/components/pkmFilter";
+import { getNatureInputProps } from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import {
   getCuteCharmTsvProps,
@@ -273,7 +273,7 @@ const getFields = ({
       input: (
         <FormikSelect<FormState, "target_nature">
           name="target_nature"
-          {...getNatureLabelProps(t)}
+          {...getNatureInputProps(t)}
           disabled={maxShinyOdds}
         />
       ),

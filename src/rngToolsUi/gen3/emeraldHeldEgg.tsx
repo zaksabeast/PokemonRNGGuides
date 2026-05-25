@@ -12,7 +12,7 @@ import { rngTools, Gen3HeldEgg } from "~/rngTools";
 import { getGen3SpeciesOptions, species } from "~/types/species";
 import { nature } from "~/types/nature";
 import { gender, genderOptions } from "~/types/gender";
-import { getNatureLabelProps } from "~/components/pkmFilter";
+import { getNatureInputProps } from "~/components/pkmFilter";
 import { z } from "zod";
 import { Translations } from "~/translations";
 import { NatureFilterInput } from "~/components/natureFilterInput";
@@ -87,7 +87,7 @@ const getFields = (t: Translations): Field[] => {
       input: (
         <FormikSelect<FormState, "female_nature">
           name="female_nature"
-          {...getNatureLabelProps(t)}
+          {...getNatureInputProps(t)}
         />
       ),
     },

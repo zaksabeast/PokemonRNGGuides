@@ -33,7 +33,7 @@ import { Icon } from "./icons";
 
 const toNatureLabel = (nat: string, up: string, down: string) => {
   return (
-    <Flex>
+    <Flex mr={8}>
       <Flex width={100}>{nat}</Flex>{" "}
       <Flex width={80}>
         <Icon name="ArrowUp" /> {up.toUpperCase()}
@@ -45,12 +45,12 @@ const toNatureLabel = (nat: string, up: string, down: string) => {
   );
 };
 
-export const getTranslatedNatureOptions = (translations?: Translations) => {
+export const getNatureLabelProps = (translations?: Translations) => {
   const t = (text: keyof Translations) => {
     return translations?.[text] ?? text;
   };
 
-  return [
+  const options = [
     {
       value: "Adamant",
       labelWhenSelected: t("Adamant"),
@@ -156,7 +156,17 @@ export const getTranslatedNatureOptions = (translations?: Translations) => {
       labelWhenSelected: t("Timid"),
       label: toNatureLabel(t("Timid"), t("Spe"), t("Atk")),
     },
-  ] as { value: Nature; labelWhenSelected: string; label: React.ReactNode }[];
+  ] satisfies {
+    value: Nature;
+    labelWhenSelected: string;
+    label: React.ReactNode;
+  }[];
+
+  return {
+    options,
+    optionLabelProp: "labelWhenSelected",
+    showSearch: { optionFilterProp: "labelWhenSelected" },
+  };
 };
 
 export type PkmFilterFields = {

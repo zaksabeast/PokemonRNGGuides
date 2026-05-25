@@ -17,7 +17,7 @@ import {
 } from "~/types";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { Translations } from "~/translations";
-import { getTranslatedNatureOptions } from "~/components/pkmFilter";
+import { getNatureLabelProps } from "~/components/pkmFilter";
 import { getStatFields } from "../shared/statFields";
 import { getStatRange } from "~/types/statRange";
 import {
@@ -162,8 +162,7 @@ export const Fields = ({ hasSubmitted }: FieldsProps) => {
         <FormikSelect<FormState, "nature">
           disabled={hasSubmitted}
           name="nature"
-          options={getTranslatedNatureOptions(t)}
-          optionLabelProp="labelWhenSelected"
+          {...getNatureLabelProps(t)}
         />
       ),
     },

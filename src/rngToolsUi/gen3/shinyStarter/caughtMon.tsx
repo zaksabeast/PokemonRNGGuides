@@ -10,7 +10,7 @@ import { CaughtMonResult, generateCaughtMonResults } from "./calc";
 import { Button } from "~/components/button";
 import type { Game, TargetStarter } from "./index";
 import { toOptions } from "~/utils/options";
-import { getTranslatedNatureOptions } from "~/components/pkmFilter";
+import { getNatureLabelProps } from "~/components/pkmFilter";
 import { getStatFields } from "~/rngToolsUi/shared/statFields";
 import { StatFieldsSchema } from "~/types";
 
@@ -112,8 +112,7 @@ export const CaughtMon = ({
       input: (
         <FormikSelect<FormState, "nature">
           name="nature"
-          options={getTranslatedNatureOptions()}
-          optionLabelProp="labelWhenSelected"
+          {...getNatureLabelProps()}
         />
       ),
     },

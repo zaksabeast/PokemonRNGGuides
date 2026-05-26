@@ -6,6 +6,7 @@ import { ClassNames } from "@emotion/react";
 import * as tst from "ts-toolbelt";
 import { useFormContext, useFormState } from "react-hook-form";
 import { identity } from "lodash-es";
+import { MaxWidthToggleButton } from "./maxWidthToggleButton";
 
 export type SingleResultColumn<T> = keyof T extends string
   ? {
@@ -151,6 +152,19 @@ export const ResultTable = <Record extends tst.O.Object>(
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { columns: _, ...propsWithColumns } = props;
+  const pagination =
+    props.pagination === false
+      ? false
+      : {
+          ...props.pagination,
+          showTotal: (total: number, range: [number, number]) => (
+            <>
+              <MaxWidthToggleButton />
+              {typeof props.pagination === "object" &&
+                props.pagination.showTotal?.(total, range)}
+            </>
+          ),
+        };
 
   return (
     <ClassNames>
@@ -158,6 +172,7 @@ export const ResultTable = <Record extends tst.O.Object>(
         <Table
           scroll={TABLE_SCROLL}
           {...propsWithColumns}
+          pagination={pagination}
           className={css({
             "&&&": {
               width: "100%",
@@ -171,6 +186,11 @@ export const ResultTable = <Record extends tst.O.Object>(
               ".disable-vertical-padding": {
                 paddingTop: 0,
                 paddingBottom: 0,
+              },
+              ".ant-pagination-total-text": {
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
               },
             },
           })}

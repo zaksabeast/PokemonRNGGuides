@@ -11,7 +11,7 @@ use wasm_bindgen::prelude::*;
 pub struct Static3SearcherResult {
     pub pid: u32,
     pub ivs: Ivs,
-    pub method4: bool,
+    pub method: Gen3StaticMethod,
 
     // derived from pid
     pub ability: AbilityType,
@@ -35,11 +35,11 @@ impl Static3SearcherResult {
         gen_opts: &Static3GeneratorOptions,
         seed: u32,
         advance: usize,
-    ) -> Static3SearcherResultMon {
-        Static3SearcherResultMon {
+    ) -> Static3SearcherResult {
+        Static3SearcherResult {
             pid: gen_res.pid,
             ivs: gen_res.ivs,
-            method4: false,
+            method: gen_res.method,
             species: gen_opts.species,
             shiny: gen3_shiny(gen_res.pid, gen_opts.tid, gen_opts.sid),
             nature: Nature::from_pid(gen_res.pid),
@@ -66,15 +66,17 @@ pub struct Static3SearcherOptions {
     pub gen3_filter: Gen3PkmFilter,
     pub painting_opts: Option<Wild3PaintingOpts>,
     pub species:Species,
+    pub bugged_roamer: bool,
+    pub methods: ArrayVec<Gen3StaticMethod, 2>,
 }
 
 #[wasm_bindgen]
-pub fn search_static3_naive(opts: &Static3SearcherOptions) -> Vec<Static3SearcherResultMon> {
+pub fn search_static3_naive(opts: &Static3SearcherOptions) -> Vec<Static3SearcherResult> {
     let base_rng = Pokerng::with_jump(opts.initial_seed, opts.initial_advances);
 
     let gen_opts = Static3GeneratorOptions {
-        bugged_roamer: false,
-        method: Gen3StaticMethod::Static1,
+        bugged_roamer: opts.bugged_roamer,
+        methods: opts.methods.clone(),
         tid: opts.tid,
         sid: opts.sid,
         filter: *opts.filter,
@@ -84,26 +86,27 @@ pub fn search_static3_naive(opts: &Static3SearcherOptions) -> Vec<Static3Searche
 
     StateIterator::new(base_rng)
         .enumerate()
-        .skip(opts.initial_advances)
         .take(opts.max_advances.saturating_add(1))
-        .filter_map(|(advance, rng)| {
-            generate_gen3_static(rng, opts).map|(|gen_res|{
-
-                Static3SearcherResultMon::new(
-                    gen_res,
-                    &gen_opts,
-                    rng.seed(),
-                    advance,
-                )
+        .flat_map(|(advance, rng)| {
+            generate_gen3_static(rng, opts).map(|gen_results|{
+                gen_results.iter().map(|gen_res|{
+                    Static3SearcherResult::new(
+                        gen_res,
+                        &gen_opts,
+                        rng.seed(),
+                        advance,
+                    )
+                })
             })
         })
+        .flatten()
         .take(opts.max_result_count)
         .collect()
 }
 
 
 #[wasm_bindgen]
-pub fn search_static3(opts: &Static3SearcherOptions) -> Vec<Static3SearcherResultMon> {
+pub fn search_static3(opts: &Static3SearcherOptions) -> Vec<Static3SearcherResult> {
     search_static3_naive(opts)
     //search_static3_reverse(opts)
 }
@@ -113,14 +116,14 @@ pub fn search_static3(opts: &Static3SearcherOptions) -> Vec<Static3SearcherResul
 fn extend_pid_paths_to_results<I>(
     opts: &Static3SearcherOptions,
     iter: I,
-) -> Vec<Static3SearcherResultMon>
+) -> Vec<Static3SearcherResult>
 where
     I: Iterator<Item = PidPath>,
 {
 }
 
 #[wasm_bindgen]
-pub fn search_static3_reverse(opts: &Static3SearcherOptions) -> Vec<Static3SearcherResultMon> {
+pub fn search_static3_reverse(opts: &Static3SearcherOptions) -> Vec<Static3SearcherResult> {
     let find_opts = new_find_pid_paths_options(opts);
 
     let pid_paths:Vec<PidPath> = match determine_best_pid_path_strategy(&find_opts) {
@@ -150,7 +153,7 @@ pub fn search_static3_reverse(opts: &Static3SearcherOptions) -> Vec<Static3Searc
 
 
 
-
+Q
 #[cfg(test)]
 mod test {
     use super::*;

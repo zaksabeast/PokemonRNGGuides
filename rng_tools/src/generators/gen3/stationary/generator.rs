@@ -14,7 +14,7 @@ enum Gen3StaticMethod {
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Static3GeneratorOptions {
     pub bugged_roamer: bool,
-    pub method: Gen3StaticMethod,
+    pub methods: ArrayVec<Gen3StaticMethod, 2>,
     pub tid: u16,
     pub sid: u16,
     pub filter: PkmFilter,
@@ -27,48 +27,60 @@ pub struct Static3GeneratorOptions {
 pub struct Static3GeneratorResult {
     pub pid: u32,
     pub ivs: Ivs,
+    pub method: Gen3StaticMethod,
 }
 
 
 fn generate_gen3_static(
     mut rng: Pokerng,
     opts: &Static3GeneratorOptions,
-) -> Option<Static3GeneratorResult> {
+) -> Option<ArrayVec<Static3GeneratorResult, 2>> {
     let pid = (rng.rand::<u16>() as u32) | ((rng.rand::<u16>() as u32) << 16);
 
     if !passes_pid_filter(
         &opts.filter,
         &opts.gen3_filter,
-        Some(encounter_gender_ratio),
+        Some(opts.encounter_gender_ratio),
         pid,
         gen3_tsv(opts.tid, opts.sid),
     ) {
         return None;
     }
 
+
     let iv1 = if opts.bugged_roamer {
         rng.rand::<u16>() & 0xFF
     } else {
         rng.rand::<u16>()
     };
-    if opts.method4 {
-        rng.next();
-    }
-    let iv2 = if opts.bugged_roamer {
-        0
-    } else {
-        rng.rand::<u16>()
-    };
 
-    let ivs = Ivs::new_g3(iv1, iv2);
-    if !passes_ivs_filter(opts.filter, &ivs){
+    if !passes_iv1_filter(opts.min_ivs, opts.max_ivs, iv1) {
         return None;
     }
 
-    Static3GeneratorResult {
-        pid,
-        ivs,
-    }
+    Some(opts.methods.iter().map(|method|{
+        let rng2 = rng.clone();
+        if method == Gen3StaticMethod::Static4 {
+            rng2.next();
+        }
+
+        let iv2 = if opts.bugged_roamer {
+            0
+        } else {
+            rng2.rand::<u16>()
+        };
+
+        if !passes_iv2_filter(opts.min_ivs, opts.max_ivs, iv2){
+            return None;
+        }
+
+        Static3GeneratorResult {
+            pid,
+            ivs:Ivs::new_g3(iv1, iv2),
+            method:*method,
+        }
+
+    }).collect());
 }
 
 

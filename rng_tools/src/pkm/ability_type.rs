@@ -1,6 +1,6 @@
 use num_enum::FromPrimitive;
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, FromPrimitive, Tsify, Serialize, Deserialize)]
@@ -32,4 +32,9 @@ impl AbilityType {
             _ => panic!("Unknown ability string: {}", str),
         }
     }
+}
+
+#[wasm_bindgen]
+pub fn get_ability_type_from_gen3_pid(pid: u32) -> AbilityType {
+    AbilityType::from_gen3_pid(pid)
 }

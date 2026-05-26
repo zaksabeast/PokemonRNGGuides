@@ -29,6 +29,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
     title: t["Calibrate"],
     dataIndex: "seed",
+    disableVerticalPadding: true,
     render: (_, target) => (
       <CalibrateTimerButton
         type="gen4"
@@ -38,7 +39,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
           second_offset: target.secondOffset,
         }}
         timer={idTimerAtom}
-        previousStepOnClick
+        lastStepOnClick={1}
       />
     ),
   },

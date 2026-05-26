@@ -40,6 +40,41 @@ pub const POKERNG_JUMP_TABLE: [(u32, u32); 32] = [
     (0x1, 0x80000000),
 ];
 
+pub const POKERNG_REV_JUMP_TABLE: [(u32, u32); 32] = [
+    (4005161829, 171270561),
+    (3698103769, 1295823142),
+    (3201192433, 2094135388),
+    (3054920929, 2417615608),
+    (1785499073, 617823984),
+    (3176541057, 788521440),
+    (3155203841, 438391744),
+    (2972855809, 413722496),
+    (1655200769, 1105907456),
+    (2791356417, 3191447040),
+    (3506532353, 637746176),
+    (3003310081, 4064704512),
+    (2852503553, 2106388480),
+    (1678475265, 1595531264),
+    (135725057, 1312014336),
+    (271450113, 3697770496),
+    (542900225, 3100573696),
+    (1085800449, 1906180096),
+    (2171600897, 3812360192),
+    (48234497, 3329753088),
+    (96468993, 2364538880),
+    (192937985, 434110464),
+    (385875969, 868220928),
+    (771751937, 1736441856),
+    (1543503873, 3472883712),
+    (3087007745, 2650800128),
+    (1879048193, 1006632960),
+    (3758096385, 2013265920),
+    (3221225473, 4026531840),
+    (2147483649, 3758096384),
+    (1, 3221225472),
+    (1, 2147483648),
+];
+
 #[derive(Debug, Clone, Copy)]
 pub struct Lcrng<const ADD: u32, const MUL: u32, const P_ADD: u32, const P_MUL: u32> {
     state: u32,
@@ -48,6 +83,17 @@ pub struct Lcrng<const ADD: u32, const MUL: u32, const P_ADD: u32, const P_MUL: 
 impl Pokerng {
     pub fn jump(&mut self, mut advances: usize) {
         for (mult, add) in POKERNG_JUMP_TABLE {
+            if (advances & 1) != 0 {
+                self.state = self.state.wrapping_mul(mult).wrapping_add(add);
+            }
+            advances >>= 1;
+            if advances == 0 {
+                break;
+            }
+        }
+    }
+    pub fn reverse_jump(&mut self, mut advances: usize) {
+        for (mult, add) in POKERNG_REV_JUMP_TABLE {
             if (advances & 1) != 0 {
                 self.state = self.state.wrapping_mul(mult).wrapping_add(add);
             }
@@ -209,8 +255,64 @@ impl<const A: u32, const M: u32, const PA: u32, const PM: u32> Rng for Lcrng<A, 
 
 #[cfg(test)]
 mod test {
+    use itertools::Itertools;
+
     use super::*;
     use crate::assert_list_eq;
+
+    // cargo test --release test_create_rev_jump_table -- --include-ignored
+    #[test]
+    #[ignore]
+    fn test_create_rev_jump_table() {
+        let result: [_; 32] = (0..32u32)
+            .map(|i| {
+                /*
+                There are 2 unknowns (PREV_MUL and PREV_ADD).
+                    X_before * PREV_MUL + PREV_ADD = X_after
+
+                If X_before == 0:
+                    PREV_ADD = X_after
+
+                If X_before == 1:
+                    PREV_MUL + PREV_ADD = X_after
+                    PREV_MUL = X_after - PREV_ADD
+                */
+
+                let mut rng = Pokerng::new(0);
+                let count = 1u32 << i;
+                for _ in 0..count {
+                    rng.prev_state();
+                }
+                let prev_add = rng.seed();
+
+                let mut rng = Pokerng::new(1);
+                for _ in 0..count {
+                    rng.prev_state();
+                }
+                let prev_mul = rng.seed().wrapping_sub(prev_add);
+
+                return (prev_mul, prev_add);
+            })
+            .collect_array()
+            .unwrap();
+
+        assert_eq!(POKERNG_REV_JUMP_TABLE, result);
+    }
+
+    #[test]
+    fn test_pokerng_reverse_jump() {
+        let list = vec![1u32, 2, 745742, 4775656, 34324934, 76553];
+        list.iter().for_each(|&advs| {
+            let mut rng_naive = Pokerng::new(advs);
+            let mut rng_jump = Pokerng::new(advs);
+            for _ in 0..advs {
+                rng_naive.prev_state();
+            }
+            rng_jump.reverse_jump(advs as usize);
+            println!("{}", advs);
+            assert_eq!(rng_naive.seed(), rng_jump.seed());
+        });
+    }
 
     #[test]
     fn produces_correct_rands() {

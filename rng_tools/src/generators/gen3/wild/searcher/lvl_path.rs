@@ -1,6 +1,8 @@
+use arrayvec::ArrayVec;
+
 use crate::{
     gen3::{
-        Gen3Lead,
+        Gen3Lead, lcrng_distance,
         wild::searcher::{NatureGenderPath, NatureGenderToPidArc, PidPath},
     },
     rng::lcrng::Pokerng,
@@ -14,6 +16,18 @@ pub struct LvlPath {
     pub nature_gender_to_pid_arc: NatureGenderToPidArc,
     pub pid_path: PidPath,
     pub debug_nature_gender_path: Option<NatureGenderPath>,
+}
+
+impl std::fmt::Display for LvlPath {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(
+            f,
+            "Seed: {:08X}, Adv: {}, NatureGenderArc: {:?}",
+            self.seed,
+            lcrng_distance(0, self.seed),
+            self.lvl_to_nature_gender_arc,
+        )
+    }
 }
 
 #[derive(Default, Debug, PartialEq, Clone, Copy)]
@@ -39,7 +53,10 @@ impl LvlPathGenerator {
         }
         Self { arcs }
     }
-    pub fn extend_path_for_all_arcs(&self, nature_gender_path: &NatureGenderPath) -> Vec<LvlPath> {
+    pub fn extend_path_for_all_arcs(
+        &self,
+        nature_gender_path: &NatureGenderPath,
+    ) -> ArrayVec<LvlPath, 2> {
         self.arcs
             .iter()
             .filter_map(|arc| {
@@ -66,14 +83,8 @@ fn permit_hustle_arc(leads: &[Gen3Lead]) -> bool {
 }
 
 fn permit_hustle_arc_for_path(nature_gender_path: &NatureGenderPath) -> bool {
-    // Cant' be Hustle and another ability at the same time
-    !matches!(
-        nature_gender_path.nature_gender_arc,
-        NatureGenderToPidArc::SynchronizeFailure
-            | NatureGenderToPidArc::SynchronizeSuccess
-            | NatureGenderToPidArc::CuteCharmSuccess
-            | NatureGenderToPidArc::CuteCharmFailure
-    )
+    !nature_gender_path.nature_gender_arc.has_cute_charm_lead()
+        && !nature_gender_path.nature_gender_arc.has_synchronize_lead()
 }
 
 fn extend_path_for_arc(

@@ -9,6 +9,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <script>
+      (() => {
+        const theme =
+          localStorage.getItem("theme") === "dark" ? "dark" : "light";
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+
     <!--injected-meta-tags-->
 
     <!--injected-styles-->

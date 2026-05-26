@@ -1,12 +1,13 @@
 import React from "react";
 import {
-  FormikNumberInput,
   ResultColumn,
+  FormikNumberInput,
   IvInput,
   Field,
   RngToolForm,
   RngToolSubmit,
   Button,
+  FormikSelect,
 } from "~/components";
 import { rngTools, Egg3PickupState, Gen3PickupMethod } from "~/rngTools";
 import { maxIvs, minIvs } from "~/types/ivs";
@@ -21,13 +22,21 @@ import {
   NullableIvs,
   NullableIvsSchema,
 } from "~/components/ivInput";
+import {
+  defaultHiddenPowerFilter,
+  HiddenPowerSchema,
+} from "~/components/hiddenPowerInput";
+import {
+  HiddenPowerInput,
+  HiddenPowerSwitch,
+} from "~/components/hiddenPowerInput.component";
 import { HexSchema } from "~/utils/number";
 import { usePickupEggState } from "./state";
 import { useCurrentStep } from "~/components/stepper/state";
 import pmap from "p-map";
-import { sortBy, startCase } from "lodash-es";
+import { sortBy } from "lodash-es";
 import { approximateGen3FrameTime } from "~/utils/approximateGen3FrameTime";
-import { ivMethods } from "./constants";
+import { getIvMethodOptions, ivMethodLabels, ivMethods } from "./constants";
 import { Translations } from "~/translations";
 
 type Result = FlattenIvs<
@@ -58,30 +67,76 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
     title: t["Select"],
     dataIndex: "advance",
+    disableVerticalPadding: true,
     render: (_, result) => <SelectButton result={result} />,
   },
   { title: t["Time"], dataIndex: "advance", render: approximateGen3FrameTime },
   {
     title: t["Method"],
     dataIndex: "method",
-    render: (method) => startCase(method),
+    render: (method) => t[ivMethodLabels[method]],
   },
   ...getInheritedIvColumns(t),
+  {
+    title: t["Hidden power"],
+    type: "group",
+    columns: [
+      {
+        title: "Type",
+        dataIndex: "hidden_power",
+        render: (hidden_power) => hidden_power?.pokemon_type ?? "?",
+      },
+      {
+        title: "Power",
+        dataIndex: "hidden_power",
+        render: (hidden_power) => hidden_power?.bp ?? "?",
+      },
+    ],
+  },
   {
     title: t["Advance"],
     dataIndex: "advance",
   },
 ];
 
-const Validator = z.object({
-  seed: HexSchema(0xffffffff),
-  initial_advances: z.number().int().min(0),
-  max_advances: z.number().int().min(0),
-  parent1_ivs: NullableIvsSchema,
-  parent2_ivs: NullableIvsSchema,
-  filter_min_ivs: IvsSchema,
-  filter_max_ivs: IvsSchema,
-});
+const hasCompleteParentIvs = (ivs: NullableIvs) =>
+  Object.values(ivs).every((iv) => iv !== null);
+
+const Validator = z
+  .object({
+    seed: HexSchema(0xffffffff),
+    initial_advances: z.number().int().min(0),
+    max_advances: z.number().int().min(0),
+    methods: z.enum(ivMethods).array().nonempty(),
+    parent1_ivs: NullableIvsSchema,
+    parent2_ivs: NullableIvsSchema,
+    filter_min_ivs: IvsSchema,
+    filter_max_ivs: IvsSchema,
+    filter_hidden_power: HiddenPowerSchema,
+  })
+  .superRefine((data, ctx) => {
+    if (!data.filter_hidden_power.active) {
+      return;
+    }
+
+    if (!hasCompleteParentIvs(data.parent1_ivs)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message:
+          "Hidden power filtering requires both parent IVs to be fully specified",
+        path: ["parent1_ivs"],
+      });
+    }
+
+    if (!hasCompleteParentIvs(data.parent2_ivs)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message:
+          "Hidden power filtering requires both parent IVs to be fully specified",
+        path: ["parent2_ivs"],
+      });
+    }
+  });
 
 export type FormState = z.infer<typeof Validator>;
 
@@ -89,10 +144,12 @@ const initialValues: FormState = {
   seed: 0,
   initial_advances: 1000,
   max_advances: 10000,
+  methods: ivMethods,
   parent1_ivs: maxIvs,
   parent2_ivs: maxIvs,
   filter_min_ivs: minIvs,
   filter_max_ivs: maxIvs,
+  filter_hidden_power: defaultHiddenPowerFilter,
 };
 
 const getFields = (t: Translations): Field[] => [
@@ -113,6 +170,16 @@ const getFields = (t: Translations): Field[] => [
     ),
   },
   {
+    label: t["Pickup method"],
+    input: (
+      <FormikSelect<FormState, "methods">
+        name="methods"
+        mode="multiple"
+        options={getIvMethodOptions(t)}
+      />
+    ),
+  },
+  {
     label: t["Parent 1 IVs"],
     input: <IvInput<FormState, "nullable"> name="parent1_ivs" />,
   },
@@ -128,6 +195,21 @@ const getFields = (t: Translations): Field[] => [
     label: t["Egg max IVs"],
     input: <IvInput<FormState> name="filter_max_ivs" />,
   },
+  {
+    label: t["Hidden power"],
+    input: <HiddenPowerSwitch />,
+  },
+  {
+    label: "",
+    key: "retail_emerald_pickup_egg.hidden_power",
+    direction: "column",
+    showWhen: {
+      fieldName: "filter_hidden_power.active",
+      when: (active: unknown) => active === true,
+    },
+    input: <HiddenPowerInput<FormState> name="filter_hidden_power" />,
+    indent: 1,
+  },
 ];
 
 export const RetailEmeraldPickupEgg = () => {
@@ -140,17 +222,13 @@ export const RetailEmeraldPickupEgg = () => {
       opts.parent2_ivs,
     ];
     const methodResults = await pmap(
-      ivMethods,
+      opts.methods,
       async (method) => {
         const spreads = await rngTools.emerald_egg_pickup_states({
           ...opts,
           delay: 0,
           method,
           parent_ivs: parentIvs,
-          filter: {
-            max_ivs: opts.filter_max_ivs,
-            min_ivs: opts.filter_min_ivs,
-          },
         });
         return spreads.map((spread) =>
           flattenIvs({

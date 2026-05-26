@@ -5,6 +5,7 @@ import { z } from "zod";
 import { optIn, optOut } from "~/utils/options";
 import { Gen3PidSpeedInput } from "./gen3PkmFilter.component";
 import { FormikNumberInput } from "./numberInput";
+import { Link } from "./link";
 
 export type Gen3PkmFilterFields = {
   filter_max_size: boolean;
@@ -63,20 +64,23 @@ const _getGen3PkmFilterFields = (opts: FieldOpts = {}): Field[] =>
     }),
     optIn(opts?.max_size, {
       label: "Max size",
+      tooltip: "To show to the Sootopolis City's brothers.",
       input: <FormikSwitch<Gen3PkmFilterFields> name="filter_max_size" />,
     }),
     optOut(opts?.pid_speed, {
       label: "PID cycle speed",
-      input: (
-        <FormikSwitch<Gen3PkmFilterFields> name="filter_pid_speed.active" />
+      tooltip: (
+        <>
+          For advanced users. Owning Pokémon with very fast or very low PID
+          cycle speed is used to influence the triggered method of wild
+          encounters. Learn more about{" "}
+          <Link newTab href="/gba-methods-lead-impact/">
+            Methods & Leads
+          </Link>
+          .
+        </>
       ),
-    }),
-    optOut(opts?.pid_speed, {
-      label: "",
-      key: "_getGen3PkmFilterFields.pid_speed",
-      direction: "column",
       input: <Gen3PidSpeedInput<Gen3PkmFilterFields> name="filter_pid_speed" />,
-      indent: 1,
     }),
   ].filter((field) => field !== null);
 

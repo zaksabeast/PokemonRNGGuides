@@ -3,7 +3,8 @@ import React from "react";
 import { FormikRadio } from "./radio";
 import { GenericForm, GuaranteeFormNameType } from "~/types";
 import { useField } from "~/hooks/form";
-import { ability } from "~/types/ability";
+import { ability12, ability12H } from "~/types/ability";
+import { abilities } from "~/translations/en/abilities";
 
 type FormikAbilityFilterProps<FormState extends GenericForm> = {
   name: GuaranteeFormNameType<FormState, AbilityType | null>;
@@ -16,10 +17,18 @@ type FormikAbilityFilterProps<FormState extends GenericForm> = {
   displayHiddenAbility?: boolean;
 };
 
-const abilityOptionsIfNoSpecies = ([null, ...ability] as const).map((abil) => ({
-  label: abil ?? ("Any" as const),
-  value: abil,
-}));
+const formatAbility = (ability: AbilityType | null) => ({
+  label: ability ?? "Any",
+  value: ability,
+});
+
+const ability12OptionsIfNoSpecies = ([null, ...ability12] as const).map(
+  formatAbility,
+);
+
+const ability12HOptionsIfNoSpecies = ([null, ...ability12H] as const).map(
+  formatAbility,
+);
 
 const getAbilityFilterOptions = async (
   species: Species,
@@ -27,36 +36,40 @@ const getAbilityFilterOptions = async (
   mergeFirstSecondIfSameAbility: boolean,
 ) => {
   const possibleAbilities = await rngTools.get_species_abilities(species);
+  const formattedAbilities = possibleAbilities.map(
+    (ability) => abilities[ability],
+  );
 
   const any = {
     label: "Any",
     value: null,
   };
 
-  if (possibleAbilities.length === 0) {
+  if (formattedAbilities.length === 0) {
     return [any];
   }
 
   if (
-    possibleAbilities.length === 1 ||
-    (possibleAbilities.length === 2 &&
-      possibleAbilities[1] === possibleAbilities[0])
+    formattedAbilities.length === 1 ||
+    (formattedAbilities.length === 2 &&
+      formattedAbilities[1] === formattedAbilities[0])
   ) {
     if (mergeFirstSecondIfSameAbility) {
       return [
         {
-          label: possibleAbilities[0],
+          label: formattedAbilities[0],
           value: null,
         },
       ];
     }
     return [
+      ...(permitAny ? [any] : []),
       {
-        label: possibleAbilities[0] + " (1)",
+        label: formattedAbilities[0] + " (1)",
         value: "First" as const,
       },
       {
-        label: possibleAbilities[0] + " (2)",
+        label: formattedAbilities[0] + " (2)",
         value: "Second" as const,
       },
     ];
@@ -65,11 +78,11 @@ const getAbilityFilterOptions = async (
   return [
     ...(permitAny ? [any] : []),
     {
-      label: possibleAbilities[0],
+      label: formattedAbilities[0],
       value: "First" as const,
     },
     {
-      label: possibleAbilities[1],
+      label: formattedAbilities[1],
       value: "Second" as const,
     },
   ];
@@ -79,7 +92,7 @@ export const FormikAbilityFilter = <FormState extends GenericForm>({
   name,
   species,
   permitAny = true,
-  displayHiddenAbility = true,
+  displayHiddenAbility = false,
   mergeFirstSecondIfSameAbility = false,
 }: FormikAbilityFilterProps<FormState>) => {
   const [{ value }, , { setValue }] = useField<AbilityType | null>(name);
@@ -116,12 +129,16 @@ export const FormikAbilityFilter = <FormState extends GenericForm>({
     });
   }, [mergeFirstSecondIfSameAbility, permitAny, setValue, species, value]);
 
-  if (species == null || displayHiddenAbility) {
+  if (species == null) {
     return (
       <FormikRadio<FormState>
         name={name}
         // @ts-expect-error -- prop types guarantee this is correct
-        options={abilityOptionsIfNoSpecies}
+        options={
+          displayHiddenAbility
+            ? ability12HOptionsIfNoSpecies
+            : ability12OptionsIfNoSpecies
+        }
       />
     );
   }

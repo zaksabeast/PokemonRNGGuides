@@ -6,7 +6,7 @@ use crate::{
 use itertools::iproduct;
 use serde::{Deserialize, Serialize};
 use std::ops::RangeInclusive;
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -36,22 +36,28 @@ struct SeedTime4SingleMonthOptions {
     pub limit: usize,
 }
 
-fn calc_seedtime_for_month(opts: SeedTime4SingleMonthOptions) -> Vec<SeedTime4> {
-    let year = opts.year.clamp(2000, 2100);
-    let month = opts.month.clamp(1, 12);
-    let ab = opts.seed >> 24;
-    let cd = (opts.seed >> 16) & 0xff;
-    let efgh = opts.seed & 0xffff;
+pub(crate) fn calc_delay_from_seed(seed: u32, year: u32) -> u32 {
+    let cd = (seed >> 16) & 0xff;
+    let efgh = seed & 0xffff;
 
-    // Allow overflow seeds by setting hour to 23 and adjusting for delay
-    let hour = if cd > 23 { 23 } else { cd };
-    let delay = match cd > 23 {
+    match cd > 23 {
         true => efgh
             .wrapping_add(2000)
             .wrapping_sub(year)
             .wrapping_add(cd.wrapping_sub(23).wrapping_mul(0x10000)),
         false => efgh.wrapping_add(2000).wrapping_sub(year),
-    };
+    }
+}
+
+fn calc_seedtime_for_month(opts: SeedTime4SingleMonthOptions) -> Vec<SeedTime4> {
+    let year = opts.year.clamp(2000, 2100);
+    let month = opts.month.clamp(1, 12);
+    let ab = opts.seed >> 24;
+    let cd = (opts.seed >> 16) & 0xff;
+
+    // Allow overflow seeds by setting hour to 23 and adjusting for delay
+    let hour = if cd > 23 { 23 } else { cd };
+    let delay = calc_delay_from_seed(opts.seed, year);
 
     if !opts.delay_range.contains(&delay) {
         return vec![];
@@ -202,9 +208,47 @@ pub fn calc_gen4_seeds(opts: Seed4CalcOpts) -> Vec<SeedTime4> {
         .collect()
 }
 
+pub fn seedtime4_iter(
+    delay_range: RangeInclusive<u32>,
+    year: u32,
+    month: Option<u32>,
+    second_range: Option<RangeInclusive<u32>>,
+) -> impl Iterator<Item = SeedTime4> {
+    let cloned_delays = delay_range.clone();
+    iproduct!(cloned_delays, 0..=0xff_u32, 0..24_u32).filter_map(move |(delay, ab, cd)| {
+        let seed = ((ab << 24) | (cd << 16))
+            .wrapping_add(delay)
+            .wrapping_add(year)
+            .wrapping_sub(2000);
+        SeedTime4Options {
+            seed,
+            year,
+            month,
+            limit: 1,
+            second_range: second_range.clone(),
+            delay_range: delay_range.clone(),
+        }
+        .find_seedtime()
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    mod calc_delay_from_seed {
+        use super::*;
+        use crate::datetime;
+
+        #[test]
+        fn removes_year_offset_from_low_bits() {
+            let datetime = datetime!(2026-05-14 12:34:30).unwrap();
+            let seed = calc_seed(&datetime, 1749);
+
+            assert_eq!(seed & 0xffff, 1775);
+            assert_eq!(super::calc_delay_from_seed(seed, datetime.year), 1749);
+        }
+    }
 
     mod calc_seedtime4 {
         use super::*;

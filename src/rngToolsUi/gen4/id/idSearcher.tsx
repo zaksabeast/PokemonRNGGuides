@@ -11,6 +11,7 @@ import {
   FormikSwitch,
   FormFieldTable,
   FormikIdFilter,
+  MinMaxContainer,
 } from "~/components";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
 import {
@@ -28,7 +29,7 @@ import { useCurrentStep } from "~/components/stepper/state";
 import { useFormContext } from "~/hooks/form";
 import { nature } from "~/types/nature";
 import { getGen4SpeciesOptions, species } from "~/types/species";
-import { natureOptions } from "~/components/pkmFilter";
+import { getNatureInputProps } from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import {
   getCuteCharmTsvProps,
@@ -39,7 +40,7 @@ import { FormikRadio } from "~/components/radio";
 import { denormalizeIdFilterOrDefault, IdFilterSchema } from "~/types/id";
 import { match, P } from "ts-pattern";
 import { chunkRange } from "~/utils/chunkRange";
-import { UndefinedToNull } from "~/types";
+import { RustOption } from "~/types";
 import { Translations } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { useWatch } from "react-hook-form";
@@ -107,6 +108,7 @@ const getColumns = ({
     {
       title: t["Select"],
       dataIndex: "seed",
+      disableVerticalPadding: true,
       render: (_, target) => <SelectButton target={target} />,
     },
     {
@@ -144,17 +146,17 @@ const getColumns = ({
       dataIndex: "targetGender",
     },
     {
-      title: t["Natures"],
-      dataIndex: "natures",
-      render: (natures) => natures.join(", "),
-    },
-    {
       title: t["Gender Ratios"],
       dataIndex: "genderRatios",
       render: (genderRatios) =>
         genderRatios.length === 0
           ? "All"
           : genderRatios.map(formatGenderRatio).join(", "),
+    },
+    {
+      title: t["Natures"],
+      dataIndex: "natures",
+      render: (natures) => natures.join(", "),
     },
     ...endColumns,
   ];
@@ -211,15 +213,16 @@ const getFields = ({
       input: <FormikNumberInput<FormState> name="year" numType="decimal" />,
     },
     {
-      label: t["Min Delay"],
+      label: t["Delay"],
       input: (
-        <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
-      ),
-    },
-    {
-      label: t["Max Delay"],
-      input: (
-        <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
+        <MinMaxContainer
+          min={
+            <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
+          }
+          max={
+            <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
+          }
+        />
       ),
     },
     {
@@ -270,7 +273,7 @@ const getFields = ({
       input: (
         <FormikSelect<FormState, "target_nature">
           name="target_nature"
-          options={natureOptions.required}
+          {...getNatureInputProps(t)}
           disabled={maxShinyOdds}
         />
       ),
@@ -327,10 +330,12 @@ const mapResult = (res: Id4): Result => ({
 export const Id4Searcher = () => {
   const t = useActiveRouteTranslations();
   const [messageApi, contextHolder] = message.useMessage();
-  const { run: searchDpptIds, data: results } = useBatchedTool(
-    multiWorkerRngTools.search_dppt_ids,
-    { map: mapResult },
-  );
+  const {
+    run: searchDpptIds,
+    data: results,
+    progressPercent,
+    cancel,
+  } = useBatchedTool(multiWorkerRngTools.search_dppt_ids, { map: mapResult });
 
   const [idType, setIdType] = React.useState<IdType>(defaultIdType);
 
@@ -363,7 +368,7 @@ export const Id4Searcher = () => {
         .exhaustive();
 
       const chunked = chunkRange([opts.min_delay, opts.max_delay], 200);
-      const searchOpts: UndefinedToNull<Id4SearchOptions>[] = chunked.map(
+      const searchOpts: RustOption<Id4SearchOptions>[] = chunked.map(
         ([min_delay, max_delay]) => ({
           year: opts.year,
           min_delay,
@@ -392,6 +397,10 @@ export const Id4Searcher = () => {
       validationSchema={Validator}
       onSubmit={onSubmit}
       submitTrackerId="search_dppt_id"
+      allowCancel
+      cancelTrackerId="cancel_dppt_id"
+      onCancel={cancel}
+      progressPercent={progressPercent}
     >
       {contextHolder}
       <Id4SearcherFields />

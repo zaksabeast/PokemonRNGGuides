@@ -16,7 +16,7 @@ import { getGen3PkmFilterFields } from "~/components/gen3PkmFilter";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { useWatch } from "react-hook-form";
 import { getPossibleValuesForSpecies } from "./wild3TargetMon";
-import { FormState } from "./wild3FindTarget";
+import { FormState } from "./wild3TargetSetupSearcher";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 

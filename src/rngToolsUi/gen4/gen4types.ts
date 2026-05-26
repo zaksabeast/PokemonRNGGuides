@@ -4,13 +4,11 @@ import { toOptions } from "~/utils/options";
 import { startCase, sortBy } from "lodash-es";
 import { z } from "zod";
 
-export const Gen4GameVersions = [
-  "Diamond",
-  "Pearl",
-  "Platinum",
-  "HeartGold",
-  "SoulSilver",
-] as const;
+export const DpPt = ["Diamond", "Pearl", "Platinum"] as const;
+
+export type DpPt = (typeof DpPt)[number];
+
+export const Gen4GameVersions = [...DpPt, "HeartGold", "SoulSilver"] as const;
 
 export type Gen4GameVersion = (typeof Gen4GameVersions)[number];
 
@@ -116,6 +114,7 @@ export const getLeadAbility = (opts: leadabilityinput): LeadAbility => {
     .with({ lead: "CutecharmF" }, () => "CutecharmF")
     .with({ lead: "CutecharmM" }, () => "CutecharmM")
     .with({ lead: "None" }, () => "None")
+    .with({ lead: "Pressure" }, () => "Pressure")
     .exhaustive();
 };
 
@@ -157,10 +156,15 @@ export const Characteristic4Options = sortBy(
     return (
       match(characteristic)
         // These two were mistranslated from Japanese in Gen 4 and 5
-        .with("TakesPlentyOfSiestas", () => "Often dozes off")
-        .with("NodsOffALot", () => "Often scatters things")
+        .with("TakesPlentyOfSiestas", () => "Often Dozes Off")
+        .with("NodsOffALot", () => "Often Scatters Things")
         .otherwise(startCase)
     );
   }),
+  (option) => option.label,
+);
+
+export const Characteristic5Options = sortBy(
+  toOptions(characteristics, startCase),
   (option) => option.label,
 );

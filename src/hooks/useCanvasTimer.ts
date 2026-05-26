@@ -5,21 +5,24 @@ export const FLASH_DURATION = 150; // milliseconds to show flash color
 export const COUNTDOWN_INTERVAL_MS = 500; // Beep every 500ms during countdown
 const UPDATE_INTERVAL_MS = 50; // Millisecond display updates every 50ms for smooth appearance
 
-// Color scheme for timer visualization
-const RING_COLOR_ACTIVE = "#1677ff"; // Blue for active countdown
-const RING_COLOR_FLASH = "#FFD700"; // Gold for flash feedback
-const BACKGROUND_COLOR = "#f0f0f0"; // Light gray background ring
-const TEXT_COLOR = "#000"; // Black text
+export type TimerColors = {
+  ringActive: string;
+  ringFlash: string;
+  background: string;
+  text: string;
+};
 
 // Draw text (only called when milliseconds value changes noticeably)
 const drawText = ({
   remaining,
   canvasRef,
   contextRef,
+  textColor,
 }: {
   remaining: number;
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
   contextRef: React.RefObject<CanvasRenderingContext2D | null>;
+  textColor: string;
 }) => {
   const canvas = canvasRef.current;
   if (canvas === null) {
@@ -32,6 +35,8 @@ const drawText = ({
     if (ctx === null) {
       return;
     }
+
+    // eslint-disable-next-line -- We expect react refs to be mutable
     contextRef.current = ctx;
   }
 
@@ -42,7 +47,7 @@ const drawText = ({
   const text = `${seconds.toString().padStart(2, "0")}:${milliseconds.toString().padStart(3, "0")}`;
 
   ctx.font = "700 24px Menlo, Monaco, 'Courier New', monospace";
-  ctx.fillStyle = TEXT_COLOR;
+  ctx.fillStyle = textColor;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   ctx.fillText(text, CENTER, CENTER);
@@ -56,6 +61,9 @@ const drawRing = ({
   canvasRef,
   contextRef,
   lastFlashTimeRef,
+  backgroundColor,
+  ringFlashColor,
+  ringActiveColor,
 }: {
   remaining: number;
   currentTime: number;
@@ -63,6 +71,9 @@ const drawRing = ({
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
   contextRef: React.RefObject<CanvasRenderingContext2D | null>;
   lastFlashTimeRef: React.RefObject<number>;
+  backgroundColor: string;
+  ringFlashColor: string;
+  ringActiveColor: string;
 }) => {
   const canvas = canvasRef.current;
   if (canvas === null) {
@@ -75,6 +86,8 @@ const drawRing = ({
     if (ctx === null) {
       return;
     }
+
+    // eslint-disable-next-line -- We expect react refs to be mutable
     contextRef.current = ctx;
   }
 
@@ -82,18 +95,23 @@ const drawRing = ({
   const RADIUS = 85;
   const LINE_WIDTH = 8;
 
+  const dpr = window.devicePixelRatio ?? 1;
+  canvas.width = CANVAS_SIZE * dpr;
+  canvas.height = CANVAS_SIZE * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
   ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
 
   // Draw background circle
   ctx.beginPath();
   ctx.arc(CENTER, CENTER, RADIUS, 0, Math.PI * 2);
-  ctx.strokeStyle = BACKGROUND_COLOR;
+  ctx.strokeStyle = backgroundColor;
   ctx.lineWidth = LINE_WIDTH;
   ctx.stroke();
 
   // Draw progress ring - use bright color if recently flashed
   const isFlashing = currentTime - lastFlashTimeRef.current < FLASH_DURATION;
-  const ringColor = isFlashing ? RING_COLOR_FLASH : RING_COLOR_ACTIVE;
+  const ringColor = isFlashing ? ringFlashColor : ringActiveColor;
 
   const percent = Math.max(0, remaining / expirationMs);
   const endAngle = -Math.PI / 2 + percent * Math.PI * 2;
@@ -112,6 +130,7 @@ type CanvasTimerConfig = {
   onExpire?: () => void;
   startTimeMs?: number | null;
   timerStartOffset?: number;
+  colors: TimerColors;
 };
 
 export const useCanvasTimer = ({
@@ -120,6 +139,7 @@ export const useCanvasTimer = ({
   onExpire,
   startTimeMs,
   timerStartOffset = 0,
+  colors,
 }: CanvasTimerConfig) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const contextRef = React.useRef<CanvasRenderingContext2D | null>(null);
@@ -157,6 +177,9 @@ export const useCanvasTimer = ({
       canvasRef,
       contextRef,
       lastFlashTimeRef: lastFlashTime,
+      backgroundColor: colors.background,
+      ringFlashColor: colors.ringFlash,
+      ringActiveColor: colors.ringActive,
     });
 
     // Redraw text only if milliseconds changed by 50ms or more
@@ -169,7 +192,7 @@ export const useCanvasTimer = ({
     }
 
     // Always redraw text after checking if it changed (prevents flicker)
-    drawText({ remaining, canvasRef, contextRef });
+    drawText({ remaining, canvasRef, contextRef, textColor: colors.text });
 
     if (remaining <= 0) {
       return;
@@ -245,8 +268,16 @@ export const useCanvasTimer = ({
       canvasRef,
       contextRef,
       lastFlashTimeRef: lastFlashTime,
+      backgroundColor: colors.background,
+      ringFlashColor: colors.ringFlash,
+      ringActiveColor: colors.ringActive,
     });
-    drawText({ remaining: expirationMs, canvasRef, contextRef });
+    drawText({
+      remaining: expirationMs,
+      canvasRef,
+      contextRef,
+      textColor: colors.text,
+    });
   };
 
   React.useEffect(() => {
@@ -279,9 +310,23 @@ export const useCanvasTimer = ({
       canvasRef,
       contextRef,
       lastFlashTimeRef: lastFlashTime,
+      backgroundColor: colors.background,
+      ringFlashColor: colors.ringFlash,
+      ringActiveColor: colors.ringActive,
     });
-    drawText({ remaining: expirationMs, canvasRef, contextRef });
-  }, [expirationMs]);
+    drawText({
+      remaining: expirationMs,
+      canvasRef,
+      contextRef,
+      textColor: colors.text,
+    });
+  }, [
+    expirationMs,
+    colors.background,
+    colors.ringFlash,
+    colors.ringActive,
+    colors.text,
+  ]);
 
   return {
     canvasRef,

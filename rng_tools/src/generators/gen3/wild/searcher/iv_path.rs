@@ -1,10 +1,14 @@
 use arrayvec::ArrayVec;
-use itertools::{Itertools, iproduct};
+use itertools::iproduct;
 
 use crate::{
     HiddenPowerFilter, Ivs,
     gen3::wild::searcher::FindPidPathsOptions,
     rng::{Rng, lcrng::Pokerng},
+};
+
+use super::searcher_main::searcher_reverse::{
+    METHOD_1, METHOD_2, METHOD_3, METHOD_4, is_considered_method,
 };
 
 /** seed used to generated iv1 (state right before iv1) */
@@ -27,12 +31,12 @@ pub enum IvFromStartArc {
     WithoutVBlank,
 }
 
-pub fn reverse_find_iv_paths_from_min_max_ivs(
+pub fn reverse_find_iv_paths_from_min_max_ivs<const METHODS: u8>(
     min_ivs: Ivs,
     max_ivs: Ivs,
-    hidden_power_filter: Option<&HiddenPowerFilter>,
-) -> Vec<IvPath> {
-    let iv_paths_it = iproduct!(
+    hidden_power_filter: &HiddenPowerFilter,
+) -> impl Iterator<Item = IvPath> {
+    iproduct!(
         min_ivs.hp..=max_ivs.hp,
         min_ivs.atk..=max_ivs.atk,
         min_ivs.def..=max_ivs.def,
@@ -41,45 +45,46 @@ pub fn reverse_find_iv_paths_from_min_max_ivs(
         min_ivs.spe..=max_ivs.spe
     )
     .flat_map(|(hp, atk, def, spa, spd, spe)| {
-        reverse_find_iv_paths_from_ivs(hp, atk, def, spa, spd, spe)
-    });
-
-    if let Some(hidden_power_filter) = hidden_power_filter {
-        if hidden_power_filter.active {
-            return iv_paths_it
-                .filter(|iv_path| hidden_power_filter.pass_filter(&iv_path.ivs()))
-                .collect_vec();
-        }
-    }
-
-    iv_paths_it.collect_vec()
+        reverse_find_iv_paths_from_ivs::<METHODS>(hp, atk, def, spa, spd, spe)
+            .into_iter()
+            .filter(|iv_path| hidden_power_filter.pass_filter(&iv_path.ivs()))
+    })
 }
 
-pub fn reverse_find_iv_paths_from_ivs(
+pub fn reverse_find_iv_paths_from_ivs<const METHODS: u8>(
     hp: u8,
     atk: u8,
     def: u8,
     spa: u8,
     spd: u8,
     spe: u8,
-) -> Vec<IvPath> {
-    let mut iv_paths = vec![];
-    iv_paths.extend(
-        reverse_find_iv1_seeds_from_ivs_values_no_vblank(hp, atk, def, spa, spd, spe)
-            .iter()
-            .map(|seed| IvPath {
-                seed: *seed,
-                iv_arc: IvFromStartArc::WithoutVBlank,
-            }),
-    );
-    iv_paths.extend(
-        reverse_find_iv1_seeds_from_ivs_values_with_vblank(hp, atk, def, spa, spd, spe)
-            .iter()
-            .map(|seed| IvPath {
-                seed: *seed,
-                iv_arc: IvFromStartArc::WithVBlank,
-            }),
-    );
+) -> ArrayVec<IvPath, 12> {
+    let mut iv_paths: ArrayVec<IvPath, 12> = Default::default();
+
+    if is_considered_method(METHODS, METHOD_1 | METHOD_2 | METHOD_3) {
+        reverse_find_iv1_seeds_from_ivs_values_no_vblank(
+            hp,
+            atk,
+            def,
+            spa,
+            spd,
+            spe,
+            &mut iv_paths,
+        );
+    }
+
+    if is_considered_method(METHODS, METHOD_4) {
+        reverse_find_iv1_seeds_from_ivs_values_with_vblank(
+            hp,
+            atk,
+            def,
+            spa,
+            spd,
+            spe,
+            &mut iv_paths,
+        );
+    }
+
     iv_paths
 }
 
@@ -93,46 +98,18 @@ fn reverse_find_iv1_seeds_from_ivs_values_no_vblank(
     spa: u8,
     spd: u8,
     spe: u8,
-) -> ArrayVec<u32, 6> {
-    const ADD: u32 = 0x6073;
-    const MULT: u32 = 0x41c64e6d;
-    const MOD: u32 = 0x67d3;
-    const PAT: u32 = 0xd3e;
-    const INC: u32 = 0x4034;
-
-    let first = ((hp as u32) | ((atk as u32) << 5) | ((def as u32) << 10)) << 16;
-    let second = ((spe as u32) | ((spa as u32) << 5) | ((spd as u32) << 10)) << 16;
-
-    let diff = ((second.wrapping_sub(first.wrapping_mul(MULT))) >> 16) as u16;
-    let diff_u32 = diff as u32;
-    let start1 = ((((diff_u32.wrapping_mul(MOD) + INC) >> 16).wrapping_mul(PAT)) % MOD) as u16;
-    let start2 =
-        (((((diff_u32 ^ 0x8000).wrapping_mul(MOD) + INC) >> 16).wrapping_mul(PAT)) % MOD) as u16;
-
-    let mut iv1_seeds = vec![];
-    for low in (start1 as u32..0x10000).step_by(MOD as usize) {
-        let seed = first | low;
-        if ((seed.wrapping_mul(MULT).wrapping_add(ADD)) & 0x7fff0000) == second {
-            iv1_seeds.push(seed);
-            iv1_seeds.push(seed ^ 0x80000000);
-        }
-    }
-
-    for low in (start2 as u32..0x10000).step_by(MOD as usize) {
-        let seed = first | low;
-        if ((seed.wrapping_mul(MULT).wrapping_add(ADD)) & 0x7fff0000) == second {
-            iv1_seeds.push(seed);
-            iv1_seeds.push(seed ^ 0x80000000);
-        }
-    }
-    iv1_seeds
-        .into_iter()
-        .map(|seed| {
-            let mut rng = Pokerng::new(seed);
-            rng.prev_rand();
-            rng.seed()
-        })
-        .collect()
+    iv_paths: &mut ArrayVec<IvPath, 12>,
+) {
+    reverse_find_iv1_seeds_from_ivs_values_with_arc::<0x41c64e6d, 0x6073, 0x67d3, 0xd3e, 0x4034>(
+        hp,
+        atk,
+        def,
+        spa,
+        spd,
+        spe,
+        IvFromStartArc::WithoutVBlank,
+        iv_paths,
+    );
 }
 
 /// Input: IVs
@@ -145,46 +122,65 @@ fn reverse_find_iv1_seeds_from_ivs_values_with_vblank(
     spa: u8,
     spd: u8,
     spe: u8,
-) -> ArrayVec<u32, 6> {
-    const ADD: u32 = 0xe97e7b6a;
-    const MULT: u32 = 0xc2a29a69;
-    const MOD: u32 = 0x3a89;
-    const PAT: u32 = 0x2e4c;
-    const INC: u32 = 0x5831;
+    iv_paths: &mut ArrayVec<IvPath, 12>,
+) {
+    reverse_find_iv1_seeds_from_ivs_values_with_arc::<0xc2a29a69, 0xe97e7b6a, 0x3a89, 0x2e4c, 0x5831>(
+        hp,
+        atk,
+        def,
+        spa,
+        spd,
+        spe,
+        IvFromStartArc::WithVBlank,
+        iv_paths,
+    );
+}
 
+fn reverse_find_iv1_seeds_from_ivs_values_with_arc<
+    const MULT: u32,
+    const ADD: u32,
+    const MOD: u32,
+    const PAT: u32,
+    const INC: u32,
+>(
+    hp: u8,
+    atk: u8,
+    def: u8,
+    spa: u8,
+    spd: u8,
+    spe: u8,
+    iv_arc: IvFromStartArc,
+    iv_paths: &mut ArrayVec<IvPath, 12>,
+) {
     let first = ((hp as u32) | ((atk as u32) << 5) | ((def as u32) << 10)) << 16;
     let second = ((spe as u32) | ((spa as u32) << 5) | ((spd as u32) << 10)) << 16;
 
-    let diff = ((second.wrapping_sub(first.wrapping_mul(MULT).wrapping_add(ADD))) >> 16) as u16;
-    let diff_u32 = diff as u32;
-    let start1 = (((diff_u32.wrapping_mul(MOD).wrapping_add(INC)) >> 16).wrapping_mul(PAT)) % MOD;
+    let additional_add = if iv_arc == IvFromStartArc::WithoutVBlank {
+        0
+    } else {
+        ADD
+    };
+
+    let diff = second.wrapping_sub(first.wrapping_mul(MULT).wrapping_add(additional_add)) >> 16;
+    let start1 = (((diff.wrapping_mul(MOD).wrapping_add(INC)) >> 16).wrapping_mul(PAT)) % MOD;
     let start2 =
-        ((((diff_u32 ^ 0x8000).wrapping_mul(MOD).wrapping_add(INC)) >> 16).wrapping_mul(PAT)) % MOD;
+        ((((diff ^ 0x8000).wrapping_mul(MOD).wrapping_add(INC)) >> 16).wrapping_mul(PAT)) % MOD;
 
-    let mut iv1_seeds = vec![];
-    for low in (start1..0x10000).step_by(MOD as usize) {
-        let seed = first | low;
-        if ((seed.wrapping_mul(MULT).wrapping_add(ADD)) & 0x7fff_0000) == second {
-            iv1_seeds.push(seed);
-            iv1_seeds.push(seed ^ 0x8000_0000);
+    for start in [start1, start2] {
+        for low in (start..0x10000).step_by(MOD as usize) {
+            let seed = first | low;
+            if ((seed.wrapping_mul(MULT).wrapping_add(ADD)) & 0x7fff_0000) == second {
+                for seed in [seed, seed ^ 0x8000_0000] {
+                    let mut rng = Pokerng::new(seed);
+                    rng.prev_rand();
+                    iv_paths.push(IvPath {
+                        seed: rng.seed(),
+                        iv_arc,
+                    });
+                }
+            }
         }
     }
-
-    for low in (start2..0x10000).step_by(MOD as usize) {
-        let seed = first | low;
-        if ((seed.wrapping_mul(MULT).wrapping_add(ADD)) & 0x7fff_0000) == second {
-            iv1_seeds.push(seed);
-            iv1_seeds.push(seed ^ 0x8000_0000);
-        }
-    }
-    iv1_seeds
-        .into_iter()
-        .map(|seed| {
-            let mut rng = Pokerng::new(seed);
-            rng.prev_rand();
-            rng.seed()
-        })
-        .collect()
 }
 
 pub fn passes_iv1_filter(min_ivs: &Ivs, max_ivs: &Ivs, iv1: u16) -> bool {
@@ -220,7 +216,8 @@ pub fn passes_iv2_filter(min_ivs: &Ivs, max_ivs: &Ivs, iv2: u16) -> bool {
     true
 }
 
-pub fn find_iv_paths_from_iv1_seed(
+// Used by ByStep only
+pub fn find_iv_paths_from_iv1_seed<const METHODS: u8>(
     opts: &FindPidPathsOptions,
     rng: &mut Pokerng,
 ) -> Option<ArrayVec<IvPath, 2>> {
@@ -229,14 +226,16 @@ pub fn find_iv_paths_from_iv1_seed(
         return None;
     }
 
-    let iv2_wild1235 = rng.rand::<u16>();
+    let iv2_wild123 = rng.rand::<u16>();
     let iv2_wild4 = rng.rand::<u16>();
 
-    let wild1235_good = passes_iv2_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv2_wild1235);
+    let wild123_good = is_considered_method(METHODS, METHOD_1 | METHOD_2 | METHOD_3)
+        && passes_iv2_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv2_wild123);
 
-    let wild4_good = passes_iv2_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv2_wild4);
+    let wild4_good = is_considered_method(METHODS, METHOD_4)
+        && passes_iv2_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv2_wild4);
 
-    if !wild1235_good && !wild4_good {
+    if !wild123_good && !wild4_good {
         return None;
     }
 
@@ -245,7 +244,7 @@ pub fn find_iv_paths_from_iv1_seed(
     rng.prev_rand(); //revert to initial state
 
     let mut iv_paths: ArrayVec<IvPath, 2> = Default::default();
-    if wild1235_good {
+    if wild123_good {
         iv_paths.push(IvPath {
             seed: rng.seed(),
             iv_arc: IvFromStartArc::WithoutVBlank,
@@ -260,7 +259,8 @@ pub fn find_iv_paths_from_iv1_seed(
     Some(iv_paths)
 }
 
-pub fn find_iv_paths_from_iv2_seed(
+// Used by ByStep only
+pub fn find_iv_paths_from_iv2_seed<const METHODS: u8>(
     opts: &FindPidPathsOptions,
     rng: &mut Pokerng,
 ) -> Option<ArrayVec<IvPath, 2>> {
@@ -270,15 +270,16 @@ pub fn find_iv_paths_from_iv2_seed(
     }
 
     rng.prev_rand(); //revert state
-    let iv1_wild1235 = rng.prev_rand();
+    let iv1_wild123 = rng.prev_rand();
     let iv1_wild4 = rng.prev_rand();
 
-    let wild1235_good = /*opts.consider_method123
-        && */passes_iv1_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv1_wild1235);
+    let wild123_good = is_considered_method(METHODS, METHOD_1 | METHOD_2 | METHOD_3)
+        && passes_iv1_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv1_wild123);
 
-    let wild4_good = /*opts.consider_method4
-        && */passes_iv1_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv1_wild4);
-    if !wild1235_good && !wild4_good {
+    let wild4_good = is_considered_method(METHODS, METHOD_4)
+        & passes_iv1_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv1_wild4);
+
+    if !wild123_good && !wild4_good {
         return None;
     }
 
@@ -289,7 +290,7 @@ pub fn find_iv_paths_from_iv2_seed(
             iv_arc: IvFromStartArc::WithVBlank,
         });
     }
-    if wild1235_good {
+    if wild123_good {
         rng.rand::<u16>();
         iv_paths.push(IvPath {
             seed: rng.seed(),

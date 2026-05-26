@@ -350,6 +350,17 @@ const externalGuides: ExternalLinkInput[] = [
     url: "https://niart120.github.io/5genSearch-web/",
     difficulty: null,
   },
+  {
+    addedOn: "2026-04-26",
+    categories: ["Emerald"],
+    section: "other_rng",
+    navDrawerTitle: "Battle Frontier",
+    guideKey: "emerald-battle-frontier",
+    displayAttributes: ["web_tool"],
+    guideVariants: ["retail"],
+    url: "https://pokemoncompletion.com/BattleFacilities/Emerald/RngManipulation",
+    difficulty: null,
+  },
 ];
 
 const getGuideLanguage = (guide: GuideMetadata) => {

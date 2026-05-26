@@ -1,4 +1,4 @@
-import { Species } from "rng_tools/pkg/rng_tools";
+import { Species } from "~/rngTools";
 import { Gen4GameVersion } from "../gen4types";
 
 const RoamersByGame = {

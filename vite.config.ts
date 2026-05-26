@@ -80,6 +80,7 @@ const remarkGithubAlerts: Plugin<[], Root> = () => {
         }
 
         if (alertHeader != null) {
+          // eslint-disable-next-line -- This is fine since it's part of a plugin, and we expect it to mutate
           node.data = {
             hName: "blockquote",
             hProperties: {

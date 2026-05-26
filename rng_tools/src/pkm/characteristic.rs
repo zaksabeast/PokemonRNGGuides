@@ -1,7 +1,7 @@
 use crate::{G3Idx, Ivs};
 use num_enum::FromPrimitive;
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, FromPrimitive, Tsify, Serialize, Deserialize)]
@@ -41,14 +41,6 @@ pub enum Characteristic {
     SomewhatStubborn = 29,
 }
 
-const ORDER: [G3Idx; 6] = [
-    G3Idx::Hp,
-    G3Idx::Atk,
-    G3Idx::Def,
-    G3Idx::Spe,
-    G3Idx::Spa,
-    G3Idx::Spd,
-];
 const CHAR_ORDER: [usize; 11] = [0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4];
 
 impl Characteristic {
@@ -59,7 +51,7 @@ impl Characteristic {
 
         for i in 0..6 {
             let index = CHAR_ORDER[ec_index + i];
-            let iv = ivs[ORDER[index]];
+            let iv = ivs[G3Idx::ORDER[index]];
             if iv > max_iv {
                 char_index = index;
                 max_iv = iv;
@@ -67,6 +59,14 @@ impl Characteristic {
         }
 
         (((char_index as u8) * 5) + (max_iv % 5)).into()
+    }
+
+    pub fn decompose(&self) -> (G3Idx, u8) {
+        let char_value = *self as u8;
+        let stat_index = (char_value / 5) as usize;
+        let iv_mod = char_value % 5;
+
+        (G3Idx::ORDER[stat_index], iv_mod)
     }
 
     #[cfg(test)]
@@ -113,11 +113,12 @@ mod test {
     use crate::{assert_list_eq, ivs};
 
     #[test]
-    fn test_characteristic() {
+    fn new() {
         let test_cases = [
             (0x74313CBB, ivs!(30 / 30 / 21 / 21 / 27 / 26)),
             (0xF431BCBB, ivs!(30 / 30 / 21 / 21 / 27 / 26)),
             (0xD831B0BB, ivs!(30 / 30 / 26 / 21 / 28 / 26)),
+            (0x86DC8307, ivs!(25 / 2 / 21 / 28 / 7 / 25)),
         ];
 
         let results = test_cases
@@ -129,7 +130,26 @@ mod test {
             Characteristic::ProudOfItsPower,
             Characteristic::LovesToEat,
             Characteristic::ProudOfItsPower,
+            Characteristic::OftenLostInThought,
         ];
+
+        assert_list_eq!(results, expected);
+    }
+
+    #[test]
+    fn decompose() {
+        let test_cases = [
+            Characteristic::ProudOfItsPower,
+            Characteristic::LovesToEat,
+            Characteristic::ProudOfItsPower,
+        ];
+
+        let results = test_cases
+            .into_iter()
+            .map(|char| char.decompose())
+            .collect::<Vec<_>>();
+
+        let expected = [(G3Idx::Atk, 0), (G3Idx::Hp, 0), (G3Idx::Atk, 0)];
 
         assert_list_eq!(results, expected);
     }

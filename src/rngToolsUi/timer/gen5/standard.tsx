@@ -19,6 +19,8 @@ import { useTimerSettings } from "~/state/timerSettings";
 import { z } from "zod";
 import { useHydrate } from "~/hooks/useHydrate";
 import { hydrationLock, HydrationLock } from "~/utils/hydration";
+import { useStateHistory } from "~/hooks/useStateHistory";
+import { UndoButton } from "../undoButton";
 
 const TimerStateSchema = z.object({
   milliseconds: z.array(z.number()),
@@ -38,20 +40,20 @@ const timerStateAtom = atomWithPersistence(
 
 const FormStateSchema = z.object({
   console: ZodConsole,
-  minTimeMs: ZodSerializedDecimal,
-  targetSecond: ZodSerializedDecimal,
+  min_time_ms: ZodSerializedDecimal,
+  target_second: ZodSerializedDecimal,
   calibration: ZodSerializedDecimal,
-  secondHit: ZodSerializedOptional(ZodSerializedDecimal),
+  second_hit: ZodSerializedOptional(ZodSerializedDecimal),
 });
 
 export type FormState = z.infer<typeof FormStateSchema>;
 
 const initialValues: FormState = {
   console: "NdsSlot1",
-  minTimeMs: 14000,
-  targetSecond: 50,
+  min_time_ms: 14000,
+  target_second: 50,
   calibration: -95,
-  secondHit: null,
+  second_hit: null,
 };
 
 const timerSettingsAtom = atomWithPersistence(
@@ -76,11 +78,13 @@ const fields: Field[] = [
   },
   {
     label: "Min Time (ms)",
-    input: <FormikNumberInput<FormState> name="minTimeMs" numType="float" />,
+    input: <FormikNumberInput<FormState> name="min_time_ms" numType="float" />,
   },
   {
     label: "Target Second",
-    input: <FormikNumberInput<FormState> name="targetSecond" numType="float" />,
+    input: (
+      <FormikNumberInput<FormState> name="target_second" numType="float" />
+    ),
   },
   {
     label: "Calibration",
@@ -88,7 +92,7 @@ const fields: Field[] = [
   },
   {
     label: "Second Hit",
-    input: <FormikNumberInput<FormState> name="secondHit" numType="float" />,
+    input: <FormikNumberInput<FormState> name="second_hit" numType="float" />,
   },
 ];
 
@@ -105,49 +109,47 @@ export const InnerGen5StandardTimer = ({
   initialSettings,
   onUpdate,
 }: InnerProps) => {
-  const onSubmit: RngToolSubmit<FormState> = async (opts, { setValue }) => {
-    let updatedOpts = opts;
-    let settings = {
-      console: opts.console,
-      min_time_ms: opts.minTimeMs,
-      target_second: opts.targetSecond,
-      calibration: opts.calibration,
-    };
-
-    if (opts.secondHit != null) {
-      settings = await rngTools.calibrate_gen5_standard_timer(
-        settings,
-        opts.secondHit,
-      );
-      settings = {
-        console: opts.console,
-        min_time_ms: capPrecision(settings.min_time_ms),
-        target_second: capPrecision(settings.target_second),
-        calibration: capPrecision(settings.calibration),
-      };
-      updatedOpts = {
-        console: settings.console,
-        minTimeMs: settings.min_time_ms,
-        targetSecond: settings.target_second,
-        calibration: settings.calibration,
-        secondHit: null,
-      };
-
-      setValue("console", updatedOpts.console);
-      setValue("minTimeMs", updatedOpts.minTimeMs);
-      setValue("targetSecond", updatedOpts.targetSecond);
-      setValue("calibration", updatedOpts.calibration);
-      setValue("secondHit", updatedOpts.secondHit);
-    }
-
-    const milliseconds = await rngTools.create_gen5_standard_timer(settings);
+  const updateTimerSettings = async (formState: FormState) => {
+    const milliseconds = await rngTools.create_gen5_standard_timer(formState);
     setTimer(
       hydrationLock({
         milliseconds: [...milliseconds],
         minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
       }),
     );
-    onUpdate(hydrationLock(updatedOpts));
+    onUpdate(hydrationLock(formState));
+  };
+
+  const history = useStateHistory({
+    initialSettings,
+    updateTimerSettings,
+  });
+
+  const onSubmit: RngToolSubmit<FormState> = async (opts, { setValue }) => {
+    let settings = opts;
+
+    if (opts.second_hit != null) {
+      const calibrated = await rngTools.calibrate_gen5_standard_timer(
+        settings,
+        opts.second_hit,
+      );
+      settings = {
+        console: opts.console,
+        min_time_ms: capPrecision(calibrated.min_time_ms),
+        target_second: capPrecision(calibrated.target_second),
+        calibration: capPrecision(calibrated.calibration),
+        second_hit: null,
+      };
+
+      setValue("console", settings.console);
+      setValue("min_time_ms", settings.min_time_ms);
+      setValue("target_second", settings.target_second);
+      setValue("calibration", settings.calibration);
+      setValue("second_hit", settings.second_hit);
+    }
+
+    await updateTimerSettings(settings);
+    history.addIfNew(settings);
   };
 
   return (
@@ -165,6 +167,19 @@ export const InnerGen5StandardTimer = ({
         onSubmit={onSubmit}
         submitTrackerId="set_gen5_standard_timer"
         submitButtonLabel="Set Timer"
+        additionalButtons={
+          <UndoButton
+            history={history}
+            trackerId="undo_gen5_standard_calibration"
+            fields={{
+              console: true,
+              min_time_ms: true,
+              target_second: true,
+              calibration: true,
+              second_hit: true,
+            }}
+          />
+        }
       />
     </Flex>
   );

@@ -4,7 +4,6 @@ import { throttle } from "lodash-es";
 const interactions: (keyof WindowEventMap)[] = [
   "click",
   "touchstart",
-  "mousemove",
   "keydown",
 ];
 

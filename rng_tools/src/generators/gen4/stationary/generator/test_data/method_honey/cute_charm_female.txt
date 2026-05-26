@@ -1,0 +1,201 @@
+0	11	L 0	Leftovers	7: Munchlax	5	0000003A	No	Impish	0: Pickup	16	13	12	18	3	2	Fire	65	♂	Often lost in thought
+1	16	ML 29	Leftovers	7: Munchlax	15	67DBAFC5	No	Naughty	1: Thick Fat	19	1	31	25	27	12	Ice	53	♂	Capable of taking hits
+2	71	M 57	Leftovers	7: Munchlax	8	DFC5706A	No	Jolly	0: Pickup	4	20	14	0	25	20	Steel	32	♂	Strong willed
+3	14	M 55	Leftovers	7: Munchlax	7	00000048	No	Sassy	0: Pickup	5	30	11	30	25	27	Grass	49	♂	Proud of its power
+4	15	M 44	Leftovers	7: Munchlax	11	00000043	No	Quiet	1: Thick Fat	27	30	25	1	31	19	Dragon	57	♂	Somewhat vain
+5	16	L 8	Leftovers	7: Munchlax	14	0000003C	No	Timid	0: Pickup	19	1	31	25	27	12	Ice	53	♂	Capable of taking hits
+6	17	M 49	Leftovers	7: Munchlax	12	0000004A	No	Quirky	0: Pickup	12	25	27	2	31	30	Water	68	♂	Somewhat vain
+7	18	ML 24	Leftovers	7: Munchlax	9	00000049	No	Careful	1: Thick Fat	30	2	31	22	18	5	Poison	64	♂	Capable of taking hits
+8	19	H 88	Leftovers	7: Munchlax	15	0000004A	No	Quirky	0: Pickup	5	22	18	30	26	22	Fighting	69	♂	Highly curious
+9	20	M 47	Leftovers	7: Munchlax	15	00000045	No	Rash	1: Thick Fat	22	30	26	9	6	29	Bug	54	♂	Proud of its power
+10	21	H 88	Leftovers	7: Munchlax	15	00000049	No	Careful	1: Thick Fat	29	9	6	21	30	28	Rock	52	♂	Strong willed
+11	22	ML 33	Leftovers	7: Munchlax	13	00000040	No	Naive	0: Pickup	28	21	30	29	18	7	Ghost	57	♂	Sturdy body
+12	23	ML 36	Leftovers	7: Munchlax	15	0000003D	No	Hasty	1: Thick Fat	7	29	18	14	23	22	Fire	68	♂	Quick tempered
+13	24	MH 78	Leftovers	7: Munchlax	11	00000045	No	Rash	1: Thick Fat	22	14	23	11	4	24	Rock	44	♂	Quick to flee
+14	25	H 83	Leftovers	7: Munchlax	10	0000003B	No	Lax	1: Thick Fat	24	11	4	29	9	6	Electric	36	♂	Very finicky
+15	26	ML 36	Leftovers	7: Munchlax	13	00000040	No	Naive	0: Pickup	6	29	9	12	24	13	Ground	30	♂	Quick tempered
+16	27	H 93	Leftovers	7: Munchlax	9	00000035	No	Adamant	1: Thick Fat	13	12	24	20	5	18	Steel	35	♂	Good perseverance
+17	46	M 54	Leftovers	7: Munchlax	11	6E031C49	No	Lax	1: Thick Fat	10	13	12	20	10	9	Poison	50	♂	Highly curious
+18	29	ML 23	Leftovers	7: Munchlax	6	00000034	No	Brave	0: Pickup	24	29	19	26	13	29	Grass	42	♂	Quick tempered
+19	74	L 4	Leftovers	7: Munchlax	9	60A1E414	No	Calm	0: Pickup	11	25	10	25	3	24	Psychic	53	♀	Highly curious
+20	31	MH 70	Leftovers	7: Munchlax	5	00000037	No	Bold	1: Thick Fat	0	4	12	3	16	28	Ground	40	♂	Somewhat of a clown
+21	186	M 49	Leftovers	7: Munchlax	13	47441306	No	Naughty	0: Pickup	18	23	21	4	0	12	Flying	31	♀	Likes to fight
+22	105	MH 73	Leftovers	7: Munchlax	7	57FDB019	No	Docile	1: Thick Fat	9	23	19	19	14	0	Bug	64	♀	Likes to fight
+23	38	M 51	Leftovers	7: Munchlax	7	3D69DFA3	No	Relaxed	1: Thick Fat	30	28	24	9	7	9	Ice	50	♂	Loves to eat
+24	143	L 1	Leftovers	7: Munchlax	7	7BE7A3A7	No	Naughty	1: Thick Fat	6	29	26	30	10	20	Fighting	63	♂	Highly curious
+25	44	ML 28	Leftovers	7: Munchlax	8	A3979268	No	Quirky	0: Pickup	9	2	7	16	27	3	Grass	59	♂	Strongly defiant
+26	37	M 56	Leftovers	7: Munchlax	7	00000047	No	Gentle	1: Thick Fat	9	11	15	28	24	30	Flying	38	♂	Likes to run
+27	38	H 96	Leftovers	7: Munchlax	15	00000037	No	Bold	1: Thick Fat	30	28	24	9	7	9	Ice	50	♂	Loves to eat
+28	121	H 98	Leftovers	7: Munchlax	14	CB60A654	No	Lax	0: Pickup	2	2	16	19	21	2	Electric	47	♂	Somewhat vain
+29	40	H 91	Leftovers	7: Munchlax	7	00000034	No	Brave	0: Pickup	13	20	26	20	24	22	Fighting	37	♂	Capable of taking hits
+30	53	L 11	Leftovers	7: Munchlax	9	945CE0C6	No	Sassy	0: Pickup	27	17	19	18	22	31	Ground	68	♂	Alert to sounds
+31	42	H 91	Leftovers	7: Munchlax	6	0000003B	No	Lax	1: Thick Fat	8	19	4	28	8	23	Poison	36	♂	Often lost in thought
+32	43	ML 32	Leftovers	7: Munchlax	15	00000040	No	Naive	0: Pickup	23	28	8	2	7	9	Water	61	♂	Likes to fight
+33	44	L 8	Leftovers	7: Munchlax	9	00000041	No	Modest	1: Thick Fat	9	2	7	16	27	3	Grass	59	♂	Strongly defiant
+34	45	M 57	Leftovers	7: Munchlax	11	00000034	No	Brave	0: Pickup	3	16	27	13	12	10	Bug	38	♂	Highly persistent
+35	102	L 11	Leftovers	7: Munchlax	12	AD05863A	No	Timid	0: Pickup	18	14	4	0	12	25	Flying	31	♂	Likes to run
+36	47	H 88	Leftovers	7: Munchlax	6	00000036	No	Naughty	0: Pickup	9	20	10	30	20	5	Poison	42	♂	Highly curious
+37	58	M 43	Leftovers	7: Munchlax	9	BFE1FBB3	No	Mild	1: Thick Fat	14	28	30	3	0	31	Bug	48	♂	Alert to sounds
+38	49	M 55	Leftovers	7: Munchlax	7	00000046	No	Calm	0: Pickup	10	31	16	22	0	25	Poison	42	♂	Likes to thrash about
+39	50	ML 32	Leftovers	7: Munchlax	12	00000045	No	Rash	1: Thick Fat	25	22	0	6	24	6	Fighting	46	♂	Loves to eat
+40	51	MH 61	Leftovers	7: Munchlax	14	0000003E	No	Serious	0: Pickup	6	6	24	2	5	28	Steel	42	♂	Somewhat of a clown
+41	52	L 12	Leftovers	7: Munchlax	13	00000047	No	Gentle	1: Thick Fat	28	2	5	17	19	27	Dragon	56	♂	Scatters things often
+42	53	L 8	Leftovers	7: Munchlax	10	00000040	No	Naive	0: Pickup	27	17	19	18	22	31	Ground	68	♂	Alert to sounds
+43	54	L 2	Leftovers	7: Munchlax	14	00000039	No	Relaxed	1: Thick Fat	31	18	22	1	9	8	Electric	34	♂	Takes plenty of siestas
+44	97	MH 63	Leftovers	7: Munchlax	11	B7A2A7C4	No	Impish	0: Pickup	21	2	10	2	7	28	Steel	64	♂	Somewhat of a clown
+45	56	M 44	Leftovers	7: Munchlax	8	00000035	No	Adamant	1: Thick Fat	19	29	30	31	15	1	Dragon	63	♂	Mischievous
+46	209	H 82	Leftovers	7: Munchlax	8	530E92F1	No	Quirky	1: Thick Fat	27	17	9	2	27	22	Water	66	♂	Strongly defiant
+47	58	L 12	Leftovers	7: Munchlax	6	00000044	No	Bashful	0: Pickup	14	28	30	3	0	31	Bug	48	♂	Alert to sounds
+48	59	H 86	Leftovers	7: Munchlax	15	0000003E	No	Serious	0: Pickup	31	3	0	6	16	4	Fighting	42	♂	Takes plenty of siestas
+49	60	H 99	Leftovers	7: Munchlax	13	00000032	No	Hardy	0: Pickup	4	6	16	2	18	8	Fighting	61	♂	Hates to lose
+50	105	H 86	Leftovers	7: Munchlax	10	57FDB019	No	Docile	1: Thick Fat	9	23	19	19	14	0	Bug	64	♀	Likes to fight
+51	178	L 1	Leftovers	7: Munchlax	5	EBAF9DA7	No	Rash	1: Thick Fat	3	5	20	7	22	21	Ghost	61	♂	Strongly defiant
+52	63	L 2	Leftovers	7: Munchlax	7	00000044	No	Bashful	0: Pickup	22	5	14	1	4	27	Ghost	38	♂	Impetuous and silly
+53	64	ML 25	Leftovers	7: Munchlax	13	00000037	No	Bold	1: Thick Fat	27	1	4	25	30	3	Ghost	56	♂	Strong willed
+54	119	H 99	Leftovers	7: Munchlax	13	2843F223	No	Naive	1: Thick Fat	20	18	9	27	18	0	Rock	61	♂	Thoroughly cunning
+55	66	MH 77	Leftovers	7: Munchlax	7	0000004A	No	Quirky	0: Pickup	3	9	31	17	15	20	Ice	53	♂	Capable of taking hits
+56	67	M 50	Leftovers	7: Munchlax	11	0000003E	No	Serious	0: Pickup	20	17	15	16	22	0	Flying	52	♂	Strongly defiant
+57	68	H 84	Leftovers	7: Munchlax	15	00000044	No	Bashful	0: Pickup	0	16	22	3	28	10	Ground	47	♂	Hates to lose
+58	69	H 91	Leftovers	7: Munchlax	10	00000047	No	Gentle	1: Thick Fat	10	3	28	30	23	5	Grass	62	♂	Highly curious
+59	70	H 94	Leftovers	7: Munchlax	13	0000003C	No	Timid	0: Pickup	5	30	23	20	14	4	Flying	54	♂	Proud of its power
+60	71	H 81	Leftovers	7: Munchlax	14	00000047	No	Gentle	1: Thick Fat	4	20	14	0	25	20	Steel	32	♂	Strong willed
+61	72	M 51	Leftovers	7: Munchlax	9	00000044	No	Bashful	0: Pickup	20	0	25	5	24	1	Ghost	30	♂	Sturdy body
+62	73	H 99	Leftovers	7: Munchlax	14	00000048	No	Sassy	0: Pickup	1	5	24	25	10	11	Ghost	55	♂	Highly curious
+63	74	H 82	Leftovers	7: Munchlax	13	0000003B	No	Lax	1: Thick Fat	11	25	10	25	3	24	Psychic	53	♂	Proud of its power
+64	75	L 12	Leftovers	7: Munchlax	14	00000036	No	Naughty	0: Pickup	24	25	3	21	13	0	Psychic	32	♂	Proud of its power
+65	88	L 1	Leftovers	7: Munchlax	9	745FAFD4	No	Jolly	0: Pickup	30	29	16	3	24	1	Ghost	40	♂	Loves to eat
+66	77	ML 34	Leftovers	7: Munchlax	6	00000043	No	Quiet	1: Thick Fat	0	11	16	17	5	22	Electric	36	♂	Impetuous and silly
+67	78	M 47	Leftovers	7: Munchlax	11	00000038	No	Docile	0: Pickup	22	17	5	0	28	9	Ground	30	♂	Hates to lose
+68	83	MH 70	Leftovers	7: Munchlax	12	B6A8260E	No	Brave	0: Pickup	3	26	30	14	30	11	Poison	70	♀	Sturdy body
+69	82	L 4	Leftovers	7: Munchlax	7	260EB54B	No	Careful	1: Thick Fat	8	21	13	26	30	3	Ground	65	♂	Strong willed
+70	81	MH 69	Leftovers	7: Munchlax	5	00000043	No	Quiet	1: Thick Fat	14	16	9	21	13	8	Psychic	30	♂	Mischievous
+71	82	M 50	Leftovers	7: Munchlax	15	00000035	No	Adamant	1: Thick Fat	8	21	13	26	30	3	Ground	65	♂	Strong willed
+72	133	MH 66	Leftovers	7: Munchlax	12	7D3AF699	No	Quiet	1: Thick Fat	3	16	15	7	16	12	Bug	43	♂	Somewhat vain
+73	84	L 18	Leftovers	7: Munchlax	6	0000003E	No	Serious	0: Pickup	11	14	30	7	26	15	Bug	70	♂	Sturdy body
+74	85	MH 70	Leftovers	7: Munchlax	12	0000004A	No	Quirky	0: Pickup	15	7	26	30	11	20	Fire	64	♂	Highly curious
+75	86	H 85	Leftovers	7: Munchlax	10	0000003C	No	Timid	0: Pickup	20	30	11	2	29	31	Grass	49	♂	Alert to sounds
+76	87	H 80	Leftovers	7: Munchlax	15	00000043	No	Quiet	1: Thick Fat	31	2	29	29	16	30	Bug	36	♂	Takes plenty of siestas
+77	88	ML 27	Leftovers	7: Munchlax	9	0000003D	No	Hasty	1: Thick Fat	30	29	16	3	24	1	Ghost	40	♂	Loves to eat
+78	89	M 49	Leftovers	7: Munchlax	12	00000045	No	Rash	1: Thick Fat	1	3	24	4	6	21	Poison	51	♂	Good perseverance
+79	90	MH 63	Leftovers	7: Munchlax	10	00000047	No	Gentle	1: Thick Fat	21	4	6	7	1	17	Ice	42	♂	Takes plenty of siestas
+80	91	L 11	Leftovers	7: Munchlax	13	00000040	No	Naive	0: Pickup	17	7	1	13	4	26	Bug	36	♂	Alert to sounds
+81	92	L 1	Leftovers	7: Munchlax	14	0000003E	No	Serious	0: Pickup	26	13	4	3	9	2	Electric	45	♂	Takes plenty of siestas
+82	93	MH 76	Leftovers	7: Munchlax	11	00000033	No	Lonely	1: Thick Fat	2	3	9	4	19	0	Water	52	♂	Somewhat stubborn
+83	100	L 15	Leftovers	7: Munchlax	10	A2421C5C	No	Adamant	0: Pickup	26	17	1	8	11	5	Grass	50	♂	Takes plenty of siestas
+84	145	M 55	Leftovers	7: Munchlax	5	ABD4EBA6	No	Rash	0: Pickup	9	29	1	7	17	5	Dark	40	♂	Quick tempered
+85	96	L 13	Leftovers	7: Munchlax	6	00000042	No	Mild	0: Pickup	2	29	13	2	10	21	Ground	61	♂	Quick tempered
+86	97	ML 39	Leftovers	7: Munchlax	13	00000043	No	Quiet	1: Thick Fat	21	2	10	2	7	28	Steel	64	♂	Somewhat of a clown
+87	98	ML 24	Leftovers	7: Munchlax	12	00000042	No	Mild	0: Pickup	28	2	7	18	8	2	Fighting	49	♂	Scatters things often
+88	99	MH 73	Leftovers	7: Munchlax	12	00000034	No	Brave	0: Pickup	2	18	8	17	1	26	Electric	36	♂	Alert to sounds
+89	212	ML 26	Leftovers	7: Munchlax	12	ECB46C56	No	Modest	0: Pickup	4	22	17	4	14	9	Poison	51	♂	A little quick tempered
+90	101	H 88	Leftovers	7: Munchlax	6	0000003F	No	Jolly	1: Thick Fat	5	8	11	14	4	18	Flying	47	♂	Somewhat of a clown
+91	102	L 7	Leftovers	7: Munchlax	11	00000042	No	Mild	0: Pickup	18	14	4	0	12	25	Flying	31	♂	Likes to run
+92	103	L 19	Leftovers	7: Munchlax	10	00000033	No	Lonely	1: Thick Fat	25	0	12	31	21	29	Ice	40	♂	Mischievous
+93	210	M 40	Leftovers	7: Munchlax	12	A63B530E	No	Quiet	0: Pickup	22	2	27	5	27	20	Psychic	54	♀	Strongly defiant
+94	105	M 55	Leftovers	7: Munchlax	5	0000003A	No	Impish	0: Pickup	9	23	19	19	14	0	Bug	64	♂	Likes to fight
+95	106	M 50	Leftovers	7: Munchlax	12	00000039	No	Relaxed	1: Thick Fat	0	19	14	8	17	27	Grass	38	♂	Impetuous and silly
+96	111	MH 74	Leftovers	7: Munchlax	8	2D9334A9	No	Bashful	1: Thick Fat	6	11	2	9	4	13	Ghost	34	♂	Somewhat of a clown
+97	108	M 46	Leftovers	7: Munchlax	8	00000038	No	Docile	0: Pickup	14	25	5	5	13	9	Dragon	30	♂	Proud of its power
+98	247	H 82	Leftovers	7: Munchlax	13	8ADFA38A	No	Brave	0: Pickup	14	1	29	15	3	5	Dragon	61	♂	Good perseverance
+99	130	L 15	Leftovers	7: Munchlax	7	7ED91119	No	Bold	1: Thick Fat	6	3	13	20	29	25	Grass	31	♀	Somewhat stubborn
+100	143	MH 72	Leftovers	7: Munchlax	5	7BE7A3A7	No	Naughty	1: Thick Fat	6	29	26	30	10	20	Fighting	63	♂	Highly curious
+101	140	MH 64	Leftovers	7: Munchlax	7	F9C9D1B0	No	Hardy	0: Pickup	28	30	2	29	8	7	Bug	38	♂	Proud of its power
+102	171	M 42	Leftovers	7: Munchlax	6	F6C3FD4D	No	Lonely	1: Thick Fat	10	14	17	20	29	16	Fire	31	♂	Somewhat stubborn
+103	212	ML 29	Leftovers	7: Munchlax	5	ECB46C56	No	Modest	0: Pickup	4	22	17	4	14	9	Poison	51	♂	A little quick tempered
+104	115	M 53	Leftovers	7: Munchlax	5	00000038	No	Docile	0: Pickup	4	30	28	24	10	11	Flying	56	♂	Proud of its power
+105	138	L 5	Leftovers	7: Munchlax	11	DCB585B1	No	Hasty	1: Thick Fat	16	13	20	14	30	9	Poison	60	♂	Strong willed
+106	117	L 7	Leftovers	7: Munchlax	7	00000036	No	Naughty	0: Pickup	3	17	28	2	10	3	Poison	66	♂	Good endurance
+107	164	MH 61	Leftovers	7: Munchlax	9	6AC05DE8	No	Careful	0: Pickup	7	31	26	17	28	13	Ghost	34	♂	Likes to thrash about
+108	119	ML 34	Leftovers	7: Munchlax	6	00000035	No	Adamant	1: Thick Fat	20	18	9	27	18	0	Rock	61	♂	Thoroughly cunning
+109	188	M 56	Leftovers	7: Munchlax	15	008CD6F2	No	Mild	0: Pickup	30	1	30	29	8	22	Rock	38	♂	Sturdy body
+110	121	ML 25	Leftovers	7: Munchlax	6	00000045	No	Rash	1: Thick Fat	2	2	16	19	21	2	Electric	47	♂	Somewhat vain
+111	122	L 19	Leftovers	7: Munchlax	12	00000044	No	Bashful	0: Pickup	2	19	21	11	28	9	Steel	42	♂	Hates to lose
+112	123	ML 35	Leftovers	7: Munchlax	13	00000046	No	Calm	0: Pickup	9	11	28	10	3	27	Grass	66	♂	Good endurance
+113	124	L 0	Leftovers	7: Munchlax	13	0000003D	No	Hasty	1: Thick Fat	27	10	3	14	15	13	Grass	64	♂	Nods off a lot
+114	125	MH 69	Leftovers	7: Munchlax	14	0000003F	No	Jolly	1: Thick Fat	13	14	15	28	1	19	Grass	38	♂	Often lost in thought
+115	126	M 54	Leftovers	7: Munchlax	9	00000038	No	Docile	0: Pickup	19	28	1	5	8	17	Ghost	30	♂	Likes to fight
+116	135	M 41	Leftovers	7: Munchlax	11	40ECBE03	No	Jolly	1: Thick Fat	16	15	30	13	1	17	Ice	33	♀	Sturdy body
+117	128	H 93	Leftovers	7: Munchlax	7	00000041	No	Modest	1: Thick Fat	25	8	4	22	31	25	Water	60	♂	Somewhat vain
+118	129	ML 23	Leftovers	7: Munchlax	10	00000033	No	Lonely	1: Thick Fat	25	22	31	3	13	6	Psychic	49	♂	Capable of taking hits
+119	154	L 2	Leftovers	7: Munchlax	11	70CBFC00	No	Serious	0: Pickup	31	4	0	3	11	15	Ice	66	♀	Takes plenty of siestas
+120	131	M 53	Leftovers	7: Munchlax	5	00000043	No	Quiet	1: Thick Fat	25	20	29	9	31	26	Psychic	55	♂	Somewhat vain
+121	132	H 96	Leftovers	7: Munchlax	10	0000004A	No	Quirky	0: Pickup	26	9	31	16	15	3	Grass	58	♂	Capable of taking hits
+122	133	MH 63	Leftovers	7: Munchlax	12	0000003E	No	Serious	0: Pickup	3	16	15	7	16	12	Bug	43	♂	Somewhat vain
+123	134	MH 70	Leftovers	7: Munchlax	15	00000044	No	Bashful	0: Pickup	12	7	16	15	30	16	Rock	61	♂	Strong willed
+124	135	H 91	Leftovers	7: Munchlax	10	00000038	No	Docile	0: Pickup	16	15	30	13	1	17	Ice	33	♂	Sturdy body
+125	138	H 93	Leftovers	7: Munchlax	13	DCB585B1	No	Hasty	1: Thick Fat	16	13	20	14	30	9	Poison	60	♂	Strong willed
+126	137	L 2	Leftovers	7: Munchlax	7	0000003F	No	Jolly	1: Thick Fat	21	5	23	13	20	16	Bug	32	♂	Good endurance
+127	138	H 81	Leftovers	7: Munchlax	10	00000047	No	Gentle	1: Thick Fat	16	13	20	14	30	9	Poison	60	♂	Strong willed
+128	139	L 17	Leftovers	7: Munchlax	10	00000046	No	Calm	0: Pickup	9	14	30	30	2	28	Fighting	64	♂	Highly curious
+129	140	H 89	Leftovers	7: Munchlax	14	0000004A	No	Quirky	0: Pickup	28	30	2	29	8	7	Bug	38	♂	Proud of its power
+130	141	M 55	Leftovers	7: Munchlax	14	00000033	No	Lonely	1: Thick Fat	7	29	8	31	30	7	Ghost	66	♂	Mischievous
+131	212	H 80	Leftovers	7: Munchlax	15	ECB46C56	No	Modest	0: Pickup	4	22	17	4	14	9	Poison	51	♂	A little quick tempered
+132	143	ML 37	Leftovers	7: Munchlax	5	0000003E	No	Serious	0: Pickup	6	29	26	30	10	20	Fighting	63	♂	Highly curious
+133	144	L 11	Leftovers	7: Munchlax	12	00000049	No	Careful	1: Thick Fat	20	30	10	29	1	9	Ice	33	♂	Proud of its power
+134	145	H 87	Leftovers	7: Munchlax	10	00000042	No	Mild	0: Pickup	9	29	1	7	17	5	Dark	40	♂	Quick tempered
+135	146	ML 36	Leftovers	7: Munchlax	15	0000003F	No	Jolly	1: Thick Fat	5	7	17	30	1	18	Water	46	♂	Highly curious
+136	147	ML 36	Leftovers	7: Munchlax	12	00000038	No	Docile	0: Pickup	18	30	1	24	18	5	Poison	52	♂	Proud of its power
+137	192	ML 23	Leftovers	7: Munchlax	10	704AB585	No	Hardy	1: Thick Fat	25	30	25	7	13	24	Psychic	41	♂	Proud of its power
+138	161	L 15	Leftovers	7: Munchlax	7	4B096A86	No	Rash	0: Pickup	23	7	28	15	23	8	Psychic	62	♂	Good endurance
+139	150	ML 24	Leftovers	7: Munchlax	5	0000004A	No	Quirky	0: Pickup	19	6	9	0	18	14	Flying	57	♂	Likes to relax
+140	151	ML 34	Leftovers	7: Munchlax	13	00000035	No	Adamant	1: Thick Fat	14	0	18	0	31	0	Steel	53	♂	Somewhat vain
+141	176	MH 70	Leftovers	7: Munchlax	15	AFD1395B	No	Relaxed	1: Thick Fat	7	13	7	29	26	15	Steel	58	♂	Very finicky
+142	209	L 15	Leftovers	7: Munchlax	6	530E92F1	No	Quirky	1: Thick Fat	27	17	9	2	27	22	Water	66	♂	Strongly defiant
+143	154	ML 25	Leftovers	7: Munchlax	8	0000003D	No	Hasty	1: Thick Fat	31	4	0	3	11	15	Ice	66	♂	Takes plenty of siestas
+144	155	H 87	Leftovers	7: Munchlax	15	0000003E	No	Serious	0: Pickup	15	3	11	28	18	15	Ground	59	♂	Often lost in thought
+145	156	M 52	Leftovers	7: Munchlax	9	00000036	No	Naughty	0: Pickup	15	28	18	18	28	17	Poison	43	♂	Likes to fight
+146	161	L 1	Leftovers	7: Munchlax	10	4B096A86	No	Rash	0: Pickup	23	7	28	15	23	8	Psychic	62	♂	Good endurance
+147	158	ML 38	Leftovers	7: Munchlax	6	00000049	No	Careful	1: Thick Fat	19	25	19	20	26	6	Flying	58	♂	Somewhat vain
+148	159	ML 36	Leftovers	7: Munchlax	13	00000039	No	Relaxed	1: Thick Fat	6	20	26	24	18	9	Flying	53	♂	Capable of taking hits
+149	166	M 57	Leftovers	7: Munchlax	15	722DEBE7	No	Timid	1: Thick Fat	28	1	26	0	14	16	Fighting	52	♂	Scatters things often
+150	161	M 47	Leftovers	7: Munchlax	8	00000039	No	Relaxed	1: Thick Fat	23	7	28	15	23	8	Psychic	62	♂	Good endurance
+151	248	ML 32	Leftovers	7: Munchlax	9	F42E8ADF	No	Hasty	1: Thick Fat	5	15	3	25	3	6	Ice	59	♂	Highly curious
+152	163	ML 34	Leftovers	7: Munchlax	8	0000003B	No	Lax	1: Thick Fat	0	22	26	31	26	7	Bug	69	♂	Mischievous
+153	164	M 53	Leftovers	7: Munchlax	9	0000003C	No	Timid	0: Pickup	7	31	26	17	28	13	Ghost	34	♂	Likes to thrash about
+154	165	H 93	Leftovers	7: Munchlax	9	00000049	No	Careful	1: Thick Fat	13	17	28	1	26	28	Rock	50	♂	Good endurance
+155	166	ML 33	Leftovers	7: Munchlax	9	0000003D	No	Hasty	1: Thick Fat	28	1	26	0	14	16	Fighting	52	♂	Scatters things often
+156	167	ML 37	Leftovers	7: Munchlax	15	0000003C	No	Timid	0: Pickup	16	0	14	4	0	23	Flying	37	♂	Somewhat of a clown
+157	168	M 56	Leftovers	7: Munchlax	9	00000037	No	Bold	1: Thick Fat	23	4	0	10	31	13	Water	61	♂	Somewhat vain
+158	217	ML 25	Leftovers	7: Munchlax	9	A1DA46F3	No	Serious	1: Thick Fat	21	7	23	8	3	4	Water	54	♂	Good endurance
+159	170	MH 75	Leftovers	7: Munchlax	7	0000004A	No	Quirky	0: Pickup	3	22	29	14	17	10	Fire	47	♂	Good perseverance
+160	171	L 1	Leftovers	7: Munchlax	10	0000004A	No	Quirky	0: Pickup	10	14	17	20	29	16	Fire	31	♂	Somewhat stubborn
+161	172	H 91	Leftovers	7: Munchlax	15	00000045	No	Rash	1: Thick Fat	16	20	29	17	27	3	Dragon	55	♂	Good perseverance
+162	173	MH 71	Leftovers	7: Munchlax	15	0000003D	No	Hasty	1: Thick Fat	3	17	27	10	14	27	Ground	68	♂	Highly persistent
+163	174	L 18	Leftovers	7: Munchlax	13	0000003C	No	Timid	0: Pickup	27	10	14	30	11	17	Water	64	♂	Highly curious
+164	175	MH 70	Leftovers	7: Munchlax	10	00000037	No	Bold	1: Thick Fat	17	30	11	13	7	7	Dragon	59	♂	Proud of its power
+165	210	M 44	Leftovers	7: Munchlax	9	A63B530E	No	Quiet	0: Pickup	22	2	27	5	27	20	Psychic	54	♀	Strongly defiant
+166	177	MH 79	Leftovers	7: Munchlax	7	00000041	No	Modest	1: Thick Fat	15	29	26	5	20	3	Ghost	38	♂	Quick tempered
+167	178	M 49	Leftovers	7: Munchlax	12	00000049	No	Careful	1: Thick Fat	3	5	20	7	22	21	Ghost	61	♂	Strongly defiant
+168	179	H 92	Leftovers	7: Munchlax	11	00000039	No	Relaxed	1: Thick Fat	21	7	22	4	4	31	Poison	38	♂	Alert to sounds
+169	196	ML 36	Leftovers	7: Munchlax	15	1240A58B	No	Gentle	1: Thick Fat	10	25	4	2	7	9	Grass	61	♂	Proud of its power
+170	181	M 51	Leftovers	7: Munchlax	8	00000033	No	Lonely	1: Thick Fat	8	25	1	21	14	13	Steel	50	♂	Proud of its power
+171	184	MH 77	Leftovers	7: Munchlax	14	8B96BAAD	No	Jolly	1: Thick Fat	6	24	4	26	17	4	Steel	40	♂	Mischievous
+172	183	M 51	Leftovers	7: Munchlax	5	00000044	No	Bashful	0: Pickup	22	28	2	24	4	6	Fighting	38	♂	Likes to fight
+173	184	ML 22	Leftovers	7: Munchlax	10	0000003F	No	Jolly	1: Thick Fat	6	24	4	26	17	4	Steel	40	♂	Mischievous
+174	185	H 83	Leftovers	7: Munchlax	13	00000033	No	Lonely	1: Thick Fat	4	26	17	23	21	18	Psychic	46	♂	Likes to thrash about
+175	238	ML 36	Leftovers	7: Munchlax	10	28B199B0	No	Docile	0: Pickup	3	18	25	16	29	11	Grass	36	♂	Somewhat stubborn
+176	213	M 59	Leftovers	7: Munchlax	5	C6C4ECB4	No	Calm	0: Pickup	9	4	14	23	12	25	Bug	42	♂	Likes to run
+177	188	ML 22	Leftovers	7: Munchlax	8	00000032	No	Hardy	0: Pickup	30	1	30	29	8	22	Rock	38	♂	Sturdy body
+178	209	MH 71	Leftovers	7: Munchlax	14	530E92F1	No	Quirky	1: Thick Fat	27	17	9	2	27	22	Water	66	♂	Strongly defiant
+179	190	L 1	Leftovers	7: Munchlax	5	00000041	No	Modest	1: Thick Fat	5	12	13	2	28	10	Flying	45	♂	Hates to lose
+180	191	MH 75	Leftovers	7: Munchlax	15	00000043	No	Quiet	1: Thick Fat	10	2	28	30	25	25	Water	42	♂	Highly curious
+181	192	L 11	Leftovers	7: Munchlax	12	0000003C	No	Timid	0: Pickup	25	30	25	7	13	24	Psychic	41	♂	Proud of its power
+182	193	MH 67	Leftovers	7: Munchlax	12	0000003C	No	Timid	0: Pickup	24	7	13	12	9	11	Grass	36	♂	Likes to relax
+183	194	M 50	Leftovers	7: Munchlax	9	00000037	No	Bold	1: Thick Fat	11	12	9	18	4	0	Flying	40	♂	Often lost in thought
+184	279	ML 24	Leftovers	7: Munchlax	9	738764F1	No	Mild	1: Thick Fat	14	10	12	4	4	15	Flying	36	♂	Likes to run
+185	196	MH 65	Leftovers	7: Munchlax	7	00000033	No	Lonely	1: Thick Fat	10	25	4	2	7	9	Grass	61	♂	Proud of its power
+186	227	L 17	Leftovers	7: Munchlax	12	8BF74522	No	Naive	0: Pickup	1	5	25	31	17	10	Ice	45	♂	Mischievous
+187	198	M 57	Leftovers	7: Munchlax	5	00000041	No	Modest	1: Thick Fat	11	23	13	20	11	1	Electric	52	♂	Likes to fight
+188	199	M 59	Leftovers	7: Munchlax	11	00000037	No	Bold	1: Thick Fat	1	20	11	0	12	24	Flying	32	♂	Quick to flee
+189	210	H 88	Leftovers	7: Munchlax	11	A63B530E	No	Quiet	0: Pickup	22	2	27	5	27	20	Psychic	54	♀	Strongly defiant
+190	201	MH 71	Leftovers	7: Munchlax	7	00000036	No	Naughty	0: Pickup	25	31	25	26	8	1	Ground	41	♂	Likes to thrash about
+191	220	M 45	Leftovers	7: Munchlax	12	1C480D04	No	Sassy	0: Pickup	17	26	20	30	13	4	Steel	41	♀	Highly curious
+192	203	M 50	Leftovers	7: Munchlax	7	00000041	No	Modest	1: Thick Fat	5	13	9	9	19	20	Ice	50	♂	Likes to run
+193	204	ML 24	Leftovers	7: Munchlax	14	00000042	No	Mild	0: Pickup	20	9	19	31	29	4	Psychic	42	♂	Mischievous
+194	205	L 10	Leftovers	7: Munchlax	12	00000039	No	Relaxed	1: Thick Fat	4	31	29	16	20	23	Ground	36	♂	Likes to thrash about
+195	218	L 17	Leftovers	7: Munchlax	12	DCF5A1DA	No	Quirky	0: Pickup	4	8	3	2	7	8	Fire	63	♂	Likes to fight
+196	207	M 41	Leftovers	7: Munchlax	8	00000046	No	Calm	0: Pickup	17	23	4	24	20	14	Fighting	36	♂	Very finicky
+197	208	MH 74	Leftovers	7: Munchlax	15	00000040	No	Naive	0: Pickup	14	24	20	17	9	27	Ice	35	♂	Impetuous and silly
+198	209	M 56	Leftovers	7: Munchlax	14	0000003A	No	Impish	0: Pickup	27	17	9	2	27	22	Water	66	♂	Strongly defiant
+199	232	M 59	Leftovers	7: Munchlax	11	454C101E	No	Mild	0: Pickup	27	28	19	0	6	1	Ground	53	♀	Likes to fight
+200	211	M 59	Leftovers	7: Munchlax	8	0000003C	No	Timid	0: Pickup	20	5	27	22	17	4	Water	42	♂	Highly persistent

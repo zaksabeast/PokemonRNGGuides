@@ -1,7 +1,7 @@
 use super::console::Console;
 use super::entralink_timer;
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 
 const ENTRALINK_FRAME_RATE: f32 = 0.837_148_9;
 

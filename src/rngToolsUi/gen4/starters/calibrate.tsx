@@ -14,7 +14,10 @@ import {
   StatsValue,
 } from "~/rngTools";
 import { z } from "zod";
-import { natureOptions } from "~/components/pkmFilter";
+import {
+  getNatureInputProps,
+  pkmFilterNatureFieldToRustInput,
+} from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import { Gen4Starter, starterTimer, useStarterState } from "./state";
 import { maleFemale, nature, StatFieldsSchema } from "~/types";
@@ -70,13 +73,14 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
     title: t["Calibrate"],
     dataIndex: "key",
+    disableVerticalPadding: true,
     render: (_, target) => (
       <CalibrateTimerButton
         type="gen4"
         calibration={{ hit_delay: target.delay }}
         timer={starterTimer}
         trackerId="calibrate_gen4_starter"
-        previousStepOnClick
+        lastStepOnClick={1}
       />
     ),
   },
@@ -156,7 +160,7 @@ export const CalibrateStarter4 = () => {
       input: (
         <FormikSelect<FormState, "nature">
           name="nature"
-          options={natureOptions.required}
+          {...getNatureInputProps(t)}
         />
       ),
     },
@@ -199,7 +203,8 @@ export const CalibrateStarter4 = () => {
     });
 
     if (minMaxIvs == null) {
-      return [];
+      setResults([]);
+      return;
     }
 
     const datetime = toRngDateTime(
@@ -226,12 +231,18 @@ export const CalibrateStarter4 = () => {
         species: targetSpecies,
         lead: "None",
         seed: seedTime.seed,
+        // Starters will always be level 5
+        // If the user levels up to 6, that only impacts their stats, not their encounter level
+        // If we ever combine starter 4 and static 4 some day (and we should), we need to keep this in mind
+        encounter_min_level: 5,
+        encounter_max_level: 5,
+        filter_level: 5,
         filter_characteristic: opts.filter_characteristic,
         filter: {
           shiny: false,
           ability: null,
           ...minMaxIvs,
-          nature: opts.nature,
+          nature: pkmFilterNatureFieldToRustInput([opts.nature]),
           gender: opts.gender,
           hidden_power: defaultHiddenPowerFilter,
         },

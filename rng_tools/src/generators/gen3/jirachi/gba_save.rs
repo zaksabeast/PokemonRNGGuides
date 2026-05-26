@@ -1,6 +1,6 @@
 use super::save_time::SaveTime;
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 
 const BLOCK_ID_OFFSET: usize = 0xff4;
 const BLOCK_COUNT: usize = 14;

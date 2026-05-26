@@ -6,13 +6,14 @@ use crate::{
         IvPath,
         wild::{
             passes_pid_filter,
-            searcher::{
-                FindPidPathsOptions, IvFromStartArc, PidPath, PidToIvArc,
-                reverse_find_iv_paths_from_ivs,
-            },
+            searcher::{FindPidPathsOptions, IvFromStartArc, PidPath, PidToIvArc},
         },
     },
     rng::{Rng, lcrng::Pokerng},
+};
+
+use super::searcher_main::searcher_reverse::{
+    METHOD_1, METHOD_2, METHOD_3, METHOD_4, is_considered_method,
 };
 
 #[derive(Default, PartialEq, Debug, Clone, Copy)]
@@ -61,50 +62,56 @@ pub enum PidLowToIvArc {
     WithoutVBlank,
 }
 
-pub fn find_pid_low_paths_from_pid_low_seed<const METHOD3: bool>(
+pub fn find_pid_low_paths_from_pid_low_seed<const METHODS: u8>(
     opts: &FindPidPathsOptions,
     mut rng: Pokerng,
-) -> Option<Vec<PidLowPath>> {
+) -> Option<ArrayVec<PidLowPath, 2>> {
+    let has_methods_124 = is_considered_method(METHODS, METHOD_1 | METHOD_2 | METHOD_4);
+    let has_method_3 = is_considered_method(METHODS, METHOD_3);
     let pid_low = rng.rand::<u16>() as u32;
 
-    let pid_high_wild1245 = pid_low + ((rng.rand::<u16>() as u32) << 16);
-
-    let wild1245_good = passes_pid_filter(
-        &opts.filter,
-        &opts.gen3_filter,
-        Some(opts.encounter_gender_ratio),
-        pid_high_wild1245,
-        opts.tsv,
-    );
-
-    let wild3_good = {
-        if METHOD3 {
-            let pid_high_wild3 = pid_low + ((rng.rand::<u16>() as u32) << 16);
-            passes_pid_filter(
-                &opts.filter,
-                &opts.gen3_filter,
-                Some(opts.encounter_gender_ratio),
-                pid_high_wild3,
-                opts.tsv,
-            )
-        } else {
-            false
-        }
+    let wild124_good = if has_methods_124 {
+        let pid_high_wild124 = pid_low + ((rng.rand::<u16>() as u32) << 16);
+        passes_pid_filter(
+            &opts.filter,
+            &opts.gen3_filter,
+            Some(opts.encounter_gender_ratio),
+            pid_high_wild124,
+            opts.tsv,
+        )
+    } else {
+        false
     };
 
-    if !wild1245_good && !wild3_good {
+    let wild3_good = if has_method_3 {
+        if !has_methods_124 {
+            rng.rand::<u16>();
+        }
+        let pid_high_wild3 = pid_low + ((rng.rand::<u16>() as u32) << 16);
+        passes_pid_filter(
+            &opts.filter,
+            &opts.gen3_filter,
+            Some(opts.encounter_gender_ratio),
+            pid_high_wild3,
+            opts.tsv,
+        )
+    } else {
+        false
+    };
+
+    if !wild124_good && !wild3_good {
         return None;
     }
 
     // revert state
     rng.prev_rand();
     rng.prev_rand();
-    if METHOD3 {
+    if has_method_3 {
         rng.prev_rand();
     }
 
-    let mut pid_low_paths = vec![];
-    if wild1245_good {
+    let mut pid_low_paths: ArrayVec<PidLowPath, 2> = Default::default();
+    if wild124_good {
         pid_low_paths.push(PidLowPath {
             seed: rng.seed(),
             pid_low_to_iv_arc: PidLowToIvArc::WithoutVBlank,
@@ -119,27 +126,33 @@ pub fn find_pid_low_paths_from_pid_low_seed<const METHOD3: bool>(
     Some(pid_low_paths)
 }
 
-pub fn extend_pid_low_path_to_pid_paths(
+pub fn extend_pid_low_path_to_pid_paths<const METHODS: u8>(
     opts: &FindPidPathsOptions,
     pid_low_path: &PidLowPath,
 ) -> ArrayVec<PidPath, 3> {
     let mut pid_paths: ArrayVec<PidPath, 3> = Default::default();
-    if let Some(wild13_pid_path) = extend_pid_low_path_to_pid_path_wild13(opts, pid_low_path) {
-        pid_paths.push(wild13_pid_path);
-    }
-    if pid_low_path.pid_low_to_iv_arc == PidLowToIvArc::WithoutVBlank {
-        if let Some(wild2_pid_path) = extend_pid_low_path_to_pid_path_wild2(opts, pid_low_path) {
-            pid_paths.push(wild2_pid_path);
-        }
-        if let Some(wild4_pid_path) = extend_pid_low_path_to_pid_path_wild4(opts, pid_low_path) {
-            pid_paths.push(wild4_pid_path);
+
+    if is_considered_method(METHODS, METHOD_1 | METHOD_3) {
+        if let Some(wild13_pid_path) = extend_pid_low_path_to_pid_path_wild13(opts, pid_low_path) {
+            pid_paths.push(wild13_pid_path);
         }
     }
 
-    // To improve performance for the common case where consider_all_methods_124 is true, we filter by consider_all_methods_124 at the end.
-    if !opts.consider_all_methods_124 {
-        pid_paths.retain(|pid_path| opts.methods.contains(&pid_path.method()));
+    if pid_low_path.pid_low_to_iv_arc == PidLowToIvArc::WithoutVBlank {
+        if is_considered_method(METHODS, METHOD_2) {
+            if let Some(wild2_pid_path) = extend_pid_low_path_to_pid_path_wild2(opts, pid_low_path)
+            {
+                pid_paths.push(wild2_pid_path);
+            }
+        }
+        if is_considered_method(METHODS, METHOD_4) {
+            if let Some(wild4_pid_path) = extend_pid_low_path_to_pid_path_wild4(opts, pid_low_path)
+            {
+                pid_paths.push(wild4_pid_path);
+            }
+        }
     }
+
     pid_paths
 }
 
@@ -150,10 +163,6 @@ fn extend_pid_low_path_to_pid_path_wild13(
     let mut rng = pid_low_path.seed_after_pid_high();
 
     let ivs = Ivs::new_g3(rng.rand::<u16>(), rng.rand::<u16>());
-
-    if pid_low_path.seed == 0x6B61F77C {
-        println!("pid_low_path={:?}, wild13 ivs={:?}", pid_low_path, ivs);
-    }
 
     if ivs.filter(&opts.filter.min_ivs, &opts.filter.max_ivs) {
         let arc_type = match pid_low_path.pid_low_to_iv_arc {
@@ -213,23 +222,69 @@ fn extend_pid_low_path_to_pid_path_wild4(
     }
 }
 
-pub fn reverse_find_pid_low_paths_from_pids(pids: &[u32]) -> Vec<PidLowPath> {
-    pids.iter()
-        .flat_map(|pid| reverse_find_pid_low_paths_from_pid(*pid))
-        .collect()
+pub fn reverse_find_pid_low_paths_from_pids<const METHODS: u8>(
+    pids: impl Iterator<Item = u32>,
+) -> impl Iterator<Item = PidLowPath> {
+    pids.flat_map(reverse_find_pid_low_paths_from_pid::<METHODS>)
 }
 
-pub fn reverse_find_pid_low_paths_from_pid(pid: u32) -> Vec<PidLowPath> {
-    // We reuse the existing reverse IV logic for PID. It's not ideal because the first bit of IV is ignored
-    // but not the first bit of PID. This means the IV logic returns correct values and incorrect values.
-    // However, it's easy to filter them afterwards. The performance is not important.
-    let ivs = Ivs::new_g3((pid & 0xFFFF) as u16, (pid >> 16) as u16);
-    //NO_PROD reverse_find_iv_paths_from_ivs should work with iterators.
-    reverse_find_iv_paths_from_ivs(ivs.hp, ivs.atk, ivs.def, ivs.spa, ivs.spd, ivs.spe)
-        .iter()
-        .map(PidLowPath::from_iv_path)
-        .filter(|pid_low_path| pid_low_path.pid() == pid)
-        .collect::<Vec<_>>()
+/** pid has already been validated that it respects the filter */
+pub fn reverse_find_pid_low_paths_from_pid<const METHODS: u8>(pid: u32) -> ArrayVec<PidLowPath, 6> {
+    let mut pid_low_paths = ArrayVec::new();
+
+    if is_considered_method(METHODS, METHOD_1 | METHOD_2 | METHOD_4) {
+        reverse_find_pid_low_paths_with_arc::<0x41c64e6d, 0x6073, 0x67d3, 0xd3e, 0x4034>(
+            pid,
+            PidLowToIvArc::WithoutVBlank,
+            &mut pid_low_paths,
+        );
+    }
+
+    if is_considered_method(METHODS, METHOD_3) {
+        reverse_find_pid_low_paths_with_arc::<0xc2a29a69, 0xe97e7b6a, 0x3a89, 0x2e4c, 0x5831>(
+            pid,
+            PidLowToIvArc::WithVBlank,
+            &mut pid_low_paths,
+        );
+    }
+
+    pid_low_paths
+}
+
+fn reverse_find_pid_low_paths_with_arc<
+    const MULT: u32,
+    const ADD: u32,
+    const MOD: u32,
+    const PAT: u32,
+    const INC: u32,
+>(
+    pid: u32,
+    pid_low_to_iv_arc: PidLowToIvArc,
+    pid_low_paths: &mut ArrayVec<PidLowPath, 6>,
+) {
+    let first = pid << 16;
+    let second = pid & 0xffff0000;
+
+    let additional_add = if pid_low_to_iv_arc == PidLowToIvArc::WithoutVBlank {
+        0
+    } else {
+        ADD
+    };
+
+    let diff = second.wrapping_sub(first.wrapping_mul(MULT).wrapping_add(additional_add)) >> 16;
+    let start = ((diff.wrapping_mul(MOD).wrapping_add(INC) >> 16).wrapping_mul(PAT)) % MOD;
+
+    for low in (start..0x10000).step_by(MOD as usize) {
+        let seed_after_pid_low = first | low;
+        if seed_after_pid_low.wrapping_mul(MULT).wrapping_add(ADD) & 0xffff0000 == second {
+            let mut rng = Pokerng::new(seed_after_pid_low);
+            rng.prev_rand();
+            pid_low_paths.push(PidLowPath {
+                seed: rng.seed(),
+                pid_low_to_iv_arc,
+            });
+        }
+    }
 }
 
 /** returns all 524_288 possible PIDs that are shiny for the given tsv */

@@ -13,6 +13,7 @@ import React from "react";
 import { clamp } from "lodash-es";
 import { z } from "zod";
 import { useWatch } from "react-hook-form";
+import { toOptions } from "~/utils/options";
 
 type Game = "emerald" | "rs";
 
@@ -97,7 +98,10 @@ const Fields = () => {
     {
       label: "Battery",
       input: (
-        <FormikRadio<FormState> name="battery" options={["Live", "Dead"]} />
+        <FormikRadio<FormState>
+          name="battery"
+          options={toOptions(["Live", "Dead"] as const)}
+        />
       ),
     },
   ];

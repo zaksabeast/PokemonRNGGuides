@@ -172,14 +172,14 @@ const TimerContent = styled(Flex)(({ theme }) => ({
   justifyContent: "center",
   flex: 1,
   gap: 16,
-  [theme.mediaQueries.down("mobile")]: {
+  [theme.mediaQueries.down("smallTablet")]: {
     flexDirection: "column",
     gap: 12,
   },
 }));
 
 const TimerTextContent = styled(Flex)(({ theme }) => ({
-  [theme.mediaQueries.down("mobile")]: {
+  [theme.mediaQueries.down("smallTablet")]: {
     alignItems: "center",
     flexDirection: "column",
     textAlign: "center",
@@ -217,7 +217,7 @@ export const HomePageComponent = () => {
         </TimerContent>
       </Card>
 
-      <Grid mobile={1} tablet={2} desktop={3}>
+      <Grid mobile={1} smallTablet={2} tablet={3} desktop={3}>
         {games.map((game) => (
           <GameCard
             id={`home-game-${game.name}`}

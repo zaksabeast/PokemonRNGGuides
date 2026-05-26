@@ -2,6 +2,11 @@ import React from "react";
 import { Subscription, finalize, from, mergeMap } from "rxjs";
 import { identity, sortBy } from "lodash-es";
 import * as tst from "ts-toolbelt";
+import {
+  attachTerminateToPromise,
+  type CancellablePromise,
+  isCancellationError,
+} from "~/utils/cancellablePromise";
 
 /**
  * Gets a list of all batchable function name in an object.
@@ -33,6 +38,8 @@ type UseBatchToolResults<Arg, Ret> = {
   run: (args: Arg[]) => Promise<Ret[]>;
   /** Cancel the current operation */
   cancel: () => void;
+  /** Reset the current results and error state */
+  reset: () => void;
   /** The streamed data returned from the function, updated as new results are available. */
   data: Ret[];
   /** Whether the function is currently running. */
@@ -44,7 +51,7 @@ type UseBatchToolResults<Arg, Ret> = {
 };
 
 export const useBatchedTool = <Arg, Ret, MappedRet = Ret>(
-  func: (arg: Arg) => Promise<Ret[]>,
+  func: (arg: Arg) => CancellablePromise<Ret[]>,
   {
     map = identity,
     sortBy: sortWith,
@@ -58,10 +65,30 @@ export const useBatchedTool = <Arg, Ret, MappedRet = Ret>(
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<unknown>(null);
   const subRef = React.useRef<Subscription | null>(null);
+  // Set of promises that may have a terminate method (for cancellation)
+  const activePromisesRef = React.useRef<
+    Set<Promise<unknown> & { terminate?: () => void }>
+  >(new Set());
+
+  const cancelActiveRun = () => {
+    const activePromises = activePromisesRef.current;
+    activePromisesRef.current = new Set();
+
+    const sub = subRef.current;
+    subRef.current = null;
+
+    activePromises.forEach((promise) => {
+      promise.terminate?.();
+    });
+
+    sub?.unsubscribe();
+  };
 
   const run = (args: Arg[]) => {
     return new Promise<MappedRet[]>((resolve) => {
-      subRef.current?.unsubscribe(); // Cancel an active observable
+      // Cancel any previous run before starting a new one
+      cancelActiveRun();
+
       setLoading(true);
       setError(null);
       setProgress({
@@ -76,10 +103,33 @@ export const useBatchedTool = <Arg, Ret, MappedRet = Ret>(
       const sub = from(args)
         // Process each argument in parallel with a concurrency limit
         .pipe(
-          mergeMap(
-            (arg) => func(arg).then((results) => ({ arg, results })),
-            concurrency,
-          ),
+          mergeMap((arg) => {
+            const originalPromise = func(arg);
+
+            // Wrap with error handling while preserving the terminate method
+            const wrappedPromise = originalPromise
+              .then((results) => ({ arg, results }))
+              .catch((err) => {
+                if (!isCancellationError(err)) {
+                  setError(err);
+                }
+                return { arg, results: [] };
+              });
+
+            // Transfer the terminate method to the wrapped promise
+            const terminatablePromise = attachTerminateToPromise({
+              promise: wrappedPromise,
+              terminate: originalPromise.terminate,
+            });
+
+            // Track the promise so we can terminate it if needed
+            activePromisesRef.current.add(terminatablePromise);
+            terminatablePromise.finally(() =>
+              activePromisesRef.current.delete(terminatablePromise),
+            );
+
+            return terminatablePromise;
+          }, concurrency),
         )
         .pipe(
           // Called when the observable completes
@@ -100,11 +150,6 @@ export const useBatchedTool = <Arg, Ret, MappedRet = Ret>(
               totalChunks: prev.totalChunks,
             }));
           },
-          // Called on error
-          error: (err) => {
-            setError(err);
-            setLoading(false);
-          },
         });
 
       subRef.current = sub;
@@ -112,13 +157,28 @@ export const useBatchedTool = <Arg, Ret, MappedRet = Ret>(
   };
 
   const cancel = () => {
-    subRef.current?.unsubscribe();
+    // Cancel the active run and stop loading
+    cancelActiveRun();
     setLoading(false);
   };
+
+  const reset = () => {
+    setProgress({ data: [], finishedChunks: 0, totalChunks: 0 });
+    setError(null);
+  };
+
+  // Cleanup on unmount
+  React.useEffect(() => {
+    return () => {
+      // Cancel any active run on unmount
+      cancelActiveRun();
+    };
+  }, []);
 
   return {
     run,
     cancel,
+    reset,
     data: progress.data,
     loading,
     error,

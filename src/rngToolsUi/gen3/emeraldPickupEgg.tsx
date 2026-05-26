@@ -16,6 +16,7 @@ import {
   inheritedIvColumns,
 } from "~/rngToolsUi/shared/ivColumns";
 import { z } from "zod";
+import { defaultHiddenPowerFilter } from "~/components/hiddenPowerInput";
 import { IvsSchema } from "~/components/ivInput";
 import { HexSchema } from "~/utils/number";
 import { Translations } from "~/translations";
@@ -27,7 +28,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => {
 };
 
 const Validator = z.object({
-  delay: z.number().int().min(0),
+  delay: z.number().int(),
   seed: HexSchema(0xffffffff),
   initial_advances: z.number().int().min(0),
   max_advances: z.number().int().min(0),
@@ -116,10 +117,7 @@ export const EmeraldPickupEgg = () => {
     const results = await rngTools.emerald_egg_pickup_states({
       ...opts,
       parent_ivs: [opts.parent1_ivs, opts.parent2_ivs],
-      filter: {
-        max_ivs: opts.filter_max_ivs,
-        min_ivs: opts.filter_min_ivs,
-      },
+      filter_hidden_power: defaultHiddenPowerFilter,
     });
 
     setResults(results.map(flattenIvs));

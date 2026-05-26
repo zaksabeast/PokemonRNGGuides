@@ -8,6 +8,8 @@ import {
   RngToolForm,
   Button,
   Field,
+  FormFieldTable,
+  MinMaxContainer,
 } from "~/components";
 import {
   multiWorkerRngTools,
@@ -30,15 +32,19 @@ import {
 } from "~/rngToolsUi/shared/ivColumns";
 import { useCurrentStep } from "~/components/stepper/state";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
-import { formatSpeciesLabel, UndefinedToNull } from "~/types";
+import { formatSpeciesLabel, RustOption } from "~/types";
 import { chunkIvs } from "~/utils/chunkIvs";
 import { MonthSchema, monthToRustFilter } from "~/utils/time";
 import { Gen4GameVersion } from "../gen4types";
 import { getStatRange } from "~/types/statRange";
-import { defaultEncounter, Encounter, getGameEncounters } from "./encounters";
-import { useWatch } from "react-hook-form";
-import { useField } from "~/hooks/form";
-import { Translations } from "~/translations";
+import {
+  defaultEncounter,
+  getGameEncounters as getStaticEncounters,
+} from "../encounters/static";
+import { getGameEncounters as getHoneyEncounters } from "../encounters/honey";
+import { type Encounter } from "../encounters/encounter";
+import { useField, useWatch } from "~/hooks/form";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 type Result = FlattenIvs<
   Static4State["state"] & {
@@ -62,9 +68,8 @@ type SelectButtonProps = {
 const SelectButton = ({ target }: SelectButtonProps) => {
   const [, setCurrentStep] = useCurrentStep();
   const [, setState] = useStatic4State();
-  const [{ isFixedGender, level, species, form, advanceOffset }] = useAtom(
-    searchedEncounterAtom,
-  );
+  const [{ isFixedGender, minLevel, maxLevel, species, form, advanceOffset }] =
+    useAtom(searchedEncounterAtom);
 
   return (
     <Button
@@ -72,7 +77,7 @@ const SelectButton = ({ target }: SelectButtonProps) => {
       onClick={async () => {
         const minMaxStats = await getStatRange({
           species,
-          levelRange: [level, level],
+          levelRange: [minLevel, maxLevel],
         });
         setState((prev) => ({
           ...prev,
@@ -81,7 +86,8 @@ const SelectButton = ({ target }: SelectButtonProps) => {
             isFixedGender,
             species,
             form,
-            level,
+            encounterMinLevel: minLevel,
+            encounterMaxLevel: maxLevel,
             minMaxStats,
             advanceOffset,
           },
@@ -145,6 +151,7 @@ const columns: ResultColumn<Result>[] = [
   {
     title: "Select",
     dataIndex: "key",
+    disableVerticalPadding: true,
     render: (_, target) => <SelectButton target={target} />,
   },
   {
@@ -183,65 +190,83 @@ const leadOptions = [
   { label: "Synchronize", value: "Synchronize" },
 ] satisfies { label: string; value: Static4LeadInput }[];
 
-const OffsetField = ({ game }: { game: Gen4GameVersion }) => {
+type OffsetFieldProps = { game: Gen4GameVersion; encounter: Encounter | null };
+
+const OffsetField = ({ game, encounter }: OffsetFieldProps) => {
   const [, , { setValue }] = useField<FormState["offset"]>("offset");
-  const encounterId = useWatch<Pick<FormState, "encounter_id">>({
-    name: "encounter_id",
-  });
 
   React.useEffect(() => {
-    const encounters = getGameEncounters(game);
-    const encounter = encounters[encounterId];
     const offset = encounter?.offset ?? 0;
     setValue(offset);
-  }, [setValue, game, encounterId]);
+  }, [setValue, game, encounter]);
 
   return <FormikNumberInput<FormState> name="offset" numType="decimal" />;
 };
 
-const getFields = (t: Translations, game: Gen4GameVersion): Field[] => {
-  const encounters = getGameEncounters(game);
+type FieldsProps = {
+  game: Gen4GameVersion;
+  getEncounters: (game: Gen4GameVersion) => Record<string, Encounter>;
+};
 
-  return [
+const Fields = ({ game, getEncounters }: FieldsProps) => {
+  const t = useActiveRouteTranslations();
+  const { encounter_id } = useWatch({
+    validationSchema: Validator,
+    names: { encounter_id: true },
+  });
+  const encounters = getEncounters(game);
+  const encounter = encounter_id == null ? null : encounters[encounter_id];
+
+  const fields: Field[] = [
     {
-      label: t["TID"],
-      input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-    },
-    {
-      label: t["SID"],
-      input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
+      label: t["TID / SID"],
+      input: (
+        <MinMaxContainer
+          min={<FormikNumberInput<FormState> name="tid" numType="decimal" />}
+          max={<FormikNumberInput<FormState> name="sid" numType="decimal" />}
+          delimeter="/"
+        />
+      ),
     },
     {
       label: t["Year"],
       input: <FormikNumberInput<FormState> name="year" numType="decimal" />,
     },
     {
-      label: t["Min Delay"],
+      label: t["Delay"],
       input: (
-        <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
+        <MinMaxContainer
+          min={
+            <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
+          }
+          max={
+            <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
+          }
+        />
       ),
     },
     {
-      label: t["Max Delay"],
+      label: t["Advance"],
       input: (
-        <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
-      ),
-    },
-    {
-      label: t["Min Advance"],
-      input: (
-        <FormikNumberInput<FormState> name="min_advance" numType="decimal" />
-      ),
-    },
-    {
-      label: t["Max Advance"],
-      input: (
-        <FormikNumberInput<FormState> name="max_advance" numType="decimal" />
+        <MinMaxContainer
+          min={
+            <FormikNumberInput<FormState>
+              name="min_advance"
+              numType="decimal"
+            />
+          }
+          max={
+            <FormikNumberInput<FormState>
+              name="max_advance"
+              numType="decimal"
+            />
+          }
+        />
       ),
     },
     {
       label: t["Offset"],
-      input: <OffsetField game={game} />,
+      input: <OffsetField game={game} encounter={encounter} />,
     },
     {
       label: t["Species"],
@@ -264,7 +289,7 @@ const getFields = (t: Translations, game: Gen4GameVersion): Field[] => {
         <FormikSelect<FormState, "lead"> name="lead" options={leadOptions} />
       ),
     },
-    ...getPkmFilterFields({}, t),
+    ...getPkmFilterFields({ species: encounter?.species }, t),
     {
       label: t["Force Second"],
       input: (
@@ -272,6 +297,8 @@ const getFields = (t: Translations, game: Gen4GameVersion): Field[] => {
       ),
     },
   ];
+
+  return <FormFieldTable fields={fields} />;
 };
 
 const mapResult = (res: Static4State): Result => {
@@ -286,21 +313,28 @@ const mapResult = (res: Static4State): Result => {
   };
 };
 
-export const Static4Searcher = () => {
+type Static4SearcherProps = {
+  honey?: boolean;
+};
+
+export const Static4Searcher = ({ honey = false }: Static4SearcherProps) => {
   const [state] = useStatic4State();
   const [, setSearchedEncounter] = useAtom(searchedEncounterAtom);
   const game = state.game;
 
+  const getEncounters = honey ? getHoneyEncounters : getStaticEncounters;
+
   const {
     run: searchStaticSeeds,
     data: results,
+    progressPercent,
     cancel,
   } = useBatchedTool(multiWorkerRngTools.search_static4, {
     map: mapResult,
   });
 
   const onSubmit = async (opts: FormState) => {
-    const encounters = getGameEncounters(game);
+    const encounters = getEncounters(game);
     const encounter = encounters[opts.encounter_id];
 
     if (encounter == null) {
@@ -309,7 +343,7 @@ export const Static4Searcher = () => {
 
     setSearchedEncounter({ ...encounter, advanceOffset: opts.offset });
 
-    const baseOpts: UndefinedToNull<SearchStatic4Opts> = {
+    const baseOpts: RustOption<SearchStatic4Opts> = {
       filter: pkmFilterFieldsToRustInput(opts),
       force_second: opts.force_second,
       max_advance: opts.max_advance,
@@ -323,6 +357,8 @@ export const Static4Searcher = () => {
       year: opts.year,
       month: monthToRustFilter(opts.month),
       lead: opts.lead,
+      encounter_min_level: encounter.minLevel,
+      encounter_max_level: encounter.maxLevel,
       game,
     };
     const chunkedIvs = chunkIvs(opts.filter_min_ivs, opts.filter_max_ivs);
@@ -338,21 +374,21 @@ export const Static4Searcher = () => {
     await searchStaticSeeds(searchOpts);
   };
 
-  const getTranslatedFields = (t: Translations) => getFields(t, game);
-
   return (
     <RngToolForm<FormState, Result>
       columns={columns}
       results={results}
       initialValues={initialValues}
       validationSchema={Validator}
-      getFields={getTranslatedFields}
       onSubmit={onSubmit}
       rowKey="key"
       submitTrackerId="search_gen4_static"
       allowCancel
       cancelTrackerId="cancel_gen4_static"
       onCancel={cancel}
-    />
+      progressPercent={progressPercent}
+    >
+      <Fields game={game} getEncounters={getEncounters} />
+    </RngToolForm>
   );
 };

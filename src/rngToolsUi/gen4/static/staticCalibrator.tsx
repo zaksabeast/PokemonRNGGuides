@@ -1,4 +1,4 @@
-import { uniqueId } from "lodash-es";
+import { uniqueId, range } from "lodash-es";
 import { match } from "ts-pattern";
 import { z } from "zod";
 import {
@@ -14,10 +14,9 @@ import {
   defaultMinMaxStats,
   gender,
   maleFemale,
-  MinMaxStats,
   nature,
   StatFieldsSchema,
-  UndefinedToNull,
+  RustOption,
 } from "~/types";
 import { Translations } from "~/translations";
 import { message } from "antd";
@@ -25,6 +24,7 @@ import {
   Button,
   CalibrateTimerButton,
   Field,
+  FormFieldTable,
   FormikNumberInput,
   FormikRadio,
   FormikSelect,
@@ -35,7 +35,10 @@ import {
 } from "~/components";
 import { formatOffset } from "~/utils/offsetSymbol";
 import { getStatFields } from "~/rngToolsUi/shared/statFields";
-import { natureOptions } from "~/components/pkmFilter";
+import {
+  getNatureInputProps,
+  pkmFilterNatureFieldToRustInput,
+} from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { Static4Target, useStatic4State, static4TimerAtom } from "./state";
@@ -55,12 +58,14 @@ type Result = Gen4StaticPokemon & {
   secondOffset: number;
   delayOffset: number;
   seed: number;
+  delay: number;
 };
 
 const Validator = z
   .object({
     nature: z.enum(nature),
     gender: z.enum(gender),
+    filter_level: z.number().int().min(1).max(100),
     filter_characteristic: z.enum(characteristics),
     delayRange: z.number().min(0),
     secondsRange: z.number().min(0),
@@ -69,21 +74,6 @@ const Validator = z
   .extend(StatFieldsSchema.shape);
 
 export type FormState = z.infer<typeof Validator>;
-
-const initialValues: FormState = {
-  hpStat: 0,
-  atkStat: 0,
-  defStat: 0,
-  spaStat: 0,
-  spdStat: 0,
-  speStat: 0,
-  nature: "Adamant",
-  gender: "Male",
-  filter_characteristic: "AlertToSounds",
-  delayRange: 50,
-  secondsRange: 1,
-  advanceRange: 20,
-};
 
 type CalibrateStatic4AdvanceProps = {
   result: Result;
@@ -133,6 +123,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
     title: t["Calibrate"],
     dataIndex: "key",
+    disableVerticalPadding: true,
     render: (_, res) =>
       match(res)
         .with({ isCorrectSeed: true, isTarget: true }, () => null)
@@ -142,7 +133,15 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
         .with({ isCorrectSeed: false }, () => (
           <CalibrateTimerButton
             type="gen4"
-            calibration={{ hit_delay: res.seedDelay }}
+            calibration={{
+              hit_delay: res.delay,
+              ...(res.secondOffset !== 0
+                ? {
+                    second_offset: res.secondOffset,
+                  }
+                : {}),
+            }}
+            lastStepOnClick={2}
             label="Calibrate Timer"
             timer={static4TimerAtom}
             trackerId="calibrate_gen4_static_calibrator"
@@ -186,54 +185,74 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
 
 type FieldProps = {
   t: Translations;
-  minMaxStats: MinMaxStats;
-  isFixedGender: boolean;
+  target: Static4Target | null;
 };
 
-const getFields = ({ t, isFixedGender, minMaxStats }: FieldProps): Field[] => [
-  {
-    label: t["Gender"],
-    show: !isFixedGender,
-    input: (
-      <FormikRadio<FormState> name="gender" options={toOptions(maleFemale)} />
-    ),
-  },
-  {
-    label: t["Nature"],
-    input: (
-      <FormikSelect<FormState, "nature">
-        name="nature"
-        options={natureOptions.required}
-      />
-    ),
-  },
-  {
-    label: t["Characteristic"],
-    input: (
-      <FormikSelect<FormState, "filter_characteristic">
-        name="filter_characteristic"
-        options={Characteristic4Options}
-      />
-    ),
-  },
-  ...getStatFields<FormState>(minMaxStats, t),
-  {
-    label: t["Delay Range ±"],
-    input: <FormikNumberInput<FormState> name="delayRange" numType="decimal" />,
-  },
-  {
-    label: t["Seconds Range ±"],
-    input: (
-      <FormikNumberInput<FormState> name="secondsRange" numType="decimal" />
-    ),
-  },
-  {
-    label: t["Advance Range ±"],
-    input: (
-      <FormikNumberInput<FormState> name="advanceRange" numType="decimal" />
-    ),
-  },
-];
+const Fields = ({ t, target }: FieldProps) => {
+  const isFixedGender = target?.isFixedGender ?? false;
+  const minMaxStats = target?.minMaxStats ?? defaultMinMaxStats;
+  const minLevel = target?.encounterMinLevel ?? 1;
+  const maxLevel = target?.encounterMaxLevel ?? 1;
+
+  const fields: Field[] = [
+    {
+      label: t["Gender"],
+      show: !isFixedGender,
+      input: (
+        <FormikRadio<FormState> name="gender" options={toOptions(maleFemale)} />
+      ),
+    },
+    {
+      label: t["Nature"],
+      input: (
+        <FormikSelect<FormState, "nature">
+          name="nature"
+          {...getNatureInputProps(t)}
+        />
+      ),
+    },
+    {
+      label: t["Characteristic"],
+      input: (
+        <FormikSelect<FormState, "filter_characteristic">
+          name="filter_characteristic"
+          options={Characteristic4Options}
+        />
+      ),
+    },
+    {
+      label: t["Level"],
+      show: minLevel !== maxLevel,
+      input: (
+        <FormikRadio<FormState>
+          name="filter_level"
+          options={toOptions(range(minLevel, maxLevel + 1))}
+        />
+      ),
+    },
+    ...getStatFields<FormState>(minMaxStats, t),
+    {
+      label: t["Delay Range ±"],
+      input: (
+        <FormikNumberInput<FormState> name="delayRange" numType="decimal" />
+      ),
+    },
+    {
+      label: t["Seconds Range ±"],
+      input: (
+        <FormikNumberInput<FormState> name="secondsRange" numType="decimal" />
+      ),
+    },
+    {
+      label: t["Advance Range ±"],
+      input: (
+        <FormikNumberInput<FormState> name="advanceRange" numType="decimal" />
+      ),
+    },
+  ];
+
+  return <FormFieldTable fields={fields} />;
+};
 
 const sortBy = [
   (result: Result) => result.advanceOffset,
@@ -246,7 +265,7 @@ const mapResult = (
   {
     seedTime,
     target,
-  }: UndefinedToNull<Gen4StaticOpts> & {
+  }: RustOption<Gen4StaticOpts> & {
     seedTime: SeedTime4;
     target: Static4Target;
   },
@@ -264,6 +283,7 @@ const mapResult = (
     key: uniqueId(),
     seed: seedTime.seed,
     seedDelay: targetSeedTime.delay,
+    delay: seedTime.delay,
     secondOffset,
     delayOffset,
     advanceOffset,
@@ -283,16 +303,12 @@ export const Static4Calibrator = () => {
   const {
     run: generateStatic4States,
     data: results,
+    progressPercent,
     cancel,
+    reset,
   } = useBatchedTool(multiWorkerRngTools.generate_static4_states, {
     sortBy,
     map: mapResult,
-  });
-
-  const fields = getFields({
-    t,
-    isFixedGender: state.target?.isFixedGender ?? false,
-    minMaxStats: state.target?.minMaxStats ?? defaultMinMaxStats,
   });
 
   const onSubmit = async (opts: FormState) => {
@@ -313,13 +329,14 @@ export const Static4Calibrator = () => {
 
     const minMaxIvs = await getIvRangeFromStats({
       species: target.species,
-      lvl: target.level,
+      lvl: opts.filter_level,
       nature: opts.nature,
       stats: caughtStats,
     });
 
     if (minMaxIvs == null) {
-      return [];
+      reset();
+      return;
     }
 
     const { datetime: targetDateTime, delay: targetDelay } =
@@ -339,51 +356,80 @@ export const Static4Calibrator = () => {
       max_delay: maxDelay,
     });
 
-    const batchedOpts = seedTimes.map((seedTime) => ({
-      // Additional info for mapping results
-      target,
-      seedTime,
+    const batchedOpts = seedTimes.map(
+      (
+        seedTime,
+      ): RustOption<Gen4StaticOpts> & {
+        target: Static4Target;
+        seedTime: SeedTime4;
+      } => ({
+        // Additional info for mapping results
+        target,
+        seedTime,
 
-      // Used by generate_static4_states
-      seed: seedTime.seed,
-      species: target.species,
-      game: state.game,
-      initial_advances: Math.max(target.advance - opts.advanceRange, 0),
-      max_advances: 2 * opts.advanceRange,
-      offset: target.advanceOffset,
-      lead: target.lead,
-      filter: {
-        shiny: false,
-        ability: null,
-        nature: opts.nature,
-        gender: state.target?.isFixedGender
-          ? state.target?.gender
-          : opts.gender,
-        hidden_power: defaultHiddenPowerFilter,
-        ...minMaxIvs,
-      },
-      filter_characteristic: opts.filter_characteristic,
-      // Doesn't matter for calibration
-      tid: 0,
-      sid: 0,
-    }));
+        // Used by generate_static4_states
+        seed: seedTime.seed,
+        species: target.species,
+        game: state.game,
+        initial_advances: Math.max(target.advance - opts.advanceRange, 0),
+        max_advances: 2 * opts.advanceRange,
+        offset: target.advanceOffset,
+        lead: target.lead,
+        encounter_min_level: target.encounterMinLevel,
+        encounter_max_level: target.encounterMaxLevel,
+        filter_level: opts.filter_level,
+        filter: {
+          shiny: false,
+          ability: null,
+          nature: pkmFilterNatureFieldToRustInput([opts.nature]),
+          gender: state.target?.isFixedGender
+            ? state.target?.gender
+            : opts.gender,
+          hidden_power: defaultHiddenPowerFilter,
+          ...minMaxIvs,
+        },
+        filter_characteristic: opts.filter_characteristic,
+        // Doesn't matter for calibration
+        tid: 0,
+        sid: 0,
+      }),
+    );
 
     await generateStatic4States(batchedOpts);
+  };
+
+  const initialValues: FormState = {
+    hpStat: 0,
+    atkStat: 0,
+    defStat: 0,
+    spaStat: 0,
+    spdStat: 0,
+    speStat: 0,
+    nature: "Adamant",
+    gender: "Male",
+    filter_level: state.target?.level ?? 1,
+    filter_characteristic: "AlertToSounds",
+    delayRange: 50,
+    secondsRange: 1,
+    advanceRange: 20,
   };
 
   return (
     <RngToolForm<FormState, Result>
       allowCancel
-      fields={fields}
       getColumns={getColumns}
       results={results}
       initialValues={initialValues}
+      values={initialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
       onCancel={cancel}
       rowKey="key"
       submitTrackerId="calibrate_static4"
       cancelTrackerId="cancel_calibrate_static4"
-    />
+      progressPercent={progressPercent}
+    >
+      <Fields t={t} target={state.target} />
+    </RngToolForm>
   );
 };

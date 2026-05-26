@@ -1,14 +1,19 @@
+import React from "react";
 import * as tst from "ts-toolbelt";
+import { isEqual } from "lodash-es";
 import styled from "@emotion/styled";
 import { Select as AntdSelect, SelectProps as AntdSelectProps } from "antd";
 import { useField } from "~/hooks/form";
 import { GenericForm } from "~/types/form";
 import { Flex } from "./flex";
-import React from "react";
 import { Icon } from "./icons";
 import { Button } from "./button";
 import { Typography } from "./typography";
 import { Path, Paths } from "~/types";
+import { PrimitiveAtom, useAtom } from "jotai";
+import { toOptions } from "~/utils/options";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { Translation } from "~/translations";
 
 const SelectContainer = styled(Flex)({
   ".ant-select": {
@@ -27,11 +32,42 @@ type SelectProps<ValueType> = {
 
 export const Select = <ValueType,>({
   fullFlex,
+  value,
+  onChange,
+  onSelect,
+  mode,
+  options,
   ...props
 }: SelectProps<ValueType>) => {
+  React.useEffect(() => {
+    if (
+      mode !== "multiple" &&
+      options != null &&
+      options.length > 0 &&
+      options.find((opt) => isEqual(opt.value, value)) == null
+    ) {
+      // The props types guarantee this is correct in usage, but TS can't figure it out internally
+      const safeValue = options[0].value as ValueType;
+      onChange?.(safeValue, options[0]);
+
+      // @ts-expect-error -- this is incorrect for multiple select
+      // but is correct for single select and we're checking mode !== "multiple"
+      onSelect?.(safeValue, options[0]);
+    }
+  }, [mode, options, onChange, onSelect, value]);
+
   return (
     <SelectContainer flex={fullFlex ? 1 : undefined}>
-      <AntdSelect size="large" showSearch {...props} />
+      <AntdSelect
+        size="large"
+        showSearch={{ optionFilterProp: "label" }}
+        mode={mode}
+        value={value}
+        onSelect={onSelect}
+        onChange={onChange}
+        options={options}
+        {...props}
+      />
     </SelectContainer>
   );
 };
@@ -42,7 +78,7 @@ type SingleFormikSelectValue<
 > =
   Path<FormState, FieldKey> extends string | number | null
     ? {
-        label: string;
+        label: React.ReactNode;
         value: Path<FormState, FieldKey>;
       }[]
     : never;
@@ -69,7 +105,7 @@ type MultiFormikSelectValue<
 > =
   Path<FormState, FieldKey> extends string[] | number[] | null
     ? {
-        label: string;
+        label: React.ReactNode;
         value: Path<FormState, FieldKey>[keyof Path<FormState, FieldKey>];
       }[]
     : never;
@@ -157,5 +193,33 @@ export const FormikSelect = <
         <Typography.Text type="danger">{error}</Typography.Text>
       )}
     </>
+  );
+};
+
+type AtomSelectProps<State, Option> = {
+  options: Option[] | Readonly<Option[]>;
+  atom: PrimitiveAtom<State>;
+  getValue: (state: State) => Option;
+  nextState: (state: State, option: Option) => State;
+  format?: (option: Option) => string;
+};
+
+export const AtomSelect = <State, Option extends Translation>({
+  options,
+  atom,
+  getValue,
+  nextState,
+  format: _format,
+}: AtomSelectProps<State, Option>) => {
+  const t = useActiveRouteTranslations();
+  const format = _format ?? ((option: Option) => t[option]);
+  const [state, setState] = useAtom(atom);
+
+  return (
+    <Select<Option>
+      options={toOptions(options, format)}
+      value={getValue(state)}
+      onChange={(option) => setState((prev) => nextState(prev, option))}
+    />
   );
 };

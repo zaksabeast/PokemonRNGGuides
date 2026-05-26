@@ -1,6 +1,7 @@
 import React from "react";
 import { Typography } from "./typography";
-import { Table, TableProps } from "antd";
+import { Table, TableProps, Tooltip } from "antd";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 import { ClassNames } from "@emotion/react";
 import * as tst from "ts-toolbelt";
 import { useFormContext, useFormState } from "react-hook-form";
@@ -13,6 +14,8 @@ export type SingleResultColumn<T> = keyof T extends string
         dataIndex: K;
         monospace?: boolean;
         show?: boolean;
+        disableVerticalPadding?: boolean;
+        tooltip?: React.ReactNode;
       } & (
         | {
             title: React.ReactNode;
@@ -33,6 +36,7 @@ export type ResultColumnGroup<T> = {
   type: "group";
   columns: SingleResultColumn<T>[];
   show?: boolean;
+  tooltip?: React.ReactNode;
 } & (
   | {
       title: React.ReactNode;
@@ -50,8 +54,10 @@ const applyMonospace = <Record extends tst.O.Object>(
   column: ResultColumn<Record>,
 ) => {
   if (column.type === "group") {
-    column.columns = column.columns.map(applyMonospaceSingleColumn);
-    return column;
+    return {
+      ...column,
+      columns: column.columns.map(applyMonospaceSingleColumn),
+    };
   }
   return applyMonospaceSingleColumn(column);
 };
@@ -75,7 +81,6 @@ const applyMonospaceSingleColumn = <Record extends tst.O.Object>(
   };
 };
 
-// eslint-disable-next-line id-length
 const TABLE_SCROLL = { x: true } as const;
 
 type FormikResultTableProps<Record extends tst.O.Object> = tst.O.Overwrite<
@@ -88,6 +93,19 @@ export const ResultTable = <Record extends tst.O.Object>(
 ) => {
   const columns = (props.columns ?? []).map(applyMonospace);
 
+  const titleWithTooltip = (
+    title: React.ReactNode,
+    tooltip?: React.ReactNode,
+  ) => {
+    if (tooltip == null) {
+      return title;
+    }
+    return (
+      <Tooltip title={tooltip}>
+        {title} <QuestionCircleOutlined />
+      </Tooltip>
+    );
+  };
   const children = columns.map((column) => {
     if (column.show === false) {
       return null;
@@ -96,13 +114,22 @@ export const ResultTable = <Record extends tst.O.Object>(
     if (column.type === "group") {
       const groupKey = column.key == null ? column.title : column.key;
       return (
-        <Table.ColumnGroup title={column.title} key={groupKey}>
+        <Table.ColumnGroup
+          title={titleWithTooltip(column.title, column.tooltip)}
+          key={groupKey}
+        >
           {column.columns.map((subColumn) => {
             const colKey =
               subColumn.key == null
                 ? subColumn.dataIndex + " " + subColumn.title
                 : subColumn.key;
-            return <Table.Column {...subColumn} key={colKey} />;
+            return (
+              <Table.Column
+                {...subColumn}
+                title={titleWithTooltip(subColumn.title, subColumn.tooltip)}
+                key={colKey}
+              />
+            );
           })}
         </Table.ColumnGroup>
       );
@@ -110,7 +137,16 @@ export const ResultTable = <Record extends tst.O.Object>(
 
     const colKey =
       column.key == null ? column.dataIndex + " " + column.title : column.key;
-    return <Table.Column {...column} key={colKey} />;
+    return (
+      <Table.Column
+        {...column}
+        key={colKey}
+        title={titleWithTooltip(column.title, column.tooltip)}
+        className={
+          column.disableVerticalPadding ? "disable-vertical-padding" : undefined
+        }
+      />
+    );
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -128,6 +164,13 @@ export const ResultTable = <Record extends tst.O.Object>(
               ".ant-table-cell": {
                 whiteSpace: "nowrap",
                 width: "auto",
+              },
+              "& span": {
+                verticalAlign: "middle",
+              },
+              ".disable-vertical-padding": {
+                paddingTop: 0,
+                paddingBottom: 0,
               },
             },
           })}

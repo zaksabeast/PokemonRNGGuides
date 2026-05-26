@@ -1,6 +1,6 @@
 use super::super::{console::Console, entralink_timer, second_timer};
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 fn get_second_calibration(console: Console, target_second: f32, hit_second: f32) -> f32 {

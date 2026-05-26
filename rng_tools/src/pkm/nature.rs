@@ -1,6 +1,6 @@
 use num_enum::{FromPrimitive, IntoPrimitive};
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 
 #[derive(
     Clone, Copy, Debug, Eq, PartialEq, FromPrimitive, IntoPrimitive, Tsify, Serialize, Deserialize,
@@ -35,6 +35,8 @@ pub enum Nature {
     Careful = 23,
     Quirky = 24,
 }
+
+pub const NATURE_COUNT: usize = 25;
 
 impl Nature {
     pub fn from_pid(pid: u32) -> Self {

@@ -6,6 +6,7 @@ import { withCss } from "./withCss";
 import { Flex } from "./flex";
 import { Typography } from "./typography";
 import { Paths } from "~/types";
+import { PrimitiveAtom, useAtom } from "jotai";
 
 export const Switch = withCss(AntdSwitch);
 
@@ -38,5 +39,28 @@ export const FormikSwitch = <FormState extends GenericForm>({
         <Typography.Text type="danger">{error}</Typography.Text>
       )}
     </Flex>
+  );
+};
+
+type AtomSwitchProps<State> = {
+  atom: PrimitiveAtom<State>;
+  getValue: (state: State) => boolean;
+  nextState: (state: State, option: boolean) => State;
+};
+
+export const AtomSwitch = <State,>({
+  atom,
+  getValue,
+  nextState,
+}: AtomSwitchProps<State>) => {
+  const [state, setState] = useAtom(atom);
+
+  return (
+    <Switch
+      onChange={(updatedValue) => {
+        setState((prev) => nextState(prev, updatedValue));
+      }}
+      value={getValue(state)}
+    />
   );
 };

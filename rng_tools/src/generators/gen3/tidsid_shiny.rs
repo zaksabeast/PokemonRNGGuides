@@ -5,7 +5,7 @@ use crate::rng::Rng;
 use crate::rng::lcrng::Pokerng;
 use crate::{gen3_psv, gen3_tsv};
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 /// ---------------------------------------------------------------------------------------------------------------------------

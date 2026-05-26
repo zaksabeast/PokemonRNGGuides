@@ -1,13 +1,19 @@
-import { Field, FormFieldTable } from "~/components";
+import { Field, FormFieldTable, AtomSelect } from "~/components";
 import { id4Atom } from "./state";
 import { Gen4GameVersions } from "../gen4types";
-import { SelectGame } from "../shared/selectGame";
 import { Gen4ConsoleSelect } from "../shared/consoleSelect";
 
 const fields: Field[] = [
   {
     label: "Game",
-    input: <SelectGame stateAtom={id4Atom} games={Gen4GameVersions} />,
+    input: (
+      <AtomSelect
+        atom={id4Atom}
+        options={Gen4GameVersions}
+        getValue={(state) => state.game}
+        nextState={(prev, game) => ({ ...prev, game })}
+      />
+    ),
   },
   {
     label: "Console",

@@ -10,6 +10,8 @@ import { NeedsUpdateNotification } from "~/swRefresh/notification";
 import { useActiveRoute } from "./hooks/useActiveRoute";
 import { getGuide } from "./guides";
 import { useUpdateHydration } from "./hooks/useHydrate";
+import { useUserInteraction } from "./hooks/useUserInteraction";
+import { resumeSharedAudioContext } from "~/utils/sharedAudio";
 
 type Props = {
   updateSw: (reloadPage: boolean) => void;
@@ -19,6 +21,8 @@ export const App = ({ updateSw }: Props) => {
   useUpdateHydration();
   const route = useActiveRoute();
   const currentLanguage = getGuide(route).meta.translation?.language ?? "en";
+
+  useUserInteraction(resumeSharedAudioContext);
 
   React.useEffect(() => {
     document.documentElement.lang = currentLanguage;

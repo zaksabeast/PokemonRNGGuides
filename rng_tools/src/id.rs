@@ -1,6 +1,6 @@
 use crate::{gen3_psv, gen3_tsv, gen6_psv, gen6_tsv};
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]

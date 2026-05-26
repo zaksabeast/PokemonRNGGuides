@@ -6,6 +6,7 @@ mod filter;
 mod game_data;
 mod generator;
 mod lcrng_distance;
+mod most_dense_pid_chunks_by_spd;
 mod searcher;
 mod types;
 
@@ -16,5 +17,6 @@ pub use filter::*;
 pub use game_data::*;
 pub use generator::*;
 pub use lcrng_distance::*;
+pub use most_dense_pid_chunks_by_spd::*;
 pub use searcher::*;
 pub use types::*;

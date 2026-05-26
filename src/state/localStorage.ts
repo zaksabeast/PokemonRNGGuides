@@ -6,12 +6,12 @@ import { hydrationLock } from "~/utils/hydration";
 export { useAtom } from "jotai";
 
 const fakeLocalStorage = {
-  getItem: noop,
+  getItem: () => null,
   setItem: noop,
   removeItem: noop,
 };
 
-const ssrLocalStorage =
+export const ssrLocalStorage =
   typeof window !== "undefined" ? window.localStorage : fakeLocalStorage;
 
 export const atomWithPersistence = <Schema extends z.ZodObject>(

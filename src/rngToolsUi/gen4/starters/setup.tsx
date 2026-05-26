@@ -1,6 +1,5 @@
-import { Field, FormFieldTable } from "~/components";
+import { Field, FormFieldTable, AtomSelect } from "~/components";
 import { starterAtom } from "./state";
-import { SelectGame } from "../shared/selectGame";
 import { Gen4ConsoleSelect } from "../shared/consoleSelect";
 import { Translations } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
@@ -16,7 +15,14 @@ const supportedGames = [
 const getFields = (t: Translations): Field[] => [
   {
     label: t["Game"],
-    input: <SelectGame stateAtom={starterAtom} games={supportedGames} />,
+    input: (
+      <AtomSelect
+        atom={starterAtom}
+        options={supportedGames}
+        getValue={(state) => state.game}
+        nextState={(prev, game) => ({ ...prev, game })}
+      />
+    ),
   },
   {
     label: t["Console"],

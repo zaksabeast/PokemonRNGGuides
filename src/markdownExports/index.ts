@@ -37,6 +37,8 @@ import {
   MediaTableRow,
   MediaTableCell,
   YouTubeTable,
+  EqualColumnTable,
+  Pixelate,
 } from "~/components";
 import { Glossary } from "~/pageComponents/glossary";
 import { Gen7SosList } from "~/pageComponents/gen7Sos/sosList";
@@ -81,6 +83,7 @@ const nonTools = {
   Text: MarkdownParagraph,
   YouTubeVideo,
   PixelImage,
+  Image: MarkdownImage,
   Alert,
   Countdown,
   Flex,
@@ -98,12 +101,14 @@ const nonTools = {
   Id4ShowIf,
   WhatNext,
   YouTubeTable,
+  EqualColumnTable,
   TranslationHelperSelectGuide,
   TranslationHelperEditGuide,
   ToolTranslationButton,
   TranslationHelperSelectLanguage,
   blockquote: MarkdownBlockquote,
   TextArea: Input.TextArea,
+  Pixelate,
 };
 
 const lazyLoad = <ImportRes, Props>(
@@ -169,17 +174,21 @@ const tools = {
     () => import("~/rngToolsUi/gen3/battleVideo/battleVideo"),
     (mod) => mod.BattleVideo,
   ),
-  Wild3SearcherFindTarget: lazyLoad(
-    () => import("~/rngToolsUi/gen3/wild/wild3FindTarget"),
-    (mod) => mod.Wild3SearcherFindTarget,
+  Wild3TargetSetupSearcher: lazyLoad(
+    () => import("~/rngToolsUi/gen3/wild/wild3TargetSetupSearcher"),
+    (mod) => mod.Wild3TargetSetupSearcher,
   ),
   Wild3Calib: lazyLoad(
     () => import("~/rngToolsUi/gen3/wild/wild3Calib"),
     (mod) => mod.Wild3Calib,
   ),
-  Wild3MethodDistribution: lazyLoad(
-    () => import("~/rngToolsUi/gen3/wild/wild3MethodDistribution"),
-    (mod) => mod.Wild3MethodDistribution,
+  Wild3LeadCycleSpeedSelector: lazyLoad(
+    () => import("~/rngToolsUi/gen3/wild/wild3LeadCycleSpeedSelector"),
+    (mod) => mod.Wild3LeadCycleSpeedSelector,
+  ),
+  Wild3TargetSetupAndLeadInputStandalone: lazyLoad(
+    () => import("~/rngToolsUi/gen3/wild/wild3TargetSetupAndLeadInput"),
+    (mod) => mod.Wild3TargetSetupAndLeadInputStandalone,
   ),
   Gen3PidSpeedCalculator: lazyLoad(
     () => import("~/rngToolsUi/gen3/pidSpeedCalculator"),
@@ -192,6 +201,18 @@ const tools = {
   EmeraldPaintingReseeding: lazyLoad(
     () => import("~/rngToolsUi/gen3/paintingReseeding/paintingReseeding"),
     (mod) => mod.EmeraldPaintingReseeding,
+  ),
+  EmeraldPaintingReseeding_WithTargetSetup: lazyLoad(
+    () => import("~/rngToolsUi/gen3/wild/wild3"),
+    (mod) => mod.EmeraldPaintingReseeding_WithTargetSetup,
+  ),
+  Wild3Calib_WithTargetSetupAndBattleVideo: lazyLoad(
+    () => import("~/rngToolsUi/gen3/wild/wild3"),
+    (mod) => mod.Wild3Calib_WithTargetSetupAndBattleVideo,
+  ),
+  Wild3TargetSetupSearcher_WithSetTargetSetup: lazyLoad(
+    () => import("~/rngToolsUi/gen3/wild/wild3"),
+    (mod) => mod.Wild3TargetSetupSearcher_WithSetTargetSetup,
   ),
   Gen3TidSidGenerator: lazyLoad(
     () => import("~/rngToolsUi/gen3/tidsid"),
@@ -256,6 +277,10 @@ const tools = {
   PaintingSeedToEmuTimer: lazyLoad(
     () => import("~/rngToolsUi/gen3/paintingReseeding/paintingSeedToEmuTimer"),
     (mod) => mod.PaintingSeedToEmuTimer,
+  ),
+  RetailEmeraldEggStateText: lazyLoad(
+    () => import("~/rngToolsUi/gen3/retailEmeraldEgg/stateText"),
+    (mod) => mod.RetailEmeraldEggStateText,
   ),
   RetailEmeraldHeldEgg: lazyLoad(
     () => import("~/rngToolsUi/gen3/retailEmeraldEgg/heldEgg"),
@@ -353,13 +378,65 @@ const tools = {
     () => import("~/rngToolsUi/gen4/static/staticCalibrator"),
     (mod) => mod.Static4Calibrator,
   ),
-  ChatterFilter: lazyLoad(
+  Static4ChatterFilter: lazyLoad(
     () => import("~/rngToolsUi/gen4/static/chatterFilter"),
-    (mod) => mod.ChatterFilter,
+    (mod) => mod.Static4ChatterFilter,
   ),
   Gen5CalibrationResults: lazyLoad(
     () => import("~/rngToolsUi/gen5/calibrationResults/calibrationResults"),
     (mod) => mod.Gen5CalibrationResults,
+  ),
+  IvCalc: lazyLoad(
+    () => import("~/rngToolsUi/ivCalc/ivCalc"),
+    (mod) => mod.IvCalc,
+  ),
+  Profile5Calibrator: lazyLoad(
+    () => import("~/rngToolsUi/gen5/profileSearcher/calibrator"),
+    (mod) => mod.Profile5Calibrator,
+  ),
+  Profile5Setup: lazyLoad(
+    () => import("~/rngToolsUi/gen5/profileSearcher/setup"),
+    (mod) => mod.Profile5Setup,
+  ),
+  HoneyTreeChatotFilter: lazyLoad(
+    () => import("~/rngToolsUi/gen4/honeyTree/chatotFilter"),
+    (mod) => mod.HoneyTreeChatotFilter,
+  ),
+  HoneyTreeTidSid: lazyLoad(
+    () => import("~/rngToolsUi/gen4/honeyTree/tidSid"),
+    (mod) => mod.HoneyTreeTidSid,
+  ),
+  HoneyTreeCoinClipper: lazyLoad(
+    () => import("~/rngToolsUi/gen4/honeyTree/coinFlipper"),
+    (mod) => mod.HoneyTreeCoinClipper,
+  ),
+  HoneyTreeFindEncounter: lazyLoad(
+    () => import("~/rngToolsUi/gen4/honeyTree/findEncounter"),
+    (mod) => mod.HoneyTreeFindEncounter,
+  ),
+  HoneyTreeShowIf: lazyLoad(
+    () => import("~/rngToolsUi/gen4/honeyTree/showIf"),
+    (mod) => mod.HoneyTreeShowIf,
+  ),
+  HoneyTreeMap: lazyLoad(
+    () => import("~/rngToolsUi/gen4/honeyTree/map"),
+    (mod) => mod.HoneyTreeMap,
+  ),
+  HoneyTreeTargetTree: lazyLoad(
+    () => import("~/rngToolsUi/gen4/honeyTree/targetTree"),
+    (mod) => mod.HoneyTreeTargetTree,
+  ),
+  StandaloneSinnohMap: lazyLoad(
+    () => import("~/rngToolsUi/gen4/standaloneSinnohMap"),
+    (mod) => mod.StandaloneSinnohMap,
+  ),
+  StandaloneChatterFilter: lazyLoad(
+    () => import("~/rngToolsUi/gen4/standaloneChatterFilter"),
+    (mod) => mod.StandaloneChatterFilter,
+  ),
+  SelectSwarm4Target: lazyLoad(
+    () => import("~/rngToolsUi/gen4/swarm/selectTarget"),
+    (mod) => mod.SelectSwarm4Target,
   ),
 };
 

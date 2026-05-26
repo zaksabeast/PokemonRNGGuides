@@ -16,7 +16,7 @@ const PERSONALS: &[Personal] = &[
     /* None */
     Personal {
         base_stats: stats!(0 / 0 / 0 / 0 / 0 / 0),
-        gender_ratio: MaleOnly,
+        gender_ratio: Genderless,
         abilities: &[None, None],
         types: [Normal, Normal],
         forms: &[],
@@ -2833,7 +2833,7 @@ const PERSONALS: &[Personal] = &[
                 base_stats: stats!(70 / 70 / 70 / 70 / 70 / 70),
                 gender_ratio: OneToOne,
                 abilities: &[Forecast, Forecast],
-                types: [Normal, Normal],
+                types: [Fire, Fire],
                 forms: &[],
             },
             /* Rainy */
@@ -2841,7 +2841,7 @@ const PERSONALS: &[Personal] = &[
                 base_stats: stats!(70 / 70 / 70 / 70 / 70 / 70),
                 gender_ratio: OneToOne,
                 abilities: &[Forecast, Forecast],
-                types: [Normal, Normal],
+                types: [Water, Water],
                 forms: &[],
             },
             /* Snowy */
@@ -2849,7 +2849,7 @@ const PERSONALS: &[Personal] = &[
                 base_stats: stats!(70 / 70 / 70 / 70 / 70 / 70),
                 gender_ratio: OneToOne,
                 abilities: &[Forecast, Forecast],
-                types: [Normal, Normal],
+                types: [Ice, Ice],
                 forms: &[],
             },
         ],
@@ -3465,13 +3465,19 @@ const PERSONALS: &[Personal] = &[
         types: [Grass, Grass],
         forms: &[],
     },
-    /* Cherrim */
+    /* Cherrim */ /* Overcast */
     Personal {
         base_stats: stats!(70 / 60 / 70 / 87 / 78 / 85),
         gender_ratio: OneToOne,
         abilities: &[FlowerGift, FlowerGift],
         types: [Grass, Grass],
-        forms: &[],
+        forms: &[/* Sunshine */ Personal {
+            base_stats: stats!(70 / 60 / 70 / 87 / 78 / 85),
+            gender_ratio: OneToOne,
+            abilities: &[FlowerGift, FlowerGift],
+            types: [Grass, Grass],
+            forms: &[],
+        }],
     },
     /* Shellos */ /* West */
     Personal {
@@ -3953,7 +3959,7 @@ const PERSONALS: &[Personal] = &[
                 base_stats: stats!(50 / 65 / 107 / 105 / 107 / 86),
                 gender_ratio: Genderless,
                 abilities: &[Levitate, Levitate],
-                types: [Electric, Ghost],
+                types: [Electric, Fire],
                 forms: &[],
             },
             /* Wash */
@@ -3961,7 +3967,7 @@ const PERSONALS: &[Personal] = &[
                 base_stats: stats!(50 / 65 / 107 / 105 / 107 / 86),
                 gender_ratio: Genderless,
                 abilities: &[Levitate, Levitate],
-                types: [Electric, Ghost],
+                types: [Electric, Water],
                 forms: &[],
             },
             /* Frost */
@@ -3969,7 +3975,7 @@ const PERSONALS: &[Personal] = &[
                 base_stats: stats!(50 / 65 / 107 / 105 / 107 / 86),
                 gender_ratio: Genderless,
                 abilities: &[Levitate, Levitate],
-                types: [Electric, Ghost],
+                types: [Electric, Ice],
                 forms: &[],
             },
             /* Fan */
@@ -3977,7 +3983,7 @@ const PERSONALS: &[Personal] = &[
                 base_stats: stats!(50 / 65 / 107 / 105 / 107 / 86),
                 gender_ratio: Genderless,
                 abilities: &[Levitate, Levitate],
-                types: [Electric, Ghost],
+                types: [Electric, Flying],
                 forms: &[],
             },
             /* Mow */
@@ -3985,7 +3991,7 @@ const PERSONALS: &[Personal] = &[
                 base_stats: stats!(50 / 65 / 107 / 105 / 107 / 86),
                 gender_ratio: Genderless,
                 abilities: &[Levitate, Levitate],
-                types: [Electric, Ghost],
+                types: [Electric, Grass],
                 forms: &[],
             },
         ],
@@ -4247,6 +4253,1396 @@ const PERSONALS: &[Personal] = &[
                 gender_ratio: Genderless,
                 abilities: &[Multitype, Multitype],
                 types: [Normal, Normal],
+                forms: &[],
+            },
+        ],
+    },
+    /* Victini */
+    Personal {
+        base_stats: stats!(100 / 100 / 100 / 100 / 100 / 100),
+        gender_ratio: Genderless,
+        abilities: &[VictoryStar, VictoryStar],
+        types: [Psychic, Fire],
+        forms: &[],
+    },
+    /* Snivy */
+    Personal {
+        base_stats: stats!(45 / 45 / 55 / 45 / 55 / 63),
+        gender_ratio: OneToSeven,
+        abilities: &[Overgrow, Overgrow],
+        types: [Grass, Grass],
+        forms: &[],
+    },
+    /* Servine */
+    Personal {
+        base_stats: stats!(60 / 60 / 75 / 60 / 75 / 83),
+        gender_ratio: OneToSeven,
+        abilities: &[Overgrow, Overgrow],
+        types: [Grass, Grass],
+        forms: &[],
+    },
+    /* Serperior */
+    Personal {
+        base_stats: stats!(75 / 75 / 95 / 75 / 95 / 113),
+        gender_ratio: OneToSeven,
+        abilities: &[Overgrow, Overgrow],
+        types: [Grass, Grass],
+        forms: &[],
+    },
+    /* Tepig */
+    Personal {
+        base_stats: stats!(65 / 63 / 45 / 45 / 45 / 45),
+        gender_ratio: OneToSeven,
+        abilities: &[Blaze, Blaze],
+        types: [Fire, Fire],
+        forms: &[],
+    },
+    /* Pignite */
+    Personal {
+        base_stats: stats!(90 / 93 / 55 / 70 / 55 / 55),
+        gender_ratio: OneToSeven,
+        abilities: &[Blaze, Blaze],
+        types: [Fire, Fighting],
+        forms: &[],
+    },
+    /* Emboar */
+    Personal {
+        base_stats: stats!(110 / 123 / 65 / 100 / 65 / 65),
+        gender_ratio: OneToSeven,
+        abilities: &[Blaze, Blaze],
+        types: [Fire, Fighting],
+        forms: &[],
+    },
+    /* Oshawott */
+    Personal {
+        base_stats: stats!(55 / 55 / 45 / 63 / 45 / 45),
+        gender_ratio: OneToSeven,
+        abilities: &[Torrent, Torrent],
+        types: [Water, Water],
+        forms: &[],
+    },
+    /* Dewott */
+    Personal {
+        base_stats: stats!(75 / 75 / 60 / 83 / 60 / 60),
+        gender_ratio: OneToSeven,
+        abilities: &[Torrent, Torrent],
+        types: [Water, Water],
+        forms: &[],
+    },
+    /* Samurott */
+    Personal {
+        base_stats: stats!(95 / 100 / 85 / 108 / 70 / 70),
+        gender_ratio: OneToSeven,
+        abilities: &[Torrent, Torrent],
+        types: [Water, Water],
+        forms: &[],
+    },
+    /* Patrat */
+    Personal {
+        base_stats: stats!(45 / 55 / 39 / 35 / 39 / 42),
+        gender_ratio: OneToOne,
+        abilities: &[RunAway, KeenEye],
+        types: [Normal, Normal],
+        forms: &[],
+    },
+    /* Watchog */
+    Personal {
+        base_stats: stats!(60 / 85 / 69 / 60 / 69 / 77),
+        gender_ratio: OneToOne,
+        abilities: &[Illuminate, KeenEye],
+        types: [Normal, Normal],
+        forms: &[],
+    },
+    /* Lillipup */
+    Personal {
+        base_stats: stats!(45 / 60 / 45 / 25 / 45 / 55),
+        gender_ratio: OneToOne,
+        abilities: &[VitalSpirit, Pickup],
+        types: [Normal, Normal],
+        forms: &[],
+    },
+    /* Herdier */
+    Personal {
+        base_stats: stats!(65 / 80 / 65 / 35 / 65 / 60),
+        gender_ratio: OneToOne,
+        abilities: &[Intimidate, SandRush],
+        types: [Normal, Normal],
+        forms: &[],
+    },
+    /* Stoutland */
+    Personal {
+        base_stats: stats!(85 / 100 / 90 / 45 / 90 / 80),
+        gender_ratio: OneToOne,
+        abilities: &[Intimidate, SandRush],
+        types: [Normal, Normal],
+        forms: &[],
+    },
+    /* Purrloin */
+    Personal {
+        base_stats: stats!(41 / 50 / 37 / 50 / 37 / 66),
+        gender_ratio: OneToOne,
+        abilities: &[Limber, Unburden],
+        types: [Dark, Dark],
+        forms: &[],
+    },
+    /* Liepard */
+    Personal {
+        base_stats: stats!(64 / 88 / 50 / 88 / 50 / 106),
+        gender_ratio: OneToOne,
+        abilities: &[Limber, Unburden],
+        types: [Dark, Dark],
+        forms: &[],
+    },
+    /* Pansage */
+    Personal {
+        base_stats: stats!(50 / 53 / 48 / 53 / 48 / 64),
+        gender_ratio: OneToSeven,
+        abilities: &[Gluttony, Gluttony],
+        types: [Grass, Grass],
+        forms: &[],
+    },
+    /* Simisage */
+    Personal {
+        base_stats: stats!(75 / 98 / 63 / 98 / 63 / 101),
+        gender_ratio: OneToSeven,
+        abilities: &[Gluttony, Gluttony],
+        types: [Grass, Grass],
+        forms: &[],
+    },
+    /* Pansear */
+    Personal {
+        base_stats: stats!(50 / 53 / 48 / 53 / 48 / 64),
+        gender_ratio: OneToSeven,
+        abilities: &[Gluttony, Gluttony],
+        types: [Fire, Fire],
+        forms: &[],
+    },
+    /* Simisear */
+    Personal {
+        base_stats: stats!(75 / 98 / 63 / 98 / 63 / 101),
+        gender_ratio: OneToSeven,
+        abilities: &[Gluttony, Gluttony],
+        types: [Fire, Fire],
+        forms: &[],
+    },
+    /* Panpour */
+    Personal {
+        base_stats: stats!(50 / 53 / 48 / 53 / 48 / 64),
+        gender_ratio: OneToSeven,
+        abilities: &[Gluttony, Gluttony],
+        types: [Water, Water],
+        forms: &[],
+    },
+    /* Simipour */
+    Personal {
+        base_stats: stats!(75 / 98 / 63 / 98 / 63 / 101),
+        gender_ratio: OneToSeven,
+        abilities: &[Gluttony, Gluttony],
+        types: [Water, Water],
+        forms: &[],
+    },
+    /* Munna */
+    Personal {
+        base_stats: stats!(76 / 25 / 45 / 67 / 55 / 24),
+        gender_ratio: OneToOne,
+        abilities: &[Forewarn, Synchronize],
+        types: [Psychic, Psychic],
+        forms: &[],
+    },
+    /* Musharna */
+    Personal {
+        base_stats: stats!(116 / 55 / 85 / 107 / 95 / 29),
+        gender_ratio: OneToOne,
+        abilities: &[Forewarn, Synchronize],
+        types: [Psychic, Psychic],
+        forms: &[],
+    },
+    /* Pidove */
+    Personal {
+        base_stats: stats!(50 / 55 / 50 / 36 / 30 / 43),
+        gender_ratio: OneToOne,
+        abilities: &[BigPecks, SuperLuck],
+        types: [Normal, Flying],
+        forms: &[],
+    },
+    /* Tranquill */
+    Personal {
+        base_stats: stats!(62 / 77 / 62 / 50 / 42 / 65),
+        gender_ratio: OneToOne,
+        abilities: &[BigPecks, SuperLuck],
+        types: [Normal, Flying],
+        forms: &[],
+    },
+    /* Unfezant */
+    Personal {
+        base_stats: stats!(80 / 105 / 80 / 65 / 55 / 93),
+        gender_ratio: OneToOne,
+        abilities: &[BigPecks, SuperLuck],
+        types: [Normal, Flying],
+        forms: &[],
+    },
+    /* Blitzle */
+    Personal {
+        base_stats: stats!(45 / 60 / 32 / 50 / 32 / 76),
+        gender_ratio: OneToOne,
+        abilities: &[LightningRod, MotorDrive],
+        types: [Electric, Electric],
+        forms: &[],
+    },
+    /* Zebstrika */
+    Personal {
+        base_stats: stats!(75 / 100 / 63 / 80 / 63 / 116),
+        gender_ratio: OneToOne,
+        abilities: &[LightningRod, MotorDrive],
+        types: [Electric, Electric],
+        forms: &[],
+    },
+    /* Roggenrola */
+    Personal {
+        base_stats: stats!(55 / 75 / 85 / 25 / 25 / 15),
+        gender_ratio: OneToOne,
+        abilities: &[Sturdy, Sturdy],
+        types: [Rock, Rock],
+        forms: &[],
+    },
+    /* Boldore */
+    Personal {
+        base_stats: stats!(70 / 105 / 105 / 50 / 40 / 20),
+        gender_ratio: OneToOne,
+        abilities: &[Sturdy, Sturdy],
+        types: [Rock, Rock],
+        forms: &[],
+    },
+    /* Gigalith */
+    Personal {
+        base_stats: stats!(85 / 135 / 130 / 60 / 70 / 25),
+        gender_ratio: OneToOne,
+        abilities: &[Sturdy, Sturdy],
+        types: [Rock, Rock],
+        forms: &[],
+    },
+    /* Woobat */
+    Personal {
+        base_stats: stats!(55 / 45 / 43 / 55 / 43 / 72),
+        gender_ratio: OneToOne,
+        abilities: &[Unaware, Klutz],
+        types: [Psychic, Flying],
+        forms: &[],
+    },
+    /* Swoobat */
+    Personal {
+        base_stats: stats!(67 / 57 / 55 / 77 / 55 / 114),
+        gender_ratio: OneToOne,
+        abilities: &[Unaware, Klutz],
+        types: [Psychic, Flying],
+        forms: &[],
+    },
+    /* Drilbur */
+    Personal {
+        base_stats: stats!(60 / 85 / 40 / 30 / 45 / 68),
+        gender_ratio: OneToOne,
+        abilities: &[SandRush, SandForce],
+        types: [Ground, Ground],
+        forms: &[],
+    },
+    /* Excadrill */
+    Personal {
+        base_stats: stats!(110 / 135 / 60 / 50 / 65 / 88),
+        gender_ratio: OneToOne,
+        abilities: &[SandRush, SandForce],
+        types: [Ground, Steel],
+        forms: &[],
+    },
+    /* Audino */
+    Personal {
+        base_stats: stats!(103 / 60 / 86 / 60 / 86 / 50),
+        gender_ratio: OneToOne,
+        abilities: &[Healer, Regenerator],
+        types: [Normal, Normal],
+        forms: &[],
+    },
+    /* Timburr */
+    Personal {
+        base_stats: stats!(75 / 80 / 55 / 25 / 35 / 35),
+        gender_ratio: OneToThree,
+        abilities: &[Guts, SheerForce],
+        types: [Fighting, Fighting],
+        forms: &[],
+    },
+    /* Gurdurr */
+    Personal {
+        base_stats: stats!(85 / 105 / 85 / 40 / 50 / 40),
+        gender_ratio: OneToThree,
+        abilities: &[Guts, SheerForce],
+        types: [Fighting, Fighting],
+        forms: &[],
+    },
+    /* Conkeldurr */
+    Personal {
+        base_stats: stats!(105 / 140 / 95 / 55 / 65 / 45),
+        gender_ratio: OneToThree,
+        abilities: &[Guts, SheerForce],
+        types: [Fighting, Fighting],
+        forms: &[],
+    },
+    /* Tympole */
+    Personal {
+        base_stats: stats!(50 / 50 / 40 / 50 / 40 / 64),
+        gender_ratio: OneToOne,
+        abilities: &[SwiftSwim, Hydration],
+        types: [Water, Water],
+        forms: &[],
+    },
+    /* Palpitoad */
+    Personal {
+        base_stats: stats!(75 / 65 / 55 / 65 / 55 / 69),
+        gender_ratio: OneToOne,
+        abilities: &[SwiftSwim, Hydration],
+        types: [Water, Ground],
+        forms: &[],
+    },
+    /* Seismitoad */
+    Personal {
+        base_stats: stats!(105 / 85 / 75 / 85 / 75 / 74),
+        gender_ratio: OneToOne,
+        abilities: &[SwiftSwim, PoisonTouch],
+        types: [Water, Ground],
+        forms: &[],
+    },
+    /* Throh */
+    Personal {
+        base_stats: stats!(120 / 100 / 85 / 30 / 85 / 45),
+        gender_ratio: MaleOnly,
+        abilities: &[Guts, InnerFocus],
+        types: [Fighting, Fighting],
+        forms: &[],
+    },
+    /* Sawk */
+    Personal {
+        base_stats: stats!(75 / 125 / 75 / 30 / 75 / 85),
+        gender_ratio: MaleOnly,
+        abilities: &[Sturdy, InnerFocus],
+        types: [Fighting, Fighting],
+        forms: &[],
+    },
+    /* Sewaddle */
+    Personal {
+        base_stats: stats!(45 / 53 / 70 / 40 / 60 / 42),
+        gender_ratio: OneToOne,
+        abilities: &[Swarm, Chlorophyll],
+        types: [Bug, Grass],
+        forms: &[],
+    },
+    /* Swadloon */
+    Personal {
+        base_stats: stats!(55 / 63 / 90 / 50 / 80 / 42),
+        gender_ratio: OneToOne,
+        abilities: &[LeafGuard, Chlorophyll],
+        types: [Bug, Grass],
+        forms: &[],
+    },
+    /* Leavanny */
+    Personal {
+        base_stats: stats!(75 / 103 / 80 / 70 / 70 / 92),
+        gender_ratio: OneToOne,
+        abilities: &[Swarm, Chlorophyll],
+        types: [Bug, Grass],
+        forms: &[],
+    },
+    /* Venipede */
+    Personal {
+        base_stats: stats!(30 / 45 / 59 / 30 / 39 / 57),
+        gender_ratio: OneToOne,
+        abilities: &[PoisonPoint, Swarm],
+        types: [Bug, Poison],
+        forms: &[],
+    },
+    /* Whirlipede */
+    Personal {
+        base_stats: stats!(40 / 55 / 99 / 40 / 79 / 47),
+        gender_ratio: OneToOne,
+        abilities: &[PoisonPoint, Swarm],
+        types: [Bug, Poison],
+        forms: &[],
+    },
+    /* Scolipede */
+    Personal {
+        base_stats: stats!(60 / 90 / 89 / 55 / 69 / 112),
+        gender_ratio: OneToOne,
+        abilities: &[PoisonPoint, Swarm],
+        types: [Bug, Poison],
+        forms: &[],
+    },
+    /* Cottonee */
+    Personal {
+        base_stats: stats!(40 / 27 / 60 / 37 / 50 / 66),
+        gender_ratio: OneToOne,
+        abilities: &[Prankster, Infiltrator],
+        types: [Grass, Grass],
+        forms: &[],
+    },
+    /* Whimsicott */
+    Personal {
+        base_stats: stats!(60 / 67 / 85 / 77 / 75 / 116),
+        gender_ratio: OneToOne,
+        abilities: &[Prankster, Infiltrator],
+        types: [Grass, Grass],
+        forms: &[],
+    },
+    /* Petilil */
+    Personal {
+        base_stats: stats!(45 / 35 / 50 / 70 / 50 / 30),
+        gender_ratio: FemaleOnly,
+        abilities: &[Chlorophyll, OwnTempo],
+        types: [Grass, Grass],
+        forms: &[],
+    },
+    /* Lilligant */
+    Personal {
+        base_stats: stats!(70 / 60 / 75 / 110 / 75 / 90),
+        gender_ratio: FemaleOnly,
+        abilities: &[Chlorophyll, OwnTempo],
+        types: [Grass, Grass],
+        forms: &[],
+    },
+    /* Basculin */ /* Red-Striped */
+    Personal {
+        base_stats: stats!(70 / 92 / 65 / 80 / 55 / 98),
+        gender_ratio: OneToOne,
+        abilities: &[Reckless, Adaptability],
+        types: [Water, Water],
+        forms: &[/* Blue-Striped */ Personal {
+            base_stats: stats!(70 / 92 / 65 / 80 / 55 / 98),
+            gender_ratio: OneToOne,
+            abilities: &[RockHead, Adaptability],
+            types: [Water, Water],
+            forms: &[],
+        }],
+    },
+    /* Sandile */
+    Personal {
+        base_stats: stats!(50 / 72 / 35 / 35 / 35 / 65),
+        gender_ratio: OneToOne,
+        abilities: &[Intimidate, Moxie],
+        types: [Ground, Dark],
+        forms: &[],
+    },
+    /* Krokorok */
+    Personal {
+        base_stats: stats!(60 / 82 / 45 / 45 / 45 / 74),
+        gender_ratio: OneToOne,
+        abilities: &[Intimidate, Moxie],
+        types: [Ground, Dark],
+        forms: &[],
+    },
+    /* Krookodile */
+    Personal {
+        base_stats: stats!(95 / 117 / 70 / 65 / 70 / 92),
+        gender_ratio: OneToOne,
+        abilities: &[Intimidate, Moxie],
+        types: [Ground, Dark],
+        forms: &[],
+    },
+    /* Darumaka */
+    Personal {
+        base_stats: stats!(70 / 90 / 45 / 15 / 45 / 50),
+        gender_ratio: OneToOne,
+        abilities: &[Hustle, Hustle],
+        types: [Fire, Fire],
+        forms: &[],
+    },
+    /* Darmanitan */ /* Standard Mode */
+    Personal {
+        base_stats: stats!(105 / 140 / 55 / 30 / 55 / 95),
+        gender_ratio: OneToOne,
+        abilities: &[SheerForce, SheerForce],
+        types: [Fire, Fire],
+        forms: &[/* Zen Mode */ Personal {
+            base_stats: stats!(105 / 30 / 105 / 140 / 105 / 55),
+            gender_ratio: OneToOne,
+            abilities: &[SheerForce, SheerForce],
+            types: [Fire, Psychic],
+            forms: &[],
+        }],
+    },
+    /* Maractus */
+    Personal {
+        base_stats: stats!(75 / 86 / 67 / 106 / 67 / 60),
+        gender_ratio: OneToOne,
+        abilities: &[WaterAbsorb, Chlorophyll],
+        types: [Grass, Grass],
+        forms: &[],
+    },
+    /* Dwebble */
+    Personal {
+        base_stats: stats!(50 / 65 / 85 / 35 / 35 / 55),
+        gender_ratio: OneToOne,
+        abilities: &[Sturdy, ShellArmor],
+        types: [Bug, Rock],
+        forms: &[],
+    },
+    /* Crustle */
+    Personal {
+        base_stats: stats!(70 / 95 / 125 / 65 / 75 / 45),
+        gender_ratio: OneToOne,
+        abilities: &[Sturdy, ShellArmor],
+        types: [Bug, Rock],
+        forms: &[],
+    },
+    /* Scraggy */
+    Personal {
+        base_stats: stats!(50 / 75 / 70 / 35 / 70 / 48),
+        gender_ratio: OneToOne,
+        abilities: &[ShedSkin, Moxie],
+        types: [Dark, Fighting],
+        forms: &[],
+    },
+    /* Scrafty */
+    Personal {
+        base_stats: stats!(65 / 90 / 115 / 45 / 115 / 58),
+        gender_ratio: OneToOne,
+        abilities: &[ShedSkin, Moxie],
+        types: [Dark, Fighting],
+        forms: &[],
+    },
+    /* Sigilyph */
+    Personal {
+        base_stats: stats!(72 / 58 / 80 / 103 / 80 / 97),
+        gender_ratio: OneToOne,
+        abilities: &[WonderSkin, MagicGuard],
+        types: [Psychic, Flying],
+        forms: &[],
+    },
+    /* Yamask */
+    Personal {
+        base_stats: stats!(38 / 30 / 85 / 55 / 65 / 30),
+        gender_ratio: OneToOne,
+        abilities: &[Mummy, Mummy],
+        types: [Ghost, Ghost],
+        forms: &[],
+    },
+    /* Cofagrigus */
+    Personal {
+        base_stats: stats!(58 / 50 / 145 / 95 / 105 / 30),
+        gender_ratio: OneToOne,
+        abilities: &[Mummy, Mummy],
+        types: [Ghost, Ghost],
+        forms: &[],
+    },
+    /* Tirtouga */
+    Personal {
+        base_stats: stats!(54 / 78 / 103 / 53 / 45 / 22),
+        gender_ratio: OneToSeven,
+        abilities: &[SolidRock, Sturdy],
+        types: [Water, Rock],
+        forms: &[],
+    },
+    /* Carracosta */
+    Personal {
+        base_stats: stats!(74 / 108 / 133 / 83 / 65 / 32),
+        gender_ratio: OneToSeven,
+        abilities: &[SolidRock, Sturdy],
+        types: [Water, Rock],
+        forms: &[],
+    },
+    /* Archen */
+    Personal {
+        base_stats: stats!(55 / 112 / 45 / 74 / 45 / 70),
+        gender_ratio: OneToSeven,
+        abilities: &[Defeatist, Defeatist],
+        types: [Rock, Flying],
+        forms: &[],
+    },
+    /* Archeops */
+    Personal {
+        base_stats: stats!(75 / 140 / 65 / 112 / 65 / 110),
+        gender_ratio: OneToSeven,
+        abilities: &[Defeatist, Defeatist],
+        types: [Rock, Flying],
+        forms: &[],
+    },
+    /* Trubbish */
+    Personal {
+        base_stats: stats!(50 / 50 / 62 / 40 / 62 / 65),
+        gender_ratio: OneToOne,
+        abilities: &[Stench, StickyHold],
+        types: [Poison, Poison],
+        forms: &[],
+    },
+    /* Garbodor */
+    Personal {
+        base_stats: stats!(80 / 95 / 82 / 60 / 82 / 75),
+        gender_ratio: OneToOne,
+        abilities: &[Stench, WeakArmor],
+        types: [Poison, Poison],
+        forms: &[],
+    },
+    /* Zorua */
+    Personal {
+        base_stats: stats!(40 / 65 / 40 / 80 / 40 / 65),
+        gender_ratio: OneToSeven,
+        abilities: &[Illusion, Illusion],
+        types: [Dark, Dark],
+        forms: &[],
+    },
+    /* Zoroark */
+    Personal {
+        base_stats: stats!(60 / 105 / 60 / 120 / 60 / 105),
+        gender_ratio: OneToSeven,
+        abilities: &[Illusion, Illusion],
+        types: [Dark, Dark],
+        forms: &[],
+    },
+    /* Minccino */
+    Personal {
+        base_stats: stats!(55 / 50 / 40 / 40 / 40 / 75),
+        gender_ratio: ThreeToOne,
+        abilities: &[CuteCharm, Technician],
+        types: [Normal, Normal],
+        forms: &[],
+    },
+    /* Cinccino */
+    Personal {
+        base_stats: stats!(75 / 95 / 60 / 65 / 60 / 115),
+        gender_ratio: ThreeToOne,
+        abilities: &[CuteCharm, Technician],
+        types: [Normal, Normal],
+        forms: &[],
+    },
+    /* Gothita */
+    Personal {
+        base_stats: stats!(45 / 30 / 50 / 55 / 65 / 45),
+        gender_ratio: ThreeToOne,
+        abilities: &[Frisk, Frisk],
+        types: [Psychic, Psychic],
+        forms: &[],
+    },
+    /* Gothorita */
+    Personal {
+        base_stats: stats!(60 / 45 / 70 / 75 / 85 / 55),
+        gender_ratio: ThreeToOne,
+        abilities: &[Frisk, Frisk],
+        types: [Psychic, Psychic],
+        forms: &[],
+    },
+    /* Gothitelle */
+    Personal {
+        base_stats: stats!(70 / 55 / 95 / 95 / 110 / 65),
+        gender_ratio: ThreeToOne,
+        abilities: &[Frisk, Frisk],
+        types: [Psychic, Psychic],
+        forms: &[],
+    },
+    /* Solosis */
+    Personal {
+        base_stats: stats!(45 / 30 / 40 / 105 / 50 / 20),
+        gender_ratio: OneToOne,
+        abilities: &[Overcoat, MagicGuard],
+        types: [Psychic, Psychic],
+        forms: &[],
+    },
+    /* Duosion */
+    Personal {
+        base_stats: stats!(65 / 40 / 50 / 125 / 60 / 30),
+        gender_ratio: OneToOne,
+        abilities: &[Overcoat, MagicGuard],
+        types: [Psychic, Psychic],
+        forms: &[],
+    },
+    /* Reuniclus */
+    Personal {
+        base_stats: stats!(110 / 65 / 75 / 125 / 85 / 30),
+        gender_ratio: OneToOne,
+        abilities: &[Overcoat, MagicGuard],
+        types: [Psychic, Psychic],
+        forms: &[],
+    },
+    /* Ducklett */
+    Personal {
+        base_stats: stats!(62 / 44 / 50 / 44 / 50 / 55),
+        gender_ratio: OneToOne,
+        abilities: &[KeenEye, BigPecks],
+        types: [Water, Flying],
+        forms: &[],
+    },
+    /* Swanna */
+    Personal {
+        base_stats: stats!(75 / 87 / 63 / 87 / 63 / 98),
+        gender_ratio: OneToOne,
+        abilities: &[KeenEye, BigPecks],
+        types: [Water, Flying],
+        forms: &[],
+    },
+    /* Vanillite */
+    Personal {
+        base_stats: stats!(36 / 50 / 50 / 65 / 60 / 44),
+        gender_ratio: OneToOne,
+        abilities: &[IceBody, IceBody],
+        types: [Ice, Ice],
+        forms: &[],
+    },
+    /* Vanillish */
+    Personal {
+        base_stats: stats!(51 / 65 / 65 / 80 / 75 / 59),
+        gender_ratio: OneToOne,
+        abilities: &[IceBody, IceBody],
+        types: [Ice, Ice],
+        forms: &[],
+    },
+    /* Vanilluxe */
+    Personal {
+        base_stats: stats!(71 / 95 / 85 / 110 / 95 / 79),
+        gender_ratio: OneToOne,
+        abilities: &[IceBody, IceBody],
+        types: [Ice, Ice],
+        forms: &[],
+    },
+    /* Deerling */ /* Spring */
+    Personal {
+        base_stats: stats!(60 / 60 / 50 / 40 / 50 / 75),
+        gender_ratio: OneToOne,
+        abilities: &[Chlorophyll, SapSipper],
+        types: [Normal, Grass],
+        forms: &[
+            /* Summer */
+            Personal {
+                base_stats: stats!(60 / 60 / 50 / 40 / 50 / 75),
+                gender_ratio: OneToOne,
+                abilities: &[Chlorophyll, SapSipper],
+                types: [Normal, Grass],
+                forms: &[],
+            },
+            /* Autumn */
+            Personal {
+                base_stats: stats!(60 / 60 / 50 / 40 / 50 / 75),
+                gender_ratio: OneToOne,
+                abilities: &[Chlorophyll, SapSipper],
+                types: [Normal, Grass],
+                forms: &[],
+            },
+            /* Winter */
+            Personal {
+                base_stats: stats!(60 / 60 / 50 / 40 / 50 / 75),
+                gender_ratio: OneToOne,
+                abilities: &[Chlorophyll, SapSipper],
+                types: [Normal, Grass],
+                forms: &[],
+            },
+        ],
+    },
+    /* Sawsbuck */ /* Spring */
+    Personal {
+        base_stats: stats!(80 / 100 / 70 / 60 / 70 / 95),
+        gender_ratio: OneToOne,
+        abilities: &[Chlorophyll, SapSipper],
+        types: [Normal, Grass],
+        forms: &[
+            /* Summer */
+            Personal {
+                base_stats: stats!(80 / 100 / 70 / 60 / 70 / 95),
+                gender_ratio: OneToOne,
+                abilities: &[Chlorophyll, SapSipper],
+                types: [Normal, Grass],
+                forms: &[],
+            },
+            /* Autumn */
+            Personal {
+                base_stats: stats!(80 / 100 / 70 / 60 / 70 / 95),
+                gender_ratio: OneToOne,
+                abilities: &[Chlorophyll, SapSipper],
+                types: [Normal, Grass],
+                forms: &[],
+            },
+            /* Winter */
+            Personal {
+                base_stats: stats!(80 / 100 / 70 / 60 / 70 / 95),
+                gender_ratio: OneToOne,
+                abilities: &[Chlorophyll, SapSipper],
+                types: [Normal, Grass],
+                forms: &[],
+            },
+        ],
+    },
+    /* Emolga */
+    Personal {
+        base_stats: stats!(55 / 75 / 60 / 75 / 60 / 103),
+        gender_ratio: OneToOne,
+        abilities: &[Static, Static],
+        types: [Electric, Flying],
+        forms: &[],
+    },
+    /* Karrablast */
+    Personal {
+        base_stats: stats!(50 / 75 / 45 / 40 / 45 / 60),
+        gender_ratio: OneToOne,
+        abilities: &[Swarm, ShedSkin],
+        types: [Bug, Bug],
+        forms: &[],
+    },
+    /* Escavalier */
+    Personal {
+        base_stats: stats!(70 / 135 / 105 / 60 / 105 / 20),
+        gender_ratio: OneToOne,
+        abilities: &[Swarm, ShellArmor],
+        types: [Bug, Steel],
+        forms: &[],
+    },
+    /* Foongus */
+    Personal {
+        base_stats: stats!(69 / 55 / 45 / 55 / 55 / 15),
+        gender_ratio: OneToOne,
+        abilities: &[EffectSpore, EffectSpore],
+        types: [Grass, Poison],
+        forms: &[],
+    },
+    /* Amoonguss */
+    Personal {
+        base_stats: stats!(114 / 85 / 70 / 85 / 80 / 30),
+        gender_ratio: OneToOne,
+        abilities: &[EffectSpore, EffectSpore],
+        types: [Grass, Poison],
+        forms: &[],
+    },
+    /* Frillish */
+    Personal {
+        base_stats: stats!(55 / 40 / 50 / 65 / 85 / 40),
+        gender_ratio: OneToOne,
+        abilities: &[WaterAbsorb, CursedBody],
+        types: [Water, Ghost],
+        forms: &[],
+    },
+    /* Jellicent */
+    Personal {
+        base_stats: stats!(100 / 60 / 70 / 85 / 105 / 60),
+        gender_ratio: OneToOne,
+        abilities: &[WaterAbsorb, CursedBody],
+        types: [Water, Ghost],
+        forms: &[],
+    },
+    /* Alomomola */
+    Personal {
+        base_stats: stats!(165 / 75 / 80 / 40 / 45 / 65),
+        gender_ratio: OneToOne,
+        abilities: &[Healer, Hydration],
+        types: [Water, Water],
+        forms: &[],
+    },
+    /* Joltik */
+    Personal {
+        base_stats: stats!(50 / 47 / 50 / 57 / 50 / 65),
+        gender_ratio: OneToOne,
+        abilities: &[CompoundEyes, Unnerve],
+        types: [Bug, Electric],
+        forms: &[],
+    },
+    /* Galvantula */
+    Personal {
+        base_stats: stats!(70 / 77 / 60 / 97 / 60 / 108),
+        gender_ratio: OneToOne,
+        abilities: &[CompoundEyes, Unnerve],
+        types: [Bug, Electric],
+        forms: &[],
+    },
+    /* Ferroseed */
+    Personal {
+        base_stats: stats!(44 / 50 / 91 / 24 / 86 / 10),
+        gender_ratio: OneToOne,
+        abilities: &[IronBarbs, IronBarbs],
+        types: [Grass, Steel],
+        forms: &[],
+    },
+    /* Ferrothorn */
+    Personal {
+        base_stats: stats!(74 / 94 / 131 / 54 / 116 / 20),
+        gender_ratio: OneToOne,
+        abilities: &[IronBarbs, IronBarbs],
+        types: [Grass, Steel],
+        forms: &[],
+    },
+    /* Klink */
+    Personal {
+        base_stats: stats!(40 / 55 / 70 / 45 / 60 / 30),
+        gender_ratio: Genderless,
+        abilities: &[Plus, Minus],
+        types: [Steel, Steel],
+        forms: &[],
+    },
+    /* Klang */
+    Personal {
+        base_stats: stats!(60 / 80 / 95 / 70 / 85 / 50),
+        gender_ratio: Genderless,
+        abilities: &[Plus, Minus],
+        types: [Steel, Steel],
+        forms: &[],
+    },
+    /* Klinklang */
+    Personal {
+        base_stats: stats!(60 / 100 / 115 / 70 / 85 / 90),
+        gender_ratio: Genderless,
+        abilities: &[Plus, Minus],
+        types: [Steel, Steel],
+        forms: &[],
+    },
+    /* Tynamo */
+    Personal {
+        base_stats: stats!(35 / 55 / 40 / 45 / 40 / 60),
+        gender_ratio: OneToOne,
+        abilities: &[Levitate, Levitate],
+        types: [Electric, Electric],
+        forms: &[],
+    },
+    /* Eelektrik */
+    Personal {
+        base_stats: stats!(65 / 85 / 70 / 75 / 70 / 40),
+        gender_ratio: OneToOne,
+        abilities: &[Levitate, Levitate],
+        types: [Electric, Electric],
+        forms: &[],
+    },
+    /* Eelektross */
+    Personal {
+        base_stats: stats!(85 / 115 / 80 / 105 / 80 / 50),
+        gender_ratio: OneToOne,
+        abilities: &[Levitate, Levitate],
+        types: [Electric, Electric],
+        forms: &[],
+    },
+    /* Elgyem */
+    Personal {
+        base_stats: stats!(55 / 55 / 55 / 85 / 55 / 30),
+        gender_ratio: OneToOne,
+        abilities: &[Telepathy, Synchronize],
+        types: [Psychic, Psychic],
+        forms: &[],
+    },
+    /* Beheeyem */
+    Personal {
+        base_stats: stats!(75 / 75 / 75 / 125 / 95 / 40),
+        gender_ratio: OneToOne,
+        abilities: &[Telepathy, Synchronize],
+        types: [Psychic, Psychic],
+        forms: &[],
+    },
+    /* Litwick */
+    Personal {
+        base_stats: stats!(50 / 30 / 55 / 65 / 55 / 20),
+        gender_ratio: OneToOne,
+        abilities: &[FlashFire, FlameBody],
+        types: [Ghost, Fire],
+        forms: &[],
+    },
+    /* Lampent */
+    Personal {
+        base_stats: stats!(60 / 40 / 60 / 95 / 60 / 55),
+        gender_ratio: OneToOne,
+        abilities: &[FlashFire, FlameBody],
+        types: [Ghost, Fire],
+        forms: &[],
+    },
+    /* Chandelure */
+    Personal {
+        base_stats: stats!(60 / 55 / 90 / 145 / 90 / 80),
+        gender_ratio: OneToOne,
+        abilities: &[FlashFire, FlameBody],
+        types: [Ghost, Fire],
+        forms: &[],
+    },
+    /* Axew */
+    Personal {
+        base_stats: stats!(46 / 87 / 60 / 30 / 40 / 57),
+        gender_ratio: OneToOne,
+        abilities: &[Rivalry, MoldBreaker],
+        types: [Dragon, Dragon],
+        forms: &[],
+    },
+    /* Fraxure */
+    Personal {
+        base_stats: stats!(66 / 117 / 70 / 40 / 50 / 67),
+        gender_ratio: OneToOne,
+        abilities: &[Rivalry, MoldBreaker],
+        types: [Dragon, Dragon],
+        forms: &[],
+    },
+    /* Haxorus */
+    Personal {
+        base_stats: stats!(76 / 147 / 90 / 60 / 70 / 97),
+        gender_ratio: OneToOne,
+        abilities: &[Rivalry, MoldBreaker],
+        types: [Dragon, Dragon],
+        forms: &[],
+    },
+    /* Cubchoo */
+    Personal {
+        base_stats: stats!(55 / 70 / 40 / 60 / 40 / 40),
+        gender_ratio: OneToOne,
+        abilities: &[SnowCloak, SnowCloak],
+        types: [Ice, Ice],
+        forms: &[],
+    },
+    /* Beartic */
+    Personal {
+        base_stats: stats!(95 / 110 / 80 / 70 / 80 / 50),
+        gender_ratio: OneToOne,
+        abilities: &[SnowCloak, SnowCloak],
+        types: [Ice, Ice],
+        forms: &[],
+    },
+    /* Cryogonal */
+    Personal {
+        base_stats: stats!(70 / 50 / 30 / 95 / 135 / 105),
+        gender_ratio: Genderless,
+        abilities: &[Levitate, Levitate],
+        types: [Ice, Ice],
+        forms: &[],
+    },
+    /* Shelmet */
+    Personal {
+        base_stats: stats!(50 / 40 / 85 / 40 / 65 / 25),
+        gender_ratio: OneToOne,
+        abilities: &[Hydration, ShellArmor],
+        types: [Bug, Bug],
+        forms: &[],
+    },
+    /* Accelgor */
+    Personal {
+        base_stats: stats!(80 / 70 / 40 / 100 / 60 / 145),
+        gender_ratio: OneToOne,
+        abilities: &[Hydration, StickyHold],
+        types: [Bug, Bug],
+        forms: &[],
+    },
+    /* Stunfisk */
+    Personal {
+        base_stats: stats!(109 / 66 / 84 / 81 / 99 / 32),
+        gender_ratio: OneToOne,
+        abilities: &[Static, Limber],
+        types: [Ground, Electric],
+        forms: &[],
+    },
+    /* Mienfoo */
+    Personal {
+        base_stats: stats!(45 / 85 / 50 / 55 / 50 / 65),
+        gender_ratio: OneToOne,
+        abilities: &[InnerFocus, Regenerator],
+        types: [Fighting, Fighting],
+        forms: &[],
+    },
+    /* Mienshao */
+    Personal {
+        base_stats: stats!(65 / 125 / 60 / 95 / 60 / 105),
+        gender_ratio: OneToOne,
+        abilities: &[InnerFocus, Regenerator],
+        types: [Fighting, Fighting],
+        forms: &[],
+    },
+    /* Druddigon */
+    Personal {
+        base_stats: stats!(77 / 120 / 90 / 60 / 90 / 48),
+        gender_ratio: OneToOne,
+        abilities: &[RoughSkin, SheerForce],
+        types: [Dragon, Dragon],
+        forms: &[],
+    },
+    /* Golett */
+    Personal {
+        base_stats: stats!(59 / 74 / 50 / 35 / 50 / 35),
+        gender_ratio: Genderless,
+        abilities: &[IronFist, Klutz],
+        types: [Ground, Ghost],
+        forms: &[],
+    },
+    /* Golurk */
+    Personal {
+        base_stats: stats!(89 / 124 / 80 / 55 / 80 / 55),
+        gender_ratio: Genderless,
+        abilities: &[IronFist, Klutz],
+        types: [Ground, Ghost],
+        forms: &[],
+    },
+    /* Pawniard */
+    Personal {
+        base_stats: stats!(45 / 85 / 70 / 40 / 40 / 60),
+        gender_ratio: OneToOne,
+        abilities: &[Defiant, InnerFocus],
+        types: [Dark, Steel],
+        forms: &[],
+    },
+    /* Bisharp */
+    Personal {
+        base_stats: stats!(65 / 125 / 100 / 60 / 70 / 70),
+        gender_ratio: OneToOne,
+        abilities: &[Defiant, InnerFocus],
+        types: [Dark, Steel],
+        forms: &[],
+    },
+    /* Bouffalant */
+    Personal {
+        base_stats: stats!(95 / 110 / 95 / 40 / 95 / 55),
+        gender_ratio: OneToOne,
+        abilities: &[Reckless, SapSipper],
+        types: [Normal, Normal],
+        forms: &[],
+    },
+    /* Rufflet */
+    Personal {
+        base_stats: stats!(70 / 83 / 50 / 37 / 50 / 60),
+        gender_ratio: MaleOnly,
+        abilities: &[KeenEye, SheerForce],
+        types: [Normal, Flying],
+        forms: &[],
+    },
+    /* Braviary */
+    Personal {
+        base_stats: stats!(100 / 123 / 75 / 57 / 75 / 80),
+        gender_ratio: MaleOnly,
+        abilities: &[KeenEye, SheerForce],
+        types: [Normal, Flying],
+        forms: &[],
+    },
+    /* Vullaby */
+    Personal {
+        base_stats: stats!(70 / 55 / 75 / 45 / 65 / 60),
+        gender_ratio: FemaleOnly,
+        abilities: &[BigPecks, Overcoat],
+        types: [Dark, Flying],
+        forms: &[],
+    },
+    /* Mandibuzz */
+    Personal {
+        base_stats: stats!(110 / 65 / 105 / 55 / 95 / 80),
+        gender_ratio: FemaleOnly,
+        abilities: &[BigPecks, Overcoat],
+        types: [Dark, Flying],
+        forms: &[],
+    },
+    /* Heatmor */
+    Personal {
+        base_stats: stats!(85 / 97 / 66 / 105 / 66 / 65),
+        gender_ratio: OneToOne,
+        abilities: &[Gluttony, FlashFire],
+        types: [Fire, Fire],
+        forms: &[],
+    },
+    /* Durant */
+    Personal {
+        base_stats: stats!(58 / 109 / 112 / 48 / 48 / 109),
+        gender_ratio: OneToOne,
+        abilities: &[Swarm, Hustle],
+        types: [Bug, Steel],
+        forms: &[],
+    },
+    /* Deino */
+    Personal {
+        base_stats: stats!(52 / 65 / 50 / 45 / 50 / 38),
+        gender_ratio: OneToOne,
+        abilities: &[Hustle, Hustle],
+        types: [Dark, Dragon],
+        forms: &[],
+    },
+    /* Zweilous */
+    Personal {
+        base_stats: stats!(72 / 85 / 70 / 65 / 70 / 58),
+        gender_ratio: OneToOne,
+        abilities: &[Hustle, Hustle],
+        types: [Dark, Dragon],
+        forms: &[],
+    },
+    /* Hydreigon */
+    Personal {
+        base_stats: stats!(92 / 105 / 90 / 125 / 90 / 98),
+        gender_ratio: OneToOne,
+        abilities: &[Levitate, Levitate],
+        types: [Dark, Dragon],
+        forms: &[],
+    },
+    /* Larvesta */
+    Personal {
+        base_stats: stats!(55 / 85 / 55 / 50 / 55 / 60),
+        gender_ratio: OneToOne,
+        abilities: &[FlameBody, FlameBody],
+        types: [Bug, Fire],
+        forms: &[],
+    },
+    /* Volcarona */
+    Personal {
+        base_stats: stats!(85 / 60 / 65 / 135 / 105 / 100),
+        gender_ratio: OneToOne,
+        abilities: &[FlameBody, FlameBody],
+        types: [Bug, Fire],
+        forms: &[],
+    },
+    /* Cobalion */
+    Personal {
+        base_stats: stats!(91 / 90 / 129 / 90 / 72 / 108),
+        gender_ratio: Genderless,
+        abilities: &[Justified, Justified],
+        types: [Steel, Fighting],
+        forms: &[],
+    },
+    /* Terrakion */
+    Personal {
+        base_stats: stats!(91 / 129 / 90 / 72 / 90 / 108),
+        gender_ratio: Genderless,
+        abilities: &[Justified, Justified],
+        types: [Rock, Fighting],
+        forms: &[],
+    },
+    /* Virizion */
+    Personal {
+        base_stats: stats!(91 / 90 / 72 / 90 / 129 / 108),
+        gender_ratio: Genderless,
+        abilities: &[Justified, Justified],
+        types: [Grass, Fighting],
+        forms: &[],
+    },
+    /* Tornadus */ /* Incarnate Forme */
+    Personal {
+        base_stats: stats!(79 / 115 / 70 / 125 / 80 / 111),
+        gender_ratio: MaleOnly,
+        abilities: &[Prankster, Prankster],
+        types: [Flying, Flying],
+        forms: &[/* Therian Forme */ Personal {
+            base_stats: stats!(79 / 100 / 80 / 110 / 90 / 121),
+            gender_ratio: MaleOnly,
+            abilities: &[Regenerator, Regenerator],
+            types: [Flying, Flying],
+            forms: &[],
+        }],
+    },
+    /* Thundurus */ /* Incarnate Forme */
+    Personal {
+        base_stats: stats!(79 / 115 / 70 / 125 / 80 / 111),
+        gender_ratio: MaleOnly,
+        abilities: &[Prankster, Prankster],
+        types: [Electric, Flying],
+        forms: &[/* Therian Forme */ Personal {
+            base_stats: stats!(79 / 105 / 70 / 145 / 80 / 101),
+            gender_ratio: MaleOnly,
+            abilities: &[VoltAbsorb, VoltAbsorb],
+            types: [Electric, Flying],
+            forms: &[],
+        }],
+    },
+    /* Reshiram */
+    Personal {
+        base_stats: stats!(100 / 120 / 100 / 150 / 120 / 90),
+        gender_ratio: Genderless,
+        abilities: &[Turboblaze, Turboblaze],
+        types: [Dragon, Fire],
+        forms: &[],
+    },
+    /* Zekrom */
+    Personal {
+        base_stats: stats!(100 / 150 / 120 / 120 / 100 / 90),
+        gender_ratio: Genderless,
+        abilities: &[Teravolt, Teravolt],
+        types: [Dragon, Electric],
+        forms: &[],
+    },
+    /* Landorus */ /* Incarnate Forme */
+    Personal {
+        base_stats: stats!(89 / 125 / 90 / 115 / 80 / 101),
+        gender_ratio: MaleOnly,
+        abilities: &[SandForce, SandForce],
+        types: [Ground, Flying],
+        forms: &[/* Therian Forme */ Personal {
+            base_stats: stats!(89 / 145 / 90 / 105 / 80 / 91),
+            gender_ratio: MaleOnly,
+            abilities: &[Intimidate, Intimidate],
+            types: [Ground, Flying],
+            forms: &[],
+        }],
+    },
+    /* Kyurem */ /* Normal */
+    Personal {
+        base_stats: stats!(125 / 130 / 90 / 130 / 90 / 95),
+        gender_ratio: Genderless,
+        abilities: &[Pressure, Pressure],
+        types: [Dragon, Ice],
+        forms: &[
+            /* White */
+            Personal {
+                base_stats: stats!(125 / 120 / 90 / 170 / 100 / 95),
+                gender_ratio: Genderless,
+                abilities: &[Turboblaze, Turboblaze],
+                types: [Dragon, Ice],
+                forms: &[],
+            },
+            /* Black */
+            Personal {
+                base_stats: stats!(125 / 170 / 100 / 120 / 90 / 95),
+                gender_ratio: Genderless,
+                abilities: &[Teravolt, Teravolt],
+                types: [Dragon, Ice],
+                forms: &[],
+            },
+        ],
+    },
+    /* Keldeo */ /* Ordinary Form */
+    Personal {
+        base_stats: stats!(91 / 72 / 90 / 129 / 90 / 108),
+        gender_ratio: Genderless,
+        abilities: &[Justified, Justified],
+        types: [Water, Fighting],
+        forms: &[/* Resolute Form */ Personal {
+            base_stats: stats!(91 / 72 / 90 / 129 / 90 / 108),
+            gender_ratio: Genderless,
+            abilities: &[Justified, Justified],
+            types: [Water, Fighting],
+            forms: &[],
+        }],
+    },
+    /* Meloetta */ /* Aria Forme */
+    Personal {
+        base_stats: stats!(100 / 77 / 77 / 128 / 128 / 90),
+        gender_ratio: Genderless,
+        abilities: &[SereneGrace, SereneGrace],
+        types: [Normal, Psychic],
+        forms: &[/* Pirouette Forme */ Personal {
+            base_stats: stats!(100 / 128 / 90 / 77 / 77 / 128),
+            gender_ratio: Genderless,
+            abilities: &[SereneGrace, SereneGrace],
+            types: [Normal, Fighting],
+            forms: &[],
+        }],
+    },
+    /* Genesect */ /* Normal */
+    Personal {
+        base_stats: stats!(71 / 120 / 95 / 120 / 95 / 99),
+        gender_ratio: Genderless,
+        abilities: &[Download, Download],
+        types: [Bug, Steel],
+        forms: &[
+            /* Douse */
+            Personal {
+                base_stats: stats!(71 / 120 / 95 / 120 / 95 / 99),
+                gender_ratio: Genderless,
+                abilities: &[Download, Download],
+                types: [Bug, Steel],
+                forms: &[],
+            },
+            /* Shock */
+            Personal {
+                base_stats: stats!(71 / 120 / 95 / 120 / 95 / 99),
+                gender_ratio: Genderless,
+                abilities: &[Download, Download],
+                types: [Bug, Steel],
+                forms: &[],
+            },
+            /* Burn */
+            Personal {
+                base_stats: stats!(71 / 120 / 95 / 120 / 95 / 99),
+                gender_ratio: Genderless,
+                abilities: &[Download, Download],
+                types: [Bug, Steel],
+                forms: &[],
+            },
+            /* Chill */
+            Personal {
+                base_stats: stats!(71 / 120 / 95 / 120 / 95 / 99),
+                gender_ratio: Genderless,
+                abilities: &[Download, Download],
+                types: [Bug, Steel],
                 forms: &[],
             },
         ],

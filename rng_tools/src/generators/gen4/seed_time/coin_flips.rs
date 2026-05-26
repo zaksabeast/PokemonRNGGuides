@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 use crate::rng::mt::MT;
@@ -29,12 +29,30 @@ impl CoinFlip {
     }
 }
 
-pub fn coin_flips(seed: u32) -> Vec<CoinFlip> {
+pub fn coin_flips(seed: u32, count: usize) -> Vec<CoinFlip> {
     MT::new(seed)
-        .take(20)
+        .take(count)
         .map(|rand| match rand & 1 {
             0 => CoinFlip::Tails,
             _ => CoinFlip::Heads,
+        })
+        .collect()
+}
+
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct CoinFlipResult {
+    pub seed: u32,
+    pub coin_flips: Vec<CoinFlip>,
+}
+
+#[wasm_bindgen]
+pub fn coin_flips_for_seeds(seeds: &[u32], count: usize) -> Vec<CoinFlipResult> {
+    seeds
+        .iter()
+        .map(|&seed| CoinFlipResult {
+            seed,
+            coin_flips: coin_flips(seed, count),
         })
         .collect()
 }

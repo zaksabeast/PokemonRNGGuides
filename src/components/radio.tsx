@@ -11,10 +11,14 @@ import { Typography } from "./typography";
 import { Flex } from "./flex";
 import { withCss } from "./withCss";
 import { Path, Paths } from "~/types";
+import { PrimitiveAtom, useAtom } from "jotai";
+import { Translation } from "~/translations";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import React from "react";
+import isEqual from "lodash-es/isEqual";
 
 type RadioOptions<OptionValues extends string | number> =
-  | OptionValues[]
-  | CheckboxOptionType<OptionValues>[];
+  CheckboxOptionType<OptionValues>[];
 
 export type RadioChangeEvent<OptionValues extends string | number> =
   tst.O.Overwrite<
@@ -67,11 +71,20 @@ type FormikRadioProps<
 
 export const FormikRadio = <FormState extends GenericForm>({
   name,
+  options,
   ...props
 }: FormikRadioProps<FormState>) => {
   type FieldKey = typeof name;
-  const [{ value, onChange, onBlur }, { error }] =
+  const [{ value, onChange, onBlur }, { error }, { setValue }] =
     useField<Path<FormState, FieldKey>>(name);
+
+  React.useEffect(() => {
+    if (options != null && options.length > 0) {
+      if (options.find((opt) => isEqual(opt.value, value)) == null) {
+        setValue(options[0].value);
+      }
+    }
+  }, [options, setValue, value]);
 
   return (
     <Flex vertical>
@@ -81,11 +94,48 @@ export const FormikRadio = <FormState extends GenericForm>({
         onBlur={onBlur}
         onChange={onChange}
         value={value}
+        options={options}
         {...props}
       />
       {error != null && (
         <Typography.Text type="danger">{error}</Typography.Text>
       )}
     </Flex>
+  );
+};
+
+type AtomRadioProps<
+  State,
+  Option extends { label: Translation; value: string | number },
+> = {
+  options: Option[];
+  atom: PrimitiveAtom<State>;
+  getValue: (state: State) => Option["value"];
+  nextState: (state: State, option: Option["value"]) => State;
+};
+
+export const AtomRadio = <
+  State,
+  Option extends { label: Translation; value: string | number },
+>({
+  atom,
+  options,
+  getValue,
+  nextState,
+  ...props
+}: AtomRadioProps<State, Option>) => {
+  const t = useActiveRouteTranslations();
+  const [state, setState] = useAtom(atom);
+
+  return (
+    <RadioGroup
+      optionType="button"
+      value={getValue(state)}
+      options={options.map((opt) => ({ ...opt, label: t[opt.label] }))}
+      onChange={(event) =>
+        setState(nextState(state, event.target.value as Option["value"]))
+      }
+      {...props}
+    />
   );
 };

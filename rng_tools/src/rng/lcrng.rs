@@ -18,24 +18,83 @@ const fn compute_jump_table<const ADD: u32, const MUL: u32>() -> [(u32, u32); 32
     table
 }
 
-pub type Pokerng = Lcrng<0x6073, 0x41c64e6d, 0xa3561a1, 0xeeb9eb65>;
+pub type Pokerng = Lcrng<0x6073, 0x41c64e6d>;
 pub const POKERNG_JUMP_TABLE: [(u32, u32); 32] = compute_jump_table::<0x6073, 0x41c64e6d>();
 
-pub type PokerngR = Lcrng<0xa3561a1, 0xeeb9eb65, 0x6073, 0x41c64e6d>;
+pub type PokerngR = Lcrng<0xa3561a1, 0xeeb9eb65>;
 pub const POKERNGR_JUMP_TABLE: [(u32, u32); 32] = compute_jump_table::<0xa3561a1, 0xeeb9eb65>();
 
-pub type Xdrng = Lcrng<0x269EC3, 0x343FD, 0xA170F641, 0xB9B33155>;
+pub type Xdrng = Lcrng<0x269EC3, 0x343FD>;
 pub const XDRNG_JUMP_TABLE: [(u32, u32); 32] = compute_jump_table::<0x269EC3, 0x343FD>();
 
+pub type XdrngR = Lcrng<0xA170F641, 0xB9B33155>;
+pub const XDRNGR_JUMP_TABLE: [(u32, u32); 32] = compute_jump_table::<0xA170F641, 0xB9B33155>();
+
 #[derive(Debug, Clone, Copy)]
-pub struct Lcrng<const ADD: u32, const MUL: u32, const P_ADD: u32, const P_MUL: u32> {
+pub struct Lcrng<const ADD: u32, const MUL: u32> {
     state: u32,
 }
 
 impl Pokerng {
-    // TODO:
+    pub fn reverse(self) -> PokerngR {
+        PokerngR::new(self.state)
+    }
+}
+
+impl PokerngR {
+    pub fn reverse(self) -> Pokerng {
+        Pokerng::new(self.state)
+    }
+}
+
+impl Xdrng {
+    pub fn reverse(self) -> XdrngR {
+        XdrngR::new(self.state)
+    }
+}
+
+impl XdrngR {
+    pub fn reverse(self) -> Xdrng {
+        Xdrng::new(self.state)
+    }
+}
+
+impl<const A: u32, const M: u32> Lcrng<A, M> {
+    pub fn new(seed: u32) -> Self {
+        Self { state: seed }
+    }
+
+    pub fn seed(&self) -> u32 {
+        self.state
+    }
+
+    pub const fn get_jump_table() -> &'static [(u32, u32); 32] {
+        match A {
+            0x6073 => &POKERNG_JUMP_TABLE,
+            0xa3561a1 => &POKERNGR_JUMP_TABLE,
+            0x269EC3 => &XDRNG_JUMP_TABLE,
+            0xA170F641 => &XDRNGR_JUMP_TABLE,
+            _ => panic!("error. invalid ADD generic constant"),
+        }
+    }
+    pub const fn get_reverse_jump_table() -> &'static [(u32, u32); 32] {
+        match A {
+            0x6073 => &POKERNGR_JUMP_TABLE,
+            0xa3561a1 => &POKERNG_JUMP_TABLE,
+            0x269EC3 => &XDRNGR_JUMP_TABLE,
+            0xA170F641 => &XDRNG_JUMP_TABLE,
+            _ => panic!("error. invalid ADD generic constant"),
+        }
+    }
+
+    pub fn with_advances(seed: u32, advance: usize) -> Self {
+        let mut rng = Self::new(seed);
+        rng.advance(advance);
+        rng
+    }
+
     pub fn jump(&mut self, mut advances: usize) {
-        for (mult, add) in POKERNG_JUMP_TABLE {
+        for &(mult, add) in Self::get_jump_table() {
             if (advances & 1) != 0 {
                 self.state = self.state.wrapping_mul(mult).wrapping_add(add);
             }
@@ -45,10 +104,14 @@ impl Pokerng {
             }
         }
     }
+    const fn prev_mul_add(&self) -> (u32, u32) {
+        Self::get_reverse_jump_table()[0]
+    }
+
     pub fn reverse_jump(&mut self, mut advances: usize) {
-        for (mult, add) in POKERNGR_JUMP_TABLE {
+        for (mult, add) in Self::get_reverse_jump_table() {
             if (advances & 1) != 0 {
-                self.state = self.state.wrapping_mul(mult).wrapping_add(add);
+                self.state = self.state.wrapping_mul(*mult).wrapping_add(*add);
             }
             advances >>= 1;
             if advances == 0 {
@@ -69,43 +132,9 @@ impl Pokerng {
         ret
     }
 
-    pub fn reverse(self) -> PokerngR {
-        PokerngR::new(self.state)
-    }
-}
-
-impl PokerngR {
-    pub fn reverse(self) -> Pokerng {
-        Pokerng::new(self.state)
-    }
-}
-
-impl<const A: u32, const M: u32, const PA: u32, const PM: u32> Lcrng<A, M, PA, PM> {
-    pub fn new(seed: u32) -> Self {
-        Self { state: seed }
-    }
-
-    pub fn seed(&self) -> u32 {
-        self.state
-    }
-
-    pub const fn get_jump_table() -> &'static [(u32, u32); 32] {
-        match A {
-            0x6073 => &POKERNG_JUMP_TABLE,
-            0xa3561a1 => &POKERNGR_JUMP_TABLE,
-            0x269EC3 => &XDRNG_JUMP_TABLE,
-            _ => panic!("error"),
-        }
-    }
-
-    pub fn with_advances(seed: u32, advance: usize) -> Self {
-        let mut rng = Self::new(seed);
-        rng.advance(advance);
-        rng
-    }
-
     fn prev_state(&mut self) -> u32 {
-        self.state = self.state.wrapping_mul(PM).wrapping_add(PA);
+        let (prev_mul, prev_add) = self.prev_mul_add();
+        self.state = self.state.wrapping_mul(prev_mul).wrapping_add(prev_add);
         self.state
     }
 
@@ -119,7 +148,7 @@ impl<const A: u32, const M: u32, const PA: u32, const PM: u32> Lcrng<A, M, PA, P
     }
 }
 
-impl<const A: u32, const M: u32, const PA: u32, const PM: u32> Iterator for Lcrng<A, M, PA, PM> {
+impl<const A: u32, const M: u32> Iterator for Lcrng<A, M> {
     type Item = u32;
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -127,98 +156,76 @@ impl<const A: u32, const M: u32, const PA: u32, const PM: u32> Iterator for Lcrn
     }
 }
 
-impl<const A: u32, const M: u32, const PA: u32, const PM: u32> DoubleEndedIterator
-    for Lcrng<A, M, PA, PM>
-{
+impl<const A: u32, const M: u32> DoubleEndedIterator for Lcrng<A, M> {
     fn next_back(&mut self) -> Option<Self::Item> {
         Some(self.prev_state())
     }
 }
 
-impl<const A: u32, const M: u32, const PA: u32, const PM: u32> GetRand<u8> for Lcrng<A, M, PA, PM> {
+impl<const A: u32, const M: u32> GetRand<u8> for Lcrng<A, M> {
     fn get(&mut self) -> u8 {
         self.next_u16() as u8
     }
 }
 
-impl<const A: u32, const M: u32, const PA: u32, const PM: u32> GetRand<u16>
-    for Lcrng<A, M, PA, PM>
-{
+impl<const A: u32, const M: u32> GetRand<u16> for Lcrng<A, M> {
     fn get(&mut self) -> u16 {
         self.next_u16()
     }
 }
 
-impl<const A: u32, const M: u32, const PA: u32, const PM: u32> GetMaxRand<u16>
-    for Lcrng<A, M, PA, PM>
-{
+impl<const A: u32, const M: u32> GetMaxRand<u16> for Lcrng<A, M> {
     fn get_max(&mut self, max: u16) -> u16 {
         ((self.next().unwrap_or_default() >> 16) as u16) % max
     }
 }
 
-impl<const A: u32, const M: u32, const PA: u32, const PM: u32> GetRand<u32>
-    for Lcrng<A, M, PA, PM>
-{
+impl<const A: u32, const M: u32> GetRand<u32> for Lcrng<A, M> {
     fn get(&mut self) -> u32 {
         self.next_state()
     }
 }
 
-impl<const A: u32, const M: u32, const PA: u32, const PM: u32> GetRand<u8>
-    for Skip<Lcrng<A, M, PA, PM>>
-{
+impl<const A: u32, const M: u32> GetRand<u8> for Skip<Lcrng<A, M>> {
     fn get(&mut self) -> u8 {
         GetRand::<u16>::get(self) as u8
     }
 }
 
-impl<const A: u32, const M: u32, const PA: u32, const PM: u32> GetRand<u16>
-    for Skip<Lcrng<A, M, PA, PM>>
-{
+impl<const A: u32, const M: u32> GetRand<u16> for Skip<Lcrng<A, M>> {
     fn get(&mut self) -> u16 {
         (self.next().unwrap_or_default() >> 16) as u16
     }
 }
 
-impl<const A: u32, const M: u32, const PA: u32, const PM: u32> GetRand<u32>
-    for Skip<Lcrng<A, M, PA, PM>>
-{
+impl<const A: u32, const M: u32> GetRand<u32> for Skip<Lcrng<A, M>> {
     fn get(&mut self) -> u32 {
         self.next().unwrap_or_default()
     }
 }
 
-impl<const A: u32, const M: u32, const PA: u32, const PM: u32> GetRand<u8>
-    for Rev<Lcrng<A, M, PA, PM>>
-{
+impl<const A: u32, const M: u32> GetRand<u8> for Rev<Lcrng<A, M>> {
     fn get(&mut self) -> u8 {
         GetRand::<u16>::get(self) as u8
     }
 }
 
-impl<const A: u32, const M: u32, const PA: u32, const PM: u32> GetRand<u16>
-    for Rev<Lcrng<A, M, PA, PM>>
-{
+impl<const A: u32, const M: u32> GetRand<u16> for Rev<Lcrng<A, M>> {
     fn get(&mut self) -> u16 {
         (self.next().unwrap_or_default() >> 16) as u16
     }
 }
 
-impl<const A: u32, const M: u32, const PA: u32, const PM: u32> GetRand<u32>
-    for Rev<Lcrng<A, M, PA, PM>>
-{
+impl<const A: u32, const M: u32> GetRand<u32> for Rev<Lcrng<A, M>> {
     fn get(&mut self) -> u32 {
         self.next().unwrap()
     }
 }
 
-impl<const A: u32, const M: u32, const PA: u32, const PM: u32> Rng for Lcrng<A, M, PA, PM> {}
+impl<const A: u32, const M: u32> Rng for Lcrng<A, M> {}
 
 #[cfg(test)]
 mod test {
-    use itertools::Itertools;
-
     use super::*;
     use crate::assert_list_eq;
 

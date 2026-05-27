@@ -93,9 +93,10 @@ fn extend_path_for_arc(
 ) -> Option<LvlPath> {
     let mut rng = Pokerng::new(nature_gender_path.seed);
 
-    rng.prev_rand();
-    if arc == LvlToNatureGenderArc::Hustle {
+    if arc != LvlToNatureGenderArc::Hustle {
         rng.prev_rand();
+    } else {
+        rng.reverse_jump_const::<2>();
     }
 
     Some(LvlPath {

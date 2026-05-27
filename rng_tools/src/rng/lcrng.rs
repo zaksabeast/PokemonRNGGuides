@@ -404,7 +404,7 @@ mod test {
         state
     }
 
-    //1.56s
+    // cargo test --release benchmark_pokerng_with_jump_random_seed_and_advances -- --ignored --nocapture
     #[test]
     #[ignore]
     fn benchmark_pokerng_with_jump_random_seed_and_advances() {
@@ -412,26 +412,51 @@ mod test {
 
         const ITERATIONS: usize = 1000_000_000;
 
-        let mut seed = 0x1234_5678_u32;
-        let mut advances = 0x9abc_def0_u32;
-        let mut checksum = 0_u32;
+        fn next_random(state: &mut u32) -> u32 {
+            *state ^= *state << 13;
+            *state ^= *state >> 17;
+            *state ^= *state << 5;
+            *state
+        }
+
+        let mut random_state = 0x1234_5678_u32;
+        let mut with_jump_checksum = 0_u32;
         let start_time = Instant::now();
 
         for _ in 0..ITERATIONS {
-            seed = seed.wrapping_mul(0x41c6_4e6d).wrapping_add(0x6073);
-            advances = advances.wrapping_mul(0x343f_d).wrapping_add(0x269e_c3);
-            checksum = checksum.wrapping_add(
-                Pokerng::with_jump(black_box(seed), black_box(advances as usize)).seed(),
-            );
+            let seed = next_random(&mut random_state);
+            let advances = next_random(&mut random_state) as usize;
+            with_jump_checksum = with_jump_checksum
+                .wrapping_add(Pokerng::with_jump(black_box(seed), black_box(advances)).seed());
         }
 
-        // TODO:
+        let with_jump_elapsed = start_time.elapsed();
+
+        random_state = 0x1234_5678_u32;
+        let mut common_impl_checksum = 0_u32;
+        let start_time = Instant::now();
+
+        for _ in 0..ITERATIONS {
+            let seed = next_random(&mut random_state);
+            let advances = next_random(&mut random_state) as usize;
+            common_impl_checksum = common_impl_checksum.wrapping_add(pokerng_jump_common_impl(
+                black_box(seed),
+                black_box(advances),
+            ));
+        }
+
+        let common_impl_elapsed = start_time.elapsed();
 
         println!(
             "Pokerng::with_jump random seed and advances: {:?} (checksum {})",
-            start_time.elapsed(),
-            checksum
+            with_jump_elapsed, with_jump_checksum
         );
+        println!(
+            "pokerng_jump_common_impl random seed and advances: {:?} (checksum {})",
+            common_impl_elapsed, common_impl_checksum
+        );
+
+        assert_eq!(with_jump_checksum, common_impl_checksum);
     }
 
     #[test]

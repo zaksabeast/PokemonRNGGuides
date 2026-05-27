@@ -50,7 +50,7 @@ type Props<FormState extends GenericForm, Result> = {
   > &
   AllOrNone<{
     rowKey: keyof Result;
-    onClickResultRow?: (record: Result) => void;
+    onClickResultRow?: (record: Result | null) => void;
   }> &
   AllOrNone<{ submitTrackerId: string; onSubmit: RngToolSubmit<FormState> }> &
   FeatureConfig<
@@ -195,14 +195,7 @@ export const RngToolForm = <
             rowKey={rowKey}
             dataSource={results}
             pagination={pagination}
-            rowSelection={
-              onClickResultRow == null
-                ? undefined
-                : {
-                    type: "radio",
-                    onSelect: (record) => onClickResultRow?.(record),
-                  }
-            }
+            onClickResultRow={onClickResultRow}
           />
         )}
       </Flex>

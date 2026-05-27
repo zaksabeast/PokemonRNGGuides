@@ -86,12 +86,15 @@ const TABLE_SCROLL = { x: true } as const;
 type FormikResultTableProps<Record extends tst.O.Object> = tst.O.Overwrite<
   TableProps<Record>,
   { columns: ResultColumn<Record>[] }
->;
+> & {
+  onClickResultRow?: (record: Record | null) => void;
+};
 
 export const ResultTable = <Record extends tst.O.Object>(
   props: FormikResultTableProps<Record>,
 ) => {
   const columns = (props.columns ?? []).map(applyMonospace);
+  const [selectedRowKeys, setSelectedRowKeys] = React.useState<React.Key[]>([]);
 
   const titleWithTooltip = (
     title: React.ReactNode,
@@ -151,6 +154,20 @@ export const ResultTable = <Record extends tst.O.Object>(
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { columns: _, ...propsWithColumns } = props;
+  const rowSelection: FormikResultTableProps<Record>["rowSelection"] =
+    props.rowSelection != null
+      ? props.rowSelection
+      : {
+          type: "checkbox",
+          selectedRowKeys,
+          hideSelectAll: true,
+          onChange: (newSelectedRowKeys, selectedRows) => {
+            const latestKey = newSelectedRowKeys.slice(-1);
+            const latestRows = selectedRows.slice(-1);
+            setSelectedRowKeys(latestKey);
+            props.onClickResultRow?.(latestRows[0] ?? null);
+          },
+        };
 
   return (
     <ClassNames>
@@ -158,6 +175,7 @@ export const ResultTable = <Record extends tst.O.Object>(
         <Table
           scroll={TABLE_SCROLL}
           {...propsWithColumns}
+          rowSelection={rowSelection}
           className={css({
             "&&&": {
               width: "100%",

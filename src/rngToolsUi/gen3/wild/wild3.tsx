@@ -177,7 +177,7 @@ export const Wild3TargetSetupSearcher_WithSetTargetSetup = () => {
     return <Skeleton />;
   }
 
-  const handleSetTargetSetup = (targetSetup: TargetSetup) => {
+  const handleSetTargetSetup = (targetSetup: TargetSetup | null) => {
     setTargetSetup(
       hydrationLock({
         targetSetup,

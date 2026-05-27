@@ -179,7 +179,7 @@ export const XyPokeRadar = () => {
         onSubmit={onSubmit}
         onClickResultRow={
           results.NoChain == null
-            ? (row) => setSelectedPatches(row.patches ?? [])
+            ? (row) => setSelectedPatches(row?.patches ?? [])
             : undefined
         }
         rowKey="advance"

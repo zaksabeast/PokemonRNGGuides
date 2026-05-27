@@ -1,34 +1,59 @@
 use super::rng_trait::{GetMaxRand, GetRand, Rng};
 use std::iter::{DoubleEndedIterator, Iterator, Rev, Skip};
 
-const fn compute_jump_table<const ADD: u32, const MUL: u32>() -> [(u32, u32); 32] {
-    let mut table = [(0, 0); 32];
-    table[0] = (MUL, ADD);
+const fn compute_jump_table<const ADD: u32, const MUL: u32>() -> [[(u32, u32); 256]; 4] {
+    let mut bit_table = [(0, 0); 32];
+    bit_table[0] = (MUL, ADD);
 
     let mut i = 1;
     while i < 32 {
-        let (prev_mul, prev_add) = table[i - 1];
-        table[i] = (
+        let (prev_mul, prev_add) = bit_table[i - 1];
+        bit_table[i] = (
             prev_mul.wrapping_mul(prev_mul),
             prev_add.wrapping_mul(prev_mul.wrapping_add(1)),
         );
         i += 1;
     }
 
+    let mut table = [[(1, 0); 256]; 4];
+    let mut byte = 0;
+    while byte < 4 {
+        let mut value = 1;
+        while value < 256 {
+            let mut mult = 1u32;
+            let mut add = 0u32;
+            let mut bit = 0;
+            while bit < 8 {
+                if (value & (1 << bit)) != 0 {
+                    let (bit_mult, bit_add) = bit_table[byte * 8 + bit];
+                    add = add.wrapping_mul(bit_mult).wrapping_add(bit_add);
+                    mult = mult.wrapping_mul(bit_mult);
+                }
+                bit += 1;
+            }
+            table[byte][value] = (mult, add);
+            value += 1;
+        }
+        byte += 1;
+    }
+
     table
 }
 
 pub type Pokerng = Lcrng<0x6073, 0x41c64e6d>;
-pub const POKERNG_JUMP_TABLE: [(u32, u32); 32] = compute_jump_table::<0x6073, 0x41c64e6d>();
+pub const POKERNG_JUMP_TABLE: [[(u32, u32); 256]; 4] =
+    compute_jump_table::<0x6073, 0x41c64e6d>();
 
 pub type PokerngR = Lcrng<0xa3561a1, 0xeeb9eb65>;
-pub const POKERNGR_JUMP_TABLE: [(u32, u32); 32] = compute_jump_table::<0xa3561a1, 0xeeb9eb65>();
+pub const POKERNGR_JUMP_TABLE: [[(u32, u32); 256]; 4] =
+    compute_jump_table::<0xa3561a1, 0xeeb9eb65>();
 
 pub type Xdrng = Lcrng<0x269EC3, 0x343FD>;
-pub const XDRNG_JUMP_TABLE: [(u32, u32); 32] = compute_jump_table::<0x269EC3, 0x343FD>();
+pub const XDRNG_JUMP_TABLE: [[(u32, u32); 256]; 4] = compute_jump_table::<0x269EC3, 0x343FD>();
 
 pub type XdrngR = Lcrng<0xA170F641, 0xB9B33155>;
-pub const XDRNGR_JUMP_TABLE: [(u32, u32); 32] = compute_jump_table::<0xA170F641, 0xB9B33155>();
+pub const XDRNGR_JUMP_TABLE: [[(u32, u32); 256]; 4] =
+    compute_jump_table::<0xA170F641, 0xB9B33155>();
 
 #[derive(Debug, Clone, Copy)]
 pub struct Lcrng<const ADD: u32, const MUL: u32> {
@@ -68,7 +93,7 @@ impl<const A: u32, const M: u32> Lcrng<A, M> {
         self.state
     }
 
-    pub const fn get_jump_table() -> &'static [(u32, u32); 32] {
+    pub const fn get_jump_table() -> &'static [[(u32, u32); 256]; 4] {
         match A {
             0x6073 => &POKERNG_JUMP_TABLE,
             0xa3561a1 => &POKERNGR_JUMP_TABLE,
@@ -77,7 +102,7 @@ impl<const A: u32, const M: u32> Lcrng<A, M> {
             _ => panic!("error. invalid ADD generic constant"),
         }
     }
-    pub const fn get_reverse_jump_table() -> &'static [(u32, u32); 32] {
+    pub const fn get_reverse_jump_table() -> &'static [[(u32, u32); 256]; 4] {
         match A {
             0x6073 => &POKERNGR_JUMP_TABLE,
             0xa3561a1 => &POKERNG_JUMP_TABLE,
@@ -93,30 +118,26 @@ impl<const A: u32, const M: u32> Lcrng<A, M> {
         rng
     }
 
-    pub fn jump(&mut self, mut advances: usize) {
-        for &(mult, add) in Self::get_jump_table() {
-            if (advances & 1) != 0 {
-                self.state = self.state.wrapping_mul(mult).wrapping_add(add);
-            }
-            advances >>= 1;
-            if advances == 0 {
-                break;
-            }
+    pub fn jump(&mut self, advances: usize) {
+        let table = Self::get_jump_table();
+        let mut byte = 0;
+        while byte < 4 {
+            let (mult, add) = table[byte][(advances >> (byte * 8)) & 0xff];
+            self.state = self.state.wrapping_mul(mult).wrapping_add(add);
+            byte += 1;
         }
     }
     const fn prev_mul_add(&self) -> (u32, u32) {
-        Self::get_reverse_jump_table()[0]
+        Self::get_reverse_jump_table()[0][1]
     }
 
-    pub fn reverse_jump(&mut self, mut advances: usize) {
-        for (mult, add) in Self::get_reverse_jump_table() {
-            if (advances & 1) != 0 {
-                self.state = self.state.wrapping_mul(*mult).wrapping_add(*add);
-            }
-            advances >>= 1;
-            if advances == 0 {
-                break;
-            }
+    pub fn reverse_jump(&mut self, advances: usize) {
+        let table = Self::get_reverse_jump_table();
+        let mut byte = 0;
+        while byte < 4 {
+            let (mult, add) = table[byte][(advances >> (byte * 8)) & 0xff];
+            self.state = self.state.wrapping_mul(mult).wrapping_add(add);
+            byte += 1;
         }
     }
 

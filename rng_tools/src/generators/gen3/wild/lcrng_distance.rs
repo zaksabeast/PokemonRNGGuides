@@ -28,17 +28,21 @@ pub fn lcrng_distance(start: u32, end: u32) -> u32 {
 pub fn lcrng_distance_from_non_zero(mut start: u32, end: u32) -> u32 {
     let mut count = 0_u32;
     let mut p = 1_u32;
+    let mut i = 0_usize;
 
-    for (mult, add) in POKERNG_JUMP_TABLE {
+    while i < 32 {
         if start == end {
             break;
         }
 
         if ((start ^ end) & p) != 0 {
+            let (mult, add) = bit_jump_params(i);
             start = mult.wrapping_mul(start).wrapping_add(add);
             count += p;
         }
-        p <<= 1
+
+        p <<= 1;
+        i += 1;
     }
 
     count
@@ -91,20 +95,22 @@ const fn gen_lookup(byte: usize, partial: u32) -> DistanceLookup {
 const fn jump_params(mut jump: u32) -> (u32, u32) {
     let mut mult = 1_u32;
     let mut add = 0_u32;
-    let mut i = 0_usize;
+    let mut byte = 0_usize;
 
-    while jump != 0 {
-        if (jump & 1) != 0 {
-            let (jump_mult, jump_add) = POKERNG_JUMP_TABLE[i];
-            add = add.wrapping_mul(jump_mult).wrapping_add(jump_add);
-            mult = mult.wrapping_mul(jump_mult);
-        }
+    while byte < 4 {
+        let (jump_mult, jump_add) = POKERNG_JUMP_TABLE[byte][(jump & 0xff) as usize];
+        add = add.wrapping_mul(jump_mult).wrapping_add(jump_add);
+        mult = mult.wrapping_mul(jump_mult);
 
-        jump >>= 1;
-        i += 1;
+        jump >>= 8;
+        byte += 1;
     }
 
     (mult, add)
+}
+
+const fn bit_jump_params(i: usize) -> (u32, u32) {
+    POKERNG_JUMP_TABLE[i / 8][1 << (i % 8)]
 }
 
 const fn lcrng_distance_const(mut start: u32, end: u32) -> u32 {
@@ -113,7 +119,7 @@ const fn lcrng_distance_const(mut start: u32, end: u32) -> u32 {
     let mut i = 0_usize;
 
     while start != end {
-        let (mult, add) = POKERNG_JUMP_TABLE[i];
+        let (mult, add) = bit_jump_params(i);
 
         if ((start ^ end) & p) != 0 {
             start = start.wrapping_mul(mult).wrapping_add(add);

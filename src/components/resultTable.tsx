@@ -155,6 +155,20 @@ export const ResultTable = <Record extends tst.O.Object>(
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { columns: _, ...propsWithColumns } = props;
+  const pagination =
+    props.pagination === false
+      ? false
+      : {
+          ...props.pagination,
+          showTotal: (total: number, range: [number, number]) => (
+            <>
+              <MaxWidthToggleButton />
+              {typeof props.pagination === "object" &&
+                props.pagination.showTotal?.(total, range)}
+            </>
+          ),
+        };
+
   const rowSelection: FormikResultTableProps<Record>["rowSelection"] =
     props.rowSelection != null
       ? props.rowSelection
@@ -168,18 +182,6 @@ export const ResultTable = <Record extends tst.O.Object>(
             setSelectedRowKeys(latestKey);
             props.onClickResultRow?.(latestRows[0] ?? null);
           },
-  const pagination =
-    props.pagination === false
-      ? false
-      : {
-          ...props.pagination,
-          showTotal: (total: number, range: [number, number]) => (
-            <>
-              <MaxWidthToggleButton />
-              {typeof props.pagination === "object" &&
-                props.pagination.showTotal?.(total, range)}
-            </>
-          ),
         };
 
   return (

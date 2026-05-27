@@ -107,11 +107,9 @@ pub fn search_static3_naive(opts: &Static3SearcherOptions) -> Vec<Static3Searche
 
 #[wasm_bindgen]
 pub fn search_static3(opts: &Static3SearcherOptions) -> Vec<Static3SearcherResult> {
-    search_static3_naive(opts)
-    //search_static3_reverse(opts)
+    search_static3_reverse(opts)
+    // for debug: search_static3_naive(opts)
 }
-
-
 
 fn extend_pid_paths_to_results<I>(
     opts: &Static3SearcherOptions,
@@ -120,40 +118,101 @@ fn extend_pid_paths_to_results<I>(
 where
     I: Iterator<Item = PidPath>,
 {
+    iter.map(|pid_path|{
+        let pid = pid_path.pid();
+        let ivs = pid_path.ivs();
+        let method = if pid_path.method() == Gen3Method::Wild1 {
+            Gen3StaticMethod::Static1
+        } else {
+            Gen3StaticMethod::Static4
+        };
+
+        Static3SearcherResult {
+            pid,
+            ivs,
+            method,
+            species: gen_opts.species,
+            shiny: gen3_shiny(pid, gen_opts.tid, gen_opts.sid),
+            nature: Nature::from_pid(pid),
+            ability: AbilityType::from_gen3_pid(pid),
+            gender: gen_opts.species.get_gender_ratio()
+                .gender_from_pid(pid),
+            hidden_power: HiddenPower::from_ivs(ivs),
+            advance,
+            seed,
+        }
+    }).collect()
 }
 
 #[wasm_bindgen]
 pub fn search_static3_reverse(opts: &Static3SearcherOptions) -> Vec<Static3SearcherResult> {
     let find_opts = new_find_pid_paths_options(opts);
 
-    let pid_paths:Vec<PidPath> = match determine_best_pid_path_strategy(&find_opts) {
-        PidPathStrategy::ByStepIv1 => {
-            find_pid_paths_by_step_iv1::<true>(&find_opts).collect()
-        }
-        PidPathStrategy::ByStepIv2 => {
-            find_pid_paths_by_step_iv2::<true>(&find_opts).collect()
-        }
-        PidPathStrategy::ByStepPid => {
-            find_pid_paths_by_step_pid::<true>(&find_opts).collect()
-        }
-        PidPathStrategy::ReverseIv => {
-            find_pid_paths_reverse_iv::<true>(&find_opts).collect()
-        }
-        PidPathStrategy::ReversePidCycleSpeed => {
-            find_pid_paths_reverse_pid_cycle_speed::<true>(&find_opts).collect()
-        }
-    };
-
-
+    match find_opts.methods_bits {
+        0 => search_static3_reverse_with_methods::<0>(opts),
+        1 => search_static3_reverse_with_methods::<1>(opts),
+        8 => search_static3_reverse_with_methods::<8>(opts),
+        _ => search_static3_reverse_with_methods::<9>(opts),
+    }
 }
 
+fn new_find_pid_paths_options(opts: &Static3SearcherOptions) -> FindPidPathsOptions {
+    let mut method_bitset = 0;
+    if opts.methods.contains(&Gen3Method::Static1) {
+        method_bitset |= METHOD_1;
+    }
+    if opts.methods.contains(&Gen3Method::Static4) {
+        method_bitset |= METHOD_4;
+    }
 
+    FindPidPathsOptions {
+        filter: opts.filter.clone(),
+        gen3_filter: opts.gen3_filter.clone(),
+        encounter_gender_ratio:opts.species.get_gender_ratio(),
+        method_bitset,
+        tsv: gen3_tsv(opts.tid, opts.sid),
+        initial_seed: opts.initial_seed,
+        initial_advances: opts.initial_advances,
+        max_result_count: opts.max_result_count,
+        max_advances: opts.max_advances,
+        painting_adv_finder: opts.painting_opts.as_ref().map(Wild3PaintingAdvFinder::new),
+    }
+}
 
+#[wasm_bindgen]
+pub fn search_static3_reverse_with_methods<const METHODS: u8>(opts: &Static3SearcherOptions) -> Vec<Static3SearcherResult> {
+    let find_opts = new_find_pid_paths_options(opts);
 
+    let strategy = determine_best_pid_path_strategy(&find_opts);
 
+    match strategy {
+        PidPathStrategy::ByStepIv1 => {
+            extend_pid_paths_to_results(opts, find_pid_paths_by_step_iv1::<METHODS>(&find_opts))
+        }
+        PidPathStrategy::ByStepIv2 => {
+            extend_pid_paths_to_results(opts, find_pid_paths_by_step_iv2::<METHODS>(&find_opts))
+        }
+        PidPathStrategy::ByStepPid => {
+            extend_pid_paths_to_results(opts, find_pid_paths_by_step_pid::<METHODS>(&find_opts))
+        }
+        PidPathStrategy::ReverseIv => {
+            extend_pid_paths_to_results(opts, find_pid_paths_reverse_iv::<METHODS>(&find_opts))
+        }
+        PidPathStrategy::ReversePidCycleSpeedLowHigh => extend_pid_paths_to_results(
+            opts,
+            find_pid_paths_reverse_pid_cycle_speed_low_high::<METHODS>(&find_opts),
+        ),
+        PidPathStrategy::ReversePidCycleSpeedMid => extend_pid_paths_to_results(
+            opts,
+            find_pid_paths_reverse_pid_cycle_speed_mid::<METHODS>(&find_opts),
+        ),
+        PidPathStrategy::ReversePidShiny => extend_pid_paths_to_results(
+            opts,
+            find_pid_paths_reverse_pid_shiny::<METHODS>(&find_opts),
+        ),
+    }
+}
 
-
-Q
 #[cfg(test)]
 mod test {
     use super::*;

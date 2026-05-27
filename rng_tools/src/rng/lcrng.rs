@@ -1,6 +1,20 @@
 use super::rng_trait::{GetMaxRand, GetRand, Rng};
 use std::iter::{DoubleEndedIterator, Iterator, Rev, Skip};
 
+pub type Pokerng = Lcrng<0x6073, 0x41c64e6d>;
+pub const POKERNG_JUMP_TABLE: [[(u32, u32); 256]; 4] = compute_jump_table::<0x6073, 0x41c64e6d>();
+
+pub type PokerngR = Lcrng<0xa3561a1, 0xeeb9eb65>;
+pub const POKERNGR_JUMP_TABLE: [[(u32, u32); 256]; 4] =
+    compute_jump_table::<0xa3561a1, 0xeeb9eb65>();
+
+pub type Xdrng = Lcrng<0x269EC3, 0x343FD>;
+pub const XDRNG_JUMP_TABLE: [[(u32, u32); 256]; 4] = compute_jump_table::<0x269EC3, 0x343FD>();
+
+pub type XdrngR = Lcrng<0xA170F641, 0xB9B33155>;
+pub const XDRNGR_JUMP_TABLE: [[(u32, u32); 256]; 4] =
+    compute_jump_table::<0xA170F641, 0xB9B33155>();
+
 const fn compute_jump_table<const ADD: u32, const MUL: u32>() -> [[(u32, u32); 256]; 4] {
     let mut bit_table = [(0, 0); 32];
     bit_table[0] = (MUL, ADD);
@@ -40,8 +54,8 @@ const fn compute_jump_table<const ADD: u32, const MUL: u32>() -> [[(u32, u32); 2
     table
 }
 
-const fn compute_jump_pair<const ADD: u32, const MUL: u32>(advances: usize) -> (u32, u32) {
-    let mut advances = advances;
+const fn compute_jump_pair<const ADD: u32, const MUL: u32, const ADV: usize>() -> (u32, u32) {
+    let mut advances = ADV;
     let mut result_mul = 1u32;
     let mut result_add = 0u32;
     let mut jump_mul = MUL;
@@ -60,20 +74,6 @@ const fn compute_jump_pair<const ADD: u32, const MUL: u32>(advances: usize) -> (
 
     (result_mul, result_add)
 }
-
-pub type Pokerng = Lcrng<0x6073, 0x41c64e6d>;
-pub const POKERNG_JUMP_TABLE: [[(u32, u32); 256]; 4] = compute_jump_table::<0x6073, 0x41c64e6d>();
-
-pub type PokerngR = Lcrng<0xa3561a1, 0xeeb9eb65>;
-pub const POKERNGR_JUMP_TABLE: [[(u32, u32); 256]; 4] =
-    compute_jump_table::<0xa3561a1, 0xeeb9eb65>();
-
-pub type Xdrng = Lcrng<0x269EC3, 0x343FD>;
-pub const XDRNG_JUMP_TABLE: [[(u32, u32); 256]; 4] = compute_jump_table::<0x269EC3, 0x343FD>();
-
-pub type XdrngR = Lcrng<0xA170F641, 0xB9B33155>;
-pub const XDRNGR_JUMP_TABLE: [[(u32, u32); 256]; 4] =
-    compute_jump_table::<0xA170F641, 0xB9B33155>();
 
 #[derive(Debug, Clone, Copy)]
 pub struct Lcrng<const ADD: u32, const MUL: u32> {
@@ -139,7 +139,7 @@ impl<const A: u32, const M: u32> Lcrng<A, M> {
     }
 
     pub fn jump_const<const ADVANCES: usize>(&mut self) {
-        let (mult, add) = compute_jump_pair::<A, M>(ADVANCES);
+        let (mult, add) = compute_jump_pair::<A, M, ADVANCES>();
         self.state = self.state.wrapping_mul(mult).wrapping_add(add);
     }
 
@@ -158,10 +158,10 @@ impl<const A: u32, const M: u32> Lcrng<A, M> {
 
     pub fn reverse_jump_const<const ADVANCES: usize>(&mut self) {
         let (mult, add) = match A {
-            0x6073 => compute_jump_pair::<0xa3561a1, 0xeeb9eb65>(ADVANCES),
-            0xa3561a1 => compute_jump_pair::<0x6073, 0x41c64e6d>(ADVANCES),
-            0x269EC3 => compute_jump_pair::<0xA170F641, 0xB9B33155>(ADVANCES),
-            0xA170F641 => compute_jump_pair::<0x269EC3, 0x343FD>(ADVANCES),
+            0x6073 => compute_jump_pair::<0xa3561a1, 0xeeb9eb65, ADVANCES>(),
+            0xa3561a1 => compute_jump_pair::<0x6073, 0x41c64e6d, ADVANCES>(),
+            0x269EC3 => compute_jump_pair::<0xA170F641, 0xB9B33155, ADVANCES>(),
+            0xA170F641 => compute_jump_pair::<0x269EC3, 0x343FD, ADVANCES>(),
             _ => panic!("error. invalid ADD generic constant"),
         };
         self.state = self.state.wrapping_mul(mult).wrapping_add(add);
@@ -459,13 +459,15 @@ mod test {
         assert_eq!(with_jump_checksum, common_impl_checksum);
     }
 
-    // cargo test --release benchmark_reverse_jump_const_5_vs_prev_rand_5 -- --ignored --nocapture
+    // cargo test --release benchmark_reverse_jump_const_vs_prev_rand -- --ignored --nocapture
     #[test]
     #[ignore]
-    fn benchmark_reverse_jump_const_5_vs_prev_rand_5() {
+    fn benchmark_reverse_jump_const_vs_prev_rand() {
         use std::{hint::black_box, time::Instant};
 
-        const ITERATIONS: usize = 1000_000_000;
+        const ITERATIONS: usize = 100_000_000;
+
+        const COUNT: usize = 15;
 
         fn next_random(state: &mut u32) -> u32 {
             *state ^= *state << 13;
@@ -481,7 +483,7 @@ mod test {
         for _ in 0..ITERATIONS {
             let seed = next_random(&mut random_state);
             let mut rng = Pokerng::new(black_box(seed));
-            rng.reverse_jump_const::<5>();
+            rng.reverse_jump_const::<COUNT>();
             reverse_jump_const_checksum =
                 reverse_jump_const_checksum.wrapping_add(black_box(rng.seed()));
         }
@@ -495,26 +497,81 @@ mod test {
         for _ in 0..ITERATIONS {
             let seed = next_random(&mut random_state);
             let mut rng = Pokerng::new(black_box(seed));
-            rng.prev_rand();
-            rng.prev_rand();
-            rng.prev_rand();
-            rng.prev_rand();
-            rng.prev_rand();
+            for _ in 0..COUNT {
+                rng.prev_rand();
+            }
             prev_rand_checksum = prev_rand_checksum.wrapping_add(black_box(rng.seed()));
         }
 
         let prev_rand_elapsed = start_time.elapsed();
 
         println!(
-            "Pokerng::reverse_jump_const::<5>: {:?} (checksum {})",
-            reverse_jump_const_elapsed, reverse_jump_const_checksum
+            "Pokerng::reverse_jump_const::<{}>: {:?} (checksum {})",
+            COUNT, reverse_jump_const_elapsed, reverse_jump_const_checksum
         );
         println!(
-            "Pokerng::prev_rand 5 times: {:?} (checksum {})",
-            prev_rand_elapsed, prev_rand_checksum
+            "Pokerng::prev_rand {} times: {:?} (checksum {})",
+            COUNT, prev_rand_elapsed, prev_rand_checksum
         );
 
         assert_eq!(reverse_jump_const_checksum, prev_rand_checksum);
+    }
+
+    // cargo test --release benchmark_jump_const_vs_rand -- --ignored --nocapture
+    #[test]
+    #[ignore]
+    fn benchmark_jump_const_vs_rand() {
+        use std::{hint::black_box, time::Instant};
+
+        const ITERATIONS: usize = 100_000_000;
+
+        fn next_random(state: &mut u32) -> u32 {
+            *state ^= *state << 13;
+            *state ^= *state >> 17;
+            *state ^= *state << 5;
+            *state
+        }
+
+        let mut random_state = 0x1234_5678_u32;
+        let mut jump_const_checksum = 0_u32;
+        let start_time = Instant::now();
+
+        const COUNT: usize = 15;
+
+        for _ in 0..ITERATIONS {
+            let seed = next_random(&mut random_state);
+            let mut rng = Pokerng::new(black_box(seed));
+
+            //rng.state = rng.state.wrapping_mul(mul15).wrapping_add(add15);
+            rng.jump_const::<COUNT>();
+            jump_const_checksum = jump_const_checksum.wrapping_add(black_box(rng.seed()));
+        }
+
+        let jump_const_elapsed = start_time.elapsed();
+
+        random_state = 0x1234_5678_u32;
+        let mut prev_rand_checksum = 0_u32;
+        let start_time = Instant::now();
+
+        for _ in 0..ITERATIONS {
+            let seed = next_random(&mut random_state);
+            let mut rng = Pokerng::new(black_box(seed));
+            rng.advance(COUNT);
+            prev_rand_checksum = prev_rand_checksum.wrapping_add(black_box(rng.seed()));
+        }
+
+        let prev_rand_elapsed = start_time.elapsed();
+
+        println!(
+            "Pokerng::jump_const::<{}>: {:?} (checksum {})",
+            COUNT, jump_const_elapsed, jump_const_checksum
+        );
+        println!(
+            "Pokerng::advance {} times: {:?} (checksum {})",
+            COUNT, prev_rand_elapsed, prev_rand_checksum
+        );
+
+        assert_eq!(jump_const_checksum, prev_rand_checksum);
     }
 
     #[test]

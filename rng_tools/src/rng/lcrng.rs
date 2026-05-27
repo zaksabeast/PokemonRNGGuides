@@ -41,8 +41,7 @@ const fn compute_jump_table<const ADD: u32, const MUL: u32>() -> [[(u32, u32); 2
 }
 
 pub type Pokerng = Lcrng<0x6073, 0x41c64e6d>;
-pub const POKERNG_JUMP_TABLE: [[(u32, u32); 256]; 4] =
-    compute_jump_table::<0x6073, 0x41c64e6d>();
+pub const POKERNG_JUMP_TABLE: [[(u32, u32); 256]; 4] = compute_jump_table::<0x6073, 0x41c64e6d>();
 
 pub type PokerngR = Lcrng<0xa3561a1, 0xeeb9eb65>;
 pub const POKERNGR_JUMP_TABLE: [[(u32, u32); 256]; 4] =
@@ -317,5 +316,33 @@ mod test {
 
         // Custom behavior for different types, such as u32 being u16 << 16 | u16
         assert_eq!(rng.rand::<u32>(), 0x52713895);
+    }
+
+    //1.56s
+    #[test]
+    #[ignore]
+    fn benchmark_pokerng_with_jump_random_seed_and_advances() {
+        use std::{hint::black_box, time::Instant};
+
+        const ITERATIONS: usize = 1000_000_000;
+
+        let mut seed = 0x1234_5678_u32;
+        let mut advances = 0x9abc_def0_u32;
+        let mut checksum = 0_u32;
+        let start_time = Instant::now();
+
+        for _ in 0..ITERATIONS {
+            seed = seed.wrapping_mul(0x41c6_4e6d).wrapping_add(0x6073);
+            advances = advances.wrapping_mul(0x343f_d).wrapping_add(0x269e_c3);
+            checksum = checksum.wrapping_add(
+                Pokerng::with_jump(black_box(seed), black_box(advances as usize)).seed(),
+            );
+        }
+
+        println!(
+            "Pokerng::with_jump random seed and advances: {:?} (checksum {})",
+            start_time.elapsed(),
+            checksum
+        );
     }
 }

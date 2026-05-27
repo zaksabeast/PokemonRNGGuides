@@ -122,7 +122,7 @@ impl PidPath {
         let mut rng = Pokerng::new(self.seed);
         let mut pid = rng.rand::<u16>() as u32;
         if self.pid_to_iv_arc == PidToIvArc::WithVBlankBetweenPid {
-            rng.jump_const::<1>();
+            rng.advance(1);
         }
         pid |= (rng.rand::<u16>() as u32) << 16;
         pid
@@ -134,13 +134,13 @@ impl PidPath {
         if self.pid_to_iv_arc == PidToIvArc::WithVBlankBetweenPid
             || self.pid_to_iv_arc == PidToIvArc::WithVBlankBetweenPidIv
         {
-            rng.jump_const::<1>();
+            rng.advance(1);
         }
 
         let iv1 = rng.rand::<u16>();
 
         if self.iv_arc == IvFromStartArc::WithVBlank {
-            rng.jump_const::<1>();
+            rng.advance(1);
         }
 
         Ivs::new_g3(iv1, rng.rand::<u16>())

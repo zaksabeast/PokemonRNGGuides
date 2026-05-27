@@ -459,6 +459,64 @@ mod test {
         assert_eq!(with_jump_checksum, common_impl_checksum);
     }
 
+    // cargo test --release benchmark_reverse_jump_const_5_vs_prev_rand_5 -- --ignored --nocapture
+    #[test]
+    #[ignore]
+    fn benchmark_reverse_jump_const_5_vs_prev_rand_5() {
+        use std::{hint::black_box, time::Instant};
+
+        const ITERATIONS: usize = 1000_000_000;
+
+        fn next_random(state: &mut u32) -> u32 {
+            *state ^= *state << 13;
+            *state ^= *state >> 17;
+            *state ^= *state << 5;
+            *state
+        }
+
+        let mut random_state = 0x1234_5678_u32;
+        let mut reverse_jump_const_checksum = 0_u32;
+        let start_time = Instant::now();
+
+        for _ in 0..ITERATIONS {
+            let seed = next_random(&mut random_state);
+            let mut rng = Pokerng::new(black_box(seed));
+            rng.reverse_jump_const::<5>();
+            reverse_jump_const_checksum =
+                reverse_jump_const_checksum.wrapping_add(black_box(rng.seed()));
+        }
+
+        let reverse_jump_const_elapsed = start_time.elapsed();
+
+        random_state = 0x1234_5678_u32;
+        let mut prev_rand_checksum = 0_u32;
+        let start_time = Instant::now();
+
+        for _ in 0..ITERATIONS {
+            let seed = next_random(&mut random_state);
+            let mut rng = Pokerng::new(black_box(seed));
+            rng.prev_rand();
+            rng.prev_rand();
+            rng.prev_rand();
+            rng.prev_rand();
+            rng.prev_rand();
+            prev_rand_checksum = prev_rand_checksum.wrapping_add(black_box(rng.seed()));
+        }
+
+        let prev_rand_elapsed = start_time.elapsed();
+
+        println!(
+            "Pokerng::reverse_jump_const::<5>: {:?} (checksum {})",
+            reverse_jump_const_elapsed, reverse_jump_const_checksum
+        );
+        println!(
+            "Pokerng::prev_rand 5 times: {:?} (checksum {})",
+            prev_rand_elapsed, prev_rand_checksum
+        );
+
+        assert_eq!(reverse_jump_const_checksum, prev_rand_checksum);
+    }
+
     #[test]
     fn test_jump_const() {
         const SEED: u32 = 0x1234_5678;

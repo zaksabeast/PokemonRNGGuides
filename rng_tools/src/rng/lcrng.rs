@@ -40,6 +40,27 @@ const fn compute_jump_table<const ADD: u32, const MUL: u32>() -> [[(u32, u32); 2
     table
 }
 
+const fn compute_jump_pair<const ADD: u32, const MUL: u32>(advances: usize) -> (u32, u32) {
+    let mut advances = advances;
+    let mut result_mul = 1u32;
+    let mut result_add = 0u32;
+    let mut jump_mul = MUL;
+    let mut jump_add = ADD;
+
+    while advances != 0 {
+        if (advances & 1) != 0 {
+            result_add = result_add.wrapping_mul(jump_mul).wrapping_add(jump_add);
+            result_mul = result_mul.wrapping_mul(jump_mul);
+        }
+
+        jump_add = jump_add.wrapping_mul(jump_mul.wrapping_add(1));
+        jump_mul = jump_mul.wrapping_mul(jump_mul);
+        advances >>= 1;
+    }
+
+    (result_mul, result_add)
+}
+
 pub type Pokerng = Lcrng<0x6073, 0x41c64e6d>;
 pub const POKERNG_JUMP_TABLE: [[(u32, u32); 256]; 4] = compute_jump_table::<0x6073, 0x41c64e6d>();
 
@@ -115,6 +136,11 @@ impl<const A: u32, const M: u32> Lcrng<A, M> {
         let mut rng = Self::new(seed);
         rng.advance(advance);
         rng
+    }
+
+    pub fn jump_const<const ADVANCES: usize>(&mut self) {
+        let (mult, add) = compute_jump_pair::<A, M>(ADVANCES);
+        self.state = self.state.wrapping_mul(mult).wrapping_add(add);
     }
 
     pub fn jump(&mut self, advances: usize) {
@@ -344,5 +370,29 @@ mod test {
             start_time.elapsed(),
             checksum
         );
+    }
+
+    #[test]
+    fn test_jump_const() {
+        const SEED: u32 = 0x1234_5678;
+
+        macro_rules! assert_jump_const {
+            ($advances:expr) => {{
+                let mut rng = Pokerng::new(SEED);
+                rng.jump_const::<$advances>();
+                assert_eq!(rng.seed(), Pokerng::with_jump(SEED, $advances).seed());
+            }};
+        }
+
+        assert_jump_const!(0);
+        assert_jump_const!(1);
+        assert_jump_const!(2);
+        assert_jump_const!(3);
+        assert_jump_const!(10);
+        assert_jump_const!(255);
+        assert_jump_const!(256);
+        assert_jump_const!(65_535);
+        assert_jump_const!(65_536);
+        assert_jump_const!(1_234_567);
     }
 }

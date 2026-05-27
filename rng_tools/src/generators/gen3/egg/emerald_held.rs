@@ -106,7 +106,7 @@ impl Gen3HeldEgg {
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Egg3HeldFilters {
     pub shiny: bool,
-    pub nature: Option<Nature>,
+    pub nature: Vec<Nature>,
     pub gender: Option<Gender>,
     pub match_call: Option<PokeNavTrainer>,
 }
@@ -117,10 +117,8 @@ impl Egg3HeldFilters {
             return false;
         }
 
-        if let Some(nature) = self.nature {
-            if egg.nature != nature {
-                return false;
-            }
+        if !self.nature.is_empty() && !self.nature.contains(&egg.nature) {
+            return false;
         }
 
         if let Some(gender) = self.gender {
@@ -492,7 +490,7 @@ mod test {
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
                 shiny: false,
-                nature: None,
+                nature: vec![],
                 gender: None,
                 match_call: None,
             },
@@ -671,7 +669,7 @@ mod test {
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
                 shiny: false,
-                nature: None,
+                nature: vec![],
                 gender: None,
                 match_call: None,
             },
@@ -922,7 +920,7 @@ mod test {
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
                 shiny: false,
-                nature: None,
+                nature: vec![],
                 gender: None,
                 match_call: None,
             },
@@ -1029,7 +1027,7 @@ mod test {
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
                 shiny: false,
-                nature: None,
+                nature: vec![],
                 gender: None,
                 match_call: None,
             },
@@ -1160,7 +1158,7 @@ mod test {
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
                 shiny: true,
-                nature: None,
+                nature: vec![],
                 gender: None,
                 match_call: None,
             },
@@ -1205,7 +1203,7 @@ mod test {
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
                 shiny: false,
-                nature: None,
+                nature: vec![],
                 gender: None,
                 match_call: None,
             },
@@ -1816,7 +1814,7 @@ mod test {
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
                 shiny: false,
-                nature: None,
+                nature: vec![],
                 gender: None,
                 match_call: None,
             },
@@ -1857,7 +1855,7 @@ mod test {
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
                 shiny: false,
-                nature: None,
+                nature: vec![],
                 gender: None,
                 match_call: None,
             },
@@ -1898,7 +1896,7 @@ mod test {
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
                 shiny: false,
-                nature: None,
+                nature: vec![],
                 gender: None,
                 match_call: None,
             },
@@ -1939,7 +1937,7 @@ mod test {
             egg_species: Species::Illumise,
             filters: Egg3HeldFilters {
                 shiny: false,
-                nature: None,
+                nature: vec![],
                 gender: None,
                 match_call: None,
             },
@@ -2035,7 +2033,7 @@ mod test {
             egg_species: Species::NidoranF,
             filters: Egg3HeldFilters {
                 shiny: false,
-                nature: None,
+                nature: vec![],
                 gender: None,
                 match_call: None,
             },
@@ -2131,7 +2129,7 @@ mod test {
             egg_species: Species::Ralts,
             filters: Egg3HeldFilters {
                 shiny: true,
-                nature: None,
+                nature: vec![],
                 gender: None,
                 match_call: None,
             },
@@ -2189,7 +2187,7 @@ mod test {
             egg_species: Species::Ralts,
             filters: Egg3HeldFilters {
                 shiny: true,
-                nature: Option::None,
+                nature: vec![],
                 gender: Option::None,
                 match_call: Option::None,
             },
@@ -2235,7 +2233,7 @@ mod test {
             egg_species: Species::Ralts,
             filters: Egg3HeldFilters {
                 shiny: false,
-                nature: None,
+                nature: vec![],
                 gender: None,
                 match_call: Some(PokeNavTrainer::FishermanElliot),
             },
@@ -2295,7 +2293,7 @@ mod test {
             egg_species: Species::Ralts,
             filters: Egg3HeldFilters {
                 shiny: true,
-                nature: None,
+                nature: vec![],
                 gender: None,
                 match_call: None,
             },
@@ -2341,7 +2339,7 @@ mod test {
             egg_species: Species::Ralts,
             filters: Egg3HeldFilters {
                 shiny: true,
-                nature: None,
+                nature: vec![],
                 gender: None,
                 match_call: None,
             },

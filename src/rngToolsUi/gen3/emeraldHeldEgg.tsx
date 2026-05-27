@@ -12,9 +12,10 @@ import { rngTools, Gen3HeldEgg } from "~/rngTools";
 import { getGen3SpeciesOptions, species } from "~/types/species";
 import { nature } from "~/types/nature";
 import { gender, genderOptions } from "~/types/gender";
-import { natureOptions } from "~/components/pkmFilter";
+import { getNatureInputProps } from "~/components/pkmFilter";
 import { z } from "zod";
-import { translateOptions, Translations } from "~/translations";
+import { Translations } from "~/translations";
+import { NatureFilterInput } from "~/components/natureFilterInput";
 
 const getColumns = (t: Translations): ResultColumn<Gen3HeldEgg>[] => {
   return [
@@ -51,7 +52,7 @@ const Validator = z.object({
   sid: z.number().int().min(0).max(65535),
   egg_species: z.enum(species),
   filter_shiny: z.boolean(),
-  filter_nature: z.enum(nature).nullable(),
+  filter_nature: z.array(z.enum(nature)),
   filter_gender: z.enum(gender).nullable(),
 });
 
@@ -71,7 +72,7 @@ const initialValues: FormState = {
   sid: 0,
   egg_species: "Bulbasaur",
   filter_shiny: false,
-  filter_nature: null,
+  filter_nature: [],
   filter_gender: null,
 };
 
@@ -86,11 +87,7 @@ const getFields = (t: Translations): Field[] => {
       input: (
         <FormikSelect<FormState, "female_nature">
           name="female_nature"
-          options={translateOptions({
-            t,
-            options: natureOptions.required,
-            sort: true,
-          })}
+          {...getNatureInputProps(t)}
         />
       ),
     },
@@ -177,16 +174,7 @@ const getFields = (t: Translations): Field[] => {
     },
     {
       label: t["Filter nature"],
-      input: (
-        <FormikSelect<FormState, "filter_nature">
-          name="filter_nature"
-          options={translateOptions({
-            t,
-            options: natureOptions.optional,
-            sort: true,
-          })}
-        />
-      ),
+      input: <NatureFilterInput />,
     },
     {
       label: t["Filter gender"],

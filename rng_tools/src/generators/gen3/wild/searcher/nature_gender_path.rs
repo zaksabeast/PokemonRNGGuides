@@ -135,7 +135,7 @@ impl NatureGenderSeedGenerator {
     pub fn new(
         leads: &[Gen3Lead],
         encounter_gender_ratio: GenderRatio,
-        wanted_nature: Option<Nature>,
+        wanted_natures: &[Nature],
         wanted_gender: Option<Gender>,
         safari_status: Wild3InSafariMapStatus,
         considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt,
@@ -186,7 +186,7 @@ impl NatureGenderSeedGenerator {
                 arcs.push(Ngpa::SafFail_SyncFail);
             }
 
-            if !has_all_synchronize_natures(leads, wanted_nature) {
+            if !has_all_synchronize_natures(leads, wanted_natures) {
                 permit_all = false;
             }
         }
@@ -268,19 +268,10 @@ impl NatureGenderSeedGenerator {
     }
 }
 
-fn has_all_synchronize_natures(leads: &[Gen3Lead], wanted_nature: Option<Nature>) -> bool {
-    let needed_natures = match wanted_nature {
-        None => (0..=24u8)
-            .map(|nat_u8| nat_u8.into())
-            .collect::<Vec<Nature>>(),
-        Some(wanted_nature) => {
-            vec![wanted_nature]
-        }
-    };
-
-    needed_natures.into_iter().all(|nat| {
+fn has_all_synchronize_natures(leads: &[Gen3Lead], wanted_natures: &[Nature]) -> bool {
+    wanted_natures.iter().all(|nat| {
         leads.iter().any(|lead| match *lead {
-            Gen3Lead::Synchronize(sync_nat) => sync_nat == nat,
+            Gen3Lead::Synchronize(sync_nat) => sync_nat == *nat,
             _ => false,
         })
     })

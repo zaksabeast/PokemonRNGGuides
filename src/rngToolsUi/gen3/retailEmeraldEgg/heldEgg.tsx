@@ -19,7 +19,7 @@ import { nature } from "~/types/nature";
 import {
   getPkmFilterFields,
   getPkmFilterInitialValues,
-  natureOptions,
+  getNatureInputProps,
   pkmFilterSchema,
 } from "~/components/pkmFilter";
 import { z } from "zod";
@@ -29,11 +29,7 @@ import { Skeleton } from "antd";
 import { toOptions } from "~/utils/options";
 import { match } from "ts-pattern";
 import { approximateGen3FrameTime } from "~/utils/approximateGen3FrameTime";
-import {
-  translateOptions,
-  Translations,
-  usePokeNavTranslations,
-} from "~/translations";
+import { Translations, usePokeNavTranslations } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { PokeNavTrainerTranslations } from "~/translations/en/pokeNav";
 import { useWatch } from "~/hooks/form";
@@ -210,11 +206,7 @@ const Fields = ({ t }: FieldsProps) => {
       input: (
         <FormikSelect<FormState, "female_nature">
           name="female_nature"
-          options={translateOptions({
-            t,
-            sort: true,
-            options: natureOptions.required,
-          })}
+          {...getNatureInputProps(t)}
         />
       ),
     },

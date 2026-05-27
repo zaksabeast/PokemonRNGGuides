@@ -156,6 +156,17 @@ impl<const A: u32, const M: u32> Lcrng<A, M> {
         Self::get_reverse_jump_table()[0][1]
     }
 
+    pub fn reverse_jump_const<const ADVANCES: usize>(&mut self) {
+        let (mult, add) = match A {
+            0x6073 => compute_jump_pair::<0xa3561a1, 0xeeb9eb65>(ADVANCES),
+            0xa3561a1 => compute_jump_pair::<0x6073, 0x41c64e6d>(ADVANCES),
+            0x269EC3 => compute_jump_pair::<0xA170F641, 0xB9B33155>(ADVANCES),
+            0xA170F641 => compute_jump_pair::<0x269EC3, 0x343FD>(ADVANCES),
+            _ => panic!("error. invalid ADD generic constant"),
+        };
+        self.state = self.state.wrapping_mul(mult).wrapping_add(add);
+    }
+
     pub fn reverse_jump(&mut self, advances: usize) {
         let table = Self::get_reverse_jump_table();
         let mut byte = 0;
@@ -337,7 +348,7 @@ mod test {
 
         // Advance without chaining
         let mut rng = Pokerng::new(0);
-        rng.advance(1);
+        rng.next_state();
         assert_eq!(rng.rand::<u16>(), 0xe97e);
 
         // Custom behavior for different types, such as u32 being u16 << 16 | u16

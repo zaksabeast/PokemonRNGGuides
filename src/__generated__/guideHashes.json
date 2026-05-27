@@ -120,8 +120,8 @@
     "lastUpdated": "2026-03-08"
   },
   "/de-e-tips-rng/": {
-    "hash": "71ebdfceb6dd40ac335eed4251e0e8808054dca44931483188646600ddcf49c4",
-    "lastUpdated": "2026-03-09"
+    "hash": "48f4870fae5c63c6bdfd6d52b5851cfa918f0011dc2e2c5c376a159c05c42ae2",
+    "lastUpdated": "2026-05-27"
   },
   "/de-emerald-advancing-rng-techniques/": {
     "hash": "e40bfd082352e6bf529e9873760838e13aad094e4fe91f93ee8c5ece86dbd0cd",
@@ -136,8 +136,8 @@
     "lastUpdated": "2026-03-19"
   },
   "/de-emerald-overview/": {
-    "hash": "d50c811d7d4cd59caff12f96c3ac88b2b8ea0837975a58a0aa7cf6bd8b97b222",
-    "lastUpdated": "2026-05-02"
+    "hash": "0f647f15e3ed7fe99f0ee83670ac261122f6c6f1e8632688ec581886ac3583b7",
+    "lastUpdated": "2026-05-27"
   },
   "/de-emerald-painting-rng/": {
     "hash": "e7c55423d893f63471aecf523c89ca733a69ad20b031145aaf8357f01718a577",
@@ -256,12 +256,12 @@
     "lastUpdated": null
   },
   "/e-tips-rng/": {
-    "hash": "47920acb81f8b25f51acbfdbc36721c826ddfe6943148be66d4f4c62b4ae146b",
-    "lastUpdated": "2026-03-09"
+    "hash": "164584b86882e648d70bd61aa9f3ddb0b908d3f642ee8221a63d3a82379aee79",
+    "lastUpdated": "2026-05-27"
   },
   "/emerald-advancing-rng-techniques/": {
-    "hash": "e6ee84232ec57303438088ca9ffa999f51f4c0488b1af37ade4956e507e58324",
-    "lastUpdated": "2026-03-27"
+    "hash": "739e8bc74768f3d9f2742383fe2f993df154afcb6e92ce0012e5a71566cd74df",
+    "lastUpdated": "2026-05-27"
   },
   "/emerald-battle-video/": {
     "hash": "26ce4cd95ed98cd2da91213c13b0fa87357b0c23d70763674df7827d9682c6d9",
@@ -272,8 +272,8 @@
     "lastUpdated": "2026-03-19"
   },
   "/emerald-overview/": {
-    "hash": "33f2674f3ba4048dc03a9ad7c4680b98a1f3b1d130d791102a2350aca40ccedc",
-    "lastUpdated": "2026-05-02"
+    "hash": "9f421a86de16f5a8caf6edd6c04478887ef39b0a19e14da8bc1369da4d48d8d1",
+    "lastUpdated": "2026-05-27"
   },
   "/emerald-painting-reseeding/": {
     "hash": "779c473d27c323df4c5970828589bfafbcb4fa47c2fa2feb5d4aa855f4cdc082",
@@ -640,12 +640,12 @@
     "lastUpdated": null
   },
   "/it-e-tips-rng/": {
-    "hash": "63b95e7593e5b85291f487ba90928abea4fbf687f43cf24aba67fbd3f54613bc",
-    "lastUpdated": null
+    "hash": "d50f3236502cee46d8e9f5b4f03f35a09a78ccbecc742fbaebc13119d4fdb0b4",
+    "lastUpdated": "2026-05-27"
   },
   "/it-emerald-overview/": {
-    "hash": "14581c77990f1d0534ece07b175c43a15e4e622b32d823101601821ced84ea74",
-    "lastUpdated": "2026-05-02"
+    "hash": "a9151849ce01ae0162756672b7f2cd647310aafbcfa812f53d94a9f57192b41b",
+    "lastUpdated": "2026-05-27"
   },
   "/it-emerald-rng-with-ace/": {
     "hash": "284f4496cdd3c32b4881def5f7fd148e531f4b79d36270d2ab33c5ae74b028f6",
@@ -996,8 +996,8 @@
     "lastUpdated": "2026-03-25"
   },
   "/rs-battery/": {
-    "hash": "9779920047a430250b90cb828e2343383198f1fe6719477739c2611e6a59c553",
-    "lastUpdated": null
+    "hash": "8a7ea58f6babe259f1b3cdbb1635d2a2abb994175c3f9396a3c7963d22d52355",
+    "lastUpdated": "2026-05-27"
   },
   "/rs-gen3-sid/": {
     "hash": "1a809daf8b19055ae22b43f4a354eaa12a8da30841ba473b68fcbf74ba167e70",
@@ -1172,8 +1172,8 @@
     "lastUpdated": "2026-03-20"
   },
   "/zh-e-tips-rng/": {
-    "hash": "e3223700c0e4170b84d426c34b540b2cfae7464a45d578aa7c2c82c9f3bd472d",
-    "lastUpdated": "2026-03-20"
+    "hash": "4a584a2f08aa0901040f04d2aeb7db8781cc0006430c2c422f78c700dee30b18",
+    "lastUpdated": "2026-05-27"
   },
   "/zh-emerald-mirage-island/": {
     "hash": "86d879d277aab2cddedac10355d6cf6dc61c385ceadd7751580878a082966fcb",
@@ -1556,8 +1556,8 @@
     "lastUpdated": "2026-03-20"
   },
   "/zh-rs-battery/": {
-    "hash": "937f1062469862c4ef32cd7179a0033800c162dca532829b2103ab7bef92db3c",
-    "lastUpdated": "2026-05-02"
+    "hash": "a8b01381c94c6013d90cdc4f71fd0898f8ed23b67c9402e29d0d5715becead52",
+    "lastUpdated": "2026-05-27"
   },
   "/zh-rs-gen3-sid/": {
     "hash": "e2c37fc01901a1a787368db35ffa51714ea1ba9c14c1769f025784659a87e6df",

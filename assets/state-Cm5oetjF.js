@@ -1,0 +1,1 @@
+import{r as e,t}from"./react-BZ2Ef9G-.js";import{t as n}from"./atoms-DjZ7Ursu.js";var r=e({console:`NdsDsi`,game:`Diamond`,target:null,coinFlipFilter:``,chatotSummaryCount:null}),i=()=>t(r),a=n();export{a as n,i as r,r as t};

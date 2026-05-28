@@ -1,0 +1,1 @@
+import{l as e}from"./time-Bx52aYw6.js";var t=({seedTime:t,game:n})=>{let r=t==null?void 0:t.datetime,i=r==null?null:e(r);if(i==null)return null;let a=n===`HeartGold`||n===`SoulSilver`?3:0;return i.subtract(a,`seconds`)};export{t};

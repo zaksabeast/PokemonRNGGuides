@@ -460,8 +460,7 @@ fn extend_path_for_arc(
             }
         }
 
-        rng.prev_rand();
-        rng.prev_rand();
+        rng.reverse_jump_const::<2>();
     }
 
     nature_gender_seeds

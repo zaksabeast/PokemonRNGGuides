@@ -146,7 +146,7 @@ fn generate_earliest_shiny_advance_by_tsv(initial_seed: u32) -> Vec<usize> {
 
     let mut unmatched_count = earliest_adv_by_tsv.len();
     let mut pid_rng = Pokerng::new(initial_seed);
-    pid_rng.advance(EARLIEST_VALID_ADVANCE);
+    pid_rng.jump_const::<EARLIEST_VALID_ADVANCE>();
     for pid_rng_adv in EARLIEST_VALID_ADVANCE..1_000_000_usize {
         // 1_000_000 to avoid infinite loop in case of bug
         let pid_high = pid_rng.rand::<u16>() as u32;

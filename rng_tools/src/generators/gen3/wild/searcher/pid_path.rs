@@ -129,7 +129,7 @@ impl PidPath {
     }
     pub fn ivs(&self) -> Ivs {
         let mut rng = Pokerng::new(self.seed);
-        rng.advance(2);
+        rng.jump_const::<2>();
 
         if self.pid_to_iv_arc == PidToIvArc::WithVBlankBetweenPid
             || self.pid_to_iv_arc == PidToIvArc::WithVBlankBetweenPidIv

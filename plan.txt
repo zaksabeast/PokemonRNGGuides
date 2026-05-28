@@ -2,7 +2,6 @@ Functional plan:
 
 ACE
     useful code for rng.
-    give access to battle frontier to create battle video.
     OR respawn gift
 
 Find target

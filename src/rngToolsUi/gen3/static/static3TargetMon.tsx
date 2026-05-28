@@ -41,7 +41,7 @@ const getTargetMonFields = (species: Species): Field[] => {
   return targetMonFields;
 };
 
-export const TargetMon = () => {
+export const Static3TargetMon = () => {
   const { setFieldValue } = useFormContext<FormState>();
   const species = useWatch<FormState, "species">({
     name: "species",

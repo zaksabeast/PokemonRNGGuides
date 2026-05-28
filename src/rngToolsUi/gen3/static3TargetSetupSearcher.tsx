@@ -34,9 +34,9 @@ import {
 } from "./utils";
 import { formatDuration } from "~/utils/formatDuration";
 import { formatHex } from "~/utils/formatHex";
-import { TargetMon } from "./wild3TargetMon.component";
+import { Wild3TargetMon } from "./wild3TargetMon.component";
 import { searchWild3Target } from "./searchWild3Target";
-import { SetupFilter } from "./wild3SetupFilter.component";
+import { Stati3SetupFilter } from "./static3SetupFilter.component";
 import { Wild3ResultSetupInfos } from "./wild3ResultSetupInfos";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 
@@ -84,13 +84,7 @@ const getInitialValues = (): FormState => {
     tid: 0,
     sid: 0,
     maps: [],
-    leadIdxs: gen3Leads.map((_, i) => i),
-    recommendedSetups: true,
-    methods: ["Wild1", "Wild2", "Wild4"],
-    actions: [...wild3Actions],
-    roamerStates: [...wild3RoamerStates],
-    feebasStates: [...wild3FeebasStates],
-    massOutbreakStates: [...wild3MassOutbreakStates],
+    methods: ["Static1"],
     usingPaintingReseeding: false,
     letSearcherFindPaintingSeed: true,
     showAdvancedPaintingSettings: false,
@@ -100,143 +94,17 @@ const getInitialValues = (): FormState => {
     min_adv_after_painting: 7000,
     max_advances: 10_000_000,
     max_result_count: 20,
-    rngManipulatedLeadPid: false,
-    mergeSimilarResults: true,
-    generate_even_if_impossible: false,
-    using_white_flute: true,
-    considered_safari_pokeblocks: "SoloOnly",
     ...getPkmFilterInitialValues(),
     ...getGen3PkmFilterInitialValues(),
   };
 };
 
-const getPidPathColumns = (): ResultColumn<PidPathResult>[] => {
-  return [
-    {
-      title: "",
-      dataIndex: "resultSetupInfos",
-      render: (resultSetupInfos) =>
-        `${resultSetupInfos.length} setup${resultSetupInfos.length > 1 ? "s" : ""}`,
-    },
-    {
-      title: "Likelihood",
-      tooltip: (
-        <>
-          Likelihood that you will obtain the target Pokemon if you hit the
-          target advance. (Likelihood that the triggered{" "}
-          <Link newTab href="/gba-methods/">
-            method
-          </Link>{" "}
-          at the target advance is the right one).
-        </>
-      ),
-      dataIndex: "resultSetupInfos",
-      key: "best_likelihood",
-      render: (resultSetupInfos) => {
-        const text = formatProbability(
-          resultSetupInfos[0]?.primaryLikelihood ?? 0,
-        );
-        const isVeryReliableSetup = resultSetupInfos.some(
-          (res) =>
-            res.lead === "Egg" &&
-            res.method === "Wild1" &&
-            res.primaryLikelihood === 1,
-        );
-
-        if (!isVeryReliableSetup) {
-          return text;
-        }
-
-        return (
-          <Tooltip title="Very reliable setup">
-            <Flex align="center" gap={4}>
-              {text}
-              <Icon name="Star" />
-            </Flex>
-          </Tooltip>
-        );
-      },
-    },
-    {
-      title: "Advances",
-      dataIndex: "advs",
-      monospace: true,
-      render: (advs, { wait_dur }) => {
-        const { frame_before_painting: before, adv_after_painting: after } =
-          advs;
-
-        const text =
-          (before !== 0 ? `${formatLargeInteger(before)} | ` : "") +
-          `~${formatLargeInteger(after)}`;
-        const title = formatDuration(wait_dur / GBA_FPS);
-        return <Tooltip title={title}>{text}</Tooltip>;
-      },
-    },
-    { title: "Nature", dataIndex: "nature" },
-    {
-      title: "Shiny",
-      dataIndex: "shiny",
-      render: (shiny: boolean) => (shiny ? "Yes" : "No"),
-    },
-    {
-      title: "IV",
-      type: "group",
-      columns: ivColumns,
-    },
-    {
-      title: "PID",
-      dataIndex: "pid",
-      monospace: true,
-      render: (pid) => formatHex(pid),
-    },
-    { title: "Ability", dataIndex: "ability" },
-    { title: "Gender", dataIndex: "gender" },
-    {
-      title: "Hidden Power",
-      type: "group",
-      columns: [
-        {
-          title: "Type",
-          dataIndex: "hidden_power",
-          render: (hidden_power) => hidden_power.pokemon_type,
-        },
-        {
-          title: "Power",
-          dataIndex: "hidden_power",
-          render: (hidden_power) => hidden_power.bp,
-        },
-      ],
-    },
-    {
-      title: "PID speed",
-      tooltip: (
-        <>
-          For advanced users. Number of cycles for the processor to perform the
-          operation (PID modulo 25). Learn more about{" "}
-          <Link newTab href="/gba-methods-lead-impact/">
-            Methods & Leads
-          </Link>
-          .
-        </>
-      ),
-      dataIndex: "pidCycleCount",
-      render: (pidCycleCount) => `${pidCycleCount} cycles`,
-    },
-    {
-      title: "Method",
-      dataIndex: "method",
-    },
-  ];
-};
-
 type Props = {
   setTargetSetup: (targetSetup: TargetSetup) => void;
-  setLeadCycleSpeed: (leadCycleSpeed: number) => void;
 };
 
-export const Wild3TargetSetupSearcher = ({
+export const Static3TargetSetupSearcher = ({
   setTargetSetup: setTargetSetupProp,
-  setLeadCycleSpeed: setLeadCycleSpeedProp,
 }: Props) => {
   const [pidPathResults, setPidPathResults] = React.useState<PidPathResult[]>(
     [],
@@ -244,17 +112,8 @@ export const Wild3TargetSetupSearcher = ({
   const [selectedPidPathResult, setSelectedPidPathResult] =
     React.useState<PidPathResult | null>(null);
 
-  const [rngManipulatedLeadPid, setRngManipulatedLeadPid] =
-    React.useState<boolean>(false);
-
-  const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
-    null,
-  );
-
   const onSubmit: RngToolSubmit<FormState> = async (values) => {
-    const pidPathResults = await searchWild3Target(values);
-
-    setRngManipulatedLeadPid(values.rngManipulatedLeadPid);
+    const pidPathResults = await searchStatic3Target(values);
 
     setPidPathResults(
       sortBy(
@@ -267,19 +126,12 @@ export const Wild3TargetSetupSearcher = ({
 
   const initialValues = getInitialValues();
 
-  const pidPathColumns = getPidPathColumns();
+  const pidPathColumns = getGeneratorPokemonResultColumns<PidPathResult>();
 
-  const [leadCycleSpeed, setLeadCycleSpeed] = React.useState<number | null>(0);
-
-  const setTargetSetupBoth = (targetSetup: TargetSetup) => {
-    setTargetSetup(targetSetup);
-    setTargetSetupProp?.(targetSetup);
-  };
-
-  const setLeadCycleSpeedBoth = (spd: number) => {
-    setLeadCycleSpeed(spd);
-    setLeadCycleSpeedProp?.(spd);
-  };
+  React.useEffect(() => {
+    //NO_PROD
+    //setTargetSetupProp?.();
+  }, [selectedPidPathResult]);
 
   return (
     <>
@@ -293,28 +145,11 @@ export const Wild3TargetSetupSearcher = ({
         rowKey="uid"
         onClickResultRow={setSelectedPidPathResult}
       >
-        <TargetMon />
+        <Static3TargetMon />
         <br />
-        <SetupFilter />
+        <Static3SetupFilter />
       </RngToolForm>
 
-      {selectedPidPathResult != null && (
-        <Wild3ResultSetupInfos
-          selectedPidPathResult={selectedPidPathResult}
-          rngManipulatedLeadPid={rngManipulatedLeadPid}
-          setTargetSetup={setTargetSetupBoth}
-        />
-      )}
-
-      {targetSetup != null && (
-        <Wild3LeadCycleSpeedSelectorWithBtn
-          targetSetup={targetSetup}
-          permitEnablingDebugOptions={false}
-          setLeadCycleSpeed={setLeadCycleSpeedBoth}
-          leadCycleSpeed={leadCycleSpeed}
-          initialDisplayLeadCycleSpdButton={!rngManipulatedLeadPid}
-        />
-      )}
     </>
   );
 };

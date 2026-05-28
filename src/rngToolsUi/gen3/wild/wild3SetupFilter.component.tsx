@@ -306,7 +306,7 @@ const getSetupFields = (
   return fields;
 };
 
-export const SetupFilter = () => {
+export const Wild3SetupFilter = () => {
   const species = useWatch<FormState, "species">({
     name: "species",
   });

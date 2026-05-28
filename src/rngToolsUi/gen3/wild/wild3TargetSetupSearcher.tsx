@@ -34,9 +34,9 @@ import {
 } from "./utils";
 import { formatDuration } from "~/utils/formatDuration";
 import { formatHex } from "~/utils/formatHex";
-import { TargetMon } from "./wild3TargetMon.component";
+import { Wild3TargetMon } from "./wild3TargetMon.component";
 import { searchWild3Target } from "./searchWild3Target";
-import { SetupFilter } from "./wild3SetupFilter.component";
+import { Wild3SetupFilter } from "./wild3SetupFilter.component";
 import { Wild3ResultSetupInfos } from "./wild3ResultSetupInfos";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 
@@ -331,9 +331,9 @@ export const Wild3TargetSetupSearcher = ({
         rowKey="uid"
         onClickResultRow={setSelectedPidPathResult}
       >
-        <TargetMon />
+        <Wild3TargetMon />
         <br />
-        <SetupFilter />
+        <Wild3SetupFilter />
       </RngToolForm>
 
       {selectedPidPathResult != null && (

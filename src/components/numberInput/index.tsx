@@ -1,42 +1,23 @@
 import React from "react";
-import { Input } from "./input";
-import { capPrecision } from "~/utils/number";
+import { Input } from "../input";
 import { GenericForm } from "~/types/form";
 import { useField } from "~/hooks/form";
-import { match, P } from "ts-pattern";
 import { InputProps as AntdInputProps } from "antd";
 import { Paths } from "~/types";
 import * as tst from "ts-toolbelt";
-
-type NumberInputType = "hex" | "hex_bigint" | "decimal" | "float";
-type NumericNumberInputType = Exclude<NumberInputType, "hex_bigint">;
-
-const parseHexBigInt = (str: string) => {
-  const normalized = str.trim().replace(/^0x/i, "");
-
-  try {
-    return BigInt(`0x${normalized}`);
-  } catch {
-    return Number.NaN;
-  }
-};
+import {
+  getNumberInputBlurValue,
+  getNumberInputChangeResult,
+  shouldClearTransientValue,
+  type NumberInputType,
+  type NumericNumberInputType,
+} from "./utils";
 
 const serializers = {
   hex: (num: number | bigint | null) => num?.toString(16),
   hex_bigint: (num: number | bigint | null) => num?.toString(16),
   decimal: (num: number | bigint | null) => num?.toString(10),
   float: (num: number | bigint | null) => num?.toString(10),
-};
-
-const deserializers = {
-  hex: (str: string) => parseInt(str, 16),
-  hex_bigint: (str: string) => parseHexBigInt(str),
-  decimal: (str: string) =>
-    parseInt(
-      str.replaceAll(",", "").replaceAll(":", "").replaceAll("'", ""),
-      10,
-    ), // To support formatted large integers and timers.
-  float: (str: string) => capPrecision(parseInt(str, 10)),
 };
 
 const inputModes = {
@@ -87,53 +68,81 @@ const InternalNumberInput = ({
   numType,
   value: externalValue,
   onChange,
+  onBlur,
   ...props
 }: SharedNumberInputProps) => {
   const serialize = serializers[numType];
-  const deserialize = deserializers[numType];
-  // Tracking negative allows us to show only '-', which is not a valid number
-  const [isNegative, setIsNegative] = React.useState(false);
+  const [transientValue, setTransientValue] = React.useState<string | null>(
+    null,
+  );
   const isExternallyControlled = React.useRef(externalValue !== undefined);
+  const previousExternalValue = React.useRef(externalValue);
   const [internalValue, setInternalValue] = React.useState<
     number | bigint | null
   >(null);
 
-  const _onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-
-    setIsNegative(value.includes("-"));
-
-    if (value.length === 0 || value === "-") {
-      onChange?.(null);
-      if (!isExternallyControlled.current) {
-        setInternalValue(null);
-      }
-      return;
+  React.useEffect(() => {
+    if (
+      shouldClearTransientValue({
+        numType,
+        transientValue,
+        externalValue,
+        previousExternalValue: previousExternalValue.current,
+      })
+    ) {
+      setTransientValue(null);
     }
 
-    const deserialized = deserialize(value);
-    const isValid = typeof deserialized === "bigint" || !isNaN(deserialized);
+    previousExternalValue.current = externalValue;
+  }, [externalValue, numType, transientValue]);
 
-    if (isValid) {
-      onChange?.(deserialized);
-      if (!isExternallyControlled.current) {
-        setInternalValue(deserialized);
-      }
+  const setValue = (value: number | bigint | null) => {
+    onChange?.(value);
+    if (!isExternallyControlled.current) {
+      setInternalValue(value);
     }
   };
 
-  const value = externalValue === undefined ? internalValue : externalValue;
+  const commitTransientValue = (value: string) => {
+    const deserialized = getNumberInputBlurValue(numType, value);
 
-  const displayedValue = match({ value, isNegative })
-    .with({ value: P.nullish, isNegative: false }, () => "")
-    .with({ value: P.nullish, isNegative: true }, () => "-")
-    .otherwise((matched) => serialize(matched.value ?? null));
+    if (deserialized !== undefined) {
+      setValue(deserialized);
+    }
+  };
+
+  const _onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const result = getNumberInputChangeResult(numType, event.target.value);
+
+    if (!result.accepted) {
+      return;
+    }
+
+    setTransientValue(result.transientValue);
+
+    if (result.nextValue !== undefined) {
+      setValue(result.nextValue);
+    }
+  };
+
+  const _onBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    if (transientValue != null) {
+      commitTransientValue(transientValue);
+      setTransientValue(null);
+    }
+
+    onBlur?.(event);
+  };
+
+  const value = externalValue === undefined ? internalValue : externalValue;
+  const displayedValue = transientValue ?? serialize(value ?? null) ?? "";
 
   return (
     <Input
       {...props}
       name={name}
       onChange={_onChange}
+      onBlur={_onBlur}
       value={displayedValue}
       inputMode={inputModes[numType]}
     />
@@ -201,7 +210,7 @@ export type FormikBigIntInputProps<FormState extends GenericForm> =
 
 const InternalFormikNumberInput = <FormState extends GenericForm>({
   name,
-  errorMessage,
+  errorMessage: _errorMessage,
   onChange: _onChange,
   ...props
 }: SharedFormikNumberInputProps<FormState>) => {
@@ -214,6 +223,8 @@ const InternalFormikNumberInput = <FormState extends GenericForm>({
     _onChange?.(value);
   };
 
+  const errorMessage = _errorMessage === undefined ? error : _errorMessage;
+
   return (
     <InternalNumberInput
       status={status}
@@ -222,7 +233,7 @@ const InternalFormikNumberInput = <FormState extends GenericForm>({
       onBlur={onBlur}
       onChange={onChange}
       value={value}
-      errorMessage={errorMessage === null ? undefined : error}
+      errorMessage={errorMessage ?? undefined}
     />
   );
 };

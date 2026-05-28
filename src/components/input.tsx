@@ -38,7 +38,7 @@ export const Input = ({
 }: InputProps) => {
   const inputRef = React.useRef<InputRef>(null);
 
-  const _status = errorMessage != null ? "error" : undefined;
+  const _status = errorMessage != null ? "error" : props.status;
 
   React.useEffect(() => {
     if (autoFocus && inputRef.current != null) {
@@ -52,8 +52,8 @@ export const Input = ({
         size="large"
         ref={inputRef}
         autoComplete="off"
-        status={_status}
         {...props}
+        status={_status}
       />
       {errorMessage != null && (
         <Typography.Text type="danger">{errorMessage}</Typography.Text>

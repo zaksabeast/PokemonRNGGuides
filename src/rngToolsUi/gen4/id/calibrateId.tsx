@@ -34,10 +34,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
       <CalibrateTimerButton
         type="gen4"
         trackerId="calibrate_gen4_id"
-        calibration={{
-          hit_delay: target.seed_time.delay,
-          second_offset: target.secondOffset,
-        }}
+        hitDelay={target.seed_time.delay}
         timer={idTimerAtom}
         lastStepOnClick={1}
       />

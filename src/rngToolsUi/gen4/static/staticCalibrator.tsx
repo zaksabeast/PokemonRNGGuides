@@ -133,14 +133,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
         .with({ isCorrectSeed: false }, () => (
           <CalibrateTimerButton
             type="gen4"
-            calibration={{
-              hit_delay: res.delay,
-              ...(res.secondOffset !== 0
-                ? {
-                    second_offset: res.secondOffset,
-                  }
-                : {}),
-            }}
+            hitDelay={res.delay}
             lastStepOnClick={2}
             label="Calibrate Timer"
             timer={static4TimerAtom}

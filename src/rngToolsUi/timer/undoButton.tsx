@@ -22,7 +22,7 @@ export const UndoButton = <T extends GenericForm>({
     <Button
       trackerId={trackerId}
       disabled={!history.canUndo}
-      onClick={async () => {
+      onClick={() => {
         if (history.previous == null) {
           return;
         }
@@ -32,7 +32,7 @@ export const UndoButton = <T extends GenericForm>({
           setFieldValue(fieldName, value as T[typeof fieldName]);
         });
 
-        await history.undo();
+        history.undo();
       }}
     >
       Undo Changes

@@ -8,12 +8,8 @@ import {
   Flex,
   MultiTimer,
 } from "~/components";
-import {
-  capPrecision,
-  ZodSerializedDecimal,
-  ZodSerializedOptional,
-} from "~/utils/number";
-import { rngTools, ZodConsole } from "~/rngTools";
+import { ZodSerializedDecimal, ZodSerializedOptional } from "~/utils/number";
+import { ZodConsole, minutesBefore, updateGen3Timer } from "~/rngTools";
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
 import { useTimerSettings } from "~/state/timerSettings";
 import { z } from "zod";
@@ -34,22 +30,47 @@ const timerStateAtom = atomWithPersistence("gen3Timer", TimerStateSchema, {
   minutesBeforeTarget: 0,
 });
 
-const FormStateSchema = z.object({
+const V0FormStateSchema = z
+  .object({
+    version: z.literal(0).optional(),
+    console: ZodConsole,
+    pre_timer: ZodSerializedDecimal,
+    target_frame: ZodSerializedDecimal,
+    calibration: ZodSerializedDecimal,
+    frame_hit: ZodSerializedOptional(ZodSerializedDecimal),
+  })
+  .transform((data) => ({
+    version: 1 as const,
+    console: data.console,
+    preTimer: data.pre_timer,
+    targetFrame: data.target_frame,
+    calibration: data.calibration,
+    frameHit: data.frame_hit,
+  }));
+
+const V1FormStateSchema = z.object({
+  version: z.literal(1),
   console: ZodConsole,
-  pre_timer: ZodSerializedDecimal,
-  target_frame: ZodSerializedDecimal,
+  preTimer: ZodSerializedDecimal,
+  targetFrame: ZodSerializedDecimal,
   calibration: ZodSerializedDecimal,
-  frame_hit: ZodSerializedOptional(ZodSerializedDecimal),
+  frameHit: ZodSerializedOptional(ZodSerializedDecimal),
 });
+
+const FormStateSchema = z.discriminatedUnion("version", [
+  V1FormStateSchema,
+  V0FormStateSchema,
+]);
 
 export type FormState = z.infer<typeof FormStateSchema>;
 
 const initialValues: FormState = {
+  version: 1,
   console: "Gba",
-  pre_timer: 5000,
-  target_frame: 1000,
+  preTimer: 5000,
+  targetFrame: 1000,
   calibration: 0.0,
-  frame_hit: null,
+  frameHit: null,
 };
 
 const timerSettingsAtom = atomWithPersistence(
@@ -76,11 +97,11 @@ const fields: Field[] = [
   },
   {
     label: "Pre-Timer",
-    input: <FormikNumberInput<FormState> name="pre_timer" numType="float" />,
+    input: <FormikNumberInput<FormState> name="preTimer" numType="float" />,
   },
   {
     label: "Target Frame",
-    input: <FormikNumberInput<FormState> name="target_frame" numType="float" />,
+    input: <FormikNumberInput<FormState> name="targetFrame" numType="float" />,
   },
   {
     label: "Calibration",
@@ -88,7 +109,7 @@ const fields: Field[] = [
   },
   {
     label: "Frame Hit",
-    input: <FormikNumberInput<FormState> name="frame_hit" numType="float" />,
+    input: <FormikNumberInput<FormState> name="frameHit" numType="float" />,
   },
 ];
 
@@ -105,12 +126,12 @@ const InnerGen3Timer = ({
   initialSettings,
   onUpdate,
 }: InnerProps) => {
-  const updateTimerSettings = async (formState: FormState) => {
-    const milliseconds = await rngTools.create_gen3_timer(formState);
+  const updateTimerSettings = (formState: FormState) => {
+    const updatedTimer = updateGen3Timer(formState);
     setTimer(
       hydrationLock({
-        milliseconds: [...milliseconds],
-        minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
+        milliseconds: updatedTimer.ms,
+        minutesBeforeTarget: minutesBefore(updatedTimer.ms),
       }),
     );
     onUpdate(hydrationLock(formState));
@@ -124,26 +145,21 @@ const InnerGen3Timer = ({
   const onSubmit: RngToolSubmit<FormState> = async (opts, { setValue }) => {
     let settings = opts;
 
-    if (opts.frame_hit != null) {
-      const calibrated = await rngTools.calibrate_gen3_timer(
-        settings,
-        opts.frame_hit,
-      );
+    if (opts.frameHit != null) {
+      const updated = updateGen3Timer(settings, opts.frameHit);
       settings = {
-        console: opts.console,
-        pre_timer: capPrecision(calibrated.pre_timer),
-        target_frame: capPrecision(calibrated.target_frame),
-        calibration: capPrecision(calibrated.calibration),
-        frame_hit: null,
+        ...updated.settings,
+        version: 1,
+        frameHit: null,
       };
       setValue("console", settings.console);
-      setValue("pre_timer", settings.pre_timer);
-      setValue("target_frame", settings.target_frame);
+      setValue("preTimer", settings.preTimer);
+      setValue("targetFrame", settings.targetFrame);
       setValue("calibration", settings.calibration);
-      setValue("frame_hit", settings.frame_hit);
+      setValue("frameHit", settings.frameHit);
     }
 
-    await updateTimerSettings(settings);
+    updateTimerSettings(settings);
     history.addIfNew(settings);
   };
 
@@ -164,11 +180,12 @@ const InnerGen3Timer = ({
             history={history}
             trackerId="undo_gen3_calibration"
             fields={{
+              version: true,
               console: true,
-              pre_timer: true,
-              target_frame: true,
+              preTimer: true,
+              targetFrame: true,
               calibration: true,
-              frame_hit: true,
+              frameHit: true,
             }}
           />
         }

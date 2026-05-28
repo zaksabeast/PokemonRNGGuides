@@ -13,7 +13,7 @@ import {
   Card,
 } from "~/components";
 import { capPrecision } from "~/utils/number";
-import { rngTools, Console } from "~/rngTools";
+import { type GameConsole, updateGen3Timer } from "~/rngTools";
 import { z } from "zod";
 import { useWatch } from "react-hook-form";
 import { P, match } from "ts-pattern";
@@ -29,7 +29,7 @@ const SingleTimerSettingsSchema = z.object({
 type SingleTimerSettings = z.infer<typeof SingleTimerSettingsSchema>;
 
 type AllTimerSettings = {
-  console: Console;
+  console: GameConsole;
   timers: SingleTimerSettings[];
 };
 
@@ -93,41 +93,41 @@ const CustomTimerSettings = () => {
   return <FormFieldTable fields={fields} />;
 };
 
-const calibrate = async (console: Console, settings: SingleTimerSettings) => {
+const calibrate = (console: GameConsole, settings: SingleTimerSettings) => {
   const hit = settings.hit ?? 0;
-  const calibration = await match(settings.target_type)
+  const calibration = match(settings.target_type)
     .with("ms", () => settings.target - hit + settings.calibration)
-    .with(P.union("advances", "seed_hex"), async () => {
-      const updated = await rngTools.calibrate_gen3_timer(
+    .with(P.union("advances", "seed_hex"), () => {
+      const updated = updateGen3Timer(
         {
           console,
           calibration: settings.calibration,
-          target_frame: settings.target,
-          pre_timer: 0,
+          targetFrame: settings.target,
+          preTimer: 0,
         },
         hit,
       );
-      return updated.calibration;
+      return updated.settings.calibration;
     })
     .exhaustive();
 
   return capPrecision(Math.max(0, calibration));
 };
 
-const create = async (console: Console, settings: SingleTimerSettings) => {
+const create = (console: GameConsole, settings: SingleTimerSettings) => {
   const target = settings.target;
 
   return match(settings.target_type)
     .with("ms", () => settings.target + settings.calibration)
-    .with(P.union("advances", "seed_hex"), async () => {
-      const updated = await rngTools.create_gen3_timer({
+    .with(P.union("advances", "seed_hex"), () => {
+      const updated = updateGen3Timer({
         console,
         calibration: settings.calibration,
-        target_frame: target,
-        pre_timer: 0,
+        targetFrame: target,
+        preTimer: 0,
       });
       // Ignore the pre-timer
-      return updated[1] ?? 0;
+      return updated.ms[1] ?? 0;
     })
     .exhaustive();
 };
@@ -185,8 +185,8 @@ export const CustomTimer = () => {
 
   const updateMilliseconds = async (settings: AllTimerSettings) => {
     const timers = await Promise.all(
-      settings.timers.map(async (timer) => {
-        const ms = await create(settings.console, timer);
+      settings.timers.map((timer) => {
+        const ms = create(settings.console, timer);
         return {
           ...timer,
           ms,
@@ -208,7 +208,7 @@ export const CustomTimer = () => {
     let updatedOpts = opts;
 
     if (opts.hit != null) {
-      const calibration = await calibrate(timerSettings.console, opts);
+      const calibration = calibrate(timerSettings.console, opts);
       updatedOpts = {
         ...opts,
         calibration,

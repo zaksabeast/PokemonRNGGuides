@@ -4,9 +4,10 @@ export type * from "rng_tools";
 // eslint-disable-next-line no-restricted-imports -- ~/rngTools is the only place where using the rng_tools lib is okay
 import type * as RngTools from "rng_tools";
 
+export * from "./timer";
+
 import { Remote, wrap } from "comlink";
 
-import { z } from "zod";
 import * as tst from "ts-toolbelt";
 import { RustOption } from "~/types/utils";
 import {
@@ -165,14 +166,6 @@ const spawnRngToolWorker = async (
     },
   };
 };
-
-export const ZodConsole = z.enum([
-  "NdsSlot1",
-  "Dsi",
-  "ThreeDs",
-  "Gba",
-  "NdsSlot2",
-]) satisfies z.Schema<RngTools.Console>;
 
 /**
  * Calls a function from rng_tools in a temporary worker.

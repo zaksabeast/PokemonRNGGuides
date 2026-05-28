@@ -7,11 +7,9 @@ mod rng;
 mod serde_utils;
 mod test_utils;
 mod time;
-mod timer;
 
 pub use generators::*;
 pub use id::*;
 pub use ivs::*;
 pub use pkm::*;
 pub use time::*;
-pub use timer::*;

@@ -1,6 +1,6 @@
 import { atom, useAtom } from "jotai";
 import { Static4State } from "~/rngTools";
-import { createGen4TimerAtom } from "~/hooks/useGen4Timer";
+import { createGen4TimerAtom } from "~/rngToolsUi/timer/atoms";
 import { MinMaxStats } from "~/types";
 import { Gen4Console, Gen4GameVersion } from "../gen4types";
 

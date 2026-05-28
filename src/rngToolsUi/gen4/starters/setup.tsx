@@ -1,8 +1,8 @@
 import { Field, FormFieldTable, AtomSelect } from "~/components";
-import { starterAtom } from "./state";
+import { starterAtom, starterTimer } from "./state";
 import { Gen4ConsoleSelect } from "../shared/consoleSelect";
-import { Translations } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { useAtom } from "jotai";
 
 const supportedGames = [
   "Diamond",
@@ -12,26 +12,35 @@ const supportedGames = [
   "SoulSilver",
 ] as const;
 
-const getFields = (t: Translations): Field[] => [
-  {
-    label: t["Game"],
-    input: (
-      <AtomSelect
-        atom={starterAtom}
-        options={supportedGames}
-        getValue={(state) => state.game}
-        nextState={(prev, game) => ({ ...prev, game })}
-      />
-    ),
-  },
-  {
-    label: t["Console"],
-    input: <Gen4ConsoleSelect stateAtom={starterAtom} />,
-  },
-];
-
 export const Starter4Setup = () => {
   const t = useActiveRouteTranslations();
-  const fields = getFields(t);
+  const [, updateTimer] = useAtom(starterTimer);
+  const fields: Field[] = [
+    {
+      label: t["Game"],
+      input: (
+        <AtomSelect
+          atom={starterAtom}
+          options={supportedGames}
+          getValue={(state) => state.game}
+          nextState={(prev, game) => ({ ...prev, game })}
+        />
+      ),
+    },
+    {
+      label: t["Console"],
+      input: (
+        <Gen4ConsoleSelect
+          stateAtom={starterAtom}
+          onChange={(console) =>
+            updateTimer({
+              minTimeMs: console === "3dsNormalSettings" ? 55_000 : 14_000,
+            })
+          }
+        />
+      ),
+    },
+  ];
+
   return <FormFieldTable fields={fields} />;
 };

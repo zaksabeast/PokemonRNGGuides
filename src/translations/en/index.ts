@@ -328,6 +328,10 @@ export const translations = {
   "Target/Heard": "Target/Heard",
   "TID / SID": "TID / SID",
   "Hidden power": "Hidden power",
+  "Calibrated Delay": "Calibrated Delay",
+  "Save calibration between different RNGs.":
+    "Save calibration between different RNGs.",
+  "Advanced Settings": "Advanced Settings",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

@@ -27,7 +27,6 @@ import { toOptions } from "~/utils/options";
 import { useHydrate } from "~/hooks/useHydrate";
 import { Skeleton } from "antd";
 import * as tst from "ts-toolbelt";
-import { createGen3TimerAtom } from "~/hooks/useGen3Timer";
 import { Gen3Timer } from "~/components/gen3Timer";
 import { formatOffset } from "~/utils/offsetSymbol";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
@@ -36,6 +35,7 @@ import { Translations, usePokeNavTranslations } from "~/translations";
 import { PokeNavTrainerTranslations } from "~/translations/en/pokeNav";
 import { sortLocale } from "~/utils/sortLocale";
 import { gender, nature } from "~/types";
+import { createGen3TimerAtom } from "~/rngToolsUi/timer/atoms";
 
 const timerAtom = createGen3TimerAtom();
 

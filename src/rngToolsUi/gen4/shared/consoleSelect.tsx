@@ -18,10 +18,12 @@ const getOptions = (t: Translations) => [
 
 type Gen4ConsoleSelectProps<State extends { console: Gen4Console }> = {
   stateAtom: PrimitiveAtom<State>;
+  onChange?: (console: Gen4Console) => void;
 };
 
 export const Gen4ConsoleSelect = <State extends { console: Gen4Console }>({
   stateAtom,
+  onChange,
 }: Gen4ConsoleSelectProps<State>) => {
   const t = useActiveRouteTranslations();
   const [state, setState] = useAtom(stateAtom);
@@ -36,6 +38,7 @@ export const Gen4ConsoleSelect = <State extends { console: Gen4Console }>({
           // Shouldn't happen
           return;
         }
+        onChange?.(value.data);
         setState((prev) => ({
           ...prev,
           console: value.data,

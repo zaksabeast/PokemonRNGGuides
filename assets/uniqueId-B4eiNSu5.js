@@ -1,0 +1,1 @@
+import{Oa as e}from"./index.esm-CeN3OIc2.js";var t=0;function n(n){var r=++t;return e(n)+r}export{n as t};

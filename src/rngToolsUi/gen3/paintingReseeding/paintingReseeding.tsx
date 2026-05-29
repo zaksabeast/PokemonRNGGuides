@@ -203,8 +203,8 @@ export const EmeraldPaintingReseeding = ({
         time to create Battle Video.
       </div>
       <EmeraldSeedToAdvances
-        onSelected={(before, after) => {
-          setTargetPaintingAdvs({ before, after });
+        onSelected={(paintingAdvs) => {
+          setTargetPaintingAdvs(paintingAdvs);
         }}
       />
     </>

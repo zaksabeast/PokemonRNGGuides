@@ -268,7 +268,7 @@ const getPidPathColumns = (): ResultColumn<PidPathResult>[] => {
 };
 
 type Props = {
-  setTargetSetup: (targetSetup: TargetSetup) => void;
+  setTargetSetup: (targetSetup: TargetSetup | null) => void;
   setLeadCycleSpeed: (leadCycleSpeed: number) => void;
 };
 
@@ -309,7 +309,7 @@ export const Wild3TargetSetupSearcher = ({
 
   const [leadCycleSpeed, setLeadCycleSpeed] = React.useState<number | null>(0);
 
-  const setTargetSetupBoth = (targetSetup: TargetSetup) => {
+  const setTargetSetupBoth = (targetSetup: TargetSetup | null) => {
     setTargetSetup(targetSetup);
     setTargetSetupProp?.(targetSetup);
   };

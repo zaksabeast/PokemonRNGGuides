@@ -153,26 +153,33 @@ export const ResultTable = <Record extends tst.O.Object>(
     );
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { columns: _, ...propsWithColumns } = props;
-  const pagination =
-    props.pagination === false
+  const {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    columns: _,
+    onClickResultRow,
+    pagination,
+    rowSelection,
+    ...propsForTable
+  } = props;
+
+  const paginationToUse =
+    pagination === false
       ? false
       : {
-          ...props.pagination,
+          ...pagination,
           showTotal: (total: number, range: [number, number]) => (
             <>
               <MaxWidthToggleButton />
-              {typeof props.pagination === "object" &&
-                props.pagination.showTotal?.(total, range)}
+              {typeof pagination === "object" &&
+                pagination.showTotal?.(total, range)}
             </>
           ),
         };
 
-  const rowSelection: FormikResultTableProps<Record>["rowSelection"] =
-    props.rowSelection != null
-      ? props.rowSelection
-      : {
+  const rowSelectionToUse: FormikResultTableProps<Record>["rowSelection"] =
+    rowSelection ??
+    (onClickResultRow != null
+      ? {
           type: "checkbox",
           selectedRowKeys,
           hideSelectAll: true,
@@ -180,18 +187,19 @@ export const ResultTable = <Record extends tst.O.Object>(
             const latestKey = newSelectedRowKeys.slice(-1);
             const latestRows = selectedRows.slice(-1);
             setSelectedRowKeys(latestKey);
-            props.onClickResultRow?.(latestRows[0] ?? null);
+            onClickResultRow(latestRows[0] ?? null);
           },
-        };
+        }
+      : undefined);
 
   return (
     <ClassNames>
       {({ css }) => (
         <Table
           scroll={TABLE_SCROLL}
-          {...propsWithColumns}
-          rowSelection={rowSelection}
-          pagination={pagination}
+          {...propsForTable}
+          rowSelection={rowSelectionToUse}
+          pagination={paginationToUse}
           className={css({
             "&&&": {
               width: "100%",

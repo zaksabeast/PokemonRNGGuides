@@ -77,3 +77,63 @@ export const getGeneratorPokemonResultColumns = <T extends {
         },
     ]
 };
+
+
+export const usingTargetSetupInputs = <T, >(usingPaintingReseeding:boolean,) => {
+    return [
+
+        {
+          ...usingPaintingReseedingLabel(),
+          input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
+        },
+        {
+          label: "Target frame before painting (Painting seed)",
+          input: (
+            <FormikEmeraldFrameBeforePaintingInput<FormState> name="targetFrameBeforePainting" />
+          ),
+          indent: 1,
+          show: usingPaintingReseeding,
+        },
+        {
+          label: usingPaintingReseeding
+            ? "Target advances after painting"
+            : "Target advances",
+          input: (
+            <FormikNumberInput<FormState> name="targetAdvance" numType="decimal" />
+          ),
+        },
+        {
+          label: "",
+          key: "Equivalent to Advances",
+          show: usingPaintingReseeding,
+          input: (
+            <>
+              Equivalent to Advances = {formatLargeInteger(equivalentInitialAdvs)}{" "}
+              without painting reseeding
+            </>
+          ),
+          indent: 1,
+        },
+    ]
+}
+
+
+/** Example of return values: Sturdy, Sturdy (1), Sturdy (2), First, Second */
+export const getAbilityDisplayStr = async (species: Species, pid: number) => {
+  const abilities = await rngTools.get_species_abilities(species);
+  const abilityType = await rngTools.get_ability_type_from_gen3_pid(pid);
+
+  const suffix =
+    abilities[0] === abilities[1]
+      ? ` (${abilityType === "First" ? 1 : 2})`
+      : ``;
+  if (abilityType === "First") {
+    return abilities[0] == null ? abilityType : `${abilities[0]}${suffix}`;
+  }
+  if (abilityType === "Second") {
+    return abilities[0] == null && abilities[1] == null
+      ? abilityType
+      : `${abilities[1] ?? abilities[0]}${suffix}`;
+  }
+  return "";
+};

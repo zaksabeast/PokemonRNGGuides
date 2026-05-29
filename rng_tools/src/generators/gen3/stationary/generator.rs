@@ -30,6 +30,18 @@ pub struct Static3GeneratorResult {
     pub method: Gen3StaticMethod,
 }
 
+#[wasm_bindgen]
+fn generate_gen3_static_wasm(
+    initial_seed: u32,
+    advances: usize,
+    opts: &Static3GeneratorOptions,
+) -> Vec<Static3GeneratorResult> {
+    let res = generate_gen3_static(Pokerng::with_jump(initial_seed, initial_advances), opts);
+    match res {
+        None => vec![],
+        Some(res) => res.to_vec(),
+    }
+}
 
 fn generate_gen3_static(
     mut rng: Pokerng,

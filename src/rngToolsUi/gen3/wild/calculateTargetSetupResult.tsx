@@ -73,26 +73,6 @@ const getProbabilityInfo = async (
   );
 };
 
-/** Example of return values: Sturdy, Sturdy (1), Sturdy (2), First, Second */
-const getAbilityDisplayStr = async (species: Species, pid: number) => {
-  const abilities = await rngTools.get_species_abilities(species);
-  const abilityType = await rngTools.get_ability_type_from_gen3_pid(pid);
-
-  const suffix =
-    abilities[0] === abilities[1]
-      ? ` (${abilityType === "First" ? 1 : 2})`
-      : ``;
-  if (abilityType === "First") {
-    return abilities[0] == null ? abilityType : `${abilities[0]}${suffix}`;
-  }
-  if (abilityType === "Second") {
-    return abilities[0] == null && abilities[1] == null
-      ? abilityType
-      : `${abilities[1] ?? abilities[0]}${suffix}`;
-  }
-  return "";
-};
-
 export const calculateTargetSetupResult = async (
   targetSetup: TargetSetup,
   lead_cycle_speed: number | null,

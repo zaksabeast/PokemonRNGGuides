@@ -1,0 +1,1 @@
+import"./nature-Cc02kzJn.js";import"./id-BGl8TRDl.js";import"./pickupItems-Jkbz9SqH.js";import"./species-CBUY7Q94.js";import"./stat-Dfq5cfRP.js";var e=[`Wild1`,`Wild2`,`Wild3`,`Wild4`,`Wild5`];export{e as t};

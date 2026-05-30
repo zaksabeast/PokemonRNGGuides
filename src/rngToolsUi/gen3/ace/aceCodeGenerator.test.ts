@@ -1,5 +1,8 @@
 import { describe, it, expect } from "bun:test";
-import { getEmeraldSeedBoxNames, getEmeraldSidBoxNames } from "./ace";
+import {
+  getEmeraldSeedBoxNames,
+  getEmeraldSidBoxNames,
+} from "./aceCodeGenerator";
 
 describe("getEmeraldSidBoxNames", () => {
   it("returns correct values", () => {

@@ -629,8 +629,8 @@ const boxNameCharAt = (code: number, cs: EmeraldCharset): string | null => {
   return code === SPACE ? " " : writableCharAt(code, cs);
 };
 
-const uint32 = (n: number): number => {
-  return n >>> 0;
+const uint32 = (value: number): number => {
+  return value >>> 0;
 };
 
 const parseUint32 = (input: number | string, label: string): number => {
@@ -645,42 +645,34 @@ const parseUint32 = (input: number | string, label: string): number => {
   return uint32(value);
 };
 
-const parseSid = (input: number | string): number => {
-  const sid = parseUint32(input, "SID");
-  if (sid > 0xffff) {
-    throw new RangeError("SID must be an integer from 0 to 65535.");
-  }
-  return sid;
-};
-
-const uint32Compare = (a: number, b: number): number => {
-  a >>>= 0;
-  b >>>= 0;
-  return a === b ? 0 : a > b ? 1 : -1;
+const uint32Compare = (left: number, right: number): number => {
+  const uintLeft = left >>> 0;
+  const uintRight = right >>> 0;
+  return uintLeft === uintRight ? 0 : uintLeft > uintRight ? 1 : -1;
 };
 
 const ror = (value: number, bits: number): number => {
-  value >>>= 0;
-  bits &= 31;
-  return ((value >>> bits) | (value << (32 - bits))) >>> 0;
+  const uintValue = value >>> 0;
+  const maskedBits = bits & 31;
+  return ((uintValue >>> maskedBits) | (uintValue << (32 - maskedBits))) >>> 0;
 };
 
 const rol = (value: number, bits: number): number => {
-  value >>>= 0;
-  bits &= 31;
-  return ((value << bits) | (value >>> (32 - bits))) >>> 0;
+  const uintValue = value >>> 0;
+  const maskedBits = bits & 31;
+  return ((uintValue << maskedBits) | (uintValue >>> (32 - maskedBits))) >>> 0;
 };
 
 const decomposeImmediate = (imm: number): [number, number][] => {
-  imm >>>= 0;
+  const uintImmediate = imm >>> 0;
   const out: [number, number][] = [];
-  let v = imm;
-  for (let n = 0; n <= 15; n++) {
-    const imm8 = v & 0xff;
-    if (imm8 === v) {
-      out.push([n, imm8]);
+  let rotated = uintImmediate;
+  for (let rotation = 0; rotation <= 15; rotation++) {
+    const imm8 = rotated & 0xff;
+    if (imm8 === rotated) {
+      out.push([rotation, imm8]);
     }
-    v = rol(v, 2);
+    rotated = rol(rotated, 2);
   }
   return out;
 };
@@ -693,7 +685,7 @@ const addrMode1Immediate = (imm: number): number[] => {
 
 const dataProc = (
   opcode: number,
-  s: boolean,
+  setFlags: boolean,
   rd: number,
   rn: number,
   imm: number,
@@ -701,7 +693,7 @@ const dataProc = (
   const base =
     ((COND_AL << 28) |
       opcode |
-      (s ? 0x00100000 : 0) |
+      (setFlags ? 0x00100000 : 0) |
       (rn << 16) |
       (rd << 12)) >>>
     0;
@@ -710,7 +702,7 @@ const dataProc = (
 
 const movLike = (
   mvn: boolean,
-  s: boolean,
+  setFlags: boolean,
   rd: number,
   imm: number,
 ): number[] => {
@@ -719,7 +711,8 @@ const movLike = (
   const out: number[] = [];
   for (const opcode of opcodes) {
     const base =
-      ((COND_AL << 28) | opcode | (s ? 0x00100000 : 0) | (rd << 12)) >>> 0;
+      ((COND_AL << 28) | opcode | (setFlags ? 0x00100000 : 0) | (rd << 12)) >>>
+      0;
     for (const mode of modes) {
       out.push((base | mode) >>> 0);
     }
@@ -780,7 +773,7 @@ const scoreBytes = (bytes: Bytes, lang: EmeraldLanguage): number => {
       bad.push([i, bytes[i]]);
     }
   }
-  if (bad.some(([, b]) => b !== EOF)) {
+  if (bad.some(([, byte]) => byte !== EOF)) {
     return Number.MAX_SAFE_INTEGER;
   }
   let score = 0;
@@ -803,7 +796,7 @@ const preferredBytes = (commands: number[], lang: EmeraldLanguage): Bytes => {
       best = bytes;
     }
   }
-  if (!best || bestScore === Number.MAX_SAFE_INTEGER) {
+  if (best === null || bestScore === Number.MAX_SAFE_INTEGER) {
     throw new Error("No writable encoding found.");
   }
   return best;
@@ -815,18 +808,18 @@ const buildConstants = (lang: EmeraldLanguage, movMvn: boolean): number[] => {
     if (!isCodeAvailable(i, lang)) {
       continue;
     }
-    let v = i >>> 0;
+    let rotated = i >>> 0;
     do {
-      set.add(v >>> 0);
-      v = ror(v, 2);
-    } while (v !== i);
+      set.add(rotated >>> 0);
+      rotated = ror(rotated, 2);
+    } while (rotated !== i);
   }
   if (movMvn) {
-    for (const v of Array.from(set)) {
-      set.add(~v >>> 0);
+    for (const value of Array.from(set)) {
+      set.add(~value >>> 0);
     }
   }
-  return Array.from(set).sort((a, b) => uint32Compare(a, b));
+  return Array.from(set).sort((left, right) => uint32Compare(left, right));
 };
 
 const synthesize = (
@@ -845,12 +838,12 @@ const synthesize = (
   const restSet = new Set(restConstants);
   const pairSums = new Map<number, [number, number]>();
   const firstAtMost = (arr: number[], limit: number): number => {
-    limit >>>= 0;
+    const uintLimit = limit >>> 0;
     let lo = 0;
     let hi = arr.length;
     while (lo < hi) {
       const mid = (lo + hi) >>> 1;
-      if (uint32Compare(arr[mid], limit) <= 0) {
+      if (uint32Compare(arr[mid], uintLimit) <= 0) {
         hi = mid;
       } else {
         lo = mid + 1;
@@ -906,9 +899,9 @@ const synthesize = (
       return false;
     }
     if (depthLeft === 1) {
-      const c = incr ? (remaining - 1) >>> 0 : remaining;
-      if (restSet.has(c)) {
-        acc.push(c);
+      const candidate = incr ? (remaining - 1) >>> 0 : remaining;
+      if (restSet.has(candidate)) {
+        acc.push(candidate);
         return true;
       }
       failed.add(key);
@@ -916,12 +909,13 @@ const synthesize = (
     }
     const limit = incr ? (remaining - 1) >>> 0 : remaining;
     for (let i = firstAtMost(pool, limit); i < pool.length; i++) {
-      const c = pool[i];
-      if (!remDepthCanReach(c, depthLeft, remaining)) {
+      const candidate = pool[i];
+      if (!remDepthCanReach(candidate, depthLeft, remaining)) {
         break;
       }
-      const nextRemaining = (remaining - (incr ? (c + 1) >>> 0 : c)) >>> 0;
-      acc.push(c);
+      const nextRemaining =
+        (remaining - (incr ? (candidate + 1) >>> 0 : candidate)) >>> 0;
+      acc.push(candidate);
       if (nextRemaining === 0) {
         return true;
       }
@@ -933,7 +927,7 @@ const synthesize = (
         }
       } else if (depthLeft === 3) {
         const pair = pairSums.get(nextRemaining);
-        if (pair) {
+        if (pair !== undefined) {
           acc.push(pair[0], pair[1]);
           return true;
         }
@@ -1021,18 +1015,18 @@ const tweakMov = (
       validFirst,
       validRest: validSub,
     });
-  for (let card = 1; card <= MAX_CARDS && !parts; card++) {
+  for (let card = 1; card <= MAX_CARDS && parts === null; card++) {
     parts = preferSubtractive ? trySubtractive(card) : tryAdditive(card);
-    if (parts) {
+    if (parts !== null) {
       additive = !preferSubtractive;
       break;
     }
     parts = preferSubtractive ? tryAdditive(card) : trySubtractive(card);
-    if (parts) {
+    if (parts !== null) {
       additive = preferSubtractive;
     }
   }
-  if (!parts) {
+  if (parts === null) {
     throw new Error("Unable to synthesize MOV immediate.");
   }
   const [first, ...rest] = parts;
@@ -1073,7 +1067,7 @@ const tweakSbc = (
     hasWritableEncoding(dataProc(0x00a00000, false, rd, rd, i), lang);
   let parts: number[] | null = null;
   let additive = true;
-  for (let card = 1; card <= MAX_CARDS && !parts; card++) {
+  for (let card = 1; card <= MAX_CARDS && parts === null; card++) {
     parts = synthesize(imm >>> 0, constants, {
       maxCard: card,
       additive: true,
@@ -1081,7 +1075,7 @@ const tweakSbc = (
       validFirst,
       validRest: validAdd,
     });
-    if (parts) {
+    if (parts !== null) {
       additive = true;
       break;
     }
@@ -1092,11 +1086,11 @@ const tweakSbc = (
       validFirst,
       validRest: validSub,
     });
-    if (parts) {
+    if (parts !== null) {
       additive = false;
     }
   }
-  if (!parts) {
+  if (parts === null) {
     throw new Error("Unable to synthesize SBC immediate.");
   }
   const [first, ...rest] = parts;
@@ -1194,7 +1188,7 @@ const certificateExit = (
     preferredBytes(strPre(REG.r11, REG.r12, 0), lang),
   ];
   const commands = variants[lang] ?? variants.eng;
-  if (!commands) {
+  if (commands === undefined) {
     throw new Error("No certificate exit commands found.");
   }
   return {
@@ -1204,34 +1198,38 @@ const certificateExit = (
 };
 
 const noEof = (bytes: Bytes): boolean => {
-  return bytes.every((b) => b !== EOF);
+  return bytes.every((byte) => byte !== EOF);
 };
 
 const onlyEof = (bytes: Bytes): boolean => {
-  return bytes.every((b) => b === EOF);
+  return bytes.every((byte) => byte === EOF);
 };
 
 const firstNonEofIndex = (bytes: Bytes): number => {
-  const i = bytes.findIndex((b) => b !== EOF);
+  const i = bytes.findIndex((byte) => byte !== EOF);
   return i < 0 ? bytes.length : i;
 };
 
 const usableEofIndex = (bytes: Bytes): number => {
   let i = 0;
-  while (i < bytes.length && bytes[i] !== EOF) i++;
-  while (i < bytes.length && bytes[i] === EOF) i++;
+  while (i < bytes.length && bytes[i] !== EOF) {
+    i++;
+  }
+  while (i < bytes.length && bytes[i] === EOF) {
+    i++;
+  }
   return bytes.length - 1 - (bytes.length - i);
 };
 
 const nopCodeAtPos = (pos: number): Bytes => {
-  pos %= NAME_SIZE + 1;
-  return pos + 4 <= NAME_SIZE
+  const wrappedPos = pos % (NAME_SIZE + 1);
+  return wrappedPos + 4 <= NAME_SIZE
     ? PADDING
-    : DEFAULT_FILLERS.fillers[NAME_SIZE - pos];
+    : DEFAULT_FILLERS.fillers[NAME_SIZE - wrappedPos];
 };
 
 const pack = (flag: boolean, bytes: Bytes): PackedByte[] => {
-  return bytes.map((b) => ({ byte: b, command: flag }));
+  return bytes.map((byte) => ({ byte, command: flag }));
 };
 
 const fitCodeAtPos = (
@@ -1239,29 +1237,34 @@ const fitCodeAtPos = (
   bytes: Bytes,
   next: Bytes | null,
 ): PackedByte[] => {
-  if (next && onlyEof(next)) {
-    next = null;
-  }
+  const nextBytes = next !== null && onlyEof(next) ? null : next;
   for (let tries = NAME_SIZE + 1; tries > 0; tries--) {
-    const p = pos % (NAME_SIZE + 1);
-    const n = bytes.length;
+    const bytePos = pos % (NAME_SIZE + 1);
+    const byteCount = bytes.length;
     let ok: boolean;
     if (noEof(bytes)) {
-      ok = p + n <= NAME_SIZE;
+      ok = bytePos + byteCount <= NAME_SIZE;
     } else {
-      const i = usableEofIndex(bytes);
+      const eofIndex = usableEofIndex(bytes);
       ok =
-        p + i === NAME_SIZE ||
-        (i === n - 1 &&
-          p + n <= NAME_SIZE &&
-          (p + n + firstNonEofIndex(nopCodeAtPos(p + n)) - 1 === NAME_SIZE ||
-            (next ? p + n + firstNonEofIndex(next) - 1 === NAME_SIZE : true)));
+        bytePos + eofIndex === NAME_SIZE ||
+        (eofIndex === byteCount - 1 &&
+          bytePos + byteCount <= NAME_SIZE &&
+          (bytePos +
+            byteCount +
+            firstNonEofIndex(nopCodeAtPos(bytePos + byteCount)) -
+            1 ===
+            NAME_SIZE ||
+            (nextBytes !== null
+              ? bytePos + byteCount + firstNonEofIndex(nextBytes) - 1 ===
+                NAME_SIZE
+              : true)));
     }
     if (ok) {
       return pack(true, bytes);
     }
-    const nop = nopCodeAtPos(p);
-    return pack(false, nop).concat(fitCodeAtPos(pos + 4, bytes, next));
+    const nop = nopCodeAtPos(bytePos);
+    return pack(false, nop).concat(fitCodeAtPos(pos + 4, bytes, nextBytes));
   }
   throw new Error("Box fitting algorithm failed.");
 };
@@ -1285,13 +1288,17 @@ const padNb = (pos: number, nb: number): Bytes => {
     throw new Error("Cannot pad requested amount.");
   }
   const out: Bytes = [];
-  while (nb > 0) {
-    const p = pos % (NAME_SIZE + 1);
+  let currentPos = pos;
+  let remaining = nb;
+  while (remaining > 0) {
+    const bytePos = currentPos % (NAME_SIZE + 1);
     const code =
-      p + 4 <= NAME_SIZE ? PADDING : DEFAULT_FILLERS.fillers[NAME_SIZE - p];
+      bytePos + 4 <= NAME_SIZE
+        ? PADDING
+        : DEFAULT_FILLERS.fillers[NAME_SIZE - bytePos];
     out.push(...code);
-    pos += 4;
-    nb -= 4;
+    currentPos += 4;
+    remaining -= 4;
   }
   return out;
 };
@@ -1303,7 +1310,7 @@ const rewriteBytes = (bytes: Bytes): Bytes => {
       const part = out.slice(pos, pos + rule.pre.length);
       if (
         part.length === rule.pre.length &&
-        part.every((b, i) => b === rule.pre[i])
+        part.every((byte, index) => byte === rule.pre[index])
       ) {
         out = out
           .slice(0, pos)
@@ -1319,20 +1326,20 @@ const splitRawIntoBoxes = (raw: Bytes, fillLast: boolean): Bytes[] => {
   const finished: Bytes[] = [];
   let current: Bytes = [];
   let i = 0;
-  for (const c of raw) {
-    if (i === NAME_SIZE && c === EOF) {
+  for (const code of raw) {
+    if (i === NAME_SIZE && code === EOF) {
       finished.push(current);
       current = [];
       i = 0;
     } else if (i === NAME_SIZE) {
       throw new Error("EOF expected while splitting box names.");
-    } else if (c === EOF) {
+    } else if (code === EOF) {
       i++;
     } else {
       if (current.length !== i) {
         throw new Error("Non-EOF byte after EOF in box name.");
       }
-      current.push(c);
+      current.push(code);
       i++;
     }
   }
@@ -1350,7 +1357,7 @@ const modulo = (x: number, y: number): number => {
 };
 
 const isFullOfSpaces = (bytes: Bytes): boolean => {
-  return bytes.every((b) => b === SPACE);
+  return bytes.every((byte) => byte === SPACE);
 };
 
 const replacePaddingInBoxes = (boxes: Bytes[]): Bytes[] => {
@@ -1362,13 +1369,17 @@ const replacePaddingInBoxes = (boxes: Bytes[]): Bytes[] => {
         return;
       }
       replaceFrom(pos + 4, false);
-      if (out.slice(pos, pos + 4).every((b, i) => b === PADDING[i])) {
+      if (
+        out.slice(pos, pos + 4).every((byte, index) => byte === PADDING[index])
+      ) {
         for (const code of [
           DEFAULT_FILLERS.nopCode,
           DEFAULT_FILLERS.nopCodeAlt,
         ]) {
           const candidate = out.slice(0, pos).concat(code, out.slice(pos + 4));
-          while (candidate[candidate.length - 1] === EOF) candidate.pop();
+          while (candidate[candidate.length - 1] === EOF) {
+            candidate.pop();
+          }
           if (!noEof(candidate)) {
             continue;
           }
@@ -1391,53 +1402,45 @@ const fitCodesIntoBoxes = (
 ): Bytes[] => {
   let res = addCodesAfter([], commands, false);
   const exit = certificateExit(lang);
-  const i = res.length;
-  res = res.concat(pack(false, padNb(i, exit.start - i)));
+  const byteCount = res.length;
+  res = res.concat(pack(false, padNb(byteCount, exit.start - byteCount)));
   res = addCodesAfter(res, exit.bytes, true);
-  const raw = rewriteBytes(res.map((x) => x.byte));
+  const raw = rewriteBytes(res.map((packed) => packed.byte));
   return replacePaddingInBoxes(splitRawIntoBoxes(raw, true));
+};
+
+const getEmeraldBoxNamesForCommands = (
+  commands: Bytes[],
+  cs: ReturnType<typeof charset>,
+): AceResult => {
+  const boxes = fitCodesIntoBoxes(commands, cs.lang);
+  const names = boxes.map((box) =>
+    box.map((byte) => boxNameCharAt(byte, cs)).join(""),
+  );
+  return {
+    language: cs.lang,
+    boxes: names,
+    rawBoxes: boxes.map((box) => box.slice()),
+    commands: commands.map((bytes) => ({
+      bytes: bytes.slice(),
+      hex: commandForBytes(bytes).toString(16).padStart(8, "0").toUpperCase(),
+    })),
+  };
 };
 
 export const getEmeraldSidBoxNames = (
   sid: number,
   languageInput: EmeraldLanguage,
-): AceResult & { sid: number } => {
+): AceResult => {
   const cs = charset(languageInput);
-  const commands = sidProgramBytes(sid, cs.lang);
-  const boxes = fitCodesIntoBoxes(commands, cs.lang);
-  const names = boxes.map((box) =>
-    box.map((b) => boxNameCharAt(b, cs)).join(""),
-  );
-  return {
-    sid,
-    language: cs.lang,
-    boxes: names,
-    rawBoxes: boxes.map((box) => box.slice()),
-    commands: commands.map((bytes) => ({
-      bytes: bytes.slice(),
-      hex: commandForBytes(bytes).toString(16).padStart(8, "0").toUpperCase(),
-    })),
-  };
+  return getEmeraldBoxNamesForCommands(sidProgramBytes(sid, cs.lang), cs);
 };
 
 export const getEmeraldSeedBoxNames = (
   seed: number,
   languageInput: EmeraldLanguage,
-): AceResult & { seed: number } => {
+): AceResult => {
+  const parsedSeed = parseUint32(seed, "Seed");
   const cs = charset(languageInput);
-  const commands = seedProgramBytes(seed, cs.lang);
-  const boxes = fitCodesIntoBoxes(commands, cs.lang);
-  const names = boxes.map((box) =>
-    box.map((b) => boxNameCharAt(b, cs)).join(""),
-  );
-  return {
-    seed,
-    language: cs.lang,
-    boxes: names,
-    rawBoxes: boxes.map((box) => box.slice()),
-    commands: commands.map((bytes) => ({
-      bytes: bytes.slice(),
-      hex: commandForBytes(bytes).toString(16).padStart(8, "0").toUpperCase(),
-    })),
-  };
+  return getEmeraldBoxNamesForCommands(seedProgramBytes(parsedSeed, cs.lang), cs);
 };

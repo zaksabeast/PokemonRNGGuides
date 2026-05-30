@@ -459,9 +459,12 @@ fn generate_state(opts: &GenerateStateOpts) -> Option<Gen3HeldEggPid> {
 
 #[cfg(test)]
 mod test {
+    use itertools::Itertools;
+
     use super::Gender::*;
     use super::Nature::*;
     use super::*;
+    use crate::AbilityType;
     use crate::assert_list_eq;
 
     fn register_all_trainers() -> Vec<PokeNavTrainer> {
@@ -2431,5 +2434,167 @@ mod test {
         ];
 
         assert_list_eq!(results, expected);
+    }
+
+    mod pokefinder {
+        use super::*;
+
+        fn parse_pokefinder(str: &str) -> Vec<Gen3HeldEgg> {
+            str.lines()
+                .map(|raw_line| {
+                    let line = raw_line.trim();
+
+                    if line.is_empty() {
+                        panic!("Empty line in chatter data");
+                    }
+
+                    let parts: Vec<&str> = line.split("\t").collect();
+                    let advance: usize = parts[0].parse().unwrap();
+                    let redraws: usize = parts[2].parse().unwrap();
+                    let pid = u32::from_str_radix(parts[3], 16).unwrap();
+                    let shiny = parts[4] != "No";
+                    let nature = Nature::from_str(parts[5]);
+                    let ability = AbilityType::from_pokefinder_str(parts[6]);
+                    let gender = Gender::from_pokefinder_str(parts[15]);
+
+                    Gen3HeldEgg {
+                        advance: advance + (redraws * 3),
+                        redraws,
+                        has_roamer: false,
+                        calibration: 18,
+                        pid,
+                        gender,
+                        shiny,
+                        nature,
+                        ability: (ability as u8) + 1,
+                        match_call: PokeNavTrainer::None,
+                    }
+                })
+                .collect()
+        }
+
+        macro_rules! pokefinder {
+            ($file:expr) => {
+                parse_pokefinder(include_str!($file))
+            };
+        }
+
+        fn clear_match_call(results: Vec<Gen3HeldEgg>) -> Vec<Gen3HeldEgg> {
+            results
+                .into_iter()
+                .map(|egg| Gen3HeldEgg {
+                    match_call: PokeNavTrainer::None,
+                    ..egg
+                })
+                .collect()
+        }
+
+        fn sort(eggs: Vec<Gen3HeldEgg>) -> Vec<Gen3HeldEgg> {
+            eggs.into_iter()
+                .sorted_by(|a, b| a.redraws.cmp(&b.redraws).then(a.advance.cmp(&b.advance)))
+                .collect()
+        }
+
+        #[test]
+        fn dont_like_each_other() {
+            let opts = Egg3HeldOptions {
+                delay: 0,
+                filter_impossible_to_hit: false,
+                compatability: Compatability::DontLikeEachOther,
+                calibration: 18,
+                has_roamer: false,
+                has_lightning_rod: false,
+                registered_trainers: vec![],
+                initial_advances: 100,
+                max_advances: 100,
+                min_redraw: 0,
+                max_redraw: 5,
+                female_has_everstone: false,
+                female_nature: Nature::Hardy,
+                tid: 12345,
+                sid: 54321,
+                lua_adjustment: false,
+                egg_species: Species::Bulbasaur,
+                filters: Egg3HeldFilters {
+                    shiny: false,
+                    nature: vec![],
+                    gender: None,
+                    match_call: None,
+                },
+            };
+
+            let results = sort(clear_match_call(emerald_egg_held_states(&opts)));
+            let expected = sort(pokefinder!("test_data/held/dont_like_each_other.txt"));
+
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn get_along() {
+            let opts = Egg3HeldOptions {
+                delay: 0,
+                filter_impossible_to_hit: false,
+                compatability: Compatability::GetAlong,
+                calibration: 18,
+                has_roamer: false,
+                has_lightning_rod: false,
+                registered_trainers: vec![],
+                initial_advances: 100,
+                max_advances: 100,
+                min_redraw: 0,
+                max_redraw: 5,
+                female_has_everstone: false,
+                female_nature: Nature::Hardy,
+                tid: 0,
+                sid: 0,
+                lua_adjustment: false,
+                egg_species: Species::Bulbasaur,
+                filters: Egg3HeldFilters {
+                    shiny: false,
+                    nature: vec![],
+                    gender: None,
+                    match_call: None,
+                },
+            };
+
+            let results = sort(clear_match_call(emerald_egg_held_states(&opts)));
+            let expected = sort(pokefinder!("test_data/held/get_along.txt"));
+
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn get_along_well() {
+            let opts = Egg3HeldOptions {
+                delay: 0,
+                filter_impossible_to_hit: false,
+                compatability: Compatability::GetAlongVeryWell,
+                calibration: 18,
+                has_roamer: false,
+                has_lightning_rod: false,
+                registered_trainers: vec![],
+                initial_advances: 100,
+                max_advances: 100,
+                min_redraw: 0,
+                max_redraw: 5,
+                female_has_everstone: false,
+                female_nature: Nature::Hardy,
+                tid: 0,
+                sid: 0,
+                lua_adjustment: false,
+                egg_species: Species::Bulbasaur,
+                filters: Egg3HeldFilters {
+                    shiny: false,
+                    nature: vec![],
+                    gender: None,
+                    match_call: None,
+                },
+            };
+
+            let results = sort(clear_match_call(emerald_egg_held_states(&opts)));
+            let expected = sort(pokefinder!("test_data/held/get_along_very_well.txt"));
+
+            assert_list_eq!(results, expected);
+        }
     }
 }

@@ -184,7 +184,7 @@ mod test {
     };
 
     #[test]
-    fn generate_emberald_bred_results() {
+    fn generate_emerald_bred_results() {
         let opts = Egg3PickupOptions {
             delay: 0,
             parent_ivs: [MALE_IVS, FEMALE_IVS],
@@ -326,7 +326,7 @@ mod test {
     }
 
     #[test]
-    fn generate_emberald_bred_split_results() {
+    fn generate_emerald_bred_split_results() {
         let opts = Egg3PickupOptions {
             delay: 0,
             parent_ivs: [MALE_IVS, FEMALE_IVS],
@@ -468,7 +468,7 @@ mod test {
     }
 
     #[test]
-    fn generate_emberald_bred_alternate_results() {
+    fn generate_emerald_bred_alternate_results() {
         let opts = Egg3PickupOptions {
             delay: 0,
             parent_ivs: [MALE_IVS, FEMALE_IVS],
@@ -850,5 +850,108 @@ mod test {
         let expected: [Egg3PickupState; 0] = [];
 
         assert_list_eq!(results, expected);
+    }
+
+    mod pokefinder {
+        use super::*;
+
+        fn parse_pokefinder(str: &str) -> Vec<Egg3PickupState> {
+            str.lines()
+                .map(|raw_line| {
+                    let line = raw_line.trim();
+
+                    if line.is_empty() {
+                        panic!("Empty line in chatter data");
+                    }
+
+                    let parts: Vec<&str> = line.split("\t").collect();
+                    let advance: usize = parts[1].parse().unwrap();
+                    let ivs = Ivs::from_pokefinder_strs(&parts[7..][..6]);
+
+                    Egg3PickupState {
+                        advance,
+                        ivs: ivs.into(),
+                        hidden_power: Some(HiddenPower::from_ivs(&ivs)),
+                    }
+                })
+                .collect()
+        }
+
+        macro_rules! pokefinder {
+            ($file:expr) => {
+                parse_pokefinder(include_str!($file))
+            };
+        }
+
+        fn clear_inheritance(results: Vec<Egg3PickupState>) -> Vec<Egg3PickupState> {
+            results
+                .into_iter()
+                .map(|mut state| {
+                    // Clear parent inheritance
+                    state.ivs = state.ivs.try_as_ivs().unwrap().into();
+                    state
+                })
+                .collect()
+        }
+
+        #[test]
+        fn emerald_bred_results() {
+            let opts = Egg3PickupOptions {
+                delay: 0,
+                parent_ivs: [MALE_IVS, FEMALE_IVS],
+                method: Gen3PickupMethod::EmeraldBred,
+                initial_advances: 0,
+                max_advances: 100,
+                seed: 0,
+                filter_min_ivs: Ivs::new_all0(),
+                filter_max_ivs: Ivs::new_all31(),
+                filter_hidden_power: HiddenPowerFilter::default(),
+            };
+
+            let results: Vec<Egg3PickupState> = clear_inheritance(emerald_egg_pickup_states(&opts));
+            let expected = pokefinder!("test_data/pickup/bred.txt");
+
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn emerald_bred_split_results() {
+            let opts = Egg3PickupOptions {
+                delay: 0,
+                parent_ivs: [MALE_IVS, FEMALE_IVS],
+                method: Gen3PickupMethod::EmeraldBredSplit,
+                initial_advances: 0,
+                max_advances: 100,
+                seed: 0,
+                filter_min_ivs: Ivs::new_all0(),
+                filter_max_ivs: Ivs::new_all31(),
+                filter_hidden_power: HiddenPowerFilter::default(),
+            };
+
+            let results = clear_inheritance(emerald_egg_pickup_states(&opts));
+            let expected = pokefinder!("test_data/pickup/split.txt");
+
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn emerald_bred_alternate_results() {
+            let opts = Egg3PickupOptions {
+                delay: 0,
+                parent_ivs: [MALE_IVS, FEMALE_IVS],
+                method: Gen3PickupMethod::EmeraldBredAlternate,
+                initial_advances: 0,
+                max_advances: 100,
+                seed: 0,
+                filter_min_ivs: Ivs::new_all0(),
+                filter_max_ivs: Ivs::new_all31(),
+                filter_hidden_power: HiddenPowerFilter::default(),
+            };
+
+            let results = clear_inheritance(emerald_egg_pickup_states(&opts));
+            let expected = pokefinder!("test_data/pickup/alternate.txt");
+
+            assert_list_eq!(results, expected);
+        }
     }
 }

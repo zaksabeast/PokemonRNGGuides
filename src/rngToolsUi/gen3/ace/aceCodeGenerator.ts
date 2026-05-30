@@ -629,22 +629,6 @@ const boxNameCharAt = (code: number, cs: EmeraldCharset): string | null => {
   return code === SPACE ? " " : writableCharAt(code, cs);
 };
 
-const uint32 = (value: number): number => {
-  return value >>> 0;
-};
-
-const parseUint32 = (input: number | string, label: string): number => {
-  const text = typeof input === "string" ? input.trim() : "";
-  const value =
-    typeof input === "number"
-      ? input
-      : Number(text.startsWith("$") ? `0x${text.slice(1)}` : text);
-  if (!Number.isInteger(value) || value < 0 || value > 0xffffffff) {
-    throw new RangeError(`${label} must be an integer from 0 to 4294967295.`);
-  }
-  return uint32(value);
-};
-
 const uint32Compare = (left: number, right: number): number => {
   const uintLeft = left >>> 0;
   const uintRight = right >>> 0;
@@ -822,6 +806,8 @@ const buildConstants = (lang: EmeraldLanguage, movMvn: boolean): number[] => {
   return Array.from(set).sort((left, right) => uint32Compare(left, right));
 };
 
+// Find the shortest writable constant sequence that reaches target using the
+// requested additive/subtractive encoding strategy.
 const synthesize = (
   target: number,
   constants: number[],
@@ -1440,7 +1426,6 @@ export const getEmeraldSeedBoxNames = (
   seed: number,
   languageInput: EmeraldLanguage,
 ): AceResult => {
-  const parsedSeed = parseUint32(seed, "Seed");
   const cs = charset(languageInput);
-  return getEmeraldBoxNamesForCommands(seedProgramBytes(parsedSeed, cs.lang), cs);
+  return getEmeraldBoxNamesForCommands(seedProgramBytes(seed, cs.lang), cs);
 };

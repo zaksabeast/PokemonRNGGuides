@@ -1,11 +1,21 @@
 import React from "react";
-import { AceResult, getEmeraldSidBoxNames } from "./aceCodeGenerator";
-import { Flex, FormikSelect, RngToolForm, RngToolSubmit } from "~/components";
+import { getEmeraldSidBoxNames } from "./aceCodeGenerator";
+import {
+  CopyToClipboardButton,
+  Field,
+  Flex,
+  FormikSelect,
+  ResultColumn,
+  RngToolForm,
+  RngToolSubmit,
+} from "~/components";
 import { Typography } from "antd";
 
 import Instructions from "./instructions_ace_change_sid.mdx";
 import z from "zod";
 import { emeraldLangOptions, emeraldLangs } from "./emeraldLang";
+import { MarkdownCode } from "~/markdownExports/components";
+import { match } from "ts-pattern";
 
 type Props = {
   sid: number;
@@ -23,56 +33,124 @@ const getInitialValues = (): FormState => {
 
 export type FormState = z.infer<typeof schema>;
 
-const longestBoxNameLength = 8;
-const spacedBoxNameLength = longestBoxNameLength * 2 - 1;
-
-export const BoxNames = ({ boxNames, manipName }: Props) => {
-  return (
-    <Flex vertical>
-      <pre style={{ fontFamily: "monospace" }}>
-        {boxNames.map(formatBoxNameLine).join("\n")}
-      </pre>
-    </Flex>
-  );
+let nextUid = 0;
+type BoxNameResult = {
+  uid: number;
+  boxNum: number;
+  boxName: string;
 };
 
-const formatBoxNameLine = (boxName: string, i: number) => {
-  const spacedBoxName = [...boxName]
-    .map((char) => (char === " " ? "_" : char))
-    .join(" ");
+const getColumns = (): ResultColumn<BoxNameResult>[] => {
+  return [
+    {
+      title: "Box",
+      dataIndex: "boxNum",
+      render: (boxNum) => {
+        if (boxNum === 0) {
+          return "All Boxes";
+        }
+        return `Box ${boxNum}`;
+      },
+    },
+    {
+      title: "Box Name",
+      dataIndex: "boxName",
+      render: (boxName, values) => {
+        if (values.boxNum === 0) {
+          return (
+            <CopyToClipboardButton text={boxName} size="small">
+              {""}
+            </CopyToClipboardButton>
+          );
+        }
 
-  return `Box ${(i + 1).toString().padStart(2)}:    ${spacedBoxName.padEnd(spacedBoxNameLength)}    [${boxName}]`;
+        return (
+          <Flex gap={30}>
+            <CopyToClipboardButton text={boxName} size="small">
+              {""}
+            </CopyToClipboardButton>{" "}
+            <Flex gap={5}>
+              {boxName
+                .split("")
+                .map((char) => {
+                  return match(char)
+                    .with(" ", () => <span title="Space">{"\u00a0"}</span>)
+                    .with("l", () => (
+                      <span title="Lowercase l letter">{char}</span>
+                    ))
+                    .with("1", () => <span title="Number 1">{char}</span>)
+                    .with("o", () => (
+                      <span title="Lowercase o letter">{char}</span>
+                    ))
+                    .with("O", () => (
+                      <span title="Uppercase O letter">{char}</span>
+                    ))
+                    .with("0", () => <span title="Number 0">{char}</span>)
+                    .otherwise(() => char);
+                })
+                .map((char, i) => {
+                  return <MarkdownCode key={i}>{char}</MarkdownCode>;
+                })}
+            </Flex>
+          </Flex>
+        );
+      },
+    },
+  ];
 };
 
 export const EmeraldAceChangeSid = ({ sid }: Props) => {
-  const [aceResult, setAceResult] = React.useState<AceResult | null>(null);
-  const lang = "eng"; // NO_PROD
+  const [results, setResults] = React.useState<BoxNameResult[]>([]);
+  const [hasError, setHasError] = React.useState(false);
 
-  React.useEffect(() => {
-    getEmeraldSidBoxNames(sid, lang).then((res) => {
-      setAceResult(res);
-    });
-  }, [sid]);
+  React.useEffect(() => {}, [sid]);
 
   const manipName = `Change SID to ${sid}`;
 
   const initialValues = getInitialValues();
 
   const onSubmit: RngToolSubmit<FormState> = async (opts) => {
-    //TODO
+    setHasError(false);
+    setResults([]);
+
+    setTimeout(async () => {
+      const res = await getEmeraldSidBoxNames(sid, opts.lang);
+      setHasError(!res.success);
+
+      if (res.success) {
+        const allBoxesNames = res.boxes.join("\n");
+        setResults(
+          res.boxes
+            .map((box, i) => {
+              return {
+                uid: nextUid++,
+                boxNum: i + 1,
+                boxName: box,
+              };
+            })
+            .concat({
+              uid: nextUid++,
+              boxNum: 0,
+              boxName: allBoxesNames,
+            }),
+        );
+      }
+    }, 100);
   };
 
-  const fields = [
-    {
-      label: "Language",
-      input: (
-        <FormikSelect<FormState, "lang">
-          name="lang"
-          options={emeraldLangOptions}
-        />
-      ),
-    },
-  ];
+  const getFields = (): Field[] => {
+    return [
+      {
+        label: "Game Language",
+        input: (
+          <FormikSelect<FormState, "lang">
+            name="lang"
+            options={emeraldLangOptions}
+          />
+        ),
+      },
+    ];
+  };
 
   return (
     <Flex vertical>
@@ -80,14 +158,22 @@ export const EmeraldAceChangeSid = ({ sid }: Props) => {
 
       <Typography.Title level={4}> {manipName}</Typography.Title>
 
-      <RngToolForm<FormState, never>
-        fields={fields}
+      <RngToolForm<FormState, BoxNameResult>
+        getFields={getFields}
+        results={results}
         validationSchema={schema}
         initialValues={initialValues}
         onSubmit={onSubmit}
+        getColumns={getColumns}
         submitTrackerId="emerald_ace_change_sid"
         rowKey="uid"
+        pagination={false}
       />
+      {hasError && (
+        <Typography.Text type="danger">
+          Error: Unable to generate the box names.
+        </Typography.Text>
+      )}
     </Flex>
   );
 };

@@ -21,7 +21,7 @@ import {
 import { gen3Methods } from "~/types";
 import { pokeblockSchema } from "~/types/pokeblock";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
-import { EmeraldAceChangeSid } from "../ace/emeraldChangeSid";
+import { EmeraldAceChangeSid } from "../ace/emeraldAceChangeSid";
 
 /*
 Possible user flows (documentation for testing): 

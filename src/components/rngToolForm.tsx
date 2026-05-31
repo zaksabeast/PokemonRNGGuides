@@ -17,7 +17,7 @@ import {
 } from "react-hook-form";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { GenericForm } from "~/types";
-import { Typography, Progress, type TablePaginationConfig } from "antd";
+import { Typography, Progress, TableProps } from "antd";
 
 export type RngToolSubmit<FormState extends GenericForm> = (
   values: FormState,
@@ -34,7 +34,7 @@ type Props<FormState extends GenericForm, Result> = {
   disableGenerate?: boolean;
   additionalButtons?: React.ReactNode;
   progressPercent?: number;
-  pagination?: TablePaginationConfig;
+  pagination?: TableProps["pagination"];
 } & OneOf<{
   fields: Field[];
   getFields: (t: Translations) => Field[];

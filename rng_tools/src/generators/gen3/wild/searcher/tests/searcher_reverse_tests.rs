@@ -109,7 +109,7 @@ fn test_search_find_pid_paths_by_step_filter_method() {
     let mut opts = FindPidPathsOptions {
         initial_advances: 193925915,
         max_advances: 1,
-        methods: vec![Gen3Method::Wild1],
+        method_bitset: METHOD_1,
         ..Default::default()
     };
 

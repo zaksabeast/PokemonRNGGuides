@@ -22,7 +22,7 @@ import {
   getGen3PkmFilterInitialValues,
 } from "~/components/gen3PkmFilter";
 import {
-  getStatic3Species,
+  getStatic3SpeciesEncounters,
   Static3Game,
 } from "~/rngToolsUi/gen3/static/constants";
 import {
@@ -80,7 +80,7 @@ const getInitialValues = (game: Static3Game): FormState => {
     max_advances: 0,
     tid: 0,
     sid: 0,
-    species: getStatic3Species(game)[0],
+    species: getStatic3SpeciesEncounters(game)[0].species,
     roamer: false,
     method4: false,
     ...getPkmFilterInitialValues(),
@@ -89,7 +89,7 @@ const getInitialValues = (game: Static3Game): FormState => {
 };
 
 const getFields = (game: Static3Game): Field[] => {
-  const staticSpecies = getStatic3Species(game);
+  const staticSpecies = getStatic3SpeciesEncounters(game);
   return [
     {
       label: "Seed",
@@ -109,8 +109,10 @@ const getFields = (game: Static3Game): Field[] => {
         <FormikSelect<FormState, "species">
           name="species"
           options={staticSpecies
-            .sort((first, second) => first.localeCompare(second))
-            .map((spec) => ({ label: spec, value: spec }))}
+            .toSorted((first, second) =>
+              first.species.localeCompare(second.species),
+            )
+            .map(({ species }) => ({ label: species, value: species }))}
         />
       ),
     },

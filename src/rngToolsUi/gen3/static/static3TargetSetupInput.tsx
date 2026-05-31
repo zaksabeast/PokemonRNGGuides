@@ -13,7 +13,7 @@ import { useWatch } from "react-hook-form";
 import { z } from "zod";
 import React from "react";
 
-import { getStatic3Species } from "./constants";
+import { getStatic3SpeciesEncounters } from "./constants";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import { usingTargetSetupInputs } from "../pokemonRng/generatorResultColumns";
 
@@ -21,7 +21,9 @@ const static3Methods = [
   "Static1",
   "Static4",
 ] as const satisfies readonly Gen3StaticMethod[];
-const static3Species = getStatic3Species("emerald");
+const static3Species = getStatic3SpeciesEncounters("emerald").map(
+  ({ species }) => species,
+);
 type Static3EncounterContext = "";
 const static3EncounterContexts = [""] as const;
 

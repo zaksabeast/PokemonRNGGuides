@@ -44,7 +44,7 @@ type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   minAdvances: 0,
-  maxAdvances: 300,
+  maxAdvances: 50,
 };
 
 type SelectButtonProps = {

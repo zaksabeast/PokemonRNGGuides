@@ -1,3 +1,5 @@
+import type { ElmCall } from "~/rngTools";
+
 export const sanitizeElmCalls = (value: string): string => {
   return value
     .toUpperCase()
@@ -7,17 +9,34 @@ export const sanitizeElmCalls = (value: string): string => {
     .replace(/^,|,$/g, "");
 };
 
+export const parseElmCallFilter = (value: string): ElmCall[] => {
+  return sanitizeElmCalls(value)
+    .split(",")
+    .filter(Boolean) as ElmCall[];
+};
+
 export const matchesElmCallFilter = (
-  elmCalls: string[],
+  elmCalls: ElmCall[],
   filter: string,
 ): boolean => {
-  const sanitized = sanitizeElmCalls(filter);
+  const pattern = parseElmCallFilter(filter);
 
-  if (sanitized.length === 0) {
+  if (pattern.length === 0) {
     return true;
   }
 
-  const expected = sanitized.split(",");
+  for (let i = 0; i <= elmCalls.length - pattern.length; i++) {
+    let match = true;
 
-  return expected.every((call, i) => elmCalls[i] === call);
+    for (let j = 0; j < pattern.length; j++) {
+      if (elmCalls[i + j] !== pattern[j]) {
+        match = false;
+        break;
+      }
+    }
+
+    if (match) return true;
+  }
+
+  return false;
 };

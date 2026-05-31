@@ -22,7 +22,10 @@ import {
 } from "../shared/coinFlipUtils";
 import { CoinFlipFilter } from "../shared/coinFlipFilter";
 import { ElmCallFilter } from "../shared/elmCallFilter";
-import { sanitizeElmCalls, matchesElmCallFilter } from "../shared/elmCallUtils";
+import {
+  sanitizeElmCalls,
+  parseElmCallFilter,
+} from "../shared/elmCallUtils";
 import {
   addRngTime,
   rngDate,
@@ -62,7 +65,7 @@ const initialValues: FormState = {
   maxDelay: 800,
   minSeconds: 0,
   maxSeconds: 0,
-  coinFlipCount: 20,
+  coinFlipCount: 50,
 };
 
 type SelectButtonProps = {
@@ -153,6 +156,28 @@ const getFields = (t: Translations, hgss: boolean): Field[] => [
   },
 ];
 
+function matchesSequence<T>(
+  values: T[],
+  pattern: T[],
+): boolean {
+  if (pattern.length === 0) return true;
+
+  for (let i = 0; i <= values.length - pattern.length; i++) {
+    let ok = true;
+
+    for (let j = 0; j < pattern.length; j++) {
+      if (values[i + j] !== pattern[j]) {
+        ok = false;
+        break;
+      }
+    }
+
+    if (ok) return true;
+  }
+
+  return false;
+}
+
 export const SwarmCoinFlipper = () => {
   const [state] = useSwarmState();
   const [allResults, setAllResults] = React.useState<ResultRow[]>([]);
@@ -165,9 +190,9 @@ export const SwarmCoinFlipper = () => {
 
   const filteredResults = allResults.filter((result) => {
     if (hgss) {
-      return matchesElmCallFilter(
+      return matchesSequence(
         result.coinFlips as ElmCall[],
-        flipFilter,
+        parseElmCallFilter(flipFilter),
       );
     }
 

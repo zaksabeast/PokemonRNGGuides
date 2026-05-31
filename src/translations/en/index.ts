@@ -337,6 +337,10 @@ export const translations = {
     "Learn how to use the 3DS Helper here",
   "Download the 3DS Alt Settings app here":
     "Download the 3DS Alt Settings app here",
+  "Masuda Method": "Masuda Method",
+  "Held Advance": "Held Advance",
+  "Pickup Advance": "Pickup Advance",
+  "Target/Seen": "Target/Seen",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

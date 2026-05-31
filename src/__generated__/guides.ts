@@ -8687,6 +8687,44 @@ export const guides = {
       return file.default;
     }),
   },
+  "/retail-dppt-egg/": {
+    meta: {
+      id: "/retail-dppt-egg/",
+      categories: ["Diamond, Pearl, and Platinum"],
+      section: "pokemon_rng",
+      guideVariants: ["retail"],
+      guideKey: "true-Egg RNG",
+      isNew: false,
+      title: "Diamond, Pearl, and Platinum Egg RNG Guide",
+      navDrawerTitle: "Egg RNG",
+      description:
+        "Learn how to RNG egg Pokémon in Diamond, Pearl, and Platinum for perfect IVs, natures, and shinies.",
+      slug: "/retail-dppt-egg/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-05-31",
+      type: "baseGuide",
+      canonical: "/retail-dppt-egg/",
+      file: "guides/Gen 4/Retail Egg.mdx",
+      translations: null,
+      guideGroupId: "en:true-Egg RNG:Diamond, Pearl, and Platinum",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/retail-dppt-egg/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["web_tool", "rough_draft"],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 4/Retail Egg.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 4/Retail Egg.mdx?raw");
+      return file.default;
+    }),
+  },
   "/retail-dppt-honey-pokemon/": {
     meta: {
       id: "/retail-dppt-honey-pokemon/",
@@ -17133,6 +17171,7 @@ export const guideSlugs = [
   "/pokereader/",
   "/retail-bw-entralink/",
   "/retail-bw-starter/",
+  "/retail-dppt-egg/",
   "/retail-dppt-honey-pokemon/",
   "/retail-dppt-honey-tree/",
   "/retail-dppt-starter/",

@@ -853,6 +853,8 @@ mod test {
     }
 
     mod pokefinder {
+        use crate::PokemonType;
+
         use super::*;
 
         fn parse_pokefinder(str: &str) -> Vec<Egg3PickupState> {
@@ -867,11 +869,13 @@ mod test {
                     let parts: Vec<&str> = line.split("\t").collect();
                     let advance: usize = parts[1].parse().unwrap();
                     let ivs = Ivs::from_pokefinder_strs(&parts[7..][..6]);
+                    let hp_type = PokemonType::from_str(parts[13]);
+                    let hp_bp: u8 = parts[14].parse().unwrap();
 
                     Egg3PickupState {
                         advance,
                         ivs: ivs.into(),
-                        hidden_power: Some(HiddenPower::from_ivs(&ivs)),
+                        hidden_power: Some(HiddenPower::new(hp_type, hp_bp)),
                     }
                 })
                 .collect()

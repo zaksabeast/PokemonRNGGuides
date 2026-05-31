@@ -420,6 +420,10 @@ const tools = {
     () => import("~/rngToolsUi/gen4/shared/consoleDateStrings"),
     (mod) => mod.Gen4ConsoleSetDateString,
   ),
+  Egg4Search: lazyLoad(
+    () => import("~/rngToolsUi/gen4/egg/searchEgg"),
+    (mod) => mod.Egg4Search,
+  ),
 };
 
 export const markdownComponents = {

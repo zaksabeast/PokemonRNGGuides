@@ -1,0 +1,9 @@
+7	0	L 0	D8E57D67	No	Adamant	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+14	0	L 0	E44B3C46	No	Adamant	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+17	0	L 0	45CCCD8C	No	Bashful	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+40	0	L 0	FA86BB52	No	Adamant	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+41	0	L 0	793E6063	No	Bashful	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+56	0	L 0	8597DA1F	No	Adamant	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+66	0	L 0	9184E322	No	Bashful	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+68	0	L 0	04CF6880	No	Bashful	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+89	0	L 0	A7342F66	No	Adamant	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds

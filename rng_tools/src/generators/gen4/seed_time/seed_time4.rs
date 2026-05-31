@@ -9,7 +9,7 @@ use std::ops::RangeInclusive;
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct SeedTime4 {
     pub seed: u32,

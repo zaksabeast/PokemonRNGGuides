@@ -15,6 +15,9 @@ pub type XdrngR = Lcrng<0xA170F641, 0xB9B33155>;
 pub const XDRNGR_JUMP_TABLE: [[(u32, u32); 256]; 4] =
     compute_jump_table::<0xA170F641, 0xB9B33155>();
 
+pub type Arng = Lcrng<0x01, 0x6C078965>;
+pub const ARNG_JUMP_TABLE: [[(u32, u32); 256]; 4] = compute_jump_table::<0x01, 0x6C078965>();
+
 const fn compute_jump_table<const ADD: u32, const MUL: u32>() -> [[(u32, u32); 256]; 4] {
     let mut bit_table = [(0, 0); 32];
     bit_table[0] = (MUL, ADD);
@@ -115,6 +118,7 @@ impl<const A: u32, const M: u32> Lcrng<A, M> {
 
     pub const fn get_jump_table() -> &'static [[(u32, u32); 256]; 4] {
         match A {
+            0x1 => &ARNG_JUMP_TABLE,
             0x6073 => &POKERNG_JUMP_TABLE,
             0xa3561a1 => &POKERNGR_JUMP_TABLE,
             0x269EC3 => &XDRNG_JUMP_TABLE,
@@ -124,6 +128,7 @@ impl<const A: u32, const M: u32> Lcrng<A, M> {
     }
     pub const fn get_reverse_jump_table() -> &'static [[(u32, u32); 256]; 4] {
         match A {
+            0x1 => &ARNG_JUMP_TABLE,
             0x6073 => &POKERNGR_JUMP_TABLE,
             0xa3561a1 => &POKERNG_JUMP_TABLE,
             0x269EC3 => &XDRNGR_JUMP_TABLE,

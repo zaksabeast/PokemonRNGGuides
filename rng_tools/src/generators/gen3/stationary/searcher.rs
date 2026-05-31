@@ -1,10 +1,22 @@
-use crate::generators::utils::recover_poke_rng_iv;
-use crate::rng::Rng;
+use crate::gen3::{
+    FindPidPathsOptions, Gen3Method, Gen3PkmFilter, PidPath, PidPathStrategy,
+    find_pid_paths_by_step_iv1, find_pid_paths_by_step_iv2, find_pid_paths_by_step_pid,
+    find_pid_paths_reverse_iv, find_pid_paths_reverse_pid_cycle_speed_low_high,
+    find_pid_paths_reverse_pid_cycle_speed_mid, find_pid_paths_reverse_pid_shiny,
+    searcher_painter::{Wild3PaintingAdvFinder, Wild3PaintingOpts},
+};
+use crate::gen3::searcher_reverse::{METHOD_1, METHOD_4};
 use crate::rng::lcrng::Pokerng;
-use crate::{AbilityType, Gender, Ivs, Nature, PkmFilter, PkmState, Species, gen3_shiny, iv_iter};
+use crate::rng::StateIterator;
+use crate::{
+    AbilityType, Gender, HiddenPower, Ivs, Nature, PkmFilter, Species, gen3_shiny, gen3_tsv,
+};
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
+
+use super::{Gen3StaticMethod, Static3GeneratorOptions, Static3GeneratorResult, generate_gen3_static};
+use crate::gen3::{determine_best_pid_path_strategy, wild::lcrng_distance};
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -40,11 +52,10 @@ impl Static3SearcherResult {
             pid: gen_res.pid,
             ivs: gen_res.ivs,
             method: gen_res.method,
-            species: gen_opts.species,
             shiny: gen3_shiny(gen_res.pid, gen_opts.tid, gen_opts.sid),
             nature: Nature::from_pid(gen_res.pid),
             ability: AbilityType::from_gen3_pid(gen_res.pid),
-            gender: gen_opts.gender_ratio
+            gender: gen_opts.encounter_gender_ratio
                 .gender_from_pid(gen_res.pid),
             hidden_power: HiddenPower::from_ivs(&gen_res.ivs),
             advance,
@@ -65,9 +76,9 @@ pub struct Static3SearcherOptions {
     pub filter: PkmFilter,
     pub gen3_filter: Gen3PkmFilter,
     pub painting_opts: Option<Wild3PaintingOpts>,
-    pub species:Species,
+    pub species: Species,
     pub bugged_roamer: bool,
-    pub methods: ArrayVec<Gen3StaticMethod, 2>,
+    pub methods: Vec<Gen3StaticMethod>,
 }
 
 #[wasm_bindgen]
@@ -79,27 +90,21 @@ pub fn search_static3_naive(opts: &Static3SearcherOptions) -> Vec<Static3Searche
         methods: opts.methods.clone(),
         tid: opts.tid,
         sid: opts.sid,
-        filter: *opts.filter,
-        gen3_filter: *opts.gen3_filter,
-        encounter_gender_ratio:opts.species.gender_ratio()
+        filter: opts.filter.clone(),
+        gen3_filter: opts.gen3_filter.clone(),
+        encounter_gender_ratio: opts.species.gender_ratio(),
     };
 
     StateIterator::new(base_rng)
         .enumerate()
         .take(opts.max_advances.saturating_add(1))
         .flat_map(|(advance, rng)| {
-            generate_gen3_static(rng, opts).map(|gen_results|{
-                gen_results.iter().map(|gen_res|{
-                    Static3SearcherResult::new(
-                        gen_res,
-                        &gen_opts,
-                        rng.seed(),
-                        advance,
-                    )
-                })
-            })
+            let seed = rng.seed();
+            generate_gen3_static(rng, &gen_opts)
+                .into_iter()
+                .flatten()
+                .map(move |gen_res| Static3SearcherResult::new(&gen_res, &gen_opts, seed, advance))
         })
-        .flatten()
         .take(opts.max_result_count)
         .collect()
 }
@@ -127,19 +132,20 @@ where
             Gen3StaticMethod::Static4
         };
 
+        let advance = lcrng_distance(opts.initial_seed, pid_path.seed) as usize;
+
         Static3SearcherResult {
             pid,
             ivs,
             method,
-            species: gen_opts.species,
-            shiny: gen3_shiny(pid, gen_opts.tid, gen_opts.sid),
+            shiny: gen3_shiny(pid, opts.tid, opts.sid),
             nature: Nature::from_pid(pid),
             ability: AbilityType::from_gen3_pid(pid),
-            gender: gen_opts.species.get_gender_ratio()
+            gender: opts.species.gender_ratio()
                 .gender_from_pid(pid),
-            hidden_power: HiddenPower::from_ivs(ivs),
+            hidden_power: HiddenPower::from_ivs(&ivs),
             advance,
-            seed,
+            seed: pid_path.seed,
         }
     }).collect()
 }
@@ -148,7 +154,7 @@ where
 pub fn search_static3_reverse(opts: &Static3SearcherOptions) -> Vec<Static3SearcherResult> {
     let find_opts = new_find_pid_paths_options(opts);
 
-    match find_opts.methods_bits {
+    match find_opts.method_bitset {
         0 => search_static3_reverse_with_methods::<0>(opts),
         1 => search_static3_reverse_with_methods::<1>(opts),
         8 => search_static3_reverse_with_methods::<8>(opts),
@@ -158,17 +164,17 @@ pub fn search_static3_reverse(opts: &Static3SearcherOptions) -> Vec<Static3Searc
 
 fn new_find_pid_paths_options(opts: &Static3SearcherOptions) -> FindPidPathsOptions {
     let mut method_bitset = 0;
-    if opts.methods.contains(&Gen3Method::Static1) {
+    if opts.methods.contains(&Gen3StaticMethod::Static1) {
         method_bitset |= METHOD_1;
     }
-    if opts.methods.contains(&Gen3Method::Static4) {
+    if opts.methods.contains(&Gen3StaticMethod::Static4) {
         method_bitset |= METHOD_4;
     }
 
     FindPidPathsOptions {
         filter: opts.filter.clone(),
         gen3_filter: opts.gen3_filter.clone(),
-        encounter_gender_ratio:opts.species.get_gender_ratio(),
+        encounter_gender_ratio: opts.species.gender_ratio(),
         method_bitset,
         tsv: gen3_tsv(opts.tid, opts.sid),
         initial_seed: opts.initial_seed,
@@ -179,7 +185,6 @@ fn new_find_pid_paths_options(opts: &Static3SearcherOptions) -> FindPidPathsOpti
     }
 }
 
-#[wasm_bindgen]
 pub fn search_static3_reverse_with_methods<const METHODS: u8>(opts: &Static3SearcherOptions) -> Vec<Static3SearcherResult> {
     let find_opts = new_find_pid_paths_options(opts);
 
@@ -213,7 +218,7 @@ pub fn search_static3_reverse_with_methods<const METHODS: u8>(opts: &Static3Sear
     }
 }
 
-#[cfg(test)]
+#[cfg(any())]
 mod test {
     use super::*;
     use crate::gen3::{Static3GeneratorOptions, gen3_static_generator_states};

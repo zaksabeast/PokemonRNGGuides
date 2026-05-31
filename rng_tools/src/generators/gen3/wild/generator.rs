@@ -8,10 +8,7 @@ use crate::{
     PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE, PERTINENT_SOLO_POKEBLOCKS_BY_NATURE,
     POKEBLOCK_NATURE_STAT_FACTORS, PkmFilter,
     gen3::{
-        CycleAndModCount, CycleAndModRange, CycleCounter, CycleRange, Gen3Lead, Gen3Method,
-        Gen3PkmFilter, Moment, Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex,
-        Wild3FeebasState, Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState,
-        Wild3SafariPokeblockGenOpt, passes_pid_filter, wild::lcrng_distance,
+        CycleAndModCount, CycleAndModRange, CycleCounter, CycleRange, Gen3Lead, Gen3Method, Gen3PkmFilter, Moment, Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt, passes_ivs_filter, passes_pid_filter, wild::lcrng_distance
     },
     gen3_tsv, is_max_size,
     rng::{Rng, lcrng::Pokerng},
@@ -861,7 +858,7 @@ fn create_if_passes_filter(
     method: Gen3Method,
     cycle_range: CycleAndModRange,
 ) -> Option<Wild3GeneratorResult> {
-    if !passes_ivs_filter(gen_data.opts, &ivs) {
+    if !passes_ivs_filter(&gen_data.opts.filter, &ivs) {
         return None;
     }
 

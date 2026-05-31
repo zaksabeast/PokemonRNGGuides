@@ -1,11 +1,16 @@
+use arrayvec::ArrayVec;
+
+use crate::gen3::{Gen3PkmFilter, passes_iv1_filter, passes_iv2_filter, passes_pid_filter};
 use crate::rng::lcrng::Pokerng;
-use crate::rng::{Rng, StateIterator};
-use crate::{AbilityType, Gender, Ivs, Nature, PkmFilter, PkmState, Species, gen3_shiny};
+use crate::rng::Rng;
+use crate::{GenderRatio, Ivs, PkmFilter, gen3_tsv};
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-enum Gen3StaticMethod {
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub enum Gen3StaticMethod {
     Static1,
     Static4,
 }
@@ -14,12 +19,12 @@ enum Gen3StaticMethod {
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Static3GeneratorOptions {
     pub bugged_roamer: bool,
-    pub methods: ArrayVec<Gen3StaticMethod, 2>,
+    pub methods: Vec<Gen3StaticMethod>,
     pub tid: u16,
     pub sid: u16,
     pub filter: PkmFilter,
     pub gen3_filter: Gen3PkmFilter,
-    pub encounter_gender_ratio:GenderRatio,
+    pub encounter_gender_ratio: GenderRatio,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
@@ -31,19 +36,19 @@ pub struct Static3GeneratorResult {
 }
 
 #[wasm_bindgen]
-fn generate_gen3_static_wasm(
+pub fn generate_gen3_static_wasm(
     initial_seed: u32,
     advances: usize,
     opts: &Static3GeneratorOptions,
 ) -> Vec<Static3GeneratorResult> {
-    let res = generate_gen3_static(Pokerng::with_jump(initial_seed, initial_advances), opts);
+    let res = generate_gen3_static(Pokerng::with_jump(initial_seed, advances), opts);
     match res {
         None => vec![],
         Some(res) => res.to_vec(),
     }
 }
 
-fn generate_gen3_static(
+pub(super) fn generate_gen3_static(
     mut rng: Pokerng,
     opts: &Static3GeneratorOptions,
 ) -> Option<ArrayVec<Static3GeneratorResult, 2>> {
@@ -66,13 +71,15 @@ fn generate_gen3_static(
         rng.rand::<u16>()
     };
 
-    if !passes_iv1_filter(opts.min_ivs, opts.max_ivs, iv1) {
+    if !passes_iv1_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv1) {
         return None;
     }
 
-    Some(opts.methods.iter().map(|method|{
-        let rng2 = rng.clone();
-        if method == Gen3StaticMethod::Static4 {
+    opts.methods
+        .iter()
+        .filter_map(|method| {
+            let mut rng2 = rng.clone();
+            if *method == Gen3StaticMethod::Static4 {
             rng2.next();
         }
 
@@ -82,17 +89,18 @@ fn generate_gen3_static(
             rng2.rand::<u16>()
         };
 
-        if !passes_iv2_filter(opts.min_ivs, opts.max_ivs, iv2){
+            if !passes_iv2_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv2) {
             return None;
         }
 
-        Static3GeneratorResult {
+            Some(Static3GeneratorResult {
             pid,
-            ivs:Ivs::new_g3(iv1, iv2),
-            method:*method,
-        }
-
-    }).collect());
+                ivs: Ivs::new_g3(iv1, iv2),
+                method: *method,
+            })
+        })
+        .collect::<ArrayVec<Static3GeneratorResult, 2>>()
+        .into()
 }
 
 

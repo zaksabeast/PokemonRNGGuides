@@ -438,6 +438,14 @@ const tools = {
     () => import("~/rngToolsUi/gen4/swarm/selectTarget"),
     (mod) => mod.SelectSwarm4Target,
   ),
+  SwarmCoinFlipper: lazyLoad(
+    () => import("~/rngToolsUi/gen4/swarm/coinFlipper"),
+    (mod) => mod.SwarmCoinFlipper,
+  ),
+  SwarmFindEncounter: lazyLoad(
+    () => import("~/rngToolsUi/gen4/swarm/findEncounter"),
+    (mod) => mod.SwarmFindEncounter,
+  ),
 };
 
 export const markdownComponents = {

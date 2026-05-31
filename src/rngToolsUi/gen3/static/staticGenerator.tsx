@@ -1,4 +1,4 @@
-import { rngTools, Static3GeneratorResult } from "~/rngTools";
+import { Gen3StaticMethod, rngTools, Static3SearcherResult } from "~/rngTools";
 import {
   Field,
   FormikNumberInput,
@@ -16,6 +16,12 @@ import {
   getPkmFilterInitialValues,
 } from "~/components/pkmFilter";
 import {
+  gen3PkmFilterFieldsToRustInput,
+  gen3PkmFilterSchema,
+  getGen3PkmFilterFields,
+  getGen3PkmFilterInitialValues,
+} from "~/components/gen3PkmFilter";
+import {
   getStatic3Species,
   Static3Game,
 } from "~/rngToolsUi/gen3/static/constants";
@@ -28,7 +34,7 @@ import { z } from "zod";
 import { HexSchema } from "~/utils/number";
 import { species } from "~/types/species";
 
-type Result = FlattenIvs<Static3GeneratorResult>;
+type Result = FlattenIvs<Static3SearcherResult>;
 
 const columns: ResultColumn<Result>[] = [
   { title: "Advance", dataIndex: "advance" },
@@ -61,7 +67,8 @@ const Validator = z
     roamer: z.boolean(),
     method4: z.boolean(),
   })
-  .extend(pkmFilterSchema.shape);
+  .extend(pkmFilterSchema.shape)
+  .extend(gen3PkmFilterSchema.shape);
 
 type FormState = z.infer<typeof Validator>;
 
@@ -77,6 +84,7 @@ const getInitialValues = (game: Static3Game): FormState => {
     roamer: false,
     method4: false,
     ...getPkmFilterInitialValues(),
+    ...getGen3PkmFilterInitialValues(),
   };
 };
 
@@ -134,6 +142,7 @@ const getFields = (game: Static3Game): Field[] => {
       input: <FormikNumberInput<FormState> name="offset" numType="decimal" />,
     },
     ...getPkmFilterFields(),
+    ...getGen3PkmFilterFields(),
   ];
 };
 
@@ -147,11 +156,23 @@ export const Static3Generator = ({ game = "emerald" }: Props) => {
   const fields = getFields(game);
 
   const onSubmit: RngToolSubmit<FormState> = async (opts) => {
-    const results = await rngTools.gen3_static_generator_states({
-      ...opts,
+    const method: Gen3StaticMethod = opts.method4 ? "Static4" : "Static1";
+    const searchOpts = {
+      initial_seed: opts.seed,
+      tid: opts.tid,
+      sid: opts.sid,
+      initial_advances: opts.initial_advances + opts.offset,
+      max_advances: opts.max_advances,
+      max_result_count: opts.max_advances + 1,
       bugged_roamer: game !== "emerald" && opts.roamer,
       filter: pkmFilterFieldsToRustInput(opts),
-    });
+      gen3_filter: gen3PkmFilterFieldsToRustInput(opts, opts.species),
+      painting_opts: undefined,
+      species: opts.species,
+      methods: [method],
+    };
+
+    const results = await rngTools.search_static3(searchOpts);
 
     setResults(results.map(flattenIvs));
   };

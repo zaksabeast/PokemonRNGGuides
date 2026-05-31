@@ -1,122 +1,163 @@
-import { ResultColumn } from "~/components/resultTable";
+import {
+  Field,
+  FormikNumberInput,
+  FormikSwitch,
+  Link,
+  ResultColumn,
+} from "~/components";
+import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
+import { FlattenIvs, ivColumns } from "~/rngToolsUi/shared/ivColumns";
+import { HiddenPower, Ivs, rngTools, Species } from "~/rngTools";
+import { GBA_FPS } from "~/utils/consts";
 import { formatDuration } from "~/utils/formatDuration";
+import { formatHex } from "~/utils/formatHex";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
+import { Tooltip } from "antd";
 
-export const getGeneratorPokemonResultColumns = <T extends {
-    advs:number,
-    //TODO
-}, >() : ResultColumn<T>[] => {
-    return [{
-          title: "Advances",
-          dataIndex: "advs",
-          monospace: true,
-          render: (advs, { wait_dur }) => {
-            const { frame_before_painting: before, adv_after_painting: after } =
-              advs;
+import { usingPaintingReseedingLabel } from "../wild/wild3Labels";
 
-            const text =
-              (before !== 0 ? `${formatLargeInteger(before)} | ` : "") +
-              `~${formatLargeInteger(after)}`;
-            const title = formatDuration(wait_dur / GBA_FPS);
-            return <Tooltip title={title}>{text}</Tooltip>;
-          },
-        },
-        { title: "Nature", dataIndex: "nature" },
+type GeneratorPokemonResult = FlattenIvs<{
+  ivs: Ivs;
+  advs: { frame_before_painting: number; adv_after_painting: number };
+  wait_dur: number;
+  nature: string;
+  shiny: boolean;
+  hidden_power: HiddenPower;
+  pid: number;
+  ability: string;
+  gender: string;
+  pidCycleCount: number;
+  method: string;
+}>;
+
+export const getGeneratorPokemonResultColumns = <
+  T extends GeneratorPokemonResult = GeneratorPokemonResult,
+>(): ResultColumn<T>[] => {
+  const columns = [
+    {
+      title: "Advances",
+      dataIndex: "advs",
+      monospace: true,
+      render: (advs, { wait_dur }) => {
+        const { frame_before_painting: before, adv_after_painting: after } =
+          advs;
+
+        const text =
+          (before !== 0 ? `${formatLargeInteger(before)} | ` : "") +
+          `~${formatLargeInteger(after)}`;
+        const title = formatDuration(wait_dur / GBA_FPS);
+        return <Tooltip title={title}>{text}</Tooltip>;
+      },
+    },
+    { title: "Nature", dataIndex: "nature" },
+    {
+      title: "Shiny",
+      dataIndex: "shiny",
+      render: (shiny: boolean) => (shiny ? "Yes" : "No"),
+    },
+    {
+      title: "IV",
+      type: "group",
+      columns: ivColumns,
+    },
+    {
+      title: "PID",
+      dataIndex: "pid",
+      monospace: true,
+      render: (pid) => formatHex(pid),
+    },
+    { title: "Ability", dataIndex: "ability" },
+    { title: "Gender", dataIndex: "gender" },
+    {
+      title: "Hidden Power",
+      type: "group",
+      columns: [
         {
-          title: "Shiny",
-          dataIndex: "shiny",
-          render: (shiny: boolean) => (shiny ? "Yes" : "No"),
+          title: "Type",
+          dataIndex: "hidden_power",
+          render: (hidden_power) => hidden_power.pokemon_type,
         },
         {
-          title: "IV",
-          type: "group",
-          columns: ivColumns,
+          title: "Power",
+          dataIndex: "hidden_power",
+          render: (hidden_power) => hidden_power.bp,
         },
-        {
-          title: "PID",
-          dataIndex: "pid",
-          monospace: true,
-          render: (pid) => formatHex(pid),
-        },
-        { title: "Ability", dataIndex: "ability" },
-        { title: "Gender", dataIndex: "gender" },
-        {
-          title: "Hidden Power",
-          type: "group",
-          columns: [
-            {
-              title: "Type",
-              dataIndex: "hidden_power",
-              render: (hidden_power) => hidden_power.pokemon_type,
-            },
-            {
-              title: "Power",
-              dataIndex: "hidden_power",
-              render: (hidden_power) => hidden_power.bp,
-            },
-          ],
-        },
-        {
-          title: "PID speed",
-          tooltip: (
-            <>
-              For advanced users. Number of cycles for the processor to perform the
-              operation (PID modulo 25). Learn more about{" "}
-              <Link newTab href="/gba-methods-lead-impact/">
-                Methods & Leads
-              </Link>
-              .
-            </>
-          ),
-          dataIndex: "pidCycleCount",
-          render: (pidCycleCount) => `${pidCycleCount} cycles`,
-        },
-        {
-          title: "Method",
-          dataIndex: "method",
-        },
-    ]
+      ],
+    },
+    {
+      title: "PID speed",
+      tooltip: (
+        <>
+          For advanced users. Number of cycles for the processor to perform the
+          operation (PID modulo 25). Learn more about{" "}
+          <Link newTab href="/gba-methods-lead-impact/">
+            Methods & Leads
+          </Link>
+          .
+        </>
+      ),
+      dataIndex: "pidCycleCount",
+      render: (pidCycleCount) => `${pidCycleCount} cycles`,
+    },
+    {
+      title: "Method",
+      dataIndex: "method",
+    },
+  ] satisfies ResultColumn<GeneratorPokemonResult>[];
+
+  return columns as unknown as ResultColumn<T>[];
 };
 
+type TargetSetupInputForm = {
+  usingPaintingReseeding: boolean;
+  targetFrameBeforePainting: number;
+  targetAdvance: number;
+};
 
-export const usingTargetSetupInputs = <T, >(usingPaintingReseeding:boolean,) => {
-    return [
-
-        {
-          ...usingPaintingReseedingLabel(),
-          input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
-        },
-        {
-          label: "Target frame before painting (Painting seed)",
-          input: (
-            <FormikEmeraldFrameBeforePaintingInput<FormState> name="targetFrameBeforePainting" />
-          ),
-          indent: 1,
-          show: usingPaintingReseeding,
-        },
-        {
-          label: usingPaintingReseeding
-            ? "Target advances after painting"
-            : "Target advances",
-          input: (
-            <FormikNumberInput<FormState> name="targetAdvance" numType="decimal" />
-          ),
-        },
-        {
-          label: "",
-          key: "Equivalent to Advances",
-          show: usingPaintingReseeding,
-          input: (
-            <>
-              Equivalent to Advances = {formatLargeInteger(equivalentInitialAdvs)}{" "}
-              without painting reseeding
-            </>
-          ),
-          indent: 1,
-        },
-    ]
-}
-
+export const usingTargetSetupInputs = (
+  usingPaintingReseeding: boolean,
+  equivalentInitialAdvs: number,
+): Field[] => {
+  return [
+    {
+      ...usingPaintingReseedingLabel(),
+      input: (
+        <FormikSwitch<TargetSetupInputForm> name="usingPaintingReseeding" />
+      ),
+    },
+    {
+      label: "Target frame before painting (Painting seed)",
+      input: (
+        <FormikEmeraldFrameBeforePaintingInput<TargetSetupInputForm> name="targetFrameBeforePainting" />
+      ),
+      indent: 1,
+      show: usingPaintingReseeding,
+    },
+    {
+      label: usingPaintingReseeding
+        ? "Target advances after painting"
+        : "Target advances",
+      input: (
+        <FormikNumberInput<TargetSetupInputForm>
+          name="targetAdvance"
+          numType="decimal"
+        />
+      ),
+    },
+    {
+      label: "",
+      key: "Equivalent to Advances",
+      show: usingPaintingReseeding,
+      input: (
+        <>
+          Equivalent to Advances = {formatLargeInteger(equivalentInitialAdvs)}{" "}
+          without painting reseeding
+        </>
+      ),
+      indent: 1,
+    },
+  ];
+};
 
 /** Example of return values: Sturdy, Sturdy (1), Sturdy (2), First, Second */
 export const getAbilityDisplayStr = async (species: Species, pid: number) => {

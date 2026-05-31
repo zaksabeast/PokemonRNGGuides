@@ -1,12 +1,22 @@
 import { describe, it, expect } from "bun:test";
 import {
+  AceResult,
   getEmeraldSeedBoxNames,
   getEmeraldSidBoxNames,
 } from "./aceCodeGenerator";
 
+const getBoxNamesStr = async (promise: Promise<AceResult>) => {
+  const res = await promise;
+  if (!res.success) {
+    return JSON.stringify(null);
+  }
+
+  return JSON.stringify(res.boxes);
+};
+
 describe("getEmeraldSidBoxNames", () => {
-  it("returns correct values", () => {
-    expect(JSON.stringify(getEmeraldSidBoxNames(0x1234, "eng").boxes)).toBe(
+  it("returns correct values", async () => {
+    expect(await getBoxNamesStr(getEmeraldSidBoxNames(0x1234, "eng"))).toBe(
       JSON.stringify([
         "VBUnv…Qn",
         "AAA…”Qn",
@@ -25,7 +35,7 @@ describe("getEmeraldSidBoxNames", () => {
       ]),
     );
 
-    expect(JSON.stringify(getEmeraldSidBoxNames(0xff23, "ita").boxes)).toBe(
+    expect(await getBoxNamesStr(getEmeraldSidBoxNames(0xff23, "ita"))).toBe(
       JSON.stringify([
         "VBUnv…Qn",
         "AAA…”Qn",
@@ -44,7 +54,7 @@ describe("getEmeraldSidBoxNames", () => {
       ]),
     );
 
-    expect(JSON.stringify(getEmeraldSidBoxNames(0x1, "ger").boxes)).toBe(
+    expect(await getBoxNamesStr(getEmeraldSidBoxNames(0x1, "ger"))).toBe(
       JSON.stringify([
         "VBUnü…Qn",
         "AAAVH.o",
@@ -66,9 +76,9 @@ describe("getEmeraldSidBoxNames", () => {
 });
 
 describe("getEmeraldSeedBoxNames", () => {
-  it("returns correct values", () => {
+  it("returns correct values", async () => {
     expect(
-      JSON.stringify(getEmeraldSeedBoxNames(0xacde1234, "eng").boxes),
+      await getBoxNamesStr(getEmeraldSeedBoxNames(0xacde1234, "eng")),
     ).toBe(
       JSON.stringify([
         "FM…o♀S?n",
@@ -89,7 +99,7 @@ describe("getEmeraldSeedBoxNames", () => {
     );
 
     expect(
-      JSON.stringify(getEmeraldSeedBoxNames(0xff123423, "ita").boxes),
+      await getBoxNamesStr(getEmeraldSeedBoxNames(0xff123423, "ita")),
     ).toBe(
       JSON.stringify([
         "FM…o♀S?n",
@@ -109,7 +119,7 @@ describe("getEmeraldSeedBoxNames", () => {
       ]),
     );
 
-    expect(JSON.stringify(getEmeraldSeedBoxNames(0x1, "ger").boxes)).toBe(
+    expect(await getBoxNamesStr(getEmeraldSeedBoxNames(0x1, "ger"))).toBe(
       JSON.stringify([
         "FM…o♀S?n",
         "AAAFS?n",

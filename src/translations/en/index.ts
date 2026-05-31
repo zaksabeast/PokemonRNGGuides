@@ -325,6 +325,7 @@ export const translations = {
   "Target Tree": "Target Tree",
   "Coin Flips": "Coin Flips",
   "Coin Flip Count": "Coin Flip Count",
+  "Calls": "Calls",
   "Target/Heard": "Target/Heard",
   "TID / SID": "TID / SID",
   "Hidden power": "Hidden power",

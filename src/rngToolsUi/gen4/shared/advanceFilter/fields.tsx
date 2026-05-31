@@ -7,16 +7,20 @@ import {
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { useWatch } from "~/hooks/form";
 import {
-  AdvanceFilterBaseProps,
+  AdvanceFilterMode,
   AdvanceFilterFormState,
   advanceFilterValidator,
 } from "./utils";
 
+type AdvanceFilterFieldsProps = {
+  mode: AdvanceFilterMode;
+  targetAdvance: number | null;
+};
+
 export const AdvanceFilterFields = ({
   mode,
-}: {
-  mode: AdvanceFilterBaseProps["mode"];
-}) => {
+  targetAdvance,
+}: AdvanceFilterFieldsProps) => {
   const t = useActiveRouteTranslations();
 
   const { seed } = useWatch({
@@ -35,6 +39,23 @@ export const AdvanceFilterFields = ({
           errorMessage={
             seed == null && mode === "embedded"
               ? "Find your seed first"
+              : undefined
+          }
+        />
+      ),
+    },
+    {
+      key: "embeddedTargetAdvance",
+      label: t["Target Advance"],
+      show: mode === "embedded",
+      input: (
+        <FormikNumberInput<AdvanceFilterFormState>
+          name="targetAdvance"
+          numType="decimal"
+          disabled={mode === "embedded"}
+          errorMessage={
+            targetAdvance == null && mode === "embedded"
+              ? "Find your target first"
               : undefined
           }
         />
@@ -60,6 +81,7 @@ export const AdvanceFilterFields = ({
       ),
     },
     {
+      key: "standaloneAdvance",
       label: t["Target Advance"],
       show: mode === "standalone",
       input: (

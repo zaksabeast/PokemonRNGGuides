@@ -11,7 +11,32 @@ const CoinButton = styled(Button)({
   height: "unset",
 });
 
+const getErrorMessage = ({
+  coinFlipFilter,
+  hasResults,
+  coinFlipsExceedMax,
+}: {
+  coinFlipFilter: string;
+  hasResults: boolean;
+  coinFlipsExceedMax: boolean;
+}) => {
+  if (coinFlipFilter.length === 0) {
+    return undefined;
+  }
+
+  if (!hasResults) {
+    return 'Click "Generate" to generate coin flips';
+  }
+
+  if (coinFlipsExceedMax) {
+    return "Over max coin flip count";
+  }
+
+  return undefined;
+};
+
 type Props = {
+  hasResults: boolean;
   coinFlipFilter: string;
   maxCoinFlips: number;
   onCoinFlipFilterChange: (value: string) => void;
@@ -20,6 +45,7 @@ type Props = {
 };
 
 export const CoinFlipFilterButtons = ({
+  hasResults,
   coinFlipFilter,
   maxCoinFlips,
   onCoinFlipFilterChange,
@@ -57,11 +83,11 @@ export const CoinFlipFilterButtons = ({
       </Flex>
       <Input
         placeholder="HTH"
-        errorMessage={
-          coinFlipFilter.length > maxCoinFlips
-            ? `Over max coin flip count: ${maxCoinFlips}`
-            : undefined
-        }
+        errorMessage={getErrorMessage({
+          coinFlipFilter,
+          hasResults,
+          coinFlipsExceedMax: coinFlipFilter.length > maxCoinFlips,
+        })}
         value={coinFlipFilter}
         onChange={onInputChange}
       />

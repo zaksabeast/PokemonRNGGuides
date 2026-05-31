@@ -173,10 +173,11 @@ export const DpptCoinFlipSeedCalibrator = () => {
       filters={
         <CoinFlipFilterButtons
           maxCoinFlips={COIN_FLIPS}
+          hasResults={allResults.length > 0}
           coinFlipFilter={state.coinFlipFilter}
-          onCoinFlipFilterChange={(value) =>
-            setState({ coinFlipFilter: value })
-          }
+          onCoinFlipFilterChange={(coinFlipFilter) => {
+            setState({ coinFlipFilter });
+          }}
           headsTrackerId="seed_calibrator_add_heads"
           tailsTrackerId="seed_calibrator_add_tails"
         />

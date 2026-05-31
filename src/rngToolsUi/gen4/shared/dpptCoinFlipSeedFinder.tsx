@@ -185,10 +185,11 @@ export const DpptCoinFlipSeedFinder = () => {
       validationSchema={Validator}
       filters={
         <CoinFlipFilterButtons
+          hasResults={allResults.length > 0}
           maxCoinFlips={coinFlipCount}
           coinFlipFilter={state.coinFlipFilter}
-          onCoinFlipFilterChange={(value) =>
-            setState({ coinFlipFilter: value })
+          onCoinFlipFilterChange={(coinFlipFilter) =>
+            setState({ coinFlipFilter })
           }
           headsTrackerId="hit_seed_add_heads"
           tailsTrackerId="hit_seed_add_tails"

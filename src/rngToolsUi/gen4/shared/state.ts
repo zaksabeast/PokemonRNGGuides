@@ -9,6 +9,7 @@ import {
 } from "~/rngToolsUi/timer/atoms";
 import { Gen4Console, Gen4GameVersion } from "../gen4types";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
+import { sanitizeFlips } from "./coinFlipUtils";
 
 type Gen4Target = {
   seedTime: SeedTime4 | null;
@@ -90,8 +91,10 @@ export const gen4StateAtom = atom(
       set(gen4ConfigAtom, nextConfig);
     }
 
-    if (coinFlipFilter != null) {
-      set(gen4CoinFlipStringAtom, coinFlipFilter);
+    const coinFlipFilterUpdate = target != null ? "" : coinFlipFilter;
+
+    if (coinFlipFilterUpdate != null) {
+      set(gen4CoinFlipStringAtom, sanitizeFlips(coinFlipFilterUpdate));
     }
 
     const seedTime = nextTarget.seedTime;

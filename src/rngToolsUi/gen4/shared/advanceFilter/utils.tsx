@@ -27,6 +27,8 @@ export type AdvanceFilterBaseProps =
       mode: "standalone";
     };
 
+export type AdvanceFilterMode = AdvanceFilterBaseProps["mode"];
+
 export type AdvanceFilterResult<T extends { advance: number }> = T & {
   id: string;
   status: AdvanceFilterStatus;

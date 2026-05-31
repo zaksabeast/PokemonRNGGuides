@@ -6,9 +6,11 @@ import {
   type ResultColumn,
   RngToolForm,
 } from "~/components";
+import { useAtom } from "jotai";
+import { gen4StateAtom } from "./state";
 import { rngTools, type CoinFlip, type CoinFlipAdvanceState } from "~/rngTools";
 import { type Translations } from "~/translations";
-import { findCoinFlipSequenceIndices, sanitizeFlips } from "./coinFlipUtils";
+import { findCoinFlipSequenceIndices } from "./coinFlipUtils";
 import { CoinFlipFilterButtons } from "./dpptCoinFlipButtons";
 import {
   advanceFilterValidator,
@@ -19,7 +21,6 @@ import {
   markMatchedAdvanceResults,
   renderAdvanceFilterStatus,
   shouldDisableAdvanceFilterGenerate,
-  type AdvanceFilterBaseProps,
   type AdvanceFilterPageSettings,
   type AdvanceFilterResult,
 } from "./advanceFilter/utils";
@@ -75,23 +76,20 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   },
 ];
 
-export const DpptCoinFlipAdvanceFilterBase = ({
-  seed,
-  targetAdvance,
-  submitTrackerId,
-  mode,
-}: AdvanceFilterBaseProps) => {
-  const resolvedSeed = seed ?? null;
-  const resolvedTargetAdvance = targetAdvance ?? null;
-  const [filter, setFilter] = React.useState("");
+export const DpptCoinFlipAdvanceFilter = () => {
+  const mode = "embedded" as const;
+  const [state, setState] = useAtom(gen4StateAtom);
   const [results, setResults] = React.useState<Result[]>([]);
   const [pageSettings, setPageSettings] =
     React.useState<AdvanceFilterPageSettings>(initialAdvanceFilterPageSettings);
 
+  const hasResults = results.length > 0;
+  const resolvedSeed = state.target.seedTime?.seed ?? null;
+  const resolvedTargetAdvance = state.target.mtAdvance;
+
   React.useEffect(() => {
-    setFilter("");
     setResults([]);
-  }, [seed, targetAdvance]);
+  }, [resolvedSeed, resolvedTargetAdvance, setState]);
 
   const onSubmit = async (opts: LooseAdvanceFilterFormState) => {
     if (opts.targetAdvance == null || opts.seed == null) {
@@ -110,7 +108,7 @@ export const DpptCoinFlipAdvanceFilterBase = ({
   const { hasMatch, markedResults, autoCurrentPage } = markResultsWithCoinFlips(
     {
       results,
-      filter,
+      filter: state.coinFlipFilter,
       pageSize: pageSettings.pageSize,
     },
   );
@@ -120,7 +118,7 @@ export const DpptCoinFlipAdvanceFilterBase = ({
       ...prev,
       currentPage: autoCurrentPage,
     }));
-  }, [filter, autoCurrentPage]);
+  }, [state.coinFlipFilter, autoCurrentPage]);
 
   const initialValues = getAdvanceFilterInitialValues(
     resolvedSeed,
@@ -130,7 +128,7 @@ export const DpptCoinFlipAdvanceFilterBase = ({
   return (
     <RngToolForm<LooseAdvanceFilterFormState, Result>
       additionalButtons={
-        filter.length > 0 && hasMatch === false ? (
+        hasResults && state.coinFlipFilter.length > 0 && hasMatch === false ? (
           <Alert
             showIcon
             type="error"
@@ -158,18 +156,21 @@ export const DpptCoinFlipAdvanceFilterBase = ({
         resolvedSeed,
         resolvedTargetAdvance,
       )}
-      submitTrackerId={submitTrackerId}
+      submitTrackerId="coin_flip_advance_filter_generate"
       filters={
         <CoinFlipFilterButtons
-          maxCoinFlips={Math.max(results.length, 1)}
-          coinFlipFilter={filter}
-          onCoinFlipFilterChange={(value) => setFilter(sanitizeFlips(value))}
+          hasResults={hasResults}
+          maxCoinFlips={results.length}
+          coinFlipFilter={state.coinFlipFilter}
+          onCoinFlipFilterChange={(coinFlipFilter) => {
+            setState({ coinFlipFilter });
+          }}
           headsTrackerId="coin_flip_advance_filter_heads"
           tailsTrackerId="coin_flip_advance_filter_tails"
         />
       }
     >
-      <AdvanceFilterFields mode={mode} />
+      <AdvanceFilterFields mode={mode} targetAdvance={resolvedTargetAdvance} />
     </RngToolForm>
   );
 };

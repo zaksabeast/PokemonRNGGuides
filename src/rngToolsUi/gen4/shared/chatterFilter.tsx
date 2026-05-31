@@ -2,26 +2,35 @@ import React from "react";
 import { match } from "ts-pattern";
 import Chatter900 from "~/assets/chatter-900.wav";
 import { getSharedAudioContext } from "~/utils/sharedAudio";
-import { z } from "zod";
 import { ChatterPitch, ChatterState, rngTools } from "~/rngTools";
-import { Translations } from "~/translations";
+import { type Translations } from "~/translations";
+import { useAtom } from "jotai";
+import { gen4StateAtom } from "./state";
 import {
   Flex,
   Button,
   Icon,
-  Field,
-  FormikNumberInput,
-  ResultColumn,
+  type ResultColumn,
   RngToolForm,
   Input,
-  MinMaxContainer,
   Typography,
   Alert,
 } from "~/components";
-import { findSubArrayIndices, IndexRange } from "~/utils/findIndexBy";
-import { uniqueId } from "lodash-es";
-import { useAtom } from "jotai";
-import { gen4StateAtom } from "./state";
+import { findSubArrayIndices } from "~/utils/findIndexBy";
+import {
+  advanceFilterValidator,
+  decorateAdvanceResultsWithTarget,
+  getAdvanceFilterInitialValues,
+  initialAdvanceFilterPageSettings,
+  LooseAdvanceFilterFormState,
+  markMatchedAdvanceResults,
+  renderAdvanceFilterStatus,
+  shouldDisableAdvanceFilterGenerate,
+  type AdvanceFilterBaseProps,
+  type AdvanceFilterPageSettings,
+  type AdvanceFilterResult,
+} from "./advanceFilter/utils";
+import { AdvanceFilterFields } from "./advanceFilter/fields";
 
 const loadAudioBuffer = async (
   ctx: AudioContext,
@@ -151,19 +160,7 @@ const ChatterSounds = () => {
   );
 };
 
-type Result = ChatterState & {
-  id: string;
-  status: "Target" | "Heard" | null;
-};
-
-const Validator = z.object({
-  seed: z.number().int().min(0).max(0xffffffff).nullable(),
-  minAdvance: z.number().int().min(0),
-  maxAdvance: z.number().int().min(0),
-  targetAdvance: z.number().int().min(0).nullable(),
-});
-
-type FormState = z.infer<typeof Validator>;
+type Result = AdvanceFilterResult<ChatterState>;
 
 const ChatterLabel = {
   Low: "Low",
@@ -177,14 +174,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
     title: t["Target/Heard"],
     dataIndex: "status",
-    render: (status) =>
-      match(status)
-        .with("Target", () => (
-          <Icon name="CheckCircle" color="Success" size={30} />
-        ))
-        .with("Heard", () => <Icon name="Ear" color="Info" size={18} />)
-        .with(null, () => null)
-        .exhaustive(),
+    render: renderAdvanceFilterStatus,
   },
   {
     title: t["Advance"],
@@ -232,10 +222,6 @@ const isMiniPitchEqualToChatter = (
     .otherwise(() => false);
 };
 
-const isIndexInRange = (index: number, ranges: IndexRange[]): boolean => {
-  return ranges.some(({ start, end }) => index >= start && index <= end);
-};
-
 const markResultsWithChatter = ({
   results,
   filter,
@@ -251,24 +237,12 @@ const markResultsWithChatter = ({
     isMiniPitchEqualToChatter,
   );
 
-  const hasMatch = indicies.length > 0;
-  const markedResults = results.map((result, index): Result => {
-    return {
-      ...result,
-      status:
-        result.status === null && isIndexInRange(index, indicies)
-          ? "Heard"
-          : result.status,
-    };
+  return markMatchedAdvanceResults({
+    results,
+    indices: indicies,
+    pageSize,
+    mark: "Heard",
   });
-
-  const endIndex = hasMatch ? indicies[0].end : 0;
-
-  return {
-    hasMatch,
-    markedResults,
-    autoCurrentPage: Math.max(1, Math.ceil((endIndex + 1) / pageSize)),
-  };
 };
 
 type ChatterFilterButtonsProps = {
@@ -319,99 +293,25 @@ const ChatterFilterButtons = ({
   );
 };
 
-type PageSettings = {
-  currentPage: number;
-  pageSize: number;
-};
-
-type ChatterFilterBaseProps =
-  | {
-      seed: number | null;
-      targetAdvance: number | null;
-      submitTrackerId: string;
-      mode: "embedded";
-    }
-  | {
-      seed?: null;
-      targetAdvance?: null;
-      submitTrackerId: string;
-      mode: "standalone";
-    };
-
 export const ChatterFilterBase = ({
   seed,
   targetAdvance,
   submitTrackerId,
   mode,
-}: ChatterFilterBaseProps) => {
+}: AdvanceFilterBaseProps) => {
+  const resolvedSeed = seed ?? null;
+  const resolvedTargetAdvance = targetAdvance ?? null;
   const [filter, setFilter] = React.useState<MiniPitch[]>([]);
   const [results, setResults] = React.useState<Result[]>([]);
-  const [pageSettings, setPageSettings] = React.useState<PageSettings>({
-    currentPage: 1,
-    pageSize: 10,
-  });
+  const [pageSettings, setPageSettings] =
+    React.useState<AdvanceFilterPageSettings>(initialAdvanceFilterPageSettings);
 
   React.useEffect(() => {
     setFilter([]);
     setResults([]);
   }, [seed, targetAdvance]);
 
-  const getFields = (t: Translations): Field[] => [
-    {
-      label: t["Seed"],
-      input: (
-        <FormikNumberInput<FormState>
-          name="seed"
-          numType="hex"
-          disabled={mode === "embedded"}
-          errorMessage={
-            seed == null && mode === "embedded"
-              ? "Find your seed first"
-              : undefined
-          }
-        />
-      ),
-    },
-    {
-      key: "embeddedTargetAdvance",
-      label: t["Target Advance"],
-      input: (
-        <FormikNumberInput<FormState>
-          name="targetAdvance"
-          numType="decimal"
-          disabled={mode === "embedded"}
-          errorMessage={
-            targetAdvance == null && mode === "embedded"
-              ? "Find your target first"
-              : undefined
-          }
-        />
-      ),
-    },
-    {
-      label: t["Advances"],
-      input: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState> name="minAdvance" numType="decimal" />
-          }
-          max={
-            <FormikNumberInput<FormState> name="maxAdvance" numType="decimal" />
-          }
-        />
-      ),
-    },
-    {
-      key: "standaloneAdvance",
-      label: t["Target Advance"],
-      show: mode === "standalone",
-      input: (
-        <FormikNumberInput<FormState> name="targetAdvance" numType="decimal" />
-      ),
-    },
-  ];
-
-  const onSubmit = async (opts: FormState) => {
+  const onSubmit = async (opts: LooseAdvanceFilterFormState) => {
     if (opts.targetAdvance == null || opts.seed == null) {
       return;
     }
@@ -421,12 +321,9 @@ export const ChatterFilterBase = ({
       max_advances: Math.max(opts.maxAdvance - opts.minAdvance, 0),
       seed: opts.seed,
     });
-    const chattersWithTarget = chatters.map(
-      (chatter): Result => ({
-        ...chatter,
-        id: uniqueId(),
-        status: chatter.advance === opts.targetAdvance ? "Target" : null,
-      }),
+    const chattersWithTarget = decorateAdvanceResultsWithTarget(
+      chatters,
+      opts.targetAdvance,
     );
     setResults(chattersWithTarget);
   };
@@ -448,15 +345,13 @@ export const ChatterFilterBase = ({
     [filter, autoCurrentPage],
   );
 
-  const initialValues: FormState = {
-    seed: seed ?? null,
-    minAdvance: 0,
-    maxAdvance: (targetAdvance ?? 0) + 10,
-    targetAdvance: targetAdvance ?? null,
-  };
+  const initialValues = getAdvanceFilterInitialValues(
+    resolvedSeed,
+    resolvedTargetAdvance,
+  );
 
   return (
-    <RngToolForm<FormState, Result>
+    <RngToolForm<LooseAdvanceFilterFormState, Result>
       additionalButtons={
         <>
           <ChatterSounds />
@@ -465,7 +360,7 @@ export const ChatterFilterBase = ({
             setPitches={setFilter}
             onClickPitch={(pitch) => setFilter((prev) => [...prev, pitch])}
           />
-          {filter.length > 0 && !hasMatch && (
+          {filter.length > 0 && hasMatch === false && (
             <Alert
               showIcon
               type="error"
@@ -483,18 +378,21 @@ export const ChatterFilterBase = ({
         },
       }}
       getColumns={getColumns}
-      getFields={getFields}
       results={markedResults}
       initialValues={initialValues}
       values={initialValues}
-      validationSchema={Validator}
+      validationSchema={advanceFilterValidator}
       onSubmit={onSubmit}
       rowKey="advance"
-      disableGenerate={
-        mode === "embedded" && (seed == null || targetAdvance == null)
-      }
+      disableGenerate={shouldDisableAdvanceFilterGenerate(
+        mode,
+        resolvedSeed,
+        resolvedTargetAdvance,
+      )}
       submitTrackerId={submitTrackerId}
-    />
+    >
+      <AdvanceFilterFields mode={mode} targetAdvance={resolvedTargetAdvance} />
+    </RngToolForm>
   );
 };
 

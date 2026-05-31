@@ -424,6 +424,10 @@ const tools = {
     () => import("~/rngToolsUi/gen4/egg/searchEgg"),
     (mod) => mod.Egg4Search,
   ),
+  DpptCoinFlipAdvanceFilter: lazyLoad(
+    () => import("~/rngToolsUi/gen4/shared/dpptCoinFlipAdvanceFilter"),
+    (mod) => mod.DpptCoinFlipAdvanceFilter,
+  ),
 };
 
 export const markdownComponents = {

@@ -333,6 +333,10 @@ export const translations = {
   "Save calibration between different RNGs.":
     "Save calibration between different RNGs.",
   "Advanced Settings": "Advanced Settings",
+  "Learn how to use the 3DS Helper here":
+    "Learn how to use the 3DS Helper here",
+  "Download the 3DS Alt Settings app here":
+    "Download the 3DS Alt Settings app here",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

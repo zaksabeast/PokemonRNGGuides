@@ -19,7 +19,7 @@ type Props = {
   tailsTrackerId: string;
 };
 
-export const CoinFlipFilter = ({
+export const CoinFlipFilterButtons = ({
   coinFlipFilter,
   maxCoinFlips,
   onCoinFlipFilterChange,

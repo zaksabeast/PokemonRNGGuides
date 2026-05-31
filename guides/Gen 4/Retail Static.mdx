@@ -19,6 +19,8 @@
   orderPriority: 3
 ---
 
+<Gen4Reset />
+
 > [!NOTE]
 > This guide is interactive and updates instructions based on your settings!
 
@@ -48,15 +50,7 @@ Follow our [Honey Tree setup guide](/retail-dppt-honey-tree) to set up your desi
 
 Choose the game and console you're playing below then continue to the next step.
 
-<Gen4StaticSetup />
-
-<Static4ShowIf is3dsNormalSettings>
-  [Learn how to use the 3DS Helper here](/3ds-helper).
-</Static4ShowIf>
-
-<Static4ShowIf is3dsAltSettings>
-  [Download the 3DS Alt Settings app here](/3ds-alt-settings).
-</Static4ShowIf>
+<Gen4ConfigSetup onlyDppt />
 
 </Step>
 
@@ -110,8 +104,8 @@ Choose the game and console you're playing below then continue to the next step.
 
 ## Prepare the console
 
-1. Set your console date to **<Static4ConsoleSetDateString format="date" />**.
-2. Start setting your console time to **<Static4ConsoleSetDateString format="time" />**, but don't confirm it just yet.
+1. Set your console date to **<Gen4ConsoleSetDateString format="date" />**.
+2. Start setting your console time to **<Gen4ConsoleSetDateString format="time" />**, but don't confirm it just yet.
 
 | Confirm time screen                                                    |
 | ---------------------------------------------------------------------- |
@@ -119,30 +113,30 @@ Choose the game and console you're playing below then continue to the next step.
 
 ## Hit your seed
 
-<Static4ShowIf is3dsNormalSettings>
+<Gen4ShowIf is3dsNormalSettings>
   [Learn how to use the 3DS Helper here](/3ds-helper).
-</Static4ShowIf>
+</Gen4ShowIf>
 
 1. Simultaneously press `A` to set the console time and start the timer below.
-2. <Static4ShowIf is3dsNormalSettings>
+2. <Gen4ShowIf is3dsNormalSettings>
      Exit the settings on your console, restart your console, and start the
      game.
-   </Static4ShowIf>
-   <Static4ShowIf is3dsAltSettings>
+   </Gen4ShowIf>
+   <Gen4ShowIf is3dsAltSettings>
      Press `Start` to exit the Alt Settings on your console, then start the
      game.
-   </Static4ShowIf>
-   <Static4ShowIf isNdsDsi>
+   </Gen4ShowIf>
+   <Gen4ShowIf isNdsDsi>
      Exit the settings on your console and restart your console.
-   </Static4ShowIf>
-3. When the first timer ends, <Static4ShowIf is3dsNormalSettings is3dsAltSettings>press `L + R + Start + Select` to soft reset the game.</Static4ShowIf><Static4ShowIf isNdsDsi>press `A` to start the game.</Static4ShowIf>
+   </Gen4ShowIf>
+3. When the first timer ends, <Gen4ShowIf is3dsNormalSettings is3dsAltSettings>press `L + R + Start + Select` to soft reset the game.</Gen4ShowIf><Gen4ShowIf isNdsDsi>press `A` to start the game.</Gen4ShowIf>
 4. Get to the screen where you load your save.
 5. Immediately press `A` when the second timer to goes off.
 
 > [!TIP]
 > If you don't have enough time to hit your seed, go back to the previous step and search for a Pokémon with a higher "Max Delay".
 
-<Static4Timer />
+<Gen4EmbeddedTimer />
 
 ## Calibrate the seed
 
@@ -159,7 +153,7 @@ Choose the game and console you're playing below then continue to the next step.
 > [!TIP]
 > If you don't see your seed, increase the delay and second offsets and try again.
 
-<Static4HitSeed />
+<DpptCoinFlipSeedCalibrator />
 
 </Step>
 
@@ -211,7 +205,7 @@ Follow these steps once you've hit your target seed and quieted the NPCs.
 
 </ShowIf>
 
-<Static4ChatterFilter />
+<Gen4ChatterFilter />
 
 </Step>
 

@@ -1,7 +1,7 @@
 import { atom } from "jotai";
 import { Gen4Timer, Gen4TimerSettings, updateGen4Timer } from "~/rngTools";
 
-const initialGen4Timer: Gen4Timer = {
+export const initialGen4Timer: Gen4Timer = {
   ms: [],
   settings: {
     console: "NdsSlot1",
@@ -13,21 +13,16 @@ const initialGen4Timer: Gen4Timer = {
   },
 };
 
+export type Gen4TimerUpdates = Partial<Gen4TimerSettings> & {
+  delayHit?: number | null;
+};
+
 export const createGen4TimerAtom = () => {
   const baseAtom = atom(initialGen4Timer);
 
   return atom(
     (get) => get(baseAtom),
-    (
-      get,
-      set,
-      {
-        delayHit,
-        ...update
-      }: Partial<Gen4TimerSettings> & {
-        delayHit?: number | null;
-      },
-    ) => {
+    (get, set, { delayHit, ...update }: Gen4TimerUpdates) => {
       const current = get(baseAtom);
       const fullSettings: Gen4TimerSettings = {
         ...current.settings,

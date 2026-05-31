@@ -202,4 +202,6 @@ export const translations: Partial<Translations> = {
   "Delay Range ±": "Delay 范围 ±",
   "Seconds Range ±": "秒数范围 ±",
   "Advance Range ±": "帧数范围 ±",
+  "Learn how to use the 3DS Helper here": "点这学习如何使用3DS Helper",
+  "Download the 3DS Alt Settings app here": "点这下载3DS Alt Settings",
 };

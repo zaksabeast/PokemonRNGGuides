@@ -24,7 +24,8 @@ import {
   multiWorkerRngTools,
 } from "~/rngTools";
 import { z } from "zod";
-import { idTimerAtom, useId4State } from "./state";
+import { id4Atom } from "./state";
+import { gen4StateAtom } from "../shared/state";
 import { useCurrentStep } from "~/components/stepper/state";
 import { useFormContext } from "~/hooks/form";
 import { nature } from "~/types/nature";
@@ -46,6 +47,7 @@ import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { useWatch } from "react-hook-form";
 import { useAtom } from "jotai";
 import { getGameDateTime } from "./utils";
+import { toRngDateTime } from "~/utils/time";
 
 const idTypes = ["Cute Charm", "Any TID"] as const;
 type IdType = (typeof idTypes)[number];
@@ -59,27 +61,29 @@ type SelectButtonProps = {
 };
 
 const SelectButton = ({ target }: SelectButtonProps) => {
-  const [state, setState] = useId4State();
+  const [state, setState] = useAtom(gen4StateAtom);
+  const [, setId4State] = useAtom(id4Atom);
   const [, setCurrentStep] = useCurrentStep();
-  const [, updateTimer] = useAtom(idTimerAtom);
 
   const dateTime = getGameDateTime({
     seedTime: target.seed_time,
-    game: state.game,
+    game: state.config.game,
   });
-
-  const targetDelay = target.seed_time.delay;
-  const targetSecond = dateTime?.second() ?? 0;
 
   return (
     <Button
       trackerId="select_id4_target"
       onClick={() => {
-        setState((state) => ({
-          ...state,
-          target,
-        }));
-        updateTimer({ targetDelay, targetSecond });
+        if (dateTime == null) {
+          return;
+        }
+        const adjustedDateTime = toRngDateTime(dateTime);
+        setState({
+          target: {
+            seedTime: { ...target.seed_time, datetime: adjustedDateTime },
+          },
+        });
+        setId4State({ id: target });
         setCurrentStep((step) => step + 1);
       }}
     >

@@ -20,6 +20,8 @@ import {
 } from "~/components";
 import { findSubArrayIndices, IndexRange } from "~/utils/findIndexBy";
 import { uniqueId } from "lodash-es";
+import { useAtom } from "jotai";
+import { gen4StateAtom } from "./state";
 
 const loadAudioBuffer = async (
   ctx: AudioContext,
@@ -155,7 +157,7 @@ type Result = ChatterState & {
 };
 
 const Validator = z.object({
-  seed: z.number().int().min(0).max(0xffffffff),
+  seed: z.number().int().min(0).max(0xffffffff).nullable(),
   minAdvance: z.number().int().min(0),
   maxAdvance: z.number().int().min(0),
   targetAdvance: z.number().int().min(0).nullable(),
@@ -371,6 +373,22 @@ export const ChatterFilterBase = ({
       ),
     },
     {
+      key: "embeddedTargetAdvance",
+      label: t["Target Advance"],
+      input: (
+        <FormikNumberInput<FormState>
+          name="targetAdvance"
+          numType="decimal"
+          disabled={mode === "embedded"}
+          errorMessage={
+            targetAdvance == null && mode === "embedded"
+              ? "Find your target first"
+              : undefined
+          }
+        />
+      ),
+    },
+    {
       label: t["Advances"],
       input: (
         <MinMaxContainer
@@ -384,6 +402,7 @@ export const ChatterFilterBase = ({
       ),
     },
     {
+      key: "standaloneAdvance",
       label: t["Target Advance"],
       show: mode === "standalone",
       input: (
@@ -393,7 +412,7 @@ export const ChatterFilterBase = ({
   ];
 
   const onSubmit = async (opts: FormState) => {
-    if (opts.targetAdvance == null) {
+    if (opts.targetAdvance == null || opts.seed == null) {
       return;
     }
 
@@ -430,10 +449,10 @@ export const ChatterFilterBase = ({
   );
 
   const initialValues: FormState = {
-    seed: seed ?? 0,
+    seed: seed ?? null,
     minAdvance: 0,
     maxAdvance: (targetAdvance ?? 0) + 10,
-    targetAdvance: targetAdvance ?? 0,
+    targetAdvance: targetAdvance ?? null,
   };
 
   return (
@@ -475,6 +494,19 @@ export const ChatterFilterBase = ({
         mode === "embedded" && (seed == null || targetAdvance == null)
       }
       submitTrackerId={submitTrackerId}
+    />
+  );
+};
+
+export const Gen4ChatterFilter = () => {
+  const [{ target }] = useAtom(gen4StateAtom);
+
+  return (
+    <ChatterFilterBase
+      seed={target.seedTime?.seed ?? null}
+      targetAdvance={target.lcrngAdvance}
+      mode="embedded"
+      submitTrackerId="chatter_filter_generate"
     />
   );
 };

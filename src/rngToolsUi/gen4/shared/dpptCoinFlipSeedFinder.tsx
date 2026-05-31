@@ -1,5 +1,5 @@
 import React from "react";
-import { rngTools, type CoinFlip } from "~/rngTools";
+import { rngTools, type CoinFlip, type SeedTime4 } from "~/rngTools";
 import {
   RngToolForm,
   FormikNumberInput,
@@ -9,13 +9,10 @@ import {
   MinMaxContainer,
   Button,
 } from "~/components";
-import { uniqueId } from "lodash-es";
+import { uniqueId, keyBy } from "lodash-es";
 import { z } from "zod";
-import {
-  shrinkCoinFlips,
-  matchesCoinFlipFilter,
-} from "../shared/coinFlipUtils";
-import { CoinFlipFilter } from "../shared/coinFlipFilter";
+import { shrinkCoinFlips, matchesCoinFlipFilter } from "./coinFlipUtils";
+import { CoinFlipFilterButtons } from "./dpptCoinFlipButtons";
 import {
   addRngTime,
   rngDate,
@@ -23,7 +20,8 @@ import {
   rngTime,
   RngTimeSchema,
 } from "~/utils/time";
-import { useHoneyTreeState } from "./state";
+import { gen4StateAtom } from "./state";
+import { useAtom } from "jotai";
 import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
 import { useCurrentStep } from "~/components/stepper/state";
 import { Translations } from "~/translations";
@@ -31,6 +29,7 @@ import { Translations } from "~/translations";
 type ResultRow = {
   id: string;
   seed: number;
+  seedTime: SeedTime4;
   coinFlips: CoinFlip[];
 };
 
@@ -57,22 +56,20 @@ const initialValues: FormState = {
 };
 
 type SelectButtonProps = {
-  seed: number;
+  seedTime: SeedTime4;
 };
 
-const SelectButton = ({ seed }: SelectButtonProps) => {
-  const [, setState] = useHoneyTreeState();
+const SelectButton = ({ seedTime }: SelectButtonProps) => {
+  const [, setState] = useAtom(gen4StateAtom);
   const [, setCurrentStep] = useCurrentStep();
 
   return (
     <Button
       trackerId="honey_tree_select_seed"
       onClick={() => {
-        setState((prev) => ({
-          ...prev,
-          initialSeed: seed,
-          targetAdvance: null,
-        }));
+        setState({
+          target: { seedTime, lcrngAdvance: null, mtAdvance: null },
+        });
         setCurrentStep((step) => step + 1);
       }}
     >
@@ -85,7 +82,7 @@ const getColumns = (t: Translations): ResultColumn<ResultRow>[] => [
   {
     title: t["Select"],
     dataIndex: "id",
-    render: (_, record) => <SelectButton seed={record.seed} />,
+    render: (_, record) => <SelectButton seedTime={record.seedTime} />,
   },
   {
     title: t["Seed"],
@@ -138,19 +135,19 @@ const getFields = (t: Translations): Field[] => [
   },
 ];
 
-export const HoneyTreeCoinClipper = () => {
+export const DpptCoinFlipSeedFinder = () => {
   const [allResults, setAllResults] = React.useState<ResultRow[]>([]);
-  const [coinFlipFilter, setCoinFlipFilter] = React.useState("");
+  const [state, setState] = useAtom(gen4StateAtom);
   const [coinFlipCount, setCoinFlipCount] = React.useState(
     initialValues.coinFlipCount,
   );
 
   const filteredResults = allResults.filter((result) =>
-    matchesCoinFlipFilter(result.coinFlips, coinFlipFilter),
+    matchesCoinFlipFilter(result.coinFlips, state.coinFlipFilter),
   );
 
   const onSubmit: RngToolSubmit<FormState> = async (opts) => {
-    const seeds = await rngTools.calc_gen4_seeds({
+    const seedTimes = await rngTools.calc_gen4_seeds({
       min_delay: opts.minDelay,
       max_delay: opts.maxDelay,
       seconds_increment: Math.max(opts.maxSeconds - opts.minSeconds, 0),
@@ -159,8 +156,8 @@ export const HoneyTreeCoinClipper = () => {
         second: opts.minSeconds,
       }),
     });
-
-    const seedList = new Uint32Array(seeds.map(({ seed }) => seed));
+    const seedTimesBySeed = keyBy(seedTimes, ({ seed }) => seed);
+    const seedList = new Uint32Array(seedTimes.map(({ seed }) => seed));
     setCoinFlipCount(opts.coinFlipCount);
     const coinFlips = await rngTools.coin_flips_for_seeds(
       seedList,
@@ -171,6 +168,7 @@ export const HoneyTreeCoinClipper = () => {
       return {
         id: uniqueId(),
         seed,
+        seedTime: seedTimesBySeed[seed],
         coinFlips: coin_flips,
       };
     });
@@ -186,10 +184,12 @@ export const HoneyTreeCoinClipper = () => {
       initialValues={initialValues}
       validationSchema={Validator}
       filters={
-        <CoinFlipFilter
+        <CoinFlipFilterButtons
           maxCoinFlips={coinFlipCount}
-          coinFlipFilter={coinFlipFilter}
-          onCoinFlipFilterChange={setCoinFlipFilter}
+          coinFlipFilter={state.coinFlipFilter}
+          onCoinFlipFilterChange={(value) =>
+            setState({ coinFlipFilter: value })
+          }
           headsTrackerId="hit_seed_add_heads"
           tailsTrackerId="hit_seed_add_tails"
         />

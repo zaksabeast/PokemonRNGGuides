@@ -1,5 +1,6 @@
 import React from "react";
-import { useStatic4State, static4TimerAtom } from "./state";
+import { gen4StateAtom } from "./state";
+import { useAtom } from "jotai";
 import { rngTools, DpptSeedTime4, type CoinFlip } from "~/rngTools";
 import {
   RngToolForm,
@@ -7,16 +8,13 @@ import {
   type RngToolSubmit,
   type ResultColumn,
   Icon,
-  CalibrateTimerButton,
   Field,
 } from "~/components";
 import { uniqueId, sortBy } from "lodash-es";
+import { CalibrateTimerButton } from "./calibrateTimerButton";
 import { z } from "zod";
-import {
-  shrinkCoinFlips,
-  matchesCoinFlipFilter,
-} from "../shared/coinFlipUtils";
-import { CoinFlipFilter } from "../shared/coinFlipFilter";
+import { shrinkCoinFlips, matchesCoinFlipFilter } from "./coinFlipUtils";
+import { CoinFlipFilterButtons } from "./dpptCoinFlipButtons";
 
 const COIN_FLIPS = 20;
 
@@ -51,10 +49,9 @@ const columns: ResultColumn<ResultRow>[] = [
     disableVerticalPadding: true,
     render: (_, target) => (
       <CalibrateTimerButton
-        type="gen4"
         hitDelay={target.delay}
-        timer={static4TimerAtom}
-        trackerId="calibrate_gen4_static_hitseed"
+        trackerId="calibrate_gen4_seed"
+        lastStepOnClick={0}
       />
     ),
   },
@@ -120,8 +117,8 @@ const fields: Field[] = [
   },
 ];
 
-export const Static4HitSeed = () => {
-  const [state, setState] = useStatic4State();
+export const DpptCoinFlipSeedCalibrator = () => {
+  const [state, setState] = useAtom(gen4StateAtom);
   const [allResults, setAllResults] = React.useState<ResultRow[]>([]);
 
   const filteredResults = allResults.filter((result) =>
@@ -129,11 +126,11 @@ export const Static4HitSeed = () => {
   );
 
   const onSubmit: RngToolSubmit<FormState> = async (formState) => {
-    if (state.target == null) {
+    const seedTime = state.target.seedTime;
+    if (seedTime == null) {
       return;
     }
 
-    const seedTime = state.target.seed_time;
     const searchResults = await rngTools.calc_dppt_seedtimes({
       seedtime: seedTime,
       delay_offset: formState.delayOffset,
@@ -141,8 +138,7 @@ export const Static4HitSeed = () => {
       coin_flip_count: COIN_FLIPS,
     });
 
-    const { datetime: targetDateTime, delay: targetDelay } =
-      state.target.seed_time;
+    const { datetime: targetDateTime, delay: targetDelay } = seedTime;
 
     const mappedResults = searchResults.map((result) => {
       const secondOffset = result.datetime.second - targetDateTime.second;
@@ -163,7 +159,7 @@ export const Static4HitSeed = () => {
     ]);
 
     setAllResults(sortedResults);
-    setState((prev) => ({ ...prev, coinFlipFilter: "" }));
+    setState({ coinFlipFilter: "" });
   };
 
   return (
@@ -175,19 +171,19 @@ export const Static4HitSeed = () => {
       validationSchema={Validator}
       disableGenerate={state.target == null}
       filters={
-        <CoinFlipFilter
+        <CoinFlipFilterButtons
           maxCoinFlips={COIN_FLIPS}
           coinFlipFilter={state.coinFlipFilter}
           onCoinFlipFilterChange={(value) =>
-            setState((prev) => ({ ...prev, coinFlipFilter: value }))
+            setState({ coinFlipFilter: value })
           }
-          headsTrackerId="hit_seed_add_heads"
-          tailsTrackerId="hit_seed_add_tails"
+          headsTrackerId="seed_calibrator_add_heads"
+          tailsTrackerId="seed_calibrator_add_tails"
         />
       }
       onSubmit={onSubmit}
       rowKey="id"
-      submitTrackerId="hit_seed_search"
+      submitTrackerId="gen4_generate_calibration_seeds"
     />
   );
 };

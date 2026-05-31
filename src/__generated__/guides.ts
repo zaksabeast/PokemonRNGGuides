@@ -2547,7 +2547,7 @@ export const guides = {
         retail: { type: "slug", slug: "/dppt-tid-sid/" },
         cfwEmu: { type: "slug", slug: "/emulator-dppt-tid-sid/" },
       },
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: ["web_tool", "video_guide"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Retail TID.mdx")),
     getRawFile: memoize(async () => {
@@ -6619,7 +6619,7 @@ export const guides = {
         retail: { type: "slug", slug: "/hgss-tid-sid/" },
         cfwEmu: null,
       },
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: ["web_tool", "video_guide"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Retail TID.mdx")),
     getRawFile: memoize(async () => {
@@ -7491,7 +7491,7 @@ export const guides = {
       },
       guideGroupId: "it:false-Starter RNG:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: ["web_tool", "video_guide"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/it/Gen 4/Starters.mdx"),
@@ -7572,7 +7572,7 @@ export const guides = {
       },
       guideGroupId: "it:false-Starter RNG:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: ["web_tool", "video_guide"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/it/Gen 4/Starters.mdx"),
@@ -8804,7 +8804,7 @@ export const guides = {
         retail: { type: "slug", slug: "/retail-dppt-starter/" },
         cfwEmu: null,
       },
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: ["web_tool", "video_guide"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Starters.mdx")),
     getRawFile: memoize(async () => {
@@ -9003,7 +9003,7 @@ export const guides = {
         retail: { type: "slug", slug: "/retail-hgss-starter/" },
         cfwEmu: null,
       },
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: ["web_tool", "video_guide"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Starters.mdx")),
     getRawFile: memoize(async () => {
@@ -12365,7 +12365,7 @@ export const guides = {
       guideGroupId:
         "zh:false-Cute Charm & TID/SID RNG:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: ["web_tool", "video_guide"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/Retail TID.mdx"),
@@ -14427,7 +14427,7 @@ export const guides = {
       guideGroupId:
         "zh:false-Cute Charm & TID/SID RNG:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: ["web_tool", "video_guide"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/Retail TID.mdx"),
@@ -14991,7 +14991,7 @@ export const guides = {
       },
       guideGroupId: "zh:false-Starter RNG:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: ["web_tool", "video_guide"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/Starters.mdx"),
@@ -15114,7 +15114,7 @@ export const guides = {
       },
       guideGroupId: "zh:false-Starter RNG:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: ["web_tool", "video_guide"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/Starters.mdx"),

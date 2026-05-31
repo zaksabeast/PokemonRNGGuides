@@ -100,10 +100,11 @@ pub fn search_static3_naive(opts: &Static3SearcherOptions) -> Vec<Static3Searche
         .take(opts.max_advances.saturating_add(1))
         .flat_map(|(advance, rng)| {
             let seed = rng.seed();
-            generate_gen3_static(rng, &gen_opts)
+            let gen_opts = &gen_opts;
+            generate_gen3_static(rng, gen_opts)
                 .into_iter()
                 .flatten()
-                .map(move |gen_res| Static3SearcherResult::new(&gen_res, &gen_opts, seed, advance))
+                .map(move |gen_res| Static3SearcherResult::new(&gen_res, gen_opts, seed, advance))
         })
         .take(opts.max_result_count)
         .collect()

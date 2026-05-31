@@ -16,17 +16,19 @@ import React from "react";
 import { getStatic3SpeciesEncounters } from "./constants";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import { usingTargetSetupInputs } from "../pokemonRng/generatorResultColumns";
+import uniq from "lodash-es/uniq";
 
 const static3Methods = [
   "Static1",
   "Static4",
 ] as const satisfies readonly Gen3StaticMethod[];
-const static3Species = getStatic3SpeciesEncounters("emerald").map(
-  ({ species }) => species,
+const static3Species = uniq(
+  getStatic3SpeciesEncounters("emerald").map(({ species }) => species),
 );
 type Static3EncounterContext = "";
 const static3EncounterContexts = [""] as const;
 
+//TODO: Change the term encouterContext (string) to roaming (boolean). Change the signature of encounterContextToLvl to (species:string, roaming:boolean). It searches in the static encounter and returns the level that match.
 export const encounterContextToLvl = (_ctx: string) => 5;
 
 export const getPossibleValuesForSpecies = (_species: Species) => {

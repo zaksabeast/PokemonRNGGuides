@@ -47,6 +47,7 @@ const getSetupFields = (
   usingPaintingReseeding: boolean,
   letSearcherFindPaintingSeed: boolean,
   showAdvancedPaintingSettings: boolean,
+  usingAceForSid: boolean,
 ): Field[] => {
   const possVals = getPossibleValuesForSpecies(species);
   const showAdvancedSetups = !recommendedSetups;
@@ -55,6 +56,17 @@ const getSetupFields = (
     {
       label: "Target species",
       input: species,
+    },
+    {
+      label: "Recommended setups?",
+      input: <FormikSwitch<FormState> name="recommendedSetups" />,
+    },
+    {
+      label: "Using ACE to change SID?",
+      tooltip:
+        "Whether to use Arbitrary Code Execution glitch to change your SID so the target Pokémon is shiny.",
+      show: filter_shiny,
+      input: <FormikSwitch<FormState> name="usingAceForSid" />,
     },
     {
       label: "TID",
@@ -68,6 +80,7 @@ const getSetupFields = (
     },
     {
       label: "SID",
+      show: !usingAceForSid,
       input: filter_shiny ? (
         <FormikNumberInput<FormState> name="sid" numType="decimal" />
       ) : (
@@ -75,10 +88,6 @@ const getSetupFields = (
           N/A
         </TooltipWithIcon>
       ),
-    },
-    {
-      label: "Recommended setups?",
-      input: <FormikSwitch<FormState> name="recommendedSetups" />,
     },
     {
       label: "Actions",
@@ -316,6 +325,9 @@ export const SetupFilter = () => {
   const recommendedSetups = useWatch<FormState, "recommendedSetups">({
     name: "recommendedSetups",
   });
+  const usingAceForSid = useWatch<FormState, "usingAceForSid">({
+    name: "usingAceForSid",
+  });
   const usingPaintingReseeding = useWatch<FormState, "usingPaintingReseeding">({
     name: "usingPaintingReseeding",
   });
@@ -339,6 +351,7 @@ export const SetupFilter = () => {
     usingPaintingReseeding,
     letSearcherFindPaintingSeed,
     showAdvancedPaintingSettings,
+    usingAceForSid,
   );
 
   return (

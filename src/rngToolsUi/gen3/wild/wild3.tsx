@@ -21,6 +21,7 @@ import {
 import { gen3Methods } from "~/types";
 import { pokeblockSchema } from "~/types/pokeblock";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
+import { EmeraldAceChangeSid } from "../ace/emeraldChangeSid";
 
 /*
 Possible user flows (documentation for testing): 
@@ -122,6 +123,14 @@ const targetSetupAtomSchema = z.object({
       targetMethod: z.enum(gen3Methods),
       requiresWhiteFlute: z.boolean().optional().default(false),
       safariPokeblock: pokeblockSchema.optional().default(null),
+      aceSid: z
+        .number()
+        .int()
+        .min(0)
+        .max(0xffff)
+        .optional()
+        .nullable()
+        .default(null),
     })
     .nullable(),
 });
@@ -214,6 +223,25 @@ export const Wild3TargetSetupSearcher_WithSetTargetSetup = () => {
       setLeadCycleSpeed={handleSetLeadCycleSpeed}
     />
   );
+};
+
+export const EmeraldAceChangeSid_WithTargetSetup = () => {
+  const [targetSetupLock] = useTargetSetup();
+  const targetSetupHydrate = useHydrate(targetSetupLock);
+
+  if (!targetSetupHydrate.hydrated) {
+    return <Skeleton />;
+  }
+
+  const { targetSetup } = targetSetupHydrate.client;
+
+  const { aceSid } = targetSetup ?? {};
+  if (aceSid == null) {
+    // No ACE setup
+    return null;
+  }
+
+  return <EmeraldAceChangeSid sid={aceSid} />;
 };
 
 /** Step 2: Painting + Battle Video

@@ -1,5 +1,4 @@
-export type EmeraldLanguage = "eng" | "fra" | "ita" | "spa" | "ger" | "jap";
-
+import type { EmeraldLang } from "./emeraldLang";
 const MAX_CARDS = 6;
 
 const EOF = 0xff;
@@ -573,9 +572,9 @@ const JAP_UNAVAILABLE = new Set([
 ]);
 
 const charset = (
-  lang: EmeraldLanguage,
+  lang: EmeraldLang,
 ): {
-  lang: EmeraldLanguage;
+  lang: EmeraldLang;
   chars: (string | null)[];
 } => {
   const chars = lang === "jap" ? JAP_CHARS.slice() : EURO_CHARS.slice();
@@ -589,7 +588,7 @@ const charset = (
   return { lang, chars };
 };
 
-const isCodeAvailable = (code: number, lang: EmeraldLanguage) => {
+const isCodeAvailable = (code: number, lang: EmeraldLang) => {
   if (lang === "jap") {
     return code >= 0 && code <= 0xff && !JAP_UNAVAILABLE.has(code);
   }
@@ -611,12 +610,17 @@ type SynthOptions = {
 };
 type TweakMovOptions = { preferSubtractive?: boolean };
 type ExitInstruction = ["adc" | "sbc" | "bic", number, number, number];
-type AceResult = {
-  language: EmeraldLanguage;
-  boxes: string[];
-  rawBoxes: Bytes[];
-  commands: { bytes: Bytes; hex: string }[];
-};
+export type AceResult =
+  | {
+      language: EmeraldLang;
+      boxes: string[];
+      rawBoxes: Bytes[];
+      commands: { bytes: Bytes; hex: string }[];
+      success: true;
+    }
+  | {
+      success: false;
+    };
 
 const writableCharAt = (code: number, cs: EmeraldCharset): string | null => {
   if (!isCodeAvailable(code, cs.lang)) {
@@ -750,7 +754,7 @@ const commandForBytes = (bytes: Bytes): number => {
   );
 };
 
-const scoreBytes = (bytes: Bytes, lang: EmeraldLanguage): number => {
+const scoreBytes = (bytes: Bytes, lang: EmeraldLang): number => {
   const bad: [number, number][] = [];
   for (let i = 0; i < bytes.length; i++) {
     if (!isCodeAvailable(bytes[i], lang)) {
@@ -769,7 +773,7 @@ const scoreBytes = (bytes: Bytes, lang: EmeraldLanguage): number => {
   return score;
 };
 
-const preferredBytes = (commands: number[], lang: EmeraldLanguage): Bytes => {
+const preferredBytes = (commands: number[], lang: EmeraldLang): Bytes => {
   let best: Bytes | null = null;
   let bestScore = Number.MAX_SAFE_INTEGER;
   for (const command of commands) {
@@ -786,7 +790,7 @@ const preferredBytes = (commands: number[], lang: EmeraldLanguage): Bytes => {
   return best;
 };
 
-const buildConstants = (lang: EmeraldLanguage, movMvn: boolean): number[] => {
+const buildConstants = (lang: EmeraldLang, movMvn: boolean): number[] => {
   const set = new Set<number>();
   for (let i = 0; i <= 0xff; i++) {
     if (!isCodeAvailable(i, lang)) {
@@ -945,13 +949,13 @@ const synthesize = (
   return null;
 };
 
-const isValidCommandBytes = (bytes: Bytes, lang: EmeraldLanguage): boolean => {
+const isValidCommandBytes = (bytes: Bytes, lang: EmeraldLang): boolean => {
   return scoreBytes(bytes, lang) !== Number.MAX_SAFE_INTEGER;
 };
 
 const hasWritableEncoding = (
   commands: number[],
-  lang: EmeraldLanguage,
+  lang: EmeraldLang,
 ): boolean => {
   try {
     return isValidCommandBytes(preferredBytes(commands, lang), lang);
@@ -963,7 +967,7 @@ const hasWritableEncoding = (
 const tweakMov = (
   rd: number,
   imm: number,
-  lang: EmeraldLanguage,
+  lang: EmeraldLang,
   constants: number[],
   constantsMovMvn: number[],
   options?: TweakMovOptions,
@@ -1042,7 +1046,7 @@ const tweakSbc = (
   rd: number,
   rn: number,
   imm: number,
-  lang: EmeraldLanguage,
+  lang: EmeraldLang,
   constants: number[],
 ): Bytes[] => {
   const validFirst = (fst: number): boolean =>
@@ -1096,17 +1100,22 @@ const tweakSbc = (
   return out;
 };
 
-const sidProgramBytes = (sid: number, lang: EmeraldLanguage): Bytes[] => {
-  const constants = buildConstants(lang, false);
-  const constantsMovMvn = buildConstants(lang, true);
-  const out: Bytes[] = [];
-  out.push(...tweakSbc(REG.r11, REG.pc, 0xd0f7, lang, constants));
-  out.push(...tweakMov(REG.r12, sid, lang, constants, constantsMovMvn));
-  out.push(preferredBytes(strh(REG.r12, REG.r11, 2), lang));
-  return out;
+const sidProgramBytes = (sid: number, lang: EmeraldLang): Bytes[] | null => {
+  try {
+    const constants = buildConstants(lang, false);
+    const constantsMovMvn = buildConstants(lang, true);
+    const out: Bytes[] = [];
+    out.push(...tweakSbc(REG.r11, REG.pc, 0xd0f7, lang, constants));
+    out.push(...tweakMov(REG.r12, sid, lang, constants, constantsMovMvn));
+    out.push(preferredBytes(strh(REG.r12, REG.r11, 2), lang));
+    return out;
+  } catch {
+    // Impossible to convert to code. Consider increasing MAX_CARDS
+    return null;
+  }
 };
 
-const seedProgramBytes = (seed: number, lang: EmeraldLanguage): Bytes[] => {
+const seedProgramBytes = (seed: number, lang: EmeraldLang): Bytes[] => {
   const constants = buildConstants(lang, false);
   const constantsMovMvn = buildConstants(lang, true);
   const out: Bytes[] = [];
@@ -1123,9 +1132,9 @@ const seedProgramBytes = (seed: number, lang: EmeraldLanguage): Bytes[] => {
 };
 
 const certificateExit = (
-  lang: EmeraldLanguage,
+  lang: EmeraldLang,
 ): { start: number; bytes: Bytes[] } => {
-  const variants: Partial<Record<EmeraldLanguage, ExitInstruction[]>> = {
+  const variants: Partial<Record<EmeraldLang, ExitInstruction[]>> = {
     eng: [
       ["sbc", REG.r12, REG.lr, 0x2c40],
       ["adc", REG.r12, REG.r12, 0xd30000],
@@ -1382,10 +1391,7 @@ const replacePaddingInBoxes = (boxes: Bytes[]): Bytes[] => {
   });
 };
 
-const fitCodesIntoBoxes = (
-  commands: Bytes[],
-  lang: EmeraldLanguage,
-): Bytes[] => {
+const fitCodesIntoBoxes = (commands: Bytes[], lang: EmeraldLang): Bytes[] => {
   let res = addCodesAfter([], commands, false);
   const exit = certificateExit(lang);
   const byteCount = res.length;
@@ -1396,15 +1402,20 @@ const fitCodesIntoBoxes = (
 };
 
 const getEmeraldBoxNamesForCommands = (
-  commands: Bytes[],
+  commands: Bytes[] | null,
   cs: ReturnType<typeof charset>,
 ): AceResult => {
+  if (commands == null) {
+    return { success: false };
+  }
+
   const boxes = fitCodesIntoBoxes(commands, cs.lang);
   const names = boxes.map((box) =>
     box.map((byte) => boxNameCharAt(byte, cs)).join(""),
   );
   return {
     language: cs.lang,
+    success: true,
     boxes: names,
     rawBoxes: boxes.map((box) => box.slice()),
     commands: commands.map((bytes) => ({
@@ -1414,18 +1425,18 @@ const getEmeraldBoxNamesForCommands = (
   };
 };
 
-export const getEmeraldSidBoxNames = (
+export const getEmeraldSidBoxNames = async (
   sid: number,
-  languageInput: EmeraldLanguage,
-): AceResult => {
-  const cs = charset(languageInput);
+  lang: EmeraldLang,
+): Promise<AceResult> => {
+  const cs = charset(lang);
   return getEmeraldBoxNamesForCommands(sidProgramBytes(sid, cs.lang), cs);
 };
 
-export const getEmeraldSeedBoxNames = (
+export const getEmeraldSeedBoxNames = async (
   seed: number,
-  languageInput: EmeraldLanguage,
-): AceResult => {
-  const cs = charset(languageInput);
+  lang: EmeraldLang,
+): Promise<AceResult> => {
+  const cs = charset(lang);
   return getEmeraldBoxNamesForCommands(seedProgramBytes(seed, cs.lang), cs);
 };

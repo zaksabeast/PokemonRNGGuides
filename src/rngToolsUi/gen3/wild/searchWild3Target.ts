@@ -208,6 +208,7 @@ export const searchWild3Target = async (values: FormState) => {
   // if the naive searching approach is used (when searching common traits).
   const max_advances = painting_opts != null ? 10_000_000 : values.max_advances;
 
+  const filter_shiny = values.filter_shiny && !values.usingAceForSid;
   const opts: Wild3SearcherOptions = {
     initial_seed,
     tid: values.tid,
@@ -215,7 +216,10 @@ export const searchWild3Target = async (values: FormState) => {
     initial_advances,
     max_advances,
     max_result_count: values.max_result_count,
-    filter: pkmFilterFieldsToRustInput(values),
+    filter: pkmFilterFieldsToRustInput({
+      ...values,
+      filter_shiny,
+    }),
     gen3_filter: gen3PkmFilterFieldsToRustInput(values, values.species),
     leads: leadsToUse,
     map_setups,

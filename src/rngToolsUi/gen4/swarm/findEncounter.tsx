@@ -10,6 +10,8 @@ import {
   RngToolForm,
 } from "~/components";
 import { useSwarmState } from "./state";
+import { useAtom } from "jotai";
+import { gen4StateAtom } from "../shared/state";
 import { gameMons, type SwarmRoute } from "./constants";
 import { rngTools, type SwarmPokemon, type SwarmGame } from "~/rngTools";
 import { uniqueId } from "lodash-es";
@@ -85,17 +87,20 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
 ];
 
 export const SwarmFindEncounter = () => {
-  const [state] = useSwarmState();
+  const [swarmState] = useSwarmState();
+  const [state] = useAtom(gen4StateAtom);
   const [results, setResults] = React.useState<Result[]>([]);
 
   React.useEffect(() => {
     setResults([]);
-  }, [state.seed]);
+  }, [state.target.seedTime]);
 
-  const mons = gameMons[state.game];
+  const mons = gameMons[state.config.game];
   const targetSpecies = (mons as Partial<Record<SwarmRoute, string>>)[
-    state.targetRoute
+    swarmState.targetRoute
   ];
+
+  const seed = state.target.seedTime?.seed;
 
   const getFields = (t: Translations): Field[] => [
     {
@@ -105,8 +110,8 @@ export const SwarmFindEncounter = () => {
           disabled
           name="seed"
           numType="hex"
-          errorMessage={state.seed == null ? "Find your seed first" : undefined}
-          value={state.seed}
+          errorMessage={seed == null ? "Find your seed first" : undefined}
+          value={seed}
         />
       ),
     },
@@ -132,14 +137,14 @@ export const SwarmFindEncounter = () => {
   ];
 
   const onSubmit = async (opts: FormState) => {
-    if (state.seed == null || targetSpecies == null) {
+    if (seed == null || targetSpecies == null) {
       return;
     }
 
-    const swarmGame = gameVersionToSwarmGame(state.game);
+    const swarmGame = gameVersionToSwarmGame(state.config.game);
 
     const results = await rngTools.find_swarm_advances({
-      seed: state.seed,
+      seed,
       game: swarmGame,
       wanted_pokemon: targetSpecies as SwarmPokemon,
       min_advances: opts.minAdvances,
@@ -160,7 +165,7 @@ export const SwarmFindEncounter = () => {
   return (
     <RngToolForm<FormState, Result>
       initialValues={initialValues}
-      disableGenerate={state.seed == null}
+      disableGenerate={seed == null}
       submitTrackerId="swarm_find_encounter"
       validationSchema={Validator}
       getFields={getFields}

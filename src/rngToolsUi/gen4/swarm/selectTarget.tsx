@@ -1,11 +1,14 @@
-import { AtomSelect, Field, FormFieldTable } from "~/components";
-import { swarmAtom, useSwarmState } from "./state";
+import { Select, AtomSelect, Field, FormFieldTable } from "~/components";
+import { swarmAtom } from "./state";
 import { gameRoutes, gameMons, SwarmRoute } from "./constants";
 import { Gen4GameVersion, Gen4GameVersions } from "../gen4types";
 import type { Species } from "~/rngTools";
 import { formatSpeciesLabel } from "~/types";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { type Translations } from "~/translations";
+import { useAtom } from "jotai";
+import { gen4StateAtom } from "../shared/state";
+import { toOptions } from "~/utils/options";
 
 const formatRouteLabel = (
   t: Translations,
@@ -20,17 +23,16 @@ const formatRouteLabel = (
 
 export const SelectSwarm4Target = () => {
   const t = useActiveRouteTranslations();
-  const [swarmState] = useSwarmState();
+  const [state, setState] = useAtom(gen4StateAtom);
 
   const fields: Field[] = [
     {
       label: "Game",
       input: (
-        <AtomSelect
-          atom={swarmAtom}
-          getValue={(atom) => atom.game}
-          nextState={(state, game) => ({ ...state, game })}
-          options={Gen4GameVersions}
+        <Select<Gen4GameVersion>
+          options={toOptions(Gen4GameVersions, (game) => t[game])}
+          value={state.config.game}
+          onChange={(game) => setState({ config: { game } })}
         />
       ),
     },
@@ -41,8 +43,8 @@ export const SelectSwarm4Target = () => {
           atom={swarmAtom}
           getValue={(atom) => atom.targetRoute}
           nextState={(state, targetRoute) => ({ ...state, targetRoute })}
-          options={gameRoutes[swarmState.game]}
-          format={(route) => formatRouteLabel(t, route, swarmState.game)}
+          options={gameRoutes[state.config.game]}
+          format={(route) => formatRouteLabel(t, route, state.config.game)}
         />
       ),
     },

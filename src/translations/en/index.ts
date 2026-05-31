@@ -325,7 +325,7 @@ export const translations = {
   "Target Tree": "Target Tree",
   "Coin Flips": "Coin Flips",
   "Coin Flip Count": "Coin Flip Count",
-  "Calls": "Calls",
+  Calls: "Calls",
   "Target/Heard": "Target/Heard",
   "TID / SID": "TID / SID",
   "Hidden power": "Hidden power",
@@ -341,6 +341,7 @@ export const translations = {
   "Held Advance": "Held Advance",
   "Pickup Advance": "Pickup Advance",
   "Target/Seen": "Target/Seen",
+  "Elm Call Count": "Elm Call Count",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

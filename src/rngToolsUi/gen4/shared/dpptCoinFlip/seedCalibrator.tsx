@@ -1,7 +1,7 @@
 import React from "react";
-import { gen4StateAtom } from "./state";
+import { gen4StateAtom } from "../state";
 import { useAtom } from "jotai";
-import { rngTools, DpptSeedTime4, type CoinFlip } from "~/rngTools";
+import { rngTools, DpptSeedTime4 } from "~/rngTools";
 import {
   RngToolForm,
   FormikNumberInput,
@@ -11,20 +11,21 @@ import {
   Field,
 } from "~/components";
 import { uniqueId, sortBy } from "lodash-es";
-import { CalibrateTimerButton } from "./calibrateTimerButton";
+import { CalibrateTimerButton } from "../calibrateTimerButton";
 import { z } from "zod";
-import { shrinkCoinFlips, matchesCoinFlipFilter } from "./coinFlipUtils";
-import { CoinFlipFilterButtons } from "./dpptCoinFlipButtons";
+import { matchesCoinFlipFilter, shrinkCoinFlips, SmallCoinFlip } from "./utils";
+import { CoinFlipFilterButtons } from "./coinFlipButtons";
 
 const COIN_FLIPS = 20;
 
-type ResultRow = DpptSeedTime4 & {
+type ResultRow = Omit<DpptSeedTime4, "coin_flips"> & {
   id: string;
   isTarget: boolean;
   flipDelay: boolean;
   delayOffset: number;
   secondOffset: number;
   second: number;
+  coinFlips: SmallCoinFlip[];
 };
 
 type FormState = {
@@ -96,9 +97,9 @@ const columns: ResultColumn<ResultRow>[] = [
   },
   {
     title: "Coin Flips",
-    dataIndex: "coin_flips",
+    dataIndex: "coinFlips",
     key: "coin_flips",
-    render: (coinFlips: CoinFlip[]) => shrinkCoinFlips(coinFlips).join(", "),
+    render: (coinFlips: SmallCoinFlip[]) => coinFlips.join(", "),
   },
 ];
 
@@ -122,7 +123,7 @@ export const DpptCoinFlipSeedCalibrator = () => {
   const [allResults, setAllResults] = React.useState<ResultRow[]>([]);
 
   const filteredResults = allResults.filter((result) =>
-    matchesCoinFlipFilter(result.coin_flips, state.coinFlipFilter),
+    matchesCoinFlipFilter(result.coinFlips, state.gameState.coinFlips),
   );
 
   const onSubmit: RngToolSubmit<FormState> = async (formState) => {
@@ -149,6 +150,7 @@ export const DpptCoinFlipSeedCalibrator = () => {
         delayOffset: result.delay - targetDelay,
         secondOffset,
         second: result.datetime.second,
+        coinFlips: shrinkCoinFlips(result.coin_flips),
         flipDelay:
           secondOffset % 2 === 0 && targetDelay % 2 !== result.delay % 2,
       };
@@ -159,7 +161,7 @@ export const DpptCoinFlipSeedCalibrator = () => {
     ]);
 
     setAllResults(sortedResults);
-    setState({ coinFlipFilter: "" });
+    setState({ gameState: { coinFlips: "" } });
   };
 
   return (
@@ -174,9 +176,9 @@ export const DpptCoinFlipSeedCalibrator = () => {
         <CoinFlipFilterButtons
           maxCoinFlips={COIN_FLIPS}
           hasResults={allResults.length > 0}
-          coinFlipFilter={state.coinFlipFilter}
-          onCoinFlipFilterChange={(coinFlipFilter) => {
-            setState({ coinFlipFilter });
+          coinFlipFilter={state.gameState.coinFlips}
+          onCoinFlipFilterChange={(coinFlips) => {
+            setState({ gameState: { coinFlips } });
           }}
           headsTrackerId="seed_calibrator_add_heads"
           tailsTrackerId="seed_calibrator_add_tails"

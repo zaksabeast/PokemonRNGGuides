@@ -1,7 +1,8 @@
+import React from "react";
 import { Button, Input, Flex, PixelImage } from "~/components";
 import styled from "@emotion/styled";
-import { sanitizeFlips } from "./coinFlipUtils";
-import React from "react";
+import { sanitizeFlips } from "./utils";
+import { getErrorMessage } from "../advanceFilter/utils";
 
 const CoinButton = styled(Button)({
   paddingTop: 12,
@@ -10,30 +11,6 @@ const CoinButton = styled(Button)({
   paddingRight: 40,
   height: "unset",
 });
-
-const getErrorMessage = ({
-  coinFlipFilter,
-  hasResults,
-  coinFlipsExceedMax,
-}: {
-  coinFlipFilter: string;
-  hasResults: boolean;
-  coinFlipsExceedMax: boolean;
-}) => {
-  if (coinFlipFilter.length === 0) {
-    return undefined;
-  }
-
-  if (!hasResults) {
-    return 'Click "Generate" to generate coin flips';
-  }
-
-  if (coinFlipsExceedMax) {
-    return "Over max coin flip count";
-  }
-
-  return undefined;
-};
 
 type Props = {
   hasResults: boolean;
@@ -84,9 +61,10 @@ export const CoinFlipFilterButtons = ({
       <Input
         placeholder="HTH"
         errorMessage={getErrorMessage({
-          coinFlipFilter,
+          filter: coinFlipFilter,
           hasResults,
-          coinFlipsExceedMax: coinFlipFilter.length > maxCoinFlips,
+          maxResults: maxCoinFlips,
+          unitName: "coin flips",
         })}
         value={coinFlipFilter}
         onChange={onInputChange}

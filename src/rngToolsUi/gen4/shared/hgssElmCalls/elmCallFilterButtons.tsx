@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { Button, Flex, Input } from "~/components";
-import { sanitizeElmCalls } from "./elmCallUtils";
+import { sanitizeElmCalls } from "./utils";
+import { getErrorMessage } from "../advanceFilter/utils";
 
 const ElmButton = styled(Button)({
   paddingTop: 12,
@@ -12,6 +13,7 @@ const ElmButton = styled(Button)({
 });
 
 type Props = {
+  hasResults: boolean;
   elmCallFilter: string;
   maxElmCalls: number;
   onElmCallFilterChange: (value: string) => void;
@@ -20,7 +22,8 @@ type Props = {
   pTrackerId: string;
 };
 
-export const ElmCallFilter = ({
+export const ElmCallFilterButtons = ({
+  hasResults,
   elmCallFilter,
   maxElmCalls,
   onElmCallFilterChange,
@@ -53,11 +56,12 @@ export const ElmCallFilter = ({
 
       <Input
         placeholder="EKP"
-        errorMessage={
-          elmCallFilter.length > maxElmCalls
-            ? `Over max elm call count: ${maxElmCalls}`
-            : undefined
-        }
+        errorMessage={getErrorMessage({
+          hasResults,
+          filter: elmCallFilter,
+          maxResults: maxElmCalls,
+          unitName: "elm calls",
+        })}
         value={elmCallFilter}
         onChange={onInputChange}
       />

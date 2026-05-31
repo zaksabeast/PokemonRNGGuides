@@ -317,7 +317,7 @@ const tools = {
     (mod) => mod.Static4Searcher,
   ),
   DpptCoinFlipSeedCalibrator: lazyLoad(
-    () => import("~/rngToolsUi/gen4/shared/dpptCoinFlipSeedCalibrator"),
+    () => import("~/rngToolsUi/gen4/shared/dpptCoinFlip/seedCalibrator"),
     (mod) => mod.DpptCoinFlipSeedCalibrator,
   ),
   Static4ChatotCount: lazyLoad(
@@ -357,7 +357,7 @@ const tools = {
     (mod) => mod.HoneyTreeTidSid,
   ),
   DpptCoinFlipSeedFinder: lazyLoad(
-    () => import("~/rngToolsUi/gen4/shared/dpptCoinFlipSeedFinder"),
+    () => import("~/rngToolsUi/gen4/shared/dpptCoinFlip/seedFinder"),
     (mod) => mod.DpptCoinFlipSeedFinder,
   ),
   HoneyTreeFindEncounter: lazyLoad(
@@ -387,10 +387,6 @@ const tools = {
   SelectSwarm4Target: lazyLoad(
     () => import("~/rngToolsUi/gen4/swarm/selectTarget"),
     (mod) => mod.SelectSwarm4Target,
-  ),
-  SwarmCoinFlipper: lazyLoad(
-    () => import("~/rngToolsUi/gen4/swarm/coinFlipper"),
-    (mod) => mod.SwarmCoinFlipper,
   ),
   SwarmFindEncounter: lazyLoad(
     () => import("~/rngToolsUi/gen4/swarm/findEncounter"),
@@ -425,8 +421,12 @@ const tools = {
     (mod) => mod.Egg4Search,
   ),
   DpptCoinFlipAdvanceFilter: lazyLoad(
-    () => import("~/rngToolsUi/gen4/shared/dpptCoinFlipAdvanceFilter"),
+    () => import("~/rngToolsUi/gen4/shared/dpptCoinFlip/advanceFilter"),
     (mod) => mod.DpptCoinFlipAdvanceFilter,
+  ),
+  Gen4SeedFinder: lazyLoad(
+    () => import("~/rngToolsUi/gen4/shared/seedFinder"),
+    (mod) => mod.Gen4SeedFinder,
   ),
 };
 

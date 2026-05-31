@@ -129,3 +129,29 @@ export const shouldDisableAdvanceFilterGenerate = (
 ) => {
   return mode === "embedded" && (seed == null || targetAdvance == null);
 };
+
+export const getErrorMessage = ({
+  filter,
+  hasResults,
+  maxResults,
+  unitName,
+}: {
+  filter: string;
+  hasResults: boolean;
+  maxResults: number;
+  unitName: "elm calls" | "coin flips";
+}) => {
+  if (filter.length === 0) {
+    return undefined;
+  }
+
+  if (!hasResults) {
+    return 'Click "Generate" to generate coin flips';
+  }
+
+  if (filter.length > maxResults) {
+    return `Over max ${unitName} count: ${maxResults}`;
+  }
+
+  return undefined;
+};

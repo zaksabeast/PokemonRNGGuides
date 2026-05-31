@@ -7,11 +7,11 @@ import {
   RngToolForm,
 } from "~/components";
 import { useAtom } from "jotai";
-import { gen4StateAtom } from "./state";
+import { gen4StateAtom } from "../state";
 import { rngTools, type CoinFlip, type CoinFlipAdvanceState } from "~/rngTools";
 import { type Translations } from "~/translations";
-import { findCoinFlipSequenceIndices } from "./coinFlipUtils";
-import { CoinFlipFilterButtons } from "./dpptCoinFlipButtons";
+import { findCoinFlipSequenceIndices } from "./utils";
+import { CoinFlipFilterButtons } from "./coinFlipButtons";
 import {
   advanceFilterValidator,
   decorateAdvanceResultsWithTarget,
@@ -23,8 +23,8 @@ import {
   shouldDisableAdvanceFilterGenerate,
   type AdvanceFilterPageSettings,
   type AdvanceFilterResult,
-} from "./advanceFilter/utils";
-import { AdvanceFilterFields } from "./advanceFilter/fields";
+} from "../advanceFilter/utils";
+import { AdvanceFilterFields } from "../advanceFilter/fields";
 
 type Result = AdvanceFilterResult<CoinFlipAdvanceState>;
 
@@ -108,7 +108,7 @@ export const DpptCoinFlipAdvanceFilter = () => {
   const { hasMatch, markedResults, autoCurrentPage } = markResultsWithCoinFlips(
     {
       results,
-      filter: state.coinFlipFilter,
+      filter: state.gameState.coinFlips,
       pageSize: pageSettings.pageSize,
     },
   );
@@ -118,7 +118,7 @@ export const DpptCoinFlipAdvanceFilter = () => {
       ...prev,
       currentPage: autoCurrentPage,
     }));
-  }, [state.coinFlipFilter, autoCurrentPage]);
+  }, [state.gameState.coinFlips, autoCurrentPage]);
 
   const initialValues = getAdvanceFilterInitialValues(
     resolvedSeed,
@@ -128,7 +128,9 @@ export const DpptCoinFlipAdvanceFilter = () => {
   return (
     <RngToolForm<LooseAdvanceFilterFormState, Result>
       additionalButtons={
-        hasResults && state.coinFlipFilter.length > 0 && hasMatch === false ? (
+        hasResults &&
+        state.gameState.coinFlips.length > 0 &&
+        hasMatch === false ? (
           <Alert
             showIcon
             type="error"
@@ -161,9 +163,9 @@ export const DpptCoinFlipAdvanceFilter = () => {
         <CoinFlipFilterButtons
           hasResults={hasResults}
           maxCoinFlips={results.length}
-          coinFlipFilter={state.coinFlipFilter}
-          onCoinFlipFilterChange={(coinFlipFilter) => {
-            setState({ coinFlipFilter });
+          coinFlipFilter={state.gameState.coinFlips}
+          onCoinFlipFilterChange={(coinFlips) => {
+            setState({ gameState: { coinFlips } });
           }}
           headsTrackerId="coin_flip_advance_filter_heads"
           tailsTrackerId="coin_flip_advance_filter_tails"

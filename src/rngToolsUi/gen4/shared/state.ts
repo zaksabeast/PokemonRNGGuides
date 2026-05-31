@@ -9,7 +9,8 @@ import {
 } from "~/rngToolsUi/timer/atoms";
 import { Gen4Console, Gen4GameVersion } from "../gen4types";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
-import { sanitizeFlips } from "./coinFlipUtils";
+import { sanitizeFlips } from "./dpptCoinFlip/utils";
+import { sanitizeElmCalls } from "./hgssElmCalls/utils";
 
 type Gen4Target = {
   seedTime: SeedTime4 | null;
@@ -37,8 +38,17 @@ const initialGen4ToolConfig: Gen4ToolConfig = {
 
 const gen4ConfigAtom = atom<Gen4ToolConfig>(initialGen4ToolConfig);
 
-const initialCoinFlipString = "";
-const gen4CoinFlipStringAtom = atom<string>(initialCoinFlipString);
+type Gen4GameState = {
+  coinFlips: string;
+  elmCalls: string;
+};
+
+const initialGen4GameState: Gen4GameState = {
+  coinFlips: "",
+  elmCalls: "",
+};
+
+const gen4GameStateAtom = atom<Gen4GameState>(initialGen4GameState);
 
 export const gen4TimerAtom = createGen4TimerAtom();
 
@@ -46,7 +56,7 @@ export type Gen4State = {
   config: Gen4ToolConfig;
   timer: Gen4Timer;
   target: Gen4Target;
-  coinFlipFilter: string;
+  gameState: Gen4GameState;
 };
 
 type Gen4StateUpdate = {
@@ -58,7 +68,7 @@ type Gen4StateUpdate = {
     hitDelay?: number;
   };
   target: Partial<Gen4Target>;
-  coinFlipFilter: string;
+  gameState: Partial<Gen4GameState>;
 };
 
 export const gen4StateAtom = atom(
@@ -67,13 +77,13 @@ export const gen4StateAtom = atom(
       timer: get(gen4TimerAtom),
       config: get(gen4ConfigAtom),
       target: get(gen4TargetAtom),
-      coinFlipFilter: get(gen4CoinFlipStringAtom),
+      gameState: get(gen4GameStateAtom),
     };
   },
   (
     get,
     set,
-    { timer, target, config, coinFlipFilter }: Partial<Gen4StateUpdate>,
+    { timer, target, config, gameState }: Partial<Gen4StateUpdate>,
   ) => {
     const currentTarget = get(gen4TargetAtom);
     const nextTarget =
@@ -91,10 +101,17 @@ export const gen4StateAtom = atom(
       set(gen4ConfigAtom, nextConfig);
     }
 
-    const coinFlipFilterUpdate = target != null ? "" : coinFlipFilter;
+    const coinFlipUpdate = target != null ? "" : gameState?.coinFlips;
+    const elmCallFilterUpdate = target != null ? "" : gameState?.elmCalls;
 
-    if (coinFlipFilterUpdate != null) {
-      set(gen4CoinFlipStringAtom, sanitizeFlips(coinFlipFilterUpdate));
+    if (coinFlipUpdate != null || elmCallFilterUpdate != null) {
+      set(gen4GameStateAtom, (prev) => {
+        return {
+          ...prev,
+          coinFlips: sanitizeFlips(coinFlipUpdate ?? prev.coinFlips),
+          elmCalls: sanitizeElmCalls(elmCallFilterUpdate ?? prev.elmCalls),
+        };
+      });
     }
 
     const seedTime = nextTarget.seedTime;
@@ -119,7 +136,7 @@ export const useResetGen4State = () => {
       config: initialGen4ToolConfig,
       timer: initialGen4Timer.settings,
       target: initialGen4Target,
-      coinFlipFilter: initialCoinFlipString,
+      gameState: initialGen4GameState,
     });
   }, [route, setGen4State]);
 };

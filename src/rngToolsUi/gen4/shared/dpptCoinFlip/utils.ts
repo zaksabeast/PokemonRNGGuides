@@ -1,5 +1,6 @@
 import { type CoinFlip } from "~/rngTools";
 import { findSubArrayIndices, type IndexRange } from "~/utils/findIndexBy";
+import { matchesSubsequence } from "~/utils/matchesSubsequence";
 
 export type SmallCoinFlip = "H" | "T";
 
@@ -39,16 +40,9 @@ export const findCoinFlipSequenceIndices = (
 };
 
 export const matchesCoinFlipFilter = (
-  coinFlips: CoinFlip[],
+  coinFlips: SmallCoinFlip[],
   filterString: string,
 ): boolean => {
-  if (filterString.length === 0) {
-    return true;
-  }
   const filterList = splitFlips(filterString);
-  const shrunk = shrinkCoinFlips(coinFlips);
-  return (
-    shrunk.length >= filterList.length &&
-    filterList.every((flip, i) => shrunk[i] === flip)
-  );
+  return matchesSubsequence(coinFlips, filterList);
 };

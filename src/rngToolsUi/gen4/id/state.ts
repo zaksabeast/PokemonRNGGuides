@@ -1,6 +1,6 @@
 import { atom, useAtom } from "jotai";
-import { createGen4TimerAtom } from "~/hooks/useGen4Timer";
 import { Id4 } from "~/rngTools";
+import { createGen4TimerAtom } from "~/rngToolsUi/timer/atoms";
 import { Gen4GameAndConsole } from "../gen4types";
 
 export type Id4State = {

@@ -359,7 +359,7 @@ const getResultSetupInfoColumns = ({
 type Props = {
   selectedPidPathResult: PidPathResult;
   rngManipulatedLeadPid: boolean;
-  setTargetSetup: (targetSetup: TargetSetup) => void;
+  setTargetSetup: (targetSetup: TargetSetup | null) => void;
 };
 
 const setupInfoToTargetSetup = (setupInfo: ResultSetupInfo): TargetSetup => {
@@ -408,8 +408,10 @@ export const Wild3ResultSetupInfos = ({
     usesPainting,
   });
 
-  const onClickResultRow = (setupInfo: ResultSetupInfo) => {
-    setTargetSetup(setupInfoToTargetSetup(setupInfo));
+  const onClickResultRow = (setupInfo: ResultSetupInfo | null) => {
+    const newTargetSetup =
+      setupInfo == null ? null : setupInfoToTargetSetup(setupInfo);
+    setTargetSetup(newTargetSetup);
   };
 
   return (
@@ -417,10 +419,7 @@ export const Wild3ResultSetupInfos = ({
       columns={resultSetupInfoColumns}
       rowKey="uid"
       dataSource={selectedPidPathResult.resultSetupInfos}
-      rowSelection={{
-        type: "radio",
-        onSelect: onClickResultRow,
-      }}
+      onClickResultRow={onClickResultRow}
     />
   );
 };

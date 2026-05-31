@@ -14,11 +14,11 @@ import {
 import { Gen4Timer as Gen4TimerComponent } from "~/components/gen4Timer";
 import { ZodSerializedDecimal, ZodSerializedOptional } from "~/utils/number";
 import { ZodConsole } from "~/rngTools";
+import { createGen4TimerAtom } from "~/rngToolsUi/timer/atoms";
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
 import { z } from "zod";
 import { useHydrate } from "~/hooks/useHydrate";
 import { hydrationLock, HydrationLock } from "~/utils/hydration";
-import { createGen4TimerAtom, useGen4Timer } from "~/hooks/useGen4Timer";
 import { useStateHistory } from "~/hooks/useStateHistory";
 import { UndoButton } from "./undoButton";
 
@@ -26,24 +26,24 @@ const timerStateAtom = createGen4TimerAtom();
 
 const FormStateSchema = z.object({
   console: ZodConsole,
-  min_time_ms: ZodSerializedDecimal,
-  calibrated_delay: ZodSerializedDecimal,
-  calibrated_second: ZodSerializedDecimal,
-  target_delay: ZodSerializedDecimal,
-  target_second: ZodSerializedDecimal,
-  delay_hit: ZodSerializedOptional(ZodSerializedDecimal),
+  minTimeMs: ZodSerializedDecimal,
+  calibratedDelay: ZodSerializedDecimal,
+  calibratedSecond: ZodSerializedDecimal,
+  targetDelay: ZodSerializedDecimal,
+  targetSecond: ZodSerializedDecimal,
+  delayHit: ZodSerializedOptional(ZodSerializedDecimal),
 });
 
 export type FormState = z.infer<typeof FormStateSchema>;
 
 const defaultValues: FormState = {
   console: "NdsSlot1",
-  min_time_ms: 14000,
-  calibrated_delay: 500,
-  calibrated_second: 14,
-  target_delay: 600,
-  target_second: 50,
-  delay_hit: null,
+  minTimeMs: 14000,
+  calibratedDelay: 500,
+  calibratedSecond: 14,
+  targetDelay: 600,
+  targetSecond: 50,
+  delayHit: null,
 };
 
 const timerSettingsAtom = atomWithPersistence(
@@ -68,134 +68,134 @@ const fields: Field[] = [
   },
   {
     label: "Min Time (ms)",
-    input: <FormikNumberInput<FormState> name="min_time_ms" numType="float" />,
+    input: <FormikNumberInput<FormState> name="minTimeMs" numType="float" />,
   },
   {
     label: "Calibrated Delay",
     input: (
-      <FormikNumberInput<FormState> name="calibrated_delay" numType="float" />
+      <FormikNumberInput<FormState> name="calibratedDelay" numType="float" />
     ),
   },
   {
     label: "Calibrated Seconds",
     input: (
-      <FormikNumberInput<FormState> name="calibrated_second" numType="float" />
+      <FormikNumberInput<FormState> name="calibratedSecond" numType="float" />
     ),
   },
   {
     label: "Target Delay",
-    input: <FormikNumberInput<FormState> name="target_delay" numType="float" />,
+    input: <FormikNumberInput<FormState> name="targetDelay" numType="float" />,
   },
   {
     label: "Target Seconds",
-    input: (
-      <FormikNumberInput<FormState> name="target_second" numType="float" />
-    ),
+    input: <FormikNumberInput<FormState> name="targetSecond" numType="float" />,
   },
   {
     label: "Delay Hit",
-    input: <FormikNumberInput<FormState> name="delay_hit" numType="float" />,
+    input: <FormikNumberInput<FormState> name="delayHit" numType="float" />,
   },
 ];
 
 type InnerProps = {
-  timerSettings: FormState;
+  initialSettings: FormState;
   onUpdate: (opts: HydrationLock<FormState>) => void;
 };
 
-const InnerGen4Timer = ({ timerSettings, onUpdate }: InnerProps) => {
+const InnerGen4Timer = ({ initialSettings, onUpdate }: InnerProps) => {
   const hasInited = React.useRef(false);
-  const { initTimer } = useGen4Timer(timerStateAtom);
+  const [timer, updateTimer] = useAtom(timerStateAtom);
 
   React.useEffect(() => {
     if (hasInited.current) {
       return;
     }
     hasInited.current = true;
-    initTimer(timerSettings);
-  }, [initTimer, timerSettings]);
+    updateTimer(initialSettings);
+  }, [updateTimer, initialSettings]);
 
-  const updateTimerSettings = async (formState: FormState) => {
-    const newTimer = await initTimer(formState);
+  const updateTimerSettings = (formState: FormState) => {
+    const newTimer = updateTimer(formState);
 
     onUpdate(
       hydrationLock({
-        ...newTimer.timer,
-        delay_hit: null,
+        ...newTimer.settings,
+        delayHit: null,
       }),
     );
 
-    return newTimer.timer;
+    return newTimer.settings;
   };
 
   const history = useStateHistory({
-    initialSettings: timerSettings,
+    initialSettings,
     updateTimerSettings,
   });
 
   const onSubmit: RngToolSubmit<FormState> = async (opts, { setValue }) => {
-    const updatedTimer = await updateTimerSettings(opts);
+    const updatedTimer = updateTimerSettings(opts);
 
-    setValue("calibrated_delay", updatedTimer.calibrated_delay);
-    setValue("calibrated_second", updatedTimer.calibrated_second);
+    setValue("calibratedDelay", updatedTimer.calibratedDelay);
+    setValue("calibratedSecond", updatedTimer.calibratedSecond);
     setValue("console", updatedTimer.console);
-    setValue("delay_hit", null);
-    setValue("min_time_ms", updatedTimer.min_time_ms);
-    setValue("target_delay", updatedTimer.target_delay);
-    setValue("target_second", updatedTimer.target_second);
+    setValue("delayHit", null);
+    setValue("minTimeMs", updatedTimer.minTimeMs);
+    setValue("targetDelay", updatedTimer.targetDelay);
+    setValue("targetSecond", updatedTimer.targetSecond);
 
-    history.addIfNew({ ...updatedTimer, delay_hit: null });
+    history.addIfNew({ ...updatedTimer, delayHit: null });
   };
 
   return (
     <Gen4TimerComponent
-      selfInit={false}
       timer={timerStateAtom}
       trackerId="mystic_timer_gen4"
-      is3ds={timerSettings.console === "ThreeDs"}
-      fields={
-        <>
-          <RngToolForm<FormState, number[]>
-            fields={fields}
-            initialValues={timerSettings}
-            onSubmit={onSubmit}
-            submitTrackerId="set_gen4_timer"
-            submitButtonLabel="Set Timer"
-            additionalButtons={
-              <UndoButton
-                history={history}
-                trackerId="undo_gen4_calibration"
-                fields={{
-                  console: true,
-                  min_time_ms: true,
-                  calibrated_delay: true,
-                  calibrated_second: true,
-                  target_delay: true,
-                  target_second: true,
-                  delay_hit: true,
-                }}
-              />
-            }
-          />
-          <Alert
-            type="tip"
-            showIcon
-            title="Want easier 3ds RNG?"
-            mt={12}
-            description={
-              <Flex vertical>
-                <Typography.Text>
-                  Set the console to 3ds and click "Set Timer" to see the 3ds
-                  helper.
-                </Typography.Text>
-                <Link href="/3ds-helper/">
-                  View the 3ds Helper guide for more details.
-                </Link>
-              </Flex>
-            }
-          />
-        </>
-      }
+      disableAdvancedSettings
+      is3ds={timer.settings.console === "ThreeDs"}
+      slots={{
+        belowStartButton: (
+          <>
+            <RngToolForm<FormState, number[]>
+              fields={fields}
+              initialValues={initialSettings}
+              onSubmit={onSubmit}
+              submitTrackerId="set_gen4_timer"
+              submitButtonLabel="Set Timer"
+              additionalButtons={
+                <UndoButton
+                  history={history}
+                  trackerId="undo_gen4_calibration"
+                  fields={{
+                    console: true,
+                    minTimeMs: true,
+                    calibratedDelay: true,
+                    calibratedSecond: true,
+                    targetDelay: true,
+                    targetSecond: true,
+                    delayHit: true,
+                  }}
+                />
+              }
+            />
+            <Alert
+              type="tip"
+              showIcon
+              title="Want easier 3ds RNG?"
+              mt={12}
+              description={
+                <Flex vertical>
+                  <Typography.Text>
+                    Set the console to 3ds and click "Set Timer" to see the 3ds
+                    helper.
+                  </Typography.Text>
+                  <Link href="/3ds-helper/">
+                    View the 3ds Helper guide for more details.
+                  </Link>
+                </Flex>
+              }
+            />
+          </>
+        ),
+      }}
     />
   );
 };
@@ -208,5 +208,7 @@ export const Gen4Timer = () => {
     return <Skeleton />;
   }
 
-  return <InnerGen4Timer timerSettings={client} onUpdate={setTimerSettings} />;
+  return (
+    <InnerGen4Timer initialSettings={client} onUpdate={setTimerSettings} />
+  );
 };

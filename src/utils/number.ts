@@ -49,7 +49,7 @@ export type DecimalString = z.infer<typeof ZodDecimalString>;
 export type HexString = z.infer<typeof ZodHexString>;
 
 export const capPrecision = (value: number): number => {
-  return parseFloat(value.toFixed(3));
+  return Math.trunc(value * 1000) / 1000;
 };
 
 export const toDecimalString = (num: number): DecimalString =>

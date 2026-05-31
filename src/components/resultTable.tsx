@@ -6,6 +6,7 @@ import { ClassNames } from "@emotion/react";
 import * as tst from "ts-toolbelt";
 import { useFormContext, useFormState } from "react-hook-form";
 import { identity } from "lodash-es";
+import { MaxWidthToggleButton } from "./maxWidthToggleButton";
 
 export type SingleResultColumn<T> = keyof T extends string
   ? {
@@ -86,12 +87,15 @@ const TABLE_SCROLL = { x: true } as const;
 type FormikResultTableProps<Record extends tst.O.Object> = tst.O.Overwrite<
   TableProps<Record>,
   { columns: ResultColumn<Record>[] }
->;
+> & {
+  onClickResultRow?: (record: Record | null) => void;
+};
 
 export const ResultTable = <Record extends tst.O.Object>(
   props: FormikResultTableProps<Record>,
 ) => {
   const columns = (props.columns ?? []).map(applyMonospace);
+  const [selectedRowKeys, setSelectedRowKeys] = React.useState<React.Key[]>([]);
 
   const titleWithTooltip = (
     title: React.ReactNode,
@@ -149,15 +153,53 @@ export const ResultTable = <Record extends tst.O.Object>(
     );
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { columns: _, ...propsWithColumns } = props;
+  const {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    columns: _,
+    onClickResultRow,
+    pagination,
+    rowSelection,
+    ...propsForTable
+  } = props;
+
+  const paginationToUse =
+    pagination === false
+      ? false
+      : {
+          ...pagination,
+          showTotal: (total: number, range: [number, number]) => (
+            <>
+              <MaxWidthToggleButton />
+              {typeof pagination === "object" &&
+                pagination.showTotal?.(total, range)}
+            </>
+          ),
+        };
+
+  const rowSelectionToUse: FormikResultTableProps<Record>["rowSelection"] =
+    rowSelection ??
+    (onClickResultRow != null
+      ? {
+          type: "checkbox",
+          selectedRowKeys,
+          hideSelectAll: true,
+          onChange: (newSelectedRowKeys, selectedRows) => {
+            const latestKey = newSelectedRowKeys.slice(-1);
+            const latestRows = selectedRows.slice(-1);
+            setSelectedRowKeys(latestKey);
+            onClickResultRow(latestRows[0] ?? null);
+          },
+        }
+      : undefined);
 
   return (
     <ClassNames>
       {({ css }) => (
         <Table
           scroll={TABLE_SCROLL}
-          {...propsWithColumns}
+          {...propsForTable}
+          rowSelection={rowSelectionToUse}
+          pagination={paginationToUse}
           className={css({
             "&&&": {
               width: "100%",
@@ -171,6 +213,11 @@ export const ResultTable = <Record extends tst.O.Object>(
               ".disable-vertical-padding": {
                 paddingTop: 0,
                 paddingBottom: 0,
+              },
+              ".ant-pagination-total-text": {
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
               },
             },
           })}

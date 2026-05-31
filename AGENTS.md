@@ -69,6 +69,13 @@ Some commands build or touch generated WASM/Rust artifacts. Avoid full-suite com
 - Avoid ad hoc parsing if a structured helper already exists.
 - Keep imports aligned with existing path aliases and lint rules.
 
+### Persisted State Migrations
+
+- Any schema change for persisted atoms must include a migration path. Do not rely on persisted state merging with initial values.
+- For newly added persisted fields, prefer parsing older data with `optional()` plus `default()` or a small `transform()` that fills the current default value.
+- For larger persisted shape changes, use a versioned `z.discriminatedUnion()` with a `version` tag and `transform()` older versions into the current shape.
+- Follow the existing Gen 5 timer migration pattern in `src/rngToolsUi/timer/gen5/standard.tsx` for versioned persisted state updates.
+
 ## Rust/WASM Guidelines
 
 - Keep Rust changes localized under `rng_tools`.

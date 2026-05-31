@@ -66,6 +66,7 @@ export { CopyToClipboardButton } from "./copyToClipboardButton";
 export { TextArea } from "./textArea";
 export { LinkButton } from "./linkButton";
 export { MinMaxContainer } from "./minMaxContainer";
+export { MaxWidthToggleButton } from "./maxWidthToggleButton";
 export { FormikTextArea } from "./textArea";
 export { TooltipWithIcon } from "./tooltipWithIcon";
 export {

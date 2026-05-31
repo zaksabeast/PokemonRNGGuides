@@ -8,12 +8,13 @@ import {
   Flex,
   MultiTimer,
 } from "~/components";
+import { ZodSerializedDecimal, ZodSerializedOptional } from "~/utils/number";
 import {
-  capPrecision,
-  ZodSerializedDecimal,
-  ZodSerializedOptional,
-} from "~/utils/number";
-import { rngTools, ZodConsole } from "~/rngTools";
+  ZodConsole,
+  calibrateGen5StandardTimer,
+  createGen5StandardTimer,
+  minutesBefore,
+} from "~/rngTools";
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
 import { useTimerSettings } from "~/state/timerSettings";
 import { z } from "zod";
@@ -38,22 +39,47 @@ const timerStateAtom = atomWithPersistence(
   },
 );
 
-const FormStateSchema = z.object({
+const V0FormStateSchema = z
+  .object({
+    version: z.literal(0).optional(),
+    console: ZodConsole,
+    min_time_ms: ZodSerializedDecimal,
+    target_second: ZodSerializedDecimal,
+    calibration: ZodSerializedDecimal,
+    second_hit: ZodSerializedOptional(ZodSerializedDecimal),
+  })
+  .transform((data) => ({
+    version: 1 as const,
+    console: data.console,
+    minTimeMs: data.min_time_ms,
+    targetSecond: data.target_second,
+    calibration: data.calibration,
+    secondHit: data.second_hit,
+  }));
+
+const V1FormStateSchema = z.object({
+  version: z.literal(1),
   console: ZodConsole,
-  min_time_ms: ZodSerializedDecimal,
-  target_second: ZodSerializedDecimal,
+  minTimeMs: ZodSerializedDecimal,
+  targetSecond: ZodSerializedDecimal,
   calibration: ZodSerializedDecimal,
-  second_hit: ZodSerializedOptional(ZodSerializedDecimal),
+  secondHit: ZodSerializedOptional(ZodSerializedDecimal),
 });
+
+const FormStateSchema = z.discriminatedUnion("version", [
+  V0FormStateSchema,
+  V1FormStateSchema,
+]);
 
 export type FormState = z.infer<typeof FormStateSchema>;
 
 const initialValues: FormState = {
+  version: 1,
   console: "NdsSlot1",
-  min_time_ms: 14000,
-  target_second: 50,
+  minTimeMs: 14000,
+  targetSecond: 50,
   calibration: -95,
-  second_hit: null,
+  secondHit: null,
 };
 
 const timerSettingsAtom = atomWithPersistence(
@@ -78,13 +104,11 @@ const fields: Field[] = [
   },
   {
     label: "Min Time (ms)",
-    input: <FormikNumberInput<FormState> name="min_time_ms" numType="float" />,
+    input: <FormikNumberInput<FormState> name="minTimeMs" numType="float" />,
   },
   {
     label: "Target Second",
-    input: (
-      <FormikNumberInput<FormState> name="target_second" numType="float" />
-    ),
+    input: <FormikNumberInput<FormState> name="targetSecond" numType="float" />,
   },
   {
     label: "Calibration",
@@ -92,7 +116,7 @@ const fields: Field[] = [
   },
   {
     label: "Second Hit",
-    input: <FormikNumberInput<FormState> name="second_hit" numType="float" />,
+    input: <FormikNumberInput<FormState> name="secondHit" numType="float" />,
   },
 ];
 
@@ -109,12 +133,12 @@ export const InnerGen5StandardTimer = ({
   initialSettings,
   onUpdate,
 }: InnerProps) => {
-  const updateTimerSettings = async (formState: FormState) => {
-    const milliseconds = await rngTools.create_gen5_standard_timer(formState);
+  const updateTimerSettings = (formState: FormState) => {
+    const milliseconds = createGen5StandardTimer(formState);
     setTimer(
       hydrationLock({
-        milliseconds: [...milliseconds],
-        minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
+        milliseconds,
+        minutesBeforeTarget: minutesBefore(milliseconds),
       }),
     );
     onUpdate(hydrationLock(formState));
@@ -128,27 +152,22 @@ export const InnerGen5StandardTimer = ({
   const onSubmit: RngToolSubmit<FormState> = async (opts, { setValue }) => {
     let settings = opts;
 
-    if (opts.second_hit != null) {
-      const calibrated = await rngTools.calibrate_gen5_standard_timer(
-        settings,
-        opts.second_hit,
-      );
+    if (opts.secondHit != null) {
+      const calibrated = calibrateGen5StandardTimer(settings, opts.secondHit);
       settings = {
-        console: opts.console,
-        min_time_ms: capPrecision(calibrated.min_time_ms),
-        target_second: capPrecision(calibrated.target_second),
-        calibration: capPrecision(calibrated.calibration),
-        second_hit: null,
+        ...calibrated,
+        version: 1,
+        secondHit: null,
       };
 
       setValue("console", settings.console);
-      setValue("min_time_ms", settings.min_time_ms);
-      setValue("target_second", settings.target_second);
+      setValue("minTimeMs", settings.minTimeMs);
+      setValue("targetSecond", settings.targetSecond);
       setValue("calibration", settings.calibration);
-      setValue("second_hit", settings.second_hit);
+      setValue("secondHit", settings.secondHit);
     }
 
-    await updateTimerSettings(settings);
+    updateTimerSettings(settings);
     history.addIfNew(settings);
   };
 
@@ -172,11 +191,12 @@ export const InnerGen5StandardTimer = ({
             history={history}
             trackerId="undo_gen5_standard_calibration"
             fields={{
+              version: true,
               console: true,
-              min_time_ms: true,
-              target_second: true,
+              minTimeMs: true,
+              targetSecond: true,
               calibration: true,
-              second_hit: true,
+              secondHit: true,
             }}
           />
         }

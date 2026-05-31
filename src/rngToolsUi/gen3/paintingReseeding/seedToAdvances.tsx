@@ -269,7 +269,7 @@ const MyFields = () => {
 };
 
 type Props = {
-  onSelected?: (before: number, after: number) => void;
+  onSelected?: (advs: { before: number; after: number } | null) => void;
 };
 
 let nextUid = 0;
@@ -355,10 +355,14 @@ export const EmeraldSeedToAdvances = ({ onSelected }: Props) => {
   const onClickResultRow =
     onSelected == null
       ? undefined
-      : (row: Result) => {
+      : (row: Result | null) => {
           onSelected(
-            row.advs.frame_before_painting,
-            row.advs.adv_after_painting,
+            row != null
+              ? {
+                  before: row.advs.frame_before_painting,
+                  after: row.advs.adv_after_painting,
+                }
+              : null,
           );
         };
 

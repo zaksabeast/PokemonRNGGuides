@@ -1,7 +1,7 @@
 import { atom, useAtom } from "jotai";
-import { createGen4TimerAtom } from "~/hooks/useGen4Timer";
 import { Gen4GameAndConsole } from "../gen4types";
 import type { Static4State as RngToolStatic4State, Species } from "~/rngTools";
+import { createGen4TimerAtom } from "~/rngToolsUi/timer/atoms";
 import { MinMaxStats } from "~/types";
 
 export type Static4Target = Omit<RngToolStatic4State["state"], "ivs"> & {

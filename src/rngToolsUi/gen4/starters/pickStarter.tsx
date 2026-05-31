@@ -34,6 +34,7 @@ import {
   Gen4Starter,
   useStarterState,
   allStarters,
+  starterTimer,
 } from "./state";
 import { getStatRange } from "~/types/statRange";
 import { Gen4GameVersion } from "../gen4types";
@@ -44,6 +45,7 @@ import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { Translations } from "~/translations";
 import { MONTHS, MonthSchema, monthToRustFilter } from "~/utils/time";
 import { useWatch } from "~/hooks/form";
+import { useAtom } from "jotai";
 
 type Result = FlattenIvs<
   Static4State["state"] & {
@@ -62,11 +64,16 @@ type SelectButtonProps = {
 const SelectButton = ({ target }: SelectButtonProps) => {
   const [, setCurrentStep] = useCurrentStep();
   const [, setState] = useStarterState();
+  const [, updateTimer] = useAtom(starterTimer);
+  const targetDelay = target.seed_time.delay;
+  const targetSecond = target.seed_time.datetime.second;
+
   return (
     <Button
       trackerId="select_gen4_starter"
       onClick={() => {
         setState((prev) => ({ ...prev, target }));
+        updateTimer({ targetDelay, targetSecond });
         setCurrentStep((prev) => prev + 1);
       }}
     >

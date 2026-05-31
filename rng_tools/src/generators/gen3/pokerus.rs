@@ -56,15 +56,18 @@ fn generate_gen3_pokerus_state(
     advance_before_pickup: usize,
 ) -> Pokerus3GeneratorResult {
     let mut advance_before_pokerus = advance_before_pickup;
-    let mut rand = || -> u16 {
-        advance_before_pokerus += 1;
-        rng.rand()
-    };
+
+    macro_rules! rand {
+        () => {{
+            advance_before_pokerus += 1;
+            rng.rand::<u16>()
+        }};
+    }
 
     let pickup_items: Vec<PickUpItem> = (0..opts.pickup_pokemon_count)
         .map(|_| {
-            if rand() % 10 == 0 {
-                let chance = rand() % 100;
+            if rand!() % 10 == 0 {
+                let chance = rand!() % 100;
 
                 for (i, item) in PICKUP_ITEM_CHANCE.iter().enumerate() {
                     if chance < *item {
@@ -78,29 +81,26 @@ fn generate_gen3_pokerus_state(
         })
         .collect();
     // vblanks between pickup and TV shows. Either 4 (~80% of the time) or 6 (~20%). The tool assumes 4.
-    for _ in 0..4 {
-        rand();
-    }
+    advance_before_pokerus += 4;
+    rng.jump_const::<4>();
 
     if opts.entered_hall_of_fame {
         if opts.has_empty_pokenews_slot {
-            rand();
+            rand!();
         }
-        if opts.can_have_new_mass_outbreak && rand() <= 0x147 {
-            rand();
+        if opts.can_have_new_mass_outbreak && rand!() <= 0x147 {
+            rand!();
         }
     }
-    rand(); // TV pokenew for not catching the Pokémon
+    rand!(); // TV pokenew for not catching the Pokémon
 
     // vblanks between TV shows and Pokerus
-    for _ in 0..74 {
-        rand();
-    }
+    advance_before_pokerus += 74;
+    rng.jump_const::<74>();
 
     if opts.level_up {
-        for _ in 0..2 {
-            rand();
-        }
+        advance_before_pokerus += 2;
+        rng.jump_const::<2>();
     }
 
     let pokerus_rng = rng.rand::<u16>();

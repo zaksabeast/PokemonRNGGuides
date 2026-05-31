@@ -19,10 +19,15 @@ import { useHydrate } from "~/hooks/useHydrate";
 import * as tst from "ts-toolbelt";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
-const MultiTimerStateSchema = z.object({
-  showAllTimers: z.boolean(),
-  maxBeepCount: z.number(),
-});
+const MultiTimerStateSchema = z
+  .object({
+    showAllTimers: z.boolean(),
+    maxBeepCount: z.number().optional(),
+  })
+  .transform((obj) => ({
+    ...obj,
+    maxBeepCount: obj.maxBeepCount ?? 5,
+  }));
 
 type MultiTimerState = z.infer<typeof MultiTimerStateSchema>;
 
@@ -44,6 +49,10 @@ type InnerProps = {
   disableStart?: boolean;
   startButtonTrackerId: string;
   stopButtonTrackerId: string;
+  slots?: {
+    aboveStartButton?: React.ReactNode;
+    belowStartButton?: React.ReactNode;
+  };
 };
 
 const InnerMultiTimer = ({
@@ -55,6 +64,7 @@ const InnerMultiTimer = ({
   startButtonTrackerId,
   stopButtonTrackerId,
   labels,
+  slots,
 }: InnerProps) => {
   const t = useActiveRouteTranslations();
   const [startTimeMs, setStartTimeMs] = React.useState<number | null>(null);
@@ -222,26 +232,36 @@ const InnerMultiTimer = ({
         </>
       )}
 
-      <FormFieldTable fields={timerSettingFields} />
+      <Flex gap={8} vertical>
+        <FormFieldTable fields={timerSettingFields} />
+        {slots?.aboveStartButton}
 
-      <Button
-        disabled={disableStart && startTimeMs == null}
-        trackerId={
-          startTimeMs != null ? startButtonTrackerId : stopButtonTrackerId
-        }
-        onClick={() => {
-          const newStartTimeMs = startTimeMs == null ? performance.now() : null;
-          setStartTimeMs(newStartTimeMs);
-          setCurrentTimerIndex(0);
-          // Stop audio when timer is stopped
-          if (newStartTimeMs == null) {
-            stopBeeps();
-            stopKeepAlive();
+        <Button
+          disabled={disableStart && startTimeMs == null}
+          trackerId={
+            startTimeMs != null ? startButtonTrackerId : stopButtonTrackerId
           }
-        }}
-      >
-        {startTimeMs == null ? t["Start Timer"] : t["Stop Timer"]}
-      </Button>
+          onClick={() => {
+            const newStartTimeMs =
+              startTimeMs == null ? performance.now() : null;
+            setStartTimeMs(newStartTimeMs);
+            setCurrentTimerIndex(0);
+            // Stop audio when timer is stopped
+            if (newStartTimeMs == null) {
+              stopBeeps();
+              stopKeepAlive();
+            }
+          }}
+        >
+          {startTimeMs == null ? t["Start Timer"] : t["Stop Timer"]}
+        </Button>
+
+        {slots?.belowStartButton != null && (
+          <Flex vertical gap={8} mt={16}>
+            {slots?.belowStartButton}
+          </Flex>
+        )}
+      </Flex>
     </Flex>
   );
 };
@@ -251,12 +271,12 @@ const getMinutesBeforeTarget = (milliseconds: number[]) => {
   return Math.floor(summedMs / 60000);
 };
 
-type Props = tst.O.Optional<
+export type MultiTimerProps = tst.O.Optional<
   tst.O.Omit<InnerProps, "state" | "setState">,
   "minutesBeforeTarget"
 >;
 
-export const MultiTimer = (props: Props) => {
+export const MultiTimer = (props: MultiTimerProps) => {
   const [lockedState, setState] = useAtom(multiTimerStateAtom);
   const { hydrated, client: state } = useHydrate(lockedState);
 

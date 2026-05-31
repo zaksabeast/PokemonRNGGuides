@@ -120,8 +120,8 @@ const targetSetupAtomSchema = z.object({
         after: z.number().int().min(0).max(0xffffffff),
       }),
       targetMethod: z.enum(gen3Methods),
-      requiresWhiteFlute: z.boolean(),
-      safariPokeblock: pokeblockSchema,
+      requiresWhiteFlute: z.boolean().optional().default(false),
+      safariPokeblock: pokeblockSchema.optional().default(null),
     })
     .nullable(),
 });
@@ -177,7 +177,7 @@ export const Wild3TargetSetupSearcher_WithSetTargetSetup = () => {
     return <Skeleton />;
   }
 
-  const handleSetTargetSetup = (targetSetup: TargetSetup) => {
+  const handleSetTargetSetup = (targetSetup: TargetSetup | null) => {
     setTargetSetup(
       hydrationLock({
         targetSetup,

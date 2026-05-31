@@ -24,7 +24,7 @@ import {
   pkmFilterFieldsToRustInput,
   pkmFilterSchema,
 } from "~/components/pkmFilter";
-import { useStatic4State } from "./state";
+import { static4TimerAtom, useStatic4State } from "./state";
 import {
   flattenIvs,
   FlattenIvs,
@@ -68,6 +68,7 @@ type SelectButtonProps = {
 const SelectButton = ({ target }: SelectButtonProps) => {
   const [, setCurrentStep] = useCurrentStep();
   const [, setState] = useStatic4State();
+  const [, updateTimer] = useAtom(static4TimerAtom);
   const [{ isFixedGender, minLevel, maxLevel, species, form, advanceOffset }] =
     useAtom(searchedEncounterAtom);
 
@@ -93,6 +94,10 @@ const SelectButton = ({ target }: SelectButtonProps) => {
           },
           chatotSummaryCount: target.advance,
         }));
+        updateTimer({
+          targetDelay: target.delay,
+          targetSecond: target.second,
+        });
         setCurrentStep((prev) => prev + 1);
       }}
     >

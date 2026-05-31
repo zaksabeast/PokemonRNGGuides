@@ -239,9 +239,7 @@ pub fn find_iv_paths_from_iv1_seed<const METHODS: u8>(
         return None;
     }
 
-    rng.prev_rand();
-    rng.prev_rand();
-    rng.prev_rand(); //revert to initial state
+    rng.reverse_jump_const::<3>(); //revert to initial state
 
     let mut iv_paths: ArrayVec<IvPath, 2> = Default::default();
     if wild123_good {

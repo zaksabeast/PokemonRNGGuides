@@ -34,7 +34,6 @@ import { z } from "zod";
 import { defaultHiddenPowerFilter } from "~/components/hiddenPowerInput";
 import pmap from "p-map";
 import { sortBy, startCase, mapValues } from "lodash-es";
-import { createGen3TimerAtom } from "~/hooks/useGen3Timer";
 import { ivMethods } from "./constants";
 import { Gen3Timer } from "~/components/gen3Timer";
 import { match, P } from "ts-pattern";
@@ -45,6 +44,7 @@ import { atom, useAtom } from "jotai";
 import { formatOffset } from "~/utils/offsetSymbol";
 import { Translations } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { createGen3TimerAtom } from "~/rngToolsUi/timer/atoms";
 
 type HeldEgg = {
   species: Species;

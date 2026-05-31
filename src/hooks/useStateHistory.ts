@@ -6,7 +6,7 @@ export type StateHistory<T> = {
   current: T | undefined;
   previous: T | undefined;
   addIfNew: (state: T) => void;
-  undo: () => Promise<void>;
+  undo: () => void;
   canUndo: boolean;
 };
 
@@ -15,7 +15,7 @@ export const useStateHistory = <T>({
   updateTimerSettings,
 }: {
   initialSettings: T;
-  updateTimerSettings: (state: T) => Promise<unknown>;
+  updateTimerSettings: (state: T) => void;
 }): StateHistory<T> => {
   const [history, setHistory] = React.useState<T[]>([initialSettings]);
 
@@ -34,7 +34,7 @@ export const useStateHistory = <T>({
 
   const canUndo = history.length > 1;
 
-  const undo = async () => {
+  const undo = () => {
     if (!canUndo) {
       return;
     }
@@ -45,7 +45,7 @@ export const useStateHistory = <T>({
       }
       return prev.slice(0, -1);
     });
-    await updateTimerSettings(previous);
+    updateTimerSettings(previous);
   };
 
   return {

@@ -104,10 +104,10 @@ pub fn find_pid_low_paths_from_pid_low_seed<const METHODS: u8>(
     }
 
     // revert state
-    rng.prev_rand();
-    rng.prev_rand();
-    if has_method_3 {
-        rng.prev_rand();
+    if !has_method_3 {
+        rng.reverse_jump_const::<2>();
+    } else {
+        rng.reverse_jump_const::<3>();
     }
 
     let mut pid_low_paths: ArrayVec<PidLowPath, 2> = Default::default();

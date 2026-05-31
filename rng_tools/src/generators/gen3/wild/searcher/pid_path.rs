@@ -20,8 +20,6 @@ use super::searcher_main::searcher_reverse::{
     METHOD_1, METHOD_2, METHOD_3, METHOD_4, METHODS_1234, is_considered_method,
 };
 
-const MAX_REVERSE_PID_PATH_COUNT:usize = 10_000_000;
-
 /**
  * PidPath represents the RNG call sequence for PID + IV generation, which represent the full Pokémon (minus its species and level).
  * Generating PidPaths that respect the filter is the most important and time-consuming step of the reverse generator.

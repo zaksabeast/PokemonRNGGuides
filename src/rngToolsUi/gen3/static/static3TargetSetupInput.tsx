@@ -19,10 +19,11 @@ import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import { usingTargetSetupInputs } from "../pokemonRng/generatorResultColumns";
 import uniq from "lodash-es/uniq";
 
-const static3Methods = [
+export const gen3StaticMethods = [
   "Static1",
   "Static4",
 ] as const satisfies readonly Gen3StaticMethod[];
+
 const static3Species = uniq(
   getStatic3SpeciesEncounters("emerald").map(({ species }) => species),
 );
@@ -59,7 +60,7 @@ const Validator = z.object({
   roaming: z.boolean(),
   usingPaintingReseeding: z.boolean(),
   targetFrameBeforePainting: z.number().int().min(1).max(0xffff),
-  targetMethod: z.enum(static3Methods),
+  targetMethod: z.enum(gen3StaticMethods),
   targetAdvance: z.number().int().min(0).max(0xffffffff),
 });
 
@@ -143,7 +144,7 @@ const getFields = ({
       input: (
         <FormikSelect<FormState, "targetMethod">
           name="targetMethod"
-          options={toOptions(static3Methods)}
+          options={toOptions(gen3StaticMethods)}
         />
       ),
     },

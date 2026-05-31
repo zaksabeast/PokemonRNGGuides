@@ -2,6 +2,7 @@ import {
   Field,
   FormFieldTable,
   FormikSelect,
+  FormikSwitch,
   RngToolForm,
   RngToolSubmit,
 } from "~/components";
@@ -25,26 +26,37 @@ const static3Methods = [
 const static3Species = uniq(
   getStatic3SpeciesEncounters("emerald").map(({ species }) => species),
 );
-type Static3EncounterContext = "";
-const static3EncounterContexts = [""] as const;
+const defaultRoamingOptions: boolean[] = [false];
 
-//TODO: Change the term encouterContext (string) to roaming (boolean). Change the signature of encounterContextToLvl to (species:string, roaming:boolean). It searches in the static encounter and returns the level that match.
-export const encounterContextToLvl = (_ctx: string) => 5;
+export const encounterContextToLvl = (species: string, roaming: boolean) => {
+  const encounter = getStatic3SpeciesEncounters("emerald").find(
+    (encounter) =>
+      encounter.species === species && encounter.roaming === roaming,
+  );
 
-export const getPossibleValuesForSpecies = (_species: Species) => {
-  return {
-    species: static3Species,
-    encounterContexts: static3EncounterContexts,
-  };
+  if (encounter == null) {
+    throw new Error(`No static encounter for ${species}`);
+  }
+
+  return encounter.lvl;
 };
 
-const formatEncounterContext = (encounterContext: Static3EncounterContext) => {
-  return encounterContext === "" ? "Default" : encounterContext;
+export const getPossibleValuesForSpecies = (species: Species) => {
+  const roaming = uniq(
+    getStatic3SpeciesEncounters("emerald")
+      .filter((encounter) => encounter.species === species)
+      .map((encounter) => encounter.roaming),
+  );
+
+  return {
+    species: static3Species,
+    roaming: roaming.length === 0 ? defaultRoamingOptions : roaming,
+  };
 };
 
 const Validator = z.object({
   species: z.enum(static3Species),
-  encounterContext: z.enum(static3EncounterContexts),
+  roaming: z.boolean(),
   usingPaintingReseeding: z.boolean(),
   targetFrameBeforePainting: z.number().int().min(1).max(0xffff),
   targetMethod: z.enum(static3Methods),
@@ -57,8 +69,7 @@ type Props = {
 
 export type TargetSetup = {
   species: Species;
-  // encounterContext is required to distinguish Roaming Lati@s and Southern Island Lati@s. They don't have the same level.
-  encounterContext: string;
+  roaming: boolean;
   targetPaintingAdvs: { before: number; after: number };
   targetMethod: Gen3StaticMethod;
 };
@@ -68,7 +79,7 @@ export type FormState = z.infer<typeof Validator>;
 const getInitialValues = (): FormState => {
   return {
     species: "Mudkip",
-    encounterContext: "",
+    roaming: false,
     usingPaintingReseeding: false,
     targetFrameBeforePainting: 1,
     targetAdvance: 1000,
@@ -79,9 +90,11 @@ const getInitialValues = (): FormState => {
 const convertFormStateValuesToTargetSetup = (
   values: FormState,
 ): TargetSetup => {
+  const { roaming } = getPossibleValuesForSpecies(values.species);
+
   return {
     species: values.species,
-    encounterContext: values.encounterContext,
+    roaming: roaming.includes(values.roaming) ? values.roaming : false,
     targetPaintingAdvs: {
       before: values.usingPaintingReseeding
         ? values.targetFrameBeforePainting
@@ -94,16 +107,17 @@ const convertFormStateValuesToTargetSetup = (
 
 const getFields = ({
   species,
-  encounterContext,
+  roaming,
   usingPaintingReseeding,
   equivalentInitialAdvs,
 }: {
   species: Species;
-  encounterContext: Static3EncounterContext;
+  roaming: boolean;
   usingPaintingReseeding: boolean;
   equivalentInitialAdvs: number;
 }): Field[] => {
-  const { encounterContexts } = getPossibleValuesForSpecies(species);
+  const { roaming: roamingOptions } = getPossibleValuesForSpecies(species);
+  const canRoam = roamingOptions.includes(true);
 
   const fields: Field[] = [
     {
@@ -119,22 +133,9 @@ const getFields = ({
 
   fields.push(
     {
-      label: "Encounter",
-      input: (
-        <FormikSelect<FormState, "encounterContext">
-          name="encounterContext"
-          options={toOptions(encounterContexts, formatEncounterContext)}
-        />
-      ),
-      show: encounterContexts.length > 1,
-    },
-    {
-      label: "Encounter",
-      input:
-        encounterContexts.length > 0
-          ? formatEncounterContext(encounterContext)
-          : "",
-      show: encounterContexts.length > 0,
+      label: "Roaming",
+      input: <FormikSwitch<FormState> name="roaming" disabled={!canRoam} />,
+      show: roamingOptions.length > 1 || roaming,
     },
     ...usingTargetSetupInputs(usingPaintingReseeding, equivalentInitialAdvs),
     {
@@ -158,8 +159,8 @@ export const Static3TargetSetupInputFields = ({
 }) => {
   const { setFieldValue } = useFormContext<FormState>();
   const species = useWatch<FormState, "species">({ name: "species" });
-  const encounterContext = useWatch<FormState, "encounterContext">({
-    name: "encounterContext",
+  const roaming = useWatch<FormState, "roaming">({
+    name: "roaming",
   });
   const usingPaintingReseeding = useWatch<FormState, "usingPaintingReseeding">({
     name: "usingPaintingReseeding",
@@ -179,18 +180,23 @@ export const Static3TargetSetupInputFields = ({
 
   const fields = getFields({
     species,
-    encounterContext,
+    roaming,
     usingPaintingReseeding,
     equivalentInitialAdvs,
   });
 
   React.useEffect(() => {
+    const { roaming: roamingOptions } = getPossibleValuesForSpecies(species);
+    if (!roamingOptions.includes(roaming)) {
+      setFieldValue("roaming", false);
+    }
+
     setTargetSetup(null);
   }, [
     setFieldValue,
     setTargetSetup,
     species,
-    encounterContext,
+    roaming,
     targetAdvance,
     targetFrameBeforePainting,
     usingPaintingReseeding,

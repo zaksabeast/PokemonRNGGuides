@@ -1,6 +1,10 @@
 import type { Game, Starter, TargetStarter } from "./index";
 import type { FormState } from "./caughtMon";
-import { rngTools } from "~/rngTools";
+import { rngTools, type Gen3StaticMethod } from "~/rngTools";
+import {
+  gen3PkmFilterFieldsToRustInput,
+  getGen3PkmFilterInitialValues,
+} from "~/components/gen3PkmFilter";
 import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
@@ -15,6 +19,7 @@ export type CaughtMonResult = {
 };
 
 const MINIMAL_ADV = 500;
+const staticStarterMethods: Gen3StaticMethod[] = ["Static1"];
 
 export const findTargetAdvanceForShinyPokemon = async (
   game: Game,
@@ -38,19 +43,24 @@ export const getTargetPokemonDesc = async (
   pokemonSpecies: Starter,
 ): Promise<string> => {
   const opts = {
-    offset: 0,
-    initial_advances: targetAdv,
-    max_advances: 0,
-    seed: game === "emerald" ? 0 : 0x5a0,
-    method4: false,
-    filter: pkmFilterFieldsToRustInput(getPkmFilterInitialValues()),
+    initial_seed: game === "emerald" ? 0 : 0x5a0,
     tid: 0, // doesn't matter
     sid: 0, // doesn't matter
+    initial_advances: targetAdv,
+    max_advances: 0,
+    max_result_count: 1,
+    filter: pkmFilterFieldsToRustInput(getPkmFilterInitialValues()),
+    gen3_filter: gen3PkmFilterFieldsToRustInput(
+      getGen3PkmFilterInitialValues(),
+      pokemonSpecies,
+    ),
+    painting_opts: null,
     bugged_roamer: false, // doesn't matter
-    species: pokemonSpecies, // doesn't matter
+    species: pokemonSpecies,
+    methods: staticStarterMethods,
   };
 
-  const genResults = await rngTools.gen3_static_generator_states(opts);
+  const genResults = await rngTools.search_static3(opts);
   if (genResults.length === 0) {
     return "";
   }
@@ -92,13 +102,14 @@ export const generateCaughtMonResults = async (
     return [];
   }
 
+  const maxAdvances = 6000;
   const opts = {
-    offset: 0,
+    initial_seed: game === "emerald" ? 0 : 0x5a0,
+    tid: 0, // doesn't matter
+    sid: 0, // doesn't matter
     initial_advances: Math.max(targetAdvance - 3000, MINIMAL_ADV),
-    max_advances: 6000,
-    seed: game === "emerald" ? 0 : 0x5a0,
-
-    method4: false,
+    max_advances: maxAdvances,
+    max_result_count: maxAdvances + 1,
     filter: {
       nature: pkmFilterNatureFieldToRustInput([caughtMonValues.nature]),
       gender: caughtMonValues.gender,
@@ -107,13 +118,17 @@ export const generateCaughtMonResults = async (
       ...minMaxIvs,
       hidden_power: defaultHiddenPowerFilter,
     },
-    tid: 0, // doesn't matter
-    sid: 0, // doesn't matter
+    gen3_filter: gen3PkmFilterFieldsToRustInput(
+      getGen3PkmFilterInitialValues(),
+      species,
+    ),
+    painting_opts: null,
     bugged_roamer: false, // doesn't matter
-    species, // doesn't matter
-  } as const;
+    species,
+    methods: staticStarterMethods,
+  };
 
-  const genResults = await rngTools.gen3_static_generator_states(opts);
+  const genResults = await rngTools.search_static3_reverse(opts);
   const caughtMonResults = genResults.map((res) => {
     return {
       advance: res.advance,

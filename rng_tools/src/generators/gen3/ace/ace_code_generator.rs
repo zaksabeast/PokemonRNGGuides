@@ -81,11 +81,6 @@ struct PackedByte {
 }
 
 #[derive(Clone, Copy)]
-struct TweakMovOptions {
-    prefer_subtractive: bool,
-}
-
-#[derive(Clone, Copy)]
 enum ExitOp {
     Adc,
     Sbc,
@@ -576,7 +571,6 @@ fn tweak_mov(
     lang: EmeraldLang,
     constants: &[u32],
     constants_mov_mvn: &[u32],
-    options: TweakMovOptions,
 ) -> Option<Vec<CommandBytes>> {
     let mut parts = None;
     let mut additive = true;
@@ -617,25 +611,15 @@ fn tweak_mov(
         )
     });
 
-    let searches: &[(bool, bool)] = if options.prefer_subtractive {
-        &[(false, false), (true, true)]
-    } else {
-        &[(true, true), (false, false)]
-    };
     for card in 1..=MAX_CARDS {
-        for (is_additive, use_add_ctx) in searches {
-            let result = if *use_add_ctx {
-                add_ctx.synthesize(imm, card)
-            } else {
-                sub_ctx.synthesize(imm, card)
-            };
-            if result.is_some() {
-                parts = result;
-                additive = *is_additive;
-                break;
-            }
-        }
+        parts = add_ctx.synthesize(imm, card);
         if parts.is_some() {
+            additive = true;
+            break;
+        }
+        parts = sub_ctx.synthesize(imm, card);
+        if parts.is_some() {
+            additive = false;
             break;
         }
     }
@@ -744,9 +728,6 @@ fn sid_program_bytes(sid: u16, lang: EmeraldLang) -> Option<Vec<CommandBytes>> {
         lang,
         constants,
         constants_mov_mvn,
-        TweakMovOptions {
-            prefer_subtractive: false,
-        },
     )?);
     out.push(preferred_bytes(strh(R12, R11, 2), lang)?);
     Some(out)
@@ -774,9 +755,6 @@ fn seed_program_bytes(seed: u32, lang: EmeraldLang) -> Option<Vec<CommandBytes>>
         lang,
         constants,
         constants_mov_mvn,
-        TweakMovOptions {
-            prefer_subtractive: false,
-        },
     )?);
     out.push(preferred_bytes(str_pre(R11, R12, 0), lang)?);
     Some(out)

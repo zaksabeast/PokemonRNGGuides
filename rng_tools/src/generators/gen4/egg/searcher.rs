@@ -133,8 +133,9 @@ mod tests {
         };
     }
 
+    #[ignore = "takes a while, run manually to test"]
     #[test]
-    fn base() {
+    fn broad() {
         let opts = SearchEgg4Opts {
             min_delay: 700,
             max_delay: 800,
@@ -164,7 +165,42 @@ mod tests {
         };
         let mut results = search_egg4(&opts);
         results.sort_by(|a, b| a.seed_time.seed.cmp(&b.seed_time.seed));
-        let expected = pokefinder!("test_data/searcher/base.txt");
+        let expected = pokefinder!("test_data/searcher/broad.txt");
+        assert_list_eq!(results, expected);
+    }
+
+    #[test]
+    fn slim() {
+        let opts = SearchEgg4Opts {
+            min_delay: 700,
+            max_delay: 705,
+            year: 2000,
+            force_seconds: None,
+            species: Species::Bulbasaur,
+            tid: 12345,
+            sid: 54321,
+            held_offset: 0,
+            held_min_advances: 0,
+            held_max_advances: 3,
+            is_masuda: false,
+            pickup_offset: 0,
+            pickup_min_advances: 0,
+            pickup_max_advances: 3,
+            parent_ivs: [PartialIvs::new_all31(), PartialIvs::new_all31()],
+            is_dppt: true,
+            filter: PkmFilter {
+                shiny: false,
+                nature: None,
+                gender: None,
+                ability: None,
+                min_ivs: Ivs::new_all31(),
+                max_ivs: Ivs::new_all31(),
+                hidden_power: HiddenPowerFilter::default(),
+            },
+        };
+        let mut results = search_egg4(&opts);
+        results.sort_by(|a, b| a.seed_time.seed.cmp(&b.seed_time.seed));
+        let expected = pokefinder!("test_data/searcher/slim.txt");
         assert_list_eq!(results, expected);
     }
 }

@@ -55,16 +55,29 @@ type SelectButtonProps = {
 };
 
 const SelectButton = ({ seedTime }: SelectButtonProps) => {
-  const [, setState] = useAtom(gen4StateAtom);
+  const [state, setState] = useAtom(gen4StateAtom);
+
   const [, setCurrentStep] = useCurrentStep();
 
   return (
     <Button
       trackerId="coin_flip_select_seed"
       onClick={() => {
+        console.log(
+          "Saving coin flips:",
+          state.gameState.coinFlips,
+          state.gameState.coinFlips.length,
+        );
+
         setState({
-          target: { seedTime, lcrngAdvance: null, mtAdvance: null },
+          target: {
+            seedTime,
+            lcrngAdvance: null,
+            mtAdvance: null,
+            coinFlipCount: state.gameState.coinFlips.length,
+          },
         });
+
         setCurrentStep((step) => step + 1);
       }}
     >

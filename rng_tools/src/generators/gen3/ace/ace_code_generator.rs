@@ -80,26 +80,32 @@ struct ExitInstruction {
     imm: u32,
 }
 
-macro_rules! constants_cache {
-    ($name:ident, $lang:expr, $mov_mvn:expr) => {
-        static $name: Lazy<Vec<u32>> = Lazy::new(|| build_constants_uncached($lang, $mov_mvn));
-    };
-}
-
-constants_cache!(ENG_CONSTANTS, EmeraldLang::Eng, false);
-constants_cache!(ENG_MOV_MVN_CONSTANTS, EmeraldLang::Eng, true);
-constants_cache!(FRA_CONSTANTS, EmeraldLang::Fra, false);
-constants_cache!(FRA_MOV_MVN_CONSTANTS, EmeraldLang::Fra, true);
-constants_cache!(ITA_CONSTANTS, EmeraldLang::Ita, false);
-constants_cache!(ITA_MOV_MVN_CONSTANTS, EmeraldLang::Ita, true);
-constants_cache!(SPA_CONSTANTS, EmeraldLang::Spa, false);
-constants_cache!(SPA_MOV_MVN_CONSTANTS, EmeraldLang::Spa, true);
-constants_cache!(GER_CONSTANTS, EmeraldLang::Ger, false);
-constants_cache!(GER_MOV_MVN_CONSTANTS, EmeraldLang::Ger, true);
-constants_cache!(JAP_CONSTANTS, EmeraldLang::Jap, false);
-constants_cache!(JAP_MOV_MVN_CONSTANTS, EmeraldLang::Jap, true);
-
 fn cached_constants(lang: EmeraldLang, mov_mvn: bool) -> &'static [u32] {
+    static ENG_CONSTANTS: Lazy<Vec<u32>> =
+        Lazy::new(|| build_constants_uncached(EmeraldLang::Eng, false));
+    static ENG_MOV_MVN_CONSTANTS: Lazy<Vec<u32>> =
+        Lazy::new(|| build_constants_uncached(EmeraldLang::Eng, true));
+    static FRA_CONSTANTS: Lazy<Vec<u32>> =
+        Lazy::new(|| build_constants_uncached(EmeraldLang::Fra, false));
+    static FRA_MOV_MVN_CONSTANTS: Lazy<Vec<u32>> =
+        Lazy::new(|| build_constants_uncached(EmeraldLang::Fra, true));
+    static ITA_CONSTANTS: Lazy<Vec<u32>> =
+        Lazy::new(|| build_constants_uncached(EmeraldLang::Ita, false));
+    static ITA_MOV_MVN_CONSTANTS: Lazy<Vec<u32>> =
+        Lazy::new(|| build_constants_uncached(EmeraldLang::Ita, true));
+    static SPA_CONSTANTS: Lazy<Vec<u32>> =
+        Lazy::new(|| build_constants_uncached(EmeraldLang::Spa, false));
+    static SPA_MOV_MVN_CONSTANTS: Lazy<Vec<u32>> =
+        Lazy::new(|| build_constants_uncached(EmeraldLang::Spa, true));
+    static GER_CONSTANTS: Lazy<Vec<u32>> =
+        Lazy::new(|| build_constants_uncached(EmeraldLang::Ger, false));
+    static GER_MOV_MVN_CONSTANTS: Lazy<Vec<u32>> =
+        Lazy::new(|| build_constants_uncached(EmeraldLang::Ger, true));
+    static JAP_CONSTANTS: Lazy<Vec<u32>> =
+        Lazy::new(|| build_constants_uncached(EmeraldLang::Jap, false));
+    static JAP_MOV_MVN_CONSTANTS: Lazy<Vec<u32>> =
+        Lazy::new(|| build_constants_uncached(EmeraldLang::Jap, true));
+
     match (lang, mov_mvn) {
         (EmeraldLang::Eng, false) => ENG_CONSTANTS.as_slice(),
         (EmeraldLang::Eng, true) => ENG_MOV_MVN_CONSTANTS.as_slice(),
@@ -120,22 +126,9 @@ fn is_code_available(code: u8, lang: EmeraldLang) -> bool {
     match lang {
         EmeraldLang::Jap => !matches!(
             code,
-            0xb7 | 0xb8
-                | 0xb9
-                | 0xef
-                | 0xf0
-                | 0xf1
-                | 0xf2
-                | 0xf3
-                | 0xf4
-                | 0xf5
-                | 0xf6
-                | 0xfa
-                | 0xfb
-                | 0xfc
-                | 0xfd
-                | 0xfe
-                | 0xff
+            0xb7..=0xb9
+                | 0xef..=0xf6
+                | 0xfa..=0xff
         ),
         EmeraldLang::Ger if matches!(code, 0xf1..=0xf6) => true,
         _ => matches!(

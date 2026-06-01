@@ -1326,15 +1326,13 @@ mod tests {
         );
     }
 
-    // TODO: Find a seed that
-
     #[test]
     fn emerald_seed_box_names_match_typescript() {
         if !cfg!(debug_assertions) {
             // This is a difficult seed.
             assert_eq!(
                 boxes(get_emerald_seed_box_names_result(
-                    0x25899da4,
+                    0xfd768458,
                     EmeraldLang::Eng,
                 )),
                 vec![

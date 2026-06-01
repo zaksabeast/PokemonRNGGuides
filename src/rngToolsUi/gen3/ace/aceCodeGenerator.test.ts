@@ -103,7 +103,7 @@ describe("getEmeraldSidBoxNames", () => {
 
 describe("getEmeraldSeedBoxNames_perf", () => {
   it("matches the Rust implementation for a specific random input", async () => {
-    const seed = 0x25899da4;
+    const seed = 0xfd768458;
     const lang: EmeraldLang = "Eng";
 
     const jsStart = performance.now();

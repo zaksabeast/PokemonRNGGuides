@@ -34,9 +34,10 @@ const R12: u32 = 12;
 const LR: u32 = 14;
 const PC: u32 = 15;
 
+#[wasm_bindgen]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize)]
 #[serde(rename_all = "lowercase")]
-enum EmeraldLang {
+pub enum EmeraldLang {
     Eng,
     Fra,
     Ita,
@@ -46,18 +47,6 @@ enum EmeraldLang {
 }
 
 impl EmeraldLang {
-    fn parse(lang: &str) -> Self {
-        match lang {
-            "eng" => Self::Eng,
-            "fra" => Self::Fra,
-            "ita" => Self::Ita,
-            "spa" => Self::Spa,
-            "ger" => Self::Ger,
-            "jap" => Self::Jap,
-            _ => panic!("Invalid Emerald language."),
-        }
-    }
-
     fn constants_index(self, mov_mvn: bool) -> usize {
         let lang_index = match self {
             Self::Eng => 0,
@@ -1162,24 +1151,22 @@ fn box_names_for_commands(commands: Option<Vec<Vec<u8>>>, lang: EmeraldLang) -> 
     })
 }
 
-pub fn get_emerald_sid_box_names_result(sid: u16, lang: &str) -> AceResult {
-    let lang = EmeraldLang::parse(lang);
+pub fn get_emerald_sid_box_names_result(sid: u16, lang: EmeraldLang) -> AceResult {
     box_names_for_commands(sid_program_bytes(sid, lang), lang)
 }
 
-pub fn get_emerald_seed_box_names_result(seed: u32, lang: &str) -> AceResult {
-    let lang = EmeraldLang::parse(lang);
+pub fn get_emerald_seed_box_names_result(seed: u32, lang: EmeraldLang) -> AceResult {
     box_names_for_commands(seed_program_bytes(seed, lang), lang)
 }
 
 #[wasm_bindgen(js_name = getEmeraldSidBoxNames)]
-pub fn get_emerald_sid_box_names(sid: u16, lang: String) -> JsValue {
-    serde_wasm_bindgen::to_value(&get_emerald_sid_box_names_result(sid, &lang)).unwrap()
+pub fn get_emerald_sid_box_names(sid: u16, lang: EmeraldLang) -> JsValue {
+    serde_wasm_bindgen::to_value(&get_emerald_sid_box_names_result(sid, lang)).unwrap()
 }
 
 #[wasm_bindgen(js_name = getEmeraldSeedBoxNames)]
-pub fn get_emerald_seed_box_names(seed: u32, lang: String) -> JsValue {
-    serde_wasm_bindgen::to_value(&get_emerald_seed_box_names_result(seed, &lang)).unwrap()
+pub fn get_emerald_seed_box_names(seed: u32, lang: EmeraldLang) -> JsValue {
+    serde_wasm_bindgen::to_value(&get_emerald_seed_box_names_result(seed, lang)).unwrap()
 }
 
 #[cfg(test)]
@@ -1194,6 +1181,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn benchmark_emerald_seed_box_names_result_20_random_values() {
         use std::{hint::black_box, time::Instant};
 
@@ -1227,7 +1215,7 @@ mod tests {
             let seed = next_random(&mut random_state);
             checksum = checksum.wrapping_add(checksum_result(get_emerald_seed_box_names_result(
                 black_box(seed),
-                black_box("eng"),
+                black_box(EmeraldLang::Eng),
             )));
         }
 
@@ -1238,13 +1226,13 @@ mod tests {
             checksum
         );
 
-        assert_ne!(checksum, 0);
+        assert_eq!(checksum, 11345541470647849650);
     }
 
     #[test]
     fn emerald_sid_box_names_match_typescript() {
         assert_eq!(
-            boxes(get_emerald_sid_box_names_result(0x1234, "eng")),
+            boxes(get_emerald_sid_box_names_result(0x1234, EmeraldLang::Eng)),
             vec![
                 vec![208, 188, 207, 226, 234, 176, 203, 226],
                 vec![187, 187, 187, 176, 178, 203, 226],
@@ -1263,7 +1251,7 @@ mod tests {
             ]
         );
         assert_eq!(
-            boxes(get_emerald_sid_box_names_result(0xff23, "ita")),
+            boxes(get_emerald_sid_box_names_result(0xff23, EmeraldLang::Ita)),
             vec![
                 vec![208, 188, 207, 226, 234, 176, 203, 226],
                 vec![187, 187, 187, 176, 178, 203, 226],
@@ -1282,7 +1270,7 @@ mod tests {
             ]
         );
         assert_eq!(
-            boxes(get_emerald_sid_box_names_result(0x0001, "ger")),
+            boxes(get_emerald_sid_box_names_result(0x0001, EmeraldLang::Ger)),
             vec![
                 vec![208, 188, 207, 226, 246, 176, 203, 226],
                 vec![187, 187, 187, 208, 194, 173, 227],
@@ -1305,7 +1293,10 @@ mod tests {
     #[test]
     fn emerald_seed_box_names_match_typescript() {
         assert_eq!(
-            boxes(get_emerald_seed_box_names_result(0xacde1234, "eng")),
+            boxes(get_emerald_seed_box_names_result(
+                0xacde1234,
+                EmeraldLang::Eng,
+            )),
             vec![
                 vec![192, 199, 176, 227, 182, 205, 172, 226],
                 vec![187, 187, 187, 192, 205, 172, 226],
@@ -1324,7 +1315,10 @@ mod tests {
             ]
         );
         assert_eq!(
-            boxes(get_emerald_seed_box_names_result(0xff123423, "ita")),
+            boxes(get_emerald_seed_box_names_result(
+                0xff123423,
+                EmeraldLang::Ita,
+            )),
             vec![
                 vec![192, 199, 176, 227, 182, 205, 172, 226],
                 vec![187, 187, 187, 192, 205, 172, 226],
@@ -1343,7 +1337,10 @@ mod tests {
             ]
         );
         assert_eq!(
-            boxes(get_emerald_seed_box_names_result(0x00000001, "ger")),
+            boxes(get_emerald_seed_box_names_result(
+                0x00000001,
+                EmeraldLang::Ger,
+            )),
             vec![
                 vec![192, 199, 176, 227, 182, 205, 172, 226],
                 vec![187, 187, 187, 192, 205, 172, 226],

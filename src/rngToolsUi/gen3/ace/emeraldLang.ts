@@ -1,16 +1,16 @@
-export type EmeraldLang = "eng" | "fra" | "ita" | "spa" | "ger" | "jap";
+export type EmeraldLang = "Eng" | "Fra" | "Ita" | "Spa" | "Ger" | "Jap";
 export const emeraldLangs = [
-  "eng",
-  "fra",
-  "ita",
-  "spa",
-  "ger",
+  "Eng",
+  "Fra",
+  "Ita",
+  "Spa",
+  "Ger",
 ] as const satisfies EmeraldLang[]; // TODO: Add support for jap
 
 export const emeraldLangOptions = [
-  { value: "eng", label: "English" } as const,
-  { value: "fra", label: "French" } as const,
-  { value: "ita", label: "Italian" } as const,
-  { value: "spa", label: "Spanish" } as const,
-  { value: "ger", label: "German" } as const,
+  { value: "Eng", label: "English" } as const,
+  { value: "Fra", label: "French" } as const,
+  { value: "Ita", label: "Italian" } as const,
+  { value: "Spa", label: "Spanish" } as const,
+  { value: "Ger", label: "German" } as const,
 ];

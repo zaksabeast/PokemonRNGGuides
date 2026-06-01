@@ -2,7 +2,7 @@ use super::base_state::{BaseStatic4State, Static4State};
 use crate::Species;
 use crate::gen4::calc_level::{LevelCalculator, ReversedHoneyLevel, SetLevel};
 use crate::gen4::game_logic::{DpptLogic, GameSpecificLogic, HgssLogic};
-use crate::gen4::seed_time4::{SeedTime4Options, calc_delay_from_seed};
+use crate::gen4::seed_time4::{calc_delay_from_seed, find_seedtime4};
 use crate::gen4::{GameVersion, LeadAbility, StaticMethod};
 use crate::generators::utils::recover_poke_rng_iv;
 use crate::rng::Rng;
@@ -73,16 +73,13 @@ impl SeedFilters {
                 let delay = calc_delay_from_seed(seed, filters.year);
 
                 if delay >= filters.min_delay && delay <= filters.max_delay {
-                    // Found a match! Now verify with find_seedtime if needed
-                    let seed_time_opts = SeedTime4Options::new(
+                    if let Some(seed_time) = find_seedtime4(
                         seed,
-                        1,
                         filters.year,
                         filters.month,
                         filters.min_delay..=filters.max_delay,
                         filters.force_second,
-                    );
-                    if let Some(seed_time) = seed_time_opts.find_seedtime() {
+                    ) {
                         let found_state = state.add_seedtime(advance, seed_time);
                         results.push(found_state);
                     }

@@ -133,7 +133,6 @@ mod tests {
         };
     }
 
-    #[ignore]
     #[test]
     fn base() {
         let opts = SearchEgg4Opts {

@@ -428,6 +428,10 @@ const tools = {
     () => import("~/rngToolsUi/gen4/shared/seedFinder"),
     (mod) => mod.Gen4SeedFinder,
   ),
+  HgssElmCallAdvanceFilter: lazyLoad(
+    () => import("~/rngToolsUi/gen4/shared/hgssElmCalls/advanceFilter"),
+    (mod) => mod.HgssElmCallAdvanceFilter,
+  ),
 };
 
 export const markdownComponents = {

@@ -1,3 +1,4 @@
+use arrayvec::ArrayVec;
 use once_cell::sync::Lazy;
 use serde::Serialize;
 use std::collections::{HashMap, HashSet};
@@ -7,6 +8,9 @@ const MAX_CARDS: usize = 6;
 const EOF: u8 = 0xff;
 const SPACE: u8 = 0x00;
 const NAME_SIZE: usize = 8;
+type CommandBytes = [u8; 4];
+type CommandCandidates = ArrayVec<u32, 32>;
+type SynthParts = ArrayVec<u32, MAX_CARDS>;
 const PADDING: [u8; 4] = [0x00, 0x00, 0x00, 0x00];
 const FILLERS: [[u8; 4]; 4] = [
     [0xff, 0xbb, 0xbb, 0xbb],
@@ -110,19 +114,6 @@ struct ExitInstruction {
     imm: u32,
 }
 
-#[derive(Clone, Copy)]
-struct SynthOptions<First, Rest>
-where
-    First: Fn(u32) -> bool,
-    Rest: Fn(u32) -> bool,
-{
-    max_card: usize,
-    additive: bool,
-    incr: bool,
-    valid_first: First,
-    valid_rest: Rest,
-}
-
 static CONSTANTS: Lazy<Vec<Vec<u32>>> = Lazy::new(|| {
     let langs = [
         EmeraldLang::Eng,
@@ -184,8 +175,8 @@ fn ror(value: u32, bits: u32) -> u32 {
     value.rotate_right(bits & 31)
 }
 
-fn decompose_immediate(imm: u32) -> Vec<(u32, u32)> {
-    let mut out = Vec::new();
+fn decompose_immediate(imm: u32) -> ArrayVec<(u32, u32), 16> {
+    let mut out = ArrayVec::new();
     let mut rotated = imm;
     for rotation in 0..=15 {
         let imm8 = rotated & 0xff;
@@ -197,14 +188,14 @@ fn decompose_immediate(imm: u32) -> Vec<(u32, u32)> {
     out
 }
 
-fn addr_mode1_immediate(imm: u32) -> Vec<u32> {
+fn addr_mode1_immediate(imm: u32) -> ArrayVec<u32, 16> {
     decompose_immediate(imm)
         .into_iter()
         .map(|(rot, imm8)| 0x0200_0000 | (rot << 8) | imm8)
         .collect()
 }
 
-fn data_proc(opcode: u32, set_flags: bool, rd: u32, rn: u32, imm: u32) -> Vec<u32> {
+fn data_proc(opcode: u32, set_flags: bool, rd: u32, rn: u32, imm: u32) -> ArrayVec<u32, 16> {
     let base = (COND_AL << 28)
         | opcode
         | if set_flags { 0x0010_0000 } else { 0 }
@@ -216,14 +207,14 @@ fn data_proc(opcode: u32, set_flags: bool, rd: u32, rn: u32, imm: u32) -> Vec<u3
         .collect()
 }
 
-fn mov_like(mvn: bool, set_flags: bool, rd: u32, imm: u32) -> Vec<u32> {
+fn mov_like(mvn: bool, set_flags: bool, rd: u32, imm: u32) -> CommandCandidates {
     let opcodes: &[u32] = if mvn {
         &[0x01e0_0000]
     } else {
         &[0x01a0_0000, 0x01ad_0000]
     };
     let modes = addr_mode1_immediate(imm);
-    let mut out = Vec::new();
+    let mut out = CommandCandidates::new();
     for opcode in opcodes {
         let base = (COND_AL << 28) | opcode | if set_flags { 0x0010_0000 } else { 0 } | (rd << 12);
         for mode in &modes {
@@ -233,37 +224,33 @@ fn mov_like(mvn: bool, set_flags: bool, rd: u32, imm: u32) -> Vec<u32> {
     out
 }
 
-fn strh(rd: u32, rn: u32, offset: u32) -> Vec<u32> {
+fn strh(rd: u32, rn: u32, offset: u32) -> [u32; 1] {
     let imm_l = offset & 0xf;
     let imm_h = (offset >> 4) & 0xf;
-    vec![
-        (COND_AL << 28)
-            | 0x0040_00b0
-            | (1 << 24)
-            | (1 << 23)
-            | (1 << 22)
-            | (rn << 16)
-            | (rd << 12)
-            | (imm_h << 8)
-            | imm_l,
-    ]
+    [(COND_AL << 28)
+        | 0x0040_00b0
+        | (1 << 24)
+        | (1 << 23)
+        | (1 << 22)
+        | (rn << 16)
+        | (rd << 12)
+        | (imm_h << 8)
+        | imm_l]
 }
 
-fn str_pre(rd: u32, rn: u32, offset: u32) -> Vec<u32> {
-    vec![
-        (COND_AL << 28)
-            | 0x0400_0000
-            | (1 << 24)
-            | (1 << 23)
-            | (1 << 21)
-            | (rn << 16)
-            | (rd << 12)
-            | offset,
-    ]
+fn str_pre(rd: u32, rn: u32, offset: u32) -> [u32; 1] {
+    [(COND_AL << 28)
+        | 0x0400_0000
+        | (1 << 24)
+        | (1 << 23)
+        | (1 << 21)
+        | (rn << 16)
+        | (rd << 12)
+        | offset]
 }
 
-fn command_bytes(command: u32) -> Vec<u8> {
-    vec![
+fn command_bytes(command: u32) -> CommandBytes {
+    [
         (command & 0xff) as u8,
         ((command >> 8) & 0xff) as u8,
         ((command >> 16) & 0xff) as u8,
@@ -271,8 +258,8 @@ fn command_bytes(command: u32) -> Vec<u8> {
     ]
 }
 
-fn score_bytes(bytes: &[u8], lang: EmeraldLang) -> usize {
-    let mut bad = Vec::new();
+fn score_bytes(bytes: CommandBytes, lang: EmeraldLang) -> usize {
+    let mut bad: ArrayVec<(usize, u8), 4> = ArrayVec::new();
     for (i, byte) in bytes.iter().copied().enumerate() {
         if !is_code_available(byte, lang) {
             bad.push((i, byte));
@@ -294,12 +281,15 @@ fn score_bytes(bytes: &[u8], lang: EmeraldLang) -> usize {
     score
 }
 
-fn preferred_bytes(commands: Vec<u32>, lang: EmeraldLang) -> Option<Vec<u8>> {
+fn preferred_bytes(
+    commands: impl IntoIterator<Item = u32>,
+    lang: EmeraldLang,
+) -> Option<CommandBytes> {
     let mut best = None;
     let mut best_score = usize::MAX;
     for command in commands {
         let bytes = command_bytes(command);
-        let score = score_bytes(&bytes, lang);
+        let score = score_bytes(bytes, lang);
         if score < best_score {
             best_score = score;
             best = Some(bytes);
@@ -355,33 +345,109 @@ fn contribution(candidate: u32, incr: bool) -> u32 {
     }
 }
 
-fn synthesize<First, Rest>(
-    target: u32,
-    constants: &[u32],
-    opts: SynthOptions<First, Rest>,
-) -> Option<Vec<u32>>
-where
-    First: Fn(u32) -> bool,
-    Rest: Fn(u32) -> bool,
-{
-    let mut descending = constants.to_vec();
-    descending.reverse();
-    let initial: &[u32] = if opts.additive {
-        &descending
-    } else {
-        constants
-    };
-    let rest_constants: Vec<u32> = descending
-        .iter()
-        .copied()
-        .filter(|value| (opts.valid_rest)(*value))
-        .collect();
-    let rest_set: HashSet<u32> = rest_constants.iter().copied().collect();
-    let mut pair_sums: HashMap<u32, (u32, u32)> = HashMap::new();
+struct SynthContext {
+    additive: bool,
+    incr: bool,
+    initial: Vec<u32>,
+    rest_constants: Vec<u32>,
+    rest_set: HashSet<u32>,
+    pair_sums: Option<HashMap<u32, (u32, u32)>>,
+}
+
+impl SynthContext {
+    fn new<First, Rest>(
+        constants: &[u32],
+        additive: bool,
+        incr: bool,
+        mut valid_first: First,
+        mut valid_rest: Rest,
+    ) -> Self
+    where
+        First: FnMut(u32) -> bool,
+        Rest: FnMut(u32) -> bool,
+    {
+        let mut descending = constants.to_vec();
+        descending.reverse();
+        let initial = if additive {
+            descending
+                .iter()
+                .copied()
+                .filter(|value| valid_first(*value))
+                .collect()
+        } else {
+            constants
+                .iter()
+                .copied()
+                .filter(|value| valid_first(*value))
+                .collect()
+        };
+        let rest_constants: Vec<u32> = descending
+            .iter()
+            .copied()
+            .filter(|value| valid_rest(*value))
+            .collect();
+        let rest_set: HashSet<u32> = rest_constants.iter().copied().collect();
+        Self {
+            additive,
+            incr,
+            initial,
+            rest_constants,
+            rest_set,
+            pair_sums: None,
+        }
+    }
+
+    fn ensure_pair_sums(&mut self) {
+        if self.pair_sums.is_some() {
+            return;
+        }
+        let mut pair_sums: HashMap<u32, (u32, u32)> = HashMap::new();
+        build_pair_sums(&self.rest_constants, self.incr, &mut pair_sums);
+        self.pair_sums = Some(pair_sums);
+    }
+
+    fn synthesize(&mut self, target: u32, max_card: usize) -> Option<SynthParts> {
+        for card in 1..=max_card {
+            if card >= 4 {
+                self.ensure_pair_sums();
+            }
+            let mut failed = HashSet::new();
+            let tail = SynthTailCtx {
+                card,
+                pool: &self.rest_constants,
+                rest_set: &self.rest_set,
+                pair_sums: self.pair_sums.as_ref(),
+                incr: self.incr,
+            };
+            let starts = self.initial.iter().copied().filter(|first| {
+                if self.additive {
+                    target >= *first
+                } else {
+                    *first >= target
+                }
+            });
+            for first in starts {
+                let remainder = if self.additive {
+                    target.wrapping_sub(first)
+                } else {
+                    first.wrapping_sub(target)
+                };
+                let mut acc = SynthParts::new();
+                acc.push(first);
+                if synthesize_tail(&mut acc, remainder, &tail, &mut failed) {
+                    return Some(acc);
+                }
+            }
+        }
+        None
+    }
+}
+
+fn build_pair_sums(rest_constants: &[u32], incr: bool, pair_sums: &mut HashMap<u32, (u32, u32)>) {
     for first in rest_constants.iter().copied() {
-        let first_value = contribution(first, opts.incr);
+        let first_value = contribution(first, incr);
         for second in rest_constants.iter().copied() {
-            let second_value = contribution(second, opts.incr);
+            let second_value = contribution(second, incr);
             if first_value < second_value {
                 continue;
             }
@@ -392,52 +458,18 @@ where
             pair_sums.insert(sum as u32, (first, second));
         }
     }
-
-    for card in 1..=opts.max_card {
-        let mut failed = HashSet::new();
-        let starts = initial
-            .iter()
-            .copied()
-            .filter(|first| {
-                if opts.additive {
-                    target >= *first
-                } else {
-                    *first >= target
-                }
-            })
-            .filter(|first| (opts.valid_first)(*first));
-        for first in starts {
-            let remainder = if opts.additive {
-                target.wrapping_sub(first)
-            } else {
-                first.wrapping_sub(target)
-            };
-            let mut acc = vec![first];
-            let tail = SynthTailCtx {
-                card,
-                pool: &rest_constants,
-                rest_set: &rest_set,
-                pair_sums: &pair_sums,
-                incr: opts.incr,
-            };
-            if synthesize_tail(&mut acc, remainder, &tail, &mut failed) {
-                return Some(acc);
-            }
-        }
-    }
-    None
 }
 
 struct SynthTailCtx<'a> {
     card: usize,
     pool: &'a [u32],
     rest_set: &'a HashSet<u32>,
-    pair_sums: &'a HashMap<u32, (u32, u32)>,
+    pair_sums: Option<&'a HashMap<u32, (u32, u32)>>,
     incr: bool,
 }
 
 fn synthesize_tail(
-    acc: &mut Vec<u32>,
+    acc: &mut SynthParts,
     remaining: u32,
     ctx: &SynthTailCtx,
     failed: &mut HashSet<u64>,
@@ -498,7 +530,10 @@ fn synthesize_tail(
                 return true;
             }
         } else if depth_left == 3 {
-            if let Some((first, second)) = ctx.pair_sums.get(&next_remaining) {
+            if let Some((first, second)) = ctx
+                .pair_sums
+                .and_then(|pair_sums| pair_sums.get(&next_remaining))
+            {
                 acc.push(*first);
                 acc.push(*second);
                 return true;
@@ -512,10 +547,26 @@ fn synthesize_tail(
     false
 }
 
-fn has_writable_encoding(commands: Vec<u32>, lang: EmeraldLang) -> bool {
-    preferred_bytes(commands, lang)
-        .map(|bytes| score_bytes(&bytes, lang) != usize::MAX)
-        .unwrap_or(false)
+fn has_writable_encoding(commands: impl IntoIterator<Item = u32>, lang: EmeraldLang) -> bool {
+    preferred_bytes(commands, lang).is_some()
+}
+
+fn cached_valid(
+    cache: &mut HashMap<u32, bool>,
+    candidate: u32,
+    commands: impl IntoIterator<Item = u32>,
+    lang: EmeraldLang,
+) -> bool {
+    if let Some(valid) = cache.get(&candidate) {
+        return *valid;
+    }
+    let valid = has_writable_encoding(commands, lang);
+    cache.insert(candidate, valid);
+    valid
+}
+
+fn has_constant(constants: &[u32], value: u32) -> bool {
+    constants.binary_search(&value).is_ok()
 }
 
 fn tweak_mov(
@@ -525,93 +576,72 @@ fn tweak_mov(
     constants: &[u32],
     constants_mov_mvn: &[u32],
     options: TweakMovOptions,
-) -> Option<Vec<Vec<u8>>> {
-    let constants_set: HashSet<u32> = constants.iter().copied().collect();
-    let valid_first = |fst: u32| {
-        let use_mov = constants_set.contains(&fst) || !constants_set.contains(&!fst);
-        has_writable_encoding(
+) -> Option<Vec<CommandBytes>> {
+    let mut parts = None;
+    let mut additive = true;
+    let mut valid_first_cache = HashMap::new();
+    let mut valid_add_cache = HashMap::new();
+    let mut valid_sub_cache = HashMap::new();
+
+    let mut valid_first = |fst: u32| {
+        if let Some(valid) = valid_first_cache.get(&fst) {
+            return *valid;
+        }
+        let use_mov = has_constant(constants, fst) || !has_constant(constants, !fst);
+        let valid = has_writable_encoding(
             if use_mov {
                 mov_like(false, false, rd, fst)
             } else {
                 mov_like(true, false, rd, !fst)
             },
             lang,
-        )
+        );
+        valid_first_cache.insert(fst, valid);
+        valid
     };
-    let valid_add = |i| has_writable_encoding(data_proc(0x00a0_0000, rd == R0, rd, rd, i), lang);
-    let valid_sub = |i| has_writable_encoding(data_proc(0x00c0_0000, false, rd, rd, i), lang);
+    let mut add_ctx = SynthContext::new(constants_mov_mvn, true, false, &mut valid_first, |i| {
+        cached_valid(
+            &mut valid_add_cache,
+            i,
+            data_proc(0x00a0_0000, rd == R0, rd, rd, i),
+            lang,
+        )
+    });
+    let mut sub_ctx = SynthContext::new(constants_mov_mvn, false, true, &mut valid_first, |i| {
+        cached_valid(
+            &mut valid_sub_cache,
+            i,
+            data_proc(0x00c0_0000, false, rd, rd, i),
+            lang,
+        )
+    });
 
-    let mut parts = None;
-    let mut additive = true;
+    let searches: &[(bool, bool)] = if options.prefer_subtractive {
+        &[(false, false), (true, true)]
+    } else {
+        &[(true, true), (false, false)]
+    };
     for card in 1..=MAX_CARDS {
-        if options.prefer_subtractive {
-            parts = synthesize(
-                imm,
-                constants_mov_mvn,
-                SynthOptions {
-                    max_card: card,
-                    additive: false,
-                    incr: true,
-                    valid_first,
-                    valid_rest: valid_sub,
-                },
-            );
-            if parts.is_some() {
-                additive = false;
+        for (is_additive, use_add_ctx) in searches {
+            let result = if *use_add_ctx {
+                add_ctx.synthesize(imm, card)
+            } else {
+                sub_ctx.synthesize(imm, card)
+            };
+            if result.is_some() {
+                parts = result;
+                additive = *is_additive;
                 break;
             }
-            parts = synthesize(
-                imm,
-                constants_mov_mvn,
-                SynthOptions {
-                    max_card: card,
-                    additive: true,
-                    incr: false,
-                    valid_first,
-                    valid_rest: valid_add,
-                },
-            );
-            if parts.is_some() {
-                additive = true;
-                break;
-            }
-        } else {
-            parts = synthesize(
-                imm,
-                constants_mov_mvn,
-                SynthOptions {
-                    max_card: card,
-                    additive: true,
-                    incr: false,
-                    valid_first,
-                    valid_rest: valid_add,
-                },
-            );
-            if parts.is_some() {
-                additive = true;
-                break;
-            }
-            parts = synthesize(
-                imm,
-                constants_mov_mvn,
-                SynthOptions {
-                    max_card: card,
-                    additive: false,
-                    incr: true,
-                    valid_first,
-                    valid_rest: valid_sub,
-                },
-            );
-            if parts.is_some() {
-                additive = false;
-                break;
-            }
+        }
+        if parts.is_some() {
+            break;
         }
     }
 
     let parts = parts?;
     let first = parts[0];
-    let use_mov = constants.contains(&first) || !constants.contains(&!first);
+    let use_mov = has_constant(constants, first) || !has_constant(constants, !first);
     let mut out = vec![preferred_bytes(
         if use_mov {
             mov_like(false, false, rd, first)
@@ -639,40 +669,45 @@ fn tweak_sbc(
     imm: u32,
     lang: EmeraldLang,
     constants: &[u32],
-) -> Option<Vec<Vec<u8>>> {
-    let valid_first = |fst| has_writable_encoding(data_proc(0x00c0_0000, false, rd, rn, fst), lang);
-    let valid_add = |i| has_writable_encoding(data_proc(0x00c0_0000, false, rd, rd, i), lang);
-    let valid_sub = |i| has_writable_encoding(data_proc(0x00a0_0000, false, rd, rd, i), lang);
-
+) -> Option<Vec<CommandBytes>> {
     let mut parts = None;
     let mut additive = true;
+    let mut valid_first_cache = HashMap::new();
+    let mut valid_add_cache = HashMap::new();
+    let mut valid_sub_cache = HashMap::new();
+
+    let mut valid_first = |fst| {
+        cached_valid(
+            &mut valid_first_cache,
+            fst,
+            data_proc(0x00c0_0000, false, rd, rn, fst),
+            lang,
+        )
+    };
+    let mut add_ctx = SynthContext::new(constants, true, true, &mut valid_first, |i| {
+        cached_valid(
+            &mut valid_add_cache,
+            i,
+            data_proc(0x00c0_0000, false, rd, rd, i),
+            lang,
+        )
+    });
+    let mut sub_ctx = SynthContext::new(constants, false, false, &mut valid_first, |i| {
+        cached_valid(
+            &mut valid_sub_cache,
+            i,
+            data_proc(0x00a0_0000, false, rd, rd, i),
+            lang,
+        )
+    });
+
     for card in 1..=MAX_CARDS {
-        parts = synthesize(
-            imm,
-            constants,
-            SynthOptions {
-                max_card: card,
-                additive: true,
-                incr: true,
-                valid_first,
-                valid_rest: valid_add,
-            },
-        );
+        parts = add_ctx.synthesize(imm, card);
         if parts.is_some() {
             additive = true;
             break;
         }
-        parts = synthesize(
-            imm,
-            constants,
-            SynthOptions {
-                max_card: card,
-                additive: false,
-                incr: false,
-                valid_first,
-                valid_rest: valid_sub,
-            },
-        );
+        parts = sub_ctx.synthesize(imm, card);
         if parts.is_some() {
             additive = false;
             break;
@@ -697,7 +732,7 @@ fn tweak_sbc(
     Some(out)
 }
 
-fn sid_program_bytes(sid: u16, lang: EmeraldLang) -> Option<Vec<Vec<u8>>> {
+fn sid_program_bytes(sid: u16, lang: EmeraldLang) -> Option<Vec<CommandBytes>> {
     let constants = cached_constants(lang, false);
     let constants_mov_mvn = cached_constants(lang, true);
     let mut out = Vec::new();
@@ -716,7 +751,7 @@ fn sid_program_bytes(sid: u16, lang: EmeraldLang) -> Option<Vec<Vec<u8>>> {
     Some(out)
 }
 
-fn seed_program_bytes(seed: u32, lang: EmeraldLang) -> Option<Vec<Vec<u8>>> {
+fn seed_program_bytes(seed: u32, lang: EmeraldLang) -> Option<Vec<CommandBytes>> {
     let constants = cached_constants(lang, false);
     let constants_mov_mvn = cached_constants(lang, true);
     let mut out = Vec::new();
@@ -746,7 +781,7 @@ fn seed_program_bytes(seed: u32, lang: EmeraldLang) -> Option<Vec<Vec<u8>>> {
     Some(out)
 }
 
-fn certificate_exit(lang: EmeraldLang) -> Option<(usize, Vec<Vec<u8>>)> {
+fn certificate_exit(lang: EmeraldLang) -> Option<(usize, Vec<CommandBytes>)> {
     let variants: &[ExitInstruction] = match lang {
         EmeraldLang::Eng | EmeraldLang::Jap => &[
             ExitInstruction {
@@ -988,7 +1023,7 @@ fn fit_code_at_pos(pos: usize, bytes: &[u8], next: Option<&[u8]>) -> Vec<PackedB
 
 fn add_codes_after(
     mut res: Vec<PackedByte>,
-    commands: &[Vec<u8>],
+    commands: &[CommandBytes],
     final_block: bool,
 ) -> Vec<PackedByte> {
     for (i, command) in commands.iter().enumerate() {
@@ -1121,7 +1156,7 @@ fn replace_padding_from(out: &mut Vec<u8>, pos: usize, first: bool) {
     }
 }
 
-fn fit_codes_into_boxes(commands: &[Vec<u8>], lang: EmeraldLang) -> Option<Vec<Vec<u8>>> {
+fn fit_codes_into_boxes(commands: &[CommandBytes], lang: EmeraldLang) -> Option<Vec<Vec<u8>>> {
     let mut res = add_codes_after(Vec::new(), commands, false);
     let (exit_start, exit_bytes) = certificate_exit(lang)?;
     let byte_count = res.len();
@@ -1138,7 +1173,7 @@ fn fit_codes_into_boxes(commands: &[Vec<u8>], lang: EmeraldLang) -> Option<Vec<V
     split_raw_into_boxes(&raw, true).map(replace_padding_in_boxes)
 }
 
-fn box_names_for_commands(commands: Option<Vec<Vec<u8>>>, lang: EmeraldLang) -> AceResult {
+fn box_names_for_commands(commands: Option<Vec<CommandBytes>>, lang: EmeraldLang) -> AceResult {
     let Some(commands) = commands else {
         return AceResult::Failure(AceFailure { success: false });
     };

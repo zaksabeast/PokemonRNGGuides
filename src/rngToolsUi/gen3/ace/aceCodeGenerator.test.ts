@@ -29,13 +29,13 @@ const getEmeraldSeedBoxNamesResult = RngToolsGlue.getEmeraldSeedBoxNames as (
   lang: EmeraldLang,
 ) => AceResult;
 
-const getBoxNamesStr = async (promise: Promise<AceResult>) => {
+const getBoxesAsStr = async (promise: Promise<AceResult>) => {
   const res = await promise;
   if (!res.success) {
     return JSON.stringify(null);
   }
 
-  return JSON.stringify(res.boxes);
+  return JSON.stringify(res.rawBoxes);
 };
 
 describe("getEmeraldSidBoxNames", () => {
@@ -48,68 +48,71 @@ describe("getEmeraldSidBoxNames", () => {
       const sid = seed & 0xffff;
       const lang = langs[seed % langs.length];
 
-      expect(await getEmeraldSidBoxNames(sid, lang)).toEqual(
-        getEmeraldSidBoxNamesResult(sid, lang),
+      const actual = await getEmeraldSidBoxNames(sid, lang);
+      const expected = getEmeraldSidBoxNamesResult(sid, lang);
+
+      expect(actual.success ? actual.rawBoxes : null).toEqual(
+        expected.success ? expected.rawBoxes : null,
       );
       console.log(`getEmeraldSidBoxNames matched for sid=${sid} lang=${lang}`);
     }
   }, 120_000);
 
   it("returns correct values", async () => {
-    expect(await getBoxNamesStr(getEmeraldSidBoxNames(0x1234, "eng"))).toBe(
+    expect(await getBoxesAsStr(getEmeraldSidBoxNames(0x1234, "eng"))).toBe(
       JSON.stringify([
-        "VBUnv…Qn",
-        "AAA…”Qn",
-        "AAzT.o",
-        "AaU?n",
-        "”FQm",
-        "A",
-        "A",
-        "A",
-        "z♀loy…Qn",
-        "♀QnFGEn",
-        "AA …?q",
-        "A“STn",
-        "YN?nFNRo",
-        "S?n… Rn ",
+        [208, 188, 207, 226, 234, 176, 203, 226],
+        [187, 187, 187, 176, 178, 203, 226],
+        [187, 187, 238, 206, 173, 227],
+        [187, 213, 207, 172, 226],
+        [178, 192, 203, 225],
+        [187],
+        [187],
+        [187],
+        [238, 182, 224, 227, 237, 176, 203, 226],
+        [182, 203, 226, 192, 193, 191, 226],
+        [187, 187, 0, 176, 172, 229],
+        [187, 177, 205, 206, 226],
+        [211, 200, 172, 226, 192, 200, 204, 227],
+        [205, 172, 226, 176, 0, 204, 226, 0],
       ]),
     );
 
-    expect(await getBoxNamesStr(getEmeraldSidBoxNames(0xff23, "ita"))).toBe(
+    expect(await getBoxesAsStr(getEmeraldSidBoxNames(0xff23, "ita"))).toBe(
       JSON.stringify([
-        "VBUnv…Qn",
-        "AAA…”Qn",
-        "AAbR.o",
-        "A1S?n",
-        "2F?n”FQm",
-        "A",
-        "A",
-        "A",
-        "z♀loy…Qn",
-        "♀QnFGEn",
-        "AA …?q",
-        "AlT–n",
-        "YN?nFNRo",
-        "AAAj ?n ",
+        [208, 188, 207, 226, 234, 176, 203, 226],
+        [187, 187, 187, 176, 178, 203, 226],
+        [187, 187, 214, 204, 173, 227],
+        [187, 162, 205, 172, 226],
+        [163, 192, 172, 226, 178, 192, 203, 225],
+        [187],
+        [187],
+        [187],
+        [238, 182, 224, 227, 237, 176, 203, 226],
+        [182, 203, 226, 192, 193, 191, 226],
+        [187, 187, 0, 176, 172, 229],
+        [187, 224, 206, 174, 226],
+        [211, 200, 172, 226, 192, 200, 204, 227],
+        [187, 187, 187, 222, 0, 172, 226, 0],
       ]),
     );
 
-    expect(await getBoxNamesStr(getEmeraldSidBoxNames(0x1, "ger"))).toBe(
+    expect(await getBoxesAsStr(getEmeraldSidBoxNames(0x1, "ger"))).toBe(
       JSON.stringify([
-        "VBUnü…Qn",
-        "AAAVH.o",
-        "AA…HRn",
-        "A“FQm",
-        "A",
-        "A",
-        "A",
-        "A",
-        "z♀loy…Qn",
-        "♀QnFGEn",
-        "AA …?q",
-        "AmT–n",
-        "YN?nFNRo",
-        "AAAn ?n ",
+        [208, 188, 207, 226, 246, 176, 203, 226],
+        [187, 187, 187, 208, 194, 173, 227],
+        [187, 187, 176, 194, 204, 226],
+        [187, 178, 192, 203, 225],
+        [187],
+        [187],
+        [187],
+        [187],
+        [238, 182, 224, 227, 237, 176, 203, 226],
+        [182, 203, 226, 192, 193, 191, 226],
+        [187, 187, 0, 176, 172, 229],
+        [187, 225, 206, 174, 226],
+        [211, 200, 172, 226, 192, 200, 204, 227],
+        [187, 187, 187, 226, 0, 172, 226, 0],
       ]),
     );
   });
@@ -124,8 +127,11 @@ describe("getEmeraldSeedBoxNames", () => {
       seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
       const lang = langs[seed % langs.length];
 
-      expect(await getEmeraldSeedBoxNames(seed, lang)).toEqual(
-        getEmeraldSeedBoxNamesResult(seed, lang),
+      const actual = await getEmeraldSeedBoxNames(seed, lang);
+      const expected = getEmeraldSeedBoxNamesResult(seed, lang);
+
+      expect(actual.success ? actual.rawBoxes : null).toEqual(
+        expected.success ? expected.rawBoxes : null,
       );
       console.log(
         `getEmeraldSeedBoxNames matched for seed=${seed} lang=${lang}`,
@@ -134,64 +140,60 @@ describe("getEmeraldSeedBoxNames", () => {
   }, 120_000);
 
   it("returns correct values", async () => {
-    expect(
-      await getBoxNamesStr(getEmeraldSeedBoxNames(0xacde1234, "eng")),
-    ).toBe(
+    expect(await getBoxesAsStr(getEmeraldSeedBoxNames(0xacde1234, "eng"))).toBe(
       JSON.stringify([
-        "FM…o♀S?n",
-        "AAAFS?n",
-        "AA?’.o",
-        "Aj,!n",
-        "zD!naE!n",
-        "AAA …?q",
-        "A",
-        "A",
-        "z♀loy…Qn",
-        "♀QnFGEn",
-        "AA …?q",
-        "A“STn",
-        "YN?nFNRo",
-        "S?n… Rn ",
+        [192, 199, 176, 227, 182, 205, 172, 226],
+        [187, 187, 187, 192, 205, 172, 226],
+        [187, 187, 172, 180, 173, 227],
+        [187, 222, 184, 171, 226],
+        [238, 190, 171, 226, 213, 191, 171, 226],
+        [187, 187, 187, 0, 176, 172, 229],
+        [187],
+        [187],
+        [238, 182, 224, 227, 237, 176, 203, 226],
+        [182, 203, 226, 192, 193, 191, 226],
+        [187, 187, 0, 176, 172, 229],
+        [187, 177, 205, 206, 226],
+        [211, 200, 172, 226, 192, 200, 204, 227],
+        [205, 172, 226, 176, 0, 204, 226, 0],
       ]),
     );
 
-    expect(
-      await getBoxNamesStr(getEmeraldSeedBoxNames(0xff123423, "ita")),
-    ).toBe(
+    expect(await getBoxesAsStr(getEmeraldSeedBoxNames(0xff123423, "ita"))).toBe(
       JSON.stringify([
-        "FM…o♀S?n",
-        "AAAFS?n",
-        "AAz,lo",
-        "ATC!n",
-        "3…!n …?q",
-        "A",
-        "A",
-        "A",
-        "z♀loy…Qn",
-        "♀QnFGEn",
-        "AA …?q",
-        "AlT–n",
-        "YN?nFNRo",
-        "AAAj ?n ",
+        [192, 199, 176, 227, 182, 205, 172, 226],
+        [187, 187, 187, 192, 205, 172, 226],
+        [187, 187, 238, 184, 224, 227],
+        [187, 206, 189, 171, 226],
+        [164, 176, 171, 226, 0, 176, 172, 229],
+        [187],
+        [187],
+        [187],
+        [238, 182, 224, 227, 237, 176, 203, 226],
+        [182, 203, 226, 192, 193, 191, 226],
+        [187, 187, 0, 176, 172, 229],
+        [187, 224, 206, 174, 226],
+        [211, 200, 172, 226, 192, 200, 204, 227],
+        [187, 187, 187, 222, 0, 172, 226, 0],
       ]),
     );
 
-    expect(await getBoxNamesStr(getEmeraldSeedBoxNames(0x1, "ger"))).toBe(
+    expect(await getBoxesAsStr(getEmeraldSeedBoxNames(0x1, "ger"))).toBe(
       JSON.stringify([
-        "FM…o♀S?n",
-        "AAAFS?n",
-        "AAV“.o",
-        "A…“Qn",
-        " …?q",
-        "A",
-        "A",
-        "A",
-        "z♀loy…Qn",
-        "♀QnFGEn",
-        "AA …?q",
-        "AmT–n",
-        "YN?nFNRo",
-        "AAAn ?n ",
+        [192, 199, 176, 227, 182, 205, 172, 226],
+        [187, 187, 187, 192, 205, 172, 226],
+        [187, 187, 208, 178, 173, 227],
+        [187, 176, 178, 203, 226],
+        [0, 176, 172, 229],
+        [187],
+        [187],
+        [187],
+        [238, 182, 224, 227, 237, 176, 203, 226],
+        [182, 203, 226, 192, 193, 191, 226],
+        [187, 187, 0, 176, 172, 229],
+        [187, 225, 206, 174, 226],
+        [211, 200, 172, 226, 192, 200, 204, 227],
+        [187, 187, 187, 226, 0, 172, 226, 0],
       ]),
     );
   });

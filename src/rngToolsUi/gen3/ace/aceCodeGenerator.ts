@@ -612,10 +612,10 @@ type TweakMovOptions = { preferSubtractive?: boolean };
 type ExitInstruction = ["adc" | "sbc" | "bic", number, number, number];
 export type AceResult =
   | {
-      language: EmeraldLang;
-      boxes: string[];
+      //language: EmeraldLang;
+      //boxes: string[];
+      //commands: { bytes: Bytes; hex: string }[];
       rawBoxes: Bytes[];
-      commands: { bytes: Bytes; hex: string }[];
       success: true;
     }
   | {
@@ -1414,14 +1414,15 @@ const getEmeraldBoxNamesForCommands = (
     box.map((byte) => boxNameCharAt(byte, cs)).join(""),
   );
   return {
-    language: cs.lang,
+    success: true,
+    rawBoxes: boxes.map((box) => box.slice()),
+    /*language: cs.lang,
     success: true,
     boxes: names,
-    rawBoxes: boxes.map((box) => box.slice()),
     commands: commands.map((bytes) => ({
       bytes: bytes.slice(),
       hex: commandForBytes(bytes).toString(16).padStart(8, "0").toUpperCase(),
-    })),
+    })),*/
   };
 };
 

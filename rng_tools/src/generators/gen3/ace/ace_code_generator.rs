@@ -58,17 +58,6 @@ impl EmeraldLang {
         }
     }
 
-    fn as_str(self) -> &'static str {
-        match self {
-            Self::Eng => "eng",
-            Self::Fra => "fra",
-            Self::Ita => "ita",
-            Self::Spa => "spa",
-            Self::Ger => "ger",
-            Self::Jap => "jap",
-        }
-    }
-
     fn constants_index(self, mov_mvn: bool) -> usize {
         let lang_index = match self {
             Self::Eng => 0,
@@ -91,11 +80,8 @@ pub enum AceResult {
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 pub struct AceSuccess {
-    pub language: String,
-    pub boxes: Vec<String>,
     #[serde(rename = "rawBoxes")]
     pub raw_boxes: Vec<Vec<u8>>,
-    pub commands: Vec<AceCommand>,
     pub success: bool,
 }
 
@@ -201,356 +187,6 @@ fn is_code_available(code: u8, lang: EmeraldLang) -> bool {
     }
 }
 
-fn euro_char_at(code: u8, lang: EmeraldLang) -> &'static str {
-    match code {
-        0x00 => "_",
-        0xa1 => "0",
-        0xa2 => "1",
-        0xa3 => "2",
-        0xa4 => "3",
-        0xa5 => "4",
-        0xa6 => "5",
-        0xa7 => "6",
-        0xa8 => "7",
-        0xa9 => "8",
-        0xaa => "9",
-        0xab => "!",
-        0xac => "?",
-        0xad => ".",
-        0xae => "–",
-        0xb0 => "…",
-        0xb1 if lang == EmeraldLang::Fra => "«",
-        0xb1 if lang == EmeraldLang::Ger => "„",
-        0xb1 => "“",
-        0xb2 if lang == EmeraldLang::Fra => "»",
-        0xb2 if lang == EmeraldLang::Ger => "“",
-        0xb2 => "”",
-        0xb3 => "‘",
-        0xb4 => "’",
-        0xb5 => "♂",
-        0xb6 => "♀",
-        0xb8 => ",",
-        0xba => "/",
-        0xbb => "A",
-        0xbc => "B",
-        0xbd => "C",
-        0xbe => "D",
-        0xbf => "E",
-        0xc0 => "F",
-        0xc1 => "G",
-        0xc2 => "H",
-        0xc3 => "I",
-        0xc4 => "J",
-        0xc5 => "K",
-        0xc6 => "L",
-        0xc7 => "M",
-        0xc8 => "N",
-        0xc9 => "O",
-        0xca => "P",
-        0xcb => "Q",
-        0xcc => "R",
-        0xcd => "S",
-        0xce => "T",
-        0xcf => "U",
-        0xd0 => "V",
-        0xd1 => "W",
-        0xd2 => "X",
-        0xd3 => "Y",
-        0xd4 => "Z",
-        0xd5 => "a",
-        0xd6 => "b",
-        0xd7 => "c",
-        0xd8 => "d",
-        0xd9 => "e",
-        0xda => "f",
-        0xdb => "g",
-        0xdc => "h",
-        0xdd => "i",
-        0xde => "j",
-        0xdf => "k",
-        0xe0 => "l",
-        0xe1 => "m",
-        0xe2 => "n",
-        0xe3 => "o",
-        0xe4 => "p",
-        0xe5 => "q",
-        0xe6 => "r",
-        0xe7 => "s",
-        0xe8 => "t",
-        0xe9 => "u",
-        0xea => "v",
-        0xeb => "w",
-        0xec => "x",
-        0xed => "y",
-        0xee => "z",
-        0xf1 => "Ä",
-        0xf2 => "Ö",
-        0xf3 => "Ü",
-        0xf4 => "ä",
-        0xf5 => "ö",
-        0xf6 => "ü",
-        _ => "✖",
-    }
-}
-
-fn jap_char_at(code: u8) -> &'static str {
-    match code {
-        0x00 => "_",
-        0x01 => "あ",
-        0x02 => "い",
-        0x03 => "う",
-        0x04 => "え",
-        0x05 => "お",
-        0x06 => "か",
-        0x07 => "き",
-        0x08 => "く",
-        0x09 => "け",
-        0x0a => "こ",
-        0x0b => "さ",
-        0x0c => "し",
-        0x0d => "す",
-        0x0e => "せ",
-        0x0f => "そ",
-        0x10 => "た",
-        0x11 => "ち",
-        0x12 => "つ",
-        0x13 => "て",
-        0x14 => "と",
-        0x15 => "な",
-        0x16 => "に",
-        0x17 => "ぬ",
-        0x18 => "ね",
-        0x19 => "の",
-        0x1a => "は",
-        0x1b => "ひ",
-        0x1c => "ふ",
-        0x1d => "へ",
-        0x1e => "ほ",
-        0x1f => "ま",
-        0x20 => "み",
-        0x21 => "む",
-        0x22 => "め",
-        0x23 => "も",
-        0x24 => "や",
-        0x25 => "ゆ",
-        0x26 => "よ",
-        0x27 => "ら",
-        0x28 => "り",
-        0x29 => "る",
-        0x2a => "れ",
-        0x2b => "ろ",
-        0x2c => "わ",
-        0x2d => "を",
-        0x2e => "ん",
-        0x2f => "ぁ",
-        0x30 => "ぃ",
-        0x31 => "ぅ",
-        0x32 => "ぇ",
-        0x33 => "ぉ",
-        0x34 => "ゃ",
-        0x35 => "ゅ",
-        0x36 => "ょ",
-        0x37 => "が",
-        0x38 => "ぎ",
-        0x39 => "ぐ",
-        0x3a => "げ",
-        0x3b => "ご",
-        0x3c => "ざ",
-        0x3d => "じ",
-        0x3e => "ず",
-        0x3f => "ぜ",
-        0x40 => "ぞ",
-        0x41 => "だ",
-        0x42 => "ぢ",
-        0x43 => "づ",
-        0x44 => "で",
-        0x45 => "ど",
-        0x46 => "ば",
-        0x47 => "び",
-        0x48 => "ぶ",
-        0x49 => "べ",
-        0x4a => "ぼ",
-        0x4b => "ぱ",
-        0x4c => "ぴ",
-        0x4d => "ぷ",
-        0x4e => "ぺ",
-        0x4f => "ぽ",
-        0x50 => "っ",
-        0x51 => "ア",
-        0x52 => "イ",
-        0x53 => "ウ",
-        0x54 => "エ",
-        0x55 => "オ",
-        0x56 => "カ",
-        0x57 => "キ",
-        0x58 => "ク",
-        0x59 => "ケ",
-        0x5a => "コ",
-        0x5b => "サ",
-        0x5c => "シ",
-        0x5d => "ス",
-        0x5e => "セ",
-        0x5f => "ソ",
-        0x60 => "タ",
-        0x61 => "チ",
-        0x62 => "ツ",
-        0x63 => "テ",
-        0x64 => "ト",
-        0x65 => "ナ",
-        0x66 => "ニ",
-        0x67 => "ヌ",
-        0x68 => "ネ",
-        0x69 => "ノ",
-        0x6a => "ハ",
-        0x6b => "ヒ",
-        0x6c => "フ",
-        0x6d => "ヘ",
-        0x6e => "ホ",
-        0x6f => "マ",
-        0x70 => "ミ",
-        0x71 => "ム",
-        0x72 => "メ",
-        0x73 => "モ",
-        0x74 => "ヤ",
-        0x75 => "ユ",
-        0x76 => "ヨ",
-        0x77 => "ラ",
-        0x78 => "リ",
-        0x79 => "ル",
-        0x7a => "レ",
-        0x7b => "ロ",
-        0x7c => "ワ",
-        0x7d => "ヲ",
-        0x7e => "ン",
-        0x7f => "ァ",
-        0x80 => "ィ",
-        0x81 => "ゥ",
-        0x82 => "ェ",
-        0x83 => "ォ",
-        0x84 => "ャ",
-        0x85 => "ュ",
-        0x86 => "ョ",
-        0x87 => "ガ",
-        0x88 => "ギ",
-        0x89 => "グ",
-        0x8a => "ゲ",
-        0x8b => "ゴ",
-        0x8c => "ザ",
-        0x8d => "ジ",
-        0x8e => "ズ",
-        0x8f => "ゼ",
-        0x90 => "ゾ",
-        0x91 => "ダ",
-        0x92 => "ヂ",
-        0x93 => "ヅ",
-        0x94 => "デ",
-        0x95 => "ド",
-        0x96 => "バ",
-        0x97 => "ビ",
-        0x98 => "ブ",
-        0x99 => "ベ",
-        0x9a => "ボ",
-        0x9b => "パ",
-        0x9c => "ピ",
-        0x9d => "プ",
-        0x9e => "ペ",
-        0x9f => "ポ",
-        0xa0 => "ッ",
-        0xa1 => "0",
-        0xa2 => "1",
-        0xa3 => "2",
-        0xa4 => "3",
-        0xa5 => "4",
-        0xa6 => "5",
-        0xa7 => "6",
-        0xa8 => "7",
-        0xa9 => "8",
-        0xaa => "9",
-        0xab => "！",
-        0xac => "？",
-        0xad => "。",
-        0xae => "ー",
-        0xaf => "・",
-        0xb0 => "‥",
-        0xb1 => "『",
-        0xb2 => "』",
-        0xb3 => "「",
-        0xb4 => "」",
-        0xb5 => "♂",
-        0xb6 => "♀",
-        0xb7 => "円",
-        0xb8 => ".",
-        0xb9 => "×",
-        0xba => "/",
-        0xbb => "A",
-        0xbc => "B",
-        0xbd => "C",
-        0xbe => "D",
-        0xbf => "E",
-        0xc0 => "F",
-        0xc1 => "G",
-        0xc2 => "H",
-        0xc3 => "I",
-        0xc4 => "J",
-        0xc5 => "K",
-        0xc6 => "L",
-        0xc7 => "M",
-        0xc8 => "N",
-        0xc9 => "O",
-        0xca => "P",
-        0xcb => "Q",
-        0xcc => "R",
-        0xcd => "S",
-        0xce => "T",
-        0xcf => "U",
-        0xd0 => "V",
-        0xd1 => "W",
-        0xd2 => "X",
-        0xd3 => "Y",
-        0xd4 => "Z",
-        0xd5 => "a",
-        0xd6 => "b",
-        0xd7 => "c",
-        0xd8 => "d",
-        0xd9 => "e",
-        0xda => "f",
-        0xdb => "g",
-        0xdc => "h",
-        0xdd => "i",
-        0xde => "j",
-        0xdf => "k",
-        0xe0 => "l",
-        0xe1 => "m",
-        0xe2 => "n",
-        0xe3 => "o",
-        0xe4 => "p",
-        0xe5 => "q",
-        0xe6 => "r",
-        0xe7 => "s",
-        0xe8 => "t",
-        0xe9 => "u",
-        0xea => "v",
-        0xeb => "w",
-        0xec => "x",
-        0xed => "y",
-        0xee => "z",
-        _ => "✖",
-    }
-}
-
-fn box_name_char_at(code: u8, lang: EmeraldLang) -> &'static str {
-    if code == SPACE {
-        return " ";
-    }
-    if !is_code_available(code, lang) {
-        return "✖";
-    }
-    match lang {
-        EmeraldLang::Jap => jap_char_at(code),
-        _ => euro_char_at(code, lang),
-    }
-}
-
 fn rol(value: u32, bits: u32) -> u32 {
     value.rotate_left(bits & 31)
 }
@@ -600,8 +236,7 @@ fn mov_like(mvn: bool, set_flags: bool, rd: u32, imm: u32) -> Vec<u32> {
     let modes = addr_mode1_immediate(imm);
     let mut out = Vec::new();
     for opcode in opcodes {
-        let base =
-            (COND_AL << 28) | opcode | if set_flags { 0x0010_0000 } else { 0 } | (rd << 12);
+        let base = (COND_AL << 28) | opcode | if set_flags { 0x0010_0000 } else { 0 } | (rd << 12);
         for mode in &modes {
             out.push(base | mode);
         }
@@ -645,13 +280,6 @@ fn command_bytes(command: u32) -> Vec<u8> {
         ((command >> 16) & 0xff) as u8,
         ((command >> 24) & 0xff) as u8,
     ]
-}
-
-fn command_for_bytes(bytes: &[u8]) -> u32 {
-    (bytes[0] as u32)
-        | ((bytes[1] as u32) << 8)
-        | ((bytes[2] as u32) << 16)
-        | ((bytes[3] as u32) << 24)
 }
 
 fn score_bytes(bytes: &[u8], lang: EmeraldLang) -> usize {
@@ -738,14 +366,22 @@ fn contribution(candidate: u32, incr: bool) -> u32 {
     }
 }
 
-fn synthesize<First, Rest>(target: u32, constants: &[u32], opts: SynthOptions<First, Rest>) -> Option<Vec<u32>>
+fn synthesize<First, Rest>(
+    target: u32,
+    constants: &[u32],
+    opts: SynthOptions<First, Rest>,
+) -> Option<Vec<u32>>
 where
     First: Fn(u32) -> bool,
     Rest: Fn(u32) -> bool,
 {
     let mut descending = constants.to_vec();
     descending.reverse();
-    let initial: &[u32] = if opts.additive { &descending } else { constants };
+    let initial: &[u32] = if opts.additive {
+        &descending
+    } else {
+        constants
+    };
     let rest_constants: Vec<u32> = descending
         .iter()
         .copied()
@@ -847,7 +483,12 @@ fn synthesize_tail(
     } else {
         remaining
     };
-    for candidate in ctx.pool.iter().copied().skip(first_at_most_desc(ctx.pool, limit)) {
+    for candidate in ctx
+        .pool
+        .iter()
+        .copied()
+        .skip(first_at_most_desc(ctx.pool, limit))
+    {
         let value = contribution(candidate, ctx.incr);
         if (value as u64) * (depth_left as u64) < remaining as u64 {
             break;
@@ -1010,8 +651,7 @@ fn tweak_sbc(
     lang: EmeraldLang,
     constants: &[u32],
 ) -> Option<Vec<Vec<u8>>> {
-    let valid_first =
-        |fst| has_writable_encoding(data_proc(0x00c0_0000, false, rd, rn, fst), lang);
+    let valid_first = |fst| has_writable_encoding(data_proc(0x00c0_0000, false, rd, rn, fst), lang);
     let valid_add = |i| has_writable_encoding(data_proc(0x00c0_0000, false, rd, rd, i), lang);
     let valid_sub = |i| has_writable_encoding(data_proc(0x00a0_0000, false, rd, rd, i), lang);
 
@@ -1091,7 +731,10 @@ fn seed_program_bytes(seed: u32, lang: EmeraldLang) -> Option<Vec<Vec<u8>>> {
     let constants = cached_constants(lang, false);
     let constants_mov_mvn = cached_constants(lang, true);
     let mut out = Vec::new();
-    out.push(preferred_bytes(mov_like(false, true, R12, 0x0300_0000), lang)?);
+    out.push(preferred_bytes(
+        mov_like(false, true, R12, 0x0300_0000),
+        lang,
+    )?);
     out.push(preferred_bytes(
         data_proc(0x00a0_0000, false, R12, R12, 0x2d80),
         lang,
@@ -1268,7 +911,13 @@ fn certificate_exit(lang: EmeraldLang) -> Option<(usize, Vec<Vec<u8>>)> {
             ExitOp::Bic => 0x01c0_0000,
         };
         out.push(preferred_bytes(
-            data_proc(opcode, false, instruction.rd, instruction.rn, instruction.imm),
+            data_proc(
+                opcode,
+                false,
+                instruction.rd,
+                instruction.rn,
+                instruction.imm,
+            ),
             lang,
         )?);
     }
@@ -1348,7 +997,11 @@ fn fit_code_at_pos(pos: usize, bytes: &[u8], next: Option<&[u8]>) -> Vec<PackedB
     out
 }
 
-fn add_codes_after(mut res: Vec<PackedByte>, commands: &[Vec<u8>], final_block: bool) -> Vec<PackedByte> {
+fn add_codes_after(
+    mut res: Vec<PackedByte>,
+    commands: &[Vec<u8>],
+    final_block: bool,
+) -> Vec<PackedByte> {
     for (i, command) in commands.iter().enumerate() {
         let next = if i == commands.len() - 1 {
             if final_block {
@@ -1483,9 +1136,16 @@ fn fit_codes_into_boxes(commands: &[Vec<u8>], lang: EmeraldLang) -> Option<Vec<V
     let mut res = add_codes_after(Vec::new(), commands, false);
     let (exit_start, exit_bytes) = certificate_exit(lang)?;
     let byte_count = res.len();
-    res.extend(pack(&pad_nb(byte_count, exit_start as isize - byte_count as isize)?));
+    res.extend(pack(&pad_nb(
+        byte_count,
+        exit_start as isize - byte_count as isize,
+    )?));
     res = add_codes_after(res, &exit_bytes, true);
-    let raw = rewrite_bytes(&res.into_iter().map(|packed| packed.byte).collect::<Vec<_>>());
+    let raw = rewrite_bytes(
+        &res.into_iter()
+            .map(|packed| packed.byte)
+            .collect::<Vec<_>>(),
+    );
     split_raw_into_boxes(&raw, true).map(replace_padding_in_boxes)
 }
 
@@ -1496,27 +1156,8 @@ fn box_names_for_commands(commands: Option<Vec<Vec<u8>>>, lang: EmeraldLang) -> 
     let Some(raw_boxes) = fit_codes_into_boxes(&commands, lang) else {
         return AceResult::Failure(AceFailure { success: false });
     };
-    let boxes = raw_boxes
-        .iter()
-        .map(|box_bytes| {
-            box_bytes
-                .iter()
-                .map(|byte| box_name_char_at(*byte, lang))
-                .collect::<String>()
-        })
-        .collect();
-    let commands = commands
-        .into_iter()
-        .map(|bytes| AceCommand {
-            hex: format!("{:08X}", command_for_bytes(&bytes)),
-            bytes,
-        })
-        .collect();
     AceResult::Success(AceSuccess {
-        language: lang.as_str().to_owned(),
-        boxes,
         raw_boxes,
-        commands,
         success: true,
     })
 }
@@ -1544,20 +1185,6 @@ pub fn get_emerald_seed_box_names(seed: u32, lang: String) -> JsValue {
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    fn boxes(result: AceResult) -> Vec<String> {
-        match result {
-            AceResult::Success(success) => success.boxes,
-            AceResult::Failure(_) => panic!("expected success"),
-        }
-    }
-
-    fn commands(result: AceResult) -> Vec<String> {
-        match result {
-            AceResult::Success(success) => success.commands.into_iter().map(|c| c.hex).collect(),
-            AceResult::Failure(_) => panic!("expected success"),
-        }
-    }
 
     #[test]
     fn emerald_sid_box_names_match_typescript() {
@@ -1686,24 +1313,13 @@ mod tests {
         assert_eq!(
             commands(get_emerald_sid_box_names_result(0x1234, "eng")),
             vec![
-                "E2CFBCD0",
-                "E2CBB0EA",
-                "E2CBB2B0",
-                "E3ADCEEE",
-                "E2ACCFD5",
-                "E1CBC0B2",
+                "E2CFBCD0", "E2CBB0EA", "E2CBB2B0", "E3ADCEEE", "E2ACCFD5", "E1CBC0B2",
             ]
         );
         assert_eq!(
             commands(get_emerald_seed_box_names_result(0xacde1234, "eng")),
             vec![
-                "E3B0C7C0",
-                "E2ACCDB6",
-                "E2ACCDC0",
-                "E3ADB4AC",
-                "E2ABB8DE",
-                "E2ABBEEE",
-                "E2ABBFD5",
+                "E3B0C7C0", "E2ACCDB6", "E2ACCDC0", "E3ADB4AC", "E2ABB8DE", "E2ABBEEE", "E2ABBFD5",
                 "E5ACB000",
             ]
         );

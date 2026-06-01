@@ -40,7 +40,7 @@ const getBoxesAsStr = async (promise: Promise<AceResult>) => {
 
 describe("getEmeraldSidBoxNames", () => {
   it("matches the Rust implementation for random inputs", async () => {
-    const langs: EmeraldLang[] = ["eng", "fra", "ita", "spa", "ger"];
+    const langs: EmeraldLang[] = ["Eng", "Fra", "Ita", "Spa", "Ger"];
     let seed = 0x9e3779b9;
 
     for (let i = 0; i < 10; i++) {
@@ -59,7 +59,7 @@ describe("getEmeraldSidBoxNames", () => {
   }, 120_000);
 
   it("returns correct values", async () => {
-    expect(await getBoxesAsStr(getEmeraldSidBoxNames(0x1234, "eng"))).toBe(
+    expect(await getBoxesAsStr(getEmeraldSidBoxNames(0x1234, "Eng"))).toBe(
       JSON.stringify([
         [208, 188, 207, 226, 234, 176, 203, 226],
         [187, 187, 187, 176, 178, 203, 226],
@@ -78,7 +78,7 @@ describe("getEmeraldSidBoxNames", () => {
       ]),
     );
 
-    expect(await getBoxesAsStr(getEmeraldSidBoxNames(0xff23, "ita"))).toBe(
+    expect(await getBoxesAsStr(getEmeraldSidBoxNames(0xff23, "Ita"))).toBe(
       JSON.stringify([
         [208, 188, 207, 226, 234, 176, 203, 226],
         [187, 187, 187, 176, 178, 203, 226],
@@ -97,7 +97,7 @@ describe("getEmeraldSidBoxNames", () => {
       ]),
     );
 
-    expect(await getBoxesAsStr(getEmeraldSidBoxNames(0x1, "ger"))).toBe(
+    expect(await getBoxesAsStr(getEmeraldSidBoxNames(0x1, "Ger"))).toBe(
       JSON.stringify([
         [208, 188, 207, 226, 246, 176, 203, 226],
         [187, 187, 187, 208, 194, 173, 227],
@@ -120,15 +120,22 @@ describe("getEmeraldSidBoxNames", () => {
 
 describe("getEmeraldSeedBoxNames", () => {
   it("matches the Rust implementation for random inputs", async () => {
-    const langs: EmeraldLang[] = ["eng", "fra", "ita", "spa", "ger"];
+    const langs: EmeraldLang[] = ["Eng", "Fra", "Ita", "Spa", "Ger"];
     let seed = 0x85ebca6b;
+    let jsMs = 0;
+    let rustMs = 0;
 
     for (let i = 0; i < 10; i++) {
       seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
       const lang = langs[seed % langs.length];
 
+      const jsStart = performance.now();
       const actual = await getEmeraldSeedBoxNames(seed, lang);
+      jsMs += performance.now() - jsStart;
+
+      const rustStart = performance.now();
       const expected = getEmeraldSeedBoxNamesResult(seed, lang);
+      rustMs += performance.now() - rustStart;
 
       expect(actual.success ? actual.rawBoxes : null).toEqual(
         expected.success ? expected.rawBoxes : null,
@@ -137,10 +144,16 @@ describe("getEmeraldSeedBoxNames", () => {
         `getEmeraldSeedBoxNames matched for seed=${seed} lang=${lang}`,
       );
     }
+    const jsTime = jsMs.toFixed(2);
+    const rustTime = rustMs.toFixed(2);
+
+    console.log(
+      `getEmeraldSeedBoxNames timing: js=${jsTime}ms rust=${rustTime}ms`,
+    );
   }, 120_000);
 
   it("returns correct values", async () => {
-    expect(await getBoxesAsStr(getEmeraldSeedBoxNames(0xacde1234, "eng"))).toBe(
+    expect(await getBoxesAsStr(getEmeraldSeedBoxNames(0xacde1234, "Eng"))).toBe(
       JSON.stringify([
         [192, 199, 176, 227, 182, 205, 172, 226],
         [187, 187, 187, 192, 205, 172, 226],
@@ -159,7 +172,7 @@ describe("getEmeraldSeedBoxNames", () => {
       ]),
     );
 
-    expect(await getBoxesAsStr(getEmeraldSeedBoxNames(0xff123423, "ita"))).toBe(
+    expect(await getBoxesAsStr(getEmeraldSeedBoxNames(0xff123423, "Ita"))).toBe(
       JSON.stringify([
         [192, 199, 176, 227, 182, 205, 172, 226],
         [187, 187, 187, 192, 205, 172, 226],
@@ -178,7 +191,7 @@ describe("getEmeraldSeedBoxNames", () => {
       ]),
     );
 
-    expect(await getBoxesAsStr(getEmeraldSeedBoxNames(0x1, "ger"))).toBe(
+    expect(await getBoxesAsStr(getEmeraldSeedBoxNames(0x1, "Ger"))).toBe(
       JSON.stringify([
         [192, 199, 176, 227, 182, 205, 172, 226],
         [187, 187, 187, 192, 205, 172, 226],

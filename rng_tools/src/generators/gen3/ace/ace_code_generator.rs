@@ -50,20 +50,6 @@ pub enum EmeraldLang {
     Jap,
 }
 
-impl EmeraldLang {
-    fn constants_index(self, mov_mvn: bool) -> usize {
-        let lang_index = match self {
-            Self::Eng => 0,
-            Self::Fra => 1,
-            Self::Ita => 2,
-            Self::Spa => 3,
-            Self::Ger => 4,
-            Self::Jap => 5,
-        };
-        lang_index * 2 + usize::from(mov_mvn)
-    }
-}
-
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 #[serde(untagged)]
 pub enum AceResult {
@@ -114,25 +100,40 @@ struct ExitInstruction {
     imm: u32,
 }
 
-static CONSTANTS: Lazy<Vec<Vec<u32>>> = Lazy::new(|| {
-    let langs = [
-        EmeraldLang::Eng,
-        EmeraldLang::Fra,
-        EmeraldLang::Ita,
-        EmeraldLang::Spa,
-        EmeraldLang::Ger,
-        EmeraldLang::Jap,
-    ];
-    let mut out = Vec::with_capacity(12);
-    for lang in langs {
-        out.push(build_constants_uncached(lang, false));
-        out.push(build_constants_uncached(lang, true));
-    }
-    out
-});
+macro_rules! constants_cache {
+    ($name:ident, $lang:expr, $mov_mvn:expr) => {
+        static $name: Lazy<Vec<u32>> = Lazy::new(|| build_constants_uncached($lang, $mov_mvn));
+    };
+}
+
+constants_cache!(ENG_CONSTANTS, EmeraldLang::Eng, false);
+constants_cache!(ENG_MOV_MVN_CONSTANTS, EmeraldLang::Eng, true);
+constants_cache!(FRA_CONSTANTS, EmeraldLang::Fra, false);
+constants_cache!(FRA_MOV_MVN_CONSTANTS, EmeraldLang::Fra, true);
+constants_cache!(ITA_CONSTANTS, EmeraldLang::Ita, false);
+constants_cache!(ITA_MOV_MVN_CONSTANTS, EmeraldLang::Ita, true);
+constants_cache!(SPA_CONSTANTS, EmeraldLang::Spa, false);
+constants_cache!(SPA_MOV_MVN_CONSTANTS, EmeraldLang::Spa, true);
+constants_cache!(GER_CONSTANTS, EmeraldLang::Ger, false);
+constants_cache!(GER_MOV_MVN_CONSTANTS, EmeraldLang::Ger, true);
+constants_cache!(JAP_CONSTANTS, EmeraldLang::Jap, false);
+constants_cache!(JAP_MOV_MVN_CONSTANTS, EmeraldLang::Jap, true);
 
 fn cached_constants(lang: EmeraldLang, mov_mvn: bool) -> &'static [u32] {
-    &CONSTANTS[lang.constants_index(mov_mvn)]
+    match (lang, mov_mvn) {
+        (EmeraldLang::Eng, false) => ENG_CONSTANTS.as_slice(),
+        (EmeraldLang::Eng, true) => ENG_MOV_MVN_CONSTANTS.as_slice(),
+        (EmeraldLang::Fra, false) => FRA_CONSTANTS.as_slice(),
+        (EmeraldLang::Fra, true) => FRA_MOV_MVN_CONSTANTS.as_slice(),
+        (EmeraldLang::Ita, false) => ITA_CONSTANTS.as_slice(),
+        (EmeraldLang::Ita, true) => ITA_MOV_MVN_CONSTANTS.as_slice(),
+        (EmeraldLang::Spa, false) => SPA_CONSTANTS.as_slice(),
+        (EmeraldLang::Spa, true) => SPA_MOV_MVN_CONSTANTS.as_slice(),
+        (EmeraldLang::Ger, false) => GER_CONSTANTS.as_slice(),
+        (EmeraldLang::Ger, true) => GER_MOV_MVN_CONSTANTS.as_slice(),
+        (EmeraldLang::Jap, false) => JAP_CONSTANTS.as_slice(),
+        (EmeraldLang::Jap, true) => JAP_MOV_MVN_CONSTANTS.as_slice(),
+    }
 }
 
 fn is_code_available(code: u8, lang: EmeraldLang) -> bool {

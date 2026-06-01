@@ -577,11 +577,11 @@ const charset = (
   lang: EmeraldLang;
   chars: (string | null)[];
 } => {
-  const chars = lang === "jap" ? JAP_CHARS.slice() : EURO_CHARS.slice();
-  if (lang === "fra") {
+  const chars = lang === "Jap" ? JAP_CHARS.slice() : EURO_CHARS.slice();
+  if (lang === "Fra") {
     chars[0xb1] = "«";
     chars[0xb2] = "»";
-  } else if (lang === "ger") {
+  } else if (lang === "Ger") {
     chars[0xb1] = "„";
     chars[0xb2] = "“";
   }
@@ -589,10 +589,10 @@ const charset = (
 };
 
 const isCodeAvailable = (code: number, lang: EmeraldLang) => {
-  if (lang === "jap") {
+  if (lang === "Jap") {
     return code >= 0 && code <= 0xff && !JAP_UNAVAILABLE.has(code);
   }
-  if (lang === "ger" && GERMAN_EXTRA_AVAILABLE.has(code)) {
+  if (lang === "Ger" && GERMAN_EXTRA_AVAILABLE.has(code)) {
     return true;
   }
   return EURO_AVAILABLE.has(code);
@@ -1135,32 +1135,32 @@ const certificateExit = (
   lang: EmeraldLang,
 ): { start: number; bytes: Bytes[] } => {
   const variants: Partial<Record<EmeraldLang, ExitInstruction[]>> = {
-    eng: [
+    Eng: [
       ["sbc", REG.r12, REG.lr, 0x2c40],
       ["adc", REG.r12, REG.r12, 0xd30000],
       ["bic", REG.r12, REG.r12, 0xc00000],
       ["adc", REG.r12, REG.r12, 0x3fc0],
       ["sbc", REG.r0, REG.r12, 0xb0],
     ],
-    fra: [
+    Fra: [
       ["adc", REG.r12, REG.lr, 0xe30],
       ["adc", REG.r12, REG.r12, 0xd30000],
       ["bic", REG.r12, REG.r12, 0xc00000],
       ["adc", REG.r0, REG.r12, 0xe2],
     ],
-    ger: [
+    Ger: [
       ["adc", REG.r12, REG.lr, 0xe10],
       ["adc", REG.r12, REG.r12, 0xd30000],
       ["bic", REG.r12, REG.r12, 0xc00000],
       ["adc", REG.r0, REG.r12, 0xe2],
     ],
-    ita: [
+    Ita: [
       ["adc", REG.r12, REG.lr, 0xe00],
       ["adc", REG.r12, REG.r12, 0xd30000],
       ["bic", REG.r12, REG.r12, 0xc00000],
       ["adc", REG.r0, REG.r12, 0xde],
     ],
-    spa: [
+    Spa: [
       ["adc", REG.r12, REG.lr, 0xe10],
       ["adc", REG.r12, REG.r12, 0xd30000],
       ["bic", REG.r12, REG.r12, 0xc00000],
@@ -1182,7 +1182,7 @@ const certificateExit = (
     preferredBytes(dataProc(0x00a00000, true, REG.r12, REG.pc, 0x30), lang),
     preferredBytes(strPre(REG.r11, REG.r12, 0), lang),
   ];
-  const commands = variants[lang] ?? variants.eng;
+  const commands = variants[lang] ?? variants.Eng;
   if (commands === undefined) {
     throw new Error("No certificate exit commands found.");
   }

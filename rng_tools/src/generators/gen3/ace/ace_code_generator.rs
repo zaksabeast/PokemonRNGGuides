@@ -234,7 +234,7 @@ fn command_bytes(command: u32) -> CommandBytes {
 
 fn score_bytes(bytes: CommandBytes, lang: EmeraldLang) -> usize {
     let mut bad: ArrayVec<(usize, u8), 4> = ArrayVec::new();
-    for (i, byte) in bytes.iter().copied().enumerate() {
+    for (i, &byte) in bytes.iter().enumerate() {
         if !is_code_available(byte, lang) {
             bad.push((i, byte));
         }
@@ -345,20 +345,17 @@ impl SynthContext {
         let initial = if additive {
             descending
                 .iter()
-                .copied()
-                .filter(|value| valid_first(*value))
+                .filter_map(|&value| valid_first(value).then_some(value))
                 .collect()
         } else {
             constants
                 .iter()
-                .copied()
-                .filter(|value| valid_first(*value))
+                .filter_map(|&value| valid_first(value).then_some(value))
                 .collect()
         };
         let rest_constants: Vec<u32> = descending
             .iter()
-            .copied()
-            .filter(|value| valid_rest(*value))
+            .filter_map(|&value| valid_rest(value).then_some(value))
             .collect();
         let rest_set: HashSet<u32> = rest_constants.iter().copied().collect();
         Self {
@@ -393,14 +390,14 @@ impl SynthContext {
                 pair_sums: self.pair_sums.as_ref(),
                 incr: self.incr,
             };
-            let starts = self.initial.iter().copied().filter(|first| {
+            let starts = self.initial.iter().filter(|&&first| {
                 if self.additive {
-                    target >= *first
+                    target >= first
                 } else {
-                    *first >= target
+                    first >= target
                 }
             });
-            for first in starts {
+            for &first in starts {
                 let remainder = if self.additive {
                     target.wrapping_sub(first)
                 } else {
@@ -418,9 +415,9 @@ impl SynthContext {
 }
 
 fn build_pair_sums(rest_constants: &[u32], incr: bool, pair_sums: &mut HashMap<u32, (u32, u32)>) {
-    for first in rest_constants.iter().copied() {
+    for &first in rest_constants.iter() {
         let first_value = contribution(first, incr);
-        for second in rest_constants.iter().copied() {
+        for &second in rest_constants.iter() {
             let second_value = contribution(second, incr);
             if first_value < second_value {
                 continue;
@@ -478,12 +475,7 @@ fn synthesize_tail(
     } else {
         remaining
     };
-    for candidate in ctx
-        .pool
-        .iter()
-        .copied()
-        .skip(first_at_most_desc(ctx.pool, limit))
-    {
+    for &candidate in ctx.pool.iter().skip(first_at_most_desc(ctx.pool, limit)) {
         let value = contribution(candidate, ctx.incr);
         if (value as u64) * (depth_left as u64) < remaining as u64 {
             break;
@@ -613,7 +605,7 @@ fn tweak_mov(
         },
         lang,
     )?];
-    for part in parts.iter().copied().skip(1) {
+    for &part in parts.iter().skip(1) {
         out.push(preferred_bytes(
             if additive {
                 data_proc(0x00a0_0000, rd == R0, rd, rd, part)
@@ -682,7 +674,7 @@ fn tweak_sbc(
         data_proc(0x00c0_0000, false, rd, rn, parts[0]),
         lang,
     )?];
-    for part in parts.iter().copied().skip(1) {
+    for &part in parts.iter().skip(1) {
         out.push(preferred_bytes(
             if additive {
                 data_proc(0x00c0_0000, false, rd, rd, part)
@@ -937,8 +929,7 @@ fn nop_code_at_pos(pos: usize) -> &'static [u8; 4] {
 fn pack(bytes: &[u8]) -> Vec<PackedByte> {
     bytes
         .iter()
-        .copied()
-        .map(|byte| PackedByte { byte })
+        .map(|&byte| PackedByte { byte })
         .collect()
 }
 
@@ -1035,7 +1026,7 @@ fn split_raw_into_boxes(raw: &[u8], fill_last: bool) -> Option<Vec<Vec<u8>>> {
     let mut finished = Vec::new();
     let mut current = Vec::new();
     let mut i = 0;
-    for code in raw.iter().copied() {
+    for &code in raw.iter() {
         if i == NAME_SIZE && code == EOF {
             finished.push(current);
             current = Vec::new();

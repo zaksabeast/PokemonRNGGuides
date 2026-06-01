@@ -1,9 +1,33 @@
 import { describe, it, expect } from "bun:test";
+import { readFileSync } from "node:fs";
 import {
   AceResult,
   getEmeraldSeedBoxNames,
   getEmeraldSidBoxNames,
 } from "./aceCodeGenerator";
+import type { EmeraldLang } from "./emeraldLang";
+// @ts-expect-error The generated wasm-bindgen glue does not emit a .d.ts file.
+import * as RngToolsGlue from "../../../../rng_tools/pkg/rng_tools_bg.js";
+
+const { instance } = await WebAssembly.instantiate(
+  readFileSync(
+    new URL("../../../../rng_tools/pkg/rng_tools_bg.wasm", import.meta.url),
+  ),
+  { "./rng_tools_bg.js": RngToolsGlue as WebAssembly.ModuleImports },
+);
+const wasmExports = instance.exports as WebAssembly.Exports & {
+  __wbindgen_start?: () => void;
+};
+RngToolsGlue.__wbg_set_wasm(wasmExports);
+wasmExports.__wbindgen_start?.();
+const getEmeraldSidBoxNamesResult = RngToolsGlue.getEmeraldSidBoxNames as (
+  sid: number,
+  lang: EmeraldLang,
+) => AceResult;
+const getEmeraldSeedBoxNamesResult = RngToolsGlue.getEmeraldSeedBoxNames as (
+  seed: number,
+  lang: EmeraldLang,
+) => AceResult;
 
 const getBoxNamesStr = async (promise: Promise<AceResult>) => {
   const res = await promise;
@@ -15,6 +39,22 @@ const getBoxNamesStr = async (promise: Promise<AceResult>) => {
 };
 
 describe("getEmeraldSidBoxNames", () => {
+  it("matches the Rust implementation for random inputs", async () => {
+    const langs: EmeraldLang[] = ["eng", "fra", "ita", "spa", "ger"];
+    let seed = 0x9e3779b9;
+
+    for (let i = 0; i < 10; i++) {
+      seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+      const sid = seed & 0xffff;
+      const lang = langs[seed % langs.length];
+
+      expect(await getEmeraldSidBoxNames(sid, lang)).toEqual(
+        getEmeraldSidBoxNamesResult(sid, lang),
+      );
+      console.log(`getEmeraldSidBoxNames matched for sid=${sid} lang=${lang}`);
+    }
+  }, 120_000);
+
   it("returns correct values", async () => {
     expect(await getBoxNamesStr(getEmeraldSidBoxNames(0x1234, "eng"))).toBe(
       JSON.stringify([
@@ -76,6 +116,23 @@ describe("getEmeraldSidBoxNames", () => {
 });
 
 describe("getEmeraldSeedBoxNames", () => {
+  it("matches the Rust implementation for random inputs", async () => {
+    const langs: EmeraldLang[] = ["eng", "fra", "ita", "spa", "ger"];
+    let seed = 0x85ebca6b;
+
+    for (let i = 0; i < 10; i++) {
+      seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+      const lang = langs[seed % langs.length];
+
+      expect(await getEmeraldSeedBoxNames(seed, lang)).toEqual(
+        getEmeraldSeedBoxNamesResult(seed, lang),
+      );
+      console.log(
+        `getEmeraldSeedBoxNames matched for seed=${seed} lang=${lang}`,
+      );
+    }
+  }, 120_000);
+
   it("returns correct values", async () => {
     expect(
       await getBoxNamesStr(getEmeraldSeedBoxNames(0xacde1234, "eng")),

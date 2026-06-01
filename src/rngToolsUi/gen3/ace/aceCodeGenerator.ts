@@ -615,7 +615,7 @@ export type AceResult =
       //language: EmeraldLang;
       //boxes: string[];
       //commands: { bytes: Bytes; hex: string }[];
-      rawBoxes: Bytes[];
+      raw_boxes: Bytes[];
       success: true;
     }
   | {
@@ -1415,7 +1415,7 @@ const getEmeraldBoxNamesForCommands = (
   );
   return {
     success: true,
-    rawBoxes: boxes.map((box) => box.slice()),
+    raw_boxes: boxes.map((box) => box.slice()),
     /*language: cs.lang,
     success: true,
     boxes: names,

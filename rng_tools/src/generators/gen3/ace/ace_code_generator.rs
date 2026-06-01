@@ -40,7 +40,6 @@ const PC: u32 = 15;
 
 #[wasm_bindgen]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize)]
-#[serde(rename_all = "lowercase")]
 pub enum EmeraldLang {
     Eng,
     Fra,
@@ -51,22 +50,8 @@ pub enum EmeraldLang {
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
-#[serde(untagged)]
-pub enum AceResult {
-    Success(AceSuccess),
-    Failure(AceFailure),
-}
-
-#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
-pub struct AceSuccess {
-    #[serde(rename = "rawBoxes")]
+pub struct AceResult {
     pub raw_boxes: Vec<Vec<u8>>,
-    pub success: bool,
-}
-
-#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
-pub struct AceFailure {
-    pub success: bool,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
@@ -749,13 +734,7 @@ fn seed_program_bytes(seed: u32, lang: EmeraldLang) -> Option<Vec<CommandBytes>>
         data_proc(0x00a0_0000, false, R12, R12, 0x3000),
         lang,
     )?);
-    out.extend(tweak_mov(
-        R11,
-        seed,
-        lang,
-        constants,
-        constants_mov_mvn,
-    )?);
+    out.extend(tweak_mov(R11, seed, lang, constants, constants_mov_mvn)?);
     out.push(preferred_bytes(str_pre(R11, R12, 0), lang)?);
     Some(out)
 }
@@ -1152,24 +1131,24 @@ fn fit_codes_into_boxes(commands: &[CommandBytes], lang: EmeraldLang) -> Option<
     split_raw_into_boxes(&raw, true).map(replace_padding_in_boxes)
 }
 
-fn box_names_for_commands(commands: Option<Vec<CommandBytes>>, lang: EmeraldLang) -> AceResult {
+fn box_names_for_commands(
+    commands: Option<Vec<CommandBytes>>,
+    lang: EmeraldLang,
+) -> Option<AceResult> {
     let Some(commands) = commands else {
-        return AceResult::Failure(AceFailure { success: false });
+        return None;
     };
     let Some(raw_boxes) = fit_codes_into_boxes(&commands, lang) else {
-        return AceResult::Failure(AceFailure { success: false });
+        return None;
     };
-    AceResult::Success(AceSuccess {
-        raw_boxes,
-        success: true,
-    })
+    Some(AceResult { raw_boxes })
 }
 
-pub fn get_emerald_sid_box_names_result(sid: u16, lang: EmeraldLang) -> AceResult {
+pub fn get_emerald_sid_box_names_result(sid: u16, lang: EmeraldLang) -> Option<AceResult> {
     box_names_for_commands(sid_program_bytes(sid, lang), lang)
 }
 
-pub fn get_emerald_seed_box_names_result(seed: u32, lang: EmeraldLang) -> AceResult {
+pub fn get_emerald_seed_box_names_result(seed: u32, lang: EmeraldLang) -> Option<AceResult> {
     box_names_for_commands(seed_program_bytes(seed, lang), lang)
 }
 
@@ -1187,11 +1166,8 @@ pub fn get_emerald_seed_box_names(seed: u32, lang: EmeraldLang) -> JsValue {
 mod tests {
     use super::*;
 
-    fn boxes(result: AceResult) -> Vec<Vec<u8>> {
-        match result {
-            AceResult::Success(success) => success.raw_boxes,
-            AceResult::Failure(_) => panic!("Expected successful ACE generation"),
-        }
+    fn boxes(result: Option<AceResult>) -> Vec<Vec<u8>> {
+        result.map(|res| res.raw_boxes).unwrap_or(vec![])
     }
 
     #[test]
@@ -1208,17 +1184,14 @@ mod tests {
             *state
         }
 
-        fn checksum_result(result: AceResult) -> u64 {
-            match result {
-                AceResult::Success(success) => success
-                    .raw_boxes
-                    .iter()
-                    .flatten()
-                    .fold(success.raw_boxes.len() as u64, |checksum, byte| {
-                        checksum.wrapping_mul(31).wrapping_add(*byte as u64)
-                    }),
-                AceResult::Failure(_) => 0,
-            }
+        fn checksum_result(result: Option<AceResult>) -> u64 {
+            let boxes = boxes(result);
+            boxes
+                .iter()
+                .flatten()
+                .fold(boxes.len() as u64, |checksum, byte| {
+                    checksum.wrapping_mul(31).wrapping_add(*byte as u64)
+                })
         }
 
         let mut random_state = 0x1234_5678_u32;

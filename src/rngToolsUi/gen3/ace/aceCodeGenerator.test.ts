@@ -7,15 +7,13 @@ import {
 import type { EmeraldLang } from "./emeraldLang";
 import { rngTools } from "~/rngTools";
 
-const toRustEmeraldLang = (lang: EmeraldLang) => lang.toLowerCase();
-
 const getBoxesAsStr = async (promise: Promise<AceResult>) => {
   const res = await promise;
   if (!res.success) {
     return JSON.stringify(null);
   }
 
-  return JSON.stringify(res.rawBoxes);
+  return JSON.stringify(res.raw_boxes);
 };
 
 describe("getEmeraldSidBoxNames", () => {
@@ -31,11 +29,11 @@ describe("getEmeraldSidBoxNames", () => {
       const actual = await getEmeraldSidBoxNames(sid, lang);
       const expected = (await rngTools.getEmeraldSidBoxNames(
         sid,
-        toRustEmeraldLang(lang),
+        lang,
       )) as AceResult;
 
-      expect(actual.success ? actual.rawBoxes : null).toEqual(
-        expected.success ? expected.rawBoxes : null,
+      expect(actual.success ? actual.raw_boxes : null).toEqual(
+        expected.success ? expected.raw_boxes : null,
       );
       console.log(`getEmeraldSidBoxNames matched for sid=${sid} lang=${lang}`);
     }
@@ -113,12 +111,12 @@ describe("getEmeraldSeedBoxNames_perf", () => {
     const rustStart = performance.now();
     const expected = (await rngTools.getEmeraldSeedBoxNames(
       seed,
-      toRustEmeraldLang(lang),
+      lang,
     )) as AceResult;
     const rustElapsedMs = performance.now() - rustStart;
 
-    expect(actual.success ? actual.rawBoxes : null).toEqual(
-      expected.success ? expected.rawBoxes : null,
+    expect(actual.success ? actual.raw_boxes : null).toEqual(
+      expected.success ? expected.raw_boxes : null,
     );
     console.log(
       `getEmeraldSeedBoxNames timing for seed=${seed} lang=${lang}: js=${jsElapsedMs.toFixed(2)}ms rust=${rustElapsedMs.toFixed(2)}ms`,
@@ -148,14 +146,14 @@ describe("getEmeraldSeedBoxNames", () => {
       const rustStart = performance.now();
       const expected = (await rngTools.getEmeraldSeedBoxNames(
         seed,
-        toRustEmeraldLang(lang),
+        lang,
       )) as AceResult;
       const rustElapsedMs = performance.now() - rustStart;
       rustMs += rustElapsedMs;
       longestRustMs = Math.max(longestRustMs, rustElapsedMs);
 
-      expect(actual.success ? actual.rawBoxes : null).toEqual(
-        expected.success ? expected.rawBoxes : null,
+      expect(actual.success ? actual.raw_boxes : null).toEqual(
+        expected.success ? expected.raw_boxes : null,
       );
       console.log(
         `getEmeraldSeedBoxNames matched for seed=${seed} lang=${lang}`,

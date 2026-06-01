@@ -4,7 +4,7 @@ use serde::Serialize;
 use std::collections::{HashMap, HashSet};
 use wasm_bindgen::prelude::*;
 
-const MAX_CARDS: usize = 6;
+const MAX_CARDS: usize = 7;
 const EOF: u8 = 0xff;
 const SPACE: u8 = 0x00;
 const NAME_SIZE: usize = 8;
@@ -1216,8 +1216,6 @@ mod tests {
         }
     }
 
-    //TODO: Find a seed that requires a MAX_CARDS = 6 to be solvable.
-
     #[test]
     #[ignore]
     fn benchmark_emerald_seed_box_names_result_20_random_values() {
@@ -1328,8 +1326,36 @@ mod tests {
         );
     }
 
+    // TODO: Find a seed that
+
     #[test]
     fn emerald_seed_box_names_match_typescript() {
+        if !cfg!(debug_assertions) {
+            // This is a difficult seed.
+            assert_eq!(
+                boxes(get_emerald_seed_box_names_result(
+                    0x25899da4,
+                    EmeraldLang::Eng,
+                )),
+                vec![
+                    vec![192, 199, 176, 227, 182, 205, 172, 226],
+                    vec![187, 187, 187, 192, 205, 172, 226],
+                    vec![187, 187, 172, 180, 173, 227],
+                    vec![187, 222, 184, 171, 226],
+                    vec![238, 190, 171, 226, 213, 191, 171, 226],
+                    vec![187, 187, 187, 0, 176, 172, 229],
+                    vec![187],
+                    vec![187],
+                    vec![238, 182, 224, 227, 237, 176, 203, 226],
+                    vec![182, 203, 226, 192, 193, 191, 226],
+                    vec![187, 187, 0, 176, 172, 229],
+                    vec![187, 177, 205, 206, 226],
+                    vec![211, 200, 172, 226, 192, 200, 204, 227],
+                    vec![205, 172, 226, 176, 0, 204, 226, 0],
+                ]
+            );
+        }
+
         assert_eq!(
             boxes(get_emerald_seed_box_names_result(
                 0xacde1234,

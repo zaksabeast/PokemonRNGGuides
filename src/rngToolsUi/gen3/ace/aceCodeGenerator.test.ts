@@ -101,6 +101,31 @@ describe("getEmeraldSidBoxNames", () => {
   });
 });
 
+describe("getEmeraldSeedBoxNames_perf", () => {
+  it("matches the Rust implementation for a specific random input", async () => {
+    const seed = 0x25899da4;
+    const lang: EmeraldLang = "Eng";
+
+    const jsStart = performance.now();
+    const actual = await getEmeraldSeedBoxNames(seed, lang);
+    const jsElapsedMs = performance.now() - jsStart;
+
+    const rustStart = performance.now();
+    const expected = (await rngTools.getEmeraldSeedBoxNames(
+      seed,
+      toRustEmeraldLang(lang),
+    )) as AceResult;
+    const rustElapsedMs = performance.now() - rustStart;
+
+    expect(actual.success ? actual.rawBoxes : null).toEqual(
+      expected.success ? expected.rawBoxes : null,
+    );
+    console.log(
+      `getEmeraldSeedBoxNames timing for seed=${seed} lang=${lang}: js=${jsElapsedMs.toFixed(2)}ms rust=${rustElapsedMs.toFixed(2)}ms`,
+    );
+  }, 120_000);
+});
+
 describe("getEmeraldSeedBoxNames", () => {
   it("matches the Rust implementation for random inputs", async () => {
     const langs: EmeraldLang[] = ["Eng", "Fra", "Ita", "Spa", "Ger"];

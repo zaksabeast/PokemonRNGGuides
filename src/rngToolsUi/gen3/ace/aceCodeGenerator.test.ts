@@ -1,33 +1,13 @@
 import { describe, it, expect } from "bun:test";
-import { readFileSync } from "node:fs";
 import {
   AceResult,
   getEmeraldSeedBoxNames,
   getEmeraldSidBoxNames,
 } from "./aceCodeGenerator";
 import type { EmeraldLang } from "./emeraldLang";
-// @ts-expect-error The generated wasm-bindgen glue does not emit a .d.ts file.
-import * as RngToolsGlue from "../../../../rng_tools/pkg/rng_tools_bg.js";
+import { rngTools } from "~/rngTools";
 
-const { instance } = await WebAssembly.instantiate(
-  readFileSync(
-    new URL("../../../../rng_tools/pkg/rng_tools_bg.wasm", import.meta.url),
-  ),
-  { "./rng_tools_bg.js": RngToolsGlue as WebAssembly.ModuleImports },
-);
-const wasmExports = instance.exports as WebAssembly.Exports & {
-  __wbindgen_start?: () => void;
-};
-RngToolsGlue.__wbg_set_wasm(wasmExports);
-wasmExports.__wbindgen_start?.();
-const getEmeraldSidBoxNamesResult = RngToolsGlue.getEmeraldSidBoxNames as (
-  sid: number,
-  lang: EmeraldLang,
-) => AceResult;
-const getEmeraldSeedBoxNamesResult = RngToolsGlue.getEmeraldSeedBoxNames as (
-  seed: number,
-  lang: EmeraldLang,
-) => AceResult;
+const toRustEmeraldLang = (lang: EmeraldLang) => lang.toLowerCase();
 
 const getBoxesAsStr = async (promise: Promise<AceResult>) => {
   const res = await promise;
@@ -49,7 +29,10 @@ describe("getEmeraldSidBoxNames", () => {
       const lang = langs[seed % langs.length];
 
       const actual = await getEmeraldSidBoxNames(sid, lang);
-      const expected = getEmeraldSidBoxNamesResult(sid, lang);
+      const expected = (await rngTools.getEmeraldSidBoxNames(
+        sid,
+        toRustEmeraldLang(lang),
+      )) as AceResult;
 
       expect(actual.success ? actual.rawBoxes : null).toEqual(
         expected.success ? expected.rawBoxes : null,
@@ -121,21 +104,30 @@ describe("getEmeraldSidBoxNames", () => {
 describe("getEmeraldSeedBoxNames", () => {
   it("matches the Rust implementation for random inputs", async () => {
     const langs: EmeraldLang[] = ["Eng", "Fra", "Ita", "Spa", "Ger"];
-    let seed = 0x85ebca6b;
+    let seed = 0x85bca64;
     let jsMs = 0;
     let rustMs = 0;
+    let longestJsMs = 0;
+    let longestRustMs = 0;
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 100; i++) {
       seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
       const lang = langs[seed % langs.length];
 
       const jsStart = performance.now();
       const actual = await getEmeraldSeedBoxNames(seed, lang);
-      jsMs += performance.now() - jsStart;
+      const jsElapsedMs = performance.now() - jsStart;
+      jsMs += jsElapsedMs;
+      longestJsMs = Math.max(longestJsMs, jsElapsedMs);
 
       const rustStart = performance.now();
-      const expected = getEmeraldSeedBoxNamesResult(seed, lang);
-      rustMs += performance.now() - rustStart;
+      const expected = (await rngTools.getEmeraldSeedBoxNames(
+        seed,
+        toRustEmeraldLang(lang),
+      )) as AceResult;
+      const rustElapsedMs = performance.now() - rustStart;
+      rustMs += rustElapsedMs;
+      longestRustMs = Math.max(longestRustMs, rustElapsedMs);
 
       expect(actual.success ? actual.rawBoxes : null).toEqual(
         expected.success ? expected.rawBoxes : null,
@@ -146,9 +138,14 @@ describe("getEmeraldSeedBoxNames", () => {
     }
     const jsTime = jsMs.toFixed(2);
     const rustTime = rustMs.toFixed(2);
+    const longestJsTime = longestJsMs.toFixed(2);
+    const longestRustTime = longestRustMs.toFixed(2);
 
     console.log(
       `getEmeraldSeedBoxNames timing: js=${jsTime}ms rust=${rustTime}ms`,
+    );
+    console.log(
+      `getEmeraldSeedBoxNames longest: js=${longestJsTime}ms rust=${longestRustTime}ms`,
     );
   }, 120_000);
 

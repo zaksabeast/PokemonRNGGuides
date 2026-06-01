@@ -1216,6 +1216,8 @@ mod tests {
         }
     }
 
+    //TODO: Find a seed that requires a MAX_CARDS = 6 to be solvable.
+
     #[test]
     #[ignore]
     fn benchmark_emerald_seed_box_names_result_20_random_values() {

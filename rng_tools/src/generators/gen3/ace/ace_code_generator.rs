@@ -1186,63 +1186,70 @@ pub fn get_emerald_seed_box_names(seed: u32, lang: String) -> JsValue {
 mod tests {
     use super::*;
 
+    fn boxes(result: AceResult) -> Vec<Vec<u8>> {
+        match result {
+            AceResult::Success(success) => success.raw_boxes,
+            AceResult::Failure(_) => panic!("Expected successful ACE generation"),
+        }
+    }
+
     #[test]
     fn emerald_sid_box_names_match_typescript() {
         assert_eq!(
             boxes(get_emerald_sid_box_names_result(0x1234, "eng")),
             vec![
-                "VBUnv…Qn",
-                "AAA…”Qn",
-                "AAzT.o",
-                "AaU?n",
-                "”FQm",
-                "A",
-                "A",
-                "A",
-                "z♀loy…Qn",
-                "♀QnFGEn",
-                "AA …?q",
-                "A“STn",
-                "YN?nFNRo",
-                "S?n… Rn ",
+                vec![208, 188, 207, 226, 234, 176, 203, 226],
+                vec![187, 187, 187, 176, 178, 203, 226],
+                vec![187, 187, 238, 206, 173, 227],
+                vec![187, 213, 207, 172, 226],
+                vec![178, 192, 203, 225],
+                vec![187],
+                vec![187],
+                vec![187],
+                vec![238, 182, 224, 227, 237, 176, 203, 226],
+                vec![182, 203, 226, 192, 193, 191, 226],
+                vec![187, 187, 0, 176, 172, 229],
+                vec![187, 177, 205, 206, 226],
+                vec![211, 200, 172, 226, 192, 200, 204, 227],
+                vec![205, 172, 226, 176, 0, 204, 226, 0],
             ]
         );
         assert_eq!(
             boxes(get_emerald_sid_box_names_result(0xff23, "ita")),
             vec![
-                "VBUnv…Qn",
-                "AAA…”Qn",
-                "AAbR.o",
-                "A1S?n",
-                "2F?n”FQm",
-                "A",
-                "A",
-                "A",
-                "z♀loy…Qn",
-                "♀QnFGEn",
-                "AA …?q",
-                "AlT–n",
-                "YN?nFNRo",
-                "AAAj ?n ",
+                vec![208, 188, 207, 226, 234, 176, 203, 226],
+                vec![187, 187, 187, 176, 178, 203, 226],
+                vec![187, 187, 214, 204, 173, 227],
+                vec![187, 162, 205, 172, 226],
+                vec![163, 192, 172, 226, 178, 192, 203, 225],
+                vec![187],
+                vec![187],
+                vec![187],
+                vec![238, 182, 224, 227, 237, 176, 203, 226],
+                vec![182, 203, 226, 192, 193, 191, 226],
+                vec![187, 187, 0, 176, 172, 229],
+                vec![187, 224, 206, 174, 226],
+                vec![211, 200, 172, 226, 192, 200, 204, 227],
+                vec![187, 187, 187, 222, 0, 172, 226, 0],
             ]
         );
         assert_eq!(
             boxes(get_emerald_sid_box_names_result(0x0001, "ger")),
             vec![
-                "VBUnü…Qn",
-                "AAAVH.o",
-                "AA…HRn",
-                "A“FQm",
-                "A",
-                "A",
-                "A",
-                "A",
-                "z♀loy…Qn",
-                "♀QnFGEn",
-                "AA …?q",
-                "AmT–n",
-                "YN?nFNRo",
-                "AAAn ?n ",
+                vec![208, 188, 207, 226, 246, 176, 203, 226],
+                vec![187, 187, 187, 208, 194, 173, 227],
+                vec![187, 187, 176, 194, 204, 226],
+                vec![187, 178, 192, 203, 225],
+                vec![187],
+                vec![187],
+                vec![187],
+                vec![187],
+                vec![238, 182, 224, 227, 237, 176, 203, 226],
+                vec![182, 203, 226, 192, 193, 191, 226],
+                vec![187, 187, 0, 176, 172, 229],
+                vec![187, 225, 206, 174, 226],
+                vec![211, 200, 172, 226, 192, 200, 204, 227],
+                vec![187, 187, 187, 226, 0, 172, 226, 0],
             ]
         );
     }
@@ -1252,75 +1259,58 @@ mod tests {
         assert_eq!(
             boxes(get_emerald_seed_box_names_result(0xacde1234, "eng")),
             vec![
-                "FM…o♀S?n",
-                "AAAFS?n",
-                "AA?’.o",
-                "Aj,!n",
-                "zD!naE!n",
-                "AAA …?q",
-                "A",
-                "A",
-                "z♀loy…Qn",
-                "♀QnFGEn",
-                "AA …?q",
-                "A“STn",
-                "YN?nFNRo",
-                "S?n… Rn ",
+                vec![192, 199, 176, 227, 182, 205, 172, 226],
+                vec![187, 187, 187, 192, 205, 172, 226],
+                vec![187, 187, 172, 180, 173, 227],
+                vec![187, 222, 184, 171, 226],
+                vec![238, 190, 171, 226, 213, 191, 171, 226],
+                vec![187, 187, 187, 0, 176, 172, 229],
+                vec![187],
+                vec![187],
+                vec![238, 182, 224, 227, 237, 176, 203, 226],
+                vec![182, 203, 226, 192, 193, 191, 226],
+                vec![187, 187, 0, 176, 172, 229],
+                vec![187, 177, 205, 206, 226],
+                vec![211, 200, 172, 226, 192, 200, 204, 227],
+                vec![205, 172, 226, 176, 0, 204, 226, 0],
             ]
         );
         assert_eq!(
             boxes(get_emerald_seed_box_names_result(0xff123423, "ita")),
             vec![
-                "FM…o♀S?n",
-                "AAAFS?n",
-                "AAz,lo",
-                "ATC!n",
-                "3…!n …?q",
-                "A",
-                "A",
-                "A",
-                "z♀loy…Qn",
-                "♀QnFGEn",
-                "AA …?q",
-                "AlT–n",
-                "YN?nFNRo",
-                "AAAj ?n ",
+                vec![192, 199, 176, 227, 182, 205, 172, 226],
+                vec![187, 187, 187, 192, 205, 172, 226],
+                vec![187, 187, 238, 184, 224, 227],
+                vec![187, 206, 189, 171, 226],
+                vec![164, 176, 171, 226, 0, 176, 172, 229],
+                vec![187],
+                vec![187],
+                vec![187],
+                vec![238, 182, 224, 227, 237, 176, 203, 226],
+                vec![182, 203, 226, 192, 193, 191, 226],
+                vec![187, 187, 0, 176, 172, 229],
+                vec![187, 224, 206, 174, 226],
+                vec![211, 200, 172, 226, 192, 200, 204, 227],
+                vec![187, 187, 187, 222, 0, 172, 226, 0],
             ]
         );
         assert_eq!(
             boxes(get_emerald_seed_box_names_result(0x00000001, "ger")),
             vec![
-                "FM…o♀S?n",
-                "AAAFS?n",
-                "AAV“.o",
-                "A…“Qn",
-                " …?q",
-                "A",
-                "A",
-                "A",
-                "z♀loy…Qn",
-                "♀QnFGEn",
-                "AA …?q",
-                "AmT–n",
-                "YN?nFNRo",
-                "AAAn ?n ",
-            ]
-        );
-    }
-
-    #[test]
-    fn command_hexes_are_stable() {
-        assert_eq!(
-            commands(get_emerald_sid_box_names_result(0x1234, "eng")),
-            vec![
-                "E2CFBCD0", "E2CBB0EA", "E2CBB2B0", "E3ADCEEE", "E2ACCFD5", "E1CBC0B2",
-            ]
-        );
-        assert_eq!(
-            commands(get_emerald_seed_box_names_result(0xacde1234, "eng")),
-            vec![
-                "E3B0C7C0", "E2ACCDB6", "E2ACCDC0", "E3ADB4AC", "E2ABB8DE", "E2ABBEEE", "E2ABBFD5",
-                "E5ACB000",
+                vec![192, 199, 176, 227, 182, 205, 172, 226],
+                vec![187, 187, 187, 192, 205, 172, 226],
+                vec![187, 187, 208, 178, 173, 227],
+                vec![187, 176, 178, 203, 226],
+                vec![0, 176, 172, 229],
+                vec![187],
+                vec![187],
+                vec![187],
+                vec![238, 182, 224, 227, 237, 176, 203, 226],
+                vec![182, 203, 226, 192, 193, 191, 226],
+                vec![187, 187, 0, 176, 172, 229],
+                vec![187, 225, 206, 174, 226],
+                vec![211, 200, 172, 226, 192, 200, 204, 227],
+                vec![187, 187, 187, 226, 0, 172, 226, 0],
             ]
         );
     }

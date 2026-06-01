@@ -1194,6 +1194,54 @@ mod tests {
     }
 
     #[test]
+    fn benchmark_emerald_seed_box_names_result_20_random_values() {
+        use std::{hint::black_box, time::Instant};
+
+        const VALUES: usize = 100;
+
+        fn next_random(state: &mut u32) -> u32 {
+            *state ^= *state << 13;
+            *state ^= *state >> 17;
+            *state ^= *state << 5;
+            *state
+        }
+
+        fn checksum_result(result: AceResult) -> u64 {
+            match result {
+                AceResult::Success(success) => success
+                    .raw_boxes
+                    .iter()
+                    .flatten()
+                    .fold(success.raw_boxes.len() as u64, |checksum, byte| {
+                        checksum.wrapping_mul(31).wrapping_add(*byte as u64)
+                    }),
+                AceResult::Failure(_) => 0,
+            }
+        }
+
+        let mut random_state = 0x1234_5678_u32;
+        let mut checksum = 0_u64;
+        let start_time = Instant::now();
+
+        for _ in 0..VALUES {
+            let seed = next_random(&mut random_state);
+            checksum = checksum.wrapping_add(checksum_result(get_emerald_seed_box_names_result(
+                black_box(seed),
+                black_box("eng"),
+            )));
+        }
+
+        println!(
+            "get_emerald_seed_box_names_result for {} random values: {:?} (checksum {})",
+            VALUES,
+            start_time.elapsed(),
+            checksum
+        );
+
+        assert_ne!(checksum, 0);
+    }
+
+    #[test]
     fn emerald_sid_box_names_match_typescript() {
         assert_eq!(
             boxes(get_emerald_sid_box_names_result(0x1234, "eng")),

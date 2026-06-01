@@ -124,12 +124,7 @@ export const Static3TargetSetupSearcher = ({
   const onSubmit: RngToolSubmit<FormState> = async (values) => {
     const pidPathResults = await searchStatic3Target(values);
 
-    setPidPathResults(
-      sortBy(
-        pidPathResults.filter((el) => el != null),
-        "wait_dur",
-      ),
-    );
+    setPidPathResults(sortBy(pidPathResults, "wait_dur"));
     setSelectedPidPathResult(null);
   };
 

@@ -726,6 +726,7 @@ fn seed_program_bytes(seed: u32, lang: EmeraldLang) -> Option<Vec<CommandBytes>>
 
 fn certificate_exit(lang: EmeraldLang) -> Option<(usize, Vec<CommandBytes>)> {
     let variants: &[ExitInstruction] = match lang {
+        // TODO: Code for Japanese is invalid. Japanese isn't supported.
         EmeraldLang::English | EmeraldLang::Japanese => &[
             ExitInstruction {
                 op: ExitOp::Sbc,
@@ -1137,12 +1138,21 @@ pub fn get_emerald_seed_box_names_result(seed: u32, lang: EmeraldLang) -> Option
 mod tests {
     use super::*;
 
-    /*
-    TODO: Create a new test that takes rng_tools\src\generators\gen3\ace\compare_input.txt as input.
-    Each row contains Manip Value Lang.
-    For each row, call either get_emerald_sid_box_names_result or get_emerald_seed_box_names_result
-    Compare the output with the value in compare_output.txt
-    */
+    fn parse_hex(value: &str) -> u32 {
+        u32::from_str_radix(value.strip_prefix("0x").unwrap_or(value), 16).unwrap()
+    }
+
+    fn parse_lang(lang: &str) -> EmeraldLang {
+        match lang {
+            "eng" => EmeraldLang::English,
+            "fra" => EmeraldLang::French,
+            "ita" => EmeraldLang::Italian,
+            "spa" => EmeraldLang::Spanish,
+            "ger" => EmeraldLang::German,
+            "jap" => EmeraldLang::Japanese,
+            _ => panic!("invalid Emerald lang {lang:?}"),
+        }
+    }
 
     fn result_to_hex(res: Option<AceResult>) -> String {
         box_names_to_hex(&boxes(res))
@@ -1169,247 +1179,41 @@ mod tests {
         result.map(|res| res.raw_boxes).unwrap_or(vec![])
     }
 
+    // cargo test --release emerald_ace -- --ignored
+    // Input and output files are used instead of inlining data, in order to simplify tests in multiple implementations.
     #[test]
     #[ignore]
-    fn benchmark_emerald_seed_box_names_result_20_random_values() {
-        use std::{hint::black_box, time::Instant};
+    fn emerald_ace() {
+        let inputs = include_str!("test_input.txt").lines();
+        let mut expected = include_str!("test_output.txt").lines();
 
-        const VALUES: usize = 100;
+        for (line_idx, input) in inputs.enumerate() {
+            let mut parts = input.split_ascii_whitespace();
+            let manip = parts.next().unwrap();
+            let value = parse_hex(parts.next().unwrap());
+            let lang = parse_lang(parts.next().unwrap());
 
-        fn next_random(state: &mut u32) -> u32 {
-            *state ^= *state << 13;
-            *state ^= *state >> 17;
-            *state ^= *state << 5;
-            *state
-        }
+            let actual = match manip {
+                "sid" => result_to_hex(get_emerald_sid_box_names_result(value as u16, lang)),
+                "seed" => result_to_hex(get_emerald_seed_box_names_result(value, lang)),
+                _ => panic!(
+                    "text_input.txt:{} has unsupported manip {manip:?}",
+                    line_idx + 1
+                ),
+            };
+            let expected = expected.next().unwrap();
 
-        fn checksum_result(result: Option<AceResult>) -> u64 {
-            let boxes = boxes(result);
-            boxes
-                .iter()
-                .flatten()
-                .fold(boxes.len() as u64, |checksum, byte| {
-                    checksum.wrapping_mul(31).wrapping_add(*byte as u64)
-                })
-        }
-
-        let mut random_state = 0x1234_5678_u32;
-        let mut checksum = 0_u64;
-        let start_time = Instant::now();
-
-        for _ in 0..VALUES {
-            let seed = next_random(&mut random_state);
-            checksum = checksum.wrapping_add(checksum_result(get_emerald_seed_box_names_result(
-                black_box(seed),
-                black_box(EmeraldLang::English),
-            )));
-        }
-
-        println!(
-            "get_emerald_seed_box_names_result for {} random values: {:?} (checksum {})",
-            VALUES,
-            start_time.elapsed(),
-            checksum
-        );
-
-        assert_eq!(checksum, 11345541470647849650);
-    }
-
-    fn hex_split_on_ff(hex: &str) -> Vec<Vec<u8>> {
-        fn nibble(byte: u8) -> u8 {
-            match byte {
-                b'0'..=b'9' => byte - b'0',
-                b'A'..=b'F' => byte - b'A' + 10,
-                b'a'..=b'f' => byte - b'a' + 10,
-                _ => panic!("invalid hex character"),
-            }
-        }
-
-        let mut out = Vec::new();
-        let mut current = Vec::with_capacity(hex.len() / 3);
-        let mut high_nibble = None;
-
-        for byte in hex.bytes() {
-            if byte.is_ascii_whitespace() {
-                continue;
-            }
-
-            if let Some(high) = high_nibble {
-                let value = (high << 4) | nibble(byte);
-                if value == 0xff {
-                    if !current.is_empty() {
-                        out.push(current);
-                        current = Vec::new();
-                    }
-                } else {
-                    current.push(value);
-                }
-                high_nibble = None;
-            } else {
-                high_nibble = Some(nibble(byte));
-            }
-        }
-
-        if high_nibble.is_some() {
-            panic!("hex string ended with an incomplete byte");
-        }
-        if !current.is_empty() {
-            out.push(current);
-        }
-
-        out
-    }
-
-    #[test]
-    fn emerald_sid_box_names_match_typescript() {
-        assert_eq!(
-            boxes(get_emerald_sid_box_names_result(
-                0x1234,
-                EmeraldLang::English
-            )),
-            hex_split_on_ff(
-                "D0 BC CF E2 EA B0 CB E2 FF BB BB BB B0 B2 CB E2 FF FF BB BB EE CE AD E3 FF FF FF BB D5 CF AC E2 FF FF FF FF B2 C0 CB E1 FF FF FF FF FF BB FF FF FF FF FF FF FF FF BB FF FF FF FF FF FF FF FF BB FF FF FF FF FF FF FF FF EE B6 E0 E3 ED B0 CB E2 FF B6 CB E2 C0 C1 BF E2 FF FF BB BB 00 B0 AC E5 FF FF FF BB B1 CD CE E2 FF FF FF FF D3 C8 AC E2 C0 C8 CC E3 FF CD AC E2 B0 00 CC E2 00 FF",
-            )
-        );
-        assert_eq!(
-            boxes(get_emerald_sid_box_names_result(
-                0xff23,
-                EmeraldLang::Italian
-            )),
-            vec![
-                vec![208, 188, 207, 226, 234, 176, 203, 226],
-                vec![187, 187, 187, 176, 178, 203, 226],
-                vec![187, 187, 214, 204, 173, 227],
-                vec![187, 162, 205, 172, 226],
-                vec![163, 192, 172, 226, 178, 192, 203, 225],
-                vec![187],
-                vec![187],
-                vec![187],
-                vec![238, 182, 224, 227, 237, 176, 203, 226],
-                vec![182, 203, 226, 192, 193, 191, 226],
-                vec![187, 187, 0, 176, 172, 229],
-                vec![187, 224, 206, 174, 226],
-                vec![211, 200, 172, 226, 192, 200, 204, 227],
-                vec![187, 187, 187, 222, 0, 172, 226, 0],
-            ]
-        );
-        assert_eq!(
-            boxes(get_emerald_sid_box_names_result(
-                0x0001,
-                EmeraldLang::German
-            )),
-            vec![
-                vec![208, 188, 207, 226, 246, 176, 203, 226],
-                vec![187, 187, 187, 208, 194, 173, 227],
-                vec![187, 187, 176, 194, 204, 226],
-                vec![187, 178, 192, 203, 225],
-                vec![187],
-                vec![187],
-                vec![187],
-                vec![187],
-                vec![238, 182, 224, 227, 237, 176, 203, 226],
-                vec![182, 203, 226, 192, 193, 191, 226],
-                vec![187, 187, 0, 176, 172, 229],
-                vec![187, 225, 206, 174, 226],
-                vec![211, 200, 172, 226, 192, 200, 204, 227],
-                vec![187, 187, 187, 226, 0, 172, 226, 0],
-            ]
-        );
-    }
-
-    #[test]
-    fn emerald_seed_box_names_match_typescript() {
-        if !cfg!(debug_assertions) {
-            // This is a difficult seed.
             assert_eq!(
-                boxes(get_emerald_seed_box_names_result(
-                    0xfd768458,
-                    EmeraldLang::English,
-                )),
-                vec![
-                    vec![192, 199, 176, 227, 182, 205, 172, 226],
-                    vec![187, 187, 187, 192, 205, 172, 226],
-                    vec![187, 187, 172, 180, 173, 227],
-                    vec![187, 222, 184, 171, 226],
-                    vec![238, 190, 171, 226, 213, 191, 171, 226],
-                    vec![187, 187, 187, 0, 176, 172, 229],
-                    vec![187],
-                    vec![187],
-                    vec![238, 182, 224, 227, 237, 176, 203, 226],
-                    vec![182, 203, 226, 192, 193, 191, 226],
-                    vec![187, 187, 0, 176, 172, 229],
-                    vec![187, 177, 205, 206, 226],
-                    vec![211, 200, 172, 226, 192, 200, 204, 227],
-                    vec![205, 172, 226, 176, 0, 204, 226, 0],
-                ]
+                actual,
+                expected,
+                "compare mismatch on line {}",
+                line_idx + 1
             );
         }
 
-        assert_eq!(
-            boxes(get_emerald_seed_box_names_result(
-                0xacde1234,
-                EmeraldLang::English,
-            )),
-            vec![
-                vec![192, 199, 176, 227, 182, 205, 172, 226],
-                vec![187, 187, 187, 192, 205, 172, 226],
-                vec![187, 187, 172, 180, 173, 227],
-                vec![187, 222, 184, 171, 226],
-                vec![238, 190, 171, 226, 213, 191, 171, 226],
-                vec![187, 187, 187, 0, 176, 172, 229],
-                vec![187],
-                vec![187],
-                vec![238, 182, 224, 227, 237, 176, 203, 226],
-                vec![182, 203, 226, 192, 193, 191, 226],
-                vec![187, 187, 0, 176, 172, 229],
-                vec![187, 177, 205, 206, 226],
-                vec![211, 200, 172, 226, 192, 200, 204, 227],
-                vec![205, 172, 226, 176, 0, 204, 226, 0],
-            ]
-        );
-        assert_eq!(
-            boxes(get_emerald_seed_box_names_result(
-                0xff123423,
-                EmeraldLang::Italian,
-            )),
-            vec![
-                vec![192, 199, 176, 227, 182, 205, 172, 226],
-                vec![187, 187, 187, 192, 205, 172, 226],
-                vec![187, 187, 238, 184, 224, 227],
-                vec![187, 206, 189, 171, 226],
-                vec![164, 176, 171, 226, 0, 176, 172, 229],
-                vec![187],
-                vec![187],
-                vec![187],
-                vec![238, 182, 224, 227, 237, 176, 203, 226],
-                vec![182, 203, 226, 192, 193, 191, 226],
-                vec![187, 187, 0, 176, 172, 229],
-                vec![187, 224, 206, 174, 226],
-                vec![211, 200, 172, 226, 192, 200, 204, 227],
-                vec![187, 187, 187, 222, 0, 172, 226, 0],
-            ]
-        );
-        assert_eq!(
-            boxes(get_emerald_seed_box_names_result(
-                0x00000001,
-                EmeraldLang::German,
-            )),
-            vec![
-                vec![192, 199, 176, 227, 182, 205, 172, 226],
-                vec![187, 187, 187, 192, 205, 172, 226],
-                vec![187, 187, 208, 178, 173, 227],
-                vec![187, 176, 178, 203, 226],
-                vec![0, 176, 172, 229],
-                vec![187],
-                vec![187],
-                vec![187],
-                vec![238, 182, 224, 227, 237, 176, 203, 226],
-                vec![182, 203, 226, 192, 193, 191, 226],
-                vec![187, 187, 0, 176, 172, 229],
-                vec![187, 225, 206, 174, 226],
-                vec![211, 200, 172, 226, 192, 200, 204, 227],
-                vec![187, 187, 187, 226, 0, 172, 226, 0],
-            ]
+        assert!(
+            expected.next().is_none(),
+            "text_output.txt has more rows than text_input.txt"
         );
     }
 }

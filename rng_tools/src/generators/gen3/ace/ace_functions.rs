@@ -46,12 +46,7 @@ fn box_names_for_commands(
     commands: Option<Vec<CommandBytes>>,
     lang: EmeraldLang,
 ) -> Option<AceResult> {
-    let Some(commands) = commands else {
-        return None;
-    };
-    let Some(raw_boxes) = fit_codes_into_boxes(&commands, lang) else {
-        return None;
-    };
+    let raw_boxes = fit_codes_into_boxes(&commands?, lang)?;
     Some(AceResult { raw_boxes })
 }
 

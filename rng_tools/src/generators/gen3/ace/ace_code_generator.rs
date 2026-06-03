@@ -1012,7 +1012,7 @@ fn split_raw_into_boxes(raw: &[u8], fill_last: bool) -> Option<Vec<Vec<u8>>> {
     }
     if i != 0 {
         if fill_last && current.len() == i {
-            current.extend(std::iter::repeat(SPACE).take(NAME_SIZE - current.len()));
+            current.extend(std::iter::repeat_n(SPACE, NAME_SIZE - current.len()));
         }
         finished.push(current);
     }

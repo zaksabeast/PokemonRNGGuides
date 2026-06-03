@@ -1,10 +1,11 @@
 import { SinnohMap } from "../shared/sinnohMap";
-import { useHoneyTreeState } from "./state";
+import { honeyTreeAtom } from "./state";
+import { useAtom } from "jotai";
 import { type HoneyTreeLocation } from "~/rngTools";
 import { getRecommendedTrees } from "./utils";
 
 export const HoneyTreeMap = () => {
-  const [state, setState] = useHoneyTreeState();
+  const [state, setState] = useAtom(honeyTreeAtom);
   const { showTrees, showMunchlax, showRecommended } = state.honeyTreeMap;
 
   const onClickHoneyTree = (targetLocation: HoneyTreeLocation) =>

@@ -22,7 +22,6 @@ import { Translations } from "~/translations";
 import { message } from "antd";
 import {
   Button,
-  CalibrateTimerButton,
   Field,
   FormFieldTable,
   FormikNumberInput,
@@ -41,7 +40,10 @@ import {
 } from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
-import { Static4Target, useStatic4State, static4TimerAtom } from "./state";
+import { Static4Target, useStatic4State } from "./state";
+import { useAtom } from "jotai";
+import { gen4StateAtom } from "../shared/state";
+import { CalibrateTimerButton } from "../shared/calibrateTimerButton";
 import { defaultHiddenPowerFilter } from "~/components/hiddenPowerInput";
 import { getIvRangeFromStats } from "~/types/statRange";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
@@ -110,7 +112,7 @@ const CalibrateStatic4Advance = ({ result }: CalibrateStatic4AdvanceProps) => {
             ),
           }));
           messageApi.success("Calibrated");
-          setCurrentStep((step) => step - 1);
+          setCurrentStep((step) => step - 2);
         }}
       >
         Calibrate Advance
@@ -132,11 +134,8 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
         ))
         .with({ isCorrectSeed: false }, () => (
           <CalibrateTimerButton
-            type="gen4"
             hitDelay={res.delay}
             lastStepOnClick={2}
-            label="Calibrate Timer"
-            timer={static4TimerAtom}
             trackerId="calibrate_gen4_static_calibrator"
           />
         ))
@@ -256,27 +255,28 @@ const sortBy = [
 const mapResult = (
   result: Gen4StaticPokemon,
   {
-    seedTime,
-    target,
+    resultSeedTime,
+    targetSeedTime,
+    targetLcrngAdvance,
   }: RustOption<Gen4StaticOpts> & {
-    seedTime: SeedTime4;
-    target: Static4Target;
+    resultSeedTime: SeedTime4;
+    targetSeedTime: SeedTime4;
+    targetLcrngAdvance: number;
   },
 ): Result => {
-  const targetSeedTime = target.seed_time;
   const secondOffset =
-    seedTime.datetime.second - targetSeedTime.datetime.second;
-  const delayOffset = seedTime.delay - targetSeedTime.delay;
-  const advanceOffset = result.advance - target.advance;
+    resultSeedTime.datetime.second - targetSeedTime.datetime.second;
+  const delayOffset = resultSeedTime.delay - targetSeedTime.delay;
+  const advanceOffset = result.advance - targetLcrngAdvance;
 
-  const isCorrectSeed = targetSeedTime.seed === seedTime.seed;
+  const isCorrectSeed = resultSeedTime.seed === targetSeedTime.seed;
 
   return {
     ...result,
     key: uniqueId(),
-    seed: seedTime.seed,
+    seed: resultSeedTime.seed,
     seedDelay: targetSeedTime.delay,
-    delay: seedTime.delay,
+    delay: resultSeedTime.delay,
     secondOffset,
     delayOffset,
     advanceOffset,
@@ -291,7 +291,8 @@ const mapResult = (
 
 export const Static4Calibrator = () => {
   const t = useActiveRouteTranslations();
-  const [state] = useStatic4State();
+  const [static4State] = useStatic4State();
+  const [state] = useAtom(gen4StateAtom);
 
   const {
     run: generateStatic4States,
@@ -305,11 +306,16 @@ export const Static4Calibrator = () => {
   });
 
   const onSubmit = async (opts: FormState) => {
-    if (state.target == null) {
+    const staticTarget = static4State.target;
+    const targetSeedTime = state.target?.seedTime;
+    const targetLcrngAdvance = state.target?.lcrngAdvance;
+    if (
+      staticTarget == null ||
+      targetSeedTime == null ||
+      targetLcrngAdvance == null
+    ) {
       return;
     }
-
-    const target = state.target;
 
     const caughtStats: StatsValue = {
       hp: opts.hpStat,
@@ -321,7 +327,7 @@ export const Static4Calibrator = () => {
     };
 
     const minMaxIvs = await getIvRangeFromStats({
-      species: target.species,
+      species: staticTarget.species,
       lvl: opts.filter_level,
       nature: opts.nature,
       stats: caughtStats,
@@ -332,8 +338,7 @@ export const Static4Calibrator = () => {
       return;
     }
 
-    const { datetime: targetDateTime, delay: targetDelay } =
-      state.target.seed_time;
+    const { datetime: targetDateTime, delay: targetDelay } = targetSeedTime;
 
     const datetime = toRngDateTime(
       fromRngDateTime(targetDateTime).subtract(opts.secondsRange, "seconds"),
@@ -353,30 +358,32 @@ export const Static4Calibrator = () => {
       (
         seedTime,
       ): RustOption<Gen4StaticOpts> & {
-        target: Static4Target;
-        seedTime: SeedTime4;
+        resultSeedTime: SeedTime4;
+        targetSeedTime: SeedTime4;
+        targetLcrngAdvance: number;
       } => ({
         // Additional info for mapping results
-        target,
-        seedTime,
+        resultSeedTime: seedTime,
+        targetSeedTime,
+        targetLcrngAdvance,
 
         // Used by generate_static4_states
         seed: seedTime.seed,
-        species: target.species,
-        game: state.game,
-        initial_advances: Math.max(target.advance - opts.advanceRange, 0),
+        species: staticTarget.species,
+        game: state.config.game,
+        initial_advances: Math.max(targetLcrngAdvance - opts.advanceRange, 0),
         max_advances: 2 * opts.advanceRange,
-        offset: target.advanceOffset,
-        lead: target.lead,
-        encounter_min_level: target.encounterMinLevel,
-        encounter_max_level: target.encounterMaxLevel,
+        offset: staticTarget.advanceOffset,
+        lead: staticTarget.lead,
+        encounter_min_level: staticTarget.encounterMinLevel,
+        encounter_max_level: staticTarget.encounterMaxLevel,
         filter_level: opts.filter_level,
         filter: {
           shiny: false,
           ability: null,
           nature: pkmFilterNatureFieldToRustInput([opts.nature]),
-          gender: state.target?.isFixedGender
-            ? state.target?.gender
+          gender: staticTarget.isFixedGender
+            ? staticTarget.gender
             : opts.gender,
           hidden_power: defaultHiddenPowerFilter,
           ...minMaxIvs,
@@ -400,7 +407,7 @@ export const Static4Calibrator = () => {
     speStat: 0,
     nature: "Adamant",
     gender: "Male",
-    filter_level: state.target?.level ?? 1,
+    filter_level: static4State.target?.level ?? 1,
     filter_characteristic: "AlertToSounds",
     delayRange: 50,
     secondsRange: 1,
@@ -422,7 +429,7 @@ export const Static4Calibrator = () => {
       cancelTrackerId="cancel_calibrate_static4"
       progressPercent={progressPercent}
     >
-      <Fields t={t} target={state.target} />
+      <Fields t={t} target={static4State.target} />
     </RngToolForm>
   );
 };

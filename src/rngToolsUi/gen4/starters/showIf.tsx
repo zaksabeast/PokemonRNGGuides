@@ -1,4 +1,5 @@
-import { useStarterState } from "./state";
+import { useAtom } from "jotai";
+import { gen4StateAtom } from "../shared/state";
 import { match } from "ts-pattern";
 
 type Starter4ShowIfProps = {
@@ -13,14 +14,14 @@ export const Starter4ShowIf = ({
   children,
   ...settings
 }: Starter4ShowIfProps) => {
-  const [state] = useStarterState();
+  const [{ config }] = useAtom(gen4StateAtom);
 
   const show = match(settings)
-    .with({ game: state.game }, () => true)
-    .with({ isNdsDsi: state.console === "NdsDsi" }, () => true)
-    .with({ is3dsAltSettings: state.console === "3dsAltSettings" }, () => true)
+    .with({ game: config.game }, () => true)
+    .with({ isNdsDsi: config.console === "NdsDsi" }, () => true)
+    .with({ is3dsAltSettings: config.console === "3dsAltSettings" }, () => true)
     .with(
-      { is3dsNormalSettings: state.console === "3dsNormalSettings" },
+      { is3dsNormalSettings: config.console === "3dsNormalSettings" },
       () => true,
     )
     .otherwise(() => false);

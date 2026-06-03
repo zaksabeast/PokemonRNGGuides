@@ -1,11 +1,12 @@
-import { useId4State } from "./state";
+import { id4Atom } from "./state";
+import { useAtom } from "jotai";
 
 export const Id4Tid = () => {
-  const [state] = useId4State();
-  return state.target?.tid ?? "???";
+  const [state] = useAtom(id4Atom);
+  return state.id?.tid ?? "???";
 };
 
 export const Id4Sid = () => {
-  const [state] = useId4State();
-  return state.target?.sid ?? "???";
+  const [state] = useAtom(id4Atom);
+  return state.id?.sid ?? "???";
 };

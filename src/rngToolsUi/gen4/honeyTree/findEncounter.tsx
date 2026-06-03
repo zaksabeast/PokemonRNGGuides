@@ -11,7 +11,9 @@ import {
   RngToolForm,
 } from "~/components";
 import { toOptions } from "~/utils/options";
-import { useHoneyTreeState } from "./state";
+import { gen4StateAtom } from "../shared/state";
+import { honeyTreeAtom } from "./state";
+import { useAtom } from "jotai";
 import { type Species, rngTools } from "~/rngTools";
 import { uniqueId, sortBy } from "lodash-es";
 import { useCurrentStep } from "~/components/stepper/state";
@@ -48,7 +50,7 @@ type SelectButtonProps = {
 };
 
 const SelectButton = ({ disabled, advance }: SelectButtonProps) => {
-  const [, setState] = useHoneyTreeState();
+  const [, setState] = useAtom(gen4StateAtom);
   const [, setStep] = useCurrentStep();
 
   return (
@@ -56,7 +58,7 @@ const SelectButton = ({ disabled, advance }: SelectButtonProps) => {
       trackerId="honey_tree_select_advance"
       disabled={disabled}
       onClick={() => {
-        setState((prev) => ({ ...prev, targetAdvance: advance }));
+        setState({ target: { lcrngAdvance: advance } });
         setStep((step) => step + 1);
       }}
     >
@@ -91,7 +93,7 @@ type SpeciesSelectProps = {
 };
 
 const SpeciesSelect = ({ isMunchlaxTree }: SpeciesSelectProps) => {
-  const [state] = useHoneyTreeState();
+  const [state] = useAtom(honeyTreeAtom);
 
   const species = sortBy(getSpecies(state.game, isMunchlaxTree));
   const optionLabels = ["Any", ...species] as const;
@@ -107,12 +109,14 @@ const SpeciesSelect = ({ isMunchlaxTree }: SpeciesSelectProps) => {
 };
 
 export const HoneyTreeFindEncounter = () => {
-  const [state] = useHoneyTreeState();
+  const [{ target }] = useAtom(gen4StateAtom);
+  const [state] = useAtom(honeyTreeAtom);
   const [results, setResults] = React.useState<Result[]>([]);
+  const initialSeed = target?.seedTime?.seed;
 
   React.useEffect(() => {
     setResults([]);
-  }, [state.initialSeed]);
+  }, [initialSeed]);
 
   const isMunchlaxTree =
     state.munchlaxLocations?.includes(state.targetLocation) ?? false;
@@ -126,9 +130,9 @@ export const HoneyTreeFindEncounter = () => {
           name="seed"
           numType="hex"
           errorMessage={
-            state.initialSeed == null ? "Find your seed first" : undefined
+            initialSeed == null ? "Find your seed first" : undefined
           }
-          value={state.initialSeed}
+          value={initialSeed}
         />
       ),
     },
@@ -158,12 +162,12 @@ export const HoneyTreeFindEncounter = () => {
   ];
 
   const onSubmit = async (opts: FormState) => {
-    if (state.initialSeed == null) {
+    if (initialSeed == null) {
       return;
     }
 
     const results = await rngTools.generate_honey_tree_encounters({
-      seed: state.initialSeed,
+      seed: initialSeed,
       game: state.game,
       is_munchlax_tree: isMunchlaxTree,
       min_advance: opts.minAdvances,
@@ -189,7 +193,7 @@ export const HoneyTreeFindEncounter = () => {
   return (
     <RngToolForm<FormState, Result>
       initialValues={initialValues}
-      disableGenerate={state.initialSeed == null}
+      disableGenerate={initialSeed == null}
       submitTrackerId="honey_tree_find_encounter"
       validationSchema={Validator}
       getFields={getFields}

@@ -63,7 +63,15 @@ export const Timer = ({
     } else {
       stop();
     }
-  }, [run, start, stop]);
+  }, [
+    run,
+    start,
+    stop,
+    startTimeMs,
+    expirationMs,
+    countdownMs,
+    timerStartOffset,
+  ]);
 
   return (
     <Flex vertical align="center">

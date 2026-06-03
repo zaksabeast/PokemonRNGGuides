@@ -24,7 +24,8 @@ import {
   pkmFilterFieldsToRustInput,
   pkmFilterSchema,
 } from "~/components/pkmFilter";
-import { static4TimerAtom, useStatic4State } from "./state";
+import { useStatic4State } from "./state";
+import { gen4StateAtom } from "../shared/state";
 import {
   flattenIvs,
   FlattenIvs,
@@ -45,6 +46,7 @@ import { getGameEncounters as getHoneyEncounters } from "../encounters/honey";
 import { type Encounter } from "../encounters/encounter";
 import { useField, useWatch } from "~/hooks/form";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { normalizeTargetLead } from "./utils";
 
 type Result = FlattenIvs<
   Static4State["state"] & {
@@ -67,8 +69,8 @@ type SelectButtonProps = {
 
 const SelectButton = ({ target }: SelectButtonProps) => {
   const [, setCurrentStep] = useCurrentStep();
-  const [, setState] = useStatic4State();
-  const [, updateTimer] = useAtom(static4TimerAtom);
+  const [, setStaticState] = useStatic4State();
+  const [, setState] = useAtom(gen4StateAtom);
   const [{ isFixedGender, minLevel, maxLevel, species, form, advanceOffset }] =
     useAtom(searchedEncounterAtom);
 
@@ -80,23 +82,24 @@ const SelectButton = ({ target }: SelectButtonProps) => {
           species,
           levelRange: [minLevel, maxLevel],
         });
-        setState((prev) => ({
-          ...prev,
+        setStaticState({
+          chatotSummaryCount: target.advance,
+          coinFlipFilter: "",
           target: {
-            ...target,
-            isFixedGender,
             species,
             form,
-            encounterMinLevel: minLevel,
-            encounterMaxLevel: maxLevel,
             minMaxStats,
             advanceOffset,
+            isFixedGender,
+            encounterMinLevel: minLevel,
+            encounterMaxLevel: maxLevel,
+            lead: target.lead,
+            gender: target.gender,
+            level: target.level,
           },
-          chatotSummaryCount: target.advance,
-        }));
-        updateTimer({
-          targetDelay: target.delay,
-          targetSecond: target.second,
+        });
+        setState({
+          target: { seedTime: target.seed_time, lcrngAdvance: target.advance },
         });
         setCurrentStep((prev) => prev + 1);
       }}
@@ -168,6 +171,11 @@ const columns: ResultColumn<Result>[] = [
   { title: "Ability", dataIndex: "ability" },
   { title: "Gender", dataIndex: "gender" },
   ...ivColumns,
+  {
+    title: "Lead",
+    dataIndex: "lead",
+    render: (lead) => normalizeTargetLead(lead),
+  },
   {
     title: "PID",
     dataIndex: "pid",
@@ -323,9 +331,9 @@ type Static4SearcherProps = {
 };
 
 export const Static4Searcher = ({ honey = false }: Static4SearcherProps) => {
-  const [state] = useStatic4State();
+  const [state] = useAtom(gen4StateAtom);
   const [, setSearchedEncounter] = useAtom(searchedEncounterAtom);
-  const game = state.game;
+  const game = state.config.game;
 
   const getEncounters = honey ? getHoneyEncounters : getStaticEncounters;
 

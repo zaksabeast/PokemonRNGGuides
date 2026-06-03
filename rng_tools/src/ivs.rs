@@ -53,6 +53,13 @@ pub enum InheritedIv {
 }
 
 impl InheritedIv {
+    pub fn new(parent_ivs: &[PartialIvs; 2], slot: usize, stat: G3Idx) -> InheritedIv {
+        match slot {
+            0 => InheritedIv::Parent1(parent_ivs[0][stat]),
+            _ => InheritedIv::Parent2(parent_ivs[1][stat]),
+        }
+    }
+
     pub fn filter(&self, min: u8, max: u8) -> bool {
         match self {
             InheritedIv::Random(iv) => *iv >= min && *iv <= max,
@@ -71,6 +78,42 @@ impl InheritedIv {
             InheritedIv::Parent2(Some(iv)) => Some(*iv),
             _ => None,
         }
+    }
+
+    #[cfg(test)]
+    fn parent_source(&self) -> Option<u8> {
+        match self {
+            InheritedIv::Parent1(_) => Some(1),
+            InheritedIv::Parent2(_) => Some(2),
+            InheritedIv::Random(_) => None,
+        }
+    }
+
+    #[cfg(test)]
+    pub fn from_pokefinder_str(str: &str) -> Self {
+        match str {
+            "A" => InheritedIv::Parent1(None),
+            "B" => InheritedIv::Parent2(None),
+            _ => {
+                let iv: u8 = str.parse().unwrap();
+                InheritedIv::Random(iv)
+            }
+        }
+    }
+
+    #[cfg(test)]
+    pub fn is_parent_or_value_eq(&self, other: &Self) -> bool {
+        let parents_match = match (self.parent_source(), other.parent_source()) {
+            (Some(left), Some(right)) => left == right,
+            _ => true,
+        };
+
+        let values_match = match (self.value(), other.value()) {
+            (Some(left), Some(right)) => left == right,
+            _ => true,
+        };
+
+        parents_match && values_match
     }
 }
 
@@ -109,6 +152,32 @@ impl InheritedIvs {
             spe: self.spe.value()?,
         })
     }
+
+    #[cfg(test)]
+    pub fn from_pokefinder_strs(parts: &[&str]) -> Self {
+        if parts.len() != 6 {
+            panic!("Expected 6 IVs, got {}", parts.len());
+        }
+
+        Self {
+            hp: InheritedIv::from_pokefinder_str(parts[0]),
+            atk: InheritedIv::from_pokefinder_str(parts[1]),
+            def: InheritedIv::from_pokefinder_str(parts[2]),
+            spa: InheritedIv::from_pokefinder_str(parts[3]),
+            spd: InheritedIv::from_pokefinder_str(parts[4]),
+            spe: InheritedIv::from_pokefinder_str(parts[5]),
+        }
+    }
+
+    #[cfg(test)]
+    pub fn is_parent_or_value_eq(&self, other: &Self) -> bool {
+        self.hp.is_parent_or_value_eq(&other.hp)
+            && self.atk.is_parent_or_value_eq(&other.atk)
+            && self.def.is_parent_or_value_eq(&other.def)
+            && self.spa.is_parent_or_value_eq(&other.spa)
+            && self.spd.is_parent_or_value_eq(&other.spd)
+            && self.spe.is_parent_or_value_eq(&other.spe)
+    }
 }
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
@@ -120,6 +189,19 @@ pub struct PartialIvs {
     pub spa: Option<u8>,
     pub spd: Option<u8>,
     pub spe: Option<u8>,
+}
+
+impl PartialIvs {
+    pub fn new_all31() -> Self {
+        Self {
+            hp: Some(31),
+            atk: Some(31),
+            def: Some(31),
+            spa: Some(31),
+            spd: Some(31),
+            spe: Some(31),
+        }
+    }
 }
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
@@ -331,5 +413,57 @@ mod test {
 
         assert!(passes.filter(&min, &max));
         assert!(!fails_hp.filter(&min, &max));
+    }
+
+    mod is_parent_or_value_eq {
+        use super::*;
+
+        #[test]
+        fn value_is_equal() {
+            let parent1_31 = InheritedIv::Parent1(Some(31));
+            let parent2_31 = InheritedIv::Parent2(Some(31));
+            let random_31 = InheritedIv::Random(31);
+
+            assert!(random_31.is_parent_or_value_eq(&parent1_31));
+            assert!(random_31.is_parent_or_value_eq(&parent2_31));
+            assert!(random_31.is_parent_or_value_eq(&random_31));
+            assert!(parent1_31.is_parent_or_value_eq(&random_31));
+            assert!(parent2_31.is_parent_or_value_eq(&random_31));
+        }
+
+        #[test]
+        fn value_is_not_equal() {
+            let parent1_30 = InheritedIv::Parent1(Some(30));
+            let parent2_30 = InheritedIv::Parent2(Some(30));
+            let random_31 = InheritedIv::Random(31);
+
+            assert!(!random_31.is_parent_or_value_eq(&parent1_30));
+            assert!(!random_31.is_parent_or_value_eq(&parent2_30));
+            assert!(!parent1_30.is_parent_or_value_eq(&random_31));
+            assert!(!parent2_30.is_parent_or_value_eq(&random_31));
+        }
+
+        #[test]
+        fn parent_is_equal() {
+            let parent1_31 = InheritedIv::Parent1(Some(31));
+            let parent1_unknown = InheritedIv::Parent1(None);
+
+            let parent2_31 = InheritedIv::Parent2(Some(31));
+            let parent2_unknown = InheritedIv::Parent2(None);
+
+            assert!(parent1_31.is_parent_or_value_eq(&parent1_unknown));
+            assert!(parent1_unknown.is_parent_or_value_eq(&parent1_31));
+            assert!(parent2_31.is_parent_or_value_eq(&parent2_unknown));
+            assert!(parent2_unknown.is_parent_or_value_eq(&parent2_31));
+        }
+
+        #[test]
+        fn mismatched_parent_is_not_equal() {
+            let parent1_31 = InheritedIv::Parent1(Some(31));
+            let parent2_31 = InheritedIv::Parent2(Some(31));
+
+            assert!(!parent1_31.is_parent_or_value_eq(&parent2_31));
+            assert!(!parent2_31.is_parent_or_value_eq(&parent1_31));
+        }
     }
 }

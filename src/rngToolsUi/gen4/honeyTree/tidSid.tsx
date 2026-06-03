@@ -11,7 +11,9 @@ import {
 import { Translations } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { useWatch } from "~/hooks/form";
-import { INITIAL_GAME, useHoneyTreeState } from "./state";
+import { honeyTreeAtom, INITIAL_GAME } from "./state";
+import { gen4StateAtom } from "../shared/state";
+import { useAtom } from "jotai";
 import { rngTools } from "~/rngTools";
 import { toOptions } from "~/utils/options";
 import { DpPt } from "../gen4types";
@@ -50,7 +52,8 @@ const getFields = (t: Translations): Field[] => [
 
 const Fields = () => {
   const t = useActiveRouteTranslations();
-  const [, setState] = useHoneyTreeState();
+  const [, setState] = useAtom(gen4StateAtom);
+  const [, setHoneyTreeState] = useAtom(honeyTreeAtom);
   const { tid, sid, game } = useWatch({
     validationSchema: Validator,
     names: {
@@ -67,16 +70,18 @@ const Fields = () => {
           ? await rngTools.get_muchlax_trees(tid, sid)
           : null;
 
-      setState((prev) => ({
+      setState({
+        target: { seedTime: null, lcrngAdvance: null, mtAdvance: null },
+      });
+      setHoneyTreeState((prev) => ({
         ...prev,
         game: game ?? prev.game,
         munchlaxLocations: trees?.reverse() ?? null,
-        targetAdvance: null,
       }));
     };
 
     submitForm();
-  }, [tid, sid, game, setState]);
+  }, [tid, sid, game, setState, setHoneyTreeState]);
 
   return <FormFieldTable fields={getFields(t)} />;
 };

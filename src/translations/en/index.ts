@@ -325,6 +325,7 @@ export const translations = {
   "Target Tree": "Target Tree",
   "Coin Flips": "Coin Flips",
   "Coin Flip Count": "Coin Flip Count",
+  Calls: "Calls",
   "Target/Heard": "Target/Heard",
   "TID / SID": "TID / SID",
   "Hidden power": "Hidden power",
@@ -332,6 +333,15 @@ export const translations = {
   "Save calibration between different RNGs.":
     "Save calibration between different RNGs.",
   "Advanced Settings": "Advanced Settings",
+  "Learn how to use the 3DS Helper here":
+    "Learn how to use the 3DS Helper here",
+  "Download the 3DS Alt Settings app here":
+    "Download the 3DS Alt Settings app here",
+  "Masuda Method": "Masuda Method",
+  "Held Advance": "Held Advance",
+  "Pickup Advance": "Pickup Advance",
+  "Target/Seen": "Target/Seen",
+  "Elm Call Count": "Elm Call Count",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

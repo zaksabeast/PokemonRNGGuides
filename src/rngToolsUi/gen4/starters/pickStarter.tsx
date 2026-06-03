@@ -34,8 +34,8 @@ import {
   Gen4Starter,
   useStarterState,
   allStarters,
-  starterTimer,
 } from "./state";
+import { gen4StateAtom } from "../shared/state";
 import { getStatRange } from "~/types/statRange";
 import { Gen4GameVersion } from "../gen4types";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
@@ -63,17 +63,15 @@ type SelectButtonProps = {
 
 const SelectButton = ({ target }: SelectButtonProps) => {
   const [, setCurrentStep] = useCurrentStep();
-  const [, setState] = useStarterState();
-  const [, updateTimer] = useAtom(starterTimer);
-  const targetDelay = target.seed_time.delay;
-  const targetSecond = target.seed_time.datetime.second;
+  const [, setState] = useAtom(gen4StateAtom);
 
   return (
     <Button
       trackerId="select_gen4_starter"
       onClick={() => {
-        setState((prev) => ({ ...prev, target }));
-        updateTimer({ targetDelay, targetSecond });
+        setState({
+          target: { seedTime: target.seed_time, lcrngAdvance: target.advance },
+        });
         setCurrentStep((prev) => prev + 1);
       }}
     >
@@ -269,7 +267,8 @@ const mapResult = (res: Static4State): Result => {
 
 export const PickStarter4 = () => {
   const t = useActiveRouteTranslations();
-  const [state, setState] = useStarterState();
+  const [, setStarter] = useStarterState();
+  const [state] = useAtom(gen4StateAtom);
   const {
     run: searchStarterSeeds,
     data: results,
@@ -279,14 +278,14 @@ export const PickStarter4 = () => {
     map: mapResult,
   });
 
-  const game = state.game;
+  const game = state.config.game;
 
   const onSubmit = async (opts: FormState) => {
     const minMaxStats = await getStatRange({
       species: opts.species,
       levelRange: [5, 6],
     });
-    setState((prev) => ({ ...prev, species: opts.species, minMaxStats }));
+    setStarter({ species: opts.species, minMaxStats });
     const advance = getStarterAdvance({
       game,
       species: opts.species,

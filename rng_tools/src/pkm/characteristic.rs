@@ -4,7 +4,9 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-#[derive(Debug, Default, Clone, Copy, PartialEq, FromPrimitive, Tsify, Serialize, Deserialize)]
+#[derive(
+    Debug, Default, Clone, Copy, Eq, PartialEq, FromPrimitive, Tsify, Serialize, Deserialize,
+)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 #[repr(u8)]
 pub enum Characteristic {

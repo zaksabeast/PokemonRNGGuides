@@ -6,7 +6,7 @@ import {
   ResultColumn,
   RngToolForm,
 } from "~/components";
-import { CalibrateTimerButton } from "~/components/calibrateTimerButton";
+import { CalibrateTimerButton } from "../shared/calibrateTimerButton";
 import {
   Gen4StaticPokemon,
   RngDateTime,
@@ -19,7 +19,9 @@ import {
   pkmFilterNatureFieldToRustInput,
 } from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
-import { Gen4Starter, starterTimer, useStarterState } from "./state";
+import { Gen4Starter, useStarterState } from "./state";
+import { useAtom } from "jotai";
+import { gen4StateAtom } from "../shared/state";
 import { maleFemale, nature, StatFieldsSchema } from "~/types";
 import { getStatFields } from "~/rngToolsUi/shared/statFields";
 import { FormikRadio } from "~/components/radio";
@@ -76,11 +78,8 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
     disableVerticalPadding: true,
     render: (_, target) => (
       <CalibrateTimerButton
-        type="gen4"
         hitDelay={target.delay}
-        timer={starterTimer}
         trackerId="calibrate_gen4_starter"
-        lastStepOnClick={1}
       />
     ),
   },
@@ -139,14 +138,15 @@ const getStarterGame = (starter: Gen4Starter) => {
 
 export const CalibrateStarter4 = () => {
   const t = useActiveRouteTranslations();
-  const [state] = useStarterState();
+  const [state] = useAtom(gen4StateAtom);
+  const [starter] = useStarterState();
   const [results, setResults] = React.useState<Result[]>([]);
 
-  const targetDateTime = state.target?.seed_time.datetime ?? defaultDateTime;
-  const targetDelay = state.target?.seed_time.delay ?? 0;
-  const targetAdvance = state.target?.advance ?? 0;
-  const targetSpecies = state.species;
-  const minMaxStats = state.minMaxStats;
+  const targetDateTime = state.target.seedTime?.datetime ?? defaultDateTime;
+  const targetDelay = state.target.seedTime?.delay ?? 0;
+  const targetAdvance = state.target.lcrngAdvance ?? 0;
+  const targetSpecies = starter.species;
+  const minMaxStats = starter.minMaxStats;
 
   const fields: Field[] = [
     {
@@ -211,7 +211,7 @@ export const CalibrateStarter4 = () => {
       fromRngDateTime(targetDateTime).subtract(1, "seconds"),
     );
 
-    const maxAdvances = state.game === "Platinum" ? 40 : 20;
+    const maxAdvances = state.config.game === "Platinum" ? 40 : 20;
 
     const seedTimes = await rngTools.calc_gen4_seeds({
       datetime,

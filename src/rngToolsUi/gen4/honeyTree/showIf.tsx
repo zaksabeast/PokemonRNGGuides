@@ -1,5 +1,6 @@
 import { getSeekerTrees, NO_NPC_TREES } from "./constants";
-import { useHoneyTreeState, type HoneyTreeState } from "./state";
+import { honeyTreeAtom, type HoneyTreeState } from "./state";
+import { useAtom } from "jotai";
 import { getRecommendedTrees } from "./utils";
 
 type HoneyTreeShowIfProps = {
@@ -48,7 +49,7 @@ export const HoneyTreeShowIf = ({
   pt,
   children,
 }: HoneyTreeShowIfProps) => {
-  const [state] = useHoneyTreeState();
+  const [state] = useAtom(honeyTreeAtom);
 
   if (onlyBadMunchlaxTrees && !hasBadTrees(state)) {
     return null;

@@ -1,5 +1,5 @@
 import React from "react";
-import { rngTools, type CoinFlip } from "~/rngTools";
+import { rngTools, type SeedTime4 } from "~/rngTools";
 import {
   RngToolForm,
   FormikNumberInput,
@@ -11,27 +11,21 @@ import {
 } from "~/components";
 import { uniqueId } from "lodash-es";
 import { z } from "zod";
-import {
-  shrinkCoinFlips,
-  matchesCoinFlipFilter,
-} from "../shared/coinFlipUtils";
-import { CoinFlipFilter } from "../shared/coinFlipFilter";
-import {
-  addRngTime,
-  rngDate,
-  RngDateSchema,
-  rngTime,
-  RngTimeSchema,
-} from "~/utils/time";
-import { useHoneyTreeState } from "./state";
+import { shrinkCoinFlips, matchesCoinFlipFilter, SmallCoinFlip } from "./utils";
+import { CoinFlipFilterButtons } from "./coinFlipButtons";
+import { rngDate, RngDateSchema, rngTime, RngTimeSchema } from "~/utils/time";
+import { gen4StateAtom } from "../state";
+import { useAtom } from "jotai";
 import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
 import { useCurrentStep } from "~/components/stepper/state";
 import { Translations } from "~/translations";
+import { getFindableSeeds } from "../getFindableSeeds";
 
 type ResultRow = {
   id: string;
   seed: number;
-  coinFlips: CoinFlip[];
+  seedTime: SeedTime4;
+  coinFlips: SmallCoinFlip[];
 };
 
 const Validator = z.object({
@@ -57,22 +51,20 @@ const initialValues: FormState = {
 };
 
 type SelectButtonProps = {
-  seed: number;
+  seedTime: SeedTime4;
 };
 
-const SelectButton = ({ seed }: SelectButtonProps) => {
-  const [, setState] = useHoneyTreeState();
+const SelectButton = ({ seedTime }: SelectButtonProps) => {
+  const [, setState] = useAtom(gen4StateAtom);
   const [, setCurrentStep] = useCurrentStep();
 
   return (
     <Button
-      trackerId="honey_tree_select_seed"
+      trackerId="coin_flip_select_seed"
       onClick={() => {
-        setState((prev) => ({
-          ...prev,
-          initialSeed: seed,
-          targetAdvance: null,
-        }));
+        setState({
+          target: { seedTime, lcrngAdvance: null, mtAdvance: null },
+        });
         setCurrentStep((step) => step + 1);
       }}
     >
@@ -85,7 +77,7 @@ const getColumns = (t: Translations): ResultColumn<ResultRow>[] => [
   {
     title: t["Select"],
     dataIndex: "id",
-    render: (_, record) => <SelectButton seed={record.seed} />,
+    render: (_, record) => <SelectButton seedTime={record.seedTime} />,
   },
   {
     title: t["Seed"],
@@ -95,7 +87,7 @@ const getColumns = (t: Translations): ResultColumn<ResultRow>[] => [
   {
     title: t["Coin Flips"],
     dataIndex: "coinFlips",
-    render: (coinFlips: CoinFlip[]) => shrinkCoinFlips(coinFlips).join(", "),
+    render: (coinFlips: SmallCoinFlip[]) => coinFlips.join(", "),
   },
 ];
 
@@ -138,29 +130,19 @@ const getFields = (t: Translations): Field[] => [
   },
 ];
 
-export const HoneyTreeCoinClipper = () => {
+export const DpptCoinFlipSeedFinder = () => {
   const [allResults, setAllResults] = React.useState<ResultRow[]>([]);
-  const [coinFlipFilter, setCoinFlipFilter] = React.useState("");
+  const [state, setState] = useAtom(gen4StateAtom);
   const [coinFlipCount, setCoinFlipCount] = React.useState(
     initialValues.coinFlipCount,
   );
 
   const filteredResults = allResults.filter((result) =>
-    matchesCoinFlipFilter(result.coinFlips, coinFlipFilter),
+    matchesCoinFlipFilter(result.coinFlips, state.gameState.coinFlips),
   );
 
   const onSubmit: RngToolSubmit<FormState> = async (opts) => {
-    const seeds = await rngTools.calc_gen4_seeds({
-      min_delay: opts.minDelay,
-      max_delay: opts.maxDelay,
-      seconds_increment: Math.max(opts.maxSeconds - opts.minSeconds, 0),
-      datetime: addRngTime(opts.date, {
-        ...opts.time,
-        second: opts.minSeconds,
-      }),
-    });
-
-    const seedList = new Uint32Array(seeds.map(({ seed }) => seed));
+    const { seedTimesBySeed, seedList } = await getFindableSeeds(opts);
     setCoinFlipCount(opts.coinFlipCount);
     const coinFlips = await rngTools.coin_flips_for_seeds(
       seedList,
@@ -171,7 +153,8 @@ export const HoneyTreeCoinClipper = () => {
       return {
         id: uniqueId(),
         seed,
-        coinFlips: coin_flips,
+        seedTime: seedTimesBySeed[seed],
+        coinFlips: shrinkCoinFlips(coin_flips),
       };
     });
 
@@ -186,17 +169,20 @@ export const HoneyTreeCoinClipper = () => {
       initialValues={initialValues}
       validationSchema={Validator}
       filters={
-        <CoinFlipFilter
+        <CoinFlipFilterButtons
+          hasResults={allResults.length > 0}
           maxCoinFlips={coinFlipCount}
-          coinFlipFilter={coinFlipFilter}
-          onCoinFlipFilterChange={setCoinFlipFilter}
+          coinFlipFilter={state.gameState.coinFlips}
+          onCoinFlipFilterChange={(coinFlips) =>
+            setState({ gameState: { coinFlips } })
+          }
           headsTrackerId="hit_seed_add_heads"
           tailsTrackerId="hit_seed_add_tails"
         />
       }
       onSubmit={onSubmit}
       rowKey="id"
-      submitTrackerId="hit_seed_search"
+      submitTrackerId="coin_flip_seed_search"
     />
   );
 };

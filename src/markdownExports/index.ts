@@ -49,7 +49,6 @@ import { GamePageComponent } from "~/pageComponents/gamePage";
 import { withTags } from "~/components/tagDetector/provider";
 import { mapValues } from "lodash-es";
 import { Starter4ShowIf } from "~/rngToolsUi/gen4/starters/showIf";
-import { Id4ShowIf } from "~/rngToolsUi/gen4/id/showIf";
 import { TranslationHelperSelectGuide } from "~/rngToolsUi/translationHelper/selectGuide";
 import { TranslationHelperEditGuide } from "~/rngToolsUi/translationHelper/editGuide";
 import { ToolTranslationButton } from "~/rngToolsUi/translationHelper/toolTranslations";
@@ -98,7 +97,6 @@ const nonTools = {
   Step,
   Glossary,
   Starter4ShowIf,
-  Id4ShowIf,
   WhatNext,
   YouTubeTable,
   EqualColumnTable,
@@ -246,21 +244,9 @@ const tools = {
     () => import("~/rngToolsUi/gen4/id/calibrateId"),
     (mod) => mod.CalibrateId4,
   ),
-  Gen4IdSetup: lazyLoad(
-    () => import("~/rngToolsUi/gen4/id/setup"),
-    (mod) => mod.Gen4IdSetup,
-  ),
-  Id4ConsoleSetDateString: lazyLoad(
-    () => import("~/rngToolsUi/gen4/id/timer"),
-    (mod) => mod.Id4ConsoleSetDateString,
-  ),
   Id4Searcher: lazyLoad(
     () => import("~/rngToolsUi/gen4/id/idSearcher"),
     (mod) => mod.Id4Searcher,
-  ),
-  Id4Timer: lazyLoad(
-    () => import("~/rngToolsUi/gen4/id/timer"),
-    (mod) => mod.Id4Timer,
   ),
   XyPokeRadar: lazyLoad(
     () => import("~/rngToolsUi/gen6/xyPokeRadar"),
@@ -323,48 +309,20 @@ const tools = {
     (mod) => mod.Id4Sid,
   ),
   CalibrateStarter4: lazyLoad(
-    () => import("~/rngToolsUi/gen4/starters"),
+    () => import("~/rngToolsUi/gen4/starters/calibrate"),
     (mod) => mod.CalibrateStarter4,
   ),
-  GetStarter4: lazyLoad(
-    () => import("~/rngToolsUi/gen4/starters"),
-    (mod) => mod.GetStarter4,
-  ),
   PickStarter4: lazyLoad(
-    () => import("~/rngToolsUi/gen4/starters"),
+    () => import("~/rngToolsUi/gen4/starters/pickStarter"),
     (mod) => mod.PickStarter4,
-  ),
-  Starter4ConsoleSetDateString: lazyLoad(
-    () => import("~/rngToolsUi/gen4/starters/getStarter"),
-    (mod) => mod.Starter4ConsoleSetDateString,
-  ),
-  Starter4Setup: lazyLoad(
-    () => import("~/rngToolsUi/gen4/starters"),
-    (mod) => mod.Starter4Setup,
-  ),
-  Gen4StaticSetup: lazyLoad(
-    () => import("~/rngToolsUi/gen4/static/setup"),
-    (mod) => mod.Gen4StaticSetup,
-  ),
-  Static4ShowIf: lazyLoad(
-    () => import("~/rngToolsUi/gen4/static/showIf"),
-    (mod) => mod.Static4ShowIf,
   ),
   Static4Searcher: lazyLoad(
     () => import("~/rngToolsUi/gen4/static/staticSearcher"),
     (mod) => mod.Static4Searcher,
   ),
-  Static4HitSeed: lazyLoad(
-    () => import("~/rngToolsUi/gen4/static/hitSeed"),
-    (mod) => mod.Static4HitSeed,
-  ),
-  Static4Timer: lazyLoad(
-    () => import("~/rngToolsUi/gen4/static/static4Timer"),
-    (mod) => mod.Static4Timer,
-  ),
-  Static4ConsoleSetDateString: lazyLoad(
-    () => import("~/rngToolsUi/gen4/static/static4Timer"),
-    (mod) => mod.Static4ConsoleSetDateString,
+  DpptCoinFlipSeedCalibrator: lazyLoad(
+    () => import("~/rngToolsUi/gen4/shared/dpptCoinFlip/seedCalibrator"),
+    (mod) => mod.DpptCoinFlipSeedCalibrator,
   ),
   Static4ChatotCount: lazyLoad(
     () => import("~/rngToolsUi/gen4/static/stateText"),
@@ -382,10 +340,6 @@ const tools = {
     () => import("~/rngToolsUi/gen4/static/staticCalibrator"),
     (mod) => mod.Static4Calibrator,
   ),
-  Static4ChatterFilter: lazyLoad(
-    () => import("~/rngToolsUi/gen4/static/chatterFilter"),
-    (mod) => mod.Static4ChatterFilter,
-  ),
   Gen5CalibrationResults: lazyLoad(
     () => import("~/rngToolsUi/gen5/calibrationResults/calibrationResults"),
     (mod) => mod.Gen5CalibrationResults,
@@ -402,17 +356,13 @@ const tools = {
     () => import("~/rngToolsUi/gen5/profileSearcher/setup"),
     (mod) => mod.Profile5Setup,
   ),
-  HoneyTreeChatotFilter: lazyLoad(
-    () => import("~/rngToolsUi/gen4/honeyTree/chatotFilter"),
-    (mod) => mod.HoneyTreeChatotFilter,
-  ),
   HoneyTreeTidSid: lazyLoad(
     () => import("~/rngToolsUi/gen4/honeyTree/tidSid"),
     (mod) => mod.HoneyTreeTidSid,
   ),
-  HoneyTreeCoinClipper: lazyLoad(
-    () => import("~/rngToolsUi/gen4/honeyTree/coinFlipper"),
-    (mod) => mod.HoneyTreeCoinClipper,
+  DpptCoinFlipSeedFinder: lazyLoad(
+    () => import("~/rngToolsUi/gen4/shared/dpptCoinFlip/seedFinder"),
+    (mod) => mod.DpptCoinFlipSeedFinder,
   ),
   HoneyTreeFindEncounter: lazyLoad(
     () => import("~/rngToolsUi/gen4/honeyTree/findEncounter"),
@@ -441,6 +391,46 @@ const tools = {
   SelectSwarm4Target: lazyLoad(
     () => import("~/rngToolsUi/gen4/swarm/selectTarget"),
     (mod) => mod.SelectSwarm4Target,
+  ),
+  SwarmFindEncounter: lazyLoad(
+    () => import("~/rngToolsUi/gen4/swarm/findEncounter"),
+    (mod) => mod.SwarmFindEncounter,
+  ),
+  Gen4ChatterFilter: lazyLoad(
+    () => import("~/rngToolsUi/gen4/shared/chatterFilter"),
+    (mod) => mod.Gen4ChatterFilter,
+  ),
+  Gen4ConfigSetup: lazyLoad(
+    () => import("~/rngToolsUi/gen4/shared/configSetup"),
+    (mod) => mod.Gen4ConfigSetup,
+  ),
+  Gen4EmbeddedTimer: lazyLoad(
+    () => import("~/rngToolsUi/gen4/shared/timer"),
+    (mod) => mod.Gen4EmbeddedTimer,
+  ),
+  Gen4ShowIf: lazyLoad(
+    () => import("~/rngToolsUi/gen4/shared/gen4ShowIf"),
+    (mod) => mod.Gen4ShowIf,
+  ),
+  Gen4Reset: lazyLoad(
+    () => import("~/rngToolsUi/gen4/shared/resetState"),
+    (mod) => mod.Gen4Reset,
+  ),
+  Gen4ConsoleSetDateString: lazyLoad(
+    () => import("~/rngToolsUi/gen4/shared/consoleDateStrings"),
+    (mod) => mod.Gen4ConsoleSetDateString,
+  ),
+  Egg4Search: lazyLoad(
+    () => import("~/rngToolsUi/gen4/egg/searchEgg"),
+    (mod) => mod.Egg4Search,
+  ),
+  DpptCoinFlipAdvanceFilter: lazyLoad(
+    () => import("~/rngToolsUi/gen4/shared/dpptCoinFlip/advanceFilter"),
+    (mod) => mod.DpptCoinFlipAdvanceFilter,
+  ),
+  Gen4SeedFinder: lazyLoad(
+    () => import("~/rngToolsUi/gen4/shared/seedFinder"),
+    (mod) => mod.Gen4SeedFinder,
   ),
 };
 

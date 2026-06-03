@@ -1,7 +1,8 @@
+import React from "react";
 import { Button, Input, Flex, PixelImage } from "~/components";
 import styled from "@emotion/styled";
-import { sanitizeFlips } from "./coinFlipUtils";
-import React from "react";
+import { sanitizeFlips } from "./utils";
+import { getErrorMessage } from "../advanceFilter/utils";
 
 const CoinButton = styled(Button)({
   paddingTop: 12,
@@ -12,6 +13,7 @@ const CoinButton = styled(Button)({
 });
 
 type Props = {
+  hasResults: boolean;
   coinFlipFilter: string;
   maxCoinFlips: number;
   onCoinFlipFilterChange: (value: string) => void;
@@ -19,7 +21,8 @@ type Props = {
   tailsTrackerId: string;
 };
 
-export const CoinFlipFilter = ({
+export const CoinFlipFilterButtons = ({
+  hasResults,
   coinFlipFilter,
   maxCoinFlips,
   onCoinFlipFilterChange,
@@ -57,11 +60,12 @@ export const CoinFlipFilter = ({
       </Flex>
       <Input
         placeholder="HTH"
-        errorMessage={
-          coinFlipFilter.length > maxCoinFlips
-            ? `Over max coin flip count: ${maxCoinFlips}`
-            : undefined
-        }
+        errorMessage={getErrorMessage({
+          filter: coinFlipFilter,
+          hasResults,
+          maxResults: maxCoinFlips,
+          unitName: "coin flips",
+        })}
         value={coinFlipFilter}
         onChange={onInputChange}
       />

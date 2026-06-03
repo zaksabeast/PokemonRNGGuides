@@ -3,13 +3,28 @@ import React from "react";
 export const CANVAS_SIZE = 200;
 export const FLASH_DURATION = 150; // milliseconds to show flash color
 export const COUNTDOWN_INTERVAL_MS = 500; // Beep every 500ms during countdown
-const UPDATE_INTERVAL_MS = 50; // Millisecond display updates every 50ms for smooth appearance
+const TEXT_CLEAR_PADDING = 12;
 
 export type TimerColors = {
   ringActive: string;
   ringFlash: string;
   background: string;
   text: string;
+};
+
+const syncCanvasResolution = (canvas: HTMLCanvasElement) => {
+  const dpr = window.devicePixelRatio ?? 1;
+  const width = CANVAS_SIZE * dpr;
+  const height = CANVAS_SIZE * dpr;
+
+  if (canvas.width !== width || canvas.height !== height) {
+    // eslint-disable-next-line no-param-reassign
+    canvas.width = width;
+    // eslint-disable-next-line no-param-reassign
+    canvas.height = height;
+  }
+
+  return dpr;
 };
 
 // Draw text (only called when milliseconds value changes noticeably)
@@ -47,9 +62,22 @@ const drawText = ({
   const text = `${seconds.toString().padStart(2, "0")}:${milliseconds.toString().padStart(3, "0")}`;
 
   ctx.font = "700 24px Menlo, Monaco, 'Courier New', monospace";
-  ctx.fillStyle = textColor;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
+
+  const metrics = ctx.measureText(text);
+  const maxTextWidth = ctx.measureText("00000:000").width;
+  const textHeight =
+    (metrics.actualBoundingBoxAscent ?? 18) +
+    (metrics.actualBoundingBoxDescent ?? 8);
+  ctx.clearRect(
+    CENTER - maxTextWidth / 2 - TEXT_CLEAR_PADDING,
+    CENTER - textHeight / 2 - TEXT_CLEAR_PADDING,
+    maxTextWidth + TEXT_CLEAR_PADDING * 2,
+    textHeight + TEXT_CLEAR_PADDING * 2,
+  );
+
+  ctx.fillStyle = textColor;
   ctx.fillText(text, CENTER, CENTER);
 };
 
@@ -94,13 +122,25 @@ const drawRing = ({
   const CENTER = CANVAS_SIZE / 2;
   const RADIUS = 85;
   const LINE_WIDTH = 8;
+  const RING_CLEAR_PADDING = LINE_WIDTH + 2;
 
-  const dpr = window.devicePixelRatio ?? 1;
-  canvas.width = CANVAS_SIZE * dpr;
-  canvas.height = CANVAS_SIZE * dpr;
+  const dpr = syncCanvasResolution(canvas);
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(CENTER, CENTER, RADIUS + RING_CLEAR_PADDING, 0, Math.PI * 2);
+  ctx.arc(
+    CENTER,
+    CENTER,
+    Math.max(RADIUS - RING_CLEAR_PADDING, 0),
+    0,
+    Math.PI * 2,
+    true,
+  );
+  ctx.clip();
   ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+  ctx.restore();
 
   // Draw background circle
   ctx.beginPath();
@@ -113,7 +153,7 @@ const drawRing = ({
   const isFlashing = currentTime - lastFlashTimeRef.current < FLASH_DURATION;
   const ringColor = isFlashing ? ringFlashColor : ringActiveColor;
 
-  const percent = Math.max(0, remaining / expirationMs);
+  const percent = expirationMs > 0 ? Math.max(0, remaining / expirationMs) : 0;
   const endAngle = -Math.PI / 2 + percent * Math.PI * 2;
 
   ctx.beginPath();
@@ -148,8 +188,18 @@ export const useCanvasTimer = ({
   const frameId = React.useRef<number | null>(null);
   const beepTimeouts = React.useRef<number[]>([]); // Store scheduled beep timeouts
   const msRemaining = React.useRef(expirationMs);
-  const lastRenderedMs = React.useRef(-1);
   const lastFlashTime = React.useRef(0);
+  const expirationMsRef = React.useRef(expirationMs);
+  const countdownMsRef = React.useRef(countdownMs);
+  const startTimeMsRef = React.useRef(startTimeMs);
+  const timerStartOffsetRef = React.useRef(timerStartOffset);
+  const colorsRef = React.useRef(colors);
+
+  expirationMsRef.current = expirationMs;
+  countdownMsRef.current = countdownMs;
+  startTimeMsRef.current = startTimeMs;
+  timerStartOffsetRef.current = timerStartOffset;
+  colorsRef.current = colors;
 
   // Store callback as ref to avoid stale closures
   const onExpireRef = React.useRef(onExpire);
@@ -159,74 +209,93 @@ export const useCanvasTimer = ({
     onExpireRef.current = onExpire;
   }, [onExpire]);
 
-  const tick = (now: number) => {
+  const clearScheduledBeeps = React.useCallback(() => {
+    beepTimeouts.current.forEach((timeout) => clearTimeout(timeout));
+    beepTimeouts.current = [];
+  }, []);
+
+  const tick = React.useCallback(function tick(now: number) {
     if (startTime.current == null) {
       return;
     }
 
+    const currentExpirationMs = expirationMsRef.current;
+    const currentTimerStartOffset = timerStartOffsetRef.current;
+    const currentColors = colorsRef.current;
+
     // Calculate elapsed time, accounting for this timer's offset in the sequence
-    const elapsed = now - startTime.current - timerStartOffset;
-    const remaining = Math.max(expirationMs - elapsed, 0);
+    const elapsed = now - startTime.current - currentTimerStartOffset;
+    const remaining = Math.max(currentExpirationMs - elapsed, 0);
     msRemaining.current = remaining;
 
     // Always draw ring for smooth animation
     drawRing({
       remaining,
       currentTime: now,
-      expirationMs,
+      expirationMs: currentExpirationMs,
       canvasRef,
       contextRef,
       lastFlashTimeRef: lastFlashTime,
-      backgroundColor: colors.background,
-      ringFlashColor: colors.ringFlash,
-      ringActiveColor: colors.ringActive,
+      backgroundColor: currentColors.background,
+      ringFlashColor: currentColors.ringFlash,
+      ringActiveColor: currentColors.ringActive,
     });
 
-    // Redraw text only if milliseconds changed by 50ms or more
-    const flooredRemaining = Math.floor(remaining);
-    if (
-      lastRenderedMs.current === -1 ||
-      Math.abs(flooredRemaining - lastRenderedMs.current) >= UPDATE_INTERVAL_MS
-    ) {
-      lastRenderedMs.current = flooredRemaining;
-    }
-
-    // Always redraw text after checking if it changed (prevents flicker)
-    drawText({ remaining, canvasRef, contextRef, textColor: colors.text });
+    drawText({
+      remaining,
+      canvasRef,
+      contextRef,
+      textColor: currentColors.text,
+    });
 
     if (remaining <= 0) {
+      frameId.current = null;
       return;
     }
 
     frameId.current = requestAnimationFrame(tick);
-  };
+  }, []);
 
-  const start = () => {
+  const start = React.useCallback(() => {
     // Stop any existing animation
     if (frameId.current != null) {
       cancelAnimationFrame(frameId.current);
     }
 
     // Clear any existing timeouts
-    beepTimeouts.current.forEach((timeout) => clearTimeout(timeout));
-    beepTimeouts.current = [];
+    clearScheduledBeeps();
+
+    const now = performance.now();
+    const currentExpirationMs = expirationMsRef.current;
+    const currentCountdownMs = countdownMsRef.current;
+    const currentTimerStartOffset = timerStartOffsetRef.current;
+    const configuredStartTimeMs = startTimeMsRef.current;
 
     setIsRunning(true);
     // Use provided startTimeMs if available, otherwise use current time
-    const now = startTimeMs ?? performance.now();
-    startTime.current = now;
-    lastRenderedMs.current = -1;
-    msRemaining.current = expirationMs;
+    const effectiveStartTimeMs = configuredStartTimeMs ?? now;
+    startTime.current = effectiveStartTimeMs;
     lastFlashTime.current = 0; // Reset flash so ring starts blue
 
+    const elapsed = Math.max(
+      0,
+      now - effectiveStartTimeMs - currentTimerStartOffset,
+    );
+    const remainingAtStart = Math.max(currentExpirationMs - elapsed, 0);
+    msRemaining.current = remainingAtStart;
+
     // Schedule countdown flashes (visual feedback for beeps)
-    if (countdownMs != null && countdownMs > 0) {
+    if (currentCountdownMs > 0) {
       for (
-        let beepTimeMs = countdownMs;
+        let beepTimeMs = currentCountdownMs;
         beepTimeMs > 0;
         beepTimeMs -= COUNTDOWN_INTERVAL_MS
       ) {
-        const delayMs = expirationMs - beepTimeMs;
+        const delayMs = remainingAtStart - beepTimeMs;
+        if (delayMs < 0) {
+          continue;
+        }
+
         const timeout = window.setTimeout(() => {
           lastFlashTime.current = performance.now();
         }, delayMs);
@@ -238,47 +307,49 @@ export const useCanvasTimer = ({
     const expiryTimeout = window.setTimeout(() => {
       lastFlashTime.current = performance.now();
       onExpireRef.current?.();
-    }, expirationMs);
+    }, remainingAtStart);
     beepTimeouts.current.push(expiryTimeout);
 
     frameId.current = requestAnimationFrame(tick);
-  };
+  }, [clearScheduledBeeps, tick]);
 
-  const stop = () => {
+  const stop = React.useCallback(() => {
+    const currentExpirationMs = expirationMsRef.current;
+    const currentColors = colorsRef.current;
+
     if (frameId.current != null) {
       cancelAnimationFrame(frameId.current);
     }
 
     // Clear all scheduled beeps
-    beepTimeouts.current.forEach((timeout) => clearTimeout(timeout));
-    beepTimeouts.current = [];
+    clearScheduledBeeps();
 
     frameId.current = null;
     setIsRunning(false);
     startTime.current = null;
-    msRemaining.current = expirationMs;
+    msRemaining.current = currentExpirationMs;
     lastFlashTime.current = 0; // Reset flash so ring is blue
     contextRef.current = null; // Clear cached context on stop
 
     // Draw final state
     drawRing({
-      remaining: expirationMs,
+      remaining: currentExpirationMs,
       currentTime: performance.now(),
-      expirationMs,
+      expirationMs: currentExpirationMs,
       canvasRef,
       contextRef,
       lastFlashTimeRef: lastFlashTime,
-      backgroundColor: colors.background,
-      ringFlashColor: colors.ringFlash,
-      ringActiveColor: colors.ringActive,
+      backgroundColor: currentColors.background,
+      ringFlashColor: currentColors.ringFlash,
+      ringActiveColor: currentColors.ringActive,
     });
     drawText({
-      remaining: expirationMs,
+      remaining: currentExpirationMs,
       canvasRef,
       contextRef,
-      textColor: colors.text,
+      textColor: currentColors.text,
     });
-  };
+  }, [clearScheduledBeeps]);
 
   React.useEffect(() => {
     return () => {
@@ -286,10 +357,9 @@ export const useCanvasTimer = ({
         cancelAnimationFrame(frameId.current);
       }
       // Clean up all scheduled beep timeouts to prevent memory leaks
-      beepTimeouts.current.forEach((timeout) => clearTimeout(timeout));
-      beepTimeouts.current = [];
+      clearScheduledBeeps();
     };
-  }, []);
+  }, [clearScheduledBeeps]);
 
   // Set up canvas at display resolution for crisp rendering
   React.useEffect(() => {
@@ -298,9 +368,7 @@ export const useCanvasTimer = ({
       return;
     }
 
-    // Set canvas resolution to match display size
-    canvas.width = CANVAS_SIZE;
-    canvas.height = CANVAS_SIZE;
+    syncCanvasResolution(canvas);
 
     // Initial render
     drawRing({

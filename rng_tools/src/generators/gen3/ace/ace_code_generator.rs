@@ -41,12 +41,12 @@ const PC: u32 = 15;
 #[wasm_bindgen]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize)]
 pub enum EmeraldLang {
-    Eng,
-    Fra,
-    Ita,
-    Spa,
-    Ger,
-    Jap,
+    English,
+    French,
+    Italian,
+    Spanish,
+    German,
+    Japanese,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
@@ -82,55 +82,55 @@ struct ExitInstruction {
 
 fn cached_constants(lang: EmeraldLang, mov_mvn: bool) -> &'static [u32] {
     static ENG_CONSTANTS: Lazy<Vec<u32>> =
-        Lazy::new(|| build_constants_uncached(EmeraldLang::Eng, false));
+        Lazy::new(|| build_constants_uncached(EmeraldLang::English, false));
     static ENG_MOV_MVN_CONSTANTS: Lazy<Vec<u32>> =
-        Lazy::new(|| build_constants_uncached(EmeraldLang::Eng, true));
+        Lazy::new(|| build_constants_uncached(EmeraldLang::English, true));
     static FRA_CONSTANTS: Lazy<Vec<u32>> =
-        Lazy::new(|| build_constants_uncached(EmeraldLang::Fra, false));
+        Lazy::new(|| build_constants_uncached(EmeraldLang::French, false));
     static FRA_MOV_MVN_CONSTANTS: Lazy<Vec<u32>> =
-        Lazy::new(|| build_constants_uncached(EmeraldLang::Fra, true));
+        Lazy::new(|| build_constants_uncached(EmeraldLang::French, true));
     static ITA_CONSTANTS: Lazy<Vec<u32>> =
-        Lazy::new(|| build_constants_uncached(EmeraldLang::Ita, false));
+        Lazy::new(|| build_constants_uncached(EmeraldLang::Italian, false));
     static ITA_MOV_MVN_CONSTANTS: Lazy<Vec<u32>> =
-        Lazy::new(|| build_constants_uncached(EmeraldLang::Ita, true));
+        Lazy::new(|| build_constants_uncached(EmeraldLang::Italian, true));
     static SPA_CONSTANTS: Lazy<Vec<u32>> =
-        Lazy::new(|| build_constants_uncached(EmeraldLang::Spa, false));
+        Lazy::new(|| build_constants_uncached(EmeraldLang::Spanish, false));
     static SPA_MOV_MVN_CONSTANTS: Lazy<Vec<u32>> =
-        Lazy::new(|| build_constants_uncached(EmeraldLang::Spa, true));
+        Lazy::new(|| build_constants_uncached(EmeraldLang::Spanish, true));
     static GER_CONSTANTS: Lazy<Vec<u32>> =
-        Lazy::new(|| build_constants_uncached(EmeraldLang::Ger, false));
+        Lazy::new(|| build_constants_uncached(EmeraldLang::German, false));
     static GER_MOV_MVN_CONSTANTS: Lazy<Vec<u32>> =
-        Lazy::new(|| build_constants_uncached(EmeraldLang::Ger, true));
+        Lazy::new(|| build_constants_uncached(EmeraldLang::German, true));
     static JAP_CONSTANTS: Lazy<Vec<u32>> =
-        Lazy::new(|| build_constants_uncached(EmeraldLang::Jap, false));
+        Lazy::new(|| build_constants_uncached(EmeraldLang::Japanese, false));
     static JAP_MOV_MVN_CONSTANTS: Lazy<Vec<u32>> =
-        Lazy::new(|| build_constants_uncached(EmeraldLang::Jap, true));
+        Lazy::new(|| build_constants_uncached(EmeraldLang::Japanese, true));
 
     match (lang, mov_mvn) {
-        (EmeraldLang::Eng, false) => ENG_CONSTANTS.as_slice(),
-        (EmeraldLang::Eng, true) => ENG_MOV_MVN_CONSTANTS.as_slice(),
-        (EmeraldLang::Fra, false) => FRA_CONSTANTS.as_slice(),
-        (EmeraldLang::Fra, true) => FRA_MOV_MVN_CONSTANTS.as_slice(),
-        (EmeraldLang::Ita, false) => ITA_CONSTANTS.as_slice(),
-        (EmeraldLang::Ita, true) => ITA_MOV_MVN_CONSTANTS.as_slice(),
-        (EmeraldLang::Spa, false) => SPA_CONSTANTS.as_slice(),
-        (EmeraldLang::Spa, true) => SPA_MOV_MVN_CONSTANTS.as_slice(),
-        (EmeraldLang::Ger, false) => GER_CONSTANTS.as_slice(),
-        (EmeraldLang::Ger, true) => GER_MOV_MVN_CONSTANTS.as_slice(),
-        (EmeraldLang::Jap, false) => JAP_CONSTANTS.as_slice(),
-        (EmeraldLang::Jap, true) => JAP_MOV_MVN_CONSTANTS.as_slice(),
+        (EmeraldLang::English, false) => ENG_CONSTANTS.as_slice(),
+        (EmeraldLang::English, true) => ENG_MOV_MVN_CONSTANTS.as_slice(),
+        (EmeraldLang::French, false) => FRA_CONSTANTS.as_slice(),
+        (EmeraldLang::French, true) => FRA_MOV_MVN_CONSTANTS.as_slice(),
+        (EmeraldLang::Italian, false) => ITA_CONSTANTS.as_slice(),
+        (EmeraldLang::Italian, true) => ITA_MOV_MVN_CONSTANTS.as_slice(),
+        (EmeraldLang::Spanish, false) => SPA_CONSTANTS.as_slice(),
+        (EmeraldLang::Spanish, true) => SPA_MOV_MVN_CONSTANTS.as_slice(),
+        (EmeraldLang::German, false) => GER_CONSTANTS.as_slice(),
+        (EmeraldLang::German, true) => GER_MOV_MVN_CONSTANTS.as_slice(),
+        (EmeraldLang::Japanese, false) => JAP_CONSTANTS.as_slice(),
+        (EmeraldLang::Japanese, true) => JAP_MOV_MVN_CONSTANTS.as_slice(),
     }
 }
 
 fn is_code_available(code: u8, lang: EmeraldLang) -> bool {
     match lang {
-        EmeraldLang::Jap => !matches!(
+        EmeraldLang::Japanese => !matches!(
             code,
             0xb7..=0xb9
                 | 0xef..=0xf6
                 | 0xfa..=0xff
         ),
-        EmeraldLang::Ger if matches!(code, 0xf1..=0xf6) => true,
+        EmeraldLang::German if matches!(code, 0xf1..=0xf6) => true,
         _ => matches!(
             code,
             0x00 | 0xa1..=0xae
@@ -726,7 +726,7 @@ fn seed_program_bytes(seed: u32, lang: EmeraldLang) -> Option<Vec<CommandBytes>>
 
 fn certificate_exit(lang: EmeraldLang) -> Option<(usize, Vec<CommandBytes>)> {
     let variants: &[ExitInstruction] = match lang {
-        EmeraldLang::Eng | EmeraldLang::Jap => &[
+        EmeraldLang::English | EmeraldLang::Japanese => &[
             ExitInstruction {
                 op: ExitOp::Sbc,
                 rd: R12,
@@ -758,7 +758,7 @@ fn certificate_exit(lang: EmeraldLang) -> Option<(usize, Vec<CommandBytes>)> {
                 imm: 0xb0,
             },
         ],
-        EmeraldLang::Fra => &[
+        EmeraldLang::French => &[
             ExitInstruction {
                 op: ExitOp::Adc,
                 rd: R12,
@@ -784,7 +784,7 @@ fn certificate_exit(lang: EmeraldLang) -> Option<(usize, Vec<CommandBytes>)> {
                 imm: 0xe2,
             },
         ],
-        EmeraldLang::Ger => &[
+        EmeraldLang::German => &[
             ExitInstruction {
                 op: ExitOp::Adc,
                 rd: R12,
@@ -810,7 +810,7 @@ fn certificate_exit(lang: EmeraldLang) -> Option<(usize, Vec<CommandBytes>)> {
                 imm: 0xe2,
             },
         ],
-        EmeraldLang::Ita => &[
+        EmeraldLang::Italian => &[
             ExitInstruction {
                 op: ExitOp::Adc,
                 rd: R12,
@@ -836,7 +836,7 @@ fn certificate_exit(lang: EmeraldLang) -> Option<(usize, Vec<CommandBytes>)> {
                 imm: 0xde,
             },
         ],
-        EmeraldLang::Spa => &[
+        EmeraldLang::Spanish => &[
             ExitInstruction {
                 op: ExitOp::Adc,
                 rd: R12,
@@ -927,10 +927,7 @@ fn nop_code_at_pos(pos: usize) -> &'static [u8; 4] {
 }
 
 fn pack(bytes: &[u8]) -> Vec<PackedByte> {
-    bytes
-        .iter()
-        .map(|&byte| PackedByte { byte })
-        .collect()
+    bytes.iter().map(|&byte| PackedByte { byte }).collect()
 }
 
 fn fit_code_at_pos(pos: usize, bytes: &[u8], next: Option<&[u8]>) -> Vec<PackedByte> {
@@ -1136,19 +1133,37 @@ pub fn get_emerald_seed_box_names_result(seed: u32, lang: EmeraldLang) -> Option
     box_names_for_commands(seed_program_bytes(seed, lang), lang)
 }
 
-#[wasm_bindgen(js_name = getEmeraldSidBoxNames)]
-pub fn get_emerald_sid_box_names(sid: u16, lang: EmeraldLang) -> JsValue {
-    serde_wasm_bindgen::to_value(&get_emerald_sid_box_names_result(sid, lang)).unwrap()
-}
-
-#[wasm_bindgen(js_name = getEmeraldSeedBoxNames)]
-pub fn get_emerald_seed_box_names(seed: u32, lang: EmeraldLang) -> JsValue {
-    serde_wasm_bindgen::to_value(&get_emerald_seed_box_names_result(seed, lang)).unwrap()
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /*
+    TODO: Create a new test that takes rng_tools\src\generators\gen3\ace\compare_input.txt as input.
+    Each row contains Manip Value Lang.
+    For each row, call either get_emerald_sid_box_names_result or get_emerald_seed_box_names_result
+    Compare the output with the value in compare_output.txt
+    */
+
+    fn result_to_hex(res: Option<AceResult>) -> String {
+        box_names_to_hex(&boxes(res))
+    }
+
+    fn box_names_to_hex(boxes: &[Vec<u8>]) -> String {
+        use std::fmt::Write;
+
+        let mut out = String::with_capacity(boxes.len() * NAME_SIZE * 2);
+        for box_name in boxes {
+            for &byte in box_name {
+                write!(out, "{byte:02X}").ok();
+            }
+
+            for _ in box_name.len()..=NAME_SIZE {
+                out.push_str("FF");
+            }
+        }
+
+        out
+    }
 
     fn boxes(result: Option<AceResult>) -> Vec<Vec<u8>> {
         result.map(|res| res.raw_boxes).unwrap_or(vec![])
@@ -1186,7 +1201,7 @@ mod tests {
             let seed = next_random(&mut random_state);
             checksum = checksum.wrapping_add(checksum_result(get_emerald_seed_box_names_result(
                 black_box(seed),
-                black_box(EmeraldLang::Eng),
+                black_box(EmeraldLang::English),
             )));
         }
 
@@ -1200,29 +1215,67 @@ mod tests {
         assert_eq!(checksum, 11345541470647849650);
     }
 
+    fn hex_split_on_ff(hex: &str) -> Vec<Vec<u8>> {
+        fn nibble(byte: u8) -> u8 {
+            match byte {
+                b'0'..=b'9' => byte - b'0',
+                b'A'..=b'F' => byte - b'A' + 10,
+                b'a'..=b'f' => byte - b'a' + 10,
+                _ => panic!("invalid hex character"),
+            }
+        }
+
+        let mut out = Vec::new();
+        let mut current = Vec::with_capacity(hex.len() / 3);
+        let mut high_nibble = None;
+
+        for byte in hex.bytes() {
+            if byte.is_ascii_whitespace() {
+                continue;
+            }
+
+            if let Some(high) = high_nibble {
+                let value = (high << 4) | nibble(byte);
+                if value == 0xff {
+                    if !current.is_empty() {
+                        out.push(current);
+                        current = Vec::new();
+                    }
+                } else {
+                    current.push(value);
+                }
+                high_nibble = None;
+            } else {
+                high_nibble = Some(nibble(byte));
+            }
+        }
+
+        if high_nibble.is_some() {
+            panic!("hex string ended with an incomplete byte");
+        }
+        if !current.is_empty() {
+            out.push(current);
+        }
+
+        out
+    }
+
     #[test]
     fn emerald_sid_box_names_match_typescript() {
         assert_eq!(
-            boxes(get_emerald_sid_box_names_result(0x1234, EmeraldLang::Eng)),
-            vec![
-                vec![208, 188, 207, 226, 234, 176, 203, 226],
-                vec![187, 187, 187, 176, 178, 203, 226],
-                vec![187, 187, 238, 206, 173, 227],
-                vec![187, 213, 207, 172, 226],
-                vec![178, 192, 203, 225],
-                vec![187],
-                vec![187],
-                vec![187],
-                vec![238, 182, 224, 227, 237, 176, 203, 226],
-                vec![182, 203, 226, 192, 193, 191, 226],
-                vec![187, 187, 0, 176, 172, 229],
-                vec![187, 177, 205, 206, 226],
-                vec![211, 200, 172, 226, 192, 200, 204, 227],
-                vec![205, 172, 226, 176, 0, 204, 226, 0],
-            ]
+            boxes(get_emerald_sid_box_names_result(
+                0x1234,
+                EmeraldLang::English
+            )),
+            hex_split_on_ff(
+                "D0 BC CF E2 EA B0 CB E2 FF BB BB BB B0 B2 CB E2 FF FF BB BB EE CE AD E3 FF FF FF BB D5 CF AC E2 FF FF FF FF B2 C0 CB E1 FF FF FF FF FF BB FF FF FF FF FF FF FF FF BB FF FF FF FF FF FF FF FF BB FF FF FF FF FF FF FF FF EE B6 E0 E3 ED B0 CB E2 FF B6 CB E2 C0 C1 BF E2 FF FF BB BB 00 B0 AC E5 FF FF FF BB B1 CD CE E2 FF FF FF FF D3 C8 AC E2 C0 C8 CC E3 FF CD AC E2 B0 00 CC E2 00 FF",
+            )
         );
         assert_eq!(
-            boxes(get_emerald_sid_box_names_result(0xff23, EmeraldLang::Ita)),
+            boxes(get_emerald_sid_box_names_result(
+                0xff23,
+                EmeraldLang::Italian
+            )),
             vec![
                 vec![208, 188, 207, 226, 234, 176, 203, 226],
                 vec![187, 187, 187, 176, 178, 203, 226],
@@ -1241,7 +1294,10 @@ mod tests {
             ]
         );
         assert_eq!(
-            boxes(get_emerald_sid_box_names_result(0x0001, EmeraldLang::Ger)),
+            boxes(get_emerald_sid_box_names_result(
+                0x0001,
+                EmeraldLang::German
+            )),
             vec![
                 vec![208, 188, 207, 226, 246, 176, 203, 226],
                 vec![187, 187, 187, 208, 194, 173, 227],
@@ -1268,7 +1324,7 @@ mod tests {
             assert_eq!(
                 boxes(get_emerald_seed_box_names_result(
                     0xfd768458,
-                    EmeraldLang::Eng,
+                    EmeraldLang::English,
                 )),
                 vec![
                     vec![192, 199, 176, 227, 182, 205, 172, 226],
@@ -1292,7 +1348,7 @@ mod tests {
         assert_eq!(
             boxes(get_emerald_seed_box_names_result(
                 0xacde1234,
-                EmeraldLang::Eng,
+                EmeraldLang::English,
             )),
             vec![
                 vec![192, 199, 176, 227, 182, 205, 172, 226],
@@ -1314,7 +1370,7 @@ mod tests {
         assert_eq!(
             boxes(get_emerald_seed_box_names_result(
                 0xff123423,
-                EmeraldLang::Ita,
+                EmeraldLang::Italian,
             )),
             vec![
                 vec![192, 199, 176, 227, 182, 205, 172, 226],
@@ -1336,7 +1392,7 @@ mod tests {
         assert_eq!(
             boxes(get_emerald_seed_box_names_result(
                 0x00000001,
-                EmeraldLang::Ger,
+                EmeraldLang::German,
             )),
             vec![
                 vec![192, 199, 176, 227, 182, 205, 172, 226],

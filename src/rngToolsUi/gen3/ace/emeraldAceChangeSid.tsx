@@ -13,9 +13,12 @@ import { Typography } from "antd";
 
 import Instructions from "./instructions_ace_change_sid.mdx";
 import z from "zod";
-import { emeraldLangOptions, emeraldLangs } from "./emeraldLang";
-import { MarkdownCode } from "~/markdownExports/components";
-import { match } from "ts-pattern";
+import { emeraldLangs } from "./emeraldLang";
+import { toOptions } from "~/utils/options";
+import {
+  formatBoxCharacter,
+  FormattedBoxCharacter,
+} from "./aceBoxNameFormatter";
 
 type Props = {
   sid: number;
@@ -27,18 +30,24 @@ const schema = z.object({
 
 const getInitialValues = (): FormState => {
   return {
-    lang: "eng",
+    lang: "English",
   };
 };
 
 export type FormState = z.infer<typeof schema>;
 
 let nextUid = 0;
-type BoxNameResult = {
-  uid: number;
-  boxNum: number;
-  boxName: string;
-};
+type BoxNameResult =
+  | {
+      uid: number;
+      boxNum: null;
+      allBoxesNamesTxt: string;
+    }
+  | {
+      uid: number;
+      boxNum: number;
+      formattedBoxChars: FormattedBoxCharacter[];
+    };
 
 const getColumns = (): ResultColumn<BoxNameResult>[] => {
   return [
@@ -46,7 +55,7 @@ const getColumns = (): ResultColumn<BoxNameResult>[] => {
       title: "Box",
       dataIndex: "boxNum",
       render: (boxNum) => {
-        if (boxNum === 0) {
+        if (boxNum === null) {
           return "All Boxes";
         }
         return `Box ${boxNum}`;
@@ -54,43 +63,30 @@ const getColumns = (): ResultColumn<BoxNameResult>[] => {
     },
     {
       title: "Box Name",
-      dataIndex: "boxName",
-      render: (boxName, values) => {
-        if (values.boxNum === 0) {
+      dataIndex: "boxNum",
+      render: (_, values) => {
+        if (values.boxNum === null) {
           return (
-            <CopyToClipboardButton text={boxName} size="small">
+            <CopyToClipboardButton text={values.allBoxesNamesTxt} size="small">
               {""}
             </CopyToClipboardButton>
           );
         }
 
+        const boxNameTxt = values.formattedBoxChars
+          .map((byte) => byte.charTxt)
+          .join("");
         return (
           <Flex gap={30}>
-            <CopyToClipboardButton text={boxName} size="small">
+            <CopyToClipboardButton text={boxNameTxt} size="small">
               {""}
             </CopyToClipboardButton>{" "}
             <Flex gap={5}>
-              {boxName
-                .split("")
-                .map((char) => {
-                  return match(char)
-                    .with(" ", () => <span title="Space">{"\u00a0"}</span>)
-                    .with("l", () => (
-                      <span title="Lowercase l letter">{char}</span>
-                    ))
-                    .with("1", () => <span title="Number 1">{char}</span>)
-                    .with("o", () => (
-                      <span title="Lowercase o letter">{char}</span>
-                    ))
-                    .with("O", () => (
-                      <span title="Uppercase O letter">{char}</span>
-                    ))
-                    .with("0", () => <span title="Number 0">{char}</span>)
-                    .otherwise(() => char);
-                })
-                .map((char, i) => {
-                  return <MarkdownCode key={i}>{char}</MarkdownCode>;
-                })}
+              {values.formattedBoxChars.map((byte, i) => (
+                <React.Fragment key={`${i}-${byte.charTxt}`}>
+                  {byte.charReact}
+                </React.Fragment>
+              ))}
             </Flex>
           </Flex>
         );
@@ -114,26 +110,33 @@ export const EmeraldAceChangeSid = ({ sid }: Props) => {
     setResults([]);
 
     setTimeout(async () => {
-      const res = await getEmeraldSidBoxNames(sid, opts.lang);
+      const { lang } = opts;
+      const res = await getEmeraldSidBoxNames(sid, lang);
       setHasError(!res.success);
 
       if (res.success) {
-        const allBoxesNames = res.boxes.join("\n");
-        setResults(
-          res.boxes
-            .map((box, i) => {
-              return {
-                uid: nextUid++,
-                boxNum: i + 1,
-                boxName: box,
-              };
-            })
-            .concat({
-              uid: nextUid++,
-              boxNum: 0,
-              boxName: allBoxesNames,
-            }),
+        const allBoxesNamesFormatted = res.raw_boxes.map((bytes) =>
+          bytes.map((byte) => formatBoxCharacter(byte, lang)),
         );
+
+        const allBoxesNamesTxt = allBoxesNamesFormatted
+          .map((bytes) => bytes.map((byte) => byte.charTxt).join(""))
+          .join("\n");
+
+        setResults([
+          ...allBoxesNamesFormatted.map((box, i) => {
+            return {
+              uid: nextUid++,
+              boxNum: i + 1,
+              formattedBoxChars: box,
+            };
+          }),
+          {
+            uid: nextUid++,
+            boxNum: null,
+            allBoxesNamesTxt,
+          },
+        ]);
       }
     }, 100);
   };
@@ -145,7 +148,7 @@ export const EmeraldAceChangeSid = ({ sid }: Props) => {
         input: (
           <FormikSelect<FormState, "lang">
             name="lang"
-            options={emeraldLangOptions}
+            options={toOptions(emeraldLangs)}
           />
         ),
       },

@@ -54,7 +54,7 @@ const getMaxWorkerCount = () => {
     return 2; // Firefox seems to over report hardwareConcurrency and has a stricter worker limit
   }
 
-  return Math.max(1, Math.min(navigator.hardwareConcurrency, 8));
+  return Math.max(1, Math.min(window.navigator.hardwareConcurrency, 8));
 };
 
 let workerCount = 0;
@@ -234,43 +234,6 @@ export const multiWorkerRngTools = new Proxy(
 ) as Remote<BatchableFunctionsOf<AdjustedRngTools>>;
 
 const getRngTools = memoize(async () => {
-  if (typeof window === "undefined") {
-    type RngToolsGlue = AdjustedRngTools & {
-      __wbg_set_wasm: (wasm: WebAssembly.Exports) => void;
-    };
-    const gluePath = "../../rng_tools/pkg/rng_tools_bg.js";
-    const wasmUrl = new URL(
-      "../../rng_tools/pkg/rng_tools_bg.wasm",
-      import.meta.url,
-    );
-    const bun = (
-      globalThis as typeof globalThis & {
-        Bun?: {
-          file: (path: URL) => {
-            arrayBuffer: () => Promise<ArrayBuffer>;
-          };
-        };
-      }
-    ).Bun;
-    const [wasmBytes, RngToolsGlue] = await Promise.all([
-      bun === undefined
-        ? fetch(wasmUrl).then((response) => response.arrayBuffer())
-        : bun.file(wasmUrl).arrayBuffer(),
-      import(gluePath) as Promise<RngToolsGlue>,
-    ]);
-    const { instance } = await WebAssembly.instantiate(
-      wasmBytes,
-      { "./rng_tools_bg.js": RngToolsGlue as WebAssembly.ModuleImports },
-    );
-    const wasmExports = instance.exports as WebAssembly.Exports & {
-      __wbindgen_start?: () => void;
-    };
-    RngToolsGlue.__wbg_set_wasm(wasmExports);
-    wasmExports.__wbindgen_start?.();
-
-    return RngToolsGlue as AdjustedRngTools;
-  }
-
   const { tools } = await spawnRngToolWorker();
   return tools;
 });

@@ -7,8 +7,8 @@ use wasm_bindgen::prelude::*;
 const MAX_CARDS: usize = 7;
 const EOF: u8 = 0xff;
 const SPACE: u8 = 0x00;
-const NAME_SIZE: usize = 8;
-type CommandBytes = [u8; 4];
+pub(super) const NAME_SIZE: usize = 8;
+pub(super) type CommandBytes = [u8; 4];
 type CommandCandidates = ArrayVec<u32, 32>;
 type SynthParts = ArrayVec<u32, MAX_CARDS>;
 const PADDING: [u8; 4] = [0x00, 0x00, 0x00, 0x00];
@@ -33,10 +33,10 @@ const REWRITE_POST_2: [u8; 12] = [
 
 const COND_AL: u32 = 0xe;
 const R0: u32 = 0;
-const R11: u32 = 11;
-const R12: u32 = 12;
+pub(super) const R11: u32 = 11;
+pub(super) const R12: u32 = 12;
 const LR: u32 = 14;
-const PC: u32 = 15;
+pub(super) const PC: u32 = 15;
 
 #[wasm_bindgen]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize)]
@@ -80,7 +80,7 @@ struct ExitInstruction {
     imm: u32,
 }
 
-fn cached_constants(lang: EmeraldLang, mov_mvn: bool) -> &'static [u32] {
+pub(super) fn cached_constants(lang: EmeraldLang, mov_mvn: bool) -> &'static [u32] {
     static ENG_CONSTANTS: Lazy<Vec<u32>> =
         Lazy::new(|| build_constants_uncached(EmeraldLang::English, false));
     static ENG_MOV_MVN_CONSTANTS: Lazy<Vec<u32>> =
@@ -169,7 +169,13 @@ fn addr_mode1_immediate(imm: u32) -> ArrayVec<u32, 16> {
         .collect()
 }
 
-fn data_proc(opcode: u32, set_flags: bool, rd: u32, rn: u32, imm: u32) -> ArrayVec<u32, 16> {
+pub(super) fn data_proc(
+    opcode: u32,
+    set_flags: bool,
+    rd: u32,
+    rn: u32,
+    imm: u32,
+) -> ArrayVec<u32, 16> {
     let base = (COND_AL << 28)
         | opcode
         | if set_flags { 0x0010_0000 } else { 0 }
@@ -181,7 +187,7 @@ fn data_proc(opcode: u32, set_flags: bool, rd: u32, rn: u32, imm: u32) -> ArrayV
         .collect()
 }
 
-fn mov_like(mvn: bool, set_flags: bool, rd: u32, imm: u32) -> CommandCandidates {
+pub(super) fn mov_like(mvn: bool, set_flags: bool, rd: u32, imm: u32) -> CommandCandidates {
     let opcodes: &[u32] = if mvn {
         &[0x01e0_0000]
     } else {
@@ -198,7 +204,7 @@ fn mov_like(mvn: bool, set_flags: bool, rd: u32, imm: u32) -> CommandCandidates 
     out
 }
 
-fn strh(rd: u32, rn: u32, offset: u32) -> [u32; 1] {
+pub(super) fn strh(rd: u32, rn: u32, offset: u32) -> [u32; 1] {
     let imm_l = offset & 0xf;
     let imm_h = (offset >> 4) & 0xf;
     [(COND_AL << 28)
@@ -212,7 +218,7 @@ fn strh(rd: u32, rn: u32, offset: u32) -> [u32; 1] {
         | imm_l]
 }
 
-fn str_pre(rd: u32, rn: u32, offset: u32) -> [u32; 1] {
+pub(super) fn str_pre(rd: u32, rn: u32, offset: u32) -> [u32; 1] {
     [(COND_AL << 28)
         | 0x0400_0000
         | (1 << 24)
@@ -255,7 +261,7 @@ fn score_bytes(bytes: CommandBytes, lang: EmeraldLang) -> usize {
     score
 }
 
-fn preferred_bytes(
+pub(super) fn preferred_bytes(
     commands: impl IntoIterator<Item = u32>,
     lang: EmeraldLang,
 ) -> Option<CommandBytes> {
@@ -535,7 +541,7 @@ fn has_constant(constants: &[u32], value: u32) -> bool {
     constants.binary_search(&value).is_ok()
 }
 
-fn tweak_mov(
+pub(super) fn tweak_mov(
     rd: u32,
     imm: u32,
     lang: EmeraldLang,
@@ -618,7 +624,7 @@ fn tweak_mov(
     Some(out)
 }
 
-fn tweak_sbc(
+pub(super) fn tweak_sbc(
     rd: u32,
     rn: u32,
     imm: u32,
@@ -684,43 +690,6 @@ fn tweak_sbc(
             lang,
         )?);
     }
-    Some(out)
-}
-
-fn sid_program_bytes(sid: u16, lang: EmeraldLang) -> Option<Vec<CommandBytes>> {
-    let constants = cached_constants(lang, false);
-    let constants_mov_mvn = cached_constants(lang, true);
-    let mut out = Vec::new();
-    out.extend(tweak_sbc(R11, PC, 0xd0f7, lang, constants)?);
-    out.extend(tweak_mov(
-        R12,
-        sid as u32,
-        lang,
-        constants,
-        constants_mov_mvn,
-    )?);
-    out.push(preferred_bytes(strh(R12, R11, 2), lang)?);
-    Some(out)
-}
-
-fn seed_program_bytes(seed: u32, lang: EmeraldLang) -> Option<Vec<CommandBytes>> {
-    let constants = cached_constants(lang, false);
-    let constants_mov_mvn = cached_constants(lang, true);
-    let mut out = Vec::new();
-    out.push(preferred_bytes(
-        mov_like(false, true, R12, 0x0300_0000),
-        lang,
-    )?);
-    out.push(preferred_bytes(
-        data_proc(0x00a0_0000, false, R12, R12, 0x2d80),
-        lang,
-    )?);
-    out.push(preferred_bytes(
-        data_proc(0x00a0_0000, false, R12, R12, 0x3000),
-        lang,
-    )?);
-    out.extend(tweak_mov(R11, seed, lang, constants, constants_mov_mvn)?);
-    out.push(preferred_bytes(str_pre(R11, R12, 0), lang)?);
     Some(out)
 }
 
@@ -1096,7 +1065,10 @@ fn replace_padding_from(out: &mut Vec<u8>, pos: usize, first: bool) {
     }
 }
 
-fn fit_codes_into_boxes(commands: &[CommandBytes], lang: EmeraldLang) -> Option<Vec<Vec<u8>>> {
+pub(super) fn fit_codes_into_boxes(
+    commands: &[CommandBytes],
+    lang: EmeraldLang,
+) -> Option<Vec<Vec<u8>>> {
     let mut res = add_codes_after(Vec::new(), commands, false);
     let (exit_start, exit_bytes) = certificate_exit(lang)?;
     let byte_count = res.len();
@@ -1111,109 +1083,4 @@ fn fit_codes_into_boxes(commands: &[CommandBytes], lang: EmeraldLang) -> Option<
             .collect::<Vec<_>>(),
     );
     split_raw_into_boxes(&raw, true).map(replace_padding_in_boxes)
-}
-
-fn box_names_for_commands(
-    commands: Option<Vec<CommandBytes>>,
-    lang: EmeraldLang,
-) -> Option<AceResult> {
-    let Some(commands) = commands else {
-        return None;
-    };
-    let Some(raw_boxes) = fit_codes_into_boxes(&commands, lang) else {
-        return None;
-    };
-    Some(AceResult { raw_boxes })
-}
-
-pub fn get_emerald_sid_box_names_result(sid: u16, lang: EmeraldLang) -> Option<AceResult> {
-    box_names_for_commands(sid_program_bytes(sid, lang), lang)
-}
-
-pub fn get_emerald_seed_box_names_result(seed: u32, lang: EmeraldLang) -> Option<AceResult> {
-    box_names_for_commands(seed_program_bytes(seed, lang), lang)
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    fn parse_hex(value: &str) -> u32 {
-        u32::from_str_radix(value.strip_prefix("0x").unwrap_or(value), 16).unwrap()
-    }
-
-    fn parse_lang(lang: &str) -> EmeraldLang {
-        match lang {
-            "eng" => EmeraldLang::English,
-            "fra" => EmeraldLang::French,
-            "ita" => EmeraldLang::Italian,
-            "spa" => EmeraldLang::Spanish,
-            "ger" => EmeraldLang::German,
-            "jap" => EmeraldLang::Japanese,
-            _ => panic!("invalid Emerald lang {lang:?}"),
-        }
-    }
-
-    fn result_to_hex(res: Option<AceResult>) -> String {
-        box_names_to_hex(&boxes(res))
-    }
-
-    fn box_names_to_hex(boxes: &[Vec<u8>]) -> String {
-        use std::fmt::Write;
-
-        let mut out = String::with_capacity(boxes.len() * NAME_SIZE * 2);
-        for box_name in boxes {
-            for &byte in box_name {
-                write!(out, "{byte:02X}").ok();
-            }
-
-            for _ in box_name.len()..=NAME_SIZE {
-                out.push_str("FF");
-            }
-        }
-
-        out
-    }
-
-    fn boxes(result: Option<AceResult>) -> Vec<Vec<u8>> {
-        result.map(|res| res.raw_boxes).unwrap_or(vec![])
-    }
-
-    // cargo test --release emerald_ace -- --ignored
-    // Input and output files are used instead of inlining data, in order to simplify tests in multiple implementations.
-    #[test]
-    #[ignore]
-    fn emerald_ace() {
-        let inputs = include_str!("test_input.txt").lines();
-        let mut expected = include_str!("test_output.txt").lines();
-
-        for (line_idx, input) in inputs.enumerate() {
-            let mut parts = input.split_ascii_whitespace();
-            let manip = parts.next().unwrap();
-            let value = parse_hex(parts.next().unwrap());
-            let lang = parse_lang(parts.next().unwrap());
-
-            let actual = match manip {
-                "sid" => result_to_hex(get_emerald_sid_box_names_result(value as u16, lang)),
-                "seed" => result_to_hex(get_emerald_seed_box_names_result(value, lang)),
-                _ => panic!(
-                    "text_input.txt:{} has unsupported manip {manip:?}",
-                    line_idx + 1
-                ),
-            };
-            let expected = expected.next().unwrap();
-
-            assert_eq!(
-                actual,
-                expected,
-                "compare mismatch on line {}",
-                line_idx + 1
-            );
-        }
-
-        assert!(
-            expected.next().is_none(),
-            "text_output.txt has more rows than text_input.txt"
-        );
-    }
 }

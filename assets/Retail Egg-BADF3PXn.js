@@ -1,0 +1,131 @@
+var e=`---
+- title: "Diamond, Pearl, and Platinum Egg RNG Guide"
+  navDrawerTitle: "Egg RNG"
+  description: "Learn how to RNG egg Pokémon in Diamond, Pearl, and Platinum for perfect IVs, natures, and shinies."
+  slug: "retail-dppt-egg"
+  category: "Diamond, Pearl, and Platinum"
+  section: "pokemon_rng"
+  variant: "retail"
+  isRoughDraft: true
+---
+
+<Stepper titles={['Set up', 'Pick an Egg', 'Hit your seed', 'Get PID', 'Get IVs']}>
+
+<Step step={0}>
+
+## Set up
+
+<Gen4ConfigSetup onlyDppt />
+
+</Step>
+
+<Step step={1}>
+
+## Pick an Egg
+
+1. Enter your egg details in the tool below and press "Generate".
+2. If you don't know the parent IVs, leave them blank.
+3. Press "Select" on the target Pokemon you want to hatch.
+
+<Egg4Search />
+
+</Step>
+
+<Step step={2}>
+
+## Prepare the save
+
+1. If you're on Platinum, set your console date to **12/31/2099** on NDS or **12/31/2050** on 3DS.
+2. Have at least one Chatot with Chatter (two is optimal).
+3. Optionally have a Pokemon with Flame Body or Magma Armor in your party to speed up hatching.
+4. Switch your Poketch to the Coin Flip app.
+5. Save inside the daycare.
+
+## Prepare the console
+
+1. Set your console date to **<Gen4ConsoleSetDateString format="date" />**.
+2. Start setting your console time to **<Gen4ConsoleSetDateString format="time" />**, but don't confirm it just yet.
+
+| Confirm time screen                                                    |
+| ---------------------------------------------------------------------- |
+| ![Confirm time screen](/images/HeartGold-SoulSilver/SetTimeScreen.jpg) |
+
+## Hit your seed
+
+<Gen4ShowIf is3dsNormalSettings>
+  [Learn how to use the 3DS Helper here](/3ds-helper).
+</Gen4ShowIf>
+
+1. Simultaneously press \`A\` to set the console time and start the timer below.
+2. <Gen4ShowIf is3dsNormalSettings>
+     Exit the settings on your console, restart your console, and start the
+     game.
+   </Gen4ShowIf>
+   <Gen4ShowIf is3dsAltSettings>
+     Press \`Start\` to exit the Alt Settings on your console, then start the
+     game.
+   </Gen4ShowIf>
+   <Gen4ShowIf isNdsDsi>
+     Exit the settings on your console and restart your console.
+   </Gen4ShowIf>
+3. When the first timer ends, <Gen4ShowIf is3dsNormalSettings is3dsAltSettings>press \`L + R + Start + Select\` to soft reset the game.</Gen4ShowIf><Gen4ShowIf isNdsDsi>press \`A\` to start the game.</Gen4ShowIf>
+4. Get to the screen where you load your save.
+5. Immediately press \`A\` when the second timer to goes off.
+
+> [!TIP]
+> If you don't have enough time to hit your seed, go back to the previous step and search for a Pokémon with a higher "Max Delay".
+
+<Gen4EmbeddedTimer />
+
+## Calibrate the seed
+
+1. Click "Generate" below to generate a list of possible seeds you hit.
+2. Flip the coin in the Poketch and click the heads or tails buttons below to filter results.
+3. If you have one result left and it isn't your target seed, click "Calibrate".
+4. Try to hit your target again.
+5. If the "Flip Delay" column is checked for the Pokémon you hit, take one of these actions:
+   - For **Any game**, insert a GBA cart
+   - For **HeartGold and SoulSilver**, use the touch screen to press the down and up arrows on the continue screen.
+   - For **Diamond, Pearl, and Platinum**, click "New Game", then press \`B\` to return to the continue screen.
+   - If you've flipped the delay, you need to keep flipping it every time.
+
+> [!TIP]
+> If you don't see your seed, increase the delay and second offsets and try again.
+
+<DpptCoinFlipSeedCalibrator />
+
+</Step>
+
+<Step step={3}>
+
+## Get PID
+
+1. Press "Generate" below to generate a list of possible RNG advances for your PID.
+2. Flip the coin in the Poketch and click the heads or tails buttons to track your current advance.
+3. Stop right before your target advance, then move on to the next step.
+
+<DpptCoinFlipAdvanceFilter />
+
+</Step>
+
+<Step step={4}>
+
+## Get IVs
+
+1. Press "Generate" to view a list of Chatter pitches.
+2. View Chatot's summary to hear the Chatter sound.
+3. Select "Low", "Medium", or "High" to match the pitch you hear and identify your current RNG advance.
+4. Repeat steps 2 and 3 until you're 1 advance before your target.
+5. Exit the party and run around the daycare, ocassionally checking with the Daycare Lady to see if an egg is ready. (Do not go outside to check!)
+6. Once an egg is ready, go get it!
+
+<Gen4ChatterFilter />
+
+## Congratulations!
+
+Want to check your IVs? Use our [IV calculator](/iv-calculator) to make sure they're correct!
+
+</Step>
+
+</Stepper>
+`;export{e as default};

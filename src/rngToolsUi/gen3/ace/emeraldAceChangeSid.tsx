@@ -17,7 +17,7 @@ import {
   convertAceResultToBoxNames,
   getBoxNameColumns,
 } from "./aceBoxNameFormatter";
-import { get_emerald_sid_box_names_result } from "~/rngTools";
+import { rngTools } from "~/rngTools";
 
 type Props = {
   sid: number;
@@ -51,7 +51,7 @@ export const EmeraldAceChangeSid = ({ sid }: Props) => {
 
     setTimeout(async () => {
       const { lang } = opts;
-      const res = await get_emerald_sid_box_names_result(sid, lang);
+      const res = await rngTools.get_emerald_sid_box_names_result(sid, lang);
       if (res == null) {
         setHasError(true);
         return;

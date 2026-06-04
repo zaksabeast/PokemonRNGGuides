@@ -63,12 +63,6 @@ const SelectButton = ({ seedTime }: SelectButtonProps) => {
     <Button
       trackerId="coin_flip_select_seed"
       onClick={() => {
-        console.log(
-          "Saving coin flips:",
-          state.gameState.coinFlips,
-          state.gameState.coinFlips.length,
-        );
-
         setState({
           target: {
             seedTime,

@@ -16,14 +16,12 @@ type Gen4Target = {
   seedTime: SeedTime4 | null;
   mtAdvance: number | null;
   lcrngAdvance: number | null;
-  coinFlipCount: number;
 };
 
 const initialGen4Target: Gen4Target = {
   seedTime: null,
   mtAdvance: null,
   lcrngAdvance: null,
-  coinFlipCount: 0,
 };
 
 const gen4TargetAtom = atom<Gen4Target>(initialGen4Target);

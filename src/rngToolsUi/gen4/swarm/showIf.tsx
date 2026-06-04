@@ -1,5 +1,6 @@
 import React from "react";
-import { useSwarmState } from "./state";
+import { useAtom } from "jotai";
+import { gen4StateAtom } from "../shared/state";
 
 type SwarmShowIfProps = {
   game?: "dppt" | "hgss";
@@ -10,13 +11,14 @@ const isDppt = (game: string) =>
   game === "Diamond" || game === "Pearl" || game === "Platinum";
 
 export const SwarmShowIf = ({ game, children }: SwarmShowIfProps) => {
-  const [state] = useSwarmState();
+  const [state] = useAtom(gen4StateAtom);
+  const currentGame = state.config.game;
 
-  if (game === "dppt" && !isDppt(state.game)) {
+  if (game === "dppt" && !isDppt(currentGame)) {
     return null;
   }
 
-  if (game === "hgss" && isDppt(state.game)) {
+  if (game === "hgss" && isDppt(currentGame)) {
     return null;
   }
 

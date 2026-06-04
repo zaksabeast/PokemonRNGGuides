@@ -73,7 +73,7 @@ export const HgssSwarmAdvanceTracker = () => {
           showIcon
           type="success"
           title="Target reached!"
-          description="Talk to the NPC to form a new group or check the radio."
+          description="Talk to the NPC to form a new group"
         />
       )}
 
@@ -95,6 +95,7 @@ export const HgssSwarmAdvanceTracker = () => {
         </Button>
 
         <Button
+          trackerId="hgss_swarm_advance_undo"
           disabled={history.length === 0}
           onClick={undo}
         >

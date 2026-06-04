@@ -432,10 +432,6 @@ const tools = {
     () => import("~/rngToolsUi/gen4/swarm/swarmAdvanceFilter"),
     (mod) => mod.SwarmAdvanceFilter,
   ),
-  HgssElmCallAdvanceFilter: lazyLoad(
-    () => import("~/rngToolsUi/gen4/shared/hgssElmCalls/advanceFilter"),
-    (mod) => mod.HgssElmCallAdvanceFilter,
-  ),
   HgssSwarmAdvanceTracker: lazyLoad(
     () => import("~/rngToolsUi/gen4/swarm/hgssSwarmAdvanceTracker"),
     (mod) => mod.HgssSwarmAdvanceTracker,

@@ -99,7 +99,7 @@ export const SwarmFindEncounter = () => {
   state.config.game === "Diamond" ||
   state.config.game === "Pearl" ||
   state.config.game === "Platinum"
-    ? state.target.coinFlipCount
+    ? state.gameState.coinFlips.length
     : 0;
   
   const [results, setResults] = React.useState<Result[]>([]);
@@ -177,7 +177,7 @@ export const SwarmFindEncounter = () => {
 
   return (
     <RngToolForm<FormState, Result>
-      key={state.target.coinFlipCount}
+      key={state.gameState.coinFlips.length}
       initialValues={getInitialValues(defaultMinAdvance)}
       disableGenerate={seed == null}
       submitTrackerId="swarm_find_encounter"

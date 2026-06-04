@@ -342,6 +342,7 @@ export const translations = {
   "Pickup Advance": "Pickup Advance",
   "Target/Seen": "Target/Seen",
   "Elm Call Count": "Elm Call Count",
+  "Elm Calls": "Elm Calls",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

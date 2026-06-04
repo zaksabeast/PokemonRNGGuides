@@ -143,7 +143,7 @@ export const HgssElmCallSeedFinder = () => {
 
   const onSubmit: RngToolSubmit<FormState> = async (opts) => {
     const { seedTimesBySeed, seedList } = await getFindableSeeds(opts);
-    setElmCallCount(opts.elmCallCount);
+    
     const elmCalls = await rngTools.elm_calls_for_seeds(
       seedList,
       opts.elmCallCount,

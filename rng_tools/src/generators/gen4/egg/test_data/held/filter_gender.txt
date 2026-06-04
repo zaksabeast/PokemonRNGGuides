@@ -1,0 +1,10 @@
+8	0	L 0	6C74A409	No	Sassy	1: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+10	0	L 0	A5595115	No	Lonely	1: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+27	0	L 0	D6094219	No	Rash	1: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+30	0	L 0	164E1B09	No	Docile	1: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+45	0	L 0	853E031D	No	Relaxed	1: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+52	0	L 0	24B2CD09	No	Careful	1: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+65	0	L 0	376FD81C	No	Hardy	0: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Alert to sounds
+75	0	L 0	62F0F111	No	Gentle	1: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+83	0	L 0	E7005101	No	Impish	1: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+91	0	L 0	2BC0BB0B	No	Impish	1: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about

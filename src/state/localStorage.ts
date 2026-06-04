@@ -6,15 +6,15 @@ import { hydrationLock } from "~/utils/hydration";
 export { useAtom } from "jotai";
 
 const fakeLocalStorage = {
-  getItem: noop,
+  getItem: () => null,
   setItem: noop,
   removeItem: noop,
 };
 
-const ssrLocalStorage =
+export const ssrLocalStorage =
   typeof window !== "undefined" ? window.localStorage : fakeLocalStorage;
 
-export const atomWithPersistence = <Schema extends z.ZodObject>(
+export const atomWithPersistence = <Schema extends z.ZodType>(
   key: string,
   schema: Schema,
   initialValue: z.infer<Schema>,
@@ -26,11 +26,7 @@ export const atomWithPersistence = <Schema extends z.ZodObject>(
       getItem: (key, initialValue) => {
         const storedValue = ssrLocalStorage.getItem(key);
         try {
-          const parsed = schema.partial().parse(JSON.parse(storedValue ?? ""));
-          return {
-            ...initialValue,
-            ...parsed,
-          };
+          return hydrationLock(schema.parse(JSON.parse(storedValue ?? "")));
         } catch {
           return initialValue;
         }

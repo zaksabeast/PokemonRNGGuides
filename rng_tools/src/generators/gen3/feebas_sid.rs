@@ -1,7 +1,7 @@
 use crate::rng::lcrng::Pokerng;
 use crate::rng::{Rng, StateIterator};
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
@@ -15,7 +15,7 @@ pub struct FeebasSidResult {
 fn generate_feebas_seed(mut rng: Pokerng) -> u16 {
     let mut trends = Vec::new();
     for _ in 0..5 {
-        rng.advance(4);
+        rng.jump_const::<4>();
         let mut rand = rng.rand_max::<u16>(98);
         if rand > 50 {
             rand = rng.rand_max::<u16>(98);
@@ -52,7 +52,7 @@ pub fn emerald_sid_from_feebas_seed(
         .flat_map(|(advances, mut rng)| {
             let sid3 = rng.rand::<u16>();
             let sid2 = rng.rand::<u16>();
-            rng.advance(2);
+            rng.jump_const::<2>();
 
             if feebas_seed != generate_feebas_seed(rng) {
                 return vec![];

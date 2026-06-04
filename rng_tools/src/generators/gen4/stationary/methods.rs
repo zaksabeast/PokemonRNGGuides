@@ -1,6 +1,6 @@
 use crate::{Nature, Species};
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
@@ -11,6 +11,21 @@ pub enum GameVersion {
     Platinum,
     HeartGold,
     SoulSilver,
+}
+
+fn dpt_method_honey(species: Species) -> bool {
+    matches!(
+        species,
+        Species::Wurmple
+            | Species::Combee
+            | Species::Burmy_Plant
+            | Species::Cherubi
+            | Species::Aipom
+            | Species::Heracross
+            | Species::Munchlax
+            | Species::Silcoon
+            | Species::Cascoon
+    )
 }
 
 fn dpt_method_jk(species: Species) -> bool {
@@ -62,6 +77,7 @@ pub enum StaticMethod {
     One,
     J,
     K,
+    Honey,
 }
 
 impl StaticMethod {
@@ -71,6 +87,11 @@ impl StaticMethod {
                 if dpt_method_jk(species) =>
             {
                 StaticMethod::J
+            }
+            GameVersion::Diamond | GameVersion::Pearl | GameVersion::Platinum
+                if dpt_method_honey(species) =>
+            {
+                StaticMethod::Honey
             }
             GameVersion::HeartGold | GameVersion::SoulSilver if hgss_method_jk(species) => {
                 StaticMethod::K
@@ -89,4 +110,5 @@ pub enum LeadAbility {
     CutecharmF,
     CutecharmM,
     Synchronize(Nature),
+    Pressure,
 }

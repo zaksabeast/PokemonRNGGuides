@@ -86,4 +86,7 @@ export const translations: Partial<Translations> = {
   "Egg min IVs": "IV minime dell'uovo",
   "Egg max IVs": "IV massime dell'uovo",
   Reset: "Reset",
+  "Learn how to use the 3DS Helper here": "Impara qui come usare il 3DS Helper",
+  "Download the 3DS Alt Settings app here":
+    "Scarica qui l'app 3DS Alt Settings",
 };

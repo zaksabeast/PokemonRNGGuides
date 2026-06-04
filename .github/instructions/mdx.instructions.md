@@ -2,45 +2,62 @@
 applyTo: "**/*.mdx,**/*.md"
 ---
 
-# Project standards for translated markdown files
+# MDX and Markdown Standards
+
+## Frontmatter Overview
+
+There are two main frontmatter patterns:
+
+1. **Single frontmatter object** – one guide per file
+2. **Frontmatter array** – multiple guides per file (same MDX component, different metadata/slugs)
+
+There are also two metadata schemas:
+
+1. **Base/English frontmatter** – full guide metadata
+2. **Translation frontmatter** – links to English guide, inherits metadata
+
+---
+
+## Single Guide Frontmatter (Base/English)
+
+Base guides use full metadata. For detailed field documentation and validation rules, see [scripts/build-guides.tsx](../../scripts/build-guides.tsx).
+
+---
+
+## Multi-Guide Frontmatter (Array)
+
+A single MDX file can host multiple guides with different metadata and slugs using a frontmatter array. Each entry follows the base guide rules. See [scripts/build-guides.tsx](../../scripts/build-guides.tsx) for full documentation.
+
+Example: **Hubs.mdx** uses this pattern for 16 game hub guides.
+
+---
+
+## Translation Frontmatter
+
+Translation files link to the English/base guide and inherit its metadata. For detailed field documentation and validation rules, see [scripts/build-guides.tsx](../../scripts/build-guides.tsx).
+
+### Translation-Only Notes
+
+- Do **not** change slug references in links unless they target confirmed translated pages
+- The English guide (referenced by `enSlug`) must exist in the codebase
+- The slug must be prefixed with the language code, followed by a dash (e.g. `zh-`, `it-`, `fr-`).
+
+Translation files can also use frontmatter arrays, linking to multiple English guides (each entry follows the same rules).
+
+---
 
 ## Translation Guidelines
 
 ### Accuracy
 
 - Ensure the **translated text is accurate** and preserves the meaning and intent of the original English version.
-- Do not use literal translations that break clarity or context.
 - Use proper grammar, idiomatic phrasing, and tone appropriate to the language.
 - Credits at the bottom of files can be in any language.
 
-### Frontmatter Format
-
-- Confirm the frontmatter uses the **correct format**:
-
-```
----
-- title: "Translated Title"
-  navDrawerTitle: "Translated Nav Drawer Title"
-  description: "Translated description."
-  slug: "languagecode-translated-slug"
-  translation:
-    enSlug: "original-english-slug"
-    language: "language-code"
----
-```
-
-- The `slug` must:
-  - Be **prefixed with the language code**, followed by a dash (e.g. `zh-`, `it-`, `fr-`).
-  - Use lowercase, kebab-case formatting.
-- The `translation` block must:
-  - Accurately reference the original English `slug` in `enSlug`.
-  - Use a valid two-letter ISO language code in `language`.
-
 ### Links and URLs
 
-- Do **not** translate or localize URLs.
 - Keep internal and external links **identical** to the English version.
-- Do not change slug references in links unless they're translated pages with confirmed translated slugs.
+- Keep slug references in links unless they're translated pages with confirmed translated slugs.
 
 ### Titles & Metadata
 

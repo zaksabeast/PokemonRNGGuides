@@ -10,7 +10,7 @@ const Container = styled.div(({ theme }) => ({
     justifyContent: "center",
     width: "100% !important",
     "& lite-youtube": {
-      borderRadius: theme.token.borderRadiusSM,
+      borderRadius: 4,
       boxShadow: theme.token.boxShadow,
       backgroundColor: theme.token.colorFillQuaternary,
       width: "100%",

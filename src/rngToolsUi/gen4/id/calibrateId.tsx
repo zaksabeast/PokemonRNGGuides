@@ -7,11 +7,12 @@ import {
   Field,
   Icon,
 } from "~/components";
-import { CalibrateTimerButton } from "~/components/calibrateTimerButton";
+import { CalibrateTimerButton } from "../shared/calibrateTimerButton";
 import { rngTools, Id4 } from "~/rngTools";
 import { denormalizeIdFilterOrDefault } from "~/types/id";
 import { z } from "zod";
-import { useId4State, idTimerAtom } from "./state";
+import { useAtom } from "jotai";
+import { gen4StateAtom } from "../shared/state";
 import { sortBy } from "lodash-es";
 import { formatOffset } from "~/utils/offsetSymbol";
 import { Translations } from "~/translations";
@@ -29,16 +30,11 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
     title: t["Calibrate"],
     dataIndex: "seed",
+    disableVerticalPadding: true,
     render: (_, target) => (
       <CalibrateTimerButton
-        type="gen4"
         trackerId="calibrate_gen4_id"
-        calibration={{
-          hit_delay: target.seed_time.delay,
-          second_offset: target.secondOffset,
-        }}
-        timer={idTimerAtom}
-        previousStepOnClick
+        hitDelay={target.seed_time.delay}
       />
     ),
   },
@@ -87,7 +83,7 @@ const initialValues: FormState = {
 };
 
 export const CalibrateId4 = () => {
-  const [{ target }] = useId4State();
+  const [{ target }] = useAtom(gen4StateAtom);
   const [results, setResults] = React.useState<Result[]>([]);
 
   const getFields = (t: Translations): Field[] => {
@@ -100,11 +96,11 @@ export const CalibrateId4 = () => {
   };
 
   const onSubmit: RngToolSubmit<FormState> = async (opts) => {
-    if (target == null) {
+    if (target.seedTime == null) {
       return;
     }
 
-    const { datetime: targetDateTime, delay: targetDelay } = target.seed_time;
+    const { datetime: targetDateTime, delay: targetDelay } = target.seedTime;
 
     const minDelay = targetDelay - 1000;
     const maxDelay = targetDelay + 1000;

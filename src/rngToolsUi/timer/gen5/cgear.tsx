@@ -8,17 +8,20 @@ import {
   Flex,
   MultiTimer,
 } from "~/components";
+import { ZodSerializedDecimal, ZodSerializedOptional } from "~/utils/number";
 import {
-  capPrecision,
-  ZodSerializedDecimal,
-  ZodSerializedOptional,
-} from "~/utils/number";
-import { rngTools, ZodConsole } from "~/rngTools";
+  ZodConsole,
+  calibrateGen5CgearTimer,
+  createGen5CgearTimer,
+  minutesBefore,
+} from "~/rngTools";
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
 import { useTimerSettings } from "~/state/timerSettings";
 import { z } from "zod";
 import { useHydrate } from "~/hooks/useHydrate";
 import { hydrationLock, HydrationLock } from "~/utils/hydration";
+import { useStateHistory } from "~/hooks/useStateHistory";
+import { UndoButton } from "../undoButton";
 
 const TimerStateSchema = z.object({
   milliseconds: z.array(z.number()),
@@ -32,7 +35,28 @@ const timerStateAtom = atomWithPersistence("gen5CGearTimer", TimerStateSchema, {
   minutesBeforeTarget: 0,
 });
 
-const FormStateSchema = z.object({
+const v0FormStateSchema = z
+  .object({
+    version: z.literal(0).optional(),
+    console: ZodConsole,
+    min_time_ms: ZodSerializedDecimal,
+    target_delay: ZodSerializedDecimal,
+    target_second: ZodSerializedDecimal,
+    calibration: ZodSerializedDecimal,
+    delay_hit: ZodSerializedOptional(ZodSerializedDecimal),
+  })
+  .transform((data) => ({
+    version: 1 as const,
+    console: data.console,
+    minTimeMs: data.min_time_ms,
+    targetDelay: data.target_delay,
+    targetSecond: data.target_second,
+    calibration: data.calibration,
+    delayHit: data.delay_hit,
+  }));
+
+const V1FormStateSchema = z.object({
+  version: z.literal(1),
   console: ZodConsole,
   minTimeMs: ZodSerializedDecimal,
   targetDelay: ZodSerializedDecimal,
@@ -41,9 +65,15 @@ const FormStateSchema = z.object({
   delayHit: ZodSerializedOptional(ZodSerializedDecimal),
 });
 
+const FormStateSchema = z.discriminatedUnion("version", [
+  v0FormStateSchema,
+  V1FormStateSchema,
+]);
+
 export type FormState = z.infer<typeof FormStateSchema>;
 
 const initialValues: FormState = {
+  version: 1,
   console: "NdsSlot1",
   minTimeMs: 14000,
   targetDelay: 1200,
@@ -107,53 +137,43 @@ const InnerGen5CGearTimer = ({
   initialSettings,
   onUpdate,
 }: InnerProps) => {
+  const updateTimerSettings = (formState: FormState) => {
+    const milliseconds = createGen5CgearTimer(formState);
+    setTimer(
+      hydrationLock({
+        milliseconds,
+        minutesBeforeTarget: minutesBefore(milliseconds),
+      }),
+    );
+    onUpdate(hydrationLock(formState));
+  };
+
+  const history = useStateHistory({
+    initialSettings,
+    updateTimerSettings,
+  });
+
   const onSubmit: RngToolSubmit<FormState> = async (opts, { setValue }) => {
-    let updatedOpts = opts;
-    let settings = {
-      console: opts.console,
-      min_time_ms: opts.minTimeMs,
-      target_delay: opts.targetDelay,
-      target_second: opts.targetSecond,
-      calibration: opts.calibration,
-    };
+    let settings = opts;
 
     if (opts.delayHit != null) {
-      settings = await rngTools.calibrate_gen5_cgear_timer(
-        settings,
-        opts.delayHit,
-      );
+      const calibrated = calibrateGen5CgearTimer(settings, opts.delayHit);
       settings = {
-        console: opts.console,
-        min_time_ms: capPrecision(settings.min_time_ms),
-        target_delay: capPrecision(settings.target_delay),
-        target_second: capPrecision(settings.target_second),
-        calibration: capPrecision(settings.calibration),
-      };
-      updatedOpts = {
-        console: settings.console,
-        minTimeMs: settings.min_time_ms,
-        targetDelay: settings.target_delay,
-        targetSecond: settings.target_second,
-        calibration: settings.calibration,
+        ...calibrated,
+        version: 1,
         delayHit: null,
       };
 
-      setValue("console", updatedOpts.console);
-      setValue("minTimeMs", updatedOpts.minTimeMs);
-      setValue("targetDelay", updatedOpts.targetDelay);
-      setValue("targetSecond", updatedOpts.targetSecond);
-      setValue("calibration", updatedOpts.calibration);
-      setValue("delayHit", updatedOpts.delayHit);
+      setValue("console", settings.console);
+      setValue("minTimeMs", settings.minTimeMs);
+      setValue("targetDelay", settings.targetDelay);
+      setValue("targetSecond", settings.targetSecond);
+      setValue("calibration", settings.calibration);
+      setValue("delayHit", settings.delayHit);
     }
 
-    const milliseconds = await rngTools.create_gen5_cgear_timer(settings);
-    setTimer(
-      hydrationLock({
-        milliseconds: [...milliseconds],
-        minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
-      }),
-    );
-    onUpdate(hydrationLock(updatedOpts));
+    updateTimerSettings(settings);
+    history.addIfNew(settings);
   };
 
   return (
@@ -171,6 +191,21 @@ const InnerGen5CGearTimer = ({
         onSubmit={onSubmit}
         submitTrackerId="set_gen5_cgear_timer"
         submitButtonLabel="Set Timer"
+        additionalButtons={
+          <UndoButton
+            history={history}
+            trackerId="undo_gen5_cgear_calibration"
+            fields={{
+              version: true,
+              console: true,
+              minTimeMs: true,
+              targetDelay: true,
+              targetSecond: true,
+              calibration: true,
+              delayHit: true,
+            }}
+          />
+        }
       />
     </Flex>
   );

@@ -11,8 +11,8 @@ import { denormalizeIdFilter } from "~/types/id";
 import { z } from "zod";
 import { useRsTidState } from "./rsTidState";
 import { CalibrateButton } from "./calibrateButton";
-import { createGen3TimerAtom } from "~/hooks/useGen3Timer";
 import { Gen3Timer } from "~/components/gen3Timer";
+import { createGen3TimerAtom } from "~/rngToolsUi/timer/atoms";
 
 const timerAtom = createGen3TimerAtom();
 
@@ -22,6 +22,7 @@ const columns: ResultColumn<Result>[] = [
   {
     title: "Calibrate",
     dataIndex: "advance",
+    disableVerticalPadding: true,
     render: (_, result) => (
       <CalibrateButton hitAdvance={result.advance} timer={timerAtom} />
     ),

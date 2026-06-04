@@ -1,11 +1,12 @@
 import { atom, useAtom } from "jotai";
-import { createGen4TimerAtom } from "~/hooks/useGen4Timer";
-import { Gen4GameAndConsole } from "../gen4types";
-import type { Static4State as RngToolStatic4State, Species } from "~/rngTools";
+import type { LeadAbility, Gender, Species } from "~/rngTools";
 import { MinMaxStats } from "~/types";
 
-export type Static4Target = Omit<RngToolStatic4State["state"], "ivs"> & {
-  seed_time: RngToolStatic4State["seed_time"];
+export type Static4Target = {
+  lead: LeadAbility;
+  encounterMinLevel: number;
+  encounterMaxLevel: number;
+  gender: Gender;
   level: number;
   species: Species;
   form?: number;
@@ -18,11 +19,9 @@ export type Static4State = {
   target: Static4Target | null;
   coinFlipFilter: string;
   chatotSummaryCount: number | null;
-} & Gen4GameAndConsole;
+};
 
 const initialHeldState: Static4State = {
-  console: "NdsDsi",
-  game: "Diamond",
   target: null,
   coinFlipFilter: "",
   chatotSummaryCount: null,
@@ -31,5 +30,3 @@ const initialHeldState: Static4State = {
 export const static4Atom = atom(initialHeldState);
 
 export const useStatic4State = () => useAtom(static4Atom);
-
-export const static4TimerAtom = createGen4TimerAtom();

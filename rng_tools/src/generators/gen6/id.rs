@@ -3,7 +3,7 @@ use crate::rng::{Rng, StateIterator};
 use crate::{IdFilter, RngDateTime};
 use chrono::TimeDelta;
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]

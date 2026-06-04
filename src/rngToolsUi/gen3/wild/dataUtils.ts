@@ -33,5 +33,10 @@ export const getPossibleValuesForMap = (mapId: string, action: Wild3Action) => {
     mass_outbreak_states: uniq(
       mapSetupsForAction.flatMap((mapSetup) => mapSetup.mass_outbreak_states),
     ),
+    canUsePokeblock: mapSetups.some(
+      (mapSetup) =>
+        mapSetup.map_data.is_safari &&
+        mapSetup.map_data.actions_with_safari_pokeblock.includes(action),
+    ),
   };
 };

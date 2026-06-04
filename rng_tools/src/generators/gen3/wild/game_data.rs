@@ -1,9 +1,9 @@
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 use super::Wild3Action;
-use crate::{EncounterSlot, GenderRatio, PokemonType, Species};
+use crate::{EncounterSlot, GenderRatio, Nature, PokemonType, Species};
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -43,6 +43,16 @@ pub enum Wild3FeebasState {
     NotInMap,
     OnFeebasTile,
     InMapButNotOnFeebasTile,
+}
+
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub enum Wild3SafariPokeblockGenOpt {
+    Specific([u8; 5]), // Spicy, Dry, Sweet, Bitter, Sour
+    ForSearching {
+        wanted_nature: Nature,
+        consider_all_safari_pokeblocks: bool,
+    },
 }
 
 #[derive(Debug, Clone, Default, PartialEq, Tsify, Serialize, Deserialize)]
@@ -105,6 +115,9 @@ pub struct Wild3MapGameData {
     pub roamers: Vec<Wild3SpecialEncounterGameData<Wild3RoamerState>>,
     pub mass_outbreaks: Vec<Wild3SpecialEncounterGameData<Wild3MassOutbreakState>>,
     pub feebas: Option<Wild3EncounterGameData>,
+    pub rock_smash_rate: u32,
+    pub is_safari: bool,
+    pub actions_with_safari_pokeblock: Vec<Wild3Action>, // Not all actions have a pokeblock feeder nearby
 }
 
 #[derive(Debug, Default, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -173,6 +186,9 @@ impl Default for Wild3MapGameData {
             roamers: vec![],
             feebas: None,
             mass_outbreaks: vec![],
+            rock_smash_rate: 20,
+            is_safari: false,
+            actions_with_safari_pokeblock: vec![],
         }
     }
 }

@@ -1,5 +1,6 @@
+use arrayvec::ArrayVec;
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 use super::calc_modulo_cycle_unsigned;
@@ -10,16 +11,24 @@ pub const BASE_LEAD_PID_MOD_24_CYCLES: usize = calc_modulo_cycle_unsigned(BASE_L
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[allow(non_camel_case_types)]
 pub enum Moment {
+    SweetScentWildEncounter,
+    RockSmashWildEncounter,
+    FishingWildEncounter,
     ChooseWildMonIndex_Land_Random,
+    ChooseWildMonIndex_WaterRock_Random,
+    ChooseWildMonIndex_Fishing_Random,
     ChooseWildMonLevel_RandomLvl,
     PickWildMonNature_RandomTestSynchro,
     CreateWildMon_RandomTestCuteCharm,
     PickWildMonNature_RandomPickNature,
     CreateMonWithNature_RandomPidLowFirst,
+    CreateMonWithNature_RandomPidLowLast,
     CreateMonWithNature_RandomPidHighLast,
     CreateBoxMon_RandomIvs1,
     CreateBoxMon_RandomIvs2,
 }
+
+pub const MOMENT_COUNT: usize = 15;
 
 #[derive(Default, Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -129,7 +138,8 @@ impl CycleAtMoment {
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct CycleCounter {
     pub cycle: CycleAndModCount,
-    pub cycle_at_moments: Vec<CycleAndModAtMoment>,
+    #[serde(with = "crate::serde_utils::arrayvec")]
+    pub cycle_at_moments: ArrayVec<CycleAndModAtMoment, MOMENT_COUNT>,
 }
 
 impl CycleCounter {

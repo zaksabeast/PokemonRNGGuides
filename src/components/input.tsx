@@ -10,11 +10,12 @@ import { useField } from "~/hooks/form";
 import * as tst from "ts-toolbelt";
 import { Typography } from "./typography";
 
-const InputContainer = styled.div<{ textAlign?: "center" }>(
-  ({ textAlign }) => ({
+const InputContainer = styled.div<{ textAlign?: "center"; fullFlex?: boolean }>(
+  ({ textAlign, fullFlex }) => ({
     ".ant-input": {
       textAlign,
     },
+    ...(fullFlex ? { flex: 1 } : {}),
   }),
 );
 
@@ -23,6 +24,7 @@ type InputProps = tst.O.Merge<
     autoFocus?: boolean;
     textAlign?: "center";
     errorMessage?: string;
+    fullFlex?: boolean;
   },
   AntdInputProps
 >;
@@ -31,11 +33,12 @@ export const Input = ({
   autoFocus,
   textAlign,
   errorMessage,
+  fullFlex = true,
   ...props
 }: InputProps) => {
   const inputRef = React.useRef<InputRef>(null);
 
-  const _status = errorMessage != null ? "error" : undefined;
+  const _status = errorMessage != null ? "error" : props.status;
 
   React.useEffect(() => {
     if (autoFocus && inputRef.current != null) {
@@ -44,13 +47,13 @@ export const Input = ({
   }, [autoFocus]);
 
   return (
-    <InputContainer textAlign={textAlign}>
+    <InputContainer textAlign={textAlign} fullFlex={fullFlex}>
       <AntdInput
         size="large"
         ref={inputRef}
         autoComplete="off"
-        status={_status}
         {...props}
+        status={_status}
       />
       {errorMessage != null && (
         <Typography.Text type="danger">{errorMessage}</Typography.Text>

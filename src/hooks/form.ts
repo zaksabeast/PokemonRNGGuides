@@ -8,7 +8,6 @@ import { match, P } from "ts-pattern";
 import { GenericForm } from "~/types";
 import * as tst from "ts-toolbelt";
 import { z } from "zod";
-import { Mask } from "node_modules/zod/v4/core/util";
 import { zipObject } from "lodash-es";
 import { NullableSchema } from "~/utils/nullableSchema";
 
@@ -52,7 +51,7 @@ export const useFormContext = <FormState extends GenericForm>() => {
 
 export const useWatch = <
   Shape extends z.core.$ZodLooseShape,
-  Names extends Mask<keyof Shape>,
+  Names extends Partial<Record<keyof Shape, true>>,
 >({
   names,
   validationSchema,

@@ -10,7 +10,6 @@ import {
   FormikNumberInput,
   FormikSwitch,
   FormFieldTable,
-  Icon,
   Field,
   FormikRadio,
 } from "~/components";
@@ -20,13 +19,16 @@ import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { formatDuration } from "~/utils/formatDuration";
 import { z } from "zod";
 import { useWatch } from "react-hook-form";
-import { Tooltip } from "antd";
 import { GBA_FPS } from "~/utils/consts";
 import { lcrng_distance, pokerng_with_jump } from "~/utils/lcrng";
 import { FormikEmeraldTargetAdvance } from "~/components/emeraldTargetAdvance";
 import { match } from "ts-pattern";
 import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
 import { formatEmeraldTargetFromPainting } from "~/utils/formatEmeraldTargetFromPainting";
+import {
+  minAdvsAfterPaintingLabel,
+  minFramesBeforePaintingLabel,
+} from "~/rngToolsUi/gen3/wild/wild3Labels";
 
 type Result = Wild3PaintingAdvsAndDur & { uid: number };
 
@@ -78,10 +80,10 @@ const getColumns = (): ResultColumn<Result>[] => {
     },
     {
       title: (
-        <>
+        <span>
           Frames before
           <br /> painting
-        </>
+        </span>
       ),
       key: "frame_before_painting",
       dataIndex: "advs",
@@ -93,11 +95,11 @@ const getColumns = (): ResultColumn<Result>[] => {
     },
     {
       title: (
-        <>
+        <span>
           RNG state after <br />
           painting <br />
           (in advances)
-        </>
+        </span>
       ),
       key: "rng_state_after",
       dataIndex: "advs",
@@ -109,11 +111,11 @@ const getColumns = (): ResultColumn<Result>[] => {
     },
     {
       title: (
-        <>
+        <span>
           Additional advances <br />
           after painting <br />
           to hit target
-        </>
+        </span>
       ),
       key: "additional_adv_after_painting",
       dataIndex: "advs",
@@ -123,10 +125,10 @@ const getColumns = (): ResultColumn<Result>[] => {
     },
     {
       title: (
-        <>
+        <span>
           Time to create Battle Video <br />
           assuming 10 painting attempts
-        </>
+        </span>
       ),
       key: "wait_dur",
       dataIndex: "wait_dur",
@@ -166,7 +168,7 @@ const MyFields = () => {
       input: <FormikSwitch<FormState> name="alreadyKnowPaintingFrameAndAdv" />,
     },
     {
-      label: "Frame before painting",
+      label: "Frame before painting (Painting seed)",
       input: (
         <FormikEmeraldFrameBeforePaintingInput<FormState> name="frameBeforePainting" />
       ),
@@ -191,16 +193,9 @@ const MyFields = () => {
       indent: 1,
     },
     {
-      label: (
-        <Tooltip title="Ex: Target advance to generate the wanted Pokémon.">
-          <div>
-            Target of the RNG manipulation{" "}
-            <Icon name="InformationCircle" size={16} />
-          </div>
-        </Tooltip>
-      ),
+      label: "Target of the RNG manipulation",
+      tooltip: "Ex: Target advance to generate the wanted Pokémon.",
       show: !alreadyKnowPaintingFrameAndAdv,
-      key: "targetSeed",
       input: <FormikEmeraldTargetAdvance name="targetAdvance" />,
     },
     {
@@ -209,15 +204,7 @@ const MyFields = () => {
       show: !alreadyKnowPaintingFrameAndAdv,
     },
     {
-      label: (
-        <Tooltip title="To ensure there is enough time between booting the game and interacting with the painting.">
-          <div>
-            Min frames before painting{" "}
-            <Icon name="InformationCircle" size={16} />
-          </div>
-        </Tooltip>
-      ),
-      key: "min_frame_before_painting",
+      ...minFramesBeforePaintingLabel(),
       input: (
         <FormikNumberInput<FormState>
           name="min_frame_before_painting"
@@ -240,15 +227,7 @@ const MyFields = () => {
       indent: 1,
     },
     {
-      label: (
-        <Tooltip title="To ensure there is enough time between interacting with the painting, and creating a Battle Video.">
-          <div>
-            Min advances after painting{" "}
-            <Icon name="InformationCircle" size={16} />
-          </div>
-        </Tooltip>
-      ),
-      key: "min_adv_after_painting",
+      ...minAdvsAfterPaintingLabel(),
       input: (
         <FormikNumberInput<FormState>
           name="min_adv_after_painting"
@@ -290,7 +269,7 @@ const MyFields = () => {
 };
 
 type Props = {
-  onSelected?: (before: number, after: number) => void;
+  onSelected?: (advs: { before: number; after: number } | null) => void;
 };
 
 let nextUid = 0;
@@ -325,7 +304,7 @@ export const EmeraldSeedToAdvances = ({ onSelected }: Props) => {
     rngTools
       .find_all_painting_advs_for_seed(painting_opts, targetSeed)
       .then((results) => {
-        results = results.filter((res) => {
+        const filteredResults = results.filter((res) => {
           if (res.advs.frame_before_painting === 0) {
             return true;
           }
@@ -340,7 +319,7 @@ export const EmeraldSeedToAdvances = ({ onSelected }: Props) => {
             res.advs.adv_after_painting >= opts.min_adv_after_painting
           );
         });
-        results.sort((lhs, rhs) => {
+        filteredResults.sort((lhs, rhs) => {
           // Painting Seed = 0 goes first.
           if (lhs.advs.frame_before_painting === 0) {
             return -1;
@@ -363,9 +342,9 @@ export const EmeraldSeedToAdvances = ({ onSelected }: Props) => {
             )
             .exhaustive();
         });
-        results = results.slice(0, opts.max_result_count);
+        const limitedResults = filteredResults.slice(0, opts.max_result_count);
         setResults(
-          results.map((res) => ({
+          limitedResults.map((res) => ({
             ...res,
             uid: nextUid++,
           })),
@@ -376,10 +355,14 @@ export const EmeraldSeedToAdvances = ({ onSelected }: Props) => {
   const onClickResultRow =
     onSelected == null
       ? undefined
-      : (row: Result) => {
+      : (row: Result | null) => {
           onSelected(
-            row.advs.frame_before_painting,
-            row.advs.adv_after_painting,
+            row != null
+              ? {
+                  before: row.advs.frame_before_painting,
+                  after: row.advs.adv_after_painting,
+                }
+              : null,
           );
         };
 

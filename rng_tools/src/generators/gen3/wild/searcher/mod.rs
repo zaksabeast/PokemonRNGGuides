@@ -4,6 +4,7 @@ mod lvl_path;
 mod nature_gender_path;
 mod pid_low_path;
 mod pid_path;
+mod pid_path_strategy;
 
 mod searcher_main; // includes searcher_naive and searcher_reverse
 
@@ -18,4 +19,5 @@ pub use lvl_path::*;
 pub use nature_gender_path::*;
 pub use pid_low_path::*;
 pub use pid_path::*;
+pub use pid_path_strategy::*;
 pub use searcher_main::*;

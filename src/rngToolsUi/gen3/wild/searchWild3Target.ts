@@ -4,6 +4,7 @@ import {
   Wild3MapSetups,
   Wild3SearcherOptions,
   Wild3PaintingAdvsAndDur,
+  Gen3Method,
 } from "~/rngTools";
 import { pkmFilterFieldsToRustInput } from "~/components/pkmFilter";
 import { orderBy, intersection } from "lodash-es";
@@ -11,11 +12,7 @@ import { gen3PkmFilterFieldsToRustInput } from "~/components/gen3PkmFilter";
 import { gen3Leads, formatActionName, formatMapName } from "./utils";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 
-import type {
-  FormState,
-  PidPathResult,
-  ResultSetupInfo,
-} from "./wild3FindTarget.tsx";
+import type { FormState, PidPathResult } from "./wild3TargetSetupSearcher.tsx";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -24,12 +21,13 @@ let nextUid = 0;
 type FastestAdvsCache = Awaited<ReturnType<typeof createFastestAdvsCache>>;
 
 const convertResultsForPidPathToPidPathResult = async (
-  results: Wild3SearcherResultMon[],
+  originalResults: Wild3SearcherResultMon[],
   mapSetups: Wild3MapSetups[],
   rngManipulatedLeadPid: boolean,
   initial_seed: number,
   getAdvsFromCache: FastestAdvsCache,
 ): Promise<PidPathResult | null> => {
+  let results = [...originalResults];
   // Limitation: The UI components only support that all results for the same PidPath
   // requires painting, or none do. Having both only occurs in the rare cases that
   // the results overlap DONT_USE_PAINTING_IF_BELOW_ADV threshold.
@@ -48,7 +46,7 @@ const convertResultsForPidPathToPidPathResult = async (
 
   const firstRes = results[0];
 
-  const resultSetupInfos: ResultSetupInfo[] = await Promise.all(
+  const resultSetupInfos = await Promise.all(
     results.map((res) => {
       const mapSetup = mapSetups[res.map_idx];
       const mapName = formatMapName(mapSetup.map_data.map_id);
@@ -76,7 +74,14 @@ const convertResultsForPidPathToPidPathResult = async (
         actionName: formatActionName(res.action),
         primaryLikelihood,
         initial_seed,
+        requiresWhiteFlute:
+          res.action === "RockSmash" &&
+          doesRockSmashSetupRequireWhiteFlute(
+            res.seed,
+            mapSetup.map_data.rock_smash_rate,
+          ),
         ...getAdvsFromCache(res.advance),
+        requiredPokeblock: res.used_safari_pokeblock ?? null,
       };
     }),
   );
@@ -101,11 +106,12 @@ const convertResultsForPidPathToPidPathResult = async (
 const createFastestAdvsCache = async (
   opts: Wild3SearcherOptions["painting_opts"],
   advs: number[],
+  initial_seed: number,
 ) => {
   const fallbackFunc = (adv: number): Wild3PaintingAdvsAndDur => {
     return {
       advs: {
-        frame_before_painting: 0,
+        frame_before_painting: initial_seed,
         adv_after_painting: adv,
       },
       wait_dur: adv,
@@ -181,6 +187,9 @@ export const searchWild3Target = async (values: FormState) => {
     : values.initial_advances;
 
   const map_setups = getMapSetupsConsideringStateSubsets(values);
+  const methods = values.recommendedSetups
+    ? (["Wild1", "Wild2", "Wild4"] as Gen3Method[])
+    : values.methods;
 
   const painting_opts =
     values.usingPaintingReseeding && values.letSearcherFindPaintingSeed
@@ -199,6 +208,7 @@ export const searchWild3Target = async (values: FormState) => {
   // if the naive searching approach is used (when searching common traits).
   const max_advances = painting_opts != null ? 10_000_000 : values.max_advances;
 
+  const filter_shiny = values.filter_shiny && !values.usingAceForSid;
   const opts: Wild3SearcherOptions = {
     initial_seed,
     tid: values.tid,
@@ -206,16 +216,23 @@ export const searchWild3Target = async (values: FormState) => {
     initial_advances,
     max_advances,
     max_result_count: values.max_result_count,
-    filter: pkmFilterFieldsToRustInput(values),
+    filter: pkmFilterFieldsToRustInput({
+      ...values,
+      filter_shiny,
+    }),
     gen3_filter: gen3PkmFilterFieldsToRustInput(values, values.species),
     leads: leadsToUse,
     map_setups,
-    methods: values.methods,
+    methods,
     consider_cycles: true,
     consider_rng_manipulated_lead_pid: values.rngManipulatedLeadPid,
     generate_even_if_impossible: values.generate_even_if_impossible,
+    using_white_flute: values.recommendedSetups
+      ? true
+      : values.using_white_flute,
     painting_opts,
     lead_cycle_speed: null,
+    considered_safari_pokeblocks: values.considered_safari_pokeblocks,
   };
 
   const resultsByPidPath = await rngTools.search_wild3(opts);
@@ -225,6 +242,7 @@ export const searchWild3Target = async (values: FormState) => {
   const fastestAdvsCache = await createFastestAdvsCache(
     opts.painting_opts,
     advs,
+    initial_seed,
   );
 
   const pidPathResults = await Promise.all(
@@ -240,4 +258,16 @@ export const searchWild3Target = async (values: FormState) => {
   );
 
   return pidPathResults;
+};
+
+export const doesRockSmashSetupRequireWhiteFlute = (
+  seed: number,
+  rockSmashEncounterRate: number,
+): boolean => {
+  const rate = rockSmashEncounterRate * 16;
+  const whiteFluteRate = rate + Math.floor(rate / 2);
+  const nextSeed = (Math.imul(seed, 0x41c64e6d) + 0x6073) >>> 0;
+  const encounterRand = (nextSeed >>> 16) % 2880;
+
+  return encounterRand >= rate && encounterRand < whiteFluteRate;
 };

@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 use crate::{
@@ -49,11 +49,8 @@ pub fn passes_pid_filter(
         }
     }
 
-    if let Some(wanted_nature) = filter.nature {
-        let nature = Nature::from_pid(pid);
-        if nature != wanted_nature {
-            return false;
-        }
+    if !filter.nature_filter_allows(Nature::from_pid(pid)) {
+        return false;
     }
 
     if let Some(wanted_ability) = filter.ability {
@@ -126,8 +123,8 @@ pub fn get_pid_filter_restrictiveness(
         }
     }
 
-    if filter.nature.is_some() {
-        prob /= 2_f64; //assuming synchronize lead
+    if filter.has_nature_filter() {
+        prob /= 2_f64; // We assume the player will use a Synchronize lead to get the target nature.
     }
 
     if gen3_filter.pid_speed.active {

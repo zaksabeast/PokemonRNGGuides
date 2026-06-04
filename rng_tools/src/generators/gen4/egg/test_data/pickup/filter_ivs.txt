@@ -1,0 +1,20 @@
+0	4	M 44	8C7F0AAC	No	Rash	0: Overgrow	2	18	3	22	31	31	Grass	70	♂	Alert to sounds
+0	17	M 54	8C7F0AAC	No	Rash	0: Overgrow	24	31	4	31	9	6	Electric	46	♂	Mischievous
+0	34	M 57	8C7F0AAC	No	Rash	0: Overgrow	8	19	4	31	31	23	Ice	66	♂	Mischievous
+0	56	M 50	8C7F0AAC	No	Rash	0: Overgrow	27	31	4	25	30	31	Ghost	57	♂	Alert to sounds
+0	70	MH 69	8C7F0AAC	No	Rash	0: Overgrow	22	31	5	0	28	31	Ground	36	♂	Alert to sounds
+0	116	M 41	8C7F0AAC	No	Rash	0: Overgrow	27	10	3	14	15	31	Grass	70	♂	Alert to sounds
+0	120	M 53	8C7F0AAC	No	Rash	0: Overgrow	31	8	4	31	31	25	Ice	61	♂	Mischievous
+0	172	M 51	8C7F0AAC	No	Rash	0: Overgrow	31	4	4	31	31	8	Electric	61	♂	Mischievous
+0	176	M 59	8C7F0AAC	No	Rash	0: Overgrow	31	31	4	31	17	4	Psychic	42	♂	Mischievous
+0	187	M 57	8C7F0AAC	No	Rash	0: Overgrow	0	31	4	25	31	31	Ice	56	♂	Alert to sounds
+0	188	M 59	8C7F0AAC	No	Rash	0: Overgrow	10	31	4	31	7	9	Ice	62	♂	Mischievous
+0	199	M 59	8C7F0AAC	No	Rash	0: Overgrow	17	31	4	24	31	31	Grass	56	♂	Alert to sounds
+0	221	M 59	8C7F0AAC	No	Rash	0: Overgrow	1	25	4	31	31	31	Dragon	65	♂	Alert to sounds
+0	222	M 50	8C7F0AAC	No	Rash	0: Overgrow	30	31	4	10	17	31	Grass	47	♂	Alert to sounds
+0	232	ML 38	8C7F0AAC	No	Rash	0: Overgrow	17	3	3	28	31	31	Electric	59	♂	Alert to sounds
+0	240	M 43	8C7F0AAC	No	Rash	0: Overgrow	5	31	3	31	31	6	Ice	69	♂	Mischievous
+0	268	MH 63	8C7F0AAC	No	Rash	0: Overgrow	8	31	5	7	31	17	Dragon	61	♂	Somewhat vain
+0	272	M 51	8C7F0AAC	No	Rash	0: Overgrow	15	31	4	24	31	31	Grass	57	♂	Alert to sounds
+0	280	MH 61	8C7F0AAC	No	Rash	0: Overgrow	27	31	4	31	1	31	Dragon	47	♂	Alert to sounds
+0	284	M 54	8C7F0AAC	No	Rash	0: Overgrow	31	12	4	31	31	1	Ice	61	♂	Mischievous

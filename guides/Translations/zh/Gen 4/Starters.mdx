@@ -13,6 +13,8 @@
     language: "zh"
 ---
 
+<Gen4Reset />
+
 ## 视频教程
 
 <YouTubeTable
@@ -48,15 +50,7 @@
 
 </Starter4ShowIf>
 
-<Starter4Setup />
-
-<Starter4ShowIf is3dsNormalSettings>
-  [点击此处查看 3DS Helper 使用教程](/3ds-helper).
-</Starter4ShowIf>
-
-<Starter4ShowIf is3dsAltSettings>
-  [点击此处下载 3DS Alt Settings 应用](/3ds-alt-settings).
-</Starter4ShowIf>
+<Gen4ConfigSetup />
 
 </Step>
 
@@ -80,14 +74,18 @@
 1. 如果你使用的是白金版，请将主机日期设置为： **12/31/2099** on NDS or **12/31/2050** on 3DS.
 1. 根据你游戏的版本，在下方图示位置存档：
 
+<EqualColumnTable>
+
 | 钻石/珍珠                                                                | 白金                                                                      | 心金/魂银                                                                   |
 | ------------------------------------------------------------------------ | ------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | ![钻珍存档位置](/images/Diamond-Pearl-Platinum/Starter/dpp-starter.webp) | ![白金存档位置](/images/Diamond-Pearl-Platinum/Starter/plat-starter.webp) | ![心金魂银存档位置](/images/HeartGold-SoulSilver/Starter/hgss-starter.webp) |
 
+</EqualColumnTable>
+
 ## 设置主机时间
 
-1. 将主机日期设置为：**<Starter4ConsoleSetDateString format="date" />**
-2. 开始设置时间为：**<Starter4ConsoleSetDateString format="time" />**，但不要立刻确认。
+1. 将主机日期设置为：**<Gen4ConsoleSetDateString format="date" />**
+2. 开始设置时间为：**<Gen4ConsoleSetDateString format="time" />**，但不要立刻确认。
 
 | 确认时间画面                                                    |
 | --------------------------------------------------------------- |
@@ -112,7 +110,7 @@
 5. 第二段计时结束时，立即按 `A` 读取存档。
 6. 若是白金版，请快速猛按按键以尽快领取御三家。
 
-<GetStarter4 />
+<Gen4EmbeddedTimer />
 
 </Step>
 

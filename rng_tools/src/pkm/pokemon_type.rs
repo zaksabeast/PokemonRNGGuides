@@ -1,6 +1,6 @@
 use num_enum::FromPrimitive;
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 
 #[derive(
     Default, Clone, Copy, Debug, Eq, PartialEq, FromPrimitive, Tsify, Serialize, Deserialize,
@@ -27,6 +27,33 @@ pub enum PokemonType {
     Dragon = 15,
     Dark = 16,
     Fairy = 17,
+}
+
+impl PokemonType {
+    #[cfg(test)]
+    pub fn from_str(str: &str) -> Self {
+        match str {
+            "Normal" => PokemonType::Normal,
+            "Fighting" => PokemonType::Fighting,
+            "Flying" => PokemonType::Flying,
+            "Poison" => PokemonType::Poison,
+            "Ground" => PokemonType::Ground,
+            "Rock" => PokemonType::Rock,
+            "Bug" => PokemonType::Bug,
+            "Ghost" => PokemonType::Ghost,
+            "Steel" => PokemonType::Steel,
+            "Fire" => PokemonType::Fire,
+            "Water" => PokemonType::Water,
+            "Grass" => PokemonType::Grass,
+            "Electric" => PokemonType::Electric,
+            "Psychic" => PokemonType::Psychic,
+            "Ice" => PokemonType::Ice,
+            "Dragon" => PokemonType::Dragon,
+            "Dark" => PokemonType::Dark,
+            "Fairy" => PokemonType::Fairy,
+            _ => panic!("Unknown type: {}", str),
+        }
+    }
 }
 
 pub const POKEMON_TYPE_COUNT: usize = 18;

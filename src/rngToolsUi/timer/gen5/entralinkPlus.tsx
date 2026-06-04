@@ -8,21 +8,20 @@ import {
   Flex,
   MultiTimer,
 } from "~/components";
+import { ZodSerializedDecimal, ZodSerializedOptional } from "~/utils/number";
 import {
-  capPrecision,
-  ZodSerializedDecimal,
-  ZodSerializedOptional,
-} from "~/utils/number";
-import {
-  Gen5EntralinkPlusTimerSettings,
-  rngTools,
   ZodConsole,
+  calibrateGen5EntralinkPlusTimer,
+  createGen5EntralinkPlusTimer,
+  minutesBefore,
 } from "~/rngTools";
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
 import { useTimerSettings } from "~/state/timerSettings";
 import { z } from "zod";
 import { useHydrate } from "~/hooks/useHydrate";
 import { hydrationLock, HydrationLock } from "~/utils/hydration";
+import { useStateHistory } from "~/hooks/useStateHistory";
+import { UndoButton } from "../undoButton";
 
 const TimerStateSchema = z.object({
   milliseconds: z.array(z.number()),
@@ -40,12 +39,43 @@ const timerStateAtom = atomWithPersistence(
   },
 );
 
-const FormStateSchema = z.object({
+const V0FormStateSchema = z
+  .object({
+    version: z.literal(0).optional(),
+    console: ZodConsole,
+    min_time_ms: ZodSerializedDecimal,
+    target_delay: ZodSerializedDecimal,
+    target_second: ZodSerializedDecimal,
+    target_advances: ZodSerializedDecimal,
+    calibration: ZodSerializedDecimal,
+    entralink_calibration: ZodSerializedDecimal,
+    frame_calibration: ZodSerializedDecimal,
+    delay_hit: ZodSerializedOptional(ZodSerializedDecimal),
+    second_hit: ZodSerializedOptional(ZodSerializedDecimal),
+    advance_hit: ZodSerializedOptional(ZodSerializedDecimal),
+  })
+  .transform((data) => ({
+    version: 1 as const,
+    console: data.console,
+    minTimeMs: data.min_time_ms,
+    targetDelay: data.target_delay,
+    targetSecond: data.target_second,
+    targetAdvances: data.target_advances,
+    calibration: data.calibration,
+    entralinkCalibration: data.entralink_calibration,
+    frameCalibration: data.frame_calibration,
+    delayHit: data.delay_hit,
+    secondHit: data.second_hit,
+    advanceHit: data.advance_hit,
+  }));
+
+const V1FormStateSchema = z.object({
+  version: z.literal(1),
   console: ZodConsole,
   minTimeMs: ZodSerializedDecimal,
   targetDelay: ZodSerializedDecimal,
   targetSecond: ZodSerializedDecimal,
-  targetAdvance: ZodSerializedDecimal,
+  targetAdvances: ZodSerializedDecimal,
   calibration: ZodSerializedDecimal,
   entralinkCalibration: ZodSerializedDecimal,
   frameCalibration: ZodSerializedDecimal,
@@ -54,14 +84,20 @@ const FormStateSchema = z.object({
   advanceHit: ZodSerializedOptional(ZodSerializedDecimal),
 });
 
+const FormStateSchema = z.discriminatedUnion("version", [
+  V0FormStateSchema,
+  V1FormStateSchema,
+]);
+
 export type FormState = z.infer<typeof FormStateSchema>;
 
 const initialValues: FormState = {
+  version: 1,
   console: "NdsSlot1",
   minTimeMs: 14000,
   targetDelay: 1200,
   targetSecond: 50,
-  targetAdvance: 100,
+  targetAdvances: 100,
   calibration: -95,
   entralinkCalibration: 256,
   frameCalibration: 0,
@@ -105,7 +141,7 @@ const fields: Field[] = [
   {
     label: "Target Advance",
     input: (
-      <FormikNumberInput<FormState> name="targetAdvance" numType="float" />
+      <FormikNumberInput<FormState> name="targetAdvances" numType="float" />
     ),
   },
   {
@@ -154,76 +190,60 @@ const InnerGen5EntralinkPlusTimer = ({
   initialSettings,
   onUpdate,
 }: InnerProps) => {
+  const updateTimerSettings = (formState: FormState) => {
+    const milliseconds = createGen5EntralinkPlusTimer(formState);
+    setTimer(
+      hydrationLock({
+        milliseconds,
+        minutesBeforeTarget: minutesBefore(milliseconds),
+      }),
+    );
+    onUpdate(hydrationLock(formState));
+  };
+
+  const history = useStateHistory({
+    initialSettings,
+    updateTimerSettings,
+  });
+
   const onSubmit: RngToolSubmit<FormState> = async (opts, { setValue }) => {
-    let updatedOpts = opts;
-    let settings: Gen5EntralinkPlusTimerSettings = {
-      console: opts.console,
-      min_time_ms: opts.minTimeMs,
-      target_delay: opts.targetDelay,
-      target_second: opts.targetSecond,
-      target_advances: opts.targetAdvance,
-      calibration: opts.calibration,
-      entralink_calibration: opts.entralinkCalibration,
-      frame_calibration: opts.frameCalibration,
-    };
+    let settings = opts;
 
     if (
       opts.secondHit != null &&
       opts.delayHit != null &&
       opts.advanceHit != null
     ) {
-      settings = await rngTools.calibrate_gen5_entralink_plus_timer(
+      const calibrated = calibrateGen5EntralinkPlusTimer({
         settings,
-        opts.secondHit,
-        opts.delayHit,
-        opts.advanceHit,
-      );
+        hitSecond: opts.secondHit,
+        hitDelay: opts.delayHit,
+        hitAdvances: opts.advanceHit,
+      });
       settings = {
+        ...calibrated,
+        version: 1,
         console: opts.console,
-        min_time_ms: capPrecision(settings.min_time_ms),
-        target_delay: capPrecision(settings.target_delay),
-        target_second: capPrecision(settings.target_second),
-        target_advances: capPrecision(settings.target_advances),
-        calibration: capPrecision(settings.calibration),
-        entralink_calibration: capPrecision(settings.entralink_calibration),
-        frame_calibration: capPrecision(settings.frame_calibration),
-      };
-      updatedOpts = {
-        console: settings.console,
-        minTimeMs: settings.min_time_ms,
-        targetDelay: settings.target_delay,
-        targetSecond: settings.target_second,
-        targetAdvance: settings.target_advances,
-        calibration: settings.calibration,
-        entralinkCalibration: settings.entralink_calibration,
-        frameCalibration: settings.frame_calibration,
         delayHit: null,
         secondHit: null,
         advanceHit: null,
       };
 
-      setValue("console", updatedOpts.console);
-      setValue("minTimeMs", updatedOpts.minTimeMs);
-      setValue("targetDelay", updatedOpts.targetDelay);
-      setValue("targetSecond", updatedOpts.targetSecond);
-      setValue("targetAdvance", updatedOpts.targetAdvance);
-      setValue("calibration", updatedOpts.calibration);
-      setValue("entralinkCalibration", updatedOpts.entralinkCalibration);
-      setValue("frameCalibration", updatedOpts.frameCalibration);
-      setValue("delayHit", updatedOpts.delayHit);
-      setValue("secondHit", updatedOpts.secondHit);
-      setValue("advanceHit", updatedOpts.advanceHit);
+      setValue("console", settings.console);
+      setValue("minTimeMs", settings.minTimeMs);
+      setValue("targetDelay", settings.targetDelay);
+      setValue("targetSecond", settings.targetSecond);
+      setValue("targetAdvances", settings.targetAdvances);
+      setValue("calibration", settings.calibration);
+      setValue("entralinkCalibration", settings.entralinkCalibration);
+      setValue("frameCalibration", settings.frameCalibration);
+      setValue("delayHit", settings.delayHit);
+      setValue("secondHit", settings.secondHit);
+      setValue("advanceHit", settings.advanceHit);
     }
 
-    const milliseconds =
-      await rngTools.create_gen5_entralink_plus_timer(settings);
-    setTimer(
-      hydrationLock({
-        milliseconds: [...milliseconds],
-        minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
-      }),
-    );
-    onUpdate(hydrationLock(updatedOpts));
+    updateTimerSettings(settings);
+    history.addIfNew(settings);
   };
 
   return (
@@ -241,6 +261,26 @@ const InnerGen5EntralinkPlusTimer = ({
         onSubmit={onSubmit}
         submitTrackerId="set_gen5_entralink_plus_timer"
         submitButtonLabel="Set Timer"
+        additionalButtons={
+          <UndoButton
+            history={history}
+            trackerId="undo_gen5_entralink_plus_calibration"
+            fields={{
+              version: true,
+              console: true,
+              minTimeMs: true,
+              targetDelay: true,
+              targetSecond: true,
+              targetAdvances: true,
+              calibration: true,
+              entralinkCalibration: true,
+              frameCalibration: true,
+              delayHit: true,
+              secondHit: true,
+              advanceHit: true,
+            }}
+          />
+        }
       />
     </Flex>
   );

@@ -108,7 +108,11 @@ export const formatRngDateTime = (
 };
 
 export const rngDate = (): RngDate => {
-  return toRngDate(dayjs());
+  return {
+    day: 1,
+    month: 1,
+    year: 2000,
+  };
 };
 
 export const toRngTime = (date: Dayjs): RngTime => {
@@ -124,7 +128,11 @@ export const fromRngTime = (time: RngTime): Dayjs => {
 };
 
 export const rngTime = (): RngTime => {
-  return toRngTime(dayjs());
+  return {
+    hour: 0,
+    minute: 0,
+    second: 0,
+  };
 };
 
 export const addRngTime = (date: RngDate, time: RngTime): RngDateTime => {

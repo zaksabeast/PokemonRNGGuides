@@ -1,10 +1,10 @@
-use super::calc_seed;
-use crate::gen4::seed_time4::{SeedTime4, SeedTime4Options};
+use crate::gen4::seed_time4::{SeedTime4, seedtime4_from_pairs, seedtime4_search_iter};
 use crate::rng::Rng;
 use crate::rng::mt::MT;
 use crate::{IdFilter, RngDateTime, gen3_tsv};
+use itertools::iproduct;
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -27,36 +27,36 @@ pub struct Id4 {
 
 #[wasm_bindgen]
 pub fn generate_dppt_ids(opts: Id4Options) -> Vec<Id4> {
-    let mut results = vec![];
     let Id4Options {
         min_delay,
         max_delay,
-        mut datetime,
+        datetime,
         filter,
     } = opts;
 
-    for seconds in 0..60 {
-        datetime.second = seconds;
-        for delay in min_delay..=max_delay {
-            let seed = calc_seed(&datetime, delay);
-            let mut rng = MT::new(seed);
+    let datetime_iter = (0..60).map(move |second| {
+        let mut datetime = datetime.clone();
+        datetime.second = second;
+        datetime
+    });
+
+    seedtime4_from_pairs(iproduct!(datetime_iter, min_delay..=max_delay))
+        .filter_map(|seed_time| {
+            let mut rng = MT::new(seed_time.seed);
             rng.rand::<u32>();
+
             let sidtid = rng.rand::<u32>();
             let tid = sidtid as u16;
             let sid = (sidtid >> 16) as u16;
 
-            if filter.filter_gen3(tid, sid) {
-                results.push(Id4 {
-                    seed_time: SeedTime4::new(seed, datetime.clone(), delay),
-                    tid,
-                    sid,
-                    tsv: gen3_tsv(tid, sid),
-                });
-            }
-        }
-    }
-
-    results
+            filter.filter_gen3(tid, sid).then(|| Id4 {
+                seed_time,
+                tid,
+                sid,
+                tsv: gen3_tsv(tid, sid),
+            })
+        })
+        .collect()
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -71,49 +71,28 @@ pub struct Id4SearchOptions {
 
 #[wasm_bindgen]
 pub fn search_dppt_ids(opts: Id4SearchOptions) -> Vec<Id4> {
-    let mut results = vec![];
+    seedtime4_search_iter(
+        opts.min_delay..=opts.max_delay,
+        opts.year,
+        None,
+        opts.force_second,
+    )
+    .filter_map(|seed_time| {
+        let mut rng = MT::new(seed_time.seed);
+        rng.rand::<u32>();
 
-    for delay in opts.min_delay..=opts.max_delay {
-        for ab in 0..=0xffu32 {
-            for cd in 0..24u32 {
-                let seed = ((ab << 24) | (cd << 16))
-                    .wrapping_add(delay)
-                    .wrapping_add(opts.year)
-                    .wrapping_sub(2000);
+        let sidtid = rng.rand::<u32>();
+        let tid = sidtid as u16;
+        let sid = (sidtid >> 16) as u16;
 
-                let mut rng = MT::new(seed);
-                rng.rand::<u32>();
-
-                let sidtid = rng.rand::<u32>();
-                let tid = sidtid as u16;
-                let sid = (sidtid >> 16) as u16;
-
-                if !opts.filter.filter_gen3(tid, sid) {
-                    continue;
-                }
-
-                let seed_time_opts = SeedTime4Options::new(
-                    seed,
-                    1,
-                    opts.year,
-                    None,
-                    delay..=delay,
-                    opts.force_second,
-                );
-
-                if let Some(seed_time) = seed_time_opts.find_seedtime() {
-                    results.push(Id4 {
-                        seed_time,
-                        tid,
-                        sid,
-                        tsv: gen3_tsv(tid, sid),
-                    });
-                }
-            }
-        }
-    }
-
-    results
+        opts.filter.filter_gen3(tid, sid).then(|| Id4 {
+            seed_time,
+            tid,
+            sid,
+            tsv: gen3_tsv(tid, sid),
+        })
+    })
+    .collect()
 }
 
 #[cfg(test)]

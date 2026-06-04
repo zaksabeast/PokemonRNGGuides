@@ -41,6 +41,7 @@ const columns: ResultColumn<RsTidTarget>[] = [
   {
     title: "Select",
     dataIndex: "advance",
+    disableVerticalPadding: true,
     render: (advance) => <SelectButton targetAdvance={advance} />,
   },
   { title: "Est. Time", dataIndex: "time" },

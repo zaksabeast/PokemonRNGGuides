@@ -1,26 +1,26 @@
 import { match } from "ts-pattern";
-import { Gen4GameAndConsole } from "../gen4types";
+import { gen4StateAtom } from "./state";
+import { useAtom } from "jotai";
 
-export type Gen4ShowIfProps<State extends Gen4GameAndConsole> = {
+export type Gen4ShowIfProps = {
   game?: string;
   isNdsDsi?: boolean;
   is3dsAltSettings?: boolean;
   is3dsNormalSettings?: boolean;
   children: React.ReactNode;
-  state: State;
 };
 
-export const Gen4ShowIf = <State extends Gen4GameAndConsole>({
-  children,
-  state,
-  ...settings
-}: Gen4ShowIfProps<State>) => {
+export const Gen4ShowIf = ({ children, ...settings }: Gen4ShowIfProps) => {
+  const [state] = useAtom(gen4StateAtom);
   const show = match(settings)
-    .with({ game: state.game }, () => true)
-    .with({ isNdsDsi: state.console === "NdsDsi" }, () => true)
-    .with({ is3dsAltSettings: state.console === "3dsAltSettings" }, () => true)
+    .with({ game: state.config.game }, () => true)
+    .with({ isNdsDsi: state.config.console === "NdsDsi" }, () => true)
     .with(
-      { is3dsNormalSettings: state.console === "3dsNormalSettings" },
+      { is3dsAltSettings: state.config.console === "3dsAltSettings" },
+      () => true,
+    )
+    .with(
+      { is3dsNormalSettings: state.config.console === "3dsNormalSettings" },
       () => true,
     )
     .otherwise(() => false);

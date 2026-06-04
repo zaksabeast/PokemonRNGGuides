@@ -1,0 +1,101 @@
+0	0	L 0	8C7F0AAC	No	Rash	0: Oblivious	0	31	0	31	26	31	Ghost	66	♀	Alert to sounds
+1	0	L 0	97C4AA2F	No	Naive	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+2	0	L 0	B716A675	No	Impish	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+3	0	L 0	D821CCC0	No	Timid	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+4	0	L 0	9A4EB343	No	Jolly	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+5	0	L 0	DBA252FB	No	Naughty	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Alert to sounds
+6	0	L 0	8B7D76C3	No	Brave	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+7	0	L 0	D8E57D67	No	Adamant	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+8	0	L 0	6C74A409	No	Sassy	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+9	0	L 0	9FA1DED3	No	Impish	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+10	0	L 0	A5595115	No	Lonely	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+11	0	L 0	6266D6F2	No	Mild	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+12	0	L 0	7005B724	No	Docile	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+13	0	L 0	4C2B3A57	No	Quirky	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Alert to sounds
+14	0	L 0	E44B3C46	No	Adamant	0: Oblivious	0	31	0	31	26	31	Ghost	66	♀	Mischievous
+15	0	L 0	0E84BDD8	No	Lonely	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+16	0	L 0	F6B29A58	No	Docile	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+17	0	L 0	45CCCD8C	No	Bashful	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+18	0	L 0	6229393A	No	Rash	0: Oblivious	0	31	0	31	26	31	Ghost	66	♀	Alert to sounds
+19	0	L 0	7A4842C1	No	Impish	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Alert to sounds
+20	0	L 0	CAAE7DE6	No	Lonely	0: Oblivious	0	31	0	31	26	31	Ghost	66	♀	Alert to sounds
+21	0	L 0	CFEA4A27	No	Rash	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+22	0	L 0	8765A857	No	Mild	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+23	0	L 0	7ADFC8AE	No	Naughty	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+24	0	L 0	916B5E58	No	Quirky	0: Oblivious	0	31	0	31	26	31	Ghost	66	♀	Alert to sounds
+25	0	L 0	648D8B51	No	Mild	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+26	0	L 0	ECF3E6A5	No	Rash	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+27	0	L 0	D6094219	No	Rash	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+28	0	L 0	122F6B4D	No	Quirky	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Alert to sounds
+29	0	L 0	565F9848	No	Bold	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+30	0	L 0	164E1B09	No	Docile	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+31	0	L 0	A5EE9794	No	Serious	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+32	0	L 0	052D0873	No	Jolly	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+33	0	L 0	5E4513D0	No	Timid	0: Oblivious	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+34	0	L 0	D52692F3	No	Calm	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+35	0	L 0	F5081EC5	No	Timid	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Alert to sounds
+36	0	L 0	C73547FE	No	Sassy	0: Oblivious	0	31	0	31	26	31	Ghost	66	♀	Mischievous
+37	0	L 0	23EE074F	No	Quirky	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+38	0	L 0	DEB91DAF	No	Hasty	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+39	0	L 0	DEBE09C0	No	Jolly	0: Oblivious	0	31	0	31	26	31	Ghost	66	♀	Mischievous
+40	0	L 0	FA86BB52	No	Adamant	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+41	0	L 0	793E6063	No	Bashful	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Alert to sounds
+42	0	L 0	CC95A7D8	No	Gentle	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+43	0	L 0	CD087CB1	No	Naive	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+44	0	L 0	762382F3	No	Gentle	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+45	0	L 0	853E031D	No	Relaxed	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+46	0	L 0	C7D0C293	No	Impish	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+47	0	L 0	ADCB0C93	No	Calm	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+48	0	L 0	1E473B8E	No	Relaxed	0: Oblivious	0	31	0	31	26	31	Ghost	66	♀	Alert to sounds
+49	0	L 0	B87B61A7	No	Gentle	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+50	0	L 0	A3D1DD20	No	Modest	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+51	0	L 0	94FF3FC1	No	Rash	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+52	0	L 0	24B2CD09	No	Careful	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+53	0	L 0	89914AB9	No	Mild	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+54	0	L 0	F1D5D27F	No	Hasty	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+55	0	L 0	C234A220	No	Bold	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+56	0	L 0	8597DA1F	No	Adamant	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+57	0	L 0	1B1CC2CA	No	Docile	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+58	0	L 0	6A2748F4	No	Lonely	0: Oblivious	0	31	0	31	26	31	Ghost	66	♀	Alert to sounds
+59	0	L 0	793DE097	No	Brave	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+60	0	L 0	43B9EAA3	No	Quirky	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+61	0	L 0	2FB379FE	No	Lonely	0: Oblivious	0	31	0	31	26	31	Ghost	66	♀	Mischievous
+62	0	L 0	C6342DCB	No	Jolly	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Alert to sounds
+63	0	L 0	BCA6AB72	No	Quirky	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+64	0	L 0	74C644B7	No	Hardy	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+65	0	L 0	376FD81C	No	Hardy	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+66	0	L 0	9184E322	No	Bashful	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+67	0	L 0	229DA880	No	Relaxed	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+68	0	L 0	04CF6880	No	Bashful	0: Oblivious	0	31	0	31	26	31	Ghost	66	♀	Alert to sounds
+69	0	L 0	52FAE7A4	No	Serious	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+70	0	L 0	9E1D5C35	No	Brave	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+71	0	L 0	26511785	No	Calm	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+72	0	L 0	9CB24E26	No	Timid	0: Oblivious	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+73	0	L 0	38EA0DE8	No	Bold	0: Oblivious	0	31	0	31	26	31	Ghost	66	♀	Mischievous
+74	0	L 0	9DEF62F4	No	Careful	0: Oblivious	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+75	0	L 0	62F0F111	No	Gentle	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+76	0	L 0	F199794F	No	Rash	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Alert to sounds
+77	0	L 0	E710B184	No	Mild	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+78	0	L 0	AE8BC669	No	Docile	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+79	0	L 0	732FEC2A	No	Modest	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+80	0	L 0	5C08B5BA	No	Relaxed	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+81	0	L 0	9CF1BA1F	No	Rash	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+82	0	L 0	6FE15378	No	Rash	0: Oblivious	0	31	0	31	26	31	Ghost	66	♀	Alert to sounds
+83	0	L 0	E7005101	No	Impish	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+84	0	L 0	B297F541	No	Rash	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+85	0	L 0	196A6FE7	No	Jolly	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+86	0	L 0	0F6AEFA9	No	Lax	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+87	0	L 0	F8456839	No	Impish	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+88	0	L 0	AAB13923	No	Rash	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+89	0	L 0	A7342F66	No	Adamant	0: Oblivious	0	31	0	31	26	31	Ghost	66	♀	Alert to sounds
+90	0	L 0	ABAEEC77	No	Timid	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+91	0	L 0	2BC0BB0B	No	Impish	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+92	0	L 0	35DBA1AE	No	Sassy	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+93	0	L 0	5BAFDC52	No	Impish	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+94	0	L 0	2101505B	No	Timid	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+95	0	L 0	C02CF780	No	Mild	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+96	0	L 0	50BFE98E	No	Gentle	0: Illuminate	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+97	0	L 0	9B9ACA63	No	Timid	1: Swarm	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+98	0	L 0	5D1C2635	No	Brave	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+99	0	L 0	53364B8C	No	Serious	0: Oblivious	0	31	0	31	26	31	Ghost	66	♀	Mischievous
+100	0	L 0	91F86A79	No	Bold	1: Tinted Lens	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about

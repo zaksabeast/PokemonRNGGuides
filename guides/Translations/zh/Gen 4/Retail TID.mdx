@@ -13,6 +13,8 @@
     language: "zh"
 ---
 
+<Gen4Reset />
+
 ## 视频教程
 
 <YouTubeTable
@@ -49,15 +51,7 @@
 
 请选择你正在游玩的游戏版本，然后继续下一步。
 
-<Gen4IdSetup />
-
-<Id4ShowIf is3dsNormalSettings>
-  [点这学习如何使用3DS Helper](/3ds-helper).
-</Id4ShowIf>
-
-<Id4ShowIf is3dsAltSettings>
-  [点这下载3DS Alt Settings](/3ds-alt-settings).
-</Id4ShowIf>
+<Gen4ConfigSetup />
 
 </Step>
 
@@ -75,8 +69,8 @@
 
 ## 准备阶段
 
-1. 将主机日期设置为 **<Id4ConsoleSetDateString format="date" />**。
-2. 进入设置时间界面，将时间设置为 **<Id4ConsoleSetDateString format="time" />**，但不要立刻确认。
+1. 将主机日期设置为 **<Gen4ConsoleSetDateString format="date" />**。
+2. 进入设置时间界面，将时间设置为 **<Gen4ConsoleSetDateString format="time" />**，但不要立刻确认。
 
 | 设置确认时间的界面                                              |
 | --------------------------------------------------------------- |
@@ -85,31 +79,35 @@
 ## 击中目标
 
 1. 同时按下 `A` 键以确认时间，并启动下方计时器。
-2. <Id4ShowIf is3dsNormalSettings>
+2. <Gen4ShowIf is3dsNormalSettings>
      退出主机上的设置，重启主机，然后启动游戏。
-   </Id4ShowIf>
-   <Id4ShowIf is3dsAltSettings>
+   </Gen4ShowIf>
+   <Gen4ShowIf is3dsAltSettings>
      按下 `Start` 键退出主机上的Alt Settings，然后启动游戏。
-   </Id4ShowIf>
-   <Id4ShowIf isNdsDsi>退出主机上的设置并重启主机。</Id4ShowIf>
-3. 第一声计时器响起时，<Id4ShowIf is3dsNormalSettings is3dsAltSettings>按 `L + R + Start + Select` 软重启游戏</Id4ShowIf><Id4ShowIf isNdsDsi>按 `A` 启动游戏</Id4ShowIf>。
+   </Gen4ShowIf>
+   <Gen4ShowIf isNdsDsi>退出主机上的设置并重启主机。</Gen4ShowIf>
+3. 第一声计时器响起时，<Gen4ShowIf is3dsNormalSettings is3dsAltSettings>按 `L + R + Start + Select` 软重启游戏</Gen4ShowIf><Gen4ShowIf isNdsDsi>按 `A` 启动游戏</Gen4ShowIf>。
 4. 进入角色命名画面，确保每次使用相同的角色名称和输入方式。
 5. 如果你之前已经进行过校准，并且需要翻转 Delay，请在角色名称输入时多切换一次大小写。日版游戏请在平假名与片假名之间切换。
 6. 到达生成 TID 之前的最后一个确认画面（见下图）。等待第二声计时器响起，同时按下 `A`。
    - 如果来不及在第二声响起前到达该界面，可以重新选择一个 Delay 更高的 TID 目标，以获得更多准备时间。
 7. 继续下一步，检查自己获得的 TID。
 
+<EqualColumnTable>
+
 | 钻石 & 珍珠                                                             | 白金                                                                           | 心金 & 魂银                                                           |
 | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
 | ![DP 最终界面](/images/Diamond-Pearl-Platinum/TID/DPTIDFinalScreen.png) | ![白金最终界面](/images/Diamond-Pearl-Platinum/TID/PlatinumTIDFinalScreen.png) | ![HGSS 最终界面](/images/HeartGold-SoulSilver/HGSSTIDFinalScreen.png) |
 
+</EqualColumnTable>
+
 ## 计时器
 
-<Id4ShowIf is3dsNormalSettings>
+<Gen4ShowIf is3dsNormalSettings>
   [点这学习如何使用3DS Helper](/3ds-helper).
-</Id4ShowIf>
+</Gen4ShowIf>
 
-<Id4Timer />
+<Gen4EmbeddedTimer />
 
 </Step>
 

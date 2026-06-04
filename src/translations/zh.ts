@@ -126,7 +126,6 @@ export const translations: Partial<Translations> = {
   "PokeNav Call": "PokeNav Call",
   "Hatched Nature": "Hatched Nature",
   "Hatched Gender": "Hatched Gender",
-  "Number of times to open the PokeDex": "Number of times to open the PokeDex",
   "Target caller": "Target caller",
   Offset: "Offset",
   "Match call": "Match call",
@@ -138,7 +137,6 @@ export const translations: Partial<Translations> = {
   "Roamer is active": "Roamer is active",
   "Female has everstone": "Female has everstone",
   "Female nature": "Female nature",
-  PokeDex: "PokeDex",
   "No Egg": "No Egg",
   Male: "Male",
   Female: "Female",
@@ -204,4 +202,6 @@ export const translations: Partial<Translations> = {
   "Delay Range ±": "Delay 范围 ±",
   "Seconds Range ±": "秒数范围 ±",
   "Advance Range ±": "帧数范围 ±",
+  "Learn how to use the 3DS Helper here": "点这学习如何使用3DS Helper",
+  "Download the 3DS Alt Settings app here": "点这下载3DS Alt Settings",
 };

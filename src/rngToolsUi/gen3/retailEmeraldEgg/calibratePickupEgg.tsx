@@ -31,19 +31,20 @@ import {
 } from "~/types/stat";
 import { getStatRange } from "~/types/statRange";
 import { z } from "zod";
+import { defaultHiddenPowerFilter } from "~/components/hiddenPowerInput";
 import pmap from "p-map";
 import { sortBy, startCase, mapValues } from "lodash-es";
-import { createGen3TimerAtom } from "~/hooks/useGen3Timer";
 import { ivMethods } from "./constants";
 import { Gen3Timer } from "~/components/gen3Timer";
 import { match, P } from "ts-pattern";
 import { Nullable } from "~/types/utils";
 import { getGen3SpeciesOptions } from "~/types/species";
-import { natureOptions } from "~/components/pkmFilter";
+import { getNatureInputProps } from "~/components/pkmFilter";
 import { atom, useAtom } from "jotai";
 import { formatOffset } from "~/utils/offsetSymbol";
-import { translateOptions, Translations } from "~/translations";
+import { Translations } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { createGen3TimerAtom } from "~/rngToolsUi/timer/atoms";
 
 type HeldEgg = {
   species: Species;
@@ -77,16 +78,10 @@ const HeldEggNatureSelect = () => {
   const t = useActiveRouteTranslations();
   const [heldEgg, setHeldEgg] = useCurrentlyHeldEgg();
 
-  const options = translateOptions({
-    t,
-    options: natureOptions.required,
-    sort: true,
-  });
-
   return (
     <Select<Nature>
       name="nature"
-      options={options}
+      {...getNatureInputProps(t)}
       value={heldEgg.nature}
       onChange={(value) => setHeldEgg((prev) => ({ ...prev, nature: value }))}
     />
@@ -140,6 +135,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
     title: t["Calibrate"],
     dataIndex: "advance",
+    disableVerticalPadding: true,
     render: (_, result) => (
       <CalibrateTimerButton
         type="gen3"
@@ -173,10 +169,9 @@ const getPotentialEggs = async (state: PickupEggState) => {
         initial_advances: Math.max(state.targetAdvance - 100, 0),
         max_advances: 200,
         delay: 0,
-        filter: {
-          min_ivs: minIvs,
-          max_ivs: maxIvs,
-        },
+        filter_min_ivs: minIvs,
+        filter_max_ivs: maxIvs,
+        filter_hidden_power: defaultHiddenPowerFilter,
       });
       return spreads.map((spread) => ({ ...spread, method }));
     },

@@ -1,6 +1,7 @@
 import { Button } from "~/components";
 import { message } from "antd";
-import { Gen3TimerAtom, useGen3Timer } from "~/hooks/useGen3Timer";
+import { Gen3TimerAtom } from "~/rngToolsUi/timer/atoms";
+import { useAtom } from "jotai";
 
 type Props = {
   hitAdvance: number;
@@ -9,10 +10,10 @@ type Props = {
 
 export const CalibrateButton = ({ hitAdvance, timer }: Props) => {
   const [messageApi, contextHolder] = message.useMessage();
-  const { calibrate } = useGen3Timer(timer);
+  const [, updateTimer] = useAtom(timer);
 
   const onClick = async () => {
-    await calibrate(hitAdvance);
+    await updateTimer({ hit_advance: hitAdvance });
     messageApi.success("Calibrated timer");
   };
 

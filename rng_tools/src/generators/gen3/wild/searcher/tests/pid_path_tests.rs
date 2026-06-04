@@ -1,7 +1,11 @@
 use super::*;
 use crate::{
     AbilityType, Gender, Ivs, Nature, PkmFilter,
-    gen3::{FASTEST_MODULO_CYCLE_24, Gen3Method, Gen3PidSpeedFilter, SLOWEST_MODULO_CYCLE_24},
+    gen3::{
+        FASTEST_MODULO_CYCLE_24, Gen3Method, Gen3PidSpeedFilter, SLOWEST_MODULO_CYCLE_24,
+        find_pid_paths_reverse_iv, find_pid_paths_reverse_pid_cycle_speed_low_high,
+        find_pid_paths_reverse_pid_cycle_speed_mid, searcher_reverse::METHODS_1234,
+    },
 };
 
 mod utils;
@@ -16,7 +20,7 @@ fn test_extend_iv_path_to_pid_paths() {
         seed: 0,
         iv_arc: IvFromStartArc::WithoutVBlank,
     };
-    let results = extend_iv_path_to_pid_paths::<true>(&opts, iv_path);
+    let results = extend_iv_path_to_pid_paths::<METHODS_1234>(&opts, iv_path);
     assert_eq!(
         results,
         ArrayVec::<PidPath, 3>::from([
@@ -40,7 +44,7 @@ fn test_find_pid_paths_filter_iv() {
 
     // The results for Wild1,Wild4 can be validated from the Static Searcher in Pokefinder.
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_reverse_iv::<true>(&opts)),
+        pid_paths_to_string(find_pid_paths_reverse_iv::<METHODS_1234>(&opts)),
         strs_to_string(&[
             "Seed: 35CC77B9, Adv: 176562487, Method: Wild2, PID: EF72C69F, Ivs: 31/31/31/31/31/31",
             "Seed: 35CC77B9, Adv: 176562487, Method: Wild3, PID: 7942C69F, Ivs: 31/31/31/31/31/31",
@@ -74,7 +78,7 @@ fn test_find_pid_paths_filter_nature() {
         filter: PkmFilter {
             min_ivs: Ivs::new(28, 31, 31, 31, 31, 31),
             max_ivs: Ivs::new(28, 31, 31, 31, 31, 31),
-            nature: Some(Nature::Adamant),
+            nature: PkmFilter::new_nature_filter(&[Nature::Adamant]),
             ..Default::default()
         },
         ..Default::default()
@@ -82,7 +86,7 @@ fn test_find_pid_paths_filter_nature() {
 
     // The results can be validated from the Static Searcher in Pokefinder.
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_reverse_iv::<true>(&opts)),
+        pid_paths_to_string(find_pid_paths_reverse_iv::<METHODS_1234>(&opts)),
         strs_to_string(&[
             "Seed: 9CB75889, Adv: 421027527, Method: Wild1, PID: 54A6DA00, Ivs: 28/31/31/31/31/31",
             "Seed: F2FC2E75, Adv: 2715152483, Method: Wild4, PID: 56E9EF05, Ivs: 28/31/31/31/31/31",
@@ -97,7 +101,7 @@ fn test_find_pid_paths_filter_gender() {
             min_ivs: Ivs::new(26, 0, 0, 0, 0, 0),
             max_ivs: Ivs::new(26, 0, 0, 0, 0, 0),
             gender: Some(Gender::Female),
-            nature: Some(Nature::Naughty),
+            nature: PkmFilter::new_nature_filter(&[Nature::Naughty]),
             ..Default::default()
         },
         ..Default::default()
@@ -105,7 +109,7 @@ fn test_find_pid_paths_filter_gender() {
 
     // The results can be validated from the Static Searcher in Pokefinder.
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_reverse_iv::<true>(&opts)),
+        pid_paths_to_string(find_pid_paths_reverse_iv::<METHODS_1234>(&opts)),
         strs_to_string(&[
             "Seed: 016846DF, Adv: 424209469, Method: Wild1, PID: 0F03CE78, Ivs: 26/0/0/0/0/0",
         ])
@@ -116,7 +120,7 @@ fn test_find_pid_paths_filter_gender() {
 fn test_find_pid_paths_filter_restrictive() {
     let opts = FindPidPathsOptions {
         filter: PkmFilter {
-            nature: Some(Nature::Adamant),
+            nature: PkmFilter::new_nature_filter(&[Nature::Adamant]),
             gender: Some(Gender::Female),
             min_ivs: Ivs::new(12, 29, 23, 10, 14, 13),
             max_ivs: Ivs::new(12, 29, 23, 10, 14, 13),
@@ -130,7 +134,7 @@ fn test_find_pid_paths_filter_restrictive() {
         "Seed: 081A6F6E, Adv: 3737251206, Method: Wild1, PID: 02FA9E49, Ivs: 12/29/23/10/14/13";
 
     // Sub-test 1
-    let pid_paths = extend_iv_path_to_pid_paths::<true>(
+    let pid_paths = extend_iv_path_to_pid_paths::<METHODS_1234>(
         &opts,
         IvPath {
             seed: 49961864,
@@ -144,13 +148,13 @@ fn test_find_pid_paths_filter_restrictive() {
     // Sub-test 2
     // The results can be validated from the Static Searcher in Pokefinder.
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_reverse_iv::<true>(&opts)),
+        pid_paths_to_string(find_pid_paths_reverse_iv::<METHODS_1234>(&opts)),
         vec![String::from(expected_res_str)]
     );
 }
 
 #[test]
-fn test_find_pid_paths_reverse_pid() {
+fn test_find_pid_paths_reverse_pid_low_high() {
     let mut opts = FindPidPathsOptions {
         gen3_filter: Gen3PkmFilter {
             pid_speed: Gen3PidSpeedFilter {
@@ -164,7 +168,7 @@ fn test_find_pid_paths_reverse_pid() {
     };
 
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_reverse_pid_cycle_speed::<true>(&opts)),
+        pid_paths_to_string(find_pid_paths_reverse_pid::<true>(&opts)),
         strs_to_string(&[
             "Seed: 091D0909, Adv: 13106503, Method: Wild3, PID: 00000013, Ivs: 15/2/18/19/21/1",
             "Seed: FC39FC71, Adv: 301677967, Method: Wild3, PID: 00000001, Ivs: 12/19/11/9/29/4",
@@ -267,7 +271,7 @@ fn test_find_pid_paths_reverse_pid() {
     opts.gen3_filter.pid_speed.min_cycle_count = SLOWEST_MODULO_CYCLE_24;
     opts.gen3_filter.pid_speed.max_cycle_count = SLOWEST_MODULO_CYCLE_24;
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_reverse_pid_cycle_speed::<true>(&opts)),
+        pid_paths_to_string(find_pid_paths_reverse_pid::<true>(&opts)),
         strs_to_string(&[
             "Seed: FCD6F078, Adv: 293090680, Method: Wild3, PID: 59999999, Ivs: 18/0/20/4/9/19",
             "Seed: 14855885, Adv: 386636595, Method: Wild1, PID: 5999999D, Ivs: 11/21/30/20/27/19",
@@ -312,5 +316,31 @@ fn test_find_pid_paths_reverse_pid() {
             "Seed: 9B3A8EE5, Adv: 3439770131, Method: Wild3, PID: 59999996, Ivs: 21/6/19/3/6/11",
             "Seed: DDAACB85, Adv: 3622933043, Method: Wild3, PID: 59999999, Ivs: 29/0/4/22/31/23"
         ])
+    );
+}
+
+#[test]
+fn test_find_pid_paths_reverse_pid_mid() {
+    let opts = FindPidPathsOptions {
+        gen3_filter: Gen3PkmFilter {
+            pid_speed: Gen3PidSpeedFilter {
+                active: true,
+                min_cycle_count: 400,
+                max_cycle_count: 400,
+            },
+            ..Default::default()
+        },
+        ..Default::default()
+    };
+
+    assert_eq!(
+        pid_paths_to_string(find_pid_paths_reverse_pid_cycle_speed_mid::<METHOD_1>(&opts).take(5)),
+        vec![
+            "Seed: DAE07302, Adv: 12779226, Method: Wild1, PID: 00000A27, Ivs: 18/28/3/13/8/18",
+            "Seed: EE39E587, Adv: 12926725, Method: Wild1, PID: 00BEE000, Ivs: 26/6/22/28/7/17",
+            "Seed: 57BA84B6, Adv: 23515406, Method: Wild1, PID: 0000099E, Ivs: 4/29/7/9/23/13",
+            "Seed: 2483ACC8, Adv: 44989128, Method: Wild1, PID: 00001565, Ivs: 21/0/13/14/27/22",
+            "Seed: F75CF67D, Adv: 83191115, Method: Wild1, PID: 0000075D, Ivs: 24/25/21/16/14/19"
+        ]
     );
 }

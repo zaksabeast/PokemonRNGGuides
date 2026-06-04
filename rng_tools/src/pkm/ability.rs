@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
@@ -229,7 +229,7 @@ pub enum Ability {
     SoulHeart,
     TanglingHair,
     Receiver,
-    PowerofAlchemy,
+    PowerOfAlchemy,
     BeastBoost,
     RKSSystem,
     ElectricSurge,
@@ -284,16 +284,16 @@ pub enum Ability {
     GuardDog,
     RockyPayload,
     WindPower,
-    ZerotoHero,
+    ZeroToHero,
     Commander,
     Electromorphosis,
     Protosynthesis,
     QuarkDrive,
-    GoodasGold,
-    VesselofRuin,
-    SwordofRuin,
-    TabletsofRuin,
-    BeadsofRuin,
+    GoodAsGold,
+    VesselOfRuin,
+    SwordOfRuin,
+    TabletsOfRuin,
+    BeadsOfRuin,
     OrichalcumPulse,
     HadronEngine,
     Opportunist,

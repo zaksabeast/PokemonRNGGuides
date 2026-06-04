@@ -1,6 +1,6 @@
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 use super::{Wild3GeneratorOptions, generate_gen3_wild};
@@ -50,7 +50,7 @@ pub fn generate_gen3_wild_distribution(
         ..opts.clone()
     };
 
-    let rng = Pokerng::with_advances(initial_seed, advances);
+    let rng = Pokerng::with_jump(initial_seed, advances);
     let (gen_results, cycle_counter) = generate_gen3_wild(rng, &opts, game_data);
     let search_results = gen_results
         .iter()
@@ -66,6 +66,7 @@ pub fn generate_gen3_wild_distribution(
                     .as_ref()
                     .unwrap()
                     .post_sweet_scent_range,
+                opts.action,
                 lead_cycle_speed,
             );
             (searcher_res, cycle_data)

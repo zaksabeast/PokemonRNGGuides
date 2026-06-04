@@ -1,9 +1,8 @@
 import { match } from "ts-pattern";
-import type { EmeraldLang } from "./emeraldLang";
 import { MarkdownCode } from "~/markdownExports/components";
 import { CopyToClipboardButton, Flex, ResultColumn } from "~/components";
 import React from "react";
-import { AceResult } from "~/rngTools";
+import { AceResult, EmeraldLang } from "~/rngTools";
 import { EURO_CHARS, JAP_CHARS } from "./chars";
 
 const SPACE = 0x00;

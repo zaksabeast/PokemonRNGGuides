@@ -39,7 +39,10 @@ export const EmeraldAceChangeSid = ({ sid }: Props) => {
   const [results, setResults] = React.useState<BoxNameResult[]>([]);
   const [hasError, setHasError] = React.useState(false);
 
-  React.useEffect(() => {}, [sid]);
+  React.useEffect(() => {
+    setResults([]);
+    setHasError(false);
+  }, [sid]);
 
   const manipName = `Change SID to ${sid}`;
 
@@ -50,15 +53,17 @@ export const EmeraldAceChangeSid = ({ sid }: Props) => {
     setResults([]);
 
     setTimeout(async () => {
-      const { lang } = opts;
-      const res = await rngTools.get_emerald_sid_box_names_result(sid, lang);
+      const res = await rngTools.get_emerald_sid_box_names_result(
+        sid,
+        opts.lang,
+      );
       if (res == null) {
         setHasError(true);
         return;
       }
 
       setResults(convertAceResultToBoxNames(res));
-    }, 100);
+    }, 100); // Without setTimeout, it's not obvious that something happened.
   };
 
   const getFields = (): Field[] => {

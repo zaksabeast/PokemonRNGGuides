@@ -6,7 +6,6 @@
 
 use arrayvec::ArrayVec;
 use once_cell::sync::Lazy;
-use serde::Serialize;
 use serde::{Deserialize, Serialize};
 use std::collections::{HashMap, HashSet};
 use tsify::Tsify;
@@ -46,9 +45,10 @@ pub(super) const R12: u32 = 12;
 const LR: u32 = 14;
 pub(super) const PC: u32 = 15;
 
-#[wasm_bindgen]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize)]
+#[derive(Clone, Copy, Default, Debug, Eq, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum EmeraldLang {
+    #[default]
     English,
     French,
     Italian,
@@ -57,8 +57,7 @@ pub enum EmeraldLang {
     Japanese,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
-// TODO: Fix cannot find attribute `tsify` in this scope `tsify` is in scope, but it is a crate, not an attribute error
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize, Tsify)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct AceResult {
     pub raw_boxes: Vec<Vec<u8>>,

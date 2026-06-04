@@ -3,7 +3,7 @@ import type { EmeraldLang } from "./emeraldLang";
 import { MarkdownCode } from "~/markdownExports/components";
 import { CopyToClipboardButton, Flex, ResultColumn } from "~/components";
 import React from "react";
-import {AceResult} from "~/rngTools";
+import { AceResult } from "~/rngTools";
 
 const SPACE = 0x00;
 const EURO_CHARS = [
@@ -670,9 +670,9 @@ export const getBoxNameColumns = (): ResultColumn<BoxNameResult>[] => {
   ];
 };
 
-export const convertAceResultToBoxNames = (res:AceResult) : BoxNameResult[] => {
+export const convertAceResultToBoxNames = (res: AceResult): BoxNameResult[] => {
   const allBoxesNamesFormatted = res.raw_boxes.map((bytes) =>
-    bytes.map((byte) => formatBoxCharacter(byte, lang)),
+    bytes.map((byte) => formatBoxCharacter(byte, res.lang)),
   );
 
   const allBoxesNamesTxt = allBoxesNamesFormatted
@@ -692,6 +692,5 @@ export const convertAceResultToBoxNames = (res:AceResult) : BoxNameResult[] => {
       boxNum: null,
       allBoxesNamesTxt,
     },
-  ]);
-}
-
+  ];
+};

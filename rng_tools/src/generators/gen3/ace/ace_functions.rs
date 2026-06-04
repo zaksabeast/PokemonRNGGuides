@@ -50,8 +50,8 @@ fn box_names_for_commands(
 }
 
 #[wasm_bindgen]
-pub fn get_emerald_sid_box_names_result(sid: u16, lang: EmeraldLang) -> Option<AceResult> {
-    box_names_for_commands(sid_program_bytes(sid, lang), lang)
+pub fn get_emerald_sid_box_names_result(sid: u16, lang: EmeraldLang) -> AceResult {
+    box_names_for_commands(sid_program_bytes(sid, lang), lang).unwrap()
 }
 
 #[wasm_bindgen]
@@ -120,7 +120,7 @@ mod tests {
             let lang = parse_lang(parts.next().unwrap());
 
             let actual = match manip {
-                "sid" => result_to_hex(get_emerald_sid_box_names_result(value as u16, lang)),
+                "sid" => result_to_hex(Some(get_emerald_sid_box_names_result(value as u16, lang))),
                 "seed" => result_to_hex(get_emerald_seed_box_names_result(value, lang)),
                 _ => panic!(
                     "text_input.txt:{} has unsupported manip {manip:?}",

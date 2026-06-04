@@ -17,10 +17,8 @@ use crate::{
 };
 
 use super::searcher_main::searcher_reverse::{
-    METHOD_1, METHOD_2, METHOD_3, METHOD_4, is_considered_method,
+    METHOD_1, METHOD_2, METHOD_3, METHOD_4, METHODS_1234, is_considered_method,
 };
-
-const MAX_REVERSE_PID_PATH_COUNT: usize = 10_000_000;
 
 /**
  * PidPath represents the RNG call sequence for PID + IV generation, which represent the full Pokémon (minus its species and level).
@@ -40,7 +38,7 @@ pub struct FindPidPathsOptions {
     pub filter: PkmFilter,
     pub gen3_filter: Gen3PkmFilter,
     pub encounter_gender_ratio: GenderRatio,
-    pub methods: Vec<Gen3Method>,
+    pub method_bitset: u8,
     pub tsv: u16,
     pub initial_seed: u32,
     pub max_result_count: usize,
@@ -55,12 +53,7 @@ impl Default for FindPidPathsOptions {
             filter: Default::default(),
             gen3_filter: Default::default(),
             encounter_gender_ratio: Default::default(),
-            methods: vec![
-                Gen3Method::Wild1,
-                Gen3Method::Wild2,
-                Gen3Method::Wild3,
-                Gen3Method::Wild4,
-            ],
+            method_bitset: METHODS_1234,
             tsv: Default::default(),
             initial_seed: Default::default(),
             max_result_count: 1,
@@ -166,59 +159,16 @@ impl std::fmt::Display for PidPath {
     }
 }
 
-pub enum PidPathStrategy {
-    ReverseIv,
-    ReversePid,
-    ByStepIv1,
-    ByStepIv2,
-    ByStepPid,
-}
-
-/** To improve performance, we want to apply the most restrictive criterias of the filter first. */
-pub fn determine_best_pid_path_strategy(opts: &FindPidPathsOptions) -> PidPathStrategy {
-    if get_limited_valid_pids(&opts.gen3_filter.pid_speed).is_some() {
-        return PidPathStrategy::ReversePid;
-    }
-
-    let iv1_restrict = get_iv1_filter_restrictiveness(&opts.filter);
-    let iv2_restrict = get_iv2_filter_restrictiveness(&opts.filter);
-    let iv_restrict = get_iv_filter_restrictiveness(&opts.filter);
-    let pid_restrict = get_pid_filter_restrictiveness(
-        &opts.filter,
-        &opts.gen3_filter,
-        Some(opts.encounter_gender_ratio),
-    );
-
-    if pid_restrict < iv_restrict {
-        return PidPathStrategy::ByStepPid;
-    }
-
-    if iv_restrict < 1f64 / 65_000_f64 {
-        return PidPathStrategy::ReverseIv;
-    }
-
-    if iv1_restrict < iv2_restrict {
-        PidPathStrategy::ByStepIv1
-    } else {
-        PidPathStrategy::ByStepIv2
-    }
-}
-
-// For all possible valid ivs, reverse-find the seeds that can generate them.
-// Very quick when they are few valid ivs (ex: 4+ perfect IVs)
-pub fn find_pid_paths_reverse_iv<const METHOD3: bool>(
+pub(super) fn sort_and_take_pid_paths(
+    pid_paths: impl Iterator<Item = PidPath>,
     opts: &FindPidPathsOptions,
 ) -> impl Iterator<Item = PidPath> {
-    reverse_find_iv_paths_from_min_max_ivs(
-        opts.filter.min_ivs,
-        opts.filter.max_ivs,
-        Some(&opts.filter.hidden_power),
-    )
-    .iter()
-    .flat_map(|iv_path| extend_iv_path_to_pid_paths::<METHOD3>(opts, *iv_path))
-    .sorted_by(|pid_path1, pid_path2| compare_paths(opts, pid_path1, pid_path2))
-    .collect::<Vec<_>>()
-    .into_iter()
+    // PidPath respects the Pokémon filter. However, we don't know yet if a setup exists that will trigger
+    // that particular encounter.
+    // At worst, the odds are ~1%. For safety, we keep at least 1000.
+    let take_count = std::cmp::max(1000, opts.max_result_count.saturating_mul(100));
+
+    pid_paths.k_smallest_by_key(take_count, |pid_path| get_path_score(opts, pid_path))
 }
 
 fn get_path_score(opts: &FindPidPathsOptions, pid_path: &PidPath) -> u32 {
@@ -268,60 +218,7 @@ pub(super) fn get_limited_valid_pids_for_cycle_speed_filter(
     }
 }
 
-// For all possible valid PIDs, reverse-find the seeds that can generate them.
-// Very quick when they are few valid PIDs
-// Limitation: Only supports when the filter is nearly the fastest or slowest PID modulo 24
-pub fn find_pid_paths_reverse_pid<const METHOD3: bool>(
-    opts: &FindPidPathsOptions,
-) -> impl Iterator<Item = PidPath> {
-    let wanted_pids = get_limited_valid_pids(&opts.gen3_filter.pid_speed)
-        .unwrap_or(FASTEST_DIVIDENDS_MOD_24.to_vec());
-
-    reverse_find_pid_low_paths_from_pids(&wanted_pids)
-        .iter()
-        .flat_map(|pid_low_path| extend_pid_low_path_to_pid_paths(opts, pid_low_path))
-        .sorted_by(|pid_path1, pid_path2| compare_paths(opts, pid_path1, pid_path2))
-        .collect::<Vec<_>>()
-        .into_iter()
-}
-
-// Progressively generate the seeds from advance 0, 1, 2 ... until enough are generated. Filter by iv1 first.
-pub fn find_pid_paths_by_step_iv1<const METHOD3: bool>(
-    opts: &FindPidPathsOptions,
-) -> impl Iterator<Item = PidPath> {
-    let base_rng = Pokerng::with_jump(opts.initial_seed, opts.initial_advances);
-    StateIterator::new(base_rng)
-        .take(opts.max_advances.saturating_add(1)) // missing +1 but overflows in wasm
-        .filter_map(|mut rng| find_iv_paths_from_iv1_seed(opts, &mut rng))
-        .flatten()
-        .flat_map(|iv_path| extend_iv_path_to_pid_paths::<METHOD3>(opts, iv_path))
-}
-
-// Progressively generate the seeds from advance 0, 1, 2 ... until enough are generated. Filter by iv2 first.
-pub fn find_pid_paths_by_step_iv2<const METHOD3: bool>(
-    opts: &FindPidPathsOptions,
-) -> impl Iterator<Item = PidPath> {
-    let base_rng = Pokerng::with_jump(opts.initial_seed, opts.initial_advances);
-    StateIterator::new(base_rng)
-        .take(opts.max_advances.saturating_add(1)) // missing +1 but overflows in wasm
-        .filter_map(|mut rng| find_iv_paths_from_iv2_seed(opts, &mut rng))
-        .flatten()
-        .flat_map(|iv_path| extend_iv_path_to_pid_paths::<METHOD3>(opts, iv_path))
-}
-
-// Progressively generate the seeds from advance 0, 1, 2 ... until enough are generated. Filter by pid first.
-pub fn find_pid_paths_by_step_pid<const METHOD3: bool>(
-    opts: &FindPidPathsOptions,
-) -> impl Iterator<Item = PidPath> {
-    let base_rng = Pokerng::with_jump(opts.initial_seed, opts.initial_advances);
-    StateIterator::new(base_rng)
-        .take(opts.max_advances.saturating_add(1)) // missing +1 but overflows in wasm
-        .filter_map(|rng| find_pid_low_paths_from_pid_low_seed::<METHOD3>(opts, rng))
-        .flatten()
-        .flat_map(|pid_low_path| extend_pid_low_path_to_pid_paths(opts, &pid_low_path))
-}
-
-pub fn extend_iv_path_to_pid_paths<const METHOD3: bool>(
+pub fn extend_iv_path_to_pid_paths<const METHODS: u8>(
     opts: &FindPidPathsOptions,
     iv_path: IvPath,
 ) -> ArrayVec<PidPath, 3> {

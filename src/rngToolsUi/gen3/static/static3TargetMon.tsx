@@ -18,7 +18,7 @@ import { useWatch } from "react-hook-form";
 import { getPossibleValuesForSpecies } from "./wild3TargetMon";
 import { FormState } from "./wild3TargetSetupSearcher";
 
-const emeraldWildGameData = getWild3EmeraldGameData();
+const emeraldStaticGameData = getStatic3EmeraldGameData();
 
 const getTargetMonFields = (species: Species): Field[] => {
   const targetMonFields: Field[] = [
@@ -27,22 +27,21 @@ const getTargetMonFields = (species: Species): Field[] => {
       input: (
         <FormikSelect<FormState, "species">
           name="species"
-          options={toOptions(emeraldWildGameData.species)}
+          options={toOptions(emeraldStaticGameData.species)}
         />
       ),
     },
+    //TODO: display map
     ...getPkmFilterFields({
       species,
       displayHiddenAbility: false,
     }),
-    ...getGen3PkmFilterFields({
-      max_size: gen3SpeciesHasVariableSize(species),
-    }),
+    ...getGen3PkmFilterFields(),
   ];
   return targetMonFields;
 };
 
-export const Wild3TargetMon = () => {
+export const Static3TargetMon = () => {
   const { setFieldValue } = useFormContext<FormState>();
   const species = useWatch<FormState, "species">({
     name: "species",
@@ -50,15 +49,10 @@ export const Wild3TargetMon = () => {
 
   const fields = getTargetMonFields(species);
 
-  // when user changes species, select all the possible setup values
   React.useEffect(() => {
     const possVals = getPossibleValuesForSpecies(species);
 
     setFieldValue("maps", possVals.maps);
-    setFieldValue("actions", possVals.actions);
-    setFieldValue("roamerStates", possVals.roamerStates);
-    setFieldValue("massOutbreakStates", possVals.massOutbreakStates);
-    setFieldValue("feebasStates", possVals.feebasStates);
   }, [species, setFieldValue]);
 
   return (

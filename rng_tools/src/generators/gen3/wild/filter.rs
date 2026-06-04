@@ -3,9 +3,7 @@ use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 use crate::{
-    AbilityType, GenderRatio, Nature, PkmFilter, Species,
-    gen3::{calculate_pid_speed, get_probability_that_random_pid_has_speed_range},
-    gen3_psv,
+    AbilityType, GenderRatio, Ivs, Nature, PkmFilter, Species, gen3::{calculate_pid_speed, get_probability_that_random_pid_has_speed_range}, gen3_psv
 };
 
 #[derive(Debug, Clone, Default, PartialEq, Tsify, Serialize, Deserialize)]
@@ -82,7 +80,7 @@ pub fn passes_pid_filter(
 }
 
 
-fn passes_ivs_filter(filter: &PkmFilter, ivs: &Ivs) -> bool {
+pub fn passes_ivs_filter(filter: &PkmFilter, ivs: &Ivs) -> bool {
     Ivs::filter(ivs, &filter.min_ivs, &filter.max_ivs)
         && filter.pass_filter_hidden_power(ivs)
 }

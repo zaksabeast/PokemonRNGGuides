@@ -228,95 +228,61 @@ pub fn reverse_find_pid_low_paths_from_pids(pids: &[u32]) -> Vec<PidLowPath> {
         .collect()
 }
 
-pub fn reverse_find_pid_low_paths_from_pid(pid: u32) -> Vec<PidLowPath> {
-    // We reuse the existing reverse IV logic for PID. It's not ideal because the first bit of IV is ignored
-    // but not the first bit of PID. This means the IV logic returns correct values and incorrect values.
-    // However, it's easy to filter them afterwards. The performance is not important.
-    let ivs = Ivs::new_g3((pid & 0xFFFF) as u16, (pid >> 16) as u16);
-    reverse_find_iv_paths_from_ivs(ivs.hp, ivs.atk, ivs.def, ivs.spa, ivs.spd, ivs.spe)
-        .iter()
-        .map(PidLowPath::from_iv_path)
-        .filter(|pid_low_path| pid_low_path.pid() == pid)
-        .collect::<Vec<_>>()
+/** pid has already been validated that it respects the filter */
+pub fn reverse_find_pid_low_paths_from_pid<const METHODS: u8>(pid: u32) -> ArrayVec<PidLowPath, 6> {
+    let mut pid_low_paths = ArrayVec::new();
+
+    if is_considered_method(METHODS, METHOD_1 | METHOD_2 | METHOD_4) {
+        reverse_find_pid_low_paths_with_arc::<0x41c64e6d, 0x6073, 0x67d3, 0xd3e, 0x4034>(
+            pid,
+            PidLowToIvArc::WithoutVBlank,
+            &mut pid_low_paths,
+        );
+    }
+
+    if is_considered_method(METHODS, METHOD_3) {
+        reverse_find_pid_low_paths_with_arc::<0xc2a29a69, 0xe97e7b6a, 0x3a89, 0x2e4c, 0x5831>(
+            pid,
+            PidLowToIvArc::WithVBlank,
+            &mut pid_low_paths,
+        );
+    }
+
+    pid_low_paths
 }
 
-/** returns all 524_288 possible PIDs that are shiny for the given tsv */
-pub fn get_iterator_shiny_pid(tsv: u16) {
-    const SHINY_BIT_COUNT: u32 = 3;
-    const TSV_BIT_MASKS: [u32; 64] = [
-        // this list assumes SHINY_BIT_COUNT = 3
-        0b00000000000000000000000000000000,
-        0b00000000000000000000000000000001,
-        0b00000000000000000000000000000010,
-        0b00000000000000000000000000000011,
-        0b00000000000000000000000000000100,
-        0b00000000000000000000000000000101,
-        0b00000000000000000000000000000110,
-        0b00000000000000000000000000000111,
-        0b00000000000000010000000000000000,
-        0b00000000000000010000000000000001,
-        0b00000000000000010000000000000010,
-        0b00000000000000010000000000000011,
-        0b00000000000000010000000000000100,
-        0b00000000000000010000000000000101,
-        0b00000000000000010000000000000110,
-        0b00000000000000010000000000000111,
-        0b00000000000000100000000000000000,
-        0b00000000000000100000000000000001,
-        0b00000000000000100000000000000010,
-        0b00000000000000100000000000000011,
-        0b00000000000000100000000000000100,
-        0b00000000000000100000000000000101,
-        0b00000000000000100000000000000110,
-        0b00000000000000100000000000000111,
-        0b00000000000000110000000000000000,
-        0b00000000000000110000000000000001,
-        0b00000000000000110000000000000010,
-        0b00000000000000110000000000000011,
-        0b00000000000000110000000000000100,
-        0b00000000000000110000000000000101,
-        0b00000000000000110000000000000110,
-        0b00000000000000110000000000000111,
-        0b00000000000001000000000000000000,
-        0b00000000000001000000000000000001,
-        0b00000000000001000000000000000010,
-        0b00000000000001000000000000000011,
-        0b00000000000001000000000000000100,
-        0b00000000000001000000000000000101,
-        0b00000000000001000000000000000110,
-        0b00000000000001000000000000000111,
-        0b00000000000001010000000000000000,
-        0b00000000000001010000000000000001,
-        0b00000000000001010000000000000010,
-        0b00000000000001010000000000000011,
-        0b00000000000001010000000000000100,
-        0b00000000000001010000000000000101,
-        0b00000000000001010000000000000110,
-        0b00000000000001010000000000000111,
-        0b00000000000001100000000000000000,
-        0b00000000000001100000000000000001,
-        0b00000000000001100000000000000010,
-        0b00000000000001100000000000000011,
-        0b00000000000001100000000000000100,
-        0b00000000000001100000000000000101,
-        0b00000000000001100000000000000110,
-        0b00000000000001100000000000000111,
-        0b00000000000001110000000000000000,
-        0b00000000000001110000000000000001,
-        0b00000000000001110000000000000010,
-        0b00000000000001110000000000000011,
-        0b00000000000001110000000000000100,
-        0b00000000000001110000000000000101,
-        0b00000000000001110000000000000110,
-        0b00000000000001110000000000000111,
-    ];
+fn reverse_find_pid_low_paths_with_arc<
+    const MULT: u32,
+    const ADD: u32,
+    const MOD: u32,
+    const PAT: u32,
+    const INC: u32,
+>(
+    pid: u32,
+    pid_low_to_iv_arc: PidLowToIvArc,
+    pid_low_paths: &mut ArrayVec<PidLowPath, 6>,
+) {
+    let first = pid << 16;
+    let second = pid & 0xffff0000;
 
-    let tsv_shift3 = (tsv as u32) << 3;
+    let additional_add = if pid_low_to_iv_arc == PidLowToIvArc::WithoutVBlank {
+        0
+    } else {
+        ADD
+    };
 
-    (0..=0x2000u32).map(|high_pid_high_bits| {
-        let low_pid_high_bits = (high_pid_high_bits ^ tsv_shift3);
-        let high_bits = (high_pid_high_bits << 19) & low_pid_high_bits;
+    let diff = second.wrapping_sub(first.wrapping_mul(MULT).wrapping_add(additional_add)) >> 16;
+    let start = ((diff.wrapping_mul(MOD).wrapping_add(INC) >> 16).wrapping_mul(PAT)) % MOD;
 
-        TSV_BIT_MASKS.map(|tsv_bit_mask| high_bits & tsv_bit_mask)
-    })
+    for low in (start..0x10000).step_by(MOD as usize) {
+        let seed_after_pid_low = first | low;
+        if seed_after_pid_low.wrapping_mul(MULT).wrapping_add(ADD) & 0xffff0000 == second {
+            let mut rng = Pokerng::new(seed_after_pid_low);
+            rng.prev_rand();
+            pid_low_paths.push(PidLowPath {
+                seed: rng.seed(),
+                pid_low_to_iv_arc,
+            });
+        }
+    }
 }

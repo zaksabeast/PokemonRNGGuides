@@ -1,0 +1,155 @@
+import { Wild3PaintingAdvsAndDur, Wild3SearcherResultMon } from "~/rngTools";
+import {
+  Flex,
+  Icon,
+  Link,
+  ResultColumn,
+  RngToolForm,
+  RngToolSubmit,
+} from "~/components";
+import { formatLargeInteger } from "~/utils/formatLargeInteger";
+import { formatProbability } from "~/utils/formatProbability";
+import {
+  pkmFilterSchema,
+  getPkmFilterInitialValues,
+} from "~/components/pkmFilter";
+import React from "react";
+import { z } from "zod";
+import { gen3Methods } from "~/types";
+
+import { sortBy } from "lodash-es";
+import { FlattenIvs, ivColumns } from "~/rngToolsUi/shared/ivColumns";
+import { Tooltip } from "antd";
+import {
+  gen3PkmFilterSchema,
+  getGen3PkmFilterInitialValues,
+} from "~/components/gen3PkmFilter";
+
+import {
+  gen3Leads,
+  wild3RoamerStates,
+  wild3MassOutbreakStates,
+  wild3FeebasStates,
+  wild3Actions,
+} from "./utils";
+import { formatDuration } from "~/utils/formatDuration";
+import { formatHex } from "~/utils/formatHex";
+import { Wild3TargetMon } from "./wild3TargetMon.component";
+import { searchWild3Target } from "./searchWild3Target";
+import { Stati3SetupFilter } from "./static3SetupFilter.component";
+import { Wild3ResultSetupInfos } from "./wild3ResultSetupInfos";
+import { getWild3EmeraldGameData } from "./data/wild3GameData";
+
+const emeraldWildGameData = getWild3EmeraldGameData();
+import { GBA_FPS } from "~/utils/consts";
+import { TargetSetup } from "./wild3TargetSetupInput";
+import { Pokeblock, wild3SafariPokeblockSearchOpt } from "~/types/pokeblock";
+import { Wild3LeadCycleSpeedSelectorWithBtn } from "./wild3LeadCycleSpeedSelector";
+
+const Validator = z
+  .object({
+    species: z.enum(emeraldWildGameData.species),
+    tid: z.number().int().min(0).max(0xffff),
+    sid: z.number().int().min(0).max(0xffff),
+    methods: z.array(z.enum(gen3StaticMethods)).min(1),
+    usingPaintingReseeding: z.boolean(),
+    letSearcherFindPaintingSeed: z.boolean(),
+    showAdvancedPaintingSettings: z.boolean(),
+    initial_seed: z.number().int().min(0).max(0xffffffff),
+    initial_advances: z.number().int().min(0).max(0xffffffff),
+    min_frame_before_painting: z.number().int().min(0).max(0xffffffff),
+    min_adv_after_painting: z.number().int().min(0).max(0xffffffff),
+    max_advances: z.number().int().min(0).max(0xffffffff),
+    max_result_count: z.number().int().min(1),
+  })
+  .extend(pkmFilterSchema.shape)
+  .extend(gen3PkmFilterSchema.shape);
+
+export type FormState = z.infer<typeof Validator>;
+
+export type PidPathResult = FlattenIvs<
+  Static3SearcherResultMon &
+    Wild3PaintingAdvsAndDur & {
+      uid: number;
+      pidCycleCount: number;
+      earliestAdvance: number;
+      initial_seed: number;
+    }
+>;
+
+
+const getInitialValues = (): FormState => {
+  return {
+    species: "Abra",
+    tid: 0,
+    sid: 0,
+    maps: [],
+    methods: ["Static1"],
+    usingPaintingReseeding: false,
+    letSearcherFindPaintingSeed: true,
+    showAdvancedPaintingSettings: false,
+    initial_seed: 0,
+    initial_advances: 1000,
+    min_frame_before_painting: 800,
+    min_adv_after_painting: 7000,
+    max_advances: 10_000_000,
+    max_result_count: 20,
+    ...getPkmFilterInitialValues(),
+    ...getGen3PkmFilterInitialValues(),
+  };
+};
+
+type Props = {
+  setTargetSetup: (targetSetup: TargetSetup) => void;
+};
+
+export const Static3TargetSetupSearcher = ({
+  setTargetSetup: setTargetSetupProp,
+}: Props) => {
+  const [pidPathResults, setPidPathResults] = React.useState<PidPathResult[]>(
+    [],
+  );
+  const [selectedPidPathResult, setSelectedPidPathResult] =
+    React.useState<PidPathResult | null>(null);
+
+  const onSubmit: RngToolSubmit<FormState> = async (values) => {
+    const pidPathResults = await searchStatic3Target(values);
+
+    setPidPathResults(
+      sortBy(
+        pidPathResults.filter((el) => el != null),
+        "wait_dur",
+      ),
+    );
+    setSelectedPidPathResult(null);
+  };
+
+  const initialValues = getInitialValues();
+
+  const pidPathColumns = getGeneratorPokemonResultColumns<PidPathResult>();
+
+  React.useEffect(() => {
+    //NO_PROD
+    //setTargetSetupProp?.();
+  }, [selectedPidPathResult]);
+
+  return (
+    <>
+      <RngToolForm<FormState, PidPathResult>
+        columns={pidPathColumns}
+        results={pidPathResults}
+        validationSchema={Validator}
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        submitTrackerId="wild3_find_target"
+        rowKey="uid"
+        onClickResultRow={setSelectedPidPathResult}
+      >
+        <Static3TargetMon />
+        <br />
+        <Static3SetupFilter />
+      </RngToolForm>
+
+    </>
+  );
+};

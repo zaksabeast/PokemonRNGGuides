@@ -137,7 +137,7 @@ fn test_search_perf_find_pid_paths_reverse_iv() {
             max_ivs: Ivs::new(20, 20, 20, 20, 20, 20), // ~85M
             ..Default::default()
         },
-        methods: vec![Gen3Method::Wild1],
+        method_bitset: METHOD_1,
         tsv: 1234,
         ..Default::default()
     };
@@ -158,7 +158,7 @@ fn test_search_perf_find_pid_paths_reverse_pid_shiny() {
             max_ivs: Ivs::new(15, 15, 15, 15, 15, 15), // ~16M
             ..Default::default()
         },
-        methods: vec![Gen3Method::Wild1],
+        method_bitset: METHOD_1,
         tsv: 1234,
         ..Default::default()
     };

@@ -1,7 +1,15 @@
+// This code is inspired by https://github.com/E-Sh4rk/CodeGenerator
+// It returns identical output for identical inputs.
+
+// Limitation: It only supports what's necessary for changing SID and RNG reseeding for
+// English, French, Spanish, Italian, German languages.
+
 use arrayvec::ArrayVec;
 use once_cell::sync::Lazy;
 use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::collections::{HashMap, HashSet};
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 const MAX_CARDS: usize = 7;
@@ -50,8 +58,11 @@ pub enum EmeraldLang {
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
+// TODO: Fix cannot find attribute `tsify` in this scope `tsify` is in scope, but it is a crate, not an attribute error
+#[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct AceResult {
     pub raw_boxes: Vec<Vec<u8>>,
+    pub lang: EmeraldLang,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
@@ -695,8 +706,7 @@ pub(super) fn tweak_sbc(
 
 fn certificate_exit(lang: EmeraldLang) -> Option<(usize, Vec<CommandBytes>)> {
     let variants: &[ExitInstruction] = match lang {
-        // TODO: Code for Japanese is invalid. Japanese isn't supported.
-        EmeraldLang::English | EmeraldLang::Japanese => &[
+        EmeraldLang::English => &[
             ExitInstruction {
                 op: ExitOp::Sbc,
                 rd: R12,
@@ -832,6 +842,7 @@ fn certificate_exit(lang: EmeraldLang) -> Option<(usize, Vec<CommandBytes>)> {
                 imm: 0xd6,
             },
         ],
+        EmeraldLang::Japanese => panic!("japanese exit is not supported"),
     };
 
     let mut out = vec![

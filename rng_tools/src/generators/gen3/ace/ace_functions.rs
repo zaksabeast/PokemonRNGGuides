@@ -1,9 +1,8 @@
-#[cfg(test)]
-use crate::gen3::ace::ace_code_generator::NAME_SIZE;
 use crate::gen3::ace::ace_code_generator::{
     AceResult, CommandBytes, EmeraldLang, PC, R11, R12, cached_constants, data_proc,
     fit_codes_into_boxes, mov_like, preferred_bytes, str_pre, strh, tweak_mov, tweak_sbc,
 };
+use wasm_bindgen::prelude::*;
 
 fn sid_program_bytes(sid: u16, lang: EmeraldLang) -> Option<Vec<CommandBytes>> {
     let constants = cached_constants(lang, false);
@@ -47,13 +46,15 @@ fn box_names_for_commands(
     lang: EmeraldLang,
 ) -> Option<AceResult> {
     let raw_boxes = fit_codes_into_boxes(&commands?, lang)?;
-    Some(AceResult { raw_boxes })
+    Some(AceResult { raw_boxes, lang })
 }
 
+#[wasm_bindgen]
 pub fn get_emerald_sid_box_names_result(sid: u16, lang: EmeraldLang) -> Option<AceResult> {
     box_names_for_commands(sid_program_bytes(sid, lang), lang)
 }
 
+#[wasm_bindgen]
 pub fn get_emerald_seed_box_names_result(seed: u32, lang: EmeraldLang) -> Option<AceResult> {
     box_names_for_commands(seed_program_bytes(seed, lang), lang)
 }
@@ -61,6 +62,7 @@ pub fn get_emerald_seed_box_names_result(seed: u32, lang: EmeraldLang) -> Option
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::gen3::ace::ace_code_generator::NAME_SIZE;
 
     fn parse_hex(value: &str) -> u32 {
         u32::from_str_radix(value.strip_prefix("0x").unwrap_or(value), 16).unwrap()
@@ -104,7 +106,7 @@ mod tests {
     }
 
     // cargo test --release emerald_ace -- --ignored
-    // Input and output files are used instead of inlining data, in order to simplify tests in multiple implementations.
+    // Input and output files are used instead of inlining data, to support different execution contexts.
     #[test]
     #[ignore]
     fn emerald_ace() {

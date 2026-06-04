@@ -64,3 +64,40 @@ pub mod arrayvec {
         })
     }
 }
+
+pub mod vec_vec {
+    use serde::{
+        ser::SerializeSeq,
+        Serialize, Serializer,
+    };
+
+    pub fn serialize<S, T>(vec: &[Vec<T>], serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+        T: Serialize,
+    {
+        let mut seq = serializer.serialize_seq(Some(vec.len()))?;
+        for inner in vec {
+            seq.serialize_element(&InnerVec(inner))?;
+        }
+        seq.end()
+    }
+
+    struct InnerVec<'a, T>(&'a [T]);
+
+    impl<T> Serialize for InnerVec<'_, T>
+    where
+        T: Serialize,
+    {
+        fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+        where
+            S: Serializer,
+        {
+            let mut seq = serializer.serialize_seq(Some(self.0.len()))?;
+            for item in self.0 {
+                seq.serialize_element(item)?;
+            }
+            seq.end()
+        }
+    }
+}

@@ -1,6 +1,9 @@
 import { match } from "ts-pattern";
 import type { EmeraldLang } from "./emeraldLang";
 import { MarkdownCode } from "~/markdownExports/components";
+import { CopyToClipboardButton, Flex, ResultColumn } from "~/components";
+import React from "react";
+import {AceResult} from "~/rngTools";
 
 const SPACE = 0x00;
 const EURO_CHARS = [
@@ -535,7 +538,7 @@ const JAP_UNAVAILABLE = new Set([
   0xfc, 0xfd, 0xfe, 0xff,
 ]);
 
-export const charset = (
+export const getCharset = (
   lang: EmeraldLang,
 ): {
   lang: EmeraldLang;
@@ -552,27 +555,27 @@ export const charset = (
   return { lang, chars };
 };
 
-export const isCodeAvailable = (code: number, lang: EmeraldLang) => {
+export const isCharAvailable = (char: number, lang: EmeraldLang) => {
   if (lang === "Japanese") {
-    return code >= 0 && code <= 0xff && !JAP_UNAVAILABLE.has(code);
+    return char >= 0 && char <= 0xff && !JAP_UNAVAILABLE.has(char);
   }
-  if (lang === "German" && GERMAN_EXTRA_AVAILABLE.has(code)) {
+  if (lang === "German" && GERMAN_EXTRA_AVAILABLE.has(char)) {
     return true;
   }
-  return EURO_AVAILABLE.has(code);
+  return EURO_AVAILABLE.has(char);
 };
 
-export type EmeraldCharset = ReturnType<typeof charset>;
+export type EmeraldCharset = ReturnType<typeof getCharset>;
 
-const formatBoxCharacterAsTxt = (code: number, cs: EmeraldCharset) => {
-  if (code === SPACE) {
+const formatBoxCharacterAsTxt = (char: number, cs: EmeraldCharset) => {
+  if (char === SPACE) {
     return " ";
   }
 
-  if (!isCodeAvailable(code, cs.lang)) {
+  if (!isCharAvailable(char, cs.lang)) {
     return "✖";
   }
-  return cs.chars[code] ?? "";
+  return cs.chars[char] ?? "";
 };
 
 export type FormattedBoxCharacter = {
@@ -581,16 +584,17 @@ export type FormattedBoxCharacter = {
 };
 
 export const formatBoxCharacter = (
-  code: number,
+  char: number,
   lang: EmeraldLang,
 ): FormattedBoxCharacter => {
-  const cs = charset(lang);
+  const cs = getCharset(lang);
 
-  const charTxt = formatBoxCharacterAsTxt(code, cs);
-  const charHtml = code === SPACE ? "\u00a0" : charTxt;
+  const charTxt = formatBoxCharacterAsTxt(char, cs);
+  const charHtml = char === SPACE ? "\u00a0" : charTxt;
   const title = match(charTxt)
     .with(" ", () => "Space")
-    .with("l", () => "Lowercase l letter")
+    .with("l", () => "Lowercase L letter")
+    .with("I", () => "Uppercase i letter")
     .with("1", () => "Number 1")
     .with("o", () => "Lowercase o letter")
     .with("O", () => "Uppercase O letter")
@@ -606,3 +610,88 @@ export const formatBoxCharacter = (
     ),
   };
 };
+
+let nextUid = 0;
+export type BoxNameResult =
+  | {
+      uid: number;
+      boxNum: null;
+      allBoxesNamesTxt: string;
+    }
+  | {
+      uid: number;
+      boxNum: number;
+      formattedBoxChars: FormattedBoxCharacter[];
+    };
+
+export const getBoxNameColumns = (): ResultColumn<BoxNameResult>[] => {
+  return [
+    {
+      title: "Box",
+      dataIndex: "boxNum",
+      render: (boxNum) => {
+        if (boxNum === null) {
+          return "All Boxes";
+        }
+        return `Box ${boxNum}`;
+      },
+    },
+    {
+      title: "Box Name",
+      dataIndex: "boxNum",
+      render: (_, values) => {
+        if (values.boxNum === null) {
+          return (
+            <CopyToClipboardButton text={values.allBoxesNamesTxt} size="small">
+              {""}
+            </CopyToClipboardButton>
+          );
+        }
+
+        const boxNameTxt = values.formattedBoxChars
+          .map((byte) => byte.charTxt)
+          .join("");
+        return (
+          <Flex gap={30}>
+            <CopyToClipboardButton text={boxNameTxt} size="small">
+              {""}
+            </CopyToClipboardButton>{" "}
+            <Flex gap={5}>
+              {values.formattedBoxChars.map((byte, i) => (
+                <React.Fragment key={`${i}-${byte.charTxt}`}>
+                  {byte.charReact}
+                </React.Fragment>
+              ))}
+            </Flex>
+          </Flex>
+        );
+      },
+    },
+  ];
+};
+
+export const convertAceResultToBoxNames = (res:AceResult) : BoxNameResult[] => {
+  const allBoxesNamesFormatted = res.raw_boxes.map((bytes) =>
+    bytes.map((byte) => formatBoxCharacter(byte, lang)),
+  );
+
+  const allBoxesNamesTxt = allBoxesNamesFormatted
+    .map((bytes) => bytes.map((byte) => byte.charTxt).join(""))
+    .join("\n");
+
+  return [
+    ...allBoxesNamesFormatted.map((box, i) => {
+      return {
+        uid: nextUid++,
+        boxNum: i + 1,
+        formattedBoxChars: box,
+      };
+    }),
+    {
+      uid: nextUid++,
+      boxNum: null,
+      allBoxesNamesTxt,
+    },
+  ]);
+}
+

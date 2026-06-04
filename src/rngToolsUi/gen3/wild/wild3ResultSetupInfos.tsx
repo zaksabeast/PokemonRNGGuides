@@ -359,10 +359,26 @@ const getResultSetupInfoColumns = ({
 type Props = {
   selectedPidPathResult: PidPathResult;
   rngManipulatedLeadPid: boolean;
+  tidForAceSid: number | null;
   setTargetSetup: (targetSetup: TargetSetup | null) => void;
 };
 
-const setupInfoToTargetSetup = (setupInfo: ResultSetupInfo): TargetSetup => {
+const getSidResultingInShiny = (pid: number, tid: number) => {
+  const pidh = pid >>> 16;
+  const pidl = pid & 0xffff;
+  const psv = (pidh ^ pidl) >>> 3;
+  return (tid ^ ((psv << 3) | (tid & 0x7))) & 0xffff;
+};
+
+const setupInfoToTargetSetup = (
+  setupInfo: ResultSetupInfo,
+  tidForAceSid: number | null,
+): TargetSetup => {
+  const aceSid =
+    tidForAceSid == null
+      ? null
+      : getSidResultingInShiny(setupInfo.pid, tidForAceSid);
+
   return {
     map: setupInfo.mapId,
     action: setupInfo.action,
@@ -377,6 +393,7 @@ const setupInfoToTargetSetup = (setupInfo: ResultSetupInfo): TargetSetup => {
     lead: setupInfo.lead,
     requiresWhiteFlute: setupInfo.requiresWhiteFlute,
     safariPokeblock: setupInfo.used_safari_pokeblock ?? null,
+    aceSid,
   };
 };
 
@@ -384,6 +401,7 @@ export const Wild3ResultSetupInfos = ({
   setTargetSetup,
   selectedPidPathResult,
   rngManipulatedLeadPid,
+  tidForAceSid,
 }: Props) => {
   const showMassOutbreak = selectedPidPathResult.resultSetupInfos.some(
     (setup) => setup.mass_outbreak_state !== "Inactive",
@@ -410,7 +428,9 @@ export const Wild3ResultSetupInfos = ({
 
   const onClickResultRow = (setupInfo: ResultSetupInfo | null) => {
     const newTargetSetup =
-      setupInfo == null ? null : setupInfoToTargetSetup(setupInfo);
+      setupInfo == null
+        ? null
+        : setupInfoToTargetSetup(setupInfo, tidForAceSid);
     setTargetSetup(newTargetSetup);
   };
 

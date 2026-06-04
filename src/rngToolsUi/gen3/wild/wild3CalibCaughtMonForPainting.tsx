@@ -47,6 +47,7 @@ const createTargetSetupAtVictoryRoad = (targetPaintingAdvs: {
     targetMethod: "Wild1", // Unused
     requiresWhiteFlute: false, // Unused
     safariPokeblock: null,
+    aceSid: null, // Unused
   };
 };
 

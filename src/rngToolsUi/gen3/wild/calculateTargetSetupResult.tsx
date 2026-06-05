@@ -1,6 +1,5 @@
 import {
   rngTools,
-  Species,
   Wild3Action,
   Wild3GeneratorOptions,
   Wild3GeneratorResult,
@@ -20,6 +19,7 @@ import { nature_from_pid } from "~/types";
 import { formatProbability } from "~/utils/formatProbability";
 import { formatHex } from "~/utils/formatHex";
 import { Flex } from "~/components";
+import { getAbilityDisplayStr } from "../pokemonRng/generatorResultColumns";
 
 const getProbabilityInfo = async (
   res: Wild3GeneratorResult,

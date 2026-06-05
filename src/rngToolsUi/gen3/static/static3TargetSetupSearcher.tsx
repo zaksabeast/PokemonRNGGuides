@@ -1,4 +1,8 @@
-import { Wild3PaintingAdvsAndDur, Wild3SearcherResultMon } from "~/rngTools";
+import {
+  Static3SearcherResult,
+  Wild3PaintingAdvsAndDur,
+  Wild3SearcherResultMon,
+} from "~/rngTools";
 import {
   Flex,
   Icon,
@@ -35,23 +39,29 @@ import {
 import { formatDuration } from "~/utils/formatDuration";
 import { formatHex } from "~/utils/formatHex";
 import { Wild3TargetMon } from "./wild3TargetMon.component";
-import { searchWild3Target } from "./searchWild3Target";
+import { searchStatic3Target } from "./searchStatic3Target";
 import { Stati3SetupFilter } from "./static3SetupFilter.component";
 import { Wild3ResultSetupInfos } from "./wild3ResultSetupInfos";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 import { GBA_FPS } from "~/utils/consts";
-import { TargetSetup } from "./wild3TargetSetupInput";
 import { Pokeblock, wild3SafariPokeblockSearchOpt } from "~/types/pokeblock";
 import { Wild3LeadCycleSpeedSelectorWithBtn } from "./wild3LeadCycleSpeedSelector";
+import {
+  gen3StaticMethods,
+  TargetSetup,
+} from "./static/static3TargetSetupInput";
+import { getGeneratorPokemonResultColumns } from "./pokemonRng/generatorResultColumns";
+import { Static3TargetMon } from "./static/static3TargetMon";
 
-const Validator = z
+const schema = z
   .object({
     species: z.enum(emeraldWildGameData.species),
     tid: z.number().int().min(0).max(0xffff),
     sid: z.number().int().min(0).max(0xffff),
     methods: z.array(z.enum(gen3StaticMethods)).min(1),
+    isRoaming: z.boolean(),
     usingPaintingReseeding: z.boolean(),
     letSearcherFindPaintingSeed: z.boolean(),
     showAdvancedPaintingSettings: z.boolean(),
@@ -65,10 +75,10 @@ const Validator = z
   .extend(pkmFilterSchema.shape)
   .extend(gen3PkmFilterSchema.shape);
 
-export type FormState = z.infer<typeof Validator>;
+export type FormState = z.infer<typeof schema>;
 
 export type PidPathResult = FlattenIvs<
-  Static3SearcherResultMon &
+  Static3SearcherResult &
     Wild3PaintingAdvsAndDur & {
       uid: number;
       pidCycleCount: number;
@@ -77,13 +87,12 @@ export type PidPathResult = FlattenIvs<
     }
 >;
 
-
 const getInitialValues = (): FormState => {
   return {
-    species: "Abra",
+    species: "Mudkip",
     tid: 0,
     sid: 0,
-    maps: [],
+    isRoaming: false,
     methods: ["Static1"],
     usingPaintingReseeding: false,
     letSearcherFindPaintingSeed: true,
@@ -115,12 +124,7 @@ export const Static3TargetSetupSearcher = ({
   const onSubmit: RngToolSubmit<FormState> = async (values) => {
     const pidPathResults = await searchStatic3Target(values);
 
-    setPidPathResults(
-      sortBy(
-        pidPathResults.filter((el) => el != null),
-        "wait_dur",
-      ),
-    );
+    setPidPathResults(sortBy(pidPathResults, "wait_dur"));
     setSelectedPidPathResult(null);
   };
 
@@ -138,7 +142,7 @@ export const Static3TargetSetupSearcher = ({
       <RngToolForm<FormState, PidPathResult>
         columns={pidPathColumns}
         results={pidPathResults}
-        validationSchema={Validator}
+        validationSchema={schema}
         initialValues={initialValues}
         onSubmit={onSubmit}
         submitTrackerId="wild3_find_target"
@@ -149,7 +153,6 @@ export const Static3TargetSetupSearcher = ({
         <br />
         <Static3SetupFilter />
       </RngToolForm>
-
     </>
   );
 };

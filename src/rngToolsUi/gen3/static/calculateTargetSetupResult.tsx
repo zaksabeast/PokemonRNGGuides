@@ -1,27 +1,33 @@
+import {
+  getGen3PkmFilterInitialValues,
+  gen3PkmFilterFieldsToRustInput,
+} from "~/components/gen3PkmFilter";
+import {
+  getPkmFilterInitialValues,
+  pkmFilterFieldsToRustInput,
+} from "~/components/pkmFilter";
+import { PokemonInfo } from "~/rngToolsUi/gen3/pokemonRng/ResultPokemonInfo";
+import { rngTools } from "~/rngTools";
 
-export const calculateTargetSetupResult = async (
-  targetSetup: TargetSetup,
-) => {
-  const opts: Static3GeneratorOptions = {
-    species: targetSetup.species,
-    encounterContext: targetSetup.encounterContext,
+import { encounterContextToLvl, TargetSetup } from "./static3TargetSetupInput";
+
+export const calculateTargetSetupResult = async (targetSetup: TargetSetup) => {
+  const encounterGenderRatio = await rngTools.get_species_gender_ratio(
+    targetSetup.species,
+  );
+
+  const opts = {
+    bugged_roamer: false,
+    methods: [targetSetup.targetMethod],
     tid: 0,
     sid: 0,
-    map_idx: 0,
-    methods: [targetSetup.targetMethod],
     filter: pkmFilterFieldsToRustInput(getPkmFilterInitialValues()),
     gen3_filter: gen3PkmFilterFieldsToRustInput(
       getGen3PkmFilterInitialValues(),
       null,
     ),
+    encounter_gender_ratio: encounterGenderRatio,
   };
-
-  const encounterData = emeraldStaticGameData.data.find(
-    (table) => table.species === targetSetup.species && table.encounterContext === targetSetup.encounterContext,
-  );
-  if (encounterData == null) {
-    return null;
-  }
 
   const results = await rngTools.generate_gen3_static_wasm(
     targetSetup.targetPaintingAdvs.before,
@@ -29,27 +35,19 @@ export const calculateTargetSetupResult = async (
     opts,
   );
 
-    if (results.length === 0) {
-      return null;
-    }
+  const result = results[0];
+  if (result == null) {
+    return { content: null };
+  }
 
-    const { species } = targetSetup;
-    const { ivs, pid } = results[0];
-
-    const nature = nature_from_pid(res.pid);
-
-    const stats = await rngTools.calculate_stats(
-      species,
-      encounterData.lvl,
-      nature,
-      ivs,
-      { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
-    );
-
-    const gender = await rngTools.get_species_gender_from_pid(species, pid);
-
-    const abilityStr = await getAbilityDisplayStr(species, pid);
-
-    return
-
+  return {
+    content: (
+      <PokemonInfo
+        species={targetSetup.species}
+        pid={result.pid}
+        ivs={result.ivs}
+        lvl={encounterContextToLvl(targetSetup.species, targetSetup.roaming)}
+      />
+    ),
   };
+};

@@ -1,42 +1,66 @@
-import { Species, Static3Method } from "~/rngTools";
-import { lcrng_distance } from "~/utils/lcrng";
+import React from "react";
+import { useWatch } from "react-hook-form";
+import { z } from "zod";
 import {
   Field,
+  FormFieldTable,
   FormikSelect,
+  FormikSwitch,
   RngToolForm,
   RngToolSubmit,
-  FormFieldTable,
 } from "~/components";
-import { toOptions } from "~/utils/options";
 import { useFormContext } from "~/hooks/form";
-import React from "react";
-import { z } from "zod";
+import { Gen3StaticMethod, Species } from "~/rngTools";
+import { lcrng_distance } from "~/utils/lcrng";
+import { toOptions } from "~/utils/options";
 
-import { useWatch } from "react-hook-form";
-import { getStatic3EmeraldGameData } from "./data/Static3GameData";
-import { getPossibleValuesForMap } from "./dataUtils";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
-import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
-import { usingPaintingReseedingLabel } from "./Static3Labels";
-import { Pokeblock, pokeblockSchema } from "~/types/pokeblock";
-import { formatLargeInteger } from "~/utils/formatLargeInteger";
+import { getStatic3SpeciesEncounters } from "./constants";
 import { usingTargetSetupInputs } from "../pokemonRng/generatorResultColumns";
-import { getStatic3Species } from "./constants";
+import uniq from "lodash-es/uniq";
 
-type Static3EncounterContext = "";
-const static3EncounterContexts = [""];
+export const gen3StaticMethods = [
+  "Static1",
+  "Static4",
+] as const satisfies readonly Gen3StaticMethod[];
 
-const static3Methods = ["Static1", "Static4"];
+const static3Species = uniq(
+  getStatic3SpeciesEncounters("emerald").map(({ species }) => species),
+);
+const defaultRoamingOptions: boolean[] = [false];
 
-const emeraldStaticGameData = getStatic3Species("emerald");
+export const encounterContextToLvl = (species: string, roaming: boolean) => {
+  const encounter = getStatic3SpeciesEncounters("emerald").find(
+    (encounter) =>
+      encounter.species === species && encounter.roaming === roaming,
+  );
+
+  if (encounter == null) {
+    throw new Error(`No static encounter for ${species}`);
+  }
+
+  return encounter.lvl;
+};
+
+export const getPossibleValuesForSpecies = (species: Species) => {
+  const roaming = uniq(
+    getStatic3SpeciesEncounters("emerald")
+      .filter((encounter) => encounter.species === species)
+      .map((encounter) => encounter.roaming),
+  );
+
+  return {
+    species: static3Species,
+    roaming: roaming.length === 0 ? defaultRoamingOptions : roaming,
+  };
+};
 
 const Validator = z.object({
-  species: z.enum(emeraldStaticGameData),
-  map: z.string(),
+  species: z.enum(static3Species),
+  roaming: z.boolean(),
   usingPaintingReseeding: z.boolean(),
-  targetFrameBeforePainting: z.number().min(1).max(0xffff),
-  targetMethod: z.enum(static3Methods),
-  encounterContext: z.enum(static3EncounterContexts),
+  targetFrameBeforePainting: z.number().int().min(1).max(0xffff),
+  targetMethod: z.enum(gen3StaticMethods),
   targetAdvance: z.number().int().min(0).max(0xffffffff),
 });
 
@@ -46,10 +70,9 @@ type Props = {
 
 export type TargetSetup = {
   species: Species;
-  // encounterContext is required to distinguish Roaming Lati@s and Southern Island Lati@s. They don't have the same level.
-  encounterContext: Static3EncounterContext;
+  roaming: boolean;
   targetPaintingAdvs: { before: number; after: number };
-  targetMethod: Static3Method;
+  targetMethod: Gen3StaticMethod;
 };
 
 export type FormState = z.infer<typeof Validator>;
@@ -57,22 +80,22 @@ export type FormState = z.infer<typeof Validator>;
 const getInitialValues = (): FormState => {
   return {
     species: "Mudkip",
-    encounterContext: "",
+    roaming: false,
     usingPaintingReseeding: false,
     targetFrameBeforePainting: 1,
     targetAdvance: 1000,
-    targetMethod: "Wild1",
-    requiresWhiteFlute: false,
-    safariPokeblock: null,
+    targetMethod: "Static1",
   };
 };
 
 const convertFormStateValuesToTargetSetup = (
   values: FormState,
 ): TargetSetup => {
+  const { roaming } = getPossibleValuesForSpecies(values.species);
+
   return {
     species: values.species,
-    encounterContext: values.encounterContext,
+    roaming: roaming.includes(values.roaming) ? values.roaming : false,
     targetPaintingAdvs: {
       before: values.usingPaintingReseeding
         ? values.targetFrameBeforePainting
@@ -83,37 +106,27 @@ const convertFormStateValuesToTargetSetup = (
   };
 };
 
-const getPossibleEncounterContextsForSpecies = (
-  _species: Species,
-): Static3EncounterContext[] => {
-  //NO_PROD
-  return [""];
-};
-
-const formatEncounterContext = (enc: Static3EncounterContext) => {
-  return enc; // NO_PROD
-};
-
 const getFields = ({
   species,
-  encounterContext,
+  roaming,
   usingPaintingReseeding,
   equivalentInitialAdvs,
 }: {
   species: Species;
-  encounterContext: Static3EncounterContext;
+  roaming: boolean;
   usingPaintingReseeding: boolean;
   equivalentInitialAdvs: number;
 }): Field[] => {
-  const { encounterContexts } = getPossibleEncounterContextsForSpecies(species);
+  const { roaming: roamingOptions } = getPossibleValuesForSpecies(species);
+  const canRoam = roamingOptions.includes(true);
 
   const fields: Field[] = [
     {
       label: "Species",
       input: (
         <FormikSelect<FormState, "species">
-          name="map"
-          options={toOptions(emeraldStaticGameData.species)}
+          name="species"
+          options={toOptions(static3Species)}
         />
       ),
     },
@@ -121,22 +134,9 @@ const getFields = ({
 
   fields.push(
     {
-      label: "Encounter",
-      input: (
-        <FormikSelect<FormState, "encounterContext">
-          name="encounterContext"
-          options={toOptions(encounterContexts, formatEncounterContext)}
-        />
-      ),
-      show: encounterContexts.length > 1,
-    },
-    {
-      label: "Encounter",
-      input:
-        encounterContexts.length > 0
-          ? formatEncounterContext(encounterContexts[0])
-          : "",
-      show: encounterContexts.length > 0,
+      label: "Roaming",
+      input: <FormikSwitch<FormState> name="roaming" disabled={!canRoam} />,
+      show: roamingOptions.length > 1 || roaming,
     },
     ...usingTargetSetupInputs(usingPaintingReseeding, equivalentInitialAdvs),
     {
@@ -144,11 +144,12 @@ const getFields = ({
       input: (
         <FormikSelect<FormState, "targetMethod">
           name="targetMethod"
-          options={toOptions(static3Methods)}
+          options={toOptions(gen3StaticMethods)}
         />
       ),
     },
   );
+
   return fields;
 };
 
@@ -159,10 +160,9 @@ export const Static3TargetSetupInputFields = ({
 }) => {
   const { setFieldValue } = useFormContext<FormState>();
   const species = useWatch<FormState, "species">({ name: "species" });
-  const encounterContext = useWatch<FormState, "encounterContext">({
-    name: "encounterContext",
+  const roaming = useWatch<FormState, "roaming">({
+    name: "roaming",
   });
-
   const usingPaintingReseeding = useWatch<FormState, "usingPaintingReseeding">({
     name: "usingPaintingReseeding",
   });
@@ -181,18 +181,23 @@ export const Static3TargetSetupInputFields = ({
 
   const fields = getFields({
     species,
-    encounterContext,
+    roaming,
     usingPaintingReseeding,
     equivalentInitialAdvs,
   });
 
   React.useEffect(() => {
+    const { roaming: roamingOptions } = getPossibleValuesForSpecies(species);
+    if (!roamingOptions.includes(roaming)) {
+      setFieldValue("roaming", false);
+    }
+
     setTargetSetup(null);
   }, [
     setFieldValue,
     setTargetSetup,
     species,
-    encounterContext,
+    roaming,
     targetAdvance,
     targetFrameBeforePainting,
     usingPaintingReseeding,
@@ -204,16 +209,14 @@ export const Static3TargetSetupInputFields = ({
 export const Static3TargetSetupInput = ({ setTargetSetup }: Props) => {
   const onSubmit: RngToolSubmit<FormState> = async (values) => {
     const targetSetup = convertFormStateValuesToTargetSetup(values);
-    const { content } = await calculateTargetSetupResult(targetSetup, null);
+    const { content } = await calculateTargetSetupResult(targetSetup);
     setTargetSetup(content == null ? null : targetSetup);
   };
-
-  const initialValues = getInitialValues();
 
   return (
     <RngToolForm<FormState, never>
       validationSchema={Validator}
-      initialValues={initialValues}
+      initialValues={getInitialValues()}
       onSubmit={onSubmit}
       submitTrackerId="static3_calib_target"
       rowKey="uid"

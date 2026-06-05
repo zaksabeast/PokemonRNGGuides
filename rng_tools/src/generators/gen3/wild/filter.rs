@@ -3,7 +3,9 @@ use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 use crate::{
-    AbilityType, GenderRatio, Ivs, Nature, PkmFilter, Species, gen3::{calculate_pid_speed, get_probability_that_random_pid_has_speed_range}, gen3_psv
+    AbilityType, GenderRatio, Nature, PkmFilter, Species,
+    gen3::{calculate_pid_speed, get_probability_that_random_pid_has_speed_range},
+    gen3_psv,
 };
 
 #[derive(Debug, Clone, Default, PartialEq, Tsify, Serialize, Deserialize)]
@@ -79,12 +81,6 @@ pub fn passes_pid_filter(
     true
 }
 
-
-pub fn passes_ivs_filter(filter: &PkmFilter, ivs: &Ivs) -> bool {
-    Ivs::filter(ivs, &filter.min_ivs, &filter.max_ivs)
-        && filter.pass_filter_hidden_power(ivs)
-}
-
 pub fn get_iv1_filter_restrictiveness(filter: &PkmFilter) -> f64 {
     let mut prob = 1_f64;
     prob *= (filter.max_ivs.hp - filter.min_ivs.hp + 1) as f64 / 32_f64;
@@ -145,18 +141,6 @@ pub fn get_iv_filter_restrictiveness(filter: &PkmFilter) -> f64 {
     }
     prob
 }
-
-pub fn get_possible_iv_count(filter: &PkmFilter) -> usize {
-    let mut count = 0_usize;
-    count *= (filter.max_ivs.hp - filter.min_ivs.hp + 1) as usize;
-    count *= (filter.max_ivs.atk - filter.min_ivs.atk + 1) as usize;
-    count *= (filter.max_ivs.def - filter.min_ivs.def + 1) as usize;
-    count *= (filter.max_ivs.spa - filter.min_ivs.spa + 1) as usize;
-    count *= (filter.max_ivs.spd - filter.min_ivs.spd + 1) as usize;
-    count *= (filter.max_ivs.spe - filter.min_ivs.spe + 1) as usize;
-    count
-}
-
 
 pub fn get_filter_restrictiveness(
     filter: &PkmFilter,

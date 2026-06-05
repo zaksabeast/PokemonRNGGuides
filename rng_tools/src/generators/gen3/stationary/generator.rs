@@ -147,7 +147,6 @@ mod test {
         );
     }
 
-
     #[test]
     fn generate_gen3_static_method14() {
         let results = generate_gen3_static_wasm(

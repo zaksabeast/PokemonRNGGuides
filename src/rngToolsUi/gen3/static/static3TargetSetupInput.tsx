@@ -1,35 +1,17 @@
-import {
-  Static3Method,
-} from "~/rngTools";
+import { Species, Static3Method } from "~/rngTools";
 import { lcrng_distance } from "~/utils/lcrng";
 import {
   Field,
-  FormikNumberInput,
   FormikSelect,
   RngToolForm,
   RngToolSubmit,
   FormFieldTable,
-  FormikSwitch,
-  FormikStatic3Pokeblock,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { useFormContext } from "~/hooks/form";
 import React from "react";
 import { z } from "zod";
 
-import {
-  formatMapName,
-  formatActionName,
-  Static3Actions,
-  Static3FeebasStates,
-  formatRoamerStateName,
-  Static3RoamerStates,
-  Static3MassOutbreakStates,
-  formatMassOutbreakStateName,
-  formatFeebasStateName,
-  leadsLabels,
-  gen3Leads,
-} from "./utils";
 import { useWatch } from "react-hook-form";
 import { getStatic3EmeraldGameData } from "./data/Static3GameData";
 import { getPossibleValuesForMap } from "./dataUtils";
@@ -39,15 +21,22 @@ import { usingPaintingReseedingLabel } from "./Static3Labels";
 import { Pokeblock, pokeblockSchema } from "~/types/pokeblock";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { usingTargetSetupInputs } from "../pokemonRng/generatorResultColumns";
+import { getStatic3Species } from "./constants";
 
-const emeraldStaticGameData = getStatic3EmeraldGameData();
+type Static3EncounterContext = "";
+const static3EncounterContexts = [""];
+
+const static3Methods = ["Static1", "Static4"];
+
+const emeraldStaticGameData = getStatic3Species("emerald");
 
 const Validator = z.object({
-  species: z.enum(emeraldStaticGameData.species),
+  species: z.enum(emeraldStaticGameData),
   map: z.string(),
   usingPaintingReseeding: z.boolean(),
   targetFrameBeforePainting: z.number().min(1).max(0xffff),
   targetMethod: z.enum(static3Methods),
+  encounterContext: z.enum(static3EncounterContexts),
   targetAdvance: z.number().int().min(0).max(0xffffffff),
 });
 
@@ -58,7 +47,7 @@ type Props = {
 export type TargetSetup = {
   species: Species;
   // encounterContext is required to distinguish Roaming Lati@s and Southern Island Lati@s. They don't have the same level.
-  encounterContext: string;
+  encounterContext: Static3EncounterContext;
   targetPaintingAdvs: { before: number; after: number };
   targetMethod: Static3Method;
 };
@@ -94,17 +83,16 @@ const convertFormStateValuesToTargetSetup = (
   };
 };
 
-type Static3EncounterContext = '';
-const static3EncounterContexts = [''];
-
-const getPossibleValuesForSpecies = (species:Species) => {
-    return [''];
+const getPossibleEncounterContextsForSpecies = (
+  _species: Species,
+): Static3EncounterContext[] => {
+  //NO_PROD
+  return [""];
 };
 
-const static3Methods = [
-    'Static1',
-    'Static4',
-];
+const formatEncounterContext = (enc: Static3EncounterContext) => {
+  return enc; // NO_PROD
+};
 
 const getFields = ({
   species,
@@ -117,9 +105,7 @@ const getFields = ({
   usingPaintingReseeding: boolean;
   equivalentInitialAdvs: number;
 }): Field[] => {
-  const {
-    encounterContexts
-  } = getPossibleValuesForSpecies(species);
+  const { encounterContexts } = getPossibleEncounterContextsForSpecies(species);
 
   const fields: Field[] = [
     {
@@ -142,12 +128,15 @@ const getFields = ({
           options={toOptions(encounterContexts, formatEncounterContext)}
         />
       ),
-      show:encounterContexts.length > 1,
+      show: encounterContexts.length > 1,
     },
     {
       label: "Encounter",
-      input: encounterContexts.length > 0 ? formatEncounterContext(encounterContexts[0]) : '',
-      show:encounterContexts.length > 0,
+      input:
+        encounterContexts.length > 0
+          ? formatEncounterContext(encounterContexts[0])
+          : "",
+      show: encounterContexts.length > 0,
     },
     ...usingTargetSetupInputs(usingPaintingReseeding, equivalentInitialAdvs),
     {
@@ -170,7 +159,9 @@ export const Static3TargetSetupInputFields = ({
 }) => {
   const { setFieldValue } = useFormContext<FormState>();
   const species = useWatch<FormState, "species">({ name: "species" });
-  const encounterContext = useWatch<FormState, "encounterContext">({ name: "encounterContext" });
+  const encounterContext = useWatch<FormState, "encounterContext">({
+    name: "encounterContext",
+  });
 
   const usingPaintingReseeding = useWatch<FormState, "usingPaintingReseeding">({
     name: "usingPaintingReseeding",

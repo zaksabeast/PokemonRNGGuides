@@ -222,10 +222,10 @@ fn extend_pid_low_path_to_pid_path_wild4(
     }
 }
 
-pub fn reverse_find_pid_low_paths_from_pids(pids: &[u32]) -> Vec<PidLowPath> {
-    pids.iter()
-        .flat_map(|pid| reverse_find_pid_low_paths_from_pid(*pid))
-        .collect()
+pub fn reverse_find_pid_low_paths_from_pids<const METHODS: u8>(
+    pids: impl Iterator<Item = u32>,
+) -> impl Iterator<Item = PidLowPath> {
+    pids.flat_map(reverse_find_pid_low_paths_from_pid::<METHODS>)
 }
 
 /** pid has already been validated that it respects the filter */

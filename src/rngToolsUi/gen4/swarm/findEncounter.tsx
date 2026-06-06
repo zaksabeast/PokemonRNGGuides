@@ -96,12 +96,12 @@ export const SwarmFindEncounter = () => {
   const [state] = useAtom(gen4StateAtom);
 
   const defaultMinAdvance =
-  state.config.game === "Diamond" ||
-  state.config.game === "Pearl" ||
-  state.config.game === "Platinum"
-    ? state.gameState.coinFlips.length
-    : 0;
-  
+    state.config.game === "Diamond" ||
+    state.config.game === "Pearl" ||
+    state.config.game === "Platinum"
+      ? state.gameState.coinFlips.length
+      : 0;
+
   const [results, setResults] = React.useState<Result[]>([]);
 
   React.useEffect(() => {

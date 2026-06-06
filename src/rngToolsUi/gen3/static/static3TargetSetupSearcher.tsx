@@ -1,63 +1,49 @@
 import {
   Static3SearcherResult,
   Wild3PaintingAdvsAndDur,
-  Wild3SearcherResultMon,
 } from "~/rngTools";
 import {
-  Flex,
-  Icon,
-  Link,
-  ResultColumn,
+  Field,
+  FormFieldTable,
+  FormikNumberInput,
+  FormikSelect,
+  FormikSwitch,
   RngToolForm,
   RngToolSubmit,
+  Typography,
 } from "~/components";
-import { formatLargeInteger } from "~/utils/formatLargeInteger";
-import { formatProbability } from "~/utils/formatProbability";
 import {
   pkmFilterSchema,
   getPkmFilterInitialValues,
 } from "~/components/pkmFilter";
 import React from "react";
 import { z } from "zod";
-import { gen3Methods } from "~/types";
 
 import { sortBy } from "lodash-es";
-import { FlattenIvs, ivColumns } from "~/rngToolsUi/shared/ivColumns";
-import { Tooltip } from "antd";
+import uniq from "lodash-es/uniq";
+import { FlattenIvs } from "~/rngToolsUi/shared/ivColumns";
 import {
   gen3PkmFilterSchema,
   getGen3PkmFilterInitialValues,
 } from "~/components/gen3PkmFilter";
 
-import {
-  gen3Leads,
-  wild3RoamerStates,
-  wild3MassOutbreakStates,
-  wild3FeebasStates,
-  wild3Actions,
-} from "./utils";
-import { formatDuration } from "~/utils/formatDuration";
-import { formatHex } from "~/utils/formatHex";
-import { Wild3TargetMon } from "./wild3TargetMon.component";
 import { searchStatic3Target } from "./searchStatic3Target";
-import { Stati3SetupFilter } from "./static3SetupFilter.component";
-import { Wild3ResultSetupInfos } from "./wild3ResultSetupInfos";
-import { getWild3EmeraldGameData } from "./data/wild3GameData";
-
-const emeraldWildGameData = getWild3EmeraldGameData();
-import { GBA_FPS } from "~/utils/consts";
-import { Pokeblock, wild3SafariPokeblockSearchOpt } from "~/types/pokeblock";
-import { Wild3LeadCycleSpeedSelectorWithBtn } from "./wild3LeadCycleSpeedSelector";
 import {
   gen3StaticMethods,
   TargetSetup,
-} from "./static/static3TargetSetupInput";
-import { getGeneratorPokemonResultColumns } from "./pokemonRng/generatorResultColumns";
-import { Static3TargetMon } from "./static/static3TargetMon";
+} from "./static3TargetSetupInput";
+import { getGeneratorPokemonResultColumns } from "../pokemonRng/generatorResultColumns";
+import { Static3TargetMon } from "./static3TargetMon";
+import { getStatic3SpeciesEncounters } from "./constants";
+import { toOptions } from "~/utils/options";
+
+const emeraldStaticSpecies = uniq(
+  getStatic3SpeciesEncounters("emerald").map(({ species }) => species),
+);
 
 const schema = z
   .object({
-    species: z.enum(emeraldWildGameData.species),
+    species: z.enum(emeraldStaticSpecies),
     tid: z.number().int().min(0).max(0xffff),
     sid: z.number().int().min(0).max(0xffff),
     methods: z.array(z.enum(gen3StaticMethods)).min(1),
@@ -112,6 +98,87 @@ type Props = {
   setTargetSetup: (targetSetup: TargetSetup) => void;
 };
 
+const getSetupFields = (): Field[] => [
+  {
+    label: "TID",
+    input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
+  },
+  {
+    label: "SID",
+    input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
+  },
+  {
+    label: "Methods",
+    input: (
+      <FormikSelect<FormState, "methods">
+        name="methods"
+        options={toOptions(gen3StaticMethods)}
+        mode="multiple"
+        selectAllNoneButtons
+      />
+    ),
+  },
+  {
+    label: "Using painting reseeding",
+    input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
+  },
+  {
+    label: "Let searcher find painting seed",
+    input: <FormikSwitch<FormState> name="letSearcherFindPaintingSeed" />,
+  },
+  {
+    label: "Initial seed",
+    input: <FormikNumberInput<FormState> name="initial_seed" numType="hex" />,
+  },
+  {
+    label: "Initial advances",
+    input: (
+      <FormikNumberInput<FormState> name="initial_advances" numType="decimal" />
+    ),
+  },
+  {
+    label: "Min frame before painting",
+    input: (
+      <FormikNumberInput<FormState>
+        name="min_frame_before_painting"
+        numType="decimal"
+      />
+    ),
+  },
+  {
+    label: "Min advances after painting",
+    input: (
+      <FormikNumberInput<FormState>
+        name="min_adv_after_painting"
+        numType="decimal"
+      />
+    ),
+  },
+  {
+    label: "Max advances",
+    input: (
+      <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
+    ),
+  },
+  {
+    label: "Max results",
+    input: (
+      <FormikNumberInput<FormState> name="max_result_count" numType="decimal" />
+    ),
+  },
+];
+
+const Static3SetupFilter = () => {
+  return (
+    <>
+      <Typography.Title level={5} p={0} m={0}>
+        Setup
+      </Typography.Title>
+      <FormFieldTable fields={getSetupFields()} />
+    </>
+  );
+};
+
 export const Static3TargetSetupSearcher = ({
   setTargetSetup: setTargetSetupProp,
 }: Props) => {
@@ -135,7 +202,7 @@ export const Static3TargetSetupSearcher = ({
   React.useEffect(() => {
     //NO_PROD
     //setTargetSetupProp?.();
-  }, [selectedPidPathResult]);
+  }, [selectedPidPathResult, setTargetSetupProp]);
 
   return (
     <>

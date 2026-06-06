@@ -65,7 +65,7 @@ const SelectButton = ({ target }: SelectButtonProps) => {
   const [, setId4State] = useAtom(id4Atom);
   const [, setCurrentStep] = useCurrentStep();
 
-  const dateTime = getGameDateTime({
+  const adjustedDateTime = getGameDateTime({
     seedTime: target.seed_time,
     game: state.config.game,
   });
@@ -74,13 +74,15 @@ const SelectButton = ({ target }: SelectButtonProps) => {
     <Button
       trackerId="select_id4_target"
       onClick={() => {
-        if (dateTime == null) {
+        if (adjustedDateTime == null) {
           return;
         }
-        const adjustedDateTime = toRngDateTime(dateTime);
         setState({
           target: {
-            seedTime: { ...target.seed_time, datetime: adjustedDateTime },
+            seedTime: {
+              ...target.seed_time,
+              datetime: toRngDateTime(adjustedDateTime),
+            },
           },
         });
         setId4State({ id: target });

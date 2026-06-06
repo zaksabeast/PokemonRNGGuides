@@ -16,6 +16,7 @@ import { gen4StateAtom } from "../shared/state";
 import { sortBy } from "lodash-es";
 import { formatOffset } from "~/utils/offsetSymbol";
 import { Translations } from "~/translations";
+import { getSecondOffset } from "./utils";
 
 type Result = Id4 & {
   flipDelay: boolean;
@@ -83,7 +84,7 @@ const initialValues: FormState = {
 };
 
 export const CalibrateId4 = () => {
-  const [{ target }] = useAtom(gen4StateAtom);
+  const [{ config, target }] = useAtom(gen4StateAtom);
   const [results, setResults] = React.useState<Result[]>([]);
 
   const getFields = (t: Translations): Field[] => {
@@ -122,7 +123,9 @@ export const CalibrateId4 = () => {
 
     const formattedResults = sortedResults.map((result) => {
       const secondOffset =
-        result.seed_time.datetime.second - targetDateTime.second;
+        result.seed_time.datetime.second -
+        getSecondOffset(config.game) -
+        targetDateTime.second;
       return {
         ...result,
         seed: result.seed_time.seed,

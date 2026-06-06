@@ -56,6 +56,7 @@ const Validator = z
   .object({
     species: z.enum(emeraldWildGameData.species),
     tid: z.number().int().min(0).max(0xffff),
+    usingAceForSid: z.boolean(),
     sid: z.number().int().min(0).max(0xffff),
     maps: z.array(z.string()).min(1),
     recommendedSetups: z.boolean(),
@@ -123,6 +124,7 @@ const getInitialValues = (): FormState => {
     sid: 0,
     maps: [],
     leadIdxs: gen3Leads.map((_, i) => i),
+    usingAceForSid: false,
     recommendedSetups: true,
     methods: ["Wild1", "Wild2", "Wild4"],
     actions: [...wild3Actions],
@@ -285,6 +287,8 @@ export const Wild3TargetSetupSearcher = ({
   const [rngManipulatedLeadPid, setRngManipulatedLeadPid] =
     React.useState<boolean>(false);
 
+  const [tidForAceSid, setTidForAceSid] = React.useState<number | null>(null);
+
   const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
     null,
   );
@@ -293,6 +297,12 @@ export const Wild3TargetSetupSearcher = ({
     const pidPathResults = await searchWild3Target(values);
 
     setRngManipulatedLeadPid(values.rngManipulatedLeadPid);
+
+    if (values.filter_shiny && values.usingAceForSid) {
+      setTidForAceSid(values.tid);
+    } else {
+      setTidForAceSid(null);
+    }
 
     setPidPathResults(
       sortBy(
@@ -340,6 +350,7 @@ export const Wild3TargetSetupSearcher = ({
         <Wild3ResultSetupInfos
           selectedPidPathResult={selectedPidPathResult}
           rngManipulatedLeadPid={rngManipulatedLeadPid}
+          tidForAceSid={tidForAceSid}
           setTargetSetup={setTargetSetupBoth}
         />
       )}

@@ -1,3 +1,4 @@
+mod ace;
 mod egg;
 mod feebas_sid;
 mod generator_pokeblock;
@@ -10,6 +11,7 @@ mod tidsid;
 mod tidsid_shiny;
 mod wild;
 
+pub use ace::*;
 pub use egg::*;
 pub use feebas_sid::*;
 pub use generator_pokeblock::*;

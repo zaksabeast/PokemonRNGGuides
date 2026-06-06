@@ -189,8 +189,8 @@ const initialValues: FormState = {
   year: 2000,
   min_delay: 600,
   max_delay: 2000,
-  held_min_advances: 0,
-  held_max_advances: 30,
+  held_min_advances: 20,
+  held_max_advances: 50,
   pickup_min_advances: 0,
   pickup_max_advances: 200,
   species: "Bulbasaur",
@@ -292,20 +292,14 @@ export const Egg4Search = () => {
     },
     { title: t["Gender"], dataIndex: "gender" },
     {
-      title: t["Hidden power"],
-      type: "group",
-      columns: [
-        {
-          title: "Type",
-          dataIndex: "hidden_power",
-          render: (hidden_power) => hidden_power?.pokemon_type ?? "?",
-        },
-        {
-          title: "Power",
-          dataIndex: "hidden_power",
-          render: (hidden_power) => hidden_power?.bp ?? "?",
-        },
-      ],
+      title: t["HP Type"],
+      dataIndex: "hidden_power",
+      render: (hidden_power) => hidden_power?.pokemon_type ?? "?",
+    },
+    {
+      title: t["HP Power"],
+      dataIndex: "hidden_power",
+      render: (hidden_power) => hidden_power?.bp ?? "?",
     },
     { title: "Delay", dataIndex: "delay" },
     {

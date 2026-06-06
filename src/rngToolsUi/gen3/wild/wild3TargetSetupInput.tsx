@@ -85,6 +85,7 @@ export type TargetSetup = {
   targetMethod: Gen3Method;
   requiresWhiteFlute: boolean;
   safariPokeblock: Pokeblock | null;
+  aceSid: number | null;
 };
 
 export type FormState = z.infer<typeof Validator>;
@@ -127,6 +128,7 @@ const convertFormStateValuesToTargetSetup = (
     requiresWhiteFlute:
       values.action === "RockSmash" && values.requiresWhiteFlute,
     safariPokeblock: values.safariPokeblock,
+    aceSid: null,
   };
 };
 

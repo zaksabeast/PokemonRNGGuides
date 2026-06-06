@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "./button";
 import { Icon } from "./icons";
 import { message } from "antd";
+import { SizeType } from "antd/es/config-provider/SizeContext";
 
 type Props = {
   text: string;
@@ -9,6 +10,7 @@ type Props = {
   trackerId?: string;
   successMessage?: string;
   children?: React.ReactNode;
+  size?: SizeType;
 };
 
 export const CopyToClipboardButton = ({
@@ -17,6 +19,7 @@ export const CopyToClipboardButton = ({
   trackerId = "copy_to_clipboard",
   successMessage = "Copied to clipboard",
   children = "Copy to Clipboard",
+  size,
 }: Props) => {
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -30,6 +33,7 @@ export const CopyToClipboardButton = ({
       {contextHolder}
       <Button
         trackerId={trackerId}
+        size={size}
         type="primary"
         icon={<Icon name="Copy" />}
         onClick={handleCopy}

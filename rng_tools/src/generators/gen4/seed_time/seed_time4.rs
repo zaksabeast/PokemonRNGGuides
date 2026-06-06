@@ -49,6 +49,91 @@ pub(crate) fn calc_delay_from_seed(seed: u32, year: u32) -> u32 {
     }
 }
 
+fn seedtime4_month_range(month: Option<u32>) -> RangeInclusive<u32> {
+    match month {
+        Some(month) if (1..=12).contains(&month) => month..=month,
+        _ => 1..=12,
+    }
+}
+
+fn seedtime4_search_second_range(second: Option<u32>) -> RangeInclusive<u32> {
+    match second {
+        Some(second) => second..=second,
+        None => 1..=58,
+    }
+}
+
+fn build_seedtime4_ab_lookup(
+    year: u32,
+    month: Option<u32>,
+    second_range: Option<RangeInclusive<u32>>,
+) -> [Option<(u32, u32, u32, u32)>; 256] {
+    let year = year.clamp(2000, 2100);
+    let mut lookup = [None; 256];
+    let mut remaining = 256;
+    let second_range = second_range.unwrap_or(0..=59);
+
+    for month in seedtime4_month_range(month) {
+        let max_days = get_days_in_month(year as i32, month);
+
+        for day in 1..=max_days {
+            for minute in 0..60 {
+                for second in second_range.clone() {
+                    if second > 59 {
+                        continue;
+                    }
+
+                    let ab = calc_ab(month, day, minute, second) as usize;
+                    if lookup[ab].is_some() {
+                        continue;
+                    }
+
+                    lookup[ab] = Some((month, day, minute, second));
+                    remaining -= 1;
+
+                    if remaining == 0 {
+                        return lookup;
+                    }
+                }
+            }
+        }
+    }
+
+    lookup
+}
+
+fn find_seedtime4_from_range(
+    seed: u32,
+    year: u32,
+    month: Option<u32>,
+    delay_range: RangeInclusive<u32>,
+    second_range: Option<RangeInclusive<u32>>,
+) -> Option<SeedTime4> {
+    let clamped_year = year.clamp(2000, 2100);
+    let delay = calc_delay_from_seed(seed, clamped_year);
+    if !delay_range.contains(&delay) {
+        return None;
+    }
+
+    let ab_lookup = build_seedtime4_ab_lookup(clamped_year, month, second_range);
+    let (month, day, minute, second) = ab_lookup[(seed >> 24) as usize]?;
+    let cd = (seed >> 16) & 0xff;
+    let hour = if cd > 23 { 23 } else { cd };
+
+    Some(SeedTime4 {
+        seed,
+        delay,
+        datetime: RngDateTime {
+            year: clamped_year,
+            month,
+            day,
+            hour,
+            minute,
+            second,
+        },
+    })
+}
+
 fn calc_seedtime_for_month(opts: SeedTime4SingleMonthOptions) -> Vec<SeedTime4> {
     let year = opts.year.clamp(2000, 2100);
     let month = opts.month.clamp(1, 12);
@@ -112,9 +197,13 @@ impl SeedTime4Options {
         delay_range: RangeInclusive<u32>,
         second: Option<u32>,
     ) -> Self {
-        match second {
-            Some(second) => Self::new_force_second(seed, limit, year, month, delay_range, second),
-            None => Self::new_safe_second(seed, limit, year, month, delay_range),
+        Self {
+            seed,
+            limit,
+            year,
+            month,
+            delay_range,
+            second_range: Some(seedtime4_search_second_range(second)),
         }
     }
 
@@ -125,14 +214,7 @@ impl SeedTime4Options {
         month: Option<u32>,
         delay_range: RangeInclusive<u32>,
     ) -> Self {
-        Self {
-            seed,
-            limit,
-            year,
-            month,
-            delay_range,
-            second_range: Some(1..=58),
-        }
+        Self::new(seed, limit, year, month, delay_range, None)
     }
 
     pub fn new_force_second(
@@ -143,27 +225,27 @@ impl SeedTime4Options {
         delay_range: RangeInclusive<u32>,
         second: u32,
     ) -> Self {
-        Self {
-            seed,
-            limit,
-            year,
-            month,
-            delay_range,
-            second_range: Some(second..=second),
-        }
+        Self::new(seed, limit, year, month, delay_range, Some(second))
     }
 
     pub fn find_seedtime(&self) -> Option<SeedTime4> {
+        if self.limit == 1 {
+            return find_seedtime4_from_range(
+                self.seed,
+                self.year,
+                self.month,
+                self.delay_range.clone(),
+                self.second_range.clone(),
+            );
+        }
+
         calc_seedtime4(self).into_iter().next()
     }
 }
 
 #[wasm_bindgen]
 pub fn calc_seedtime4(opts: &SeedTime4Options) -> Vec<SeedTime4> {
-    let month_range = match opts.month {
-        Some(month) if (1..=12).contains(&month) => month..=month,
-        _ => 1..=12,
-    };
+    let month_range = seedtime4_month_range(opts.month);
 
     month_range
         .flat_map(|month| {
@@ -189,6 +271,18 @@ pub struct Seed4CalcOpts {
     pub max_delay: u32,
 }
 
+pub(crate) fn seedtime4_from_datetime_delay(datetime: RngDateTime, delay: u32) -> SeedTime4 {
+    let seed = calc_seed(&datetime, delay);
+    SeedTime4::new(seed, datetime, delay)
+}
+
+pub(crate) fn seedtime4_from_pairs<I>(pairs: I) -> impl Iterator<Item = SeedTime4>
+where
+    I: Iterator<Item = (RngDateTime, u32)>,
+{
+    pairs.map(|(datetime, delay)| seedtime4_from_datetime_delay(datetime, delay))
+}
+
 #[wasm_bindgen]
 pub fn calc_gen4_seeds(opts: Seed4CalcOpts) -> Vec<SeedTime4> {
     let Seed4CalcOpts {
@@ -200,12 +294,8 @@ pub fn calc_gen4_seeds(opts: Seed4CalcOpts) -> Vec<SeedTime4> {
     let datetime_iter = datetime
         .as_seconds_iterator()
         .take(seconds_increment.saturating_add(1));
-    iproduct!(datetime_iter, min_delay..=max_delay)
-        .map(|(datetime, delay)| {
-            let seed = calc_seed(&datetime, delay);
-            SeedTime4::new(seed, datetime.clone(), delay)
-        })
-        .collect()
+
+    seedtime4_from_pairs(iproduct!(datetime_iter, min_delay..=max_delay)).collect()
 }
 
 pub fn seedtime4_iter(
@@ -214,22 +304,64 @@ pub fn seedtime4_iter(
     month: Option<u32>,
     second_range: Option<RangeInclusive<u32>>,
 ) -> impl Iterator<Item = SeedTime4> {
+    let clamped_year = year.clamp(2000, 2100);
+    let ab_lookup = build_seedtime4_ab_lookup(clamped_year, month, second_range.clone());
     let cloned_delays = delay_range.clone();
     iproduct!(cloned_delays, 0..=0xff_u32, 0..24_u32).filter_map(move |(delay, ab, cd)| {
         let seed = ((ab << 24) | (cd << 16))
             .wrapping_add(delay)
             .wrapping_add(year)
             .wrapping_sub(2000);
-        SeedTime4Options {
-            seed,
-            year,
-            month,
-            limit: 1,
-            second_range: second_range.clone(),
-            delay_range: delay_range.clone(),
+        let delay = calc_delay_from_seed(seed, clamped_year);
+        if !delay_range.contains(&delay) {
+            return None;
         }
-        .find_seedtime()
+
+        let (month, day, minute, second) = ab_lookup[ab as usize]?;
+
+        Some(SeedTime4 {
+            seed,
+            delay,
+            datetime: RngDateTime {
+                year: clamped_year,
+                month,
+                day,
+                hour: cd,
+                minute,
+                second,
+            },
+        })
     })
+}
+
+pub(crate) fn seedtime4_search_iter(
+    delay_range: RangeInclusive<u32>,
+    year: u32,
+    month: Option<u32>,
+    second: Option<u32>,
+) -> impl Iterator<Item = SeedTime4> {
+    seedtime4_iter(
+        delay_range,
+        year,
+        month,
+        Some(seedtime4_search_second_range(second)),
+    )
+}
+
+pub(crate) fn find_seedtime4(
+    seed: u32,
+    year: u32,
+    month: Option<u32>,
+    delay_range: RangeInclusive<u32>,
+    second: Option<u32>,
+) -> Option<SeedTime4> {
+    find_seedtime4_from_range(
+        seed,
+        year,
+        month,
+        delay_range,
+        Some(seedtime4_search_second_range(second)),
+    )
 }
 
 #[cfg(test)]
@@ -739,6 +871,147 @@ mod tests {
             .collect::<Vec<_>>();
 
             assert_list_eq!(results, expected);
+        }
+    }
+
+    mod calc_gen4_seeds {
+        use super::*;
+        use crate::{assert_list_eq, datetime};
+
+        #[test]
+        fn iterates_datetime_and_delay_ranges() {
+            let opts = Seed4CalcOpts {
+                datetime: datetime!(2026-05-14 12:34:30).unwrap(),
+                seconds_increment: 1,
+                min_delay: 1749,
+                max_delay: 1750,
+            };
+            let result = super::calc_gen4_seeds(opts);
+            let expected = [
+                SeedTime4::new(
+                    calc_seed(&datetime!(2026-05-14 12:34:30).unwrap(), 1749),
+                    datetime!(2026-05-14 12:34:30).unwrap(),
+                    1749,
+                ),
+                SeedTime4::new(
+                    calc_seed(&datetime!(2026-05-14 12:34:30).unwrap(), 1750),
+                    datetime!(2026-05-14 12:34:30).unwrap(),
+                    1750,
+                ),
+                SeedTime4::new(
+                    calc_seed(&datetime!(2026-05-14 12:34:31).unwrap(), 1749),
+                    datetime!(2026-05-14 12:34:31).unwrap(),
+                    1749,
+                ),
+                SeedTime4::new(
+                    calc_seed(&datetime!(2026-05-14 12:34:31).unwrap(), 1750),
+                    datetime!(2026-05-14 12:34:31).unwrap(),
+                    1750,
+                ),
+            ];
+
+            assert_list_eq!(result, expected);
+        }
+    }
+
+    mod seedtime4_iter {
+        use super::*;
+
+        #[test]
+        fn matches_find_seedtime_without_forced_second() {
+            let delay_range = 601..=605;
+            let year = 2000;
+            let month = None;
+            let second_range = None;
+
+            let results =
+                super::seedtime4_iter(delay_range.clone(), year, month, second_range.clone())
+                    .take(64)
+                    .collect::<Vec<_>>();
+
+            for result in results {
+                let expected = SeedTime4Options {
+                    seed: result.seed,
+                    year,
+                    month,
+                    limit: 1,
+                    second_range: second_range.clone(),
+                    delay_range: delay_range.clone(),
+                }
+                .find_seedtime();
+
+                assert_eq!(Some(result), expected);
+            }
+        }
+
+        #[test]
+        fn matches_find_seedtime_with_forced_second_and_month() {
+            let delay_range = 740..=780;
+            let year = 2000;
+            let month = Some(4);
+            let second_range = Some(56..=56);
+
+            let results =
+                super::seedtime4_iter(delay_range.clone(), year, month, second_range.clone())
+                    .take(64)
+                    .collect::<Vec<_>>();
+
+            for result in results {
+                let expected = SeedTime4Options {
+                    seed: result.seed,
+                    year,
+                    month,
+                    limit: 1,
+                    second_range: second_range.clone(),
+                    delay_range: delay_range.clone(),
+                }
+                .find_seedtime();
+
+                assert_eq!(Some(result), expected);
+            }
+        }
+    }
+
+    mod seedtime4_search_iter {
+        use super::*;
+
+        #[test]
+        fn matches_new_without_forced_second() {
+            let delay_range = 601..=605;
+            let year = 2000;
+            let month = None;
+            let second = None;
+
+            let results = super::seedtime4_search_iter(delay_range.clone(), year, month, second)
+                .take(64)
+                .collect::<Vec<_>>();
+
+            for result in results {
+                let expected =
+                    SeedTime4Options::new(result.seed, 1, year, month, delay_range.clone(), second)
+                        .find_seedtime();
+
+                assert_eq!(Some(result), expected);
+            }
+        }
+
+        #[test]
+        fn matches_new_with_forced_second_and_month() {
+            let delay_range = 740..=780;
+            let year = 2000;
+            let month = Some(4);
+            let second = Some(56);
+
+            let results = super::seedtime4_search_iter(delay_range.clone(), year, month, second)
+                .take(64)
+                .collect::<Vec<_>>();
+
+            for result in results {
+                let expected =
+                    super::find_seedtime4(result.seed, year, month, delay_range.clone(), second);
+
+                assert_eq!(Some(result), expected);
+            }
         }
     }
 }

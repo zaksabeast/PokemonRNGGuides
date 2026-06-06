@@ -15,7 +15,7 @@ import { lcrng_distance } from "~/utils/lcrng";
 import { toOptions } from "~/utils/options";
 
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
-import { getStatic3SpeciesEncounters } from "./constants";
+import { getStatic3SpeciesEncounters, Static3Game } from "./constants";
 import { usingTargetSetupInputs } from "../pokemonRng/generatorResultColumns";
 import uniq from "lodash-es/uniq";
 
@@ -29,8 +29,12 @@ const static3Species = uniq(
 );
 const defaultRoamingOptions: boolean[] = [false];
 
-export const encounterContextToLvl = (species: string, roaming: boolean) => {
-  const encounter = getStatic3SpeciesEncounters("emerald").find(
+export const encounterContextToLvl = (
+  game: Static3Game,
+  species: string,
+  roaming: boolean,
+) => {
+  const encounter = getStatic3SpeciesEncounters(game).find(
     (encounter) =>
       encounter.species === species && encounter.roaming === roaming,
   );
@@ -42,9 +46,12 @@ export const encounterContextToLvl = (species: string, roaming: boolean) => {
   return encounter.lvl;
 };
 
-export const getPossibleValuesForSpecies = (species: Species) => {
+export const getPossibleValuesForSpecies = (
+  game: Static3Game,
+  species: Species,
+) => {
   const roaming = uniq(
-    getStatic3SpeciesEncounters("emerald")
+    getStatic3SpeciesEncounters(game)
       .filter((encounter) => encounter.species === species)
       .map((encounter) => encounter.roaming),
   );

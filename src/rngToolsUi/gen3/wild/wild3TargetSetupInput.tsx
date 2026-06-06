@@ -9,7 +9,6 @@ import {
 import { lcrng_distance } from "~/utils/lcrng";
 import {
   Field,
-  FormikNumberInput,
   FormikSelect,
   RngToolForm,
   RngToolSubmit,
@@ -39,10 +38,8 @@ import { useWatch } from "react-hook-form";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { getPossibleValuesForMap } from "./dataUtils";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
-import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
-import { usingPaintingReseedingLabel } from "./wild3Labels";
 import { Pokeblock, pokeblockSchema } from "~/types/pokeblock";
-import { formatLargeInteger } from "~/utils/formatLargeInteger";
+import { usingTargetSetupInputs } from "../pokemonRng/generatorResultColumns";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -197,18 +194,12 @@ const getFields = ({
         />
       ),
     },
-    {
-      ...usingPaintingReseedingLabel(),
-      input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
-    },
-    {
-      label: "Target frame before painting (Painting seed)",
-      input: (
-        <FormikEmeraldFrameBeforePaintingInput<FormState> name="targetFrameBeforePainting" />
-      ),
-      indent: 1,
-      show: usingPaintingReseeding,
-    },
+    ...usingTargetSetupInputs(usingPaintingReseeding, equivalentInitialAdvs, [
+      "usingPaintingReseeding",
+      "targetFrameBeforePainting",
+      "targetAdvance",
+      "equivalentInitialAdvs",
+    ]),
     {
       label: "Target Method",
       input: (
@@ -217,26 +208,6 @@ const getFields = ({
           options={toOptions(supportedGen3Methods)}
         />
       ),
-    },
-    {
-      label: usingPaintingReseeding
-        ? "Target advances after painting"
-        : "Target advances",
-      input: (
-        <FormikNumberInput<FormState> name="targetAdvance" numType="decimal" />
-      ),
-    },
-    {
-      label: "",
-      key: "Equivalent to Advances",
-      show: usingPaintingReseeding,
-      input: (
-        <>
-          Equivalent to Advances = {formatLargeInteger(equivalentInitialAdvs)}{" "}
-          without painting reseeding
-        </>
-      ),
-      indent: 1,
     },
     {
       label: "Feebas state",

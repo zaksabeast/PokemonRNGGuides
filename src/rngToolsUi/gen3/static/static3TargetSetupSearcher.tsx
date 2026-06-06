@@ -1,7 +1,4 @@
-import {
-  Static3SearcherResult,
-  Wild3PaintingAdvsAndDur,
-} from "~/rngTools";
+import { Static3SearcherResult, Wild3PaintingAdvsAndDur } from "~/rngTools";
 import {
   Field,
   FormFieldTable,
@@ -28,22 +25,18 @@ import {
 } from "~/components/gen3PkmFilter";
 
 import { searchStatic3Target } from "./searchStatic3Target";
+import { gen3StaticMethods, TargetSetup } from "./static3TargetSetupInput";
 import {
-  gen3StaticMethods,
-  TargetSetup,
-} from "./static3TargetSetupInput";
-import { getGeneratorPokemonResultColumns } from "../pokemonRng/generatorResultColumns";
+  getGeneratorPokemonResultColumns,
+  usingTargetSetupInputs,
+} from "../pokemonRng/generatorResultColumns";
 import { Static3TargetMon } from "./static3TargetMon";
-import { getStatic3SpeciesEncounters } from "./constants";
 import { toOptions } from "~/utils/options";
-
-const emeraldStaticSpecies = uniq(
-  getStatic3SpeciesEncounters("emerald").map(({ species }) => species),
-);
+import { species } from "~/types/species";
 
 const schema = z
   .object({
-    species: z.enum(emeraldStaticSpecies),
+    species: z.enum(species),
     tid: z.number().int().min(0).max(0xffff),
     sid: z.number().int().min(0).max(0xffff),
     methods: z.array(z.enum(gen3StaticMethods)).min(1),
@@ -118,10 +111,7 @@ const getSetupFields = (): Field[] => [
       />
     ),
   },
-  {
-    label: "Using painting reseeding",
-    input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
-  },
+  ...usingTargetSetupInputs(false, 0, ["usingPaintingReseeding"]),
   {
     label: "Let searcher find painting seed",
     input: <FormikSwitch<FormState> name="letSearcherFindPaintingSeed" />,

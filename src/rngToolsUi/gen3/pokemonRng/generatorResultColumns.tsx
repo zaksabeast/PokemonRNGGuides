@@ -114,18 +114,30 @@ type TargetSetupInputForm = {
   targetAdvance: number;
 };
 
+type TargetSetupInputField =
+  | "usingPaintingReseeding"
+  | "targetFrameBeforePainting"
+  | "targetAdvance"
+  | "equivalentInitialAdvs";
+
 export const usingTargetSetupInputs = (
   usingPaintingReseeding: boolean,
   equivalentInitialAdvs: number,
+  fieldsToInclude: TargetSetupInputField[] = [
+    "usingPaintingReseeding",
+    "targetFrameBeforePainting",
+    "targetAdvance",
+    "equivalentInitialAdvs",
+  ],
 ): Field[] => {
-  return [
-    {
+  const inputs: Record<TargetSetupInputField, Field> = {
+    usingPaintingReseeding: {
       ...usingPaintingReseedingLabel(),
       input: (
         <FormikSwitch<TargetSetupInputForm> name="usingPaintingReseeding" />
       ),
     },
-    {
+    targetFrameBeforePainting: {
       label: "Target frame before painting (Painting seed)",
       input: (
         <FormikEmeraldFrameBeforePaintingInput<TargetSetupInputForm> name="targetFrameBeforePainting" />
@@ -133,7 +145,7 @@ export const usingTargetSetupInputs = (
       indent: 1,
       show: usingPaintingReseeding,
     },
-    {
+    targetAdvance: {
       label: usingPaintingReseeding
         ? "Target advances after painting"
         : "Target advances",
@@ -144,7 +156,7 @@ export const usingTargetSetupInputs = (
         />
       ),
     },
-    {
+    equivalentInitialAdvs: {
       label: "",
       key: "Equivalent to Advances",
       show: usingPaintingReseeding,
@@ -156,7 +168,9 @@ export const usingTargetSetupInputs = (
       ),
       indent: 1,
     },
-  ];
+  };
+
+  return fieldsToInclude.map((fieldName) => inputs[fieldName]);
 };
 
 /** Example of return values: Sturdy, Sturdy (1), Sturdy (2), First, Second */

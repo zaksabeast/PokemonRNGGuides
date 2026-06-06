@@ -164,9 +164,9 @@ const tools = {
     () => import("~/rngToolsUi/gen3/emeraldPickupEgg"),
     (mod) => mod.EmeraldPickupEgg,
   ),
-  Static3Searcher: lazyLoad(
-    () => import("~/rngToolsUi/gen3/static/staticSearcher"),
-    (mod) => mod.Static3Searcher,
+  Static3TargetSetupSearcher_WithSetTargetSetup: lazyLoad(
+    () => import("~/rngToolsUi/gen3/static/static3"),
+    (mod) => mod.Static3TargetSetupSearcher_WithSetTargetSetup,
   ),
   BattleVideo: lazyLoad(
     () => import("~/rngToolsUi/gen3/battleVideo/battleVideo"),

@@ -1,14 +1,5 @@
 import { Static3SearcherResult, Wild3PaintingAdvsAndDur } from "~/rngTools";
-import {
-  Field,
-  FormFieldTable,
-  FormikNumberInput,
-  FormikSelect,
-  FormikSwitch,
-  RngToolForm,
-  RngToolSubmit,
-  Typography,
-} from "~/components";
+import { RngToolForm, RngToolSubmit } from "~/components";
 import {
   pkmFilterSchema,
   getPkmFilterInitialValues,
@@ -17,7 +8,6 @@ import React from "react";
 import { z } from "zod";
 
 import { sortBy } from "lodash-es";
-import uniq from "lodash-es/uniq";
 import { FlattenIvs } from "~/rngToolsUi/shared/ivColumns";
 import {
   gen3PkmFilterSchema,
@@ -26,13 +16,11 @@ import {
 
 import { searchStatic3Target } from "./searchStatic3Target";
 import { gen3StaticMethods, TargetSetup } from "./static3TargetSetupInput";
-import {
-  getGeneratorPokemonResultColumns,
-  usingTargetSetupInputs,
-} from "../pokemonRng/generatorResultColumns";
+import { getGeneratorPokemonResultColumns } from "../pokemonRng/generatorResultColumns";
 import { Static3TargetMon } from "./static3TargetMon";
-import { toOptions } from "~/utils/options";
 import { species } from "~/types/species";
+import { Static3Game } from "./constants";
+import { Static3SetupFilter } from "./static3SetupFilter";
 
 const schema = z
   .object({
@@ -88,88 +76,12 @@ const getInitialValues = (): FormState => {
 };
 
 type Props = {
+  game: Static3Game;
   setTargetSetup: (targetSetup: TargetSetup) => void;
 };
 
-const getSetupFields = (): Field[] => [
-  {
-    label: "TID",
-    input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-  },
-  {
-    label: "SID",
-    input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
-  },
-  {
-    label: "Methods",
-    input: (
-      <FormikSelect<FormState, "methods">
-        name="methods"
-        options={toOptions(gen3StaticMethods)}
-        mode="multiple"
-        selectAllNoneButtons
-      />
-    ),
-  },
-  ...usingTargetSetupInputs(false, 0, ["usingPaintingReseeding"]),
-  {
-    label: "Let searcher find painting seed",
-    input: <FormikSwitch<FormState> name="letSearcherFindPaintingSeed" />,
-  },
-  {
-    label: "Initial seed",
-    input: <FormikNumberInput<FormState> name="initial_seed" numType="hex" />,
-  },
-  {
-    label: "Initial advances",
-    input: (
-      <FormikNumberInput<FormState> name="initial_advances" numType="decimal" />
-    ),
-  },
-  {
-    label: "Min frame before painting",
-    input: (
-      <FormikNumberInput<FormState>
-        name="min_frame_before_painting"
-        numType="decimal"
-      />
-    ),
-  },
-  {
-    label: "Min advances after painting",
-    input: (
-      <FormikNumberInput<FormState>
-        name="min_adv_after_painting"
-        numType="decimal"
-      />
-    ),
-  },
-  {
-    label: "Max advances",
-    input: (
-      <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
-    ),
-  },
-  {
-    label: "Max results",
-    input: (
-      <FormikNumberInput<FormState> name="max_result_count" numType="decimal" />
-    ),
-  },
-];
-
-const Static3SetupFilter = () => {
-  return (
-    <>
-      <Typography.Title level={5} p={0} m={0}>
-        Setup
-      </Typography.Title>
-      <FormFieldTable fields={getSetupFields()} />
-    </>
-  );
-};
-
 export const Static3TargetSetupSearcher = ({
+  game,
   setTargetSetup: setTargetSetupProp,
 }: Props) => {
   const [pidPathResults, setPidPathResults] = React.useState<PidPathResult[]>(
@@ -206,9 +118,9 @@ export const Static3TargetSetupSearcher = ({
         rowKey="uid"
         onClickResultRow={setSelectedPidPathResult}
       >
-        <Static3TargetMon />
+        <Static3TargetMon game={game} />
         <br />
-        <Static3SetupFilter />
+        <Static3SetupFilter game={game} />
       </RngToolForm>
     </>
   );

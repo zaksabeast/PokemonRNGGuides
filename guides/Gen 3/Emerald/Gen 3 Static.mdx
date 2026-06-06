@@ -1,32 +1,22 @@
 ---
-- title: "Static Tool"
+- title: "Static RNG"
   description: "Static encounters in Emerald"
   slug: "emerald-static"
   category: "Emerald"
-  section: "tool"
+  section: "pokemon_rng"
   isRoughDraft: true
-- title: "Static Tool"
+- title: "Static RNG"
   description: "Static encounters in Ruby and Sapphire"
   slug: "rs-static"
   category: "Ruby and Sapphire"
-  section: "tool"
+  section: "pokemon_rng"
   isRoughDraft: true
-- title: "Static Tool"
+- title: "Static RNG"
   description: "Static encounters in FireRed and LeafGreen"
   slug: "frlg-static"
   category: "FireRed and LeafGreen"
-  section: "tool"
+  section: "pokemon_rng"
   isRoughDraft: true
 ---
 
-<ShowIf slug="/emerald-static">
-  <Static3Searcher game="emerald" />
-</ShowIf>
-
-<ShowIf slug="/rs-static">
-  <Static3Searcher game="rs" />
-</ShowIf>
-
-<ShowIf slug="/frlg-static">
-  <Static3Searcher game="frlg" />
-</ShowIf>
+<Static3TargetSetupSearcher_WithSetTargetSetup />

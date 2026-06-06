@@ -46,7 +46,11 @@ export const calculateTargetSetupResult = async (targetSetup: TargetSetup) => {
         species={targetSetup.species}
         pid={result.pid}
         ivs={result.ivs}
-        lvl={encounterContextToLvl(targetSetup.species, targetSetup.roaming)}
+        lvl={encounterContextToLvl(
+          targetSetup.game,
+          targetSetup.species,
+          targetSetup.roaming,
+        )}
       />
     ),
   };

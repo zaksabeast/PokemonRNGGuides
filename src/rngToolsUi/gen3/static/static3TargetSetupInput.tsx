@@ -15,7 +15,11 @@ import { lcrng_distance } from "~/utils/lcrng";
 import { toOptions } from "~/utils/options";
 
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
-import { getStatic3SpeciesEncounters, Static3Game } from "./constants";
+import {
+  getStatic3SpeciesEncounters,
+  Static3Game,
+  static3Games,
+} from "./constants";
 import { usingTargetSetupInputs } from "../pokemonRng/generatorResultColumns";
 import uniq from "lodash-es/uniq";
 
@@ -63,6 +67,7 @@ export const getPossibleValuesForSpecies = (
 };
 
 const Validator = z.object({
+  game: z.enum(static3Games),
   species: z.enum(static3Species),
   roaming: z.boolean(),
   usingPaintingReseeding: z.boolean(),
@@ -72,10 +77,12 @@ const Validator = z.object({
 });
 
 type Props = {
+  game: Static3Game;
   setTargetSetup: (targetSetup: TargetSetup | null) => void;
 };
 
 export type TargetSetup = {
+  game: Static3Game;
   species: Species;
   roaming: boolean;
   targetPaintingAdvs: { before: number; after: number };
@@ -84,8 +91,9 @@ export type TargetSetup = {
 
 export type FormState = z.infer<typeof Validator>;
 
-const getInitialValues = (): FormState => {
+const getInitialValues = (game: Static3Game): FormState => {
   return {
+    game,
     species: "Mudkip",
     roaming: false,
     usingPaintingReseeding: false,
@@ -98,9 +106,10 @@ const getInitialValues = (): FormState => {
 const convertFormStateValuesToTargetSetup = (
   values: FormState,
 ): TargetSetup => {
-  const { roaming } = getPossibleValuesForSpecies(values.species);
+  const { roaming } = getPossibleValuesForSpecies(values.game, values.species);
 
   return {
+    game: values.game,
     species: values.species,
     roaming: roaming.includes(values.roaming) ? values.roaming : false,
     targetPaintingAdvs: {
@@ -114,17 +123,22 @@ const convertFormStateValuesToTargetSetup = (
 };
 
 const getFields = ({
+  game,
   species,
   roaming,
   usingPaintingReseeding,
   equivalentInitialAdvs,
 }: {
+  game: Static3Game;
   species: Species;
   roaming: boolean;
   usingPaintingReseeding: boolean;
   equivalentInitialAdvs: number;
 }): Field[] => {
-  const { roaming: roamingOptions } = getPossibleValuesForSpecies(species);
+  const { roaming: roamingOptions } = getPossibleValuesForSpecies(
+    game,
+    species,
+  );
   const canRoam = roamingOptions.includes(true);
 
   const fields: Field[] = [
@@ -161,8 +175,10 @@ const getFields = ({
 };
 
 export const Static3TargetSetupInputFields = ({
+  game,
   setTargetSetup,
 }: {
+  game: Static3Game;
   setTargetSetup: (targetSetup: TargetSetup | null) => void;
 }) => {
   const { setFieldValue } = useFormContext<FormState>();
@@ -187,6 +203,7 @@ export const Static3TargetSetupInputFields = ({
     lcrng_distance(0, targetFrameBeforePainting) + targetAdvance;
 
   const fields = getFields({
+    game,
     species,
     roaming,
     usingPaintingReseeding,
@@ -194,13 +211,17 @@ export const Static3TargetSetupInputFields = ({
   });
 
   React.useEffect(() => {
-    const { roaming: roamingOptions } = getPossibleValuesForSpecies(species);
+    const { roaming: roamingOptions } = getPossibleValuesForSpecies(
+      game,
+      species,
+    );
     if (!roamingOptions.includes(roaming)) {
       setFieldValue("roaming", false);
     }
 
     setTargetSetup(null);
   }, [
+    game,
     setFieldValue,
     setTargetSetup,
     species,
@@ -213,7 +234,7 @@ export const Static3TargetSetupInputFields = ({
   return <FormFieldTable fields={fields} />;
 };
 
-export const Static3TargetSetupInput = ({ setTargetSetup }: Props) => {
+export const Static3TargetSetupInput = ({ game, setTargetSetup }: Props) => {
   const onSubmit: RngToolSubmit<FormState> = async (values) => {
     const targetSetup = convertFormStateValuesToTargetSetup(values);
     const { content } = await calculateTargetSetupResult(targetSetup);
@@ -223,13 +244,16 @@ export const Static3TargetSetupInput = ({ setTargetSetup }: Props) => {
   return (
     <RngToolForm<FormState, never>
       validationSchema={Validator}
-      initialValues={getInitialValues()}
+      initialValues={getInitialValues(game)}
       onSubmit={onSubmit}
       submitTrackerId="static3_calib_target"
       rowKey="uid"
       submitButtonLabel="Calculate Target"
     >
-      <Static3TargetSetupInputFields setTargetSetup={setTargetSetup} />
+      <Static3TargetSetupInputFields
+        game={game}
+        setTargetSetup={setTargetSetup}
+      />
     </RngToolForm>
   );
 };

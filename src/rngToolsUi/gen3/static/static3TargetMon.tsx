@@ -15,9 +15,11 @@ import {
   FormState,
   getPossibleValuesForSpecies,
 } from "./static3TargetSetupInput";
+import { Static3Game } from "./constants";
 
-const getTargetMonFields = (species: Species): Field[] => {
-  const possibleValues = getPossibleValuesForSpecies(species);
+// TODO: Display isRoaming input field if the selected species can be roaming or not roaming.
+const getTargetMonFields = (game: Static3Game, species: Species): Field[] => {
+  const possibleValues = getPossibleValuesForSpecies(game, species);
   return [
     {
       label: "Species",
@@ -36,7 +38,7 @@ const getTargetMonFields = (species: Species): Field[] => {
   ];
 };
 
-export const Static3TargetMon = () => {
+export const Static3TargetMon = ({ game }: { game: Static3Game }) => {
   const species = useWatch<FormState, "species">({
     name: "species",
   });
@@ -46,7 +48,7 @@ export const Static3TargetMon = () => {
       <Typography.Title level={5} p={0} m={0}>
         Target Pokémon
       </Typography.Title>
-      <FormFieldTable fields={getTargetMonFields(species)} />
+      <FormFieldTable fields={getTargetMonFields(game, species)} />
     </Flex>
   );
 };

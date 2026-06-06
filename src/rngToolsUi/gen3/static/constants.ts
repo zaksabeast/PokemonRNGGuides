@@ -2,6 +2,13 @@ import { Species } from "~/rngTools";
 import { match } from "ts-pattern";
 
 export type Static3Game = "emerald" | "rs" | "frlg";
+
+export const static3Games = [
+  "emerald",
+  "rs",
+  "frlg",
+] as const satisfies Static3Game[];
+
 export type Static3Encounter = {
   species: Species;
   lvl: number;

@@ -9,14 +9,24 @@ import { createFastestAdvsCache } from "../paintingReseeding/paintingCache";
 
 let nextUid = 0;
 
+const getInitialSeed = (game: Static3Game, opts: FormState) => {
+  if (opts.usingPaintingReseeding && opts.letSearcherFindPaintingSeed) {
+    return 0;
+  }
+
+  if (game === "rs" && opts.usingDeadBattery) {
+    // usingDeadBattery can only be true for r/s
+    return 0x5a0;
+  }
+
+  return opts.initial_seed;
+};
+
 export const searchStatic3Target = (
   game: Static3Game,
   opts: FormState,
 ): Promise<PidPathResult[]> => {
-  const initial_seed =
-    opts.usingPaintingReseeding && opts.letSearcherFindPaintingSeed
-      ? 0
-      : opts.initial_seed;
+  const initial_seed = getInitialSeed(game, opts);
 
   const initial_advances = opts.usingPaintingReseeding
     ? opts.min_adv_after_painting

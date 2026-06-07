@@ -12,17 +12,13 @@ import { sortBy } from "lodash-es";
 import { FlattenIvs } from "~/rngToolsUi/shared/ivColumns";
 
 import { searchStatic3Target } from "./searchStatic3Target";
-import { getGeneratorPokemonResultColumns } from "../pokemonRng/generatorResultColumns";
 import { Static3TargetMon } from "./static3TargetMon";
-import {
-  gen3StaticMethods,
-  getPossibleStatic3Species,
-  Static3Game,
-} from "./constants";
+import { gen3StaticMethods, Static3Game } from "./constants";
 import { Static3SetupFilter } from "./static3SetupFilter";
 import {
   targetSetupSearcherSchema,
   getTargetSetupSearcherInitialValues,
+  getTargetResultColumns,
 } from "../pokemonRng/targetSetupSearcher";
 
 export type TargetSetup = {
@@ -56,10 +52,10 @@ export type PidPathResult = FlattenIvs<
 
 const getInitialValues = (game: Static3Game): FormState => {
   return {
-    species: getPossibleStatic3Species(game)[0],
+    species: game === "frlg" ? "Squirtle" : "Mudkip",
     roaming: false,
     methods: ["Static1"],
-    ...getTargetSetupSearcherInitialValues(),
+    ...getTargetSetupSearcherInitialValues(game),
   };
 };
 
@@ -94,7 +90,7 @@ export const Static3TargetSetupSearcher = ({
 
   const initialValues = getInitialValues(game);
 
-  const pidPathColumns = getGeneratorPokemonResultColumns<PidPathResult>();
+  const pidPathColumns = getTargetResultColumns(game, false);
 
   const onSubmit: RngToolSubmit<FormState> = async (values) => {
     const pidPathResults = await searchStatic3Target(game, values);

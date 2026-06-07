@@ -4,8 +4,7 @@ import { nature_from_pid } from "~/types";
 import { minIvs } from "~/types/ivs";
 import { formatHex } from "~/utils/formatHex";
 import React from "react";
-
-import { getAbilityDisplayStr } from "./generatorResultColumns";
+import { getAbilityDisplayStr } from "../wild/calculateTargetSetupResult";
 
 export const PokemonInfo = ({
   species,

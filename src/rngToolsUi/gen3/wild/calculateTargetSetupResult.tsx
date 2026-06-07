@@ -1,5 +1,6 @@
 import {
   rngTools,
+  Species,
   Wild3Action,
   Wild3GeneratorOptions,
   Wild3GeneratorResult,
@@ -19,7 +20,6 @@ import { nature_from_pid } from "~/types";
 import { formatProbability } from "~/utils/formatProbability";
 import { formatHex } from "~/utils/formatHex";
 import { Flex } from "~/components";
-import { getAbilityDisplayStr } from "../pokemonRng/generatorResultColumns";
 
 const getProbabilityInfo = async (
   res: Wild3GeneratorResult,
@@ -71,6 +71,26 @@ const getProbabilityInfo = async (
       )}
     </Flex>
   );
+};
+
+/** Example of return values: Sturdy, Sturdy (1), Sturdy (2), First, Second */
+export const getAbilityDisplayStr = async (species: Species, pid: number) => {
+  const abilities = await rngTools.get_species_abilities(species);
+  const abilityType = await rngTools.get_ability_type_from_gen3_pid(pid);
+
+  const suffix =
+    abilities[0] === abilities[1]
+      ? ` (${abilityType === "First" ? 1 : 2})`
+      : ``;
+  if (abilityType === "First") {
+    return abilities[0] == null ? abilityType : `${abilities[0]}${suffix}`;
+  }
+  if (abilityType === "Second") {
+    return abilities[0] == null && abilities[1] == null
+      ? abilityType
+      : `${abilities[1] ?? abilities[0]}${suffix}`;
+  }
+  return "";
 };
 
 export const calculateTargetSetupResult = async (

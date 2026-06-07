@@ -3,6 +3,8 @@ import {
   FormikNumberInput,
   FormikSwitch,
   TooltipWithIcon,
+  Link,
+  ResultColumn,
 } from "~/components";
 import {
   minAdvsAfterPaintingLabel,
@@ -11,8 +13,14 @@ import {
 } from "../wild/wild3Labels";
 import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
 
-import { FormState as WildFormState } from "../wild/wild3TargetSetupSearcher";
-import { FormState as StaticFormState } from "../static/static3TargetSetupSearcher";
+import {
+  FormState as WildFormState,
+  PidPathResult as Wild3PidPathResult,
+} from "../wild/wild3TargetSetupSearcher";
+import {
+  FormState as StaticFormState,
+  PidPathResult as Static3PidPathResult,
+} from "../static/static3TargetSetupSearcher";
 import z from "zod";
 import { species } from "~/types/species";
 import {
@@ -24,14 +32,23 @@ import {
   getGen3PkmFilterInitialValues,
 } from "~/components/gen3PkmFilter";
 import { Static3Game } from "../static/constants";
+import { Tooltip } from "antd";
+import { ivColumns } from "~/rngToolsUi/shared/ivColumns";
+import { GBA_FPS } from "~/utils/consts";
+import { formatDuration } from "~/utils/formatDuration";
+import { formatHex } from "~/utils/formatHex";
+import { formatLargeInteger } from "~/utils/formatLargeInteger";
+import { match } from "ts-pattern";
 
 type FormState = WildFormState | StaticFormState;
+type PidPathResult = Wild3PidPathResult | Static3PidPathResult;
 
 export const targetSetupSearcherSchema = z
   .object({
     species: z.enum(species),
     tid: z.number().int().min(0).max(0xffff),
     usingAceForSid: z.boolean(),
+    usingDeadBattery: z.boolean(),
     sid: z.number().int().min(0).max(0xffff),
     usingPaintingReseeding: z.boolean(),
     letSearcherFindPaintingSeed: z.boolean(),
@@ -46,15 +63,16 @@ export const targetSetupSearcherSchema = z
   .extend(pkmFilterSchema.shape)
   .extend(gen3PkmFilterSchema.shape);
 
-export const getTargetSetupSearcherInitialValues = () => {
+export const getTargetSetupSearcherInitialValues = (game: Static3Game) => {
   return {
     tid: 0,
     usingAceForSid: false,
     sid: 0,
     usingPaintingReseeding: false,
+    usingDeadBattery: true,
     letSearcherFindPaintingSeed: true,
     showAdvancedPaintingSettings: false,
-    initial_seed: 0,
+    initial_seed: game === "rs" ? 0x5a0 : 0,
     initial_advances: 1000,
     min_frame_before_painting: 800,
     min_adv_after_painting: 7000,
@@ -70,11 +88,13 @@ export const getPaintingSetupFilterFields = ({
   usingPaintingReseeding,
   letSearcherFindPaintingSeed,
   showAdvancedPaintingSettings,
+  usingDeadBattery,
 }: {
   game: Static3Game;
   usingPaintingReseeding: boolean;
   letSearcherFindPaintingSeed: boolean;
   showAdvancedPaintingSettings: boolean;
+  usingDeadBattery: boolean;
 }): Field[] => {
   return [
     {
@@ -89,7 +109,20 @@ export const getPaintingSetupFilterFields = ({
       show: usingPaintingReseeding,
       indent: 1,
     },
-
+    {
+      label: "Dead Battery?",
+      input: <FormikSwitch<FormState> name="usingDeadBattery" />,
+      show: game === "rs" && !usingPaintingReseeding,
+    },
+    {
+      label: "Initial seed",
+      input: <FormikNumberInput<FormState> name="initial_seed" numType="hex" />,
+      show: match(game)
+        .with("emerald", () => false)
+        .with("rs", () => !usingPaintingReseeding && !usingDeadBattery)
+        .with("frlg", () => true)
+        .exhaustive(),
+    },
     {
       label: "Frame before painting (Painting seed)",
       input: (
@@ -132,7 +165,7 @@ export const getPaintingSetupFilterFields = ({
     {
       label: "Min advances",
       tooltip:
-        "To ensure there is enough time between booting the game and triggering the wild encounter.",
+        "To ensure there is enough time between booting the game and triggering the encounter.",
       input: (
         <FormikNumberInput<FormState>
           name="initial_advances"
@@ -199,6 +232,87 @@ export const getTidSidSetupFilterFields = ({
           N/A
         </TooltipWithIcon>
       ),
+    },
+  ];
+};
+
+export const getTargetResultColumns = (
+  game: Static3Game,
+  isApproxAdv: boolean,
+): ResultColumn<PidPathResult>[] => {
+  return [
+    {
+      title: "Advances",
+      dataIndex: "advs",
+      monospace: true,
+      render: (advs, { wait_dur }) => {
+        const { frame_before_painting: before, adv_after_painting: after } =
+          advs;
+
+        const beforeTxt =
+          before !== 0 && game === "emerald"
+            ? `${formatLargeInteger(before)} | `
+            : "";
+
+        const afterTxt = `${isApproxAdv ? "~" : ""}${formatLargeInteger(after)}`;
+        const text = `${beforeTxt}${afterTxt}`;
+        const title = formatDuration(wait_dur / GBA_FPS);
+        return <Tooltip title={title}>{text}</Tooltip>;
+      },
+    },
+    { title: "Nature", dataIndex: "nature" },
+    {
+      title: "Shiny",
+      dataIndex: "shiny",
+      render: (shiny: boolean) => (shiny ? "Yes" : "No"),
+    },
+    {
+      title: "IV",
+      type: "group",
+      columns: ivColumns,
+    },
+    {
+      title: "PID",
+      dataIndex: "pid",
+      monospace: true,
+      render: (pid) => formatHex(pid),
+    },
+    { title: "Ability", dataIndex: "ability" },
+    { title: "Gender", dataIndex: "gender" },
+    {
+      title: "Hidden Power",
+      type: "group",
+      columns: [
+        {
+          title: "Type",
+          dataIndex: "hidden_power",
+          render: (hidden_power) => hidden_power.pokemon_type,
+        },
+        {
+          title: "Power",
+          dataIndex: "hidden_power",
+          render: (hidden_power) => hidden_power.bp,
+        },
+      ],
+    },
+    {
+      title: "PID speed",
+      tooltip: (
+        <>
+          For advanced users. Number of cycles for the processor to perform the
+          operation (PID modulo 25). Learn more about{" "}
+          <Link newTab href="/gba-methods-lead-impact/">
+            Methods & Leads
+          </Link>
+          .
+        </>
+      ),
+      dataIndex: "pidCycleCount",
+      render: (pidCycleCount) => `${pidCycleCount} cycles`,
+    },
+    {
+      title: "Method",
+      dataIndex: "method",
     },
   ];
 };

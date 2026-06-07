@@ -15,6 +15,7 @@ const getSetupFields = (obj: {
   usingAceForSid: boolean;
   letSearcherFindPaintingSeed: boolean;
   showAdvancedPaintingSettings: boolean;
+  usingDeadBattery: boolean;
 }): Field[] => {
   const { game } = obj;
 
@@ -59,6 +60,9 @@ export const Static3SetupFilter = ({ game }: { game: Static3Game }) => {
   >({
     name: "showAdvancedPaintingSettings",
   });
+  const usingDeadBattery = useWatch<FormState, "usingDeadBattery">({
+    name: "usingDeadBattery",
+  });
 
   return (
     <>
@@ -73,6 +77,7 @@ export const Static3SetupFilter = ({ game }: { game: Static3Game }) => {
           usingAceForSid,
           letSearcherFindPaintingSeed,
           showAdvancedPaintingSettings,
+          usingDeadBattery,
         })}
       />
     </>

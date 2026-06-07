@@ -32,8 +32,8 @@ import { Wild3LeadCycleSpeedSelectorWithBtn } from "./wild3LeadCycleSpeedSelecto
 import {
   targetSetupSearcherSchema,
   getTargetSetupSearcherInitialValues,
+  getTargetResultColumns,
 } from "../pokemonRng/targetSetupSearcher";
-import { getGeneratorPokemonResultColumns } from "../pokemonRng/generatorResultColumns";
 
 /*
 Possible UI improvements:
@@ -77,6 +77,7 @@ export type PidPathResult = FlattenIvs<
       pidCycleCount: number;
       earliestAdvance: number;
       resultSetupInfos: ResultSetupInfo[];
+      initial_seed: number;
     }
 >;
 
@@ -108,7 +109,7 @@ const getInitialValues = (): FormState => {
     generate_even_if_impossible: false,
     using_white_flute: true,
     considered_safari_pokeblocks: "SoloOnly",
-    ...getTargetSetupSearcherInitialValues(),
+    ...getTargetSetupSearcherInitialValues("emerald"),
   };
 };
 
@@ -159,7 +160,7 @@ const getPidPathColumns = (): ResultColumn<PidPathResult>[] => {
         );
       },
     },
-    ...getGeneratorPokemonResultColumns(),
+    ...getTargetResultColumns("emerald", true),
   ];
 };
 

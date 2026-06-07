@@ -15,6 +15,7 @@ import { useWatch } from "react-hook-form";
 import {
   getPossibleRoamingValuesForSpecies,
   getPossibleStatic3Species,
+  getStatic3SpeciesEncounters,
   Static3Game,
 } from "./constants";
 import { FormState } from "./static3TargetSetupSearcher";
@@ -22,11 +23,20 @@ import { FormState } from "./static3TargetSetupSearcher";
 const getTargetMonFields = (
   game: Static3Game,
   selectedSpecies: Species,
+  selectedRoaming: boolean,
 ): Field[] => {
   const possibleSpecies = getPossibleStatic3Species(game);
   const possibleRoaming = getPossibleRoamingValuesForSpecies(
     game,
     selectedSpecies,
+  );
+
+  const selectedRoamingFixed = possibleRoaming.includes(selectedRoaming)
+    ? selectedRoaming
+    : possibleRoaming[0];
+  const selectedEncounter = getStatic3SpeciesEncounters(game).find(
+    (enc) =>
+      enc.species === selectedSpecies && enc.roaming === selectedRoamingFixed,
   );
 
   return [
@@ -44,6 +54,16 @@ const getTargetMonFields = (
       input: <FormikSwitch<FormState> name="roaming" />,
       show: possibleRoaming.length > 1,
     },
+    {
+      label: "Location",
+      input: selectedEncounter?.location,
+      show: selectedEncounter != null,
+    },
+    {
+      label: "Level",
+      input: selectedEncounter?.lvl,
+      show: selectedEncounter != null,
+    },
     ...getPkmFilterFields({
       species: selectedSpecies,
       displayHiddenAbility: false,
@@ -56,13 +76,16 @@ export const Static3TargetMon = ({ game }: { game: Static3Game }) => {
   const species = useWatch<FormState, "species">({
     name: "species",
   });
+  const roaming = useWatch<FormState, "roaming">({
+    name: "roaming",
+  });
 
   return (
     <Flex vertical gap={8}>
       <Typography.Title level={5} p={0} m={0}>
         Target Pokémon
       </Typography.Title>
-      <FormFieldTable fields={getTargetMonFields(game, species)} />
+      <FormFieldTable fields={getTargetMonFields(game, species, roaming)} />
     </Flex>
   );
 };

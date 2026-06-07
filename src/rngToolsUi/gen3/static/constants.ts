@@ -18,9 +18,24 @@ export type Static3Encounter = {
 };
 
 const emeraldStaticEncounters: Static3Encounter[] = [
-  { species: "Chikorita", lvl: 5, location: "Littleroot Town", roaming: false },
-  { species: "Totodile", lvl: 5, location: "Littleroot Town", roaming: false },
-  { species: "Cyndaquil", lvl: 5, location: "Littleroot Town", roaming: false },
+  {
+    species: "Chikorita",
+    lvl: 5,
+    location: "Littleroot Town (after completing the Hoenn Pokédex)",
+    roaming: false,
+  },
+  {
+    species: "Totodile",
+    lvl: 5,
+    location: "Littleroot Town (after completing the Hoenn Pokédex)",
+    roaming: false,
+  },
+  {
+    species: "Cyndaquil",
+    lvl: 5,
+    location: "Littleroot Town (after completing the Hoenn Pokédex)",
+    roaming: false,
+  },
   { species: "Treecko", lvl: 5, location: "Route 101", roaming: false },
   { species: "Mudkip", lvl: 5, location: "Route 101", roaming: false },
   { species: "Torchic", lvl: 5, location: "Route 101", roaming: false },
@@ -56,13 +71,13 @@ const emeraldStaticEncounters: Static3Encounter[] = [
   {
     species: "Latias",
     lvl: 50,
-    location: "Southern Island (event)",
+    location: "Southern Island (Eon Ticket event)",
     roaming: false,
   },
   {
     species: "Latios",
     lvl: 50,
-    location: "Southern Island (event)",
+    location: "Southern Island (Eon Ticket event)",
     roaming: false,
   },
   { species: "Kyogre", lvl: 70, location: "Marine Cave", roaming: false },
@@ -71,17 +86,27 @@ const emeraldStaticEncounters: Static3Encounter[] = [
   {
     species: "Mew",
     lvl: 30,
-    location: "Faraway Island (event)",
+    location: "Faraway Island (Old Sea Map event)",
     roaming: false,
   },
   {
     species: "Deoxys_Speed",
     lvl: 30,
-    location: "Birth Island (event)",
+    location: "Birth Island (AuroraTicket event)",
     roaming: false,
   },
-  { species: "Lugia", lvl: 70, location: "Navel Rock (event)", roaming: false },
-  { species: "HoOh", lvl: 70, location: "Navel Rock (event)", roaming: false },
+  {
+    species: "Lugia",
+    lvl: 70,
+    location: "Navel Rock (MysticTicket event)",
+    roaming: false,
+  },
+  {
+    species: "HoOh",
+    lvl: 70,
+    location: "Navel Rock (MysticTicket event)",
+    roaming: false,
+  },
 ];
 
 const rsStaticEncounters: Static3Encounter[] = [

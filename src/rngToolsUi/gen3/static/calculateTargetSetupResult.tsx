@@ -8,10 +8,18 @@ import {
 } from "~/components/pkmFilter";
 import { PokemonInfo } from "~/rngToolsUi/gen3/pokemonRng/ResultPokemonInfo";
 import { rngTools } from "~/rngTools";
-
-import { encounterContextToLvl, TargetSetup } from "./static3TargetSetupInput";
+import { TargetSetup } from "./static3TargetSetupSearcher";
+import { getStatic3SpeciesEncounters } from "./constants";
 
 export const calculateTargetSetupResult = async (targetSetup: TargetSetup) => {
+  const encounterLvl =
+    getStatic3SpeciesEncounters(targetSetup.game).find((enc) => {
+      return (
+        enc.species === targetSetup.species &&
+        enc.roaming === targetSetup.roaming
+      );
+    })?.lvl ?? 5;
+
   const encounterGenderRatio = await rngTools.get_species_gender_ratio(
     targetSetup.species,
   );
@@ -46,11 +54,7 @@ export const calculateTargetSetupResult = async (targetSetup: TargetSetup) => {
         species={targetSetup.species}
         pid={result.pid}
         ivs={result.ivs}
-        lvl={encounterContextToLvl(
-          targetSetup.game,
-          targetSetup.species,
-          targetSetup.roaming,
-        )}
+        lvl={encounterLvl}
       />
     ),
   };

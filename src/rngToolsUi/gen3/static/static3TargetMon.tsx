@@ -12,32 +12,18 @@ import { Species } from "~/rngTools";
 import { toOptions } from "~/utils/options";
 import { useWatch } from "react-hook-form";
 
-import { getStatic3SpeciesEncounters, Static3Game } from "./constants";
-import uniq from "lodash-es/uniq";
+import {
+  getPossibleRoamingValuesForSpecies,
+  getPossibleStatic3Species,
+  Static3Game,
+} from "./constants";
 import { FormState } from "./static3TargetSetupSearcher";
-
-export const getPossibleRoamingValuesForSpecies = (
-  game: Static3Game,
-  selectedSpecies: Species,
-) => {
-  return uniq(
-    getStatic3SpeciesEncounters(game)
-      .filter((encounter) => encounter.species === selectedSpecies)
-      .map((encounter) => encounter.roaming),
-  );
-};
-
-export const getPossibleSpecies = (game: Static3Game) => {
-  return uniq(
-    getStatic3SpeciesEncounters(game).map((encounter) => encounter.species),
-  );
-};
 
 const getTargetMonFields = (
   game: Static3Game,
   selectedSpecies: Species,
 ): Field[] => {
-  const possibleSpecies = getPossibleSpecies(game);
+  const possibleSpecies = getPossibleStatic3Species(game);
   const possibleRoaming = getPossibleRoamingValuesForSpecies(
     game,
     selectedSpecies,

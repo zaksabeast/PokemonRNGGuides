@@ -13,18 +13,17 @@ import { FlattenIvs } from "~/rngToolsUi/shared/ivColumns";
 
 import { searchStatic3Target } from "./searchStatic3Target";
 import { getGeneratorPokemonResultColumns } from "../pokemonRng/generatorResultColumns";
-import { getPossibleSpecies, Static3TargetMon } from "./static3TargetMon";
-import { Static3Game } from "./constants";
+import { Static3TargetMon } from "./static3TargetMon";
+import {
+  gen3StaticMethods,
+  getPossibleStatic3Species,
+  Static3Game,
+} from "./constants";
 import { Static3SetupFilter } from "./static3SetupFilter";
 import {
   targetSetupSearcherSchema,
   getTargetSetupSearcherInitialValues,
-} from "../pokemonRng/setupFilter";
-
-export const gen3StaticMethods = [
-  "Static1",
-  "Static4",
-] as const satisfies readonly Gen3StaticMethod[];
+} from "../pokemonRng/targetSetupSearcher";
 
 export type TargetSetup = {
   game: Static3Game;
@@ -57,7 +56,7 @@ export type PidPathResult = FlattenIvs<
 
 const getInitialValues = (game: Static3Game): FormState => {
   return {
-    species: getPossibleSpecies(game)[0],
+    species: getPossibleStatic3Species(game)[0],
     roaming: false,
     methods: ["Static1"],
     ...getTargetSetupSearcherInitialValues(),

@@ -1,12 +1,12 @@
-import { Static3Game } from "./constants";
+import { gen3StaticMethods, Static3Game } from "./constants";
 import { Field, FormFieldTable, FormikSelect, Typography } from "~/components";
 import { toOptions } from "~/utils/options";
-import { FormState, gen3StaticMethods } from "./static3TargetSetupSearcher";
+import { FormState } from "./static3TargetSetupSearcher";
 import { useWatch } from "react-hook-form";
 import {
   getPaintingSetupFilterFields,
   getTidSidSetupFilterFields,
-} from "../pokemonRng/setupFilter";
+} from "../pokemonRng/targetSetupSearcher";
 
 const getSetupFields = (obj: {
   game: Static3Game;

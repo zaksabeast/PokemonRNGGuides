@@ -36,7 +36,7 @@ import { Wild3LeadCycleSpeedSelectorWithBtn } from "./wild3LeadCycleSpeedSelecto
 import {
   targetSetupSearcherSchema,
   getTargetSetupSearcherInitialValues,
-} from "../pokemonRng/setupFilter";
+} from "../pokemonRng/targetSetupSearcher";
 
 /*
 Possible UI improvements:

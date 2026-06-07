@@ -1,5 +1,6 @@
-import { Species } from "~/rngTools";
+import { Gen3StaticMethod, Species } from "~/rngTools";
 import { match } from "ts-pattern";
+import uniq from "lodash-es/uniq";
 
 export type Static3Game = "emerald" | "rs" | "frlg";
 
@@ -189,3 +190,25 @@ export const getStatic3SpeciesEncounters = (game: Static3Game) => {
     .with("frlg", () => frlgStaticEncounters)
     .exhaustive();
 };
+
+export const getPossibleRoamingValuesForSpecies = (
+  game: Static3Game,
+  selectedSpecies: Species,
+) => {
+  return uniq(
+    getStatic3SpeciesEncounters(game)
+      .filter((encounter) => encounter.species === selectedSpecies)
+      .map((encounter) => encounter.roaming),
+  );
+};
+
+export const getPossibleStatic3Species = (game: Static3Game) => {
+  return uniq(
+    getStatic3SpeciesEncounters(game).map((encounter) => encounter.species),
+  );
+};
+
+export const gen3StaticMethods = [
+  "Static1",
+  "Static4",
+] as const satisfies readonly Gen3StaticMethod[];

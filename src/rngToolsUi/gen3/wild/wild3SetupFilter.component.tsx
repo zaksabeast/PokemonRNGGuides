@@ -26,7 +26,7 @@ import { wild3SafariPokeblockSearchOptLabels } from "~/types/pokeblock";
 import {
   getPaintingSetupFilterFields as getPaintingSetupFilterFields,
   getTidSidSetupFilterFields,
-} from "../pokemonRng/setupFilter";
+} from "../pokemonRng/targetSetupSearcher";
 
 const supportedGen3Methods = [
   "Wild1",

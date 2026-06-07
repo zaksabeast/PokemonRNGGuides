@@ -5,6 +5,7 @@ import {
   FormikSwitch,
   Flex,
   Typography,
+  Link,
 } from "~/components";
 import { getGen3PkmFilterFields } from "~/components/gen3PkmFilter";
 import { getPkmFilterFields } from "~/components/pkmFilter";
@@ -24,6 +25,7 @@ const getTargetMonFields = (
   game: Static3Game,
   selectedSpecies: Species,
   selectedRoaming: boolean,
+  filter_shiny: boolean,
 ): Field[] => {
   const possibleSpecies = getPossibleStatic3Species(game);
   const possibleRoaming = getPossibleRoamingValuesForSpecies(
@@ -38,6 +40,11 @@ const getTargetMonFields = (
     (enc) =>
       enc.species === selectedSpecies && enc.roaming === selectedRoamingFixed,
   );
+
+  const isStarter =
+    selectedSpecies === "Mudkip" ||
+    selectedSpecies === "Treecko" ||
+    selectedSpecies === "Torchic";
 
   return [
     {
@@ -64,6 +71,16 @@ const getTargetMonFields = (
       input: selectedEncounter?.lvl,
       show: selectedEncounter != null,
     },
+    {
+      label: "",
+      input: (
+        <>
+          Note: Use <Link href="/emerald-shiny-starter/">Shiny Starter</Link>{" "}
+          webtool if you don't know your SID.
+        </>
+      ),
+      show: game === "emerald" && isStarter && filter_shiny,
+    },
     ...getPkmFilterFields({
       species: selectedSpecies,
       displayHiddenAbility: false,
@@ -79,13 +96,18 @@ export const Static3TargetMon = ({ game }: { game: Static3Game }) => {
   const roaming = useWatch<FormState, "roaming">({
     name: "roaming",
   });
+  const filter_shiny = useWatch<FormState, "filter_shiny">({
+    name: "filter_shiny",
+  });
 
   return (
     <Flex vertical gap={8}>
       <Typography.Title level={5} p={0} m={0}>
         Target Pokémon
       </Typography.Title>
-      <FormFieldTable fields={getTargetMonFields(game, species, roaming)} />
+      <FormFieldTable
+        fields={getTargetMonFields(game, species, roaming, filter_shiny)}
+      />
     </Flex>
   );
 };

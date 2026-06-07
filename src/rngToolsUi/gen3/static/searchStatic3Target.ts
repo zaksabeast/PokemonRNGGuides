@@ -4,6 +4,7 @@ import { rngTools, Wild3PaintingAdvsAndDur } from "~/rngTools";
 import { flattenIvs } from "~/rngToolsUi/shared/ivColumns";
 
 import type { FormState, PidPathResult } from "./static3TargetSetupSearcher";
+import { Static3Game } from "./constants";
 
 type PaintingOpts = {
   min_frame_before_painting: number;
@@ -49,6 +50,7 @@ const createFastestAdvsCache = async (
 };
 
 export const searchStatic3Target = (
+  game: Static3Game,
   opts: FormState,
 ): Promise<PidPathResult[]> => {
   const initial_seed =
@@ -70,6 +72,8 @@ export const searchStatic3Target = (
 
   const max_advances = painting_opts == null ? opts.max_advances : 10_000_000;
 
+  const bugged_roamer = game !== "emerald" && opts.roaming;
+
   const searchOpts = {
     initial_seed,
     tid: opts.tid,
@@ -81,7 +85,7 @@ export const searchStatic3Target = (
     gen3_filter: gen3PkmFilterFieldsToRustInput(opts, opts.species),
     painting_opts,
     species: opts.species,
-    bugged_roamer: false,
+    bugged_roamer,
     methods: opts.methods,
   };
 
@@ -93,14 +97,18 @@ export const searchStatic3Target = (
     );
 
     return Promise.all(
-      results.map(async (result): Promise<PidPathResult> => ({
-        ...flattenIvs(result),
-        ...getAdvsFromCache(result.advance),
-        uid: nextUid++,
-        pidCycleCount: await rngTools.calculate_pid_speed(result.pid),
-        earliestAdvance: result.advance,
-        initial_seed,
-      })),
+      results.map(
+        async (result): Promise<PidPathResult> => ({
+          ...flattenIvs(result),
+          ...getAdvsFromCache(result.advance),
+          uid: nextUid++,
+          pidCycleCount: await rngTools.calculate_pid_speed(result.pid),
+          earliestAdvance: result.advance,
+          initial_seed,
+          species: opts.species,
+          roaming: opts.roaming,
+        }),
+      ),
     );
   });
 };

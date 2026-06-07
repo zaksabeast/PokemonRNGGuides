@@ -1,91 +1,80 @@
 import { Static3Game } from "./constants";
-import {
-  Field,
-  FormFieldTable,
-  FormikNumberInput,
-  FormikSelect,
-  FormikSwitch,
-  Typography,
-} from "~/components";
+import { Field, FormFieldTable, FormikSelect, Typography } from "~/components";
 import { toOptions } from "~/utils/options";
-import { gen3StaticMethods } from "./static3TargetSetupInput";
-import { usingTargetSetupInputs } from "../pokemonRng/generatorResultColumns";
-import { FormState } from "./static3TargetSetupSearcher";
+import { FormState, gen3StaticMethods } from "./static3TargetSetupSearcher";
+import { useWatch } from "react-hook-form";
+import {
+  getPaintingSetupFilterFields,
+  getTidSidSetupFilterFields,
+} from "../pokemonRng/setupFilter";
 
-const getSetupFields = (_game: Static3Game): Field[] => [
-  {
-    label: "TID",
-    input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-  },
-  {
-    label: "SID",
-    input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
-  },
-  {
-    label: "Methods",
-    input: (
-      <FormikSelect<FormState, "methods">
-        name="methods"
-        options={toOptions(gen3StaticMethods)}
-        mode="multiple"
-        selectAllNoneButtons
-      />
-    ),
-  },
-  ...usingTargetSetupInputs(false, 0, ["usingPaintingReseeding"]),
-  {
-    label: "Let searcher find painting seed",
-    input: <FormikSwitch<FormState> name="letSearcherFindPaintingSeed" />,
-  },
-  {
-    label: "Initial seed",
-    input: <FormikNumberInput<FormState> name="initial_seed" numType="hex" />,
-  },
-  {
-    label: "Initial advances",
-    input: (
-      <FormikNumberInput<FormState> name="initial_advances" numType="decimal" />
-    ),
-  },
-  {
-    label: "Min frame before painting",
-    input: (
-      <FormikNumberInput<FormState>
-        name="min_frame_before_painting"
-        numType="decimal"
-      />
-    ),
-  },
-  {
-    label: "Min advances after painting",
-    input: (
-      <FormikNumberInput<FormState>
-        name="min_adv_after_painting"
-        numType="decimal"
-      />
-    ),
-  },
-  {
-    label: "Max advances",
-    input: (
-      <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
-    ),
-  },
-  {
-    label: "Max results",
-    input: (
-      <FormikNumberInput<FormState> name="max_result_count" numType="decimal" />
-    ),
-  },
-];
+const getSetupFields = (obj: {
+  game: Static3Game;
+  usingPaintingReseeding: boolean;
+  filter_shiny: boolean;
+  usingAceForSid: boolean;
+  letSearcherFindPaintingSeed: boolean;
+  showAdvancedPaintingSettings: boolean;
+}): Field[] => {
+  const { game } = obj;
+
+  const canUseAce = game === "emerald";
+  return [
+    ...getTidSidSetupFilterFields({ ...obj, canUseAce }),
+    {
+      label: "Methods",
+      input: (
+        <FormikSelect<FormState, "methods">
+          name="methods"
+          options={toOptions(gen3StaticMethods)}
+          mode="multiple"
+          selectAllNoneButtons
+        />
+      ),
+    },
+
+    ...getPaintingSetupFilterFields(obj),
+  ];
+};
 
 export const Static3SetupFilter = ({ game }: { game: Static3Game }) => {
+  const usingPaintingReseeding = useWatch<FormState, "usingPaintingReseeding">({
+    name: "usingPaintingReseeding",
+  });
+  const filter_shiny = useWatch<FormState, "filter_shiny">({
+    name: "filter_shiny",
+  });
+  const usingAceForSid = useWatch<FormState, "usingAceForSid">({
+    name: "usingAceForSid",
+  });
+  const letSearcherFindPaintingSeed = useWatch<
+    FormState,
+    "letSearcherFindPaintingSeed"
+  >({
+    name: "letSearcherFindPaintingSeed",
+  });
+  const showAdvancedPaintingSettings = useWatch<
+    FormState,
+    "showAdvancedPaintingSettings"
+  >({
+    name: "showAdvancedPaintingSettings",
+  });
+
   return (
     <>
       <Typography.Title level={4} p={0} m={0}>
         Setup
       </Typography.Title>
-      <FormFieldTable fields={getSetupFields(game)} />
+      <FormFieldTable
+        fields={getSetupFields({
+          game,
+          usingPaintingReseeding,
+          filter_shiny,
+          usingAceForSid,
+          letSearcherFindPaintingSeed,
+          showAdvancedPaintingSettings,
+        })}
+      />
     </>
   );
 };

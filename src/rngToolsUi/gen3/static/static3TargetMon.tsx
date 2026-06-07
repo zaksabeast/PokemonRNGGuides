@@ -2,6 +2,7 @@ import {
   Field,
   FormFieldTable,
   FormikSelect,
+  FormikSwitch,
   Flex,
   Typography,
 } from "~/components";
@@ -11,15 +12,32 @@ import { Species } from "~/rngTools";
 import { toOptions } from "~/utils/options";
 import { useWatch } from "react-hook-form";
 
-import {
-  FormState,
-  getPossibleValuesForSpecies,
-} from "./static3TargetSetupInput";
-import { Static3Game } from "./constants";
+import { getStatic3SpeciesEncounters, Static3Game } from "./constants";
+import uniq from "lodash-es/uniq";
+import { FormState } from "./static3TargetSetupSearcher";
 
-// TODO: Display isRoaming input field if the selected species can be roaming or not roaming.
-const getTargetMonFields = (game: Static3Game, species: Species): Field[] => {
-  const possibleValues = getPossibleValuesForSpecies(game, species);
+const getPossibleValuesForSpecies = (game: Static3Game, species: Species) => {
+  const static3Species = uniq(
+    getStatic3SpeciesEncounters(game).map((encounter) => encounter.species),
+  );
+  const roaming = uniq(
+    getStatic3SpeciesEncounters(game)
+      .filter((encounter) => encounter.species === species)
+      .map((encounter) => encounter.roaming),
+  );
+
+  return {
+    species: static3Species,
+    roaming,
+  };
+};
+
+const getTargetMonFields = (
+  game: Static3Game,
+  selectedSpecies: Species,
+): Field[] => {
+  const possibleValues = getPossibleValuesForSpecies(game, selectedSpecies);
+
   return [
     {
       label: "Species",
@@ -30,8 +48,13 @@ const getTargetMonFields = (game: Static3Game, species: Species): Field[] => {
         />
       ),
     },
+    {
+      label: "Roaming",
+      input: <FormikSwitch<FormState> name="roaming" />,
+      show: possibleValues.roaming.length > 1,
+    },
     ...getPkmFilterFields({
-      species,
+      species: selectedSpecies,
       displayHiddenAbility: false,
     }),
     ...getGen3PkmFilterFields(),

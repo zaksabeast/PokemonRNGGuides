@@ -1,4 +1,9 @@
-import { Static3SearcherResult, Wild3PaintingAdvsAndDur } from "~/rngTools";
+import {
+  Gen3StaticMethod,
+  Species,
+  Static3SearcherResult,
+  Wild3PaintingAdvsAndDur,
+} from "~/rngTools";
 import { RngToolForm, RngToolSubmit } from "~/components";
 import {
   pkmFilterSchema,
@@ -15,20 +20,33 @@ import {
 } from "~/components/gen3PkmFilter";
 
 import { searchStatic3Target } from "./searchStatic3Target";
-import { gen3StaticMethods, TargetSetup } from "./static3TargetSetupInput";
 import { getGeneratorPokemonResultColumns } from "../pokemonRng/generatorResultColumns";
 import { Static3TargetMon } from "./static3TargetMon";
 import { species } from "~/types/species";
 import { Static3Game } from "./constants";
 import { Static3SetupFilter } from "./static3SetupFilter";
 
+export const gen3StaticMethods = [
+  "Static1",
+  "Static4",
+] as const satisfies readonly Gen3StaticMethod[];
+
+export type TargetSetup = {
+  game: Static3Game;
+  species: Species;
+  roaming: boolean;
+  targetPaintingAdvs: { before: number; after: number };
+  targetMethod: Gen3StaticMethod;
+};
+
 const schema = z
   .object({
     species: z.enum(species),
+    roaming: z.boolean(),
     tid: z.number().int().min(0).max(0xffff),
+    usingAceForSid: z.boolean(),
     sid: z.number().int().min(0).max(0xffff),
     methods: z.array(z.enum(gen3StaticMethods)).min(1),
-    isRoaming: z.boolean(),
     usingPaintingReseeding: z.boolean(),
     letSearcherFindPaintingSeed: z.boolean(),
     showAdvancedPaintingSettings: z.boolean(),
@@ -51,6 +69,8 @@ export type PidPathResult = FlattenIvs<
       pidCycleCount: number;
       earliestAdvance: number;
       initial_seed: number;
+      roaming: boolean;
+      species: Species;
     }
 >;
 
@@ -58,8 +78,9 @@ const getInitialValues = (): FormState => {
   return {
     species: "Mudkip",
     tid: 0,
+    usingAceForSid: false,
     sid: 0,
-    isRoaming: false,
+    roaming: false,
     methods: ["Static1"],
     usingPaintingReseeding: false,
     letSearcherFindPaintingSeed: true,
@@ -77,7 +98,23 @@ const getInitialValues = (): FormState => {
 
 type Props = {
   game: Static3Game;
-  setTargetSetup: (targetSetup: TargetSetup) => void;
+  setTargetSetup: (targetSetup: TargetSetup | null) => void;
+};
+
+const convertToTargetSetup = (
+  game: Static3Game,
+  pidPath: PidPathResult,
+): TargetSetup => {
+  return {
+    game,
+    species: pidPath.species,
+    roaming: pidPath.roaming,
+    targetPaintingAdvs: {
+      before: pidPath.advs.frame_before_painting,
+      after: pidPath.advs.adv_after_painting,
+    },
+    targetMethod: pidPath.method,
+  };
 };
 
 export const Static3TargetSetupSearcher = ({
@@ -91,7 +128,7 @@ export const Static3TargetSetupSearcher = ({
     React.useState<PidPathResult | null>(null);
 
   const onSubmit: RngToolSubmit<FormState> = async (values) => {
-    const pidPathResults = await searchStatic3Target(values);
+    const pidPathResults = await searchStatic3Target(game, values);
 
     setPidPathResults(sortBy(pidPathResults, "wait_dur"));
     setSelectedPidPathResult(null);
@@ -102,9 +139,12 @@ export const Static3TargetSetupSearcher = ({
   const pidPathColumns = getGeneratorPokemonResultColumns<PidPathResult>();
 
   React.useEffect(() => {
-    //NO_PROD
-    //setTargetSetupProp?.();
-  }, [selectedPidPathResult, setTargetSetupProp]);
+    if (selectedPidPathResult == null) {
+      setTargetSetupProp(null);
+    } else {
+      setTargetSetupProp(convertToTargetSetup(game, selectedPidPathResult));
+    }
+  }, [game, selectedPidPathResult, setTargetSetupProp]);
 
   return (
     <>

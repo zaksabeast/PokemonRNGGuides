@@ -76,7 +76,7 @@ pub(super) fn generate_gen3_static(
     opts.methods
         .iter()
         .filter_map(|&method| {
-            let mut rng = rng.clone();
+            let mut rng = rng; // Copy
             if method == Gen3StaticMethod::Static4 {
                 rng.next();
             }

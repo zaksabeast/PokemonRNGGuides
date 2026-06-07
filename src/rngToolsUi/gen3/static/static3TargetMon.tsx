@@ -55,7 +55,7 @@ const getTargetMonFields = (
       show: possibleRoaming.length > 1,
     },
     {
-      label: "Location",
+      label: "Map",
       input: selectedEncounter?.location,
       show: selectedEncounter != null,
     },

@@ -113,12 +113,13 @@ pub fn search_static3_naive(opts: &Static3SearcherOptions) -> Vec<Static3Searche
 #[wasm_bindgen]
 pub fn search_static3(opts: &Static3SearcherOptions) -> Vec<Static3SearcherResult> {
     if opts.bugged_roamer {
-        if opts.filter.max_ivs.spa != 0
-            || opts.filter.max_ivs.spd != 0
-            || opts.filter.max_ivs.spe != 0
-            || opts.filter.max_ivs.def != 0
-            || opts.filter.max_ivs.def > 7
-        {
+        let is_possible_ivs = opts.filter.max_ivs.atk <= 7
+            && opts.filter.max_ivs.def == 0
+            && opts.filter.max_ivs.spa == 0
+            && opts.filter.max_ivs.spd == 0
+            && opts.filter.max_ivs.spe == 0;
+
+        if !is_possible_ivs {
             return vec![];
         }
     }

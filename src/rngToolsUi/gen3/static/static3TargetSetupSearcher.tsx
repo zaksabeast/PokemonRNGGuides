@@ -5,26 +5,21 @@ import {
   Wild3PaintingAdvsAndDur,
 } from "~/rngTools";
 import { RngToolForm, RngToolSubmit } from "~/components";
-import {
-  pkmFilterSchema,
-  getPkmFilterInitialValues,
-} from "~/components/pkmFilter";
 import React from "react";
 import { z } from "zod";
 
 import { sortBy } from "lodash-es";
 import { FlattenIvs } from "~/rngToolsUi/shared/ivColumns";
-import {
-  gen3PkmFilterSchema,
-  getGen3PkmFilterInitialValues,
-} from "~/components/gen3PkmFilter";
 
 import { searchStatic3Target } from "./searchStatic3Target";
 import { getGeneratorPokemonResultColumns } from "../pokemonRng/generatorResultColumns";
 import { getPossibleSpecies, Static3TargetMon } from "./static3TargetMon";
-import { species } from "~/types/species";
 import { Static3Game } from "./constants";
 import { Static3SetupFilter } from "./static3SetupFilter";
+import {
+  targetSetupSearcherSchema,
+  getTargetSetupSearcherInitialValues,
+} from "../pokemonRng/setupFilter";
 
 export const gen3StaticMethods = [
   "Static1",
@@ -41,24 +36,10 @@ export type TargetSetup = {
 
 const schema = z
   .object({
-    species: z.enum(species),
-    roaming: z.boolean(),
-    tid: z.number().int().min(0).max(0xffff),
-    usingAceForSid: z.boolean(),
-    sid: z.number().int().min(0).max(0xffff),
     methods: z.array(z.enum(gen3StaticMethods)).min(1),
-    usingPaintingReseeding: z.boolean(),
-    letSearcherFindPaintingSeed: z.boolean(),
-    showAdvancedPaintingSettings: z.boolean(),
-    initial_seed: z.number().int().min(0).max(0xffffffff),
-    initial_advances: z.number().int().min(0).max(0xffffffff),
-    min_frame_before_painting: z.number().int().min(0).max(0xffffffff),
-    min_adv_after_painting: z.number().int().min(0).max(0xffffffff),
-    max_advances: z.number().int().min(0).max(0xffffffff),
-    max_result_count: z.number().int().min(1),
+    roaming: z.boolean(),
   })
-  .extend(pkmFilterSchema.shape)
-  .extend(gen3PkmFilterSchema.shape);
+  .extend(targetSetupSearcherSchema.shape);
 
 export type FormState = z.infer<typeof schema>;
 
@@ -77,22 +58,9 @@ export type PidPathResult = FlattenIvs<
 const getInitialValues = (game: Static3Game): FormState => {
   return {
     species: getPossibleSpecies(game)[0],
-    tid: 0,
-    usingAceForSid: false,
-    sid: 0,
     roaming: false,
     methods: ["Static1"],
-    usingPaintingReseeding: false,
-    letSearcherFindPaintingSeed: true,
-    showAdvancedPaintingSettings: false,
-    initial_seed: 0,
-    initial_advances: 1000,
-    min_frame_before_painting: 800,
-    min_adv_after_painting: 7000,
-    max_advances: 10_000_000,
-    max_result_count: 20,
-    ...getPkmFilterInitialValues(),
-    ...getGen3PkmFilterInitialValues(),
+    ...getTargetSetupSearcherInitialValues(),
   };
 };
 

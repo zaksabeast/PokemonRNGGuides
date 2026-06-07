@@ -13,7 +13,56 @@ import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrame
 
 import { FormState as WildFormState } from "../wild/wild3TargetSetupSearcher";
 import { FormState as StaticFormState } from "../static/static3TargetSetupSearcher";
+import z from "zod";
+import { species } from "~/types/species";
+import {
+  getPkmFilterInitialValues,
+  pkmFilterSchema,
+} from "~/components/pkmFilter";
+import {
+  gen3PkmFilterSchema,
+  getGen3PkmFilterInitialValues,
+} from "~/components/gen3PkmFilter";
+
 type FormState = WildFormState | StaticFormState;
+
+export const targetSetupSearcherSchema = z
+  .object({
+    species: z.enum(species),
+    tid: z.number().int().min(0).max(0xffff),
+    usingAceForSid: z.boolean(),
+    sid: z.number().int().min(0).max(0xffff),
+    usingPaintingReseeding: z.boolean(),
+    letSearcherFindPaintingSeed: z.boolean(),
+    showAdvancedPaintingSettings: z.boolean(),
+    initial_seed: z.number().int().min(0).max(0xffffffff),
+    initial_advances: z.number().int().min(0).max(0xffffffff),
+    min_frame_before_painting: z.number().int().min(0).max(0xffffffff),
+    min_adv_after_painting: z.number().int().min(0).max(0xffffffff),
+    max_advances: z.number().int().min(0).max(0xffffffff),
+    max_result_count: z.number().int().min(1),
+  })
+  .extend(pkmFilterSchema.shape)
+  .extend(gen3PkmFilterSchema.shape);
+
+export const getTargetSetupSearcherInitialValues = () => {
+  return {
+    tid: 0,
+    usingAceForSid: false,
+    sid: 0,
+    usingPaintingReseeding: false,
+    letSearcherFindPaintingSeed: true,
+    showAdvancedPaintingSettings: false,
+    initial_seed: 0,
+    initial_advances: 1000,
+    min_frame_before_painting: 800,
+    min_adv_after_painting: 7000,
+    max_advances: 10_000_000,
+    max_result_count: 20,
+    ...getPkmFilterInitialValues(),
+    ...getGen3PkmFilterInitialValues(),
+  };
+};
 
 export const getPaintingSetupFilterFields = ({
   usingPaintingReseeding,

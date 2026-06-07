@@ -221,6 +221,10 @@ pub fn search_static3_reverse_with_methods<const METHODS: u8>(
     }
 }
 
+#[path = "searcher_reverse_test_perf.rs"]
+#[cfg(test)]
+mod perf_tests;
+
 #[cfg(any())]
 mod test {
     use super::*;

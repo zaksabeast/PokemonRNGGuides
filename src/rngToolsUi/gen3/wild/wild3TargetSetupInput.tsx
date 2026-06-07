@@ -15,6 +15,7 @@ import {
   FormFieldTable,
   FormikSwitch,
   FormikWild3Pokeblock,
+  FormikNumberInput,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { useFormContext } from "~/hooks/form";
@@ -39,7 +40,9 @@ import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { getPossibleValuesForMap } from "./dataUtils";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import { Pokeblock, pokeblockSchema } from "~/types/pokeblock";
-import { usingTargetSetupInputs } from "../pokemonRng/generatorResultColumns";
+import { formatLargeInteger } from "~/utils/formatLargeInteger";
+import { usingPaintingReseedingLabel } from "./wild3Labels";
+import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -194,12 +197,38 @@ const getFields = ({
         />
       ),
     },
-    ...usingTargetSetupInputs(usingPaintingReseeding, equivalentInitialAdvs, [
-      "usingPaintingReseeding",
-      "targetFrameBeforePainting",
-      "targetAdvance",
-      "equivalentInitialAdvs",
-    ]),
+    {
+      ...usingPaintingReseedingLabel(),
+      input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
+    },
+    {
+      label: "Target frame before painting (Painting seed)",
+      input: (
+        <FormikEmeraldFrameBeforePaintingInput<FormState> name="targetFrameBeforePainting" />
+      ),
+      indent: 1,
+      show: usingPaintingReseeding,
+    },
+    {
+      label: usingPaintingReseeding
+        ? "Target advances after painting"
+        : "Target advances",
+      input: (
+        <FormikNumberInput<FormState> name="targetAdvance" numType="decimal" />
+      ),
+    },
+    {
+      label: "",
+      key: "Equivalent to Advances",
+      show: usingPaintingReseeding,
+      input: (
+        <>
+          Equivalent to Advances = {formatLargeInteger(equivalentInitialAdvs)}{" "}
+          without painting reseeding
+        </>
+      ),
+      indent: 1,
+    },
     {
       label: "Target Method",
       input: (

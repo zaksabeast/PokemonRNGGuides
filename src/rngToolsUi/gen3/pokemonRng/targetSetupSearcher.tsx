@@ -23,6 +23,7 @@ import {
   gen3PkmFilterSchema,
   getGen3PkmFilterInitialValues,
 } from "~/components/gen3PkmFilter";
+import { Static3Game } from "../static/constants";
 
 type FormState = WildFormState | StaticFormState;
 
@@ -65,10 +66,12 @@ export const getTargetSetupSearcherInitialValues = () => {
 };
 
 export const getPaintingSetupFilterFields = ({
+  game,
   usingPaintingReseeding,
   letSearcherFindPaintingSeed,
   showAdvancedPaintingSettings,
 }: {
+  game: Static3Game;
   usingPaintingReseeding: boolean;
   letSearcherFindPaintingSeed: boolean;
   showAdvancedPaintingSettings: boolean;
@@ -77,6 +80,7 @@ export const getPaintingSetupFilterFields = ({
     {
       ...usingPaintingReseedingLabel(),
       input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
+      show: game === "emerald",
     },
 
     {

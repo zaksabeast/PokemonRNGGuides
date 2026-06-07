@@ -1,9 +1,8 @@
-use arrayvec::ArrayVec;
-
 use crate::gen3::{Gen3PkmFilter, passes_iv1_filter, passes_iv2_filter, passes_pid_filter};
 use crate::rng::Rng;
 use crate::rng::lcrng::Pokerng;
 use crate::{GenderRatio, Ivs, PkmFilter, gen3_tsv};
+use arrayvec::ArrayVec;
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
@@ -18,13 +17,13 @@ pub enum Gen3StaticMethod {
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Static3GeneratorOptions {
-    pub bugged_roamer: bool,
     pub methods: Vec<Gen3StaticMethod>,
     pub tid: u16,
     pub sid: u16,
     pub filter: PkmFilter,
     pub gen3_filter: Gen3PkmFilter,
     pub encounter_gender_ratio: GenderRatio,
+    pub bugged_roamer: bool,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
@@ -76,16 +75,16 @@ pub(super) fn generate_gen3_static(
 
     opts.methods
         .iter()
-        .filter_map(|method| {
-            let mut rng2 = rng.clone();
-            if *method == Gen3StaticMethod::Static4 {
-                rng2.next();
+        .filter_map(|&method| {
+            let mut rng = rng.clone();
+            if method == Gen3StaticMethod::Static4 {
+                rng.next();
             }
 
             let iv2 = if opts.bugged_roamer {
                 0
             } else {
-                rng2.rand::<u16>()
+                rng.rand::<u16>()
             };
 
             if !passes_iv2_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv2) {
@@ -95,7 +94,7 @@ pub(super) fn generate_gen3_static(
             Some(Static3GeneratorResult {
                 pid,
                 ivs: Ivs::new_g3(iv1, iv2),
-                method: *method,
+                method,
             })
         })
         .collect::<ArrayVec<Static3GeneratorResult, 2>>()

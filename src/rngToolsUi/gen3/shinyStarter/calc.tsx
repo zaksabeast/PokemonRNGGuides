@@ -12,6 +12,7 @@ import {
 } from "~/components/pkmFilter";
 import { defaultHiddenPowerFilter } from "~/components/hiddenPowerInput";
 import { getIvRangeFromStats } from "~/types/statRange";
+import { nature_from_pid } from "~/types";
 
 export type CaughtMonResult = {
   advance: number;
@@ -42,11 +43,11 @@ export const getTargetPokemonDesc = async (
   targetAdv: number,
   pokemonSpecies: Starter,
 ): Promise<string> => {
+  const encounterGenderRatio =
+    await rngTools.get_species_gender_ratio(pokemonSpecies);
   const opts = {
-    initial_seed: game === "emerald" ? 0 : 0x5a0,
     tid: 0, // doesn't matter
     sid: 0, // doesn't matter
-    initial_advances: targetAdv,
     max_advances: 0,
     max_result_count: 1,
     filter: pkmFilterFieldsToRustInput(getPkmFilterInitialValues()),
@@ -58,23 +59,33 @@ export const getTargetPokemonDesc = async (
     bugged_roamer: false, // doesn't matter
     species: pokemonSpecies,
     methods: staticStarterMethods,
+    encounter_gender_ratio: encounterGenderRatio,
   };
 
-  const genResults = await rngTools.search_static3(opts);
+  const genResults = await rngTools.generate_gen3_static_wasm(
+    game === "emerald" ? 0 : 0x5a0,
+    targetAdv,
+    opts,
+  );
   if (genResults.length === 0) {
     return "";
   }
   const res = genResults[0];
+  const nature = nature_from_pid(res.pid);
 
   const stats = await rngTools.calculate_stats(
     pokemonSpecies,
     5,
-    res.nature,
+    nature,
     res.ivs,
     { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
   );
+  const gender = await rngTools.get_species_gender_from_pid(
+    pokemonSpecies,
+    res.pid,
+  );
 
-  return `${res.gender}, ${res.nature}, HP ${stats.hp}, ATK ${stats.atk}, DEF ${stats.def}, SPA ${stats.spa}, SPD ${stats.spd}, SPE ${stats.spe}`;
+  return `${gender}, ${nature}, HP ${stats.hp}, ATK ${stats.atk}, DEF ${stats.def}, SPA ${stats.spa}, SPD ${stats.spd}, SPE ${stats.spe}`;
 };
 
 export const generateCaughtMonResults = async (

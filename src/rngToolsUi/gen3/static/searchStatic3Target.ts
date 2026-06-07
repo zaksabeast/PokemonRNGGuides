@@ -15,14 +15,13 @@ const getInitialSeed = (game: Static3Game, opts: FormState) => {
   }
 
   if (game === "rs" && opts.usingDeadBattery) {
-    // usingDeadBattery can only be true for r/s
     return 0x5a0;
   }
 
   return opts.initial_seed;
 };
 
-export const searchStatic3Target = (
+export const searchStatic3Target = async (
   game: Static3Game,
   opts: FormState,
 ): Promise<PidPathResult[]> => {
@@ -59,26 +58,26 @@ export const searchStatic3Target = (
     methods: opts.methods,
   };
 
-  return rngTools.search_static3(searchOpts).then(async (results) => {
-    const getAdvsFromCache = await createFastestAdvsCache(
-      searchOpts.painting_opts,
-      results.map((result) => result.advance),
-      initial_seed,
-    );
+  const results = await rngTools.search_static3(searchOpts);
 
-    return Promise.all(
-      results.map(
-        async (result): Promise<PidPathResult> => ({
-          ...flattenIvs(result),
-          ...getAdvsFromCache(result.advance),
-          uid: nextUid++,
-          pidCycleCount: await rngTools.calculate_pid_speed(result.pid),
-          earliestAdvance: result.advance,
-          initial_seed,
-          species: opts.species,
-          roaming: opts.roaming,
-        }),
-      ),
-    );
-  });
+  const getAdvsFromCache = await createFastestAdvsCache(
+    searchOpts.painting_opts,
+    results.map((result) => result.advance),
+    initial_seed,
+  );
+
+  return Promise.all(
+    results.map(
+      async (result): Promise<PidPathResult> => ({
+        ...flattenIvs(result),
+        ...getAdvsFromCache(result.advance),
+        uid: nextUid++,
+        pidCycleCount: await rngTools.calculate_pid_speed(result.pid),
+        earliestAdvance: result.advance,
+        initial_seed,
+        species: opts.species,
+        roaming: opts.roaming,
+      }),
+    ),
+  );
 };

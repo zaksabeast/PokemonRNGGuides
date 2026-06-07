@@ -23,14 +23,13 @@ export const PokemonInfo = ({
   const [abilityStr, setAbilityStr] = React.useState("");
 
   React.useEffect(() => {
-    const statsPromise = rngTools.calculate_stats(species, lvl, nature, ivs, {
-      hp: 0,
-      atk: 0,
-      def: 0,
-      spa: 0,
-      spd: 0,
-      spe: 0,
-    });
+    const statsPromise = rngTools.calculate_stats(
+      species,
+      lvl,
+      nature,
+      ivs,
+      minIvs /*evs*/,
+    );
 
     const genderPromise = rngTools.get_species_gender_from_pid(species, pid);
     const abilityStrPromise = getAbilityDisplayStr(species, pid);

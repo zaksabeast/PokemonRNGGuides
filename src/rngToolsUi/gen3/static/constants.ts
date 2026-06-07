@@ -10,6 +10,11 @@ export const static3Games = [
   "frlg",
 ] as const satisfies Static3Game[];
 
+export const gen3StaticMethods = [
+  "Static1",
+  "Static4",
+] as const satisfies readonly Gen3StaticMethod[];
+
 export type Static3Encounter = {
   species: Species;
   lvl: number;
@@ -232,8 +237,3 @@ export const getPossibleStatic3Species = (game: Static3Game) => {
     getStatic3SpeciesEncounters(game).map((encounter) => encounter.species),
   );
 };
-
-export const gen3StaticMethods = [
-  "Static1",
-  "Static4",
-] as const satisfies readonly Gen3StaticMethod[];

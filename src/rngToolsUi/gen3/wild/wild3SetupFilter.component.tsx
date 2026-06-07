@@ -59,7 +59,7 @@ const getSetupFields = (obj: {
       label: "Recommended setups?",
       input: <FormikSwitch<FormState> name="recommendedSetups" />,
     },
-    ...getTidSidSetupFilterFields({ ...obj, canUseAce: true }),
+    ...getTidSidSetupFilterFields({ ...obj, game: "emerald" }),
     {
       label: "Actions",
       input: (

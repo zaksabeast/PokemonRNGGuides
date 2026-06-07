@@ -112,6 +112,17 @@ pub fn search_static3_naive(opts: &Static3SearcherOptions) -> Vec<Static3Searche
 
 #[wasm_bindgen]
 pub fn search_static3(opts: &Static3SearcherOptions) -> Vec<Static3SearcherResult> {
+    if opts.bugged_roamer {
+        if opts.filter.max_ivs.spa != 0
+            || opts.filter.max_ivs.spd != 0
+            || opts.filter.max_ivs.spe != 0
+            || opts.filter.max_ivs.def != 0
+            || opts.filter.max_ivs.def > 7
+        {
+            return vec![];
+        }
+    }
+
     search_static3_reverse(opts)
     // for debug: search_static3_naive(opts)
 }
@@ -225,153 +236,145 @@ pub fn search_static3_reverse_with_methods<const METHODS: u8>(
 #[cfg(test)]
 mod perf_tests;
 
-#[cfg(any())]
+#[cfg(test)]
 mod test {
+    use crate::assert_list_eq;
+
     use super::*;
-    use crate::gen3::{Static3GeneratorOptions, gen3_static_generator_states};
+
+    fn opts(
+        species: Species,
+        bugged_roamer: bool,
+        methods: Vec<Gen3StaticMethod>,
+        filter: PkmFilter,
+    ) -> Static3SearcherOptions {
+        Static3SearcherOptions {
+            initial_seed: 0,
+            tid: 12345,
+            sid: 54321,
+            initial_advances: 0,
+            max_advances: u32::MAX as usize,
+            max_result_count: 20,
+            filter,
+            gen3_filter: Gen3PkmFilter::default(),
+            painting_opts: None,
+            species,
+            bugged_roamer,
+            methods,
+        }
+    }
+
+    fn assert_pid_ivs(results: &[Static3SearcherResult], expected: &[(u32, Ivs)]) {
+        assert_eq!(results.len(), expected.len());
+
+        let mut actual = results
+            .iter()
+            .map(|result| (result.pid, result.ivs))
+            .collect::<Vec<_>>();
+        actual.sort_unstable_by_key(|(pid, _)| *pid);
+
+        let mut expected = expected.to_vec();
+        expected.sort_unstable_by_key(|(pid, _)| *pid);
+
+        assert_list_eq!(actual, expected);
+    }
 
     #[test]
     fn search_method4() {
-        let opts = Static3SearcherOptions {
-            species: Species::Groudon,
-            bugged_roamer: false,
-            method4: true,
-            tid: 12345,
-            sid: 54321,
-            filter: PkmFilter {
+        let opts = opts(
+            Species::Groudon,
+            false,
+            vec![Gen3StaticMethod::Static4],
+            PkmFilter {
                 min_ivs: Ivs::new_all31(),
                 ..Default::default()
             },
-        };
+        );
 
-        let results = gen3_static_searcher_states(&opts);
-        assert_eq!(results.len(), 4);
-
-        let mut opts = Static3GeneratorOptions {
-            offset: 0,
-            initial_advances: 0,
-            max_advances: 0,
-            seed: 0,
-            species: Species::Groudon,
-            bugged_roamer: false,
-            method4: true,
-            tid: 12345,
-            sid: 54321,
-            filter: PkmFilter {
-                min_ivs: Ivs::new_all31(),
-                ..Default::default()
-            },
-        };
-
-        results.into_iter().for_each(|result| {
-            opts.seed = result.seed;
-            let generated = gen3_static_generator_states(&opts);
-            assert_eq!(generated.len(), 1);
-            let generated = generated[0];
-            assert_eq!(generated.pid, result.pid);
-            assert_eq!(generated.shiny, result.shiny);
-            assert_eq!(generated.nature, result.nature);
-            assert_eq!(generated.gender, result.gender);
-            assert_eq!(generated.ability, result.ability);
-            assert_eq!(generated.ivs, result.ivs);
-        })
+        let results = search_static3(&opts);
+        assert_pid_ivs(
+            &results,
+            &[
+                (0x995abc94, Ivs::new_all31()),
+                (0xb8862c85, Ivs::new_all31()),
+                (0x195a3c94, Ivs::new_all31()),
+                (0x3886ac85, Ivs::new_all31()),
+            ],
+        );
     }
 
     #[test]
     fn search_method1() {
-        let opts = Static3SearcherOptions {
-            species: Species::Totodile,
-            bugged_roamer: false,
-            method4: false,
-            tid: 12345,
-            sid: 54321,
-            filter: PkmFilter {
+        let opts = opts(
+            Species::Totodile,
+            false,
+            vec![Gen3StaticMethod::Static1],
+            PkmFilter {
                 min_ivs: Ivs::new_all31(),
                 ..Default::default()
             },
-        };
+        );
 
-        let results = gen3_static_searcher_states(&opts);
-        assert_eq!(results.len(), 6);
-
-        let mut opts = Static3GeneratorOptions {
-            offset: 0,
-            initial_advances: 0,
-            max_advances: 0,
-            seed: 0,
-            species: Species::Totodile,
-            bugged_roamer: false,
-            method4: false,
-            tid: 12345,
-            sid: 54321,
-            filter: PkmFilter {
-                min_ivs: Ivs::new_all31(),
-                ..Default::default()
-            },
-        };
-
-        results.into_iter().for_each(|result| {
-            opts.seed = result.seed;
-            let generated = gen3_static_generator_states(&opts);
-            assert_eq!(generated.len(), 1);
-            let generated = generated[0];
-            assert_eq!(generated.pid, result.pid);
-            assert_eq!(generated.shiny, result.shiny);
-            assert_eq!(generated.nature, result.nature);
-            assert_eq!(generated.gender, result.gender);
-            assert_eq!(generated.ability, result.ability);
-            assert_eq!(generated.ivs, result.ivs);
-        })
+        let results = search_static3(&opts);
+        assert_pid_ivs(
+            &results,
+            &[
+                (0x7942ef72, Ivs::new_all31()),
+                (0xe85091a9, Ivs::new_all31()),
+                (0xe9375a48, Ivs::new_all31()),
+                (0xf9426f72, Ivs::new_all31()),
+                (0x685011a9, Ivs::new_all31()),
+                (0x6937da48, Ivs::new_all31()),
+            ],
+        );
     }
 
     #[test]
     fn search_bugged_roamer() {
-        let opts = Static3SearcherOptions {
-            species: Species::Latios,
-            bugged_roamer: true,
-            method4: false,
-            tid: 12345,
-            sid: 54321,
-            filter: PkmFilter {
-                min_ivs: Ivs::new_all31(),
-                ..Default::default()
-            },
-        };
-
-        let results = gen3_static_searcher_states(&opts);
-        assert_eq!(results.len(), 6);
-
-        let mut opts = Static3GeneratorOptions {
-            offset: 0,
-            initial_advances: 0,
-            max_advances: 0,
-            seed: 0,
-            species: Species::Latios,
-            bugged_roamer: true,
-            method4: false,
-            tid: 12345,
-            sid: 54321,
-            filter: PkmFilter {
+        let opts = opts(
+            Species::Latios,
+            true,
+            vec![Gen3StaticMethod::Static1],
+            PkmFilter {
                 min_ivs: Ivs {
+                    hp: 31,
+                    atk: 6,
+                    ..Default::default()
+                },
+                max_ivs: Ivs {
                     hp: 31,
                     atk: 7,
                     ..Default::default()
                 },
                 ..Default::default()
             },
-        };
+        );
 
-        results.into_iter().for_each(|result| {
-            opts.seed = result.seed;
-            let generated = gen3_static_generator_states(&opts);
-            assert_eq!(generated.len(), 1);
-            let generated = generated[0];
-            assert_eq!(generated.pid, result.pid);
-            assert_eq!(generated.shiny, result.shiny);
-            assert_eq!(generated.nature, result.nature);
-            assert_eq!(generated.gender, result.gender);
-            assert_eq!(generated.ability, result.ability);
-            assert_eq!(generated.ivs, result.ivs);
-        })
+        let results = search_static3(&opts);
+        let roamer_atk7_ivs = Ivs {
+            hp: 31,
+            atk: 7,
+            ..Default::default()
+        };
+        let roamer_atk6_ivs = Ivs {
+            hp: 31,
+            atk: 6,
+            ..Default::default()
+        };
+        assert_pid_ivs(
+            &results,
+            &[
+                (0x33eedd36, roamer_atk7_ivs),
+                (0xf6d90ee0, roamer_atk6_ivs),
+                (0xa2fb7f6c, roamer_atk7_ivs),
+                (0x65e7b116, roamer_atk6_ivs),
+                (0xe6cef9b5, roamer_atk6_ivs),
+                (0xb3ee5d36, roamer_atk7_ivs),
+                (0x76d98ee0, roamer_atk6_ivs),
+                (0x22fbff6c, roamer_atk7_ivs),
+                (0xe5e73116, roamer_atk6_ivs),
+                (0x66ce79b5, roamer_atk6_ivs),
+            ],
+        );
     }
 }

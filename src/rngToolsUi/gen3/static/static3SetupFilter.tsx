@@ -19,9 +19,8 @@ const getSetupFields = (obj: {
 }): Field[] => {
   const { game } = obj;
 
-  const canUseAce = game === "emerald";
   return [
-    ...getTidSidSetupFilterFields({ ...obj, canUseAce }),
+    ...getTidSidSetupFilterFields(obj),
     {
       label: "Methods",
       input: (
@@ -32,6 +31,7 @@ const getSetupFields = (obj: {
           selectAllNoneButtons
         />
       ),
+      show: game === "rs",
     },
 
     ...getPaintingSetupFilterFields(obj),

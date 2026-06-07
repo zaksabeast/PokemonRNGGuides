@@ -12,7 +12,6 @@ import {
   usingPaintingReseedingLabel,
 } from "../wild/wild3Labels";
 import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
-
 import {
   FormState as WildFormState,
   PidPathResult as Wild3PidPathResult,
@@ -39,6 +38,8 @@ import { formatDuration } from "~/utils/formatDuration";
 import { formatHex } from "~/utils/formatHex";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { match } from "ts-pattern";
+
+// This file contains the code shared by Static3 and Wild3 targetSetupSearcher webtools.
 
 type FormState = WildFormState | StaticFormState;
 type PidPathResult = Wild3PidPathResult | Static3PidPathResult;
@@ -196,12 +197,12 @@ export const getPaintingSetupFilterFields = ({
 };
 
 export const getTidSidSetupFilterFields = ({
+  game,
   filter_shiny,
-  canUseAce,
   usingAceForSid,
 }: {
+  game: Static3Game;
   filter_shiny: boolean;
-  canUseAce: boolean;
   usingAceForSid: boolean;
 }) => {
   return [
@@ -209,7 +210,7 @@ export const getTidSidSetupFilterFields = ({
       label: "Using ACE to change SID?",
       tooltip:
         "Whether to use Arbitrary Code Execution glitch to change your SID so the target Pokémon is shiny.",
-      show: filter_shiny && canUseAce,
+      show: filter_shiny && game === "emerald",
       input: <FormikSwitch<FormState> name="usingAceForSid" />,
     },
     {

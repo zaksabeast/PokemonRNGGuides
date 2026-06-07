@@ -1,53 +1,13 @@
 import { gen3PkmFilterFieldsToRustInput } from "~/components/gen3PkmFilter";
 import { pkmFilterFieldsToRustInput } from "~/components/pkmFilter";
-import { rngTools, Wild3PaintingAdvsAndDur } from "~/rngTools";
+import { rngTools } from "~/rngTools";
 import { flattenIvs } from "~/rngToolsUi/shared/ivColumns";
 
 import type { FormState, PidPathResult } from "./static3TargetSetupSearcher";
 import { Static3Game } from "./constants";
-
-type PaintingOpts = {
-  min_frame_before_painting: number;
-  min_adv_after_painting: number;
-} | null;
+import { createFastestAdvsCache } from "../paintingReseeding/paintingCache";
 
 let nextUid = 0;
-
-const createFastestAdvsCache = async (
-  opts: PaintingOpts,
-  advs: number[],
-  initial_seed: number,
-) => {
-  const fallbackFunc = (adv: number): Wild3PaintingAdvsAndDur => ({
-    advs: {
-      frame_before_painting: initial_seed,
-      adv_after_painting: adv,
-    },
-    wait_dur: adv,
-  });
-
-  if (opts == null || advs.length === 0) {
-    return fallbackFunc;
-  }
-
-  const advsWithoutDupe = new Uint32Array(new Set(advs));
-  const fastestAdvs = await rngTools.find_fastest_advs_considering_painting(
-    opts,
-    advsWithoutDupe,
-  );
-
-  if (fastestAdvs.length !== advsWithoutDupe.length) {
-    return fallbackFunc;
-  }
-
-  const fastestAdvsByAdvance = new Map<number, Wild3PaintingAdvsAndDur>();
-  fastestAdvs.forEach((fastestAdv, i) => {
-    fastestAdvsByAdvance.set(advsWithoutDupe[i], fastestAdv);
-  });
-
-  return (adv: number): Wild3PaintingAdvsAndDur =>
-    fastestAdvsByAdvance.get(adv) ?? fallbackFunc(adv);
-};
 
 export const searchStatic3Target = (
   game: Static3Game,

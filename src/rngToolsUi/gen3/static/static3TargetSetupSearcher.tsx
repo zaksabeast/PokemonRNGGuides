@@ -21,7 +21,7 @@ import {
 
 import { searchStatic3Target } from "./searchStatic3Target";
 import { getGeneratorPokemonResultColumns } from "../pokemonRng/generatorResultColumns";
-import { Static3TargetMon } from "./static3TargetMon";
+import { getPossibleSpecies, Static3TargetMon } from "./static3TargetMon";
 import { species } from "~/types/species";
 import { Static3Game } from "./constants";
 import { Static3SetupFilter } from "./static3SetupFilter";
@@ -74,9 +74,9 @@ export type PidPathResult = FlattenIvs<
     }
 >;
 
-const getInitialValues = (): FormState => {
+const getInitialValues = (game: Static3Game): FormState => {
   return {
-    species: "Mudkip",
+    species: getPossibleSpecies(game)[0],
     tid: 0,
     usingAceForSid: false,
     sid: 0,
@@ -124,44 +124,37 @@ export const Static3TargetSetupSearcher = ({
   const [pidPathResults, setPidPathResults] = React.useState<PidPathResult[]>(
     [],
   );
-  const [selectedPidPathResult, setSelectedPidPathResult] =
-    React.useState<PidPathResult | null>(null);
+
+  const initialValues = getInitialValues(game);
+
+  const pidPathColumns = getGeneratorPokemonResultColumns<PidPathResult>();
 
   const onSubmit: RngToolSubmit<FormState> = async (values) => {
     const pidPathResults = await searchStatic3Target(game, values);
 
     setPidPathResults(sortBy(pidPathResults, "wait_dur"));
-    setSelectedPidPathResult(null);
+    setTargetSetupProp(null);
   };
 
-  const initialValues = getInitialValues();
-
-  const pidPathColumns = getGeneratorPokemonResultColumns<PidPathResult>();
-
-  React.useEffect(() => {
-    if (selectedPidPathResult == null) {
-      setTargetSetupProp(null);
-    } else {
-      setTargetSetupProp(convertToTargetSetup(game, selectedPidPathResult));
-    }
-  }, [game, selectedPidPathResult, setTargetSetupProp]);
+  const onClickResultRow = (res: PidPathResult | null) => {
+    const targetSetup = res == null ? null : convertToTargetSetup(game, res);
+    setTargetSetupProp(targetSetup);
+  };
 
   return (
-    <>
-      <RngToolForm<FormState, PidPathResult>
-        columns={pidPathColumns}
-        results={pidPathResults}
-        validationSchema={schema}
-        initialValues={initialValues}
-        onSubmit={onSubmit}
-        submitTrackerId="wild3_find_target"
-        rowKey="uid"
-        onClickResultRow={setSelectedPidPathResult}
-      >
-        <Static3TargetMon game={game} />
-        <br />
-        <Static3SetupFilter game={game} />
-      </RngToolForm>
-    </>
+    <RngToolForm<FormState, PidPathResult>
+      columns={pidPathColumns}
+      results={pidPathResults}
+      validationSchema={schema}
+      initialValues={initialValues}
+      onSubmit={onSubmit}
+      submitTrackerId="wild3_find_target"
+      rowKey="uid"
+      onClickResultRow={onClickResultRow}
+    >
+      <Static3TargetMon game={game} />
+      <br />
+      <Static3SetupFilter game={game} />
+    </RngToolForm>
   );
 };

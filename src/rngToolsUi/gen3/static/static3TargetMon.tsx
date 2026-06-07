@@ -16,27 +16,32 @@ import { getStatic3SpeciesEncounters, Static3Game } from "./constants";
 import uniq from "lodash-es/uniq";
 import { FormState } from "./static3TargetSetupSearcher";
 
-const getPossibleValuesForSpecies = (game: Static3Game, species: Species) => {
-  const static3Species = uniq(
-    getStatic3SpeciesEncounters(game).map((encounter) => encounter.species),
-  );
-  const roaming = uniq(
+export const getPossibleRoamingValuesForSpecies = (
+  game: Static3Game,
+  selectedSpecies: Species,
+) => {
+  return uniq(
     getStatic3SpeciesEncounters(game)
-      .filter((encounter) => encounter.species === species)
+      .filter((encounter) => encounter.species === selectedSpecies)
       .map((encounter) => encounter.roaming),
   );
+};
 
-  return {
-    species: static3Species,
-    roaming,
-  };
+export const getPossibleSpecies = (game: Static3Game) => {
+  return uniq(
+    getStatic3SpeciesEncounters(game).map((encounter) => encounter.species),
+  );
 };
 
 const getTargetMonFields = (
   game: Static3Game,
   selectedSpecies: Species,
 ): Field[] => {
-  const possibleValues = getPossibleValuesForSpecies(game, selectedSpecies);
+  const possibleSpecies = getPossibleSpecies(game);
+  const possibleRoaming = getPossibleRoamingValuesForSpecies(
+    game,
+    selectedSpecies,
+  );
 
   return [
     {
@@ -44,14 +49,14 @@ const getTargetMonFields = (
       input: (
         <FormikSelect<FormState, "species">
           name="species"
-          options={toOptions(possibleValues.species)}
+          options={toOptions(possibleSpecies)}
         />
       ),
     },
     {
       label: "Roaming",
       input: <FormikSwitch<FormState> name="roaming" />,
-      show: possibleValues.roaming.length > 1,
+      show: possibleRoaming.length > 1,
     },
     ...getPkmFilterFields({
       species: selectedSpecies,

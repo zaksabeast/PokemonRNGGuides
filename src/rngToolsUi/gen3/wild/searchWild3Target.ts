@@ -3,7 +3,6 @@ import {
   Wild3SearcherResultMon,
   Wild3MapSetups,
   Wild3SearcherOptions,
-  Wild3PaintingAdvsAndDur,
   Gen3Method,
 } from "~/rngTools";
 import { pkmFilterFieldsToRustInput } from "~/components/pkmFilter";
@@ -13,12 +12,14 @@ import { gen3Leads, formatActionName, formatMapName } from "./utils";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 
 import type { FormState, PidPathResult } from "./wild3TargetSetupSearcher.tsx";
+import {
+  createFastestAdvsCache,
+  FastestAdvsCache,
+} from "../paintingReseeding/paintingCache.ts";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
 let nextUid = 0;
-
-type FastestAdvsCache = Awaited<ReturnType<typeof createFastestAdvsCache>>;
 
 const convertResultsForPidPathToPidPathResult = async (
   originalResults: Wild3SearcherResultMon[],
@@ -100,45 +101,6 @@ const convertResultsForPidPathToPidPathResult = async (
       ["primaryLikelihood", "advance", "method", "map_idx"],
       ["desc", "asc", "asc", "asc"],
     ),
-  };
-};
-
-const createFastestAdvsCache = async (
-  opts: Wild3SearcherOptions["painting_opts"],
-  advs: number[],
-  initial_seed: number,
-) => {
-  const fallbackFunc = (adv: number): Wild3PaintingAdvsAndDur => {
-    return {
-      advs: {
-        frame_before_painting: initial_seed,
-        adv_after_painting: adv,
-      },
-      wait_dur: adv,
-    };
-  };
-
-  if (opts == null || advs.length === 0) {
-    return fallbackFunc;
-  }
-
-  const advsWithoutDupe = new Uint32Array(new Set(advs));
-  const fastestAdvs = await rngTools.find_fastest_advs_considering_painting(
-    opts,
-    advsWithoutDupe,
-  );
-  if (fastestAdvs.length !== advsWithoutDupe.length) {
-    return fallbackFunc;
-  }
-
-  const map = new Map<number, Wild3PaintingAdvsAndDur>();
-
-  fastestAdvs.forEach((fastestAdv, i) => {
-    map.set(advsWithoutDupe[i], fastestAdv);
-  });
-
-  return (adv: number): Wild3PaintingAdvsAndDur => {
-    return map.get(adv) ?? fallbackFunc(adv);
   };
 };
 

@@ -1,3 +1,4 @@
+use crate::gen3::searcher_reverse::{METHOD_1, METHOD_4};
 use crate::gen3::{
     FindPidPathsOptions, Gen3Method, Gen3PkmFilter, PidPath, PidPathStrategy,
     find_pid_paths_by_step_iv1, find_pid_paths_by_step_iv2, find_pid_paths_by_step_pid,
@@ -5,9 +6,8 @@ use crate::gen3::{
     find_pid_paths_reverse_pid_cycle_speed_mid, find_pid_paths_reverse_pid_shiny,
     searcher_painter::{Wild3PaintingAdvFinder, Wild3PaintingOpts},
 };
-use crate::gen3::searcher_reverse::{METHOD_1, METHOD_4};
-use crate::rng::lcrng::Pokerng;
 use crate::rng::StateIterator;
+use crate::rng::lcrng::Pokerng;
 use crate::{
     AbilityType, Gender, HiddenPower, Ivs, Nature, PkmFilter, Species, gen3_shiny, gen3_tsv,
 };
@@ -15,7 +15,9 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-use super::{Gen3StaticMethod, Static3GeneratorOptions, Static3GeneratorResult, generate_gen3_static};
+use super::{
+    Gen3StaticMethod, Static3GeneratorOptions, Static3GeneratorResult, generate_gen3_static,
+};
 use crate::gen3::{determine_best_pid_path_strategy, wild::lcrng_distance};
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
@@ -40,7 +42,6 @@ pub struct Static3SearcherResult {
     pub seed: u32,
 }
 
-
 impl Static3SearcherResult {
     pub fn new(
         gen_res: &Static3GeneratorResult,
@@ -55,8 +56,7 @@ impl Static3SearcherResult {
             shiny: gen3_shiny(gen_res.pid, gen_opts.tid, gen_opts.sid),
             nature: Nature::from_pid(gen_res.pid),
             ability: AbilityType::from_gen3_pid(gen_res.pid),
-            gender: gen_opts.encounter_gender_ratio
-                .gender_from_pid(gen_res.pid),
+            gender: gen_opts.encounter_gender_ratio.gender_from_pid(gen_res.pid),
             hidden_power: HiddenPower::from_ivs(&gen_res.ivs),
             advance,
             seed,
@@ -110,7 +110,6 @@ pub fn search_static3_naive(opts: &Static3SearcherOptions) -> Vec<Static3Searche
         .collect()
 }
 
-
 #[wasm_bindgen]
 pub fn search_static3(opts: &Static3SearcherOptions) -> Vec<Static3SearcherResult> {
     search_static3_reverse(opts)
@@ -124,31 +123,32 @@ fn extend_pid_paths_to_results<I>(
 where
     I: Iterator<Item = PidPath>,
 {
-    iter.map(|pid_path|{
-        let pid = pid_path.pid();
-        let ivs = pid_path.ivs();
-        let method = if pid_path.method() == Gen3Method::Wild1 {
-            Gen3StaticMethod::Static1
-        } else {
-            Gen3StaticMethod::Static4
-        };
+    iter.take(opts.max_result_count)
+        .map(|pid_path| {
+            let pid = pid_path.pid();
+            let ivs = pid_path.ivs();
+            let method = if pid_path.method() == Gen3Method::Wild1 {
+                Gen3StaticMethod::Static1
+            } else {
+                Gen3StaticMethod::Static4
+            };
 
-        let advance = lcrng_distance(opts.initial_seed, pid_path.seed) as usize;
+            let advance = lcrng_distance(opts.initial_seed, pid_path.seed) as usize;
 
-        Static3SearcherResult {
-            pid,
-            ivs,
-            method,
-            shiny: gen3_shiny(pid, opts.tid, opts.sid),
-            nature: Nature::from_pid(pid),
-            ability: AbilityType::from_gen3_pid(pid),
-            gender: opts.species.gender_ratio()
-                .gender_from_pid(pid),
-            hidden_power: HiddenPower::from_ivs(&ivs),
-            advance,
-            seed: pid_path.seed,
-        }
-    }).collect()
+            Static3SearcherResult {
+                pid,
+                ivs,
+                method,
+                shiny: gen3_shiny(pid, opts.tid, opts.sid),
+                nature: Nature::from_pid(pid),
+                ability: AbilityType::from_gen3_pid(pid),
+                gender: opts.species.gender_ratio().gender_from_pid(pid),
+                hidden_power: HiddenPower::from_ivs(&ivs),
+                advance,
+                seed: pid_path.seed,
+            }
+        })
+        .collect()
 }
 
 #[wasm_bindgen]
@@ -186,7 +186,9 @@ fn new_find_pid_paths_options(opts: &Static3SearcherOptions) -> FindPidPathsOpti
     }
 }
 
-pub fn search_static3_reverse_with_methods<const METHODS: u8>(opts: &Static3SearcherOptions) -> Vec<Static3SearcherResult> {
+pub fn search_static3_reverse_with_methods<const METHODS: u8>(
+    opts: &Static3SearcherOptions,
+) -> Vec<Static3SearcherResult> {
     let find_opts = new_find_pid_paths_options(opts);
 
     let strategy = determine_best_pid_path_strategy(&find_opts);

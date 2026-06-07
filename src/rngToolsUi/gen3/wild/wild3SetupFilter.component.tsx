@@ -181,7 +181,11 @@ const getSetupFields = (obj: {
       show: showAdvancedSetups,
       indent: 1,
     },
-    ...getPaintingSetupFilterFields(obj),
+    ...getPaintingSetupFilterFields({
+      ...obj,
+      game: "emerald",
+      usingDeadBattery: false,
+    }),
     {
       label: "Display results with 0% likelihood",
       input: <FormikSwitch<FormState> name="generate_even_if_impossible" />,

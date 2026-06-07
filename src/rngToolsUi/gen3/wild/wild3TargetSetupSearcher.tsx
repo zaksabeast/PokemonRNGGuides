@@ -77,7 +77,6 @@ export type PidPathResult = FlattenIvs<
       pidCycleCount: number;
       earliestAdvance: number;
       resultSetupInfos: ResultSetupInfo[];
-      initial_seed: number;
     }
 >;
 

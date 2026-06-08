@@ -1,10 +1,11 @@
 import { gen3StaticMethods, Static3Game } from "./constants";
 import { Field, FormFieldTable, FormikSelect, Typography } from "~/components";
+import { useWatch } from "~/hooks/form";
 import { toOptions } from "~/utils/options";
 import { FormState } from "./static3TargetSetupSearcher";
-import { useWatch } from "react-hook-form";
 import {
   getPaintingSetupFilterFields,
+  targetSetupSearcherSchema,
   getTidSidSetupFilterFields,
 } from "../pokemonRng/targetSetupSearcher";
 
@@ -39,29 +40,23 @@ const getSetupFields = (obj: {
 };
 
 export const Static3SetupFilter = ({ game }: { game: Static3Game }) => {
-  const usingPaintingReseeding = useWatch<FormState, "usingPaintingReseeding">({
-    name: "usingPaintingReseeding",
-  });
-  const filter_shiny = useWatch<FormState, "filter_shiny">({
-    name: "filter_shiny",
-  });
-  const usingAceForSid = useWatch<FormState, "usingAceForSid">({
-    name: "usingAceForSid",
-  });
-  const letSearcherFindPaintingSeed = useWatch<
-    FormState,
-    "letSearcherFindPaintingSeed"
-  >({
-    name: "letSearcherFindPaintingSeed",
-  });
-  const showAdvancedPaintingSettings = useWatch<
-    FormState,
-    "showAdvancedPaintingSettings"
-  >({
-    name: "showAdvancedPaintingSettings",
-  });
-  const usingDeadBattery = useWatch<FormState, "usingDeadBattery">({
-    name: "usingDeadBattery",
+  const {
+    usingPaintingReseeding,
+    filter_shiny,
+    usingAceForSid,
+    letSearcherFindPaintingSeed,
+    showAdvancedPaintingSettings,
+    usingDeadBattery,
+  } = useWatch({
+    names: {
+      usingPaintingReseeding: true,
+      filter_shiny: true,
+      usingAceForSid: true,
+      letSearcherFindPaintingSeed: true,
+      showAdvancedPaintingSettings: true,
+      usingDeadBattery: true,
+    },
+    validationSchema: targetSetupSearcherSchema,
   });
 
   return (
@@ -72,12 +67,12 @@ export const Static3SetupFilter = ({ game }: { game: Static3Game }) => {
       <FormFieldTable
         fields={getSetupFields({
           game,
-          usingPaintingReseeding,
-          filter_shiny,
-          usingAceForSid,
-          letSearcherFindPaintingSeed,
-          showAdvancedPaintingSettings,
-          usingDeadBattery,
+          usingPaintingReseeding: usingPaintingReseeding ?? false,
+          filter_shiny: filter_shiny ?? false,
+          usingAceForSid: usingAceForSid ?? false,
+          letSearcherFindPaintingSeed: letSearcherFindPaintingSeed ?? false,
+          showAdvancedPaintingSettings: showAdvancedPaintingSettings ?? false,
+          usingDeadBattery: usingDeadBattery ?? false,
         })}
       />
     </>

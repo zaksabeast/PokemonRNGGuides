@@ -9,9 +9,10 @@ import {
 } from "~/components";
 import { getGen3PkmFilterFields } from "~/components/gen3PkmFilter";
 import { getPkmFilterFields } from "~/components/pkmFilter";
+import { useWatch } from "~/hooks/form";
 import { Species } from "~/rngTools";
 import { toOptions } from "~/utils/options";
-import { useWatch } from "react-hook-form";
+import { z } from "zod";
 
 import {
   getPossibleRoamingValuesForSpecies,
@@ -20,6 +21,11 @@ import {
   Static3Game,
 } from "./constants";
 import { FormState } from "./static3TargetSetupSearcher";
+import { targetSetupSearcherSchema } from "../pokemonRng/targetSetupSearcher";
+
+const targetMonSchema = targetSetupSearcherSchema.extend({
+  roaming: z.boolean(),
+});
 
 const getTargetMonFields = (
   game: Static3Game,
@@ -90,14 +96,13 @@ const getTargetMonFields = (
 };
 
 export const Static3TargetMon = ({ game }: { game: Static3Game }) => {
-  const species = useWatch<FormState, "species">({
-    name: "species",
-  });
-  const roaming = useWatch<FormState, "roaming">({
-    name: "roaming",
-  });
-  const filter_shiny = useWatch<FormState, "filter_shiny">({
-    name: "filter_shiny",
+  const { species, roaming, filter_shiny } = useWatch({
+    names: {
+      species: true,
+      roaming: true,
+      filter_shiny: true,
+    },
+    validationSchema: targetMonSchema,
   });
 
   return (
@@ -106,7 +111,12 @@ export const Static3TargetMon = ({ game }: { game: Static3Game }) => {
         Target Pokémon
       </Typography.Title>
       <FormFieldTable
-        fields={getTargetMonFields(game, species, roaming, filter_shiny)}
+        fields={getTargetMonFields(
+          game,
+          species ?? getPossibleStatic3Species(game)[0],
+          roaming ?? false,
+          filter_shiny ?? false,
+        )}
       />
     </Flex>
   );

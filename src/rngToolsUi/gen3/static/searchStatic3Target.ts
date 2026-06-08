@@ -43,6 +43,7 @@ export const searchStatic3Target = async (
 
   const bugged_roamer = game !== "emerald" && opts.roaming;
 
+  const filter_shiny = opts.filter_shiny && !opts.usingAceForSid;
   const searchOpts = {
     initial_seed,
     tid: opts.tid,
@@ -50,7 +51,10 @@ export const searchStatic3Target = async (
     initial_advances,
     max_advances,
     max_result_count: opts.max_result_count,
-    filter: pkmFilterFieldsToRustInput(opts),
+    filter: pkmFilterFieldsToRustInput({
+      ...opts,
+      filter_shiny,
+    }),
     gen3_filter: gen3PkmFilterFieldsToRustInput(opts, opts.species),
     painting_opts,
     species: opts.species,

@@ -35,10 +35,6 @@ export const createFastestAdvsCache = async (
     advsWithoutDupe,
   );
 
-  if (fastestAdvs.length !== advsWithoutDupe.length) {
-    return fallbackFunc;
-  }
-
   const fastestAdvsByAdvance = new Map<number, Wild3PaintingAdvsAndDur>();
   fastestAdvs.forEach((fastestAdv, i) => {
     fastestAdvsByAdvance.set(advsWithoutDupe[i], fastestAdv);

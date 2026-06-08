@@ -44,24 +44,29 @@ const Validator = z.object({
 
 type FormState = z.infer<typeof Validator>;
 
-const initialValues: FormState = {
-  minAdvances: 0,
-  maxAdvances: 50,
-};
+const getInitialValues = (minAdvance: number): FormState => ({
+  minAdvances: minAdvance,
+  maxAdvances: Math.max(50, minAdvance + 50),
+});
 
 type SelectButtonProps = {
   advance: number;
 };
 
 const SelectButton = ({ advance }: SelectButtonProps) => {
-  const [, setState] = useSwarmState();
+  const [, setGen4State] = useAtom(gen4StateAtom);
   const [, setStep] = useCurrentStep();
 
   return (
     <Button
       trackerId="swarm_select_advance"
       onClick={() => {
-        setState((prev) => ({ ...prev, targetAdvance: advance }));
+        setGen4State({
+          target: {
+            mtAdvance: advance,
+          },
+        });
+
         setStep((step) => step + 1);
       }}
     >
@@ -89,6 +94,14 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
 export const SwarmFindEncounter = () => {
   const [swarmState] = useSwarmState();
   const [state] = useAtom(gen4StateAtom);
+
+  const defaultMinAdvance =
+    state.config.game === "Diamond" ||
+    state.config.game === "Pearl" ||
+    state.config.game === "Platinum"
+      ? state.gameState.coinFlips.length
+      : 0;
+
   const [results, setResults] = React.useState<Result[]>([]);
 
   React.useEffect(() => {
@@ -164,7 +177,8 @@ export const SwarmFindEncounter = () => {
 
   return (
     <RngToolForm<FormState, Result>
-      initialValues={initialValues}
+      key={state.gameState.coinFlips.length}
+      initialValues={getInitialValues(defaultMinAdvance)}
       disableGenerate={seed == null}
       submitTrackerId="swarm_find_encounter"
       validationSchema={Validator}

@@ -133,9 +133,7 @@ const getFields = (t: Translations): Field[] => [
 export const HgssElmCallSeedFinder = () => {
   const [allResults, setAllResults] = React.useState<ResultRow[]>([]);
   const [state, setState] = useAtom(gen4StateAtom);
-  const [elmCallCount, setElmCallCount] = React.useState(
-    initialValues.elmCallCount,
-  );
+  const elmCallCount = initialValues.elmCallCount;
 
   const filteredResults = allResults.filter((result) =>
     matchesElmCallFilter(result.elmCalls, state.gameState.elmCalls),
@@ -143,7 +141,7 @@ export const HgssElmCallSeedFinder = () => {
 
   const onSubmit: RngToolSubmit<FormState> = async (opts) => {
     const { seedTimesBySeed, seedList } = await getFindableSeeds(opts);
-    setElmCallCount(opts.elmCallCount);
+
     const elmCalls = await rngTools.elm_calls_for_seeds(
       seedList,
       opts.elmCallCount,

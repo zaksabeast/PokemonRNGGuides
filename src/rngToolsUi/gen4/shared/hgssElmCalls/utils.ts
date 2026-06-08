@@ -1,22 +1,42 @@
-import type { ElmCall } from "~/rngTools";
+import { type ElmCall } from "~/rngTools";
+import { findSubArrayIndices, type IndexRange } from "~/utils/findIndexBy";
 import { matchesSubsequence } from "~/utils/matchesSubsequence";
 
-const isElmCall = (char: string): char is ElmCall => {
-  return char === "E" || char === "K" || char === "P";
+const joinElmCalls = (calls: ElmCall[]): string => {
+  return calls.join("");
 };
 
-export const sanitizeElmCalls = (value: string): string => {
-  return parseElmCallFilter(value).join(",");
+export const splitElmCalls = (input: string): ElmCall[] => {
+  return input
+    .split("")
+    .filter(
+      (call): call is ElmCall => call === "E" || call === "K" || call === "P",
+    );
 };
 
-export const parseElmCallFilter = (value: string): ElmCall[] => {
-  return value.toUpperCase().split("").filter(isElmCall);
+export const sanitizeElmCalls = (input: string): string => {
+  return joinElmCalls(splitElmCalls(input));
+};
+
+export const isElmCallEqual = (
+  elmCall: ElmCall,
+  filterCall: ElmCall,
+): boolean => {
+  return elmCall === filterCall;
+};
+
+export const findElmCallSequenceIndices = (
+  elmCalls: ElmCall[],
+  filterString: string,
+): IndexRange[] => {
+  const filterList = splitElmCalls(filterString);
+  return findSubArrayIndices(elmCalls, filterList, isElmCallEqual);
 };
 
 export const matchesElmCallFilter = (
   elmCalls: ElmCall[],
-  filter: string,
+  filterString: string,
 ): boolean => {
-  const pattern = parseElmCallFilter(filter);
-  return matchesSubsequence(elmCalls, pattern);
+  const filterList = splitElmCalls(filterString);
+  return matchesSubsequence(elmCalls, filterList);
 };

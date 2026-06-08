@@ -2300,7 +2300,7 @@ export const guides = {
       section: "supporting_info",
       guideVariants: null,
       guideKey: "false-Honey Tree NPCs",
-      isNew: true,
+      isNew: false,
       title: "Honey Tree NPCs in Diamond, Pearl, and Platinum",
       navDrawerTitle: "Honey Tree NPCs",
       description:
@@ -8732,7 +8732,7 @@ export const guides = {
       section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "false-Honey Pokémon RNG",
-      isNew: true,
+      isNew: false,
       title: "Diamond, Pearl, and Platinum Honey Pokémon RNG Guide",
       navDrawerTitle: "Honey Pokémon RNG",
       description:
@@ -8770,7 +8770,7 @@ export const guides = {
       section: "other_rng",
       guideVariants: ["retail"],
       guideKey: "false-Honey Tree RNG",
-      isNew: true,
+      isNew: false,
       title: "Diamond, Pearl, and Platinum Honey Tree RNG",
       navDrawerTitle: "Honey Tree RNG",
       description:

@@ -22,13 +22,25 @@
   isRoughDraft: true
 ---
 
-<Static3TargetSetupSearcher_WithSetTargetSetup />
+<ShowIf slug="/emerald-static">
+  <Static3TargetSetupSearcher_WithSetTargetSetup />
+  
+  ## Coming soon
 
-## Coming soon
+  - Add battle video step.
+  - Add calibration step.
+  - Add ACE code to respawn Pokémon or access event Pokémon.
 
-- Add battle video step.
-- Add calibration step.
-- Add ACE code to respawn Pokémon or access event Pokémon.
+</ShowIf>
+
+<ShowIf slug="/rs-static">
+  <Static3TargetSetupSearcher />
+</ShowIf>
+
+<ShowIf slug="/frlg-static">
+  <Static3TargetSetupSearcher />
+</ShowIf>
+
 
 ## Credits
 

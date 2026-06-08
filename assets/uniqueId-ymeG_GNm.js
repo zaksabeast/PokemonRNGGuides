@@ -1,0 +1,1 @@
+import{da as e}from"./index.esm-B8c1wI0S.js";var t=0;function n(n){var r=++t;return e(n)+r}export{n as t};

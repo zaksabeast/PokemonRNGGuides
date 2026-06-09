@@ -436,6 +436,14 @@ const tools = {
     () => import("~/rngToolsUi/gen4/shared/seedFinder"),
     (mod) => mod.Gen4SeedFinder,
   ),
+  SwarmAdvanceFilter: lazyLoad(
+    () => import("~/rngToolsUi/gen4/swarm/swarmAdvanceFilter"),
+    (mod) => mod.SwarmAdvanceFilter,
+  ),
+  HgssSwarmAdvanceTracker: lazyLoad(
+    () => import("~/rngToolsUi/gen4/swarm/hgssSwarmAdvanceTracker"),
+    (mod) => mod.HgssSwarmAdvanceTracker,
+  ),
 };
 
 export const markdownComponents = {

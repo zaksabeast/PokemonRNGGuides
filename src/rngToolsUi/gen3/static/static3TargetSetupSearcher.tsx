@@ -4,7 +4,7 @@ import {
   Static3SearcherResult,
   Wild3PaintingAdvsAndDur,
 } from "~/rngTools";
-import { RngToolForm, RngToolSubmit } from "~/components";
+import { Flex, RngToolForm, RngToolSubmit } from "~/components";
 import React from "react";
 import { z } from "zod";
 
@@ -111,13 +111,14 @@ export const Static3TargetSetupSearcher = ({
       validationSchema={schema}
       initialValues={initialValues}
       onSubmit={onSubmit}
-      submitTrackerId="wild3_find_target"
+      submitTrackerId="static3_find_target"
       rowKey="uid"
       onClickResultRow={onClickResultRow}
     >
-      <Static3TargetMon game={game} />
-      <br />
-      <Static3SetupFilter game={game} />
+      <Flex vertical gap={15}>
+        <Static3TargetMon game={game} />
+        <Static3SetupFilter game={game} />
+      </Flex>
     </RngToolForm>
   );
 };

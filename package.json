@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "bun run scripts/dev-server",
-    "dev": "bun run build:rng_tools:dev && bun run start",
+    "dev": "bun run build:rng_tools && bun run start",
     "format": "bun run format:ts && bun run format:rust",
     "format:ts": "bun prettier . --write --list-different",
     "format:rust": "bun run scripts/format-rust",

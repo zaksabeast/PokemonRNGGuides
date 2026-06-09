@@ -254,8 +254,7 @@ export const CalibrateStarter4 = () => {
           seed: seedTime.seed,
           delay: seedTime.delay,
           advanceOffset: state.advance - targetAdvance,
-          flipDelay:
-            secondOffset % 2 === 0 && targetDelay % 2 !== seedTime.delay % 2,
+          flipDelay: targetDelay % 2 !== seedTime.delay % 2,
           key: `${seedTime.seed}-${state.pid}`,
           delayOffset: seedTime.delay - targetDelay,
           second: seedTime.datetime.second,

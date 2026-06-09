@@ -9,13 +9,13 @@ import {
 import { lcrng_distance } from "~/utils/lcrng";
 import {
   Field,
-  FormikNumberInput,
   FormikSelect,
   RngToolForm,
   RngToolSubmit,
   FormFieldTable,
   FormikSwitch,
   FormikWild3Pokeblock,
+  FormikNumberInput,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { useFormContext } from "~/hooks/form";
@@ -39,10 +39,10 @@ import { useWatch } from "react-hook-form";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { getPossibleValuesForMap } from "./dataUtils";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
-import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
-import { usingPaintingReseedingLabel } from "./wild3Labels";
 import { Pokeblock, pokeblockSchema } from "~/types/pokeblock";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
+import { usingPaintingReseedingLabel } from "./wild3Labels";
+import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -210,15 +210,6 @@ const getFields = ({
       show: usingPaintingReseeding,
     },
     {
-      label: "Target Method",
-      input: (
-        <FormikSelect<FormState, "targetMethod">
-          name="targetMethod"
-          options={toOptions(supportedGen3Methods)}
-        />
-      ),
-    },
-    {
       label: usingPaintingReseeding
         ? "Target advances after painting"
         : "Target advances",
@@ -237,6 +228,15 @@ const getFields = ({
         </>
       ),
       indent: 1,
+    },
+    {
+      label: "Target Method",
+      input: (
+        <FormikSelect<FormState, "targetMethod">
+          name="targetMethod"
+          options={toOptions(supportedGen3Methods)}
+        />
+      ),
     },
     {
       label: "Feebas state",

@@ -194,11 +194,26 @@ fn new_find_pid_paths_options(opts: &Wild3SearcherOptions) -> FindPidPathsOption
     let encounter_gender_ratio = get_encounter_species_data(opts)
         .map(|data| data.gender_ratio())
         .unwrap_or(GenderRatio::Genderless);
+
+    let mut method_bitset = 0;
+    if opts.methods.contains(&Gen3Method::Wild1) {
+        method_bitset |= METHOD_1;
+    }
+    if opts.methods.contains(&Gen3Method::Wild2) {
+        method_bitset |= METHOD_2;
+    }
+    if opts.methods.contains(&Gen3Method::Wild3) {
+        method_bitset |= METHOD_3;
+    }
+    if opts.methods.contains(&Gen3Method::Wild4) {
+        method_bitset |= METHOD_4;
+    }
+
     FindPidPathsOptions {
         filter: opts.filter.clone(),
         gen3_filter: opts.gen3_filter.clone(),
         encounter_gender_ratio,
-        methods: opts.methods.clone(),
+        method_bitset,
         tsv: gen3_tsv(opts.tid, opts.sid),
         initial_seed: opts.initial_seed,
         initial_advances: opts.initial_advances,
@@ -209,21 +224,9 @@ fn new_find_pid_paths_options(opts: &Wild3SearcherOptions) -> FindPidPathsOption
 }
 
 pub fn search_wild3_reverse(opts: &Wild3SearcherOptions) -> Vec<Vec<Wild3SearcherResultMon>> {
-    let mut methods_bits = 0;
-    if opts.methods.contains(&Gen3Method::Wild1) {
-        methods_bits |= METHOD_1;
-    }
-    if opts.methods.contains(&Gen3Method::Wild2) {
-        methods_bits |= METHOD_2;
-    }
-    if opts.methods.contains(&Gen3Method::Wild3) {
-        methods_bits |= METHOD_3;
-    }
-    if opts.methods.contains(&Gen3Method::Wild4) {
-        methods_bits |= METHOD_4;
-    }
+    let find_opts = new_find_pid_paths_options(opts);
 
-    match methods_bits {
+    match find_opts.method_bitset {
         0 => search_wild3_reverse_with_methods::<0>(opts),
         1 => search_wild3_reverse_with_methods::<1>(opts),
         2 => search_wild3_reverse_with_methods::<2>(opts),

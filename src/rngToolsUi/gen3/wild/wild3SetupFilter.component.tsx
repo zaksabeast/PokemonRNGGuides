@@ -1,14 +1,12 @@
 import { Gen3Method, Species } from "~/rngTools";
 import {
   Field,
-  FormikNumberInput,
   FormikSelect,
   FormikSwitch,
   FormFieldTable,
   Flex,
   Typography,
   Link,
-  TooltipWithIcon,
   FormikRadio,
 } from "~/components";
 import { toOptions } from "~/utils/options";
@@ -24,13 +22,11 @@ import {
 import { useWatch } from "react-hook-form";
 import { FormState } from "./wild3TargetSetupSearcher";
 import { getPossibleValuesForSpecies } from "./wild3TargetMon";
-import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
-import {
-  minAdvsAfterPaintingLabel,
-  minFramesBeforePaintingLabel,
-  usingPaintingReseedingLabel,
-} from "./wild3Labels";
 import { wild3SafariPokeblockSearchOptLabels } from "~/types/pokeblock";
+import {
+  getPaintingSetupFilterFields as getPaintingSetupFilterFields,
+  getTidSidSetupFilterFields,
+} from "../pokemonRng/targetSetupSearcher";
 
 const supportedGen3Methods = [
   "Wild1",
@@ -40,15 +36,17 @@ const supportedGen3Methods = [
   // TODO: Support Wild5
 ] as const satisfies Gen3Method[];
 
-const getSetupFields = (
-  species: Species,
-  filter_shiny: boolean,
-  recommendedSetups: boolean,
-  usingPaintingReseeding: boolean,
-  letSearcherFindPaintingSeed: boolean,
-  showAdvancedPaintingSettings: boolean,
-  usingAceForSid: boolean,
-): Field[] => {
+const getSetupFields = (obj: {
+  species: Species;
+  filter_shiny: boolean;
+  recommendedSetups: boolean;
+  usingPaintingReseeding: boolean;
+  letSearcherFindPaintingSeed: boolean;
+  showAdvancedPaintingSettings: boolean;
+  usingAceForSid: boolean;
+}): Field[] => {
+  const { species, recommendedSetups } = obj;
+
   const possVals = getPossibleValuesForSpecies(species);
   const showAdvancedSetups = !recommendedSetups;
 
@@ -61,34 +59,7 @@ const getSetupFields = (
       label: "Recommended setups?",
       input: <FormikSwitch<FormState> name="recommendedSetups" />,
     },
-    {
-      label: "Using ACE to change SID?",
-      tooltip:
-        "Whether to use Arbitrary Code Execution glitch to change your SID so the target Pokémon is shiny.",
-      show: filter_shiny,
-      input: <FormikSwitch<FormState> name="usingAceForSid" />,
-    },
-    {
-      label: "TID",
-      input: filter_shiny ? (
-        <FormikNumberInput<FormState> name="tid" numType="decimal" />
-      ) : (
-        <TooltipWithIcon title="The only impact of TID/SID is shininess and the target Pokemon is not shiny.">
-          N/A
-        </TooltipWithIcon>
-      ),
-    },
-    {
-      label: "SID",
-      show: !usingAceForSid,
-      input: filter_shiny ? (
-        <FormikNumberInput<FormState> name="sid" numType="decimal" />
-      ) : (
-        <TooltipWithIcon title="The only impact of TID/SID is shininess and the target Pokemon is not shiny.">
-          N/A
-        </TooltipWithIcon>
-      ),
-    },
+    ...getTidSidSetupFilterFields({ ...obj, game: "emerald" }),
     {
       label: "Actions",
       input: (
@@ -210,88 +181,11 @@ const getSetupFields = (
       show: showAdvancedSetups,
       indent: 1,
     },
-
-    {
-      ...usingPaintingReseedingLabel(),
-      input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
-    },
-
-    {
-      label: "Let searcher find painting seed?",
-      input: <FormikSwitch<FormState> name="letSearcherFindPaintingSeed" />,
-      show: usingPaintingReseeding,
-      indent: 1,
-    },
-
-    {
-      label: "Frame before painting (Painting seed)",
-      input: (
-        <FormikEmeraldFrameBeforePaintingInput<FormState> name="initial_seed" />
-      ),
-      show: usingPaintingReseeding && !letSearcherFindPaintingSeed,
-      indent: 1,
-    },
-    {
-      label: "Show advanced painting settings?",
-      input: <FormikSwitch<FormState> name="showAdvancedPaintingSettings" />,
-      show: usingPaintingReseeding,
-      indent: 1,
-    },
-    {
-      ...minFramesBeforePaintingLabel(),
-      input: (
-        <FormikNumberInput<FormState>
-          name="min_frame_before_painting"
-          numType="decimal"
-        />
-      ),
-      show:
-        usingPaintingReseeding &&
-        letSearcherFindPaintingSeed &&
-        showAdvancedPaintingSettings,
-      indent: 2,
-    },
-    {
-      ...minAdvsAfterPaintingLabel(),
-      input: (
-        <FormikNumberInput<FormState>
-          name="min_adv_after_painting"
-          numType="decimal"
-        />
-      ),
-      show: usingPaintingReseeding && showAdvancedPaintingSettings,
-      indent: 2,
-    },
-    {
-      label: "Min advances",
-      tooltip:
-        "To ensure there is enough time between booting the game and triggering the wild encounter.",
-      input: (
-        <FormikNumberInput<FormState>
-          name="initial_advances"
-          numType="decimal"
-        />
-      ),
-      show: !usingPaintingReseeding,
-    },
-    {
-      label: usingPaintingReseeding
-        ? "Max advances after painting"
-        : "Max advances",
-      input: (
-        <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
-      ),
-      show: usingPaintingReseeding && !letSearcherFindPaintingSeed,
-    },
-    {
-      label: "Max result count",
-      input: (
-        <FormikNumberInput<FormState>
-          name="max_result_count"
-          numType="decimal"
-        />
-      ),
-    },
+    ...getPaintingSetupFilterFields({
+      ...obj,
+      game: "emerald",
+      usingDeadBattery: false,
+    }),
     {
       label: "Display results with 0% likelihood",
       input: <FormikSwitch<FormState> name="generate_even_if_impossible" />,
@@ -315,11 +209,11 @@ const getSetupFields = (
   return fields;
 };
 
-export const SetupFilter = () => {
+export const Wild3SetupFilter = () => {
   const species = useWatch<FormState, "species">({
     name: "species",
   });
-  const filterShiny = useWatch<FormState, "filter_shiny">({
+  const filter_shiny = useWatch<FormState, "filter_shiny">({
     name: "filter_shiny",
   });
   const recommendedSetups = useWatch<FormState, "recommendedSetups">({
@@ -344,15 +238,15 @@ export const SetupFilter = () => {
     name: "showAdvancedPaintingSettings",
   });
 
-  const fields: Field[] = getSetupFields(
+  const fields: Field[] = getSetupFields({
     species,
-    filterShiny,
+    filter_shiny,
     recommendedSetups,
     usingPaintingReseeding,
     letSearcherFindPaintingSeed,
     showAdvancedPaintingSettings,
     usingAceForSid,
-  );
+  });
 
   return (
     <Flex vertical gap={8}>

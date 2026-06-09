@@ -1,32 +1,35 @@
 ---
-- title: "Static Tool"
+- title: "Static RNG"
   description: "Static encounters in Emerald"
   slug: "emerald-static"
   category: "Emerald"
-  section: "tool"
+  section: "pokemon_rng"
+  variant: "retail"
   isRoughDraft: true
-- title: "Static Tool"
+- title: "Static RNG"
   description: "Static encounters in Ruby and Sapphire"
   slug: "rs-static"
   category: "Ruby and Sapphire"
-  section: "tool"
+  section: "pokemon_rng"
+  variant: "retail"
   isRoughDraft: true
-- title: "Static Tool"
+- title: "Static RNG"
   description: "Static encounters in FireRed and LeafGreen"
   slug: "frlg-static"
   category: "FireRed and LeafGreen"
-  section: "tool"
+  section: "pokemon_rng"
+  variant: "retail"
   isRoughDraft: true
 ---
 
-<ShowIf slug="/emerald-static">
-  <Static3 game="emerald" />
-</ShowIf>
+<Static3TargetSetupSearcher_WithSetTargetSetup />
 
-<ShowIf slug="/rs-static">
-  <Static3 game="rs" />
-</ShowIf>
+## Coming soon
 
-<ShowIf slug="/frlg-static">
-  <Static3 game="frlg" />
-</ShowIf>
+- Add battle video step.
+- Add calibration step.
+- Add ACE code to respawn Pokémon or access event Pokémon.
+
+## Credits
+
+- RainingChain: Web tool and searcher.

@@ -6,7 +6,7 @@ pub fn search_wild3_naive(opts: &Wild3SearcherOptions) -> Vec<Wild3SearcherResul
     let base_rng = Pokerng::with_jump(opts.initial_seed, opts.initial_advances);
     StateIterator::new(base_rng)
         .enumerate()
-        .take(opts.max_advances.wrapping_add(1))
+        .take(opts.max_advances.saturating_add(1))
         .flat_map(|(adv, rng)| {
             search_wild3_naive_at_given_advance(rng, adv + opts.initial_advances, opts)
         })

@@ -18,6 +18,7 @@
     "build:guides:force": "bun run scripts/reset-guides.ts && bun run scripts/build-guides.tsx --no-detected-tags && bun run build:guides",
     "build:guides:check": "bun run scripts/build-guides.tsx --check",
     "build:rng_tools": "wasm-pack build rng_tools",
+    "build:rng_tools:dev": "wasm-pack build rng_tools --dev",
     "build:wild3": "bun run scripts/wild3/generateWildGameData.ts",
     "minimize-css": "bunx postcss dist/assets/*.css --replace",
     "lint": "bun run lint:rust && bun run lint:ts",

@@ -17,7 +17,7 @@ use crate::{
 };
 
 use super::searcher_main::searcher_reverse::{
-    METHOD_1, METHOD_2, METHOD_3, METHOD_4, is_considered_method,
+    METHOD_1, METHOD_2, METHOD_3, METHOD_4, METHODS_1234, is_considered_method,
 };
 
 /**
@@ -38,7 +38,7 @@ pub struct FindPidPathsOptions {
     pub filter: PkmFilter,
     pub gen3_filter: Gen3PkmFilter,
     pub encounter_gender_ratio: GenderRatio,
-    pub methods: Vec<Gen3Method>,
+    pub method_bitset: u8,
     pub tsv: u16,
     pub initial_seed: u32,
     pub max_result_count: usize,
@@ -53,12 +53,7 @@ impl Default for FindPidPathsOptions {
             filter: Default::default(),
             gen3_filter: Default::default(),
             encounter_gender_ratio: Default::default(),
-            methods: vec![
-                Gen3Method::Wild1,
-                Gen3Method::Wild2,
-                Gen3Method::Wild3,
-                Gen3Method::Wild4,
-            ],
+            method_bitset: METHODS_1234,
             tsv: Default::default(),
             initial_seed: Default::default(),
             max_result_count: 1,

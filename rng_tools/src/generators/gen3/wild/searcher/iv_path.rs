@@ -183,7 +183,7 @@ fn reverse_find_iv1_seeds_from_ivs_values_with_arc<
     }
 }
 
-fn passes_iv1_filter(min_ivs: &Ivs, max_ivs: &Ivs, iv1: u16) -> bool {
+pub fn passes_iv1_filter(min_ivs: &Ivs, max_ivs: &Ivs, iv1: u16) -> bool {
     let hp = (iv1 & 31) as u8;
     if hp < min_ivs.hp || hp > max_ivs.hp {
         return false;
@@ -200,7 +200,7 @@ fn passes_iv1_filter(min_ivs: &Ivs, max_ivs: &Ivs, iv1: u16) -> bool {
     true
 }
 
-fn passes_iv2_filter(min_ivs: &Ivs, max_ivs: &Ivs, iv2: u16) -> bool {
+pub fn passes_iv2_filter(min_ivs: &Ivs, max_ivs: &Ivs, iv2: u16) -> bool {
     let spe = (iv2 & 31) as u8;
     if spe < min_ivs.spe || spe > max_ivs.spe {
         return false;

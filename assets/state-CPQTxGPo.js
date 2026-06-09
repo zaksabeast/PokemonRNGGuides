@@ -1,0 +1,1 @@
+import{r as e,t}from"./react-DZDkGa0m.js";var n=[`Turtwig`,`Chimchar`,`Piplup`],r=[`Chikorita`,`Cyndaquil`,`Totodile`],i=[...n,...r],a=e({species:`Chikorita`,minMaxStats:{hp:{min:0,max:0},atk:{min:0,max:0},def:{min:0,max:0},spa:{min:0,max:0},spd:{min:0,max:0},spe:{min:0,max:0}}}),o=()=>t(a);export{o as i,n,r,i as t};

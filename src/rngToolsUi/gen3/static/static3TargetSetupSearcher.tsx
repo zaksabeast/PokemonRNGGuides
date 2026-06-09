@@ -61,7 +61,7 @@ const getInitialValues = (game: Static3Game): FormState => {
 
 type Props = {
   game: Static3Game;
-  setTargetSetup: (targetSetup: TargetSetup | null) => void;
+  setTargetSetup?: (targetSetup: TargetSetup | null) => void;
 };
 
 const convertToTargetSetup = (
@@ -96,10 +96,10 @@ export const Static3TargetSetupSearcher = ({
     const pidPathResults = await searchStatic3Target(game, values);
 
     setPidPathResults(sortBy(pidPathResults, "wait_dur"));
-    setTargetSetupProp(null);
+    setTargetSetupProp?.(null);
   };
 
-  const onClickResultRow = (res: PidPathResult | null) => {
+  const onClickResultRow = setTargetSetupProp == null ? null : (res: PidPathResult | null) => {
     const targetSetup = res == null ? null : convertToTargetSetup(game, res);
     setTargetSetupProp(targetSetup);
   };

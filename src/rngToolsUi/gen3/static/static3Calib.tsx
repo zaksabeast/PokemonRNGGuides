@@ -8,8 +8,8 @@ import {
   NumberInput,
 } from "~/components";
 import { FormFieldTable } from "~/components/formFieldTable";
-import { TargetSetup } from "./wild3TargetSetupInput";
-import { Wild3CalibCaughtMon } from "./wild3CalibCaughtMon.component";
+import { TargetSetup } from "./static3TargetSetupInput";
+import { Static3CalibCaughtMon } from "./static3CalibCaughtMon.component";
 import {
   Gen3Console,
   gen3ConsoleFpsMap,
@@ -22,7 +22,7 @@ import {
 import { formatActionName, formatLeadName, formatMapName } from "./utils";
 import { BattleVideoInfo } from "../battleVideo/battleVideo";
 import { AllOrNone } from "~/types";
-import { BattleVideoInfoInput } from "./wild3CalibBattleVideoInfoInput";
+import { BattleVideoInfoInput } from "./static3CalibBattleVideoInfoInput";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import { formatHex } from "~/utils/formatHex";
 import { Gen3Method } from "~/rngTools";
@@ -30,18 +30,19 @@ import { Gen3Method } from "~/rngTools";
 import Instructions_calib_with_battle_video from "./instructions_calib_with_battle_video.mdx";
 import Instructions_calib_without_battle_video from "./instructions_calib_without_battle_video.mdx";
 import Instructions_calib_wrong_method from "./instructions_calib_wrong_method.mdx";
-import { Wild3LeadCycleSpeedSelector } from "./wild3LeadCycleSpeedSelector";
-import { Wild3Action } from "../../../../rng_tools/pkg/rng_tools";
-import { Wild3PokeblockDescription } from "~/components/wild3Pokeblock";
+import { Static3LeadCycleSpeedSelector } from "./static3LeadCycleSpeedSelector";
+import { Static3Action } from "../../../../rng_tools/pkg/rng_tools";
+import { Static3PokeblockDescription } from "~/components/static3Pokeblock";
 import {
   AVERAGE_LEAD_CYCLE_SPEED,
   FASTEST_LEAD_CYCLE_SPEED,
   SLOWEST_LEAD_CYCLE_SPEED,
-} from "./wild3LeadCycleSpeedInput";
+} from "./static3LeadCycleSpeedInput";
 import { match } from "ts-pattern";
-import { Wild3TargetSetupAndLeadInput } from "./wild3TargetSetupAndLeadInput";
+import { Static3TargetSetupAndLeadInput } from "./static3TargetSetupAndLeadInput";
 import { CalibOffset } from "../pokemonRng/calib";
 
+//NO_PROD put calib offset in ./constants
 
 const FISHING_CALIB_OFFSET: CalibOffset = {
   offset: 4,
@@ -70,19 +71,17 @@ const CALIB_OFFSET_BY_ACTION = {
     calibNoBattleVideo: 10,
     calibBattleVideo: 4,
   },
-} as const satisfies Record<Wild3Action, CalibOffset>;
+} as const satisfies Record<Static3Action, CalibOffset>;
 
 type Props = AllOrNone<{
   targetSetup: TargetSetup;
   battleVideoInfo: BattleVideoInfo;
-  leadCycleSpeed: number;
   clearAll?: () => void;
   displayInstructions?: boolean;
 }>;
 
-export const Wild3Calib = ({
+export const Static3Calib = ({
   targetSetup: targetSetupProp,
-  leadCycleSpeed: leadCycleSpeedProp,
   battleVideoInfo: battleVideoInfoProp,
   clearAll,
   displayInstructions = true,
@@ -90,8 +89,6 @@ export const Wild3Calib = ({
   const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
     targetSetupProp ?? null,
   );
-  const [targetSetupHasEncounter, setTargetSetupHasEncounter] =
-    React.useState(false);
 
   React.useEffect(() => {
     setTargetSetup(targetSetupProp ?? null);
@@ -100,26 +97,17 @@ export const Wild3Calib = ({
   const [targetSetupResult, setTargetSetupResult] =
     React.useState<React.ReactNode>(null);
 
-  const [overwriteLeadCycleSpeed, setOverwriteLeadCycleSpeed] = React.useState<
-    number | null
-  >(null);
-
-  const finalLeadCycleSpeed =
-    overwriteLeadCycleSpeed ?? leadCycleSpeedProp ?? AVERAGE_LEAD_CYCLE_SPEED;
-
   React.useEffect(() => {
     if (targetSetup == null) {
-      setTargetSetupHasEncounter(false);
       return setTargetSetupResult(null);
     }
 
-    calculateTargetSetupResult(targetSetup, finalLeadCycleSpeed).then(
-      ({ content, hasEncounter }) => {
+    calculateTargetSetupResult(targetSetup).then(
+      ({ content,}) => {
         setTargetSetupResult(content);
-        setTargetSetupHasEncounter(hasEncounter);
       },
     );
-  }, [finalLeadCycleSpeed, targetSetup]);
+  }, [targetSetup]);
 
   const [battleVideoInfo, setBattleVideoInfo] =
     React.useState<BattleVideoInfo | null>(battleVideoInfoProp ?? null);
@@ -134,49 +122,22 @@ export const Wild3Calib = ({
   const [humanInputDelay, setHumanInputDelay] = React.useState<number | null>(
     0,
   );
-  const [hasHitTargetAdv, setHasHitTargetAdv] = React.useState(false);
-
-  React.useEffect(() => {
-    setOverwriteLeadCycleSpeed(null);
-  }, [targetSetupProp]);
-
-  React.useEffect(() => {
-    setHasHitTargetAdv(false);
-  }, [targetSetup]);
 
   const targetSetupInputForm = () => (
-    <Wild3TargetSetupAndLeadInput
+    <Static3TargetSetup
       setTargetSetup={setTargetSetup}
-      setLeadCycleSpeed={setOverwriteLeadCycleSpeed}
-      leadCycleSpeed={finalLeadCycleSpeed}
       displayInstructions={displayInstructions}
       permitEnablingDebugOptions={false}
-      initialDisplayLeadCycleSpdButton
     />
   );
-
-  const leadCycleSpeedToText = (spd: number) => {
-    return match(spd)
-      .with(AVERAGE_LEAD_CYCLE_SPEED, () => `Average`)
-      .with(FASTEST_LEAD_CYCLE_SPEED, () => `Fastest (${spd})`)
-      .with(SLOWEST_LEAD_CYCLE_SPEED, () => `Slowest (${spd})`)
-      .otherwise(() => `${spd}`);
-  };
 
   const setLatestHitAdv = (
     hitAdv: {
       frame_before_painting: number;
       adv_after_painting: number;
     },
-    hitMethod: Gen3Method,
+    _hitMethod: Gen3Method,
   ) => {
-    if (
-      hitAdv.adv_after_painting === targetSetup?.targetPaintingAdvs.after &&
-      hitMethod !== targetSetup?.targetMethod
-    ) {
-      setHasHitTargetAdv(true);
-    }
-
     setHumanInputDelay(
       (humanInputDelay ?? 0) + hitAdv.adv_after_painting - targetForTimer,
     );
@@ -202,11 +163,11 @@ export const Wild3Calib = ({
   ];
   const labels = [
     initialAdv > 0 ? "Close the Battle Video" : "Soft reset START+SELECT+A+B",
-    "Trigger Sweet Scent",
+    "Press the final A button",
   ];
 
   const battleVideoInfoInputForm = () => {
-    if (targetSetup == null || !targetSetupHasEncounter) {
+    if (targetSetup == null) {
       return null;
     }
 
@@ -268,11 +229,6 @@ export const Wild3Calib = ({
         />
       ),
     },
-    {
-      label: "Lead cycle speed (from calibration)",
-      input: leadCycleSpeedToText(overwriteLeadCycleSpeed ?? 0),
-      show: overwriteLeadCycleSpeed !== null,
-    },
   ];
 
   const canDoCalib =
@@ -287,32 +243,10 @@ export const Wild3Calib = ({
       battleVideoInfoProp.targetPaintingAdvs.before > 0;
 
     const fields: Field[] = [
+        //NO_PROD
       {
         label: "Map",
         input: formatMapName(targetSetupProp.map),
-      },
-      {
-        label: "Player action",
-        input: formatActionName(targetSetupProp.action),
-      },
-      {
-        label: "Requires White Flute?",
-        input: targetSetupProp.requiresWhiteFlute ? "Yes" : "No",
-        show: targetSetupProp.action === "RockSmash",
-      },
-      {
-        label: "Pokéblock",
-        input:
-          targetSetupProp.safariPokeblock !== null ? (
-            <Wild3PokeblockDescription
-              pokeblock={targetSetupProp.safariPokeblock}
-            />
-          ) : null,
-        show: targetSetupProp.safariPokeblock !== null,
-      },
-      {
-        label: "Lead",
-        input: formatLeadName(targetSetupProp.lead),
       },
       {
         label: "Target Method",
@@ -345,12 +279,6 @@ export const Wild3Calib = ({
         show: usingPaintingReseeding,
       },
       {
-        label: "Lead Cycle Speed",
-        input: leadCycleSpeedToText(leadCycleSpeedProp),
-        show:
-          targetSetupProp.lead !== "Egg" && overwriteLeadCycleSpeed === null,
-      },
-      {
         label: "Target Pokémon",
         input: targetSetupResult,
       },
@@ -363,7 +291,7 @@ export const Wild3Calib = ({
           <FormFieldTable fields={fields} />
           {clearAll != null && (
             <Button
-              trackerId="wild3Calib_clearAll"
+              trackerId="static3Calib_clearAll"
               danger
               maxWidth={150}
               size="small"
@@ -393,7 +321,7 @@ export const Wild3Calib = ({
     <Flex gap={32} vertical>
       {targetSetupProp == null ? inputForms() : infoFromPrevSteps()}
 
-      {canDoCalib && targetSetup != null && targetSetupHasEncounter && (
+      {canDoCalib && targetSetup != null && (
         <>
           {displayInstructions &&
             (usingBattleVideo ? (
@@ -405,27 +333,17 @@ export const Wild3Calib = ({
           <MultiTimer
             milliseconds={milliseconds}
             labels={labels}
-            startButtonTrackerId="start_wild3_calib_timer"
-            stopButtonTrackerId="stop_wild3_calib_timer"
+            startButtonTrackerId="start_static3_calib_timer"
+            stopButtonTrackerId="stop_static3_calib_timer"
           />
-          <Wild3CalibCaughtMon
+          <Static3CalibCaughtMon
             targetSetup={targetSetup}
             setLatestHitAdv={setLatestHitAdv}
-            leadCycleSpeed={finalLeadCycleSpeed}
           />
-          {hasHitTargetAdv && targetSetup != null && (
-            <>
-              <Instructions_calib_wrong_method />
-              <Wild3LeadCycleSpeedSelector
-                targetSetup={targetSetup}
-                permitEnablingDebugOptions
-                setLeadCycleSpeed={setOverwriteLeadCycleSpeed}
-                leadCycleSpeed={finalLeadCycleSpeed}
-              />
-            </>
-          )}
         </>
       )}
     </Flex>
   );
 };
+
+//NO_PROD create Static3CalibCaughtMon, Instructions_calib_with_battle_video, Instructions_calib_without_battle_video

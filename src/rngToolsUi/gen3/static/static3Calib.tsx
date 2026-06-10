@@ -1,45 +1,30 @@
 import React from "react";
-import {
-  Flex,
-  MultiTimer,
-  Field,
-  Select,
-  Button,
-  NumberInput,
-} from "~/components";
+import { Flex, MultiTimer, Field, Button } from "~/components";
 import { FormFieldTable } from "~/components/formFieldTable";
 import {
   Static3TargetSetupSearcher,
   TargetSetup,
 } from "./static3TargetSetupSearcher";
 import { Static3CalibCaughtMon } from "./static3CalibCaughtMon";
-import {
-  Gen3Console,
-  gen3ConsoleFpsMap,
-  gen3ConsoleOptions,
-} from "~/types/console";
-import {
-  formatLargeInteger,
-  formatLargeIntegerWithSign,
-} from "~/utils/formatLargeInteger";
+import { Gen3Console, gen3ConsoleFpsMap } from "~/types/console";
 import { BattleVideoInfo } from "../battleVideo/battleVideo";
 import { AllOrNone } from "~/types";
 import { BattleVideoInfoInput } from "../wild/wild3CalibBattleVideoInfoInput";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
-import { formatHex } from "~/utils/formatHex";
 import { Gen3StaticMethod } from "~/rngTools";
 import Instructions_calib_with_battle_video from "./instructions_calib_with_battle_video.mdx";
 import Instructions_calib_without_battle_video from "./instructions_calib_without_battle_video.mdx";
-import { CalibOffset } from "../pokemonRng/calib";
+import {
+  buildGen3CalibFields,
+  buildGen3CalibPreviousStepFields,
+} from "../pokemonRng/calib";
 
-// TODO: Fill with the correct values for all static species. Put the data in constants.ts
-const CALIB_OFFSET_BY_SPECIES = {
-  Mudkip: {
-    offset: 500,
-    calibNoBattleVideo: 10,
-    calibBattleVideo: 4,
-  },
-} as const satisfies Record<string, CalibOffset>;
+// TODO: Have custom values by species.
+const CALIB_OFFSET = {
+  offset: 3, // for starter
+  calibNoBattleVideo: 10,
+  calibBattleVideo: 6,
+};
 
 type Props = AllOrNone<{
   targetSetup: TargetSetup;
@@ -112,8 +97,7 @@ export const Static3Calib = ({
 
   const initialAdv = battleVideoInfo?.battleVideoAdvAfterPainting ?? 0;
 
-  const { offset, calibBattleVideo, calibNoBattleVideo } =
-    CALIB_OFFSET_BY_SPECIES.Mudkip;
+  const { offset, calibBattleVideo, calibNoBattleVideo } = CALIB_OFFSET;
 
   const calibration = initialAdv > 0 ? calibBattleVideo : calibNoBattleVideo;
 
@@ -144,58 +128,16 @@ export const Static3Calib = ({
     );
   };
 
-  const consoleProp = battleVideoInfoProp?.consoleType;
-  const calibFields: Field[] = [
-    // consoleType has 3 possible sources:
-    //  - battleVideoInfoProp.consoleType
-    //  - battleVideoInfoInput (if battleVideoInfoProp == null)
-    //  - here if (battleVideoInfoProp != null but battleVideoInfoProp.consoleType is null)
+  const calibFields: Field[] = buildGen3CalibFields({
+    battleVideoInfoProp,
+    consoleTypeFromInput,
+    setConsoleTypeFromInput,
+    calibration,
+    offset,
+    humanInputDelay,
+    setHumanInputDelay,
+  });
 
-    // Don't show Console field if battleVideoInfoProp == null because it's already shown in battleVideoInfoInput
-    {
-      label: "Console",
-      show: battleVideoInfoProp != null,
-      input:
-        battleVideoInfoProp != null &&
-        battleVideoInfoProp.consoleType == null ? (
-          <Select<Gen3Console>
-            name="console"
-            value={consoleTypeFromInput}
-            options={gen3ConsoleOptions}
-            onSelect={(val) => {
-              setConsoleTypeFromInput(val);
-            }}
-          />
-        ) : (
-          (gen3ConsoleOptions.find((opt) => opt.value === consoleProp)?.label ??
-          "")
-        ),
-    },
-    {
-      label: "Calibration",
-      input: calibration + " advances",
-      tooltip: "Number of RNG advances not caused by frames. (Ex: NPC moving)",
-    },
-    {
-      label: "Offset",
-      input: offset + " advances",
-      tooltip:
-        "Number of RNG advances between the last player input and when the Pokémon generation occurs.",
-    },
-    {
-      label: "Human input delay (advance)",
-      tooltip:
-        "Number of RNG advances caused by human reaction time between the timer ending and pressing the input.",
-      input: (
-        <NumberInput
-          numType="decimal"
-          onChange={setHumanInputDelay}
-          value={humanInputDelay}
-        />
-      ),
-    },
-  ];
-  //NO_PROD reduce duplicate code
   const canDoCalib =
     battleVideoInfo != null || targetSetup?.targetPaintingAdvs.before === 0;
 
@@ -204,40 +146,12 @@ export const Static3Calib = ({
       return null;
     }
 
-    const usingPaintingReseeding =
-      battleVideoInfoProp.targetPaintingAdvs.before > 0;
-
     const fields: Field[] = [
-      {
-        label: "Target Method",
-        input: targetSetupProp.targetMethod,
-      },
-      {
-        label: "Target frame before painting",
-        input: `${formatLargeInteger(battleVideoInfoProp.targetPaintingAdvs.before)} (Seed: ${formatHex(battleVideoInfoProp.targetPaintingAdvs.before, 2)})`,
-        show: usingPaintingReseeding,
-      },
-      {
-        label: "Battle Video advance",
-        input: formatLargeInteger(
-          battleVideoInfoProp.battleVideoAdvAfterPainting,
-        ),
-        show: battleVideoInfoProp.battleVideoAdvAfterPainting > 0,
-      },
-      {
-        label: "Target advance",
-        input:
-          formatLargeInteger(targetSetupProp.targetPaintingAdvs.after) +
-          (initialAdv > 0
-            ? ` (${formatLargeIntegerWithSign(targetSetupProp.targetPaintingAdvs.after - initialAdv)} from Battle Video)`
-            : ``),
-        show: !usingPaintingReseeding,
-      },
-      {
-        label: "Target advance after painting",
-        input: `${formatLargeInteger(targetSetupProp.targetPaintingAdvs.after)} (${formatLargeIntegerWithSign(targetSetupProp.targetPaintingAdvs.after - initialAdv)} from Battle Video)`,
-        show: usingPaintingReseeding,
-      },
+      ...buildGen3CalibPreviousStepFields({
+        targetSetup: targetSetupProp,
+        battleVideoInfo: battleVideoInfoProp,
+        initialAdv,
+      }),
       {
         label: "Target Pokémon",
         input: targetSetupResult,

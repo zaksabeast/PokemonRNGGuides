@@ -1,30 +1,14 @@
 import React from "react";
-import {
-  Flex,
-  MultiTimer,
-  Field,
-  Select,
-  Button,
-  NumberInput,
-} from "~/components";
+import { Flex, MultiTimer, Field, Button } from "~/components";
 import { FormFieldTable } from "~/components/formFieldTable";
 import { TargetSetup } from "./wild3TargetSetupInput";
 import { Wild3CalibCaughtMon } from "./wild3CalibCaughtMon.component";
-import {
-  Gen3Console,
-  gen3ConsoleFpsMap,
-  gen3ConsoleOptions,
-} from "~/types/console";
-import {
-  formatLargeInteger,
-  formatLargeIntegerWithSign,
-} from "~/utils/formatLargeInteger";
+import { Gen3Console, gen3ConsoleFpsMap } from "~/types/console";
 import { formatActionName, formatLeadName, formatMapName } from "./utils";
 import { BattleVideoInfo } from "../battleVideo/battleVideo";
 import { AllOrNone } from "~/types";
 import { BattleVideoInfoInput } from "./wild3CalibBattleVideoInfoInput";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
-import { formatHex } from "~/utils/formatHex";
 import { Gen3Method } from "~/rngTools";
 
 import Instructions_calib_with_battle_video from "./instructions_calib_with_battle_video.mdx";
@@ -40,8 +24,11 @@ import {
 } from "./wild3LeadCycleSpeedInput";
 import { match } from "ts-pattern";
 import { Wild3TargetSetupAndLeadInput } from "./wild3TargetSetupAndLeadInput";
-import { CalibOffset } from "../pokemonRng/calib";
-
+import {
+  buildGen3CalibFields,
+  buildGen3CalibPreviousStepFields,
+  CalibOffset,
+} from "../pokemonRng/calib";
 
 const FISHING_CALIB_OFFSET: CalibOffset = {
   offset: 4,
@@ -57,18 +44,18 @@ const CALIB_OFFSET_BY_ACTION = {
   SweetScentLand: {
     offset: 264,
     calibNoBattleVideo: 10,
-    calibBattleVideo: 4,
+    calibBattleVideo: 6, // (SetSaveBlocksPointers + x2 MoveSaveBlocks_ResetHeap) called twice
   },
   SweetScentWater: {
     offset: 354,
     calibNoBattleVideo: 10,
-    calibBattleVideo: 4,
+    calibBattleVideo: 6,
   },
   RockSmash: {
     // assuming interacting with the rock from the overworld
     offset: 301,
     calibNoBattleVideo: 10,
-    calibBattleVideo: 4,
+    calibBattleVideo: 6,
   },
 } as const satisfies Record<Wild3Action, CalibOffset>;
 
@@ -218,56 +205,16 @@ export const Wild3Calib = ({
     );
   };
 
-  const consoleProp = battleVideoInfoProp?.consoleType;
   const calibFields: Field[] = [
-    // consoleType has 3 possible sources:
-    //  - battleVideoInfoProp.consoleType
-    //  - battleVideoInfoInput (if battleVideoInfoProp == null)
-    //  - here if (battleVideoInfoProp != null but battleVideoInfoProp.consoleType is null)
-
-    // Don't show Console field if battleVideoInfoProp == null because it's already shown in battleVideoInfoInput
-    {
-      label: "Console",
-      show: battleVideoInfoProp != null,
-      input:
-        battleVideoInfoProp != null &&
-        battleVideoInfoProp.consoleType == null ? (
-          <Select<Gen3Console>
-            name="console"
-            value={consoleTypeFromInput}
-            options={gen3ConsoleOptions}
-            onSelect={(val) => {
-              setConsoleTypeFromInput(val);
-            }}
-          />
-        ) : (
-          (gen3ConsoleOptions.find((opt) => opt.value === consoleProp)?.label ??
-          "")
-        ),
-    },
-    {
-      label: "Calibration",
-      input: calibration + " advances",
-      tooltip: "Number of RNG advances not caused by frames. (Ex: NPC moving)",
-    },
-    {
-      label: "Offset",
-      input: offset + " advances",
-      tooltip:
-        "Number of RNG advances between the last player input and when the Pokémon generation occurs.",
-    },
-    {
-      label: "Human input delay (advance)",
-      tooltip:
-        "Number of RNG advances caused by human reaction time between the timer ending and pressing the input.",
-      input: (
-        <NumberInput
-          numType="decimal"
-          onChange={setHumanInputDelay}
-          value={humanInputDelay}
-        />
-      ),
-    },
+    ...buildGen3CalibFields({
+      battleVideoInfoProp,
+      consoleTypeFromInput,
+      setConsoleTypeFromInput,
+      calibration,
+      offset,
+      humanInputDelay,
+      setHumanInputDelay,
+    }),
     {
       label: "Lead cycle speed (from calibration)",
       input: leadCycleSpeedToText(overwriteLeadCycleSpeed ?? 0),
@@ -282,9 +229,6 @@ export const Wild3Calib = ({
     if (targetSetupProp == null) {
       return null;
     }
-
-    const usingPaintingReseeding =
-      battleVideoInfoProp.targetPaintingAdvs.before > 0;
 
     const fields: Field[] = [
       {
@@ -314,36 +258,11 @@ export const Wild3Calib = ({
         label: "Lead",
         input: formatLeadName(targetSetupProp.lead),
       },
-      {
-        label: "Target Method",
-        input: targetSetupProp.targetMethod,
-      },
-      {
-        label: "Target frame before painting",
-        input: `${formatLargeInteger(battleVideoInfoProp.targetPaintingAdvs.before)} (Seed: ${formatHex(battleVideoInfoProp.targetPaintingAdvs.before, 2)})`,
-        show: usingPaintingReseeding,
-      },
-      {
-        label: "Battle Video advance",
-        input: formatLargeInteger(
-          battleVideoInfoProp.battleVideoAdvAfterPainting,
-        ),
-        show: battleVideoInfoProp.battleVideoAdvAfterPainting > 0,
-      },
-      {
-        label: "Target advance",
-        input:
-          formatLargeInteger(targetSetupProp.targetPaintingAdvs.after) +
-          (initialAdv > 0
-            ? ` (${formatLargeIntegerWithSign(targetSetupProp.targetPaintingAdvs.after - initialAdv)} from Battle Video)`
-            : ``),
-        show: !usingPaintingReseeding,
-      },
-      {
-        label: "Target advance after painting",
-        input: `${formatLargeInteger(targetSetupProp.targetPaintingAdvs.after)} (${formatLargeIntegerWithSign(targetSetupProp.targetPaintingAdvs.after - initialAdv)} from Battle Video)`,
-        show: usingPaintingReseeding,
-      },
+      ...buildGen3CalibPreviousStepFields({
+        targetSetup: targetSetupProp,
+        battleVideoInfo: battleVideoInfoProp,
+        initialAdv,
+      }),
       {
         label: "Lead Cycle Speed",
         input: leadCycleSpeedToText(leadCycleSpeedProp),

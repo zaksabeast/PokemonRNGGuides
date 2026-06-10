@@ -38,7 +38,14 @@ import { Gen3IvRating, getGen3IvRating } from "../ivRater";
 import { ability12 } from "~/types/ability";
 import { match, P } from "ts-pattern";
 import { pokerng_with_jump } from "~/utils/lcrng";
-import { CaughtMonResult, createColumns, FormState, getCommonFieldInputs } from "../pokemonRng/calibCaughtMon";
+import {
+  BATTLE_VIDEO_CONFIDENCE_RANGE,
+  CaughtMonResult,
+  createColumns,
+  FormState,
+  getCommonFieldInputs,
+} from "../pokemonRng/calibCaughtMon";
+import { getStaticEncounterLvl } from "./calculateTargetSetupResult";
 
 let nextUid = 0;
 
@@ -54,23 +61,9 @@ const createStatic3SearcherOptions = async (
     0,
   );
 
-  const map_data = emeraldWildGameData.maps_data.find(
-    (map) => map.map_id === targetSetup.map,
-  );
-  if (map_data == null) {
-    return null;
-  }
-  const map_setup: Static3MapSetups = {
-    map_data,
-    actions: [targetSetup.action],
-    roamer_states: [targetSetup.roamerState],
-    mass_outbreak_states: [targetSetup.massOutbreakState],
-    feebas_states: [targetSetup.feebasState],
-  };
-
   const minMaxIvs = await getIvRangeFromStats({
-    species: values.species,
-    lvl: values.lvl,
+    species: targetSetup.species,
+    lvl: getStaticEncounterLvl(targetSetup),
     nature: values.nature,
     stats: {
       hp: values.hpStat,
@@ -130,30 +123,6 @@ const createStatic3SearcherOptions = async (
   return opts;
 };
 
-const createUiResultBase = (
-  result: Static3SearcherResultMon,
-  targetSetup: TargetSetup,
-) => {
-  return {
-    advance: {
-      frame_before_painting: pokerng_with_jump(
-        result.seed,
-        2 ** 32 - result.advance,
-      ), // equivalent to reversing <result.advance> advances
-      adv_after_painting: result.advance,
-    },
-    targetAdvance: {
-      frame_before_painting: targetSetup.targetPaintingAdvs.before,
-      adv_after_painting: targetSetup.targetPaintingAdvs.after,
-    },
-    method: result.method,
-    uid: nextUid++,
-    ...getGen3IvRating(result.ivs),
-    statsWithRareCandy: createAllStats0(),
-    ivs: result.ivs,
-  };
-};
-
 const searchCaughtMon = async (
   values: FormState,
   targetSetup: TargetSetup,
@@ -193,7 +162,7 @@ const searchCaughtMon = async (
       const score = distanceFromTargetAfter / scoreHitMethodsAtAdvance;
 
       return {
-        ...createUiResultBase(result, targetSetup),
+        ...createUiResultBase(result, targetSetup.targetPaintingAdvs),
         score,
         probabilityHitMethodsAtAdvance,
         distanceFromTargetAfter,
@@ -215,7 +184,6 @@ const searchCaughtMon = async (
   );
 };
 
-
 export const Fields = ({
   targetSetup,
   onRareCandyChange,
@@ -230,64 +198,32 @@ export const Fields = ({
 }) => {
   const { setFieldValue } = useFormContext<FormState>();
 
-  const selectedSpecies = useWatch<FormState, "species">({ name: "species" });
-  const selectedLvl = useWatch<FormState, "lvl">({ name: "lvl" });
+  const targetSpecies = targetSetup.species;
+  const targetLvl = getStaticEncounterLvl(targetSetup);
   const selectedNature = useWatch<FormState, "nature">({ name: "nature" });
   const rareCandy = useWatch<FormState, "rareCandy">({ name: "rareCandy" });
 
   const [fields, setFields] = React.useState<Field[]>([]);
 
   React.useEffect(() => {
-    onRareCandyChange(selectedSpecies, selectedLvl, selectedNature, rareCandy);
-  }, [
-    onRareCandyChange,
-    rareCandy,
-    selectedLvl,
-    selectedNature,
-    selectedSpecies,
-  ]);
+    onRareCandyChange(targetSpecies, targetLvl, selectedNature, rareCandy);
+  }, [onRareCandyChange, rareCandy, targetLvl, selectedNature, targetSpecies]);
 
   React.useEffect(() => {
-    const encounters = getPossibleEncountersForMap(targetSetup);
-    const speciesList = uniq(
-      encounters.map((enc) => enc.species_data.species),
-    ).toSorted();
-    const selectedSpeciesInfos = encounters.filter(
-      (enc) => enc.species_data.species === selectedSpecies,
-    );
-
-    const speciesField: Field = {
-      label: "Species",
-      input: (
-        <FormikRadio<FormState>
-          name="species"
-          options={toOptions(speciesList)}
-        />
-      ),
-    };
-
-    if (selectedSpeciesInfos.length === 0) {
-      setFields([speciesField]);
-      return;
-    }
-
-    const lvls = new Set<number>();
-    selectedSpeciesInfos.forEach((info) => {
-      for (let lvl = info.min_level; lvl <= info.max_level; lvl++) {
-        lvls.add(lvl);
-      }
-    });
-    const sortedLvls = Array.from(lvls).sort((lvl1, lvl2) => lvl1 - lvl2);
-
     getStatRange({
       species: targetSetup.species,
-      levelRange: targetSetup.lvl,
+      levelRange: [targetLvl, targetLvl],
       nature: selectedNature,
     }).then((minMaxStats) => {
       setFields([
-        ...getCommonFieldInputs(selectedSpecies, minMaxStats, rareCandy, (count) => {
+        ...getCommonFieldInputs(
+          targetSpecies,
+          minMaxStats,
+          rareCandy,
+          (count) => {
             setFieldValue("rareCandy", count);
-        }),
+          },
+        ),
         {
           label: "Display results with 0% likelihood",
           input: <FormikSwitch<FormState> name="generate_even_if_impossible" />,
@@ -296,8 +232,8 @@ export const Fields = ({
     });
   }, [
     targetSetup,
-    selectedSpecies,
-    selectedLvl,
+    targetSpecies,
+    targetLvl,
     selectedNature,
     setFieldValue,
     rareCandy,
@@ -317,7 +253,6 @@ type Props = {
   ) => void;
 };
 
-
 export const Static3CalibCaughtMon = ({
   targetSetup,
   setLatestHitAdv,
@@ -331,16 +266,26 @@ export const Static3CalibCaughtMon = ({
     setResults(await searchCaughtMon(values, targetSetup));
   };
 
-    const onRemove = (values:CaughtMonResult) => {
-        setResults(results.filter((res) => res !== values));
-    };
+  const onRemove = (values: CaughtMonResult) => {
+    setResults(results.filter((res) => res !== values));
+  };
 
-    const onUpdateCalib = setLatestHitAdv == null ? null :(values:CaughtMonResult) => {
-        setLatestHitAdv?.(values.advance, values.method);
-        setResults([]);
-    };
+  const onUpdateCalib =
+    setLatestHitAdv == null
+      ? null
+      : (values: CaughtMonResult) => {
+          setLatestHitAdv?.(values.advance, values.method);
+          setResults([]);
+        };
 
-  const columns = createColumns(targetMethod, targetPaintingAdvs, usingPaintingReseeding, lastRareCandyValue, onRemove, onUpdateCalib);
+  const columns = createColumns(
+    targetMethod,
+    targetPaintingAdvs,
+    usingPaintingReseeding,
+    lastRareCandyValue,
+    onRemove,
+    onUpdateCalib,
+  );
 
   const onRareCandyChange = async (
     species: Species,
@@ -384,19 +329,3 @@ export const Static3CalibCaughtMon = ({
     </Flex>
   );
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

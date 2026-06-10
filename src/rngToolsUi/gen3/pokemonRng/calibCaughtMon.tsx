@@ -24,6 +24,7 @@ import {
   Static3MapSetups,
   Static3SearcherOptions,
   Static3SearcherResultMon,
+  Wild3SearcherResultMon,
 } from "~/rngTools";
 import { getStatic3EmeraldGameData } from "./data/static3GameData";
 import type { TargetSetup } from "./static3TargetSetupInput";
@@ -54,7 +55,6 @@ export const validator = z
 
 export type FormState = z.infer<typeof validator>;
 
-
 export const initialValues: FormState = {
   hpStat: 0,
   atkStat: 0,
@@ -70,7 +70,6 @@ export const initialValues: FormState = {
   generate_even_if_impossible: false,
   rareCandy: 1,
 };
-
 
 export type CaughtMonResult = {
   advance: {
@@ -90,7 +89,6 @@ export type CaughtMonResult = {
   statsWithRareCandy: StatsValue;
   ivs: Ivs;
 } & Gen3IvRating;
-
 
 export const BATTLE_VIDEO_CONFIDENCE_RANGE = 3600; // We assume the player hits its target advance by more or less 1 minute
 
@@ -218,101 +216,100 @@ export const ivInfoColumns = (
   },
 ];
 
-
-export const getCommonFieldInputs = (selectedSpecies:Species,minMaxStats:MinMaxStats,rareCandy:number, setRareCandyCount:(count:number) => void) => {
-    return [
-        {
-          label: "Gender",
-          input: (
-            <FormikRadio
-              name="gender"
-              options={getGenderFilterOptions(selectedSpecies, false)}
-            />
-          ),
-        },
-        {
-          label: "Ability",
-          input: (
-            <FormikAbilityFilter<FormState>
-              name="ability"
-              species={selectedSpecies}
-              permitAny={false}
-              displayHiddenAbility={false}
-              mergeFirstSecondIfSameAbility
-            />
-          ),
-        },
-        {
-          label: "Nature",
-          input: (
-            <FormikSelect<FormState, "nature">
-              name="nature"
-              {...getNatureInputProps()}
-            />
-          ),
-        },
-        ...getStatFields<FormState>(minMaxStats),
-        {
-          label: "Rare Candy",
-          input: (
-            <Flex dir="row">
-              <Button
-                trackerId="calib_set_rare_candy_to_1"
-                onClick={() => {
-                  setRareCandyCount(1);
-                }}
-              >
-                {" =1 "}
-              </Button>
-              <FormikNumberInput<FormState>
-                name="rareCandy"
-                numType="decimal"
-              />
-              <Button
-                trackerId="calib_add_rare_candy"
-                onClick={() => {
-                  setRareCandyCount(Math.min(rareCandy + 1, 99));
-                }}
-              >
-                {" +1 "}
-              </Button>
-            </Flex>
-          ),
-        }
-    ]
+export const getCommonFieldInputs = (
+  selectedSpecies: Species,
+  minMaxStats: MinMaxStats,
+  rareCandy: number,
+  setRareCandyCount: (count: number) => void,
+) => {
+  return [
+    {
+      label: "Gender",
+      input: (
+        <FormikRadio
+          name="gender"
+          options={getGenderFilterOptions(selectedSpecies, false)}
+        />
+      ),
+    },
+    {
+      label: "Ability",
+      input: (
+        <FormikAbilityFilter<FormState>
+          name="ability"
+          species={selectedSpecies}
+          permitAny={false}
+          displayHiddenAbility={false}
+          mergeFirstSecondIfSameAbility
+        />
+      ),
+    },
+    {
+      label: "Nature",
+      input: (
+        <FormikSelect<FormState, "nature">
+          name="nature"
+          {...getNatureInputProps()}
+        />
+      ),
+    },
+    ...getStatFields<FormState>(minMaxStats),
+    {
+      label: "Rare Candy",
+      input: (
+        <Flex dir="row">
+          <Button
+            trackerId="calib_set_rare_candy_to_1"
+            onClick={() => {
+              setRareCandyCount(1);
+            }}
+          >
+            {" =1 "}
+          </Button>
+          <FormikNumberInput<FormState> name="rareCandy" numType="decimal" />
+          <Button
+            trackerId="calib_add_rare_candy"
+            onClick={() => {
+              setRareCandyCount(Math.min(rareCandy + 1, 99));
+            }}
+          >
+            {" +1 "}
+          </Button>
+        </Flex>
+      ),
+    },
+  ];
 };
 
+export const getAdvDiffTxt = (
+  result: CaughtMonResult,
+  targetMethod: Gen3Method | Gen3StaticMethod,
+) => {
+  const diffWithTarget =
+    result.advance.adv_after_painting - result.targetAdvance.adv_after_painting;
+  const valStr = formatLargeInteger(result.advance.adv_after_painting);
 
-  export const getAdvDiffTxt = (result: CaughtMonResult, targetMethod:Gen3Method | Gen3StaticMethod) => {
-    const diffWithTarget =
-      result.advance.adv_after_painting -
-      result.targetAdvance.adv_after_painting;
-    const valStr = formatLargeInteger(result.advance.adv_after_painting);
+  if (diffWithTarget === 0) {
+    const suffix =
+      result.method === targetMethod
+        ? `(Target)`
+        : `(Target advance but wrong method)`;
+    return `${valStr} ${suffix}`;
+  }
+  const sign = diffWithTarget > 0 ? "+" : "";
 
-    if (diffWithTarget === 0) {
-      const suffix =
-        result.method === targetMethod
-          ? `(Target)`
-          : `(Target advance but wrong method)`;
-      return `${valStr} ${suffix}`;
-    }
-    const sign = diffWithTarget > 0 ? "+" : "";
-
-    return `${valStr} (${sign}${formatLargeInteger(diffWithTarget)})`;
-  };
-
-
-
+  return `${valStr} (${sign}${formatLargeInteger(diffWithTarget)})`;
+};
 
 export const createColumns = (
-    targetMethod:Gen3Method | Gen3StaticMethod,
-    targetPaintingAdvs:{before:number,after:number},
-    usingPaintingReseeding:boolean,
-    lastRareCandyValue:number,
-    onRemove:(onRemove:CaughtMonResult) => void,
-    onUpdateCalib?:(selected:CaughtMonResult) => void,
-) : ResultColumn<CaughtMonResult>[] =>{
-    return [
+  targetMethod: Gen3Method | Gen3StaticMethod,
+  targetPaintingAdvs: { before: number; after: number },
+  usingPaintingReseeding: boolean,
+  lastRareCandyValue: number,
+  onRemove: (onRemove: CaughtMonResult) => void,
+  onUpdateCalib?: (selected: CaughtMonResult) => void,
+): ResultColumn<CaughtMonResult>[] => {
+  return [
     {
       title: (
         <span>
@@ -337,7 +334,7 @@ export const createColumns = (
             color="PrimaryText"
             trackerId="static3CalibCaughtMon_adv"
             onClick={() => {
-                onUpdateCalib(values);
+              onUpdateCalib(values);
             }}
           >
             <Icon name="Update" size={20} />
@@ -375,7 +372,7 @@ export const createColumns = (
             color="PrimaryText"
             trackerId="Static3CalibCaughtMon_remove"
             onClick={() => {
-              onRemove(values)
+              onRemove(values);
             }}
           >
             <Icon name="Close" />
@@ -385,4 +382,30 @@ export const createColumns = (
     },
     ...ivInfoColumns(lastRareCandyValue),
   ];
+};
+
+let nextUid = 0;
+
+export const createUiResultBase = (
+  result: Static3SearcherResultMon | Wild3SearcherResultMon,
+  targetPaintingAdvs: TargetSetup["targetPaintingAdvs"],
+) => {
+  return {
+    advance: {
+      frame_before_painting: pokerng_with_jump(
+        result.seed,
+        2 ** 32 - result.advance,
+      ), // equivalent to reversing <result.advance> advances
+      adv_after_painting: result.advance,
+    },
+    targetAdvance: {
+      frame_before_painting: targetPaintingAdvs.before,
+      adv_after_painting: targetPaintingAdvs.after,
+    },
+    method: result.method,
+    uid: nextUid++,
+    ...getGen3IvRating(result.ivs),
+    statsWithRareCandy: createAllStats0(),
+    ivs: result.ivs,
+  };
 };

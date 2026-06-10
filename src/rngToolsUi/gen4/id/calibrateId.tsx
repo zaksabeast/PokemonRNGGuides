@@ -129,9 +129,7 @@ export const CalibrateId4 = () => {
       return {
         ...result,
         seed: result.seed_time.seed,
-        flipDelay:
-          secondOffset % 2 === 0 &&
-          targetDelay % 2 !== result.seed_time.delay % 2,
+        flipDelay: targetDelay % 2 !== result.seed_time.delay % 2,
         delayOffset: result.seed_time.delay - targetDelay,
         delay: result.seed_time.delay,
         seconds: result.seed_time.datetime.second,

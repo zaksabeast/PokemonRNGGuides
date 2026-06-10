@@ -151,8 +151,7 @@ export const DpptCoinFlipSeedCalibrator = () => {
         secondOffset,
         second: result.datetime.second,
         coinFlips: shrinkCoinFlips(result.coin_flips),
-        flipDelay:
-          secondOffset % 2 === 0 && targetDelay % 2 !== result.delay % 2,
+        flipDelay: targetDelay % 2 !== result.delay % 2,
       };
     });
     const sortedResults = sortBy(mappedResults, [

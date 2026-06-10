@@ -28,37 +28,14 @@ import { BattleVideoInfoInput } from "../wild/wild3CalibBattleVideoInfoInput";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import { formatHex } from "~/utils/formatHex";
 import { Gen3StaticMethod } from "~/rngTools";
-
 import Instructions_calib_with_battle_video from "./instructions_calib_with_battle_video.mdx";
 import Instructions_calib_without_battle_video from "./instructions_calib_without_battle_video.mdx";
 import { CalibOffset } from "../pokemonRng/calib";
 
-//NO_PROD put calib offset in ./constants
-
-const FISHING_CALIB_OFFSET: CalibOffset = {
-  offset: 4,
-  // assuming x2 fishing attempts and using SELECT to activate rod, (+3 advs per attempt)
-  calibNoBattleVideo: 17,
-  calibBattleVideo: 11,
-};
-
-const CALIB_OFFSET_BY_ACTION = {
-  OldRod: FISHING_CALIB_OFFSET,
-  GoodRod: FISHING_CALIB_OFFSET,
-  SuperRod: FISHING_CALIB_OFFSET,
-  SweetScentLand: {
-    offset: 264,
-    calibNoBattleVideo: 10,
-    calibBattleVideo: 4,
-  },
-  SweetScentWater: {
-    offset: 354,
-    calibNoBattleVideo: 10,
-    calibBattleVideo: 4,
-  },
-  RockSmash: {
-    // assuming interacting with the rock from the overworld
-    offset: 301,
+// TODO: Fill with the correct values for all static species. Put the data in constants.ts
+const CALIB_OFFSET_BY_SPECIES = {
+  Mudkip: {
+    offset: 500,
     calibNoBattleVideo: 10,
     calibBattleVideo: 4,
   },
@@ -136,7 +113,7 @@ export const Static3Calib = ({
   const initialAdv = battleVideoInfo?.battleVideoAdvAfterPainting ?? 0;
 
   const { offset, calibBattleVideo, calibNoBattleVideo } =
-    CALIB_OFFSET_BY_ACTION.SweetScentLand;
+    CALIB_OFFSET_BY_SPECIES.Mudkip;
 
   const calibration = initialAdv > 0 ? calibBattleVideo : calibNoBattleVideo;
 
@@ -328,5 +305,3 @@ export const Static3Calib = ({
     </Flex>
   );
 };
-
-//NO_PROD create Static3CalibCaughtMon, Instructions_calib_with_battle_video, Instructions_calib_without_battle_video

@@ -23,6 +23,18 @@ import { Static3Calib } from "./static3Calib";
 
 // Limitation: Multi-step components only support Emerald.
 
+/*
+static3 and wild3 share the same structure pattern.
+The main difference is that static3 don't have the concept of lead cycle speed, and multiple target method.
+
+Possible user flows (documentation for testing):
+  1- Search for a shiny Latios with TID 11568 and SID 15096. Select advance 1011. PID=E601F1CD, IVS=14/31/17/18/29/28
+      Find a Hardy 140/103/97/150/123/122 Latios. Hit advance is -1.
+
+For more advanced user flows, check wild3.
+
+*/
+
 const targetSetupAtom = atomWithPersistence(
   "emerald_static_targetSetup",
   z.object({

@@ -41,6 +41,7 @@ import {
   validator,
 } from "./wild3CalibCaughtMon";
 import { getGenderFilterOptions } from "~/types";
+import { createColumns } from "../pokemonRng/calibCaughtMon";
 
 export const Fields = ({
   targetSetup,
@@ -121,64 +122,9 @@ export const Fields = ({
             />
           ),
         },
-        {
-          label: "Gender",
-          input: (
-            <FormikRadio
-              name="gender"
-              options={getGenderFilterOptions(selectedSpecies, false)}
-            />
-          ),
-        },
-        {
-          label: "Ability",
-          input: (
-            <FormikAbilityFilter<FormState>
-              name="ability"
-              species={selectedSpecies}
-              permitAny={false}
-              displayHiddenAbility={false}
-              mergeFirstSecondIfSameAbility
-            />
-          ),
-        },
-        {
-          label: "Nature",
-          input: (
-            <FormikSelect<FormState, "nature">
-              name="nature"
-              {...getNatureInputProps()}
-            />
-          ),
-        },
-        ...getStatFields<FormState>(minMaxStats),
-        {
-          label: "Rare Candy",
-          input: (
-            <Flex dir="row">
-              <Button
-                trackerId="wild3_calib_set_rare_candy_to_1"
-                onClick={() => {
-                  setFieldValue("rareCandy", 1);
-                }}
-              >
-                {" =1 "}
-              </Button>
-              <FormikNumberInput<FormState>
-                name="rareCandy"
-                numType="decimal"
-              />
-              <Button
-                trackerId="wild3_calib_add_rare_candy"
-                onClick={() => {
-                  setFieldValue("rareCandy", Math.min(rareCandy + 1, 99));
-                }}
-              >
-                {" +1 "}
-              </Button>
-            </Flex>
-          ),
-        },
+        ...getCommonFieldInputs(selectedSpecies, minMaxStats, rareCandy, (count) => {
+            setFieldValue("rareCandy", count);
+        }),
         {
           label: "Display results with 0% likelihood",
           input: <FormikSwitch<FormState> name="generate_even_if_impossible" />,
@@ -302,80 +248,18 @@ export const Wild3CalibCaughtMon = ({
     return `${valStr} (${sign}${formatLargeInteger(diffWithTarget)})`;
   };
 
-  const columns: ResultColumn<CaughtMonResult>[] = [
-    {
-      title: (
-        <span>
-          Update <br /> Calibration
-        </span>
-      ),
-      key: "Update Calibration",
-      dataIndex: "advance",
-      show: setLatestHitAdv != null,
-      render: (advance, values) => {
-        if (
-          values.advance.frame_before_painting === targetPaintingAdvs.before &&
-          values.advance.adv_after_painting === targetPaintingAdvs.after &&
-          values.method === targetMethod
-        ) {
-          return "Target Pokémon";
-        }
 
-        return (
-          <Button
-            type="text"
-            color="PrimaryText"
-            trackerId="wild3CalibCaughtMon_adv"
-            onClick={() => {
-              setLatestHitAdv?.(advance, values.method);
-              setResults([]);
-            }}
-          >
-            <Icon name="Update" size={20} />
-          </Button>
-        );
-      },
-    },
-    {
-      title: usingPaintingReseeding ? (
-        <span>
-          Advance after <br /> painting
-        </span>
-      ) : (
-        "Advance"
-      ),
-      key: "frame_after_painting",
-      dataIndex: "advance",
-      render: (_, values) => {
-        const diffTxt = getAdvDiffTxt(values);
-        const title = formatEmeraldTargetFromPainting(
-          values.advance.frame_before_painting,
-          values.advance.adv_after_painting,
-        );
-        return <Tooltip title={title}>{diffTxt}</Tooltip>;
-      },
-    },
-    confidenceRatingColumn,
-    {
-      title: "Remove",
-      dataIndex: "advance",
-      render: (_, values) => {
-        return (
-          <Button
-            type="text"
-            color="PrimaryText"
-            trackerId="Wild3CalibCaughtMon_remove"
-            onClick={() => {
-              setResults(results.filter((res) => res !== values));
-            }}
-          >
-            <Icon name="Close" />
-          </Button>
-        );
-      },
-    },
-    ...ivInfoColumns(lastRareCandyValue),
-  ];
+
+    const onRemove = (values:CaughtMonResult) => {
+        setResults(results.filter((res) => res !== values));
+    };
+
+    const onUpdateCalib = setLatestHitAdv == null ? undefined :(values:CaughtMonResult) => {
+        setLatestHitAdv?.(values.advance, values.method);
+        setResults([]);
+    }
+
+  const columns = createColumns(targetMethod, targetPaintingAdvs, usingPaintingReseeding, lastRareCandyValue, onRemove, onUpdateCalib);
 
   const onRareCandyChange = async (
     species: Species,

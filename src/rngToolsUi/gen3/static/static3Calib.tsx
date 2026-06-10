@@ -8,8 +8,11 @@ import {
   NumberInput,
 } from "~/components";
 import { FormFieldTable } from "~/components/formFieldTable";
-import { TargetSetup } from "./static3TargetSetupInput";
-import { Static3CalibCaughtMon } from "./static3CalibCaughtMon.component";
+import {
+  Static3TargetSetupSearcher,
+  TargetSetup,
+} from "./static3TargetSetupSearcher";
+import { Static3CalibCaughtMon } from "./static3CalibCaughtMon";
 import {
   Gen3Console,
   gen3ConsoleFpsMap,
@@ -19,27 +22,15 @@ import {
   formatLargeInteger,
   formatLargeIntegerWithSign,
 } from "~/utils/formatLargeInteger";
-import { formatActionName, formatLeadName, formatMapName } from "./utils";
 import { BattleVideoInfo } from "../battleVideo/battleVideo";
 import { AllOrNone } from "~/types";
-import { BattleVideoInfoInput } from "./static3CalibBattleVideoInfoInput";
+import { BattleVideoInfoInput } from "../wild/wild3CalibBattleVideoInfoInput";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import { formatHex } from "~/utils/formatHex";
-import { Gen3Method } from "~/rngTools";
+import { Gen3StaticMethod } from "~/rngTools";
 
 import Instructions_calib_with_battle_video from "./instructions_calib_with_battle_video.mdx";
 import Instructions_calib_without_battle_video from "./instructions_calib_without_battle_video.mdx";
-import Instructions_calib_wrong_method from "./instructions_calib_wrong_method.mdx";
-import { Static3LeadCycleSpeedSelector } from "./static3LeadCycleSpeedSelector";
-import { Static3Action } from "../../../../rng_tools/pkg/rng_tools";
-import { Static3PokeblockDescription } from "~/components/static3Pokeblock";
-import {
-  AVERAGE_LEAD_CYCLE_SPEED,
-  FASTEST_LEAD_CYCLE_SPEED,
-  SLOWEST_LEAD_CYCLE_SPEED,
-} from "./static3LeadCycleSpeedInput";
-import { match } from "ts-pattern";
-import { Static3TargetSetupAndLeadInput } from "./static3TargetSetupAndLeadInput";
 import { CalibOffset } from "../pokemonRng/calib";
 
 //NO_PROD put calib offset in ./constants
@@ -71,7 +62,7 @@ const CALIB_OFFSET_BY_ACTION = {
     calibNoBattleVideo: 10,
     calibBattleVideo: 4,
   },
-} as const satisfies Record<Static3Action, CalibOffset>;
+} as const satisfies Record<string, CalibOffset>;
 
 type Props = AllOrNone<{
   targetSetup: TargetSetup;
@@ -102,11 +93,9 @@ export const Static3Calib = ({
       return setTargetSetupResult(null);
     }
 
-    calculateTargetSetupResult(targetSetup).then(
-      ({ content,}) => {
-        setTargetSetupResult(content);
-      },
-    );
+    calculateTargetSetupResult(targetSetup).then(({ content }) => {
+      setTargetSetupResult(content);
+    });
   }, [targetSetup]);
 
   const [battleVideoInfo, setBattleVideoInfo] =
@@ -124,10 +113,9 @@ export const Static3Calib = ({
   );
 
   const targetSetupInputForm = () => (
-    <Static3TargetSetup
+    <Static3TargetSetupSearcher
+      game="emerald"
       setTargetSetup={setTargetSetup}
-      displayInstructions={displayInstructions}
-      permitEnablingDebugOptions={false}
     />
   );
 
@@ -136,7 +124,7 @@ export const Static3Calib = ({
       frame_before_painting: number;
       adv_after_painting: number;
     },
-    _hitMethod: Gen3Method,
+    _hitMethod: Gen3StaticMethod,
   ) => {
     setHumanInputDelay(
       (humanInputDelay ?? 0) + hitAdv.adv_after_painting - targetForTimer,
@@ -148,7 +136,7 @@ export const Static3Calib = ({
   const initialAdv = battleVideoInfo?.battleVideoAdvAfterPainting ?? 0;
 
   const { offset, calibBattleVideo, calibNoBattleVideo } =
-    CALIB_OFFSET_BY_ACTION[targetSetup?.action ?? "SweetScentLand"];
+    CALIB_OFFSET_BY_ACTION.SweetScentLand;
 
   const calibration = initialAdv > 0 ? calibBattleVideo : calibNoBattleVideo;
 
@@ -230,12 +218,12 @@ export const Static3Calib = ({
       ),
     },
   ];
-
+  //NO_PROD reduce duplicate code
   const canDoCalib =
     battleVideoInfo != null || targetSetup?.targetPaintingAdvs.before === 0;
 
   const infoFromPrevSteps = () => {
-    if (targetSetupProp == null) {
+    if (targetSetupProp == null || battleVideoInfoProp == null) {
       return null;
     }
 
@@ -243,11 +231,6 @@ export const Static3Calib = ({
       battleVideoInfoProp.targetPaintingAdvs.before > 0;
 
     const fields: Field[] = [
-        //NO_PROD
-      {
-        label: "Map",
-        input: formatMapName(targetSetupProp.map),
-      },
       {
         label: "Target Method",
         input: targetSetupProp.targetMethod,

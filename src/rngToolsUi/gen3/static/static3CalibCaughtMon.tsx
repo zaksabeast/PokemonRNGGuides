@@ -1,58 +1,49 @@
-import { z } from "zod";
-import { ResultColumn } from "~/components";
-import { nature } from "~/types/nature";
-import { formatLargeInteger } from "~/utils/formatLargeInteger";
+import React from "react";
+import {
+  Field,
+  Flex,
+  FormFieldTable,
+  FormikSwitch,
+  RngToolForm,
+} from "~/components";
 import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
 } from "~/components/pkmFilter";
 import {
-  createAllStats0,
-  gen3Methods,
-  gender,
-  StatFieldsSchema,
-} from "~/types";
-import {
-  Gen3Method,
-  Ivs,
+  Gen3StaticMethod,
   Nature,
   rngTools,
   Species,
-  StatsValue,
-  Static3EncounterGameData,
-  Static3MapSetups,
   Static3SearcherOptions,
-  Static3SearcherResultMon,
 } from "~/rngTools";
-import { getStatic3EmeraldGameData } from "./data/static3GameData";
-import type { TargetSetup } from "./static3TargetSetupInput";
-import { isFishingAction, static3Actions } from "./utils";
-import { getIvRangeFromStats } from "~/types/statRange";
+import type { TargetSetup } from "./static3TargetSetupSearcher";
+import { getIvRangeFromStats, getStatRange } from "~/types/statRange";
 import {
   gen3PkmFilterFieldsToRustInput,
   getGen3PkmFilterInitialValues,
 } from "~/components/gen3PkmFilter";
-import { Tooltip } from "antd";
-import { formatProbability } from "~/utils/formatProbability";
-import { Gen3IvRating, getGen3IvRating } from "../ivRater";
-import { ability12 } from "~/types/ability";
-import { match, P } from "ts-pattern";
-import { pokerng_with_jump } from "~/utils/lcrng";
 import {
   BATTLE_VIDEO_CONFIDENCE_RANGE,
   CaughtMonResult,
   createColumns,
+  createUiResultBase,
   FormState,
   getCommonFieldInputs,
+  initialValues,
+  updateResultsForRareCandy,
+  validator,
 } from "../pokemonRng/calibCaughtMon";
 import { getStaticEncounterLvl } from "./calculateTargetSetupResult";
-
-let nextUid = 0;
+import { RngToolSubmit } from "~/components/rngToolForm";
+import { Typography } from "~/components/typography";
+import { useWatch } from "react-hook-form";
+import { useFormContext } from "~/hooks/form";
+import clamp from "lodash-es/clamp";
 
 const createStatic3SearcherOptions = async (
   values: FormState,
   targetSetup: TargetSetup,
-  leadCycleSpeed: number,
 ) => {
   const initial_seed = targetSetup.targetPaintingAdvs.before;
 
@@ -103,53 +94,29 @@ const createStatic3SearcherOptions = async (
       },
       values.species,
     ),
-    leads: [targetSetup.lead],
-    map_setups: [map_setup],
-    methods: gen3Methods,
-    consider_cycles: true,
-    consider_rng_manipulated_lead_pid: false,
-    generate_even_if_impossible: values.generate_even_if_impossible,
-    using_white_flute: targetSetup.requiresWhiteFlute,
+    species: targetSetup.species,
+    bugged_roamer: targetSetup.game !== "emerald" && targetSetup.roaming,
+    methods: [targetSetup.targetMethod],
     painting_opts: null,
-    lead_cycle_speed: leadCycleSpeed,
-    considered_safari_pokeblocks:
-      targetSetup.safariPokeblock == null
-        ? "None"
-        : {
-            Specific: targetSetup.safariPokeblock,
-          },
   };
 
   return opts;
 };
 
-const searchCaughtMon = async (
-  values: FormState,
-  targetSetup: TargetSetup,
-  leadCycleSpeed: number,
-) => {
-  const opts = await createStatic3SearcherOptions(
-    values,
-    targetSetup,
-    leadCycleSpeed,
-  );
+const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
+  const opts = await createStatic3SearcherOptions(values, targetSetup);
   if (opts == null) {
     return [];
   }
 
-  const wrappedResultsBySeed = await rngTools.search_static3(opts);
-
-  const resultsBySeed = wrappedResultsBySeed.flatMap(
-    (wrappedRes) => wrappedRes.vec,
-  );
+  const resultsBySeed = await rngTools.search_static3(opts);
 
   const list = resultsBySeed
     .filter((result) => {
       return result.advance <= opts.initial_advances + opts.max_advances;
     })
     .map((result) => {
-      const probabilityHitMethodsAtAdvance =
-        result.cycle_data_by_lead?.specified_lead?.method_probability ?? 0;
+      const probabilityHitMethodsAtAdvance = 1;
       const scoreHitMethodsAtAdvance = clamp(
         probabilityHitMethodsAtAdvance,
         0.01,
@@ -272,9 +239,9 @@ export const Static3CalibCaughtMon = ({
 
   const onUpdateCalib =
     setLatestHitAdv == null
-      ? null
+      ? undefined
       : (values: CaughtMonResult) => {
-          setLatestHitAdv?.(values.advance, values.method);
+          setLatestHitAdv?.(values.advance, values.method as Gen3StaticMethod);
           setResults([]);
         };
 

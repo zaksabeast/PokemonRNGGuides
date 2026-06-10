@@ -3,45 +3,34 @@ import {
   RngToolForm,
   Field,
   Flex,
-  ResultColumn,
-  Icon,
   FormFieldTable,
   FormikRadio,
   FormikSwitch,
-  FormikNumberInput,
 } from "~/components";
-import { FormikSelect } from "~/components/select";
 import { RngToolSubmit } from "~/components/rngToolForm";
 import { Typography } from "~/components/typography";
-import { Button } from "~/components/button";
 import { toOptions } from "~/utils/options";
-import { formatLargeInteger } from "~/utils/formatLargeInteger";
-import { getNatureInputProps } from "~/components/pkmFilter";
-import { getStatFields } from "~/rngToolsUi/shared/statFields";
 import { Gen3Method, Nature, rngTools, Species } from "~/rngTools";
 import type { TargetSetup } from "./wild3TargetSetupInput";
 import { useWatch } from "react-hook-form";
 import { getStatRange } from "~/types/statRange";
 import uniq from "lodash-es/uniq";
 import clamp from "lodash-es/clamp";
-import { Tooltip } from "antd";
-import { FormikAbilityFilter } from "~/components/abilityFilter";
 import { useFormContext } from "~/hooks/form";
-import { formatEmeraldTargetFromPainting } from "~/utils/formatEmeraldTargetFromPainting";
+import {
+  createWild3SearcherOptions,
+  getPossibleEncountersForMap,
+} from "./wild3CalibCaughtMon";
 import {
   CaughtMonResult,
-  confidenceRatingColumn,
+  createColumns,
   createUiResultBase,
-  createWild3SearcherOptions,
   FormState,
-  getPossibleEncountersForMap,
+  getCommonFieldInputs,
   initialValues,
-  ivInfoColumns,
   updateResultsForRareCandy,
   validator,
-} from "./wild3CalibCaughtMon";
-import { getGenderFilterOptions } from "~/types";
-import { createColumns } from "../pokemonRng/calibCaughtMon";
+} from "../pokemonRng/calibCaughtMon";
 
 export const Fields = ({
   targetSetup,
@@ -122,9 +111,14 @@ export const Fields = ({
             />
           ),
         },
-        ...getCommonFieldInputs(selectedSpecies, minMaxStats, rareCandy, (count) => {
+        ...getCommonFieldInputs(
+          selectedSpecies,
+          minMaxStats,
+          rareCandy,
+          (count) => {
             setFieldValue("rareCandy", count);
-        }),
+          },
+        ),
         {
           label: "Display results with 0% likelihood",
           input: <FormikSwitch<FormState> name="generate_even_if_impossible" />,
@@ -182,7 +176,7 @@ const searchCaughtMon = async (
       const score = distanceFromTargetAfter / scoreHitMethodsAtAdvance;
 
       return {
-        ...createUiResultBase(result, targetSetup),
+        ...createUiResultBase(result, targetSetup.targetPaintingAdvs),
         score,
         probabilityHitMethodsAtAdvance,
         distanceFromTargetAfter,
@@ -230,36 +224,26 @@ export const Wild3CalibCaughtMon = ({
     setResults(await searchCaughtMon(values, targetSetup, leadCycleSpeed));
   };
 
-  const getAdvDiffTxt = (result: CaughtMonResult) => {
-    const diffWithTarget =
-      result.advance.adv_after_painting -
-      result.targetAdvance.adv_after_painting;
-    const valStr = formatLargeInteger(result.advance.adv_after_painting);
-
-    if (diffWithTarget === 0) {
-      const suffix =
-        result.method === targetMethod
-          ? `(Target)`
-          : `(Target advance but wrong method)`;
-      return `${valStr} ${suffix}`;
-    }
-    const sign = diffWithTarget > 0 ? "+" : "";
-
-    return `${valStr} (${sign}${formatLargeInteger(diffWithTarget)})`;
+  const onRemove = (values: CaughtMonResult) => {
+    setResults(results.filter((res) => res !== values));
   };
 
+  const onUpdateCalib =
+    setLatestHitAdv == null
+      ? undefined
+      : (values: CaughtMonResult) => {
+          setLatestHitAdv?.(values.advance, values.method as Gen3Method);
+          setResults([]);
+        };
 
-
-    const onRemove = (values:CaughtMonResult) => {
-        setResults(results.filter((res) => res !== values));
-    };
-
-    const onUpdateCalib = setLatestHitAdv == null ? undefined :(values:CaughtMonResult) => {
-        setLatestHitAdv?.(values.advance, values.method);
-        setResults([]);
-    }
-
-  const columns = createColumns(targetMethod, targetPaintingAdvs, usingPaintingReseeding, lastRareCandyValue, onRemove, onUpdateCalib);
+  const columns = createColumns(
+    targetMethod,
+    targetPaintingAdvs,
+    usingPaintingReseeding,
+    lastRareCandyValue,
+    onRemove,
+    onUpdateCalib,
+  );
 
   const onRareCandyChange = async (
     species: Species,

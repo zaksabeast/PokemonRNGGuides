@@ -9,7 +9,6 @@ import z from "zod";
 import { Flex } from "~/components/flex";
 import { useCurrentStep } from "~/components/stepper/state";
 import { Wild3Calib } from "./wild3Calib";
-import { gen3Consoles } from "~/types/console";
 import { BattleVideoInfo } from "../battleVideo/battleVideo";
 import {
   gen3LeadSchema,
@@ -22,6 +21,7 @@ import { gen3Methods } from "~/types";
 import { pokeblockSchema } from "~/types/pokeblock";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 import { EmeraldAceChangeSid } from "../ace/emeraldAceChangeSid";
+import { createBattleVideoInfoAtom } from "../pokemonRng/mainComponent";
 
 /*
 Possible user flows (documentation for testing):
@@ -152,7 +152,8 @@ const leadCycleSpeedAtom = atomWithPersistence(
 );
 
 const battleVideoInfoAtom = createBattleVideoInfoAtom(
-  "emerald_wild_battleVideoInfo");
+  "emerald_wild_battleVideoInfo",
+);
 
 export const useTargetSetup = () => useAtom(targetSetupAtom);
 export const useLeadCycleSpeed = () => useAtom(leadCycleSpeedAtom);

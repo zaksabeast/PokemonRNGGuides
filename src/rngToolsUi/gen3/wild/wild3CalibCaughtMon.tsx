@@ -1,28 +1,12 @@
-import { z } from "zod";
-import { ResultColumn } from "~/components";
-import { nature } from "~/types/nature";
-import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
 } from "~/components/pkmFilter";
+import { gen3Methods } from "~/types";
 import {
-  createAllStats0,
-  gen3Methods,
-  gender,
-  StatFieldsSchema,
-} from "~/types";
-import {
-  Gen3Method,
-  Ivs,
-  Nature,
-  rngTools,
-  Species,
-  StatsValue,
   Wild3EncounterGameData,
   Wild3MapSetups,
   Wild3SearcherOptions,
-  Wild3SearcherResultMon,
 } from "~/rngTools";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import type { TargetSetup } from "./wild3TargetSetupInput";
@@ -32,17 +16,12 @@ import {
   gen3PkmFilterFieldsToRustInput,
   getGen3PkmFilterInitialValues,
 } from "~/components/gen3PkmFilter";
-import { Tooltip } from "antd";
-import { formatProbability } from "~/utils/formatProbability";
-import { Gen3IvRating, getGen3IvRating } from "../ivRater";
-import { ability12 } from "~/types/ability";
-import { match, P } from "ts-pattern";
-import { pokerng_with_jump } from "~/utils/lcrng";
+import {
+  BATTLE_VIDEO_CONFIDENCE_RANGE,
+  type FormState,
+} from "../pokemonRng/calibCaughtMon";
 
 export const emeraldWildGameData = getWild3EmeraldGameData();
-
-
-let nextUid = 0;
 
 export const createWild3SearcherOptions = async (
   values: FormState,
@@ -130,30 +109,6 @@ export const createWild3SearcherOptions = async (
   };
 
   return opts;
-};
-
-export const createUiResultBase = (
-  result: Wild3SearcherResultMon,
-  targetSetup: TargetSetup,
-) => {
-  return {
-    advance: {
-      frame_before_painting: pokerng_with_jump(
-        result.seed,
-        2 ** 32 - result.advance,
-      ), // equivalent to reversing <result.advance> advances
-      adv_after_painting: result.advance,
-    },
-    targetAdvance: {
-      frame_before_painting: targetSetup.targetPaintingAdvs.before,
-      adv_after_painting: targetSetup.targetPaintingAdvs.after,
-    },
-    method: result.method,
-    uid: nextUid++,
-    ...getGen3IvRating(result.ivs),
-    statsWithRareCandy: createAllStats0(),
-    ivs: result.ivs,
-  };
 };
 
 export const getPossibleEncountersForMap = (targetSetup: TargetSetup) => {

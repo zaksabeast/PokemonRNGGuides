@@ -1,45 +1,44 @@
 import { z } from "zod";
-import { ResultColumn } from "~/components";
+import {
+  Flex,
+  FormikNumberInput,
+  FormikRadio,
+  Icon,
+  ResultColumn,
+} from "~/components";
+import { Button } from "~/components/button";
+import { FormikSelect } from "~/components/select";
 import { nature } from "~/types/nature";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
-import {
-  getPkmFilterInitialValues,
-  pkmFilterFieldsToRustInput,
-} from "~/components/pkmFilter";
+import { getNatureInputProps } from "~/components/pkmFilter";
 import {
   createAllStats0,
-  gen3Methods,
   gender,
   species,
   StatFieldsSchema,
+  getGenderFilterOptions,
 } from "~/types";
 import {
+  Gen3StaticMethod,
   Gen3Method,
   Ivs,
   Nature,
   rngTools,
   Species,
   StatsValue,
-  Static3EncounterGameData,
-  Static3MapSetups,
-  Static3SearcherOptions,
-  Static3SearcherResultMon,
+  Static3SearcherResult,
   Wild3SearcherResultMon,
 } from "~/rngTools";
-import { getStatic3EmeraldGameData } from "./data/static3GameData";
-import type { TargetSetup } from "./static3TargetSetupInput";
-import { isFishingAction, static3Actions } from "./utils";
-import { getIvRangeFromStats } from "~/types/statRange";
-import {
-  gen3PkmFilterFieldsToRustInput,
-  getGen3PkmFilterInitialValues,
-} from "~/components/gen3PkmFilter";
 import { Tooltip } from "antd";
 import { formatProbability } from "~/utils/formatProbability";
 import { Gen3IvRating, getGen3IvRating } from "../ivRater";
 import { ability12 } from "~/types/ability";
 import { match, P } from "ts-pattern";
 import { pokerng_with_jump } from "~/utils/lcrng";
+import { MinMaxStats } from "~/types/stat";
+import { FormikAbilityFilter } from "~/components/abilityFilter";
+import { getStatFields } from "~/rngToolsUi/shared/statFields";
+import { formatEmeraldTargetFromPainting } from "~/utils/formatEmeraldTargetFromPainting";
 
 export const validator = z
   .object({
@@ -319,7 +318,7 @@ export const createColumns = (
       key: "Update Calibration",
       dataIndex: "advance",
       show: onUpdateCalib != null,
-      render: (advance, values) => {
+      render: (_, values) => {
         if (
           values.advance.frame_before_painting === targetPaintingAdvs.before &&
           values.advance.adv_after_painting === targetPaintingAdvs.after &&
@@ -334,7 +333,7 @@ export const createColumns = (
             color="PrimaryText"
             trackerId="static3CalibCaughtMon_adv"
             onClick={() => {
-              onUpdateCalib(values);
+              onUpdateCalib?.(values);
             }}
           >
             <Icon name="Update" size={20} />
@@ -387,8 +386,8 @@ export const createColumns = (
 let nextUid = 0;
 
 export const createUiResultBase = (
-  result: Static3SearcherResultMon | Wild3SearcherResultMon,
-  targetPaintingAdvs: TargetSetup["targetPaintingAdvs"],
+  result: Static3SearcherResult | Wild3SearcherResultMon,
+  targetPaintingAdvs: { before: number; after: number },
 ) => {
   return {
     advance: {

@@ -27,6 +27,7 @@ export type TargetSetup = {
   roaming: boolean;
   targetPaintingAdvs: { before: number; after: number };
   targetMethod: Gen3StaticMethod;
+  aceSid: number | null;
 };
 
 const schema = z
@@ -77,6 +78,7 @@ const convertToTargetSetup = (
       after: pidPath.advs.adv_after_painting,
     },
     targetMethod: pidPath.method,
+    aceSid: null,
   };
 };
 
@@ -99,10 +101,14 @@ export const Static3TargetSetupSearcher = ({
     setTargetSetupProp?.(null);
   };
 
-  const onClickResultRow = setTargetSetupProp == null ? null : (res: PidPathResult | null) => {
-    const targetSetup = res == null ? null : convertToTargetSetup(game, res);
-    setTargetSetupProp(targetSetup);
-  };
+  const onClickResultRow =
+    setTargetSetupProp == null
+      ? undefined
+      : (res: PidPathResult | null) => {
+          const targetSetup =
+            res == null ? null : convertToTargetSetup(game, res);
+          setTargetSetupProp(targetSetup);
+        };
 
   return (
     <RngToolForm<FormState, PidPathResult>

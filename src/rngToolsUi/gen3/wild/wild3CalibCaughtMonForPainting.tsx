@@ -12,16 +12,16 @@ import { Tooltip } from "antd";
 import { getGen3IvRating } from "../ivRater";
 import { formatEmeraldTargetFromPainting } from "~/utils/formatEmeraldTargetFromPainting";
 import { formatHex } from "~/utils/formatHex";
+import { createWild3SearcherOptions } from "./wild3CalibCaughtMon";
 import {
   validator,
   FormState,
   initialValues,
   CaughtMonResult,
-  createWild3SearcherOptions,
   updateResultsForRareCandy,
   ivInfoColumns,
   confidenceRatingColumn,
-} from "./wild3CalibCaughtMon";
+} from "../pokemonRng/calibCaughtMon";
 import { Fields } from "./wild3CalibCaughtMon.component";
 
 type Props = {

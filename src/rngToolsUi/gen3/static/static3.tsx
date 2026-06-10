@@ -1,14 +1,17 @@
-import { match } from "ts-pattern";
-import { useActiveRoute } from "~/hooks/useActiveRoute";
-import { Static3TargetSetupSearcher, TargetSetup } from "./static3TargetSetupSearcher";
-import { gen3StaticMethods, Static3Game, static3Games } from "./constants";
+import {
+  Static3TargetSetupSearcher,
+  TargetSetup,
+} from "./static3TargetSetupSearcher";
+import { gen3StaticMethods } from "./constants";
 import z from "zod";
 import { species } from "~/types/species";
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
-import { Gen3StaticMethod, Species } from "~/rngTools";
-import { gen3Consoles } from "~/types/console";
 import { useHydrate } from "~/hooks/useHydrate";
-import { aceSidSchema, targetPaintingAdvsSchema } from "../pokemonRng/mainComponent";
+import {
+  aceSidSchema,
+  createBattleVideoInfoAtom,
+  targetPaintingAdvsSchema,
+} from "../pokemonRng/mainComponent";
 import { hydrationLock } from "~/utils/hydration";
 import { Skeleton } from "antd";
 import { useCurrentStep } from "~/components/stepper/state";
@@ -16,6 +19,7 @@ import { EmeraldPaintingReseeding } from "../paintingReseeding/paintingReseeding
 import { BattleVideoInfo } from "../battleVideo/battleVideo";
 import { Flex } from "~/components/flex";
 import { EmeraldAceChangeSid } from "../ace/emeraldAceChangeSid";
+import { Static3Calib } from "./static3Calib";
 
 // Limitation: Multi-step components only support Emerald.
 
@@ -37,7 +41,8 @@ const targetSetupAtom = atomWithPersistence(
 );
 
 const battleVideoInfoAtom = createBattleVideoInfoAtom(
-  "emerald_static_battleVideoInfo");
+  "emerald_static_battleVideoInfo",
+);
 
 export const useTargetSetup = () => useAtom(targetSetupAtom);
 export const useBattleVideoInfo = () => useAtom(battleVideoInfoAtom);
@@ -52,22 +57,25 @@ export const Static3TargetSetupSearcher_WithSetTargetSetup = () => {
     return <Skeleton />;
   }
 
-    const handleSetTargetSetup = (targetSetup: TargetSetup | null) => {
-      setTargetSetup(
-        hydrationLock({
-          targetSetup,
-        }),
-      );
-      setBattleVideoInfo(
-        hydrationLock({
-          battleVideoInfo: null,
-        }),
-      );
-    };
-
+  const handleSetTargetSetup = (targetSetup: TargetSetup | null) => {
+    setTargetSetup(
+      hydrationLock({
+        targetSetup:
+          targetSetup == null ? null : { ...targetSetup, game: "emerald" },
+      }),
+    );
+    setBattleVideoInfo(
+      hydrationLock({
+        battleVideoInfo: null,
+      }),
+    );
+  };
 
   return (
-    <Static3TargetSetupSearcher game="emerald" setTargetSetup={handleSetTargetSetup} />
+    <Static3TargetSetupSearcher
+      game="emerald"
+      setTargetSetup={handleSetTargetSetup}
+    />
   );
 };
 
@@ -137,18 +145,18 @@ export const EmeraldStaticPaintingReseeding_WithTargetSetup = () => {
     );
   };
 
+  const targetAction = "SweetScentLand"; // Only impacts the buffer for battle video
   return (
     <Flex vertical gap={40}>
       <EmeraldPaintingReseeding
         targetPaintingAdvs={targetSetup.targetPaintingAdvs}
         onBattleVideoCreatedOrSkipped={onBattleVideoCreatedOrSkipped}
-        targetAction={targetSetup.action}
+        targetAction={targetAction}
         clearAll={clearAll}
       />
     </Flex>
   );
 };
-
 
 export const Static3Calib_WithTargetSetupAndBattleVideo = () => {
   const [targetSetupLock, setTargetSetup] = useTargetSetup();
@@ -157,10 +165,7 @@ export const Static3Calib_WithTargetSetupAndBattleVideo = () => {
   const [battleVideoInfoLock, setBattleVideoInfo] = useBattleVideoInfo();
   const battleVideoHydrate = useHydrate(battleVideoInfoLock);
 
-  if (
-    !targetSetupHydrate.hydrated ||
-    !battleVideoHydrate.hydrated
-  ) {
+  if (!targetSetupHydrate.hydrated || !battleVideoHydrate.hydrated) {
     return <Skeleton />;
   }
   const { targetSetup } = targetSetupHydrate.client;

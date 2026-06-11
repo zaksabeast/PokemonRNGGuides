@@ -1,10 +1,7 @@
 import React from "react";
 import { Flex, MultiTimer, Field, Button } from "~/components";
 import { FormFieldTable } from "~/components/formFieldTable";
-import {
-  Static3TargetSetupSearcher,
-  TargetSetup,
-} from "./static3TargetSetupSearcher";
+import { TargetSetup } from "./static3TargetSetupSearcher";
 import { Static3CalibCaughtMon } from "./static3CalibCaughtMon";
 import { Gen3Console, gen3ConsoleFpsMap } from "~/types/console";
 import { BattleVideoInfo } from "../battleVideo/battleVideo";
@@ -18,6 +15,7 @@ import {
   buildGen3CalibFields,
   buildGen3CalibPreviousStepFields,
 } from "../pokemonRng/calib";
+import { Static3TargetSetupInput } from "./static3TargetSetupInput";
 
 // TODO: Have custom values by species.
 const CALIB_OFFSET = {
@@ -75,10 +73,7 @@ export const Static3Calib = ({
   );
 
   const targetSetupInputForm = () => (
-    <Static3TargetSetupSearcher
-      game="emerald"
-      setTargetSetup={setTargetSetup}
-    />
+    <Static3TargetSetupInput setTargetSetup={setTargetSetup} />
   );
 
   const setLatestHitAdv = (

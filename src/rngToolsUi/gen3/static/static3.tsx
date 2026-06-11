@@ -32,7 +32,6 @@ Possible user flows (documentation for testing):
       Find a Hardy 140/103/97/150/123/122 Latios. Hit advance is -1.
 
 For more advanced user flows, check wild3.
-
 */
 
 const targetSetupAtom = atomWithPersistence(

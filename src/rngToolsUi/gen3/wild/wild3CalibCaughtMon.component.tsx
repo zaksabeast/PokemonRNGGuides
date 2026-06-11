@@ -46,8 +46,10 @@ export const Fields = ({
 }) => {
   const { setFieldValue } = useFormContext<FormState>();
 
-  const selectedSpecies = useWatch<FormState, "species">({ name: "species" });
-  const selectedLvl = useWatch<FormState, "lvl">({ name: "lvl" });
+  const selectedSpecies = useWatch<FormState, "wildSpecies">({
+    name: "wildSpecies",
+  });
+  const selectedLvl = useWatch<FormState, "wildLvl">({ name: "wildLvl" });
   const selectedNature = useWatch<FormState, "nature">({ name: "nature" });
   const rareCandy = useWatch<FormState, "rareCandy">({ name: "rareCandy" });
 
@@ -76,7 +78,7 @@ export const Fields = ({
       label: "Species",
       input: (
         <FormikRadio<FormState>
-          name="species"
+          name="wildSpecies"
           options={toOptions(speciesList)}
         />
       ),
@@ -106,7 +108,7 @@ export const Fields = ({
           label: "Level",
           input: (
             <FormikRadio<FormState>
-              name="lvl"
+              name="wildLvl"
               options={toOptions(sortedLvls)}
             />
           ),
@@ -191,8 +193,8 @@ const searchCaughtMon = async (
 
   return updateResultsForRareCandy(
     list,
-    values.species,
-    values.lvl,
+    values.wildSpecies,
+    values.wildLvl,
     values.nature,
     values.rareCandy,
   );

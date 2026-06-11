@@ -140,8 +140,8 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
 
   return updateResultsForRareCandy(
     list,
-    values.species,
-    values.lvl,
+    values.wildSpecies,
+    values.wildLvl,
     values.nature,
     values.rareCandy,
   );

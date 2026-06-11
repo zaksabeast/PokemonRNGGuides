@@ -90,9 +90,9 @@ const createStatic3SearcherOptions = async (
     gen3_filter: gen3PkmFilterFieldsToRustInput(
       {
         ...getGen3PkmFilterInitialValues(),
-        filter_lvl: values.lvl,
+        filter_lvl: getStaticEncounterLvl(targetSetup),
       },
-      values.species,
+      targetSetup.species,
     ),
     species: targetSetup.species,
     bugged_roamer: targetSetup.game !== "emerald" && targetSetup.roaming,
@@ -110,6 +110,7 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
   }
 
   const resultsBySeed = await rngTools.search_static3(opts);
+  const lvl = getStaticEncounterLvl(targetSetup);
 
   const list = resultsBySeed
     .filter((result) => {
@@ -144,8 +145,8 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
 
   return updateResultsForRareCandy(
     list,
-    values.species,
-    values.lvl,
+    targetSetup.species,
+    lvl,
     values.nature,
     values.rareCandy,
   );
@@ -191,10 +192,6 @@ export const Fields = ({
             setFieldValue("rareCandy", count);
           },
         ),
-        {
-          label: "Display results with 0% likelihood",
-          input: <FormikSwitch<FormState> name="generate_even_if_impossible" />,
-        },
       ]);
     });
   }, [

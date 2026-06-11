@@ -50,8 +50,8 @@ export const createWild3SearcherOptions = async (
   };
 
   const minMaxIvs = await getIvRangeFromStats({
-    species: values.species,
-    lvl: values.lvl,
+    species: values.wildSpecies,
+    lvl: values.wildLvl,
     nature: values.nature,
     stats: {
       hp: values.hpStat,
@@ -87,9 +87,9 @@ export const createWild3SearcherOptions = async (
     gen3_filter: gen3PkmFilterFieldsToRustInput(
       {
         ...getGen3PkmFilterInitialValues(),
-        filter_lvl: values.lvl,
+        filter_lvl: values.wildLvl,
       },
-      values.species,
+      values.wildSpecies,
     ),
     leads: [targetSetup.lead],
     map_setups: [map_setup],

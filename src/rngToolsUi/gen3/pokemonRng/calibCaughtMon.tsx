@@ -44,11 +44,12 @@ export const validator = z
   .object({
     nature: z.enum(nature),
     gender: z.enum(gender),
-    species: z.enum(species),
-    lvl: z.number().min(1).max(100),
     ability: z.enum(ability12).nullable(),
     generate_even_if_impossible: z.boolean(),
     rareCandy: z.number().min(0).max(99),
+    // for wild only
+    wildSpecies: z.enum(species),
+    wildLvl: z.number().min(1).max(100),
   })
   .extend(StatFieldsSchema.shape);
 
@@ -63,8 +64,8 @@ export const initialValues: FormState = {
   speStat: 0,
   nature: "Adamant",
   gender: "Male",
-  species: "Shuckle",
-  lvl: 1,
+  wildSpecies: "Shuckle",
+  wildLvl: 1,
   ability: "First",
   generate_even_if_impossible: false,
   rareCandy: 1,
@@ -417,7 +418,10 @@ export const createUiResultBase = (
     method: result.method,
     uid: nextUid++,
     ...getGen3IvRating(result.ivs),
-    statsWithRareCandy: createAllStats0(),
+    statsWithRareCandy: {
+      ...createAllStats0(),
+      lvl: 0,
+    },
     ivs: result.ivs,
   };
 };

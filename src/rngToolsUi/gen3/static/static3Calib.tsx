@@ -16,6 +16,7 @@ import {
   buildGen3CalibPreviousStepFields,
 } from "../pokemonRng/calib";
 import { Static3TargetSetupInput } from "./static3TargetSetupInput";
+import Instructions_calib_skip_setup from "../wild/instructions_calib_skip_setup.mdx";
 
 // TODO: Have custom values by species.
 const CALIB_OFFSET = {
@@ -73,7 +74,22 @@ export const Static3Calib = ({
   );
 
   const targetSetupInputForm = () => (
-    <Static3TargetSetupInput setTargetSetup={setTargetSetup} />
+    <Flex vertical gap={10}>
+      {displayInstructions && <Instructions_calib_skip_setup />}
+      <Static3TargetSetupInput setTargetSetup={setTargetSetup} />
+      {targetSetupResult != null && targetSetup != null && (
+        <Flex vertical gap={20} mt={20}>
+          <FormFieldTable
+            fields={[
+              {
+                label: "Target Pokémon",
+                input: targetSetupResult,
+              },
+            ]}
+          />
+        </Flex>
+      )}
+    </Flex>
   );
 
   const setLatestHitAdv = (
@@ -137,7 +153,7 @@ export const Static3Calib = ({
     battleVideoInfo != null || targetSetup?.targetPaintingAdvs.before === 0;
 
   const infoFromPrevSteps = () => {
-    if (targetSetupProp == null || battleVideoInfoProp == null) {
+    if (targetSetupProp == null) {
       return null;
     }
 

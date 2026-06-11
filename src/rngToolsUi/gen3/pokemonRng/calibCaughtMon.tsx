@@ -85,7 +85,7 @@ export type CaughtMonResult = {
   distanceFromTargetAfter: number;
   distanceFromTargetBefore: number;
   uid: number;
-  statsWithRareCandy: StatsValue;
+  statsWithRareCandy: StatsValue & { lvl: number };
   ivs: Ivs;
 } & Gen3IvRating;
 
@@ -100,15 +100,21 @@ export const updateResultsForRareCandy = async (
 ) => {
   return Promise.all(
     results.map(async (res) => {
+      const lvl = Math.min(initialLvl + rareCandy, 100);
+      const stats = await rngTools.calculate_stats(
+        species,
+        lvl,
+        nature,
+        res.ivs,
+        createAllStats0(),
+      );
+
       return {
         ...res,
-        statsWithRareCandy: await rngTools.calculate_stats(
-          species,
-          Math.min(initialLvl + rareCandy, 100),
-          nature,
-          res.ivs,
-          createAllStats0(),
-        ),
+        statsWithRareCandy: {
+          ...stats,
+          lvl,
+        },
       };
     }),
   );
@@ -149,6 +155,13 @@ export const ivInfoColumns = (
     title: `Stats with x${lastRareCandyValue ?? 0} Rare Candy`,
     type: "group",
     columns: [
+      {
+        title: "Lv.",
+        dataIndex: "statsWithRareCandy",
+        render: (statsWithRareCandy) => {
+          return statsWithRareCandy.lvl;
+        },
+      },
       {
         title: "HP",
         dataIndex: "statsWithRareCandy",

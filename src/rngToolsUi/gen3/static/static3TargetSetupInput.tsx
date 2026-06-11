@@ -1,14 +1,12 @@
 import React from "react";
 import {
   Field,
-  FormikNumberInput,
   FormikSelect,
   FormikSwitch,
   RngToolForm,
   RngToolSubmit,
 } from "~/components";
 import { FormFieldTable } from "~/components/formFieldTable";
-import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
 import { useFormContext, useWatch } from "~/hooks/form";
 import { TargetSetup } from "./static3TargetSetupSearcher";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
@@ -17,14 +15,11 @@ import {
   getPossibleRoamingValuesForSpecies,
   getPossibleStatic3Species,
 } from "./constants";
-import { usingPaintingReseedingLabel } from "../wild/wild3Labels";
+import { getPaintingReseedingFields } from "../pokemonRng/targetSetupInput";
 import { species } from "~/types/species";
-import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { lcrng_distance } from "~/utils/lcrng";
 import { toOptions } from "~/utils/options";
 import { z } from "zod";
-
-const GAME = "emerald";
 
 const schema = z.object({
   species: z.enum(species),
@@ -35,7 +30,9 @@ const schema = z.object({
   targetMethod: z.enum(gen3StaticMethods),
 });
 
-type FormState = z.infer<typeof schema>;
+const GAME = "emerald"; // Only emerald is supported.
+
+export type FormState = z.infer<typeof schema>;
 
 const getInitialValues = (): FormState => ({
   species: "Mudkip",
@@ -127,38 +124,10 @@ const Static3TargetSetupInputFields = ({
       input: <FormikSwitch<FormState> name="roaming" />,
       show: possibleRoaming.length > 1,
     },
-    {
-      ...usingPaintingReseedingLabel(),
-      input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
-    },
-    {
-      label: "Target frame before painting (Painting seed)",
-      input: (
-        <FormikEmeraldFrameBeforePaintingInput<FormState> name="targetFrameBeforePainting" />
-      ),
-      indent: 1,
-      show: usingPaintingReseeding,
-    },
-    {
-      label: usingPaintingReseeding
-        ? "Target advances after painting"
-        : "Target advances",
-      input: (
-        <FormikNumberInput<FormState> name="targetAdvance" numType="decimal" />
-      ),
-    },
-    {
-      label: "",
-      key: "Equivalent to Advances",
-      show: usingPaintingReseeding,
-      input: (
-        <>
-          Equivalent to Advances = {formatLargeInteger(equivalentInitialAdvs)}{" "}
-          without painting reseeding
-        </>
-      ),
-      indent: 1,
-    },
+    ...getPaintingReseedingFields({
+      usingPaintingReseeding,
+      equivalentInitialAdvs,
+    }),
     {
       label: "Target Method",
       input: (
@@ -167,6 +136,7 @@ const Static3TargetSetupInputFields = ({
           options={toOptions(gen3StaticMethods)}
         />
       ),
+      show: false, // GAME === "rs", // To show when rs will be supported.
     },
   ];
 

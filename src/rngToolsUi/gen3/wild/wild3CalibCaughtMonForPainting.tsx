@@ -127,7 +127,10 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
           distanceFromTargetBefore,
           uid: nextUid++,
           ...getGen3IvRating(result.ivs),
-          statsWithRareCandy: createAllStats0(),
+          statsWithRareCandy: {
+            ...createAllStats0(),
+            lvl: 0,
+          },
           ivs: result.ivs,
         };
       });

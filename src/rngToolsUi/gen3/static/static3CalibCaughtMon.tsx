@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Field,
-  Flex,
-  FormFieldTable,
-  FormikSwitch,
-  RngToolForm,
-} from "~/components";
+import { Field, Flex, FormFieldTable, RngToolForm } from "~/components";
 import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,

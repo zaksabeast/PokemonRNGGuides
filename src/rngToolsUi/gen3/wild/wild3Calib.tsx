@@ -7,7 +7,7 @@ import { Gen3Console, gen3ConsoleFpsMap } from "~/types/console";
 import { formatActionName, formatLeadName, formatMapName } from "./utils";
 import { BattleVideoInfo } from "../battleVideo/battleVideo";
 import { AllOrNone } from "~/types";
-import { BattleVideoInfoInput } from "./wild3CalibBattleVideoInfoInput";
+import { BattleVideoInfoInput } from "../battleVideo/calibBattleVideoInfoInput";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import { Gen3Method } from "~/rngTools";
 

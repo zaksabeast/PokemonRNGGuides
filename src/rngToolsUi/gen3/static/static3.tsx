@@ -11,7 +11,7 @@ import {
   aceSidSchema,
   createBattleVideoInfoAtom,
   targetPaintingAdvsSchema,
-} from "../pokemonRng/mainComponent";
+} from "../pokemonRng/shared";
 import { hydrationLock } from "~/utils/hydration";
 import { Skeleton } from "antd";
 import { useCurrentStep } from "~/components/stepper/state";

@@ -425,3 +425,11 @@ export const createUiResultBase = (
     ivs: result.ivs,
   };
 };
+
+export const isType = <T extends string>(
+  array: readonly T[],
+  value: string,
+): value is T => {
+  // Downcast to less specific type, which is safe
+  return (array as readonly string[]).includes(value);
+};

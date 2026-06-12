@@ -25,15 +25,16 @@ import {
   FormState,
   getCommonFieldInputs,
   initialValues,
+  isType,
   updateResultsForRareCandy,
   validator,
 } from "../pokemonRng/calibCaughtMon";
 import { getStaticEncounterLvl } from "./calculateTargetSetupResult";
 import { RngToolSubmit } from "~/components/rngToolForm";
 import { Typography } from "~/components/typography";
-import { useWatch } from "react-hook-form";
-import { useFormContext } from "~/hooks/form";
+import { useFormContext, useWatch } from "~/hooks/form";
 import clamp from "lodash-es/clamp";
+import { gen3StaticMethods } from "./constants";
 
 const createStatic3SearcherOptions = async (
   values: FormState,
@@ -162,8 +163,15 @@ export const Fields = ({
 
   const targetSpecies = targetSetup.species;
   const targetLvl = getStaticEncounterLvl(targetSetup);
-  const selectedNature = useWatch<FormState, "nature">({ name: "nature" });
-  const rareCandy = useWatch<FormState, "rareCandy">({ name: "rareCandy" });
+  const watchedValues = useWatch({
+    names: {
+      nature: true,
+      rareCandy: true,
+    },
+    validationSchema: validator,
+  });
+  const selectedNature = watchedValues.nature ?? initialValues.nature;
+  const rareCandy = watchedValues.rareCandy ?? initialValues.rareCandy;
 
   const [fields, setFields] = React.useState<Field[]>([]);
 
@@ -232,7 +240,10 @@ export const Static3CalibCaughtMon = ({
     setLatestHitAdv == null
       ? undefined
       : (values: CaughtMonResult) => {
-          setLatestHitAdv?.(values.advance, values.method as Gen3StaticMethod);
+          const { method } = values;
+          if (isType(gen3StaticMethods, method)) {
+            setLatestHitAdv?.(values.advance, method);
+          }
           setResults([]);
         };
 

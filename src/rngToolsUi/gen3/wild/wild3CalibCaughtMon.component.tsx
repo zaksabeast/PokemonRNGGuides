@@ -30,7 +30,9 @@ import {
   initialValues,
   updateResultsForRareCandy,
   validator,
+  isType,
 } from "../pokemonRng/calibCaughtMon";
+import { gen3Methods } from "~/types";
 
 export const Fields = ({
   targetSetup,
@@ -234,7 +236,10 @@ export const Wild3CalibCaughtMon = ({
     setLatestHitAdv == null
       ? undefined
       : (values: CaughtMonResult) => {
-          setLatestHitAdv?.(values.advance, values.method as Gen3Method);
+          const { method } = values;
+          if (isType(gen3Methods, method)) {
+            setLatestHitAdv?.(values.advance, method);
+          }
           setResults([]);
         };
 

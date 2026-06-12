@@ -6,7 +6,7 @@ import { Static3CalibCaughtMon } from "./static3CalibCaughtMon";
 import { Gen3Console, gen3ConsoleFpsMap } from "~/types/console";
 import { BattleVideoInfo } from "../battleVideo/battleVideo";
 import { AllOrNone } from "~/types";
-import { BattleVideoInfoInput } from "../wild/wild3CalibBattleVideoInfoInput";
+import { BattleVideoInfoInput } from "../battleVideo/calibBattleVideoInfoInput";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import { Gen3StaticMethod } from "~/rngTools";
 import Instructions_calib_with_battle_video from "./instructions_calib_with_battle_video.mdx";
@@ -16,7 +16,7 @@ import {
   buildGen3CalibPreviousStepFields,
 } from "../pokemonRng/calib";
 import { Static3TargetSetupInput } from "./static3TargetSetupInput";
-import Instructions_calib_skip_setup from "../wild/instructions_calib_skip_setup.mdx";
+import Instructions_calib_skip_setup from "../static/instructions_calib_skip_setup.mdx";
 
 // TODO: Have custom values by species.
 const CALIB_OFFSET = {

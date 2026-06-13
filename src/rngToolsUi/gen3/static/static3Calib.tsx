@@ -17,6 +17,7 @@ import {
 } from "../pokemonRng/calib";
 import { Static3TargetSetupInput } from "./static3TargetSetupInput";
 import Instructions_calib_skip_setup from "../static/instructions_calib_skip_setup.mdx";
+import { isEqual } from "lodash-es";
 
 // TODO: Have custom values by species.
 const CALIB_OFFSET = {
@@ -41,10 +42,18 @@ export const Static3Calib = ({
   const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
     targetSetupProp ?? null,
   );
+  const [lastTargetSetupProp, setLastTargetSetupProp] = React.useState<
+    TargetSetup | undefined
+  >(targetSetupProp);
 
   React.useEffect(() => {
+    if (isEqual(lastTargetSetupProp, targetSetupProp)) {
+      return;
+    }
+
+    setLastTargetSetupProp(targetSetupProp);
     setTargetSetup(targetSetupProp ?? null);
-  }, [targetSetupProp]);
+  }, [lastTargetSetupProp, targetSetupProp]);
 
   const [targetSetupResult, setTargetSetupResult] =
     React.useState<React.ReactNode>(null);

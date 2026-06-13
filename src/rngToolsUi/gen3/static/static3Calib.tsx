@@ -17,7 +17,6 @@ import {
 } from "../pokemonRng/calib";
 import { Static3TargetSetupInput } from "./static3TargetSetupInput";
 import Instructions_calib_skip_setup from "../static/instructions_calib_skip_setup.mdx";
-import { isEqual } from "lodash-es";
 
 // TODO: Have custom values by species.
 const CALIB_OFFSET = {
@@ -39,21 +38,17 @@ export const Static3Calib = ({
   clearAll,
   displayInstructions = true,
 }: Props) => {
-  const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
-    targetSetupProp ?? null,
-  );
-  const [lastTargetSetupProp, setLastTargetSetupProp] = React.useState<
-    TargetSetup | undefined
-  >(targetSetupProp);
+  const [localTargetSetup, setLocalTargetSetup] =
+    React.useState<TargetSetup | null>(null);
+  const targetSetup = targetSetupProp ?? localTargetSetup;
 
   React.useEffect(() => {
-    if (isEqual(lastTargetSetupProp, targetSetupProp)) {
+    if (targetSetupProp == null) {
       return;
     }
 
-    setLastTargetSetupProp(targetSetupProp);
-    setTargetSetup(targetSetupProp ?? null);
-  }, [lastTargetSetupProp, targetSetupProp]);
+    setLocalTargetSetup(null);
+  }, [targetSetupProp]);
 
   const [targetSetupResult, setTargetSetupResult] =
     React.useState<React.ReactNode>(null);
@@ -85,7 +80,7 @@ export const Static3Calib = ({
   const targetSetupInputForm = () => (
     <Flex vertical gap={10}>
       {displayInstructions && <Instructions_calib_skip_setup />}
-      <Static3TargetSetupInput setTargetSetup={setTargetSetup} />
+      <Static3TargetSetupInput setTargetSetup={setLocalTargetSetup} />
       {targetSetupResult != null && targetSetup != null && (
         <Flex vertical gap={20} mt={20}>
           <FormFieldTable

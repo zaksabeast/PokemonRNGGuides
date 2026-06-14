@@ -9,7 +9,6 @@ import z from "zod";
 import { Flex } from "~/components/flex";
 import { useCurrentStep } from "~/components/stepper/state";
 import { Wild3Calib } from "./wild3Calib";
-import { gen3Consoles } from "~/types/console";
 import { BattleVideoInfo } from "../battleVideo/battleVideo";
 import {
   gen3LeadSchema,
@@ -22,17 +21,18 @@ import { gen3Methods } from "~/types";
 import { pokeblockSchema } from "~/types/pokeblock";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 import { EmeraldAceChangeSid } from "../ace/emeraldAceChangeSid";
+import { createBattleVideoInfoAtom } from "../pokemonRng/shared";
 
 /*
-Possible user flows (documentation for testing): 
+Possible user flows (documentation for testing):
  - Case 1) Step 1: Low target advance without painting. Step 2: Too low to create battle video, so must skip.
       Step1: Abra, no filter, adv 1005, Wild1. (Abra, Lvl 7, Male, InnerFocus, Lonely, HP 21, ATK 8, DEF 7, SPA 20, SPD 14, SPE 18)
       Step2: Skip.
       Step3: Wild1 bad adv: Whismur, Lvl 6, Female, Hasty, Soundproof, 24/12/7/11/9/9, adv 1027
              Wild2 target adv: Abra, Lvl 7, Male, InnerFocus, Lonely, HP 21, ATK 8, DEF 8, SPA 20, SPD 14, SPE 17
  - Case 2) Step 1: Target advance without painting. Step 2: Press "Skip creating battle video".
-      Step1: Abra, no filter, min adv 10000, select adv 10004, Wild1 (Abra, Lvl 8, Male, Careful, HP 22, ATK 10, DEF 9, SPA 19, SPD 16, SPE 21). 
-      Step2: Skip. 
+      Step1: Abra, no filter, min adv 10000, select adv 10004, Wild1 (Abra, Lvl 8, Male, Careful, HP 22, ATK 10, DEF 9, SPA 19, SPD 16, SPE 21).
+      Step2: Skip.
       Step3: Zubat, Lvl 7, Female, Serious, 23/12/11/9/12/14, adv 10008
  - Case 3) Step 1: Target advance without painting. Step 2: Skip the step without confirming. Step 3: Assumes no battle video was created.
       Same as Case 2)
@@ -59,7 +59,7 @@ Possible user flows (documentation for testing):
       Step3: Expected: Displayed "Lead cycle speed" is Average. Likelihood is ~50.8%.
              Wild2 target adv: Abra, Lvl 7, Male, InnerFocus, Lonely, HP 21, ATK 8, DEF 8, SPA 20, SPD 14, SPE 17
              Change lead cycle speed for ideal.
- - Case 13) Calibrate lead with specified lead cycle speed from step 1 
+ - Case 13) Calibrate lead with specified lead cycle speed from step 1
       Same as case 12, but select the ideal lead cycle speed in step 1.
       In step 3: the Lead cycle speed displayed is ~603. Likelihood is ~96.6%.
  - Case 14) Skip step 1 & 2.
@@ -83,14 +83,14 @@ Utilities:
       output = lead cycle speed
   - Wild3TargetSetupAndLeadInput
       Wild3TargetSetupInput + Wild3LeadCycleSpeedSelector
-  - EmeraldPaintingReseeding 
+  - EmeraldPaintingReseeding
       input = target advance
       output = battle video
   - Wild3CalibCaughtMon
       input = target setup
       displays fields to specify caught pokemon
       output = hit advance
-       
+
 All-in-one Wild webtool:
   Wild3: Root for steps 1,2,3
 
@@ -104,7 +104,7 @@ All-in-one Wild webtool:
   Step-3: Wild3Calib
     display: Wild3CalibCaughtMon + Wild3LeadCycleSpeedSelector
              if target setup was skipped, displays Wild3TargetSetupInput
-    
+
 */
 
 const targetSetupAtomSchema = z.object({
@@ -151,23 +151,8 @@ const leadCycleSpeedAtom = atomWithPersistence(
   { leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED },
 );
 
-const battleVideoInfoAtom = atomWithPersistence(
+const battleVideoInfoAtom = createBattleVideoInfoAtom(
   "emerald_wild_battleVideoInfo",
-  z.object({
-    battleVideoInfo: z
-      .object({
-        targetPaintingAdvs: z.object({
-          before: z.number().int().min(0),
-          after: z.number().int().min(0),
-        }),
-        battleVideoAdvAfterPainting: z.number().int().min(0),
-        consoleType: z.enum(gen3Consoles).nullable(),
-      })
-      .nullable(),
-  }),
-  {
-    battleVideoInfo: null,
-  },
 );
 
 export const useTargetSetup = () => useAtom(targetSetupAtom);
@@ -225,7 +210,7 @@ export const Wild3TargetSetupSearcher_WithSetTargetSetup = () => {
   );
 };
 
-export const EmeraldAceChangeSid_WithTargetSetup = () => {
+export const EmeraldWildAceChangeSid_WithTargetSetup = () => {
   const [targetSetupLock] = useTargetSetup();
   const targetSetupHydrate = useHydrate(targetSetupLock);
 
@@ -249,7 +234,7 @@ export const EmeraldAceChangeSid_WithTargetSetup = () => {
  * 1) Step 1 (targetSetup) is not completed. The user must input the target advs in the fields of the component.
  * 2) Step 1 (targetSetup) is completed. The target advs are provided to the component, and the fields are read-only.
  **/
-export const EmeraldPaintingReseeding_WithTargetSetup = () => {
+export const EmeraldWildPaintingReseeding_WithTargetSetup = () => {
   const [step, setStep] = useCurrentStep();
 
   const [targetSetupLock, setTargetSetup] = useTargetSetup();

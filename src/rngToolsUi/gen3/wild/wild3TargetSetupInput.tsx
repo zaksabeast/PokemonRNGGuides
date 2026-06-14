@@ -6,7 +6,6 @@ import {
   Wild3MassOutbreakState,
   Gen3Lead,
 } from "~/rngTools";
-import { lcrng_distance } from "~/utils/lcrng";
 import {
   Field,
   FormikSelect,
@@ -15,7 +14,6 @@ import {
   FormFieldTable,
   FormikSwitch,
   FormikWild3Pokeblock,
-  FormikNumberInput,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { useFormContext } from "~/hooks/form";
@@ -40,9 +38,8 @@ import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { getPossibleValuesForMap } from "./dataUtils";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import { Pokeblock, pokeblockSchema } from "~/types/pokeblock";
-import { formatLargeInteger } from "~/utils/formatLargeInteger";
-import { usingPaintingReseedingLabel } from "./wild3Labels";
-import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
+import { getPaintingReseedingFields } from "../pokemonRng/targetSetupInput";
+import { lcrng_distance } from "~/utils/lcrng";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -197,38 +194,10 @@ const getFields = ({
         />
       ),
     },
-    {
-      ...usingPaintingReseedingLabel(),
-      input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
-    },
-    {
-      label: "Target frame before painting (Painting seed)",
-      input: (
-        <FormikEmeraldFrameBeforePaintingInput<FormState> name="targetFrameBeforePainting" />
-      ),
-      indent: 1,
-      show: usingPaintingReseeding,
-    },
-    {
-      label: usingPaintingReseeding
-        ? "Target advances after painting"
-        : "Target advances",
-      input: (
-        <FormikNumberInput<FormState> name="targetAdvance" numType="decimal" />
-      ),
-    },
-    {
-      label: "",
-      key: "Equivalent to Advances",
-      show: usingPaintingReseeding,
-      input: (
-        <>
-          Equivalent to Advances = {formatLargeInteger(equivalentInitialAdvs)}{" "}
-          without painting reseeding
-        </>
-      ),
-      indent: 1,
-    },
+    ...getPaintingReseedingFields({
+      usingPaintingReseeding,
+      equivalentInitialAdvs,
+    }),
     {
       label: "Target Method",
       input: (

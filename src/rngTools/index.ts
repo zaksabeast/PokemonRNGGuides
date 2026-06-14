@@ -263,6 +263,12 @@ export type Wild3MapGameData = RustOption<RngTools.Wild3MapGameData>;
 
 export type Wild3SearcherOptions = RustOption<RngTools.Wild3SearcherOptions>;
 
+export type Static3SearcherOptions =
+  RustOption<RngTools.Static3SearcherOptions>;
+
 export type Gen3PkmFilter = RustOption<RngTools.Gen3PkmFilter>;
 
 export type Wild3GeneratorOptions = RustOption<RngTools.Wild3GeneratorOptions>;
+
+export type Static3GeneratorOptions =
+  RustOption<RngTools.Static3GeneratorOptions>;

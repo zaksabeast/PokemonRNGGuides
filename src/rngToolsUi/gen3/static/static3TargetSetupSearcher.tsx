@@ -27,6 +27,7 @@ export type TargetSetup = {
   roaming: boolean;
   targetPaintingAdvs: { before: number; after: number };
   targetMethod: Gen3StaticMethod;
+  aceSid: number | null;
 };
 
 const schema = z
@@ -61,7 +62,7 @@ const getInitialValues = (game: Static3Game): FormState => {
 
 type Props = {
   game: Static3Game;
-  setTargetSetup: (targetSetup: TargetSetup | null) => void;
+  setTargetSetup?: (targetSetup: TargetSetup | null) => void;
 };
 
 const convertToTargetSetup = (
@@ -77,6 +78,7 @@ const convertToTargetSetup = (
       after: pidPath.advs.adv_after_painting,
     },
     targetMethod: pidPath.method,
+    aceSid: null,
   };
 };
 
@@ -96,13 +98,17 @@ export const Static3TargetSetupSearcher = ({
     const pidPathResults = await searchStatic3Target(game, values);
 
     setPidPathResults(sortBy(pidPathResults, "wait_dur"));
-    setTargetSetupProp(null);
+    setTargetSetupProp?.(null);
   };
 
-  const onClickResultRow = (res: PidPathResult | null) => {
-    const targetSetup = res == null ? null : convertToTargetSetup(game, res);
-    setTargetSetupProp(targetSetup);
-  };
+  const onClickResultRow =
+    setTargetSetupProp == null
+      ? undefined
+      : (res: PidPathResult | null) => {
+          const targetSetup =
+            res == null ? null : convertToTargetSetup(game, res);
+          setTargetSetupProp(targetSetup);
+        };
 
   return (
     <RngToolForm<FormState, PidPathResult>

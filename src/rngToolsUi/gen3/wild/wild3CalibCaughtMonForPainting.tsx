@@ -12,16 +12,16 @@ import { Tooltip } from "antd";
 import { getGen3IvRating } from "../ivRater";
 import { formatEmeraldTargetFromPainting } from "~/utils/formatEmeraldTargetFromPainting";
 import { formatHex } from "~/utils/formatHex";
+import { createWild3SearcherOptions } from "./wild3CalibCaughtMon";
 import {
   validator,
   FormState,
   initialValues,
   CaughtMonResult,
-  createWild3SearcherOptions,
   updateResultsForRareCandy,
   ivInfoColumns,
   confidenceRatingColumn,
-} from "./wild3CalibCaughtMon";
+} from "../pokemonRng/calibCaughtMon";
 import { Fields } from "./wild3CalibCaughtMon.component";
 
 type Props = {
@@ -127,7 +127,10 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
           distanceFromTargetBefore,
           uid: nextUid++,
           ...getGen3IvRating(result.ivs),
-          statsWithRareCandy: createAllStats0(),
+          statsWithRareCandy: {
+            ...createAllStats0(),
+            lvl: 0,
+          },
           ivs: result.ivs,
         };
       });
@@ -140,8 +143,8 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
 
   return updateResultsForRareCandy(
     list,
-    values.species,
-    values.lvl,
+    values.wildSpecies,
+    values.wildLvl,
     values.nature,
     values.rareCandy,
   );

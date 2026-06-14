@@ -11,14 +11,19 @@ import { rngTools } from "~/rngTools";
 import { TargetSetup } from "./static3TargetSetupSearcher";
 import { getStatic3SpeciesEncounters } from "./constants";
 
-export const calculateTargetSetupResult = async (targetSetup: TargetSetup) => {
-  const encounterLvl =
+export const getStaticEncounterLvl = (targetSetup: TargetSetup) => {
+  return (
     getStatic3SpeciesEncounters(targetSetup.game).find((enc) => {
       return (
         enc.species === targetSetup.species &&
         enc.roaming === targetSetup.roaming
       );
-    })?.lvl ?? 5;
+    })?.lvl ?? 5
+  );
+};
+
+export const calculateTargetSetupResult = async (targetSetup: TargetSetup) => {
+  const encounterLvl = getStaticEncounterLvl(targetSetup);
 
   const encounterGenderRatio = await rngTools.get_species_gender_ratio(
     targetSetup.species,

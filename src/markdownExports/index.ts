@@ -164,6 +164,10 @@ const tools = {
     () => import("~/rngToolsUi/gen3/emeraldPickupEgg"),
     (mod) => mod.EmeraldPickupEgg,
   ),
+  Static3TargetSetupSearcher: lazyLoad(
+    () => import("~/rngToolsUi/gen3/static/static3TargetSetupSearcher"),
+    (mod) => mod.Static3TargetSetupSearcher,
+  ),
   Static3TargetSetupSearcher_WithSetTargetSetup: lazyLoad(
     () => import("~/rngToolsUi/gen3/static/static3"),
     (mod) => mod.Static3TargetSetupSearcher_WithSetTargetSetup,
@@ -200,17 +204,29 @@ const tools = {
     () => import("~/rngToolsUi/gen3/paintingReseeding/paintingReseeding"),
     (mod) => mod.EmeraldPaintingReseeding,
   ),
-  EmeraldAceChangeSid_WithTargetSetup: lazyLoad(
+  EmeraldWildAceChangeSid_WithTargetSetup: lazyLoad(
     () => import("~/rngToolsUi/gen3/wild/wild3"),
-    (mod) => mod.EmeraldAceChangeSid_WithTargetSetup,
+    (mod) => mod.EmeraldWildAceChangeSid_WithTargetSetup,
   ),
-  EmeraldPaintingReseeding_WithTargetSetup: lazyLoad(
+  EmeraldStaticAceChangeSid_WithTargetSetup: lazyLoad(
+    () => import("~/rngToolsUi/gen3/static/static3"),
+    (mod) => mod.EmeraldStaticAceChangeSid_WithTargetSetup,
+  ),
+  EmeraldWildPaintingReseeding_WithTargetSetup: lazyLoad(
     () => import("~/rngToolsUi/gen3/wild/wild3"),
-    (mod) => mod.EmeraldPaintingReseeding_WithTargetSetup,
+    (mod) => mod.EmeraldWildPaintingReseeding_WithTargetSetup,
+  ),
+  EmeraldStaticPaintingReseeding_WithTargetSetup: lazyLoad(
+    () => import("~/rngToolsUi/gen3/static/static3"),
+    (mod) => mod.EmeraldStaticPaintingReseeding_WithTargetSetup,
   ),
   Wild3Calib_WithTargetSetupAndBattleVideo: lazyLoad(
     () => import("~/rngToolsUi/gen3/wild/wild3"),
     (mod) => mod.Wild3Calib_WithTargetSetupAndBattleVideo,
+  ),
+  Static3Calib_WithTargetSetupAndBattleVideo: lazyLoad(
+    () => import("~/rngToolsUi/gen3/static/static3"),
+    (mod) => mod.Static3Calib_WithTargetSetupAndBattleVideo,
   ),
   Wild3TargetSetupSearcher_WithSetTargetSetup: lazyLoad(
     () => import("~/rngToolsUi/gen3/wild/wild3"),

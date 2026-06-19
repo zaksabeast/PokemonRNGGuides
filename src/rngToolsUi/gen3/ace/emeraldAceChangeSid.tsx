@@ -53,6 +53,7 @@ export const EmeraldAceChangeSid = ({ sid }: Props) => {
     setResults([]);
 
     setTimeout(async () => {
+        //NO_PROD put in aceForm
       const res = await rngTools.get_emerald_sid_box_names_result(
         sid,
         opts.lang,
@@ -86,22 +87,14 @@ export const EmeraldAceChangeSid = ({ sid }: Props) => {
 
       <Typography.Title level={4}> {manipName}</Typography.Title>
 
-      <RngToolForm<FormState, BoxNameResult>
+      <AceForm<FormState>
         getFields={getFields}
         results={results}
         validationSchema={schema}
         initialValues={initialValues}
         onSubmit={onSubmit}
-        getColumns={getBoxNameColumns}
-        submitTrackerId="emerald_ace_change_sid"
-        rowKey="uid"
-        pagination={false}
-      />
-      {hasError && (
-        <Typography.Text type="danger">
-          Error: Unable to generate the box names.
-        </Typography.Text>
-      )}
-    </Flex>
+      >
+        <EmeraldAceStatic />
+     </AceForm>
   );
 };

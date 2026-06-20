@@ -68,6 +68,7 @@ type Props = {
 const convertToTargetSetup = (
   game: Static3Game,
   pidPath: PidPathResult,
+  tidForAceSid: number | null,
 ): TargetSetup => {
   return {
     game,
@@ -78,7 +79,7 @@ const convertToTargetSetup = (
       after: pidPath.advs.adv_after_painting,
     },
     targetMethod: pidPath.method,
-    aceSid: null,
+    aceSid: tidForAceSid,
   };
 };
 
@@ -90,12 +91,19 @@ export const Static3TargetSetupSearcher = ({
     [],
   );
 
+  const [tidForAceSid, setTidForAceSid] = React.useState<number | null>(null);
   const initialValues = getInitialValues(game);
 
   const pidPathColumns = getTargetResultColumns(game, false);
 
   const onSubmit: RngToolSubmit<FormState> = async (values) => {
     const pidPathResults = await searchStatic3Target(game, values);
+
+    if (values.filter_shiny && values.usingAceForSid) {
+      setTidForAceSid(values.tid);
+    } else {
+      setTidForAceSid(null);
+    }
 
     setPidPathResults(sortBy(pidPathResults, "wait_dur"));
     setTargetSetupProp?.(null);
@@ -106,7 +114,7 @@ export const Static3TargetSetupSearcher = ({
       ? undefined
       : (res: PidPathResult | null) => {
           const targetSetup =
-            res == null ? null : convertToTargetSetup(game, res);
+            res == null ? null : convertToTargetSetup(game, res, tidForAceSid);
           setTargetSetupProp(targetSetup);
         };
 

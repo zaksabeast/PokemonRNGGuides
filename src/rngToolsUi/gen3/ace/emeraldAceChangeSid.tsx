@@ -1,23 +1,13 @@
 import React from "react";
-import {
-  Field,
-  Flex,
-  FormikSelect,
-  RngToolForm,
-  RngToolSubmit,
-} from "~/components";
+import { Field, Flex, FormikSelect } from "~/components";
 import { Typography } from "antd";
 
 import Instructions from "./instructions_ace_change_sid.mdx";
 import z from "zod";
 import { emeraldLangs } from "./emeraldLang";
 import { toOptions } from "~/utils/options";
-import {
-  BoxNameResult,
-  convertAceResultToBoxNames,
-  getBoxNameColumns,
-} from "./aceBoxNameFormatter";
 import { rngTools } from "~/rngTools";
+import { AceForm } from "./aceForm";
 
 type Props = {
   sid: number;
@@ -36,36 +26,9 @@ const getInitialValues = (): FormState => {
 export type FormState = z.infer<typeof schema>;
 
 export const EmeraldAceChangeSid = ({ sid }: Props) => {
-  const [results, setResults] = React.useState<BoxNameResult[]>([]);
-  const [hasError, setHasError] = React.useState(false);
-
-  React.useEffect(() => {
-    setResults([]);
-    setHasError(false);
-  }, [sid]);
-
   const manipName = `Change SID to ${sid}`;
 
   const initialValues = getInitialValues();
-
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
-    setHasError(false);
-    setResults([]);
-
-    setTimeout(async () => {
-        //NO_PROD put in aceForm
-      const res = await rngTools.get_emerald_sid_box_names_result(
-        sid,
-        opts.lang,
-      );
-      if (res == null) {
-        setHasError(true);
-        return;
-      }
-
-      setResults(convertAceResultToBoxNames(res));
-    }, 100); // Without setTimeout, it's not obvious that something happened.
-  };
 
   const getFields = (): Field[] => {
     return [
@@ -81,6 +44,10 @@ export const EmeraldAceChangeSid = ({ sid }: Props) => {
     ];
   };
 
+  const onSubmit = (values: FormState) => {
+    return rngTools.get_emerald_sid_box_names_result(sid, values.lang);
+  };
+
   return (
     <Flex vertical>
       <Instructions />
@@ -88,13 +55,12 @@ export const EmeraldAceChangeSid = ({ sid }: Props) => {
       <Typography.Title level={4}> {manipName}</Typography.Title>
 
       <AceForm<FormState>
+        key={sid}
         getFields={getFields}
-        results={results}
         validationSchema={schema}
         initialValues={initialValues}
         onSubmit={onSubmit}
-      >
-        <EmeraldAceStatic />
-     </AceForm>
+      />
+    </Flex>
   );
 };

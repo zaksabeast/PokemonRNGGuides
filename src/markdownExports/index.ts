@@ -212,10 +212,6 @@ const tools = {
     () => import("~/rngToolsUi/gen3/static/static3"),
     (mod) => mod.EmeraldStaticAceChangeSid_WithTargetSetup,
   ),
-  EmeraldAceStatic: lazyLoad(
-    () => import("~/rngToolsUi/gen3/ace/emeraldAceStatic"),
-    (mod) => mod.EmeraldAceStatic,
-  ),
   EmeraldWildPaintingReseeding_WithTargetSetup: lazyLoad(
     () => import("~/rngToolsUi/gen3/wild/wild3"),
     (mod) => mod.EmeraldWildPaintingReseeding_WithTargetSetup,

@@ -1,7 +1,5 @@
-import React from "react";
 import { Field, Flex, FormikSelect } from "~/components";
 import { Typography } from "antd";
-
 import Instructions from "./instructions_ace_change_sid.mdx";
 import z from "zod";
 import { emeraldLangs } from "./emeraldLang";

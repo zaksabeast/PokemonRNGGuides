@@ -24,6 +24,8 @@ import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { Wild3Action } from "~/rngTools";
 import { AllOrNone } from "~/types";
 import { Wild3CalibCaughtMonForPainting } from "../wild/wild3CalibCaughtMonForPainting";
+import { lcrng_distance, pokerng_with_jump } from "~/utils/lcrng";
+import { Tooltip } from "antd";
 
 const FRAME_BATTLE_VIDEO_TO_SWEET_SCENT = 60 * 10; // ~10s
 const NON_VBLANK_ADV_BATTLE_VIDEO_TO_SWEET_SCENT = 210;
@@ -216,6 +218,20 @@ export const EmeraldPaintingReseeding = ({
     }
 
     const isUsingPainting = targetPaintingAdvsProp.before !== 0;
+    const seed = pokerng_with_jump(
+      targetPaintingAdvsProp.before,
+      targetPaintingAdvsProp.after,
+    );
+    const afterTxt = `${formatLargeInteger(targetPaintingAdvsProp.after)}`;
+    const seedTxt = `Seed: ${formatHex(seed, 4)}`;
+    const advFromSeed0 = `Equivalent to ${formatLargeInteger(lcrng_distance(0, seed))} advances without painting reseeding`;
+    const titleAfterPainting = (
+      <Flex vertical>
+        <div>{seedTxt}</div>
+        <div>{advFromSeed0}</div>
+      </Flex>
+    );
+
     return (
       <Flex vertical>
         <h3>Info from the previous step</h3>
@@ -230,13 +246,15 @@ export const EmeraldPaintingReseeding = ({
                     },
                     {
                       label: "Target advance after painting",
-                      input: formatLargeInteger(targetPaintingAdvsProp.after),
+                      input: (
+                        <Tooltip title={titleAfterPainting}>{afterTxt}</Tooltip>
+                      ),
                     },
                   ]
                 : [
                     {
                       label: "Target advance",
-                      input: formatLargeInteger(targetPaintingAdvsProp.after),
+                      input: <Tooltip title={seedTxt}>{afterTxt}</Tooltip>,
                     },
                   ]
             }

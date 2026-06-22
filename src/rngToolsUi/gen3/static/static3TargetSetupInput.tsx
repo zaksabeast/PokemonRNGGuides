@@ -129,7 +129,7 @@ const Static3TargetSetupInputFields = ({
       equivalentInitialAdvs,
     }),
     {
-      label: "Target Method",
+      label: "Target method",
       input: (
         <FormikSelect<FormState, "targetMethod">
           name="targetMethod"

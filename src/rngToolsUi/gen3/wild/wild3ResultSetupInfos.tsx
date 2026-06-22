@@ -14,6 +14,7 @@ import { PidPathResult, ResultSetupInfo } from "./wild3TargetSetupSearcher";
 import { GBA_FPS } from "~/utils/consts";
 import { TargetSetup } from "./wild3TargetSetupInput";
 import { Wild3PokeblockDescription } from "~/components/wild3Pokeblock";
+import { lcrng_distance } from "~/utils/lcrng";
 
 const getMethodLikelihoodColumValue = (
   cycleData: Wild3SearcherCycleData,
@@ -87,10 +88,19 @@ const getResultSetupInfoColumns = ({
           dataIndex: "advs",
           monospace: true,
           render: (advs, { seed, actionName }) => {
+            const title = (
+              <Flex vertical>
+                <div>
+                  Seed at start of {actionName}: {formatHex(seed)}
+                </div>
+                <div>
+                  Equivalent to {formatLargeInteger(lcrng_distance(0, seed))}{" "}
+                  advances without painting reseeding
+                </div>
+              </Flex>
+            );
             return (
-              <Tooltip
-                title={`Seed at start of ${actionName}: ${formatHex(seed)}`}
-              >
+              <Tooltip title={title}>
                 {formatLargeInteger(advs.adv_after_painting)}
               </Tooltip>
             );

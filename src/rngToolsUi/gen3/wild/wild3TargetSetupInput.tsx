@@ -199,7 +199,7 @@ const getFields = ({
       equivalentInitialAdvs,
     }),
     {
-      label: "Target Method",
+      label: "Target method",
       input: (
         <FormikSelect<FormState, "targetMethod">
           name="targetMethod"

@@ -5,6 +5,7 @@ import {
   TooltipWithIcon,
   Link,
   ResultColumn,
+  Flex,
 } from "~/components";
 import {
   minAdvsAfterPaintingLabel,
@@ -38,6 +39,8 @@ import { formatDuration } from "~/utils/formatDuration";
 import { formatHex } from "~/utils/formatHex";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { match } from "ts-pattern";
+import { AbilityName } from "~/components/abilityName";
+import { lcrng_distance } from "~/utils/lcrng";
 
 // This file contains the code shared by Static3 and Wild3 targetSetupSearcher webtools.
 
@@ -240,24 +243,40 @@ export const getTidSidSetupFilterFields = ({
 export const getTargetResultColumns = (
   game: Static3Game,
   isApproxAdv: boolean,
+  usingAceForSid: boolean,
 ): ResultColumn<PidPathResult>[] => {
   return [
     {
       title: "Advances",
       dataIndex: "advs",
       monospace: true,
-      render: (advs, { wait_dur }) => {
+      render: (advs, { wait_dur, seed }) => {
         const { frame_before_painting: before, adv_after_painting: after } =
           advs;
 
-        const beforeTxt =
-          before !== 0 && game === "emerald"
-            ? `${formatLargeInteger(before)} | `
-            : "";
+        const usingPainting = before !== 0 && game === "emerald";
+
+        const beforeTxt = usingPainting
+          ? `${formatLargeInteger(before)} | `
+          : "";
 
         const afterTxt = `${isApproxAdv ? "~" : ""}${formatLargeInteger(after)}`;
         const text = `${beforeTxt}${afterTxt}`;
-        const title = formatDuration(wait_dur / GBA_FPS);
+        const durTxt = formatDuration(wait_dur / GBA_FPS);
+
+        if (isApproxAdv) {
+          return <Tooltip title={durTxt}>{text}</Tooltip>;
+        }
+
+        const advFromSeed0 = `Equivalent to ${formatLargeInteger(lcrng_distance(0, seed))} advances without painting reseeding`;
+
+        const title = (
+          <Flex vertical>
+            <div>{durTxt}</div>
+            <div>Seed: {formatHex(seed, 4)}</div>
+            {usingPainting && <div>{advFromSeed0}</div>}
+          </Flex>
+        );
         return <Tooltip title={title}>{text}</Tooltip>;
       },
     },
@@ -265,7 +284,7 @@ export const getTargetResultColumns = (
     {
       title: "Shiny",
       dataIndex: "shiny",
-      render: (shiny: boolean) => (shiny ? "Yes" : "No"),
+      render: (shiny: boolean) => (shiny || usingAceForSid ? "Yes" : "No"),
     },
     {
       title: "IV",
@@ -278,7 +297,15 @@ export const getTargetResultColumns = (
       monospace: true,
       render: (pid) => formatHex(pid),
     },
-    { title: "Ability", dataIndex: "ability" },
+    {
+      title: "Ability",
+      dataIndex: "ability",
+      render: (abilityType, values) => {
+        return (
+          <AbilityName species={values.species} abilityType={abilityType} />
+        );
+      },
+    },
     { title: "Gender", dataIndex: "gender" },
     {
       title: "Hidden Power",

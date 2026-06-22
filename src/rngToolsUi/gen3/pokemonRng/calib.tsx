@@ -1,5 +1,5 @@
 import React from "react";
-import { Field, NumberInput, Select } from "~/components";
+import { Field, Flex, NumberInput, Select } from "~/components";
 import { Gen3Console, gen3ConsoleOptions } from "~/types/console";
 import {
   formatLargeInteger,
@@ -7,6 +7,8 @@ import {
 } from "~/utils/formatLargeInteger";
 import { formatHex } from "~/utils/formatHex";
 import { BattleVideoInfo } from "../battleVideo/battleVideo";
+import { lcrng_distance, pokerng_with_jump } from "~/utils/lcrng";
+import { Tooltip } from "antd";
 
 export type CalibOffset = {
   offset: number; // between pressing A and reaching RNG manip start function.
@@ -106,9 +108,31 @@ export const buildGen3CalibPreviousStepFields = ({
 }): Field[] => {
   const usingPaintingReseeding = battleVideoInfo.targetPaintingAdvs.before > 0;
 
+  const seed = pokerng_with_jump(
+    battleVideoInfo.targetPaintingAdvs.before,
+    battleVideoInfo.targetPaintingAdvs.after,
+  );
+  const seedTxt = `Seed: ${formatHex(seed, 4)}`;
+
+  const targetAdvTxtWithoutPainting =
+    formatLargeInteger(targetSetup.targetPaintingAdvs.after) +
+    (initialAdv > 0
+      ? ` (${formatLargeIntegerWithSign(targetSetup.targetPaintingAdvs.after - initialAdv)} from Battle Video)`
+      : ``);
+
+  const targetAdvTxtWithPainting = `${formatLargeInteger(targetSetup.targetPaintingAdvs.after)} (${formatLargeIntegerWithSign(targetSetup.targetPaintingAdvs.after - initialAdv)} from Battle Video)`;
+  const advFromSeed0 = `Equivalent to ${formatLargeInteger(lcrng_distance(0, seed))} advances without painting reseeding`;
+
+  const targetAdvTitleWithPainting = (
+    <Flex vertical>
+      <div>{seedTxt}</div>
+      <div>{advFromSeed0}</div>
+    </Flex>
+  );
+
   return [
     {
-      label: "Target Method",
+      label: "Target method",
       input: targetSetup.targetMethod,
     },
     {
@@ -123,16 +147,16 @@ export const buildGen3CalibPreviousStepFields = ({
     },
     {
       label: "Target advance",
-      input:
-        formatLargeInteger(targetSetup.targetPaintingAdvs.after) +
-        (initialAdv > 0
-          ? ` (${formatLargeIntegerWithSign(targetSetup.targetPaintingAdvs.after - initialAdv)} from Battle Video)`
-          : ``),
+      input: <Tooltip title={seedTxt}>{targetAdvTxtWithoutPainting}</Tooltip>,
       show: !usingPaintingReseeding,
     },
     {
       label: "Target advance after painting",
-      input: `${formatLargeInteger(targetSetup.targetPaintingAdvs.after)} (${formatLargeIntegerWithSign(targetSetup.targetPaintingAdvs.after - initialAdv)} from Battle Video)`,
+      input: (
+        <Tooltip title={targetAdvTitleWithPainting}>
+          {targetAdvTxtWithPainting}
+        </Tooltip>
+      ),
       show: usingPaintingReseeding,
     },
   ];

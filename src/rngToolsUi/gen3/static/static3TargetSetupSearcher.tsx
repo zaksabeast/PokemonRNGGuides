@@ -94,7 +94,11 @@ export const Static3TargetSetupSearcher = ({
   const [tidForAceSid, setTidForAceSid] = React.useState<number | null>(null);
   const initialValues = getInitialValues(game);
 
-  const pidPathColumns = getTargetResultColumns(game, false);
+  const pidPathColumns = getTargetResultColumns(
+    game,
+    false,
+    tidForAceSid !== null,
+  );
 
   const onSubmit: RngToolSubmit<FormState> = async (values) => {
     const pidPathResults = await searchStatic3Target(game, values);

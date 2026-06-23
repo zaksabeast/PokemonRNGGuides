@@ -121,7 +121,7 @@ export const PaintingReseedingTimers = ({
 
   return (
     <>
-      <h2>Interact with the painting and create the Battle Video</h2>
+      <h2>Step 2: Interact with the painting and create the Battle Video</h2>
       <Instructions_0_createBattleVideo />
 
       <FormFieldTable fields={fields} />
@@ -132,7 +132,7 @@ export const PaintingReseedingTimers = ({
         stopButtonTrackerId="painting_battle_video_timer_stop"
       />
 
-      <h2>Validate that the painting frame was hit</h2>
+      <h2>Step 3: Validate that the painting frame was hit</h2>
       <Instructions_1_validateFrame />
       <MultiTimer
         milliseconds={millisecondsValidateFrame}
@@ -198,7 +198,7 @@ export const EmeraldPaintingReseeding = ({
 
   const inputForm = () => (
     <>
-      <h2>Selecting the target painting frame and advance</h2>
+      <h2>Step 1: Selecting the target painting frame and advance</h2>
       <div>
         Fill the fields, press Generate and select the row with the smallest
         time to create Battle Video.

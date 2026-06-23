@@ -276,7 +276,7 @@ export const Wild3TargetSetupInputFields = ({
   });
 
   const equivalentInitialAdvs =
-    lcrng_distance(0, targetFrameBeforePainting) + targetAdvance;
+    (lcrng_distance(0, targetFrameBeforePainting) + targetAdvance) % 2 ** 32;
 
   const fields = getFields({
     mapId: map,

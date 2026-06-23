@@ -38,7 +38,7 @@ import { pokerng_with_jump } from "~/utils/lcrng";
 import { MinMaxStats } from "~/types/stat";
 import { FormikAbilityFilter } from "~/components/abilityFilter";
 import { getStatFields } from "~/rngToolsUi/shared/statFields";
-import { formatEmeraldTargetFromPainting } from "~/utils/formatEmeraldTargetFromPainting";
+import { targetAdvanceAfterPaintingTitle } from "./labels";
 
 export const validator = z
   .object({
@@ -367,10 +367,10 @@ export const createColumns = (
       dataIndex: "advance",
       render: (_, values) => {
         const diffTxt = getAdvDiffTxt(values, targetMethod);
-        const title = formatEmeraldTargetFromPainting(
-          values.advance.frame_before_painting,
-          values.advance.adv_after_painting,
-        );
+        const title = targetAdvanceAfterPaintingTitle({
+          before: values.advance.frame_before_painting,
+          after: values.advance.adv_after_painting,
+        });
         return <Tooltip title={title}>{diffTxt}</Tooltip>;
       },
     },

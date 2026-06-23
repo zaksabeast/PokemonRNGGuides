@@ -8,10 +8,11 @@ import {
   Flex,
 } from "~/components";
 import {
+  advanceFromSeed0Txt,
   minAdvsAfterPaintingLabel,
   minFramesBeforePaintingLabel,
   usingPaintingReseedingLabel,
-} from "../wild/wild3Labels";
+} from "../pokemonRng/labels";
 import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
 import {
   FormState as WildFormState,
@@ -40,7 +41,6 @@ import { formatHex } from "~/utils/formatHex";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { match } from "ts-pattern";
 import { AbilityName } from "~/components/abilityName";
-import { lcrng_distance } from "~/utils/lcrng";
 
 // This file contains the code shared by Static3 and Wild3 targetSetupSearcher webtools.
 
@@ -262,19 +262,17 @@ export const getTargetResultColumns = (
 
         const afterTxt = `${isApproxAdv ? "~" : ""}${formatLargeInteger(after)}`;
         const text = `${beforeTxt}${afterTxt}`;
-        const durTxt = formatDuration(wait_dur / GBA_FPS);
+        const durTxt = `${formatDuration(wait_dur / GBA_FPS)} wait`;
 
         if (isApproxAdv) {
           return <Tooltip title={durTxt}>{text}</Tooltip>;
         }
 
-        const advFromSeed0 = `Equivalent to ${formatLargeInteger(lcrng_distance(0, seed))} advances without painting reseeding`;
-
         const title = (
           <Flex vertical>
             <div>{durTxt}</div>
             <div>Seed: {formatHex(seed, 4)}</div>
-            {usingPainting && <div>{advFromSeed0}</div>}
+            {usingPainting && <div>{advanceFromSeed0Txt(seed)}</div>}
           </Flex>
         );
         return <Tooltip title={title}>{text}</Tooltip>;
@@ -300,11 +298,9 @@ export const getTargetResultColumns = (
     {
       title: "Ability",
       dataIndex: "ability",
-      render: (abilityType, values) => {
-        return (
-          <AbilityName species={values.species} abilityType={abilityType} />
-        );
-      },
+      render: (abilityType, values) => (
+        <AbilityName species={values.species} abilityType={abilityType} />
+      ),
     },
     { title: "Gender", dataIndex: "gender" },
     {

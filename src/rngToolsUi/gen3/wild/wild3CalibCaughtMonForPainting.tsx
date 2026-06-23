@@ -10,7 +10,6 @@ import type { TargetSetup } from "./wild3TargetSetupInput";
 import clamp from "lodash-es/clamp";
 import { Tooltip } from "antd";
 import { getGen3IvRating } from "../ivRater";
-import { formatEmeraldTargetFromPainting } from "~/utils/formatEmeraldTargetFromPainting";
 import { formatHex } from "~/utils/formatHex";
 import { createWild3SearcherOptions } from "./wild3CalibCaughtMon";
 import {
@@ -23,6 +22,7 @@ import {
   confidenceRatingColumn,
 } from "../pokemonRng/calibCaughtMon";
 import { Fields } from "./wild3CalibCaughtMon.component";
+import { targetAdvanceAfterPaintingTitle } from "../pokemonRng/labels";
 
 type Props = {
   targetPaintingAdvs: { before: number; after: number };
@@ -235,10 +235,10 @@ export const Wild3CalibCaughtMonForPainting = ({
       dataIndex: "advance",
       render: (_, values) => {
         const diffTxt = getAdvDiffTxt(values, "adv_after_painting");
-        const title = formatEmeraldTargetFromPainting(
-          values.advance.frame_before_painting,
-          values.advance.adv_after_painting,
-        );
+        const title = targetAdvanceAfterPaintingTitle({
+          before: values.advance.frame_before_painting,
+          after: values.advance.adv_after_painting,
+        });
         return <Tooltip title={title}>{diffTxt}</Tooltip>;
       },
     },

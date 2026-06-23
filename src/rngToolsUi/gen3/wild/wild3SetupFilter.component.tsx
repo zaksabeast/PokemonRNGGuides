@@ -194,9 +194,14 @@ const getSetupFields = (obj: {
       label: "RNG-manipulated lead PID",
       tooltip: (
         <>
-          For advanced users. Whether to consider setups that require catching a
-          specific lead Pokemon with RNG-manipulation, then catching your real
-          target Pokemon using that lead. Learn more about{" "}
+          For advanced users.
+          <br />
+          If inactive, likelihood is calculated assuming you're using a common
+          lead cycle speed.
+          <br />
+          If active, likelihood is calculated assuming you will catch a Pokémon
+          with the optimal lead cycle speed then use it to catch your target
+          Pokémon. Learn more about{" "}
           <Link newTab href="/gba-methods-lead-impact/">
             Methods & Leads
           </Link>

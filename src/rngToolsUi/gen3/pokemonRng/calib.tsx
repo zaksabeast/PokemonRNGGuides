@@ -1,12 +1,13 @@
 import React from "react";
 import { Field, NumberInput, Select } from "~/components";
 import { Gen3Console, gen3ConsoleOptions } from "~/types/console";
-import {
-  formatLargeInteger,
-  formatLargeIntegerWithSign,
-} from "~/utils/formatLargeInteger";
-import { formatHex } from "~/utils/formatHex";
+import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { BattleVideoInfo } from "../battleVideo/battleVideo";
+import {
+  targetAdvanceAfterPaintingLabel,
+  targetAdvanceLabel,
+  targetFrameBeforePaintingLabel,
+} from "./labels";
 
 export type CalibOffset = {
   offset: number; // between pressing A and reaching RNG manip start function.
@@ -104,36 +105,22 @@ export const buildGen3CalibPreviousStepFields = ({
   battleVideoInfo: BattleVideoInfo;
   initialAdv: number;
 }): Field[] => {
-  const usingPaintingReseeding = battleVideoInfo.targetPaintingAdvs.before > 0;
-
   return [
     {
-      label: "Target Method",
+      label: "Target method",
       input: targetSetup.targetMethod,
     },
-    {
-      label: "Target frame before painting",
-      input: `${formatLargeInteger(battleVideoInfo.targetPaintingAdvs.before)} (Seed: ${formatHex(battleVideoInfo.targetPaintingAdvs.before, 2)})`,
-      show: usingPaintingReseeding,
-    },
+    targetFrameBeforePaintingLabel(battleVideoInfo.targetPaintingAdvs.before),
     {
       label: "Battle Video advance",
       input: formatLargeInteger(battleVideoInfo.battleVideoAdvAfterPainting),
       show: battleVideoInfo.battleVideoAdvAfterPainting > 0,
     },
-    {
-      label: "Target advance",
-      input:
-        formatLargeInteger(targetSetup.targetPaintingAdvs.after) +
-        (initialAdv > 0
-          ? ` (${formatLargeIntegerWithSign(targetSetup.targetPaintingAdvs.after - initialAdv)} from Battle Video)`
-          : ``),
-      show: !usingPaintingReseeding,
-    },
-    {
-      label: "Target advance after painting",
-      input: `${formatLargeInteger(targetSetup.targetPaintingAdvs.after)} (${formatLargeIntegerWithSign(targetSetup.targetPaintingAdvs.after - initialAdv)} from Battle Video)`,
-      show: usingPaintingReseeding,
-    },
+    targetAdvanceLabel(
+      targetSetup.targetPaintingAdvs.after,
+      targetSetup.targetPaintingAdvs.before === 0,
+      initialAdv,
+    ),
+    targetAdvanceAfterPaintingLabel(targetSetup.targetPaintingAdvs, initialAdv),
   ];
 };

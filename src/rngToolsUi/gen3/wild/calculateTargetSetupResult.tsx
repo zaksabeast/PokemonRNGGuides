@@ -1,4 +1,5 @@
 import {
+  AbilityType,
   rngTools,
   Species,
   Wild3Action,
@@ -75,9 +76,17 @@ const getProbabilityInfo = async (
 
 /** Example of return values: Sturdy, Sturdy (1), Sturdy (2), First, Second */
 export const getAbilityDisplayStr = async (species: Species, pid: number) => {
-  const abilities = await rngTools.get_species_abilities(species);
   const abilityType = await rngTools.get_ability_type_from_gen3_pid(pid);
 
+  return getAbilityDisplayStrFromAbType(species, abilityType);
+};
+
+/** Example of return values: Sturdy, Sturdy (1), Sturdy (2), First, Second */
+export const getAbilityDisplayStrFromAbType = async (
+  species: Species,
+  abilityType: AbilityType,
+) => {
+  const abilities = await rngTools.get_species_abilities(species);
   const suffix =
     abilities[0] === abilities[1]
       ? ` (${abilityType === "First" ? 1 : 2})`
@@ -89,6 +98,9 @@ export const getAbilityDisplayStr = async (species: Species, pid: number) => {
     return abilities[0] == null && abilities[1] == null
       ? abilityType
       : `${abilities[1] ?? abilities[0]}${suffix}`;
+  }
+  if (abilityType === "Hidden") {
+    return abilityType;
   }
   return "";
 };

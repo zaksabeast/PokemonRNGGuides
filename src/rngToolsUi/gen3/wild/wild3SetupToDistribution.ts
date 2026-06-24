@@ -132,8 +132,9 @@ export const setupToDistributions = async (
     uiResults: convertSearcherResultsToUIResults(results),
     cycle_at_moments,
     advanceAtSweetScent:
-      lcrng_distance(0, targetSetup.targetPaintingAdvs.before) +
-      targetSetup.targetPaintingAdvs.after,
+      (lcrng_distance(0, targetSetup.targetPaintingAdvs.before) +
+        targetSetup.targetPaintingAdvs.after) %
+      2 ** 32,
     hasError: false,
     idealLeadCycleSpd,
   };

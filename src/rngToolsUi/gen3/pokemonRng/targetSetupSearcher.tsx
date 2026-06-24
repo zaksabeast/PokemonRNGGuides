@@ -5,12 +5,14 @@ import {
   TooltipWithIcon,
   Link,
   ResultColumn,
+  Flex,
 } from "~/components";
 import {
+  advanceFromSeed0Txt,
   minAdvsAfterPaintingLabel,
   minFramesBeforePaintingLabel,
   usingPaintingReseedingLabel,
-} from "../wild/wild3Labels";
+} from "../pokemonRng/labels";
 import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
 import {
   FormState as WildFormState,
@@ -38,6 +40,7 @@ import { formatDuration } from "~/utils/formatDuration";
 import { formatHex } from "~/utils/formatHex";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { match } from "ts-pattern";
+import { AbilityName } from "~/components/abilityName";
 
 // This file contains the code shared by Static3 and Wild3 targetSetupSearcher webtools.
 
@@ -196,6 +199,13 @@ export const getPaintingSetupFilterFields = ({
   ];
 };
 
+export const getSidResultingInShiny = (pid: number, tid: number) => {
+  const pidh = pid >>> 16;
+  const pidl = pid & 0xffff;
+  const psv = (pidh ^ pidl) >>> 3;
+  return (tid ^ ((psv << 3) | (tid & 0x7))) & 0xffff;
+};
+
 export const getTidSidSetupFilterFields = ({
   game,
   filter_shiny,
@@ -240,24 +250,38 @@ export const getTidSidSetupFilterFields = ({
 export const getTargetResultColumns = (
   game: Static3Game,
   isApproxAdv: boolean,
+  usingAceForSid: boolean,
 ): ResultColumn<PidPathResult>[] => {
   return [
     {
       title: "Advances",
       dataIndex: "advs",
       monospace: true,
-      render: (advs, { wait_dur }) => {
+      render: (advs, { wait_dur, seed }) => {
         const { frame_before_painting: before, adv_after_painting: after } =
           advs;
 
-        const beforeTxt =
-          before !== 0 && game === "emerald"
-            ? `${formatLargeInteger(before)} | `
-            : "";
+        const usingPainting = before !== 0 && game === "emerald";
+
+        const beforeTxt = usingPainting
+          ? `${formatLargeInteger(before)} | `
+          : "";
 
         const afterTxt = `${isApproxAdv ? "~" : ""}${formatLargeInteger(after)}`;
         const text = `${beforeTxt}${afterTxt}`;
-        const title = formatDuration(wait_dur / GBA_FPS);
+        const durTxt = `${formatDuration(wait_dur / GBA_FPS)} wait`;
+
+        if (isApproxAdv) {
+          return <Tooltip title={durTxt}>{text}</Tooltip>;
+        }
+
+        const title = (
+          <Flex vertical>
+            <div>{durTxt}</div>
+            <div>Seed: {formatHex(seed, 4)}</div>
+            {usingPainting && <div>{advanceFromSeed0Txt(seed)}</div>}
+          </Flex>
+        );
         return <Tooltip title={title}>{text}</Tooltip>;
       },
     },
@@ -265,7 +289,7 @@ export const getTargetResultColumns = (
     {
       title: "Shiny",
       dataIndex: "shiny",
-      render: (shiny: boolean) => (shiny ? "Yes" : "No"),
+      render: (shiny: boolean) => (shiny || usingAceForSid ? "Yes" : "No"),
     },
     {
       title: "IV",
@@ -278,7 +302,13 @@ export const getTargetResultColumns = (
       monospace: true,
       render: (pid) => formatHex(pid),
     },
-    { title: "Ability", dataIndex: "ability" },
+    {
+      title: "Ability",
+      dataIndex: "ability",
+      render: (abilityType, values) => (
+        <AbilityName species={values.species} abilityType={abilityType} />
+      ),
+    },
     { title: "Gender", dataIndex: "gender" },
     {
       title: "Hidden Power",

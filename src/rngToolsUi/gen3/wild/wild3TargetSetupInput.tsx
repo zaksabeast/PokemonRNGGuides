@@ -199,7 +199,7 @@ const getFields = ({
       equivalentInitialAdvs,
     }),
     {
-      label: "Target Method",
+      label: "Target method",
       input: (
         <FormikSelect<FormState, "targetMethod">
           name="targetMethod"
@@ -276,7 +276,7 @@ export const Wild3TargetSetupInputFields = ({
   });
 
   const equivalentInitialAdvs =
-    lcrng_distance(0, targetFrameBeforePainting) + targetAdvance;
+    (lcrng_distance(0, targetFrameBeforePainting) + targetAdvance) % 2 ** 32;
 
   const fields = getFields({
     mapId: map,

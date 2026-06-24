@@ -112,7 +112,9 @@ const getInitialValues = (): FormState => {
   };
 };
 
-const getPidPathColumns = (): ResultColumn<PidPathResult>[] => {
+const getPidPathColumns = (
+  usingAceForSid: boolean,
+): ResultColumn<PidPathResult>[] => {
   return [
     {
       title: "",
@@ -159,7 +161,7 @@ const getPidPathColumns = (): ResultColumn<PidPathResult>[] => {
         );
       },
     },
-    ...getTargetResultColumns("emerald", true),
+    ...getTargetResultColumns("emerald", true, usingAceForSid),
   ];
 };
 
@@ -209,7 +211,7 @@ export const Wild3TargetSetupSearcher = ({
 
   const initialValues = getInitialValues();
 
-  const pidPathColumns = getPidPathColumns();
+  const pidPathColumns = getPidPathColumns(tidForAceSid !== null);
 
   const [leadCycleSpeed, setLeadCycleSpeed] = React.useState<number | null>(0);
 

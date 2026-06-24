@@ -31,6 +31,7 @@ import {
 } from "~/types/console";
 import { Wild3Action } from "~/rngTools";
 import { isFishingAction } from "../wild/utils";
+import { advanceAfterTxt, targetAdvanceLabel } from "../pokemonRng/labels";
 
 // No waiting in battle
 const ADV_MISC_NO_BATTLE = 100; // Advances before last input not caused by frames when not waiting in battle
@@ -146,16 +147,15 @@ const MyFields = ({
       input: <FormikEmeraldTargetAdvance<FormState> name="targetAdvance" />,
       show: fixedData == null,
     },
+    targetAdvanceLabel(
+      targetAdvance,
+      fixedData?.isAfterPainting === false,
+      existingBattleVideoAdv,
+    ),
     {
-      label: fixedData?.isAfterPainting
-        ? "Target advance after painting"
-        : "Target advance",
-      input:
-        formatLargeInteger(targetAdvance) +
-        (fixedData?.isUpdatingExisting
-          ? ` (+${formatLargeInteger(targetAdvance - existingBattleVideoAdv)})`
-          : ``),
-      show: fixedData != null,
+      label: "Target advance after painting",
+      input: advanceAfterTxt(targetAdvance, existingBattleVideoAdv),
+      show: fixedData?.isAfterPainting === true,
     },
     {
       label: "Is updating existing Battle Video?",

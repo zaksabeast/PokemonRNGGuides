@@ -1,0 +1,1 @@
+import{r as e}from"./react-DZDkGa0m.js";var t=`Diamond`,n=e({game:t,munchlaxLocations:null,targetLocation:`FloaromaMeadow`,honeyTreeMap:{showTrees:!0,showRecommended:!0,showMunchlax:!0}});export{n,t};

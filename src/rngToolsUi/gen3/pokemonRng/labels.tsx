@@ -16,7 +16,7 @@ export const minFramesBeforePaintingLabel = () => ({
 export const minAdvsAfterPaintingLabel = () => ({
   label: "Min advances after painting",
   tooltip:
-    "To ensure there is enough time between interacting with the painting, and creating a Battle Video.",
+    "To ensure there is enough time between interacting with the painting and creating a Battle Video.",
 });
 
 export const usingPaintingReseedingLabel = () => ({

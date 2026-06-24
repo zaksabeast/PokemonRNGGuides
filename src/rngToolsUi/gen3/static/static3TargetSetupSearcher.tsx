@@ -19,6 +19,7 @@ import {
   targetSetupSearcherSchema,
   getTargetSetupSearcherInitialValues,
   getTargetResultColumns,
+  getSidResultingInShiny,
 } from "../pokemonRng/targetSetupSearcher";
 
 export type TargetSetup = {
@@ -70,6 +71,11 @@ const convertToTargetSetup = (
   pidPath: PidPathResult,
   tidForAceSid: number | null,
 ): TargetSetup => {
+  const aceSid =
+    tidForAceSid == null
+      ? null
+      : getSidResultingInShiny(pidPath.pid, tidForAceSid);
+
   return {
     game,
     species: pidPath.species,
@@ -79,7 +85,7 @@ const convertToTargetSetup = (
       after: pidPath.advs.adv_after_painting,
     },
     targetMethod: pidPath.method,
-    aceSid: tidForAceSid,
+    aceSid,
   };
 };
 

@@ -15,6 +15,7 @@ import { GBA_FPS } from "~/utils/consts";
 import { TargetSetup } from "./wild3TargetSetupInput";
 import { Wild3PokeblockDescription } from "~/components/wild3Pokeblock";
 import { targetAdvanceAfterPaintingTitle } from "../pokemonRng/labels";
+import { getSidResultingInShiny } from "../pokemonRng/targetSetupSearcher";
 
 const getMethodLikelihoodColumValue = (
   cycleData: Wild3SearcherCycleData,
@@ -363,13 +364,6 @@ type Props = {
   rngManipulatedLeadPid: boolean;
   tidForAceSid: number | null;
   setTargetSetup: (targetSetup: TargetSetup | null) => void;
-};
-
-const getSidResultingInShiny = (pid: number, tid: number) => {
-  const pidh = pid >>> 16;
-  const pidl = pid & 0xffff;
-  const psv = (pidh ^ pidl) >>> 3;
-  return (tid ^ ((psv << 3) | (tid & 0x7))) & 0xffff;
 };
 
 const setupInfoToTargetSetup = (

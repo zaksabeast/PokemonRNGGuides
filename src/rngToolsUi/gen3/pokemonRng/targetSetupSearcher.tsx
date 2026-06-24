@@ -199,6 +199,13 @@ export const getPaintingSetupFilterFields = ({
   ];
 };
 
+export const getSidResultingInShiny = (pid: number, tid: number) => {
+  const pidh = pid >>> 16;
+  const pidl = pid & 0xffff;
+  const psv = (pidh ^ pidl) >>> 3;
+  return (tid ^ ((psv << 3) | (tid & 0x7))) & 0xffff;
+};
+
 export const getTidSidSetupFilterFields = ({
   game,
   filter_shiny,

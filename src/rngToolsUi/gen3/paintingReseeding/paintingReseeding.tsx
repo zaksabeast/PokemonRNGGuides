@@ -19,11 +19,15 @@ import Instructions_0_createBattleVideo from "./instructions_0_createBattleVideo
 import Instructions_1_validateFrame from "./instructions_1_validateFrame.mdx";
 import Instructions_2_validateFrame from "./instructions_2_validateFrame.mdx";
 import { BattleVideo, BattleVideoInfo } from "../battleVideo/battleVideo";
-import { formatHex } from "~/utils/formatHex";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { Wild3Action } from "~/rngTools";
 import { AllOrNone } from "~/types";
 import { Wild3CalibCaughtMonForPainting } from "../wild/wild3CalibCaughtMonForPainting";
+import {
+  targetAdvanceAfterPaintingLabel,
+  targetAdvanceLabel,
+  targetFrameBeforePaintingLabel,
+} from "../pokemonRng/labels";
 
 const FRAME_BATTLE_VIDEO_TO_SWEET_SCENT = 60 * 10; // ~10s
 const NON_VBLANK_ADV_BATTLE_VIDEO_TO_SWEET_SCENT = 210;
@@ -80,10 +84,7 @@ export const PaintingReseedingTimers = ({
   const labelsValidateFrame = ["Close the Battle Video", "Trigger Sweet Scent"];
 
   const fields: Field[] = [
-    {
-      label: "Target frame before painting",
-      input: `${formatLargeInteger(frame_before_painting)} (Seed: ${formatHex(frame_before_painting, 2)})`,
-    },
+    targetFrameBeforePaintingLabel(frame_before_painting),
     {
       label: "Battle Video created at",
       input: `~${formatLargeInteger(existingBattleVideoAdv)} advances after painting.`,
@@ -120,7 +121,7 @@ export const PaintingReseedingTimers = ({
 
   return (
     <>
-      <h2>Interact with the painting and create the Battle Video</h2>
+      <h2>Step 2: Interact with the painting and create the Battle Video</h2>
       <Instructions_0_createBattleVideo />
 
       <FormFieldTable fields={fields} />
@@ -131,7 +132,7 @@ export const PaintingReseedingTimers = ({
         stopButtonTrackerId="painting_battle_video_timer_stop"
       />
 
-      <h2>Validate that the painting frame was hit</h2>
+      <h2>Step 3: Validate that the painting frame was hit</h2>
       <Instructions_1_validateFrame />
       <MultiTimer
         milliseconds={millisecondsValidateFrame}
@@ -197,7 +198,7 @@ export const EmeraldPaintingReseeding = ({
 
   const inputForm = () => (
     <>
-      <h2>Selecting the target painting frame and advance</h2>
+      <h2>Step 1: Selecting the target painting frame and advance</h2>
       <div>
         Fill the fields, press Generate and select the row with the smallest
         time to create Battle Video.
@@ -215,31 +216,19 @@ export const EmeraldPaintingReseeding = ({
       return null;
     }
 
-    const isUsingPainting = targetPaintingAdvsProp.before !== 0;
     return (
       <Flex vertical>
         <h3>Info from the previous step</h3>
         <Flex ml={20} vertical>
           <FormFieldTable
-            fields={
-              isUsingPainting
-                ? [
-                    {
-                      label: "Target frame before painting",
-                      input: `${formatLargeInteger(targetPaintingAdvsProp.before)} (Seed: ${formatHex(targetPaintingAdvsProp.before, 2)})`,
-                    },
-                    {
-                      label: "Target advance after painting",
-                      input: formatLargeInteger(targetPaintingAdvsProp.after),
-                    },
-                  ]
-                : [
-                    {
-                      label: "Target advance",
-                      input: formatLargeInteger(targetPaintingAdvsProp.after),
-                    },
-                  ]
-            }
+            fields={[
+              targetFrameBeforePaintingLabel(targetPaintingAdvsProp.before),
+              targetAdvanceAfterPaintingLabel(targetPaintingAdvsProp),
+              targetAdvanceLabel(
+                targetPaintingAdvsProp.after,
+                targetPaintingAdvsProp.before === 0,
+              ),
+            ]}
           />
           {clearAll != null && (
             <Button

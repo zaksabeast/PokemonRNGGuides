@@ -89,7 +89,7 @@ const Static3TargetSetupInputFields = ({
     selectedSpecies,
   );
   const equivalentInitialAdvs =
-    lcrng_distance(0, targetFrameBeforePainting) + targetAdvance;
+    (lcrng_distance(0, targetFrameBeforePainting) + targetAdvance) % 2 ** 32;
 
   React.useEffect(() => {
     if (!possibleRoaming.includes(roaming)) {
@@ -129,7 +129,7 @@ const Static3TargetSetupInputFields = ({
       equivalentInitialAdvs,
     }),
     {
-      label: "Target Method",
+      label: "Target method",
       input: (
         <FormikSelect<FormState, "targetMethod">
           name="targetMethod"

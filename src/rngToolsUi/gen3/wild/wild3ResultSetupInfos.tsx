@@ -14,6 +14,8 @@ import { PidPathResult, ResultSetupInfo } from "./wild3TargetSetupSearcher";
 import { GBA_FPS } from "~/utils/consts";
 import { TargetSetup } from "./wild3TargetSetupInput";
 import { Wild3PokeblockDescription } from "~/components/wild3Pokeblock";
+import { targetAdvanceAfterPaintingTitle } from "../pokemonRng/labels";
+import { getSidResultingInShiny } from "../pokemonRng/targetSetupSearcher";
 
 const getMethodLikelihoodColumValue = (
   cycleData: Wild3SearcherCycleData,
@@ -56,9 +58,7 @@ const getResultSetupInfoColumns = ({
         const painting_seed = formatHex(seed);
         const durInMinutes = formatDuration(adv / GBA_FPS);
         return (
-          <Tooltip
-            title={`Seed when performing the player action: ${painting_seed}. (${durInMinutes})`}
-          >
+          <Tooltip title={`Seed: ${painting_seed}. (${durInMinutes})`}>
             {formatLargeInteger(adv)}
           </Tooltip>
         );
@@ -86,10 +86,13 @@ const getResultSetupInfoColumns = ({
           title: "After Reseed",
           dataIndex: "advs",
           monospace: true,
-          render: (advs, { seed, actionName }) => {
+          render: (advs) => {
             return (
               <Tooltip
-                title={`Seed at start of ${actionName}: ${formatHex(seed)}`}
+                title={targetAdvanceAfterPaintingTitle({
+                  before: advs.frame_before_painting,
+                  after: advs.adv_after_painting,
+                })}
               >
                 {formatLargeInteger(advs.adv_after_painting)}
               </Tooltip>
@@ -361,13 +364,6 @@ type Props = {
   rngManipulatedLeadPid: boolean;
   tidForAceSid: number | null;
   setTargetSetup: (targetSetup: TargetSetup | null) => void;
-};
-
-const getSidResultingInShiny = (pid: number, tid: number) => {
-  const pidh = pid >>> 16;
-  const pidl = pid & 0xffff;
-  const psv = (pidh ^ pidl) >>> 3;
-  return (tid ^ ((psv << 3) | (tid & 0x7))) & 0xffff;
 };
 
 const setupInfoToTargetSetup = (

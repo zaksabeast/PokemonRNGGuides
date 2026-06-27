@@ -24,11 +24,11 @@ import { lcrng_distance, pokerng_with_jump } from "~/utils/lcrng";
 import { FormikEmeraldTargetAdvance } from "~/components/emeraldTargetAdvance";
 import { match } from "ts-pattern";
 import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
-import { formatEmeraldTargetFromPainting } from "~/utils/formatEmeraldTargetFromPainting";
 import {
   minAdvsAfterPaintingLabel,
   minFramesBeforePaintingLabel,
-} from "~/rngToolsUi/gen3/wild/wild3Labels";
+  targetAdvanceAfterPaintingTitle,
+} from "~/rngToolsUi/gen3/pokemonRng/labels";
 
 type Result = Wild3PaintingAdvsAndDur & { uid: number };
 
@@ -156,10 +156,10 @@ const MyFields = () => {
   const advAfterPainting = useWatch<FormState, "advAfterPainting">({
     name: "advAfterPainting",
   });
-  const resultingTargetTxt = formatEmeraldTargetFromPainting(
-    frameBeforePainting ?? 0,
-    advAfterPainting ?? 0,
-  );
+  const resultingTargetTxt = targetAdvanceAfterPaintingTitle({
+    before: frameBeforePainting ?? 0,
+    after: advAfterPainting ?? 0,
+  });
 
   const fields: Field[] = [
     {

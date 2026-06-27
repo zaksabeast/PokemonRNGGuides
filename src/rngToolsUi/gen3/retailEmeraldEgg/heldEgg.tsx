@@ -15,11 +15,9 @@ import {
 import { useCurrentStep } from "~/components/stepper/state";
 import { rngTools, Gen3HeldEgg, PokeNavTrainer } from "~/rngTools";
 import { getGen3SpeciesOptions, species } from "~/types/species";
-import { nature } from "~/types/nature";
 import {
   getPkmFilterFields,
   getPkmFilterInitialValues,
-  getNatureInputProps,
   pkmFilterSchema,
 } from "~/components/pkmFilter";
 import { z } from "zod";
@@ -143,8 +141,6 @@ const Validator = z
     calibration: z.number().int().min(0),
     has_roamer: z.boolean(),
     has_lightning_rod: z.boolean(),
-    female_has_everstone: z.boolean(),
-    female_nature: z.enum(nature),
     compatability: z.enum(compatability),
     tid: z.number().int().min(0).max(65535),
     sid: z.number().int().min(0).max(65535),
@@ -159,8 +155,6 @@ const initialValues: FormState = {
   calibration: 19,
   has_roamer: false,
   has_lightning_rod: true,
-  female_has_everstone: false,
-  female_nature: "Adamant",
   compatability: "GetAlong",
   tid: 0,
   sid: 0,
@@ -196,19 +190,6 @@ const Fields = ({ t }: FieldsProps) => {
     {
       label: t["Roamer is active"],
       input: <FormikSwitch<FormState> name="has_roamer" />,
-    },
-    {
-      label: t["Female has everstone"],
-      input: <FormikSwitch<FormState> name="female_has_everstone" />,
-    },
-    {
-      label: t["Female nature"],
-      input: (
-        <FormikSelect<FormState, "female_nature">
-          name="female_nature"
-          {...getNatureInputProps(t)}
-        />
-      ),
     },
     {
       label: t["Egg species"],

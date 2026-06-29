@@ -1,42 +1,68 @@
 ---
-- title: "Diamond, Pearl, and Platinum PokeRadar RNG"
-  navDrawerTitle: "PokeRadar RNG"
-  description: "Learn two different methods for RNG manipulation with the PokéRadar in Diamond, Pearl, and Platinum."
+- title: "Diamond, Pearl, and Platinum PokéRadar RNG"
+  navDrawerTitle: "PokéRadar RNG"
+  description: "Learn how to RNG PokéRadar in Diamond, Pearl, and Platinum for shiny, high-IV Pokémon."
   slug: "dppt-pokeradar-rng"
   category: "Diamond, Pearl, and Platinum"
   section: "pokemon_rng"
+  isRoughDraft: true
   variant:
     - "retail"
     - "cfw-emu"
 ---
 
-## Tools
-
-- [This specific build of PokeFinder](https://mega.nz/file/cgxm3ajT#qZxPCoSMGo64Xrw6TdAywqbBeUOk0il53MavrFqKr0Q) by Real.96. It will be merged with the main PokeFinder in the future.
-- Some repels.
-
 ## Intro
 
-This guide explains how to do PokeRadar RNG based on a chain at 1. It assumes you know the basics of Gen 4 RNG and works for both emulated and retail play.
+In this guide we will explain how PokéRadar works and how to perform RNG Manipulation with it on Pokemon Diamond, Pearl and Platinum!
 
-## 1-Chain Case
+PokéRadar is an item that allows you to find particular wild Pokémon in the tall grass and create "chains" of consecutive encounters with the same species. It is the most famous method of Gen 4 together with the Masuda method for hunting Shiny Pokémon, because long chains greatly increase the chances of finding one.
+It is usually used to catch exclusive Pokémon or perform RNG manipulation where it is not possible to do so, such as during a blizzard or a sandstorm.
 
-This allows for shiny chained spreads but requires more setup.
+## How does PokéRadar work?
 
-1. Launch PokeFinder, assuming profile setup is done, and open Gen 4 => Wild => Searcher.
-2. On the Settings tab, check PokeRadar, route, and Pokémon. Check the PokeRadar Shiny and Shiny Patch boxes.
-3. Input filters, selecting one encounter slot. Advances is for IVs, nature, etc., and Shiny Patch is for the shiny appearance.
+Once used, 4 "rings" are created, each spaced 1 tile where at least one piece of tall grass per ring will vibrate, indicating that at that specific point if the user passes over that tile, a wild encounter will be started.
 
-```
-Note: You need to defeat a Pokémon, walk to reset the PokeRadar, and search for a spread range of about 300-500 or more. Select a Shiny Patch around 200 advances. Anything less won't work.
-```
+The first pokemon encountered, if it is captured or knocked out, will start a chain with that pokemon species. The longer the chain becomes, the more the game increases the chance that a special lump containing a Shiny Pokémon will appear.
 
-4. In-game, hit your initial seed. Trigger the PokeRadar, find your chain's Pokémon, and defeat it.
-5. Walk until the PokeRadar resets.
-6. Advance the RNG to your Shiny Patch. Find a big Grass Patch for the best results. Search within a 2 by 2 advance range for a closer Shiny Patch.
-7. The Shiny Patch should appear. Stand next to it and open your bag.
-8. Advance near your target (adjust if needed), then close the menu and head to your patch.
+### Grass shake types
 
-## Credits
+The grass can shake in two different ways:
 
-- Chinese translation: xuanyelin, Hakuhiro.
+- **Slow**
+- **Fast**
+
+Once you start a chain with one shake type, you must continue entering patches with the same shake type for the entire chain.
+
+For example, if the chain starts from a fast patch and you enter a slow patch, the chain will immediately break.
+
+### Hidden chain breaks
+
+Even patches with the correct shake type are not always safe.
+
+When a patch breaks the chain, the game performs a random 50/50 roll between shake types 1 and 2. Because of this, a dangerous patch can sometimes appear to have the same shake type as a safe patch.
+
+As a result, it is impossible to determine with certainty whether every matching patch is safe just by looking at the animation.
+
+Your chain will break if:
+
+- A random encounter starts (it is therefore very important to use repellent).
+- You encounter a Pokémon other than the one in the chain.
+- You enter a patch of grass that doesn't have the same vibration.
+- You change route, enter a building or leave the area.
+- You turn off the game or restart it.
+- You use the bike.
+- PokéRadar usage fails.
+
+You can stop right at the first encounter, since the probability changes gradually, and the difference between the first two is minimal. But you're free to build a chain as long as you want.
+This tool can also be used simply to build very long chains, as it will show which patches are safe and which aren't.
+
+## In-game preparations
+
+1. Make sure you have a charged PokéRadar.
+2. Go to the area with as much tall grass as possible, trying to cover the entire 9x9. If this is not possible, try to cover as many tiles as possible.
+3. Once done, save the game.
+
+## Webtool
+
+> [!NOTE]
+> WIP, it will be available in the next few days.

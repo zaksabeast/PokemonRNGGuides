@@ -20,59 +20,145 @@ export type Static3Encounter = {
   lvl: number;
   location: string;
   roaming: boolean;
+  calib?: number;
+  mustWaitInMenu?: boolean;
+  offset?: number;
+  note?: string;
 };
 
+/*
+calib: boot game and right before interacting, check number of non-vblank rng updates.
+offset: check rng advance on pause. unpause while holding A, and count number of adv for CreateBoxMon_pid_low
+*/
+
+const TV_SAVE_BLOCK_CALIB = 4; // assumes no lottery
+
 const emeraldStaticEncounters: Static3Encounter[] = [
-  {
-    species: "Chikorita",
+  ...(["Chikorita", "Totodile", "Cyndaquil"] as const).map((species) => ({
+    species,
     lvl: 5,
     location: "Littleroot Town (after completing the Hoenn Pokédex)",
     roaming: false,
-  },
-  {
-    species: "Totodile",
+
+    offset: 3,
+    // +5 for npc moves
+    calib: TV_SAVE_BLOCK_CALIB + 5,
+    mustWaitInMenu: true,
+  })),
+  ...(["Treecko", "Mudkip", "Torchic"] as const).map((species) => ({
+    species,
     lvl: 5,
-    location: "Littleroot Town (after completing the Hoenn Pokédex)",
+    location: "Route 101",
     roaming: false,
-  },
-  {
-    species: "Cyndaquil",
-    lvl: 5,
-    location: "Littleroot Town (after completing the Hoenn Pokédex)",
+    offset: 3,
+    // +5 for npc move
+    calib: TV_SAVE_BLOCK_CALIB + 5,
+  })),
+  ...(["Lileep", "Anorith"] as const).map((species) => ({
+    species,
+    lvl: 20,
+    location: "Rustboro City",
     roaming: false,
-  },
-  { species: "Treecko", lvl: 5, location: "Route 101", roaming: false },
-  { species: "Mudkip", lvl: 5, location: "Route 101", roaming: false },
-  { species: "Torchic", lvl: 5, location: "Route 101", roaming: false },
-  { species: "Lileep", lvl: 20, location: "Rustboro City", roaming: false },
-  { species: "Anorith", lvl: 20, location: "Rustboro City", roaming: false },
+    offset: 3,
+    // standard
+    calib: TV_SAVE_BLOCK_CALIB,
+  })),
   {
     species: "Castform_Normal",
     lvl: 25,
     location: "Weather Institute",
     roaming: false,
   },
-  { species: "Beldum", lvl: 5, location: "Mossdeep City", roaming: false },
-  { species: "Wynaut", lvl: 5, location: "Lavaridge Town", roaming: false },
+  {
+    species: "Beldum",
+    lvl: 5,
+    location: "Mossdeep City",
+    roaming: false,
+    offset: 3,
+    // +1 for npc move
+    calib: TV_SAVE_BLOCK_CALIB + 1,
+  },
+  {
+    species: "Wynaut",
+    lvl: 5,
+    location: "Lavaridge Town",
+    roaming: false,
+    offset: 165,
+    // +3 for npc move
+    calib: TV_SAVE_BLOCK_CALIB + 3,
+  },
   {
     species: "Kecleon",
     lvl: 30,
     location: "Route 119, Route 120",
     roaming: false,
+    offset: 1859 - 1715,
+    // +1 for ambient cry
+    calib: TV_SAVE_BLOCK_CALIB + 1,
   },
-  { species: "Voltorb", lvl: 25, location: "New Mauville", roaming: false },
-  { species: "Electrode", lvl: 30, location: "Aqua Hideout", roaming: false },
+  {
+    species: "Voltorb",
+    lvl: 25,
+    location: "New Mauville",
+    roaming: false,
+    offset: 4,
+    // +1 for ChooseWildMonIndex_Land_Random, +1 for UpdateAmbientCry_v1, +1 for npc move
+    calib: TV_SAVE_BLOCK_CALIB + 3,
+    mustWaitInMenu: true,
+  },
+  {
+    species: "Electrode",
+    lvl: 30,
+    location: "Aqua Hideout",
+    roaming: false,
+    offset: 4,
+    // +2 for npc move (assuming both balls are displayed)
+    calib: TV_SAVE_BLOCK_CALIB + 2,
+    mustWaitInMenu: true,
+  },
   {
     species: "Sudowoodo",
     lvl: 40,
     location: "Battle Frontier",
     roaming: false,
+    offset: 52,
+    // +1 for npc move
+    calib: TV_SAVE_BLOCK_CALIB + 1,
   },
-  { species: "Regirock", lvl: 40, location: "Desert Ruins", roaming: false },
-  { species: "Regice", lvl: 40, location: "Island Cave", roaming: false },
-  { species: "Registeel", lvl: 40, location: "Ancient Tomb", roaming: false },
-  { species: "Latias", lvl: 40, location: "Hoenn (Roaming)", roaming: true },
-  { species: "Latios", lvl: 40, location: "Hoenn (Roaming)", roaming: true },
+  {
+    species: "Regirock",
+    lvl: 40,
+    location: "Desert Ruins",
+    roaming: false,
+    offset: 103,
+    calib: TV_SAVE_BLOCK_CALIB,
+  },
+  {
+    species: "Regice",
+    lvl: 40,
+    location: "Island Cave",
+    roaming: false,
+    offset: 103,
+    calib: TV_SAVE_BLOCK_CALIB,
+  },
+  {
+    species: "Registeel",
+    lvl: 40,
+    location: "Ancient Tomb",
+    roaming: false,
+    offset: 919 - 840,
+    calib: TV_SAVE_BLOCK_CALIB,
+  },
+  ...(["Latias", "Latios"] as const).map((species) => ({
+    species,
+    lvl: 40,
+    location: "Hoenn (Roaming)",
+    roaming: true,
+    offset: 3,
+    // +3 for save block when changing map
+    calib: TV_SAVE_BLOCK_CALIB + 3,
+    // ~2800 minimum advances
+  })),
   {
     species: "Latias",
     lvl: 50,

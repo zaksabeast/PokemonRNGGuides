@@ -1,0 +1,8 @@
+
+- use offset/calib from data
+
+- display image
+- display text depending on mustOpenMenu
+
+- display warning if trying to use painting for starter.
+- display warning if trying to use battle video for starter

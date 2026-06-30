@@ -16,13 +16,28 @@ import {
   buildGen3CalibPreviousStepFields,
 } from "../pokemonRng/calib";
 import { Static3TargetSetupInput } from "./static3TargetSetupInput";
-import Instructions_calib_skip_setup from "../static/instructions_calib_skip_setup.mdx";
+import Instructions_calib_skip_setup from "./instructions_calib_skip_setup.mdx";
+import Instructions_Castform from "./Instructions_Castform.mdx";
 
-// TODO: Have custom values by species.
-const CALIB_OFFSET = {
-  offset: 3, // for starter
-  calibNoBattleVideo: 10,
-  calibBattleVideo: 6,
+const getCalibData = (targetSetup:TargetSetup | null) => {
+    if (targetSetup !== null){
+        const data = getEmeraldStaticCalibData(targetSetup.species, targetSetup.roaming);
+        if (data !== null){
+            return data;
+        }
+    }
+    return {
+        offset: 3,
+        calibNoBattleVideo: 10,
+        calibBattleVideo: 6,
+        mustWaitInMenu:false,
+    };
+};
+
+const getAdditionalInstructions = (species:Species) => {
+    return match(species)
+        .with("Castform", () => <Instructions_Castform />)
+        .otherwise(() => null);
 };
 
 type Props = AllOrNone<{
@@ -112,7 +127,7 @@ export const Static3Calib = ({
 
   const initialAdv = battleVideoInfo?.battleVideoAdvAfterPainting ?? 0;
 
-  const { offset, calibBattleVideo, calibNoBattleVideo } = CALIB_OFFSET;
+  const { offset, calibBattleVideo, calibNoBattleVideo } = getCalibData(targetSetup);
 
   const calibration = initialAdv > 0 ? calibBattleVideo : calibNoBattleVideo;
 
@@ -206,6 +221,7 @@ export const Static3Calib = ({
   const usingBattleVideo =
     (battleVideoInfo?.battleVideoAdvAfterPainting ?? 0) > 0;
 
+
   return (
     <Flex gap={32} vertical>
       {targetSetupProp == null ? inputForms() : infoFromPrevSteps()}
@@ -218,6 +234,9 @@ export const Static3Calib = ({
             ) : (
               <Instructions_calib_without_battle_video />
             ))}
+
+          {displayInstructions && getAdditionalInstructions(targetSetup.species)}
+
           <FormFieldTable fields={calibFields} />
           <MultiTimer
             milliseconds={milliseconds}

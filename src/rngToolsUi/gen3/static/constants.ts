@@ -27,11 +27,11 @@ export type Static3Encounter = {
 };
 
 /*
-calib: boot game and right before interacting, check number of non-vblank rng updates.
+calibNoBattleVideo: boot game and right before interacting, check number of non-vblank rng updates.
 offset: check rng advance on pause. unpause while holding A, and count number of adv for CreateBoxMon_pid_low
 */
 
-const TV_SAVE_BLOCK_CALIB = 4; // assumes no lottery, and no roamer
+const CALIB_TV_SAVE_BLOCK = 4; // assumes no lottery, and no roamer
 
 const emeraldStaticEncounters: Static3Encounter[] = [
   ...(["Chikorita", "Totodile", "Cyndaquil"] as const).map((species) => ({
@@ -42,7 +42,7 @@ const emeraldStaticEncounters: Static3Encounter[] = [
 
     offset: 3,
     // +5 for npc moves
-    calib: TV_SAVE_BLOCK_CALIB + 5,
+    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK + 5,
     mustWaitInMenu: true,
   })),
   ...(["Treecko", "Mudkip", "Torchic"] as const).map((species) => ({
@@ -52,7 +52,7 @@ const emeraldStaticEncounters: Static3Encounter[] = [
     roaming: false,
     offset: 3,
     // +5 for npc move
-    calib: TV_SAVE_BLOCK_CALIB + 5,
+    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK + 5,
   })),
   ...(["Lileep", "Anorith"] as const).map((species) => ({
     species,
@@ -61,7 +61,7 @@ const emeraldStaticEncounters: Static3Encounter[] = [
     roaming: false,
     offset: 3,
     // standard
-    calib: TV_SAVE_BLOCK_CALIB,
+    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
   })),
   {
     species: "Castform_Normal",
@@ -76,7 +76,7 @@ const emeraldStaticEncounters: Static3Encounter[] = [
     roaming: false,
     offset: 3,
     // +1 for npc move
-    calib: TV_SAVE_BLOCK_CALIB + 1,
+    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK + 1,
   },
   {
     species: "Wynaut",
@@ -85,7 +85,7 @@ const emeraldStaticEncounters: Static3Encounter[] = [
     roaming: false,
     offset: 165,
     // +3 for npc move
-    calib: TV_SAVE_BLOCK_CALIB + 3,
+    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK + 3,
   },
   {
     species: "Kecleon",
@@ -94,7 +94,7 @@ const emeraldStaticEncounters: Static3Encounter[] = [
     roaming: false,
     offset: 1859 - 1715,
     // +1 for ambient cry
-    calib: TV_SAVE_BLOCK_CALIB + 1,
+    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK + 1,
   },
   {
     species: "Voltorb",
@@ -103,7 +103,7 @@ const emeraldStaticEncounters: Static3Encounter[] = [
     roaming: false,
     offset: 4,
     // +1 for ChooseWildMonIndex_Land_Random, +1 for UpdateAmbientCry_v1, +1 for npc move
-    calib: TV_SAVE_BLOCK_CALIB + 3,
+    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK + 3,
     mustWaitInMenu: true,
   },
   {
@@ -113,7 +113,7 @@ const emeraldStaticEncounters: Static3Encounter[] = [
     roaming: false,
     offset: 4,
     // +2 for npc move (assuming both balls are displayed)
-    calib: TV_SAVE_BLOCK_CALIB + 2,
+    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK + 2,
     mustWaitInMenu: true,
   },
   {
@@ -123,7 +123,7 @@ const emeraldStaticEncounters: Static3Encounter[] = [
     roaming: false,
     offset: 52,
     // +1 for npc move
-    calib: TV_SAVE_BLOCK_CALIB + 1,
+    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK + 1,
   },
   {
     species: "Regirock",
@@ -131,7 +131,7 @@ const emeraldStaticEncounters: Static3Encounter[] = [
     location: "Desert Ruins",
     roaming: false,
     offset: 103,
-    calib: TV_SAVE_BLOCK_CALIB,
+    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
   },
   {
     species: "Regice",
@@ -139,7 +139,7 @@ const emeraldStaticEncounters: Static3Encounter[] = [
     location: "Island Cave",
     roaming: false,
     offset: 103,
-    calib: TV_SAVE_BLOCK_CALIB,
+    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
   },
   {
     species: "Registeel",
@@ -147,7 +147,7 @@ const emeraldStaticEncounters: Static3Encounter[] = [
     location: "Ancient Tomb",
     roaming: false,
     offset: 919 - 840,
-    calib: TV_SAVE_BLOCK_CALIB,
+    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
   },
   ...(["Latias", "Latios"] as const).map((species) => ({
     species,
@@ -156,7 +156,7 @@ const emeraldStaticEncounters: Static3Encounter[] = [
     roaming: true,
     offset: 3,
     // +3 for save block when changing map
-    calib: TV_SAVE_BLOCK_CALIB + 3,
+    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK + 3,
     // ~2800 minimum advances
   })),
   ...(["Latias", "Latios"] as const).map((species) => ({
@@ -347,5 +347,16 @@ export const getPossibleRoamingValuesForSpecies = (
 export const getPossibleStatic3Species = (game: Static3Game) => {
   return uniq(
     getStatic3SpeciesEncounters(game).map((encounter) => encounter.species),
+  );
+};
+
+export const getEmeraldStaticCalibData = (
+  species: Species,
+  roaming: boolean,
+) => {
+  return (
+    emeraldStaticEncounters.find((enc) => {
+      return enc.species === species && enc.roaming === roaming;
+    }) ?? null
   );
 };

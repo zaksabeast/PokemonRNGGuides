@@ -31,7 +31,7 @@ calib: boot game and right before interacting, check number of non-vblank rng up
 offset: check rng advance on pause. unpause while holding A, and count number of adv for CreateBoxMon_pid_low
 */
 
-const TV_SAVE_BLOCK_CALIB = 4; // assumes no lottery
+const TV_SAVE_BLOCK_CALIB = 4; // assumes no lottery, and no roamer
 
 const emeraldStaticEncounters: Static3Encounter[] = [
   ...(["Chikorita", "Totodile", "Cyndaquil"] as const).map((species) => ({
@@ -159,44 +159,70 @@ const emeraldStaticEncounters: Static3Encounter[] = [
     calib: TV_SAVE_BLOCK_CALIB + 3,
     // ~2800 minimum advances
   })),
-  {
-    species: "Latias",
+  ...(["Latias", "Latios"] as const).map((species) => ({
+    species,
     lvl: 50,
     location: "Southern Island (Eon Ticket event)",
     roaming: false,
+    offset: 1002 - 570,
+    calib: TV_SAVE_BLOCK_CALIB,
+    mustWaitInMenu: true,
+  })),
+  {
+    species: "Kyogre",
+    lvl: 70,
+    location: "Marine Cave",
+    roaming: false,
+    offset: 288,
+    calib: TV_SAVE_BLOCK_CALIB,
   },
   {
-    species: "Latios",
-    lvl: 50,
-    location: "Southern Island (Eon Ticket event)",
+    species: "Groudon",
+    lvl: 70,
+    location: "Terra Cave",
     roaming: false,
+    offset: 288,
+    calib: TV_SAVE_BLOCK_CALIB,
   },
-  { species: "Kyogre", lvl: 70, location: "Marine Cave", roaming: false },
-  { species: "Groudon", lvl: 70, location: "Terra Cave", roaming: false },
-  { species: "Rayquaza", lvl: 70, location: "Sky Pillar", roaming: false },
+  {
+    species: "Rayquaza",
+    lvl: 70,
+    location: "Sky Pillar",
+    roaming: false,
+    offset: 96,
+    calib: TV_SAVE_BLOCK_CALIB,
+  },
   {
     species: "Mew",
     lvl: 30,
     location: "Faraway Island (Old Sea Map event)",
     roaming: false,
+    offset: 1009 - 900,
+    calib: TV_SAVE_BLOCK_CALIB,
   },
   {
     species: "Deoxys_Speed",
     lvl: 30,
     location: "Birth Island (AuroraTicket event)",
     roaming: false,
+    offset: 1251 - 750,
+    calib: TV_SAVE_BLOCK_CALIB,
   },
   {
     species: "Lugia",
     lvl: 70,
     location: "Navel Rock (MysticTicket event)",
     roaming: false,
+    offset: 816 - 540,
+    calib: TV_SAVE_BLOCK_CALIB,
   },
   {
     species: "HoOh",
     lvl: 70,
     location: "Navel Rock (MysticTicket event)",
     roaming: false,
+    offset: 378,
+    calib: TV_SAVE_BLOCK_CALIB,
   },
 ];
 

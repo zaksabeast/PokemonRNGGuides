@@ -20,10 +20,12 @@ export type Static3Encounter = {
   lvl: number;
   location: string;
   roaming: boolean;
-  calib?: number;
+};
+
+export type EmeraldStaticEncounter = Static3Encounter & {
+  calibNoBattleVideo: number;
   mustWaitInMenu?: boolean;
-  offset?: number;
-  note?: string;
+  offset: number;
 };
 
 /*
@@ -33,7 +35,7 @@ offset: check rng advance on pause. unpause while holding A, and count number of
 
 const CALIB_TV_SAVE_BLOCK = 4; // assumes no lottery, and no roamer
 
-const emeraldStaticEncounters: Static3Encounter[] = [
+const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
   ...(["Chikorita", "Totodile", "Cyndaquil"] as const).map((species) => ({
     species,
     lvl: 5,
@@ -60,7 +62,6 @@ const emeraldStaticEncounters: Static3Encounter[] = [
     location: "Rustboro City",
     roaming: false,
     offset: 3,
-    // standard
     calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
   })),
   {
@@ -68,6 +69,9 @@ const emeraldStaticEncounters: Static3Encounter[] = [
     lvl: 25,
     location: "Weather Institute",
     roaming: false,
+    offset: 3,
+    // +1 for npc move
+    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK + 1,
   },
   {
     species: "Beldum",
@@ -165,7 +169,7 @@ const emeraldStaticEncounters: Static3Encounter[] = [
     location: "Southern Island (Eon Ticket event)",
     roaming: false,
     offset: 1002 - 570,
-    calib: TV_SAVE_BLOCK_CALIB,
+    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
     mustWaitInMenu: true,
   })),
   {
@@ -174,7 +178,7 @@ const emeraldStaticEncounters: Static3Encounter[] = [
     location: "Marine Cave",
     roaming: false,
     offset: 288,
-    calib: TV_SAVE_BLOCK_CALIB,
+    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
   },
   {
     species: "Groudon",
@@ -182,7 +186,7 @@ const emeraldStaticEncounters: Static3Encounter[] = [
     location: "Terra Cave",
     roaming: false,
     offset: 288,
-    calib: TV_SAVE_BLOCK_CALIB,
+    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
   },
   {
     species: "Rayquaza",
@@ -190,7 +194,7 @@ const emeraldStaticEncounters: Static3Encounter[] = [
     location: "Sky Pillar",
     roaming: false,
     offset: 96,
-    calib: TV_SAVE_BLOCK_CALIB,
+    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
   },
   {
     species: "Mew",
@@ -198,7 +202,7 @@ const emeraldStaticEncounters: Static3Encounter[] = [
     location: "Faraway Island (Old Sea Map event)",
     roaming: false,
     offset: 1009 - 900,
-    calib: TV_SAVE_BLOCK_CALIB,
+    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
   },
   {
     species: "Deoxys_Speed",
@@ -206,7 +210,7 @@ const emeraldStaticEncounters: Static3Encounter[] = [
     location: "Birth Island (AuroraTicket event)",
     roaming: false,
     offset: 1251 - 750,
-    calib: TV_SAVE_BLOCK_CALIB,
+    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
   },
   {
     species: "Lugia",
@@ -214,7 +218,7 @@ const emeraldStaticEncounters: Static3Encounter[] = [
     location: "Navel Rock (MysticTicket event)",
     roaming: false,
     offset: 816 - 540,
-    calib: TV_SAVE_BLOCK_CALIB,
+    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
   },
   {
     species: "HoOh",
@@ -222,7 +226,7 @@ const emeraldStaticEncounters: Static3Encounter[] = [
     location: "Navel Rock (MysticTicket event)",
     roaming: false,
     offset: 378,
-    calib: TV_SAVE_BLOCK_CALIB,
+    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
   },
 ];
 

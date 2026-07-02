@@ -8,7 +8,7 @@ import { BattleVideoInfo } from "../battleVideo/battleVideo";
 import { AllOrNone } from "~/types";
 import { BattleVideoInfoInput } from "../battleVideo/calibBattleVideoInfoInput";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
-import { Gen3StaticMethod } from "~/rngTools";
+import { Gen3StaticMethod, Species } from "~/rngTools";
 import Instructions_calib_with_battle_video from "./instructions_calib_with_battle_video.mdx";
 import Instructions_calib_without_battle_video from "./instructions_calib_without_battle_video.mdx";
 import {
@@ -18,26 +18,30 @@ import {
 import { Static3TargetSetupInput } from "./static3TargetSetupInput";
 import Instructions_calib_skip_setup from "./instructions_calib_skip_setup.mdx";
 import Instructions_Castform from "./Instructions_Castform.mdx";
+import { getEmeraldStaticCalibData } from "./constants";
+import { match } from "ts-pattern";
 
-const getCalibData = (targetSetup:TargetSetup | null) => {
-    if (targetSetup !== null){
-        const data = getEmeraldStaticCalibData(targetSetup.species, targetSetup.roaming);
-        if (data !== null){
-            return data;
-        }
+const getCalibData = (targetSetup: TargetSetup | null) => {
+  if (targetSetup !== null) {
+    const data = getEmeraldStaticCalibData(
+      targetSetup.species,
+      targetSetup.roaming,
+    );
+    if (data !== null) {
+      return data;
     }
-    return {
-        offset: 3,
-        calibNoBattleVideo: 10,
-        calibBattleVideo: 6,
-        mustWaitInMenu:false,
-    };
+  }
+  return {
+    offset: 3,
+    calib: 9,
+    mustWaitInMenu: false,
+  };
 };
 
-const getAdditionalInstructions = (species:Species) => {
-    return match(species)
-        .with("Castform", () => <Instructions_Castform />)
-        .otherwise(() => null);
+const getAdditionalInstructions = (species: Species) => {
+  return match(species)
+    .with("Castform_Normal", () => <Instructions_Castform />)
+    .otherwise(() => null);
 };
 
 type Props = AllOrNone<{
@@ -127,12 +131,10 @@ export const Static3Calib = ({
 
   const initialAdv = battleVideoInfo?.battleVideoAdvAfterPainting ?? 0;
 
-  const { offset, calibBattleVideo, calibNoBattleVideo } = getCalibData(targetSetup);
-
-  const calibration = initialAdv > 0 ? calibBattleVideo : calibNoBattleVideo;
+  const { offset, calib } = getCalibData(targetSetup);
 
   const advFromTimer =
-    targetForTimer - initialAdv - (humanInputDelay ?? 0) - offset - calibration;
+    targetForTimer - initialAdv - (humanInputDelay ?? 0) - offset - calib;
 
   const consoleType = battleVideoInfo?.consoleType ?? consoleTypeFromInput;
 
@@ -162,7 +164,7 @@ export const Static3Calib = ({
     battleVideoInfoProp,
     consoleTypeFromInput,
     setConsoleTypeFromInput,
-    calibration,
+    calibration: calib,
     offset,
     humanInputDelay,
     setHumanInputDelay,
@@ -221,7 +223,6 @@ export const Static3Calib = ({
   const usingBattleVideo =
     (battleVideoInfo?.battleVideoAdvAfterPainting ?? 0) > 0;
 
-
   return (
     <Flex gap={32} vertical>
       {targetSetupProp == null ? inputForms() : infoFromPrevSteps()}
@@ -235,7 +236,8 @@ export const Static3Calib = ({
               <Instructions_calib_without_battle_video />
             ))}
 
-          {displayInstructions && getAdditionalInstructions(targetSetup.species)}
+          {displayInstructions &&
+            getAdditionalInstructions(targetSetup.species)}
 
           <FormFieldTable fields={calibFields} />
           <MultiTimer

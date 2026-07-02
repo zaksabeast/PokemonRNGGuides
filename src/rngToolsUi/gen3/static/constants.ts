@@ -23,14 +23,18 @@ export type Static3Encounter = {
 };
 
 export type EmeraldStaticEncounter = Static3Encounter & {
-  calibNoBattleVideo: number;
+  calib: number;
   mustWaitInMenu?: boolean;
   offset: number;
 };
 
 /*
-calibNoBattleVideo: boot game and right before interacting, check number of non-vblank rng updates.
+calib: boot game and right before interacting, check number of non-vblank rng updates.
 offset: check rng advance on pause. unpause while holding A, and count number of adv for CreateBoxMon_pid_low
+
+calib with and without battle video is the same.
+  without battle video: +1 adv for tv show, +3 save block
+  with battle video: +1 adv for BattleStartClearSetData, +3 save block
 */
 
 const CALIB_TV_SAVE_BLOCK = 4; // assumes no lottery, and no roamer
@@ -44,7 +48,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
 
     offset: 3,
     // +5 for npc moves
-    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK + 5,
+    calib: CALIB_TV_SAVE_BLOCK + 5,
     mustWaitInMenu: true,
   })),
   ...(["Treecko", "Mudkip", "Torchic"] as const).map((species) => ({
@@ -54,7 +58,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 3,
     // +5 for npc move
-    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK + 5,
+    calib: CALIB_TV_SAVE_BLOCK + 5,
   })),
   ...(["Lileep", "Anorith"] as const).map((species) => ({
     species,
@@ -62,7 +66,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     location: "Rustboro City",
     roaming: false,
     offset: 3,
-    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
+    calib: CALIB_TV_SAVE_BLOCK,
   })),
   {
     species: "Castform_Normal",
@@ -71,7 +75,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 3,
     // +1 for npc move
-    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK + 1,
+    calib: CALIB_TV_SAVE_BLOCK + 1,
   },
   {
     species: "Beldum",
@@ -80,7 +84,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 3,
     // +1 for npc move
-    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK + 1,
+    calib: CALIB_TV_SAVE_BLOCK + 1,
   },
   {
     species: "Wynaut",
@@ -89,7 +93,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 165,
     // +3 for npc move
-    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK + 3,
+    calib: CALIB_TV_SAVE_BLOCK + 3,
   },
   {
     species: "Kecleon",
@@ -98,7 +102,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 1859 - 1715,
     // +1 for ambient cry
-    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK + 1,
+    calib: CALIB_TV_SAVE_BLOCK + 1,
   },
   {
     species: "Voltorb",
@@ -107,7 +111,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 4,
     // +1 for ChooseWildMonIndex_Land_Random, +1 for UpdateAmbientCry_v1, +1 for npc move
-    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK + 3,
+    calib: CALIB_TV_SAVE_BLOCK + 3,
     mustWaitInMenu: true,
   },
   {
@@ -117,7 +121,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 4,
     // +2 for npc move (assuming both balls are displayed)
-    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK + 2,
+    calib: CALIB_TV_SAVE_BLOCK + 2,
     mustWaitInMenu: true,
   },
   {
@@ -127,7 +131,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 52,
     // +1 for npc move
-    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK + 1,
+    calib: CALIB_TV_SAVE_BLOCK + 1,
   },
   {
     species: "Regirock",
@@ -135,7 +139,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     location: "Desert Ruins",
     roaming: false,
     offset: 103,
-    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
+    calib: CALIB_TV_SAVE_BLOCK,
   },
   {
     species: "Regice",
@@ -143,7 +147,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     location: "Island Cave",
     roaming: false,
     offset: 103,
-    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
+    calib: CALIB_TV_SAVE_BLOCK,
   },
   {
     species: "Registeel",
@@ -151,7 +155,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     location: "Ancient Tomb",
     roaming: false,
     offset: 919 - 840,
-    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
+    calib: CALIB_TV_SAVE_BLOCK,
   },
   ...(["Latias", "Latios"] as const).map((species) => ({
     species,
@@ -160,7 +164,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: true,
     offset: 3,
     // +3 for save block when changing map
-    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK + 3,
+    calib: CALIB_TV_SAVE_BLOCK + 3,
     // ~2800 minimum advances
   })),
   ...(["Latias", "Latios"] as const).map((species) => ({
@@ -169,7 +173,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     location: "Southern Island (Eon Ticket event)",
     roaming: false,
     offset: 1002 - 570,
-    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
+    calib: CALIB_TV_SAVE_BLOCK,
     mustWaitInMenu: true,
   })),
   {
@@ -178,7 +182,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     location: "Marine Cave",
     roaming: false,
     offset: 288,
-    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
+    calib: CALIB_TV_SAVE_BLOCK,
   },
   {
     species: "Groudon",
@@ -186,7 +190,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     location: "Terra Cave",
     roaming: false,
     offset: 288,
-    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
+    calib: CALIB_TV_SAVE_BLOCK,
   },
   {
     species: "Rayquaza",
@@ -194,7 +198,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     location: "Sky Pillar",
     roaming: false,
     offset: 96,
-    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
+    calib: CALIB_TV_SAVE_BLOCK,
   },
   {
     species: "Mew",
@@ -202,7 +206,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     location: "Faraway Island (Old Sea Map event)",
     roaming: false,
     offset: 1009 - 900,
-    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
+    calib: CALIB_TV_SAVE_BLOCK,
   },
   {
     species: "Deoxys_Speed",
@@ -210,7 +214,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     location: "Birth Island (AuroraTicket event)",
     roaming: false,
     offset: 1251 - 750,
-    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
+    calib: CALIB_TV_SAVE_BLOCK,
   },
   {
     species: "Lugia",
@@ -218,7 +222,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     location: "Navel Rock (MysticTicket event)",
     roaming: false,
     offset: 816 - 540,
-    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
+    calib: CALIB_TV_SAVE_BLOCK,
   },
   {
     species: "HoOh",
@@ -226,7 +230,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     location: "Navel Rock (MysticTicket event)",
     roaming: false,
     offset: 378,
-    calibNoBattleVideo: CALIB_TV_SAVE_BLOCK,
+    calib: CALIB_TV_SAVE_BLOCK,
   },
 ];
 

@@ -1,6 +1,6 @@
 ### Additional Instructions for Castform
 
 1. Fill all the PC boxes and your party with Pokémon.
-1. Defeat Team Magma NO_PROD in the NO_PROD. The scientist won't give you Castform right away because you don't have space.
+1. Defeat Team Aqua in the Weather Institue. The scientist won't give you Castform right away because you don't have space.
 1. Release a Pokémon in your PC.
 1. Go back to the scientist to perform RNG manipulation.

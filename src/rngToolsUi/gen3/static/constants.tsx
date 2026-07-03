@@ -3,6 +3,33 @@ import { match } from "ts-pattern";
 import uniq from "lodash-es/uniq";
 import Instruction_LatiosRoaming from "./Instructions_LatiosRoaming.mdx";
 import Instruction_LatiasRoaming from "./Instructions_LatiasRoaming.mdx";
+import Instructions_Anorith from "./Instructions_Anorith.mdx";
+import Instructions_Beldum from "./Instructions_Beldum.mdx";
+import Instructions_Castform from "./Instructions_Castform.mdx";
+import Instructions_Chikorita from "./Instructions_Chikorita.mdx";
+import Instructions_Cyndaquil from "./Instructions_Cyndaquil.mdx";
+import Instructions_Deoxys_Speed from "./Instructions_Deoxys_Speed.mdx";
+import Instructions_Electrode from "./Instructions_Electrode.mdx";
+import Instructions_Groudon from "./Instructions_Groudon.mdx";
+import Instructions_HoOh from "./Instructions_HoOh.mdx";
+import Instructions_Kecleon from "./Instructions_Kecleon.mdx";
+import Instructions_Kyogre from "./Instructions_Kyogre.mdx";
+import Instructions_LatiasSouthernIsland from "./Instructions_LatiasSouthernIsland.mdx";
+import Instructions_LatiosSouthernIsland from "./Instructions_LatiosSouthernIsland.mdx";
+import Instructions_Lileep from "./Instructions_Lileep.mdx";
+import Instructions_Lugia from "./Instructions_Lugia.mdx";
+import Instructions_Mew from "./Instructions_Mew.mdx";
+import Instructions_Mudkip from "./Instructions_Mudkip.mdx";
+import Instructions_Rayquaza from "./Instructions_Rayquaza.mdx";
+import Instructions_Regice from "./Instructions_Regice.mdx";
+import Instructions_Regirock from "./Instructions_Regirock.mdx";
+import Instructions_Registeel from "./Instructions_Registeel.mdx";
+import Instructions_Sudowoodo from "./Instructions_Sudowoodo.mdx";
+import Instructions_Torchic from "./Instructions_Torchic.mdx";
+import Instructions_Totodile from "./Instructions_Totodile.mdx";
+import Instructions_Treecko from "./Instructions_Treecko.mdx";
+import Instructions_Voltorb from "./Instructions_Voltorb.mdx";
+import Instructions_Wynaut from "./Instructions_Wynaut.mdx";
 
 export type Static3Game = "emerald" | "rs" | "frlg";
 
@@ -27,7 +54,7 @@ export type Static3Encounter = {
 export type EmeraldStaticEncounter = Static3Encounter & {
   calib: number;
   offset: number;
-  instructions?: React.ReactNode;
+  instructions: React.ReactNode;
 };
 
 /*
@@ -42,34 +69,87 @@ calib with and without battle video is the same.
 const CALIB_TV_SAVE_BLOCK = 4; // assumes no lottery, and no roamer
 
 const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
-  ...(["Chikorita", "Totodile", "Cyndaquil"] as const).map((species) => ({
-    species,
+  {
+    species: "Chikorita",
     lvl: 5,
     location: "Littleroot Town (after completing the Hoenn Pokédex)",
     roaming: false,
-
     offset: 3,
     // +5 for npc moves,
     // must wait in menu to avoid unwanted advances
     calib: CALIB_TV_SAVE_BLOCK + 5,
-  })),
-  ...(["Treecko", "Mudkip", "Torchic"] as const).map((species) => ({
-    species,
+    instructions: <Instructions_Chikorita />,
+  },
+  {
+    species: "Totodile",
+    lvl: 5,
+    location: "Littleroot Town (after completing the Hoenn Pokédex)",
+    roaming: false,
+    offset: 3,
+    // +5 for npc moves,
+    // must wait in menu to avoid unwanted advances
+    calib: CALIB_TV_SAVE_BLOCK + 5,
+    instructions: <Instructions_Totodile />,
+  },
+  {
+    species: "Cyndaquil",
+    lvl: 5,
+    location: "Littleroot Town (after completing the Hoenn Pokédex)",
+    roaming: false,
+    offset: 3,
+    // +5 for npc moves,
+    // must wait in menu to avoid unwanted advances
+    calib: CALIB_TV_SAVE_BLOCK + 5,
+    instructions: <Instructions_Cyndaquil />,
+  },
+  {
+    species: "Treecko",
     lvl: 5,
     location: "Route 101",
     roaming: false,
     offset: 3,
     // +5 for npc move
     calib: CALIB_TV_SAVE_BLOCK + 5,
-  })),
-  ...(["Lileep", "Anorith"] as const).map((species) => ({
-    species,
+    instructions: <Instructions_Treecko />,
+  },
+  {
+    species: "Mudkip",
+    lvl: 5,
+    location: "Route 101",
+    roaming: false,
+    offset: 3,
+    // +5 for npc move
+    calib: CALIB_TV_SAVE_BLOCK + 5,
+    instructions: <Instructions_Mudkip />,
+  },
+  {
+    species: "Torchic",
+    lvl: 5,
+    location: "Route 101",
+    roaming: false,
+    offset: 3,
+    // +5 for npc move
+    calib: CALIB_TV_SAVE_BLOCK + 5,
+    instructions: <Instructions_Torchic />,
+  },
+  {
+    species: "Lileep",
     lvl: 20,
     location: "Rustboro City",
     roaming: false,
     offset: 3,
     calib: CALIB_TV_SAVE_BLOCK,
-  })),
+    instructions: <Instructions_Lileep />,
+  },
+  {
+    species: "Anorith",
+    lvl: 20,
+    location: "Rustboro City",
+    roaming: false,
+    offset: 3,
+    calib: CALIB_TV_SAVE_BLOCK,
+    instructions: <Instructions_Anorith />,
+  },
   {
     species: "Castform_Normal",
     lvl: 25,
@@ -78,6 +158,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     offset: 3,
     // +1 for npc move
     calib: CALIB_TV_SAVE_BLOCK + 1,
+    instructions: <Instructions_Castform />,
   },
   {
     species: "Beldum",
@@ -87,6 +168,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     offset: 3,
     // +1 for npc move
     calib: CALIB_TV_SAVE_BLOCK + 1,
+    instructions: <Instructions_Beldum />,
   },
   {
     species: "Wynaut",
@@ -96,6 +178,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     offset: 165,
     // +3 for npc move
     calib: CALIB_TV_SAVE_BLOCK + 3,
+    instructions: <Instructions_Wynaut />,
   },
   {
     species: "Kecleon",
@@ -105,6 +188,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     offset: 1859 - 1715,
     // +1 for ambient cry
     calib: CALIB_TV_SAVE_BLOCK + 1,
+    instructions: <Instructions_Kecleon />,
   },
   {
     species: "Voltorb",
@@ -115,6 +199,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     // +1 for ChooseWildMonIndex_Land_Random, +1 for UpdateAmbientCry_v1, +1 for npc move
     // must wait in menu to avoid unwanted advances
     calib: CALIB_TV_SAVE_BLOCK + 3,
+    instructions: <Instructions_Voltorb />,
   },
   {
     species: "Electrode",
@@ -125,6 +210,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     // +2 for npc move (assuming both balls are displayed)
     // must wait in menu to avoid unwanted advances
     calib: CALIB_TV_SAVE_BLOCK + 2,
+    instructions: <Instructions_Electrode />,
   },
   {
     species: "Sudowoodo",
@@ -134,6 +220,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     offset: 52,
     // +1 for npc move
     calib: CALIB_TV_SAVE_BLOCK + 1,
+    instructions: <Instructions_Sudowoodo />,
   },
   {
     species: "Regirock",
@@ -142,6 +229,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 103,
     calib: CALIB_TV_SAVE_BLOCK,
+    instructions: <Instructions_Regirock />,
   },
   {
     species: "Regice",
@@ -150,6 +238,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 103,
     calib: CALIB_TV_SAVE_BLOCK,
+    instructions: <Instructions_Regice />,
   },
   {
     species: "Registeel",
@@ -158,10 +247,10 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 919 - 840,
     calib: CALIB_TV_SAVE_BLOCK,
+    instructions: <Instructions_Registeel />,
   },
   {
     species: "Latias",
-    instructions: <Instruction_LatiasRoaming />,
     lvl: 40,
     location: "Hoenn (Roaming)",
     roaming: true,
@@ -169,10 +258,10 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     // +3 for save block when changing map
     calib: CALIB_TV_SAVE_BLOCK + 3,
     // ~2800 minimum advances
+    instructions: <Instruction_LatiasRoaming />,
   },
   {
     species: "Latios",
-    instructions: <Instruction_LatiosRoaming />,
     lvl: 40,
     location: "Hoenn (Roaming)",
     roaming: true,
@@ -180,17 +269,27 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     // +3 for save block when changing map
     calib: CALIB_TV_SAVE_BLOCK + 3,
     // ~2800 minimum advances
+    instructions: <Instruction_LatiosRoaming />,
   },
 
-  ...(["Latias", "Latios"] as const).map((species) => ({
-    species,
+  {
+    species: "Latias",
     lvl: 50,
     location: "Southern Island (Eon Ticket event)",
     roaming: false,
     offset: 1002 - 570,
     calib: CALIB_TV_SAVE_BLOCK,
-    mustWaitInMenu: true,
-  })),
+    instructions: <Instructions_LatiasSouthernIsland />,
+  },
+  {
+    species: "Latios",
+    lvl: 50,
+    location: "Southern Island (Eon Ticket event)",
+    roaming: false,
+    offset: 1002 - 570,
+    calib: CALIB_TV_SAVE_BLOCK,
+    instructions: <Instructions_LatiosSouthernIsland />,
+  },
   {
     species: "Kyogre",
     lvl: 70,
@@ -198,6 +297,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 288,
     calib: CALIB_TV_SAVE_BLOCK,
+    instructions: <Instructions_Kyogre />,
   },
   {
     species: "Groudon",
@@ -206,6 +306,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 288,
     calib: CALIB_TV_SAVE_BLOCK,
+    instructions: <Instructions_Groudon />,
   },
   {
     species: "Rayquaza",
@@ -214,6 +315,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 96,
     calib: CALIB_TV_SAVE_BLOCK,
+    instructions: <Instructions_Rayquaza />,
   },
   {
     species: "Mew",
@@ -222,6 +324,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 1009 - 900,
     calib: CALIB_TV_SAVE_BLOCK,
+    instructions: <Instructions_Mew />,
   },
   {
     species: "Deoxys_Speed",
@@ -230,6 +333,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 1251 - 750,
     calib: CALIB_TV_SAVE_BLOCK,
+    instructions: <Instructions_Deoxys_Speed />,
   },
   {
     species: "Lugia",
@@ -238,6 +342,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 816 - 540,
     calib: CALIB_TV_SAVE_BLOCK,
+    instructions: <Instructions_Lugia />,
   },
   {
     species: "HoOh",
@@ -246,6 +351,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 378,
     calib: CALIB_TV_SAVE_BLOCK,
+    instructions: <Instructions_HoOh />,
   },
 ];
 

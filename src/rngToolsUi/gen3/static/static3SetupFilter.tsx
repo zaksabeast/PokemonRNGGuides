@@ -65,6 +65,7 @@ const getSetupFieldsOpts = (
   if (calib == null) {
     return defaultVal;
   }
+
   return {
     requireAceForPaintingReseeding: calib.requireAceForPaintingReseeding,
     recommendedMinAdvances: calib.recommendedMinAdvances ?? null,

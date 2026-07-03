@@ -30,8 +30,8 @@ const getCalibData = (targetSetup: TargetSetup | null) => {
     }
   }
   return {
-    offset: 3,
-    calib: 9,
+    offset: 0,
+    calib: 0,
     instructions: null,
   };
 };

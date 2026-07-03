@@ -1,4 +1,4 @@
-import { gen3StaticMethods, Static3Game } from "./constants";
+import { gen3StaticMethods, Static3Game } from "./constants.tsx";
 import { Field, FormFieldTable, FormikSelect, Typography } from "~/components";
 import { useWatch } from "~/hooks/form";
 import { toOptions } from "~/utils/options";

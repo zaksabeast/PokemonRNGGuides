@@ -32,7 +32,7 @@ import {
   gen3PkmFilterSchema,
   getGen3PkmFilterInitialValues,
 } from "~/components/gen3PkmFilter";
-import { Static3Game } from "../static/constants";
+import { Static3Game } from "../static/constants.tsx";
 import { Tooltip } from "antd";
 import { ivColumns } from "~/rngToolsUi/shared/ivColumns";
 import { GBA_FPS } from "~/utils/consts";

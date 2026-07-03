@@ -8,7 +8,7 @@ import { BattleVideoInfo } from "../battleVideo/battleVideo";
 import { AllOrNone } from "~/types";
 import { BattleVideoInfoInput } from "../battleVideo/calibBattleVideoInfoInput";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
-import { Gen3StaticMethod, Species } from "~/rngTools";
+import { Gen3StaticMethod } from "~/rngTools";
 import Instructions_calib_with_battle_video from "./instructions_calib_with_battle_video.mdx";
 import Instructions_calib_without_battle_video from "./instructions_calib_without_battle_video.mdx";
 import {
@@ -17,9 +17,7 @@ import {
 } from "../pokemonRng/calib";
 import { Static3TargetSetupInput } from "./static3TargetSetupInput";
 import Instructions_calib_skip_setup from "./instructions_calib_skip_setup.mdx";
-import Instructions_Castform from "./Instructions_Castform.mdx";
-import { getEmeraldStaticCalibData } from "./constants";
-import { match } from "ts-pattern";
+import { getEmeraldStaticCalibData } from "./constants.tsx";
 
 const getCalibData = (targetSetup: TargetSetup | null) => {
   if (targetSetup !== null) {
@@ -34,14 +32,8 @@ const getCalibData = (targetSetup: TargetSetup | null) => {
   return {
     offset: 3,
     calib: 9,
-    mustWaitInMenu: false,
+    instructions: null,
   };
-};
-
-const getAdditionalInstructions = (species: Species) => {
-  return match(species)
-    .with("Castform_Normal", () => <Instructions_Castform />)
-    .otherwise(() => null);
 };
 
 type Props = AllOrNone<{
@@ -131,7 +123,7 @@ export const Static3Calib = ({
 
   const initialAdv = battleVideoInfo?.battleVideoAdvAfterPainting ?? 0;
 
-  const { offset, calib } = getCalibData(targetSetup);
+  const { offset, calib, instructions } = getCalibData(targetSetup);
 
   const advFromTimer =
     targetForTimer - initialAdv - (humanInputDelay ?? 0) - offset - calib;
@@ -236,8 +228,7 @@ export const Static3Calib = ({
               <Instructions_calib_without_battle_video />
             ))}
 
-          {displayInstructions &&
-            getAdditionalInstructions(targetSetup.species)}
+          {displayInstructions && instructions}
 
           <FormFieldTable fields={calibFields} />
           <MultiTimer

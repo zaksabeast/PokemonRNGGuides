@@ -1,6 +1,8 @@
 import { Gen3StaticMethod, Species } from "~/rngTools";
 import { match } from "ts-pattern";
 import uniq from "lodash-es/uniq";
+import Instruction_LatiosRoaming from "./Instructions_LatiosRoaming.mdx";
+import Instruction_LatiasRoaming from "./Instructions_LatiasRoaming.mdx";
 
 export type Static3Game = "emerald" | "rs" | "frlg";
 
@@ -24,8 +26,8 @@ export type Static3Encounter = {
 
 export type EmeraldStaticEncounter = Static3Encounter & {
   calib: number;
-  mustWaitInMenu?: boolean;
   offset: number;
+  instructions?: React.ReactNode;
 };
 
 /*
@@ -47,9 +49,9 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
 
     offset: 3,
-    // +5 for npc moves
+    // +5 for npc moves,
+    // must wait in menu to avoid unwanted advances
     calib: CALIB_TV_SAVE_BLOCK + 5,
-    mustWaitInMenu: true,
   })),
   ...(["Treecko", "Mudkip", "Torchic"] as const).map((species) => ({
     species,
@@ -111,8 +113,8 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 4,
     // +1 for ChooseWildMonIndex_Land_Random, +1 for UpdateAmbientCry_v1, +1 for npc move
+    // must wait in menu to avoid unwanted advances
     calib: CALIB_TV_SAVE_BLOCK + 3,
-    mustWaitInMenu: true,
   },
   {
     species: "Electrode",
@@ -121,8 +123,8 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 4,
     // +2 for npc move (assuming both balls are displayed)
+    // must wait in menu to avoid unwanted advances
     calib: CALIB_TV_SAVE_BLOCK + 2,
-    mustWaitInMenu: true,
   },
   {
     species: "Sudowoodo",
@@ -157,8 +159,9 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     offset: 919 - 840,
     calib: CALIB_TV_SAVE_BLOCK,
   },
-  ...(["Latias", "Latios"] as const).map((species) => ({
-    species,
+  {
+    species: "Latias",
+    instructions: <Instruction_LatiasRoaming />,
     lvl: 40,
     location: "Hoenn (Roaming)",
     roaming: true,
@@ -166,7 +169,19 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     // +3 for save block when changing map
     calib: CALIB_TV_SAVE_BLOCK + 3,
     // ~2800 minimum advances
-  })),
+  },
+  {
+    species: "Latios",
+    instructions: <Instruction_LatiosRoaming />,
+    lvl: 40,
+    location: "Hoenn (Roaming)",
+    roaming: true,
+    offset: 3,
+    // +3 for save block when changing map
+    calib: CALIB_TV_SAVE_BLOCK + 3,
+    // ~2800 minimum advances
+  },
+
   ...(["Latias", "Latios"] as const).map((species) => ({
     species,
     lvl: 50,

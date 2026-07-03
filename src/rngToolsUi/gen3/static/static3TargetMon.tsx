@@ -19,7 +19,7 @@ import {
   getPossibleStatic3Species,
   getStatic3SpeciesEncounters,
   Static3Game,
-} from "./constants";
+} from "./constants.tsx";
 import { FormState } from "./static3TargetSetupSearcher";
 import { targetSetupSearcherSchema } from "../pokemonRng/targetSetupSearcher";
 

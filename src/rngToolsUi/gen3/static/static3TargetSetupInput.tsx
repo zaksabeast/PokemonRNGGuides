@@ -14,7 +14,7 @@ import {
   gen3StaticMethods,
   getPossibleRoamingValuesForSpecies,
   getPossibleStatic3Species,
-} from "./constants";
+} from "./constants.tsx";
 import { getPaintingReseedingFields } from "../pokemonRng/targetSetupInput";
 import { species } from "~/types/species";
 import { lcrng_distance } from "~/utils/lcrng";

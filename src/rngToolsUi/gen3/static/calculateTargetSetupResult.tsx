@@ -9,7 +9,7 @@ import {
 import { PokemonInfo } from "~/rngToolsUi/gen3/pokemonRng/ResultPokemonInfo";
 import { rngTools } from "~/rngTools";
 import { TargetSetup } from "./static3TargetSetupSearcher";
-import { getStatic3SpeciesEncounters } from "./constants";
+import { getStatic3SpeciesEncounters } from "./constants.tsx";
 
 export const getStaticEncounterLvl = (targetSetup: TargetSetup) => {
   return (

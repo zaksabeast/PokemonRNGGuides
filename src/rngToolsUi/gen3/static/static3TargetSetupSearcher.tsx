@@ -13,7 +13,7 @@ import { FlattenIvs } from "~/rngToolsUi/shared/ivColumns";
 
 import { searchStatic3Target } from "./searchStatic3Target";
 import { Static3TargetMon } from "./static3TargetMon";
-import { gen3StaticMethods, Static3Game } from "./constants";
+import { gen3StaticMethods, Static3Game } from "./constants.tsx";
 import { Static3SetupFilter } from "./static3SetupFilter";
 import {
   targetSetupSearcherSchema,

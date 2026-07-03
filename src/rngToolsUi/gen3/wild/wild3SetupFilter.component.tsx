@@ -186,6 +186,8 @@ const getSetupFields = (obj: {
       game: "emerald",
       usingDeadBattery: false,
       requireAceForPaintingReseeding: false,
+      initial_advances: 0, // doesn't matter if recommendedMinAdvances is null
+      recommendedMinAdvances: null,
     }),
     {
       label: "Display results with 0% likelihood",

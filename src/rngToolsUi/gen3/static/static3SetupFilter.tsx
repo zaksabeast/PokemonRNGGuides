@@ -24,6 +24,8 @@ const getSetupFields = (obj: {
   showAdvancedPaintingSettings: boolean;
   usingDeadBattery: boolean;
   requireAceForPaintingReseeding: boolean;
+  initial_advances: number;
+  recommendedMinAdvances: number | null;
 }): Field[] => {
   const { game } = obj;
 
@@ -46,13 +48,18 @@ const getSetupFields = (obj: {
   ];
 };
 
-const getRequireAceForPaintingReseeding = (
+const getSetupFieldsOpts = (
   game: Static3Game,
   species: Species | null | undefined,
   roaming: boolean | null | undefined,
 ) => {
+  const defaultVal = {
+    requireAceForPaintingReseeding: false,
+    recommendedMinAdvances: null,
+  };
+
   if (game !== "emerald" || species == null || roaming == null) {
-    return false;
+    return defaultVal;
   }
 
   const possibleRoaming = getPossibleRoamingValuesForSpecies(game, species);
@@ -61,10 +68,14 @@ const getRequireAceForPaintingReseeding = (
     ? roaming
     : possibleRoaming[0];
 
-  return (
-    getEmeraldStaticCalibData(species, effectiveRoaming)
-      ?.requireAceForPaintingReseeding ?? false
-  );
+  const calib = getEmeraldStaticCalibData(species, effectiveRoaming);
+  if (calib == null) {
+    return defaultVal;
+  }
+  return {
+    requireAceForPaintingReseeding: calib.requireAceForPaintingReseeding,
+    recommendedMinAdvances: calib.recommendedMinAdvances ?? null,
+  };
 };
 
 export const Static3SetupFilter = ({ game }: { game: Static3Game }) => {
@@ -77,6 +88,7 @@ export const Static3SetupFilter = ({ game }: { game: Static3Game }) => {
     usingDeadBattery,
     species,
     roaming,
+    initial_advances,
   } = useWatch({
     names: {
       usingPaintingReseeding: true,
@@ -87,6 +99,7 @@ export const Static3SetupFilter = ({ game }: { game: Static3Game }) => {
       usingDeadBattery: true,
       species: true,
       roaming: true,
+      initial_advances: true,
     },
     validationSchema: static3TargetSetupSearcherSchema,
   });
@@ -99,17 +112,14 @@ export const Static3SetupFilter = ({ game }: { game: Static3Game }) => {
       <FormFieldTable
         fields={getSetupFields({
           game,
-          requireAceForPaintingReseeding: getRequireAceForPaintingReseeding(
-            game,
-            species,
-            roaming,
-          ),
           usingPaintingReseeding: usingPaintingReseeding ?? false,
           filter_shiny: filter_shiny ?? false,
           usingAceForSid: usingAceForSid ?? false,
           letSearcherFindPaintingSeed: letSearcherFindPaintingSeed ?? false,
           showAdvancedPaintingSettings: showAdvancedPaintingSettings ?? false,
           usingDeadBattery: usingDeadBattery ?? false,
+          initial_advances: initial_advances ?? 0,
+          ...getSetupFieldsOpts(game, species, roaming),
         })}
       />
     </>

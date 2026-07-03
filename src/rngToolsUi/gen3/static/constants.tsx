@@ -56,6 +56,7 @@ export type EmeraldStaticEncounter = Static3Encounter & {
   offset: number;
   instructions: React.ReactNode;
   requireAceForPaintingReseeding: boolean;
+  recommendedMinAdvances?: number | null;
 };
 
 /*
@@ -278,6 +279,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     calib: CALIB_TV_SAVE_BLOCK + 3,
     // ~2800 minimum advances
     requireAceForPaintingReseeding: true,
+    recommendedMinAdvances: 3000,
     instructions: <Instruction_LatiasRoaming />,
   },
   {
@@ -290,6 +292,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     calib: CALIB_TV_SAVE_BLOCK + 3,
     // ~2800 minimum advances
     requireAceForPaintingReseeding: true,
+    recommendedMinAdvances: 3000,
     instructions: <Instruction_LatiosRoaming />,
   },
 

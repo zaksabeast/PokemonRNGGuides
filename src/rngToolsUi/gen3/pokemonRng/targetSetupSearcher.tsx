@@ -95,6 +95,8 @@ export const getPaintingSetupFilterFields = ({
   showAdvancedPaintingSettings,
   usingDeadBattery,
   requireAceForPaintingReseeding,
+  recommendedMinAdvances,
+  initial_advances,
 }: {
   game: Static3Game;
   usingPaintingReseeding: boolean;
@@ -102,6 +104,8 @@ export const getPaintingSetupFilterFields = ({
   showAdvancedPaintingSettings: boolean;
   usingDeadBattery: boolean;
   requireAceForPaintingReseeding: boolean;
+  recommendedMinAdvances: number | null;
+  initial_advances: number;
 }): Field[] => {
   return [
     {
@@ -197,6 +201,22 @@ export const getPaintingSetupFilterFields = ({
       ),
       show: !usingPaintingReseeding,
     },
+    {
+      label: "",
+      key: "recommendedMinAdvances",
+      input: (
+        <Alert
+          showIcon
+          type="warning"
+          title={`At least ${recommendedMinAdvances} advances is recommended to have enough time to trigger this encounter.`}
+        />
+      ),
+      show:
+        !usingPaintingReseeding &&
+        recommendedMinAdvances != null &&
+        initial_advances < recommendedMinAdvances,
+    },
+
     {
       label: usingPaintingReseeding
         ? "Max advances after painting"

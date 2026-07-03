@@ -1,13 +1,19 @@
-import { gen3StaticMethods, Static3Game } from "./constants.tsx";
+import {
+  gen3StaticMethods,
+  getEmeraldStaticCalibData,
+  getPossibleRoamingValuesForSpecies,
+  Static3Game,
+} from "./constants.tsx";
 import { Field, FormFieldTable, FormikSelect, Typography } from "~/components";
 import { useWatch } from "~/hooks/form";
 import { toOptions } from "~/utils/options";
 import { FormState } from "./static3TargetSetupSearcher";
 import {
   getPaintingSetupFilterFields,
-  targetSetupSearcherSchema,
   getTidSidSetupFilterFields,
 } from "../pokemonRng/targetSetupSearcher";
+import { static3TargetSetupSearcherSchema } from "./static3TargetSetupSearcher.schema.ts";
+import { Species } from "~/rngTools/index.ts";
 
 const getSetupFields = (obj: {
   game: Static3Game;
@@ -17,6 +23,7 @@ const getSetupFields = (obj: {
   letSearcherFindPaintingSeed: boolean;
   showAdvancedPaintingSettings: boolean;
   usingDeadBattery: boolean;
+  requireAceForPaintingReseeding: boolean;
 }): Field[] => {
   const { game } = obj;
 
@@ -39,6 +46,27 @@ const getSetupFields = (obj: {
   ];
 };
 
+const getRequireAceForPaintingReseeding = (
+  game: Static3Game,
+  species: Species | null | undefined,
+  roaming: boolean | null | undefined,
+) => {
+  if (game !== "emerald" || species == null || roaming == null) {
+    return false;
+  }
+
+  const possibleRoaming = getPossibleRoamingValuesForSpecies(game, species);
+
+  const effectiveRoaming = possibleRoaming.includes(roaming)
+    ? roaming
+    : possibleRoaming[0];
+
+  return (
+    getEmeraldStaticCalibData(species, effectiveRoaming)
+      ?.requireAceForPaintingReseeding ?? false
+  );
+};
+
 export const Static3SetupFilter = ({ game }: { game: Static3Game }) => {
   const {
     usingPaintingReseeding,
@@ -47,6 +75,8 @@ export const Static3SetupFilter = ({ game }: { game: Static3Game }) => {
     letSearcherFindPaintingSeed,
     showAdvancedPaintingSettings,
     usingDeadBattery,
+    species,
+    roaming,
   } = useWatch({
     names: {
       usingPaintingReseeding: true,
@@ -55,8 +85,10 @@ export const Static3SetupFilter = ({ game }: { game: Static3Game }) => {
       letSearcherFindPaintingSeed: true,
       showAdvancedPaintingSettings: true,
       usingDeadBattery: true,
+      species: true,
+      roaming: true,
     },
-    validationSchema: targetSetupSearcherSchema,
+    validationSchema: static3TargetSetupSearcherSchema,
   });
 
   return (
@@ -67,6 +99,11 @@ export const Static3SetupFilter = ({ game }: { game: Static3Game }) => {
       <FormFieldTable
         fields={getSetupFields({
           game,
+          requireAceForPaintingReseeding: getRequireAceForPaintingReseeding(
+            game,
+            species,
+            roaming,
+          ),
           usingPaintingReseeding: usingPaintingReseeding ?? false,
           filter_shiny: filter_shiny ?? false,
           usingAceForSid: usingAceForSid ?? false,

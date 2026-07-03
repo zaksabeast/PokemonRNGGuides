@@ -8,7 +8,7 @@ import Instructions_Beldum from "./Instructions_Beldum.mdx";
 import Instructions_Castform from "./Instructions_Castform.mdx";
 import Instructions_Chikorita from "./Instructions_Chikorita.mdx";
 import Instructions_Cyndaquil from "./Instructions_Cyndaquil.mdx";
-import Instructions_Deoxys_Speed from "./Instructions_Deoxys_Speed.mdx";
+import Instructions_Deoxys from "./Instructions_Deoxys.mdx";
 import Instructions_Electrode from "./Instructions_Electrode.mdx";
 import Instructions_Groudon from "./Instructions_Groudon.mdx";
 import Instructions_HoOh from "./Instructions_HoOh.mdx";
@@ -55,6 +55,7 @@ export type EmeraldStaticEncounter = Static3Encounter & {
   calib: number;
   offset: number;
   instructions: React.ReactNode;
+  requireAceForPaintingReseeding: boolean;
 };
 
 /*
@@ -78,6 +79,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     // +5 for npc moves,
     // must wait in menu to avoid unwanted advances
     calib: CALIB_TV_SAVE_BLOCK + 5,
+    requireAceForPaintingReseeding: false,
     instructions: <Instructions_Chikorita />,
   },
   {
@@ -89,6 +91,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     // +5 for npc moves,
     // must wait in menu to avoid unwanted advances
     calib: CALIB_TV_SAVE_BLOCK + 5,
+    requireAceForPaintingReseeding: false,
     instructions: <Instructions_Totodile />,
   },
   {
@@ -100,6 +103,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     // +5 for npc moves,
     // must wait in menu to avoid unwanted advances
     calib: CALIB_TV_SAVE_BLOCK + 5,
+    requireAceForPaintingReseeding: false,
     instructions: <Instructions_Cyndaquil />,
   },
   {
@@ -110,6 +114,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     offset: 3,
     // +5 for npc move
     calib: CALIB_TV_SAVE_BLOCK + 5,
+    requireAceForPaintingReseeding: true,
     instructions: <Instructions_Treecko />,
   },
   {
@@ -120,6 +125,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     offset: 3,
     // +5 for npc move
     calib: CALIB_TV_SAVE_BLOCK + 5,
+    requireAceForPaintingReseeding: true,
     instructions: <Instructions_Mudkip />,
   },
   {
@@ -130,6 +136,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     offset: 3,
     // +5 for npc move
     calib: CALIB_TV_SAVE_BLOCK + 5,
+    requireAceForPaintingReseeding: true,
     instructions: <Instructions_Torchic />,
   },
   {
@@ -139,6 +146,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 3,
     calib: CALIB_TV_SAVE_BLOCK,
+    requireAceForPaintingReseeding: false,
     instructions: <Instructions_Lileep />,
   },
   {
@@ -148,6 +156,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 3,
     calib: CALIB_TV_SAVE_BLOCK,
+    requireAceForPaintingReseeding: false,
     instructions: <Instructions_Anorith />,
   },
   {
@@ -158,6 +167,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     offset: 3,
     // +1 for npc move
     calib: CALIB_TV_SAVE_BLOCK + 1,
+    requireAceForPaintingReseeding: false,
     instructions: <Instructions_Castform />,
   },
   {
@@ -168,6 +178,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     offset: 3,
     // +1 for npc move
     calib: CALIB_TV_SAVE_BLOCK + 1,
+    requireAceForPaintingReseeding: false,
     instructions: <Instructions_Beldum />,
   },
   {
@@ -178,6 +189,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     offset: 165,
     // +3 for npc move
     calib: CALIB_TV_SAVE_BLOCK + 3,
+    requireAceForPaintingReseeding: false,
     instructions: <Instructions_Wynaut />,
   },
   {
@@ -188,6 +200,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     offset: 1859 - 1715,
     // +1 for ambient cry
     calib: CALIB_TV_SAVE_BLOCK + 1,
+    requireAceForPaintingReseeding: false,
     instructions: <Instructions_Kecleon />,
   },
   {
@@ -199,6 +212,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     // +1 for ChooseWildMonIndex_Land_Random, +1 for UpdateAmbientCry_v1, +1 for npc move
     // must wait in menu to avoid unwanted advances
     calib: CALIB_TV_SAVE_BLOCK + 3,
+    requireAceForPaintingReseeding: false,
     instructions: <Instructions_Voltorb />,
   },
   {
@@ -210,6 +224,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     // +2 for npc move (assuming both balls are displayed)
     // must wait in menu to avoid unwanted advances
     calib: CALIB_TV_SAVE_BLOCK + 2,
+    requireAceForPaintingReseeding: false,
     instructions: <Instructions_Electrode />,
   },
   {
@@ -220,6 +235,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     offset: 52,
     // +1 for npc move
     calib: CALIB_TV_SAVE_BLOCK + 1,
+    requireAceForPaintingReseeding: false,
     instructions: <Instructions_Sudowoodo />,
   },
   {
@@ -229,6 +245,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 103,
     calib: CALIB_TV_SAVE_BLOCK,
+    requireAceForPaintingReseeding: false,
     instructions: <Instructions_Regirock />,
   },
   {
@@ -238,6 +255,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 103,
     calib: CALIB_TV_SAVE_BLOCK,
+    requireAceForPaintingReseeding: false,
     instructions: <Instructions_Regice />,
   },
   {
@@ -247,6 +265,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 919 - 840,
     calib: CALIB_TV_SAVE_BLOCK,
+    requireAceForPaintingReseeding: false,
     instructions: <Instructions_Registeel />,
   },
   {
@@ -258,6 +277,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     // +3 for save block when changing map
     calib: CALIB_TV_SAVE_BLOCK + 3,
     // ~2800 minimum advances
+    requireAceForPaintingReseeding: true,
     instructions: <Instruction_LatiasRoaming />,
   },
   {
@@ -269,6 +289,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     // +3 for save block when changing map
     calib: CALIB_TV_SAVE_BLOCK + 3,
     // ~2800 minimum advances
+    requireAceForPaintingReseeding: true,
     instructions: <Instruction_LatiosRoaming />,
   },
 
@@ -279,6 +300,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 1002 - 570,
     calib: CALIB_TV_SAVE_BLOCK,
+    requireAceForPaintingReseeding: false,
     instructions: <Instructions_LatiasSouthernIsland />,
   },
   {
@@ -288,6 +310,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 1002 - 570,
     calib: CALIB_TV_SAVE_BLOCK,
+    requireAceForPaintingReseeding: false,
     instructions: <Instructions_LatiosSouthernIsland />,
   },
   {
@@ -297,6 +320,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 288,
     calib: CALIB_TV_SAVE_BLOCK,
+    requireAceForPaintingReseeding: false,
     instructions: <Instructions_Kyogre />,
   },
   {
@@ -306,6 +330,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 288,
     calib: CALIB_TV_SAVE_BLOCK,
+    requireAceForPaintingReseeding: false,
     instructions: <Instructions_Groudon />,
   },
   {
@@ -315,6 +340,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 96,
     calib: CALIB_TV_SAVE_BLOCK,
+    requireAceForPaintingReseeding: false,
     instructions: <Instructions_Rayquaza />,
   },
   {
@@ -324,6 +350,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 1009 - 900,
     calib: CALIB_TV_SAVE_BLOCK,
+    requireAceForPaintingReseeding: false,
     instructions: <Instructions_Mew />,
   },
   {
@@ -333,7 +360,8 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 1251 - 750,
     calib: CALIB_TV_SAVE_BLOCK,
-    instructions: <Instructions_Deoxys_Speed />,
+    requireAceForPaintingReseeding: false,
+    instructions: <Instructions_Deoxys />,
   },
   {
     species: "Lugia",
@@ -342,6 +370,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 816 - 540,
     calib: CALIB_TV_SAVE_BLOCK,
+    requireAceForPaintingReseeding: false,
     instructions: <Instructions_Lugia />,
   },
   {
@@ -351,6 +380,7 @@ const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
     roaming: false,
     offset: 378,
     calib: CALIB_TV_SAVE_BLOCK,
+    requireAceForPaintingReseeding: false,
     instructions: <Instructions_HoOh />,
   },
 ];

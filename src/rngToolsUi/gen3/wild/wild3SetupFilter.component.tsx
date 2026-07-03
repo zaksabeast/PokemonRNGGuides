@@ -185,6 +185,7 @@ const getSetupFields = (obj: {
       ...obj,
       game: "emerald",
       usingDeadBattery: false,
+      requireAceForPaintingReseeding: false,
     }),
     {
       label: "Display results with 0% likelihood",

@@ -6,6 +6,7 @@ import {
   Link,
   ResultColumn,
   Flex,
+  Alert,
 } from "~/components";
 import {
   advanceFromSeed0Txt,
@@ -93,18 +94,36 @@ export const getPaintingSetupFilterFields = ({
   letSearcherFindPaintingSeed,
   showAdvancedPaintingSettings,
   usingDeadBattery,
+  requireAceForPaintingReseeding,
 }: {
   game: Static3Game;
   usingPaintingReseeding: boolean;
   letSearcherFindPaintingSeed: boolean;
   showAdvancedPaintingSettings: boolean;
   usingDeadBattery: boolean;
+  requireAceForPaintingReseeding: boolean;
 }): Field[] => {
   return [
     {
       ...usingPaintingReseedingLabel(),
       input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
       show: game === "emerald",
+    },
+    {
+      label: "",
+      key: "requireAceForPaintingReseeding",
+      input: (
+        <Alert
+          showIcon
+          type="warning"
+          title="To use Painting Reseeding for this Pokémon, you must beat the game to access the Battle Frontier, then use Arbitrary code execution (ACE) to respawn this encounter."
+        />
+      ),
+      show:
+        game === "emerald" &&
+        usingPaintingReseeding &&
+        requireAceForPaintingReseeding,
+      indent: 1,
     },
 
     {

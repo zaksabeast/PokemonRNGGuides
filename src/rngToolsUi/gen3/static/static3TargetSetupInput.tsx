@@ -7,7 +7,7 @@ import {
   RngToolSubmit,
 } from "~/components";
 import { FormFieldTable } from "~/components/formFieldTable";
-import { useFormContext, useWatch } from "~/hooks/form";
+import { useWatch } from "~/hooks/form";
 import { TargetSetup } from "./static3TargetSetupSearcher";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import {
@@ -64,7 +64,6 @@ const Static3TargetSetupInputFields = ({
 }: {
   setTargetSetup: (targetSetup: TargetSetup | null) => void;
 }) => {
-  const { setFieldValue } = useFormContext<FormState>();
   const watchedValues = useWatch({
     names: {
       roaming: true,

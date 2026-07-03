@@ -12,7 +12,7 @@ import { TargetSetup } from "./static3TargetSetupSearcher";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import {
   gen3StaticMethods,
-  getPossibleRoamingValuesForSpecies,
+  hasMultiplePossibleRoamingValuesForSpecies,
   getPossibleStatic3Species,
 } from "./constants.tsx";
 import { getPaintingReseedingFields } from "../pokemonRng/targetSetupInput";
@@ -84,18 +84,12 @@ const Static3TargetSetupInputFields = ({
     watchedValues.targetFrameBeforePainting ?? 1;
   const targetAdvance = watchedValues.targetAdvance ?? 1000;
 
-  const possibleRoaming = getPossibleRoamingValuesForSpecies(
+  const hasMultiplePossibleRoaming = hasMultiplePossibleRoamingValuesForSpecies(
     GAME,
     selectedSpecies,
   );
   const equivalentInitialAdvs =
     (lcrng_distance(0, targetFrameBeforePainting) + targetAdvance) % 2 ** 32;
-
-  React.useEffect(() => {
-    if (!possibleRoaming.includes(roaming)) {
-      setFieldValue("roaming", possibleRoaming[0]);
-    }
-  }, [possibleRoaming, roaming, setFieldValue]);
 
   React.useEffect(() => {
     setTargetSetup(null);
@@ -122,7 +116,7 @@ const Static3TargetSetupInputFields = ({
     {
       label: "Roaming",
       input: <FormikSwitch<FormState> name="roaming" />,
-      show: possibleRoaming.length > 1,
+      show: hasMultiplePossibleRoaming,
     },
     ...getPaintingReseedingFields({
       usingPaintingReseeding,

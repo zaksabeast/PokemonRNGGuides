@@ -1,5 +1,0 @@
-
-- display text 
-
-- display warning if trying to use painting for starter.
-- display warning if trying to use battle video for starter

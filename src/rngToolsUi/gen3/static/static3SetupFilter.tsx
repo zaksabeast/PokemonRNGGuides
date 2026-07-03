@@ -1,7 +1,6 @@
 import {
   gen3StaticMethods,
   getEmeraldStaticCalibData,
-  getPossibleRoamingValuesForSpecies,
   Static3Game,
 } from "./constants.tsx";
 import { Field, FormFieldTable, FormikSelect, Typography } from "~/components";
@@ -62,13 +61,7 @@ const getSetupFieldsOpts = (
     return defaultVal;
   }
 
-  const possibleRoaming = getPossibleRoamingValuesForSpecies(game, species);
-
-  const effectiveRoaming = possibleRoaming.includes(roaming)
-    ? roaming
-    : possibleRoaming[0];
-
-  const calib = getEmeraldStaticCalibData(species, effectiveRoaming);
+  const calib = getEmeraldStaticCalibData(species, roaming);
   if (calib == null) {
     return defaultVal;
   }

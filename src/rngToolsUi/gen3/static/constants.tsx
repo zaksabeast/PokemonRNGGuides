@@ -52,23 +52,19 @@ export type Static3Encounter = {
 };
 
 export type EmeraldStaticEncounter = Static3Encounter & {
+  // To determine calib: boot game and right before interacting, check number of non-vblank rng updates.
+  // calib with and without battle video is about the same.
+  //    without battle video: +1 adv for tv show, +3 save block
+  //    with battle video: +1 adv for BattleStartClearSetData, +3 save block
   calib: number;
+  // To determine offset: pause and check rng advance. unpause while holding A, and count number of advance before reaching CreateBoxMon_pid_low
   offset: number;
   instructions: React.ReactNode;
   requireAceForPaintingReseeding: boolean;
   recommendedMinAdvances?: number | null;
 };
 
-/*
-calib: boot game and right before interacting, check number of non-vblank rng updates.
-offset: check rng advance on pause. unpause while holding A, and count number of adv for CreateBoxMon_pid_low
-
-calib with and without battle video is the same.
-  without battle video: +1 adv for tv show, +3 save block
-  with battle video: +1 adv for BattleStartClearSetData, +3 save block
-*/
-
-const CALIB_TV_SAVE_BLOCK = 4; // assumes no lottery, and no roamer
+const CALIB_TV_SAVE_BLOCK = 4; // +1 for TV show. +3 for save block. Assumes no lottery, and no roamer
 
 const emeraldStaticEncounters: EmeraldStaticEncounter[] = [
   {
@@ -495,14 +491,32 @@ export const getStatic3SpeciesEncounters = (game: Static3Game) => {
     .exhaustive();
 };
 
-export const getPossibleRoamingValuesForSpecies = (
+export const getStatic3SpeciesEncounter = (
+  game: Static3Game,
+  species: Species,
+  roaming: boolean,
+) => {
+  const encounters = getStatic3SpeciesEncounters(game).filter((enc) => {
+    return enc.species === species;
+  });
+
+  if (encounters.length <= 1) {
+    return encounters[0] ?? null;
+  }
+
+  return encounters.find((enc) => enc.roaming === roaming) ?? null;
+};
+
+export const hasMultiplePossibleRoamingValuesForSpecies = (
   game: Static3Game,
   selectedSpecies: Species,
 ) => {
-  return uniq(
-    getStatic3SpeciesEncounters(game)
-      .filter((encounter) => encounter.species === selectedSpecies)
-      .map((encounter) => encounter.roaming),
+  return (
+    uniq(
+      getStatic3SpeciesEncounters(game)
+        .filter((encounter) => encounter.species === selectedSpecies)
+        .map((encounter) => encounter.roaming),
+    ).length > 1
   );
 };
 
@@ -516,9 +530,13 @@ export const getEmeraldStaticCalibData = (
   species: Species,
   roaming: boolean,
 ) => {
-  return (
-    emeraldStaticEncounters.find((enc) => {
-      return enc.species === species && enc.roaming === roaming;
-    }) ?? null
-  );
+  const encounters = emeraldStaticEncounters.filter((enc) => {
+    return enc.species === species;
+  });
+
+  if (encounters.length <= 1) {
+    return encounters[0] ?? null;
+  }
+
+  return encounters.find((enc) => enc.roaming === roaming) ?? null;
 };

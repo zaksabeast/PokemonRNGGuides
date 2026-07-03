@@ -15,9 +15,9 @@ import { toOptions } from "~/utils/options";
 import { z } from "zod";
 
 import {
-  getPossibleRoamingValuesForSpecies,
+  hasMultiplePossibleRoamingValuesForSpecies,
   getPossibleStatic3Species,
-  getStatic3SpeciesEncounters,
+  getStatic3SpeciesEncounter,
   Static3Game,
 } from "./constants.tsx";
 import { FormState } from "./static3TargetSetupSearcher";
@@ -34,17 +34,15 @@ const getTargetMonFields = (
   filter_shiny: boolean,
 ): Field[] => {
   const possibleSpecies = getPossibleStatic3Species(game);
-  const possibleRoaming = getPossibleRoamingValuesForSpecies(
+  const hasMultiplePossibleRoaming = hasMultiplePossibleRoamingValuesForSpecies(
     game,
     selectedSpecies,
   );
 
-  const selectedRoamingFixed = possibleRoaming.includes(selectedRoaming)
-    ? selectedRoaming
-    : possibleRoaming[0];
-  const selectedEncounter = getStatic3SpeciesEncounters(game).find(
-    (enc) =>
-      enc.species === selectedSpecies && enc.roaming === selectedRoamingFixed,
+  const selectedEncounter = getStatic3SpeciesEncounter(
+    game,
+    selectedSpecies,
+    selectedRoaming,
   );
 
   const isStarter =
@@ -65,7 +63,7 @@ const getTargetMonFields = (
     {
       label: "Roaming",
       input: <FormikSwitch<FormState> name="roaming" />,
-      show: possibleRoaming.length > 1,
+      show: hasMultiplePossibleRoaming,
     },
     {
       label: "Map",

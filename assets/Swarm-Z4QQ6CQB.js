@@ -1,0 +1,128 @@
+var e=`---
+- title: "HeartGold and SoulSilver Swarm RNG"
+  navDrawerTitle: "Swarm RNG"
+  description: "Learn how to RNG Swarm Pokémon in HeartGold and SoulSilver for shiny, high-IV Pokémon."
+  slug: "retail-hgss-swarm"
+  category: "HeartGold and SoulSilver"
+  section: "pokemon_rng"
+  variant: "retail"
+  isRoughDraft: true
+- title: "Diamond, Pearl, and Platinum Swarm RNG"
+  navDrawerTitle: "Swarm RNG"
+  description: "Learn how to RNG Swarm Pokémon in Diamond, Pearl, and Platinum for shiny, high-IV Pokémon."
+  slug: "retail-dppt-swarm"
+  category: "Diamond, Pearl, and Platinum"
+  section: "pokemon_rng"
+  variant: "retail"
+  isRoughDraft: true
+---
+
+<Gen4Reset />
+
+> [!NOTE]
+> This guide is interactive and updates instructions based on your settings!
+
+<Stepper titles={["Set up", "Find your seed", "Select the encounter", "Get the Pokémon"]}>
+
+<Step step={0}>
+
+## Find your target
+
+Select a game and a target Pokemon from the interactive map below.
+
+<Alert type="warning" message="Todo: add map" />
+
+<SelectSwarm4Target />
+
+## Prepare your save
+
+1. In DPPt, get the Coin Flip Pokétch App.
+2. In HGSS, register the trainer Youngster Joey. (Route 30)
+3. Save at the location in the screenshots below depending on your game: in DPPt in Jubilife City in front of the Jubilife TV Station, in HGSS inside the Pokémon School of Violet City. He is the "Group NPC" and he will confirm our Swarm.
+
+<Pixelate>
+
+<EqualColumnTable>
+
+| Diamond, Pearl and Platinum                                              | HeartGold and SoulSilver                                               |
+| ------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| ![Where to Save in DPPt](/images/Diamond-Pearl-Platinum/Swarm/Save.webp) | ![Where to Save in HGSS](/images/HeartGold-SoulSilver/Swarm/Save.webp) |
+
+</EqualColumnTable>
+
+</Pixelate>
+
+</Step>
+
+<Step step={1}>
+
+## Find your seed
+
+1. Restart the game, and enter the date, time, and approximate second when you **loaded the save**.
+   - ~15 seconds after launch on NDS
+   - ~20 seconds with TwilightMenu
+   - ~30 seconds using a 3DS launcher
+2. Click "Generate" to get a list of possible seeds.
+3. Filter your Initial Seed based on:
+   - **For HeartGold and SoulSilver**: Use the Pokégear to call Professor Elm. Based on his response, press the matching button below to narrow down your seed.
+   - **For Diamond, Pearl and Platinum**: Use the Coin Toss Poketch app and click the "Heads" and "Tails" buttons to narrow down your seed.
+
+List of calls in HeartGold and SoulSilver:
+
+- **K** — “I expect there are some Pokémon in the Kanto region that I don't know. There are probably methods of evolution that I'm not familiar with yet. I should use that perspective and discover what I can!”
+- **E** — “There are so many different ways that Pokémon evolve, aren't there? Some Pokémon don't even evolve until they meet certain conditions first!”
+- **P** — “It seems that Pokémon that have been infected with Pokérus level up better. We're not quite sure why...”
+
+> [!TIP]
+> Start the game at a late hour like 11:50 PM, so you only have to wait 10 minutes!
+> If you don't see any results after filtering, increase the seconds and delay intervals. Search for 0-59 seconds if you still have problems.
+
+<Gen4SeedFinder />
+
+</Step>
+
+<Step step={2}>
+
+## Select the encounter
+
+<SwarmFindEncounter />
+
+</Step>
+
+<Step step={3}>
+
+## Advance the RNG and Get the Pokémon
+
+1. Use the tool below to keep track of your current advance.
+2. Advance until you are on the right advance. For DPPt it is the one with the checkmark.
+3. Once you have reached your target, talk to the group NPC and make a new group.
+4. Save the game and wait for the DS clock to pass midnight.
+5. In DPPt talk to your rival's sister or check TV news, in HGSS listen to the Mary and Oak transmission in the Pokémon Talk radio channel. They should nominate your target Pokémon.
+
+   - <Pixelate>
+
+      <EqualColumnTable>
+
+     | Diamond, Pearl and Platinum                                                             | HeartGold and SoulSilver                                                                          |
+     | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+     | ![Talk to your rival's sister](/images/Diamond-Pearl-Platinum/Swarm/GetThePokemon.webp) | ![Listen to the Mary and Oak transmission](/images/HeartGold-SoulSilver/Swarm/GetThePokemon.webp) |
+
+      </EqualColumnTable>
+
+      </Pixelate>
+
+6. If this didn't happen, wait 24h and retry.
+
+<SwarmAdvanceFilter />
+
+**Congratulations!** If all went well, you should now have a swarm with your desired Pokemon.
+
+</Step>
+
+</Stepper>
+
+## Credits
+
+- Fiask for writing the guide and writing the tool.
+- Real96 for his [Gen 4 Swarm tool](https://github.com/Real96/Gen4SwarmDailyEncounterRNGTool), which this tool is a direct port of.
+`;export{e as default};

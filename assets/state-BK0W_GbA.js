@@ -1,0 +1,1 @@
+import{r as e}from"./react-DZDkGa0m.js";var t=e({id:null});export{t};

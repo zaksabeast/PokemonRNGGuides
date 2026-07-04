@@ -31,6 +31,8 @@ export type BatchableFunctionsOf<T> = {
 type UseBatchedToolOptions<Arg, Ret, MappedRet> = {
   map?: (value: Ret, arg: Arg) => MappedRet;
   sortBy?: ((value: MappedRet) => number) | ((value: MappedRet) => number)[];
+  /** Maximum number of results to collect before cancelling remaining work. */
+  limit?: number;
 };
 
 type UseBatchToolResults<Arg, Ret> = {
@@ -55,6 +57,7 @@ export const useBatchedTool = <Arg, Ret, MappedRet = Ret>(
   {
     map = identity,
     sortBy: sortWith,
+    limit,
   }: UseBatchedToolOptions<Arg, Ret, MappedRet> = {},
 ): UseBatchToolResults<Arg, MappedRet> => {
   const [progress, setProgress] = React.useState<{
@@ -130,9 +133,6 @@ export const useBatchedTool = <Arg, Ret, MappedRet = Ret>(
 
             return terminatablePromise;
           }, concurrency),
-        )
-        .pipe(
-          // Called when the observable completes
           finalize(() => {
             setLoading(false);
             resolve(results);
@@ -142,13 +142,29 @@ export const useBatchedTool = <Arg, Ret, MappedRet = Ret>(
           // Called when each chunk is received
           next: ({ arg, results: values }) => {
             const mappedValues = values.map((val) => map(val, arg));
-            const unsorted = [...results, ...mappedValues];
+
+            const acceptedValues =
+              limit == null
+                ? mappedValues
+                : mappedValues.slice(0, Math.max(0, limit - results.length));
+
+            const unsorted = [...results, ...acceptedValues];
+
             results = sortWith == null ? unsorted : sortBy(unsorted, sortWith);
+
             setProgress((prev) => ({
               data: results,
               finishedChunks: prev.finishedChunks + 1,
               totalChunks: prev.totalChunks,
             }));
+
+            if (limit != null && results.length >= limit) {
+              cancelActiveRun();
+              setProgress((prev) => ({
+                ...prev,
+                finishedChunks: prev.totalChunks,
+              }));
+            }
           },
         });
 

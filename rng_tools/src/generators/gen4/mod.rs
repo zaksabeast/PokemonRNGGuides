@@ -1,19 +1,23 @@
 mod calc_level;
 mod chatter;
 mod egg;
+mod game;
 mod game_logic;
 mod gen4wild;
 mod honey_tree;
 mod id;
+mod lottery;
 mod seed;
 mod seed_time;
 mod stationary;
 mod swarm;
 
 pub use egg::*;
+pub use game::*;
 pub use gen4wild::*;
 pub use honey_tree::*;
 pub use id::*;
+pub use lottery::*;
 pub use seed::*;
 pub use seed_time::*;
 pub use stationary::*;

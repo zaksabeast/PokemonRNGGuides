@@ -8816,6 +8816,44 @@ export const guides = {
       return file.default;
     }),
   },
+  "/retail-dppt-lottery/": {
+    meta: {
+      id: "/retail-dppt-lottery/",
+      categories: ["Diamond, Pearl, and Platinum"],
+      section: "other_rng",
+      guideVariants: ["retail"],
+      guideKey: "true-Lottery RNG",
+      isNew: false,
+      title: "Diamond, Pearl, and Platinum Lottery RNG Guide",
+      navDrawerTitle: "Lottery RNG",
+      description:
+        "Get unlimited Master Balls and Experience Shares in Diamond, Pearl, and Platinum with lottery RNG.",
+      slug: "/retail-dppt-lottery/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-07-04",
+      type: "baseGuide",
+      canonical: "/retail-dppt-lottery/",
+      file: "guides/Gen 4/Lottery.mdx",
+      translations: null,
+      guideGroupId: "en:true-Lottery RNG:Diamond, Pearl, and Platinum",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/retail-dppt-lottery/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["web_tool", "rough_draft"],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 4/Lottery.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 4/Lottery.mdx?raw");
+      return file.default;
+    }),
+  },
   "/retail-dppt-starter/": {
     meta: {
       id: "/retail-dppt-starter/",
@@ -17186,6 +17224,7 @@ export const guideSlugs = [
   "/retail-dppt-egg/",
   "/retail-dppt-honey-pokemon/",
   "/retail-dppt-honey-tree/",
+  "/retail-dppt-lottery/",
   "/retail-dppt-starter/",
   "/retail-dppt-static/",
   "/retail-dppt-swarm/",

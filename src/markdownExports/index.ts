@@ -456,6 +456,10 @@ const tools = {
     () => import("~/rngToolsUi/gen4/swarm/hgssSwarmAdvanceTracker"),
     (mod) => mod.HgssSwarmAdvanceTracker,
   ),
+  Lottery4Searcher: lazyLoad(
+    () => import("~/rngToolsUi/gen4/lottery/search"),
+    (mod) => mod.Lottery4Searcher,
+  ),
 };
 
 export const markdownComponents = {

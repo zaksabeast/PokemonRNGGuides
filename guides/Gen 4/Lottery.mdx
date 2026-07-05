@@ -1,15 +1,15 @@
 ---
-- title: "Diamond, Pearl, and Platinum Egg RNG Guide"
-  navDrawerTitle: "Egg RNG"
-  description: "Learn how to RNG egg Pokémon in Diamond, Pearl, and Platinum for perfect IVs, natures, and shinies."
-  slug: "retail-dppt-egg"
+- title: "Diamond, Pearl, and Platinum Lottery RNG Guide"
+  navDrawerTitle: "Lottery RNG"
+  description: "Get unlimited Master Balls and Experience Shares in Diamond, Pearl, and Platinum with lottery RNG."
+  slug: "retail-dppt-lottery"
   category: "Diamond, Pearl, and Platinum"
-  section: "pokemon_rng"
+  section: "other_rng"
   variant: "retail"
-  addedOn: "2026-07-04"
+  isRoughDraft: true
 ---
 
-<Stepper titles={['Set up', 'Pick an Egg', 'Hit your seed', 'Get PID', 'Get IVs']}>
+<Stepper titles={['Set up', 'Pick a Prize', 'Hit your seed', 'Advance to target', 'Get prize']}>
 
 <Step step={0}>
 
@@ -23,13 +23,11 @@ Choose the game and console you're playing below then continue to the next step.
 
 <Step step={1}>
 
-## Pick an Egg
+## Pick a Prize
 
-1. Enter your egg details in the tool below and press "Generate".
-2. If you don't know the parent IVs, leave them blank.
-3. Press "Select" on the target Pokemon you want to hatch.
+Type your TID and other info below, then choose the lottery prize you want to win.
 
-<Egg4Search />
+<Lottery4Searcher />
 
 </Step>
 
@@ -39,17 +37,16 @@ Choose the game and console you're playing below then continue to the next step.
 
 1. If you're on Platinum, set your console date to **12/31/2099** on NDS or **12/31/2050** on 3DS.
 2. Have at least one Chatot with Chatter (two is optimal).
-3. Optionally have a Pokemon with Flame Body or Magma Armor in your party to speed up hatching.
-4. Switch your Poketch to the Coin Flip app.
-5. Save inside the daycare.
+3. Switch your Poketch to the Coin Flip app.
+4. Save next to the Group NPC, south of the Jubilife TV station.
 
 <Pixelate>
 
 <EqualColumnTable>
 
-| Daycare                                                                 | Coin Flip App                                                           |
-| ----------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| ![Daycare Woman](/images/Diamond-Pearl-Platinum/Egg/daycare-woman.webp) | ![Poketch Coin Flip App](/images/Diamond-Pearl-Platinum/coin-flip.webp) |
+| Group NPC                                                   | Coin Flip App                                                           |
+| ----------------------------------------------------------- | ----------------------------------------------------------------------- |
+| ![Group NPC](/images/Diamond-Pearl-Platinum/group-npc.webp) | ![Poketch Coin Flip App](/images/Diamond-Pearl-Platinum/coin-flip.webp) |
 
 </EqualColumnTable>
 
@@ -87,7 +84,7 @@ Choose the game and console you're playing below then continue to the next step.
 5. Immediately press `A` when the second timer to goes off.
 
 > [!TIP]
-> If you don't have enough time to hit your seed, go back to the previous step and search for a Pokémon with a higher "Max Delay".
+> If you don't have enough time to hit your seed, go back to the previous step and search for a prize with a higher "Max Delay".
 
 <Gen4EmbeddedTimer />
 
@@ -112,12 +109,11 @@ Choose the game and console you're playing below then continue to the next step.
 
 <Step step={3}>
 
-## Get PID
+## Advance to target
 
-1. Press "Generate" below to generate a list of possible RNG advances for your PID.
+1. Press "Generate" below to generate a list of coin flips.
 2. Flip the coin in the Poketch and click the heads or tails buttons to track your current advance.
-3. Stop right before your target advance.
-4. Run around the daycare, ocassionally checking with the Daycare Lady to see if an egg is ready. (Do not go outside to check!)
+3. Stop right before your target advance, then move on to the next step.
 
 <DpptCoinFlipAdvanceFilter />
 
@@ -125,20 +121,28 @@ Choose the game and console you're playing below then continue to the next step.
 
 <Step step={4}>
 
-## Get IVs
+## Get prize
 
-1. Go outside in front of the daycare man and open your party as fast as possible.
-2. Press "Generate" to view a list of Chatter pitches.
-3. View Chatot's summary to hear the Chatter sound.
-4. Select "Low", "Medium", or "High" to match the pitch you hear and identify your current RNG advance.
-5. Repeat steps 2 and 3 until you're 1 advance before your target.
-6. As fast as possible, close the party and get the egg from the daycare man.
+> [!WARNING]
+> Do not change your console's date or time or use another console for 24 hours! That will mess up the RNG!
 
-<Gen4ChatterFilter />
+1. Talk to the group NPC to create a new group.
+2. Save the game.
+3. Wait 24 hours and talk to the Lottery NPC inside the Jubilife TV building to get your prize.
 
-## Congratulations!
+<Pixelate>
 
-Want to check your IVs? Use our [IV calculator](/iv-calculator) to make sure they're correct!
+<EqualColumnTable>
+
+| Group NPC                                                   | Lottery Counter                                                                 |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| ![Group NPC](/images/Diamond-Pearl-Platinum/group-npc.webp) | ![Lottery Counter](/images/Diamond-Pearl-Platinum/Lottery/lottery-counter.webp) |
+
+</EqualColumnTable>
+
+</Pixelate>
+
+**Congratulations!** You should have your winning prize!
 
 </Step>
 

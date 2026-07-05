@@ -345,6 +345,13 @@ export const translations = {
   "Elm Calls": "Elm Calls",
   "HP Type": "HP Type",
   "HP Power": "HP Power",
+  Prize: "Prize",
+  "Master Ball": "Master Ball",
+  "Max Revive": "Max Revive",
+  "Exp. Share": "Exp. Share",
+  "PP Up": "PP Up",
+  "Ultra Ball": "Ultra Ball",
+  Backdrop: "Backdrop",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

@@ -14,62 +14,65 @@ describe("chunkRange", () => {
   });
 
   it("splits range evenly into chunks", () => {
-    expect(chunkRange([0, 10], 5)).toEqual([
-      [0, 5],
-      [5, 10],
+    expect(chunkRange([0, 9], 5)).toEqual([
+      [0, 4],
+      [5, 9],
     ]);
-    expect(chunkRange([0, 20], 10)).toEqual([
-      [0, 10],
-      [10, 20],
+    expect(chunkRange([0, 19], 10)).toEqual([
+      [0, 9],
+      [10, 19],
     ]);
   });
 
   it("handles ranges that don't divide evenly", () => {
     expect(chunkRange([0, 10], 3)).toEqual([
-      [0, 3],
-      [3, 6],
-      [6, 9],
+      [0, 2],
+      [3, 5],
+      [6, 8],
       [9, 10],
     ]);
-    expect(chunkRange([0, 7], 2)).toEqual([
-      [0, 2],
-      [2, 4],
-      [4, 6],
-      [6, 7],
+    expect(chunkRange([0, 6], 2)).toEqual([
+      [0, 1],
+      [2, 3],
+      [4, 5],
+      [6, 6],
     ]);
   });
 
   it("works with chunk size of 1", () => {
     expect(chunkRange([0, 3], 1)).toEqual([
-      [0, 1],
-      [1, 2],
-      [2, 3],
+      [0, 0],
+      [1, 1],
+      [2, 2],
+      [3, 3],
     ]);
   });
 
   it("works with very large ranges", () => {
-    expect(chunkRange([0, 1000], 100)).toHaveLength(10);
-    expect(chunkRange([0, 1000], 100)[0]).toEqual([0, 100]);
-    expect(chunkRange([0, 1000], 100)[9]).toEqual([900, 1000]);
+    expect(chunkRange([0, 1000], 100)).toHaveLength(11);
+    expect(chunkRange([0, 1000], 100)[0]).toEqual([0, 99]);
+    expect(chunkRange([0, 1000], 100)[10]).toEqual([1000, 1000]);
   });
 
   it("handles negative start values", () => {
     expect(chunkRange([-10, 0], 5)).toEqual([
-      [-10, -5],
-      [-5, 0],
+      [-10, -6],
+      [-5, -1],
+      [0, 0],
     ]);
     expect(chunkRange([-5, 5], 3)).toEqual([
-      [-5, -2],
-      [-2, 1],
-      [1, 4],
+      [-5, -3],
+      [-2, 0],
+      [1, 3],
       [4, 5],
     ]);
   });
 
   it("handles negative ranges", () => {
     expect(chunkRange([-20, -10], 5)).toEqual([
-      [-20, -15],
-      [-15, -10],
+      [-20, -16],
+      [-15, -11],
+      [-10, -10],
     ]);
   });
 
@@ -86,7 +89,11 @@ describe("chunkRange", () => {
   it("ensures all chunk boundaries are contiguous", () => {
     const chunks = chunkRange([0, 50], 7);
     for (let i = 0; i < chunks.length - 1; i++) {
-      expect(chunks[i][1]).toBe(chunks[i + 1][0]);
+      expect(chunks[i][1] + 1).toBe(chunks[i + 1][0]);
     }
+  });
+
+  it("returns empty array for chunk size of 0", () => {
+    expect(chunkRange([0, 10], 0)).toEqual([]);
   });
 });

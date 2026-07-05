@@ -1,8 +1,8 @@
-use super::GameVersion;
 use super::LeadAbility;
 use crate::Characteristic;
 use crate::Ivs;
 use crate::Species;
+use crate::gen4::GameVersion;
 use crate::gen4::StaticMethod;
 use crate::gen4::calc_level::HoneyLevel;
 use crate::gen4::calc_level::LevelCalculator;

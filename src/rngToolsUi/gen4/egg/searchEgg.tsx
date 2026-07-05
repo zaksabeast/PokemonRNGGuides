@@ -191,7 +191,7 @@ const initialValues: FormState = {
   max_delay: 2000,
   held_min_advances: 20,
   held_max_advances: 50,
-  pickup_min_advances: 0,
+  pickup_min_advances: 30,
   pickup_max_advances: 200,
   species: "Bulbasaur",
   is_masuda: false,

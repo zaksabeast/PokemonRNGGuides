@@ -2,7 +2,6 @@ import { atom, useAtom } from "jotai";
 import {
   PokeNavTrainer,
   Gen3HeldEgg,
-  Nature,
   Species,
   Compatability,
   Gen3PickupMethod,
@@ -105,8 +104,6 @@ export const useRegisteredTrainers = () => useAtom(registeredTrainers);
 type HeldEggSettings = {
   compatability: Compatability;
   egg_species: Species;
-  female_nature: Nature;
-  female_has_everstone: boolean;
   has_lightning_rod: boolean;
   has_roamer: boolean;
 };
@@ -123,8 +120,6 @@ const initialHeldState: HeldEggState = {
   eggSettings: {
     compatability: "DontLikeEachOther",
     egg_species: "Bulbasaur",
-    female_has_everstone: false,
-    female_nature: "Adamant",
     has_lightning_rod: false,
     has_roamer: false,
   },

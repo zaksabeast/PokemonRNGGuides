@@ -5,6 +5,7 @@
   slug: "dppt-pokeradar-rng"
   category: "Diamond, Pearl, and Platinum"
   section: "pokemon_rng"
+  isRoughDraft: true
   variant:
     - "retail"
     - "cfw-emu"
@@ -20,21 +21,28 @@ It is usually used to catch exclusive Pokémon or perform RNG manipulation where
 
 ## How does PokéRadar work?
 
-Using the PokéRadar causes up to four patches of grass to shake. These patches appear in four "rings", each one tile farther away from the player than the previous.
+Once used, 4 "rings" are created, each spaced 1 tile where at least one piece of tall grass per ring will vibrate, indicating that at that specific point if the user passes over that tile, a wild encounter will be started.
 
-Walking into a shaking patch starts a wild encounter. Defeating or catching the first Pokémon begins a chain of that species. As the chain length increases, the chance of a shiny patch appearing also increases.
+The first pokemon encountered, if it is captured or knocked out, will start a chain with that pokemon species. The longer the chain becomes, the more the game increases the chance that a special lump containing a Shiny Pokémon will appear.
 
-### Shake types
+### Grass shake types
 
-Grass patches can shake in two different ways: **Slow** and **Fast**.
+The grass can shake in two different ways:
 
-Once you start a chain, you should continue entering patches with the same shake type as your first encounter. Entering a patch with the opposite shake type will always break the chain.
+- **Slow**
+- **Fast**
 
-### Not every matching patch is safe
+Once you start a chain with one shake type, you must continue entering patches with the same shake type for the entire chain.
 
-Unfortunately, matching the shake type does not guarantee that a patch is safe.
+For example, if the chain starts from a fast patch and you enter a slow patch, the chain will immediately break.
 
-When the game generates a chain-breaking patch, it randomly assigns one of the two shake types (a 50/50 roll). If that roll happens to match your current chain's shake type, the patch will look identical to a safe one, making it impossible to distinguish between them just by looking.
+### Hidden chain breaks
+
+Even patches with the correct shake type are not always safe.
+
+When a patch breaks the chain, the game performs a random 50/50 roll between shake types 1 and 2. Because of this, a dangerous patch can sometimes appear to have the same shake type as a safe patch.
+
+As a result, it is impossible to determine with certainty whether every matching patch is safe just by looking at the animation.
 
 Your chain will break if:
 
@@ -47,7 +55,10 @@ Your chain will break if:
 - PokéRadar usage fails.
 
 You can stop right at the first encounter, since the probability changes gradually, and the difference between the first two is minimal. But you're free to build a chain as long as you want.
+<<<<<<< HEAD
 
+=======
+>>>>>>> pokeradar
 This tool can also be used simply to build very long chains, as it will show which patches are safe and which aren't.
 
 ## In-game preparations

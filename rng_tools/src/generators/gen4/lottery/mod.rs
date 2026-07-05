@@ -114,7 +114,7 @@ fn generate_lotto_prizes(
         })
         .filter(|res| {
             res.prize != Lottery4Prize::None
-                && opts.prize_filter.map_or(true, |filter| res.prize == filter)
+                && opts.prize_filter.is_none_or(|filter| res.prize == filter)
         })
 }
 

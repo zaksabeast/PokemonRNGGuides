@@ -217,24 +217,6 @@ mod tests {
         use crate::{assert_list_eq, datetime};
 
         #[test]
-        fn ztest() {
-            let opts = SearchLottery4Opts {
-                min_delay: 800,
-                max_delay: 1000,
-                year: 2000,
-                force_seconds: None,
-                tid: 0,
-                game: GameVersion::Diamond,
-                min_mt_advance: 20,
-                max_mt_advance: 30,
-                prize_filter: None,
-                limit: 100,
-            };
-            let res = search_lotto_prizes(&opts);
-            println!("res: {:?}", res);
-        }
-
-        #[test]
         fn search() {
             let opts = SearchLottery4Opts {
                 min_delay: 800,

@@ -8836,7 +8836,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-07-04",
+      lastUpdated: "2026-07-06",
       type: "baseGuide",
       canonical: "/retail-dppt-lottery/",
       file: "guides/Gen 4/Lottery.mdx",

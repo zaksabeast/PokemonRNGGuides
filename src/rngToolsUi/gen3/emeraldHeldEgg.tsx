@@ -12,7 +12,6 @@ import { rngTools, Gen3HeldEgg } from "~/rngTools";
 import { getGen3SpeciesOptions, species } from "~/types/species";
 import { nature } from "~/types/nature";
 import { gender, genderOptions } from "~/types/gender";
-import { getNatureInputProps } from "~/components/pkmFilter";
 import { z } from "zod";
 import { Translations } from "~/translations";
 import { NatureFilterInput } from "~/components/natureFilterInput";
@@ -42,8 +41,6 @@ const Validator = z.object({
   delay: z.number().int(),
   initial_advances: z.number().int().min(0),
   max_advances: z.number().int().min(0),
-  female_has_everstone: z.boolean(),
-  female_nature: z.enum(nature),
   calibration: z.number().int().min(0),
   min_redraw: z.number().int().min(0),
   max_redraw: z.number().int().min(0),
@@ -62,8 +59,6 @@ const initialValues: FormState = {
   delay: 0,
   initial_advances: 100,
   max_advances: 1000,
-  female_has_everstone: false,
-  female_nature: "Adamant",
   calibration: 18,
   min_redraw: 0,
   max_redraw: 5,
@@ -78,19 +73,6 @@ const initialValues: FormState = {
 
 const getFields = (t: Translations): Field[] => {
   return [
-    {
-      label: t["Female or Ditto has everstone"],
-      input: <FormikSwitch<FormState> name="female_has_everstone" />,
-    },
-    {
-      label: t["Female or Ditto nature"],
-      input: (
-        <FormikSelect<FormState, "female_nature">
-          name="female_nature"
-          {...getNatureInputProps(t)}
-        />
-      ),
-    },
     {
       label: t["Egg species"],
       input: (

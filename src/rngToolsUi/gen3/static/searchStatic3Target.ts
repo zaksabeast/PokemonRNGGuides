@@ -4,7 +4,7 @@ import { rngTools } from "~/rngTools";
 import { flattenIvs } from "~/rngToolsUi/shared/ivColumns";
 
 import type { FormState, PidPathResult } from "./static3TargetSetupSearcher";
-import { Static3Game } from "./constants";
+import { Static3Game } from "./constants.tsx";
 import { createFastestAdvsCache } from "../paintingReseeding/paintingCache";
 
 let nextUid = 0;

@@ -6,6 +6,7 @@ import {
   Link,
   ResultColumn,
   Flex,
+  Alert,
 } from "~/components";
 import {
   advanceFromSeed0Txt,
@@ -32,7 +33,7 @@ import {
   gen3PkmFilterSchema,
   getGen3PkmFilterInitialValues,
 } from "~/components/gen3PkmFilter";
-import { Static3Game } from "../static/constants";
+import { Static3Game } from "../static/constants.tsx";
 import { Tooltip } from "antd";
 import { ivColumns } from "~/rngToolsUi/shared/ivColumns";
 import { GBA_FPS } from "~/utils/consts";
@@ -93,18 +94,40 @@ export const getPaintingSetupFilterFields = ({
   letSearcherFindPaintingSeed,
   showAdvancedPaintingSettings,
   usingDeadBattery,
+  requireAceForPaintingReseeding,
+  recommendedMinAdvances,
+  initial_advances,
 }: {
   game: Static3Game;
   usingPaintingReseeding: boolean;
   letSearcherFindPaintingSeed: boolean;
   showAdvancedPaintingSettings: boolean;
   usingDeadBattery: boolean;
+  requireAceForPaintingReseeding: boolean;
+  recommendedMinAdvances: number | null;
+  initial_advances: number;
 }): Field[] => {
   return [
     {
       ...usingPaintingReseedingLabel(),
       input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
       show: game === "emerald",
+    },
+    {
+      label: "",
+      key: "requireAceForPaintingReseeding",
+      input: (
+        <Alert
+          showIcon
+          type="warning"
+          title="To use Painting Reseeding for this Pokémon, you must beat the game to access the Battle Frontier, then use Arbitrary code execution (ACE) to respawn this encounter."
+        />
+      ),
+      show:
+        game === "emerald" &&
+        usingPaintingReseeding &&
+        requireAceForPaintingReseeding,
+      indent: 1,
     },
 
     {
@@ -178,6 +201,22 @@ export const getPaintingSetupFilterFields = ({
       ),
       show: !usingPaintingReseeding,
     },
+    {
+      label: "",
+      key: "recommendedMinAdvances",
+      input: (
+        <Alert
+          showIcon
+          type="warning"
+          title={`At least ${recommendedMinAdvances} advances is recommended to have enough time to trigger this encounter.`}
+        />
+      ),
+      show:
+        !usingPaintingReseeding &&
+        recommendedMinAdvances != null &&
+        initial_advances < recommendedMinAdvances,
+    },
+
     {
       label: usingPaintingReseeding
         ? "Max advances after painting"

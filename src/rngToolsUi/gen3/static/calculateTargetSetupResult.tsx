@@ -9,16 +9,15 @@ import {
 import { PokemonInfo } from "~/rngToolsUi/gen3/pokemonRng/ResultPokemonInfo";
 import { rngTools } from "~/rngTools";
 import { TargetSetup } from "./static3TargetSetupSearcher";
-import { getStatic3SpeciesEncounters } from "./constants";
+import { getStatic3SpeciesEncounter } from "./constants.tsx";
 
 export const getStaticEncounterLvl = (targetSetup: TargetSetup) => {
   return (
-    getStatic3SpeciesEncounters(targetSetup.game).find((enc) => {
-      return (
-        enc.species === targetSetup.species &&
-        enc.roaming === targetSetup.roaming
-      );
-    })?.lvl ?? 5
+    getStatic3SpeciesEncounter(
+      targetSetup.game,
+      targetSetup.species,
+      targetSetup.roaming,
+    )?.lvl ?? 5
   );
 };
 

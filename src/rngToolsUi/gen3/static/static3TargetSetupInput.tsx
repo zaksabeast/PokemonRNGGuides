@@ -7,14 +7,14 @@ import {
   RngToolSubmit,
 } from "~/components";
 import { FormFieldTable } from "~/components/formFieldTable";
-import { useFormContext, useWatch } from "~/hooks/form";
+import { useWatch } from "~/hooks/form";
 import { TargetSetup } from "./static3TargetSetupSearcher";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import {
   gen3StaticMethods,
-  getPossibleRoamingValuesForSpecies,
+  hasMultiplePossibleRoamingValuesForSpecies,
   getPossibleStatic3Species,
-} from "./constants";
+} from "./constants.tsx";
 import { getPaintingReseedingFields } from "../pokemonRng/targetSetupInput";
 import { species } from "~/types/species";
 import { lcrng_distance } from "~/utils/lcrng";
@@ -64,7 +64,6 @@ const Static3TargetSetupInputFields = ({
 }: {
   setTargetSetup: (targetSetup: TargetSetup | null) => void;
 }) => {
-  const { setFieldValue } = useFormContext<FormState>();
   const watchedValues = useWatch({
     names: {
       roaming: true,
@@ -84,18 +83,12 @@ const Static3TargetSetupInputFields = ({
     watchedValues.targetFrameBeforePainting ?? 1;
   const targetAdvance = watchedValues.targetAdvance ?? 1000;
 
-  const possibleRoaming = getPossibleRoamingValuesForSpecies(
+  const hasMultiplePossibleRoaming = hasMultiplePossibleRoamingValuesForSpecies(
     GAME,
     selectedSpecies,
   );
   const equivalentInitialAdvs =
     (lcrng_distance(0, targetFrameBeforePainting) + targetAdvance) % 2 ** 32;
-
-  React.useEffect(() => {
-    if (!possibleRoaming.includes(roaming)) {
-      setFieldValue("roaming", possibleRoaming[0]);
-    }
-  }, [possibleRoaming, roaming, setFieldValue]);
 
   React.useEffect(() => {
     setTargetSetup(null);
@@ -122,7 +115,7 @@ const Static3TargetSetupInputFields = ({
     {
       label: "Roaming",
       input: <FormikSwitch<FormState> name="roaming" />,
-      show: possibleRoaming.length > 1,
+      show: hasMultiplePossibleRoaming,
     },
     ...getPaintingReseedingFields({
       usingPaintingReseeding,

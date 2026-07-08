@@ -2,13 +2,18 @@ export const chunkRange = (
   [start, end]: [number, number],
   chunkSize: number,
 ): [number, number][] => {
-  if (start === end) {
-    return [[start, end]];
+  const chunks: [number, number][] = [];
+
+  if (chunkSize === 0) {
+    return [];
   }
 
-  const chunks: [number, number][] = [];
-  for (let i = start; i < end; i += chunkSize) {
-    chunks.push([i, Math.min(i + chunkSize, end)]);
+  let i = start;
+  while (i <= end) {
+    const chunkEnd = Math.min(i + chunkSize - 1, end);
+    chunks.push([i, chunkEnd]);
+    i = chunkEnd + 1;
   }
+
   return chunks;
 };

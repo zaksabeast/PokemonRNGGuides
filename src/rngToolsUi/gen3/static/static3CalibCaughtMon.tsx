@@ -34,7 +34,7 @@ import { RngToolSubmit } from "~/components/rngToolForm";
 import { Typography } from "~/components/typography";
 import { useFormContext, useWatch } from "~/hooks/form";
 import clamp from "lodash-es/clamp";
-import { gen3StaticMethods } from "./constants";
+import { gen3StaticMethods } from "./constants.tsx";
 
 const createStatic3SearcherOptions = async (
   values: FormState,

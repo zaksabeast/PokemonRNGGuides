@@ -2,7 +2,7 @@ import {
   Static3TargetSetupSearcher,
   TargetSetup,
 } from "./static3TargetSetupSearcher";
-import { gen3StaticMethods } from "./constants";
+import { gen3StaticMethods } from "./constants.tsx";
 import z from "zod";
 import { species } from "~/types/species";
 import { atomWithPersistence, useAtom } from "~/state/localStorage";

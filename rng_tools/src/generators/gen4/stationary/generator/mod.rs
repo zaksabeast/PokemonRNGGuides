@@ -1,5 +1,6 @@
 use super::LeadAbility;
 use crate::Characteristic;
+use crate::Gender;
 use crate::Ivs;
 use crate::Species;
 use crate::gen4::GameVersion;
@@ -11,7 +12,7 @@ use crate::gen4::game_logic::{DpptLogic, GameSpecificLogic, HgssLogic};
 use crate::rng::Rng;
 use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
-use crate::{AbilityType, Gender, Nature, PkmFilter, PkmState, gen3_shiny};
+use crate::{AbilityType, Nature, PkmFilter, PkmState, gen3_shiny};
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
@@ -110,15 +111,120 @@ fn generate_static4_method1(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Gen4Sta
     )
 }
 
-fn generate_static4_jk<Game: GameSpecificLogic, LevelCalc: LevelCalculator<Pokerng>>(
+trait PidStrategy<Game: GameSpecificLogic> {
+    fn generate_pid(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> u32;
+}
+
+struct NormalPid;
+
+impl<Game: GameSpecificLogic> PidStrategy<Game> for NormalPid {
+    fn generate_pid(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> u32 {
+        let buffer: u8 = match opts.lead {
+            LeadAbility::CutecharmF => (25 * ((opts.species.gender_ratio() as u32 / 25) + 1)) as u8,
+            _ => 0,
+        };
+
+        let cute_charm = matches!(opts.lead, LeadAbility::CutecharmF | LeadAbility::CutecharmM)
+            && !opts.species.is_fixed_gender();
+        let cute_charm_flag = match cute_charm {
+            true => Game::max(rng.rand::<u16>(), 3) != 0,
+            false => false,
+        };
+
+        let nature = match opts.lead {
+            LeadAbility::Synchronize(nature) => {
+                let is_sync = Game::max(rng.rand::<u16>(), 2) == 0;
+                match is_sync {
+                    true => nature as u16,
+                    false => Game::max(rng.rand::<u16>(), 25),
+                }
+            }
+            _ => Game::max(rng.rand::<u16>(), 25),
+        };
+
+        match cute_charm_flag {
+            true => buffer as u32 + nature as u32,
+            false => {
+                let mut pid;
+                loop {
+                    let pid_low = rng.rand::<u16>() as u32;
+                    let pid_high = rng.rand::<u16>() as u32;
+                    pid = (pid_high << 16) | pid_low;
+                    if pid % 25 == nature as u32 {
+                        break;
+                    }
+                }
+                pid
+            }
+        }
+    }
+}
+
+struct ShinyPid;
+
+fn shiny_pid(rng: &mut Pokerng, tsv: u16) -> u32 {
+    let mut low = rng.rand::<u16>() % 8;
+    let mut high = rng.rand::<u16>() % 8;
+
+    for i in 3..16 {
+        low |= (rng.rand::<u16>() & 1) << i;
+    }
+
+    high |= (tsv ^ low) & 0xFFF8;
+
+    ((high as u32) << 16) | (low as u32)
+}
+
+impl<Game: GameSpecificLogic> PidStrategy<Game> for ShinyPid {
+    fn generate_pid(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> u32 {
+        let tsv = opts.tid ^ opts.sid;
+        let lead = opts.lead;
+        let species = opts.species;
+
+        let cute_charm_active = matches!(lead, LeadAbility::CutecharmF | LeadAbility::CutecharmM)
+            && !species.is_fixed_gender();
+
+        let cute_charm_check = |pid: u32| -> bool {
+            match lead {
+                LeadAbility::CutecharmF => species.gender_from_pid(pid) == Gender::Male,
+                LeadAbility::CutecharmM => species.gender_from_pid(pid) == Gender::Female,
+                _ => false,
+            }
+        };
+
+        if cute_charm_active && (rng.rand::<u16>() / 21846) != 0 {
+            loop {
+                let pid = shiny_pid(rng, tsv);
+                if cute_charm_check(pid) {
+                    break pid;
+                }
+            }
+        } else if let LeadAbility::Synchronize(nature) = lead {
+            if (rng.rand::<u16>() / 32768) == 0 {
+                let nature_value = nature as u32;
+                loop {
+                    let pid = shiny_pid(rng, tsv);
+                    if pid % 25 == nature_value {
+                        break pid;
+                    }
+                }
+            } else {
+                shiny_pid(rng, tsv)
+            }
+        } else {
+            shiny_pid(rng, tsv)
+        }
+    }
+}
+
+fn generate_static4_jk<
+    Game: GameSpecificLogic,
+    LevelCalc: LevelCalculator<Pokerng>,
+    Pid: PidStrategy<Game>,
+>(
     rng: &mut Pokerng,
     opts: &Gen4StaticOpts,
 ) -> Gen4StaticPokemon {
-    let buffer: u8 = match opts.lead {
-        LeadAbility::CutecharmF => (25 * ((opts.species.gender_ratio() as u32 / 25) + 1)) as u8,
-        _ => 0,
-    };
-
     let level = LevelCalc::calc_level(
         rng,
         opts.encounter_min_level,
@@ -126,39 +232,7 @@ fn generate_static4_jk<Game: GameSpecificLogic, LevelCalc: LevelCalculator<Poker
         opts.lead == LeadAbility::Pressure,
     );
 
-    let cute_charm = matches!(opts.lead, LeadAbility::CutecharmF | LeadAbility::CutecharmM)
-        && !opts.species.is_fixed_gender();
-    let cute_charm_flag = match cute_charm {
-        true => Game::max(rng.rand::<u16>(), 3) != 0,
-        false => false,
-    };
-
-    let nature = match opts.lead {
-        LeadAbility::Synchronize(nature) => {
-            let is_sync = Game::max(rng.rand::<u16>(), 2) == 0;
-            match is_sync {
-                true => nature as u16,
-                false => Game::max(rng.rand::<u16>(), 25),
-            }
-        }
-        _ => Game::max(rng.rand::<u16>(), 25),
-    };
-
-    let pid = match cute_charm_flag {
-        true => buffer as u32 + nature as u32,
-        false => {
-            let mut pid;
-            loop {
-                let pid_low = rng.rand::<u16>() as u32;
-                let pid_high = rng.rand::<u16>() as u32;
-                pid = (pid_high << 16) | pid_low;
-                if pid % 25 == nature as u32 {
-                    break;
-                }
-            }
-            pid
-        }
-    };
+    let pid = Pid::generate_pid(rng, opts);
 
     let iv1 = rng.rand::<u16>();
     let iv2 = rng.rand::<u16>();
@@ -170,9 +244,9 @@ fn generate_static4_jk<Game: GameSpecificLogic, LevelCalc: LevelCalculator<Poker
 fn generate_static4_state(opts: &Gen4StaticOpts, rng: &mut Pokerng) -> Gen4StaticPokemon {
     match StaticMethod::new(opts.game, opts.species) {
         StaticMethod::One => generate_static4_method1(rng, opts),
-        StaticMethod::J => generate_static4_jk::<DpptLogic, SetLevel>(rng, opts),
-        StaticMethod::K => generate_static4_jk::<HgssLogic, SetLevel>(rng, opts),
-        StaticMethod::Honey => generate_static4_jk::<DpptLogic, HoneyLevel>(rng, opts),
+        StaticMethod::J => generate_static4_jk::<DpptLogic, SetLevel, NormalPid>(rng, opts),
+        StaticMethod::K => generate_static4_jk::<HgssLogic, SetLevel, NormalPid>(rng, opts),
+        StaticMethod::Honey => generate_static4_jk::<DpptLogic, HoneyLevel, NormalPid>(rng, opts),
     }
 }
 
@@ -207,6 +281,46 @@ pub fn generate_static4_states(opts: &Gen4StaticOpts) -> Vec<Gen4StaticPokemon> 
             Some(pkm)
         })
         .collect::<Vec<Gen4StaticPokemon>>()
+}
+
+fn generate_static4_radar_generic<Pid: PidStrategy<DpptLogic>>(
+    opts: &Gen4StaticOpts,
+) -> Vec<Gen4StaticPokemon> {
+    let base_rng = Pokerng::new(opts.seed);
+    StateIterator::new(base_rng)
+        .skip(opts.offset)
+        .enumerate()
+        .skip(opts.initial_advances)
+        .take(opts.max_advances.wrapping_add(1))
+        .filter_map(|(adv, mut rng)| {
+            let mut pkm = generate_static4_jk::<DpptLogic, SetLevel, Pid>(&mut rng, opts);
+            if let Some(filter_level) = opts.filter_level {
+                if pkm.level != filter_level {
+                    return None;
+                }
+            }
+            if let Some(filter_characteristic) = opts.filter_characteristic {
+                if pkm.characteristic != filter_characteristic {
+                    return None;
+                }
+            }
+            if !opts.filter.pass_filter(&pkm) {
+                return None;
+            }
+            pkm.advance = adv;
+            Some(pkm)
+        })
+        .collect()
+}
+
+#[wasm_bindgen]
+pub fn generate_static4_radar_states(opts: &Gen4StaticOpts) -> Vec<Gen4StaticPokemon> {
+    generate_static4_radar_generic::<NormalPid>(opts)
+}
+
+#[wasm_bindgen]
+pub fn generate_static4_radar_shiny_states(opts: &Gen4StaticOpts) -> Vec<Gen4StaticPokemon> {
+    generate_static4_radar_generic::<ShinyPid>(opts)
 }
 
 #[cfg(test)]
@@ -308,6 +422,45 @@ mod test {
         };
     }
 
+    fn parse_radar_states(str: &str) -> Vec<Gen4StaticPokemon> {
+        let mut results: Vec<Gen4StaticPokemon> = Vec::new();
+        for raw_line in str.lines() {
+            let line = raw_line.trim();
+            if line.is_empty() {
+                continue;
+            }
+
+            let parts: Vec<&str> = line.split('\t').collect();
+            let advance: usize = parts[0].parse().unwrap();
+            let level: u8 = parts[5].parse().unwrap();
+            let pid = u32::from_str_radix(parts[6], 16).unwrap();
+            let shiny = parts[7] != "No";
+            let nature = Nature::from_str(parts[8]);
+            let ability = AbilityType::from_pokefinder_str(parts[9]);
+            let ivs = Ivs::from_pokefinder_strs(&parts[10..][..6]);
+            let gender = Gender::from_pokefinder_str(parts[18]);
+            let characteristic = Characteristic::from_pokefinder_str(parts[19]);
+
+            results.push(Gen4StaticPokemon {
+                pid,
+                shiny,
+                level,
+                ability,
+                gender,
+                ivs,
+                nature,
+                advance,
+                characteristic,
+            });
+        }
+        results
+    }
+
+    macro_rules! pokefinder_radar {
+        ($file:expr) => {
+            parse_radar_states(include_str!($file))
+        };
+    }
     mod method1 {
         use super::*;
 
@@ -815,6 +968,248 @@ mod test {
             };
             let results = generate_static4_states(&opts);
             let expected = pokefinder_honey!("test_data/method_honey/pressure.txt");
+            assert_list_eq!(results, expected);
+        }
+    }
+
+    mod method_shiny_radar {
+        use super::*;
+
+        #[test]
+        fn shiny_no_lead() {
+            let opts = Gen4StaticOpts {
+                tid: 39259,
+                sid: 25081,
+                initial_advances: 0,
+                max_advances: 200,
+                offset: 0,
+                filter: PkmFilter::new_allow_all(),
+                filter_level: None,
+                filter_characteristic: None,
+                game: GameVersion::Platinum,
+                species: Species::Snover,
+                lead: LeadAbility::None,
+                seed: 0xd6140374,
+                encounter_min_level: 33,
+                encounter_max_level: 33,
+            };
+            let results = generate_static4_radar_shiny_states(&opts);
+            let expected = pokefinder_radar!("test_data/method_shiny_pokeradar/no_lead.txt");
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn shiny_cute_charm_male() {
+            let opts = Gen4StaticOpts {
+                tid: 39259,
+                sid: 25081,
+                initial_advances: 0,
+                max_advances: 200,
+                offset: 0,
+                filter: PkmFilter::new_allow_all(),
+                filter_level: None,
+                filter_characteristic: None,
+                game: GameVersion::Platinum,
+                species: Species::Snover,
+                lead: LeadAbility::CutecharmM,
+                seed: 0xd6140374,
+                encounter_min_level: 33,
+                encounter_max_level: 33,
+            };
+            let results = generate_static4_radar_shiny_states(&opts);
+            let expected =
+                pokefinder_radar!("test_data/method_shiny_pokeradar/cute_charm_male.txt");
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn shiny_cute_charm_female() {
+            let opts = Gen4StaticOpts {
+                tid: 39259,
+                sid: 25081,
+                initial_advances: 0,
+                max_advances: 200,
+                offset: 0,
+                filter: PkmFilter::new_allow_all(),
+                filter_level: None,
+                filter_characteristic: None,
+                game: GameVersion::Platinum,
+                species: Species::Snover,
+                lead: LeadAbility::CutecharmF,
+                seed: 0xd6140374,
+                encounter_min_level: 33,
+                encounter_max_level: 33,
+            };
+            let results = generate_static4_radar_shiny_states(&opts);
+            let expected =
+                pokefinder_radar!("test_data/method_shiny_pokeradar/cute_charm_female.txt");
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn shiny_cute_charm_genderless() {
+            let opts = Gen4StaticOpts {
+                tid: 39259,
+                sid: 25081,
+                initial_advances: 0,
+                max_advances: 200,
+                offset: 0,
+                filter: PkmFilter::new_allow_all(),
+                filter_level: None,
+                filter_characteristic: None,
+                game: GameVersion::Platinum,
+                species: Species::Beldum,
+                lead: LeadAbility::CutecharmF,
+                seed: 0xd6140374,
+                encounter_min_level: 51,
+                encounter_max_level: 51,
+            };
+            let results = generate_static4_radar_shiny_states(&opts);
+            let expected =
+                pokefinder_radar!("test_data/method_shiny_pokeradar/cute_charm_genderless.txt");
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn shiny_synchronize_jolly() {
+            let opts = Gen4StaticOpts {
+                tid: 39259,
+                sid: 25081,
+                initial_advances: 0,
+                max_advances: 200,
+                offset: 0,
+                filter: PkmFilter::new_allow_all(),
+                filter_level: None,
+                filter_characteristic: None,
+                game: GameVersion::Platinum,
+                species: Species::Snover,
+                lead: LeadAbility::Synchronize(Nature::Jolly),
+                seed: 0xd6140374,
+                encounter_min_level: 33,
+                encounter_max_level: 33,
+            };
+            let results = generate_static4_radar_shiny_states(&opts);
+            let expected = pokefinder_radar!("test_data/method_shiny_pokeradar/sync_jolly.txt");
+            assert_list_eq!(results, expected);
+        }
+    }
+
+    mod method_radar {
+        use super::*;
+
+        #[test]
+        fn no_lead() {
+            let opts = Gen4StaticOpts {
+                tid: 39259,
+                sid: 25081,
+                initial_advances: 0,
+                max_advances: 200,
+                offset: 0,
+                filter: PkmFilter::new_allow_all(),
+                filter_level: None,
+                filter_characteristic: None,
+                game: GameVersion::Platinum,
+                species: Species::Snover,
+                lead: LeadAbility::None,
+                seed: 0xd6140374,
+                encounter_min_level: 33,
+                encounter_max_level: 33,
+            };
+            let results = generate_static4_radar_states(&opts);
+            let expected = pokefinder_radar!("test_data/method_pokeradar/no_lead.txt");
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn shiny_cute_charm_male() {
+            let opts = Gen4StaticOpts {
+                tid: 39259,
+                sid: 25081,
+                initial_advances: 0,
+                max_advances: 200,
+                offset: 0,
+                filter: PkmFilter::new_allow_all(),
+                filter_level: None,
+                filter_characteristic: None,
+                game: GameVersion::Platinum,
+                species: Species::Snover,
+                lead: LeadAbility::CutecharmM,
+                seed: 0xd6140374,
+                encounter_min_level: 33,
+                encounter_max_level: 33,
+            };
+            let results = generate_static4_radar_states(&opts);
+            let expected = pokefinder_radar!("test_data/method_pokeradar/cute_charm_male.txt");
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn shiny_cute_charm_female() {
+            let opts = Gen4StaticOpts {
+                tid: 39259,
+                sid: 25081,
+                initial_advances: 0,
+                max_advances: 200,
+                offset: 0,
+                filter: PkmFilter::new_allow_all(),
+                filter_level: None,
+                filter_characteristic: None,
+                game: GameVersion::Platinum,
+                species: Species::Snover,
+                lead: LeadAbility::CutecharmF,
+                seed: 0xd6140374,
+                encounter_min_level: 33,
+                encounter_max_level: 33,
+            };
+            let results = generate_static4_radar_states(&opts);
+            let expected = pokefinder_radar!("test_data/method_pokeradar/cute_charm_female.txt");
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn shiny_cute_charm_genderless() {
+            let opts = Gen4StaticOpts {
+                tid: 39259,
+                sid: 25081,
+                initial_advances: 0,
+                max_advances: 200,
+                offset: 0,
+                filter: PkmFilter::new_allow_all(),
+                filter_level: None,
+                filter_characteristic: None,
+                game: GameVersion::Platinum,
+                species: Species::Beldum,
+                lead: LeadAbility::CutecharmF,
+                seed: 0xd6140374,
+                encounter_min_level: 52,
+                encounter_max_level: 52,
+            };
+            let results = generate_static4_radar_states(&opts);
+            let expected =
+                pokefinder_radar!("test_data/method_pokeradar/cute_charm_genderless.txt");
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn synchronize_hardy() {
+            let opts = Gen4StaticOpts {
+                tid: 39259,
+                sid: 25081,
+                initial_advances: 0,
+                max_advances: 200,
+                offset: 0,
+                filter: PkmFilter::new_allow_all(),
+                filter_level: None,
+                filter_characteristic: None,
+                game: GameVersion::Platinum,
+                species: Species::Snover,
+                lead: LeadAbility::Synchronize(Nature::Hardy),
+                seed: 0xd6140374,
+                encounter_min_level: 33,
+                encounter_max_level: 33,
+            };
+            let results = generate_static4_radar_states(&opts);
+            let expected = pokefinder_radar!("test_data/method_pokeradar/sync_hardy.txt");
             assert_list_eq!(results, expected);
         }
     }

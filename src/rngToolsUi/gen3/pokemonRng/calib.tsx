@@ -72,12 +72,12 @@ export const buildGen3CalibFields = ({
     },
     {
       label: "Calibration",
-      input: calibration + " advances",
+      input: `~${calibration} advances`,
       tooltip: "Number of RNG advances not caused by frames. (Ex: NPC moving)",
     },
     {
       label: "Offset",
-      input: offset + " advances",
+      input: `~${offset} advances`,
       tooltip:
         "Number of RNG advances between the last player input and when the Pokémon generation occurs.",
     },

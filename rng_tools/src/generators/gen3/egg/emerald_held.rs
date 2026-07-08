@@ -415,14 +415,14 @@ fn generate_state(opts: &GenerateStateOpts) -> Option<Gen3HeldEggPid> {
     }
 
     let pid = (go.rand_max::<u16>(0xfffe) + 1) as u32 | ((trng.rand::<u16>() as u32) << 16);
-    return Some(Gen3HeldEggPid {
+    Some(Gen3HeldEggPid {
         redraws,
         calibration: remove_roamer(calibration, opts.has_roamer),
         has_roamer: opts.has_roamer,
         pid,
         advance: held_advance,
         match_call: generate_match_call(&mut go, has_lightning_rod, opts.ordered_trainers),
-    });
+    })
 }
 
 #[cfg(test)]

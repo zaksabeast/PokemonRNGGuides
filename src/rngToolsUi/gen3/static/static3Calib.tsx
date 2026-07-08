@@ -16,13 +16,24 @@ import {
   buildGen3CalibPreviousStepFields,
 } from "../pokemonRng/calib";
 import { Static3TargetSetupInput } from "./static3TargetSetupInput";
-import Instructions_calib_skip_setup from "../static/instructions_calib_skip_setup.mdx";
+import Instructions_calib_skip_setup from "./instructions_calib_skip_setup.mdx";
+import { getEmeraldStaticCalibData } from "./constants.tsx";
 
-// TODO: Have custom values by species.
-const CALIB_OFFSET = {
-  offset: 3, // for starter
-  calibNoBattleVideo: 10,
-  calibBattleVideo: 6,
+const getCalibData = (targetSetup: TargetSetup | null) => {
+  if (targetSetup !== null) {
+    const data = getEmeraldStaticCalibData(
+      targetSetup.species,
+      targetSetup.roaming,
+    );
+    if (data !== null) {
+      return data;
+    }
+  }
+  return {
+    offset: 0,
+    calib: 0,
+    instructions: null,
+  };
 };
 
 type Props = AllOrNone<{
@@ -112,12 +123,10 @@ export const Static3Calib = ({
 
   const initialAdv = battleVideoInfo?.battleVideoAdvAfterPainting ?? 0;
 
-  const { offset, calibBattleVideo, calibNoBattleVideo } = CALIB_OFFSET;
-
-  const calibration = initialAdv > 0 ? calibBattleVideo : calibNoBattleVideo;
+  const { offset, calib, instructions } = getCalibData(targetSetup);
 
   const advFromTimer =
-    targetForTimer - initialAdv - (humanInputDelay ?? 0) - offset - calibration;
+    targetForTimer - initialAdv - (humanInputDelay ?? 0) - offset - calib;
 
   const consoleType = battleVideoInfo?.consoleType ?? consoleTypeFromInput;
 
@@ -147,7 +156,7 @@ export const Static3Calib = ({
     battleVideoInfoProp,
     consoleTypeFromInput,
     setConsoleTypeFromInput,
-    calibration,
+    calibration: calib,
     offset,
     humanInputDelay,
     setHumanInputDelay,
@@ -218,6 +227,9 @@ export const Static3Calib = ({
             ) : (
               <Instructions_calib_without_battle_video />
             ))}
+
+          {displayInstructions && instructions}
+
           <FormFieldTable fields={calibFields} />
           <MultiTimer
             milliseconds={milliseconds}

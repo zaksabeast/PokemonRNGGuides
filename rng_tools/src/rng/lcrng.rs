@@ -1,4 +1,4 @@
-use super::rng_trait::{GetMaxRand, GetRand, Rng};
+use super::rng_trait::{GetMaxRand, GetRand, GetRandRange, Rng};
 use std::iter::{DoubleEndedIterator, Iterator, Rev, Skip};
 
 pub type Pokerng = Lcrng<0x6073, 0x41c64e6d>;

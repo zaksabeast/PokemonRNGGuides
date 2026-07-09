@@ -192,7 +192,7 @@ impl<Game: GameSpecificLogic> PidStrategy<Game> for ShinyPid {
             }
         };
 
-        if cute_charm_active && (rng.rand::<u16>() / 21846) != 0 {
+        if cute_charm_active && (Game::max(rng.rand::<u16>(), 3)) != 0 {
             loop {
                 let pid = shiny_pid(rng, tsv);
                 if cute_charm_check(pid) {
@@ -200,7 +200,7 @@ impl<Game: GameSpecificLogic> PidStrategy<Game> for ShinyPid {
                 }
             }
         } else if let LeadAbility::Synchronize(nature) = lead {
-            if (rng.rand::<u16>() / 32768) == 0 {
+            if (Game::max(rng.rand::<u16>(), 2)) == 0 {
                 let nature_value = nature as u32;
                 loop {
                     let pid = shiny_pid(rng, tsv);

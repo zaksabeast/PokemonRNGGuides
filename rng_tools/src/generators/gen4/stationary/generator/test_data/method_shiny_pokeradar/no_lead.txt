@@ -1,0 +1,201 @@
+0	19	H 97	None	0: Snover	33	1697EE33	Star	Quiet	1: Snow Warning	12	8	27	23	5	23	Dragon	47	♀	Highly persistent
+1	20	MH 78	None	0: Snover	33	8FBC771F	Star	Lonely	1: Snow Warning	23	23	5	1	16	21	Steel	31	♀	Likes to fight
+2	21	M 52	None	0: Snover	33	432BBB8C	Star	Relaxed	0: Snow Warning	21	1	16	3	25	22	Psychic	45	♂	Strong willed
+3	22	L 10	None	0: Snover	33	2563DDC3	Star	Brave	1: Snow Warning	22	3	25	19	8	25	Steel	42	♂	Likes to run
+4	23	H 81	Never-Melt Ice	0: Snover	33	96406EE3	Star	Mild	1: Snow Warning	25	19	8	9	14	8	Rock	51	♂	Loves to eat
+5	24	H 91	None	0: Snover	33	4FD4B770	Star	Docile	0: Snow Warning	8	9	14	20	16	7	Poison	37	♀	Highly curious
+6	25	M 44	Never-Melt Ice	0: Snover	33	A31E5BBC	Square	Sassy	0: Snow Warning	7	20	16	18	6	27	Poison	66	♂	Impetuous and silly
+7	26	MH 70	None	0: Snover	33	557BADDE	Star	Careful	0: Snow Warning	27	18	6	3	0	0	Rock	44	♂	Nods off a lot
+8	27	M 58	None	0: Snover	33	2E4FD6EB	Star	Quirky	1: Snow Warning	0	3	0	21	29	14	Electric	36	♂	Somewhat stubborn
+9	28	L 18	None	0: Snover	33	93D56B77	Square	Docile	1: Snow Warning	14	21	29	5	16	30	Bug	35	♀	Likes to run
+10	29	H 83	None	0: Snover	33	CD1C35BD	Star	Calm	1: Snow Warning	30	5	16	25	25	14	Electric	35	♂	Loves to eat
+11	30	MH 66	None	0: Snover	33	E27F1ADC	Star	Naive	0: Snow Warning	14	25	25	0	2	20	Flying	50	♂	Sturdy body
+12	31	MH 62	None	0: Snover	33	F5CF0D6F	Star	Hasty	1: Snow Warning	20	0	2	26	5	4	Steel	42	♀	Mischievous
+13	32	ML 22	None	0: Snover	33	FE1306B7	Star	Quiet	1: Snow Warning	4	26	5	15	10	30	Rock	66	♂	Likes to run
+14	33	ML 33	None	0: Snover	33	FBFC035B	Star	Sassy	1: Snow Warning	30	15	10	16	16	22	Fighting	39	♀	Loves to eat
+15	34	M 40	None	0: Snover	33	F90F01AC	Star	Brave	0: Snow Warning	22	16	16	2	10	28	Fighting	61	♂	Somewhat of a clown
+16	35	MH 71	None	0: Snover	33	F87500D7	Square	Calm	1: Snow Warning	28	2	10	12	1	0	Steel	33	♂	Scatters things often
+17	36	L 0	None	0: Snover	33	F8CE006D	Star	Bashful	1: Snow Warning	0	12	1	11	29	12	Psychic	40	♀	Somewhat stubborn
+18	37	L 13	None	0: Snover	33	F8910036	Star	Quiet	0: Snow Warning	12	11	29	14	7	25	Grass	61	♀	Good perseverance
+19	38	L 7	None	0: Snover	33	F8B80019	Star	Quiet	1: Snow Warning	25	14	7	20	15	27	Grass	59	♀	Impetuous and silly
+20	39	MH 78	None	0: Snover	33	78AF8008	Star	Gentle	0: Snow Warning	27	20	15	25	16	1	Ghost	33	♀	Nods off a lot
+21	40	L 7	None	0: Snover	33	38A3C007	Star	Careful	1: Snow Warning	1	25	16	15	16	16	Rock	40	♀	Proud of its power
+22	41	H 82	None	0: Snover	33	18A0E003	Star	Mild	1: Snow Warning	16	15	16	26	9	8	Fire	41	♀	Mischievous
+23	42	L 1	None	0: Snover	33	88A67000	Star	Quirky	0: Snow Warning	8	26	9	17	1	17	Dragon	31	♀	Likes to thrash about
+24	43	MH 70	None	0: Snover	33	C0A63806	Star	Modest	0: Snow Warning	17	17	1	21	19	11	Dark	55	♀	Mischievous
+25	44	L 2	None	0: Snover	33	64A69C06	Star	Bashful	0: Snow Warning	11	21	19	17	11	27	Dark	58	♀	Impetuous and silly
+26	45	ML 22	None	0: Snover	33	36A4CE06	Square	Timid	0: Snow Warning	27	17	11	23	29	28	Ice	43	♀	Somewhat stubborn
+27	46	ML 25	None	0: Snover	33	1FA4E704	Star	Modest	0: Snow Warning	28	23	29	17	6	1	Steel	51	♀	Good perseverance
+28	47	MH 72	None	0: Snover	33	8B267384	Square	Naive	0: Snow Warning	1	17	6	17	19	21	Dragon	52	♂	Alert to sounds
+29	48	ML 31	None	0: Snover	33	4166B9C6	Star	Calm	0: Snow Warning	21	17	19	8	11	11	Electric	57	♂	Takes plenty of siestas
+30	49	L 6	None	0: Snover	33	2444DCE6	Square	Quirky	0: Snow Warning	11	8	11	18	10	2	Flying	68	♂	Often lost in thought
+31	50	ML 26	None	0: Snover	33	16D0EE74	Star	Lax	0: Snow Warning	2	18	10	7	27	19	Ice	70	♀	Strongly defiant
+32	51	L 17	None	0: Snover	33	8F9C7738	Star	Quirky	0: Snow Warning	19	7	27	28	4	1	Ground	34	♀	Often lost in thought
+33	52	MH 66	None	0: Snover	33	4339BB9C	Star	Brave	0: Snow Warning	1	28	4	13	22	13	Bug	50	♂	Likes to fight
+34	53	H 93	None	0: Snover	33	256BDDC9	Square	Gentle	1: Snow Warning	13	13	22	26	5	19	Grass	47	♂	Mischievous
+35	54	H 95	None	0: Snover	33	1641EEE3	Square	Sassy	1: Snow Warning	19	26	5	22	22	27	Ground	67	♂	Impetuous and silly
+36	55	L 9	None	0: Snover	33	0FD0F771	Star	Careful	1: Snow Warning	27	22	22	10	19	12	Steel	64	♀	Nods off a lot
+37	56	L 6	None	0: Snover	33	0318FBB8	Star	Brave	0: Snow Warning	12	10	19	6	4	3	Poison	49	♂	Good perseverance
+38	57	ML 22	None	0: Snover	33	85797DD8	Star	Hardy	0: Snow Warning	3	6	4	6	4	8	Fighting	42	♂	Somewhat of a clown
+39	58	L 19	None	0: Snover	33	464BBEE9	Square	Bashful	1: Snow Warning	8	6	4	16	14	26	Fighting	56	♂	Alert to sounds
+40	59	M 45	None	0: Snover	33	A7D35F73	Star	Adamant	1: Snow Warning	26	16	14	15	30	7	Bug	68	♀	Strong willed
+41	60	M 44	None	0: Snover	33	D71C2FBB	Star	Quiet	1: Snow Warning	7	15	30	10	20	7	Poison	49	♂	Sturdy body
+42	61	MH 71	None	0: Snover	33	6F7997DC	Star	Impish	0: Snow Warning	7	10	20	2	27	12	Steel	62	♂	Strongly defiant
+43	62	H 81	None	0: Snover	33	334DCBE9	Star	Naive	1: Snow Warning	12	2	27	13	3	4	Psychic	54	♂	Highly persistent
+44	63	M 44	None	0: Snover	33	9D5365F5	Star	Lonely	1: Snow Warning	4	13	3	24	27	6	Water	57	♂	Strongly defiant
+45	64	M 40	None	0: Snover	33	CA5A32FB	Star	Careful	1: Snow Warning	6	24	27	14	10	15	Poison	68	♂	Highly persistent
+46	65	ML 32	None	0: Snover	33	E1DB197A	Star	Docile	0: Snow Warning	15	14	10	4	16	18	Fighting	39	♀	Somewhat of a clown
+47	66	M 40	None	0: Snover	33	74198CBB	Square	Impish	1: Snow Warning	18	4	16	16	15	3	Water	56	♂	Scatters things often
+48	67	MH 60	None	0: Snover	33	BEFD4659	Star	Relaxed	1: Snow Warning	3	16	15	22	2	24	Flying	63	♀	Quick to flee
+49	68	H 80	None	0: Snover	33	5B8BA32D	Star	Impish	1: Snow Warning	24	22	2	16	13	17	Water	33	♀	Likes to relax
+50	69	MH 72	None	0: Snover	33	A9335193	Star	Careful	1: Snow Warning	17	16	13	20	3	9	Grass	50	♂	Highly curious
+51	70	H 83	None	0: Snover	33	506CA8CB	Star	Naughty	1: Snow Warning	9	20	3	3	31	26	Psychic	68	♂	Somewhat vain
+52	71	M 41	None	0: Snover	33	2CC3D464	Star	Gentle	0: Snow Warning	26	3	31	18	24	23	Ground	49	♀	Capable of taking hits
+53	72	M 52	None	0: Snover	33	92906A33	Star	Relaxed	1: Snow Warning	23	18	24	5	28	9	Bug	31	♀	Hates to lose
+54	73	M 52	None	0: Snover	33	4DBAB518	Square	Jolly	0: Snow Warning	9	5	28	14	18	14	Fighting	65	♀	Good endurance
+55	74	H 81	None	0: Snover	33	222FDA8A	Star	Relaxed	0: Snow Warning	14	14	18	3	13	13	Ice	44	♂	Good endurance
+56	75	H 80	None	0: Snover	33	95E76D47	Star	Hardy	1: Snow Warning	13	3	13	7	0	0	Bug	41	♀	Scatters things often
+57	76	M 53	None	0: Snover	33	4E04B6A7	Star	Lonely	1: Snow Warning	0	7	0	8	23	26	Fire	56	♂	Alert to sounds
+58	77	ML 38	None	0: Snover	33	A3F45B54	Star	Sassy	0: Snow Warning	26	8	23	3	29	2	Psychic	48	♀	Somewhat stubborn
+59	78	M 42	None	0: Snover	33	D50E2DAC	Square	Naughty	0: Snow Warning	2	3	29	23	11	31	Dragon	67	♂	Alert to sounds
+60	79	M 46	None	0: Snover	33	EE7716D6	Star	Jolly	0: Snow Warning	31	23	11	8	3	5	Electric	54	♂	Takes plenty of siestas
+61	80	ML 30	None	0: Snover	33	73CA8B6F	Star	Relaxed	1: Snow Warning	5	8	3	16	19	18	Fire	57	♀	Somewhat stubborn
+62	81	L 1	None	0: Snover	33	3D13C5B2	Star	Calm	0: Snow Warning	18	16	19	12	16	28	Fighting	33	♂	Somewhat of a clown
+63	82	H 93	None	0: Snover	33	9A7862DB	Star	Mild	1: Snow Warning	28	12	16	7	19	28	Electric	60	♂	Somewhat of a clown
+64	83	ML 33	None	0: Snover	33	C9C93168	Star	Hardy	0: Snow Warning	28	7	19	21	25	2	Psychic	38	♀	Scatters things often
+65	84	MH 68	None	0: Snover	33	E01118B1	Star	Quiet	1: Snow Warning	2	21	25	31	18	18	Bug	66	♂	Mischievous
+66	85	M 45	None	0: Snover	33	F4FA0C59	Star	Modest	1: Snow Warning	18	31	18	3	29	0	Electric	44	♀	Likes to thrash about
+67	86	H 88	None	0: Snover	33	FE8F062A	Star	Modest	0: Snow Warning	0	3	29	23	30	25	Steel	61	♀	Strong willed
+68	87	L 7	None	0: Snover	33	FBB10317	Star	Naughty	1: Snow Warning	25	23	30	17	4	13	Ghost	33	♀	Sturdy body
+69	88	M 52	None	0: Snover	33	792E8189	Star	Adamant	1: Snow Warning	13	17	4	28	23	13	Grass	50	♂	Often lost in thought
+70	89	ML 30	None	0: Snover	33	3865C0C6	Star	Relaxed	0: Snow Warning	13	28	23	4	27	17	Grass	52	♂	Likes to fight
+71	90	MH 63	None	0: Snover	33	18C0E065	Star	Mild	1: Snow Warning	17	4	27	29	16	26	Bug	37	♀	Very finicky
+72	91	L 2	None	0: Snover	33	0892F030	Square	Sassy	0: Snow Warning	26	29	16	10	1	18	Fire	45	♀	Quick tempered
+73	92	H 90	None	0: Snover	33	80BA781A	Star	Modest	0: Snow Warning	18	10	1	9	17	14	Psychic	36	♀	Scatters things often
+74	93	MH 63	None	0: Snover	33	C4AF3C0A	Star	Docile	0: Snow Warning	14	9	17	30	5	3	Grass	45	♀	Highly curious
+75	94	M 46	Never-Melt Ice	0: Snover	33	E6A51E07	Square	Relaxed	1: Snow Warning	3	30	5	6	9	19	Grass	47	♀	Proud of its power
+76	95	M 40	None	0: Snover	33	77A28F05	Star	Quirky	1: Snow Warning	19	6	9	5	10	31	Ghost	57	♀	Alert to sounds
+77	96	M 43	None	0: Snover	33	3F24C782	Star	Adamant	0: Snow Warning	31	5	10	30	18	31	Poison	68	♂	Alert to sounds
+78	97	L 5	None	0: Snover	33	1B64E3C4	Star	Modest	0: Snow Warning	31	30	18	9	14	20	Rock	54	♂	Takes plenty of siestas
+79	98	M 40	None	0: Snover	33	0942F1E4	Star	Rash	0: Snow Warning	20	9	14	12	2	17	Poison	52	♂	Loves to eat
+80	99	ML 20	None	0: Snover	33	805278F2	Star	Serious	0: Snow Warning	17	12	2	25	8	27	Bug	37	♂	Impetuous and silly
+81	100	ML 37	None	0: Snover	33	44D8BC7A	Square	Naive	0: Snow Warning	27	25	8	7	25	8	Psychic	40	♀	Nods off a lot
+82	101	MH 63	None	0: Snover	33	2699DE38	Star	Naughty	0: Snow Warning	8	7	25	7	15	29	Dragon	61	♀	Quick to flee
+83	102	H 84	None	0: Snover	33	97BD6F19	Star	Hasty	1: Snow Warning	29	7	15	0	4	25	Ground	33	♀	Likes to relax
+84	103	M 56	None	0: Snover	33	4F2DB78D	Star	Careful	1: Snow Warning	25	0	4	15	16	29	Bug	40	♂	Quick to flee
+85	104	H 98	None	0: Snover	33	2361DBC5	Star	Jolly	1: Snow Warning	29	15	16	28	9	21	Grass	31	♂	Likes to relax
+86	105	ML 39	None	0: Snover	33	1542EDE1	Star	Lax	1: Snow Warning	21	28	9	20	2	4	Flying	50	♂	Likes to fight
+87	106	L 11	None	0: Snover	33	0E52F6F2	Star	Rash	0: Snow Warning	4	20	2	6	31	17	Water	63	♂	Somewhat vain
+88	107	L 16	None	0: Snover	33	83DE7B7A	Star	Careful	0: Snow Warning	17	6	31	17	4	27	Ghost	38	♀	Capable of taking hits
+89	108	L 16	None	0: Snover	33	451BBDBE	Star	Hardy	0: Snow Warning	27	17	4	9	19	28	Psychic	50	♂	Somewhat of a clown
+90	109	MH 74	None	0: Snover	33	267BDEDB	Star	Serious	1: Snow Warning	28	9	19	17	2	21	Steel	52	♂	Scatters things often
+91	110	L 15	None	0: Snover	33	97CF6F6B	Star	Mild	1: Snow Warning	21	17	2	0	0	0	Fighting	32	♀	Takes plenty of siestas
+92	111	ML 27	None	0: Snover	33	4F17B7B7	Star	Careful	1: Snow Warning	0	0	0	0	0	0	Fighting	30	♂	Likes to run
+93	112	ML 37	None	0: Snover	33	A37C5BDF	Star	Mild	1: Snow Warning	0	0	0	11	26	30	Ground	65	♂	Likes to run
+94	113	MH 78	None	0: Snover	33	D5492DEC	Star	Quiet	0: Snow Warning	30	11	26	19	20	17	Ghost	44	♂	Loves to eat
+95	114	ML 29	None	0: Snover	33	EE5316F1	Square	Rash	1: Snow Warning	17	19	20	13	12	16	Rock	31	♂	Sturdy body
+96	115	L 10	None	0: Snover	33	73D88B7B	Star	Careful	1: Snow Warning	16	13	12	18	3	2	Fire	65	♀	Often lost in thought
+97	116	L 15	Never-Melt Ice	0: Snover	33	BD1D45B8	Star	Mild	0: Snow Warning	2	18	3	22	24	12	Fighting	44	♂	Somewhat stubborn
+98	117	H 90	None	0: Snover	33	DA7922DD	Star	Rash	1: Snow Warning	12	22	24	30	11	5	Water	61	♂	Highly curious
+99	118	M 50	None	0: Snover	33	E9CD1169	Star	Modest	1: Snow Warning	5	30	11	30	25	27	Grass	49	♀	Proud of its power
+100	119	L 6	None	0: Snover	33	701588B5	Star	Calm	1: Snow Warning	27	30	25	1	31	19	Dragon	57	♂	Somewhat vain
+101	120	ML 23	None	0: Snover	33	3CFCC45D	Star	Lonely	1: Snow Warning	19	1	31	25	27	12	Ice	53	♀	Capable of taking hits
+102	121	ML 32	None	0: Snover	33	1A89E22C	Star	Careful	0: Snow Warning	12	25	27	2	31	30	Water	68	♀	Somewhat vain
+103	122	H 90	None	0: Snover	33	89B37111	Square	Docile	1: Snow Warning	30	2	31	22	18	5	Poison	64	♀	Capable of taking hits
+104	123	M 56	None	0: Snover	33	C02C388B	Star	Docile	1: Snow Warning	5	22	18	30	26	22	Fighting	69	♂	Highly curious
+105	124	M 41	None	0: Snover	33	64E59C44	Star	Careful	0: Snow Warning	22	30	26	9	6	29	Bug	54	♀	Proud of its power
+106	125	ML 31	None	0: Snover	33	B6804E25	Star	Hardy	1: Snow Warning	29	9	6	21	30	28	Rock	52	♀	Strong willed
+107	126	L 0	None	0: Snover	33	5FB0A710	Star	Quirky	0: Snow Warning	28	21	30	29	18	7	Ghost	57	♀	Sturdy body
+108	127	L 0	None	0: Snover	33	AB2E5388	Star	Lonely	0: Snow Warning	7	29	18	14	23	22	Fire	68	♂	Quick tempered
+109	128	ML 29	None	0: Snover	33	5161A9C6	Star	Hardy	0: Snow Warning	22	14	23	11	4	24	Rock	44	♂	Quick to flee
+110	129	M 57	None	0: Snover	33	AC4054E1	Star	Timid	1: Snow Warning	24	11	4	29	9	6	Electric	36	♂	Very finicky
+111	130	M 55	None	0: Snover	33	D2D22A70	Square	Lax	0: Snow Warning	6	29	9	12	24	13	Ground	30	♀	Quick tempered
+112	131	M 44	None	0: Snover	33	ED9C153A	Star	Quiet	0: Snow Warning	13	12	24	20	5	18	Steel	35	♀	Good perseverance
+113	132	L 8	None	0: Snover	33	723D8A9C	Star	Naughty	0: Snow Warning	18	20	5	29	19	24	Psychic	50	♂	Very finicky
+114	133	M 49	None	0: Snover	33	BDEB454D	Star	Hardy	1: Snow Warning	24	29	19	26	13	29	Grass	42	♀	Quick to flee
+115	134	ML 24	None	0: Snover	33	DA0322A3	Star	Jolly	1: Snow Warning	29	26	13	4	12	0	Flying	31	♂	Likes to relax
+116	135	H 88	None	0: Snover	33	69F49153	Star	Quiet	1: Snow Warning	0	4	12	3	16	28	Ground	40	♀	Somewhat of a clown
+117	136	M 47	None	0: Snover	33	B00E48AC	Square	Quirky	0: Snow Warning	28	3	16	7	18	27	Ghost	66	♂	Scatters things often
+118	137	H 88	None	0: Snover	33	DCF52456	Star	Quiet	0: Snow Warning	27	7	18	16	12	19	Poison	39	♀	Nods off a lot
+119	138	ML 33	None	0: Snover	33	6A8E922D	Star	Naughty	1: Snow Warning	19	16	12	23	31	7	Ice	66	♀	Somewhat vain
+120	139	ML 36	None	0: Snover	33	31B5C916	Star	Adamant	0: Snow Warning	7	23	31	29	23	3	Dark	59	♀	Capable of taking hits
+121	140	MH 78	None	0: Snover	33	1C2CE48D	Star	Mild	1: Snow Warning	3	29	23	11	15	9	Dark	63	♂	Quick tempered
+122	141	H 83	None	0: Snover	33	0AE7F244	Star	Gentle	0: Snow Warning	9	11	15	28	24	30	Flying	38	♀	Likes to run
+123	142	ML 36	None	0: Snover	33	0186F927	Star	Careful	1: Snow Warning	30	28	24	9	7	9	Ice	50	♀	Loves to eat
+124	143	H 93	None	0: Snover	33	84307C96	Star	Lax	0: Snow Warning	9	9	7	20	26	13	Ground	52	♂	Somewhat vain
+125	144	M 54	None	0: Snover	33	46EEBE48	Star	Hardy	0: Snow Warning	13	20	26	20	24	22	Fighting	37	♀	Capable of taking hits
+126	145	ML 23	None	0: Snover	33	2785DF26	Star	Jolly	0: Snow Warning	22	20	24	19	4	8	Ground	40	♀	Good perseverance
+127	146	L 4	None	0: Snover	33	97326F95	Star	Docile	1: Snow Warning	8	19	4	28	8	23	Poison	36	♂	Often lost in thought
+128	147	MH 70	None	0: Snover	33	CF6837CA	Square	Jolly	0: Snow Warning	23	28	8	2	7	9	Water	61	♂	Likes to fight
+129	148	M 49	None	0: Snover	33	63459BE0	Star	Sassy	0: Snow Warning	9	2	7	16	27	3	Grass	59	♂	Strongly defiant
+130	149	MH 73	None	0: Snover	33	3550CDF5	Star	Adamant	1: Snow Warning	3	16	27	13	12	10	Bug	38	♂	Highly persistent
+131	150	M 51	None	0: Snover	33	1E5CE6F8	Star	Calm	0: Snow Warning	10	13	12	20	10	9	Poison	50	♂	Highly curious
+132	151	L 1	None	0: Snover	33	8BDB737C	Star	Sassy	0: Snow Warning	9	20	10	30	20	5	Poison	42	♀	Highly curious
+133	152	ML 28	Never-Melt Ice	0: Snover	33	411BB9BB	Star	Lax	1: Snow Warning	5	30	20	31	16	10	Rock	46	♂	Mischievous
+134	153	M 56	None	0: Snover	33	247FDCDB	Star	Serious	1: Snow Warning	10	31	16	22	0	25	Poison	42	♂	Likes to thrash about
+135	154	H 96	None	0: Snover	33	96CB6E6F	Star	Naughty	1: Snow Warning	25	22	0	6	24	6	Fighting	46	♀	Loves to eat
+136	155	H 98	None	0: Snover	33	4F91B733	Square	Impish	1: Snow Warning	6	6	24	2	5	28	Steel	42	♀	Somewhat of a clown
+137	156	H 91	None	0: Snover	33	A33E5B99	Star	Naive	1: Snow Warning	28	2	5	17	19	27	Dragon	56	♂	Scatters things often
+138	157	L 11	None	0: Snover	33	D5692DCE	Star	Naive	0: Snow Warning	27	17	19	18	22	31	Ground	68	♂	Alert to sounds
+139	158	H 91	None	0: Snover	33	6E4596E1	Star	Rash	1: Snow Warning	31	18	22	1	9	8	Electric	34	♂	Takes plenty of siestas
+140	159	ML 32	None	0: Snover	33	33D6CB75	Star	Bold	1: Snow Warning	8	1	9	29	30	19	Steel	55	♀	Strong willed
+141	160	L 8	None	0: Snover	33	9D1865BE	Star	Sassy	0: Snow Warning	19	29	30	31	15	1	Dragon	63	♂	Mischievous
+142	161	M 57	None	0: Snover	33	4A7FB2D8	Star	Modest	0: Snow Warning	1	31	15	28	30	14	Flying	59	♂	Likes to thrash about
+143	162	L 11	None	0: Snover	33	21C9D96F	Star	Brave	1: Snow Warning	14	28	30	3	0	31	Bug	48	♀	Alert to sounds
+144	163	H 88	None	0: Snover	33	94136CB1	Square	Brave	1: Snow Warning	31	3	0	6	16	4	Fighting	42	♂	Takes plenty of siestas
+145	164	M 43	None	0: Snover	33	4EFAB65B	Star	Docile	1: Snow Warning	4	6	16	2	18	8	Fighting	61	♀	Hates to lose
+146	165	M 55	None	0: Snover	33	A3895B2A	Star	Adamant	0: Snow Warning	8	2	18	30	15	17	Water	64	♀	Highly curious
+147	166	ML 32	None	0: Snover	33	D5352D91	Star	Docile	1: Snow Warning	17	30	15	5	14	22	Bug	59	♂	Proud of its power
+148	167	MH 61	None	0: Snover	33	6E6A96CD	Star	Docile	1: Snow Warning	22	5	14	1	4	27	Ghost	38	♂	Impetuous and silly
+149	168	L 12	None	0: Snover	33	B3C14B62	Star	Timid	0: Snow Warning	27	1	4	25	30	3	Ghost	56	♀	Strong willed
+150	169	L 8	None	0: Snover	33	5D16A5B1	Star	Sassy	1: Snow Warning	3	25	30	9	31	3	Dragon	58	♂	Somewhat vain
+151	170	L 2	None	0: Snover	33	2A7CD2DE	Square	Bashful	0: Snow Warning	3	9	31	17	15	20	Ice	53	♂	Capable of taking hits
+152	171	MH 63	None	0: Snover	33	11CBE96C	Star	Hasty	0: Snow Warning	20	17	15	16	22	0	Flying	52	♀	Strongly defiant
+153	172	M 44	None	0: Snover	33	8C1774B3	Star	Bashful	1: Snow Warning	0	16	22	3	28	10	Ground	47	♂	Hates to lose
+154	173	H 82	None	0: Snover	33	C2F83A5F	Star	Hardy	1: Snow Warning	10	3	28	30	23	5	Grass	62	♀	Highly curious
+155	174	L 12	None	0: Snover	33	E58B1D28	Star	Relaxed	0: Snow Warning	5	30	23	20	14	4	Flying	54	♀	Proud of its power
+156	175	H 86	None	0: Snover	33	76318E93	Square	Lonely	1: Snow Warning	4	20	14	0	25	20	Steel	32	♂	Strong willed
+157	176	H 99	None	0: Snover	33	BFEE4749	Star	Careful	1: Snow Warning	20	0	25	5	24	1	Ghost	30	♀	Sturdy body
+158	177	H 86	None	0: Snover	33	DB0723A6	Star	Relaxed	0: Snow Warning	1	5	24	25	10	11	Ghost	55	♂	Highly curious
+159	178	L 1	None	0: Snover	33	697491D7	Star	Mild	1: Snow Warning	11	25	10	25	3	24	Psychic	53	♂	Proud of its power
+160	179	L 2	None	0: Snover	33	3048C8EC	Star	Gentle	0: Snow Warning	24	25	3	21	13	0	Psychic	32	♂	Proud of its power
+161	180	ML 25	None	0: Snover	33	9CD16470	Star	Relaxed	0: Snow Warning	0	21	13	11	16	0	Bug	40	♀	Likes to thrash about
+162	181	H 99	None	0: Snover	33	CA9E3239	Star	Brave	1: Snow Warning	0	11	16	17	5	22	Electric	36	♀	Impetuous and silly
+163	182	MH 77	None	0: Snover	33	E1BB191E	Star	Serious	0: Snow Warning	22	17	5	0	28	9	Ground	30	♀	Hates to lose
+164	183	M 50	None	0: Snover	33	F42B0C8B	Star	Jolly	1: Snow Warning	9	0	28	10	13	11	Water	45	♂	Good endurance
+165	184	H 84	None	0: Snover	33	7EE38643	Star	Lax	1: Snow Warning	11	10	13	16	9	14	Fire	36	♀	Mischievous
+166	185	H 91	None	0: Snover	33	3B84C323	Star	Lonely	1: Snow Warning	14	16	9	21	13	8	Psychic	30	♀	Mischievous
+167	186	H 94	None	0: Snover	33	99306194	Star	Docile	0: Snow Warning	8	21	13	26	30	3	Ground	65	♂	Strong willed
+168	187	H 81	None	0: Snover	33	C86A30C8	Square	Naughty	0: Snow Warning	3	26	30	14	30	11	Poison	70	♂	Sturdy body
+169	188	M 51	None	0: Snover	33	60C59862	Star	Jolly	0: Snow Warning	11	14	30	7	26	15	Bug	70	♀	Sturdy body
+170	189	H 99	None	0: Snover	33	3494CC35	Star	Serious	1: Snow Warning	15	7	26	30	11	20	Fire	64	♀	Highly curious
+171	190	H 82	None	0: Snover	33	1EBCE61C	Star	Docile	0: Snow Warning	20	30	11	2	29	31	Grass	49	♀	Alert to sounds
+172	191	L 12	None	0: Snover	33	8BA9730C	Star	Timid	0: Snow Warning	31	2	29	29	16	30	Bug	36	♀	Takes plenty of siestas
+173	192	L 1	None	0: Snover	33	4123B981	Square	Naive	1: Snow Warning	30	29	16	3	24	1	Ghost	40	♂	Loves to eat
+174	193	ML 34	None	0: Snover	33	A4605CC3	Star	Brave	1: Snow Warning	1	3	24	4	6	21	Poison	51	♂	Good perseverance
+175	194	M 47	None	0: Snover	33	56C0AE60	Star	Adamant	0: Snow Warning	21	4	6	7	1	17	Ice	42	♀	Takes plenty of siestas
+176	195	MH 70	None	0: Snover	33	2F90D730	Star	Quirky	0: Snow Warning	17	7	1	13	4	26	Bug	36	♀	Alert to sounds
+177	196	L 4	None	0: Snover	33	133EEB98	Star	Careful	0: Snow Warning	26	13	4	3	9	2	Electric	45	♂	Takes plenty of siestas
+178	197	MH 69	None	0: Snover	33	8D6975CE	Star	Rash	0: Snow Warning	2	3	9	4	19	0	Water	52	♂	Somewhat stubborn
+179	198	M 50	None	0: Snover	33	C2433AE1	Square	Naive	1: Snow Warning	0	4	19	30	9	4	Fire	42	♂	Highly curious
+180	199	MH 66	None	0: Snover	33	E5D61D73	Star	Relaxed	1: Snow Warning	4	30	9	29	13	2	Psychic	36	♀	Proud of its power
+181	200	L 18	None	0: Snover	33	F6180EBE	Star	Quirky	0: Snow Warning	2	29	13	2	10	21	Ground	61	♂	Quick tempered
+182	201	MH 70	None	0: Snover	33	FFFB0758	Star	Gentle	0: Snow Warning	21	2	10	2	7	28	Steel	64	♀	Somewhat of a clown
+183	202	H 85	None	0: Snover	33	7B0B83AB	Star	Gentle	1: Snow Warning	28	2	7	18	8	2	Fighting	49	♂	Scatters things often
+184	203	H 80	None	0: Snover	33	B97741D3	Star	Calm	1: Snow Warning	2	18	8	17	1	26	Electric	36	♂	Alert to sounds
+185	204	ML 27	None	0: Snover	33	D84C20EF	Star	Careful	1: Snow Warning	26	17	1	8	11	5	Grass	50	♂	Takes plenty of siestas
+186	205	M 49	None	0: Snover	33	E8D71074	Star	Naive	0: Snow Warning	5	8	11	14	4	18	Flying	47	♀	Somewhat of a clown
+187	206	MH 63	None	0: Snover	33	709E883F	Star	Lax	1: Snow Warning	18	14	4	0	12	25	Flying	31	♀	Likes to run
+188	207	L 11	None	0: Snover	33	BCB9441E	Star	Docile	0: Snow Warning	25	0	12	31	21	29	Ice	40	♀	Mischievous
+189	208	L 1	None	0: Snover	33	5AADA209	Star	Quirky	1: Snow Warning	29	31	21	23	19	9	Dark	61	♀	Likes to thrash about
+190	209	MH 76	None	0: Snover	33	29A1D105	Star	Hasty	1: Snow Warning	9	23	19	19	14	0	Bug	64	♀	Likes to fight
+191	210	L 15	None	0: Snover	33	1022E881	Star	Lonely	1: Snow Warning	0	19	14	8	17	27	Grass	38	♂	Impetuous and silly
+192	211	M 55	None	0: Snover	33	8CE27442	Star	Jolly	0: Snow Warning	27	8	17	25	5	14	Psychic	35	♀	Nods off a lot
+193	212	L 13	None	0: Snover	33	4280BA22	Square	Naive	0: Snow Warning	14	25	5	5	13	9	Dragon	30	♀	Proud of its power
+194	213	ML 39	None	0: Snover	33	A5B45D10	Star	Rash	0: Snow Warning	9	5	13	12	11	19	Electric	55	♀	Quick to flee
+195	214	ML 24	Never-Melt Ice	0: Snover	33	562AAE8C	Star	Sassy	0: Snow Warning	19	12	11	11	2	6	Bug	68	♂	Likes to relax
+196	215	MH 73	None	0: Snover	33	2FE5D742	Star	Brave	0: Snow Warning	6	11	2	9	4	13	Ghost	34	♀	Somewhat of a clown
+197	216	ML 26	None	0: Snover	33	93046BA5	Star	Adamant	1: Snow Warning	13	9	4	15	8	0	Rock	40	♂	Highly curious
+198	217	H 88	None	0: Snover	33	4D72B5D4	Star	Lax	0: Snow Warning	0	15	8	19	16	20	Rock	41	♂	Likes to run
+199	218	L 7	None	0: Snover	33	A24A5AEA	Star	Bold	0: Snow Warning	20	19	16	30	28	4	Fighting	41	♂	Highly curious
+200	219	L 19	None	0: Snover	33	D5D52D72	Star	Timid	0: Snow Warning	4	30	28	24	10	11	Flying	56	♀	Proud of its power

@@ -1,0 +1,53 @@
+---
+- title: "HeartGold and SoulSilver Voltorb Flip RNG"
+  navDrawerTitle: "Voltorb Flip RNG"
+  description: "A Voltorb Flip solver for Pokémon HeartGold & SoulSilver that predicts boards, finds safe moves, and helps you earn Game Corner coins for prizes like Porygon, Eevee, and Dratini."
+  slug: "retail-hgss-voltorb-flip"
+  category: "HeartGold and SoulSilver"
+  section: "other_rng"
+  variant: "retail"
+  isRoughDraft: true
+---
+
+<Stepper titles={["Find Seed", "View Boards"]}>
+
+<Step step={0}>
+
+# Find your seed
+
+1. Save in front of the Voltorb Flip board.
+2. Soft reset your game and quickly load the save.
+3. Use the PokeGear to find the current time.
+4. Enter the time and date into the tool below.
+5. Start a Voltorb Flip game. DO NOT flip any cards!
+6. Press `B` to quit immediately to reveal all cards.
+7. Match the board below with your game by clicking each card to set it.
+8. Press "Generate" then select your seed from the list of possible seeds.
+
+<FindVoltorbFlipSeed />
+
+> [!TIP]
+> If no results show up:
+>
+> - Double check your cards.
+> - Increase your max delay.
+> - Decrease your minute by 1, in case you viewed the PokeGear late.
+
+</Step>
+
+<Step step={1}>
+
+# View boards
+
+1. Choose the number of boards you want to generate.
+2. Click "Generate" to view the boards.
+3. For each board, flip all "1"s, then "2"s, and finally "3"s. Do not skip any cards or all future boards will be wrong!
+
+> [!TIP]
+> Use the memo feature to mark all cards in-game before flipping. This helps make sure you don't forget to flip a card.
+
+<GenerateVoltorbFlipBoards />
+
+</Step>
+
+</Stepper>

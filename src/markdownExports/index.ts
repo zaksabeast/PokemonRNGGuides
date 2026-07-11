@@ -460,6 +460,14 @@ const tools = {
     () => import("~/rngToolsUi/gen4/lottery/search"),
     (mod) => mod.Lottery4Searcher,
   ),
+  FindVoltorbFlipSeed: lazyLoad(
+    () => import("~/rngToolsUi/gen4/voltorbFlip/findSeed"),
+    (mod) => mod.FindVoltorbFlipSeed,
+  ),
+  GenerateVoltorbFlipBoards: lazyLoad(
+    () => import("~/rngToolsUi/gen4/voltorbFlip/generateBoards"),
+    (mod) => mod.GenerateVoltorbFlipBoards,
+  ),
 };
 
 export const markdownComponents = {

@@ -352,6 +352,8 @@ export const translations = {
   "PP Up": "PP Up",
   "Ultra Ball": "Ultra Ball",
   Backdrop: "Backdrop",
+  Board: "Board",
+  "Board Count": "Board Count",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

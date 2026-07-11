@@ -51,6 +51,7 @@ import Venipede from "~/assets/box-sprites/venipede.png";
 import Vigoroth from "~/assets/box-sprites/vigoroth.png";
 import DpptHeads from "~/assets/dppt_heads.webp";
 import DpptTails from "~/assets/dppt_tails.webp";
+import { OneOf } from "~/types/utils";
 
 const image = {
   Aggron,
@@ -111,10 +112,12 @@ const _PixelImage = styled.img({
 });
 
 type Props = {
-  name: keyof typeof image;
   className?: string;
-};
+} & OneOf<{
+  name: keyof typeof image;
+  src: string;
+}>;
 
-export const PixelImage = ({ name, className }: Props) => {
-  return <_PixelImage src={image[name]} className={className} />;
+export const PixelImage = ({ src, name, className }: Props) => {
+  return <_PixelImage src={src ?? image[name]} className={className} />;
 };

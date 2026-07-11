@@ -8702,7 +8702,7 @@ export const guides = {
       section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "false-Egg RNG",
-      isNew: true,
+      isNew: false,
       title: "Diamond, Pearl, and Platinum Egg RNG Guide",
       navDrawerTitle: "Egg RNG",
       description:
@@ -9130,6 +9130,44 @@ export const guides = {
     Guide: React.lazy(() => import("~/../guides/Gen 4/Swarm.mdx")),
     getRawFile: memoize(async () => {
       const file = await import("~/../guides/Gen 4/Swarm.mdx?raw");
+      return file.default;
+    }),
+  },
+  "/retail-hgss-voltorb-flip/": {
+    meta: {
+      id: "/retail-hgss-voltorb-flip/",
+      categories: ["HeartGold and SoulSilver"],
+      section: "other_rng",
+      guideVariants: ["retail"],
+      guideKey: "true-Voltorb Flip RNG",
+      isNew: false,
+      title: "HeartGold and SoulSilver Voltorb Flip RNG",
+      navDrawerTitle: "Voltorb Flip RNG",
+      description:
+        "A Voltorb Flip solver for Pokémon HeartGold & SoulSilver that predicts boards, finds safe moves, and helps you earn Game Corner coins for prizes like Porygon, Eevee, and Dratini.",
+      slug: "/retail-hgss-voltorb-flip/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-07-11",
+      type: "baseGuide",
+      canonical: "/retail-hgss-voltorb-flip/",
+      file: "guides/Gen 4/Voltorb Flip.mdx",
+      translations: null,
+      guideGroupId: "en:true-Voltorb Flip RNG:HeartGold and SoulSilver",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/retail-hgss-voltorb-flip/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["web_tool", "rough_draft"],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 4/Voltorb Flip.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 4/Voltorb Flip.mdx?raw");
       return file.default;
     }),
   },
@@ -17232,6 +17270,7 @@ export const guideSlugs = [
   "/retail-emerald-wild/",
   "/retail-hgss-starter/",
   "/retail-hgss-swarm/",
+  "/retail-hgss-voltorb-flip/",
   "/retail-oras-egg-mmsc/",
   "/retail-oras-egg-no-mmsc/",
   "/retail-oras-tid/",

@@ -139,7 +139,10 @@ export const FindVoltorbFlipSeed = () => {
 
   const onSubmit: RngToolSubmit<FormState> = async (opts) => {
     const res = await rngTools.find_voltorb_flip_seed({
-      datetime: addRngTime(opts.date, opts.time),
+      datetime: addRngTime(opts.date, {
+        ...opts.time,
+        second: 0,
+      }),
       min_delay: opts.minDelay,
       max_delay: opts.maxDelay,
       // Always use the first board so we know the RNG hasn't advanced

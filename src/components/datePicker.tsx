@@ -45,7 +45,8 @@ const TimePicker = ({
       // @ts-expect-error Type '(date: Dayjs | null, dateString: string) => void' is not assignable to type '(date: Dayjs, dateString: string | string[]) => void'.
       onChange={(date: Dayjs | null, dateString: string) => {
         if (nullable || date != null) {
-          onChange?.(date, dateString);
+          const dateToUse = showSecond ? date : date?.clone().second(0);
+          onChange?.(dateToUse ?? null, dateString);
         }
       }}
       format={

@@ -3,7 +3,6 @@ mod chatter;
 mod egg;
 mod game;
 mod game_logic;
-mod gen4wild;
 mod honey_tree;
 mod id;
 mod lottery;
@@ -15,7 +14,6 @@ mod voltorb_flip;
 
 pub use egg::*;
 pub use game::*;
-pub use gen4wild::*;
 pub use honey_tree::*;
 pub use id::*;
 pub use lottery::*;

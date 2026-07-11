@@ -1,0 +1,32 @@
+var e=`---
+title: "Translation Helper"
+description: "Help us translate Pokémon guides and tools into your language"
+slug: "help-translate"
+category: "Home"
+section: "site_info"
+layout: "titled"
+---
+
+<Stepper titles={["Select Guide", "Edit Guide"]}>
+
+<Step step={0}>
+
+### Select a language
+
+<TranslationHelperSelectLanguage />
+### Translate a Guide
+
+<TranslationHelperSelectGuide />
+
+### Translate Tools
+
+<ToolTranslationButton />
+
+</Step>
+
+<Step step={1}>
+  <TranslationHelperEditGuide />
+</Step>
+
+</Stepper>
+`;export{e as default};

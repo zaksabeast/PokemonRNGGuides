@@ -66,7 +66,7 @@ pub fn generate_voltorb_flip_boards(opts: &GenerateVoltorbFlipBoardsOpts) -> Vec
         .map(|(i, level)| {
             let board = generate_board(&mut rng, *level);
 
-            let should_advance = !opts.quit_first_board || (opts.quit_first_board && i != 0);
+            let should_advance = !(opts.quit_first_board && i == 0);
             if should_advance {
                 rng.advance(board.get_flip_advances());
             }

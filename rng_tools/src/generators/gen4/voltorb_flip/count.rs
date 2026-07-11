@@ -8,18 +8,18 @@ fn count_voltorbs_in_row_col<'a>(cards: impl Iterator<Item = &'a VoltorbFlipCard
 
 pub fn get_safe_rows(board: &VoltorbFlipBoard) -> [bool; 5] {
     let mut safe_rows = [true; 5];
-    for row in 0..5 {
-        let row_cards = board.row(row);
-        safe_rows[row] = count_voltorbs_in_row_col(row_cards) == 0;
+    for (row_index, row) in safe_rows.iter_mut().enumerate() {
+        let row_cards = board.row(row_index);
+        *row = count_voltorbs_in_row_col(row_cards) == 0;
     }
     safe_rows
 }
 
 pub fn get_safe_cols(board: &VoltorbFlipBoard) -> [bool; 5] {
     let mut safe_cols = [true; 5];
-    for col in 0..5 {
-        let col_cards = board.col(col);
-        safe_cols[col] = count_voltorbs_in_row_col(col_cards) == 0;
+    for (col_index, col) in safe_cols.iter_mut().enumerate() {
+        let col_cards = board.col(col_index);
+        *col = count_voltorbs_in_row_col(col_cards) == 0;
     }
     safe_cols
 }

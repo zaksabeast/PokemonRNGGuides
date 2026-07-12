@@ -12,6 +12,7 @@ import {
   multiWorkerRngTools,
   Static4State,
   SearchStatic4Opts,
+  Species,
 } from "~/rngTools";
 import { z } from "zod";
 import {
@@ -31,12 +32,10 @@ import { match } from "ts-pattern";
 import {
   dpptStarters,
   hgssStarters,
-  Gen4Starter,
   useStarterState,
   allStarters,
 } from "./state";
 import { gen4StateAtom } from "../shared/state";
-import { getStatRange } from "~/types/statRange";
 import { Gen4GameVersion } from "../gen4types";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
 import { chunkIvs } from "~/utils/chunkIvs";
@@ -49,6 +48,7 @@ import { useAtom } from "jotai";
 
 type Result = FlattenIvs<
   Static4State["state"] & {
+    species: Species;
     seed_time: Static4State["seed_time"];
     key: string;
     second: number;
@@ -63,12 +63,14 @@ type SelectButtonProps = {
 
 const SelectButton = ({ target }: SelectButtonProps) => {
   const [, setCurrentStep] = useCurrentStep();
+  const [, setStarter] = useStarterState();
   const [, setState] = useAtom(gen4StateAtom);
 
   return (
     <Button
       trackerId="select_gen4_starter"
       onClick={() => {
+        setStarter({ species: target.species });
         setState({
           target: { seedTime: target.seed_time, lcrngAdvance: target.advance },
         });
@@ -119,7 +121,7 @@ const getStarterAdvance = ({
   game,
   platinum_target_advance,
 }: {
-  species: Gen4Starter;
+  species: Species;
   game: Gen4GameVersion;
   platinum_target_advance: number;
 }): number => {
@@ -253,11 +255,15 @@ const Fields = ({ game, t }: FieldsProps) => {
   return <FormFieldTable fields={fields} />;
 };
 
-const mapResult = (res: Static4State): Result => {
+const mapResult = (
+  res: Static4State,
+  opts: RustOption<SearchStatic4Opts>,
+): Result => {
   const { state, seed_time } = res;
   return {
     ...flattenIvs(state),
     seed_time,
+    species: opts.species,
     key: `${seed_time.seed}-${state.pid}`,
     second: seed_time.datetime.second,
     seed: seed_time.seed,
@@ -267,7 +273,6 @@ const mapResult = (res: Static4State): Result => {
 
 export const PickStarter4 = () => {
   const t = useActiveRouteTranslations();
-  const [, setStarter] = useStarterState();
   const [state] = useAtom(gen4StateAtom);
   const {
     run: searchStarterSeeds,
@@ -281,11 +286,6 @@ export const PickStarter4 = () => {
   const game = state.config.game;
 
   const onSubmit = async (opts: FormState) => {
-    const minMaxStats = await getStatRange({
-      species: opts.species,
-      levelRange: [5, 6],
-    });
-    setStarter({ species: opts.species, minMaxStats });
     const advance = getStarterAdvance({
       game,
       species: opts.species,

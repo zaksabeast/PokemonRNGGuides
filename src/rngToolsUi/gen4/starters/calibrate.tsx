@@ -1,16 +1,19 @@
 import React from "react";
 import {
   Field,
+  FormFieldTable,
   FormikSelect,
   Icon,
   ResultColumn,
   RngToolForm,
 } from "~/components";
+import { MinMaxStats, defaultMinMaxStats } from "~/types/stat";
 import { CalibrateTimerButton } from "../shared/calibrateTimerButton";
 import {
   Gen4StaticPokemon,
   RngDateTime,
   rngTools,
+  Species,
   StatsValue,
 } from "~/rngTools";
 import { z } from "zod";
@@ -19,7 +22,7 @@ import {
   pkmFilterNatureFieldToRustInput,
 } from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
-import { Gen4Starter, useStarterState } from "./state";
+import { useStarterState } from "./state";
 import { useAtom } from "jotai";
 import { gen4StateAtom } from "../shared/state";
 import { maleFemale, nature, StatFieldsSchema } from "~/types";
@@ -34,7 +37,7 @@ import { fromRngDateTime, toRngDateTime } from "~/utils/time";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { Translations } from "~/translations";
 import { defaultHiddenPowerFilter } from "~/components/hiddenPowerInput";
-import { getIvRangeFromStats } from "~/types/statRange";
+import { getStatRange, getIvRangeFromStats } from "~/types/statRange";
 
 type Result = Gen4StaticPokemon & {
   key: string;
@@ -125,28 +128,40 @@ const defaultDateTime: RngDateTime = {
   second: 0,
 };
 
-const getStarterGame = (starter: Gen4Starter) => {
-  return match<Gen4Starter, "Diamond" | "HeartGold">(starter)
-    .with("Turtwig", () => "Diamond")
-    .with("Chimchar", () => "Diamond")
-    .with("Piplup", () => "Diamond")
-    .with("Chikorita", () => "HeartGold")
-    .with("Cyndaquil", () => "HeartGold")
-    .with("Totodile", () => "HeartGold")
-    .exhaustive();
+const getStarterGame = (starter: Species) => {
+  return (
+    match<Species, "Diamond" | "HeartGold">(starter)
+      .with("Turtwig", () => "Diamond")
+      .with("Chimchar", () => "Diamond")
+      .with("Piplup", () => "Diamond")
+      .with("Chikorita", () => "HeartGold")
+      .with("Cyndaquil", () => "HeartGold")
+      .with("Totodile", () => "HeartGold")
+      // Bad value, default to Diamond
+      .otherwise(() => "Diamond")
+  );
 };
 
-export const CalibrateStarter4 = () => {
-  const t = useActiveRouteTranslations();
-  const [state] = useAtom(gen4StateAtom);
-  const [starter] = useStarterState();
-  const [results, setResults] = React.useState<Result[]>([]);
+type FieldsProps = {
+  t: Translations;
+};
 
-  const targetDateTime = state.target.seedTime?.datetime ?? defaultDateTime;
-  const targetDelay = state.target.seedTime?.delay ?? 0;
-  const targetAdvance = state.target.lcrngAdvance ?? 0;
-  const targetSpecies = starter.species;
-  const minMaxStats = starter.minMaxStats;
+const Fields = ({ t }: FieldsProps) => {
+  const [starter] = useStarterState();
+  const [minMaxStats, setMinMaxStats] =
+    React.useState<MinMaxStats>(defaultMinMaxStats);
+
+  React.useEffect(() => {
+    const run = async () => {
+      const stats = await getStatRange({
+        species: starter.species,
+        levelRange: [5, 6],
+      });
+      setMinMaxStats(stats);
+    };
+
+    run();
+  }, [starter.species]);
 
   const fields: Field[] = [
     {
@@ -181,6 +196,20 @@ export const CalibrateStarter4 = () => {
     },
     ...getStatFields<FormState>(minMaxStats, t),
   ];
+
+  return <FormFieldTable fields={fields} />;
+};
+
+export const CalibrateStarter4 = () => {
+  const t = useActiveRouteTranslations();
+  const [state] = useAtom(gen4StateAtom);
+  const [starter] = useStarterState();
+  const [results, setResults] = React.useState<Result[]>([]);
+
+  const targetDateTime = state.target.seedTime?.datetime ?? defaultDateTime;
+  const targetDelay = state.target.seedTime?.delay ?? 0;
+  const targetAdvance = state.target.lcrngAdvance ?? 0;
+  const targetSpecies = starter.species;
 
   const onSubmit = async (opts: FormState) => {
     const minDelay = Math.max(targetDelay - 500, 0);
@@ -272,7 +301,6 @@ export const CalibrateStarter4 = () => {
 
   return (
     <RngToolForm<FormState, Result>
-      fields={fields}
       getColumns={getColumns}
       results={results}
       initialValues={initialValues}
@@ -280,6 +308,8 @@ export const CalibrateStarter4 = () => {
       onSubmit={onSubmit}
       rowKey="key"
       submitTrackerId="calibrate_gen4_starter"
-    />
+    >
+      <Fields t={t} />
+    </RngToolForm>
   );
 };

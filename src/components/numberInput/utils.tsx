@@ -170,3 +170,10 @@ export const shouldClearTransientValue = ({
 
   return true;
 };
+
+export const serializers = {
+  hex: (num: number | bigint | null) => num?.toString(16),
+  hex_bigint: (num: number | bigint | null) => num?.toString(16),
+  decimal: (num: number | bigint | null) => num?.toString(10),
+  float: (num: number | bigint | null) => num?.toString(10),
+};

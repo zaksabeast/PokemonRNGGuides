@@ -9,16 +9,10 @@ import {
   getNumberInputBlurValue,
   getNumberInputChangeResult,
   shouldClearTransientValue,
+  serializers,
   type NumberInputType,
   type NumericNumberInputType,
 } from "./utils";
-
-const serializers = {
-  hex: (num: number | bigint | null) => num?.toString(16),
-  hex_bigint: (num: number | bigint | null) => num?.toString(16),
-  decimal: (num: number | bigint | null) => num?.toString(10),
-  float: (num: number | bigint | null) => num?.toString(10),
-};
 
 const inputModes = {
   hex: "text",

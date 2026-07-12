@@ -27,7 +27,7 @@ import { z } from "zod";
 import { id4Atom } from "./state";
 import { gen4StateAtom } from "../shared/state";
 import { useCurrentStep } from "~/components/stepper/state";
-import { useFormContext } from "~/hooks/form";
+import { useFormContext, useWatch } from "~/hooks/form";
 import { nature } from "~/types/nature";
 import { getGen4SpeciesOptions, species } from "~/types/species";
 import { getNatureInputProps } from "~/components/pkmFilter";
@@ -44,7 +44,6 @@ import { chunkRange } from "~/utils/chunkRange";
 import { RustOption } from "~/types";
 import { Translations } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
-import { useWatch } from "react-hook-form";
 import { useAtom } from "jotai";
 import { getGameDateTime } from "./utils";
 import { toRngDateTime } from "~/utils/time";
@@ -323,16 +322,14 @@ const getFields = ({
 const Id4SearcherFields = () => {
   const t = useActiveRouteTranslations();
   const { reset } = useFormContext<FormState>();
-  const maxShinyOdds = useWatch<FormState, "max_shiny_odds">({
-    name: "max_shiny_odds",
-  });
-  const idType = useWatch<FormState, "id_type">({
-    name: "id_type",
+  const { max_shiny_odds, id_type } = useWatch({
+    validationSchema: Validator,
+    names: { max_shiny_odds: true, id_type: true },
   });
   const fields = getFields({
     t,
-    idType,
-    maxShinyOdds,
+    idType: id_type ?? initialValues.id_type,
+    maxShinyOdds: max_shiny_odds ?? initialValues.max_shiny_odds,
     reset,
   });
   return <FormFieldTable fields={fields} />;

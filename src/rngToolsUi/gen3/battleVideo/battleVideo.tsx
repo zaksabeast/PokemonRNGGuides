@@ -21,7 +21,7 @@ import InstructionsWithBattleNoExisting from "./instructions_with_battle_no_exis
 import InstructionsNoBattleWithExisting from "./instructions_no_battle_with_existing.mdx";
 import InstructionsWithBattleWithExisting from "./instructions_with_battle_with_existing.mdx";
 import { FormikEmeraldTargetAdvance } from "~/components/emeraldTargetAdvance";
-import { useWatch } from "react-hook-form";
+import { useWatch_UNSAFE } from "~/hooks/form";
 import { match } from "ts-pattern";
 import {
   Gen3Console,
@@ -122,13 +122,16 @@ const MyFields = ({
   setDisplayAdvancedBreakdown: (val: boolean) => void;
   fixedData: Props["fixedData"];
 }) => {
-  const useRecommendedBuffer = useWatch<FormState, "useRecommendedBuffer">({
+  const useRecommendedBuffer = useWatch_UNSAFE<
+    FormState,
+    "useRecommendedBuffer"
+  >({
     name: "useRecommendedBuffer",
   });
-  const isUpdatingExisting = useWatch<FormState, "isUpdatingExisting">({
+  const isUpdatingExisting = useWatch_UNSAFE<FormState, "isUpdatingExisting">({
     name: "isUpdatingExisting",
   });
-  const targetAdvance = useWatch<FormState, "targetAdvance">({
+  const targetAdvance = useWatch_UNSAFE<FormState, "targetAdvance">({
     name: "targetAdvance",
   });
 

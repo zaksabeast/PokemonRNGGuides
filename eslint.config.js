@@ -140,6 +140,11 @@ const baseConfig = {
             message: 'Use `import { Alert } from "~/components";`',
           },
           {
+            name: "react-hook-form",
+            importNames: ["useWatch"],
+            message: 'Use `import { useWatch } from "~/hooks/form";`',
+          },
+          {
             name: "@amplitude/analytics-browser",
             message: "Import from `~/analytics`",
           },

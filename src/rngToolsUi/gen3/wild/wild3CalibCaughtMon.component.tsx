@@ -12,11 +12,10 @@ import { Typography } from "~/components/typography";
 import { toOptions } from "~/utils/options";
 import { Gen3Method, Nature, rngTools, Species } from "~/rngTools";
 import type { TargetSetup } from "./wild3TargetSetupInput";
-import { useWatch } from "react-hook-form";
 import { getStatRange } from "~/types/statRange";
 import uniq from "lodash-es/uniq";
 import clamp from "lodash-es/clamp";
-import { useFormContext } from "~/hooks/form";
+import { useFormContext, useWatch_UNSAFE } from "~/hooks/form";
 import {
   createWild3SearcherOptions,
   getPossibleEncountersForMap,
@@ -48,12 +47,18 @@ export const Fields = ({
 }) => {
   const { setFieldValue } = useFormContext<FormState>();
 
-  const selectedSpecies = useWatch<FormState, "wildSpecies">({
+  const selectedSpecies = useWatch_UNSAFE<FormState, "wildSpecies">({
     name: "wildSpecies",
   });
-  const selectedLvl = useWatch<FormState, "wildLvl">({ name: "wildLvl" });
-  const selectedNature = useWatch<FormState, "nature">({ name: "nature" });
-  const rareCandy = useWatch<FormState, "rareCandy">({ name: "rareCandy" });
+  const selectedLvl = useWatch_UNSAFE<FormState, "wildLvl">({
+    name: "wildLvl",
+  });
+  const selectedNature = useWatch_UNSAFE<FormState, "nature">({
+    name: "nature",
+  });
+  const rareCandy = useWatch_UNSAFE<FormState, "rareCandy">({
+    name: "rareCandy",
+  });
 
   const [fields, setFields] = React.useState<Field[]>([]);
 

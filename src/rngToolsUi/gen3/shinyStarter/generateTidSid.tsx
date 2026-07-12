@@ -12,7 +12,7 @@ import {
 } from "~/components";
 import { Game } from "./index";
 import { rngTools, Gen3NearbySid, Gen3TidSidShinyResult } from "~/rngTools";
-import { useWatch } from "react-hook-form";
+import { useWatch_UNSAFE } from "~/hooks/form";
 import { GBA_FPS, MS_PER_GBA_FRAME } from "~/utils/consts";
 
 const Validator = z.object({
@@ -137,7 +137,7 @@ type FieldsProps = {
 };
 
 const Fields = ({ idealAdvance }: FieldsProps) => {
-  const advFromOffset = useWatch<FormState, "offset">({
+  const advFromOffset = useWatch_UNSAFE<FormState, "offset">({
     name: "offset",
   });
 

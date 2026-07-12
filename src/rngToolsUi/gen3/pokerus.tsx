@@ -18,10 +18,9 @@ import React from "react";
 import { z } from "zod";
 import { toOptions } from "~/utils/options";
 import { range } from "lodash-es";
-import { useFormContext } from "~/hooks/form";
+import { useFormContext, useWatch_UNSAFE } from "~/hooks/form";
 import { match, P } from "ts-pattern";
 import { pickupIdToName, pickupItems } from "~/types/pickupItems";
-import { useWatch } from "react-hook-form";
 import { MS_PER_GBA_FRAME } from "~/utils/consts";
 
 const HAS_EMPTY_TV_NEWS_SLOT = true; // The tool assumes the player always has a empty TV News slot.
@@ -146,7 +145,7 @@ export const UpdateCalibrationBtn = ({
   onClick: () => void;
 }) => {
   const { setFieldValue } = useFormContext<FormState>();
-  const calibration = useWatch<FormState, "calibration">({
+  const calibration = useWatch_UNSAFE<FormState, "calibration">({
     name: "calibration",
   });
   return (
@@ -173,22 +172,24 @@ export const UpdateCalibrationBtn = ({
 
 export const Fields = () => {
   const { setFieldValue } = useFormContext<FormState>();
-  const enteredHallOfFame = useWatch<FormState, "entered_hall_of_fame">({
+  const enteredHallOfFame = useWatch_UNSAFE<FormState, "entered_hall_of_fame">({
     name: "entered_hall_of_fame",
   });
-  const hadMassOutbreak = useWatch<FormState, "had_mass_outbreak">({
+  const hadMassOutbreak = useWatch_UNSAFE<FormState, "had_mass_outbreak">({
     name: "had_mass_outbreak",
   });
-  const pickupPokemonCount = useWatch<FormState, "pickup_pokemon_count">({
-    name: "pickup_pokemon_count",
-  });
-  const targetAdv = useWatch<FormState, "targetAdv">({
+  const pickupPokemonCount = useWatch_UNSAFE<FormState, "pickup_pokemon_count">(
+    {
+      name: "pickup_pokemon_count",
+    },
+  );
+  const targetAdv = useWatch_UNSAFE<FormState, "targetAdv">({
     name: "targetAdv",
   });
-  const calibration = useWatch<FormState, "calibration">({
+  const calibration = useWatch_UNSAFE<FormState, "calibration">({
     name: "calibration",
   });
-  const filterActive = useWatch<FormState, "filter_active">({
+  const filterActive = useWatch_UNSAFE<FormState, "filter_active">({
     name: "filter_active",
   });
 

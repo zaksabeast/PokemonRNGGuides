@@ -4,7 +4,7 @@ import { Flex } from "./flex";
 import { FormikNumberInput } from "./numberInput";
 import { IdFilter } from "~/types/id";
 import { Paths } from "~/types";
-import { useWatch } from "react-hook-form";
+import { useWatch_UNSAFE } from "~/hooks/form";
 
 type FilterType = IdFilter["type"];
 
@@ -34,7 +34,7 @@ export const FormikIdFilter = <FormState extends GenericForm>({
   type FakeForm = Record<"field", IdFilter>;
   const fakeName = name as "field";
 
-  const type = useWatch<FakeForm>({
+  const type = useWatch_UNSAFE<FakeForm>({
     name: `${fakeName}.type`,
   });
 

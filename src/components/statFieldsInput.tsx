@@ -3,7 +3,8 @@ import { Flex } from "./flex";
 import { Grid } from "./grid";
 import { Ivs } from "~/rngTools";
 import { FormikNumberInput } from "./numberInput";
-import { useFormState, useWatch } from "react-hook-form";
+import { useFormState } from "react-hook-form";
+import { useWatch_UNSAFE } from "~/hooks/form";
 import { uniq } from "lodash-es";
 import { Typography } from "./typography";
 import React from "react";
@@ -75,7 +76,7 @@ export const StatFieldsInput = <
   onChange,
 }: StatFieldsInputProps<FormState, FieldType>) => {
   const { errors } = useFormState<FormState>();
-  const watchedValue = useWatch({ name });
+  const watchedValue = useWatch_UNSAFE({ name });
 
   React.useEffect(() => {
     if (onChange == null || watchedValue == null) {

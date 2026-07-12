@@ -18,7 +18,7 @@ import { formatHex } from "~/utils/formatHex";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { formatDuration } from "~/utils/formatDuration";
 import { z } from "zod";
-import { useWatch } from "react-hook-form";
+import { useWatch_UNSAFE } from "~/hooks/form";
 import { GBA_FPS } from "~/utils/consts";
 import { lcrng_distance, pokerng_with_jump } from "~/utils/lcrng";
 import { FormikEmeraldTargetAdvance } from "~/components/emeraldTargetAdvance";
@@ -140,20 +140,22 @@ const getColumns = (): ResultColumn<Result>[] => {
 };
 
 const MyFields = () => {
-  const alreadyKnowPaintingFrameAndAdv = useWatch<
+  const alreadyKnowPaintingFrameAndAdv = useWatch_UNSAFE<
     FormState,
     "alreadyKnowPaintingFrameAndAdv"
   >({
     name: "alreadyKnowPaintingFrameAndAdv",
   });
-  const showAdvanced = useWatch<FormState, "showAdvancedSettings">({
+  const showAdvanced = useWatch_UNSAFE<FormState, "showAdvancedSettings">({
     name: "showAdvancedSettings",
   });
 
-  const frameBeforePainting = useWatch<FormState, "frameBeforePainting">({
-    name: "frameBeforePainting",
-  });
-  const advAfterPainting = useWatch<FormState, "advAfterPainting">({
+  const frameBeforePainting = useWatch_UNSAFE<FormState, "frameBeforePainting">(
+    {
+      name: "frameBeforePainting",
+    },
+  );
+  const advAfterPainting = useWatch_UNSAFE<FormState, "advAfterPainting">({
     name: "advAfterPainting",
   });
   const resultingTargetTxt = targetAdvanceAfterPaintingTitle({

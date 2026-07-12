@@ -16,7 +16,7 @@ import {
   FormikWild3Pokeblock,
 } from "~/components";
 import { toOptions } from "~/utils/options";
-import { useFormContext } from "~/hooks/form";
+import { useFormContext, useWatch_UNSAFE } from "~/hooks/form";
 import React from "react";
 import { z } from "zod";
 
@@ -33,7 +33,6 @@ import {
   leadsLabels,
   gen3Leads,
 } from "./utils";
-import { useWatch } from "react-hook-form";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { getPossibleValuesForMap } from "./dataUtils";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
@@ -247,31 +246,34 @@ export const Wild3TargetSetupInputFields = ({
   setTargetSetup: (targetSetup: TargetSetup | null) => void;
 }) => {
   const { setFieldValue } = useFormContext<FormState>();
-  const map = useWatch<FormState, "map">({ name: "map" });
-  const action = useWatch<FormState, "action">({ name: "action" });
-  const leadIdx = useWatch<FormState, "leadIdx">({ name: "leadIdx" });
-  const targetMethod = useWatch<FormState, "targetMethod">({
+  const map = useWatch_UNSAFE<FormState, "map">({ name: "map" });
+  const action = useWatch_UNSAFE<FormState, "action">({ name: "action" });
+  const leadIdx = useWatch_UNSAFE<FormState, "leadIdx">({ name: "leadIdx" });
+  const targetMethod = useWatch_UNSAFE<FormState, "targetMethod">({
     name: "targetMethod",
   });
-  const feebasState = useWatch<FormState, "feebasState">({
+  const feebasState = useWatch_UNSAFE<FormState, "feebasState">({
     name: "feebasState",
   });
-  const massOutbreakState = useWatch<FormState, "massOutbreakState">({
+  const massOutbreakState = useWatch_UNSAFE<FormState, "massOutbreakState">({
     name: "massOutbreakState",
   });
-  const roamerState = useWatch<FormState, "roamerState">({
+  const roamerState = useWatch_UNSAFE<FormState, "roamerState">({
     name: "roamerState",
   });
-  const usingPaintingReseeding = useWatch<FormState, "usingPaintingReseeding">({
+  const usingPaintingReseeding = useWatch_UNSAFE<
+    FormState,
+    "usingPaintingReseeding"
+  >({
     name: "usingPaintingReseeding",
   });
-  const targetFrameBeforePainting = useWatch<
+  const targetFrameBeforePainting = useWatch_UNSAFE<
     FormState,
     "targetFrameBeforePainting"
   >({
     name: "targetFrameBeforePainting",
   });
-  const targetAdvance = useWatch<FormState, "targetAdvance">({
+  const targetAdvance = useWatch_UNSAFE<FormState, "targetAdvance">({
     name: "targetAdvance",
   });
 

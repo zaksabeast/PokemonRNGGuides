@@ -12,7 +12,7 @@ import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import React from "react";
 import { clamp } from "lodash-es";
 import { z } from "zod";
-import { useWatch } from "react-hook-form";
+import { useWatch_UNSAFE } from "~/hooks/form";
 import { toOptions } from "~/utils/options";
 
 type Game = "emerald" | "rs";
@@ -90,7 +90,7 @@ type Props = {
 };
 
 const Fields = () => {
-  const battery = useWatch<FormState, "battery">({
+  const battery = useWatch_UNSAFE<FormState, "battery">({
     name: "battery",
   });
 

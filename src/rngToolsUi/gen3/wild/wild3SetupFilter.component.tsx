@@ -19,7 +19,7 @@ import {
   formatFeebasStateName,
   leadsLabels,
 } from "./utils";
-import { useWatch } from "react-hook-form";
+import { useWatch_UNSAFE } from "~/hooks/form";
 import { FormState } from "./wild3TargetSetupSearcher";
 import { getPossibleValuesForSpecies } from "./wild3TargetMon";
 import { wild3SafariPokeblockSearchOptLabels } from "~/types/pokeblock";
@@ -218,28 +218,31 @@ const getSetupFields = (obj: {
 };
 
 export const Wild3SetupFilter = () => {
-  const species = useWatch<FormState, "species">({
+  const species = useWatch_UNSAFE<FormState, "species">({
     name: "species",
   });
-  const filter_shiny = useWatch<FormState, "filter_shiny">({
+  const filter_shiny = useWatch_UNSAFE<FormState, "filter_shiny">({
     name: "filter_shiny",
   });
-  const recommendedSetups = useWatch<FormState, "recommendedSetups">({
+  const recommendedSetups = useWatch_UNSAFE<FormState, "recommendedSetups">({
     name: "recommendedSetups",
   });
-  const usingAceForSid = useWatch<FormState, "usingAceForSid">({
+  const usingAceForSid = useWatch_UNSAFE<FormState, "usingAceForSid">({
     name: "usingAceForSid",
   });
-  const usingPaintingReseeding = useWatch<FormState, "usingPaintingReseeding">({
+  const usingPaintingReseeding = useWatch_UNSAFE<
+    FormState,
+    "usingPaintingReseeding"
+  >({
     name: "usingPaintingReseeding",
   });
-  const letSearcherFindPaintingSeed = useWatch<
+  const letSearcherFindPaintingSeed = useWatch_UNSAFE<
     FormState,
     "letSearcherFindPaintingSeed"
   >({
     name: "letSearcherFindPaintingSeed",
   });
-  const showAdvancedPaintingSettings = useWatch<
+  const showAdvancedPaintingSettings = useWatch_UNSAFE<
     FormState,
     "showAdvancedPaintingSettings"
   >({

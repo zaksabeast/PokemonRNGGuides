@@ -15,7 +15,7 @@ import {
 import { capPrecision } from "~/utils/number";
 import { type GameConsole, updateGen3Timer } from "~/rngTools";
 import { z } from "zod";
-import { useWatch } from "react-hook-form";
+import { useWatch } from "~/hooks/form";
 import { P, match } from "ts-pattern";
 
 const SingleTimerSettingsSchema = z.object({
@@ -46,8 +46,9 @@ const initialValues: Omit<SingleTimerSettings, "timer_id"> = {
 };
 
 const CustomTimerSettings = () => {
-  const targetType = useWatch<SingleTimerSettings, "target_type">({
-    name: "target_type",
+  const { target_type: targetType } = useWatch({
+    validationSchema: SingleTimerSettingsSchema,
+    names: { target_type: true },
   });
   const numType = targetType === "seed_hex" ? "hex" : "float";
 

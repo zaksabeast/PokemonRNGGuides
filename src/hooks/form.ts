@@ -2,6 +2,7 @@ import { RadioChangeEvent, InputProps as AntdInputProps } from "antd";
 import {
   useController,
   useFormContext as useRHFormContext,
+  // eslint-disable-next-line no-restricted-imports -- We need to import this to build our own wrapper.
   useWatch as useRHWatch,
 } from "react-hook-form";
 import { match, P } from "ts-pattern";
@@ -74,3 +75,11 @@ export const useWatch = <
   const empty: Partial<z.infer<typeof Schema>> = {};
   return empty;
 };
+
+/**
+ * @deprecated
+ * Re-exports useWatch from react-hook-form.
+ * This has type errors and does not do validation.
+ * Prefer using `useWatch` from `~/hooks/form` instead.
+ */
+export const useWatch_UNSAFE = useRHWatch;

@@ -2,7 +2,7 @@ import { Flex } from "./flex";
 import { Typography } from "./typography";
 import { Form as AntdForm } from "antd";
 import styled from "@emotion/styled";
-import { useWatch } from "react-hook-form";
+import { useWatch_UNSAFE } from "~/hooks/form";
 
 type IndentProps = {
   indent?: number;
@@ -81,7 +81,7 @@ const FormFieldRow = ({
 };
 
 const WatchedFormFieldRow = ({ showWhen, ...field }: Field) => {
-  const watchedValue = useWatch({
+  const watchedValue = useWatch_UNSAFE({
     name: showWhen?.fieldName as never,
   });
 

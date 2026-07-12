@@ -3083,7 +3083,7 @@ export const guides = {
       addedOn: "2026-05-05",
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-05-05",
+      lastUpdated: "2026-07-12",
       type: "baseGuide",
       canonical: "/emerald-rng-with-ace/",
       file: "guides/Gen 3/Emerald/RNG With Ace.mdx",

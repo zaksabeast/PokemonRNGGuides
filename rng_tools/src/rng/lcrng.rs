@@ -1,4 +1,4 @@
-use super::rng_trait::{GetMaxRand, GetRand, Rng};
+use super::rng_trait::{GetMaxRand, GetRand, GetRandRange, Rng};
 use std::iter::{DoubleEndedIterator, Iterator, Rev, Skip};
 
 pub type Pokerng = Lcrng<0x6073, 0x41c64e6d>;
@@ -239,6 +239,13 @@ impl<const A: u32, const M: u32> GetRand<u16> for Lcrng<A, M> {
 impl<const A: u32, const M: u32> GetMaxRand<u16> for Lcrng<A, M> {
     fn get_max(&mut self, max: u16) -> u16 {
         ((self.next().unwrap_or_default() >> 16) as u16) % max
+    }
+}
+
+impl<const A: u32, const M: u32> GetRandRange<u16> for Lcrng<A, M> {
+    fn get_rand_range(&mut self, max: u16) -> u16 {
+        let high = self.next_u16();
+        ((high as u32 * max as u32) / 65536) as u16
     }
 }
 

@@ -11,6 +11,7 @@ mod seed_time;
 mod stationary;
 mod swarm;
 mod voltorb_flip;
+mod pokeradar;
 
 pub use egg::*;
 pub use game::*;
@@ -22,3 +23,4 @@ pub use seed_time::*;
 pub use stationary::*;
 pub use swarm::*;
 pub use voltorb_flip::*;
+pub use pokeradar::*;

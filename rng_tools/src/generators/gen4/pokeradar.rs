@@ -253,12 +253,10 @@ mod tests {
     }
     #[test]
     fn test_real_game_case_001() {
-        let init_seed = 0x010D029F;
-        let target_advance = 350;
 
         let result = simulate_advance(
-            init_seed,
-            target_advance,
+            0x010D029F,
+            350,
             1,
             BattleResult::Catch,
             ShakeType::Slow,

@@ -1,4 +1,5 @@
-use crate::rng::{GetRandRange, lcrng::Pokerng};
+use crate::gen4::game_logic::{DpptLogic, GameSpecificLogic};
+use crate::rng::{Rng, lcrng::Pokerng};
 
 const RING_TILE_COUNT: [u16; 4] = [32, 24, 16, 8];
 const RATES_WIN: [u16; 4] = [88, 68, 48, 28];
@@ -36,7 +37,7 @@ fn patch_grid_coords(ring: i32, rand: u16) -> (i32, i32) {
     (ring + ox, ring + oz)
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Patch {
     pub ring: i32,
     pub gx: i32,
@@ -60,13 +61,11 @@ pub fn simulate_advance(
 ) -> SimulateAdvanceResult {
     let mut rng = Pokerng::new(init_seed);
 
-    for _ in 0..target_advance {
-        rng.next();
-    }
+    rng.jump(target_advance as usize);
 
     let mut positions: [u16; 4] = [0; 4];
     for (ring, slot) in positions.iter_mut().enumerate() {
-        *slot = rng.get_rand_range(RING_TILE_COUNT[ring]);
+        *slot = DpptLogic::max(rng.rand(), RING_TILE_COUNT[ring]);
     }
 
     let rates = match battle_result {
@@ -79,30 +78,23 @@ pub fn simulate_advance(
     let mut patches = Vec::with_capacity(4);
 
     for ring in 0..4i32 {
-        let cc_val = rng.get_rand_range(100);
-        let continue_chain = if chain_count > 0 {
-            cc_val < rates[ring as usize]
-        } else {
-            false
-        };
+        let cc_val = DpptLogic::max(rng.rand(), 100);
+        let continue_chain = chain_count > 0 && cc_val < rates[ring as usize];
 
-        let shake_type;
-        let mut is_shiny = false;
-
-        if !continue_chain {
-            let sh_val = rng.get_rand_range(100);
-            shake_type = if sh_val < 50 {
-                ShakeType::Slow
-            } else {
-                ShakeType::Fast
-            };
-        } else {
-            shake_type = selected_shake;
-            if chain_count > 0 {
-                let sh_val = rng.get_rand_range(s_rate);
-                is_shiny = sh_val == 0;
+        let (shake_type, is_shiny) = match continue_chain {
+            true => {
+                let sh_val = DpptLogic::max(rng.rand(), s_rate);
+                (selected_shake, sh_val == 0)
             }
-        }
+            false => {
+                let sh_val = DpptLogic::max(rng.rand(), 100);
+                let shake_type = match sh_val < 50 {
+                    true => ShakeType::Slow,
+                    false => ShakeType::Fast,
+                };
+                (shake_type, false)
+            }
+        };
 
         let rand_val = positions[ring as usize];
         let (gx, gz) = patch_grid_coords(ring, rand_val);
@@ -125,6 +117,7 @@ pub fn simulate_advance(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::assert_list_eq;
 
     #[test]
     fn test_ring_sizes() {
@@ -252,40 +245,43 @@ mod tests {
         }
     }
     #[test]
-    fn test_real_game_case_001() {
+    fn test_real_game_case() {
+        let result = simulate_advance(0x010D029F, 350, 1, BattleResult::Catch, ShakeType::Slow);
+        let expected = [
+            Patch {
+                ring: 0,
+                gx: 7,
+                gz: 0,
+                continue_chain: true,
+                is_shiny: false,
+                shake_type: ShakeType::Slow,
+            },
+            Patch {
+                ring: 1,
+                gx: 1,
+                gz: 5,
+                continue_chain: true,
+                is_shiny: false,
+                shake_type: ShakeType::Slow,
+            },
+            Patch {
+                ring: 2,
+                gx: 2,
+                gz: 3,
+                continue_chain: false,
+                is_shiny: false,
+                shake_type: ShakeType::Fast,
+            },
+            Patch {
+                ring: 3,
+                gx: 5,
+                gz: 5,
+                continue_chain: false,
+                is_shiny: false,
+                shake_type: ShakeType::Fast,
+            },
+        ];
 
-        let result = simulate_advance(
-            0x010D029F,
-            350,
-            1,
-            BattleResult::Catch,
-            ShakeType::Slow,
-        );
-
-        assert_eq!(result.patches.len(), 4);
-
-        assert_eq!(result.patches[0].gx, 7);
-        assert_eq!(result.patches[0].gz, 0);
-        assert!(result.patches[0].continue_chain);
-        assert!(!result.patches[0].is_shiny);
-        assert_eq!(result.patches[0].shake_type, ShakeType::Slow);
-
-        assert_eq!(result.patches[1].gx, 1);
-        assert_eq!(result.patches[1].gz, 5);
-        assert!(result.patches[1].continue_chain);
-        assert!(!result.patches[1].is_shiny);
-        assert_eq!(result.patches[1].shake_type, ShakeType::Slow);
-
-        assert_eq!(result.patches[2].gx, 2);
-        assert_eq!(result.patches[2].gz, 3);
-        assert!(!result.patches[2].continue_chain);
-        assert!(!result.patches[2].is_shiny);
-        assert_eq!(result.patches[2].shake_type, ShakeType::Fast);
-
-        assert_eq!(result.patches[3].gx, 5);
-        assert_eq!(result.patches[3].gz, 5);
-        assert!(!result.patches[3].continue_chain);
-        assert!(!result.patches[3].is_shiny);
-        assert_eq!(result.patches[3].shake_type, ShakeType::Fast);
+        assert_list_eq!(result.patches, expected);
     }
 }

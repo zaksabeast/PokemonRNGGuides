@@ -9,10 +9,6 @@ pub trait GetMaxRand<T> {
     fn get_max(&mut self, max: T) -> T;
 }
 
-pub trait GetRandRange<T> {
-    fn get_rand_range(&mut self, max: T) -> T;
-}
-
 pub trait Rng: Iterator {
     fn rand<T>(&mut self) -> T
     where

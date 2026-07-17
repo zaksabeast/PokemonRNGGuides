@@ -608,10 +608,9 @@ fn get_radar_sync_states(
     let mut states = Vec::new();
 
     loop {
-        let test = rng; // copia, non tocca rng "vero"
+        let test = rng;
 
         if (next_rng / 0x8000) == 0 {
-            // ramo 1: nessun advance, seed corrente
             let origin_seed = test.seed();
             states.push(BaseStatic4State::new(
                 origin_seed,
@@ -625,7 +624,6 @@ fn get_radar_sync_states(
                 LeadAbility::Synchronize(nature),
             ));
         } else if (next_rng2 / 0x8000) == 1 && (next_rng / 0xa3e) == nature_rand {
-            // ramo 2: un advance in più (equivalente a test.next())
             let mut t = test;
             let origin_seed = t.rand::<u32>();
             states.push(BaseStatic4State::new(
@@ -660,7 +658,7 @@ fn get_radar_states(
     max_level: u8,
     tid: u16,
     sid: u16,
-    ivs: Ivs,
+F    ivs: Ivs,
     seed: u32,
 ) -> Vec<BaseStatic4State> {
     match lead {

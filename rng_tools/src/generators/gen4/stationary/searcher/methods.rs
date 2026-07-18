@@ -108,10 +108,31 @@ impl From<&SearchStatic4Opts> for SeedFilters {
         }
     }
 }
+trait SyncGate {
+    fn allow_check2(check1: bool) -> bool;
+}
+
+struct NoGate;
+impl SyncGate for NoGate {
+    fn allow_check2(_check1: bool) -> bool {
+        true
+    }
+}
+
+struct GateOnCheck1;
+impl SyncGate for GateOnCheck1 {
+    fn allow_check2(check1: bool) -> bool {
+        !check1
+    }
+}
 
 /// Iterator for MethodJ/K sync lead that generates states on-demand.
 /// This avoids collecting millions of intermediate states into memory.
-struct MethodJKSyncStateIterator<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>> {
+struct MethodJKSyncStateIterator<
+    Game: GameSpecificLogic,
+    LevelCalc: LevelCalculator<PokerngR>,
+    Gate: SyncGate,
+> {
     species: Species,
     min_level: u8,
     max_level: u8,
@@ -133,10 +154,11 @@ struct MethodJKSyncStateIterator<Game: GameSpecificLogic, LevelCalc: LevelCalcul
 
     _phantom_game: std::marker::PhantomData<Game>,
     _phantom_level: std::marker::PhantomData<LevelCalc>,
+    _phantom_gate: std::marker::PhantomData<Gate>,
 }
 
-impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>>
-    MethodJKSyncStateIterator<Game, LevelCalc>
+impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>, Gate: SyncGate>
+    MethodJKSyncStateIterator<Game, LevelCalc, Gate>
 {
     fn new(
         species: Species,
@@ -182,6 +204,7 @@ impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>>
             returned_check2: false,
             _phantom_game: std::marker::PhantomData,
             _phantom_level: std::marker::PhantomData,
+            _phantom_gate: std::marker::PhantomData,
         }
     }
 
@@ -190,8 +213,8 @@ impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>>
     }
 }
 
-impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>> Iterator
-    for MethodJKSyncStateIterator<Game, LevelCalc>
+impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>, Gate: SyncGate> Iterator
+    for MethodJKSyncStateIterator<Game, LevelCalc, Gate>
 {
     type Item = BaseStatic4State;
 
@@ -202,7 +225,8 @@ impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>> Iterator
             }
 
             let check1 = Game::sync_check(self.next_rng) == 0;
-            let check2 = Game::sync_check(self.next_rng_2) == 1
+            let check2 = Gate::allow_check2(check1)
+                && Game::sync_check(self.next_rng_2) == 1
                 && Game::max(self.next_rng, 25) == self.nature_rand;
 
             // Yield check1 result if applicable and not yet returned
@@ -262,7 +286,11 @@ impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>> Iterator
     }
 }
 
-fn get_methodjk_sync_state<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>>(
+fn get_methodjk_sync_state<
+    Game: GameSpecificLogic,
+    LevelCalc: LevelCalculator<PokerngR>,
+    Gate: SyncGate,
+>(
     species: Species,
     min_level: u8,
     max_level: u8,
@@ -271,7 +299,7 @@ fn get_methodjk_sync_state<Game: GameSpecificLogic, LevelCalc: LevelCalculator<P
     ivs: Ivs,
     seed: u32,
 ) -> impl Iterator<Item = BaseStatic4State> {
-    MethodJKSyncStateIterator::<Game, LevelCalc>::new(
+    MethodJKSyncStateIterator::<Game, LevelCalc, Gate>::new(
         species, min_level, max_level, tid, sid, ivs, seed,
     )
 }
@@ -492,7 +520,7 @@ fn get_methodjk_states<
     seed: u32,
 ) -> Box<dyn Iterator<Item = BaseStatic4State>> {
     match lead {
-        Static4LeadInput::Synchronize => Box::new(get_methodjk_sync_state::<Game, LevelCalc>(
+        Static4LeadInput::Synchronize => Box::new(get_methodjk_sync_state::<Game, LevelCalc, NoGate>(
             species, min_level, max_level, tid, sid, ivs, seed,
         )),
         Static4LeadInput::CutecharmF | Static4LeadInput::CutecharmM => Box::new(
@@ -585,72 +613,6 @@ pub fn search_static4(opts: &SearchStatic4Opts) -> Vec<Static4State> {
     }
 }
 
-//It's different from method J/K, so it needs its own function
-fn get_radar_sync_states(
-    species: Species,
-    max_level: u8,
-    tid: u16,
-    sid: u16,
-    ivs: Ivs,
-    seed: u32,
-) -> Vec<BaseStatic4State> {
-    let mut rng = Pokerng::new(seed).reverse();
-
-    let pidh = rng.rand::<u16>() as u32;
-    let pidl = rng.rand::<u16>() as u32;
-    let pid = (pidh << 16) | pidl;
-    let nature_rand = (pid % 25) as u16;
-    let nature = Nature::from(nature_rand as u8);
-
-    let mut next_rng = rng.rand::<u16>();
-    let mut next_rng2 = rng.rand::<u16>();
-
-    let mut states = Vec::new();
-
-    loop {
-        let test = rng;
-
-        if (next_rng / 0x8000) == 0 {
-            let origin_seed = test.seed();
-            states.push(BaseStatic4State::new(
-                origin_seed,
-                species,
-                nature,
-                max_level,
-                pid,
-                tid,
-                sid,
-                ivs,
-                LeadAbility::Synchronize(nature),
-            ));
-        } else if (next_rng2 / 0x8000) == 1 && (next_rng / 0xa3e) == nature_rand {
-            let mut t = test;
-            let origin_seed = t.rand::<u32>();
-            states.push(BaseStatic4State::new(
-                origin_seed,
-                species,
-                nature,
-                max_level,
-                pid,
-                tid,
-                sid,
-                ivs,
-                LeadAbility::Synchronize(nature),
-            ));
-        }
-
-        let hunt_nature = (((next_rng as u32) << 16 | next_rng2 as u32) % 25) as u16;
-        next_rng = rng.rand::<u16>();
-        next_rng2 = rng.rand::<u16>();
-
-        if hunt_nature == nature_rand {
-            break;
-        }
-    }
-
-    states
-}
-
 fn get_radar_states(
     lead: Static4LeadInput,
     species: Species,
@@ -658,14 +620,15 @@ fn get_radar_states(
     max_level: u8,
     tid: u16,
     sid: u16,
-F    ivs: Ivs,
+    ivs: Ivs,
     seed: u32,
 ) -> Vec<BaseStatic4State> {
     match lead {
         Static4LeadInput::Pressure => vec![],
-        Static4LeadInput::Synchronize => {
-            get_radar_sync_states(species, max_level, tid, sid, ivs, seed)
-        }
+        Static4LeadInput::Synchronize => get_methodjk_sync_state::<DpptLogic, SetLevel, GateOnCheck1>(
+            species, max_level, max_level, tid, sid, ivs, seed,
+        )
+        .collect(),
         _ => get_methodjk_states::<DpptLogic, SetLevel>(
             lead, species, max_level, max_level, tid, sid, ivs, seed,
         )

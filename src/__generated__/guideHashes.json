@@ -95,9 +95,13 @@
     "hash": "03bdf907aa8cf7e478c812ba176f7adba92adaae3c11ef8780f370b6fdd8e28c",
     "lastUpdated": null
   },
+  "/chatot-pitch-elm-call-finder/": {
+    "hash": "b999a1a513be884d2d04b03c094529acb92b8628fde517a7e5d62e0779facee4",
+    "lastUpdated": "2026-07-19"
+  },
   "/chatot-pitch-finder/": {
-    "hash": "42fabcf8ff1ef893645fd703c86b08234703835b656dbc7404f1e5c8dc3fe7d6",
-    "lastUpdated": "2026-05-14"
+    "hash": "b999a1a513be884d2d04b03c094529acb92b8628fde517a7e5d62e0779facee4",
+    "lastUpdated": "2026-07-19"
   },
   "/citrarng-setup/": {
     "hash": "9ca239daf106beb6f8fb383cade00ac87e718760da7650bd62d653f8a77e119d",

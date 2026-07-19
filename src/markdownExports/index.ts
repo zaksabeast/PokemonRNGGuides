@@ -400,9 +400,9 @@ const tools = {
     () => import("~/rngToolsUi/gen4/standaloneSinnohMap"),
     (mod) => mod.StandaloneSinnohMap,
   ),
-  StandaloneChatterFilter: lazyLoad(
-    () => import("~/rngToolsUi/gen4/standaloneChatterFilter"),
-    (mod) => mod.StandaloneChatterFilter,
+  StandaloneGen4AdvanceFilter: lazyLoad(
+    () => import("~/rngToolsUi/gen4/standaloneAdvanceFilter"),
+    (mod) => mod.StandaloneGen4AdvanceFilter,
   ),
   SelectSwarm4Target: lazyLoad(
     () => import("~/rngToolsUi/gen4/swarm/selectTarget"),

@@ -42,15 +42,15 @@ export const ElmCallFilterButtons = ({
     <Flex vertical gap={8}>
       <Flex gap={8}>
         <ElmButton flex={1} trackerId={eTrackerId} onClick={() => addCall("E")}>
-          E
+          Evolution
         </ElmButton>
 
         <ElmButton flex={1} trackerId={kTrackerId} onClick={() => addCall("K")}>
-          K
+          Kanto
         </ElmButton>
 
         <ElmButton flex={1} trackerId={pTrackerId} onClick={() => addCall("P")}>
-          P
+          Pokérus
         </ElmButton>
       </Flex>
 

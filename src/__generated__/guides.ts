@@ -951,20 +951,20 @@ export const guides = {
       return file.default;
     }),
   },
-  "/chatot-pitch-finder/": {
+  "/chatot-pitch-elm-call-finder/": {
     meta: {
-      id: "/chatot-pitch-finder/",
+      id: "/chatot-pitch-elm-call-finder/",
       categories: ["Diamond, Pearl, and Platinum", "HeartGold and SoulSilver"],
       section: "rng_technique",
       guideVariants: ["retail"],
-      guideKey: "false-Chatot Pitch Finder",
+      guideKey: "false-Chatot Pitch & Elm Call Finder",
       isNew: false,
       title:
-        "Pokémon Gen 4 Chatot RNG Tool | RNG Advance Finder for DPPt & HGSS",
-      navDrawerTitle: "Chatot Pitch Finder",
+        "Pokémon Gen 4 Chatot & Elm Call RNG Tool | RNG Advance Finder for DPPt & HGSS",
+      navDrawerTitle: "Chatot Pitch & Elm Call Finder",
       description:
-        "Easily find RNG advances in Pokémon Diamond, Pearl, Platinum, HeartGold, and SoulSilver using Chatot pitches. No manual counting or difficult 5-pitch matching required. Simplified Low/Medium/High filters, live sequence matching, and target advance markers make Gen 4 RNG tracking faster and easier.",
-      slug: "/chatot-pitch-finder/",
+        "Easily find RNG advances in Pokémon Diamond, Pearl, Platinum, HeartGold, and SoulSilver using Chatot pitches or Elm Calls. No manual counting or difficult 5-pitch matching required. Simplified Low/Medium/High filters, live sequence matching, and target advance markers make Gen 4 RNG tracking faster and easier.",
+      slug: "/chatot-pitch-elm-call-finder/",
       isRoughDraft: false,
       orderPriority: 2,
       difficulty: null,
@@ -972,22 +972,62 @@ export const guides = {
       addedOn: "2026-05-14",
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-05-14",
+      lastUpdated: "2026-07-19",
       type: "baseGuide",
-      canonical: "/chatot-pitch-finder/",
-      file: "guides/Gen 4/Chatter Filter.mdx",
+      canonical: "/chatot-pitch-elm-call-finder/",
+      file: "guides/Gen 4/Advance Finder.mdx",
       translations: null,
       guideGroupId:
-        "en:false-Chatot Pitch Finder:Diamond, Pearl, and Platinum|HeartGold and SoulSilver",
+        "en:false-Chatot Pitch & Elm Call Finder:Diamond, Pearl, and Platinum|HeartGold and SoulSilver",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/chatot-pitch-elm-call-finder/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 4/Advance Finder.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 4/Advance Finder.mdx?raw");
+      return file.default;
+    }),
+  },
+  "/chatot-pitch-finder/": {
+    meta: {
+      id: "/chatot-pitch-finder/",
+      categories: ["Diamond, Pearl, and Platinum", "HeartGold and SoulSilver"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "/chatot-pitch-finder/",
+      isNew: false,
+      title:
+        "Pokémon Gen 4 Chatot & Elm Call RNG Tool | RNG Advance Finder for DPPt & HGSS",
+      navDrawerTitle: "Chatot Pitch & Elm Call Finder",
+      description:
+        "Easily find RNG advances in Pokémon Diamond, Pearl, Platinum, HeartGold, and SoulSilver using Chatot pitches or Elm Calls. No manual counting or difficult 5-pitch matching required. Simplified Low/Medium/High filters, live sequence matching, and target advance markers make Gen 4 RNG tracking faster and easier.",
+      slug: "/chatot-pitch-finder/",
+      isRoughDraft: false,
+      orderPriority: 2,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-05-14",
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-07-19",
+      type: "baseGuide",
+      canonical: "/chatot-pitch-elm-call-finder/",
+      file: "guides/Gen 4/Advance Finder.mdx",
+      translations: null,
+      guideGroupId:
+        "en:/chatot-pitch-finder/:Diamond, Pearl, and Platinum|HeartGold and SoulSilver",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/chatot-pitch-finder/" },
         cfwEmu: null,
       },
       displayAttributes: ["web_tool"],
     },
-    Guide: React.lazy(() => import("~/../guides/Gen 4/Chatter Filter.mdx")),
+    Guide: React.lazy(() => import("~/../guides/Gen 4/Advance Finder.mdx")),
     getRawFile: memoize(async () => {
-      const file = await import("~/../guides/Gen 4/Chatter Filter.mdx?raw");
+      const file = await import("~/../guides/Gen 4/Advance Finder.mdx?raw");
       return file.default;
     }),
   },
@@ -17079,6 +17119,7 @@ export const guideSlugs = [
   "/cfw-bdsp-wild/",
   "/challenge-usum-ta/",
   "/channel-jirachi/",
+  "/chatot-pitch-elm-call-finder/",
   "/chatot-pitch-finder/",
   "/citrarng-setup/",
   "/connect-dolphin-to-gba/",

@@ -42,10 +42,10 @@ pub mod arrayvec {
             where
                 A: SeqAccess<'de>,
             {
-                if let Some(len) = seq.size_hint() {
-                    if len > N {
-                        return Err(A::Error::invalid_length(len, &self));
-                    }
+                if let Some(len) = seq.size_hint()
+                    && len > N
+                {
+                    return Err(A::Error::invalid_length(len, &self));
                 }
 
                 let mut arrayvec = ArrayVec::new();

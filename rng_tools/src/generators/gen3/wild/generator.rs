@@ -205,11 +205,12 @@ fn select_encounter_idx(
     if opts.action == Wild3Action::SweetScentLand || opts.action == Wild3Action::SweetScentWater {
         // In TryStartRoamerEncounter()
         match opts.roamer_state {
-            Wild3RoamerState::ActiveInMapLatias | Wild3RoamerState::ActiveInMapLatios => {
-                if rand_next_u16(rng, "select_encounter_idx.roamer_state", 4) % 4 == 0 {
-                    return Some(Wild3EncounterIndex::Roamer(opts.roamer_state));
-                }
+            Wild3RoamerState::ActiveInMapLatias | Wild3RoamerState::ActiveInMapLatios
+                if rand_next_u16(rng, "select_encounter_idx.roamer_state", 4).is_multiple_of(4) =>
+            {
+                return Some(Wild3EncounterIndex::Roamer(opts.roamer_state));
             }
+
             _ => {}
         }
     }
@@ -240,7 +241,7 @@ fn select_encounter_idx(
     match opts.lead {
         Gen3Lead::MagnetPull => {
             if opts.action == Wild3Action::SweetScentLand
-                && rand_next_u16(rng, "select_encounter_idx.MagnetPull", 2) % 2 == 0
+                && rand_next_u16(rng, "select_encounter_idx.MagnetPull", 2).is_multiple_of(2)
             {
                 let slots = &map_data.slots_by_action[opts.action as usize];
                 if let Some(idx) = select_encounter_idx_ability_attract_type(rng, slots, true) {
@@ -248,15 +249,14 @@ fn select_encounter_idx(
                 }
             }
         }
-        Gen3Lead::Static => {
+        Gen3Lead::Static
             if (opts.action == Wild3Action::SweetScentLand
                 || opts.action == Wild3Action::SweetScentWater)
-                && rand_next_u16(rng, "select_encounter_idx.Static", 2) % 2 == 0
-            {
-                let slots = &map_data.slots_by_action[opts.action as usize];
-                if let Some(idx) = select_encounter_idx_ability_attract_type(rng, slots, false) {
-                    return Some(idx);
-                }
+                && rand_next_u16(rng, "select_encounter_idx.Static", 2).is_multiple_of(2) =>
+        {
+            let slots = &map_data.slots_by_action[opts.action as usize];
+            if let Some(idx) = select_encounter_idx_ability_attract_type(rng, slots, false) {
+                return Some(idx);
             }
         }
         _ => {}
@@ -315,7 +315,7 @@ fn select_lvl(
 
     let mut lvl_incr = (lvl_range_rand_val as u8) % lvl_range;
     if matches!(lead, Gen3Lead::HustleVitalSpiritPressure) {
-        if rand_next_u16(rng, "select_lvl.Hustle", 2) % 2 == 0 {
+        if rand_next_u16(rng, "select_lvl.Hustle", 2).is_multiple_of(2) {
             return encounter.max_level;
         } else {
             lvl_incr = lvl_incr.saturating_sub(1);
@@ -472,18 +472,18 @@ pub fn generate_gen3_wild(
     }
 
     let encounter = encounter.unwrap();
-    if let Some(species) = opts.gen3_filter.species {
-        if species != encounter.species_data.species {
-            return (results, cycle_counter); // empty
-        }
+    if let Some(species) = opts.gen3_filter.species
+        && species != encounter.species_data.species
+    {
+        return (results, cycle_counter); // empty
     }
 
     let lvl = select_lvl(&mut rng, opts.lead, encounter, &mut cycle_counter);
 
-    if let Some(wanted_lvl) = opts.gen3_filter.lvl {
-        if lvl != wanted_lvl {
-            return (results, cycle_counter); // empty
-        }
+    if let Some(wanted_lvl) = opts.gen3_filter.lvl
+        && lvl != wanted_lvl
+    {
+        return (results, cycle_counter); // empty
     }
 
     if matches!(encounter_idx, Wild3EncounterIndex::Roamer(_)) {
@@ -545,7 +545,7 @@ pub fn generate_gen3_wild(
                 // between CreateWildMon_CuteCharmRandom and PickWildMonNature_pickRandom
                 cycle_counter.add_cycle(calc_modulo_cycle_unsigned(cute_charm_rand_val as u32, 3));
 
-                if cute_charm_rand_val % 3 != 0 {
+                if !cute_charm_rand_val.is_multiple_of(3) {
                     cycle_counter.add(8786 + 44, 8);
                     Some(if lead_gender == Gender::Female {
                         Gender::Male
@@ -566,13 +566,12 @@ pub fn generate_gen3_wild(
 
     // PickWildMonNature()
     let (required_nature, used_safari_pokeblock) = (|| {
-        if map_data.is_safari {
-            if let Some((nature, used_safari_pokeblock)) =
+        if map_data.is_safari
+            && let Some((nature, used_safari_pokeblock)) =
                 pick_wild_mon_nature_safari(&mut rng, &opts.safari_pokeblock)
-            {
-                cycle_counter.add_cycle(33728);
-                return (nature, used_safari_pokeblock);
-            }
+        {
+            cycle_counter.add_cycle(33728);
+            return (nature, used_safari_pokeblock);
         }
         if let Gen3Lead::Synchronize(lead_nature) = opts.lead {
             cycle_counter.on_moment_reached(Moment::PickWildMonNature_RandomTestSynchro);
@@ -614,15 +613,15 @@ pub fn generate_gen3_wild(
         let pid_low = rand_next_u16(&mut rng, "pid_low", 1) as u32;
 
         let method3_range = 80;
-        if methods_contains_wild3 {
-            if let Some(gen_mon_wild3) = generate_gen3_wild_method3(
+        if methods_contains_wild3
+            && let Some(gen_mon_wild3) = generate_gen3_wild_method3(
                 &gen_data,
                 rng,
                 pid_low,
                 CycleRange::from_start_len(cycle_counter.cycle, method3_range),
-            ) {
-                results.push(gen_mon_wild3);
-            }
+            )
+        {
+            results.push(gen_mon_wild3);
         }
 
         let pid_high = rand_next_u16(&mut rng, "pid_high", 1) as u32;
@@ -686,15 +685,15 @@ pub fn generate_gen3_wild(
     let method2_range =
         calc_modulo_cycle_unsigned(pid, 25) + 100 * calc_modulo_cycle_unsigned(pid, 24) + 36900;
 
-    if opts.methods.contains(&Gen3Method::Wild2) {
-        if let Some(gen_mon_wild2) = generate_gen3_wild_method2(
+    if opts.methods.contains(&Gen3Method::Wild2)
+        && let Some(gen_mon_wild2) = generate_gen3_wild_method2(
             &gen_data,
             rng,
             pid,
             CycleRange::from_start_len(cycle_counter.cycle, method2_range),
-        ) {
-            results.push(gen_mon_wild2);
-        }
+        )
+    {
+        results.push(gen_mon_wild2);
     }
     cycle_counter.add_cycle(method2_range);
 
@@ -704,16 +703,16 @@ pub fn generate_gen3_wild(
     // between CreateBoxMon_ivs1 and CreateBoxMon_ivs2
     let method4_range = 36 * calc_modulo_cycle_unsigned(pid, 24) + 11103; // between CreateBoxMon_ivs1 and CreateBoxMon_ivs2
 
-    if opts.methods.contains(&Gen3Method::Wild4) {
-        if let Some(gen_mon_wild4) = generate_gen3_wild_method4(
+    if opts.methods.contains(&Gen3Method::Wild4)
+        && let Some(gen_mon_wild4) = generate_gen3_wild_method4(
             &gen_data,
             rng,
             pid,
             iv1,
             CycleRange::from_start_len(cycle_counter.cycle, method4_range),
-        ) {
-            results.push(gen_mon_wild4);
-        }
+        )
+    {
+        results.push(gen_mon_wild4);
     }
     cycle_counter.add_cycle(method4_range);
 

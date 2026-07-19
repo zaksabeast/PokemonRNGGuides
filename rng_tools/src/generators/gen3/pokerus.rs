@@ -180,16 +180,16 @@ pub fn gen3_pokerus_generator_states(
         .filter_map(|(advance, rng)| {
             let state = generate_gen3_pokerus_state(rng, opts, advance);
 
-            if let Some(filter_pickup_items) = &opts.filter_pickup_items {
-                if *filter_pickup_items != state.pickup_items {
-                    return None;
-                }
+            if let Some(filter_pickup_items) = &opts.filter_pickup_items
+                && *filter_pickup_items != state.pickup_items
+            {
+                return None;
             }
 
-            if let Some(filter_gives_pokerus) = opts.filter_gives_pokerus {
-                if filter_gives_pokerus != state.gives_pokerus {
-                    return None;
-                }
+            if let Some(filter_gives_pokerus) = opts.filter_gives_pokerus
+                && filter_gives_pokerus != state.gives_pokerus
+            {
+                return None;
             }
 
             Some(state)

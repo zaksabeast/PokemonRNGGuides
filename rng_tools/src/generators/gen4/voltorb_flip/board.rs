@@ -77,7 +77,7 @@ impl VoltorbFlipBoard {
         VoltorbFlipBoard { cards: flat_cards }
     }
 
-    pub(super) fn row(&self, row: usize) -> RowIter {
+    pub(super) fn row(&self, row: usize) -> RowIter<'_> {
         RowIter {
             board: self,
             row,
@@ -85,7 +85,7 @@ impl VoltorbFlipBoard {
         }
     }
 
-    pub(super) fn col(&self, col: usize) -> ColIter {
+    pub(super) fn col(&self, col: usize) -> ColIter<'_> {
         ColIter {
             board: self,
             col,

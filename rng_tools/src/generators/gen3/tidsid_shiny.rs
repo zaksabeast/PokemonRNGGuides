@@ -308,7 +308,7 @@ fn sort_nearby_sids(nearby_sids: &[Gen3NearbySid]) -> Vec<Gen3NearbySid> {
 
     let mut res: Vec<Gen3NearbySid> = vec![];
     for priorized_nearby_sids in nearby_sids_by_priority_order {
-        res.extend(priorized_nearby_sids.nearby_sids.into_iter());
+        res.extend(priorized_nearby_sids.nearby_sids);
     }
     res
 }
@@ -389,7 +389,7 @@ fn find_best_tid_gen_adv(seed: u32, tid_gen_adv_min: usize, tid_gen_adv_max: usi
         })
         .collect();
 
-    avg_adv_by_tid_gen_adv_with_nearby.sort_by(|a, b| a.method1_adv.cmp(&b.method1_adv));
+    avg_adv_by_tid_gen_adv_with_nearby.sort_by_key(|a| a.method1_adv);
 
     avg_adv_by_tid_gen_adv_with_nearby[0].tidsid_adv
 }
@@ -407,7 +407,7 @@ fn calculate_avg_adv_for_all_tids(
     for res in res_by_tid.iter() {
         sum += res.avg_adv_to_determine_sid;
     }
-    (sum / len) as usize
+    sum / len
 }
 
 #[cfg(test)]

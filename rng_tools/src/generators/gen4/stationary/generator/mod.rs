@@ -261,16 +261,16 @@ pub fn generate_static4_states(opts: &Gen4StaticOpts) -> Vec<Gen4StaticPokemon> 
         .filter_map(|(adv, mut rng)| {
             let mut pkm = generate_static4_state(opts, &mut rng);
 
-            if let Some(filter_level) = opts.filter_level {
-                if pkm.level != filter_level {
-                    return None;
-                }
+            if let Some(filter_level) = opts.filter_level
+                && pkm.level != filter_level
+            {
+                return None;
             }
 
-            if let Some(filter_characteristic) = opts.filter_characteristic {
-                if pkm.characteristic != filter_characteristic {
-                    return None;
-                }
+            if let Some(filter_characteristic) = opts.filter_characteristic
+                && pkm.characteristic != filter_characteristic
+            {
+                return None;
             }
 
             if !opts.filter.pass_filter(&pkm) {
@@ -294,15 +294,15 @@ fn generate_static4_radar_generic<Pid: PidStrategy<DpptLogic>>(
         .take(opts.max_advances.wrapping_add(1))
         .filter_map(|(adv, mut rng)| {
             let mut pkm = generate_static4_jk::<DpptLogic, SetLevel, Pid>(&mut rng, opts);
-            if let Some(filter_level) = opts.filter_level {
-                if pkm.level != filter_level {
-                    return None;
-                }
+            if let Some(filter_level) = opts.filter_level
+                && pkm.level != filter_level
+            {
+                return None;
             }
-            if let Some(filter_characteristic) = opts.filter_characteristic {
-                if pkm.characteristic != filter_characteristic {
-                    return None;
-                }
+            if let Some(filter_characteristic) = opts.filter_characteristic
+                && pkm.characteristic != filter_characteristic
+            {
+                return None;
             }
             if !opts.filter.pass_filter(&pkm) {
                 return None;

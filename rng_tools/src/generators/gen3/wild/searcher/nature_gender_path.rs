@@ -395,9 +395,9 @@ fn extend_path_for_arc(
 
     let is_synchronize_correct = |rng_nat: &mut Pokerng| -> bool {
         if arc.is_synchronize_success() {
-            (rng_nat.prev_rand() % 2) == 0
+            rng_nat.prev_rand().is_multiple_of(2)
         } else if arc.is_synchronize_fail() {
-            (rng_nat.prev_rand() % 2) == 1
+            !rng_nat.prev_rand().is_multiple_of(2)
         } else {
             true
         }
@@ -415,9 +415,9 @@ fn extend_path_for_arc(
 
     let is_cute_charm_correct = |rng_nat: &mut Pokerng| -> bool {
         if arc.is_cute_charm_success() {
-            (rng_nat.prev_rand() % 3) != 0
+            !rng_nat.prev_rand().is_multiple_of(3)
         } else if arc.is_cute_charm_fail() {
-            (rng_nat.prev_rand() % 3) == 0
+            rng_nat.prev_rand().is_multiple_of(3)
         } else {
             true
         }

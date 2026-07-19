@@ -392,12 +392,12 @@ fn get_mass_outbreak_setups(
                     {
                         return None;
                     }
-                    if let Some(species_data) = species_data {
-                        if mass_outbreak.encounter_data.species_data.species != species_data.species
-                        {
-                            return None;
-                        }
+                    if let Some(species_data) = species_data
+                        && mass_outbreak.encounter_data.species_data.species != species_data.species
+                    {
+                        return None;
                     }
+
                     Some((map_setups_for_rev.map_setups_idx, mass_outbreak.id))
                 })
                 .collect()
@@ -443,16 +443,15 @@ fn filter_paths_with_safari_mismatch(
         return false;
     }
 
-    if let Some(action) = action {
-        if lvl_path.nature_gender_to_pid_arc.uses_safari_pokeblock()
-            && !map_setups
-                .map_data
-                .actions_with_safari_pokeblock
-                .contains(&action)
-        {
-            // Ex: Trying to use RockSmash with Pokeblock, but there's no feeder near rocks.
-            return false;
-        }
+    if let Some(action) = action
+        && lvl_path.nature_gender_to_pid_arc.uses_safari_pokeblock()
+        && !map_setups
+            .map_data
+            .actions_with_safari_pokeblock
+            .contains(&action)
+    {
+        // Ex: Trying to use RockSmash with Pokeblock, but there's no feeder near rocks.
+        return false;
     }
     true
 }
@@ -497,10 +496,10 @@ fn extend_path_for_slot_vanilla(
 
                     encounter?;
 
-                    if let Some(species_data) = species_data {
-                        if encounter.unwrap().species_data.species != species_data.species {
-                            return None;
-                        }
+                    if let Some(species_data) = species_data
+                        && encounter.unwrap().species_data.species != species_data.species
+                    {
+                        return None;
                     }
 
                     if *action == Wild3Action::RockSmash
@@ -571,7 +570,7 @@ fn extend_path_for_magnet_pull(
                 return None;
             }
 
-            let ability_triggered = rng.prev_rand() % 2 == 0;
+            let ability_triggered = rng.prev_rand().is_multiple_of(2);
             if !ability_triggered {
                 return None;
             }
@@ -630,7 +629,7 @@ fn extend_path_for_static(
                     return None;
                 }
 
-                let ability_triggered = rng.prev_rand() % 2 == 0;
+                let ability_triggered = rng.prev_rand().is_multiple_of(2);
                 if !ability_triggered {
                     return None;
                 }

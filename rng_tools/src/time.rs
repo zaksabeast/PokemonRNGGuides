@@ -77,7 +77,7 @@ impl RngDateTime {
         )
     }
 
-    pub fn as_seconds_iterator(&mut self) -> SecondsIterator {
+    pub fn as_seconds_iterator(&mut self) -> SecondsIterator<'_> {
         SecondsIterator::new(self)
     }
 

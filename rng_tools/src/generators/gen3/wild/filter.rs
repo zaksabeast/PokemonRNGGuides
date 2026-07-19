@@ -60,12 +60,12 @@ pub fn passes_pid_filter(
         }
     }
 
-    if let Some(wanted_gender) = filter.gender {
-        if let Some(encounter_gender_ratio) = encounter_gender_ratio {
-            let generated_gender = encounter_gender_ratio.gender_from_pid(pid);
-            if generated_gender != wanted_gender {
-                return false;
-            }
+    if let Some(wanted_gender) = filter.gender
+        && let Some(encounter_gender_ratio) = encounter_gender_ratio
+    {
+        let generated_gender = encounter_gender_ratio.gender_from_pid(pid);
+        if generated_gender != wanted_gender {
+            return false;
         }
     }
 
@@ -111,10 +111,10 @@ pub fn get_pid_filter_restrictiveness(
         prob /= 2_f64;
     }
 
-    if let Some(encounter_gender_ratio) = encounter_gender_ratio {
-        if let Some(wanted_gender) = filter.gender {
-            prob *= encounter_gender_ratio.gender_probability(wanted_gender);
-        }
+    if let Some(encounter_gender_ratio) = encounter_gender_ratio
+        && let Some(wanted_gender) = filter.gender
+    {
+        prob *= encounter_gender_ratio.gender_probability(wanted_gender);
     }
 
     if filter.has_nature_filter() {

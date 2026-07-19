@@ -114,16 +114,16 @@ impl PkmFilter {
             return false;
         }
 
-        if let Some(gender) = self.gender {
-            if state.gender() != gender {
-                return false;
-            }
+        if let Some(gender) = self.gender
+            && state.gender() != gender
+        {
+            return false;
         }
 
-        if let Some(ability) = self.ability {
-            if ability != state.ability() {
-                return false;
-            }
+        if let Some(ability) = self.ability
+            && ability != state.ability()
+        {
+            return false;
         }
 
         if !self.pass_filter_hidden_power(state.ivs()) {

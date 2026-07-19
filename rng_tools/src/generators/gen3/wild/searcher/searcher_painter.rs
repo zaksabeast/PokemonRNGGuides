@@ -245,7 +245,7 @@ pub fn create_lookup_painting_table(opts: &Wild3PaintingOpts) -> Vec<Wild3Painti
         })
         .collect_vec();
 
-    min_max_advs.sort_by(|a, b| a.min_adv_after_painting.cmp(&b.min_adv_after_painting));
+    min_max_advs.sort_by_key(|a| a.min_adv_after_painting);
 
     /*
     min_max_advs = {

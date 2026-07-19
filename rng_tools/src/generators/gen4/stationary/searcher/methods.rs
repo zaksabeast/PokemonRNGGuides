@@ -73,17 +73,18 @@ impl SeedFilters {
                 // Quick delay precheck before resolving the full seed time.
                 let delay = calc_delay_from_seed(seed, filters.year);
 
-                if delay >= filters.min_delay && delay <= filters.max_delay {
-                    if let Some(seed_time) = find_seedtime4(
+                if delay >= filters.min_delay
+                    && delay <= filters.max_delay
+                    && let Some(seed_time) = find_seedtime4(
                         seed,
                         filters.year,
                         filters.month,
                         filters.min_delay..=filters.max_delay,
                         filters.force_second,
-                    ) {
-                        let found_state = state.add_seedtime(advance, seed_time);
-                        results.push(found_state);
-                    }
+                    )
+                {
+                    let found_state = state.add_seedtime(advance, seed_time);
+                    results.push(found_state);
                 }
 
                 seed = rng.rand::<u32>();

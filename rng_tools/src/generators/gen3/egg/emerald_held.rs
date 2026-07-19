@@ -121,16 +121,16 @@ impl Egg3HeldFilters {
             return false;
         }
 
-        if let Some(gender) = self.gender {
-            if egg.gender != gender {
-                return false;
-            }
+        if let Some(gender) = self.gender
+            && egg.gender != gender
+        {
+            return false;
         }
 
-        if let Some(match_call) = self.match_call {
-            if egg.match_call != match_call {
-                return false;
-            }
+        if let Some(match_call) = self.match_call
+            && egg.match_call != match_call
+        {
+            return false;
         }
 
         true
@@ -166,7 +166,7 @@ pub fn emerald_egg_held_states(opts: &Egg3HeldOptions) -> Vec<Gen3HeldEgg> {
         .take(opts.max_advances.saturating_add(1))
         .flat_map(|(advance, rng)| generate_redraw_states(rng, opts, advance))
         .collect::<Vec<Gen3HeldEgg>>();
-    result.sort_by(|a, b| a.advance.cmp(&b.advance));
+    result.sort_by_key(|a| a.advance);
     result
 }
 

@@ -63,10 +63,10 @@ fn generate_egg4_held(opts: &Egg4HeldOpts, advance: usize, rand: u32) -> Option<
     }
 
     let ability = AbilityType::from_gen3_pid(pid);
-    if let Some(filter_ability) = opts.filter.ability {
-        if ability != filter_ability {
-            return None;
-        }
+    if let Some(filter_ability) = opts.filter.ability
+        && ability != filter_ability
+    {
+        return None;
     }
 
     let nature = Nature::from_pid(pid);
@@ -82,10 +82,10 @@ fn generate_egg4_held(opts: &Egg4HeldOpts, advance: usize, rand: u32) -> Option<
         _ => opts.species.gender_from_pid(pid),
     };
 
-    if let Some(filter_gender) = opts.filter.gender {
-        if gender != filter_gender {
-            return None;
-        }
+    if let Some(filter_gender) = opts.filter.gender
+        && gender != filter_gender
+    {
+        return None;
     }
 
     Some(Egg4HeldResult {

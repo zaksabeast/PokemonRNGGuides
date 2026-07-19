@@ -40,10 +40,10 @@ pub struct Stationary6Filter {
 
 impl Stationary6Filter {
     fn apply_filters(&self, state: &Stationary6State) -> bool {
-        if let Some(filter_ivs) = &self.ivs {
-            if !state.ivs.filter(&filter_ivs.min_ivs, &filter_ivs.max_ivs) {
-                return false;
-            }
+        if let Some(filter_ivs) = &self.ivs
+            && !state.ivs.filter(&filter_ivs.min_ivs, &filter_ivs.max_ivs)
+        {
+            return false;
         }
 
         if self.gender.is_some() && self.gender != Some(state.gender) {

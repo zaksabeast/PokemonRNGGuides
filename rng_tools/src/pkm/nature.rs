@@ -3,12 +3,22 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 
 #[derive(
-    Clone, Copy, Debug, Eq, PartialEq, FromPrimitive, IntoPrimitive, Tsify, Serialize, Deserialize,
+    Default,
+    Clone,
+    Copy,
+    Debug,
+    Eq,
+    PartialEq,
+    FromPrimitive,
+    IntoPrimitive,
+    Tsify,
+    Serialize,
+    Deserialize,
 )]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 #[repr(u8)]
 pub enum Nature {
-    #[num_enum(default)]
+    #[default]
     Hardy = 0,
     Lonely = 1,
     Brave = 2,
@@ -78,12 +88,6 @@ impl Nature {
             "Quirky" => Nature::Quirky,
             _ => Nature::Hardy,
         }
-    }
-}
-
-impl Default for Nature {
-    fn default() -> Self {
-        Self::Hardy
     }
 }
 

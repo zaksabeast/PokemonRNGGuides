@@ -135,10 +135,10 @@ pub fn generate_mirage_spots(opts: MirageSpotOptions) -> Vec<MirageSpot> {
             let date = start_date.checked_add_days(days)?;
             let spot = MirageSpot::new(rand.wrapping_add(opts.tid), date);
 
-            if let Some(species) = opts.filter_species {
-                if !spot.pokemon.contains(&species) {
-                    return Option::None;
-                }
+            if let Some(species) = opts.filter_species
+                && !spot.pokemon.contains(&species)
+            {
+                return Option::None;
             }
 
             Some(spot)

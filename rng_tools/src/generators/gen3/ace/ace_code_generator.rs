@@ -64,12 +64,6 @@ pub struct AceResult {
     pub lang: EmeraldLang,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
-pub struct AceCommand {
-    pub bytes: Vec<u8>,
-    pub hex: String,
-}
-
 #[derive(Clone, Copy)]
 struct PackedByte {
     byte: u8,
@@ -911,7 +905,7 @@ fn pack(bytes: &[u8]) -> Vec<PackedByte> {
 }
 
 fn fit_code_at_pos(pos: usize, bytes: &[u8], next: Option<&[u8]>) -> Vec<PackedByte> {
-    let next_bytes = next.and_then(|bytes| if only_eof(bytes) { None } else { Some(bytes) });
+    let next_bytes = next.filter(|&bytes| !only_eof(bytes));
     let byte_pos = pos % (NAME_SIZE + 1);
     let byte_count = bytes.len();
     let ok = if no_eof(bytes) {

@@ -156,18 +156,17 @@ fn calc_seedtime_for_month(opts: SeedTime4SingleMonthOptions) -> Vec<SeedTime4> 
     for day in 1..=max_days {
         for minute in 0..60 {
             for second in second_range.clone() {
-                if ab == calc_ab(month, day, minute, second) & 0xff {
-                    if let Some(datetime) = RngDateTime::new(year, month, day, hour, minute, second)
-                    {
-                        results.push(SeedTime4 {
-                            seed: opts.seed,
-                            delay,
-                            datetime,
-                        });
+                if ab == calc_ab(month, day, minute, second) & 0xff
+                    && let Some(datetime) = RngDateTime::new(year, month, day, hour, minute, second)
+                {
+                    results.push(SeedTime4 {
+                        seed: opts.seed,
+                        delay,
+                        datetime,
+                    });
 
-                        if results.len() >= opts.limit {
-                            return results;
-                        }
+                    if results.len() >= opts.limit {
+                        return results;
                     }
                 }
             }

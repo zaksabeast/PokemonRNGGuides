@@ -226,31 +226,29 @@ pub fn extend_iv_path_to_pid_paths<const METHODS: u8>(
 
     match iv_path.iv_arc {
         IvFromStartArc::WithoutVBlank => {
-            if is_considered_method(METHODS, METHOD_1) {
-                if let Some(no_vblank_pid_path) =
+            if is_considered_method(METHODS, METHOD_1)
+                && let Some(no_vblank_pid_path) =
                     extend_iv_path_to_pid_path_no_vblank(opts, iv_path)
-                {
-                    pid_paths.push(no_vblank_pid_path);
-                }
+            {
+                pid_paths.push(no_vblank_pid_path);
             }
-            if is_considered_method(METHODS, METHOD_2) {
-                if let Some(wild2_pid_path) = extend_iv_path_to_pid_path_wild2(opts, iv_path) {
-                    pid_paths.push(wild2_pid_path);
-                }
+            if is_considered_method(METHODS, METHOD_2)
+                && let Some(wild2_pid_path) = extend_iv_path_to_pid_path_wild2(opts, iv_path)
+            {
+                pid_paths.push(wild2_pid_path);
             }
-            if is_considered_method(METHODS, METHOD_3) {
-                if let Some(wild3_pid_path) = extend_iv_path_to_pid_path_wild3(opts, iv_path) {
-                    pid_paths.push(wild3_pid_path);
-                }
+            if is_considered_method(METHODS, METHOD_3)
+                && let Some(wild3_pid_path) = extend_iv_path_to_pid_path_wild3(opts, iv_path)
+            {
+                pid_paths.push(wild3_pid_path);
             }
         }
         IvFromStartArc::WithVBlank => {
-            if is_considered_method(METHODS, METHOD_4) {
-                if let Some(no_vblank_pid_path) =
+            if is_considered_method(METHODS, METHOD_4)
+                && let Some(no_vblank_pid_path) =
                     extend_iv_path_to_pid_path_no_vblank(opts, iv_path)
-                {
-                    pid_paths.push(no_vblank_pid_path);
-                }
+            {
+                pid_paths.push(no_vblank_pid_path);
             }
         }
     }

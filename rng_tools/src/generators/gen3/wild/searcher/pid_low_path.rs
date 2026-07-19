@@ -132,24 +132,22 @@ pub fn extend_pid_low_path_to_pid_paths<const METHODS: u8>(
 ) -> ArrayVec<PidPath, 3> {
     let mut pid_paths: ArrayVec<PidPath, 3> = Default::default();
 
-    if is_considered_method(METHODS, METHOD_1 | METHOD_3) {
-        if let Some(wild13_pid_path) = extend_pid_low_path_to_pid_path_wild13(opts, pid_low_path) {
-            pid_paths.push(wild13_pid_path);
-        }
+    if is_considered_method(METHODS, METHOD_1 | METHOD_3)
+        && let Some(wild13_pid_path) = extend_pid_low_path_to_pid_path_wild13(opts, pid_low_path)
+    {
+        pid_paths.push(wild13_pid_path);
     }
 
     if pid_low_path.pid_low_to_iv_arc == PidLowToIvArc::WithoutVBlank {
-        if is_considered_method(METHODS, METHOD_2) {
-            if let Some(wild2_pid_path) = extend_pid_low_path_to_pid_path_wild2(opts, pid_low_path)
-            {
-                pid_paths.push(wild2_pid_path);
-            }
+        if is_considered_method(METHODS, METHOD_2)
+            && let Some(wild2_pid_path) = extend_pid_low_path_to_pid_path_wild2(opts, pid_low_path)
+        {
+            pid_paths.push(wild2_pid_path);
         }
-        if is_considered_method(METHODS, METHOD_4) {
-            if let Some(wild4_pid_path) = extend_pid_low_path_to_pid_path_wild4(opts, pid_low_path)
-            {
-                pid_paths.push(wild4_pid_path);
-            }
+        if is_considered_method(METHODS, METHOD_4)
+            && let Some(wild4_pid_path) = extend_pid_low_path_to_pid_path_wild4(opts, pid_low_path)
+        {
+            pid_paths.push(wild4_pid_path);
         }
     }
 

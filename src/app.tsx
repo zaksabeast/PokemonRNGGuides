@@ -12,6 +12,7 @@ import { getGuide } from "./guides";
 import { useUpdateHydration } from "./hooks/useHydrate";
 import { useUserInteraction } from "./hooks/useUserInteraction";
 import { resumeSharedAudioContext } from "~/utils/sharedAudio";
+import { SizeContext } from "~/theme/size";
 
 type Props = {
   updateSw: (reloadPage: boolean) => void;
@@ -30,18 +31,20 @@ export const App = ({ updateSw }: Props) => {
 
   return (
     <StrictMode>
-      <ThemeProvider>
-        <AntdApp>
-          <PageLanguageContext.Provider value={currentLanguage}>
-            <MDXProvider components={markdownComponents}>
-              <NeedsUpdateNotification updateSw={updateSw} />
-              <Flex height="100vh" vertical backgroundColor="BgBase">
-                <Router />
-              </Flex>
-            </MDXProvider>
-          </PageLanguageContext.Provider>
-        </AntdApp>
-      </ThemeProvider>
+      <SizeContext.Provider value="large">
+        <ThemeProvider>
+          <AntdApp>
+            <PageLanguageContext.Provider value={currentLanguage}>
+              <MDXProvider components={markdownComponents}>
+                <NeedsUpdateNotification updateSw={updateSw} />
+                <Flex height="100vh" vertical backgroundColor="BgBase">
+                  <Router />
+                </Flex>
+              </MDXProvider>
+            </PageLanguageContext.Provider>
+          </AntdApp>
+        </ThemeProvider>
+      </SizeContext.Provider>
     </StrictMode>
   );
 };

@@ -9,6 +9,7 @@ import { GenericForm, GuaranteeFormNameType } from "~/types/form";
 import { useField } from "~/hooks/form";
 import * as tst from "ts-toolbelt";
 import { Typography } from "./typography";
+import { useSize } from "~/theme/size";
 
 const InputContainer = styled.div<{ textAlign?: "center"; fullFlex?: boolean }>(
   ({ textAlign, fullFlex }) => ({
@@ -36,6 +37,7 @@ export const Input = ({
   fullFlex = true,
   ...props
 }: InputProps) => {
+  const size = useSize();
   const inputRef = React.useRef<InputRef>(null);
 
   const _status = errorMessage != null ? "error" : props.status;
@@ -49,7 +51,7 @@ export const Input = ({
   return (
     <InputContainer textAlign={textAlign} fullFlex={fullFlex}>
       <AntdInput
-        size="large"
+        size={size}
         ref={inputRef}
         autoComplete="off"
         {...props}

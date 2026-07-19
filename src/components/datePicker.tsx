@@ -20,6 +20,7 @@ import {
   toRngTime,
 } from "~/utils/time";
 import { RngDate } from "~/rngTools";
+import { useSize } from "~/theme/size";
 
 type TimePickerProps = tst.O.Omit<
   AntdTimePickerProps,
@@ -73,6 +74,7 @@ export const FormikTimePicker = <FormState extends GenericForm>({
   onChange,
   ...props
 }: FormikTimePickerProps<FormState>) => {
+  const size = useSize();
   const [{ value: formTime }, { error, status }, { setValue }] =
     useField<RngTime | null>(name);
   const value = formTime == null ? null : fromRngTime(formTime);
@@ -83,7 +85,7 @@ export const FormikTimePicker = <FormState extends GenericForm>({
         {...props}
         name={name}
         value={value}
-        size="large"
+        size={size}
         status={status}
         onChange={(date) => {
           const rngTime = date == null ? null : toRngTime(date);
@@ -147,6 +149,7 @@ export const FormikDatePicker = <FormState extends GenericForm>({
   onChange,
   ...props
 }: FormikDatePickerProps<FormState>) => {
+  const size = useSize();
   const [{ value: formDate }, { error, status }, { setValue }] =
     useField<RngDate | null>(name);
   const dateValue = match({ formDate })
@@ -160,7 +163,7 @@ export const FormikDatePicker = <FormState extends GenericForm>({
       <DatePicker
         {...props}
         name={name}
-        size="large"
+        size={size}
         value={dateValue}
         status={status}
         onChange={(date) => {

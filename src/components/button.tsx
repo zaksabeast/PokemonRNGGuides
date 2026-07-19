@@ -10,6 +10,7 @@ import styled from "@emotion/styled";
 import { withCss } from "./withCss";
 import * as tst from "ts-toolbelt";
 import { track } from "~/analytics";
+import { useSize } from "~/theme/size";
 
 const _StyledButton = withCss(AntdButton);
 
@@ -32,6 +33,7 @@ export const Button = ({
   ...props
 }: ButtonProps) => {
   const id = _id ?? trackerId;
+  const size = useSize();
   const trackedClick: tst.U.NonNullable<typeof onClick> = (event) => {
     track("Button clicked", { id: trackerId });
     onClick?.(event);
@@ -40,7 +42,7 @@ export const Button = ({
     <StyledButton
       id={id}
       onClick={trackedClick}
-      size="large"
+      size={size}
       // @ts-expect-error styled doesn't overwrite prop types correctly when shouldForwardProp prevents a passthrough
       color={color}
       {...props}

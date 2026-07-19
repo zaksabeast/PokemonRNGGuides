@@ -14,6 +14,7 @@ import { PrimitiveAtom, useAtom } from "jotai";
 import { toOptions } from "~/utils/options";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { Translation } from "~/translations";
+import { useSize } from "~/theme/size";
 
 const SelectContainer = styled(Flex)({
   ".ant-select": {
@@ -39,6 +40,7 @@ export const Select = <ValueType,>({
   options,
   ...props
 }: SelectProps<ValueType>) => {
+  const size = useSize();
   React.useEffect(() => {
     if (
       mode !== "multiple" &&
@@ -59,7 +61,7 @@ export const Select = <ValueType,>({
   return (
     <SelectContainer flex={fullFlex ? 1 : undefined}>
       <AntdSelect
-        size="large"
+        size={size}
         showSearch={{ optionFilterProp: "label" }}
         mode={mode}
         value={value}

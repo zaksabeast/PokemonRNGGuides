@@ -193,14 +193,14 @@ const InnerMultiTimer = ({
               onExpire={onExpire}
             />
           </Flex>
-          <Flex vertical gap={8}>
-            <Typography.Title level={5} p={0} m={0}>
+          <Flex vertical gap={4}>
+            <Typography.Text strong>
               {t["Next Phase"]}:{" "}
               {nextMs == null ? "None" : (nextMs / 1000).toFixed(3)}
-            </Typography.Title>
-            <Typography.Title level={5} p={0} m={0}>
+            </Typography.Text>
+            <Typography.Text strong>
               {t["Minutes Before Target"]}: {minutesBeforeTarget}
-            </Typography.Title>
+            </Typography.Text>
           </Flex>
         </>
       )}
@@ -225,9 +225,9 @@ const InnerMultiTimer = ({
             })}
           </Flex>
           <Flex vertical gap={8}>
-            <Typography.Title level={5} p={0} m={0}>
+            <Typography.Text strong>
               {t["Minutes Before Target"]}: {minutesBeforeTarget}
-            </Typography.Title>
+            </Typography.Text>
           </Flex>
         </>
       )}

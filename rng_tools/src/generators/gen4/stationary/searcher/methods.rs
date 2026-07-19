@@ -5,9 +5,10 @@ use crate::gen4::game_logic::{DpptLogic, GameSpecificLogic, HgssLogic};
 use crate::gen4::seed_time4::{calc_delay_from_seed, find_seedtime4};
 use crate::gen4::{GameVersion, LeadAbility, StaticMethod};
 use crate::generators::utils::recover_poke_rng_iv;
+use crate::rng::GetRand;
 use crate::rng::Rng;
 use crate::rng::lcrng::PokerngR;
-use crate::{Ivs, Nature, PkmFilter, iv_iter, rng::lcrng::Pokerng};
+use crate::{Gender, Ivs, Nature, PkmFilter, iv_iter, rng::lcrng::Pokerng};
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
@@ -107,10 +108,31 @@ impl From<&SearchStatic4Opts> for SeedFilters {
         }
     }
 }
+trait SyncGate {
+    fn allow_check2(check1: bool) -> bool;
+}
+
+struct NoGate;
+impl SyncGate for NoGate {
+    fn allow_check2(_check1: bool) -> bool {
+        true
+    }
+}
+
+struct GateOnCheck1;
+impl SyncGate for GateOnCheck1 {
+    fn allow_check2(check1: bool) -> bool {
+        !check1
+    }
+}
 
 /// Iterator for MethodJ/K sync lead that generates states on-demand.
 /// This avoids collecting millions of intermediate states into memory.
-struct MethodJKSyncStateIterator<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>> {
+struct MethodJKSyncStateIterator<
+    Game: GameSpecificLogic,
+    LevelCalc: LevelCalculator<PokerngR>,
+    Gate: SyncGate,
+> {
     species: Species,
     min_level: u8,
     max_level: u8,
@@ -132,10 +154,11 @@ struct MethodJKSyncStateIterator<Game: GameSpecificLogic, LevelCalc: LevelCalcul
 
     _phantom_game: std::marker::PhantomData<Game>,
     _phantom_level: std::marker::PhantomData<LevelCalc>,
+    _phantom_gate: std::marker::PhantomData<Gate>,
 }
 
-impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>>
-    MethodJKSyncStateIterator<Game, LevelCalc>
+impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>, Gate: SyncGate>
+    MethodJKSyncStateIterator<Game, LevelCalc, Gate>
 {
     fn new(
         species: Species,
@@ -181,6 +204,7 @@ impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>>
             returned_check2: false,
             _phantom_game: std::marker::PhantomData,
             _phantom_level: std::marker::PhantomData,
+            _phantom_gate: std::marker::PhantomData,
         }
     }
 
@@ -189,8 +213,8 @@ impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>>
     }
 }
 
-impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>> Iterator
-    for MethodJKSyncStateIterator<Game, LevelCalc>
+impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>, Gate: SyncGate> Iterator
+    for MethodJKSyncStateIterator<Game, LevelCalc, Gate>
 {
     type Item = BaseStatic4State;
 
@@ -201,7 +225,8 @@ impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>> Iterator
             }
 
             let check1 = Game::sync_check(self.next_rng) == 0;
-            let check2 = Game::sync_check(self.next_rng_2) == 1
+            let check2 = Gate::allow_check2(check1)
+                && Game::sync_check(self.next_rng_2) == 1
                 && Game::max(self.next_rng, 25) == self.nature_rand;
 
             // Yield check1 result if applicable and not yet returned
@@ -261,7 +286,11 @@ impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>> Iterator
     }
 }
 
-fn get_methodjk_sync_state<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>>(
+fn get_methodjk_sync_state<
+    Game: GameSpecificLogic,
+    LevelCalc: LevelCalculator<PokerngR>,
+    Gate: SyncGate,
+>(
     species: Species,
     min_level: u8,
     max_level: u8,
@@ -270,7 +299,7 @@ fn get_methodjk_sync_state<Game: GameSpecificLogic, LevelCalc: LevelCalculator<P
     ivs: Ivs,
     seed: u32,
 ) -> impl Iterator<Item = BaseStatic4State> {
-    MethodJKSyncStateIterator::<Game, LevelCalc>::new(
+    MethodJKSyncStateIterator::<Game, LevelCalc, Gate>::new(
         species, min_level, max_level, tid, sid, ivs, seed,
     )
 }
@@ -491,7 +520,7 @@ fn get_methodjk_states<
     seed: u32,
 ) -> Box<dyn Iterator<Item = BaseStatic4State>> {
     match lead {
-        Static4LeadInput::Synchronize => Box::new(get_methodjk_sync_state::<Game, LevelCalc>(
+        Static4LeadInput::Synchronize => Box::new(get_methodjk_sync_state::<Game, LevelCalc, NoGate>(
             species, min_level, max_level, tid, sid, ivs, seed,
         )),
         Static4LeadInput::CutecharmF | Static4LeadInput::CutecharmM => Box::new(
@@ -582,6 +611,149 @@ pub fn search_static4(opts: &SearchStatic4Opts) -> Vec<Static4State> {
             search_seeds!(opts, get_methodjk_states::<DpptLogic, ReversedHoneyLevel>)
         }
     }
+}
+
+fn get_radar_states(
+    lead: Static4LeadInput,
+    species: Species,
+    _min_level: u8,
+    max_level: u8,
+    tid: u16,
+    sid: u16,
+    ivs: Ivs,
+    seed: u32,
+) -> Vec<BaseStatic4State> {
+    match lead {
+        Static4LeadInput::Pressure => vec![],
+        Static4LeadInput::Synchronize => get_methodjk_sync_state::<DpptLogic, SetLevel, GateOnCheck1>(
+            species, max_level, max_level, tid, sid, ivs, seed,
+        )
+        .collect(),
+        _ => get_methodjk_states::<DpptLogic, SetLevel>(
+            lead, species, max_level, max_level, tid, sid, ivs, seed,
+        )
+        .collect(),
+    }
+}
+
+#[wasm_bindgen]
+pub fn search_static4_radar(opts: &SearchStatic4Opts) -> Vec<Static4State> {
+    search_seeds!(opts, get_radar_states)
+}
+
+fn shiny_pid_rev<R: Rng + GetRand<u16>>(rng: &mut R, tsv: u16) -> u32 {
+    let mut low: u16 = 0;
+    for j in (3..=15).rev() {
+        low |= (rng.rand::<u16>() % 2) << j;
+    }
+    let mut high = rng.rand::<u16>() % 8;
+    low |= rng.rand::<u16>() % 8;
+    high |= (low ^ tsv) & 0xfff8;
+    ((high as u32) << 16) | (low as u32)
+}
+
+fn get_radar_shiny_states(
+    lead: Static4LeadInput,
+    species: Species,
+    _min_level: u8,
+    max_level: u8,
+    tid: u16,
+    sid: u16,
+    ivs: Ivs,
+    seed: u32,
+) -> Vec<BaseStatic4State> {
+    if lead == Static4LeadInput::Pressure {
+        return vec![];
+    }
+
+    let tsv = tid ^ sid;
+    let mut rng = Pokerng::new(seed).reverse();
+
+    let cute_charm = matches!(
+        lead,
+        Static4LeadInput::CutecharmF | Static4LeadInput::CutecharmM
+    ) && !species.is_fixed_gender();
+
+    let cute_charm_check = |pid: u32| -> bool {
+        match lead {
+            Static4LeadInput::CutecharmF => species.gender_from_pid(pid) == Gender::Male,
+            Static4LeadInput::CutecharmM => species.gender_from_pid(pid) == Gender::Female,
+            _ => false,
+        }
+    };
+
+    let pid = shiny_pid_rev(&mut rng, tsv);
+    let nature_rand = (pid % 25) as u16;
+    let nature = Nature::from(nature_rand as u8);
+
+    let out_lead = match lead {
+        Static4LeadInput::CutecharmF => LeadAbility::CutecharmF,
+        Static4LeadInput::CutecharmM => LeadAbility::CutecharmM,
+        Static4LeadInput::Synchronize => LeadAbility::Synchronize(nature),
+        _ => LeadAbility::None,
+    };
+
+    let mut states = Vec::new();
+
+    if lead == Static4LeadInput::Synchronize || cute_charm {
+        let gender_threshold = species.gender_ratio() as u32;
+        let gender = (pid & 0xff) < gender_threshold;
+
+        loop {
+            let mut test = rng;
+            let valid = if lead == Static4LeadInput::Synchronize {
+                DpptLogic::max(test.rand::<u16>(), 2) == 0
+            } else {
+                DpptLogic::max(test.rand::<u16>(), 3) != 0 && cute_charm_check(pid)
+            };
+
+            if valid {
+                let origin_seed = test.rand::<u32>();
+                states.push(BaseStatic4State::new(
+                    origin_seed,
+                    species,
+                    nature,
+                    max_level,
+                    pid,
+                    tid,
+                    sid,
+                    ivs,
+                    out_lead,
+                ));
+            }
+
+            let hunt_pid = shiny_pid_rev(&mut rng, tsv);
+            let hunt_nature = (hunt_pid % 25) as u16;
+            let hunt_gender = (hunt_pid & 0xff) < gender_threshold;
+
+            if cute_charm && gender == hunt_gender {
+                break;
+            }
+            if hunt_nature == nature_rand {
+                break;
+            }
+        }
+    } else {
+        let origin_seed = rng.rand::<u32>();
+        states.push(BaseStatic4State::new(
+            origin_seed,
+            species,
+            nature,
+            max_level,
+            pid,
+            tid,
+            sid,
+            ivs,
+            out_lead,
+        ));
+    }
+
+    states
+}
+
+#[wasm_bindgen]
+pub fn search_static4_radar_shiny(opts: &SearchStatic4Opts) -> Vec<Static4State> {
+    search_seeds!(opts, get_radar_shiny_states)
 }
 
 #[cfg(test)]
@@ -1288,6 +1460,280 @@ mod tests {
             let results = search_static4(&opts);
             let expected =
                 pokefinder_honey!(LeadAbility::Pressure, "test_data/method_honey/pressure.txt");
+
+            assert_list_eq!(results, expected);
+        }
+    }
+
+    mod method_radar {
+        use super::*;
+        use crate::{assert_list_eq, ivs};
+
+        #[test]
+        fn no_lead() {
+            let opts = SearchStatic4Opts {
+                tid: 39259,
+                sid: 25081,
+                offset: 0,
+                game: GameVersion::Platinum,
+                species: Species::Snover,
+                lead: Static4LeadInput::None,
+                filter: PkmFilter {
+                    min_ivs: ivs!(28 / 28 / 28 / 28 / 28 / 28),
+                    ..Default::default()
+                },
+                year: 2000,
+                month: None,
+                encounter_min_level: 33,
+                encounter_max_level: 33,
+                min_delay: 800,
+                max_delay: 900,
+                min_advance: 0,
+                max_advance: 30,
+                force_second: None,
+            };
+            let results = search_static4_radar(&opts);
+            let expected =
+                pokefinder_honey!(LeadAbility::None, "test_data/method_pokeradar/no_lead.txt");
+
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn sync() {
+            let opts = SearchStatic4Opts {
+                tid: 39259,
+                sid: 25081,
+                offset: 0,
+                game: GameVersion::Platinum,
+                species: Species::Snover,
+                lead: Static4LeadInput::Synchronize,
+                filter: PkmFilter {
+                    min_ivs: ivs!(28 / 28 / 28 / 28 / 28 / 28),
+                    ..Default::default()
+                },
+                year: 2000,
+                month: None,
+                encounter_min_level: 33,
+                encounter_max_level: 33,
+                min_delay: 800,
+                max_delay: 900,
+                min_advance: 0,
+                max_advance: 5,
+                force_second: None,
+            };
+            let results = search_static4_radar(&opts);
+            let expected =
+                pokefinder_honey!(LeadAbility::None, "test_data/method_pokeradar/sync.txt")
+                    .into_iter()
+                    .map(|mut state| {
+                        state.lead = LeadAbility::Synchronize(state.nature);
+                        state
+                    })
+                    .collect::<Vec<_>>();
+
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn cutecharm_f() {
+            let opts = SearchStatic4Opts {
+                tid: 39259,
+                sid: 25081,
+                offset: 0,
+                game: GameVersion::Platinum,
+                species: Species::Snover,
+                lead: Static4LeadInput::CutecharmF,
+                filter: PkmFilter {
+                    min_ivs: ivs!(28 / 28 / 28 / 28 / 28 / 28),
+                    ..Default::default()
+                },
+                year: 2000,
+                month: None,
+                encounter_min_level: 33,
+                encounter_max_level: 33,
+                min_delay: 800,
+                max_delay: 900,
+                min_advance: 0,
+                max_advance: 30,
+                force_second: None,
+            };
+            let results = search_static4_radar(&opts);
+            let expected = pokefinder_honey!(
+                LeadAbility::CutecharmF,
+                "test_data/method_pokeradar/cutecharm_f.txt"
+            );
+
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn cutecharm_m() {
+            let opts = SearchStatic4Opts {
+                tid: 39259,
+                sid: 25081,
+                offset: 0,
+                game: GameVersion::Platinum,
+                species: Species::Snover,
+                lead: Static4LeadInput::CutecharmM,
+                filter: PkmFilter {
+                    min_ivs: ivs!(28 / 28 / 28 / 28 / 28 / 28),
+                    ..Default::default()
+                },
+                year: 2000,
+                month: None,
+                encounter_min_level: 33,
+                encounter_max_level: 33,
+                min_delay: 800,
+                max_delay: 900,
+                min_advance: 0,
+                max_advance: 30,
+                force_second: None,
+            };
+            let results = search_static4_radar(&opts);
+            let expected = pokefinder_honey!(
+                LeadAbility::CutecharmM,
+                "test_data/method_pokeradar/cutecharm_m.txt"
+            );
+
+            assert_list_eq!(results, expected);
+        }
+    }
+
+    mod method_radar_shiny {
+        use super::*;
+        use crate::{assert_list_eq, ivs};
+
+        #[test]
+        fn no_lead() {
+            let opts = SearchStatic4Opts {
+                tid: 39259,
+                sid: 25081,
+                offset: 0,
+                game: GameVersion::Platinum,
+                species: Species::Snover,
+                lead: Static4LeadInput::None,
+                filter: PkmFilter {
+                    min_ivs: ivs!(28 / 28 / 28 / 28 / 28 / 28),
+                    ..Default::default()
+                },
+                year: 2000,
+                month: None,
+                encounter_min_level: 33,
+                encounter_max_level: 33,
+                min_delay: 800,
+                max_delay: 900,
+                min_advance: 0,
+                max_advance: 30,
+                force_second: None,
+            };
+            let results = search_static4_radar_shiny(&opts);
+            let expected = pokefinder_honey!(
+                LeadAbility::None,
+                "test_data/method_shiny_pokeradar/no_lead.txt"
+            );
+
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn sync() {
+            let opts = SearchStatic4Opts {
+                tid: 39259,
+                sid: 25081,
+                offset: 0,
+                game: GameVersion::Platinum,
+                species: Species::Snover,
+                lead: Static4LeadInput::Synchronize,
+                filter: PkmFilter {
+                    min_ivs: ivs!(28 / 28 / 28 / 28 / 28 / 28),
+                    ..Default::default()
+                },
+                year: 2000,
+                month: None,
+                encounter_min_level: 33,
+                encounter_max_level: 33,
+                min_delay: 800,
+                max_delay: 900,
+                min_advance: 0,
+                max_advance: 5,
+                force_second: None,
+            };
+            let results = search_static4_radar_shiny(&opts);
+            let expected = pokefinder_honey!(
+                LeadAbility::None,
+                "test_data/method_shiny_pokeradar/sync.txt"
+            )
+            .into_iter()
+            .map(|mut state| {
+                state.lead = LeadAbility::Synchronize(state.nature);
+                state
+            })
+            .collect::<Vec<_>>();
+
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn cutecharm_f() {
+            let opts = SearchStatic4Opts {
+                tid: 39259,
+                sid: 25081,
+                offset: 0,
+                game: GameVersion::Platinum,
+                species: Species::Snover,
+                lead: Static4LeadInput::CutecharmF,
+                filter: PkmFilter {
+                    min_ivs: ivs!(28 / 28 / 28 / 28 / 28 / 28),
+                    ..Default::default()
+                },
+                year: 2000,
+                month: None,
+                encounter_min_level: 33,
+                encounter_max_level: 33,
+                min_delay: 800,
+                max_delay: 900,
+                min_advance: 0,
+                max_advance: 30,
+                force_second: None,
+            };
+            let results = search_static4_radar_shiny(&opts);
+            let expected = pokefinder_honey!(
+                LeadAbility::CutecharmF,
+                "test_data/method_shiny_pokeradar/cutecharm_f.txt"
+            );
+
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn cutecharm_m() {
+            let opts = SearchStatic4Opts {
+                tid: 39259,
+                sid: 25081,
+                offset: 0,
+                game: GameVersion::Platinum,
+                species: Species::Snover,
+                lead: Static4LeadInput::CutecharmM,
+                filter: PkmFilter {
+                    min_ivs: ivs!(28 / 28 / 28 / 28 / 28 / 28),
+                    ..Default::default()
+                },
+                year: 2000,
+                month: None,
+                encounter_min_level: 33,
+                encounter_max_level: 33,
+                min_delay: 800,
+                max_delay: 900,
+                min_advance: 0,
+                max_advance: 30,
+                force_second: None,
+            };
+            let results = search_static4_radar_shiny(&opts);
+            let expected = pokefinder_honey!(
+                LeadAbility::CutecharmM,
+                "test_data/method_shiny_pokeradar/cutecharm_m.txt"
+            );
 
             assert_list_eq!(results, expected);
         }

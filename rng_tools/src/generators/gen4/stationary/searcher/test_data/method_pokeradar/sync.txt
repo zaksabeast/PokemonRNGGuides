@@ -1,0 +1,183 @@
+8806034A	0	None	0: Snover	33	C799DFBD	No	Rash	1: Snow Warning	28	28	29	30	29	30	Fire	45	♂	Likes to run
+0806034A	4	None	0: Snover	33	47995FBD	No	Adamant	1: Snow Warning	28	28	29	30	29	30	Fire	45	♂	Likes to run
+0806034A	2	None	0: Snover	33	47995FBD	No	Adamant	1: Snow Warning	28	28	29	30	29	30	Fire	45	♂	Likes to run
+8717033C	5	None	0: Snover	33	0C3DDE26	No	Impish	0: Snow Warning	28	28	30	29	30	28	Ground	52	♀	Sturdy body
+8717033C	3	None	0: Snover	33	0C3DDE26	No	Impish	0: Snow Warning	28	28	30	29	30	28	Ground	52	♀	Sturdy body
+0717033C	1	None	0: Snover	33	8C3D5E26	No	Jolly	0: Snow Warning	28	28	30	29	30	28	Ground	52	♀	Sturdy body
+8C070382	4	None	0: Snover	33	1AD01348	No	Modest	0: Snow Warning	28	28	31	30	29	30	Fire	47	♀	Capable of taking hits
+8C070382	2	None	0: Snover	33	1AD01348	No	Modest	0: Snow Warning	28	28	31	30	29	30	Fire	47	♀	Capable of taking hits
+8C070382	0	None	0: Snover	33	1AD01348	No	Modest	0: Snow Warning	28	28	31	30	29	30	Fire	47	♀	Capable of taking hits
+A80C033B	4	None	0: Snover	33	0CC6F26E	No	Relaxed	0: Snow Warning	28	29	29	28	31	29	Grass	50	♀	Somewhat vain
+A80C033B	2	None	0: Snover	33	0CC6F26E	No	Relaxed	0: Snow Warning	28	29	29	28	31	29	Grass	50	♀	Somewhat vain
+280C033B	0	None	0: Snover	33	8CC6726E	No	Serious	0: Snow Warning	28	29	29	28	31	29	Grass	50	♀	Somewhat vain
+06170350	0	None	0: Snover	33	2535F98C	No	Lax	0: Snow Warning	28	29	29	31	31	28	Psychic	60	♂	Mischievous
+66030349	0	Never-Melt Ice	0: Snover	33	828C0DCF	No	Bold	1: Snow Warning	28	29	30	29	28	31	Ghost	37	♂	Alert to sounds
+E6030349	4	None	0: Snover	33	028C8DCF	No	Hardy	1: Snow Warning	28	29	30	29	28	31	Ghost	37	♂	Alert to sounds
+E6030349	2	None	0: Snover	33	028C8DCF	No	Hardy	1: Snow Warning	28	29	30	29	28	31	Ghost	37	♂	Alert to sounds
+C8030363	4	None	0: Snover	33	5310BB03	No	Naughty	1: Snow Warning	28	29	31	30	28	30	Flying	47	♀	Capable of taking hits
+C8030363	2	None	0: Snover	33	5310BB03	No	Naughty	1: Snow Warning	28	29	31	30	28	30	Flying	47	♀	Capable of taking hits
+48030363	0	None	0: Snover	33	D3103B03	No	Lax	1: Snow Warning	28	29	31	30	28	30	Flying	47	♀	Capable of taking hits
+360B0376	4	None	0: Snover	33	861E0AFA	No	Lax	0: Snow Warning	28	30	28	29	30	31	Bug	56	♂	Alert to sounds
+360B0376	2	None	0: Snover	33	861E0AFA	No	Lax	0: Snow Warning	28	30	28	29	30	31	Bug	56	♂	Alert to sounds
+360B0376	0	None	0: Snover	33	861E0AFA	No	Lax	0: Snow Warning	28	30	28	29	30	31	Bug	56	♂	Alert to sounds
+2A02032D	4	None	0: Snover	33	E79515F8	No	Lax	0: Snow Warning	28	30	29	30	30	31	Poison	66	♂	Alert to sounds
+2A02032D	0	None	0: Snover	33	E79515F8	No	Lax	0: Snow Warning	28	30	29	30	30	31	Poison	66	♂	Alert to sounds
+8810037B	2	None	0: Snover	33	C3C1BEE9	No	Mild	1: Snow Warning	28	30	29	31	28	28	Rock	41	♂	Mischievous
+AF010374	4	None	0: Snover	33	0DB08B67	No	Docile	1: Snow Warning	28	30	30	29	28	29	Bug	33	♀	Proud of its power
+AF010374	2	None	0: Snover	33	0DB08B67	No	Docile	1: Snow Warning	28	30	30	29	28	29	Bug	33	♀	Proud of its power
+2F010374	0	None	0: Snover	33	8DB00B67	No	Hasty	1: Snow Warning	28	30	30	29	28	29	Bug	33	♀	Proud of its power
+D40A0338	4	None	0: Snover	33	AF573E96	No	Naughty	0: Snow Warning	28	30	30	31	28	30	Ground	49	♂	Mischievous
+D40A0338	2	None	0: Snover	33	AF573E96	No	Naughty	0: Snow Warning	28	30	30	31	28	30	Ground	49	♂	Mischievous
+D40A0338	0	None	0: Snover	33	AF573E96	No	Naughty	0: Snow Warning	28	30	30	31	28	30	Ground	49	♂	Mischievous
+A209033A	2	None	0: Snover	33	CA2C9E72	No	Adamant	0: Snow Warning	28	30	31	28	30	31	Poison	59	♀	Capable of taking hits
+E704034A	4	None	0: Snover	33	5B1FFC3C	No	Rash	0: Snow Warning	28	30	31	28	30	31	Poison	59	♀	Capable of taking hits
+E704034A	3	None	0: Snover	33	5B1FFC3C	No	Rash	0: Snow Warning	28	30	31	28	30	31	Poison	59	♀	Capable of taking hits
+E704034A	1	None	0: Snover	33	5B1FFC3C	No	Rash	0: Snow Warning	28	30	31	28	30	31	Poison	59	♀	Capable of taking hits
+6704034A	5	None	0: Snover	33	DB1F7C3C	No	Quirky	0: Snow Warning	28	30	31	28	30	31	Poison	59	♀	Capable of taking hits
+2E0F0326	2	None	0: Snover	33	C2155A17	No	Careful	1: Snow Warning	28	30	31	30	28	31	Poison	49	♀	Capable of taking hits
+2E0F0326	0	None	0: Snover	33	C2155A17	No	Careful	1: Snow Warning	28	30	31	30	28	31	Poison	49	♀	Capable of taking hits
+2F0E037B	1	None	0: Snover	33	04EE1ACA	No	Modest	0: Snow Warning	28	30	31	30	29	29	Grass	43	♂	Capable of taking hits
+37100377	2	None	0: Snover	33	E205BE2B	No	Naughty	1: Snow Warning	28	31	29	28	30	28	Flying	51	♀	Likes to thrash about
+37100377	0	None	0: Snover	33	E205BE2B	No	Naughty	1: Snow Warning	28	31	29	28	30	28	Flying	51	♀	Likes to thrash about
+B7100377	4	None	0: Snover	33	62053E2B	No	Jolly	1: Snow Warning	28	31	29	28	30	28	Flying	51	♀	Likes to thrash about
+5D0F0360	3	None	0: Snover	33	E9C40A32	No	Rash	0: Snow Warning	28	31	30	28	29	31	Grass	38	♀	Likes to thrash about
+0806034B	5	None	0: Snover	33	9DB31D70	No	Quiet	0: Snow Warning	28	31	30	29	28	31	Ghost	38	♀	Likes to thrash about
+E3000383	3	None	0: Snover	33	1868CF5A	No	Timid	0: Snow Warning	28	31	30	30	29	28	Fire	43	♀	Likes to thrash about
+63000383	5	None	0: Snover	33	98684F5A	No	Modest	0: Snow Warning	28	31	30	30	29	28	Fire	43	♀	Likes to thrash about
+63000383	1	None	0: Snover	33	98684F5A	No	Modest	0: Snow Warning	28	31	30	30	29	28	Fire	43	♀	Likes to thrash about
+6E080333	2	Never-Melt Ice	0: Snover	33	5FC10CCA	No	Quiet	0: Snow Warning	29	28	28	29	31	29	Ice	50	♂	Somewhat vain
+EE080333	4	None	0: Snover	33	DFC18CCA	No	Impish	0: Snow Warning	29	28	28	29	31	29	Ice	50	♂	Somewhat vain
+EE080333	0	None	0: Snover	33	DFC18CCA	No	Impish	0: Snow Warning	29	28	28	29	31	29	Ice	50	♂	Somewhat vain
+BB000372	1	None	0: Snover	33	0AEE9B72	No	Sassy	0: Snow Warning	29	28	28	30	28	29	Poison	40	♀	Highly curious
+3B000372	5	None	0: Snover	33	8AEE1B72	No	Brave	0: Snow Warning	29	28	28	30	28	29	Poison	40	♀	Highly curious
+3B000372	3	None	0: Snover	33	8AEE1B72	No	Brave	0: Snow Warning	29	28	28	30	28	29	Poison	40	♀	Highly curious
+FD0F0324	5	None	0: Snover	33	8FC2420C	No	Bold	0: Snow Warning	29	28	28	30	29	29	Water	40	♀	Highly curious
+FD0F0324	1	None	0: Snover	33	8FC2420C	No	Bold	0: Snow Warning	29	28	28	30	29	29	Water	40	♀	Highly curious
+2113036D	5	None	0: Snover	33	CCFEEC6A	No	Bold	0: Snow Warning	29	28	31	28	29	31	Grass	37	♀	Capable of taking hits
+2113036D	3	None	0: Snover	33	CCFEEC6A	No	Bold	0: Snow Warning	29	28	31	28	29	31	Grass	37	♀	Capable of taking hits
+85110383	5	None	0: Snover	33	C7B31E55	No	Bashful	1: Snow Warning	29	28	31	29	30	28	Bug	52	♀	Capable of taking hits
+85110383	3	None	0: Snover	33	C7B31E55	No	Bashful	1: Snow Warning	29	28	31	29	30	28	Bug	52	♀	Capable of taking hits
+85110383	1	None	0: Snover	33	C7B31E55	No	Bashful	1: Snow Warning	29	28	31	29	30	28	Bug	52	♀	Capable of taking hits
+1209032E	5	Never-Melt Ice	0: Snover	33	4388B7F5	No	Hasty	1: Snow Warning	29	28	31	31	29	29	Dragon	42	♂	Capable of taking hits
+14060332	5	None	0: Snover	33	30E7E31F	No	Brave	1: Snow Warning	29	29	28	31	28	31	Ghost	45	♀	Alert to sounds
+14060332	3	None	0: Snover	33	30E7E31F	No	Brave	1: Snow Warning	29	29	28	31	28	31	Ghost	45	♀	Alert to sounds
+B30B035E	5	None	0: Snover	33	01A918B8	No	Adamant	0: Snow Warning	29	29	29	30	28	30	Flying	45	♂	Likes to run
+B30B035E	3	None	0: Snover	33	01A918B8	No	Adamant	0: Snow Warning	29	29	29	30	28	30	Flying	45	♂	Likes to run
+B30B035E	1	None	0: Snover	33	01A918B8	No	Adamant	0: Snow Warning	29	29	29	30	28	30	Flying	45	♂	Likes to run
+8A040347	3	None	0: Snover	33	7DF58391	No	Lonely	1: Snow Warning	29	29	31	28	30	30	Flying	57	♂	Capable of taking hits
+5A160324	5	None	0: Snover	33	E9BF0807	No	Lax	1: Snow Warning	29	29	31	30	29	30	Water	47	♀	Capable of taking hits
+5A160324	1	None	0: Snover	33	E9BF0807	No	Lax	1: Snow Warning	29	29	31	30	29	30	Water	47	♀	Capable of taking hits
+DA160324	3	None	0: Snover	33	69BF8807	No	Naughty	1: Snow Warning	29	29	31	30	29	30	Water	47	♀	Capable of taking hits
+AC060370	4	None	0: Snover	33	733CA5AC	No	Serious	0: Snow Warning	29	30	29	31	31	28	Psychic	61	♂	Mischievous
+AC060370	2	None	0: Snover	33	733CA5AC	No	Serious	0: Snow Warning	29	30	29	31	31	28	Psychic	61	♂	Mischievous
+AC060370	0	None	0: Snover	33	733CA5AC	No	Serious	0: Snow Warning	29	30	29	31	31	28	Psychic	61	♂	Mischievous
+C80D033B	4	None	0: Snover	33	522542C9	No	Mild	1: Snow Warning	29	30	30	31	28	31	Bug	49	♂	Alert to sounds
+C80D033B	2	None	0: Snover	33	522542C9	No	Mild	1: Snow Warning	29	30	30	31	28	31	Bug	49	♂	Alert to sounds
+480D033B	0	None	0: Snover	33	D225C2C9	No	Relaxed	1: Snow Warning	29	30	30	31	28	31	Bug	49	♂	Alert to sounds
+7408035A	4	None	0: Snover	33	EAF15C89	No	Lax	1: Snow Warning	29	30	30	31	30	31	Bug	69	♂	Alert to sounds
+7408035A	0	None	0: Snover	33	EAF15C89	No	Lax	1: Snow Warning	29	30	30	31	30	31	Bug	69	♂	Alert to sounds
+F408035A	2	None	0: Snover	33	6AF1DC89	No	Naughty	1: Snow Warning	29	30	30	31	30	31	Bug	69	♂	Alert to sounds
+280C035A	4	None	0: Snover	33	C7270917	No	Modest	1: Snow Warning	29	30	31	28	29	31	Grass	38	♀	Alert to sounds
+280C035A	2	None	0: Snover	33	C7270917	No	Modest	1: Snow Warning	29	30	31	28	29	31	Grass	38	♀	Alert to sounds
+280C035A	0	None	0: Snover	33	C7270917	No	Modest	1: Snow Warning	29	30	31	28	29	31	Grass	38	♀	Alert to sounds
+4012036B	4	None	0: Snover	33	7809B52D	No	Hardy	1: Snow Warning	29	31	28	30	29	30	Fire	46	♀	Likes to thrash about
+4012036B	2	None	0: Snover	33	7809B52D	No	Hardy	1: Snow Warning	29	31	28	30	29	30	Fire	46	♀	Likes to thrash about
+0C080370	2	None	0: Snover	33	FA08F7AD	No	Bashful	1: Snow Warning	29	31	28	31	28	28	Rock	41	♂	Mischievous
+BE130341	3	None	0: Snover	33	27B3CD31	No	Sassy	1: Snow Warning	29	31	28	31	31	29	Dragon	61	♀	Likes to thrash about
+3205032F	4	None	0: Snover	33	C5E5DFA7	No	Lonely	1: Snow Warning	29	31	29	28	30	31	Ground	56	♂	Alert to sounds
+BA130370	4	None	0: Snover	33	027199B6	No	Hardy	0: Snow Warning	29	31	30	29	29	30	Psychic	38	♂	Likes to thrash about
+BA130370	0	None	0: Snover	33	027199B6	No	Hardy	0: Snow Warning	29	31	30	29	29	30	Psychic	38	♂	Likes to thrash about
+3A130370	2	None	0: Snover	33	827119B6	No	Bold	0: Snow Warning	29	31	30	29	29	30	Psychic	38	♂	Likes to thrash about
+870D0376	2	None	0: Snover	33	275CEAA5	No	Bold	1: Snow Warning	29	31	30	29	30	31	Ghost	59	♂	Likes to thrash about
+870D0376	0	None	0: Snover	33	275CEAA5	No	Bold	1: Snow Warning	29	31	30	29	30	31	Ghost	59	♂	Likes to thrash about
+3B080335	5	None	0: Snover	33	BE549389	No	Impish	1: Snow Warning	29	31	31	28	28	28	Flying	33	♂	Likes to thrash about
+3B080335	3	None	0: Snover	33	BE549389	No	Impish	1: Snow Warning	29	31	31	28	28	28	Flying	33	♂	Likes to thrash about
+3B080335	1	None	0: Snover	33	BE549389	No	Impish	1: Snow Warning	29	31	31	28	28	28	Flying	33	♂	Likes to thrash about
+D3090361	5	None	0: Snover	33	462ECF80	No	Gentle	0: Snow Warning	29	31	31	28	30	28	Flying	54	♂	Likes to thrash about
+C614036D	5	None	0: Snover	33	8B0F4087	No	Impish	1: Snow Warning	29	31	31	29	29	28	Ice	33	♂	Likes to thrash about
+4614036D	3	None	0: Snover	33	0B0FC087	No	Adamant	1: Snow Warning	29	31	31	29	29	28	Ice	33	♂	Likes to thrash about
+4614036D	1	None	0: Snover	33	0B0FC087	No	Adamant	1: Snow Warning	29	31	31	29	29	28	Ice	33	♂	Likes to thrash about
+730B035A	3	None	0: Snover	33	1CC841DB	No	Relaxed	1: Snow Warning	30	28	28	30	28	30	Fighting	45	♂	Loves to eat
+730B035A	1	None	0: Snover	33	1CC841DB	No	Relaxed	1: Snow Warning	30	28	28	30	28	30	Fighting	45	♂	Loves to eat
+F30B035A	5	None	0: Snover	33	9CC8C1DB	No	Careful	1: Snow Warning	30	28	28	30	28	30	Fighting	45	♂	Likes to run
+4E11035C	5	None	0: Snover	33	37939E1A	No	Gentle	0: Snow Warning	30	28	28	31	29	28	Electric	40	♀	Mischievous
+4E11035C	3	None	0: Snover	33	37939E1A	No	Gentle	0: Snow Warning	30	28	28	31	29	28	Electric	40	♀	Mischievous
+4E11035C	1	None	0: Snover	33	37939E1A	No	Gentle	0: Snow Warning	30	28	28	31	29	28	Electric	40	♀	Mischievous
+CA06037F	4	None	0: Snover	33	482E9958	No	Naive	0: Snow Warning	30	28	30	29	28	30	Ground	38	♀	Sturdy body
+4A06037F	2	None	0: Snover	33	C82E1958	No	Rash	0: Snow Warning	30	28	30	29	28	30	Ground	38	♀	Sturdy body
+4A06037F	0	None	0: Snover	33	C82E1958	No	Rash	0: Snow Warning	30	28	30	29	28	30	Ground	38	♀	Sturdy body
+35140360	5	None	0: Snover	33	D0CC4029	No	Sassy	1: Snow Warning	30	28	31	29	28	29	Ghost	33	♀	Capable of taking hits
+47080350	4	None	0: Snover	33	81D4C847	No	Quiet	1: Snow Warning	30	28	31	29	28	31	Ghost	38	♀	Alert to sounds
+47080350	2	None	0: Snover	33	81D4C847	No	Quiet	1: Snow Warning	30	28	31	29	28	31	Ghost	38	♀	Alert to sounds
+87170367	0	None	0: Snover	33	0A96CCDD	No	Bold	1: Snow Warning	30	28	31	29	30	31	Ghost	58	♂	Alert to sounds
+07170367	4	None	0: Snover	33	8A964CDD	No	Timid	1: Snow Warning	30	28	31	29	30	31	Ghost	58	♂	Alert to sounds
+07170367	2	None	0: Snover	33	8A964CDD	No	Timid	1: Snow Warning	30	28	31	29	30	31	Ghost	58	♂	Alert to sounds
+90140342	5	None	0: Snover	33	2D928250	No	Hasty	0: Snow Warning	30	28	31	30	29	30	Fire	48	♀	Capable of taking hits
+90140342	3	None	0: Snover	33	2D928250	No	Hasty	0: Snow Warning	30	28	31	30	29	30	Fire	48	♀	Capable of taking hits
+90140342	1	None	0: Snover	33	2D928250	No	Hasty	0: Snow Warning	30	28	31	30	29	30	Fire	48	♀	Capable of taking hits
+5B120383	4	None	0: Snover	33	46EC6FE8	No	Naive	0: Snow Warning	30	29	28	29	29	31	Ice	35	♂	Alert to sounds
+5B120383	3	None	0: Snover	33	46EC6FE8	No	Naive	0: Snow Warning	30	29	28	29	29	31	Ice	35	♂	Alert to sounds
+DB120383	5	None	0: Snover	33	C6ECEFE8	No	Bold	0: Snow Warning	30	29	28	29	29	31	Ice	35	♂	Alert to sounds
+DB120383	1	None	0: Snover	33	C6ECEFE8	No	Bold	0: Snow Warning	30	29	28	29	29	31	Ice	35	♂	Alert to sounds
+840C034B	4	None	0: Snover	33	9B9B837C	No	Calm	0: Snow Warning	30	29	29	28	30	29	Ground	50	♀	Strong willed
+840C034B	0	None	0: Snover	33	9B9B837C	No	Calm	0: Snow Warning	30	29	29	28	30	29	Ground	50	♀	Strong willed
+040C034B	2	None	0: Snover	33	1B9B037C	No	Naughty	0: Snow Warning	30	29	29	28	30	29	Ground	50	♀	Loves to eat
+FA060369	3	None	0: Snover	33	2A2D389D	No	Timid	1: Snow Warning	30	29	30	29	29	31	Ice	38	♂	Alert to sounds
+2E160325	5	None	0: Snover	33	B4EDFFB2	No	Calm	0: Snow Warning	30	29	30	30	30	29	Poison	63	♂	Highly curious
+2E160325	1	None	0: Snover	33	B4EDFFB2	No	Calm	0: Snow Warning	30	29	30	30	30	29	Poison	63	♂	Highly curious
+A015035E	4	None	0: Snover	33	F19D1785	No	Naughty	1: Snow Warning	30	29	30	31	31	29	Ice	63	♂	Somewhat vain
+A015035E	0	None	0: Snover	33	F19D1785	No	Naughty	1: Snow Warning	30	29	30	31	31	29	Ice	63	♂	Somewhat vain
+3C0F034E	2	None	0: Snover	33	62B37FD7	No	Naive	1: Snow Warning	30	29	31	28	31	28	Water	53	♂	Capable of taking hits
+B201037D	4	None	0: Snover	33	36B8BD69	No	Brave	1: Snow Warning	30	29	31	29	30	30	Bug	58	♀	Capable of taking hits
+B201037D	2	None	0: Snover	33	36B8BD69	No	Brave	1: Snow Warning	30	29	31	29	30	30	Bug	58	♀	Capable of taking hits
+3201037D	0	None	0: Snover	33	B6B83D69	No	Relaxed	1: Snow Warning	30	29	31	29	30	30	Bug	58	♀	Capable of taking hits
+47060336	5	None	0: Snover	33	07CABE75	No	Mild	1: Snow Warning	30	30	29	29	28	29	Ghost	31	♀	Loves to eat
+47060336	3	None	0: Snover	33	07CABE75	No	Mild	1: Snow Warning	30	30	29	29	28	29	Ghost	31	♀	Loves to eat
+67130335	4	None	0: Snover	33	3FA5AFAD	No	Gentle	1: Snow Warning	30	30	29	30	28	29	Poison	42	♂	Highly curious
+67130335	2	None	0: Snover	33	3FA5AFAD	No	Gentle	1: Snow Warning	30	30	29	30	28	29	Poison	42	♂	Highly curious
+AB120335	4	None	0: Snover	33	416F015C	No	Lax	0: Snow Warning	30	30	31	30	31	30	Fire	70	♀	Capable of taking hits
+AB120335	0	None	0: Snover	33	416F015C	No	Lax	0: Snow Warning	30	30	31	30	31	30	Fire	70	♀	Capable of taking hits
+2B120335	2	None	0: Snover	33	C16F815C	No	Hardy	0: Snow Warning	30	30	31	30	31	30	Fire	70	♀	Capable of taking hits
+5613036E	0	None	0: Snover	33	00940329	No	Serious	1: Snow Warning	30	30	31	31	29	30	Psychic	49	♀	Mischievous
+4811036C	2	None	0: Snover	33	22B07556	No	Bashful	0: Snow Warning	30	31	28	30	31	31	Grass	67	♀	Alert to sounds
+C811036C	4	None	0: Snover	33	A2B0F556	No	Lax	0: Snow Warning	30	31	28	30	31	31	Grass	67	♀	Likes to thrash about
+57120354	3	None	0: Snover	33	BAAFF117	No	Calm	1: Snow Warning	30	31	29	28	31	30	Water	57	♀	Likes to thrash about
+57120354	1	None	0: Snover	33	BAAFF117	No	Calm	1: Snow Warning	30	31	29	28	31	30	Water	57	♀	Likes to thrash about
+D7120354	5	None	0: Snover	33	3AAF7117	No	Naughty	1: Snow Warning	30	31	29	28	31	30	Water	57	♀	Somewhat vain
+31040379	3	None	0: Snover	33	E44A0ADD	No	Bashful	1: Snow Warning	30	31	30	28	31	30	Fire	59	♂	Somewhat vain
+31040379	1	None	0: Snover	33	E44A0ADD	No	Bashful	1: Snow Warning	30	31	30	28	31	30	Fire	59	♂	Somewhat vain
+C8040365	4	None	0: Snover	33	54E9B5ED	No	Bold	1: Snow Warning	30	31	30	30	31	29	Grass	64	♂	Somewhat vain
+CE170332	4	None	0: Snover	33	E6F20D97	No	Gentle	1: Snow Warning	30	31	30	31	30	28	Rock	64	♂	Mischievous
+CE170332	2	None	0: Snover	33	E6F20D97	No	Gentle	1: Snow Warning	30	31	30	31	30	28	Rock	64	♂	Mischievous
+4E170332	0	None	0: Snover	33	66F28D97	No	Mild	1: Snow Warning	30	31	30	31	30	28	Rock	64	♂	Mischievous
+970A0360	5	None	0: Snover	33	9142D73C	No	Gentle	0: Snow Warning	30	31	31	28	28	31	Ground	39	♀	Likes to thrash about
+170A0360	3	Never-Melt Ice	0: Snover	33	1142573C	No	Bold	0: Snow Warning	30	31	31	28	28	31	Ground	39	♀	Capable of taking hits
+170A0360	1	Never-Melt Ice	0: Snover	33	1142573C	No	Bold	0: Snow Warning	30	31	31	28	28	31	Ground	39	♀	Capable of taking hits
+05140368	5	None	0: Snover	33	62D1AAD3	No	Careful	1: Snow Warning	30	31	31	29	30	31	Steel	59	♂	Likes to thrash about
+05140368	3	None	0: Snover	33	62D1AAD3	No	Careful	1: Snow Warning	30	31	31	29	30	31	Steel	59	♂	Likes to thrash about
+97010347	5	None	0: Snover	33	8F9310CC	No	Bold	0: Snow Warning	31	28	28	29	30	31	Bug	56	♂	Takes plenty of siestas
+97010347	1	None	0: Snover	33	8F9310CC	No	Bold	0: Snow Warning	31	28	28	29	30	31	Bug	56	♂	Takes plenty of siestas
+17010347	3	None	0: Snover	33	0F9390CC	No	Hardy	0: Snow Warning	31	28	28	29	30	31	Bug	56	♂	Takes plenty of siestas
+2C02037F	5	None	0: Snover	33	4224B3EF	No	Modest	1: Snow Warning	31	28	28	31	31	28	Electric	61	♂	Mischievous
+2C02037F	3	None	0: Snover	33	4224B3EF	No	Modest	1: Snow Warning	31	28	28	31	31	28	Electric	61	♂	Mischievous
+94010368	2	Never-Melt Ice	0: Snover	33	78FE8260	No	Modest	0: Snow Warning	31	28	30	28	30	29	Poison	53	♀	Takes plenty of siestas
+94010368	0	Never-Melt Ice	0: Snover	33	78FE8260	No	Modest	0: Snow Warning	31	28	30	28	30	29	Poison	53	♀	Takes plenty of siestas
+14010368	4	None	0: Snover	33	F8FE0260	No	Calm	0: Snow Warning	31	28	30	28	30	29	Poison	53	♀	Takes plenty of siestas
+9A0D032A	2	None	0: Snover	33	77A9001B	No	Modest	1: Snow Warning	31	28	30	29	31	31	Ice	58	♀	Alert to sounds
+1A0D032A	0	None	0: Snover	33	F7A9801B	No	Docile	1: Snow Warning	31	28	30	29	31	31	Ice	58	♀	Alert to sounds
+F20A0342	1	None	0: Snover	33	30780D6F	No	Brave	1: Snow Warning	31	28	31	31	28	28	Bug	43	♀	Capable of taking hits
+9908037A	1	None	0: Snover	33	D5CE1A3B	No	Naive	1: Snow Warning	31	30	28	28	31	30	Steel	57	♀	Somewhat vain
+15070376	4	None	0: Snover	33	3AA257D2	No	Quiet	0: Snow Warning	31	30	29	29	28	31	Ghost	36	♂	Takes plenty of siestas
+15070376	2	None	0: Snover	33	3AA257D2	No	Quiet	0: Snow Warning	31	30	29	29	28	31	Ghost	36	♂	Takes plenty of siestas
+420D0356	5	None	0: Snover	33	472CDC9E	No	Careful	0: Snow Warning	31	30	30	29	29	29	Ice	34	♂	Takes plenty of siestas
+420D0356	3	None	0: Snover	33	472CDC9E	No	Careful	0: Snow Warning	31	30	30	29	29	29	Ice	34	♂	Takes plenty of siestas
+420D0356	1	None	0: Snover	33	472CDC9E	No	Careful	0: Snow Warning	31	30	30	29	29	29	Ice	34	♂	Takes plenty of siestas
+23070355	2	None	0: Snover	33	5097A16F	No	Bashful	1: Snow Warning	31	30	30	31	31	29	Ice	64	♀	Somewhat vain
+23070355	0	None	0: Snover	33	5097A16F	No	Bashful	1: Snow Warning	31	30	30	31	31	29	Ice	64	♀	Somewhat vain
+6E030348	5	None	0: Snover	33	2BC9972A	No	Sassy	0: Snow Warning	31	31	28	30	29	31	Grass	47	♀	Alert to sounds
+6E030348	3	None	0: Snover	33	2BC9972A	No	Sassy	0: Snow Warning	31	31	28	30	29	31	Grass	47	♀	Alert to sounds
+6E030348	1	None	0: Snover	33	2BC9972A	No	Sassy	0: Snow Warning	31	31	28	30	29	31	Grass	47	♀	Alert to sounds
+C1080340	4	None	0: Snover	33	14F58059	No	Sassy	1: Snow Warning	31	31	30	31	29	30	Psychic	49	♀	Takes plenty of siestas
+C1080340	1	None	0: Snover	33	14F58059	No	Sassy	1: Snow Warning	31	31	30	31	29	30	Psychic	49	♀	Takes plenty of siestas
+41080340	5	Never-Melt Ice	0: Snover	33	94F50059	No	Brave	1: Snow Warning	31	31	30	31	29	30	Psychic	49	♀	Takes plenty of siestas
+41080340	3	Never-Melt Ice	0: Snover	33	94F50059	No	Brave	1: Snow Warning	31	31	30	31	29	30	Psychic	49	♀	Takes plenty of siestas

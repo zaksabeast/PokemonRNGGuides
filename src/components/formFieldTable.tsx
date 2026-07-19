@@ -10,6 +10,10 @@ type IndentProps = {
 
 const FormItem = styled(AntdForm.Item)<IndentProps>(({ indent = 0 }) => ({
   paddingLeft: `${indent * 20}px`,
+  ".ant-form-item-label": {
+    display: "flex",
+    alignItems: "center",
+  },
 }));
 
 export type Field = {

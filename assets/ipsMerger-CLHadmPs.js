@@ -1,0 +1,1 @@
+import{G as e}from"./components-DLv6be0I.js";export{e as IpsMerger};

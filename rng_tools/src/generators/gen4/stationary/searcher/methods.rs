@@ -520,9 +520,11 @@ fn get_methodjk_states<
     seed: u32,
 ) -> Box<dyn Iterator<Item = BaseStatic4State>> {
     match lead {
-        Static4LeadInput::Synchronize => Box::new(get_methodjk_sync_state::<Game, LevelCalc, NoGate>(
-            species, min_level, max_level, tid, sid, ivs, seed,
-        )),
+        Static4LeadInput::Synchronize => {
+            Box::new(get_methodjk_sync_state::<Game, LevelCalc, NoGate>(
+                species, min_level, max_level, tid, sid, ivs, seed,
+            ))
+        }
         Static4LeadInput::CutecharmF | Static4LeadInput::CutecharmM => Box::new(
             get_methodjk_cutecharm::<Game, LevelCalc>(
                 lead, species, min_level, max_level, tid, sid, ivs, seed,
@@ -625,10 +627,12 @@ fn get_radar_states(
 ) -> Vec<BaseStatic4State> {
     match lead {
         Static4LeadInput::Pressure => vec![],
-        Static4LeadInput::Synchronize => get_methodjk_sync_state::<DpptLogic, SetLevel, GateOnCheck1>(
-            species, max_level, max_level, tid, sid, ivs, seed,
-        )
-        .collect(),
+        Static4LeadInput::Synchronize => {
+            get_methodjk_sync_state::<DpptLogic, SetLevel, GateOnCheck1>(
+                species, max_level, max_level, tid, sid, ivs, seed,
+            )
+            .collect()
+        }
         _ => get_methodjk_states::<DpptLogic, SetLevel>(
             lead, species, max_level, max_level, tid, sid, ivs, seed,
         )

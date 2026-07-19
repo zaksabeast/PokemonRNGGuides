@@ -1,0 +1,1 @@
+import{pa as e}from"./index.esm-CGgWKxs-.js";var t=0;function n(n){var r=++t;return e(n)+r}export{n as t};

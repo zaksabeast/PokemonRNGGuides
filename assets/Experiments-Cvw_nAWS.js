@@ -1,0 +1,12 @@
+var e=`---
+title: "Experimental Features"
+description: "Help us test new features and provide feedback!"
+slug: "experiments"
+category: "User Settings"
+section: "site_info"
+layout: "application"
+hideFromNavDrawer: true
+---
+
+<RngWorkbench />
+`;export{e as default};

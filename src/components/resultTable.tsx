@@ -84,17 +84,18 @@ const applyMonospaceSingleColumn = <Record extends tst.O.Object>(
 
 const TABLE_SCROLL = { x: true } as const;
 
-type FormikResultTableProps<Record extends tst.O.Object> = tst.O.Overwrite<
-  TableProps<Record>,
-  { columns: ResultColumn<Record>[] }
-> & {
-  onClickResultRow?: (record: Record | null) => void;
-};
+export type FormikResultTableProps<Record extends tst.O.Object> =
+  tst.O.Overwrite<TableProps<Record>, { columns: ResultColumn<Record>[] }> & {
+    expandable?: boolean;
+    onClickResultRow?: (record: Record | null) => void;
+  };
 
-export const ResultTable = <Record extends tst.O.Object>(
-  props: FormikResultTableProps<Record>,
-) => {
-  const columns = (props.columns ?? []).map(applyMonospace);
+export const ResultTable = <Record extends tst.O.Object>({
+  columns: columnsProp,
+  expandable = true,
+  ...props
+}: FormikResultTableProps<Record>) => {
+  const columns = (columnsProp ?? []).map(applyMonospace);
   const [selectedRowKeys, setSelectedRowKeys] = React.useState<React.Key[]>([]);
 
   const titleWithTooltip = (
@@ -153,14 +154,8 @@ export const ResultTable = <Record extends tst.O.Object>(
     );
   });
 
-  const {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    columns: _,
-    onClickResultRow,
-    pagination,
-    rowSelection,
-    ...propsForTable
-  } = props;
+  const { onClickResultRow, pagination, rowSelection, ...propsForTable } =
+    props;
 
   const paginationToUse =
     pagination === false
@@ -169,7 +164,7 @@ export const ResultTable = <Record extends tst.O.Object>(
           ...pagination,
           showTotal: (total: number, range: [number, number]) => (
             <>
-              <MaxWidthToggleButton />
+              {expandable && <MaxWidthToggleButton />}
               {typeof pagination === "object" &&
                 pagination.showTotal?.(total, range)}
             </>

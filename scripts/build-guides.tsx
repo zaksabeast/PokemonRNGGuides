@@ -59,7 +59,7 @@ const DateSchema = z.string().refine((value) => dayjs(value).isValid(), {
 const GuideSectionSchema = z.enum(sections);
 const GuideVariantSchema = z.enum(rngGuideVariants);
 
-const layouts = ["titled", "guide"] as const;
+const layouts = ["titled", "guide", "application"] as const;
 
 const categories = [
   "Home",

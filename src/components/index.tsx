@@ -21,6 +21,7 @@ export { FormFieldTable, type Field } from "./formFieldTable";
 export {
   FormikResultTable,
   ResultTable,
+  type FormikResultTableProps,
   type ResultColumn,
   type ResultColumnGroup,
   type SingleResultColumn,

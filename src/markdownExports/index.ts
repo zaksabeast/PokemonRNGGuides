@@ -468,6 +468,10 @@ const tools = {
     () => import("~/rngToolsUi/gen4/voltorbFlip/generateBoards"),
     (mod) => mod.GenerateVoltorbFlipBoards,
   ),
+  RngWorkbench: lazyLoad(
+    () => import("~/rngToolsUi/workbench"),
+    (mod) => mod.RngWorkbench,
+  ),
 };
 
 export const markdownComponents = {

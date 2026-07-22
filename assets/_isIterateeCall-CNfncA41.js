@@ -1,0 +1,1 @@
+import{j as e}from"./useActiveRoute-DFUNdKRh.js";import{h as t,l as n,s as r}from"./_cacheHas-C7F62H8O.js";function i(i,a,o){if(!t(o))return!1;var s=typeof a;return(s==`number`?r(o)&&e(a,o.length):s==`string`&&a in o)?n(o[a],i):!1}export{i as t};

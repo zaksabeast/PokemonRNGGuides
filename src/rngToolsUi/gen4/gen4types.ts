@@ -194,6 +194,17 @@ export const Characteristic4Options = sortBy(
   (option) => option.label,
 );
 
+export const OptionalCharacteristic4Options = sortBy(
+  [
+    { label: "Any", value: null },
+    ...toOptions(
+      characteristics,
+      (characteristic) => characteristicToGen4Label[characteristic],
+    ),
+  ],
+  (option) => option.label,
+);
+
 export const Characteristic5Options = sortBy(
   toOptions(characteristics, startCase),
   (option) => option.label,

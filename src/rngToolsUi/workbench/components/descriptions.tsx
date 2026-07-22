@@ -1,5 +1,11 @@
-import { Descriptions as AntdDescriptions } from "antd";
+import * as tst from "ts-toolbelt";
+import { Descriptions as AntdDescriptions, DescriptionsProps } from "antd";
 import styled from "@emotion/styled";
+
+export type Field = tst.U.Exclude<
+  DescriptionsProps["items"],
+  undefined
+>[number];
 
 export const Descriptions = styled(AntdDescriptions)({
   ".ant-descriptions-view": { border: "none !important" },

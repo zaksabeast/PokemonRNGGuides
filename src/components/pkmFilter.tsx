@@ -215,7 +215,7 @@ export const pkmFilterFieldsToRustInput = (
   };
 };
 
-type Props = {
+export type PkmFilterProps = {
   displayShiny?: boolean;
   displayNature?: boolean;
   displayAbility?: boolean;
@@ -236,7 +236,10 @@ export const getPkmFilterInitialValues = (): PkmFilterFields => ({
   filter_hidden_power: defaultHiddenPowerFilter,
 });
 
-const _getPkmFilterFields = (props: Props = {}, t?: Translations): Field[] =>
+const _getPkmFilterFields = (
+  props: PkmFilterProps = {},
+  t?: Translations,
+): Field[] =>
   [
     optOut(props?.displayShiny, {
       label: t?.["Shiny"] ?? "Shiny",
@@ -292,7 +295,7 @@ const _getPkmFilterFields = (props: Props = {}, t?: Translations): Field[] =>
   ].filter((field) => field !== null);
 
 export const getPkmFilterFields = <FormField,>(
-  props?: Props,
+  props?: PkmFilterProps,
   t?: Translations,
 ): FormField extends PkmFilterFields ? Field[] : never => {
   return _getPkmFilterFields(props, t) as FormField extends PkmFilterFields

@@ -26,7 +26,7 @@ import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
   pkmFilterSchema,
-} from "~/components/pkmFilter";
+} from "~/rngToolsUi/workbench/components/pkmFilter";
 import { flattenIvs } from "~/rngToolsUi/shared/ivColumns";
 import { chunkIvs } from "~/utils/chunkIvs";
 import { characteristicToGen4Label } from "~/rngToolsUi/gen4/gen4types";
@@ -34,10 +34,12 @@ import { ToolLayout } from "~/rngToolsUi/workbench/layouts/tool";
 import { formatHex } from "~/utils/formatHex";
 import {
   gen4ProfilesAtom,
-  defaultProfile,
+  findProfileOrDefault,
 } from "~/rngToolsUi/workbench/tools/profile/state";
 import { useAtom } from "jotai";
 import { useHydrate } from "~/hooks/useHydrate";
+import { toOptions } from "~/utils/options";
+import { dpptStarters, hgssStarters } from "./constants";
 
 const LIMIT = 1000;
 
@@ -65,6 +67,7 @@ const initialValues: FormState = {
   min_advance: 0,
   max_advance: 0,
   force_second: null,
+  filter_level: 5,
   ...getPkmFilterInitialValues(),
 };
 
@@ -94,8 +97,7 @@ const RngInfoFields = () => {
     names: { profile_id: true },
   });
 
-  const { game } =
-    (profiles ?? []).find(({ id }) => id === profile_id) ?? defaultProfile;
+  const { game } = findProfileOrDefault({ profiles, id: profile_id });
 
   const rngInfoFields: DescriptionsProps["items"] = [
     {
@@ -107,19 +109,11 @@ const RngInfoFields = () => {
       children: (
         <FormikSelect<FormState, "species">
           name="species"
-          options={
+          options={toOptions(
             game === "HeartGold" || game === "SoulSilver"
-              ? [
-                  { label: "Chikorita", value: "Chikorita" },
-                  { label: "Cyndaquil", value: "Cyndaquil" },
-                  { label: "Totodile", value: "Totodile" },
-                ]
-              : [
-                  { label: "Chimchar", value: "Chimchar" },
-                  { label: "Piplup", value: "Piplup" },
-                  { label: "Turtwig", value: "Turtwig" },
-                ]
-          }
+              ? hgssStarters
+              : dpptStarters,
+          )}
         />
       ),
     },
@@ -171,135 +165,15 @@ const RngInfoFields = () => {
 };
 
 const FilterFields = () => {
-  const { species } = useWatch({
+  const { species, iv_filter_mode } = useWatch({
     validationSchema: Validator,
-    names: { species: true },
+    names: { species: true, iv_filter_mode: true },
   });
 
-  const filterFields: DescriptionsProps["items"] = [
-    {
-      label: "HP",
-      children: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState>
-              name="filter_min_ivs.hp"
-              numType="decimal"
-            />
-          }
-          max={
-            <FormikNumberInput<FormState>
-              name="filter_max_ivs.hp"
-              numType="decimal"
-            />
-          }
-        />
-      ),
-    },
-    {
-      label: "Atk",
-      children: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState>
-              name="filter_min_ivs.atk"
-              numType="decimal"
-            />
-          }
-          max={
-            <FormikNumberInput<FormState>
-              name="filter_max_ivs.atk"
-              numType="decimal"
-            />
-          }
-        />
-      ),
-    },
-    {
-      label: "Def",
-      children: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState>
-              name="filter_min_ivs.def"
-              numType="decimal"
-            />
-          }
-          max={
-            <FormikNumberInput<FormState>
-              name="filter_max_ivs.def"
-              numType="decimal"
-            />
-          }
-        />
-      ),
-    },
-    {
-      label: "SpA",
-      children: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState>
-              name="filter_min_ivs.spa"
-              numType="decimal"
-            />
-          }
-          max={
-            <FormikNumberInput<FormState>
-              name="filter_max_ivs.spa"
-              numType="decimal"
-            />
-          }
-        />
-      ),
-    },
-    {
-      label: "SpD",
-      children: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState>
-              name="filter_min_ivs.spd"
-              numType="decimal"
-            />
-          }
-          max={
-            <FormikNumberInput<FormState>
-              name="filter_max_ivs.spd"
-              numType="decimal"
-            />
-          }
-        />
-      ),
-    },
-    {
-      label: "Spe",
-      children: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState>
-              name="filter_min_ivs.spe"
-              numType="decimal"
-            />
-          }
-          max={
-            <FormikNumberInput<FormState>
-              name="filter_max_ivs.spe"
-              numType="decimal"
-            />
-          }
-        />
-      ),
-    },
-    ...getPkmFilterFields<FormState>({
-      species: species ?? undefined,
-      displayIvs: false,
-      displayHiddenPower: false,
-    }).map((field) => ({
-      label: field.label,
-      children: field.input,
-    })),
-  ];
+  const filterFields = getPkmFilterFields<FormState>({
+    species: species ?? undefined,
+    ivFilterMode: iv_filter_mode ?? "ivs",
+  });
 
   return (
     <Descriptions bordered title="Filters" items={filterFields} column={1} />
@@ -359,13 +233,15 @@ export const Static4Searcher = () => {
     cancel,
   } = useBatchedTool(multiWorkerRngTools.search_static4, {
     map: mapResult,
+    sortBy: [(res) => res.seed, (res) => res.advance],
     limit: LIMIT,
   });
 
   const onSubmit = async (opts: FormState) => {
-    const { tid, sid, game } =
-      (profiles ?? []).find(({ id }) => id === opts.profile_id) ??
-      defaultProfile;
+    const { tid, sid, game } = findProfileOrDefault({
+      profiles,
+      id: opts.profile_id,
+    });
 
     const baseOpts: RustOption<SearchStatic4Opts> = {
       game,
@@ -373,7 +249,7 @@ export const Static4Searcher = () => {
       sid,
       encounter_max_level: 5,
       encounter_min_level: 5,
-      filter: pkmFilterFieldsToRustInput(opts),
+      filter: await pkmFilterFieldsToRustInput(opts),
       force_second: opts.force_second,
       max_advance: opts.max_advance,
       max_delay: opts.max_delay,

@@ -11,7 +11,7 @@ export const Gen4ProfileSchema = z.object({
   nationalDex: z.boolean(),
 });
 
-export const defaultProfile: z.infer<typeof Gen4ProfileSchema> = {
+const defaultProfile: z.infer<typeof Gen4ProfileSchema> = {
   id: "",
   name: "",
   tid: 0,
@@ -25,3 +25,15 @@ export const gen4ProfilesAtom = atomWithPersistence(
   z.array(Gen4ProfileSchema),
   [],
 );
+
+export const findProfileOrDefault = ({
+  profiles,
+  id,
+}: {
+  profiles: z.infer<typeof Gen4ProfileSchema>[] | null;
+  id: string | null | undefined;
+}): z.infer<typeof Gen4ProfileSchema> => {
+  return (
+    (profiles ?? []).find((profile) => profile.id === id) ?? defaultProfile
+  );
+};

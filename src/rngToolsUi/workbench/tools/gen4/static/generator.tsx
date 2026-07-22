@@ -7,8 +7,10 @@ import {
   NumberInput,
 } from "~/components";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
-import { DescriptionsProps } from "antd";
-import { Descriptions } from "~/rngToolsUi/workbench/components/descriptions";
+import {
+  Descriptions,
+  Field,
+} from "~/rngToolsUi/workbench/components/descriptions";
 import { FormikProfileSelect } from "~/rngToolsUi/workbench/components/formikProfileSelect";
 import { useWatch } from "~/hooks/form";
 import {
@@ -22,22 +24,28 @@ import { Gen4Timer } from "~/rngToolsUi/timer/gen4";
 import { z } from "zod";
 import { RustOption, species } from "~/types";
 import {
+  pkmFilterSchema,
   getPkmFilterFields,
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
-  pkmFilterSchema,
-} from "~/components/pkmFilter";
+} from "~/rngToolsUi/workbench/components/pkmFilter";
 import { flattenIvs } from "~/rngToolsUi/shared/ivColumns";
 import { chunkRange } from "~/utils/chunkRange";
-import { characteristicToGen4Label } from "~/rngToolsUi/gen4/gen4types";
+import {
+  characteristics,
+  characteristicToGen4Label,
+  OptionalCharacteristic4Options,
+} from "~/rngToolsUi/gen4/gen4types";
 import { ToolLayout } from "~/rngToolsUi/workbench/layouts/tool";
 import { formatHex } from "~/utils/formatHex";
 import {
   gen4ProfilesAtom,
-  defaultProfile,
+  findProfileOrDefault,
 } from "~/rngToolsUi/workbench/tools/profile/state";
 import { useAtom } from "jotai";
 import { useHydrate } from "~/hooks/useHydrate";
+import { dpptStarters, hgssStarters } from "./constants";
+import { toOptions } from "~/utils/options";
 
 const LIMIT = 1000;
 
@@ -51,6 +59,7 @@ const Validator = z
     species: z.enum(species),
     year: z.number().int().min(2000).max(2100),
     force_second: z.number().int().min(0).max(59).nullable(),
+    filter_characteristic: z.enum(characteristics).nullable(),
   })
   .extend(pkmFilterSchema.shape);
 
@@ -64,7 +73,9 @@ const initialValues: FormState = {
   offset: 0,
   min_advance: 0,
   max_advance: 2000,
+  filter_level: 5,
   force_second: null,
+  filter_characteristic: null,
   ...getPkmFilterInitialValues(),
 };
 
@@ -93,10 +104,9 @@ const RngInfoFields = () => {
     names: { profile_id: true },
   });
 
-  const { game } =
-    (profiles ?? []).find(({ id }) => id === profile_id) ?? defaultProfile;
+  const { game } = findProfileOrDefault({ profiles, id: profile_id });
 
-  const rngInfoFields: DescriptionsProps["items"] = [
+  const rngInfoFields: Field[] = [
     {
       label: "Profile",
       children: <FormikProfileSelect<FormState> name="profile_id" />,
@@ -106,19 +116,11 @@ const RngInfoFields = () => {
       children: (
         <FormikSelect<FormState, "species">
           name="species"
-          options={
+          options={toOptions(
             game === "HeartGold" || game === "SoulSilver"
-              ? [
-                  { label: "Chikorita", value: "Chikorita" },
-                  { label: "Cyndaquil", value: "Cyndaquil" },
-                  { label: "Totodile", value: "Totodile" },
-                ]
-              : [
-                  { label: "Chimchar", value: "Chimchar" },
-                  { label: "Piplup", value: "Piplup" },
-                  { label: "Turtwig", value: "Turtwig" },
-                ]
-          }
+              ? hgssStarters
+              : dpptStarters,
+          )}
         />
       ),
     },
@@ -163,139 +165,30 @@ const RngInfoFields = () => {
 };
 
 const FilterFields = () => {
-  const { species } = useWatch({
+  const { species, iv_filter_mode } = useWatch({
     validationSchema: Validator,
-    names: { species: true },
+    names: { species: true, iv_filter_mode: true },
   });
 
-  const filterFields: DescriptionsProps["items"] = [
+  const baseFields = getPkmFilterFields<FormState>({
+    species: species ?? undefined,
+    ivFilterMode: iv_filter_mode ?? "ivs",
+  });
+
+  const fields: Field[] = [
+    ...baseFields,
     {
-      label: "HP",
+      label: "Characteristic",
       children: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState>
-              name="filter_min_ivs.hp"
-              numType="decimal"
-            />
-          }
-          max={
-            <FormikNumberInput<FormState>
-              name="filter_max_ivs.hp"
-              numType="decimal"
-            />
-          }
+        <FormikSelect<FormState, "filter_characteristic">
+          name="filter_characteristic"
+          options={OptionalCharacteristic4Options}
         />
       ),
     },
-    {
-      label: "Atk",
-      children: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState>
-              name="filter_min_ivs.atk"
-              numType="decimal"
-            />
-          }
-          max={
-            <FormikNumberInput<FormState>
-              name="filter_max_ivs.atk"
-              numType="decimal"
-            />
-          }
-        />
-      ),
-    },
-    {
-      label: "Def",
-      children: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState>
-              name="filter_min_ivs.def"
-              numType="decimal"
-            />
-          }
-          max={
-            <FormikNumberInput<FormState>
-              name="filter_max_ivs.def"
-              numType="decimal"
-            />
-          }
-        />
-      ),
-    },
-    {
-      label: "SpA",
-      children: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState>
-              name="filter_min_ivs.spa"
-              numType="decimal"
-            />
-          }
-          max={
-            <FormikNumberInput<FormState>
-              name="filter_max_ivs.spa"
-              numType="decimal"
-            />
-          }
-        />
-      ),
-    },
-    {
-      label: "SpD",
-      children: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState>
-              name="filter_min_ivs.spd"
-              numType="decimal"
-            />
-          }
-          max={
-            <FormikNumberInput<FormState>
-              name="filter_max_ivs.spd"
-              numType="decimal"
-            />
-          }
-        />
-      ),
-    },
-    {
-      label: "Spe",
-      children: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState>
-              name="filter_min_ivs.spe"
-              numType="decimal"
-            />
-          }
-          max={
-            <FormikNumberInput<FormState>
-              name="filter_max_ivs.spe"
-              numType="decimal"
-            />
-          }
-        />
-      ),
-    },
-    ...getPkmFilterFields<FormState>({
-      species: species ?? undefined,
-      displayIvs: false,
-      displayHiddenPower: false,
-    }).map((field) => ({
-      label: field.label,
-      children: field.input,
-    })),
   ];
 
-  return (
-    <Descriptions bordered title="Filters" items={filterFields} column={1} />
-  );
+  return <Descriptions bordered title="Filters" items={fields} column={1} />;
 };
 
 const columns: ResultColumn<Result>[] = [
@@ -349,9 +242,10 @@ export const Static4Generator = () => {
   });
 
   const onSubmit = async (opts: FormState) => {
-    const { tid, sid, game } =
-      (profiles ?? []).find(({ id }) => id === opts.profile_id) ??
-      defaultProfile;
+    const { tid, sid, game } = findProfileOrDefault({
+      profiles,
+      id: opts.profile_id,
+    });
 
     const baseOpts: RustOption<Gen4StaticOpts> = {
       game,
@@ -359,14 +253,14 @@ export const Static4Generator = () => {
       sid,
       encounter_max_level: 5,
       encounter_min_level: 5,
-      filter: pkmFilterFieldsToRustInput(opts),
+      filter: await pkmFilterFieldsToRustInput(opts),
       initial_advances: opts.min_advance,
       max_advances: opts.max_advance,
       species: opts.species,
       lead: "None",
       offset: opts.offset,
       seed: opts.seed,
-      filter_characteristic: null,
+      filter_characteristic: opts.filter_characteristic,
       filter_level: null,
     };
     const chunkedAdvances = chunkRange(

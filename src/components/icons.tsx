@@ -23,7 +23,15 @@ import {
 import { BiMessageAltError } from "react-icons/bi";
 import { TiWarningOutline } from "react-icons/ti";
 import { AiOutlineSearch } from "react-icons/ai";
-import { FaDiscord, FaRegCopy, FaEye } from "react-icons/fa";
+import {
+  FaDiscord,
+  FaRegCopy,
+  FaEye,
+  FaCaretLeft,
+  FaCaretRight,
+  FaCaretUp,
+  FaCaretDown,
+} from "react-icons/fa";
 import { IoLanguage, IoSparkles } from "react-icons/io5";
 import { PiPersonSimpleWalkBold, PiWarningOctagonBold } from "react-icons/pi";
 import {
@@ -79,6 +87,10 @@ const icons = {
   LightMode: MdOutlineLightMode,
   DarkMode: MdOutlineDarkMode,
   Eye: FaEye,
+  CaretLeft: FaCaretLeft,
+  CaretRight: FaCaretRight,
+  CaretUp: FaCaretUp,
+  CaretDown: FaCaretDown,
 } as const;
 
 export type IconName = keyof typeof icons;

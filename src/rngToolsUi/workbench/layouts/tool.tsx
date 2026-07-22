@@ -1,5 +1,5 @@
 import * as tst from "ts-toolbelt";
-import { Flex, ResultTable, ResultColumn, Button } from "~/components";
+import { Flex, ResultTable, ResultColumn, Button, Icon } from "~/components";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import {
   DefaultValues,
@@ -26,6 +26,50 @@ const ProgressContainer = styled(Flex)(({ theme }) => ({
   paddingRight: 8,
   flex: 1,
 }));
+
+const UpDownIconContainer = styled(Flex)(({ theme }) => ({
+  backgroundColor: theme.token.colorBgMask,
+  borderRadius: 4,
+  paddingTop: 4,
+  paddingBottom: 4,
+  paddingLeft: 10,
+  paddingRight: 10,
+}));
+
+const LeftRightIconContainer = styled(Flex)(({ theme }) => ({
+  backgroundColor: theme.token.colorBgMask,
+  borderRadius: 4,
+  paddingTop: 10,
+  paddingBottom: 10,
+  paddingLeft: 4,
+  paddingRight: 4,
+}));
+
+const upDownIcons = {
+  start: (
+    <UpDownIconContainer mb={20}>
+      <Icon name="CaretUp" size={20} />
+    </UpDownIconContainer>
+  ),
+  end: (
+    <UpDownIconContainer mt={20}>
+      <Icon name="CaretDown" size={20} />
+    </UpDownIconContainer>
+  ),
+};
+
+const leftRightIcons = {
+  start: (
+    <LeftRightIconContainer mr={20}>
+      <Icon name="CaretLeft" size={20} />
+    </LeftRightIconContainer>
+  ),
+  end: (
+    <LeftRightIconContainer ml={20}>
+      <Icon name="CaretRight" size={20} />
+    </LeftRightIconContainer>
+  ),
+};
 
 type ToolLayoutProps<FormState, Result> = {
   results: Result[];
@@ -72,9 +116,9 @@ export const ToolLayout = <
       control={control}
       {...form}
     >
-      <SplitterContainer vertical>
+      <SplitterContainer vertical collapsibleIcon={upDownIcons}>
         <Splitter.Panel>
-          <Splitter>
+          <Splitter collapsibleIcon={leftRightIcons}>
             {slots.rngInfoFields != null && (
               <Splitter.Panel collapsible>
                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -125,7 +169,7 @@ export const ToolLayout = <
             )}
           </Splitter>
         </Splitter.Panel>
-        <Splitter.Panel>
+        <Splitter.Panel collapsible>
           {progressPercent != null && (
             <ProgressContainer>
               <Progress percent={progressPercent} size={["100%", 12]} />

@@ -76,6 +76,11 @@ export const getTheme = ({
         subMenuItemSelectedColor: tokens.colorLink,
         itemSelectedColor: isLightMode ? "#6200ee" : tokens.colorText,
       },
+      Splitter: {
+        splitBarDraggableSize: 100,
+        splitBarSize: 4,
+        splitTriggerSize: 10,
+      },
     },
   };
 };

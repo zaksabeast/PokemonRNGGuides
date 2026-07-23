@@ -1,23 +1,26 @@
-use super::grid::{RING_TILE_COUNT, patch_grid_coords};
-use super::types::{BattleResult, Patch, ShakeType, SimulateAdvanceResult};
+use super::grid::patch_grid_coords;
+use super::types::{BattleResult, Patch, PokeRadar4AdvanceOpts, ShakeType, SimulateAdvanceResult};
 use crate::gen4::game_logic::{DpptLogic, GameSpecificLogic};
 use crate::rng::{Rng, lcrng::Pokerng};
 use wasm_bindgen::prelude::*;
+
+use super::grid::RING_TILE_COUNT;
 
 const RATES_WIN: [u16; 4] = [88, 68, 48, 28];
 const RATES_CATCH: [u16; 4] = [98, 78, 58, 38];
 
 #[wasm_bindgen]
-pub fn simulate_advance(
-    init_seed: u32,
-    target_advance: u32,
-    chain_count: u16,
-    battle_result: BattleResult,
-    selected_shake: ShakeType,
-) -> SimulateAdvanceResult {
-    let mut rng = Pokerng::new(init_seed);
+pub fn pokeradar4_simulate_advance(opts: PokeRadar4AdvanceOpts) -> SimulateAdvanceResult {
+    let PokeRadar4AdvanceOpts {
+        init_seed,
+        target_advance,
+        chain_count,
+        battle_result,
+        selected_shake,
+    } = opts;
 
-    rng.jump(target_advance as usize);
+    let mut rng = Pokerng::new(init_seed);
+    rng.jump(target_advance);
 
     let mut positions: [u16; 4] = [0; 4];
     for (ring, slot) in positions.iter_mut().enumerate() {
@@ -77,14 +80,26 @@ mod tests {
 
     #[test]
     fn test_patch_count() {
-        let result = simulate_advance(0, 0, 1, BattleResult::Catch, ShakeType::Slow);
+        let result = pokeradar4_simulate_advance(PokeRadar4AdvanceOpts {
+            init_seed: 0,
+            target_advance: 0,
+            chain_count: 1,
+            battle_result: BattleResult::Catch,
+            selected_shake: ShakeType::Slow,
+        });
 
         assert_eq!(result.patches.len(), 4);
     }
 
     #[test]
     fn test_patch_ring() {
-        let result = simulate_advance(123456, 0, 10, BattleResult::Win, ShakeType::Fast);
+        let result = pokeradar4_simulate_advance(PokeRadar4AdvanceOpts {
+            init_seed: 123456,
+            target_advance: 0,
+            chain_count: 10,
+            battle_result: BattleResult::Win,
+            selected_shake: ShakeType::Fast,
+        });
 
         for (expected_ring, patch) in result.patches.iter().enumerate() {
             assert_eq!(patch.ring, expected_ring as i32);
@@ -93,7 +108,14 @@ mod tests {
 
     #[test]
     fn test_real_game_case() {
-        let result = simulate_advance(0x010D029F, 350, 1, BattleResult::Catch, ShakeType::Slow);
+        let result = pokeradar4_simulate_advance(PokeRadar4AdvanceOpts {
+            init_seed: 0x010D029F,
+            target_advance: 350,
+            chain_count: 1,
+            battle_result: BattleResult::Catch,
+            selected_shake: ShakeType::Slow,
+        });
+
         let expected = [
             Patch {
                 ring: 0,

@@ -32,3 +32,13 @@ pub struct SimulateAdvanceResult {
     pub patches: Vec<Patch>,
     pub seed_after_patch: u32,
 }
+
+#[derive(Clone, Debug, PartialEq, Eq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct PokeRadar4AdvanceOpts {
+    pub init_seed: u32,
+    pub target_advance: usize,
+    pub chain_count: u16,
+    pub battle_result: BattleResult,
+    pub selected_shake: ShakeType,
+}

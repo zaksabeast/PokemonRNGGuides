@@ -1,18 +1,12 @@
-use serde::{Deserialize, Serialize};
-use tsify::Tsify;
-use wasm_bindgen::prelude::*;
+pub(crate) const RING_TILE_COUNT: [u16; 4] = [32, 24, 16, 8];
 
-pub const RING_TILE_COUNT: [u16; 4] = [32, 24, 16, 8];
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct GridCoords {
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) struct GridCoords {
     pub x: i32,
     pub z: i32,
 }
 
-#[wasm_bindgen]
-pub fn ring_offset_to_coords(ring: i32, rand: u16) -> GridCoords {
+pub(crate) fn ring_offset_to_coords(ring: i32, rand: u16) -> GridCoords {
     let size = 9 - ring * 2;
     let rand = rand as i32;
     let row = rand / size;
@@ -36,8 +30,7 @@ pub fn ring_offset_to_coords(ring: i32, rand: u16) -> GridCoords {
     }
 }
 
-#[wasm_bindgen]
-pub fn patch_grid_coords(ring: i32, rand: u16) -> GridCoords {
+pub(crate) fn patch_grid_coords(ring: i32, rand: u16) -> GridCoords {
     let offset = ring_offset_to_coords(ring, rand);
     GridCoords {
         x: ring + offset.x,

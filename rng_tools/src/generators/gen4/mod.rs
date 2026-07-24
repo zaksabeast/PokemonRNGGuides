@@ -10,6 +10,7 @@ mod pokeradar;
 mod seed;
 mod seed_time;
 mod stationary;
+mod step_calculator;
 mod swarm;
 mod voltorb_flip;
 

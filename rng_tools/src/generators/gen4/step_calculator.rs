@@ -53,12 +53,31 @@ impl EncounterTerrain {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
+pub enum EncounterMovement {
+    Walking,
+    Surfing,
+    Biking,
+    TallGrass,
+}
+
+impl EncounterMovement {
+    fn base_rate(self) -> u32 {
+        match self {
+            EncounterMovement::Walking => 40,
+            EncounterMovement::Surfing => 40,
+            EncounterMovement::Biking => 70,
+            EncounterMovement::TallGrass => 70,
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct StepSearchOpts {
     pub seed: u32,
     pub initial_advance: usize,
     pub current_cooldown_steps: u32,
-    /// True for walking/surfing, false for biking/tall grass.
-    pub is_walking: bool,
+    pub movement: EncounterMovement,
     pub terrain: EncounterTerrain,
     pub ability: EncounterAbilityEffect,
     pub flute: EncounterFlute,
@@ -121,7 +140,7 @@ fn compute_encounter_rate(
 /// Walks the RNG forward step-by-step until an encounter check passes or `DEFAULT_MAX_STEPS` is exceeded.
 #[wasm_bindgen]
 pub fn search_steps_to_encounter(opts: StepSearchOpts) -> Option<StepSearchResult> {
-    let movement_rate: u32 = if opts.is_walking { 40 } else { 70 };
+    let movement_rate: u32 = opts.movement.base_rate();
     let encounter_rate = compute_encounter_rate(opts.terrain, opts.ability, opts.flute, opts.item);
     let map_rate = encounter_cooldown_steps(encounter_rate);
 
@@ -212,7 +231,7 @@ mod tests {
             seed: 0x1234ABCD,
             initial_advance: 30,
             current_cooldown_steps: 0,
-            is_walking: true,
+            movement: EncounterMovement::Walking,
             terrain: EncounterTerrain::Grass,
             ability: EncounterAbilityEffect::None,
             flute: EncounterFlute::None,
@@ -221,9 +240,15 @@ mod tests {
 
         let result = search_steps_to_encounter(opts).unwrap();
 
-        assert_eq!(result.total_steps, 8);
-        assert_eq!(result.encounter_rate, 30);
-        assert_eq!(result.seed_after, 0x30292E64);
+        let expected = StepSearchResult {
+            total_steps: 8,
+            missing_steps: 3,
+            cooldown_steps: 5,
+            seed_after: 0x30292E64,
+            encounter_rate: 30,
+        };
+
+        assert_eq!(result, expected);
     }
 
     #[test]
@@ -232,7 +257,7 @@ mod tests {
             seed: 0x1234ABCD,
             initial_advance: 30,
             current_cooldown_steps: 3,
-            is_walking: true,
+            movement: EncounterMovement::Walking,
             terrain: EncounterTerrain::Grass,
             ability: EncounterAbilityEffect::Double,
             flute: EncounterFlute::White,
@@ -241,9 +266,15 @@ mod tests {
 
         let result = search_steps_to_encounter(opts).unwrap();
 
-        assert_eq!(result.total_steps, 3);
-        assert_eq!(result.encounter_rate, 60);
-        assert_eq!(result.seed_after, 0x0EA41E1F);
+        let expected = StepSearchResult {
+            total_steps: 3,
+            missing_steps: 3,
+            cooldown_steps: 0,
+            seed_after: 0x0EA41E1F,
+            encounter_rate: 60,
+        };
+
+        assert_eq!(result, expected);
     }
 
     #[test]
@@ -252,7 +283,7 @@ mod tests {
             seed: 0x1234ABCD,
             initial_advance: 30,
             current_cooldown_steps: 0,
-            is_walking: false,
+            movement: EncounterMovement::Biking,
             terrain: EncounterTerrain::WaterOrCave,
             ability: EncounterAbilityEffect::None,
             flute: EncounterFlute::None,
@@ -261,9 +292,15 @@ mod tests {
 
         let result = search_steps_to_encounter(opts).unwrap();
 
-        assert_eq!(result.total_steps, 12);
-        assert_eq!(result.encounter_rate, 10);
-        assert_eq!(result.seed_after, 0x038EC132);
+        let expected = StepSearchResult {
+            total_steps: 12,
+            missing_steps: 5,
+            cooldown_steps: 7,
+            seed_after: 0x038EC132,
+            encounter_rate: 10,
+        };
+
+        assert_eq!(result, expected);
     }
 
     #[test]
@@ -272,7 +309,7 @@ mod tests {
             seed: 0x1234ABCD,
             initial_advance: 30,
             current_cooldown_steps: 3,
-            is_walking: false,
+            movement: EncounterMovement::Biking,
             terrain: EncounterTerrain::WaterOrCave,
             ability: EncounterAbilityEffect::Half,
             flute: EncounterFlute::Black,
@@ -281,8 +318,14 @@ mod tests {
 
         let result = search_steps_to_encounter(opts).unwrap();
 
-        assert_eq!(result.total_steps, 92);
-        assert_eq!(result.encounter_rate, 1);
-        assert_eq!(result.seed_after, 0x026B57FA);
+        let expected = StepSearchResult {
+            total_steps: 92,
+            missing_steps: 87,
+            cooldown_steps: 5,
+            seed_after: 0x026B57FA,
+            encounter_rate: 1,
+        };
+
+        assert_eq!(result, expected);
     }
 }

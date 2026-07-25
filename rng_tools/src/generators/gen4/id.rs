@@ -1,4 +1,6 @@
-use crate::gen4::seed_time4::{SeedTime4, seedtime4_from_pairs, seedtime4_search_iter};
+use crate::gen4::seed_time::{
+    SeedTime4, generate_seedtime4_from_datetime_delay, seedtime4_iter_with_second,
+};
 use crate::rng::Rng;
 use crate::rng::mt::MT;
 use crate::{IdFilter, RngDateTime, gen3_tsv};
@@ -40,7 +42,7 @@ pub fn generate_dppt_ids(opts: Id4Options) -> Vec<Id4> {
         datetime
     });
 
-    seedtime4_from_pairs(iproduct!(datetime_iter, min_delay..=max_delay))
+    generate_seedtime4_from_datetime_delay(iproduct!(datetime_iter, min_delay..=max_delay))
         .filter_map(|seed_time| {
             let mut rng = MT::new(seed_time.seed);
             rng.rand::<u32>();
@@ -71,7 +73,7 @@ pub struct Id4SearchOptions {
 
 #[wasm_bindgen]
 pub fn search_dppt_ids(opts: Id4SearchOptions) -> Vec<Id4> {
-    seedtime4_search_iter(
+    seedtime4_iter_with_second(
         opts.min_delay..=opts.max_delay,
         opts.year,
         None,

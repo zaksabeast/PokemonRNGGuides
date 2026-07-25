@@ -91,6 +91,7 @@ pub fn search_static4_radar_shiny(opts: &SearchStatic4Opts) -> Vec<Static4State>
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::gen4::seed_time::calc_seed;
     use crate::gen4::{GameVersion, LeadAbility};
     use crate::{AbilityType, Characteristic, Gender, Nature, PkmFilter, Species};
 
@@ -187,7 +188,7 @@ mod tests {
 
     mod method1 {
         use super::*;
-        use crate::{assert_list_eq, datetime, gen4::seed_time4::SeedTime4, ivs};
+        use crate::{assert_list_eq, datetime, gen4::seed_time::SeedTime4, ivs};
 
         #[test]
         fn offset_10() {
@@ -284,7 +285,7 @@ mod tests {
         #[test]
         fn delay_range_uses_decoded_delay() {
             let datetime = datetime!(2026-05-14 12:34:30).unwrap();
-            let seed = crate::gen4::calc_seed(&datetime, 1749);
+            let seed = calc_seed(&datetime, 1749);
             let state = BaseStatic4State::new(
                 seed,
                 Species::Omanyte,
@@ -337,7 +338,7 @@ mod tests {
         #[test]
         fn optional_year_returns_first_matching_year() {
             let datetime = datetime!(2026-05-14 12:34:30).unwrap();
-            let seed = crate::gen4::calc_seed(&datetime, 1749);
+            let seed = calc_seed(&datetime, 1749);
             let state = BaseStatic4State::new(
                 seed,
                 Species::Omanyte,

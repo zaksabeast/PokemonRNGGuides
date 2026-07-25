@@ -1,5 +1,5 @@
 use super::opts::SearchStatic4Opts;
-use crate::gen4::seed_time4::SeedTime4SearchLookup;
+use crate::gen4::seed_time::SeedTime4Searcher;
 use crate::gen4::stationary::searcher::base_state::{BaseStatic4State, Static4State};
 use crate::rng::Rng;
 use crate::rng::lcrng::Pokerng;
@@ -20,7 +20,7 @@ impl SeedFilters {
         let filters = self;
         let min_advance = filters.min_advance;
         let max_advance = filters.max_advance;
-        let seed_time_lookup = SeedTime4SearchLookup::new(
+        let seed_time_lookup = SeedTime4Searcher::new(
             filters.year,
             filters.month,
             filters.min_delay..=filters.max_delay,

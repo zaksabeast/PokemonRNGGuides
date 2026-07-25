@@ -242,7 +242,7 @@ export const CalibrateStarter4 = () => {
 
     const maxAdvances = state.config.game === "Platinum" ? 40 : 20;
 
-    const seedTimes = await rngTools.calc_gen4_seeds({
+    const seedTimes = await rngTools.generate_seedtime4s({
       datetime,
       seconds_increment: 2,
       min_delay: minDelay,

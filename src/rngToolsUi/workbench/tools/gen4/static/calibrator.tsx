@@ -300,7 +300,7 @@ export const Static4Calibrator = () => {
       fromRngDateTime(targetDateTime).subtract(opts.seconds_offset, "seconds"),
     );
 
-    const seedTimes = await rngTools.calc_gen4_seeds({
+    const seedTimes = await rngTools.generate_seedtime4s({
       datetime,
       seconds_increment: opts.seconds_offset * 2,
       min_delay: opts.min_delay,

@@ -1,7 +1,7 @@
 use crate::{
     gen4::{
         GameVersion,
-        seed_time4::{SeedTime4, seedtime4_iter},
+        seed_time::{SeedTime4, seedtime4_iter},
     },
     rng::{Rng, lcrng::Arng, mt::MT},
 };

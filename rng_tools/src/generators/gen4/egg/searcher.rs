@@ -5,7 +5,7 @@ use crate::{
     gen4::{
         held_generator::{Egg4HeldOpts, Egg4HeldResult, generate_egg4_helds},
         pickup_generator::{Egg4PickupOpts, Egg4PickupResult, egg4_pickup_iter},
-        seed_time4::{SeedTime4, seedtime4_iter},
+        seed_time::{SeedTime4, seedtime4_iter},
     },
 };
 use serde::{Deserialize, Serialize};

@@ -17,7 +17,7 @@ export const getFindableSeeds = async ({
   date: RngDate;
   time: RngTime;
 }) => {
-  const seedTimes = await rngTools.calc_gen4_seeds({
+  const seedTimes = await rngTools.generate_seedtime4s({
     min_delay: minDelay,
     max_delay: maxDelay,
     seconds_increment: Math.max(maxSeconds - minSeconds, 0),

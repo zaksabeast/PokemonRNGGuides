@@ -132,7 +132,7 @@ export const DpptCoinFlipSeedCalibrator = () => {
       return;
     }
 
-    const searchResults = await rngTools.calc_dppt_seedtimes({
+    const searchResults = await rngTools.get_relative_dppt_seedtimes({
       seedtime: seedTime,
       delay_offset: formState.delayOffset,
       second_offset: formState.secondOffset,

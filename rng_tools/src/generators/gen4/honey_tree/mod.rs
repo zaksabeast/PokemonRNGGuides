@@ -308,7 +308,9 @@ mod tests {
     #[test]
     fn find_special_munchlax_seeds() {
         use crate::RngDateTime;
-        use crate::gen4::seed_time4::{Seed4CalcOpts, SeedTime4Options};
+        use crate::gen4::seed_time::{
+            Seed4CalcOpts, ab::build_seedtime4_ab_lookup, find_seedtime4_with_lookup,
+        };
         use chrono::Duration;
         use std::mem;
 
@@ -392,16 +394,17 @@ mod tests {
 
         let start_datetime = opts.datetime.clone().to_naive_datetime().unwrap();
         let end_datetime = start_datetime + Duration::seconds(opts.seconds_increment as i64);
+        let year = opts.datetime.year;
+
+        let ab_lookup = build_seedtime4_ab_lookup(year, Some(opts.datetime.month), None);
 
         for seed in candidate_seeds {
-            let seed_time = SeedTime4Options::new_safe_second(
+            let seed_time = find_seedtime4_with_lookup(
                 seed,
-                1,
-                opts.datetime.year,
-                Some(opts.datetime.month),
-                opts.min_delay..=opts.max_delay,
-            )
-            .find_seedtime();
+                year,
+                &(opts.min_delay..=opts.max_delay),
+                &ab_lookup,
+            );
 
             if let Some(seed_time) = seed_time {
                 let datetime = seed_time.datetime.to_naive_datetime().unwrap();

@@ -1,7 +1,7 @@
 use super::{VoltorbFlipBoard, VoltorbFlipLevel, generate_board};
 use crate::{
     RngDateTime,
-    gen4::seed_time4::{Seed4CalcOpts, SeedTime4, calc_gen4_seeds},
+    gen4::seed_time::{Seed4CalcOpts, SeedTime4, generate_seedtime4s},
     rng::mt::MT,
 };
 use serde::{Deserialize, Serialize};
@@ -36,7 +36,7 @@ pub fn find_voltorb_flip_seed(opts: FindVoltorbFlipSeedOpts) -> Vec<SeedTime4> {
         min_delay,
         max_delay,
     };
-    calc_gen4_seeds(seed_opts)
+    generate_seedtime4s(seed_opts)
         .into_iter()
         .filter(|seed| {
             let mut rng = MT::new(seed.seed);

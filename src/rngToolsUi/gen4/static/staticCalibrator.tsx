@@ -347,7 +347,7 @@ export const Static4Calibrator = () => {
     const minDelay = Math.max(targetDelay - opts.delayRange, 0);
     const maxDelay = targetDelay + opts.delayRange;
 
-    const seedTimes = await rngTools.calc_gen4_seeds({
+    const seedTimes = await rngTools.generate_seedtime4s({
       datetime,
       seconds_increment: 2 * opts.secondsRange,
       min_delay: minDelay,

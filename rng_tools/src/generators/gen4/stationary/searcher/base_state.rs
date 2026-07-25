@@ -1,6 +1,6 @@
 use crate::{
     AbilityType, Characteristic, Gender, Ivs, Nature, PkmState, Species, gen3_shiny,
-    gen4::{LeadAbility, seed_time4::SeedTime4},
+    gen4::{LeadAbility, seed_time::SeedTime4},
 };
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;

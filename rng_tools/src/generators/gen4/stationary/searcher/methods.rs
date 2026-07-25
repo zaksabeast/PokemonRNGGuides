@@ -2,7 +2,7 @@ use super::base_state::{BaseStatic4State, Static4State};
 use crate::Species;
 use crate::gen4::calc_level::{LevelCalculator, ReversedHoneyLevel, SetLevel};
 use crate::gen4::game_logic::{DpptLogic, GameSpecificLogic, HgssLogic};
-use crate::gen4::seed_time4::{calc_delay_from_seed, find_seedtime4};
+use crate::gen4::seed_time4::SeedTime4SearchLookup;
 use crate::gen4::{GameVersion, LeadAbility, StaticMethod};
 use crate::generators::utils::recover_poke_rng_iv;
 use crate::rng::GetRand;
@@ -38,7 +38,7 @@ pub struct SearchStatic4Opts {
     pub max_advance: usize,
     pub min_delay: u32,
     pub max_delay: u32,
-    pub year: u32,
+    pub year: Option<u32>,
     pub month: Option<u32>,
     pub force_second: Option<u32>,
     pub lead: Static4LeadInput,
@@ -48,7 +48,7 @@ struct SeedFilters {
     offset: usize,
     min_advance: usize,
     max_advance: usize,
-    year: u32,
+    year: Option<u32>,
     month: Option<u32>,
     min_delay: u32,
     max_delay: u32,
@@ -60,6 +60,12 @@ impl SeedFilters {
         let filters = self;
         let min_advance = filters.min_advance;
         let max_advance = filters.max_advance;
+        let seed_time_lookup = SeedTime4SearchLookup::new(
+            filters.year,
+            filters.month,
+            filters.min_delay..=filters.max_delay,
+            filters.force_second,
+        );
 
         let mut results = vec![];
 
@@ -70,19 +76,7 @@ impl SeedFilters {
             let mut seed = rng.seed();
 
             for advance in min_advance..=max_advance {
-                // Quick delay precheck before resolving the full seed time.
-                let delay = calc_delay_from_seed(seed, filters.year);
-
-                if delay >= filters.min_delay
-                    && delay <= filters.max_delay
-                    && let Some(seed_time) = find_seedtime4(
-                        seed,
-                        filters.year,
-                        filters.month,
-                        filters.min_delay..=filters.max_delay,
-                        filters.force_second,
-                    )
-                {
+                if let Some(seed_time) = seed_time_lookup.find(seed) {
                     let found_state = state.add_seedtime(advance, seed_time);
                     results.push(found_state);
                 }
@@ -859,7 +853,7 @@ mod tests {
 
     mod method1 {
         use super::*;
-        use crate::{assert_list_eq, datetime, ivs};
+        use crate::{assert_list_eq, datetime, gen4::seed_time4::SeedTime4, ivs};
 
         #[test]
         fn offset_10() {
@@ -867,7 +861,7 @@ mod tests {
                 tid: 12345,
                 sid: 54321,
                 offset: 10,
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 encounter_min_level: 0,
                 encounter_max_level: 0,
@@ -897,7 +891,7 @@ mod tests {
                 tid: 12345,
                 sid: 54321,
                 offset: 0,
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 encounter_min_level: 0,
                 encounter_max_level: 0,
@@ -928,7 +922,7 @@ mod tests {
                 tid: 12345,
                 sid: 54321,
                 offset: 0,
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 encounter_min_level: 0,
                 encounter_max_level: 0,
@@ -973,7 +967,7 @@ mod tests {
                 offset: 0,
                 min_advance: 0,
                 max_advance: 0,
-                year: datetime.year,
+                year: Some(datetime.year),
                 month: Some(datetime.month),
                 min_delay: 800,
                 max_delay: 1750,
@@ -981,8 +975,82 @@ mod tests {
             }
             .filter(std::iter::once(state));
 
-            assert_eq!(results.len(), 1);
-            assert_eq!(results[0].seed_time.delay, 1749);
+            assert_list_eq!(
+                results,
+                [Static4State {
+                    state: BaseStatic4State {
+                        seed: 0x860c06ef,
+                        advance: 0,
+                        pid: 0,
+                        ivs: ivs!(0 / 0 / 0 / 0 / 0 / 0),
+                        ability: AbilityType::First,
+                        gender: Gender::Female,
+                        nature: Nature::Hardy,
+                        shiny: false,
+                        characteristic: Characteristic::LovesToEat,
+                        lead: LeadAbility::None,
+                        level: 1
+                    },
+                    seed_time: SeedTime4 {
+                        seed: 0x860c06ef,
+                        datetime: datetime!(2026-05-09 12:59:30).unwrap(),
+                        delay: 1749
+                    }
+                }]
+            );
+        }
+
+        #[test]
+        fn optional_year_returns_first_matching_year() {
+            let datetime = datetime!(2026-05-14 12:34:30).unwrap();
+            let seed = crate::gen4::calc_seed(&datetime, 1749);
+            let state = BaseStatic4State::new(
+                seed,
+                Species::Omanyte,
+                Nature::Hardy,
+                1,
+                0,
+                12345,
+                54321,
+                ivs!(0 / 0 / 0 / 0 / 0 / 0),
+                LeadAbility::None,
+            );
+
+            let results = SeedFilters {
+                offset: 0,
+                min_advance: 0,
+                max_advance: 0,
+                year: None,
+                month: Some(datetime.month),
+                min_delay: 1749,
+                max_delay: 1750,
+                force_second: Some(datetime.second),
+            }
+            .filter(std::iter::once(state));
+
+            assert_list_eq!(
+                results,
+                [Static4State {
+                    state: BaseStatic4State {
+                        seed: 0x860c06ef,
+                        advance: 0,
+                        pid: 0,
+                        ivs: ivs!(0 / 0 / 0 / 0 / 0 / 0),
+                        ability: AbilityType::First,
+                        gender: Gender::Female,
+                        nature: Nature::Hardy,
+                        shiny: false,
+                        characteristic: Characteristic::LovesToEat,
+                        lead: LeadAbility::None,
+                        level: 1
+                    },
+                    seed_time: SeedTime4 {
+                        seed: 0x860c06ef,
+                        datetime: datetime!(2025-05-09 12:59:30).unwrap(),
+                        delay: 1750
+                    }
+                }]
+            );
         }
     }
 
@@ -1003,7 +1071,7 @@ mod tests {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
                     ..Default::default()
                 },
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 encounter_min_level: 0,
                 encounter_max_level: 0,
@@ -1032,7 +1100,7 @@ mod tests {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
                     ..Default::default()
                 },
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 encounter_min_level: 0,
                 encounter_max_level: 0,
@@ -1063,7 +1131,7 @@ mod tests {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
                     ..Default::default()
                 },
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 encounter_min_level: 0,
                 encounter_max_level: 0,
@@ -1093,7 +1161,7 @@ mod tests {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
                     ..Default::default()
                 },
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 encounter_min_level: 0,
                 encounter_max_level: 0,
@@ -1123,7 +1191,7 @@ mod tests {
                     min_ivs: ivs!(30 / 30 / 30 / 25 / 25 / 20),
                     ..Default::default()
                 },
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 encounter_min_level: 0,
                 encounter_max_level: 0,
@@ -1169,7 +1237,7 @@ mod tests {
                 max_advance: 30,
                 min_delay: 800,
                 max_delay: 900,
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 force_second: None,
             };
@@ -1198,7 +1266,7 @@ mod tests {
                 max_advance: 30,
                 min_delay: 800,
                 max_delay: 900,
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 force_second: None,
             };
@@ -1229,7 +1297,7 @@ mod tests {
                 max_advance: 200,
                 min_delay: 800,
                 max_delay: 801,
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 force_second: None,
             };
@@ -1264,7 +1332,7 @@ mod tests {
                 max_advance: 30,
                 min_delay: 800,
                 max_delay: 900,
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 force_second: None,
             };
@@ -1294,7 +1362,7 @@ mod tests {
                 max_advance: 30,
                 min_delay: 800,
                 max_delay: 900,
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 force_second: None,
             };
@@ -1329,7 +1397,7 @@ mod tests {
                 max_advance: 30,
                 min_delay: 800,
                 max_delay: 900,
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 force_second: None,
             };
@@ -1359,7 +1427,7 @@ mod tests {
                 max_advance: 200,
                 min_delay: 800,
                 max_delay: 801,
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 force_second: None,
             };
@@ -1394,7 +1462,7 @@ mod tests {
                 max_advance: 30,
                 min_delay: 800,
                 max_delay: 900,
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 force_second: None,
             };
@@ -1426,7 +1494,7 @@ mod tests {
                 max_advance: 30,
                 min_delay: 800,
                 max_delay: 900,
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 force_second: None,
             };
@@ -1458,7 +1526,7 @@ mod tests {
                 max_advance: 30,
                 min_delay: 800,
                 max_delay: 900,
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 force_second: None,
             };
@@ -1487,7 +1555,7 @@ mod tests {
                     min_ivs: ivs!(28 / 28 / 28 / 28 / 28 / 28),
                     ..Default::default()
                 },
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 encounter_min_level: 33,
                 encounter_max_level: 33,
@@ -1517,7 +1585,7 @@ mod tests {
                     min_ivs: ivs!(28 / 28 / 28 / 28 / 28 / 28),
                     ..Default::default()
                 },
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 encounter_min_level: 33,
                 encounter_max_level: 33,
@@ -1553,7 +1621,7 @@ mod tests {
                     min_ivs: ivs!(28 / 28 / 28 / 28 / 28 / 28),
                     ..Default::default()
                 },
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 encounter_min_level: 33,
                 encounter_max_level: 33,
@@ -1585,7 +1653,7 @@ mod tests {
                     min_ivs: ivs!(28 / 28 / 28 / 28 / 28 / 28),
                     ..Default::default()
                 },
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 encounter_min_level: 33,
                 encounter_max_level: 33,
@@ -1622,7 +1690,7 @@ mod tests {
                     min_ivs: ivs!(28 / 28 / 28 / 28 / 28 / 28),
                     ..Default::default()
                 },
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 encounter_min_level: 33,
                 encounter_max_level: 33,
@@ -1654,7 +1722,7 @@ mod tests {
                     min_ivs: ivs!(28 / 28 / 28 / 28 / 28 / 28),
                     ..Default::default()
                 },
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 encounter_min_level: 33,
                 encounter_max_level: 33,
@@ -1692,7 +1760,7 @@ mod tests {
                     min_ivs: ivs!(28 / 28 / 28 / 28 / 28 / 28),
                     ..Default::default()
                 },
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 encounter_min_level: 33,
                 encounter_max_level: 33,
@@ -1724,7 +1792,7 @@ mod tests {
                     min_ivs: ivs!(28 / 28 / 28 / 28 / 28 / 28),
                     ..Default::default()
                 },
-                year: 2000,
+                year: Some(2000),
                 month: None,
                 encounter_min_level: 33,
                 encounter_max_level: 33,

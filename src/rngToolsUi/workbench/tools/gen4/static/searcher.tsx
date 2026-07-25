@@ -52,7 +52,7 @@ const Validator = z
     min_advance: z.number().int().min(0),
     max_advance: z.number().int().min(0),
     species: z.enum(species),
-    year: z.number().int().min(2000).max(2099),
+    year: z.number().int().min(2000).max(2099).nullable(),
     force_second: z.number().int().min(0).max(59).nullable(),
   })
   .extend(pkmFilterSchema.shape);
@@ -61,7 +61,7 @@ type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   profile_id: "",
-  year: 2000,
+  year: null,
   species: "Turtwig",
   min_delay: 600,
   max_delay: 1000,

@@ -27,6 +27,16 @@ impl SeedTime4 {
     }
 }
 
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+pub struct AbParts {
+    pub month: u32,
+    pub day: u32,
+    pub minute: u32,
+    pub second: u32,
+}
+
+type SeedTime4AbLookup = [Option<AbParts>; 256];
+
 struct SeedTime4SingleMonthOptions {
     pub seed: u32,
     pub year: u32,
@@ -49,6 +59,37 @@ pub(crate) fn calc_delay_from_seed(seed: u32, year: u32) -> u32 {
     }
 }
 
+fn calc_delay_year_base(seed: u32) -> i64 {
+    let cd = (seed >> 16) & 0xff;
+    let efgh = seed & 0xffff;
+    let overflow = match cd > 23 {
+        true => i64::from(cd.wrapping_sub(23).wrapping_mul(0x10000)),
+        false => 0,
+    };
+
+    i64::from(efgh) + 2000 + overflow
+}
+
+fn get_candidate_years(seed: u32, delay_range: &RangeInclusive<u32>) -> RangeInclusive<u32> {
+    let base = calc_delay_year_base(seed);
+    let start = (base - i64::from(*delay_range.end())).max(2000);
+    let end = (base - i64::from(*delay_range.start())).min(2100);
+
+    match start > end {
+        // Intentionally empty range
+        true => RangeInclusive::new(1, 0),
+        false => start as u32..=end as u32,
+    }
+}
+
+fn needs_leap_lookup(month: Option<u32>) -> bool {
+    matches!(month, None | Some(2))
+}
+
+fn is_leap_year(year: u32) -> bool {
+    (year.is_multiple_of(4) && !year.is_multiple_of(100)) || year.is_multiple_of(400)
+}
+
 fn seedtime4_month_range(month: Option<u32>) -> RangeInclusive<u32> {
     match month {
         Some(month) if (1..=12).contains(&month) => month..=month,
@@ -67,7 +108,7 @@ fn build_seedtime4_ab_lookup(
     year: u32,
     month: Option<u32>,
     second_range: Option<RangeInclusive<u32>>,
-) -> [Option<(u32, u32, u32, u32)>; 256] {
+) -> SeedTime4AbLookup {
     let year = year.clamp(2000, 2100);
     let mut lookup = [None; 256];
     let mut remaining = 256;
@@ -88,7 +129,12 @@ fn build_seedtime4_ab_lookup(
                         continue;
                     }
 
-                    lookup[ab] = Some((month, day, minute, second));
+                    lookup[ab] = Some(AbParts {
+                        month,
+                        day,
+                        minute,
+                        second,
+                    });
                     remaining -= 1;
 
                     if remaining == 0 {
@@ -102,12 +148,11 @@ fn build_seedtime4_ab_lookup(
     lookup
 }
 
-fn find_seedtime4_from_range(
+fn find_seedtime4_from_lookup(
     seed: u32,
     year: u32,
-    month: Option<u32>,
-    delay_range: RangeInclusive<u32>,
-    second_range: Option<RangeInclusive<u32>>,
+    delay_range: &RangeInclusive<u32>,
+    ab_lookup: &SeedTime4AbLookup,
 ) -> Option<SeedTime4> {
     let clamped_year = year.clamp(2000, 2100);
     let delay = calc_delay_from_seed(seed, clamped_year);
@@ -115,8 +160,12 @@ fn find_seedtime4_from_range(
         return None;
     }
 
-    let ab_lookup = build_seedtime4_ab_lookup(clamped_year, month, second_range);
-    let (month, day, minute, second) = ab_lookup[(seed >> 24) as usize]?;
+    let AbParts {
+        month,
+        day,
+        minute,
+        second,
+    } = ab_lookup[(seed >> 24) as usize]?;
     let cd = (seed >> 16) & 0xff;
     let hour = if cd > 23 { 23 } else { cd };
 
@@ -132,6 +181,101 @@ fn find_seedtime4_from_range(
             second,
         },
     })
+}
+
+fn find_seedtime4_from_range(
+    seed: u32,
+    year: u32,
+    month: Option<u32>,
+    delay_range: RangeInclusive<u32>,
+    second_range: Option<RangeInclusive<u32>>,
+) -> Option<SeedTime4> {
+    let clamped_year = year.clamp(2000, 2100);
+    let ab_lookup = build_seedtime4_ab_lookup(clamped_year, month, second_range);
+    find_seedtime4_from_lookup(seed, clamped_year, &delay_range, &ab_lookup)
+}
+
+pub(crate) enum SeedTime4SearchLookup {
+    FixedYear {
+        year: u32,
+        delay_range: RangeInclusive<u32>,
+        ab_lookup: SeedTime4AbLookup,
+    },
+    AnyYear {
+        delay_range: RangeInclusive<u32>,
+        common_lookup: SeedTime4AbLookup,
+        // Put this lookup in a box to avoid the large size difference between the two variants of this enum
+        leap_lookup: Option<Box<SeedTime4AbLookup>>,
+    },
+}
+
+impl SeedTime4SearchLookup {
+    pub fn new(
+        year: Option<u32>,
+        month: Option<u32>,
+        delay_range: RangeInclusive<u32>,
+        second: Option<u32>,
+    ) -> Self {
+        let second_range = Some(seedtime4_search_second_range(second));
+
+        match year {
+            Some(year) => {
+                let clamped_year = year.clamp(2000, 2100);
+                let ab_lookup = build_seedtime4_ab_lookup(clamped_year, month, second_range);
+
+                Self::FixedYear {
+                    year: clamped_year,
+                    delay_range,
+                    ab_lookup,
+                }
+            }
+            None => {
+                let common_lookup = build_seedtime4_ab_lookup(2001, month, second_range.clone());
+                let leap_lookup = needs_leap_lookup(month)
+                    .then(|| build_seedtime4_ab_lookup(2000, month, second_range));
+                let leap_lookup = leap_lookup.map(Box::new);
+
+                Self::AnyYear {
+                    delay_range,
+                    common_lookup,
+                    leap_lookup,
+                }
+            }
+        }
+    }
+
+    pub fn find(&self, seed: u32) -> Option<SeedTime4> {
+        match self {
+            Self::FixedYear {
+                year,
+                delay_range,
+                ab_lookup,
+            } => find_seedtime4_from_lookup(seed, *year, delay_range, ab_lookup),
+            Self::AnyYear {
+                delay_range,
+                common_lookup,
+                leap_lookup,
+            } => {
+                for year in get_candidate_years(seed, delay_range) {
+                    let ab_lookup = match is_leap_year(year) {
+                        true => leap_lookup
+                            .as_ref()
+                            .map(|lookup| lookup.as_ref())
+                            .unwrap_or(common_lookup),
+                        false => common_lookup,
+                    };
+
+                    if let Some(seed_time) =
+                        find_seedtime4_from_lookup(seed, year, delay_range, ab_lookup)
+                    {
+                        return Some(seed_time);
+                    }
+                }
+
+                None
+            }
+        }
+    }
 }
 
 fn calc_seedtime_for_month(opts: SeedTime4SingleMonthOptions) -> Vec<SeedTime4> {
@@ -316,7 +460,12 @@ pub fn seedtime4_iter(
             return None;
         }
 
-        let (month, day, minute, second) = ab_lookup[ab as usize]?;
+        let AbParts {
+            month,
+            day,
+            minute,
+            second,
+        } = ab_lookup[ab as usize]?;
 
         Some(SeedTime4 {
             seed,
@@ -347,6 +496,7 @@ pub(crate) fn seedtime4_search_iter(
     )
 }
 
+#[cfg(test)]
 pub(crate) fn find_seedtime4(
     seed: u32,
     year: u32,
@@ -369,7 +519,7 @@ mod tests {
 
     mod calc_delay_from_seed {
         use super::*;
-        use crate::datetime;
+        use crate::{assert_list_eq, datetime};
 
         #[test]
         fn removes_year_offset_from_low_bits() {
@@ -378,6 +528,37 @@ mod tests {
 
             assert_eq!(seed & 0xffff, 1775);
             assert_eq!(super::calc_delay_from_seed(seed, datetime.year), 1749);
+        }
+
+        #[test]
+        fn candidate_years_are_narrowed_by_delay_range() {
+            let years = super::get_candidate_years(0xDC03025B, &(601..=605)).collect::<Vec<_>>();
+
+            assert_list_eq!(years, [2000, 2001, 2002]);
+        }
+
+        #[test]
+        fn candidate_years_can_be_empty() {
+            let years = super::get_candidate_years(0xDC03025B, &(0..=10)).collect::<Vec<_>>();
+
+            assert!(years.is_empty());
+        }
+    }
+
+    mod seedtime4_search_lookup {
+        use super::*;
+        use crate::datetime;
+
+        #[test]
+        fn finds_first_matching_year_when_year_is_optional() {
+            let datetime = datetime!(2026-05-14 12:34:30).unwrap();
+            let seed = calc_seed(&datetime, 1749);
+            let result =
+                SeedTime4SearchLookup::new(None, Some(5), 1749..=1750, Some(30)).find(seed);
+            let expected = find_seedtime4(seed, 2025, Some(5), 1749..=1750, Some(30));
+
+            assert_eq!(result, expected);
+            assert_eq!(result.unwrap().datetime.year, 2025);
         }
     }
 

@@ -1,3 +1,4 @@
+use crate::time::is_leap_year;
 use crate::{
     RngDateTime,
     gen4::{calc_ab, calc_seed},
@@ -84,10 +85,6 @@ fn get_candidate_years(seed: u32, delay_range: &RangeInclusive<u32>) -> RangeInc
 
 fn needs_leap_lookup(month: Option<u32>) -> bool {
     matches!(month, None | Some(2))
-}
-
-fn is_leap_year(year: u32) -> bool {
-    (year.is_multiple_of(4) && !year.is_multiple_of(100)) || year.is_multiple_of(400)
 }
 
 fn seedtime4_month_range(month: Option<u32>) -> RangeInclusive<u32> {

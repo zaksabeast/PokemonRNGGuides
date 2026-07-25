@@ -29,7 +29,7 @@ export type BatchableFunctionsOf<T> = {
 };
 
 type UseBatchedToolOptions<Arg, Ret, MappedRet> = {
-  map?: (value: Ret, arg: Arg) => MappedRet;
+  map?: (value: Ret, arg: Arg) => MappedRet | Promise<MappedRet>;
   sortBy?: ((value: MappedRet) => number) | ((value: MappedRet) => number)[];
   /** Maximum number of results to collect before cancelling remaining work. */
   limit?: number;
@@ -111,12 +111,14 @@ export const useBatchedTool = <Arg, Ret, MappedRet = Ret>(
 
             // Wrap with error handling while preserving the terminate method
             const wrappedPromise = originalPromise
-              .then((results) => ({ arg, results }))
+              .then((results) =>
+                Promise.all(results.map((val) => map(val, arg))),
+              )
               .catch((err) => {
                 if (!isCancellationError(err)) {
                   setError(err);
                 }
-                return { arg, results: [] };
+                return [];
               });
 
             // Transfer the terminate method to the wrapped promise
@@ -140,9 +142,7 @@ export const useBatchedTool = <Arg, Ret, MappedRet = Ret>(
         )
         .subscribe({
           // Called when each chunk is received
-          next: ({ arg, results: values }) => {
-            const mappedValues = values.map((val) => map(val, arg));
-
+          next: (mappedValues) => {
             const acceptedValues =
               limit == null
                 ? mappedValues

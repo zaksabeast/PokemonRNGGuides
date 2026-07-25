@@ -19,17 +19,19 @@ import {
   Gen4StaticOpts,
   Gen4StaticPokemon,
   multiWorkerRngTools,
+  rngTools,
+  RngDateTime,
+  SeedTime4,
 } from "~/rngTools";
 import { z } from "zod";
-import { RustOption, species } from "~/types";
+import { RustOption } from "~/types";
 import {
   pkmFilterSchema,
-  getPkmFilterIvFields,
+  getPkmStatFilterFields,
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
 } from "~/rngToolsUi/workbench/components/pkmFilter";
 import { flattenIvs } from "~/rngToolsUi/shared/ivColumns";
-import { chunkRange } from "~/utils/chunkRange";
 import {
   characteristics,
   characteristicToGen4Label,
@@ -45,21 +47,33 @@ import { useAtom } from "jotai";
 import { useHydrate } from "~/hooks/useHydrate";
 import { dpptStarters, hgssStarters } from "./constants";
 import { toOptions } from "~/utils/options";
+import {
+  addRngTime,
+  rngDate,
+  RngDateSchema,
+  rngTime,
+  RngTimeSchema,
+  toRngDateTime,
+  fromRngDateTime,
+  formatRngDateTime,
+} from "~/utils/time";
+import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
 
-const IV_FILTER_MODE = "ivs";
+const IV_FILTER_MODE = "stats";
 
 const LIMIT = 1000;
 
 const Validator = z
   .object({
     profile_id: z.string().min(1, "Profile is required"),
-    seed: z.number().int().min(0).max(0xffffffff),
+    date: RngDateSchema,
+    time: RngTimeSchema,
+    seconds_offset: z.number().int().min(0),
+    min_delay: z.number().int().min(0),
+    max_delay: z.number().int().min(0),
     offset: z.number().int().min(0),
     min_advance: z.number().int().min(0),
     max_advance: z.number().int().min(0),
-    species: z.enum(species),
-    year: z.number().int().min(2000).max(2100),
-    force_second: z.number().int().min(0).max(59).nullable(),
     filter_characteristic: z.enum(characteristics).nullable(),
   })
   .extend(pkmFilterSchema.shape);
@@ -68,14 +82,16 @@ type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   profile_id: "",
-  year: 2000,
   species: "Turtwig",
-  seed: 0,
+  date: rngDate(),
+  time: rngTime(),
+  seconds_offset: 0,
+  min_delay: 0,
+  max_delay: 0,
   offset: 0,
   min_advance: 0,
   max_advance: 2000,
   filter_level: 5,
-  force_second: null,
   filter_characteristic: null,
   ...getPkmFilterInitialValues(),
 };
@@ -83,6 +99,9 @@ const initialValues: FormState = {
 type Result = {
   id: string;
   advance: number;
+  seed: number;
+  datetime: RngDateTime;
+  delay: number;
   pid: number;
   shiny: boolean;
   nature: Nature;
@@ -98,36 +117,37 @@ type Result = {
 };
 
 const RngInfoFields = () => {
-  const [lockedProfiles] = useAtom(gen4ProfilesAtom);
-  const { client: profiles } = useHydrate(lockedProfiles);
-  const { profile_id } = useWatch({
-    validationSchema: Validator,
-    names: { profile_id: true },
-  });
-
-  const { game } = findProfileOrDefault({ profiles, id: profile_id });
-
   const rngInfoFields: Field[] = [
     {
       label: "Profile",
       children: <FormikProfileSelect<FormState> name="profile_id" />,
     },
     {
-      label: "Pokemon",
+      label: "Seed Date",
+      children: <FormikDatePicker<FormState> name="date" />,
+    },
+    {
+      label: "Seed Time",
+      children: <FormikTimePicker<FormState> name="time" showSecond />,
+    },
+    {
+      label: "Seed Seconds Offset ±",
       children: (
-        <FormikSelect<FormState, "species">
-          name="species"
-          options={toOptions(
-            game === "HeartGold" || game === "SoulSilver"
-              ? hgssStarters
-              : dpptStarters,
-          )}
-        />
+        <FormikNumberInput<FormState> name="seconds_offset" numType="decimal" />
       ),
     },
     {
-      label: "Seed",
-      children: <FormikNumberInput<FormState> name="seed" numType="hex" />,
+      label: "Seed Delay",
+      children: (
+        <MinMaxContainer
+          min={
+            <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
+          }
+          max={
+            <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
+          }
+        />
+      ),
     },
     {
       label: "Advances",
@@ -166,13 +186,22 @@ const RngInfoFields = () => {
 };
 
 const FilterFields = () => {
-  const { species } = useWatch({
+  const { species, profile_id } = useWatch({
     validationSchema: Validator,
-    names: { species: true },
+    names: { species: true, profile_id: true },
   });
 
-  const baseFields = getPkmFilterIvFields<FormState>({
-    species: species ?? undefined,
+  const [lockedProfiles] = useAtom(gen4ProfilesAtom);
+  const { client: profiles } = useHydrate(lockedProfiles);
+  const { game } = findProfileOrDefault({ profiles, id: profile_id });
+
+  const baseFields = getPkmStatFilterFields<FormState>({
+    species: species ?? "None",
+    speciesOptions: toOptions(
+      game === "HeartGold" || game === "SoulSilver"
+        ? hgssStarters
+        : dpptStarters,
+    ),
   });
 
   const fields: Field[] = [
@@ -192,6 +221,18 @@ const FilterFields = () => {
 };
 
 const columns: ResultColumn<Result>[] = [
+  {
+    title: "Seed",
+    dataIndex: "seed",
+    monospace: true,
+    render: (value) => formatHex(value),
+  },
+  {
+    title: "Datetime",
+    dataIndex: "datetime",
+    render: (value) => formatRngDateTime(value, { seconds: true }),
+  },
+  { title: "Delay", dataIndex: "delay" },
   { title: "Advances", dataIndex: "advance" },
   {
     title: "Pid",
@@ -220,14 +261,20 @@ const columns: ResultColumn<Result>[] = [
   },
 ];
 
-const mapResult = (res: Gen4StaticPokemon): Result => {
+const mapResult = (
+  res: Gen4StaticPokemon,
+  opts: RustOption<Gen4StaticOpts> & { seedTime: SeedTime4 },
+): Result => {
   return {
     id: uniqueId(),
     ...flattenIvs(res),
+    seed: opts.seedTime.seed,
+    datetime: opts.seedTime.datetime,
+    delay: opts.seedTime.delay,
   };
 };
 
-export const Static4Generator = () => {
+export const Static4Calibrator = () => {
   const [lockedProfiles] = useAtom(gen4ProfilesAtom);
   const { client: profiles } = useHydrate(lockedProfiles);
   const {
@@ -247,7 +294,23 @@ export const Static4Generator = () => {
       id: opts.profile_id,
     });
 
+    const targetDateTime = addRngTime(opts.date, opts.time);
+
+    const datetime = toRngDateTime(
+      fromRngDateTime(targetDateTime).subtract(opts.seconds_offset, "seconds"),
+    );
+
+    const seedTimes = await rngTools.calc_gen4_seeds({
+      datetime,
+      seconds_increment: opts.seconds_offset * 2,
+      min_delay: opts.min_delay,
+      max_delay: opts.max_delay,
+    });
+
     const baseOpts: RustOption<Gen4StaticOpts> = {
+      // Will override seed
+      seed: 0,
+      // Base opts
       game,
       tid,
       sid,
@@ -262,21 +325,15 @@ export const Static4Generator = () => {
       species: opts.species,
       lead: "None",
       offset: opts.offset,
-      seed: opts.seed,
       filter_characteristic: opts.filter_characteristic,
       filter_level: null,
     };
-    const chunkedAdvances = chunkRange(
-      [opts.min_advance, opts.max_advance],
-      1000,
-    );
-    const searchOpts = chunkedAdvances.map(
-      ([initial_advances, max_advances]) => ({
-        ...baseOpts,
-        initial_advances,
-        max_advances,
-      }),
-    );
+
+    const searchOpts = seedTimes.map((seedTime) => ({
+      ...baseOpts,
+      seed: seedTime.seed,
+      seedTime,
+    }));
 
     await generateStatic4(searchOpts);
   };

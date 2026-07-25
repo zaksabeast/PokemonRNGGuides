@@ -9,24 +9,17 @@ import {
 } from "~/components/pkmFilter";
 import { optOut, toOptions } from "~/utils/options";
 import { Translations } from "~/translations/en";
-import {
-  MinMaxContainer,
-  FormikNumberInput,
-  FormikRadio,
-  FormikSelect,
-} from "~/components";
+import { MinMaxContainer, FormikNumberInput, FormikSelect } from "~/components";
 import { GenericForm, nature, species } from "~/types";
 import { Field } from "./descriptions";
 import { z } from "zod";
 import { getIvRangeFromStats } from "~/types/statRange";
+import { Species } from "~/rngTools";
 
-const IvFilterModeSchema = z.enum(["ivs", "stats"]);
-
-type IvFilterMode = z.infer<typeof IvFilterModeSchema>;
+type IvFilterMode = "ivs" | "stats";
 
 const ExtendedSchema = z.object({
   species: z.enum(species),
-  iv_filter_mode: IvFilterModeSchema,
   filter_level: z.number().int().min(1).max(100),
   filter_stat_nature: z.enum(nature),
   filter_stat_hp: z.number(),
@@ -47,7 +40,6 @@ export const getPkmFilterInitialValues = (): tst.O.Omit<
 > => {
   return {
     ..._getPkmFilterInitialValues(),
-    iv_filter_mode: "ivs",
     filter_stat_nature: "Hardy",
     filter_stat_hp: 0,
     filter_stat_atk: 0,
@@ -58,13 +50,16 @@ export const getPkmFilterInitialValues = (): tst.O.Omit<
   };
 };
 
-export const pkmFilterFieldsToRustInput = async (opts: PkmFilterFields) => {
+export const pkmFilterFieldsToRustInput = async (
+  { ivFilterMode }: { ivFilterMode: IvFilterMode },
+  opts: PkmFilterFields,
+) => {
   const filterIvs = {
     max_ivs: opts.filter_max_ivs,
     min_ivs: opts.filter_min_ivs,
   };
   const minMaxIvs =
-    opts.iv_filter_mode === "stats"
+    ivFilterMode === "stats"
       ? ((await getIvRangeFromStats({
           species: opts.species,
           lvl: opts.filter_level,
@@ -81,9 +76,7 @@ export const pkmFilterFieldsToRustInput = async (opts: PkmFilterFields) => {
       : filterIvs;
 
   const natures =
-    opts.iv_filter_mode === "stats"
-      ? [opts.filter_stat_nature]
-      : opts.filter_nature;
+    ivFilterMode === "stats" ? [opts.filter_stat_nature] : opts.filter_nature;
 
   return _pkmFilterFieldsToRustInput({
     ...opts,
@@ -99,7 +92,7 @@ export const pkmFilterFieldsToRustInput = async (opts: PkmFilterFields) => {
 
 const ivFields: Field[] = [
   {
-    label: "HP",
+    label: "HP IV",
     children: (
       <MinMaxContainer
         min={
@@ -118,7 +111,7 @@ const ivFields: Field[] = [
     ),
   },
   {
-    label: "Atk",
+    label: "Atk IV",
     children: (
       <MinMaxContainer
         min={
@@ -137,7 +130,7 @@ const ivFields: Field[] = [
     ),
   },
   {
-    label: "Def",
+    label: "Def IV",
     children: (
       <MinMaxContainer
         min={
@@ -156,7 +149,7 @@ const ivFields: Field[] = [
     ),
   },
   {
-    label: "SpA",
+    label: "SpA IV",
     children: (
       <MinMaxContainer
         min={
@@ -175,7 +168,7 @@ const ivFields: Field[] = [
     ),
   },
   {
-    label: "SpD",
+    label: "SpD IV",
     children: (
       <MinMaxContainer
         min={
@@ -194,7 +187,7 @@ const ivFields: Field[] = [
     ),
   },
   {
-    label: "Spe",
+    label: "Spe IV",
     children: (
       <MinMaxContainer
         min={
@@ -216,7 +209,7 @@ const ivFields: Field[] = [
 
 const statFields: Field[] = [
   {
-    label: "HP",
+    label: "HP Stat",
     children: (
       <FormikNumberInput<PkmFilterFields>
         name="filter_stat_hp"
@@ -225,7 +218,7 @@ const statFields: Field[] = [
     ),
   },
   {
-    label: "Atk",
+    label: "Atk Stat",
     children: (
       <FormikNumberInput<PkmFilterFields>
         name="filter_stat_atk"
@@ -234,7 +227,7 @@ const statFields: Field[] = [
     ),
   },
   {
-    label: "Def",
+    label: "Def Stat",
     children: (
       <FormikNumberInput<PkmFilterFields>
         name="filter_stat_def"
@@ -243,7 +236,7 @@ const statFields: Field[] = [
     ),
   },
   {
-    label: "SpA",
+    label: "SpA Stat",
     children: (
       <FormikNumberInput<PkmFilterFields>
         name="filter_stat_spa"
@@ -252,7 +245,7 @@ const statFields: Field[] = [
     ),
   },
   {
-    label: "SpD",
+    label: "SpD Stat",
     children: (
       <FormikNumberInput<PkmFilterFields>
         name="filter_stat_spd"
@@ -261,7 +254,7 @@ const statFields: Field[] = [
     ),
   },
   {
-    label: "Spe",
+    label: "Spe Stat",
     children: (
       <FormikNumberInput<PkmFilterFields>
         name="filter_stat_spe"
@@ -271,14 +264,16 @@ const statFields: Field[] = [
   },
 ];
 
-export const getPkmFilterFields = <FormState extends GenericForm>(
+export const getPkmStatFilterFields = <FormState extends GenericForm>(
   {
-    ivFilterMode,
     displayIvs,
     displayHiddenPower,
     displayNature = true,
+    speciesOptions,
     ...props
-  }: PkmFilterProps & { ivFilterMode: IvFilterMode },
+  }: tst.O.Required<PkmFilterProps, "species"> & {
+    speciesOptions: { label: string; value: Species }[];
+  },
   t?: Translations,
 ): FormState extends PkmFilterFields ? Field[] : never => {
   const fields = _getPkmFilterFields<FormState>(
@@ -287,27 +282,23 @@ export const getPkmFilterFields = <FormState extends GenericForm>(
       // We have custom stat fields
       displayIvs: false,
       displayHiddenPower: false,
-      displayNature: displayNature && ivFilterMode === "ivs",
+      displayNature: false,
     },
     t,
   );
 
   const mapped: Field[] = [
     {
-      label: "Mode",
+      label: "Species",
       children: (
-        <FormikRadio<PkmFilterFields>
-          name="iv_filter_mode"
-          options={[
-            { label: "IVs", value: "ivs" },
-            { label: "Stats", value: "stats" },
-          ]}
+        <FormikSelect<PkmFilterFields, "species">
+          name="species"
+          options={speciesOptions}
         />
       ),
     },
-    ...(optOut(displayIvs || ivFilterMode === "ivs", ivFields) ?? []),
-    ...(optOut(displayIvs || ivFilterMode === "stats", statFields) ?? []),
-    optOut(displayNature && ivFilterMode === "stats", {
+    ...(optOut(displayIvs, statFields) ?? []),
+    optOut(displayNature, {
       label: "Nature",
       children: (
         <FormikSelect<PkmFilterFields, "filter_stat_nature">
@@ -316,6 +307,41 @@ export const getPkmFilterFields = <FormState extends GenericForm>(
         />
       ),
     }),
+    ...fields.map((field) => ({
+      label: field.label,
+      children: field.input,
+    })),
+    optOut(displayHiddenPower, {
+      label: "HP Type",
+      children: (
+        <FormikSelect<PkmFilterFields, "filter_hidden_power.pokemon_types">
+          name="filter_hidden_power.pokemon_types"
+          options={toOptions(pokemonTypes.filter((type) => type !== "Normal"))}
+          mode="multiple"
+        />
+      ),
+    }),
+  ].filter((field) => field != null);
+
+  return mapped as FormState extends PkmFilterFields ? Field[] : never;
+};
+
+export const getPkmFilterIvFields = <FormState extends GenericForm>(
+  { displayIvs, displayHiddenPower, ...props }: PkmFilterProps,
+  t?: Translations,
+): FormState extends PkmFilterFields ? Field[] : never => {
+  const fields = _getPkmFilterFields<FormState>(
+    {
+      ...props,
+      // We have custom stat fields
+      displayIvs: false,
+      displayHiddenPower: false,
+    },
+    t,
+  );
+
+  const mapped: Field[] = [
+    ...(optOut(displayIvs, ivFields) ?? []),
     ...fields.map((field) => ({
       label: field.label,
       children: field.input,

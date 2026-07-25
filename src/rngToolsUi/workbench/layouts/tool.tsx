@@ -82,7 +82,6 @@ type ToolLayoutProps<FormState, Result> = {
     filterFields?: React.ReactNode;
     rngInfoActions?: React.ReactNode;
     rngInfoFields?: React.ReactNode;
-    timer?: React.ReactNode;
   };
   onSubmit: (opts: FormState) => Promise<void>;
   cancel?: () => void;
@@ -117,12 +116,12 @@ export const ToolLayout = <
       {...form}
     >
       <SplitterContainer vertical collapsibleIcon={upDownIcons}>
-        <Splitter.Panel>
+        <Splitter.Panel collapsible>
           <Splitter collapsibleIcon={leftRightIcons}>
             {slots.rngInfoFields != null && (
               <Splitter.Panel collapsible>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                  <Flex vertical gap={4} ph={8}>
+                  <Flex vertical gap={4} ph={8} pb={30}>
                     {slots.rngInfoFields}
                     <Flex flex={1} gap={8}>
                       {slots.rngInfoActions != null ? (
@@ -155,15 +154,8 @@ export const ToolLayout = <
             )}
             {slots.filterFields != null && (
               <Splitter.Panel collapsible>
-                <Flex vertical gap={10} ph={8}>
+                <Flex vertical gap={10} ph={8} pb={30}>
                   {slots.filterFields}
-                </Flex>
-              </Splitter.Panel>
-            )}
-            {slots.timer != null && (
-              <Splitter.Panel collapsible>
-                <Flex vertical gap={10} ph={8}>
-                  {slots.timer}
                 </Flex>
               </Splitter.Panel>
             )}

@@ -18,11 +18,10 @@ import {
   Static4State,
   multiWorkerRngTools,
 } from "~/rngTools";
-import { Gen4Timer } from "~/rngToolsUi/timer/gen4";
 import { z } from "zod";
 import { RustOption, species } from "~/types";
 import {
-  getPkmFilterFields,
+  getPkmFilterIvFields,
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
   pkmFilterSchema,
@@ -40,6 +39,8 @@ import { useAtom } from "jotai";
 import { useHydrate } from "~/hooks/useHydrate";
 import { toOptions } from "~/utils/options";
 import { dpptStarters, hgssStarters } from "./constants";
+
+const IV_FILTER_MODE = "ivs";
 
 const LIMIT = 1000;
 
@@ -165,14 +166,13 @@ const RngInfoFields = () => {
 };
 
 const FilterFields = () => {
-  const { species, iv_filter_mode } = useWatch({
+  const { species } = useWatch({
     validationSchema: Validator,
-    names: { species: true, iv_filter_mode: true },
+    names: { species: true },
   });
 
-  const filterFields = getPkmFilterFields<FormState>({
+  const filterFields = getPkmFilterIvFields<FormState>({
     species: species ?? undefined,
-    ivFilterMode: iv_filter_mode ?? "ivs",
   });
 
   return (
@@ -249,7 +249,10 @@ export const Static4Searcher = () => {
       sid,
       encounter_max_level: 5,
       encounter_min_level: 5,
-      filter: await pkmFilterFieldsToRustInput(opts),
+      filter: await pkmFilterFieldsToRustInput(
+        { ivFilterMode: IV_FILTER_MODE },
+        opts,
+      ),
       force_second: opts.force_second,
       max_advance: opts.max_advance,
       max_delay: opts.max_delay,
@@ -285,7 +288,6 @@ export const Static4Searcher = () => {
       onSubmit={onSubmit}
       cancel={cancel}
       slots={{
-        timer: <Gen4Timer />,
         filterFields: <FilterFields />,
         rngInfoFields: <RngInfoFields />,
       }}

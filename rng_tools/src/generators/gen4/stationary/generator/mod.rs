@@ -1,223 +1,21 @@
+mod opts;
+mod pid_strategy;
+mod state;
+
 use super::LeadAbility;
-use crate::Characteristic;
-use crate::Gender;
 use crate::Ivs;
-use crate::Species;
-use crate::gen4::GameVersion;
 use crate::gen4::StaticMethod;
-use crate::gen4::calc_level::HoneyLevel;
-use crate::gen4::calc_level::LevelCalculator;
-use crate::gen4::calc_level::SetLevel;
+use crate::gen4::calc_level::{HoneyLevel, LevelCalculator, SetLevel};
 use crate::gen4::game_logic::{DpptLogic, GameSpecificLogic, HgssLogic};
 use crate::rng::Rng;
 use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
-use crate::{AbilityType, Nature, PkmFilter, PkmState, gen3_shiny};
-use serde::{Deserialize, Serialize};
-use tsify::Tsify;
+use opts::Gen4StaticOpts;
+use pid_strategy::{Method1, NormalMethodJK, PidStrategy, ShinyMethodJK};
+use state::Gen4StaticPokemon;
 use wasm_bindgen::prelude::*;
 
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Gen4StaticOpts {
-    pub tid: u16,
-    pub sid: u16,
-    pub initial_advances: usize,
-    pub max_advances: usize,
-    pub offset: usize,
-    pub filter: PkmFilter,
-    pub filter_level: Option<u8>,
-    pub filter_characteristic: Option<Characteristic>,
-    pub game: GameVersion,
-    pub species: Species,
-    pub encounter_min_level: u8,
-    pub encounter_max_level: u8,
-    pub lead: LeadAbility,
-    pub seed: u32,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Gen4StaticPokemon {
-    pub pid: u32,
-    pub shiny: bool,
-    pub level: u8,
-    pub ability: AbilityType,
-    pub gender: Gender,
-    pub ivs: Ivs,
-    pub nature: Nature,
-    pub advance: usize,
-    pub characteristic: Characteristic,
-}
-
-impl Gen4StaticPokemon {
-    pub fn new(tid: u16, sid: u16, species: Species, level: u8, pid: u32, ivs: Ivs) -> Self {
-        Self {
-            pid,
-            level,
-            shiny: gen3_shiny(pid, tid, sid),
-            ability: AbilityType::from_gen3_pid(pid),
-            gender: species.gender_from_pid(pid),
-            characteristic: Characteristic::new(pid, &ivs),
-            ivs,
-            nature: Nature::from_pid(pid),
-            advance: 0,
-        }
-    }
-}
-
-impl PkmState for Gen4StaticPokemon {
-    fn ability(&self) -> AbilityType {
-        self.ability
-    }
-
-    fn gender(&self) -> Gender {
-        self.gender
-    }
-
-    fn ivs(&self) -> &Ivs {
-        &self.ivs
-    }
-
-    fn nature(&self) -> Nature {
-        self.nature
-    }
-
-    fn shiny(&self) -> bool {
-        self.shiny
-    }
-
-    fn pid(&self) -> u32 {
-        self.pid
-    }
-}
-
-fn generate_static4_method1(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Gen4StaticPokemon {
-    let pid_low = rng.rand::<u16>() as u32;
-    let pid_high = rng.rand::<u16>() as u32;
-    let pid = (pid_high << 16) | pid_low;
-
-    let iv1 = rng.rand::<u16>();
-    let iv2 = rng.rand::<u16>();
-    let ivs = Ivs::new_g3(iv1, iv2);
-
-    Gen4StaticPokemon::new(
-        opts.tid,
-        opts.sid,
-        opts.species,
-        opts.encounter_min_level,
-        pid,
-        ivs,
-    )
-}
-
-trait PidStrategy<Game: GameSpecificLogic> {
-    fn generate_pid(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> u32;
-}
-
-struct NormalPid;
-
-impl<Game: GameSpecificLogic> PidStrategy<Game> for NormalPid {
-    fn generate_pid(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> u32 {
-        let buffer: u8 = match opts.lead {
-            LeadAbility::CutecharmF => (25 * ((opts.species.gender_ratio() as u32 / 25) + 1)) as u8,
-            _ => 0,
-        };
-
-        let cute_charm = matches!(opts.lead, LeadAbility::CutecharmF | LeadAbility::CutecharmM)
-            && !opts.species.is_fixed_gender();
-        let cute_charm_flag = match cute_charm {
-            true => Game::max(rng.rand::<u16>(), 3) != 0,
-            false => false,
-        };
-
-        let nature = match opts.lead {
-            LeadAbility::Synchronize(nature) => {
-                let is_sync = Game::max(rng.rand::<u16>(), 2) == 0;
-                match is_sync {
-                    true => nature as u16,
-                    false => Game::max(rng.rand::<u16>(), 25),
-                }
-            }
-            _ => Game::max(rng.rand::<u16>(), 25),
-        };
-
-        match cute_charm_flag {
-            true => buffer as u32 + nature as u32,
-            false => {
-                let mut pid;
-                loop {
-                    let pid_low = rng.rand::<u16>() as u32;
-                    let pid_high = rng.rand::<u16>() as u32;
-                    pid = (pid_high << 16) | pid_low;
-                    if pid % 25 == nature as u32 {
-                        break;
-                    }
-                }
-                pid
-            }
-        }
-    }
-}
-
-struct ShinyPid;
-
-fn shiny_pid(rng: &mut Pokerng, tsv: u16) -> u32 {
-    let mut low = rng.rand::<u16>() % 8;
-    let mut high = rng.rand::<u16>() % 8;
-
-    for i in 3..16 {
-        low |= (rng.rand::<u16>() & 1) << i;
-    }
-
-    high |= (tsv ^ low) & 0xFFF8;
-
-    ((high as u32) << 16) | (low as u32)
-}
-
-impl<Game: GameSpecificLogic> PidStrategy<Game> for ShinyPid {
-    fn generate_pid(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> u32 {
-        let tsv = opts.tid ^ opts.sid;
-        let lead = opts.lead;
-        let species = opts.species;
-
-        let cute_charm_active = matches!(lead, LeadAbility::CutecharmF | LeadAbility::CutecharmM)
-            && !species.is_fixed_gender();
-
-        let cute_charm_check = |pid: u32| -> bool {
-            match lead {
-                LeadAbility::CutecharmF => species.gender_from_pid(pid) == Gender::Male,
-                LeadAbility::CutecharmM => species.gender_from_pid(pid) == Gender::Female,
-                _ => false,
-            }
-        };
-
-        if cute_charm_active && (Game::max(rng.rand::<u16>(), 3)) != 0 {
-            loop {
-                let pid = shiny_pid(rng, tsv);
-                if cute_charm_check(pid) {
-                    break pid;
-                }
-            }
-        } else if let LeadAbility::Synchronize(nature) = lead {
-            if (Game::max(rng.rand::<u16>(), 2)) == 0 {
-                let nature_value = nature as u32;
-                loop {
-                    let pid = shiny_pid(rng, tsv);
-                    if pid % 25 == nature_value {
-                        break pid;
-                    }
-                }
-            } else {
-                shiny_pid(rng, tsv)
-            }
-        } else {
-            shiny_pid(rng, tsv)
-        }
-    }
-}
-
-fn generate_static4_jk<
+pub fn generate_static4<
     Game: GameSpecificLogic,
     LevelCalc: LevelCalculator<Pokerng>,
     Pid: PidStrategy<Game>,
@@ -243,10 +41,10 @@ fn generate_static4_jk<
 
 fn generate_static4_state(opts: &Gen4StaticOpts, rng: &mut Pokerng) -> Gen4StaticPokemon {
     match StaticMethod::new(opts.game, opts.species) {
-        StaticMethod::One => generate_static4_method1(rng, opts),
-        StaticMethod::J => generate_static4_jk::<DpptLogic, SetLevel, NormalPid>(rng, opts),
-        StaticMethod::K => generate_static4_jk::<HgssLogic, SetLevel, NormalPid>(rng, opts),
-        StaticMethod::Honey => generate_static4_jk::<DpptLogic, HoneyLevel, NormalPid>(rng, opts),
+        StaticMethod::One => generate_static4::<DpptLogic, SetLevel, Method1>(rng, opts),
+        StaticMethod::J => generate_static4::<DpptLogic, SetLevel, NormalMethodJK>(rng, opts),
+        StaticMethod::K => generate_static4::<HgssLogic, SetLevel, NormalMethodJK>(rng, opts),
+        StaticMethod::Honey => generate_static4::<DpptLogic, HoneyLevel, NormalMethodJK>(rng, opts),
     }
 }
 
@@ -293,7 +91,7 @@ fn generate_static4_radar_generic<Pid: PidStrategy<DpptLogic>>(
         .skip(opts.initial_advances)
         .take(opts.max_advances.wrapping_add(1))
         .filter_map(|(adv, mut rng)| {
-            let mut pkm = generate_static4_jk::<DpptLogic, SetLevel, Pid>(&mut rng, opts);
+            let mut pkm = generate_static4::<DpptLogic, SetLevel, Pid>(&mut rng, opts);
             if let Some(filter_level) = opts.filter_level
                 && pkm.level != filter_level
             {
@@ -315,18 +113,21 @@ fn generate_static4_radar_generic<Pid: PidStrategy<DpptLogic>>(
 
 #[wasm_bindgen]
 pub fn generate_static4_radar_states(opts: &Gen4StaticOpts) -> Vec<Gen4StaticPokemon> {
-    generate_static4_radar_generic::<NormalPid>(opts)
+    generate_static4_radar_generic::<NormalMethodJK>(opts)
 }
 
 #[wasm_bindgen]
 pub fn generate_static4_radar_shiny_states(opts: &Gen4StaticOpts) -> Vec<Gen4StaticPokemon> {
-    generate_static4_radar_generic::<ShinyPid>(opts)
+    generate_static4_radar_generic::<ShinyMethodJK>(opts)
 }
 
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::assert_list_eq;
+    use crate::gen4::GameVersion;
+    use crate::{
+        AbilityType, Characteristic, Gender, Ivs, Nature, PkmFilter, Species, assert_list_eq,
+    };
 
     const CHATOT: usize = 2;
     const CHATOT_AND_ELM: usize = 3;
@@ -461,6 +262,7 @@ mod test {
             parse_radar_states(include_str!($file))
         };
     }
+
     mod method1 {
         use super::*;
 

@@ -123,21 +123,21 @@ const RngInfoFields = () => {
       children: <FormikProfileSelect<FormState> name="profile_id" />,
     },
     {
-      label: "Seed Date",
+      label: "Date",
       children: <FormikDatePicker<FormState> name="date" />,
     },
     {
-      label: "Seed Time",
+      label: "Time",
       children: <FormikTimePicker<FormState> name="time" showSecond />,
     },
     {
-      label: "Seed Seconds Offset ±",
+      label: "Second Offset ±",
       children: (
         <FormikNumberInput<FormState> name="seconds_offset" numType="decimal" />
       ),
     },
     {
-      label: "Seed Delay",
+      label: "Delay",
       children: (
         <MinMaxContainer
           min={
@@ -169,7 +169,7 @@ const RngInfoFields = () => {
       ),
     },
     {
-      label: "Offset",
+      label: "Advance Offset",
       children: (
         <FormikNumberInput<FormState> name="offset" numType="decimal" />
       ),

@@ -289,7 +289,7 @@ export const Static4Calibrator = () => {
   });
 
   const onSubmit = async (opts: FormState) => {
-    const { tid, sid, game } = findProfileOrDefault({
+    const { tid, sid } = findProfileOrDefault({
       profiles,
       id: opts.profile_id,
     });
@@ -311,7 +311,7 @@ export const Static4Calibrator = () => {
       // Will override seed
       seed: 0,
       // Base opts
-      game,
+      method: "One",
       tid,
       sid,
       encounter_max_level: 5,

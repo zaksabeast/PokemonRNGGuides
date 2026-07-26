@@ -242,13 +242,13 @@ export const Static4Generator = () => {
   });
 
   const onSubmit = async (opts: FormState) => {
-    const { tid, sid, game } = findProfileOrDefault({
+    const { tid, sid } = findProfileOrDefault({
       profiles,
       id: opts.profile_id,
     });
 
     const baseOpts: RustOption<Gen4StaticOpts> = {
-      game,
+      method: "One",
       tid,
       sid,
       encounter_max_level: 5,

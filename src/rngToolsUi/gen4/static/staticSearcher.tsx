@@ -71,8 +71,9 @@ const SelectButton = ({ target }: SelectButtonProps) => {
   const [, setCurrentStep] = useCurrentStep();
   const [, setStaticState] = useStatic4State();
   const [, setState] = useAtom(gen4StateAtom);
-  const [{ isFixedGender, minLevel, maxLevel, species, form, advanceOffset }] =
-    useAtom(searchedEncounterAtom);
+  const [
+    { isFixedGender, minLevel, maxLevel, species, form, advanceOffset, method },
+  ] = useAtom(searchedEncounterAtom);
 
   return (
     <Button
@@ -91,6 +92,7 @@ const SelectButton = ({ target }: SelectButtonProps) => {
             minMaxStats,
             advanceOffset,
             isFixedGender,
+            method,
             encounterMinLevel: minLevel,
             encounterMaxLevel: maxLevel,
             lead: target.lead,
@@ -372,7 +374,7 @@ export const Static4Searcher = ({ honey = false }: Static4SearcherProps) => {
       lead: opts.lead,
       encounter_min_level: encounter.minLevel,
       encounter_max_level: encounter.maxLevel,
-      game,
+      method: encounter.method,
     };
     const chunkedIvs = chunkIvs(opts.filter_min_ivs, opts.filter_max_ivs);
     const searchOpts = chunkedIvs.map(([minIvs, maxIvs]) => ({

@@ -7,42 +7,49 @@ const FossilEncounters = {
     minLevel: 20,
     maxLevel: 20,
     isFixedGender: false,
+    method: "One",
   },
   "kabuto-20": {
     species: "Kabuto",
     minLevel: 20,
     maxLevel: 20,
     isFixedGender: false,
+    method: "One",
   },
   "aerodactyl-20": {
     species: "Aerodactyl",
     minLevel: 20,
     maxLevel: 20,
     isFixedGender: false,
+    method: "One",
   },
   "lileep-20": {
     species: "Lileep",
     minLevel: 20,
     maxLevel: 20,
     isFixedGender: false,
+    method: "One",
   },
   "anorith-20": {
     species: "Anorith",
     minLevel: 20,
     maxLevel: 20,
     isFixedGender: false,
+    method: "One",
   },
   "cranidos-20": {
     species: "Cranidos",
     minLevel: 20,
     maxLevel: 20,
     isFixedGender: false,
+    method: "One",
   },
   "shieldon-20": {
     species: "Shieldon",
     minLevel: 20,
     maxLevel: 20,
     isFixedGender: false,
+    method: "One",
   },
 } as const satisfies Record<string, Encounter>;
 
@@ -57,6 +64,7 @@ const CommonDpptEncounters = {
     maxLevel: 1,
     offset: 0,
     isFixedGender: false,
+    method: "One",
   },
 
   // Stationary
@@ -65,6 +73,7 @@ const CommonDpptEncounters = {
     minLevel: 25,
     maxLevel: 25,
     isFixedGender: false,
+    method: "DpptJ",
   },
 
   // Legends
@@ -73,12 +82,14 @@ const CommonDpptEncounters = {
     minLevel: 50,
     maxLevel: 50,
     isFixedGender: true,
+    method: "DpptJ",
   },
   "azelf-50": {
     species: "Azelf",
     minLevel: 50,
     maxLevel: 50,
     isFixedGender: true,
+    method: "DpptJ",
   },
 
   // Events
@@ -87,6 +98,7 @@ const CommonDpptEncounters = {
     minLevel: 1,
     maxLevel: 1,
     isFixedGender: true,
+    method: "One",
   },
 } as const satisfies Record<string, Encounter>;
 
@@ -99,12 +111,14 @@ const DiamondEncounters = {
     minLevel: 5,
     maxLevel: 5,
     isFixedGender: false,
+    method: "One",
   },
   "happiny-1": {
     species: "Happiny",
     minLevel: 1,
     maxLevel: 1,
     isFixedGender: true,
+    method: "One",
   },
 
   // Stationary
@@ -114,12 +128,14 @@ const DiamondEncounters = {
     maxLevel: 22,
     offset: 0,
     isFixedGender: false,
+    method: "DpptJ",
   },
   "rotom-15": {
     species: "Rotom_Normal",
     minLevel: 15,
     maxLevel: 15,
     isFixedGender: true,
+    method: "DpptJ",
   },
 
   // Legends
@@ -128,6 +144,7 @@ const DiamondEncounters = {
     minLevel: 47,
     maxLevel: 47,
     isFixedGender: true,
+    method: "DpptJ",
   },
   "giratina-70": {
     species: "Giratina_Altered",
@@ -135,18 +152,21 @@ const DiamondEncounters = {
     minLevel: 70,
     maxLevel: 70,
     isFixedGender: true,
+    method: "DpptJ",
   },
   "heatran-70": {
     species: "Heatran",
     minLevel: 70,
     maxLevel: 70,
     isFixedGender: false,
+    method: "DpptJ",
   },
   "regigigas-70": {
     species: "Regigigas",
     minLevel: 70,
     maxLevel: 70,
     isFixedGender: true,
+    method: "DpptJ",
   },
 } as const satisfies Record<string, Encounter>;
 
@@ -159,12 +179,14 @@ const PearlEncounters = {
     minLevel: 5,
     maxLevel: 5,
     isFixedGender: false,
+    method: "One",
   },
   "happiny-1": {
     species: "Happiny",
     minLevel: 1,
     maxLevel: 1,
     isFixedGender: true,
+    method: "One",
   },
 
   // Stationary
@@ -174,12 +196,14 @@ const PearlEncounters = {
     maxLevel: 22,
     offset: 0,
     isFixedGender: false,
+    method: "DpptJ",
   },
   "rotom-15": {
     species: "Rotom_Normal",
     minLevel: 15,
     maxLevel: 15,
     isFixedGender: true,
+    method: "DpptJ",
   },
 
   // Legends
@@ -188,6 +212,7 @@ const PearlEncounters = {
     minLevel: 47,
     maxLevel: 47,
     isFixedGender: true,
+    method: "DpptJ",
   },
   "giratina-70": {
     species: "Giratina_Altered",
@@ -195,18 +220,21 @@ const PearlEncounters = {
     minLevel: 70,
     maxLevel: 70,
     isFixedGender: true,
+    method: "DpptJ",
   },
   "heatran-70": {
     species: "Heatran",
     minLevel: 70,
     maxLevel: 70,
     isFixedGender: false,
+    method: "DpptJ",
   },
   "regigigas-70": {
     species: "Regigigas",
     minLevel: 70,
     maxLevel: 70,
     isFixedGender: true,
+    method: "DpptJ",
   },
 } as const satisfies Record<string, Encounter>;
 
@@ -219,18 +247,21 @@ const PlatinumEncounters = {
     minLevel: 20,
     maxLevel: 20,
     isFixedGender: false,
+    method: "One",
   },
   "porygon-25": {
     species: "Porygon",
     minLevel: 25,
     maxLevel: 25,
     isFixedGender: true,
+    method: "One",
   },
   "togepi-1": {
     species: "Togepi",
     minLevel: 1,
     maxLevel: 1,
     isFixedGender: false,
+    method: "One",
   },
 
   // Stationary
@@ -240,12 +271,14 @@ const PlatinumEncounters = {
     maxLevel: 15,
     offset: 0,
     isFixedGender: false,
+    method: "DpptJ",
   },
   "rotom-20": {
     species: "Rotom_Normal",
     minLevel: 20,
     maxLevel: 20,
     isFixedGender: true,
+    method: "DpptJ",
   },
 
   // Legends
@@ -254,36 +287,42 @@ const PlatinumEncounters = {
     minLevel: 70,
     maxLevel: 70,
     isFixedGender: true,
+    method: "DpptJ",
   },
   "palkia-70": {
     species: "Palkia",
     minLevel: 70,
     maxLevel: 70,
     isFixedGender: true,
+    method: "DpptJ",
   },
   "regirock-30": {
     species: "Regirock",
     minLevel: 30,
     maxLevel: 30,
     isFixedGender: true,
+    method: "DpptJ",
   },
   "regice-30": {
     species: "Regice",
     minLevel: 30,
     maxLevel: 30,
     isFixedGender: true,
+    method: "DpptJ",
   },
   "registeel-30": {
     species: "Registeel",
     minLevel: 30,
     maxLevel: 30,
     isFixedGender: true,
+    method: "DpptJ",
   },
   "regigigas-1": {
     species: "Regigigas",
     minLevel: 1,
     maxLevel: 1,
     isFixedGender: true,
+    method: "DpptJ",
   },
   "giratina-alt-47": {
     species: "Giratina_Altered",
@@ -291,6 +330,7 @@ const PlatinumEncounters = {
     minLevel: 47,
     maxLevel: 47,
     isFixedGender: true,
+    method: "DpptJ",
   },
   "giratina-origin-47": {
     species: "Giratina_Origin",
@@ -299,12 +339,14 @@ const PlatinumEncounters = {
     maxLevel: 47,
     offset: 11,
     isFixedGender: true,
+    method: "DpptJ",
   },
   "heatran-50": {
     species: "Heatran",
     minLevel: 50,
     maxLevel: 50,
     isFixedGender: false,
+    method: "DpptJ",
   },
 
   // Events
@@ -313,6 +355,7 @@ const PlatinumEncounters = {
     minLevel: 50,
     maxLevel: 50,
     isFixedGender: true,
+    method: "DpptJ",
   },
   "shaymin-land-30": {
     species: "Shaymin_Land",
@@ -320,6 +363,7 @@ const PlatinumEncounters = {
     minLevel: 30,
     maxLevel: 30,
     isFixedGender: true,
+    method: "DpptJ",
   },
 } as const satisfies Record<string, Encounter>;
 
@@ -333,6 +377,7 @@ const CommonHgSsEncounters = {
     minLevel: 15,
     maxLevel: 15,
     isFixedGender: false,
+    method: "One",
   },
   "eevee-5": {
     species: "Eevee",
@@ -340,6 +385,7 @@ const CommonHgSsEncounters = {
     minLevel: 5,
     maxLevel: 5,
     isFixedGender: false,
+    method: "One",
   },
   "dratini-dragons-den-15": {
     species: "Dratini",
@@ -347,30 +393,35 @@ const CommonHgSsEncounters = {
     minLevel: 15,
     maxLevel: 15,
     isFixedGender: false,
+    method: "One",
   },
   "tyrogue-10": {
     species: "Tyrogue",
     minLevel: 10,
     maxLevel: 10,
     isFixedGender: true,
+    method: "One",
   },
   "mareep-1": {
     species: "Mareep",
     minLevel: 1,
     maxLevel: 1,
     isFixedGender: false,
+    method: "One",
   },
   "wooper-1": {
     species: "Wooper",
     minLevel: 1,
     maxLevel: 1,
     isFixedGender: false,
+    method: "One",
   },
   "slugma-1": {
     species: "Slugma",
     minLevel: 1,
     maxLevel: 1,
     isFixedGender: false,
+    method: "One",
   },
 
   // Game Corner
@@ -379,18 +430,21 @@ const CommonHgSsEncounters = {
     minLevel: 15,
     maxLevel: 15,
     isFixedGender: false,
+    method: "One",
   },
   "porygon-15": {
     species: "Porygon",
     minLevel: 15,
     maxLevel: 15,
     isFixedGender: true,
+    method: "One",
   },
   "abra-15": {
     species: "Abra",
     minLevel: 15,
     maxLevel: 15,
     isFixedGender: false,
+    method: "One",
   },
   "eevee-15": {
     species: "Eevee",
@@ -398,6 +452,7 @@ const CommonHgSsEncounters = {
     minLevel: 15,
     maxLevel: 15,
     isFixedGender: false,
+    method: "One",
   },
   "dratini-game-corner-15": {
     species: "Dratini",
@@ -405,6 +460,7 @@ const CommonHgSsEncounters = {
     minLevel: 15,
     maxLevel: 15,
     isFixedGender: false,
+    method: "One",
   },
 
   // Stationary
@@ -413,48 +469,56 @@ const CommonHgSsEncounters = {
     minLevel: 23,
     maxLevel: 23,
     isFixedGender: true,
+    method: "HgssK",
   },
   "geodude-21": {
     species: "Geodude",
     minLevel: 21,
     maxLevel: 21,
     isFixedGender: false,
+    method: "One",
   },
   "koffing-21": {
     species: "Koffing",
     minLevel: 21,
     maxLevel: 21,
     isFixedGender: false,
+    method: "One",
   },
   "gyarados-30": {
     species: "Gyarados",
     minLevel: 30,
     maxLevel: 30,
     isFixedGender: false,
+    method: "One",
   },
   "lapras-20": {
     species: "Lapras",
     minLevel: 20,
     maxLevel: 20,
     isFixedGender: false,
+    method: "HgssK",
   },
   "electrode-23": {
     species: "Electrode",
     minLevel: 23,
     maxLevel: 23,
     isFixedGender: true,
+    method: "HgssK",
   },
   "snorlax-50": {
     species: "Snorlax",
     minLevel: 50,
     maxLevel: 50,
     isFixedGender: false,
+    method: "HgssK",
   },
   "sudowoodo-20": {
     species: "Sudowoodo",
     minLevel: 20,
     maxLevel: 20,
     isFixedGender: false,
+    method: "HgssK",
   },
 
   // Legends
@@ -463,48 +527,56 @@ const CommonHgSsEncounters = {
     minLevel: 50,
     maxLevel: 50,
     isFixedGender: true,
+    method: "HgssK",
   },
   "zapdos-50": {
     species: "Zapdos",
     minLevel: 50,
     maxLevel: 50,
     isFixedGender: true,
+    method: "HgssK",
   },
   "moltres-50": {
     species: "Moltres",
     minLevel: 50,
     maxLevel: 50,
     isFixedGender: true,
+    method: "HgssK",
   },
   "mewtwo-70": {
     species: "Mewtwo",
     minLevel: 70,
     maxLevel: 70,
     isFixedGender: true,
+    method: "HgssK",
   },
   "suicune-40": {
     species: "Suicune",
     minLevel: 40,
     maxLevel: 40,
     isFixedGender: true,
+    method: "HgssK",
   },
   "rayquaza-50": {
     species: "Rayquaza",
     minLevel: 50,
     maxLevel: 50,
     isFixedGender: true,
+    method: "HgssK",
   },
   "dialga-1": {
     species: "Dialga",
     minLevel: 1,
     maxLevel: 1,
     isFixedGender: true,
+    method: "One",
   },
   "palkia-1": {
     species: "Palkia",
     minLevel: 1,
     maxLevel: 1,
     isFixedGender: true,
+    method: "One",
   },
   "giratina-1": {
     species: "Giratina_Origin",
@@ -512,6 +584,7 @@ const CommonHgSsEncounters = {
     minLevel: 1,
     maxLevel: 1,
     isFixedGender: true,
+    method: "One",
   },
 
   // Events
@@ -520,6 +593,7 @@ const CommonHgSsEncounters = {
     minLevel: 1,
     maxLevel: 1,
     isFixedGender: true,
+    method: "One",
   },
 } as const satisfies Record<string, Encounter>;
 
@@ -532,6 +606,7 @@ const HeartGoldEncounters = {
     minLevel: 15,
     maxLevel: 15,
     isFixedGender: false,
+    method: "One",
   },
 
   // Legends
@@ -540,24 +615,28 @@ const HeartGoldEncounters = {
     minLevel: 70,
     maxLevel: 70,
     isFixedGender: true,
+    method: "HgssK",
   },
   "hooh-45": {
     species: "HoOh",
     minLevel: 45,
     maxLevel: 45,
     isFixedGender: true,
+    method: "HgssK",
   },
   "latios-40": {
     species: "Latios",
     minLevel: 40,
     maxLevel: 40,
     isFixedGender: true,
+    method: "HgssK",
   },
   "kyogre-50": {
     species: "Kyogre",
     minLevel: 50,
     maxLevel: 50,
     isFixedGender: true,
+    method: "HgssK",
   },
 } as const satisfies Record<string, Encounter>;
 
@@ -570,6 +649,7 @@ const SoulSilverEncounters = {
     minLevel: 15,
     maxLevel: 15,
     isFixedGender: false,
+    method: "One",
   },
 
   // Legends
@@ -578,24 +658,28 @@ const SoulSilverEncounters = {
     minLevel: 45,
     maxLevel: 45,
     isFixedGender: true,
+    method: "HgssK",
   },
   "hooh-70": {
     species: "HoOh",
     minLevel: 70,
     maxLevel: 70,
     isFixedGender: true,
+    method: "HgssK",
   },
   "latias-40": {
     species: "Latias",
     minLevel: 40,
     maxLevel: 40,
     isFixedGender: true,
+    method: "HgssK",
   },
   "groudon-50": {
     species: "Groudon",
     minLevel: 50,
     maxLevel: 50,
     isFixedGender: true,
+    method: "HgssK",
   },
 } as const satisfies Record<string, Encounter>;
 

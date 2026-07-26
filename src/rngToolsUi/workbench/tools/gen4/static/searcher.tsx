@@ -238,13 +238,13 @@ export const Static4Searcher = () => {
   });
 
   const onSubmit = async (opts: FormState) => {
-    const { tid, sid, game } = findProfileOrDefault({
+    const { tid, sid } = findProfileOrDefault({
       profiles,
       id: opts.profile_id,
     });
 
     const baseOpts: RustOption<SearchStatic4Opts> = {
-      game,
+      method: "One",
       tid,
       sid,
       encounter_max_level: 5,

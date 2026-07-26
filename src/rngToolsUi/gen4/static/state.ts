@@ -1,5 +1,5 @@
 import { atom, useAtom } from "jotai";
-import type { LeadAbility, Gender, Species } from "~/rngTools";
+import type { LeadAbility, Gender, Species, Static4Method } from "~/rngTools";
 import { MinMaxStats } from "~/types";
 
 export type Static4Target = {
@@ -13,6 +13,7 @@ export type Static4Target = {
   advanceOffset: number;
   minMaxStats: MinMaxStats;
   isFixedGender: boolean;
+  method: Static4Method;
 };
 
 export type Static4State = {

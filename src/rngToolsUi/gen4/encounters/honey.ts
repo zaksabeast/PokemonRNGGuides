@@ -35,7 +35,13 @@ export const getSpecies = (game: Gen4GameVersion, isMunchlaxTree: boolean) => {
 };
 
 const createEncounter = <Spec extends HoneyTreeSpecies>(species: Spec) =>
-  ({ species, minLevel: 5, maxLevel: 15, isFixedGender: false }) as const;
+  ({
+    species,
+    minLevel: 5,
+    maxLevel: 15,
+    isFixedGender: false,
+    method: "Honey",
+  }) as const;
 
 const PlatinumEncounters = {
   "honey-wurmple": createEncounter("Wurmple"),

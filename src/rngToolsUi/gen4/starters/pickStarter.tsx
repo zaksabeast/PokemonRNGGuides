@@ -302,7 +302,7 @@ export const PickStarter4 = () => {
       filter: pkmFilterFieldsToRustInput(opts),
       lead: "None",
       offset: 0,
-      game,
+      method: "One",
     };
     const chunkedIvs = chunkIvs(opts.filter_min_ivs, opts.filter_max_ivs);
     const searchOpts = chunkedIvs.map(([minIvs, maxIvs]) => ({

@@ -8,6 +8,7 @@ import { SizeContext } from "~/theme/size";
 import { useAtom } from "jotai";
 import { static4Tabs } from "./tools/gen4/static/tabs";
 import { routeAtom, WorkbenchRoute } from "./state";
+import { advanceFinder4Tabs } from "./tools/gen4/advanceFinder/tabs";
 
 const FullHeight = styled(Flex)(({ theme }) => ({
   // Header + Menu
@@ -30,6 +31,9 @@ const Content = () => {
     .with("profile", () => <FullHeightTabs items={profileTabs} type="card" />)
     .with("static4", () => <FullHeightTabs items={static4Tabs} type="card" />)
     .with("iv-calc", () => <FullHeightTabs items={ivCalcTabs} type="card" />)
+    .with("advance-finder4", () => (
+      <FullHeightTabs items={advanceFinder4Tabs} type="card" />
+    ))
     .exhaustive();
 };
 
@@ -57,7 +61,13 @@ export const RngWorkbench = () => {
       key: "g4",
       label: "Gen 4 Tools",
       type: "submenu",
-      children: [createSubItem({ route: "static4", label: "Static RNG" })],
+      children: [
+        createSubItem({ route: "static4", label: "Static RNG" }),
+        createSubItem({
+          route: "advance-finder4",
+          label: "Chatot/Elm Tracker",
+        }),
+      ],
     },
     {
       key: "extra",

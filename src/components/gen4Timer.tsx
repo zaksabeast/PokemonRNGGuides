@@ -41,6 +41,24 @@ const AdvancedSettings = ({ timer }: AdvancedSettingsProps) => {
         />
       ),
     },
+    {
+      show: showAdvanced,
+      indent: 1,
+      label: t["Target Second"],
+      tooltip: "WARNING: Only change this if you know what you're doing.",
+      input: (
+        <NumberInput
+          numType="decimal"
+          name="calibration"
+          value={timerSettings.settings.targetSecond}
+          onChange={(value) => {
+            if (value != null) {
+              updateTimer({ targetSecond: value });
+            }
+          }}
+        />
+      ),
+    },
   ];
 
   return <FormFieldTable fields={fields} />;

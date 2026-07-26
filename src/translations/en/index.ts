@@ -46,6 +46,7 @@ export const translations = {
   "Max Delay": "Max Delay",
   Species: "Species",
   "Force Second": "Force Second",
+  "Target Second": "Target Second",
   Cancel: "Cancel",
   Select: "Select",
   PID: "PID",

@@ -55,7 +55,7 @@ export const RngWorkbench = () => {
       key: "g4",
       label: "Gen 4 Tools",
       type: "submenu",
-      children: [createSubItem({ route: "static4", label: "Starter RNG" })],
+      children: [createSubItem({ route: "static4", label: "Static RNG" })],
     },
     {
       key: "extra",

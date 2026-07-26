@@ -45,8 +45,6 @@ import {
 } from "~/rngToolsUi/workbench/tools/profile/state";
 import { useAtom } from "jotai";
 import { useHydrate } from "~/hooks/useHydrate";
-import { dpptStarters, hgssStarters } from "./constants";
-import { toOptions } from "~/utils/options";
 import {
   addRngTime,
   rngDate,
@@ -58,6 +56,7 @@ import {
   formatRngDateTime,
 } from "~/utils/time";
 import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
+import { getEncounterOptions, getEncounter } from "./encounters";
 
 const IV_FILTER_MODE = "stats";
 
@@ -68,6 +67,7 @@ const Validator = z
     profile_id: z.string().min(1, "Profile is required"),
     date: RngDateSchema,
     time: RngTimeSchema,
+    encounter_id: z.string(),
     seconds_offset: z.number().int().min(0),
     min_delay: z.number().int().min(0),
     max_delay: z.number().int().min(0),
@@ -82,7 +82,7 @@ type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   profile_id: "",
-  species: "Turtwig",
+  encounter_id: "",
   date: rngDate(),
   time: rngTime(),
   seconds_offset: 0,
@@ -186,25 +186,30 @@ const RngInfoFields = () => {
 };
 
 const FilterFields = () => {
-  const { species, profile_id } = useWatch({
+  const { encounter_id, profile_id } = useWatch({
     validationSchema: Validator,
-    names: { species: true, profile_id: true },
+    names: { encounter_id: true, profile_id: true },
   });
 
   const [lockedProfiles] = useAtom(gen4ProfilesAtom);
   const { client: profiles } = useHydrate(lockedProfiles);
   const { game } = findProfileOrDefault({ profiles, id: profile_id });
 
-  const baseFields = getPkmStatFilterFields<FormState>({
-    species: species ?? "None",
-    speciesOptions: toOptions(
-      game === "HeartGold" || game === "SoulSilver"
-        ? hgssStarters
-        : dpptStarters,
-    ),
-  });
+  const encounter = getEncounter(game, encounter_id);
+  const species = encounter.species;
+
+  const baseFields = getPkmStatFilterFields<FormState>({ species });
 
   const fields: Field[] = [
+    {
+      label: "Species",
+      children: (
+        <FormikSelect<FormState, "encounter_id">
+          name="encounter_id"
+          options={getEncounterOptions(game)}
+        />
+      ),
+    },
     ...baseFields,
     {
       label: "Characteristic",
@@ -284,12 +289,13 @@ export const Static4Calibrator = () => {
     progressPercent,
     cancel,
   } = useBatchedTool(multiWorkerRngTools.generate_static4_states, {
-    map: mapResult,
     limit: LIMIT,
+    map: mapResult,
+    sortBy: [(res) => res.seed, (res) => res.advance],
   });
 
   const onSubmit = async (opts: FormState) => {
-    const { tid, sid } = findProfileOrDefault({
+    const { tid, sid, game } = findProfileOrDefault({
       profiles,
       id: opts.profile_id,
     });
@@ -299,6 +305,9 @@ export const Static4Calibrator = () => {
     const datetime = toRngDateTime(
       fromRngDateTime(targetDateTime).subtract(opts.seconds_offset, "seconds"),
     );
+
+    const encounter = getEncounter(game, opts.encounter_id);
+    const species = encounter.species;
 
     const seedTimes = await rngTools.generate_seedtime4s({
       datetime,
@@ -311,18 +320,18 @@ export const Static4Calibrator = () => {
       // Will override seed
       seed: 0,
       // Base opts
-      method: "One",
       tid,
       sid,
-      encounter_max_level: 5,
-      encounter_min_level: 5,
+      species,
+      method: encounter.method,
+      encounter_min_level: encounter.minLevel,
+      encounter_max_level: encounter.maxLevel,
       filter: await pkmFilterFieldsToRustInput(
-        { ivFilterMode: IV_FILTER_MODE },
+        { species, ivFilterMode: IV_FILTER_MODE },
         opts,
       ),
       initial_advances: opts.min_advance,
       max_advances: opts.max_advance,
-      species: opts.species,
       lead: "None",
       offset: opts.offset,
       filter_characteristic: opts.filter_characteristic,

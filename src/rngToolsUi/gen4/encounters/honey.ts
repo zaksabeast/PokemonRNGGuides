@@ -63,18 +63,10 @@ const PearlEncounters = {
   "honey-cascoon": createEncounter("Cascoon"),
 } as const satisfies Record<string, Encounter>;
 
-const EncountersByGame = {
+export const EncountersByGame = {
   Diamond: DiamondEncounters,
   Pearl: PearlEncounters,
   Platinum: PlatinumEncounters,
-} as const satisfies Record<DpPt, Record<string, Encounter>>;
-
-export const getGameEncounters = (
-  game: Gen4GameVersion,
-): Record<string, Encounter> => {
-  if (game === "HeartGold" || game === "SoulSilver") {
-    return {};
-  }
-
-  return EncountersByGame[game];
-};
+  HeartGold: {},
+  SoulSilver: {},
+} as const satisfies Record<Gen4GameVersion, Record<string, Encounter>>;

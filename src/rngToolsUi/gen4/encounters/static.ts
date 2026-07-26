@@ -683,18 +683,12 @@ const SoulSilverEncounters = {
   },
 } as const satisfies Record<string, Encounter>;
 
-const EncountersByGame = {
+export const EncountersByGame = {
   Diamond: DiamondEncounters,
   Pearl: PearlEncounters,
   Platinum: PlatinumEncounters,
   HeartGold: HeartGoldEncounters,
   SoulSilver: SoulSilverEncounters,
 } as const satisfies Record<Gen4GameVersion, Record<string, Encounter>>;
-
-export const getGameEncounters = (
-  game: Gen4GameVersion,
-): Readonly<Record<string, Encounter>> => {
-  return EncountersByGame[game];
-};
 
 export const defaultEncounter = DiamondEncounters["eevee-5"];

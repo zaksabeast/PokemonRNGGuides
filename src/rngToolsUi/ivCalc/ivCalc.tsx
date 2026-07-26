@@ -9,7 +9,7 @@ import { Validator, type FormState, type IvRangeColumn } from "./types";
 
 export const IvCalc = () => {
   const t = useActiveRouteTranslations();
-  const { ivRangeData, result, setResult, onSubmit } = useOnSubmit();
+  const { ivRangeData, result, setResult, onSubmit } = useOnSubmit({ t });
 
   return (
     <>

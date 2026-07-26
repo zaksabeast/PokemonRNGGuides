@@ -48,7 +48,7 @@ const Actions = ({ hasSubmitted, setResult, onReset }: ActionsProps) => {
 
 export const IvCalcTab = () => {
   const t = useActiveRouteTranslations();
-  const { ivRangeData, result, setResult, onSubmit } = useOnSubmit();
+  const { ivRangeData, result, setResult, onSubmit } = useOnSubmit({ t });
 
   return (
     <ToolLayout<FormState, IvRangeColumn>

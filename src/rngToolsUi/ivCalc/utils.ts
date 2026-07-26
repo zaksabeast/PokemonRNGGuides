@@ -1,11 +1,10 @@
 import React from "react";
-import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { STAT_I18N_KEYS, STAT_KEYS, initialResult } from "./constants";
 import type { IvRangeColumn, IvRangeResult, FormState } from "./types";
 import type { Translations } from "~/translations";
 import { rngTools } from "~/rngTools";
 
-const formatStatRange = (stat: number[], na: string): string => {
+export const formatStatRange = (stat: number[], na: string): string => {
   if (stat.length === 0) {
     return na;
   }
@@ -40,7 +39,7 @@ const formatStatRange = (stat: number[], na: string): string => {
   return ranges.join(", ");
 };
 
-const getIvRangeRow = (
+export const getIvRangeRow = (
   t: Translations,
   key: (typeof STAT_KEYS)[number],
   index: number,
@@ -79,8 +78,7 @@ const formatIvRangeData = ({
   );
 };
 
-export const useOnSubmit = () => {
-  const t = useActiveRouteTranslations();
+export const useOnSubmit = ({ t }: { t: Translations }) => {
   const [result, setResult] = React.useState<IvRangeResult>(initialResult);
 
   const onSubmit = async (opts: FormState) => {

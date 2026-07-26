@@ -1,6 +1,7 @@
 import { match } from "ts-pattern";
 import { Flex } from "~/components";
 import { profileTabs } from "./tools/profile/tabs";
+import { ivCalcTabs } from "./tools/ivCalc/tabs";
 import { Tabs, Menu, MenuProps } from "antd";
 import styled from "@emotion/styled";
 import { SizeContext } from "~/theme/size";
@@ -28,6 +29,7 @@ const Content = () => {
   return match(route)
     .with("profile", () => <FullHeightTabs items={profileTabs} type="card" />)
     .with("static4", () => <FullHeightTabs items={static4Tabs} type="card" />)
+    .with("iv-calc", () => <FullHeightTabs items={ivCalcTabs} type="card" />)
     .exhaustive();
 };
 
@@ -61,7 +63,10 @@ export const RngWorkbench = () => {
       key: "extra",
       label: "Extra Tools",
       type: "submenu",
-      children: [createSubItem({ route: "profile", label: "Profile Manager" })],
+      children: [
+        createSubItem({ route: "profile", label: "Profile Manager" }),
+        createSubItem({ route: "iv-calc", label: "IV Calculator" }),
+      ],
     },
   ];
 

@@ -7,7 +7,7 @@ export const Gen4TimerTab = () => {
     <Splitter>
       <Splitter.Panel>
         <Flex vertical width="100%" justify="center" align="center">
-          <Flex vertical maxWidth={1200}>
+          <Flex vertical maxWidth={1200} p={8}>
             <Gen4Timer />
           </Flex>
         </Flex>

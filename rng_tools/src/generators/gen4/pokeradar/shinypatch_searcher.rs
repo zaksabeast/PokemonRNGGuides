@@ -37,8 +37,8 @@ pub fn search_shiny_patches(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::gen4::stationary::BaseStatic4State;
     use crate::gen4::LeadAbility;
+    use crate::gen4::stationary::BaseStatic4State;
     use crate::{AbilityType, Characteristic, Gender, Ivs, Nature};
 
     fn dummy_state(seed: u32, advance: usize) -> BaseStatic4State {
@@ -81,5 +81,4 @@ mod tests {
 
         assert!(result.is_empty());
     }
-
 }

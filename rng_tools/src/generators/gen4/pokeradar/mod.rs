@@ -1,4 +1,5 @@
 mod grid;
+mod shinypatch_searcher;
 mod simulate;
 mod types;
 

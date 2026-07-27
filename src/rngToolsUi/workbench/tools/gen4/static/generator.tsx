@@ -21,7 +21,7 @@ import {
   multiWorkerRngTools,
 } from "~/rngTools";
 import { z } from "zod";
-import { RustOption, species } from "~/types";
+import { RustOption } from "~/types";
 import {
   pkmFilterSchema,
   getPkmFilterIvFields,
@@ -43,8 +43,7 @@ import {
 } from "~/rngToolsUi/workbench/tools/profile/state";
 import { useAtom } from "jotai";
 import { useHydrate } from "~/hooks/useHydrate";
-import { dpptStarters, hgssStarters } from "./constants";
-import { toOptions } from "~/utils/options";
+import { getEncounterOptions, getEncounter } from "./encounters";
 
 const IV_FILTER_MODE = "ivs";
 
@@ -57,7 +56,7 @@ const Validator = z
     offset: z.number().int().min(0),
     min_advance: z.number().int().min(0),
     max_advance: z.number().int().min(0),
-    species: z.enum(species),
+    encounter_id: z.string(),
     year: z.number().int().min(2000).max(2100),
     force_second: z.number().int().min(0).max(59).nullable(),
     filter_characteristic: z.enum(characteristics).nullable(),
@@ -69,7 +68,7 @@ type FormState = z.infer<typeof Validator>;
 const initialValues: FormState = {
   profile_id: "",
   year: 2000,
-  species: "Turtwig",
+  encounter_id: "",
   seed: 0,
   offset: 0,
   min_advance: 0,
@@ -115,13 +114,9 @@ const RngInfoFields = () => {
     {
       label: "Pokemon",
       children: (
-        <FormikSelect<FormState, "species">
-          name="species"
-          options={toOptions(
-            game === "HeartGold" || game === "SoulSilver"
-              ? hgssStarters
-              : dpptStarters,
-          )}
+        <FormikSelect<FormState, "encounter_id">
+          name="encounter_id"
+          options={getEncounterOptions(game)}
         />
       ),
     },
@@ -166,14 +161,19 @@ const RngInfoFields = () => {
 };
 
 const FilterFields = () => {
-  const { species } = useWatch({
+  const { encounter_id, profile_id } = useWatch({
     validationSchema: Validator,
-    names: { species: true },
+    names: { encounter_id: true, profile_id: true },
   });
 
-  const baseFields = getPkmFilterIvFields<FormState>({
-    species: species ?? undefined,
-  });
+  const [lockedProfiles] = useAtom(gen4ProfilesAtom);
+  const { client: profiles } = useHydrate(lockedProfiles);
+  const { game } = findProfileOrDefault({ profiles, id: profile_id });
+
+  const encounter = getEncounter(game, encounter_id);
+  const species = encounter.species;
+
+  const baseFields = getPkmFilterIvFields<FormState>({ species });
 
   const fields: Field[] = [
     ...baseFields,
@@ -237,8 +237,9 @@ export const Static4Generator = () => {
     progressPercent,
     cancel,
   } = useBatchedTool(multiWorkerRngTools.generate_static4_states, {
-    map: mapResult,
     limit: LIMIT,
+    map: mapResult,
+    sortBy: (res) => res.advance,
   });
 
   const onSubmit = async (opts: FormState) => {
@@ -247,19 +248,22 @@ export const Static4Generator = () => {
       id: opts.profile_id,
     });
 
+    const encounter = getEncounter(game, opts.encounter_id);
+    const species = encounter.species;
+
     const baseOpts: RustOption<Gen4StaticOpts> = {
-      game,
       tid,
       sid,
-      encounter_max_level: 5,
-      encounter_min_level: 5,
+      species,
+      method: encounter.method,
+      encounter_min_level: encounter.minLevel,
+      encounter_max_level: encounter.maxLevel,
       filter: await pkmFilterFieldsToRustInput(
-        { ivFilterMode: IV_FILTER_MODE },
+        { species, ivFilterMode: IV_FILTER_MODE },
         opts,
       ),
       initial_advances: opts.min_advance,
       max_advances: opts.max_advance,
-      species: opts.species,
       lead: "None",
       offset: opts.offset,
       seed: opts.seed,
@@ -271,10 +275,10 @@ export const Static4Generator = () => {
       1000,
     );
     const searchOpts = chunkedAdvances.map(
-      ([initial_advances, max_advances]) => ({
+      ([initial_advances, end_advance]) => ({
         ...baseOpts,
         initial_advances,
-        max_advances,
+        max_advances: end_advance - initial_advances,
       }),
     );
 

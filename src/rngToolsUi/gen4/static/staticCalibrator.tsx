@@ -370,7 +370,7 @@ export const Static4Calibrator = () => {
         // Used by generate_static4_states
         seed: seedTime.seed,
         species: staticTarget.species,
-        game: state.config.game,
+        method: staticTarget.method,
         initial_advances: Math.max(targetLcrngAdvance - opts.advanceRange, 0),
         max_advances: 2 * opts.advanceRange,
         offset: staticTarget.advanceOffset,

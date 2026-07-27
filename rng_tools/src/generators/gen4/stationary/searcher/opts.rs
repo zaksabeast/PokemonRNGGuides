@@ -1,6 +1,6 @@
 use crate::PkmFilter;
 use crate::Species;
-use crate::gen4::GameVersion;
+use crate::gen4::Static4Method;
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
@@ -20,7 +20,6 @@ pub enum Static4LeadInput {
 pub struct SearchStatic4Opts {
     pub tid: u16,
     pub sid: u16,
-    pub game: GameVersion,
     pub species: Species,
     pub filter: PkmFilter,
     pub offset: usize,
@@ -34,4 +33,5 @@ pub struct SearchStatic4Opts {
     pub month: Option<u32>,
     pub force_second: Option<u32>,
     pub lead: Static4LeadInput,
+    pub method: Static4Method,
 }

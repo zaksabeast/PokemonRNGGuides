@@ -10,7 +10,7 @@ import {
 import { optOut, toOptions } from "~/utils/options";
 import { Translations } from "~/translations/en";
 import { MinMaxContainer, FormikNumberInput, FormikSelect } from "~/components";
-import { GenericForm, nature, species } from "~/types";
+import { GenericForm, nature } from "~/types";
 import { Field } from "./descriptions";
 import { z } from "zod";
 import { getIvRangeFromStats } from "~/types/statRange";
@@ -19,7 +19,6 @@ import { Species } from "~/rngTools";
 type IvFilterMode = "ivs" | "stats";
 
 const ExtendedSchema = z.object({
-  species: z.enum(species),
   filter_level: z.number().int().min(1).max(100),
   filter_stat_nature: z.enum(nature),
   filter_stat_hp: z.number(),
@@ -51,7 +50,7 @@ export const getPkmFilterInitialValues = (): tst.O.Omit<
 };
 
 export const pkmFilterFieldsToRustInput = async (
-  { ivFilterMode }: { ivFilterMode: IvFilterMode },
+  { species, ivFilterMode }: { species: Species; ivFilterMode: IvFilterMode },
   opts: PkmFilterFields,
 ) => {
   const filterIvs = {
@@ -61,7 +60,7 @@ export const pkmFilterFieldsToRustInput = async (
   const minMaxIvs =
     ivFilterMode === "stats"
       ? ((await getIvRangeFromStats({
-          species: opts.species,
+          species,
           lvl: opts.filter_level,
           nature: opts.filter_stat_nature,
           stats: {
@@ -269,11 +268,8 @@ export const getPkmStatFilterFields = <FormState extends GenericForm>(
     displayIvs,
     displayHiddenPower,
     displayNature = true,
-    speciesOptions,
     ...props
-  }: tst.O.Required<PkmFilterProps, "species"> & {
-    speciesOptions: { label: string; value: Species }[];
-  },
+  }: tst.O.Required<PkmFilterProps, "species">,
   t?: Translations,
 ): FormState extends PkmFilterFields ? Field[] : never => {
   const fields = _getPkmFilterFields<FormState>(
@@ -289,11 +285,11 @@ export const getPkmStatFilterFields = <FormState extends GenericForm>(
 
   const mapped: Field[] = [
     {
-      label: "Species",
+      label: "Level",
       children: (
-        <FormikSelect<PkmFilterFields, "species">
-          name="species"
-          options={speciesOptions}
+        <FormikNumberInput<PkmFilterFields>
+          name="filter_level"
+          numType="decimal"
         />
       ),
     },

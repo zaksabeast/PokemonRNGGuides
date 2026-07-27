@@ -35,7 +35,13 @@ export const getSpecies = (game: Gen4GameVersion, isMunchlaxTree: boolean) => {
 };
 
 const createEncounter = <Spec extends HoneyTreeSpecies>(species: Spec) =>
-  ({ species, minLevel: 5, maxLevel: 15, isFixedGender: false }) as const;
+  ({
+    species,
+    minLevel: 5,
+    maxLevel: 15,
+    isFixedGender: false,
+    method: "Honey",
+  }) as const;
 
 const PlatinumEncounters = {
   "honey-wurmple": createEncounter("Wurmple"),
@@ -57,18 +63,10 @@ const PearlEncounters = {
   "honey-cascoon": createEncounter("Cascoon"),
 } as const satisfies Record<string, Encounter>;
 
-const EncountersByGame = {
+export const EncountersByGame = {
   Diamond: DiamondEncounters,
   Pearl: PearlEncounters,
   Platinum: PlatinumEncounters,
-} as const satisfies Record<DpPt, Record<string, Encounter>>;
-
-export const getGameEncounters = (
-  game: Gen4GameVersion,
-): Record<string, Encounter> => {
-  if (game === "HeartGold" || game === "SoulSilver") {
-    return {};
-  }
-
-  return EncountersByGame[game];
-};
+  HeartGold: {},
+  SoulSilver: {},
+} as const satisfies Record<Gen4GameVersion, Record<string, Encounter>>;

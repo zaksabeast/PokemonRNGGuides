@@ -1,5 +1,5 @@
 use super::LeadAbility;
-use crate::gen4::GameVersion;
+use crate::gen4::Static4Method;
 use crate::{Characteristic, PkmFilter, Species};
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
@@ -16,7 +16,7 @@ pub struct Gen4StaticOpts {
     pub filter: PkmFilter,
     pub filter_level: Option<u8>,
     pub filter_characteristic: Option<Characteristic>,
-    pub game: GameVersion,
+    pub method: Static4Method,
     pub species: Species,
     pub encounter_min_level: u8,
     pub encounter_max_level: u8,

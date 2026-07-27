@@ -13,7 +13,6 @@ import {
   Gen4StaticPokemon,
   RngDateTime,
   rngTools,
-  Species,
   StatsValue,
 } from "~/rngTools";
 import { z } from "zod";
@@ -31,7 +30,6 @@ import { FormikRadio } from "~/components/radio";
 import { formatOffset } from "~/utils/offsetSymbol";
 import { sortBy } from "lodash-es";
 import pMap from "p-map";
-import { match } from "ts-pattern";
 import { characteristics, Characteristic4Options } from "../gen4types";
 import { fromRngDateTime, toRngDateTime } from "~/utils/time";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
@@ -126,20 +124,6 @@ const defaultDateTime: RngDateTime = {
   hour: 0,
   minute: 0,
   second: 0,
-};
-
-const getStarterGame = (starter: Species) => {
-  return (
-    match<Species, "Diamond" | "HeartGold">(starter)
-      .with("Turtwig", () => "Diamond")
-      .with("Chimchar", () => "Diamond")
-      .with("Piplup", () => "Diamond")
-      .with("Chikorita", () => "HeartGold")
-      .with("Cyndaquil", () => "HeartGold")
-      .with("Totodile", () => "HeartGold")
-      // Bad value, default to Diamond
-      .otherwise(() => "Diamond")
-  );
 };
 
 type FieldsProps = {
@@ -256,7 +240,7 @@ export const CalibrateStarter4 = () => {
         offset: 0,
         initial_advances: Math.max(targetAdvance - maxAdvances / 2, 0),
         max_advances: maxAdvances,
-        game: getStarterGame(targetSpecies),
+        method: "One",
         species: targetSpecies,
         lead: "None",
         seed: seedTime.seed,

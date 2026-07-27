@@ -4,7 +4,7 @@ use super::methodjk::{GateOnCheck1, get_methodjk_states, get_methodjk_sync_state
 use super::opts::{SearchStatic4Opts, Static4LeadInput};
 use super::radar_shiny::get_radar_shiny_states;
 use super::seed_filter::SeedFilters;
-use crate::gen4::StaticMethod;
+use crate::gen4::Static4Method;
 use crate::gen4::calc_level::{ReversedHoneyLevel, SetLevel};
 use crate::gen4::game_logic::{DpptLogic, HgssLogic};
 use crate::generators::utils::recover_poke_rng_iv;
@@ -43,11 +43,11 @@ macro_rules! search_seeds {
 
 #[wasm_bindgen]
 pub fn search_static4(opts: &SearchStatic4Opts) -> Vec<Static4State> {
-    match StaticMethod::new(opts.game, opts.species) {
-        StaticMethod::One => search_seeds!(opts, get_method1_states),
-        StaticMethod::J => search_seeds!(opts, get_methodjk_states::<DpptLogic, SetLevel>),
-        StaticMethod::K => search_seeds!(opts, get_methodjk_states::<HgssLogic, SetLevel>),
-        StaticMethod::Honey => {
+    match opts.method {
+        Static4Method::One => search_seeds!(opts, get_method1_states),
+        Static4Method::DpptJ => search_seeds!(opts, get_methodjk_states::<DpptLogic, SetLevel>),
+        Static4Method::HgssK => search_seeds!(opts, get_methodjk_states::<HgssLogic, SetLevel>),
+        Static4Method::Honey => {
             search_seeds!(opts, get_methodjk_states::<DpptLogic, ReversedHoneyLevel>)
         }
     }
@@ -91,8 +91,8 @@ pub fn search_static4_radar_shiny(opts: &SearchStatic4Opts) -> Vec<Static4State>
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::gen4::LeadAbility;
     use crate::gen4::seed_time::calc_seed;
-    use crate::gen4::{GameVersion, LeadAbility};
     use crate::{AbilityType, Characteristic, Gender, Nature, PkmFilter, Species};
 
     fn parse_honey_states(lead: LeadAbility, str: &str) -> Vec<BaseStatic4State> {
@@ -205,7 +205,7 @@ mod tests {
                 min_advance: 0,
                 max_advance: 30,
                 force_second: None,
-                game: GameVersion::Diamond,
+                method: Static4Method::One,
                 species: Species::Omanyte,
                 lead: Static4LeadInput::None,
                 filter: PkmFilter {
@@ -235,7 +235,7 @@ mod tests {
                 min_advance: 0,
                 max_advance: 30,
                 force_second: None,
-                game: GameVersion::Diamond,
+                method: Static4Method::One,
                 species: Species::Omanyte,
                 lead: Static4LeadInput::None,
                 filter: PkmFilter {
@@ -266,7 +266,7 @@ mod tests {
                 min_advance: 40,
                 max_advance: 60,
                 force_second: None,
-                game: GameVersion::Diamond,
+                method: Static4Method::One,
                 species: Species::Omanyte,
                 lead: Static4LeadInput::None,
                 filter: PkmFilter {
@@ -400,7 +400,7 @@ mod tests {
                 sid: 54321,
                 offset: 0,
                 lead: Static4LeadInput::None,
-                game: GameVersion::Diamond,
+                method: Static4Method::DpptJ,
                 species: Species::Drifloon,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
@@ -429,7 +429,7 @@ mod tests {
                 sid: 54321,
                 offset: 0,
                 lead: Static4LeadInput::Pressure,
-                game: GameVersion::Diamond,
+                method: Static4Method::DpptJ,
                 species: Species::Drifloon,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
@@ -459,7 +459,7 @@ mod tests {
                 tid: 12345,
                 sid: 54321,
                 offset: 0,
-                game: GameVersion::Diamond,
+                method: Static4Method::DpptJ,
                 species: Species::Drifloon,
                 lead: Static4LeadInput::CutecharmM,
                 filter: PkmFilter {
@@ -489,7 +489,7 @@ mod tests {
                 tid: 12345,
                 sid: 54321,
                 offset: 0,
-                game: GameVersion::Diamond,
+                method: Static4Method::DpptJ,
                 species: Species::Drifloon,
                 lead: Static4LeadInput::CutecharmF,
                 filter: PkmFilter {
@@ -519,7 +519,7 @@ mod tests {
                 tid: 12345,
                 sid: 54321,
                 offset: 0,
-                game: GameVersion::Diamond,
+                method: Static4Method::DpptJ,
                 species: Species::Drifloon,
                 lead: Static4LeadInput::Synchronize,
                 filter: PkmFilter {
@@ -560,7 +560,7 @@ mod tests {
                 sid: 54321,
                 offset: 0,
                 species: Species::Snorlax,
-                game: GameVersion::SoulSilver,
+                method: Static4Method::HgssK,
                 lead: Static4LeadInput::None,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
@@ -589,7 +589,7 @@ mod tests {
                 sid: 54321,
                 offset: 0,
                 species: Species::Snorlax,
-                game: GameVersion::SoulSilver,
+                method: Static4Method::HgssK,
                 lead: Static4LeadInput::Pressure,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
@@ -620,7 +620,7 @@ mod tests {
                 sid: 54321,
                 offset: 0,
                 species: Species::Snorlax,
-                game: GameVersion::SoulSilver,
+                method: Static4Method::HgssK,
                 lead: Static4LeadInput::Synchronize,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 25 / 25 / 20),
@@ -655,7 +655,7 @@ mod tests {
                 sid: 54321,
                 offset: 0,
                 species: Species::Snorlax,
-                game: GameVersion::SoulSilver,
+                method: Static4Method::HgssK,
                 lead: Static4LeadInput::CutecharmF,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
@@ -685,7 +685,7 @@ mod tests {
                 sid: 54321,
                 offset: 0,
                 species: Species::Snorlax,
-                game: GameVersion::SoulSilver,
+                method: Static4Method::HgssK,
                 lead: Static4LeadInput::CutecharmM,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
@@ -720,7 +720,7 @@ mod tests {
                 sid: 54321,
                 offset: 0,
                 species: Species::Munchlax,
-                game: GameVersion::Diamond,
+                method: Static4Method::Honey,
                 lead: Static4LeadInput::None,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
@@ -750,7 +750,7 @@ mod tests {
                 sid: 54321,
                 offset: 0,
                 species: Species::Munchlax,
-                game: GameVersion::Diamond,
+                method: Static4Method::Honey,
                 lead: Static4LeadInput::Synchronize,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 25 / 25 / 20),
@@ -785,7 +785,7 @@ mod tests {
                 sid: 54321,
                 offset: 0,
                 species: Species::Munchlax,
-                game: GameVersion::Diamond,
+                method: Static4Method::Honey,
                 lead: Static4LeadInput::CutecharmF,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
@@ -817,7 +817,7 @@ mod tests {
                 sid: 54321,
                 offset: 0,
                 species: Species::Munchlax,
-                game: GameVersion::Diamond,
+                method: Static4Method::Honey,
                 lead: Static4LeadInput::CutecharmM,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
@@ -849,7 +849,7 @@ mod tests {
                 sid: 54321,
                 offset: 0,
                 species: Species::Munchlax,
-                game: GameVersion::Diamond,
+                method: Static4Method::Honey,
                 lead: Static4LeadInput::Pressure,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
@@ -883,7 +883,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                game: GameVersion::Platinum,
+                method: Static4Method::DpptJ,
                 species: Species::Snover,
                 lead: Static4LeadInput::None,
                 filter: PkmFilter {
@@ -913,7 +913,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                game: GameVersion::Platinum,
+                method: Static4Method::DpptJ,
                 species: Species::Snover,
                 lead: Static4LeadInput::Synchronize,
                 filter: PkmFilter {
@@ -949,7 +949,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                game: GameVersion::Platinum,
+                method: Static4Method::DpptJ,
                 species: Species::Snover,
                 lead: Static4LeadInput::CutecharmF,
                 filter: PkmFilter {
@@ -981,7 +981,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                game: GameVersion::Platinum,
+                method: Static4Method::DpptJ,
                 species: Species::Snover,
                 lead: Static4LeadInput::CutecharmM,
                 filter: PkmFilter {
@@ -1018,7 +1018,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                game: GameVersion::Platinum,
+                method: Static4Method::DpptJ,
                 species: Species::Snover,
                 lead: Static4LeadInput::None,
                 filter: PkmFilter {
@@ -1050,7 +1050,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                game: GameVersion::Platinum,
+                method: Static4Method::DpptJ,
                 species: Species::Snover,
                 lead: Static4LeadInput::Synchronize,
                 filter: PkmFilter {
@@ -1088,7 +1088,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                game: GameVersion::Platinum,
+                method: Static4Method::DpptJ,
                 species: Species::Snover,
                 lead: Static4LeadInput::CutecharmF,
                 filter: PkmFilter {
@@ -1120,7 +1120,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                game: GameVersion::Platinum,
+                method: Static4Method::DpptJ,
                 species: Species::Snover,
                 lead: Static4LeadInput::CutecharmM,
                 filter: PkmFilter {

@@ -2,12 +2,11 @@ import * as tst from "ts-toolbelt";
 import { Descriptions as AntdDescriptions, DescriptionsProps } from "antd";
 import styled from "@emotion/styled";
 
-export type Field = tst.U.Exclude<
-  DescriptionsProps["items"],
-  undefined
->[number];
+type BaseField = tst.U.Exclude<DescriptionsProps["items"], undefined>[number];
 
-export const Descriptions = styled(AntdDescriptions)({
+export type Field = tst.O.Merge<BaseField, { show?: boolean }>;
+
+const StyledDescriptions = styled(AntdDescriptions)({
   ".ant-descriptions-view": { border: "none !important" },
   ".ant-descriptions-row": { border: "none !important" },
   ".ant-descriptions-item-content": {
@@ -23,3 +22,11 @@ export const Descriptions = styled(AntdDescriptions)({
     paddingRight: "24px !important",
   },
 });
+
+export const Descriptions = ({
+  items,
+  ...props
+}: tst.O.Overwrite<DescriptionsProps, { items: Field[] }>) => {
+  const filteredItems = items?.filter((item) => item.show !== false);
+  return <StyledDescriptions items={filteredItems} {...props} />;
+};

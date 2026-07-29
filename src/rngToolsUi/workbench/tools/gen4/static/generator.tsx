@@ -21,7 +21,7 @@ import {
   multiWorkerRngTools,
 } from "~/rngTools";
 import { z } from "zod";
-import { RustOption } from "~/types";
+import { nature, RustOption } from "~/types";
 import {
   pkmFilterSchema,
   getPkmFilterIvFields,
@@ -44,6 +44,12 @@ import {
 import { useAtom } from "jotai";
 import { useHydrate } from "~/hooks/useHydrate";
 import { getEncounterOptions, getEncounter } from "./encounters";
+import {
+  static4LeadSchema,
+  getLeadOptions,
+  leadOptionToRust,
+} from "~/rngToolsUi/gen4/shared/leads";
+import { getNatureInputProps } from "~/components/pkmFilter";
 
 const IV_FILTER_MODE = "ivs";
 
@@ -57,6 +63,8 @@ const Validator = z
     min_advance: z.number().int().min(0),
     max_advance: z.number().int().min(0),
     encounter_id: z.string(),
+    lead: static4LeadSchema,
+    sync_nature: z.enum(nature),
     year: z.number().int().min(2000).max(2100),
     force_second: z.number().int().min(0).max(59).nullable(),
     filter_characteristic: z.enum(characteristics).nullable(),
@@ -69,6 +77,8 @@ const initialValues: FormState = {
   profile_id: "",
   year: 2000,
   encounter_id: "",
+  lead: "None",
+  sync_nature: "Adamant",
   seed: 0,
   offset: 0,
   min_advance: 0,
@@ -99,17 +109,37 @@ type Result = {
 const RngInfoFields = () => {
   const [lockedProfiles] = useAtom(gen4ProfilesAtom);
   const { client: profiles } = useHydrate(lockedProfiles);
-  const { profile_id } = useWatch({
+  const { profile_id, encounter_id, lead } = useWatch({
     validationSchema: Validator,
-    names: { profile_id: true },
+    names: { profile_id: true, encounter_id: true, lead: true },
   });
 
   const { game } = findProfileOrDefault({ profiles, id: profile_id });
+  const encounter = getEncounter(game, encounter_id);
 
   const rngInfoFields: Field[] = [
     {
       label: "Profile",
       children: <FormikProfileSelect<FormState> name="profile_id" />,
+    },
+    {
+      label: "Lead",
+      children: (
+        <FormikSelect<FormState, "lead">
+          name="lead"
+          options={getLeadOptions(encounter.method)}
+        />
+      ),
+    },
+    {
+      label: "Sync Nature",
+      show: lead === "Synchronize",
+      children: (
+        <FormikSelect<FormState, "sync_nature">
+          name="sync_nature"
+          {...getNatureInputProps()}
+        />
+      ),
     },
     {
       label: "Pokemon",
@@ -264,7 +294,7 @@ export const Static4Generator = () => {
       ),
       initial_advances: opts.min_advance,
       max_advances: opts.max_advance,
-      lead: "None",
+      lead: leadOptionToRust({ lead: opts.lead, syncNature: opts.sync_nature }),
       offset: opts.offset,
       seed: opts.seed,
       filter_characteristic: opts.filter_characteristic,

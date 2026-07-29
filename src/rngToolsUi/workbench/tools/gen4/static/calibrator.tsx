@@ -24,7 +24,7 @@ import {
   SeedTime4,
 } from "~/rngTools";
 import { z } from "zod";
-import { RustOption } from "~/types";
+import { nature, RustOption } from "~/types";
 import {
   pkmFilterSchema,
   getPkmStatFilterFields,
@@ -57,6 +57,12 @@ import {
 } from "~/utils/time";
 import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
 import { getEncounterOptions, getEncounter } from "./encounters";
+import {
+  static4LeadSchema,
+  getLeadOptions,
+  leadOptionToRust,
+} from "~/rngToolsUi/gen4/shared/leads";
+import { getNatureInputProps } from "~/components/pkmFilter";
 
 const IV_FILTER_MODE = "stats";
 
@@ -68,6 +74,8 @@ const Validator = z
     date: RngDateSchema,
     time: RngTimeSchema,
     encounter_id: z.string(),
+    lead: static4LeadSchema,
+    sync_nature: z.enum(nature),
     seconds_offset: z.number().int().min(0),
     min_delay: z.number().int().min(0),
     max_delay: z.number().int().min(0),
@@ -83,6 +91,8 @@ type FormState = z.infer<typeof Validator>;
 const initialValues: FormState = {
   profile_id: "",
   encounter_id: "",
+  lead: "None",
+  sync_nature: "Adamant",
   date: rngDate(),
   time: rngTime(),
   seconds_offset: 0,
@@ -186,9 +196,9 @@ const RngInfoFields = () => {
 };
 
 const FilterFields = () => {
-  const { encounter_id, profile_id } = useWatch({
+  const { encounter_id, profile_id, lead } = useWatch({
     validationSchema: Validator,
-    names: { encounter_id: true, profile_id: true },
+    names: { encounter_id: true, profile_id: true, lead: true },
   });
 
   const [lockedProfiles] = useAtom(gen4ProfilesAtom);
@@ -207,6 +217,25 @@ const FilterFields = () => {
         <FormikSelect<FormState, "encounter_id">
           name="encounter_id"
           options={getEncounterOptions(game)}
+        />
+      ),
+    },
+    {
+      label: "Lead",
+      children: (
+        <FormikSelect<FormState, "lead">
+          name="lead"
+          options={getLeadOptions(encounter.method)}
+        />
+      ),
+    },
+    {
+      label: "Sync Nature",
+      show: lead === "Synchronize",
+      children: (
+        <FormikSelect<FormState, "sync_nature">
+          name="sync_nature"
+          {...getNatureInputProps()}
         />
       ),
     },
@@ -332,7 +361,7 @@ export const Static4Calibrator = () => {
       ),
       initial_advances: opts.min_advance,
       max_advances: opts.max_advance,
-      lead: "None",
+      lead: leadOptionToRust({ lead: opts.lead, syncNature: opts.sync_nature }),
       offset: opts.offset,
       filter_characteristic: opts.filter_characteristic,
       filter_level: null,

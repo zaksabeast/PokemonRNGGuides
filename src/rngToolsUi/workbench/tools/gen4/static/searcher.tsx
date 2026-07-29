@@ -38,6 +38,10 @@ import {
 import { useAtom } from "jotai";
 import { useHydrate } from "~/hooks/useHydrate";
 import { getEncounterOptions, getEncounter } from "./encounters";
+import {
+  static4LeadSchema,
+  getLeadOptions,
+} from "~/rngToolsUi/gen4/shared/leads";
 
 const IV_FILTER_MODE = "ivs";
 
@@ -46,6 +50,7 @@ const LIMIT = 1000;
 const Validator = z
   .object({
     profile_id: z.string().min(1, "Profile is required"),
+    lead: static4LeadSchema,
     min_delay: z.number().int().min(0),
     max_delay: z.number().int().min(0),
     min_advance: z.number().int().min(0),
@@ -67,6 +72,7 @@ const initialValues: FormState = {
   min_advance: 0,
   max_advance: 0,
   force_second: null,
+  lead: "None",
   filter_level: 5,
   ...getPkmFilterInitialValues(),
 };
@@ -92,17 +98,27 @@ type Result = {
 const RngInfoFields = () => {
   const [lockedProfiles] = useAtom(gen4ProfilesAtom);
   const { client: profiles } = useHydrate(lockedProfiles);
-  const { profile_id } = useWatch({
+  const { profile_id, encounter_id } = useWatch({
     validationSchema: Validator,
-    names: { profile_id: true },
+    names: { profile_id: true, encounter_id: true },
   });
 
   const { game } = findProfileOrDefault({ profiles, id: profile_id });
+  const encounter = getEncounter(game, encounter_id);
 
   const rngInfoFields: DescriptionsProps["items"] = [
     {
       label: "Profile",
       children: <FormikProfileSelect<FormState> name="profile_id" />,
+    },
+    {
+      label: "Lead",
+      children: (
+        <FormikSelect<FormState, "lead">
+          name="lead"
+          options={getLeadOptions(encounter.method)}
+        />
+      ),
     },
     {
       label: "Pokemon",
@@ -263,7 +279,7 @@ export const Static4Searcher = () => {
       min_advance: opts.min_advance,
       min_delay: opts.min_delay,
       year: opts.year,
-      lead: "None",
+      lead: opts.lead,
       month: null,
       offset: 0,
     };

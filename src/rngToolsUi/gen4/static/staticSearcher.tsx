@@ -15,7 +15,6 @@ import {
   multiWorkerRngTools,
   Static4State,
   SearchStatic4Opts,
-  Static4LeadInput,
 } from "~/rngTools";
 import { z } from "zod";
 import {
@@ -47,6 +46,7 @@ import { type Encounter } from "../encounters/encounter";
 import { useField, useWatch } from "~/hooks/form";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { normalizeTargetLead } from "./utils";
+import { static4LeadSchema, leadOptions } from "../shared/leads";
 
 type Result = FlattenIvs<
   Static4State["state"] & {
@@ -111,15 +111,6 @@ const SelectButton = ({ target }: SelectButtonProps) => {
   );
 };
 
-const LeadOptions = [
-  "None",
-  "CutecharmF",
-  "CutecharmM",
-  "Synchronize",
-] as const satisfies Static4LeadInput[];
-
-const LeadOptionsSchema = z.enum(LeadOptions);
-
 const Validator = z
   .object({
     tid: z.number().int().min(0).max(0xffff),
@@ -134,7 +125,7 @@ const Validator = z
     offset: z.number().int().min(0),
     year: z.number().int().min(2000).max(2100),
     month: MonthSchema,
-    lead: LeadOptionsSchema,
+    lead: static4LeadSchema,
     force_second: z.number().int().min(0).max(59).nullable(),
   })
   .extend(pkmFilterSchema.shape);
@@ -197,13 +188,6 @@ const columns: ResultColumn<Result>[] = [
     render: (seed) => seed.toString(16).padStart(8, "0").toUpperCase(),
   },
 ];
-
-const leadOptions = [
-  { label: "No Lead", value: "None" },
-  { label: "Cute Charm (Female)", value: "CutecharmF" },
-  { label: "Cute Charm (Male)", value: "CutecharmM" },
-  { label: "Synchronize", value: "Synchronize" },
-] satisfies { label: string; value: Static4LeadInput }[];
 
 type OffsetFieldProps = { game: Gen4GameVersion; encounter: Encounter | null };
 

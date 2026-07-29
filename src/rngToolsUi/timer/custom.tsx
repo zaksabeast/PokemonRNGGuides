@@ -260,6 +260,7 @@ export const CustomTimer = () => {
           { label: "NDS - Slot 1", value: "NdsSlot1" },
           { label: "DSI", value: "Dsi" },
           { label: "3DS", value: "ThreeDs" },
+          { label: "Switch - FR/LG", value: "SwitchFrLg" },
         ]}
       />
     ),

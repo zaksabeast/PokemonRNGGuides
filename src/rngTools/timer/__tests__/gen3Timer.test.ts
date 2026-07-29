@@ -28,4 +28,20 @@ describe("updateGen3Timer", () => {
     expect(secondUpdate.settings.calibration).toBe(8358);
     expect(secondUpdate.ms).toEqual([5000, 25073]);
   });
+
+  it("handles switch frlg correctly", () => {
+    const settings: Gen3TimerSettings = {
+      console: "SwitchFrLg",
+      preTimer: 5000,
+      targetFrame: 6457,
+      calibration: 0,
+    };
+    const firstUpdate = updateGen3Timer(settings);
+    expect(firstUpdate.settings.calibration).toBe(0);
+    expect(firstUpdate.ms).toEqual([5000, 54058]);
+
+    const secondUpdate = updateGen3Timer(firstUpdate.settings, 6009);
+    expect(secondUpdate.settings.calibration).toBe(3751);
+    expect(secondUpdate.ms).toEqual([5000, 57809]);
+  });
 });

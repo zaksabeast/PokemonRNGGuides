@@ -4,10 +4,12 @@ import { Calibrator, newCalibrator } from "./calibrator";
 const GBA_FPS: number = 59.7275;
 const NDS_SLOT1_FPS: number = 59.8261;
 const NDS_SLOT2_FPS: number = 59.6555;
+const SWITCH_FRLG_FPT: number = 119.445;
 
 const MS_PER_GBA_FRAME: number = 1000 / GBA_FPS;
 const MS_PER_NDS_SLOT1_FRAME: number = 1000 / NDS_SLOT1_FPS;
 const MS_PER_NDS_SLOT2_FRAME: number = 1000 / NDS_SLOT2_FPS;
+const MS_PER_SWITCH_FRLG_FRAME: number = 1000 / SWITCH_FRLG_FPT;
 
 const CONSOLE_MS_PER_FRAME = {
   Gba: MS_PER_GBA_FRAME,
@@ -15,6 +17,7 @@ const CONSOLE_MS_PER_FRAME = {
   NdsSlot2: MS_PER_NDS_SLOT2_FRAME,
   Dsi: MS_PER_NDS_SLOT1_FRAME,
   ThreeDs: MS_PER_NDS_SLOT1_FRAME,
+  SwitchFrLg: MS_PER_SWITCH_FRLG_FRAME,
 } as const satisfies Record<string, number>;
 
 export type GameConsole = keyof typeof CONSOLE_MS_PER_FRAME;
@@ -29,4 +32,5 @@ export const ZodConsole = z.enum([
   "ThreeDs",
   "Gba",
   "NdsSlot2",
+  "SwitchFrLg",
 ]) satisfies z.Schema<GameConsole>;

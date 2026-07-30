@@ -31,7 +31,11 @@ export type BatchableFunctionsOf<T> = {
 type UseBatchedToolOptions<Arg, Ret, MappedRet> = {
   map?: (value: Ret, arg: Arg) => MappedRet | Promise<MappedRet>;
   sortBy?: ((value: MappedRet) => number) | ((value: MappedRet) => number)[];
-  /** Maximum number of results to collect before cancelling remaining work. */
+  /**
+   * Maximum number of results to collect for memory purposes.
+   * Does not cancel remaining work.
+   * New results will be sorted and truncated to this limit.
+   * */
   limit?: number;
 };
 
@@ -143,28 +147,18 @@ export const useBatchedTool = <Arg, Ret, MappedRet = Ret>(
         .subscribe({
           // Called when each chunk is received
           next: (mappedValues) => {
-            const acceptedValues =
-              limit == null
-                ? mappedValues
-                : mappedValues.slice(0, Math.max(0, limit - results.length));
+            const unsorted = [...results, ...mappedValues];
+            const ordered =
+              sortWith == null ? unsorted : sortBy(unsorted, sortWith);
+            const limited = limit == null ? ordered : ordered.slice(0, limit);
 
-            const unsorted = [...results, ...acceptedValues];
-
-            results = sortWith == null ? unsorted : sortBy(unsorted, sortWith);
+            results = limited;
 
             setProgress((prev) => ({
               data: results,
               finishedChunks: prev.finishedChunks + 1,
               totalChunks: prev.totalChunks,
             }));
-
-            if (limit != null && results.length >= limit) {
-              cancelActiveRun();
-              setProgress((prev) => ({
-                ...prev,
-                finishedChunks: prev.totalChunks,
-              }));
-            }
           },
         });
 

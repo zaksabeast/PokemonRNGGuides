@@ -1,8 +1,8 @@
-use serde::{Deserialize, Serialize};
-use tsify::Tsify;
 use crate::gen4::SearchStatic4Opts;
 use crate::gen4::seed_time::SeedTime4;
 use crate::gen4::stationary::BaseStatic4State;
+use serde::{Deserialize, Serialize};
+use tsify::Tsify;
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]

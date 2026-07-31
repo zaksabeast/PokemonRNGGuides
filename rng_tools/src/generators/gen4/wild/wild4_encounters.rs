@@ -30,11 +30,11 @@
 //!   `honey_tree` module (reused here, not reimplemented) for the
 //!   tid/sid -> tree dedup logic.
 
+use crate::gen4::honey_tree::{HoneyTreeLocation, get_muchlax_trees};
 use serde::Deserialize;
 use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
-use crate::gen4::honey_tree::{get_muchlax_trees, HoneyTreeLocation};
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct RawEncountersFile {
@@ -258,8 +258,12 @@ pub fn get_wild_pokemon(
         Method::Grass => resolve_grass(entry, cond),
         Method::Surf => resolve_water(&entry.surf, &WATER_SLOT_RATES, entry, false),
         Method::OldRod => resolve_water(&entry.old_rod, &WATER_SLOT_RATES, entry, cond.feebas_tile),
-        Method::GoodRod => resolve_water(&entry.good_rod, &WATER_SLOT_RATES, entry, cond.feebas_tile),
-        Method::SuperRod => resolve_water(&entry.super_rod, &WATER_SLOT_RATES, entry, cond.feebas_tile),
+        Method::GoodRod => {
+            resolve_water(&entry.good_rod, &WATER_SLOT_RATES, entry, cond.feebas_tile)
+        }
+        Method::SuperRod => {
+            resolve_water(&entry.super_rod, &WATER_SLOT_RATES, entry, cond.feebas_tile)
+        }
     }
 }
 
@@ -287,7 +291,6 @@ fn resolve_grass(entry: &RawEntry, cond: &Conditions) -> Vec<ResolvedEncounter> 
         set_slot(&mut species, 10, entry.radar.get(2).copied());
         set_slot(&mut species, 11, entry.radar.get(3).copied());
     }
-
 
     if let Some(cart) = cond.dual_slot {
         let arr: &[u16] = match cart {
@@ -328,7 +331,7 @@ fn resolve_water(
         .iter()
         .zip(rates.iter())
         .enumerate()
-        .filter(|(_, (s, _))| s.species!= 0)
+        .filter(|(_, (s, _))| s.species != 0)
         .map(|(i, (s, rate))| ResolvedEncounter {
             species: s.species,
             form: shellos_gastrodon_form(s.species, entry),
@@ -354,13 +357,13 @@ fn resolve_water(
 }
 
 fn shellos_gastrodon_form(species: u16, entry: &RawEntry) -> u8 {
-    if species == SHELLOS_SPECIES{
+    if species == SHELLOS_SPECIES {
         if entry.form.first().copied().unwrap_or(0) == 0 {
             1
         } else {
             0
         }
-    } else if species == GASTRODON_SPECIES{
+    } else if species == GASTRODON_SPECIES {
         if entry.form.get(1).copied().unwrap_or(0) == 0 {
             1
         } else {
@@ -414,9 +417,7 @@ pub fn get_honey_tree_pokemon(
     };
 
     let munchlax_available = match tree_id_from_location(location) {
-        Some(tree_id) => {
-            get_muchlax_trees(tid, sid).contains(&HoneyTreeLocation::from(tree_id))
-        }
+        Some(tree_id) => get_muchlax_trees(tid, sid).contains(&HoneyTreeLocation::from(tree_id)),
         None => false,
     };
 
@@ -725,10 +726,7 @@ mod tests {
         };
         let result = get_wild_pokemon(&data, 999, Method::Grass, &cond);
         let species: Vec<u16> = result.iter().map(|e| e.species).collect();
-        assert_eq!(
-            species,
-            vec![1, 2, 3, 4, 400, 401, 7, 8, 9, 10, 402, 403]
-        );
+        assert_eq!(species, vec![1, 2, 3, 4, 400, 401, 7, 8, 9, 10, 402, 403]);
     }
 
     #[test]
@@ -795,8 +793,14 @@ mod tests {
         let data = wrap_entries(vec![entry_from(LOCATION_0_JSON)]);
         let result = get_wild_pokemon(&data, 0, Method::Surf, &Conditions::default());
 
-        let shellos = result.iter().find(|e| e.species== SHELLOS_SPECIES).unwrap();
-        let gastrodon = result.iter().find(|e| e.species== GASTRODON_SPECIES).unwrap();
+        let shellos = result
+            .iter()
+            .find(|e| e.species == SHELLOS_SPECIES)
+            .unwrap();
+        let gastrodon = result
+            .iter()
+            .find(|e| e.species == GASTRODON_SPECIES)
+            .unwrap();
         assert_eq!(shellos.form, 1);
         assert_eq!(gastrodon.form, 1);
     }
@@ -807,7 +811,7 @@ mod tests {
         let result = get_wild_pokemon(&data, 0, Method::OldRod, &Conditions::default());
 
         assert_eq!(result.len(), 5);
-        assert!(result.iter().all(|e| e.species== 129));
+        assert!(result.iter().all(|e| e.species == 129));
         assert_eq!(result[0].min_level, 4);
         assert_eq!(result[0].max_level, 6);
         assert_eq!(result[4].min_level, 5);
@@ -845,8 +849,13 @@ mod tests {
         assert_eq!(feebas.min_level, FEEBAS_MIN_LEVEL);
         assert_eq!(feebas.max_level, FEEBAS_MAX_LEVEL);
         assert_eq!(feebas.rate_percent, FEEBAS_RATE_PERCENT_WHEN_TILE);
-        
-        assert!(result.iter().filter(|e| e.slot != 5).all(|e| e.species== 129));
+
+        assert!(
+            result
+                .iter()
+                .filter(|e| e.slot != 5)
+                .all(|e| e.species == 129)
+        );
         assert_eq!(result.iter().filter(|e| e.slot != 5).count(), 5);
     }
 
@@ -854,7 +863,7 @@ mod tests {
     fn feebas_tile_false_does_not_replace_anything() {
         let data = wrap_entries(vec![entry_from(LOCATION_22_JSON)]);
         let result = get_wild_pokemon(&data, 22, Method::OldRod, &Conditions::default());
-        assert!(result.iter().all(|e| e.species== 129));
+        assert!(result.iter().all(|e| e.species == 129));
     }
 
     #[test]
@@ -865,8 +874,8 @@ mod tests {
             ..Default::default()
         };
         let result = get_wild_pokemon(&data, 0, Method::OldRod, &cond);
-        assert!(result.iter().all(|e| e.species== 129));
-        assert!(!result.iter().any(|e| e.species== FEEBAS_SPECIES));
+        assert!(result.iter().all(|e| e.species == 129));
+        assert!(!result.iter().any(|e| e.species == FEEBAS_SPECIES));
     }
 
     fn honey_data_with(entries: Vec<RawHoneyEntry>) -> RawHoneyFile {
@@ -913,7 +922,7 @@ mod tests {
 
         let result = get_honey_tree_pokemon(&data, 9999, 0, 0);
         assert!(!result.iter().any(|e| e.group == HoneyGroup::Munchlax));
-        assert!(!result.iter().any(|e| e.species== 446));
+        assert!(!result.iter().any(|e| e.species == 446));
     }
 
     #[test]
@@ -951,13 +960,34 @@ mod tests {
     #[test]
     fn merge_by_species_sums_rates_and_widens_level_range() {
         let list = vec![
-            ResolvedEncounter { species: 129, form: 0, min_level: 5, max_level: 10, rate_percent: 20, slot: 0 },
-            ResolvedEncounter { species: 129, form: 0, min_level: 3, max_level: 8, rate_percent: 10, slot: 4 },
-            ResolvedEncounter { species: 130, form: 0, min_level: 20, max_level: 20, rate_percent: 1, slot: 11 },
+            ResolvedEncounter {
+                species: 129,
+                form: 0,
+                min_level: 5,
+                max_level: 10,
+                rate_percent: 20,
+                slot: 0,
+            },
+            ResolvedEncounter {
+                species: 129,
+                form: 0,
+                min_level: 3,
+                max_level: 8,
+                rate_percent: 10,
+                slot: 4,
+            },
+            ResolvedEncounter {
+                species: 130,
+                form: 0,
+                min_level: 20,
+                max_level: 20,
+                rate_percent: 1,
+                slot: 11,
+            },
         ];
         let merged = merge_by_species(list);
         assert_eq!(merged.len(), 2);
-        let m129 = merged.iter().find(|e| e.species== 129).unwrap();
+        let m129 = merged.iter().find(|e| e.species == 129).unwrap();
         assert_eq!(m129.rate_percent, 30);
         assert_eq!(m129.min_level, 3);
         assert_eq!(m129.max_level, 10);

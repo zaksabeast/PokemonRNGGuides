@@ -69,19 +69,12 @@ mod tests {
         let candidates = vec![
             // Seed 1 should not produce a shiny patch in this range.
             dummy_state(1, 25),
-
             // Seed 50 produces a shiny patch at advance 0.
             dummy_state(50, 10),
         ];
 
-        let result = search_shiny_patches(
-            &candidates,
-            0,
-            0,
-            40,
-            BattleResult::Catch,
-            ShakeType::Slow,
-        );
+        let result =
+            search_shiny_patches(&candidates, 0, 0, 40, BattleResult::Catch, ShakeType::Slow);
 
         assert_eq!(result.len(), 1);
 
@@ -99,14 +92,8 @@ mod tests {
     fn returns_empty_when_no_shiny_patch_exists() {
         let candidates = vec![dummy_state(1, 25)];
 
-        let result = search_shiny_patches(
-            &candidates,
-            0,
-            0,
-            1,
-            BattleResult::Catch,
-            ShakeType::Slow,
-        );
+        let result =
+            search_shiny_patches(&candidates, 0, 0, 1, BattleResult::Catch, ShakeType::Slow);
 
         assert!(result.is_empty());
     }
@@ -119,24 +106,14 @@ mod tests {
             dummy_state(50, 123),
         ];
 
-        let result = search_shiny_patches(
-            &candidates,
-            0,
-            10,
-            40,
-            BattleResult::Catch,
-            ShakeType::Slow,
-        );
+        let result =
+            search_shiny_patches(&candidates, 0, 10, 40, BattleResult::Catch, ShakeType::Slow);
 
         // If seed 50 has a shiny patch at advance 0, the search
         // must report patch_advance = 0 rather than the spread advance.
-        assert!(
-            result.iter().any(|candidate| {
-                candidate.seed == 50
-                    && candidate.spread_advance == 123
-                    && candidate.patch_advance == 0
-            })
-        );
+        assert!(result.iter().any(|candidate| {
+            candidate.seed == 50 && candidate.spread_advance == 123 && candidate.patch_advance == 0
+        }));
     }
 
     /// Just check that if there are any, we don't lose the spread_advance
@@ -144,14 +121,8 @@ mod tests {
     fn preserves_multiple_shiny_patch_advances_for_same_seed() {
         let candidates = vec![dummy_state(50, 123)];
 
-        let result = search_shiny_patches(
-            &candidates,
-            0,
-            10,
-            40,
-            BattleResult::Catch,
-            ShakeType::Slow,
-        );
+        let result =
+            search_shiny_patches(&candidates, 0, 10, 40, BattleResult::Catch, ShakeType::Slow);
 
         let matching_results: Vec<_> = result
             .iter()

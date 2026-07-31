@@ -6,4 +6,5 @@ mod radar_shiny;
 mod seed_filter;
 
 pub mod search;
+pub use opts::SearchStatic4Opts;
 pub use base_state::*;

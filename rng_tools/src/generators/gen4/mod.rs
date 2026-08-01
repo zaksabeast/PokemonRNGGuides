@@ -12,7 +12,7 @@ mod stationary;
 mod step_calculator;
 mod swarm;
 mod voltorb_flip;
-mod wild;
+pub mod wild;
 
 pub use egg::*;
 pub use game::*;

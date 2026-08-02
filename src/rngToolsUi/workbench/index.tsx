@@ -2,6 +2,7 @@ import { match } from "ts-pattern";
 import { Flex } from "~/components";
 import { profileTabs } from "./tools/profile/tabs";
 import { ivCalcTabs } from "./tools/ivCalc/tabs";
+import { emeraldEggTabs } from "./tools/gen3/emeraldEgg/tabs";
 import { Tabs, Menu, MenuProps } from "antd";
 import styled from "@emotion/styled";
 import { SizeContext } from "~/theme/size";
@@ -31,6 +32,9 @@ const Content = () => {
     .with("profile", () => <FullHeightTabs items={profileTabs} type="card" />)
     .with("static4", () => <FullHeightTabs items={static4Tabs} type="card" />)
     .with("iv-calc", () => <FullHeightTabs items={ivCalcTabs} type="card" />)
+    .with("emerald-egg", () => (
+      <FullHeightTabs items={emeraldEggTabs} type="card" />
+    ))
     .with("advance-finder4", () => (
       <FullHeightTabs items={advanceFinder4Tabs} type="card" />
     ))
@@ -58,11 +62,17 @@ export const RngWorkbench = () => {
 
   const menuItems: MenuItem[] = [
     {
+      key: "g3",
+      label: "Gen 3 Tools",
+      type: "submenu",
+      children: [createSubItem({ route: "emerald-egg", label: "Emerald Egg" })],
+    },
+    {
       key: "g4",
       label: "Gen 4 Tools",
       type: "submenu",
       children: [
-        createSubItem({ route: "static4", label: "Static RNG" }),
+        createSubItem({ route: "static4", label: "Static" }),
         createSubItem({
           route: "advance-finder4",
           label: "Chatot/Elm Tracker",

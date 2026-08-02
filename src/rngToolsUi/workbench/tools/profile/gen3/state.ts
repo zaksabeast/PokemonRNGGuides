@@ -12,7 +12,9 @@ export const Gen3ProfileSchema = z.object({
   pokeNavTrainers: z.array(z.enum(pokeNavTrainers)),
 });
 
-const defaultProfile: z.infer<typeof Gen3ProfileSchema> = {
+export type Gen3Profile = z.infer<typeof Gen3ProfileSchema>;
+
+const defaultProfile: Gen3Profile = {
   id: "",
   name: "",
   tid: 0,

@@ -130,7 +130,12 @@ const RngInfoFields = () => {
   const rngInfoFields: Field[] = [
     {
       label: "Profile",
-      children: <FormikProfileSelect<FormState> name="profile_id" />,
+      children: (
+        <FormikProfileSelect<FormState>
+          name="profile_id"
+          profileAtom={gen4ProfilesAtom}
+        />
+      ),
     },
     {
       label: "Date",

@@ -11,7 +11,9 @@ export const Gen4ProfileSchema = z.object({
   nationalDex: z.boolean(),
 });
 
-const defaultProfile: z.infer<typeof Gen4ProfileSchema> = {
+export type Gen4Profile = z.infer<typeof Gen4ProfileSchema>;
+
+const defaultProfile: Gen4Profile = {
   id: "",
   name: "",
   tid: 0,

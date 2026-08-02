@@ -3,7 +3,7 @@ import { GenericForm } from "~/types/form";
 import { Paths } from "~/types";
 import { useHydrate } from "~/hooks/useHydrate";
 import { useAtom } from "jotai";
-import { gen4ProfilesAtom } from "~/rngToolsUi/workbench/tools/profile/state";
+import { gen4ProfilesAtom } from "~/rngToolsUi/workbench/tools/profile/gen4/state";
 import { routeAtom } from "~/rngToolsUi/workbench/state";
 
 type FormikProfileSelectProps<FormState extends GenericForm> = {

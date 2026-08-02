@@ -1,5 +1,5 @@
 import { TabsProps } from "antd";
-import { Gen4ProfileTool } from "./gen4";
+import { Gen4ProfileTool } from "./gen4/tab";
 
 export const profileTabs: TabsProps["items"] = [
   {

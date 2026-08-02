@@ -2,33 +2,40 @@ use super::simulate::pokeradar4_simulate_advance;
 use super::types::{BattleResult, PokeRadar4AdvanceOpts, ShakeType};
 use crate::gen4::stationary::BaseStatic4State;
 
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct ShinyPatchCandidate {
     pub seed: u32,
-    pub advance: usize,
+    pub spread_advance: usize,
+    pub patch_advance: usize,
 }
 
 pub fn search_shiny_patches(
     candidates: &[BaseStatic4State],
+    patch_min_advance: usize,
+    patch_max_advance: usize,
     chain_count: u16,
     battle_result: BattleResult,
     selected_shake: ShakeType,
 ) -> Vec<ShinyPatchCandidate> {
     candidates
         .iter()
-        .filter_map(|c| {
-            let result = pokeradar4_simulate_advance(PokeRadar4AdvanceOpts {
-                init_seed: c.seed,
-                target_advance: c.advance,
-                chain_count,
-                battle_result,
-                selected_shake,
-            });
+        .flat_map(|candidate| {
+            (patch_min_advance..=patch_max_advance).filter_map(move |patch_advance| {
+                let result = pokeradar4_simulate_advance(PokeRadar4AdvanceOpts {
+                    init_seed: candidate.seed,
+                    target_advance: patch_advance,
+                    chain_count,
+                    battle_result,
+                    selected_shake,
+                });
 
-            let has_shiny = result.patches.iter().any(|p| p.is_shiny);
+                let has_shiny_patch = result.patches.iter().any(|patch| patch.is_shiny);
 
-            has_shiny.then_some(ShinyPatchCandidate {
-                seed: c.seed,
-                advance: c.advance,
+                has_shiny_patch.then_some(ShinyPatchCandidate {
+                    seed: candidate.seed,
+                    spread_advance: candidate.advance,
+                    patch_advance,
+                })
             })
         })
         .collect()
@@ -58,27 +65,76 @@ mod tests {
     }
 
     #[test]
-    fn keeps_only_candidates_with_a_shiny_patch() {
+    fn keeps_only_candidates_with_a_shiny_patch_in_range() {
         let candidates = vec![
-            // no shiny patch anywhere (chain_count = 1)
-            dummy_state(1, 0),
-            // ring 1 produces a shiny with chain_count = 40
-            dummy_state(50, 0),
+            // Seed 1 should not produce a shiny patch in this range.
+            dummy_state(1, 25),
+            // Seed 50 produces a shiny patch at advance 0.
+            dummy_state(50, 10),
         ];
 
-        let result = search_shiny_patches(&candidates, 40, BattleResult::Catch, ShakeType::Slow);
+        let result =
+            search_shiny_patches(&candidates, 0, 0, 40, BattleResult::Catch, ShakeType::Slow);
 
         assert_eq!(result.len(), 1);
-        assert_eq!(result[0].seed, 50);
-        assert_eq!(result[0].advance, 0);
+
+        assert_eq!(
+            result[0],
+            ShinyPatchCandidate {
+                seed: 50,
+                spread_advance: 10,
+                patch_advance: 0,
+            }
+        );
     }
 
     #[test]
-    fn no_candidate_has_a_shiny_patch() {
-        let candidates = vec![dummy_state(1, 0)];
+    fn returns_empty_when_no_shiny_patch_exists() {
+        let candidates = vec![dummy_state(1, 25)];
 
-        let result = search_shiny_patches(&candidates, 1, BattleResult::Catch, ShakeType::Slow);
+        let result =
+            search_shiny_patches(&candidates, 0, 0, 1, BattleResult::Catch, ShakeType::Slow);
 
         assert!(result.is_empty());
+    }
+
+    #[test]
+    fn searches_the_entire_patch_advance_range() {
+        let candidates = vec![
+            // The spread advance is deliberately different from the
+            // patch advance we are searching.
+            dummy_state(50, 123),
+        ];
+
+        let result =
+            search_shiny_patches(&candidates, 0, 10, 40, BattleResult::Catch, ShakeType::Slow);
+
+        // If seed 50 has a shiny patch at advance 0, the search
+        // must report patch_advance = 0 rather than the spread advance.
+        assert!(result.iter().any(|candidate| {
+            candidate.seed == 50 && candidate.spread_advance == 123 && candidate.patch_advance == 0
+        }));
+    }
+
+    /// Just check that if there are any, we don't lose the spread_advance
+    #[test]
+    fn preserves_multiple_shiny_patch_advances_for_same_seed() {
+        let candidates = vec![dummy_state(50, 123)];
+
+        let result =
+            search_shiny_patches(&candidates, 0, 10, 40, BattleResult::Catch, ShakeType::Slow);
+
+        let matching_results: Vec<_> = result
+            .iter()
+            .filter(|candidate| candidate.seed == 50)
+            .collect();
+
+        // A seed can have more than one shiny patch in the searched range.
+        // Every matching patch advance should be returned.
+        assert!(
+            matching_results
+                .iter()
+                .all(|candidate| candidate.spread_advance == 123)
+        );
     }
 }

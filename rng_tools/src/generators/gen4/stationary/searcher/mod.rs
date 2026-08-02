@@ -7,3 +7,4 @@ mod seed_filter;
 
 pub mod search;
 pub use base_state::*;
+pub use opts::SearchStatic4Opts;

@@ -169,7 +169,7 @@ pub fn load_encounters_file(json_dir: &str, game: Game) -> anyhow::Result<RawEnc
     };
     let path = std::path::Path::new(json_dir).join(filename);
     let content = std::fs::read_to_string(&path)
-        .map_err(|e| anyhow::anyhow!("impossibile leggere {}: {}", path.display(), e))?;
+        .map_err(|e| anyhow::anyhow!("Cannot read {}: {}", path.display(), e))?;
     Ok(serde_json::from_str(&content)?)
 }
 
@@ -181,6 +181,6 @@ pub fn load_honey_file(json_dir: &str, game: Game) -> anyhow::Result<RawHoneyFil
     };
     let path = std::path::Path::new(json_dir).join(filename);
     let content = std::fs::read_to_string(&path)
-        .map_err(|e| anyhow::anyhow!("impossibile leggere {}: {}", path.display(), e))?;
+        .map_err(|e| anyhow::anyhow!("Cannot read {}: {}", path.display(), e))?;
     Ok(serde_json::from_str(&content)?)
 }

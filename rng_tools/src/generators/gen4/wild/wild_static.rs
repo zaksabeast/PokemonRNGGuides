@@ -82,8 +82,6 @@ pub struct RawHoneyEntry {
 const GRASS_SLOT_RATES: [u32; 12] = [20, 20, 10, 10, 10, 10, 5, 5, 4, 4, 1, 1];
 const WATER_SLOT_RATES: [u32; 5] = [60, 30, 5, 4, 1];
 
-// TODO: verifica che questa stringa corrisponda esattamente al valore
-// "location" usato nel tuo nuovo JSON per Mt Coronet Upper B1F.
 const MT_CORONET_B1F_LOCATION: &str = "Mt Coronet Upper B1F";
 const FEEBAS_SPECIES: &str = "Feebas";
 const FEEBAS_MIN_LEVEL: u8 = 10;
@@ -94,10 +92,6 @@ const GASTRODON_SPECIES: &str = "Gastrodon";
 
 const FEEBAS_RATE_PERCENT_WHEN_TILE: u32 = 50;
 
-// Ordine ricavato dal vecchio elenco di id (145,146,147,148,149,150,156,157,
-// 159,160,161,162,163,164,167,169,170,7,8,9,183), mappato 1:1 sull'ordine
-// delle entry nel JSON honey (pt_honey.json). Se aggiungi/riordini entry nel
-// JSON, questo array va tenuto allineato a mano.
 const HONEY_TREE_MAP_IDS: [&str; 21] = [
     "Route 205 (South)",
     "Route 205 (North)",

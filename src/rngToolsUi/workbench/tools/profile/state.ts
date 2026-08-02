@@ -1,6 +1,6 @@
 import { atomWithPersistence } from "~/state/localStorage";
 import { z } from "zod";
-import { Gen4GameVersions } from "~/rngToolsUi/gen4/gen4types";
+import { Gen4GameVersions } from "~/types/games";
 
 export const Gen4ProfileSchema = z.object({
   id: z.string(),

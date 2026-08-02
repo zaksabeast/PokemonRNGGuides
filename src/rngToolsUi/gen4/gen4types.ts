@@ -3,14 +3,7 @@ import { Characteristic, LeadAbility, Nature } from "~/rngTools";
 import { toOptions } from "~/utils/options";
 import { startCase, sortBy } from "lodash-es";
 import { z } from "zod";
-
-export const DpPt = ["Diamond", "Pearl", "Platinum"] as const;
-
-export type DpPt = (typeof DpPt)[number];
-
-export const Gen4GameVersions = [...DpPt, "HeartGold", "SoulSilver"] as const;
-
-export type Gen4GameVersion = (typeof Gen4GameVersions)[number];
+import type { Gen4GameVersion } from "~/types/games";
 
 export const Gen4ConsoleSchema = z.enum([
   "NdsDsi",

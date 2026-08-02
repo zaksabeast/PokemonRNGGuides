@@ -1,6 +1,6 @@
 import { type HoneyTreeLocation } from "~/rngTools";
 import { atom } from "jotai";
-import { DpPt } from "../gen4types";
+import { DpPt } from "~/types/games";
 
 export type HoneyTreeState = {
   game: DpPt;

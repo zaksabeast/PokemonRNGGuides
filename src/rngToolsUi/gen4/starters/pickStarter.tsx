@@ -36,7 +36,7 @@ import {
   allStarters,
 } from "./state";
 import { gen4StateAtom } from "../shared/state";
-import { Gen4GameVersion } from "../gen4types";
+import { Gen4GameVersion } from "~/types/games";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
 import { chunkIvs } from "~/utils/chunkIvs";
 import { RustOption } from "~/types";

@@ -1,6 +1,6 @@
 import { SeedTime4 } from "~/rngTools";
 import { fromRngDateTime } from "~/utils/time";
-import { Gen4GameVersion } from "../gen4types";
+import { Gen4GameVersion } from "~/types/games";
 
 export const getSecondOffset = (game: Gen4GameVersion) => {
   const isHgss = game === "HeartGold" || game === "SoulSilver";

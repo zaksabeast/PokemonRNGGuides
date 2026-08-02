@@ -1,5 +1,5 @@
 import type { Encounter } from "./encounter";
-import type { Gen4GameVersion } from "../gen4types";
+import type { Gen4GameVersion } from "~/types/games";
 
 const FossilEncounters = {
   "omanyte-20": {

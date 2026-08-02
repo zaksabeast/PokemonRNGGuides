@@ -1,0 +1,2191 @@
+{
+  "file": "d_honey.bin",
+  "compressedSize": 1554,
+  "decompressedSize": 1554,
+  "entries": [
+    {
+      "location": "Route 205 (South)",
+      "normal": [
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Silcoon",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "rare": [
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Heracross",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "munchlax": [
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "swarm": [],
+      "day": [],
+      "night": [],
+      "radar": [],
+      "form": []
+    },
+    {
+      "location": "Route 205 (North)",
+      "normal": [
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Silcoon",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "rare": [
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Heracross",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "munchlax": [
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "swarm": [],
+      "day": [],
+      "night": [],
+      "radar": [],
+      "form": []
+    },
+    {
+      "location": "Route 206",
+      "normal": [
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Silcoon",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "rare": [
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Heracross",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "munchlax": [
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "swarm": [],
+      "day": [],
+      "night": [],
+      "radar": [],
+      "form": []
+    },
+    {
+      "location": "Route 207",
+      "normal": [
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Silcoon",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "rare": [
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Heracross",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "munchlax": [
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "swarm": [],
+      "day": [],
+      "night": [],
+      "radar": [],
+      "form": []
+    },
+    {
+      "location": "Route 208",
+      "normal": [
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Silcoon",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "rare": [
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Heracross",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "munchlax": [
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "swarm": [],
+      "day": [],
+      "night": [],
+      "radar": [],
+      "form": []
+    },
+    {
+      "location": "Route 209",
+      "normal": [
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Silcoon",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "rare": [
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Heracross",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "munchlax": [
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "swarm": [],
+      "day": [],
+      "night": [],
+      "radar": [],
+      "form": []
+    },
+    {
+      "location": "Route 210 (South)",
+      "normal": [
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Silcoon",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "rare": [
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Heracross",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "munchlax": [
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "swarm": [],
+      "day": [],
+      "night": [],
+      "radar": [],
+      "form": []
+    },
+    {
+      "location": "Route 210 (North)",
+      "normal": [
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Silcoon",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "rare": [
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Heracross",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "munchlax": [
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "swarm": [],
+      "day": [],
+      "night": [],
+      "radar": [],
+      "form": []
+    },
+    {
+      "location": "Route 211 (East)",
+      "normal": [
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Silcoon",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "rare": [
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Heracross",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "munchlax": [
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "swarm": [],
+      "day": [],
+      "night": [],
+      "radar": [],
+      "form": []
+    },
+    {
+      "location": "Route 212 (North)",
+      "normal": [
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Silcoon",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "rare": [
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Heracross",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "munchlax": [
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "swarm": [],
+      "day": [],
+      "night": [],
+      "radar": [],
+      "form": []
+    },
+    {
+      "location": "Route 212 (South)",
+      "normal": [
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Silcoon",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "rare": [
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Heracross",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "munchlax": [
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "swarm": [],
+      "day": [],
+      "night": [],
+      "radar": [],
+      "form": []
+    },
+    {
+      "location": "Route 213",
+      "normal": [
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Silcoon",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "rare": [
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Heracross",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "munchlax": [
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "swarm": [],
+      "day": [],
+      "night": [],
+      "radar": [],
+      "form": []
+    },
+    {
+      "location": "Route 214",
+      "normal": [
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Silcoon",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "rare": [
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Heracross",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "munchlax": [
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "swarm": [],
+      "day": [],
+      "night": [],
+      "radar": [],
+      "form": []
+    },
+    {
+      "location": "Route 215",
+      "normal": [
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Silcoon",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "rare": [
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Heracross",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "munchlax": [
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "swarm": [],
+      "day": [],
+      "night": [],
+      "radar": [],
+      "form": []
+    },
+    {
+      "location": "Route 218",
+      "normal": [
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Silcoon",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "rare": [
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Heracross",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "munchlax": [
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "swarm": [],
+      "day": [],
+      "night": [],
+      "radar": [],
+      "form": []
+    },
+    {
+      "location": "Route 221",
+      "normal": [
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Silcoon",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "rare": [
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Heracross",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "munchlax": [
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "swarm": [],
+      "day": [],
+      "night": [],
+      "radar": [],
+      "form": []
+    },
+    {
+      "location": "Route 222",
+      "normal": [
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Silcoon",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "rare": [
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Heracross",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "munchlax": [
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "swarm": [],
+      "day": [],
+      "night": [],
+      "radar": [],
+      "form": []
+    },
+    {
+      "location": "Valley Windworks",
+      "normal": [
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Silcoon",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "rare": [
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Heracross",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "munchlax": [
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "swarm": [],
+      "day": [],
+      "night": [],
+      "radar": [],
+      "form": []
+    },
+    {
+      "location": "Eterna Forest",
+      "normal": [
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Silcoon",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "rare": [
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Heracross",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "munchlax": [
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "swarm": [],
+      "day": [],
+      "night": [],
+      "radar": [],
+      "form": []
+    },
+    {
+      "location": "Fuego Ironworks",
+      "normal": [
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Silcoon",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "rare": [
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Heracross",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "munchlax": [
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "swarm": [],
+      "day": [],
+      "night": [],
+      "radar": [],
+      "form": []
+    },
+    {
+      "location": "Floaroma Meadow",
+      "normal": [
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Silcoon",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "rare": [
+        {
+          "species": "Combee",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Burmy",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Cherubi",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Aipom",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Heracross",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Wurmple",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "munchlax": [
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        },
+        {
+          "species": "Munchlax",
+          "minLevel": 5,
+          "maxLevel": 15
+        }
+      ],
+      "swarm": [],
+      "day": [],
+      "night": [],
+      "radar": [],
+      "form": []
+    }
+  ]
+}

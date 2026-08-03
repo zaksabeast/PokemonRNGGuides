@@ -53,7 +53,8 @@ import { getNatureInputProps } from "~/components/pkmFilter";
 
 const IV_FILTER_MODE = "ivs";
 
-const LIMIT = 1000;
+const CHUNK = 200;
+const LIMIT = CHUNK * 5;
 
 const Validator = z
   .object({
@@ -307,7 +308,7 @@ export const Static4Generator = () => {
     };
     const chunkedAdvances = chunkRange(
       [opts.min_advance, opts.max_advance],
-      1000,
+      CHUNK,
     );
     const searchOpts = chunkedAdvances.map(
       ([initial_advances, end_advance]) => ({

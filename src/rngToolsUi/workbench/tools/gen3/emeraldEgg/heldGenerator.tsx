@@ -38,7 +38,8 @@ import { usePokeNavTranslations } from "~/translations";
 import { pokeNavTrainers } from "~/rngToolsUi/gen3/retailEmeraldEgg/state";
 import { toOptions } from "~/utils/options";
 
-const LIMIT = 1000;
+const CHUNK = 200;
+const LIMIT = CHUNK * 5;
 
 const Validator = z
   .object({
@@ -265,7 +266,7 @@ export const EmeraldEggHeldGenerator = () => {
         sid,
         registered_trainers: pokeNavTrainers,
       };
-    const chunked = chunkRange([opts.min_advances, opts.max_advances], 1000);
+    const chunked = chunkRange([opts.min_advances, opts.max_advances], CHUNK);
     const searchOpts = chunked.map(([min_advances, max_advances]) => {
       const initial_advances = min_advances + opts.calibration;
       return {

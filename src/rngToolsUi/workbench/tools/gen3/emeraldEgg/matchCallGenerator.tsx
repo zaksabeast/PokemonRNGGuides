@@ -31,7 +31,8 @@ import {
 import { FormikProfileSelect } from "~/rngToolsUi/workbench/components/formikProfileSelect";
 import { toOptions } from "~/utils/options";
 
-const LIMIT = 1000;
+const CHUNK = 200;
+const LIMIT = CHUNK * 5;
 
 const Validator = z.object({
   profile_id: z.string().min(1, "Profile is required"),
@@ -175,7 +176,7 @@ export const MatchCallGenerator = () => {
       registered_trainers: pokeNavTrainers,
     };
 
-    const chunked = chunkRange([opts.min_advances, opts.max_advances], 1000);
+    const chunked = chunkRange([opts.min_advances, opts.max_advances], CHUNK);
     const searchOpts: NoEggMatchCallOpts[] = chunked.map(
       ([min_advances, max_advances]) => {
         const initial_advances = min_advances + opts.calibration;

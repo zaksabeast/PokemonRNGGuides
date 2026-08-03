@@ -39,7 +39,8 @@ import {
 import { maxIvs, RustOption } from "~/types";
 import { getInheritedIvColumns } from "~/rngToolsUi/shared/ivColumns";
 
-const LIMIT = 1000;
+const CHUNK = 200;
+const LIMIT = CHUNK * 5;
 
 const Validator = z
   .object({
@@ -212,7 +213,7 @@ export const EmeraldEggPickupGenerator = () => {
       methods: opts.methods,
       parent_ivs: [opts.parent1_ivs, opts.parent2_ivs],
     };
-    const chunked = chunkRange([opts.min_advances, opts.max_advances], 200);
+    const chunked = chunkRange([opts.min_advances, opts.max_advances], CHUNK);
     const searchOpts: RustOption<Egg3PickupOptions>[] = chunked.map(
       ([min_advances, max_advances]) => ({
         ...baseOpts,

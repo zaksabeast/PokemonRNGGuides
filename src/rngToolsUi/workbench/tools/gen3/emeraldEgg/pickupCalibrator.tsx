@@ -1,63 +1,68 @@
 import { uniqueId } from "lodash-es";
+import {
+  Flex,
+  IvInput,
+  NumberInput,
+  MinMaxContainer,
+  FormikNumberInput,
+  FormikSelect,
+} from "~/components";
 import { ToolLayout } from "~/rngToolsUi/workbench/layouts/tool";
 import {
   Descriptions,
   Field,
 } from "~/rngToolsUi/workbench/components/descriptions";
-import {
-  FormikNumberInput,
-  IvInput,
-  MinMaxContainer,
-  FormikSelect,
-  NumberInput,
-  Flex,
-} from "~/components";
+import { useWatch } from "~/hooks/form";
 import { ResultColumn } from "~/components/resultTable";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
 import {
   multiWorkerRngTools,
   Egg3PickupOptions,
   Egg3PickupState,
-  Gen3PickupMethod,
   InheritedIv,
 } from "~/rngTools";
 import { z } from "zod";
 import { chunkRange } from "~/utils/chunkRange";
 import { NullableIvsSchema } from "~/components/ivInput";
-import { HexSchema } from "~/utils/number";
 import {
   getIvMethodOptions,
   ivMethodLabels,
   ivMethods,
 } from "~/rngToolsUi/gen3/retailEmeraldEgg/constants";
+import { HexSchema } from "~/utils/number";
 import {
   pkmFilterSchema,
-  getPkmFilterIvFields,
   getPkmFilterInitialValues,
+  pkmFilterFieldsToRustInput,
+  getPkmStatFilterFields,
 } from "~/rngToolsUi/workbench/components/pkmFilter";
-import { maxIvs, RustOption } from "~/types";
+import { EvsSchema } from "~/components/evInput";
+import { StatFieldsSchema } from "~/types/stat";
+import { maxIvs } from "~/types/ivs";
+import { RustOption } from "~/types/utils";
+import { getGen3SpeciesOptions, species } from "~/types/species";
 import { getInheritedIvColumns } from "~/rngToolsUi/shared/ivColumns";
 
-const CHUNK = 200;
-const LIMIT = CHUNK * 5;
+const LIMIT = 1000;
 
 const Validator = z
   .object({
     seed: HexSchema(0xffffffff),
+    egg_species: z.enum(species),
     min_advances: z.number().int().min(0),
     max_advances: z.number().int().min(0),
     methods: z.enum(ivMethods).array().nonempty(),
     offset: z.number().int().min(0),
     parent1_ivs: NullableIvsSchema,
     parent2_ivs: NullableIvsSchema,
+    evs: EvsSchema,
+    stats: StatFieldsSchema,
   })
   .extend(pkmFilterSchema.shape);
 
 type FormState = z.infer<typeof Validator>;
-type Result = {
+type Result = Egg3PickupState & {
   id: string;
-  method: Gen3PickupMethod;
-  advance: number;
   hp: InheritedIv;
   atk: InheritedIv;
   def: InheritedIv;
@@ -67,29 +72,40 @@ type Result = {
 };
 
 const initialValues: FormState = {
-  ...getPkmFilterInitialValues(),
   seed: 0,
-  offset: 0,
   min_advances: 0,
-  max_advances: 1000,
-  methods: ["EmeraldBred", "EmeraldBredSplit", "EmeraldBredAlternate"],
+  max_advances: 10000,
+  egg_species: "Bulbasaur",
+  methods: ["EmeraldBred", "EmeraldBredAlternate", "EmeraldBredSplit"],
+  offset: 0,
+  filter_level: 5,
+  evs: { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
+  stats: {
+    hpStat: 0,
+    atkStat: 0,
+    defStat: 0,
+    spaStat: 0,
+    spdStat: 0,
+    speStat: 0,
+  },
   parent1_ivs: maxIvs,
   parent2_ivs: maxIvs,
-  filter_level: 5,
+  ...getPkmFilterInitialValues(),
 };
 
 const FilterFields = () => {
-  const filterFields = getPkmFilterIvFields({
+  const { egg_species } = useWatch({
+    validationSchema: Validator,
+    names: { egg_species: true },
+  });
+  const fields = getPkmStatFilterFields({
     displayHiddenPower: false,
     displayGender: false,
     displayAbility: false,
-    displayNature: false,
     displayShiny: false,
+    species: egg_species ?? "None",
   });
-
-  return (
-    <Descriptions bordered title="Filters" items={filterFields} column={1} />
-  );
+  return <Descriptions bordered title="Filters" items={fields} column={1} />;
 };
 
 const RngInfoFields = () => {
@@ -97,6 +113,15 @@ const RngInfoFields = () => {
     {
       label: "Seed",
       children: <FormikNumberInput<FormState> name="seed" numType="hex" />,
+    },
+    {
+      label: "Egg Species",
+      children: (
+        <FormikSelect<FormState, "egg_species">
+          name="egg_species"
+          options={getGen3SpeciesOptions().byName}
+        />
+      ),
     },
     {
       label: "Advances",
@@ -174,9 +199,8 @@ const columns: ResultColumn<Result>[] = [
 ];
 
 const mapResult = (res: Egg3PickupState): Result => ({
+  ...res,
   id: uniqueId(),
-  advance: res.advance,
-  method: res.method,
   hp: res.ivs.hp,
   atk: res.ivs.atk,
   def: res.ivs.def,
@@ -185,7 +209,7 @@ const mapResult = (res: Egg3PickupState): Result => ({
   spe: res.ivs.spe,
 });
 
-export const EmeraldEggPickupGenerator = () => {
+export const EmeraldEggPickupCalibrator = () => {
   const {
     run: generatePickupStates,
     data: results,
@@ -199,19 +223,23 @@ export const EmeraldEggPickupGenerator = () => {
   });
 
   const onSubmit = async (opts: FormState) => {
+    const filters = await pkmFilterFieldsToRustInput(
+      { species: opts.egg_species, ivFilterMode: "stats" },
+      opts,
+    );
     const baseOpts: Omit<
       RustOption<Egg3PickupOptions>,
       "initial_advances" | "max_advances"
     > = {
       delay: opts.offset,
       seed: opts.seed,
-      filter_hidden_power: opts.filter_hidden_power,
-      filter_max_ivs: opts.filter_max_ivs,
-      filter_min_ivs: opts.filter_min_ivs,
       methods: opts.methods,
       parent_ivs: [opts.parent1_ivs, opts.parent2_ivs],
+      filter_hidden_power: filters.hidden_power,
+      filter_max_ivs: filters.max_ivs,
+      filter_min_ivs: filters.min_ivs,
     };
-    const chunked = chunkRange([opts.min_advances, opts.max_advances], CHUNK);
+    const chunked = chunkRange([opts.min_advances, opts.max_advances], 200);
     const searchOpts: RustOption<Egg3PickupOptions>[] = chunked.map(
       ([min_advances, max_advances]) => ({
         ...baseOpts,

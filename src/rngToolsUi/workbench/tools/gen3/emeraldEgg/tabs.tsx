@@ -3,6 +3,7 @@ import { Gen3TimerTab } from "../timer";
 import { EmeraldEggHeldGenerator } from "./heldGenerator";
 import { EmeraldEggPickupGenerator } from "./pickupGenerator";
 import { MatchCallGenerator } from "./matchCallGenerator";
+import { EmeraldEggPickupCalibrator } from "./pickupCalibrator";
 
 export const emeraldEggTabs: TabsProps["items"] = [
   {
@@ -17,8 +18,13 @@ export const emeraldEggTabs: TabsProps["items"] = [
   },
   {
     key: "pickup",
-    label: "Pickup Egg",
+    label: "Pickup Egg Generator",
     children: <EmeraldEggPickupGenerator />,
+  },
+  {
+    key: "pickupCalibrator",
+    label: "Pickup Egg Calibrator",
+    children: <EmeraldEggPickupCalibrator />,
   },
   {
     key: "timer",

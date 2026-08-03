@@ -63,10 +63,10 @@ export const inheritedIvColumns = [
   { title: "Spe", dataIndex: "spe", render: renderInheritedIv },
 ] as const satisfies ResultColumn<InheritedIvs>[];
 
-export const getInheritedIvColumns = (t: Translations) => {
+export const getInheritedIvColumns = (t: null | Translations) => {
   return inheritedIvColumns.map((column) => ({
     ...column,
-    title: t[column.title],
+    title: t == null ? column.title : t[column.title],
   }));
 };
 

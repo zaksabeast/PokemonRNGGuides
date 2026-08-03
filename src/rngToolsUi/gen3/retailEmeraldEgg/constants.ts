@@ -34,8 +34,8 @@ export const ivMethodLabels = {
   EmeraldBredAlternate: "Emerald Bred Alternate",
 } as const;
 
-export const getIvMethodOptions = (t: Translations) =>
+export const getIvMethodOptions = (t: Translations | null) =>
   ivMethods.map((method) => ({
-    label: t[ivMethodLabels[method]],
+    label: t == null ? ivMethodLabels[method] : t[ivMethodLabels[method]],
     value: method,
   })) satisfies { label: string; value: Gen3PickupMethod }[];

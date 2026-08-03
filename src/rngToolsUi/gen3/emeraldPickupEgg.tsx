@@ -118,6 +118,7 @@ export const EmeraldPickupEgg = () => {
       ...opts,
       parent_ivs: [opts.parent1_ivs, opts.parent2_ivs],
       filter_hidden_power: defaultHiddenPowerFilter,
+      methods: [opts.method],
     });
 
     setResults(results.map(flattenIvs));

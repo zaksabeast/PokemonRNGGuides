@@ -159,25 +159,17 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
 ];
 
 const getPotentialEggs = async (state: PickupEggState) => {
-  const results = await pmap(
-    ivMethods,
-    async (method) => {
-      const spreads = await rngTools.emerald_egg_pickup_states({
-        method,
-        seed: state.seed,
-        parent_ivs: state.parentIvs,
-        initial_advances: Math.max(state.targetAdvance - 100, 0),
-        max_advances: 200,
-        delay: 0,
-        filter_min_ivs: minIvs,
-        filter_max_ivs: maxIvs,
-        filter_hidden_power: defaultHiddenPowerFilter,
-      });
-      return spreads.map((spread) => ({ ...spread, method }));
-    },
-    { concurrency: 3 },
-  );
-  return results.flat();
+  return await rngTools.emerald_egg_pickup_states({
+    methods: ivMethods,
+    seed: state.seed,
+    parent_ivs: state.parentIvs,
+    initial_advances: Math.max(state.targetAdvance - 100, 0),
+    max_advances: 200,
+    delay: 0,
+    filter_min_ivs: minIvs,
+    filter_max_ivs: maxIvs,
+    filter_hidden_power: defaultHiddenPowerFilter,
+  });
 };
 
 const DEFAULT_EGG_LEVEL = 5;

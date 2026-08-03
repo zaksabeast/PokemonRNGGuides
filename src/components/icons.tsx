@@ -31,6 +31,7 @@ import {
   FaCaretRight,
   FaCaretUp,
   FaCaretDown,
+  FaRegQuestionCircle,
 } from "react-icons/fa";
 import { IoLanguage, IoSparkles } from "react-icons/io5";
 import { PiPersonSimpleWalkBold, PiWarningOctagonBold } from "react-icons/pi";
@@ -91,6 +92,7 @@ const icons = {
   CaretRight: FaCaretRight,
   CaretUp: FaCaretUp,
   CaretDown: FaCaretDown,
+  Question: FaRegQuestionCircle,
 } as const;
 
 export type IconName = keyof typeof icons;

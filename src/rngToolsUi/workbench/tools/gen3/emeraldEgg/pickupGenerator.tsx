@@ -57,7 +57,7 @@ const Validator = z
 
 type FormState = z.infer<typeof Validator>;
 type Result = {
-  key: string;
+  id: string;
   method: Gen3PickupMethod;
   advance: number;
   hp: InheritedIv;
@@ -176,7 +176,7 @@ const columns: ResultColumn<Result>[] = [
 ];
 
 const mapResult = (res: Egg3PickupState): Result => ({
-  key: uniqueId(),
+  id: uniqueId(),
   advance: res.advance,
   method: res.method,
   hp: res.ivs.hp,

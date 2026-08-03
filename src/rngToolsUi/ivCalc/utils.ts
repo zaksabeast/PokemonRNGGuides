@@ -48,6 +48,7 @@ export const getIvRangeRow = (
   NA: string,
   formatFn: (stat: number[], na: string) => string,
 ): IvRangeColumn => ({
+  id: key,
   stat: t[STAT_I18N_KEYS[index]],
   nextLevel: (nextLevelStats?.[key] ?? NA) as number | string,
   value: possibleIvs != null ? formatFn(possibleIvs[key], NA) : NA,

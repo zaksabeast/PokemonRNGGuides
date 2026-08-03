@@ -1,4 +1,3 @@
-import * as tst from "ts-toolbelt";
 import { Flex, ResultTable, ResultColumn, Button, Icon } from "~/components";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import {
@@ -89,7 +88,7 @@ type ToolLayoutProps<FormState, Result> = {
 
 export const ToolLayout = <
   FormState extends FieldValues,
-  Result extends tst.O.Object,
+  Result extends { id: string },
 >({
   initialValues,
   validationSchema,
@@ -169,6 +168,7 @@ export const ToolLayout = <
           )}
           <ResultTable<Result>
             size="small"
+            rowKey="id"
             loading={loading}
             sticky={{ offsetHeader: progressPercent == null ? 0 : 30 }}
             columns={columns}

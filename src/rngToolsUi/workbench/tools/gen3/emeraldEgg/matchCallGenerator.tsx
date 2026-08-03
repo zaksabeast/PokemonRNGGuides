@@ -46,7 +46,7 @@ const Validator = z.object({
 });
 
 type FormState = z.infer<typeof Validator>;
-type Result = NoEggMatchCall & { key: string };
+type Result = NoEggMatchCall & { id: string };
 
 const initialValues: FormState = {
   profile_id: "",
@@ -138,7 +138,7 @@ const RngInfoFields = () => {
 
 const mapResult = (res: NoEggMatchCall): Result => ({
   ...res,
-  key: uniqueId(),
+  id: uniqueId(),
 });
 
 export const MatchCallGenerator = () => {

@@ -59,7 +59,7 @@ const Validator = z
   .extend(pkmFilterSchema.shape);
 
 type FormState = z.infer<typeof Validator>;
-type Result = Gen3HeldEgg & { key: string };
+type Result = Gen3HeldEgg & { id: string };
 
 const initialValues: FormState = {
   profile_id: "",
@@ -212,7 +212,7 @@ const RngInfoFields = () => {
 const mapResult = (res: Gen3HeldEgg): Result => {
   return {
     ...res,
-    key: uniqueId(),
+    id: uniqueId(),
   };
 };
 

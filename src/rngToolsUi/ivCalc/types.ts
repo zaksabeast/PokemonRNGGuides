@@ -16,6 +16,7 @@ export const Validator = z
 export type FormState = z.infer<typeof Validator>;
 
 export type IvRangeColumn = {
+  id: string;
   stat: string;
   nextLevel: number | string;
   value: string;

@@ -43,16 +43,19 @@ export const getIvRangeFromStats = async ({
   lvl,
   nature,
   stats,
+  evs = { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
 }: {
   species: Species;
   lvl: number;
   nature: Nature;
   stats: StatsValue;
+  evs?: StatsValue;
 }): Promise<{ min_ivs: Ivs; max_ivs: Ivs } | null> => {
   const min_ivs = await rngTools.calculate_min_ivs_from_stats(
     species,
     lvl,
     nature,
+    evs,
     stats,
   );
   if (min_ivs == null) {
@@ -63,6 +66,7 @@ export const getIvRangeFromStats = async ({
     species,
     lvl,
     nature,
+    evs,
     stats,
   );
   if (max_ivs == null) {

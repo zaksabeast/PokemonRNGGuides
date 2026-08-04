@@ -14,8 +14,10 @@ import {
   FormikSelect,
   IvInput,
   StatFieldsInput,
+  EvInput,
+  EvsSchema,
 } from "~/components";
-import { GenericForm, nature } from "~/types";
+import { GenericForm, maxIvs, minIvs, nature } from "~/types";
 import { Field } from "./descriptions";
 import { z } from "zod";
 import { getIvRangeFromStats } from "~/types/statRange";
@@ -23,19 +25,22 @@ import { Species } from "~/rngTools";
 
 type IvFilterMode = "ivs" | "stats";
 
+const Stat = z.number().int().min(0);
+
 const StatSchema = z.object({
-  hp: z.number().int().min(0),
-  atk: z.number().int().min(0),
-  def: z.number().int().min(0),
-  spa: z.number().int().min(0),
-  spd: z.number().int().min(0),
-  spe: z.number().int().min(0),
+  hp: Stat,
+  atk: Stat,
+  def: Stat,
+  spa: Stat,
+  spd: Stat,
+  spe: Stat,
 });
 
 const ExtendedSchema = z.object({
   filter_level: z.number().int().min(1).max(100),
   filter_stat_nature: z.enum(nature),
   filter_stats: StatSchema,
+  filter_evs: EvsSchema,
 });
 
 export const pkmFilterSchema = _pkmFilterSchema.extend(ExtendedSchema.shape);
@@ -49,15 +54,15 @@ export const getPkmFilterInitialValues = (): tst.O.Omit<
   return {
     ..._getPkmFilterInitialValues(),
     filter_stat_nature: "Hardy",
-    filter_stats: {
-      hp: 0,
-      atk: 0,
-      def: 0,
-      spa: 0,
-      spd: 0,
-      spe: 0,
-    },
+    filter_stats: minIvs,
+    filter_evs: minIvs,
   };
+};
+
+// Intentionally impossible range
+const impossibleIvs = {
+  min_ivs: maxIvs,
+  max_ivs: minIvs,
 };
 
 export const pkmFilterFieldsToRustInput = async (
@@ -74,8 +79,9 @@ export const pkmFilterFieldsToRustInput = async (
           species,
           lvl: opts.filter_level,
           nature: opts.filter_stat_nature,
+          evs: opts.filter_evs,
           stats: opts.filter_stats,
-        })) ?? filterIvs)
+        })) ?? impossibleIvs)
       : filterIvs;
 
   const natures =
@@ -120,6 +126,15 @@ const statFields: Field[] = [
     children: (
       <StatFieldsInput<PkmFilterFields>
         name="filter_stats"
+        gridOverrides={{ desktop: 2, mobile: 2, smallTablet: 2, tablet: 2 }}
+      />
+    ),
+  },
+  {
+    label: "EVs",
+    children: (
+      <EvInput<PkmFilterFields>
+        name="filter_evs"
         gridOverrides={{ desktop: 2, mobile: 2, smallTablet: 2, tablet: 2 }}
       />
     ),

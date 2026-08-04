@@ -82,6 +82,7 @@ pub fn calculate_min_ivs_from_stats(
     species: Species,
     level: u8,
     nature: Nature,
+    evs: &StatsValue,
     stats: &StatsValue,
 ) -> Option<Ivs> {
     let base_stats = &species.personal().base_stats;
@@ -93,22 +94,23 @@ pub fn calculate_min_ivs_from_stats(
     // RetVal:  T,  T,  F,  F,  F,  F
     // partition_point  ^
 
-    let hp = ARRAY_0_31.partition_point(|iv| calculate_hp(base_stats.hp, *iv, 0, level) < stats.hp)
+    let hp = ARRAY_0_31
+        .partition_point(|iv| calculate_hp(base_stats.hp, *iv, evs.hp, level) < stats.hp)
         as u8;
     let atk = ARRAY_0_31.partition_point(|iv| {
-        calculate_non_hp(base_stats.atk, *iv, 0, level, nature_factors.atk) < stats.atk
+        calculate_non_hp(base_stats.atk, *iv, evs.atk, level, nature_factors.atk) < stats.atk
     }) as u8;
     let def = ARRAY_0_31.partition_point(|iv| {
-        calculate_non_hp(base_stats.def, *iv, 0, level, nature_factors.def) < stats.def
+        calculate_non_hp(base_stats.def, *iv, evs.def, level, nature_factors.def) < stats.def
     }) as u8;
     let spa = ARRAY_0_31.partition_point(|iv| {
-        calculate_non_hp(base_stats.spa, *iv, 0, level, nature_factors.spa) < stats.spa
+        calculate_non_hp(base_stats.spa, *iv, evs.spa, level, nature_factors.spa) < stats.spa
     }) as u8;
     let spd = ARRAY_0_31.partition_point(|iv| {
-        calculate_non_hp(base_stats.spd, *iv, 0, level, nature_factors.spd) < stats.spd
+        calculate_non_hp(base_stats.spd, *iv, evs.spd, level, nature_factors.spd) < stats.spd
     }) as u8;
     let spe = ARRAY_0_31.partition_point(|iv| {
-        calculate_non_hp(base_stats.spe, *iv, 0, level, nature_factors.spe) < stats.spe
+        calculate_non_hp(base_stats.spe, *iv, evs.spe, level, nature_factors.spe) < stats.spe
     }) as u8;
 
     if hp > 31 || atk > 31 || def > 31 || spa > 31 || spd > 31 || spe > 31 {
@@ -130,6 +132,7 @@ pub fn calculate_max_ivs_from_stats(
     species: Species,
     level: u8,
     nature: Nature,
+    evs: &StatsValue,
     stats: &StatsValue,
 ) -> Option<Ivs> {
     let base_stats = &species.personal().base_stats;
@@ -141,21 +144,22 @@ pub fn calculate_max_ivs_from_stats(
     // RetVal:  T,  T,  T,  F,  F,  F
     // partition_point      ^
 
-    let hp = ARRAY_31_0.partition_point(|iv| calculate_hp(base_stats.hp, *iv, 0, level) > stats.hp);
+    let hp =
+        ARRAY_31_0.partition_point(|iv| calculate_hp(base_stats.hp, *iv, evs.hp, level) > stats.hp);
     let atk = ARRAY_31_0.partition_point(|iv| {
-        calculate_non_hp(base_stats.atk, *iv, 0, level, nature_factors.atk) > stats.atk
+        calculate_non_hp(base_stats.atk, *iv, evs.atk, level, nature_factors.atk) > stats.atk
     });
     let def = ARRAY_31_0.partition_point(|iv| {
-        calculate_non_hp(base_stats.def, *iv, 0, level, nature_factors.def) > stats.def
+        calculate_non_hp(base_stats.def, *iv, evs.def, level, nature_factors.def) > stats.def
     });
     let spa = ARRAY_31_0.partition_point(|iv| {
-        calculate_non_hp(base_stats.spa, *iv, 0, level, nature_factors.spa) > stats.spa
+        calculate_non_hp(base_stats.spa, *iv, evs.spa, level, nature_factors.spa) > stats.spa
     });
     let spd = ARRAY_31_0.partition_point(|iv| {
-        calculate_non_hp(base_stats.spd, *iv, 0, level, nature_factors.spd) > stats.spd
+        calculate_non_hp(base_stats.spd, *iv, evs.spd, level, nature_factors.spd) > stats.spd
     });
     let spe = ARRAY_31_0.partition_point(|iv| {
-        calculate_non_hp(base_stats.spe, *iv, 0, level, nature_factors.spe) > stats.spe
+        calculate_non_hp(base_stats.spe, *iv, evs.spe, level, nature_factors.spe) > stats.spe
     });
 
     if hp > 31 || atk > 31 || def > 31 || spa > 31 || spd > 31 || spe > 31 {
@@ -204,6 +208,7 @@ mod tests {
                 Species::Mudkip,
                 10,
                 Nature::Adamant,
+                &StatsValue::new_all0(),
                 &StatsValue {
                     hp: 31,
                     atk: 22,
@@ -228,6 +233,7 @@ mod tests {
                 Species::Mudkip,
                 10,
                 Nature::Adamant,
+                &StatsValue::new_all0(),
                 &StatsValue {
                     hp: 31,
                     atk: 22,
@@ -252,6 +258,7 @@ mod tests {
                 Species::Mudkip,
                 10,
                 Nature::Adamant,
+                &StatsValue::new_all0(),
                 &StatsValue {
                     hp: 100,
                     atk: 22,
@@ -269,6 +276,7 @@ mod tests {
                 Species::Mudkip,
                 10,
                 Nature::Adamant,
+                &StatsValue::new_all0(),
                 &StatsValue {
                     hp: 10,
                     atk: 22,
@@ -330,6 +338,34 @@ mod tests {
         assert_eq!(
             calculate_non_hp(base_stats.spe, 0, 0, 5, NatureFactor::Less),
             8
+        );
+    }
+
+    #[test]
+    fn bulbasaur_with_evs() {
+        assert_eq!(
+            calculate_minmax_stats(
+                Species::Bulbasaur,
+                50,
+                false,
+                &StatsValue {
+                    hp: 200,
+                    atk: 200,
+                    def: 200,
+                    spa: 200,
+                    spd: 200,
+                    spe: 200
+                },
+                Some(Nature::Adamant)
+            ),
+            StatsValue {
+                hp: 145,
+                atk: 103,
+                def: 94,
+                spa: 99,
+                spd: 110,
+                spe: 90
+            }
         );
     }
 }

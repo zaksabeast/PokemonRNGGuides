@@ -198,16 +198,19 @@ impl PossibleIvs {
     }
 
     fn calc_single_level(opts: &SingleCalcStatOpts) -> Option<Self> {
+        let zero_evs = StatsValue::new_all0();
         let min_ivs = calculate_min_ivs_from_stats(
             opts.species,
             opts.level_stats.level,
             opts.nature,
+            &zero_evs,
             &opts.level_stats.stats,
         )?;
         let max_ivs = calculate_max_ivs_from_stats(
             opts.species,
             opts.level_stats.level,
             opts.nature,
+            &zero_evs,
             &opts.level_stats.stats,
         )?;
         let mut possible = match opts.characteristic {

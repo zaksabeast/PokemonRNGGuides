@@ -8982,7 +8982,7 @@ export const guides = {
       section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "false-Swarm RNG",
-      isNew: true,
+      isNew: false,
       title: "Diamond, Pearl, and Platinum Swarm RNG",
       navDrawerTitle: "Swarm RNG",
       description:
@@ -9142,7 +9142,7 @@ export const guides = {
       section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "false-Swarm RNG",
-      isNew: true,
+      isNew: false,
       title: "HeartGold and SoulSilver Swarm RNG",
       navDrawerTitle: "Swarm RNG",
       description:
@@ -9180,7 +9180,7 @@ export const guides = {
       section: "other_rng",
       guideVariants: ["retail"],
       guideKey: "false-Voltorb Flip RNG",
-      isNew: true,
+      isNew: false,
       title: "HeartGold and SoulSilver Voltorb Flip RNG",
       navDrawerTitle: "Voltorb Flip RNG",
       description:

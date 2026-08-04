@@ -47,6 +47,10 @@ fn generate_static4_state(opts: &Gen4StaticOpts, rng: &mut Pokerng) -> Gen4Stati
         Static4Method::Honey => {
             generate_static4::<DpptLogic, HoneyLevel, NormalMethodJK>(rng, opts)
         }
+        Static4Method::Radar => generate_static4::<DpptLogic, SetLevel, NormalMethodJK>(rng, opts),
+        Static4Method::ShinyRadar => {
+            generate_static4::<DpptLogic, SetLevel, ShinyMethodJK>(rng, opts)
+        }
     }
 }
 
@@ -81,46 +85,6 @@ pub fn generate_static4_states(opts: &Gen4StaticOpts) -> Vec<Gen4StaticPokemon> 
             Some(pkm)
         })
         .collect::<Vec<Gen4StaticPokemon>>()
-}
-
-fn generate_static4_radar_generic<Pid: PidStrategy<DpptLogic>>(
-    opts: &Gen4StaticOpts,
-) -> Vec<Gen4StaticPokemon> {
-    let base_rng = Pokerng::new(opts.seed);
-    StateIterator::new(base_rng)
-        .skip(opts.offset)
-        .enumerate()
-        .skip(opts.initial_advances)
-        .take(opts.max_advances.wrapping_add(1))
-        .filter_map(|(adv, mut rng)| {
-            let mut pkm = generate_static4::<DpptLogic, SetLevel, Pid>(&mut rng, opts);
-            if let Some(filter_level) = opts.filter_level
-                && pkm.level != filter_level
-            {
-                return None;
-            }
-            if let Some(filter_characteristic) = opts.filter_characteristic
-                && pkm.characteristic != filter_characteristic
-            {
-                return None;
-            }
-            if !opts.filter.pass_filter(&pkm) {
-                return None;
-            }
-            pkm.advance = adv;
-            Some(pkm)
-        })
-        .collect()
-}
-
-#[wasm_bindgen]
-pub fn generate_static4_radar_states(opts: &Gen4StaticOpts) -> Vec<Gen4StaticPokemon> {
-    generate_static4_radar_generic::<NormalMethodJK>(opts)
-}
-
-#[wasm_bindgen]
-pub fn generate_static4_radar_shiny_states(opts: &Gen4StaticOpts) -> Vec<Gen4StaticPokemon> {
-    generate_static4_radar_generic::<ShinyMethodJK>(opts)
 }
 
 #[cfg(test)]
@@ -789,14 +753,14 @@ mod test {
                 filter: PkmFilter::new_allow_all(),
                 filter_level: None,
                 filter_characteristic: None,
-                method: Static4Method::DpptJ,
+                method: Static4Method::ShinyRadar,
                 species: Species::Snover,
                 lead: LeadAbility::None,
                 seed: 0xd6140374,
                 encounter_min_level: 33,
                 encounter_max_level: 33,
             };
-            let results = generate_static4_radar_shiny_states(&opts);
+            let results = generate_static4_states(&opts);
             let expected = pokefinder_radar!("test_data/method_shiny_pokeradar/no_lead.txt");
             assert_list_eq!(results, expected);
         }
@@ -812,14 +776,14 @@ mod test {
                 filter: PkmFilter::new_allow_all(),
                 filter_level: None,
                 filter_characteristic: None,
-                method: Static4Method::DpptJ,
+                method: Static4Method::ShinyRadar,
                 species: Species::Snover,
                 lead: LeadAbility::CutecharmM,
                 seed: 0xd6140374,
                 encounter_min_level: 33,
                 encounter_max_level: 33,
             };
-            let results = generate_static4_radar_shiny_states(&opts);
+            let results = generate_static4_states(&opts);
             let expected =
                 pokefinder_radar!("test_data/method_shiny_pokeradar/cute_charm_male.txt");
             assert_list_eq!(results, expected);
@@ -836,14 +800,14 @@ mod test {
                 filter: PkmFilter::new_allow_all(),
                 filter_level: None,
                 filter_characteristic: None,
-                method: Static4Method::DpptJ,
+                method: Static4Method::ShinyRadar,
                 species: Species::Snover,
                 lead: LeadAbility::CutecharmF,
                 seed: 0xd6140374,
                 encounter_min_level: 33,
                 encounter_max_level: 33,
             };
-            let results = generate_static4_radar_shiny_states(&opts);
+            let results = generate_static4_states(&opts);
             let expected =
                 pokefinder_radar!("test_data/method_shiny_pokeradar/cute_charm_female.txt");
             assert_list_eq!(results, expected);
@@ -860,14 +824,14 @@ mod test {
                 filter: PkmFilter::new_allow_all(),
                 filter_level: None,
                 filter_characteristic: None,
-                method: Static4Method::DpptJ,
+                method: Static4Method::ShinyRadar,
                 species: Species::Beldum,
                 lead: LeadAbility::CutecharmF,
                 seed: 0xd6140374,
                 encounter_min_level: 51,
                 encounter_max_level: 51,
             };
-            let results = generate_static4_radar_shiny_states(&opts);
+            let results = generate_static4_states(&opts);
             let expected =
                 pokefinder_radar!("test_data/method_shiny_pokeradar/cute_charm_genderless.txt");
             assert_list_eq!(results, expected);
@@ -884,14 +848,14 @@ mod test {
                 filter: PkmFilter::new_allow_all(),
                 filter_level: None,
                 filter_characteristic: None,
-                method: Static4Method::DpptJ,
+                method: Static4Method::ShinyRadar,
                 species: Species::Snover,
                 lead: LeadAbility::Synchronize(Nature::Jolly),
                 seed: 0xd6140374,
                 encounter_min_level: 33,
                 encounter_max_level: 33,
             };
-            let results = generate_static4_radar_shiny_states(&opts);
+            let results = generate_static4_states(&opts);
             let expected = pokefinder_radar!("test_data/method_shiny_pokeradar/sync_jolly.txt");
             assert_list_eq!(results, expected);
         }
@@ -911,14 +875,14 @@ mod test {
                 filter: PkmFilter::new_allow_all(),
                 filter_level: None,
                 filter_characteristic: None,
-                method: Static4Method::DpptJ,
+                method: Static4Method::Radar,
                 species: Species::Snover,
                 lead: LeadAbility::None,
                 seed: 0xd6140374,
                 encounter_min_level: 33,
                 encounter_max_level: 33,
             };
-            let results = generate_static4_radar_states(&opts);
+            let results = generate_static4_states(&opts);
             let expected = pokefinder_radar!("test_data/method_pokeradar/no_lead.txt");
             assert_list_eq!(results, expected);
         }
@@ -934,14 +898,14 @@ mod test {
                 filter: PkmFilter::new_allow_all(),
                 filter_level: None,
                 filter_characteristic: None,
-                method: Static4Method::DpptJ,
+                method: Static4Method::Radar,
                 species: Species::Snover,
                 lead: LeadAbility::CutecharmM,
                 seed: 0xd6140374,
                 encounter_min_level: 33,
                 encounter_max_level: 33,
             };
-            let results = generate_static4_radar_states(&opts);
+            let results = generate_static4_states(&opts);
             let expected = pokefinder_radar!("test_data/method_pokeradar/cute_charm_male.txt");
             assert_list_eq!(results, expected);
         }
@@ -957,14 +921,14 @@ mod test {
                 filter: PkmFilter::new_allow_all(),
                 filter_level: None,
                 filter_characteristic: None,
-                method: Static4Method::DpptJ,
+                method: Static4Method::Radar,
                 species: Species::Snover,
                 lead: LeadAbility::CutecharmF,
                 seed: 0xd6140374,
                 encounter_min_level: 33,
                 encounter_max_level: 33,
             };
-            let results = generate_static4_radar_states(&opts);
+            let results = generate_static4_states(&opts);
             let expected = pokefinder_radar!("test_data/method_pokeradar/cute_charm_female.txt");
             assert_list_eq!(results, expected);
         }
@@ -980,14 +944,14 @@ mod test {
                 filter: PkmFilter::new_allow_all(),
                 filter_level: None,
                 filter_characteristic: None,
-                method: Static4Method::DpptJ,
+                method: Static4Method::Radar,
                 species: Species::Beldum,
                 lead: LeadAbility::CutecharmF,
                 seed: 0xd6140374,
                 encounter_min_level: 52,
                 encounter_max_level: 52,
             };
-            let results = generate_static4_radar_states(&opts);
+            let results = generate_static4_states(&opts);
             let expected =
                 pokefinder_radar!("test_data/method_pokeradar/cute_charm_genderless.txt");
             assert_list_eq!(results, expected);
@@ -1004,14 +968,14 @@ mod test {
                 filter: PkmFilter::new_allow_all(),
                 filter_level: None,
                 filter_characteristic: None,
-                method: Static4Method::DpptJ,
+                method: Static4Method::Radar,
                 species: Species::Snover,
                 lead: LeadAbility::Synchronize(Nature::Hardy),
                 seed: 0xd6140374,
                 encounter_min_level: 33,
                 encounter_max_level: 33,
             };
-            let results = generate_static4_radar_states(&opts);
+            let results = generate_static4_states(&opts);
             let expected = pokefinder_radar!("test_data/method_pokeradar/sync_hardy.txt");
             assert_list_eq!(results, expected);
         }

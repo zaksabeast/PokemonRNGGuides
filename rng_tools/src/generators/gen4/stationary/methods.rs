@@ -10,6 +10,8 @@ pub enum Static4Method {
     DpptJ,
     HgssK,
     Honey,
+    Radar,
+    ShinyRadar,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]

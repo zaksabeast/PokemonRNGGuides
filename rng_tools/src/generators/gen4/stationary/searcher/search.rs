@@ -50,6 +50,8 @@ pub fn search_static4(opts: &SearchStatic4Opts) -> Vec<Static4State> {
         Static4Method::Honey => {
             search_seeds!(opts, get_methodjk_states::<DpptLogic, ReversedHoneyLevel>)
         }
+        Static4Method::Radar => search_seeds!(opts, get_radar_states),
+        Static4Method::ShinyRadar => search_seeds!(opts, get_radar_shiny_states),
     }
 }
 
@@ -76,16 +78,6 @@ fn get_radar_states(
         )
         .collect(),
     }
-}
-
-#[wasm_bindgen]
-pub fn search_static4_radar(opts: &SearchStatic4Opts) -> Vec<Static4State> {
-    search_seeds!(opts, get_radar_states)
-}
-
-#[wasm_bindgen]
-pub fn search_static4_radar_shiny(opts: &SearchStatic4Opts) -> Vec<Static4State> {
-    search_seeds!(opts, get_radar_shiny_states)
 }
 
 #[cfg(test)]
@@ -883,7 +875,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                method: Static4Method::DpptJ,
+                method: Static4Method::Radar,
                 species: Species::Snover,
                 lead: Static4LeadInput::None,
                 filter: PkmFilter {
@@ -900,7 +892,7 @@ mod tests {
                 max_advance: 30,
                 force_second: None,
             };
-            let results = search_static4_radar(&opts);
+            let results = search_static4(&opts);
             let expected =
                 pokefinder_honey!(LeadAbility::None, "test_data/method_pokeradar/no_lead.txt");
 
@@ -913,7 +905,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                method: Static4Method::DpptJ,
+                method: Static4Method::Radar,
                 species: Species::Snover,
                 lead: Static4LeadInput::Synchronize,
                 filter: PkmFilter {
@@ -930,7 +922,7 @@ mod tests {
                 max_advance: 5,
                 force_second: None,
             };
-            let results = search_static4_radar(&opts);
+            let results = search_static4(&opts);
             let expected =
                 pokefinder_honey!(LeadAbility::None, "test_data/method_pokeradar/sync.txt")
                     .into_iter()
@@ -949,7 +941,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                method: Static4Method::DpptJ,
+                method: Static4Method::Radar,
                 species: Species::Snover,
                 lead: Static4LeadInput::CutecharmF,
                 filter: PkmFilter {
@@ -966,7 +958,7 @@ mod tests {
                 max_advance: 30,
                 force_second: None,
             };
-            let results = search_static4_radar(&opts);
+            let results = search_static4(&opts);
             let expected = pokefinder_honey!(
                 LeadAbility::CutecharmF,
                 "test_data/method_pokeradar/cutecharm_f.txt"
@@ -981,7 +973,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                method: Static4Method::DpptJ,
+                method: Static4Method::Radar,
                 species: Species::Snover,
                 lead: Static4LeadInput::CutecharmM,
                 filter: PkmFilter {
@@ -998,7 +990,7 @@ mod tests {
                 max_advance: 30,
                 force_second: None,
             };
-            let results = search_static4_radar(&opts);
+            let results = search_static4(&opts);
             let expected = pokefinder_honey!(
                 LeadAbility::CutecharmM,
                 "test_data/method_pokeradar/cutecharm_m.txt"
@@ -1018,7 +1010,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                method: Static4Method::DpptJ,
+                method: Static4Method::ShinyRadar,
                 species: Species::Snover,
                 lead: Static4LeadInput::None,
                 filter: PkmFilter {
@@ -1035,7 +1027,7 @@ mod tests {
                 max_advance: 30,
                 force_second: None,
             };
-            let results = search_static4_radar_shiny(&opts);
+            let results = search_static4(&opts);
             let expected = pokefinder_honey!(
                 LeadAbility::None,
                 "test_data/method_shiny_pokeradar/no_lead.txt"
@@ -1050,7 +1042,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                method: Static4Method::DpptJ,
+                method: Static4Method::ShinyRadar,
                 species: Species::Snover,
                 lead: Static4LeadInput::Synchronize,
                 filter: PkmFilter {
@@ -1067,7 +1059,7 @@ mod tests {
                 max_advance: 5,
                 force_second: None,
             };
-            let results = search_static4_radar_shiny(&opts);
+            let results = search_static4(&opts);
             let expected = pokefinder_honey!(
                 LeadAbility::None,
                 "test_data/method_shiny_pokeradar/sync.txt"
@@ -1088,7 +1080,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                method: Static4Method::DpptJ,
+                method: Static4Method::ShinyRadar,
                 species: Species::Snover,
                 lead: Static4LeadInput::CutecharmF,
                 filter: PkmFilter {
@@ -1105,7 +1097,7 @@ mod tests {
                 max_advance: 30,
                 force_second: None,
             };
-            let results = search_static4_radar_shiny(&opts);
+            let results = search_static4(&opts);
             let expected = pokefinder_honey!(
                 LeadAbility::CutecharmF,
                 "test_data/method_shiny_pokeradar/cutecharm_f.txt"
@@ -1120,7 +1112,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                method: Static4Method::DpptJ,
+                method: Static4Method::ShinyRadar,
                 species: Species::Snover,
                 lead: Static4LeadInput::CutecharmM,
                 filter: PkmFilter {
@@ -1137,7 +1129,7 @@ mod tests {
                 max_advance: 30,
                 force_second: None,
             };
-            let results = search_static4_radar_shiny(&opts);
+            let results = search_static4(&opts);
             let expected = pokefinder_honey!(
                 LeadAbility::CutecharmM,
                 "test_data/method_shiny_pokeradar/cutecharm_m.txt"

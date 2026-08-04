@@ -14,8 +14,15 @@ export type Field = tst.O.Merge<
   { show?: boolean; tooltip?: React.ReactNode }
 >;
 
+// Todo: remove !important at some point
 const StyledDescriptions = styled(AntdDescriptions)({
-  ".ant-descriptions-view": { border: "none !important" },
+  ".ant-descriptions-view": {
+    border: "none !important",
+    "> table": {
+      borderCollapse: "separate",
+      borderSpacing: "0px 10px !important",
+    },
+  },
   ".ant-descriptions-row": { border: "none !important" },
   ".ant-descriptions-item-content": {
     padding: "0 !important",
@@ -24,8 +31,8 @@ const StyledDescriptions = styled(AntdDescriptions)({
   ".ant-descriptions-item-label": {
     backgroundColor: "unset !important",
     border: "none !important",
-    paddingTop: "10px !important",
-    paddingBottom: "10px !important",
+    paddingTop: "0px !important",
+    paddingBottom: "0px !important",
     paddingLeft: "24px !important",
     paddingRight: "24px !important",
   },

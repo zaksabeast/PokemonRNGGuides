@@ -1,6 +1,5 @@
 import { uniqueId } from "lodash-es";
 import {
-  Flex,
   IvInput,
   NumberInput,
   MinMaxContainer,
@@ -157,24 +156,20 @@ const RngInfoFields = () => {
       label: "Parent 1 IVs",
       tooltip: "IVs can be left blank if you don't know them",
       children: (
-        <Flex vertical mv={4}>
-          <IvInput<FormState, "nullable">
-            name="parent1_ivs"
-            gridOverrides={{ desktop: 2, mobile: 2, smallTablet: 2, tablet: 2 }}
-          />
-        </Flex>
+        <IvInput<FormState, "nullable">
+          name="parent1_ivs"
+          gridOverrides={{ desktop: 2, mobile: 2, smallTablet: 2, tablet: 2 }}
+        />
       ),
     },
     {
       label: "Parent 2 IVs",
       tooltip: "IVs can be left blank if you don't know them",
       children: (
-        <Flex vertical mv={4}>
-          <IvInput<FormState, "nullable">
-            name="parent2_ivs"
-            gridOverrides={{ desktop: 2, mobile: 2, smallTablet: 2, tablet: 2 }}
-          />
-        </Flex>
+        <IvInput<FormState, "nullable">
+          name="parent2_ivs"
+          gridOverrides={{ desktop: 2, mobile: 2, smallTablet: 2, tablet: 2 }}
+        />
       ),
     },
     {

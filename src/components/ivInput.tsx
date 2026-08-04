@@ -2,6 +2,7 @@ import { GenericForm, GuaranteeFormNameType } from "~/types/form";
 import { Ivs } from "~/rngTools";
 import { z } from "zod";
 import { StatFieldsInput } from "./statFieldsInput";
+import { GridProps } from "./grid";
 
 const IvSchema = z.number().int().min(0).max(31);
 
@@ -34,6 +35,7 @@ type Props<FormState extends GenericForm, IvNullability extends Nullability> = {
     FormState,
     IvNullability extends "nullable" ? NullableIvs : Ivs
   >;
+  gridOverrides?: Partial<GridProps>;
 };
 
 export const IvInput = <
@@ -41,7 +43,13 @@ export const IvInput = <
   IvNullability extends Nullability = "non-nullable",
 >({
   name,
+  gridOverrides,
 }: Props<FormState, IvNullability>) => {
   type FieldType = IvNullability extends "nullable" ? NullableIvs : Ivs;
-  return <StatFieldsInput<FormState, FieldType> name={name} />;
+  return (
+    <StatFieldsInput<FormState, FieldType>
+      name={name}
+      gridOverrides={gridOverrides}
+    />
+  );
 };

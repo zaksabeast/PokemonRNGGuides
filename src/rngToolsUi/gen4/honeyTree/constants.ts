@@ -1,5 +1,5 @@
 import type { HoneyTreeLocation } from "~/rngTools";
-import { DpPt } from "../gen4types";
+import { DpPt } from "~/types/games";
 
 export const HONEY_TREE_LOCATIONS = [
   "EternaForestOutside",

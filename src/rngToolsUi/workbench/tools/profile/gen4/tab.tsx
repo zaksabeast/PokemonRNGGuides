@@ -12,7 +12,7 @@ import {
 } from "~/components";
 import { z } from "zod";
 import { useAtom } from "jotai";
-import { Gen4GameVersions } from "~/rngToolsUi/gen4/gen4types";
+import { Gen4GameVersions } from "~/types/games";
 import { useHydrate } from "~/hooks/useHydrate";
 import { hydrationLock } from "~/utils/hydration";
 import { toOptions } from "~/utils/options";

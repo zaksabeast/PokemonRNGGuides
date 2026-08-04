@@ -1,5 +1,5 @@
 import { Species } from "~/rngTools";
-import { Gen4GameVersion } from "../gen4types";
+import { Gen4GameVersion } from "~/types/games";
 
 // Temporary until TS is updated with new rust changes
 export type SwarmRoute =

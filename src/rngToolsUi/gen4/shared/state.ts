@@ -7,7 +7,8 @@ import {
   createGen4TimerAtom,
   Gen4TimerUpdates,
 } from "~/rngToolsUi/timer/atoms";
-import { Gen4Console, Gen4GameVersion } from "../gen4types";
+import { Gen4Console } from "../gen4types";
+import { Gen4GameVersion } from "~/types/games";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { sanitizeFlips } from "./dpptCoinFlip/utils";
 import { sanitizeElmCalls } from "./hgssElmCalls/utils";

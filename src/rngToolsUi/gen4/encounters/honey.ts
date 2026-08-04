@@ -1,5 +1,5 @@
 import type { Encounter } from "./encounter";
-import type { DpPt, Gen4GameVersion } from "../gen4types";
+import type { DpPt, Gen4GameVersion } from "~/types/games";
 import type { Species } from "~/rngTools";
 
 const SILCOON = "Silcoon" as const satisfies Species;

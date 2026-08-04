@@ -2,7 +2,7 @@ import { TabsProps } from "antd";
 import { Static4Generator } from "./generator";
 import { Static4Searcher } from "./searcher";
 import { Static4Calibrator } from "./calibrator";
-import { Gen4TimerTab } from "./timer";
+import { Gen4TimerTab } from "../timer";
 
 export const static4Tabs: TabsProps["items"] = [
   {

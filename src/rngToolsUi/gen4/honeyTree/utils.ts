@@ -1,7 +1,7 @@
 import { intersection } from "lodash-es";
 import { type HoneyTreeLocation } from "~/rngTools";
 import { NO_NPC_TREES, getSeekerTrees } from "./constants";
-import { type DpPt } from "../gen4types";
+import { type DpPt } from "~/types/games";
 
 type HoneyTreeRecomendation = {
   type: "NoNpc" | "VsSeeker";

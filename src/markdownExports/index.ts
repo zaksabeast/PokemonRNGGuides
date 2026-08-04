@@ -472,6 +472,10 @@ const tools = {
     () => import("~/rngToolsUi/workbench"),
     (mod) => mod.RngWorkbench,
   ),
+  PokeRadar4ShinySearcher: lazyLoad(
+    () => import("~/rngToolsUi/gen4/pokeradar/pokeradar4ShinySearcher"),
+    (mod) => mod.PokeRadar4ShinySearcher,
+  ),
 };
 
 export const markdownComponents = {

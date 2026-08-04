@@ -1123,22 +1123,22 @@
         }
       ],
       "swarm": [
-        74,
-        74
+        "Geodude",
+        "Geodude"
       ],
       "day": [
-        41,
-        41
+        "Zubat",
+        "Zubat"
       ],
       "night": [
-        41,
-        41
+        "Zubat",
+        "Zubat"
       ],
       "radar": [
-        74,
-        74,
-        74,
-        74
+        "Geodude",
+        "Geodude",
+        "Geodude",
+        "Geodude"
       ],
       "form": [
         0,
@@ -1335,22 +1335,22 @@
         }
       ],
       "swarm": [
-        74,
-        74
+        "Geodude",
+        "Geodude"
       ],
       "day": [
-        41,
-        41
+        "Zubat",
+        "Zubat"
       ],
       "night": [
-        41,
-        41
+        "Zubat",
+        "Zubat"
       ],
       "radar": [
-        74,
-        74,
-        74,
-        74
+        "Geodude",
+        "Geodude",
+        "Geodude",
+        "Geodude"
       ],
       "form": [
         0,
@@ -1547,22 +1547,22 @@
         }
       ],
       "swarm": [
-        309,
-        309
+        "Electrike",
+        "Electrike"
       ],
       "day": [
-        418,
-        422
+        "Buizel",
+        "Shellos"
       ],
       "night": [
-        418,
-        422
+        "Buizel",
+        "Shellos"
       ],
       "radar": [
-        179,
-        179,
-        179,
-        179
+        "Mareep",
+        "Mareep",
+        "Mareep",
+        "Mareep"
       ],
       "form": [
         0,
@@ -1759,22 +1759,22 @@
         }
       ],
       "swarm": [
-        287,
-        287
+        "Slakoth",
+        "Slakoth"
       ],
       "day": [
-        265,
-        406
+        "Wurmple",
+        "Budew"
       ],
       "night": [
-        401,
-        163
+        "Kricketot",
+        "Hoothoot"
       ],
       "radar": [
-        290,
-        290,
-        290,
-        290
+        "Nincada",
+        "Nincada",
+        "Nincada",
+        "Nincada"
       ],
       "form": [
         0,
@@ -1971,22 +1971,22 @@
         }
       ],
       "swarm": [
-        126,
-        81
+        "Magmar",
+        "Magnemite"
       ],
       "day": [
-        126,
-        419
+        "Magmar",
+        "Floatzel"
       ],
       "night": [
-        423,
-        419
+        "Gastrodon",
+        "Floatzel"
       ],
       "radar": [
-        304,
-        304,
-        304,
-        304
+        "Aron",
+        "Aron",
+        "Aron",
+        "Aron"
       ],
       "form": [
         0,
@@ -2183,22 +2183,22 @@
         }
       ],
       "swarm": [
-        436,
-        74
+        "Bronzor",
+        "Geodude"
       ],
       "day": [
-        307,
-        74
+        "Meditite",
+        "Geodude"
       ],
       "night": [
-        41,
-        35
+        "Zubat",
+        "Clefairy"
       ],
       "radar": [
-        66,
-        307,
-        41,
-        433
+        "Machop",
+        "Meditite",
+        "Zubat",
+        "Chingling"
       ],
       "form": [
         0,
@@ -2395,22 +2395,22 @@
         }
       ],
       "swarm": [
-        437,
-        75
+        "Bronzong",
+        "Graveler"
       ],
       "day": [
-        308,
-        75
+        "Medicham",
+        "Graveler"
       ],
       "night": [
-        42,
-        35
+        "Golbat",
+        "Clefairy"
       ],
       "radar": [
-        67,
-        308,
-        42,
-        433
+        "Machoke",
+        "Medicham",
+        "Golbat",
+        "Chingling"
       ],
       "form": [
         0,
@@ -2607,22 +2607,22 @@
         }
       ],
       "swarm": [
-        437,
-        75
+        "Bronzong",
+        "Graveler"
       ],
       "day": [
-        308,
-        75
+        "Medicham",
+        "Graveler"
       ],
       "night": [
-        42,
-        35
+        "Golbat",
+        "Clefairy"
       ],
       "radar": [
-        67,
-        308,
-        308,
-        433
+        "Machoke",
+        "Medicham",
+        "Medicham",
+        "Chingling"
       ],
       "form": [
         0,
@@ -2819,22 +2819,22 @@
         }
       ],
       "swarm": [
-        459,
-        460
+        "Snover",
+        "Abomasnow"
       ],
       "day": [
-        308,
-        460
+        "Medicham",
+        "Abomasnow"
       ],
       "night": [
-        42,
-        164
+        "Golbat",
+        "Noctowl"
       ],
       "radar": [
-        294,
-        294,
-        294,
-        294
+        "Loudred",
+        "Loudred",
+        "Loudred",
+        "Loudred"
       ],
       "form": [
         0,
@@ -3031,22 +3031,22 @@
         }
       ],
       "swarm": [
-        437,
-        75
+        "Bronzong",
+        "Graveler"
       ],
       "day": [
-        308,
-        75
+        "Medicham",
+        "Graveler"
       ],
       "night": [
-        42,
-        35
+        "Golbat",
+        "Clefairy"
       ],
       "radar": [
-        67,
-        308,
-        42,
-        433
+        "Machoke",
+        "Medicham",
+        "Golbat",
+        "Chingling"
       ],
       "form": [
         0,
@@ -3243,22 +3243,22 @@
         }
       ],
       "swarm": [
-        437,
-        75
+        "Bronzong",
+        "Graveler"
       ],
       "day": [
-        308,
-        75
+        "Medicham",
+        "Graveler"
       ],
       "night": [
-        42,
-        35
+        "Golbat",
+        "Clefairy"
       ],
       "radar": [
-        67,
-        308,
-        42,
-        358
+        "Machoke",
+        "Medicham",
+        "Golbat",
+        "Chimecho"
       ],
       "form": [
         0,
@@ -3455,22 +3455,22 @@
         }
       ],
       "swarm": [
-        437,
-        75
+        "Bronzong",
+        "Graveler"
       ],
       "day": [
-        308,
-        75
+        "Medicham",
+        "Graveler"
       ],
       "night": [
-        42,
-        35
+        "Golbat",
+        "Clefairy"
       ],
       "radar": [
-        67,
-        308,
-        42,
-        358
+        "Machoke",
+        "Medicham",
+        "Golbat",
+        "Chimecho"
       ],
       "form": [
         0,
@@ -3667,22 +3667,22 @@
         }
       ],
       "swarm": [
-        437,
-        75
+        "Bronzong",
+        "Graveler"
       ],
       "day": [
-        308,
-        75
+        "Medicham",
+        "Graveler"
       ],
       "night": [
-        42,
-        35
+        "Golbat",
+        "Clefairy"
       ],
       "radar": [
-        67,
-        308,
-        42,
-        358
+        "Machoke",
+        "Medicham",
+        "Golbat",
+        "Chimecho"
       ],
       "form": [
         0,
@@ -3879,22 +3879,22 @@
         }
       ],
       "swarm": [
-        75,
-        75
+        "Graveler",
+        "Graveler"
       ],
       "day": [
-        308,
-        75
+        "Medicham",
+        "Graveler"
       ],
       "night": [
-        42,
-        35
+        "Golbat",
+        "Clefairy"
       ],
       "radar": [
-        67,
-        308,
-        42,
-        433
+        "Machoke",
+        "Medicham",
+        "Golbat",
+        "Chingling"
       ],
       "form": [
         0,
@@ -4091,22 +4091,22 @@
         }
       ],
       "swarm": [
-        436,
-        75
+        "Bronzor",
+        "Graveler"
       ],
       "day": [
-        307,
-        75
+        "Meditite",
+        "Graveler"
       ],
       "night": [
-        42,
-        35
+        "Golbat",
+        "Clefairy"
       ],
       "radar": [
-        67,
-        307,
-        42,
-        433
+        "Machoke",
+        "Meditite",
+        "Golbat",
+        "Chingling"
       ],
       "form": [
         0,
@@ -4303,22 +4303,22 @@
         }
       ],
       "swarm": [
-        436,
-        74
+        "Bronzor",
+        "Geodude"
       ],
       "day": [
-        307,
-        74
+        "Meditite",
+        "Geodude"
       ],
       "night": [
-        41,
-        173
+        "Zubat",
+        "Cleffa"
       ],
       "radar": [
-        66,
-        307,
-        41,
-        433
+        "Machop",
+        "Meditite",
+        "Zubat",
+        "Chingling"
       ],
       "form": [
         0,
@@ -4515,22 +4515,22 @@
         }
       ],
       "swarm": [
-        436,
-        75
+        "Bronzor",
+        "Graveler"
       ],
       "day": [
-        307,
-        75
+        "Meditite",
+        "Graveler"
       ],
       "night": [
-        42,
-        35
+        "Golbat",
+        "Clefairy"
       ],
       "radar": [
-        67,
-        307,
-        42,
-        433
+        "Machoke",
+        "Meditite",
+        "Golbat",
+        "Chingling"
       ],
       "form": [
         0,
@@ -4727,22 +4727,22 @@
         }
       ],
       "swarm": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "day": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "night": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "radar": [
-        201,
-        201,
-        201,
-        201
+        "Unown",
+        "Unown",
+        "Unown",
+        "Unown"
       ],
       "form": [
         100,
@@ -4939,22 +4939,22 @@
         }
       ],
       "swarm": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "day": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "night": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "radar": [
-        201,
-        201,
-        201,
-        201
+        "Unown",
+        "Unown",
+        "Unown",
+        "Unown"
       ],
       "form": [
         100,
@@ -5151,22 +5151,22 @@
         }
       ],
       "swarm": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "day": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "night": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "radar": [
-        201,
-        201,
-        201,
-        201
+        "Unown",
+        "Unown",
+        "Unown",
+        "Unown"
       ],
       "form": [
         100,
@@ -5363,22 +5363,22 @@
         }
       ],
       "swarm": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "day": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "night": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "radar": [
-        201,
-        201,
-        201,
-        201
+        "Unown",
+        "Unown",
+        "Unown",
+        "Unown"
       ],
       "form": [
         100,
@@ -5575,22 +5575,22 @@
         }
       ],
       "swarm": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "day": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "night": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "radar": [
-        201,
-        201,
-        201,
-        201
+        "Unown",
+        "Unown",
+        "Unown",
+        "Unown"
       ],
       "form": [
         100,
@@ -5787,22 +5787,22 @@
         }
       ],
       "swarm": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "day": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "night": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "radar": [
-        201,
-        201,
-        201,
-        201
+        "Unown",
+        "Unown",
+        "Unown",
+        "Unown"
       ],
       "form": [
         100,
@@ -5999,22 +5999,22 @@
         }
       ],
       "swarm": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "day": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "night": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "radar": [
-        201,
-        201,
-        201,
-        201
+        "Unown",
+        "Unown",
+        "Unown",
+        "Unown"
       ],
       "form": [
         100,
@@ -6211,22 +6211,22 @@
         }
       ],
       "swarm": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "day": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "night": [
-        201,
-        201
+        "Unown",
+        "Unown"
       ],
       "radar": [
-        201,
-        201,
-        201,
-        201
+        "Unown",
+        "Unown",
+        "Unown",
+        "Unown"
       ],
       "form": [
         100,
@@ -6423,22 +6423,22 @@
         }
       ],
       "swarm": [
-        75,
-        111
+        "Graveler",
+        "Rhyhorn"
       ],
       "day": [
-        75,
-        95
+        "Graveler",
+        "Onix"
       ],
       "night": [
-        42,
-        95
+        "Golbat",
+        "Onix"
       ],
       "radar": [
-        95,
-        112,
-        208,
-        444
+        "Onix",
+        "Rhydon",
+        "Steelix",
+        "Gabite"
       ],
       "form": [
         100,
@@ -6635,22 +6635,22 @@
         }
       ],
       "swarm": [
-        82,
-        208
+        "Magneton",
+        "Steelix"
       ],
       "day": [
-        75,
-        208
+        "Graveler",
+        "Steelix"
       ],
       "night": [
-        42,
-        208
+        "Golbat",
+        "Steelix"
       ],
       "radar": [
-        208,
-        82,
-        95,
-        444
+        "Steelix",
+        "Magneton",
+        "Onix",
+        "Gabite"
       ],
       "form": [
         100,
@@ -6847,22 +6847,22 @@
         }
       ],
       "swarm": [
-        419,
-        184
+        "Floatzel",
+        "Azumarill"
       ],
       "day": [
-        75,
-        184
+        "Graveler",
+        "Azumarill"
       ],
       "night": [
-        42,
-        184
+        "Golbat",
+        "Azumarill"
       ],
       "radar": [
-        95,
-        419,
-        208,
-        444
+        "Onix",
+        "Floatzel",
+        "Steelix",
+        "Gabite"
       ],
       "form": [
         100,
@@ -7059,22 +7059,22 @@
         }
       ],
       "swarm": [
-        419,
-        184
+        "Floatzel",
+        "Azumarill"
       ],
       "day": [
-        75,
-        184
+        "Graveler",
+        "Azumarill"
       ],
       "night": [
-        42,
-        184
+        "Golbat",
+        "Azumarill"
       ],
       "radar": [
-        87,
-        419,
-        87,
-        444
+        "Dewgong",
+        "Floatzel",
+        "Dewgong",
+        "Gabite"
       ],
       "form": [
         100,
@@ -7271,22 +7271,22 @@
         }
       ],
       "swarm": [
-        75,
-        419
+        "Graveler",
+        "Floatzel"
       ],
       "day": [
-        75,
-        95
+        "Graveler",
+        "Onix"
       ],
       "night": [
-        42,
-        95
+        "Golbat",
+        "Onix"
       ],
       "radar": [
-        95,
-        419,
-        208,
-        444
+        "Onix",
+        "Floatzel",
+        "Steelix",
+        "Gabite"
       ],
       "form": [
         100,
@@ -7483,22 +7483,22 @@
         }
       ],
       "swarm": [
-        75,
-        419
+        "Graveler",
+        "Floatzel"
       ],
       "day": [
-        75,
-        95
+        "Graveler",
+        "Onix"
       ],
       "night": [
-        42,
-        95
+        "Golbat",
+        "Onix"
       ],
       "radar": [
-        95,
-        419,
-        208,
-        444
+        "Onix",
+        "Floatzel",
+        "Steelix",
+        "Gabite"
       ],
       "form": [
         100,
@@ -7695,22 +7695,22 @@
         }
       ],
       "swarm": [
-        41,
-        54
+        "Zubat",
+        "Psyduck"
       ],
       "day": [
-        41,
-        54
+        "Zubat",
+        "Psyduck"
       ],
       "night": [
-        41,
-        54
+        "Zubat",
+        "Psyduck"
       ],
       "radar": [
-        41,
-        41,
-        41,
-        41
+        "Zubat",
+        "Zubat",
+        "Zubat",
+        "Zubat"
       ],
       "form": [
         0,
@@ -7907,22 +7907,22 @@
         }
       ],
       "swarm": [
-        41,
-        54
+        "Zubat",
+        "Psyduck"
       ],
       "day": [
-        41,
-        54
+        "Zubat",
+        "Psyduck"
       ],
       "night": [
-        41,
-        54
+        "Zubat",
+        "Psyduck"
       ],
       "radar": [
-        74,
-        41,
-        41,
-        41
+        "Geodude",
+        "Zubat",
+        "Zubat",
+        "Zubat"
       ],
       "form": [
         0,
@@ -8119,22 +8119,22 @@
         }
       ],
       "swarm": [
-        41,
-        54
+        "Zubat",
+        "Psyduck"
       ],
       "day": [
-        41,
-        54
+        "Zubat",
+        "Psyduck"
       ],
       "night": [
-        41,
-        54
+        "Zubat",
+        "Psyduck"
       ],
       "radar": [
-        74,
-        41,
-        41,
-        42
+        "Geodude",
+        "Zubat",
+        "Zubat",
+        "Golbat"
       ],
       "form": [
         0,
@@ -8331,22 +8331,22 @@
         }
       ],
       "swarm": [
-        323,
-        112
+        "Camerupt",
+        "Rhydon"
       ],
       "day": [
-        22,
-        75
+        "Fearow",
+        "Graveler"
       ],
       "night": [
-        42,
-        75
+        "Golbat",
+        "Graveler"
       ],
       "radar": [
-        324,
-        324,
-        324,
-        324
+        "Torkoal",
+        "Torkoal",
+        "Torkoal",
+        "Torkoal"
       ],
       "form": [
         100,
@@ -8543,22 +8543,22 @@
         }
       ],
       "swarm": [
-        219,
-        112
+        "Magcargo",
+        "Rhydon"
       ],
       "day": [
-        42,
-        75
+        "Golbat",
+        "Graveler"
       ],
       "night": [
-        42,
-        75
+        "Golbat",
+        "Graveler"
       ],
       "radar": [
-        42,
-        110,
-        218,
-        111
+        "Golbat",
+        "Weezing",
+        "Slugma",
+        "Rhyhorn"
       ],
       "form": [
         100,
@@ -8755,22 +8755,22 @@
         }
       ],
       "swarm": [
-        219,
-        219
+        "Magcargo",
+        "Magcargo"
       ],
       "day": [
-        42,
-        75
+        "Golbat",
+        "Graveler"
       ],
       "night": [
-        42,
-        75
+        "Golbat",
+        "Graveler"
       ],
       "radar": [
-        112,
-        110,
-        218,
-        109
+        "Rhydon",
+        "Weezing",
+        "Slugma",
+        "Koffing"
       ],
       "form": [
         100,
@@ -8967,22 +8967,22 @@
         }
       ],
       "swarm": [
-        75,
-        400
+        "Graveler",
+        "Bibarel"
       ],
       "day": [
-        75,
-        397
+        "Graveler",
+        "Staravia"
       ],
       "night": [
-        356,
-        42
+        "Dusclops",
+        "Golbat"
       ],
       "radar": [
-        400,
-        397,
-        356,
-        433
+        "Bibarel",
+        "Staravia",
+        "Dusclops",
+        "Chingling"
       ],
       "form": [
         100,
@@ -9179,22 +9179,22 @@
         }
       ],
       "swarm": [
-        92,
-        436
+        "Gastly",
+        "Bronzor"
       ],
       "day": [
-        92,
-        42
+        "Gastly",
+        "Golbat"
       ],
       "night": [
-        356,
-        42
+        "Dusclops",
+        "Golbat"
       ],
       "radar": [
-        92,
-        42,
-        356,
-        433
+        "Gastly",
+        "Golbat",
+        "Dusclops",
+        "Chingling"
       ],
       "form": [
         100,
@@ -9391,22 +9391,22 @@
         }
       ],
       "swarm": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "day": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "night": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "radar": [
-        42,
-        215,
-        238,
-        42
+        "Golbat",
+        "Sneasel",
+        "Smoochum",
+        "Golbat"
       ],
       "form": [
         0,
@@ -9603,22 +9603,22 @@
         }
       ],
       "swarm": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "day": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "night": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "radar": [
-        42,
-        215,
-        124,
-        42
+        "Golbat",
+        "Sneasel",
+        "Jynx",
+        "Golbat"
       ],
       "form": [
         0,
@@ -9815,22 +9815,22 @@
         }
       ],
       "swarm": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "day": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "night": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "radar": [
-        42,
-        215,
-        124,
-        42
+        "Golbat",
+        "Sneasel",
+        "Jynx",
+        "Golbat"
       ],
       "form": [
         0,
@@ -10027,22 +10027,22 @@
         }
       ],
       "swarm": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "day": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "night": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "radar": [
-        42,
-        215,
-        124,
-        42
+        "Golbat",
+        "Sneasel",
+        "Jynx",
+        "Golbat"
       ],
       "form": [
         0,
@@ -10239,22 +10239,22 @@
         }
       ],
       "swarm": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "day": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "night": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "radar": [
-        42,
-        215,
-        124,
-        42
+        "Golbat",
+        "Sneasel",
+        "Jynx",
+        "Golbat"
       ],
       "form": [
         0,
@@ -10451,22 +10451,22 @@
         }
       ],
       "swarm": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "day": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "night": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "radar": [
-        42,
-        215,
-        124,
-        42
+        "Golbat",
+        "Sneasel",
+        "Jynx",
+        "Golbat"
       ],
       "form": [
         0,
@@ -10663,22 +10663,22 @@
         }
       ],
       "swarm": [
-        436,
-        74
+        "Bronzor",
+        "Geodude"
       ],
       "day": [
-        74,
-        41
+        "Geodude",
+        "Zubat"
       ],
       "night": [
-        74,
-        41
+        "Geodude",
+        "Zubat"
       ],
       "radar": [
-        436,
-        95,
-        74,
-        95
+        "Bronzor",
+        "Onix",
+        "Geodude",
+        "Onix"
       ],
       "form": [
         0,
@@ -10875,22 +10875,22 @@
         }
       ],
       "swarm": [
-        436,
-        74
+        "Bronzor",
+        "Geodude"
       ],
       "day": [
-        443,
-        41
+        "Gible",
+        "Zubat"
       ],
       "night": [
-        443,
-        41
+        "Gible",
+        "Zubat"
       ],
       "radar": [
-        436,
-        95,
-        443,
-        95
+        "Bronzor",
+        "Onix",
+        "Gible",
+        "Onix"
       ],
       "form": [
         0,
@@ -11087,22 +11087,22 @@
         }
       ],
       "swarm": [
-        74,
-        74
+        "Geodude",
+        "Geodude"
       ],
       "day": [
-        74,
-        74
+        "Geodude",
+        "Geodude"
       ],
       "night": [
-        74,
-        74
+        "Geodude",
+        "Geodude"
       ],
       "radar": [
-        74,
-        74,
-        74,
-        449
+        "Geodude",
+        "Geodude",
+        "Geodude",
+        "Hippopotas"
       ],
       "form": [
         100,
@@ -11299,22 +11299,22 @@
         }
       ],
       "swarm": [
-        172,
-        315
+        "Pichu",
+        "Roselia"
       ],
       "day": [
-        397,
-        397
+        "Staravia",
+        "Staravia"
       ],
       "night": [
-        402,
-        402
+        "Kricketune",
+        "Kricketune"
       ],
       "radar": [
-        315,
-        397,
-        25,
-        172
+        "Roselia",
+        "Staravia",
+        "Pikachu",
+        "Pichu"
       ],
       "form": [
         100,
@@ -11723,22 +11723,22 @@
         }
       ],
       "swarm": [
-        74,
-        75
+        "Geodude",
+        "Graveler"
       ],
       "day": [
-        41,
-        42
+        "Zubat",
+        "Golbat"
       ],
       "night": [
-        41,
-        42
+        "Zubat",
+        "Golbat"
       ],
       "radar": [
-        74,
-        75,
-        74,
-        75
+        "Geodude",
+        "Graveler",
+        "Geodude",
+        "Graveler"
       ],
       "form": [
         0,
@@ -11935,22 +11935,22 @@
         }
       ],
       "swarm": [
-        75,
-        75
+        "Graveler",
+        "Graveler"
       ],
       "day": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "night": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "radar": [
-        75,
-        75,
-        75,
-        75
+        "Graveler",
+        "Graveler",
+        "Graveler",
+        "Graveler"
       ],
       "form": [
         0,
@@ -12147,22 +12147,22 @@
         }
       ],
       "swarm": [
-        75,
-        75
+        "Graveler",
+        "Graveler"
       ],
       "day": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "night": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "radar": [
-        75,
-        75,
-        75,
-        75
+        "Graveler",
+        "Graveler",
+        "Graveler",
+        "Graveler"
       ],
       "form": [
         0,
@@ -12359,22 +12359,22 @@
         }
       ],
       "swarm": [
-        95,
-        75
+        "Onix",
+        "Graveler"
       ],
       "day": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "night": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "radar": [
-        75,
-        75,
-        75,
-        75
+        "Graveler",
+        "Graveler",
+        "Graveler",
+        "Graveler"
       ],
       "form": [
         0,
@@ -12571,22 +12571,22 @@
         }
       ],
       "swarm": [
-        95,
-        75
+        "Onix",
+        "Graveler"
       ],
       "day": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "night": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "radar": [
-        75,
-        75,
-        75,
-        75
+        "Graveler",
+        "Graveler",
+        "Graveler",
+        "Graveler"
       ],
       "form": [
         0,
@@ -12783,22 +12783,22 @@
         }
       ],
       "swarm": [
-        95,
-        75
+        "Onix",
+        "Graveler"
       ],
       "day": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "night": [
-        42,
-        42
+        "Golbat",
+        "Golbat"
       ],
       "radar": [
-        75,
-        75,
-        75,
-        75
+        "Graveler",
+        "Graveler",
+        "Graveler",
+        "Graveler"
       ],
       "form": [
         0,
@@ -12995,22 +12995,22 @@
         }
       ],
       "swarm": [
-        92,
-        92
+        "Gastly",
+        "Gastly"
       ],
       "day": [
-        92,
-        92
+        "Gastly",
+        "Gastly"
       ],
       "night": [
-        92,
-        92
+        "Gastly",
+        "Gastly"
       ],
       "radar": [
-        92,
-        92,
-        92,
-        92
+        "Gastly",
+        "Gastly",
+        "Gastly",
+        "Gastly"
       ],
       "form": [
         0,
@@ -13207,22 +13207,22 @@
         }
       ],
       "swarm": [
-        92,
-        92
+        "Gastly",
+        "Gastly"
       ],
       "day": [
-        92,
-        92
+        "Gastly",
+        "Gastly"
       ],
       "night": [
-        92,
-        92
+        "Gastly",
+        "Gastly"
       ],
       "radar": [
-        92,
-        92,
-        92,
-        92
+        "Gastly",
+        "Gastly",
+        "Gastly",
+        "Gastly"
       ],
       "form": [
         0,
@@ -13419,22 +13419,22 @@
         }
       ],
       "swarm": [
-        396,
-        399
+        "Starly",
+        "Bidoof"
       ],
       "day": [
-        396,
-        399
+        "Starly",
+        "Bidoof"
       ],
       "night": [
-        399,
-        399
+        "Bidoof",
+        "Bidoof"
       ],
       "radar": [
-        202,
-        202,
-        202,
-        202
+        "Wobbuffet",
+        "Wobbuffet",
+        "Wobbuffet",
+        "Wobbuffet"
       ],
       "form": [
         0,
@@ -13631,22 +13631,22 @@
         }
       ],
       "swarm": [
-        396,
-        399
+        "Starly",
+        "Bidoof"
       ],
       "day": [
-        396,
-        399
+        "Starly",
+        "Bidoof"
       ],
       "night": [
-        396,
-        399
+        "Starly",
+        "Bidoof"
       ],
       "radar": [
-        202,
-        202,
-        202,
-        202
+        "Wobbuffet",
+        "Wobbuffet",
+        "Wobbuffet",
+        "Wobbuffet"
       ],
       "form": [
         0,
@@ -13843,22 +13843,22 @@
         }
       ],
       "swarm": [
-        397,
-        400
+        "Staravia",
+        "Bibarel"
       ],
       "day": [
-        397,
-        400
+        "Staravia",
+        "Bibarel"
       ],
       "night": [
-        397,
-        400
+        "Staravia",
+        "Bibarel"
       ],
       "radar": [
-        202,
-        202,
-        202,
-        202
+        "Wobbuffet",
+        "Wobbuffet",
+        "Wobbuffet",
+        "Wobbuffet"
       ],
       "form": [
         100,
@@ -14055,22 +14055,22 @@
         }
       ],
       "swarm": [
-        459,
-        400
+        "Snover",
+        "Bibarel"
       ],
       "day": [
-        459,
-        459
+        "Snover",
+        "Snover"
       ],
       "night": [
-        361,
-        361
+        "Snorunt",
+        "Snorunt"
       ],
       "radar": [
-        55,
-        215,
-        459,
-        400
+        "Golduck",
+        "Sneasel",
+        "Snover",
+        "Bibarel"
       ],
       "form": [
         0,
@@ -14267,22 +14267,22 @@
         }
       ],
       "swarm": [
-        203,
-        400
+        "Girafarig",
+        "Bibarel"
       ],
       "day": [
-        397,
-        397
+        "Staravia",
+        "Staravia"
       ],
       "night": [
-        402,
-        228
+        "Kricketune",
+        "Houndour"
       ],
       "radar": [
-        33,
-        30,
-        33,
-        30
+        "Nidorino",
+        "Nidorina",
+        "Nidorino",
+        "Nidorina"
       ],
       "form": [
         100,
@@ -14479,22 +14479,22 @@
         }
       ],
       "swarm": [
-        459,
-        220
+        "Snover",
+        "Swinub"
       ],
       "day": [
-        215,
-        459
+        "Sneasel",
+        "Snover"
       ],
       "night": [
-        361,
-        361
+        "Snorunt",
+        "Snorunt"
       ],
       "radar": [
-        215,
-        220,
-        215,
-        459
+        "Sneasel",
+        "Swinub",
+        "Sneasel",
+        "Snover"
       ],
       "form": [
         0,
@@ -14691,22 +14691,22 @@
         }
       ],
       "swarm": [
-        84,
-        84
+        "Doduo",
+        "Doduo"
       ],
       "day": [
-        396,
-        399
+        "Starly",
+        "Bidoof"
       ],
       "night": [
-        401,
-        399
+        "Kricketot",
+        "Bidoof"
       ],
       "radar": [
-        32,
-        29,
-        32,
-        29
+        "Nidoran♂",
+        "Nidoran♀",
+        "Nidoran♂",
+        "Nidoran♀"
       ],
       "form": [
         0,
@@ -14903,22 +14903,22 @@
         }
       ],
       "swarm": [
-        263,
-        263
+        "Zigzagoon",
+        "Zigzagoon"
       ],
       "day": [
-        396,
-        399
+        "Starly",
+        "Bidoof"
       ],
       "night": [
-        401,
-        399
+        "Kricketot",
+        "Bidoof"
       ],
       "radar": [
-        161,
-        161,
-        161,
-        161
+        "Sentret",
+        "Sentret",
+        "Sentret",
+        "Sentret"
       ],
       "form": [
         0,
@@ -15115,22 +15115,22 @@
         }
       ],
       "swarm": [
-        104,
-        104
+        "Cubone",
+        "Cubone"
       ],
       "day": [
-        396,
-        399
+        "Starly",
+        "Bidoof"
       ],
       "night": [
-        401,
-        41
+        "Kricketot",
+        "Zubat"
       ],
       "radar": [
-        399,
-        63,
-        396,
-        399
+        "Bidoof",
+        "Abra",
+        "Starly",
+        "Bidoof"
       ],
       "form": [
         0,
@@ -15327,22 +15327,22 @@
         }
       ],
       "swarm": [
-        396,
-        399
+        "Starly",
+        "Bidoof"
       ],
       "day": [
-        265,
-        406
+        "Wurmple",
+        "Budew"
       ],
       "night": [
-        401,
-        41
+        "Kricketot",
+        "Zubat"
       ],
       "radar": [
-        406,
-        403,
-        396,
-        399
+        "Budew",
+        "Shinx",
+        "Starly",
+        "Bidoof"
       ],
       "form": [
         0,
@@ -15539,22 +15539,22 @@
         }
       ],
       "swarm": [
-        396,
-        399
+        "Starly",
+        "Bidoof"
       ],
       "day": [
-        265,
-        406
+        "Wurmple",
+        "Budew"
       ],
       "night": [
-        401,
-        41
+        "Kricketot",
+        "Zubat"
       ],
       "radar": [
-        191,
-        191,
-        191,
-        191
+        "Sunkern",
+        "Sunkern",
+        "Sunkern",
+        "Sunkern"
       ],
       "form": [
         0,
@@ -15751,22 +15751,22 @@
         }
       ],
       "swarm": [
-        422,
-        422
+        "Shellos",
+        "Shellos"
       ],
       "day": [
-        418,
-        422
+        "Buizel",
+        "Shellos"
       ],
       "night": [
-        418,
-        422
+        "Buizel",
+        "Shellos"
       ],
       "radar": [
-        187,
-        187,
-        187,
-        187
+        "Hoppip",
+        "Hoppip",
+        "Hoppip",
+        "Hoppip"
       ],
       "form": [
         0,
@@ -15963,22 +15963,22 @@
         }
       ],
       "swarm": [
-        399,
-        406
+        "Bidoof",
+        "Budew"
       ],
       "day": [
-        265,
-        406
+        "Wurmple",
+        "Budew"
       ],
       "night": [
-        401,
-        163
+        "Kricketot",
+        "Hoothoot"
       ],
       "radar": [
-        79,
-        79,
-        79,
-        79
+        "Slowpoke",
+        "Slowpoke",
+        "Slowpoke",
+        "Slowpoke"
       ],
       "form": [
         0,
@@ -16175,22 +16175,22 @@
         }
       ],
       "swarm": [
-        246,
-        246
+        "Larvitar",
+        "Larvitar"
       ],
       "day": [
-        207,
-        77
+        "Gligar",
+        "Ponyta"
       ],
       "night": [
-        402,
-        41
+        "Kricketune",
+        "Zubat"
       ],
       "radar": [
-        343,
-        343,
-        343,
-        343
+        "Baltoy",
+        "Baltoy",
+        "Baltoy",
+        "Baltoy"
       ],
       "form": [
         0,
@@ -16387,22 +16387,22 @@
         }
       ],
       "swarm": [
-        231,
-        231
+        "Phanpy",
+        "Phanpy"
       ],
       "day": [
-        77,
-        66
+        "Ponyta",
+        "Machop"
       ],
       "night": [
-        401,
-        41
+        "Kricketot",
+        "Zubat"
       ],
       "radar": [
-        234,
-        234,
-        234,
-        234
+        "Stantler",
+        "Stantler",
+        "Stantler",
+        "Stantler"
       ],
       "form": [
         0,
@@ -16599,22 +16599,22 @@
         }
       ],
       "swarm": [
-        206,
-        206
+        "Dunsparce",
+        "Dunsparce"
       ],
       "day": [
-        406,
-        280
+        "Budew",
+        "Ralts"
       ],
       "night": [
-        41,
-        280
+        "Zubat",
+        "Ralts"
       ],
       "radar": [
-        235,
-        235,
-        235,
-        235
+        "Smeargle",
+        "Smeargle",
+        "Smeargle",
+        "Smeargle"
       ],
       "form": [
         100,
@@ -16811,22 +16811,22 @@
         }
       ],
       "swarm": [
-        209,
-        209
+        "Snubbull",
+        "Snubbull"
       ],
       "day": [
-        397,
-        280
+        "Staravia",
+        "Ralts"
       ],
       "night": [
-        41,
-        355
+        "Zubat",
+        "Duskull"
       ],
       "radar": [
-        281,
-        281,
-        281,
-        281
+        "Kirlia",
+        "Kirlia",
+        "Kirlia",
+        "Kirlia"
       ],
       "form": [
         100,
@@ -17023,22 +17023,22 @@
         }
       ],
       "swarm": [
-        92,
-        41
+        "Gastly",
+        "Zubat"
       ],
       "day": [
-        92,
-        92
+        "Gastly",
+        "Gastly"
       ],
       "night": [
-        355,
-        355
+        "Duskull",
+        "Duskull"
       ],
       "radar": [
-        41,
-        92,
-        92,
-        92
+        "Zubat",
+        "Gastly",
+        "Gastly",
+        "Gastly"
       ],
       "form": [
         100,
@@ -17235,22 +17235,22 @@
         }
       ],
       "swarm": [
-        92,
-        41
+        "Gastly",
+        "Zubat"
       ],
       "day": [
-        92,
-        92
+        "Gastly",
+        "Gastly"
       ],
       "night": [
-        355,
-        355
+        "Duskull",
+        "Duskull"
       ],
       "radar": [
-        41,
-        92,
-        92,
-        92
+        "Zubat",
+        "Gastly",
+        "Gastly",
+        "Gastly"
       ],
       "form": [
         100,
@@ -17447,22 +17447,22 @@
         }
       ],
       "swarm": [
-        92,
-        41
+        "Gastly",
+        "Zubat"
       ],
       "day": [
-        92,
-        92
+        "Gastly",
+        "Gastly"
       ],
       "night": [
-        355,
-        355
+        "Duskull",
+        "Duskull"
       ],
       "radar": [
-        41,
-        92,
-        92,
-        92
+        "Zubat",
+        "Gastly",
+        "Gastly",
+        "Gastly"
       ],
       "form": [
         100,
@@ -17659,22 +17659,22 @@
         }
       ],
       "swarm": [
-        92,
-        41
+        "Gastly",
+        "Zubat"
       ],
       "day": [
-        92,
-        92
+        "Gastly",
+        "Gastly"
       ],
       "night": [
-        355,
-        355
+        "Duskull",
+        "Duskull"
       ],
       "radar": [
-        41,
-        92,
-        92,
-        92
+        "Zubat",
+        "Gastly",
+        "Gastly",
+        "Gastly"
       ],
       "form": [
         100,
@@ -17871,22 +17871,22 @@
         }
       ],
       "swarm": [
-        92,
-        41
+        "Gastly",
+        "Zubat"
       ],
       "day": [
-        92,
-        92
+        "Gastly",
+        "Gastly"
       ],
       "night": [
-        355,
-        355
+        "Duskull",
+        "Duskull"
       ],
       "radar": [
-        41,
-        92,
-        92,
-        92
+        "Zubat",
+        "Gastly",
+        "Gastly",
+        "Gastly"
       ],
       "form": [
         100,
@@ -18083,22 +18083,22 @@
         }
       ],
       "swarm": [
-        397,
-        74
+        "Staravia",
+        "Geodude"
       ],
       "day": [
-        77,
-        77
+        "Ponyta",
+        "Ponyta"
       ],
       "night": [
-        164,
-        163
+        "Noctowl",
+        "Hoothoot"
       ],
       "radar": [
-        241,
-        128,
-        241,
-        128
+        "Miltank",
+        "Tauros",
+        "Miltank",
+        "Tauros"
       ],
       "form": [
         100,
@@ -18295,22 +18295,22 @@
         }
       ],
       "swarm": [
-        333,
-        400
+        "Swablu",
+        "Bibarel"
       ],
       "day": [
-        333,
-        307
+        "Swablu",
+        "Meditite"
       ],
       "night": [
-        164,
-        163
+        "Noctowl",
+        "Hoothoot"
       ],
       "radar": [
-        371,
-        371,
-        371,
-        371
+        "Bagon",
+        "Bagon",
+        "Bagon",
+        "Bagon"
       ],
       "form": [
         100,
@@ -18507,22 +18507,22 @@
         }
       ],
       "swarm": [
-        307,
-        399
+        "Meditite",
+        "Bidoof"
       ],
       "day": [
-        307,
-        307
+        "Meditite",
+        "Meditite"
       ],
       "night": [
-        41,
-        163
+        "Zubat",
+        "Hoothoot"
       ],
       "radar": [
-        236,
-        236,
-        236,
-        236
+        "Tyrogue",
+        "Tyrogue",
+        "Tyrogue",
+        "Tyrogue"
       ],
       "form": [
         0,
@@ -18719,22 +18719,22 @@
         }
       ],
       "swarm": [
-        307,
-        75
+        "Meditite",
+        "Graveler"
       ],
       "day": [
-        307,
-        307
+        "Meditite",
+        "Meditite"
       ],
       "night": [
-        41,
-        164
+        "Zubat",
+        "Noctowl"
       ],
       "radar": [
-        433,
-        67,
-        67,
-        436
+        "Chingling",
+        "Machoke",
+        "Machoke",
+        "Bronzor"
       ],
       "form": [
         100,
@@ -18931,22 +18931,22 @@
         }
       ],
       "swarm": [
-        315,
-        183
+        "Roselia",
+        "Marill"
       ],
       "day": [
-        397,
-        280
+        "Staravia",
+        "Ralts"
       ],
       "night": [
-        183,
-        183
+        "Marill",
+        "Marill"
       ],
       "radar": [
-        235,
-        235,
-        235,
-        235
+        "Smeargle",
+        "Smeargle",
+        "Smeargle",
+        "Smeargle"
       ],
       "form": [
         100,
@@ -19143,22 +19143,22 @@
         }
       ],
       "swarm": [
-        422,
-        195
+        "Shellos",
+        "Quagsire"
       ],
       "day": [
-        418,
-        422
+        "Buizel",
+        "Shellos"
       ],
       "night": [
-        418,
-        422
+        "Buizel",
+        "Shellos"
       ],
       "radar": [
-        88,
-        88,
-        88,
-        88
+        "Grimer",
+        "Grimer",
+        "Grimer",
+        "Grimer"
       ],
       "form": [
         100,
@@ -19355,22 +19355,22 @@
         }
       ],
       "swarm": [
-        422,
-        418
+        "Shellos",
+        "Buizel"
       ],
       "day": [
-        441,
-        441
+        "Chatot",
+        "Chatot"
       ],
       "night": [
-        422,
-        418
+        "Shellos",
+        "Buizel"
       ],
       "radar": [
-        277,
-        277,
-        277,
-        277
+        "Swellow",
+        "Swellow",
+        "Swellow",
+        "Swellow"
       ],
       "form": [
         100,
@@ -19567,22 +19567,22 @@
         }
       ],
       "swarm": [
-        325,
-        325
+        "Spoink",
+        "Spoink"
       ],
       "day": [
-        75,
-        111
+        "Graveler",
+        "Rhyhorn"
       ],
       "night": [
-        228,
-        41
+        "Houndour",
+        "Zubat"
       ],
       "radar": [
-        261,
-        261,
-        261,
-        261
+        "Poochyena",
+        "Poochyena",
+        "Poochyena",
+        "Poochyena"
       ],
       "form": [
         100,
@@ -19779,22 +19779,22 @@
         }
       ],
       "swarm": [
-        96,
-        96
+        "Drowzee",
+        "Drowzee"
       ],
       "day": [
-        397,
-        397
+        "Staravia",
+        "Staravia"
       ],
       "night": [
-        183,
-        183
+        "Marill",
+        "Marill"
       ],
       "radar": [
-        108,
-        63,
-        183,
-        64
+        "Lickitung",
+        "Abra",
+        "Marill",
+        "Kadabra"
       ],
       "form": [
         100,
@@ -19991,22 +19991,22 @@
         }
       ],
       "swarm": [
-        459,
-        215
+        "Snover",
+        "Sneasel"
       ],
       "day": [
-        307,
-        459
+        "Meditite",
+        "Snover"
       ],
       "night": [
-        41,
-        361
+        "Zubat",
+        "Snorunt"
       ],
       "radar": [
-        307,
-        215,
-        75,
-        459
+        "Meditite",
+        "Sneasel",
+        "Graveler",
+        "Snover"
       ],
       "form": [
         0,
@@ -20203,22 +20203,22 @@
         }
       ],
       "swarm": [
-        225,
-        225
+        "Delibird",
+        "Delibird"
       ],
       "day": [
-        215,
-        459
+        "Sneasel",
+        "Snover"
       ],
       "night": [
-        361,
-        361
+        "Snorunt",
+        "Snorunt"
       ],
       "radar": [
-        221,
-        221,
-        221,
-        221
+        "Piloswine",
+        "Piloswine",
+        "Piloswine",
+        "Piloswine"
       ],
       "form": [
         0,
@@ -20415,22 +20415,22 @@
         }
       ],
       "swarm": [
-        100,
-        100
+        "Voltorb",
+        "Voltorb"
       ],
       "day": [
-        441,
-        441
+        "Chatot",
+        "Chatot"
       ],
       "night": [
-        423,
-        419
+        "Gastrodon",
+        "Floatzel"
       ],
       "radar": [
-        122,
-        122,
-        419,
-        423
+        "Mr. Mime",
+        "Mr. Mime",
+        "Floatzel",
+        "Gastrodon"
       ],
       "form": [
         0,
@@ -20839,22 +20839,22 @@
         }
       ],
       "swarm": [
-        83,
-        83
+        "Farfetch’d",
+        "Farfetch’d"
       ],
       "day": [
-        315,
-        315
+        "Roselia",
+        "Roselia"
       ],
       "night": [
-        419,
-        315
+        "Floatzel",
+        "Roselia"
       ],
       "radar": [
-        33,
-        30,
-        33,
-        30
+        "Nidorino",
+        "Nidorina",
+        "Nidorino",
+        "Nidorina"
       ],
       "form": [
         0,
@@ -21051,22 +21051,22 @@
         }
       ],
       "swarm": [
-        300,
-        300
+        "Skitty",
+        "Skitty"
       ],
       "day": [
-        125,
-        441
+        "Electabuzz",
+        "Chatot"
       ],
       "night": [
-        419,
-        419
+        "Floatzel",
+        "Floatzel"
       ],
       "radar": [
-        180,
-        180,
-        180,
-        180
+        "Flaaffy",
+        "Flaaffy",
+        "Flaaffy",
+        "Flaaffy"
       ],
       "form": [
         100,
@@ -21263,22 +21263,22 @@
         }
       ],
       "swarm": [
-        177,
-        177
+        "Natu",
+        "Natu"
       ],
       "day": [
-        69,
-        69
+        "Bellsprout",
+        "Bellsprout"
       ],
       "night": [
-        43,
-        43
+        "Oddish",
+        "Oddish"
       ],
       "radar": [
-        279,
-        423,
-        267,
-        269
+        "Pelipper",
+        "Gastrodon",
+        "Beautifly",
+        "Dustox"
       ],
       "form": [
         100,
@@ -21475,22 +21475,22 @@
         }
       ],
       "swarm": [
-        296,
-        296
+        "Makuhita",
+        "Makuhita"
       ],
       "day": [
-        22,
-        22
+        "Fearow",
+        "Fearow"
       ],
       "night": [
-        354,
-        354
+        "Banette",
+        "Banette"
       ],
       "radar": [
-        57,
-        57,
-        56,
-        56
+        "Primeape",
+        "Primeape",
+        "Mankey",
+        "Mankey"
       ],
       "form": [
         100,
@@ -21687,22 +21687,22 @@
         }
       ],
       "swarm": [
-        327,
-        327
+        "Spinda",
+        "Spinda"
       ],
       "day": [
-        22,
-        75
+        "Fearow",
+        "Graveler"
       ],
       "night": [
-        42,
-        75
+        "Golbat",
+        "Graveler"
       ],
       "radar": [
-        324,
-        324,
-        324,
-        324
+        "Torkoal",
+        "Torkoal",
+        "Torkoal",
+        "Torkoal"
       ],
       "form": [
         100,
@@ -21899,22 +21899,22 @@
         }
       ],
       "swarm": [
-        374,
-        374
+        "Beldum",
+        "Beldum"
       ],
       "day": [
-        450,
-        112
+        "Hippowdon",
+        "Rhydon"
       ],
       "night": [
-        332,
-        332
+        "Cacturne",
+        "Cacturne"
       ],
       "radar": [
-        112,
-        450,
-        50,
-        331
+        "Rhydon",
+        "Hippowdon",
+        "Diglett",
+        "Cacnea"
       ],
       "form": [
         100,
@@ -22111,22 +22111,22 @@
         }
       ],
       "swarm": [
-        127,
-        127
+        "Pinsir",
+        "Pinsir"
       ],
       "day": [
-        16,
-        16
+        "Pidgey",
+        "Pidgey"
       ],
       "night": [
-        168,
-        168
+        "Ariados",
+        "Ariados"
       ],
       "radar": [
-        49,
-        49,
-        48,
-        48
+        "Venomoth",
+        "Venomoth",
+        "Venonat",
+        "Venonat"
       ],
       "form": [
         100,
@@ -23383,22 +23383,22 @@
         }
       ],
       "swarm": [
-        98,
-        98
+        "Krabby",
+        "Krabby"
       ],
       "day": [
-        22,
-        22
+        "Fearow",
+        "Fearow"
       ],
       "night": [
-        354,
-        354
+        "Banette",
+        "Banette"
       ],
       "radar": [
-        57,
-        57,
-        56,
-        56
+        "Primeape",
+        "Primeape",
+        "Mankey",
+        "Mankey"
       ],
       "form": [
         100,
@@ -23595,22 +23595,22 @@
         }
       ],
       "swarm": [
-        222,
-        222
+        "Corsola",
+        "Corsola"
       ],
       "day": [
-        69,
-        69
+        "Bellsprout",
+        "Bellsprout"
       ],
       "night": [
-        43,
-        43
+        "Oddish",
+        "Oddish"
       ],
       "radar": [
-        175,
-        175,
-        175,
-        175
+        "Togepi",
+        "Togepi",
+        "Togepi",
+        "Togepi"
       ],
       "form": [
         100,
@@ -23807,22 +23807,22 @@
         }
       ],
       "swarm": [
-        194,
-        400
+        "Wooper",
+        "Bibarel"
       ],
       "day": [
-        357,
-        357
+        "Tropius",
+        "Tropius"
       ],
       "night": [
-        164,
-        164
+        "Noctowl",
+        "Noctowl"
       ],
       "radar": [
-        194,
-        195,
-        193,
-        114
+        "Wooper",
+        "Quagsire",
+        "Yanma",
+        "Tangela"
       ],
       "form": [
         100,
@@ -24019,22 +24019,22 @@
         }
       ],
       "swarm": [
-        194,
-        400
+        "Wooper",
+        "Bibarel"
       ],
       "day": [
-        357,
-        357
+        "Tropius",
+        "Tropius"
       ],
       "night": [
-        164,
-        164
+        "Noctowl",
+        "Noctowl"
       ],
       "radar": [
-        194,
-        195,
-        193,
-        114
+        "Wooper",
+        "Quagsire",
+        "Yanma",
+        "Tangela"
       ],
       "form": [
         100,
@@ -24231,22 +24231,22 @@
         }
       ],
       "swarm": [
-        194,
-        400
+        "Wooper",
+        "Bibarel"
       ],
       "day": [
-        400,
-        114
+        "Bibarel",
+        "Tangela"
       ],
       "night": [
-        164,
-        163
+        "Noctowl",
+        "Hoothoot"
       ],
       "radar": [
-        114,
-        195,
-        193,
-        114
+        "Tangela",
+        "Quagsire",
+        "Yanma",
+        "Tangela"
       ],
       "form": [
         100,
@@ -24443,22 +24443,22 @@
         }
       ],
       "swarm": [
-        194,
-        400
+        "Wooper",
+        "Bibarel"
       ],
       "day": [
-        400,
-        114
+        "Bibarel",
+        "Tangela"
       ],
       "night": [
-        164,
-        163
+        "Noctowl",
+        "Hoothoot"
       ],
       "radar": [
-        114,
-        195,
-        193,
-        114
+        "Tangela",
+        "Quagsire",
+        "Yanma",
+        "Tangela"
       ],
       "form": [
         100,
@@ -24655,22 +24655,22 @@
         }
       ],
       "swarm": [
-        194,
-        400
+        "Wooper",
+        "Bibarel"
       ],
       "day": [
-        400,
-        193
+        "Bibarel",
+        "Yanma"
       ],
       "night": [
-        163,
-        163
+        "Hoothoot",
+        "Hoothoot"
       ],
       "radar": [
-        193,
-        195,
-        193,
-        114
+        "Yanma",
+        "Quagsire",
+        "Yanma",
+        "Tangela"
       ],
       "form": [
         100,
@@ -24867,22 +24867,22 @@
         }
       ],
       "swarm": [
-        194,
-        400
+        "Wooper",
+        "Bibarel"
       ],
       "day": [
-        400,
-        193
+        "Bibarel",
+        "Yanma"
       ],
       "night": [
-        163,
-        163
+        "Hoothoot",
+        "Hoothoot"
       ],
       "radar": [
-        193,
-        195,
-        193,
-        114
+        "Yanma",
+        "Quagsire",
+        "Yanma",
+        "Tangela"
       ],
       "form": [
         100,
@@ -25079,22 +25079,22 @@
         }
       ],
       "swarm": [
-        74,
-        74
+        "Geodude",
+        "Geodude"
       ],
       "day": [
-        74,
-        74
+        "Geodude",
+        "Geodude"
       ],
       "night": [
-        74,
-        74
+        "Geodude",
+        "Geodude"
       ],
       "radar": [
-        74,
-        74,
-        74,
-        449
+        "Geodude",
+        "Geodude",
+        "Geodude",
+        "Hippopotas"
       ],
       "form": [
         100,
@@ -25291,22 +25291,22 @@
         }
       ],
       "swarm": [
-        74,
-        74
+        "Geodude",
+        "Geodude"
       ],
       "day": [
-        74,
-        74
+        "Geodude",
+        "Geodude"
       ],
       "night": [
-        74,
-        74
+        "Geodude",
+        "Geodude"
       ],
       "radar": [
-        74,
-        449,
-        74,
-        449
+        "Geodude",
+        "Hippopotas",
+        "Geodude",
+        "Hippopotas"
       ],
       "form": [
         100,
@@ -25503,22 +25503,22 @@
         }
       ],
       "swarm": [
-        93,
-        436
+        "Haunter",
+        "Bronzor"
       ],
       "day": [
-        93,
-        42
+        "Haunter",
+        "Golbat"
       ],
       "night": [
-        356,
-        42
+        "Dusclops",
+        "Golbat"
       ],
       "radar": [
-        93,
-        42,
-        356,
-        433
+        "Haunter",
+        "Golbat",
+        "Dusclops",
+        "Chingling"
       ],
       "form": [
         100,
@@ -25715,22 +25715,22 @@
         }
       ],
       "swarm": [
-        93,
-        437
+        "Haunter",
+        "Bronzong"
       ],
       "day": [
-        93,
-        42
+        "Haunter",
+        "Golbat"
       ],
       "night": [
-        356,
-        42
+        "Dusclops",
+        "Golbat"
       ],
       "radar": [
-        93,
-        42,
-        356,
-        358
+        "Haunter",
+        "Golbat",
+        "Dusclops",
+        "Chimecho"
       ],
       "form": [
         100,

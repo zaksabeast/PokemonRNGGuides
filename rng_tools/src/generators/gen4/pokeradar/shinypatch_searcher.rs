@@ -1,6 +1,10 @@
 use super::simulate::pokeradar4_simulate_advance;
-use super::types::{BattleResult, PokeRadar4AdvanceOpts, ShakeType};
-use crate::gen4::stationary::BaseStatic4State;
+use super::types::{BattleResult, Patch, PokeRadar4AdvanceOpts, ShakeType};
+use crate::gen4::search::search_static4_radar_shiny;
+use crate::gen4::stationary::{BaseStatic4State, Static4State};
+use crate::gen4::pokeradar::types::RadarShinyPatchResult;
+use crate::gen4::pokeradar::types::SearchRadarShinyPatchOpts;
+use wasm_bindgen::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct ShinyPatchCandidate {
@@ -36,6 +40,53 @@ pub fn search_shiny_patches(
                     spread_advance: candidate.advance,
                     patch_advance,
                 })
+            })
+        })
+        .collect()
+}
+
+#[wasm_bindgen]
+pub fn search_shiny_patches_range(opts: SearchRadarShinyPatchOpts) -> Vec<RadarShinyPatchResult> {
+    // Step 1: spread search, porta con sé seed_time per ogni stato
+    let static4_states: Vec<Static4State> = search_static4_radar_shiny(&opts.search);
+
+    let base_states: Vec<BaseStatic4State> =
+        static4_states.iter().map(|s| s.state.clone()).collect();
+
+    // Step 2: shiny patch search sui soli BaseStatic4State
+    let matches = search_shiny_patches(
+        &base_states,
+        opts.patch_min_advance,
+        opts.patch_max_advance,
+        opts.chain_count,
+        opts.battle_result,
+        opts.selected_shake,
+    );
+
+    matches
+        .into_iter()
+        .filter_map(|candidate| {
+            // Ritrova lo Static4State originale (con seed_time) per questo seed
+            let static4_state = static4_states
+                .iter()
+                .find(|s| s.state.seed == candidate.seed)?;
+
+            // Ri-simula quell'advance specifico per recuperare i patch veri
+            // (search_shiny_patches ci dice solo che *esiste* un patch shiny,
+            // non quali sono i patch di quell'advance)
+            let simulate_result = pokeradar4_simulate_advance(PokeRadar4AdvanceOpts {
+                init_seed: candidate.seed,
+                target_advance: candidate.patch_advance,
+                chain_count: opts.chain_count,
+                battle_result: opts.battle_result,
+                selected_shake: opts.selected_shake,
+            });
+
+            Some(RadarShinyPatchResult {
+                state: static4_state.state.clone(),
+                seed_time: static4_state.seed_time.clone(),
+                patch_advance: candidate.patch_advance,
+                patches: simulate_result.patches,
             })
         })
         .collect()

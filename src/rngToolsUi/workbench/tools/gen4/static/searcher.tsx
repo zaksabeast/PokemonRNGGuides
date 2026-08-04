@@ -70,7 +70,7 @@ const initialValues: FormState = {
   min_delay: 600,
   max_delay: 1000,
   min_advance: 0,
-  max_advance: 0,
+  max_advance: 10000,
   force_second: null,
   lead: "None",
   filter_level: 5,

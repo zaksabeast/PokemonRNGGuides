@@ -1,6 +1,6 @@
 use super::simulate::pokeradar4_simulate_advance;
-use super::types::{BattleResult, Patch, PokeRadar4AdvanceOpts, ShakeType};
-use crate::gen4::search::search_static4_radar_shiny;
+use super::types::{BattleResult, PokeRadar4AdvanceOpts, ShakeType};
+use crate::gen4::search::search_static4;
 use crate::gen4::stationary::{BaseStatic4State, Static4State};
 use crate::gen4::pokeradar::types::RadarShinyPatchResult;
 use crate::gen4::pokeradar::types::SearchRadarShinyPatchOpts;
@@ -47,13 +47,11 @@ pub fn search_shiny_patches(
 
 #[wasm_bindgen]
 pub fn search_shiny_patches_range(opts: SearchRadarShinyPatchOpts) -> Vec<RadarShinyPatchResult> {
-    // Step 1: spread search, porta con sé seed_time per ogni stato
-    let static4_states: Vec<Static4State> = search_static4_radar_shiny(&opts.search);
+    let static4_states: Vec<Static4State> = search_static4(&opts.search);
 
     let base_states: Vec<BaseStatic4State> =
         static4_states.iter().map(|s| s.state.clone()).collect();
 
-    // Step 2: shiny patch search sui soli BaseStatic4State
     let matches = search_shiny_patches(
         &base_states,
         opts.patch_min_advance,
@@ -66,14 +64,11 @@ pub fn search_shiny_patches_range(opts: SearchRadarShinyPatchOpts) -> Vec<RadarS
     matches
         .into_iter()
         .filter_map(|candidate| {
-            // Ritrova lo Static4State originale (con seed_time) per questo seed
+            
             let static4_state = static4_states
                 .iter()
                 .find(|s| s.state.seed == candidate.seed)?;
 
-            // Ri-simula quell'advance specifico per recuperare i patch veri
-            // (search_shiny_patches ci dice solo che *esiste* un patch shiny,
-            // non quali sono i patch di quell'advance)
             let simulate_result = pokeradar4_simulate_advance(PokeRadar4AdvanceOpts {
                 init_seed: candidate.seed,
                 target_advance: candidate.patch_advance,

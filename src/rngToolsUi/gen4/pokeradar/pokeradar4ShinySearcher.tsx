@@ -13,6 +13,7 @@ import {
 } from "~/components";
 import {
   rngTools,
+  multiWorkerRngTools,
   Species,
   Nature,
   Gender,
@@ -24,12 +25,11 @@ import {
   Patch,
   BattleResult,
   ShakeType,
-  PokeRadarPatch,
 } from "~/rngTools";
-import { toOptions } from "~/utils/options";
 import { formatSpeciesLabel } from "~/types/species";
-import { PokeRadarPatches } from "~/rngToolsUi/gen6/xyPokeRadar/patch";
 import { useWatch_UNSAFE } from "~/hooks/form";
+import { useBatchedTool } from "~/hooks/useBatchedTool";
+import { chunkIvs } from "~/utils/chunkIvs";
 import {
   getPkmFilterIvFields,
   getPkmFilterInitialValues,
@@ -38,18 +38,6 @@ import {
 } from "~/rngToolsUi/workbench/components/pkmFilter";
 import { IvInput } from "~/components/ivInput";
 
-// Adapter: il componente PokeRadarPatches è stato scritto per il tool XY
-// (griglia 0-8 con `{ x, y, state: "Empty"|"Shiny"|"Good"|"Bad" }"), mentre
-// i nostri Patch Gen4 hanno `{ ring, gx, gz, continue_chain, is_shiny, shake_type }`.
-// Verifica che gx/gz siano effettivamente coordinate 0-8 sulla griglia:
-// se la visualizzazione risulta sbagliata, questo è il punto da rivedere.
-const toXyPatchFormat = (patches: Patch[]): PokeRadarPatch[] =>
-  patches.map((p) => ({
-    x: p.gx,
-    y: p.gz,
-    state: p.is_shiny ? "Shiny" : p.continue_chain ? "Good" : "Bad",
-  }));
-
 const IV_FILTER_MODE = "ivs";
 
 type Game = "Diamond" | "Pearl" | "Platinum";
@@ -57,8 +45,9 @@ type Game = "Diamond" | "Pearl" | "Platinum";
 const GAMES = ["Diamond", "Pearl", "Platinum"] as const satisfies Game[];
 
 const RADAR_LEADS = [
+  "None",
   "Synchronize",
-  "CutecharmM",
+  "CuteharmM",
   "CutecharmF",
 ] as const satisfies Static4LeadInput[];
 
@@ -74,26 +63,64 @@ const DUAL_SLOT_GAMES = [
 ] as const;
 type DualSlotGame = (typeof DUAL_SLOT_GAMES)[number];
 
-// Rispecchia la struct Rust `RadarEncounter` (rng_tools/src/gen4/pokeradar/encounters.rs)
-type RadarEncounter = {
-  location: string;
+const ALLOWED_ROUTES = [
+  "Valley Windworks",
+  "Eterna Forest",
+  "Fuego Ironworks",
+  "Mt. Coronet Summit",
+  "Stark Mountain",
+  "Sendoff Spring",
+  "Trophy Garden",
+  "Lake Valor",
+  "Lake Acuity",
+  "Valor Lakefront",
+  "Acuity Lakefront",
+  "Route 201",
+  "Route 202",
+  "Route 203",
+  "Route 204 (South)",
+  "Route 205 (South)",
+  "Route 205 (North)",
+  "Route 206",
+  "Route 207",
+  "Route 208",
+  "Route 209",
+  "Route 210 (South)",
+  "Route 210 (North)",
+  "Route 211 (West)",
+  "Route 211 (East)",
+  "Route 212 (North)",
+  "Route 212 (South)",
+  "Route 213",
+  "Route 214",
+  "Route 215",
+  "Route 216",
+  "Route 217",
+  "Route 218",
+  "Route 221",
+  "Route 222",
+  "Route 224",
+  "Route 225",
+  "Route 226",
+  "Route 227",
+  "Route 228",
+  "Route 229",
+  "Route 230",
+] as const;
+
+const ALLOWED_ROUTES_SET = new Set<string>(ALLOWED_ROUTES);
+
+type RadarSpecies = {
   species: Species;
   min_level: number;
   max_level: number;
-  source: "Radar" | "Swarm" | "Day" | "Night" | "DualSlot";
-  dual_slot_game: DualSlotGame | null;
 };
-
-// ---------------------------------------------------------------------------
-// Form state & validazione
-// ---------------------------------------------------------------------------
 
 const Validator = z
   .object({
     game: z.enum(GAMES),
     tid: z.number().int().min(0).max(0xffff),
     sid: z.number().int().min(0).max(0xffff),
-    chain: z.number().int().min(0).max(999),
     minDelay: z.number().int().min(0),
     maxDelay: z.number().int().min(0),
     lead: z.enum(RADAR_LEADS),
@@ -131,10 +158,9 @@ const initialValues: FormState = {
   game: "Diamond",
   tid: 0,
   sid: 0,
-  chain: 1,
   minDelay: 700,
   maxDelay: 3000,
-  lead: "Synchronize",
+  lead: "None",
   minAdvanceSpread: 550,
   maxAdvanceSpread: 3000,
   minAdvancePatch: 300,
@@ -187,8 +213,8 @@ const hex = (n: number, width = 8) =>
 
 const columns: ResultColumn<ResultRow>[] = [
   { title: "Seed", dataIndex: "seed", monospace: true, render: (v) => hex(v) },
-  { title: "Spread Advance", dataIndex: "advance" },
   { title: "Patch Advance", dataIndex: "patchAdvance" },
+  { title: "Spread Advance", dataIndex: "advance" },
   { title: "Delay", dataIndex: "delay" },
   { title: "PID", dataIndex: "pid", monospace: true, render: (v) => hex(v) },
   { title: "Nature", dataIndex: "nature" },
@@ -203,14 +229,23 @@ const columns: ResultColumn<ResultRow>[] = [
   { title: "Level", dataIndex: "level" },
 ];
 
-// ---------------------------------------------------------------------------
-// Form content: qui vivono routes/species, popolate da rngTools.get_gen4_radar_encounters
-// ---------------------------------------------------------------------------
+const fetchRadarSpecies = (opts: {
+  game: Game;
+  route: string;
+  time: (typeof TIMES)[number];
+  swarm: boolean;
+  dualSlot: boolean;
+  dualSlotGame: DualSlotGame;
+}): Promise<RadarSpecies[]> =>
+  rngTools.get_gen4_radar_species({
+    game: opts.game,
+    location: opts.route,
+    time_of_day: opts.time,
+    swarm_active: opts.swarm,
+    dual_slot_game: opts.dualSlot ? opts.dualSlotGame : null,
+  });
 
 const FormContent = () => {
-  // Valori grezzi (non validati) via react-hook-form: ci servono anche quando
-  // route/species sono ancora vuoti, cosa che useWatch (validato) non permette
-  // (se un campo fallisce lo schema, l'intero risultato diventa {}).
   const [game, route, species, time, swarm, dualSlot, dualSlotGame] =
     useWatch_UNSAFE<FormState>({
       name: [
@@ -224,20 +259,18 @@ const FormContent = () => {
       ],
     });
 
-  const [encounters, setEncounters] = React.useState<RadarEncounter[]>([]);
+  const [locations, setLocations] = React.useState<string[]>([]);
 
   React.useEffect(() => {
-    console.log("[radar] game watched value:", game);
     if (!game) return;
     let cancelled = false;
     rngTools
-      .get_gen4_radar_encounters(game)
-      .then((result: RadarEncounter[]) => {
-        console.log("[radar] encounters received:", result.length, result.slice(0, 3));
-        if (!cancelled) setEncounters(result);
+      .get_gen4_radar_locations(game)
+      .then((result: string[]) => {
+        if (!cancelled) setLocations(result);
       })
       .catch((err: unknown) => {
-        console.error("[radar] get_gen4_radar_encounters failed:", err);
+        console.error("[radar] get_gen4_radar_locations failed:", err);
       });
     return () => {
       cancelled = true;
@@ -246,51 +279,44 @@ const FormContent = () => {
 
   const routeOptions = React.useMemo(
     () =>
-      Array.from(new Set(encounters.map((e) => e.location)))
-        .sort()
+      locations
+        .filter((r) => ALLOWED_ROUTES_SET.has(r))
+        .sort((a, b) => a.localeCompare(b))
         .map((r) => ({ label: r, value: r })),
-    [encounters],
+    [locations],
   );
 
-  const encountersForRoute = React.useMemo(
-    () => (route ? encounters.filter((e) => e.location === route) : []),
-    [encounters, route],
+  const [resolvedSpecies, setResolvedSpecies] = React.useState<RadarSpecies[]>(
+    [],
   );
 
-  // Filtra per fonte in base agli switch/select attivi. Radar (la tabella
-  // base) è sempre incluso; Swarm/Dual Slot/Time sono condizionali.
-  const activeEncounters = React.useMemo(
-    () =>
-      encountersForRoute.filter((e) => {
-        switch (e.source) {
-          case "Radar":
-            return true;
-          case "Swarm":
-            return swarm;
-          case "Day":
-            return time === "Day";
-          case "Night":
-            return time === "Night";
-          case "DualSlot":
-            return dualSlot && e.dual_slot_game === dualSlotGame;
-          default:
-            return false;
-        }
-      }),
-    [encountersForRoute, swarm, dualSlot, dualSlotGame, time],
-  );
+  React.useEffect(() => {
+    if (!game || !route) {
+      setResolvedSpecies([]);
+      return;
+    }
+    let cancelled = false;
+    fetchRadarSpecies({ game, route, time, swarm, dualSlot, dualSlotGame })
+      .then((result) => {
+        if (!cancelled) setResolvedSpecies(result);
+      })
+      .catch((err: unknown) => {
+        console.error("[radar] get_gen4_radar_species failed:", err);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [game, route, time, swarm, dualSlot, dualSlotGame]);
 
   const speciesOptions = React.useMemo(
     () =>
-      Array.from(new Set(activeEncounters.map((e) => e.species))).map((s) => ({
-        label: formatSpeciesLabel(s),
-        value: s,
+      resolvedSpecies.map((s) => ({
+        label: formatSpeciesLabel(s.species),
+        value: s.species,
       })),
-    [activeEncounters],
+    [resolvedSpecies],
   );
 
-  // TODO: se esiste già un helper tipo getSpeciesGenderRatio(species), usalo qui
-  // per disabilitare Cute Charm sulle specie gender-locked. Per ora sempre abilitato.
   const allowCuteCharm = true;
 
   const staticFields: Field[] = [
@@ -350,10 +376,6 @@ const FormContent = () => {
           )}
         />
       ),
-    },
-    {
-      label: "Chain",
-      input: <FormikNumberInput<FormState> name="chain" numType="decimal" />,
     },
     {
       label: "Delay",
@@ -421,9 +443,6 @@ const FormContent = () => {
     },
   ];
 
-  // Il risultato è sempre e solo shiny (forziamo filter.shiny = true nel
-  // submit), quindi lo switch "Shiny" del filtro condiviso viene nascosto:
-  // mostrarlo confonderebbe, dato che l'utente non può comunque cambiarlo.
   const otherFilterFields: Field[] = species
     ? getPkmFilterIvFields<FormState>({ species })
         .filter((f) => !/\bIV\b/.test(f.label) && !/shiny/i.test(f.label))
@@ -440,88 +459,113 @@ const FormContent = () => {
   );
 };
 
-// ---------------------------------------------------------------------------
-
 export const PokeRadar4ShinySearcher = () => {
-  const [results, setResults] = React.useState<ResultRow[]>([]);
   const [selectedPatches, setSelectedPatches] = React.useState<Patch[]>([]);
 
+  const {
+    run: searchShinyPatches,
+    data: results,
+    progressPercent,
+    cancel,
+  } = useBatchedTool(multiWorkerRngTools.search_shiny_patches_range, {
+    map: toResultRow,
+  });
+
+  const filteredResults = React.useMemo(
+    () => results.filter((r) => r.patchAdvance < r.advance),
+    [results],
+  );
+
   const onSubmit: RngToolSubmit<FormState> = async (opts) => {
-    const allEncounters: RadarEncounter[] = await rngTools.get_gen4_radar_encounters(
-      opts.game,
-    );
-    const encounter = allEncounters.find((e) => {
-      if (e.location !== opts.route || e.species !== opts.species) return false;
-      switch (e.source) {
-        case "Radar":
-          return true;
-        case "Swarm":
-          return opts.swarm;
-        case "Day":
-          return opts.time === "Day";
-        case "Night":
-          return opts.time === "Night";
-        case "DualSlot":
-          return opts.dualSlot && e.dual_slot_game === opts.dualSlotGame;
-        default:
-          return false;
+    console.log("[radar] onSubmit CALLED with opts:", opts);
+    try {
+      const resolvedSpecies = await fetchRadarSpecies({
+        game: opts.game,
+        route: opts.route,
+        time: opts.time,
+        swarm: opts.swarm,
+        dualSlot: opts.dualSlot,
+        dualSlotGame: opts.dualSlotGame,
+      });
+      console.log("[radar] resolvedSpecies:", resolvedSpecies);
+      const encounter = resolvedSpecies.find((s) => s.species === opts.species);
+      if (!encounter) {
+        console.warn(
+          "[radar] nessun match per la specie selezionata tra gli slot risolti:",
+          opts.species,
+          resolvedSpecies,
+        );
       }
-    });
 
-    const filter = {
-      ...(await pkmFilterFieldsToRustInput(
-        { species: opts.species, ivFilterMode: IV_FILTER_MODE },
-        opts,
-      )),
-      shiny: true,
-    };
+      const filter = {
+        ...(await pkmFilterFieldsToRustInput(
+          { species: opts.species, ivFilterMode: IV_FILTER_MODE },
+          opts,
+        )),
+        shiny: true,
+      };
 
-    const search: SearchStatic4Opts = {
-      tid: opts.tid,
-      sid: opts.sid,
-      species: opts.species,
-      filter,
-      offset: 0,
-      encounter_min_level: encounter?.min_level ?? 1,
-      encounter_max_level: encounter?.max_level ?? 100,
-      min_advance: opts.minAdvanceSpread,
-      max_advance: opts.maxAdvanceSpread,
-      min_delay: opts.minDelay,
-      max_delay: opts.maxDelay,
-      year: null,
-      month: null,
-      force_second: null,
-      lead: opts.lead,
-      method: "DpptJ",
-    };
+      const baseSearch: Omit<SearchStatic4Opts, "filter"> = {
+        tid: opts.tid,
+        sid: opts.sid,
+        species: opts.species,
+        offset: 0,
+        encounter_min_level: encounter?.min_level ?? 1,
+        encounter_max_level: encounter?.max_level ?? 100,
+        min_advance: opts.minAdvanceSpread,
+        max_advance: opts.maxAdvanceSpread,
+        min_delay: opts.minDelay,
+        max_delay: opts.maxDelay,
+        year: 2000,
+        month: null,
+        force_second: null,
+        lead: opts.lead,
+        method: "ShinyRadar",
+      };
 
-    const rawResults = await rngTools.search_shiny_patches_range({
-      search,
-      patch_min_advance: opts.minAdvancePatch,
-      patch_max_advance: opts.maxAdvancePatch,
-      chain_count: opts.chainCount,
-      battle_result: opts.battleResult,
-      selected_shake: opts.selectedShake,
-    });
+      const chunkedIvs = chunkIvs(opts.filter_min_ivs, opts.filter_max_ivs);
+      const searchOptsChunks = chunkedIvs.map(([minIvs, maxIvs]) => ({
+        search: {
+          ...baseSearch,
+          filter: {
+            ...filter,
+            min_ivs: minIvs,
+            max_ivs: maxIvs,
+          },
+        } as SearchStatic4Opts,
+        patch_min_advance: opts.minAdvancePatch,
+        patch_max_advance: opts.maxAdvancePatch,
+        chain_count: opts.chainCount,
+        battle_result: opts.battleResult,
+        selected_shake: opts.selectedShake,
+      }));
 
-    setResults(rawResults.map(toResultRow));
+      console.log("[radar] searchOptsChunks:", searchOptsChunks);
+      await searchShinyPatches(searchOptsChunks);
+    } catch (err) {
+      console.error("[radar] onSubmit failed:", err);
+      throw err;
+    }
   };
 
   return (
     <>
       <RngToolForm<FormState, ResultRow>
         columns={columns}
-        results={results}
+        results={filteredResults}
         initialValues={initialValues}
         validationSchema={Validator}
         onSubmit={onSubmit}
         onClickResultRow={(row) => setSelectedPatches(row?.patches ?? [])}
         rowKey="key"
         submitTrackerId="search_gen4_radar_shiny_patches"
+        allowCancel
+        cancelTrackerId="cancel_gen4_radar_shiny_patches"
+        onCancel={cancel}
+        progressPercent={progressPercent}
       >
         <FormContent />
       </RngToolForm>
-      <PokeRadarPatches patches={toXyPatchFormat(selectedPatches)} />
     </>
   );
 };

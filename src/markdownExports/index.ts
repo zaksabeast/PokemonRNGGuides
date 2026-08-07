@@ -53,6 +53,7 @@ import { TranslationHelperSelectGuide } from "~/rngToolsUi/translationHelper/sel
 import { TranslationHelperEditGuide } from "~/rngToolsUi/translationHelper/editGuide";
 import { ToolTranslationButton } from "~/rngToolsUi/translationHelper/toolTranslations";
 import { TranslationHelperSelectLanguage } from "~/rngToolsUi/translationHelper/selectLanguage";
+import { PokeRadar4PatchGrid } from "~/rngToolsUi/gen4/pokeradar/patchGrid";
 
 const nonTools = {
   br: MarkdownBreak,
@@ -473,10 +474,15 @@ const tools = {
     (mod) => mod.RngWorkbench,
   ),
   PokeRadar4ShinySearcher: lazyLoad(
-    () => import("~/rngToolsUi/gen4/pokeradar/pokeradar4ShinySearcher"),
+    () => import("~/rngToolsUi/gen4/pokeradar/index"),
     (mod) => mod.PokeRadar4ShinySearcher,
   ),
+  PokeRadar4PatchGrid: lazyLoad(
+    () => import("~/rngToolsUi/gen4/pokeradar/patchGrid"),
+    (mod) => mod.PokeRadar4PatchGrid,
+  ),
 };
+
 
 export const markdownComponents = {
   ...nonTools,

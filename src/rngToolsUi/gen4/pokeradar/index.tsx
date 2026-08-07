@@ -24,7 +24,6 @@ import {
   RadarShinyPatchResult,
   Patch,
   BattleResult,
-  ShakeType,
 } from "~/rngTools";
 import { formatSpeciesLabel } from "~/types/species";
 import { useWatch_UNSAFE } from "~/hooks/form";
@@ -37,6 +36,7 @@ import {
   pkmFilterSchema,
 } from "~/rngToolsUi/workbench/components/pkmFilter";
 import { IvInput } from "~/components/ivInput";
+import { toOptions } from "~/utils/options";
 
 const IV_FILTER_MODE = "ivs";
 
@@ -52,7 +52,6 @@ const RADAR_LEADS = [
 ] as const satisfies Static4LeadInput[];
 
 const BATTLE_RESULTS = ["Catch", "Win"] as const satisfies BattleResult[];
-const SHAKE_TYPES = ["Slow", "Fast"] as const satisfies ShakeType[];
 const TIMES = ["Day", "Night"] as const;
 const DUAL_SLOT_GAMES = [
   "Ruby",
@@ -136,7 +135,6 @@ const Validator = z
     dualSlotGame: z.enum(DUAL_SLOT_GAMES),
     chainCount: z.number().int().min(0),
     battleResult: z.enum(BATTLE_RESULTS),
-    selectedShake: z.enum(SHAKE_TYPES),
   })
   .extend(pkmFilterSchema.shape)
   .refine((v) => v.minDelay <= v.maxDelay, {
@@ -173,7 +171,6 @@ const initialValues: FormState = {
   dualSlotGame: "Ruby",
   chainCount: 40,
   battleResult: "Catch",
-  selectedShake: "Slow",
   filter_level: 5,
   ...getPkmFilterInitialValues(),
 };
@@ -421,15 +418,6 @@ const FormContent = () => {
         />
       ),
     },
-    {
-      label: "Shake Type",
-      input: (
-        <FormikSelect<FormState>
-          name="selectedShake"
-          options={toOptions([...SHAKE_TYPES])}
-        />
-      ),
-    },
   ];
 
   const ivFields: Field[] = [
@@ -460,8 +448,6 @@ const FormContent = () => {
 };
 
 export const PokeRadar4ShinySearcher = () => {
-  const [selectedPatches, setSelectedPatches] = React.useState<Patch[]>([]);
-
   const {
     run: searchShinyPatches,
     data: results,
@@ -477,7 +463,6 @@ export const PokeRadar4ShinySearcher = () => {
   );
 
   const onSubmit: RngToolSubmit<FormState> = async (opts) => {
-    console.log("[radar] onSubmit CALLED with opts:", opts);
     try {
       const resolvedSpecies = await fetchRadarSpecies({
         game: opts.game,
@@ -487,7 +472,6 @@ export const PokeRadar4ShinySearcher = () => {
         dualSlot: opts.dualSlot,
         dualSlotGame: opts.dualSlotGame,
       });
-      console.log("[radar] resolvedSpecies:", resolvedSpecies);
       const encounter = resolvedSpecies.find((s) => s.species === opts.species);
       if (!encounter) {
         console.warn(
@@ -537,10 +521,9 @@ export const PokeRadar4ShinySearcher = () => {
         patch_max_advance: opts.maxAdvancePatch,
         chain_count: opts.chainCount,
         battle_result: opts.battleResult,
-        selected_shake: opts.selectedShake,
+        selected_shake: "Slow",
       }));
 
-      console.log("[radar] searchOptsChunks:", searchOptsChunks);
       await searchShinyPatches(searchOptsChunks);
     } catch (err) {
       console.error("[radar] onSubmit failed:", err);
@@ -549,23 +532,20 @@ export const PokeRadar4ShinySearcher = () => {
   };
 
   return (
-    <>
-      <RngToolForm<FormState, ResultRow>
-        columns={columns}
-        results={filteredResults}
-        initialValues={initialValues}
-        validationSchema={Validator}
-        onSubmit={onSubmit}
-        onClickResultRow={(row) => setSelectedPatches(row?.patches ?? [])}
-        rowKey="key"
-        submitTrackerId="search_gen4_radar_shiny_patches"
-        allowCancel
-        cancelTrackerId="cancel_gen4_radar_shiny_patches"
-        onCancel={cancel}
-        progressPercent={progressPercent}
-      >
-        <FormContent />
-      </RngToolForm>
-    </>
+    <RngToolForm<FormState, ResultRow>
+      columns={columns}
+      results={filteredResults}
+      initialValues={initialValues}
+      validationSchema={Validator}
+      onSubmit={onSubmit}
+      rowKey="key"
+      submitTrackerId="search_gen4_radar_shiny_patches"
+      allowCancel
+      cancelTrackerId="cancel_gen4_radar_shiny_patches"
+      onCancel={cancel}
+      progressPercent={progressPercent}
+    >
+      <FormContent />
+    </RngToolForm>
   );
 };

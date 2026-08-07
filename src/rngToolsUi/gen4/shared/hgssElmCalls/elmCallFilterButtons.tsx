@@ -1,16 +1,29 @@
 import React from "react";
-import styled from "@emotion/styled";
-import { Button, Flex, Input } from "~/components";
+import { Button, Flex, Input, RadioGroup } from "~/components";
 import { sanitizeElmCalls } from "./utils";
 import { getErrorMessage } from "../advanceFilter/utils";
 
-const ElmButton = styled(Button)({
-  paddingTop: 12,
-  paddingBottom: 12,
-  paddingLeft: 24,
-  paddingRight: 24,
-  height: "unset",
-});
+type Caller = "elm" | "irwin";
+type CallType = "E" | "K" | "P";
+
+const labels: Record<Caller, Record<CallType, string>> = {
+  elm: {
+    // eslint-disable-next-line id-length
+    E: "Evolution",
+    // eslint-disable-next-line id-length
+    K: "Kanto",
+    // eslint-disable-next-line id-length
+    P: "Pokérus",
+  },
+  irwin: {
+    // eslint-disable-next-line id-length
+    E: "Glad (E)",
+    // eslint-disable-next-line id-length
+    K: "Escapades (K)",
+    // eslint-disable-next-line id-length
+    P: "Questions (P)",
+  },
+};
 
 type Props = {
   hasResults: boolean;
@@ -31,7 +44,8 @@ export const ElmCallFilterButtons = ({
   kTrackerId,
   pTrackerId,
 }: Props) => {
-  const addCall = (call: "E" | "K" | "P") => {
+  const [callType, setCallType] = React.useState<Caller>("elm");
+  const addCall = (call: CallType) => {
     onElmCallFilterChange(sanitizeElmCalls(`${elmCallFilter}, ${call}`));
   };
 
@@ -40,18 +54,27 @@ export const ElmCallFilterButtons = ({
 
   return (
     <Flex vertical gap={8}>
+      <RadioGroup
+        optionType="button"
+        value={callType}
+        onChange={(event) => setCallType(event.target.value)}
+        options={[
+          { label: "Elm", value: "elm" },
+          { label: "Irwin", value: "irwin" },
+        ]}
+      />
       <Flex gap={8}>
-        <ElmButton flex={1} trackerId={eTrackerId} onClick={() => addCall("E")}>
-          Evolution
-        </ElmButton>
+        <Button flex={1} trackerId={eTrackerId} onClick={() => addCall("E")}>
+          {labels[callType]["E"]}
+        </Button>
 
-        <ElmButton flex={1} trackerId={kTrackerId} onClick={() => addCall("K")}>
-          Kanto
-        </ElmButton>
+        <Button flex={1} trackerId={kTrackerId} onClick={() => addCall("K")}>
+          {labels[callType]["K"]}
+        </Button>
 
-        <ElmButton flex={1} trackerId={pTrackerId} onClick={() => addCall("P")}>
-          Pokérus
-        </ElmButton>
+        <Button flex={1} trackerId={pTrackerId} onClick={() => addCall("P")}>
+          {labels[callType]["P"]}
+        </Button>
       </Flex>
 
       <Input

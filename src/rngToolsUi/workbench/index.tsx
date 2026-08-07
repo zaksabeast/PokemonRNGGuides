@@ -10,6 +10,7 @@ import { useAtom } from "jotai";
 import { static4Tabs } from "./tools/gen4/static/tabs";
 import { routeAtom, WorkbenchRoute } from "./state";
 import { advanceFinder4Tabs } from "./tools/gen4/advanceFinder/tabs";
+import { seedToTime4Tabs } from "./tools/gen4/seedToTime/tabs";
 
 const FullHeight = styled(Flex)(({ theme }) => ({
   // Header + Menu
@@ -38,6 +39,9 @@ const Content = () => {
     .with("advance-finder4", () => (
       <FullHeightTabs items={advanceFinder4Tabs} type="card" />
     ))
+    .with("seed-to-time4", () => {
+      return <FullHeightTabs items={seedToTime4Tabs} type="card" />;
+    })
     .exhaustive();
 };
 
@@ -73,6 +77,7 @@ export const RngWorkbench = () => {
       type: "submenu",
       children: [
         createSubItem({ route: "static4", label: "Static" }),
+        createSubItem({ route: "seed-to-time4", label: "Seed to Time" }),
         createSubItem({
           route: "advance-finder4",
           label: "Chatot/Elm Tracker",

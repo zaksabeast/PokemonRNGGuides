@@ -1,5 +1,5 @@
 import React from "react";
-import { rngTools, type ElmCall, type SeedTime4 } from "~/rngTools";
+import { type ElmCall, type SeedTime4 } from "~/rngTools";
 import {
   RngToolForm,
   FormikNumberInput,
@@ -9,7 +9,6 @@ import {
   MinMaxContainer,
   Button,
 } from "~/components";
-import { uniqueId } from "lodash-es";
 import { z } from "zod";
 import { ElmCallFilterButtons } from "./elmCallFilterButtons";
 import { rngDate, RngDateSchema, rngTime, RngTimeSchema } from "~/utils/time";
@@ -19,7 +18,7 @@ import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
 import { useCurrentStep } from "~/components/stepper/state";
 import { Translations } from "~/translations";
 import { matchesElmCallFilter } from "./utils";
-import { getFindableSeeds } from "../getFindableSeeds";
+import { getSeedTime4WithMarkers } from "../getFindableSeeds";
 
 type ResultRow = {
   id: string;
@@ -35,7 +34,7 @@ const Validator = z.object({
   maxDelay: z.number().int().min(0),
   minSeconds: z.number().int().min(0).max(59),
   maxSeconds: z.number().int().min(0).max(60),
-  elmCallCount: z.number().int().min(0),
+  filterItemCount: z.number().int().min(0),
 });
 
 type FormState = z.infer<typeof Validator>;
@@ -47,7 +46,7 @@ const initialValues: FormState = {
   maxDelay: 800,
   minSeconds: 0,
   maxSeconds: 0,
-  elmCallCount: 20,
+  filterItemCount: 20,
 };
 
 type SelectButtonProps = {
@@ -125,7 +124,7 @@ const getFields = (t: Translations): Field[] => [
   {
     label: t["Elm Call Count"],
     input: (
-      <FormikNumberInput<FormState> name="elmCallCount" numType="decimal" />
+      <FormikNumberInput<FormState> name="filterItemCount" numType="decimal" />
     ),
   },
 ];
@@ -133,29 +132,21 @@ const getFields = (t: Translations): Field[] => [
 export const HgssElmCallSeedFinder = () => {
   const [allResults, setAllResults] = React.useState<ResultRow[]>([]);
   const [state, setState] = useAtom(gen4StateAtom);
-  const elmCallCount = initialValues.elmCallCount;
+  const [filterItemCount, setFilterItemCount] = React.useState(
+    initialValues.filterItemCount,
+  );
 
   const filteredResults = allResults.filter((result) =>
     matchesElmCallFilter(result.elmCalls, state.gameState.elmCalls),
   );
 
   const onSubmit: RngToolSubmit<FormState> = async (opts) => {
-    const { seedTimesBySeed, seedList } = await getFindableSeeds(opts);
-
-    const elmCalls = await rngTools.elm_calls_for_seeds(
-      seedList,
-      opts.elmCallCount,
-    );
-
-    const results = elmCalls.map(({ seed, elm_calls }): ResultRow => {
-      return {
-        id: uniqueId(),
-        seed,
-        seedTime: seedTimesBySeed[seed],
-        elmCalls: elm_calls,
-      };
+    const results = await getSeedTime4WithMarkers({
+      ...opts,
+      includeCoinFlips: false,
+      includeElmCalls: true,
     });
-
+    setFilterItemCount(opts.filterItemCount);
     setAllResults(results);
   };
 
@@ -169,7 +160,7 @@ export const HgssElmCallSeedFinder = () => {
       filters={
         <ElmCallFilterButtons
           hasResults={allResults.length > 0}
-          maxElmCalls={elmCallCount}
+          maxElmCalls={filterItemCount}
           elmCallFilter={state.gameState.elmCalls}
           onElmCallFilterChange={(elmCalls) =>
             setState({ gameState: { elmCalls } })

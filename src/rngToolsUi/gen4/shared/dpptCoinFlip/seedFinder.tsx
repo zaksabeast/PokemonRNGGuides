@@ -1,5 +1,5 @@
 import React from "react";
-import { rngTools, type SeedTime4 } from "~/rngTools";
+import { type SeedTime4 } from "~/rngTools";
 import {
   RngToolForm,
   FormikNumberInput,
@@ -9,9 +9,8 @@ import {
   MinMaxContainer,
   Button,
 } from "~/components";
-import { uniqueId } from "lodash-es";
 import { z } from "zod";
-import { shrinkCoinFlips, matchesCoinFlipFilter, SmallCoinFlip } from "./utils";
+import { matchesCoinFlipFilter, SmallCoinFlip } from "./utils";
 import { CoinFlipFilterButtons } from "./coinFlipButtons";
 import { rngDate, RngDateSchema, rngTime, RngTimeSchema } from "~/utils/time";
 import { gen4StateAtom } from "../state";
@@ -19,7 +18,7 @@ import { useAtom } from "jotai";
 import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
 import { useCurrentStep } from "~/components/stepper/state";
 import { Translations } from "~/translations";
-import { getFindableSeeds } from "../getFindableSeeds";
+import { getSeedTime4WithMarkers } from "../getFindableSeeds";
 
 type ResultRow = {
   id: string;
@@ -35,7 +34,7 @@ const Validator = z.object({
   maxDelay: z.number().int().min(0),
   minSeconds: z.number().int().min(0).max(59),
   maxSeconds: z.number().int().min(0).max(60),
-  coinFlipCount: z.number().int().min(0),
+  filterItemCount: z.number().int().min(0),
 });
 
 type FormState = z.infer<typeof Validator>;
@@ -47,7 +46,7 @@ const initialValues: FormState = {
   maxDelay: 800,
   minSeconds: 0,
   maxSeconds: 0,
-  coinFlipCount: 20,
+  filterItemCount: 20,
 };
 
 type SelectButtonProps = {
@@ -132,7 +131,7 @@ const getFields = (t: Translations): Field[] => [
   {
     label: t["Coin Flip Count"],
     input: (
-      <FormikNumberInput<FormState> name="coinFlipCount" numType="decimal" />
+      <FormikNumberInput<FormState> name="filterItemCount" numType="decimal" />
     ),
   },
 ];
@@ -140,8 +139,8 @@ const getFields = (t: Translations): Field[] => [
 export const DpptCoinFlipSeedFinder = () => {
   const [allResults, setAllResults] = React.useState<ResultRow[]>([]);
   const [state, setState] = useAtom(gen4StateAtom);
-  const [coinFlipCount, setCoinFlipCount] = React.useState(
-    initialValues.coinFlipCount,
+  const [filterItemCount, setFilterItemCount] = React.useState(
+    initialValues.filterItemCount,
   );
 
   const filteredResults = allResults.filter((result) =>
@@ -149,22 +148,12 @@ export const DpptCoinFlipSeedFinder = () => {
   );
 
   const onSubmit: RngToolSubmit<FormState> = async (opts) => {
-    const { seedTimesBySeed, seedList } = await getFindableSeeds(opts);
-    setCoinFlipCount(opts.coinFlipCount);
-    const coinFlips = await rngTools.coin_flips_for_seeds(
-      seedList,
-      opts.coinFlipCount,
-    );
-
-    const results = coinFlips.map(({ seed, coin_flips }): ResultRow => {
-      return {
-        id: uniqueId(),
-        seed,
-        seedTime: seedTimesBySeed[seed],
-        coinFlips: shrinkCoinFlips(coin_flips),
-      };
+    const results = await getSeedTime4WithMarkers({
+      ...opts,
+      includeCoinFlips: true,
+      includeElmCalls: false,
     });
-
+    setFilterItemCount(opts.filterItemCount);
     setAllResults(results);
   };
 
@@ -178,7 +167,7 @@ export const DpptCoinFlipSeedFinder = () => {
       filters={
         <CoinFlipFilterButtons
           hasResults={allResults.length > 0}
-          maxCoinFlips={coinFlipCount}
+          maxCoinFlips={filterItemCount}
           coinFlipFilter={state.gameState.coinFlips}
           onCoinFlipFilterChange={(coinFlips) =>
             setState({ gameState: { coinFlips } })

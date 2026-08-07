@@ -2,8 +2,12 @@ use super::ab::{AbParts, SeedTime4AbLookup, build_seedtime4_ab_lookup};
 use super::seed_time4::SeedTime4;
 use super::utils::{calc_delay_from_seed, seedtime4_search_second_range};
 use crate::RngDateTime;
+use crate::get_days_in_month;
 use crate::time::is_leap_year;
+use serde::{Deserialize, Serialize};
 use std::ops::RangeInclusive;
+use tsify::Tsify;
+use wasm_bindgen::prelude::*;
 
 fn needs_leap_lookup(month: Option<u32>) -> bool {
     matches!(month, None | Some(2))
@@ -54,12 +58,13 @@ impl SeedTime4Searcher {
         delay_range: RangeInclusive<u32>,
         second: Option<u32>,
     ) -> Self {
-        let second_range = Some(seedtime4_search_second_range(second));
+        let second_range = seedtime4_search_second_range(second);
+        let lookup_second_range = Some(second_range.clone());
 
         match year {
             Some(year) => {
                 let clamped_year = year.clamp(2000, 2100);
-                let ab_lookup = build_seedtime4_ab_lookup(clamped_year, month, second_range);
+                let ab_lookup = build_seedtime4_ab_lookup(clamped_year, month, lookup_second_range);
 
                 Self::FixedYear {
                     year: clamped_year,
@@ -68,9 +73,10 @@ impl SeedTime4Searcher {
                 }
             }
             None => {
-                let common_lookup = build_seedtime4_ab_lookup(2001, month, second_range.clone());
+                let common_lookup =
+                    build_seedtime4_ab_lookup(2001, month, lookup_second_range.clone());
                 let leap_lookup = needs_leap_lookup(month)
-                    .then(|| build_seedtime4_ab_lookup(2000, month, second_range));
+                    .then(|| build_seedtime4_ab_lookup(2000, month, lookup_second_range));
                 let leap_lookup = leap_lookup.map(Box::new);
 
                 Self::AnyYear {
@@ -117,6 +123,61 @@ impl SeedTime4Searcher {
     }
 }
 
+#[derive(Debug, Default, Clone, PartialEq, Eq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct FindAllSeedtime4Opts {
+    pub seed: u32,
+    pub year: u32,
+    pub second: Option<u32>,
+}
+
+#[wasm_bindgen]
+pub fn find_all_seedtime4(opts: FindAllSeedtime4Opts) -> Vec<SeedTime4> {
+    let FindAllSeedtime4Opts { seed, year, second } = opts;
+    let clamped_year = year.clamp(2000, 2100);
+    let delay = calc_delay_from_seed(seed, clamped_year);
+
+    let ab = (seed >> 24) & 0xff;
+    let cd = (seed >> 16) & 0xff;
+    let hour = if cd > 23 { 23 } else { cd };
+    let mut results = Vec::new();
+
+    for month in 1..=12 {
+        let max_days = get_days_in_month(clamped_year as i32, month);
+
+        for day in 1..=max_days {
+            let month_day = month * day;
+
+            for minute in 0..60 {
+                let found_second = ab.wrapping_sub(month_day.wrapping_add(minute)) & 0xff;
+                if found_second > 59 {
+                    continue;
+                }
+                if let Some(second) = second
+                    && second != found_second
+                {
+                    continue;
+                }
+
+                results.push(SeedTime4 {
+                    seed,
+                    delay,
+                    datetime: RngDateTime {
+                        year: clamped_year,
+                        month,
+                        day,
+                        hour,
+                        minute,
+                        second: found_second,
+                    },
+                });
+            }
+        }
+    }
+
+    results
+}
+
 /// Finds a SeedTime4 for a given seed, year, and delay range using a lookup table.
 pub fn find_seedtime4_with_lookup(
     seed: u32,
@@ -157,6 +218,39 @@ pub fn find_seedtime4_with_lookup(
 mod tests {
     use super::*;
     use crate::assert_list_eq;
+    use crate::datetime;
+
+    fn parse_pokefinder_output(seed: u32, output: &str) -> Vec<SeedTime4> {
+        let mut results: Vec<SeedTime4> = Vec::new();
+        for raw_line in output.lines() {
+            let line = raw_line.trim();
+            if line.is_empty() {
+                continue;
+            }
+
+            let seedtime = parse_line_to_seedtime4(seed, line);
+            results.push(seedtime);
+        }
+        results
+    }
+
+    fn parse_line_to_seedtime4(seed: u32, line: &str) -> SeedTime4 {
+        let mut parts = line.split("\t");
+        let datetime_str = parts.next().unwrap();
+        let datetime = RngDateTime::from_pokefinder_str(datetime_str).unwrap();
+        let delay = parts.next().unwrap().parse::<u32>().unwrap();
+        SeedTime4 {
+            datetime,
+            delay,
+            seed,
+        }
+    }
+
+    macro_rules! pokefinder {
+        ($seed:expr, $file:expr) => {
+            parse_pokefinder_output($seed, include_str!($file))
+        };
+    }
 
     mod get_candidate_years {
         use super::*;
@@ -178,7 +272,6 @@ mod tests {
 
     mod seedtime4_search_lookup {
         use super::*;
-        use crate::datetime;
 
         #[test]
         fn finds_first_matching_year_when_year_is_optional() {
@@ -193,6 +286,37 @@ mod tests {
 
             assert_eq!(result, expected);
             assert_eq!(result.unwrap().datetime.year, 2025);
+        }
+    }
+
+    mod find_all_seedtime4 {
+        use super::*;
+
+        #[test]
+        fn with_second() {
+            let opts = FindAllSeedtime4Opts {
+                seed: 0xabcd,
+                year: 2026,
+                second: Some(30),
+            };
+            let expected = pokefinder!(opts.seed, "test_data/find_all_seedtime4/with_second.txt");
+            let results = find_all_seedtime4(opts);
+
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn without_second() {
+            let opts = FindAllSeedtime4Opts {
+                seed: 0xabcd,
+                year: 2026,
+                second: None,
+            };
+            let expected =
+                pokefinder!(opts.seed, "test_data/find_all_seedtime4/without_second.txt");
+            let results = find_all_seedtime4(opts);
+
+            assert_list_eq!(results, expected);
         }
     }
 }

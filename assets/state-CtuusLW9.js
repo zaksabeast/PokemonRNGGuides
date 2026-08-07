@@ -1,0 +1,1 @@
+import{r as e}from"./react-DFI7aX18.js";var t=e({id:null});export{t};

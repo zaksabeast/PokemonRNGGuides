@@ -1,0 +1,1 @@
+import{t as e}from"./react-DFI7aX18.js";import{t}from"./state-CtuusLW9.js";var n=()=>{var n;let[r]=e(t);return((n=r.id)==null?void 0:n.tid)??`???`},r=()=>{var n;let[r]=e(t);return((n=r.id)==null?void 0:n.sid)??`???`};export{r as Id4Sid,n as Id4Tid};

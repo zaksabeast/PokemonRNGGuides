@@ -24,13 +24,12 @@ import { z } from "zod";
 import { useHeldEggState, useRegisteredTrainers } from "./state";
 import { useHydrate } from "~/hooks/useHydrate";
 import { Skeleton } from "antd";
-import { toOptions } from "~/utils/options";
-import { match } from "ts-pattern";
 import { approximateGen3FrameTime } from "~/utils/approximateGen3FrameTime";
 import { Translations, usePokeNavTranslations } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { PokeNavTrainerTranslations } from "~/translations/en/pokeNav";
 import { useWatch } from "~/hooks/form";
+import { compatability, getCompatabilityOptions } from "./constants";
 
 const Calibration = () => {
   const [disabled, setDisabled] = React.useState(true);
@@ -129,12 +128,6 @@ const getColumns = ({
   },
 ];
 
-const compatability = [
-  "DontLikeEachOther",
-  "GetAlong",
-  "GetAlongVeryWell",
-] as const;
-
 const Validator = z
   .object({
     max_advances: z.number().int().min(0),
@@ -171,16 +164,6 @@ const Fields = ({ t }: FieldsProps) => {
     validationSchema: Validator,
     names: { egg_species: true },
   });
-  const compatabilityOptions = toOptions(compatability, (option) => {
-    return match(option)
-      .with("GetAlong", () => t["The two seem to get along"])
-      .with("GetAlongVeryWell", () => t["The two seem to get along very well"])
-      .with(
-        "DontLikeEachOther",
-        () => t["The two don't seem to like each other"],
-      )
-      .exhaustive();
-  });
 
   const fields: Field[] = [
     {
@@ -205,7 +188,7 @@ const Fields = ({ t }: FieldsProps) => {
       input: (
         <FormikSelect<FormState, "compatability">
           name="compatability"
-          options={compatabilityOptions}
+          options={getCompatabilityOptions(t)}
         />
       ),
     },

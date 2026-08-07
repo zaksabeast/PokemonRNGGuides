@@ -34,7 +34,7 @@ import { formatHex } from "~/utils/formatHex";
 import {
   gen4ProfilesAtom,
   findProfileOrDefault,
-} from "~/rngToolsUi/workbench/tools/profile/state";
+} from "~/rngToolsUi/workbench/tools/profile/gen4/state";
 import { useAtom } from "jotai";
 import { useHydrate } from "~/hooks/useHydrate";
 import { getEncounterOptions, getEncounter } from "./encounters";
@@ -109,7 +109,12 @@ const RngInfoFields = () => {
   const rngInfoFields: DescriptionsProps["items"] = [
     {
       label: "Profile",
-      children: <FormikProfileSelect<FormState> name="profile_id" />,
+      children: (
+        <FormikProfileSelect<FormState>
+          name="profile_id"
+          profileAtom={gen4ProfilesAtom}
+        />
+      ),
     },
     {
       label: "Lead",

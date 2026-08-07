@@ -1,6 +1,10 @@
 use super::simulate::pokeradar4_simulate_advance;
 use super::types::{BattleResult, PokeRadar4AdvanceOpts, ShakeType};
-use crate::gen4::stationary::BaseStatic4State;
+use crate::gen4::pokeradar::types::RadarShinyPatchResult;
+use crate::gen4::pokeradar::types::SearchRadarShinyPatchOpts;
+use crate::gen4::search::search_static4;
+use crate::gen4::stationary::{BaseStatic4State, Static4State};
+use wasm_bindgen::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct ShinyPatchCandidate {
@@ -36,6 +40,47 @@ pub fn search_shiny_patches(
                     spread_advance: candidate.advance,
                     patch_advance,
                 })
+            })
+        })
+        .collect()
+}
+
+#[wasm_bindgen]
+pub fn search_shiny_patches_range(opts: SearchRadarShinyPatchOpts) -> Vec<RadarShinyPatchResult> {
+    let static4_states: Vec<Static4State> = search_static4(&opts.search);
+
+    let base_states: Vec<BaseStatic4State> =
+        static4_states.iter().map(|s| s.state.clone()).collect();
+
+    let matches = search_shiny_patches(
+        &base_states,
+        opts.patch_min_advance,
+        opts.patch_max_advance,
+        opts.chain_count,
+        opts.battle_result,
+        opts.selected_shake,
+    );
+
+    matches
+        .into_iter()
+        .filter_map(|candidate| {
+            let static4_state = static4_states
+                .iter()
+                .find(|s| s.state.seed == candidate.seed)?;
+
+            let simulate_result = pokeradar4_simulate_advance(PokeRadar4AdvanceOpts {
+                init_seed: candidate.seed,
+                target_advance: candidate.patch_advance,
+                chain_count: opts.chain_count,
+                battle_result: opts.battle_result,
+                selected_shake: opts.selected_shake,
+            });
+
+            Some(RadarShinyPatchResult {
+                state: static4_state.state.clone(),
+                seed_time: static4_state.seed_time.clone(),
+                patch_advance: candidate.patch_advance,
+                patches: simulate_result.patches,
             })
         })
         .collect()

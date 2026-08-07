@@ -2,19 +2,23 @@ import { FormikSelect, Flex, Button } from "~/components";
 import { GenericForm } from "~/types/form";
 import { Paths } from "~/types";
 import { useHydrate } from "~/hooks/useHydrate";
-import { useAtom } from "jotai";
-import { gen4ProfilesAtom } from "~/rngToolsUi/workbench/tools/profile/state";
+import { HydrationLock } from "~/utils/hydration";
+import { useAtom, Atom } from "jotai";
+import { Gen4Profile } from "~/rngToolsUi/workbench/tools/profile/gen4/state";
+import { Gen3Profile } from "~/rngToolsUi/workbench/tools/profile/gen3/state";
 import { routeAtom } from "~/rngToolsUi/workbench/state";
 
 type FormikProfileSelectProps<FormState extends GenericForm> = {
   name: Paths<FormState, string>;
+  profileAtom: Atom<HydrationLock<(Gen4Profile | Gen3Profile)[]>>;
 };
 
 export const FormikProfileSelect = <FormState extends GenericForm>({
   name,
+  profileAtom,
 }: FormikProfileSelectProps<FormState>) => {
   const [, setRoute] = useAtom(routeAtom);
-  const [lockedProfiles] = useAtom(gen4ProfilesAtom);
+  const [lockedProfiles] = useAtom(profileAtom);
   const { hydrated, client: profiles } = useHydrate(lockedProfiles);
 
   return (

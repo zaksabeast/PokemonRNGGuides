@@ -35,7 +35,7 @@ import { useBatchedTool } from "~/hooks/useBatchedTool";
 import { formatSpeciesLabel, RustOption } from "~/types";
 import { chunkIvs } from "~/utils/chunkIvs";
 import { MonthSchema, monthToRustFilter } from "~/utils/time";
-import { Gen4GameVersion } from "../gen4types";
+import { Gen4GameVersion } from "~/types/games";
 import { getStatRange } from "~/types/statRange";
 import {
   defaultEncounter,

@@ -62,49 +62,17 @@
           "level": 0
         }
       ],
-      "swarm": [
-        0,
-        0
-      ],
-      "day": [
-        0,
-        0
-      ],
-      "night": [
-        0,
-        0
-      ],
-      "radar": [
-        0,
-        0,
-        0,
-        0
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": [0, 0],
+      "day": [0, 0],
+      "night": [0, 0],
+      "radar": [0, 0, 0, 0],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          0,
-          0
-        ],
-        "sapphire": [
-          0,
-          0
-        ],
-        "emerald": [
-          0,
-          0
-        ],
-        "firered": [
-          0,
-          0
-        ],
-        "leafgreen": [
-          0,
-          0
-        ]
+        "ruby": [0, 0],
+        "sapphire": [0, 0],
+        "emerald": [0, 0],
+        "firered": [0, 0],
+        "leafgreen": [0, 0]
       },
       "surf": [
         {
@@ -274,49 +242,17 @@
           "level": 0
         }
       ],
-      "swarm": [
-        0,
-        0
-      ],
-      "day": [
-        0,
-        0
-      ],
-      "night": [
-        0,
-        0
-      ],
-      "radar": [
-        0,
-        0,
-        0,
-        0
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": [0, 0],
+      "day": [0, 0],
+      "night": [0, 0],
+      "radar": [0, 0, 0, 0],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          0,
-          0
-        ],
-        "sapphire": [
-          0,
-          0
-        ],
-        "emerald": [
-          0,
-          0
-        ],
-        "firered": [
-          0,
-          0
-        ],
-        "leafgreen": [
-          0,
-          0
-        ]
+        "ruby": [0, 0],
+        "sapphire": [0, 0],
+        "emerald": [0, 0],
+        "firered": [0, 0],
+        "leafgreen": [0, 0]
       },
       "surf": [
         {
@@ -486,49 +422,17 @@
           "level": 0
         }
       ],
-      "swarm": [
-        0,
-        0
-      ],
-      "day": [
-        0,
-        0
-      ],
-      "night": [
-        0,
-        0
-      ],
-      "radar": [
-        0,
-        0,
-        0,
-        0
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": [0, 0],
+      "day": [0, 0],
+      "night": [0, 0],
+      "radar": [0, 0, 0, 0],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          0,
-          0
-        ],
-        "sapphire": [
-          0,
-          0
-        ],
-        "emerald": [
-          0,
-          0
-        ],
-        "firered": [
-          0,
-          0
-        ],
-        "leafgreen": [
-          0,
-          0
-        ]
+        "ruby": [0, 0],
+        "sapphire": [0, 0],
+        "emerald": [0, 0],
+        "firered": [0, 0],
+        "leafgreen": [0, 0]
       },
       "surf": [
         {
@@ -698,49 +602,17 @@
           "level": 0
         }
       ],
-      "swarm": [
-        0,
-        0
-      ],
-      "day": [
-        0,
-        0
-      ],
-      "night": [
-        0,
-        0
-      ],
-      "radar": [
-        0,
-        0,
-        0,
-        0
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": [0, 0],
+      "day": [0, 0],
+      "night": [0, 0],
+      "radar": [0, 0, 0, 0],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          0,
-          0
-        ],
-        "sapphire": [
-          0,
-          0
-        ],
-        "emerald": [
-          0,
-          0
-        ],
-        "firered": [
-          0,
-          0
-        ],
-        "leafgreen": [
-          0,
-          0
-        ]
+        "ruby": [0, 0],
+        "sapphire": [0, 0],
+        "emerald": [0, 0],
+        "firered": [0, 0],
+        "leafgreen": [0, 0]
       },
       "surf": [
         {
@@ -910,49 +782,17 @@
           "level": 0
         }
       ],
-      "swarm": [
-        0,
-        0
-      ],
-      "day": [
-        0,
-        0
-      ],
-      "night": [
-        0,
-        0
-      ],
-      "radar": [
-        0,
-        0,
-        0,
-        0
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": [0, 0],
+      "day": [0, 0],
+      "night": [0, 0],
+      "radar": [0, 0, 0, 0],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          0,
-          0
-        ],
-        "sapphire": [
-          0,
-          0
-        ],
-        "emerald": [
-          0,
-          0
-        ],
-        "firered": [
-          0,
-          0
-        ],
-        "leafgreen": [
-          0,
-          0
-        ]
+        "ruby": [0, 0],
+        "sapphire": [0, 0],
+        "emerald": [0, 0],
+        "firered": [0, 0],
+        "leafgreen": [0, 0]
       },
       "surf": [
         {
@@ -1122,49 +962,17 @@
           "level": 5
         }
       ],
-      "swarm": [
-        74,
-        74
-      ],
-      "day": [
-        41,
-        41
-      ],
-      "night": [
-        41,
-        41
-      ],
-      "radar": [
-        74,
-        74,
-        74,
-        74
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Geodude", "Geodude"],
+      "day": ["Zubat", "Zubat"],
+      "night": ["Zubat", "Zubat"],
+      "radar": ["Geodude", "Geodude", "Geodude", "Geodude"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Geodude",
-          "Geodude"
-        ],
-        "sapphire": [
-          "Geodude",
-          "Geodude"
-        ],
-        "emerald": [
-          "Geodude",
-          "Geodude"
-        ],
-        "firered": [
-          "Geodude",
-          "Geodude"
-        ],
-        "leafgreen": [
-          "Geodude",
-          "Geodude"
-        ]
+        "ruby": ["Geodude", "Geodude"],
+        "sapphire": ["Geodude", "Geodude"],
+        "emerald": ["Geodude", "Geodude"],
+        "firered": ["Geodude", "Geodude"],
+        "leafgreen": ["Geodude", "Geodude"]
       },
       "surf": [
         {
@@ -1334,49 +1142,17 @@
           "level": 6
         }
       ],
-      "swarm": [
-        74,
-        74
-      ],
-      "day": [
-        41,
-        41
-      ],
-      "night": [
-        41,
-        41
-      ],
-      "radar": [
-        74,
-        74,
-        74,
-        74
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Geodude", "Geodude"],
+      "day": ["Zubat", "Zubat"],
+      "night": ["Zubat", "Zubat"],
+      "radar": ["Geodude", "Geodude", "Geodude", "Geodude"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Geodude",
-          "Geodude"
-        ],
-        "sapphire": [
-          "Geodude",
-          "Geodude"
-        ],
-        "emerald": [
-          "Geodude",
-          "Geodude"
-        ],
-        "firered": [
-          "Geodude",
-          "Geodude"
-        ],
-        "leafgreen": [
-          "Geodude",
-          "Geodude"
-        ]
+        "ruby": ["Geodude", "Geodude"],
+        "sapphire": ["Geodude", "Geodude"],
+        "emerald": ["Geodude", "Geodude"],
+        "firered": ["Geodude", "Geodude"],
+        "leafgreen": ["Geodude", "Geodude"]
       },
       "surf": [
         {
@@ -1546,49 +1322,17 @@
           "level": 9
         }
       ],
-      "swarm": [
-        309,
-        309
-      ],
-      "day": [
-        418,
-        422
-      ],
-      "night": [
-        418,
-        422
-      ],
-      "radar": [
-        179,
-        179,
-        179,
-        179
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Electrike", "Electrike"],
+      "day": ["Buizel", "Shellos"],
+      "night": ["Buizel", "Shellos"],
+      "radar": ["Mareep", "Mareep", "Mareep", "Mareep"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Buizel",
-          "Shellos"
-        ],
-        "sapphire": [
-          "Buizel",
-          "Shellos"
-        ],
-        "emerald": [
-          "Buizel",
-          "Shellos"
-        ],
-        "firered": [
-          "Elekid",
-          "Elekid"
-        ],
-        "leafgreen": [
-          "Buizel",
-          "Shellos"
-        ]
+        "ruby": ["Buizel", "Shellos"],
+        "sapphire": ["Buizel", "Shellos"],
+        "emerald": ["Buizel", "Shellos"],
+        "firered": ["Elekid", "Elekid"],
+        "leafgreen": ["Buizel", "Shellos"]
       },
       "surf": [
         {
@@ -1758,49 +1502,17 @@
           "level": 12
         }
       ],
-      "swarm": [
-        287,
-        287
-      ],
-      "day": [
-        265,
-        406
-      ],
-      "night": [
-        198,
-        198
-      ],
-      "radar": [
-        290,
-        290,
-        290,
-        290
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Slakoth", "Slakoth"],
+      "day": ["Wurmple", "Budew"],
+      "night": ["Murkrow", "Murkrow"],
+      "radar": ["Nincada", "Nincada", "Nincada", "Nincada"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Seedot",
-          "Seedot"
-        ],
-        "sapphire": [
-          "Budew",
-          "Buneary"
-        ],
-        "emerald": [
-          "Pineco",
-          "Pineco"
-        ],
-        "firered": [
-          "Metapod",
-          "Metapod"
-        ],
-        "leafgreen": [
-          "Kakuna",
-          "Kakuna"
-        ]
+        "ruby": ["Seedot", "Seedot"],
+        "sapphire": ["Budew", "Buneary"],
+        "emerald": ["Pineco", "Pineco"],
+        "firered": ["Metapod", "Metapod"],
+        "leafgreen": ["Kakuna", "Kakuna"]
       },
       "surf": [
         {
@@ -1970,49 +1682,17 @@
           "level": 30
         }
       ],
-      "swarm": [
-        81,
-        81
-      ],
-      "day": [
-        403,
-        278
-      ],
-      "night": [
-        403,
-        278
-      ],
-      "radar": [
-        304,
-        304,
-        304,
-        304
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Magnemite", "Magnemite"],
+      "day": ["Shinx", "Wingull"],
+      "night": ["Shinx", "Wingull"],
+      "radar": ["Aron", "Aron", "Aron", "Aron"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Floatzel",
-          "Gastrodon"
-        ],
-        "sapphire": [
-          "Floatzel",
-          "Gastrodon"
-        ],
-        "emerald": [
-          "Floatzel",
-          "Gastrodon"
-        ],
-        "firered": [
-          "Floatzel",
-          "Gastrodon"
-        ],
-        "leafgreen": [
-          "Floatzel",
-          "Gastrodon"
-        ]
+        "ruby": ["Floatzel", "Gastrodon"],
+        "sapphire": ["Floatzel", "Gastrodon"],
+        "emerald": ["Floatzel", "Gastrodon"],
+        "firered": ["Floatzel", "Gastrodon"],
+        "leafgreen": ["Floatzel", "Gastrodon"]
       },
       "surf": [
         {
@@ -2182,49 +1862,17 @@
           "level": 14
         }
       ],
-      "swarm": [
-        66,
-        74
-      ],
-      "day": [
-        74,
-        41
-      ],
-      "night": [
-        74,
-        41
-      ],
-      "radar": [
-        307,
-        41,
-        66,
-        173
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Machop", "Geodude"],
+      "day": ["Geodude", "Zubat"],
+      "night": ["Geodude", "Zubat"],
+      "radar": ["Meditite", "Zubat", "Machop", "Cleffa"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Machop",
-          "Cleffa"
-        ],
-        "sapphire": [
-          "Machop",
-          "Cleffa"
-        ],
-        "emerald": [
-          "Machop",
-          "Cleffa"
-        ],
-        "firered": [
-          "Machop",
-          "Cleffa"
-        ],
-        "leafgreen": [
-          "Machop",
-          "Cleffa"
-        ]
+        "ruby": ["Machop", "Cleffa"],
+        "sapphire": ["Machop", "Cleffa"],
+        "emerald": ["Machop", "Cleffa"],
+        "firered": ["Machop", "Cleffa"],
+        "leafgreen": ["Machop", "Cleffa"]
       },
       "surf": [
         {
@@ -2394,49 +2042,17 @@
           "level": 38
         }
       ],
-      "swarm": [
-        437,
-        75
-      ],
-      "day": [
-        67,
-        35
-      ],
-      "night": [
-        67,
-        35
-      ],
-      "radar": [
-        308,
-        42,
-        436,
-        35
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Bronzong", "Graveler"],
+      "day": ["Machoke", "Clefairy"],
+      "night": ["Machoke", "Clefairy"],
+      "radar": ["Medicham", "Golbat", "Bronzor", "Clefairy"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Solrock",
-          "Solrock"
-        ],
-        "sapphire": [
-          "Lunatone",
-          "Lunatone"
-        ],
-        "emerald": [
-          "Bronzor",
-          "Clefairy"
-        ],
-        "firered": [
-          "Bronzor",
-          "Clefairy"
-        ],
-        "leafgreen": [
-          "Bronzor",
-          "Clefairy"
-        ]
+        "ruby": ["Solrock", "Solrock"],
+        "sapphire": ["Lunatone", "Lunatone"],
+        "emerald": ["Bronzor", "Clefairy"],
+        "firered": ["Bronzor", "Clefairy"],
+        "leafgreen": ["Bronzor", "Clefairy"]
       },
       "surf": [
         {
@@ -2606,49 +2222,17 @@
           "level": 38
         }
       ],
-      "swarm": [
-        437,
-        75
-      ],
-      "day": [
-        67,
-        35
-      ],
-      "night": [
-        67,
-        35
-      ],
-      "radar": [
-        308,
-        42,
-        436,
-        35
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Bronzong", "Graveler"],
+      "day": ["Machoke", "Clefairy"],
+      "night": ["Machoke", "Clefairy"],
+      "radar": ["Medicham", "Golbat", "Bronzor", "Clefairy"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Solrock",
-          "Solrock"
-        ],
-        "sapphire": [
-          "Lunatone",
-          "Lunatone"
-        ],
-        "emerald": [
-          "Bronzor",
-          "Clefairy"
-        ],
-        "firered": [
-          "Bronzor",
-          "Clefairy"
-        ],
-        "leafgreen": [
-          "Bronzor",
-          "Clefairy"
-        ]
+        "ruby": ["Solrock", "Solrock"],
+        "sapphire": ["Lunatone", "Lunatone"],
+        "emerald": ["Bronzor", "Clefairy"],
+        "firered": ["Bronzor", "Clefairy"],
+        "leafgreen": ["Bronzor", "Clefairy"]
       },
       "surf": [
         {
@@ -2818,49 +2402,17 @@
           "level": 39
         }
       ],
-      "swarm": [
-        459,
-        460
-      ],
-      "day": [
-        308,
-        67
-      ],
-      "night": [
-        42,
-        164
-      ],
-      "radar": [
-        294,
-        294,
-        294,
-        294
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Snover", "Abomasnow"],
+      "day": ["Medicham", "Machoke"],
+      "night": ["Golbat", "Noctowl"],
+      "radar": ["Loudred", "Loudred", "Loudred", "Loudred"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Solrock",
-          "Solrock"
-        ],
-        "sapphire": [
-          "Lunatone",
-          "Lunatone"
-        ],
-        "emerald": [
-          "Bronzong",
-          "Clefairy"
-        ],
-        "firered": [
-          "Bronzong",
-          "Clefairy"
-        ],
-        "leafgreen": [
-          "Bronzong",
-          "Clefairy"
-        ]
+        "ruby": ["Solrock", "Solrock"],
+        "sapphire": ["Lunatone", "Lunatone"],
+        "emerald": ["Bronzong", "Clefairy"],
+        "firered": ["Bronzong", "Clefairy"],
+        "leafgreen": ["Bronzong", "Clefairy"]
       },
       "surf": [
         {
@@ -3030,49 +2582,17 @@
           "level": 40
         }
       ],
-      "swarm": [
-        437,
-        75
-      ],
-      "day": [
-        67,
-        35
-      ],
-      "night": [
-        67,
-        35
-      ],
-      "radar": [
-        308,
-        42,
-        437,
-        35
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Bronzong", "Graveler"],
+      "day": ["Machoke", "Clefairy"],
+      "night": ["Machoke", "Clefairy"],
+      "radar": ["Medicham", "Golbat", "Bronzong", "Clefairy"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Solrock",
-          "Solrock"
-        ],
-        "sapphire": [
-          "Lunatone",
-          "Lunatone"
-        ],
-        "emerald": [
-          "Bronzong",
-          "Clefairy"
-        ],
-        "firered": [
-          "Bronzong",
-          "Clefairy"
-        ],
-        "leafgreen": [
-          "Bronzong",
-          "Clefairy"
-        ]
+        "ruby": ["Solrock", "Solrock"],
+        "sapphire": ["Lunatone", "Lunatone"],
+        "emerald": ["Bronzong", "Clefairy"],
+        "firered": ["Bronzong", "Clefairy"],
+        "leafgreen": ["Bronzong", "Clefairy"]
       },
       "surf": [
         {
@@ -3242,49 +2762,17 @@
           "level": 40
         }
       ],
-      "swarm": [
-        437,
-        75
-      ],
-      "day": [
-        67,
-        35
-      ],
-      "night": [
-        67,
-        35
-      ],
-      "radar": [
-        308,
-        42,
-        437,
-        35
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Bronzong", "Graveler"],
+      "day": ["Machoke", "Clefairy"],
+      "night": ["Machoke", "Clefairy"],
+      "radar": ["Medicham", "Golbat", "Bronzong", "Clefairy"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Solrock",
-          "Solrock"
-        ],
-        "sapphire": [
-          "Lunatone",
-          "Lunatone"
-        ],
-        "emerald": [
-          "Bronzong",
-          "Clefairy"
-        ],
-        "firered": [
-          "Bronzong",
-          "Clefairy"
-        ],
-        "leafgreen": [
-          "Bronzong",
-          "Clefairy"
-        ]
+        "ruby": ["Solrock", "Solrock"],
+        "sapphire": ["Lunatone", "Lunatone"],
+        "emerald": ["Bronzong", "Clefairy"],
+        "firered": ["Bronzong", "Clefairy"],
+        "leafgreen": ["Bronzong", "Clefairy"]
       },
       "surf": [
         {
@@ -3454,49 +2942,17 @@
           "level": 42
         }
       ],
-      "swarm": [
-        437,
-        75
-      ],
-      "day": [
-        67,
-        35
-      ],
-      "night": [
-        67,
-        35
-      ],
-      "radar": [
-        308,
-        42,
-        437,
-        35
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Bronzong", "Graveler"],
+      "day": ["Machoke", "Clefairy"],
+      "night": ["Machoke", "Clefairy"],
+      "radar": ["Medicham", "Golbat", "Bronzong", "Clefairy"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Solrock",
-          "Solrock"
-        ],
-        "sapphire": [
-          "Lunatone",
-          "Lunatone"
-        ],
-        "emerald": [
-          "Bronzong",
-          "Clefairy"
-        ],
-        "firered": [
-          "Bronzong",
-          "Clefairy"
-        ],
-        "leafgreen": [
-          "Bronzong",
-          "Clefairy"
-        ]
+        "ruby": ["Solrock", "Solrock"],
+        "sapphire": ["Lunatone", "Lunatone"],
+        "emerald": ["Bronzong", "Clefairy"],
+        "firered": ["Bronzong", "Clefairy"],
+        "leafgreen": ["Bronzong", "Clefairy"]
       },
       "surf": [
         {
@@ -3666,49 +3122,17 @@
           "level": 42
         }
       ],
-      "swarm": [
-        437,
-        75
-      ],
-      "day": [
-        67,
-        35
-      ],
-      "night": [
-        67,
-        35
-      ],
-      "radar": [
-        308,
-        42,
-        437,
-        35
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Bronzong", "Graveler"],
+      "day": ["Machoke", "Clefairy"],
+      "night": ["Machoke", "Clefairy"],
+      "radar": ["Medicham", "Golbat", "Bronzong", "Clefairy"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Solrock",
-          "Solrock"
-        ],
-        "sapphire": [
-          "Lunatone",
-          "Lunatone"
-        ],
-        "emerald": [
-          "Bronzong",
-          "Clefairy"
-        ],
-        "firered": [
-          "Bronzong",
-          "Clefairy"
-        ],
-        "leafgreen": [
-          "Bronzong",
-          "Clefairy"
-        ]
+        "ruby": ["Solrock", "Solrock"],
+        "sapphire": ["Lunatone", "Lunatone"],
+        "emerald": ["Bronzong", "Clefairy"],
+        "firered": ["Bronzong", "Clefairy"],
+        "leafgreen": ["Bronzong", "Clefairy"]
       },
       "surf": [
         {
@@ -3878,49 +3302,17 @@
           "level": 40
         }
       ],
-      "swarm": [
-        75,
-        75
-      ],
-      "day": [
-        67,
-        35
-      ],
-      "night": [
-        67,
-        35
-      ],
-      "radar": [
-        308,
-        42,
-        437,
-        35
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Graveler", "Graveler"],
+      "day": ["Machoke", "Clefairy"],
+      "night": ["Machoke", "Clefairy"],
+      "radar": ["Medicham", "Golbat", "Bronzong", "Clefairy"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Solrock",
-          "Solrock"
-        ],
-        "sapphire": [
-          "Lunatone",
-          "Lunatone"
-        ],
-        "emerald": [
-          "Bronzong",
-          "Clefairy"
-        ],
-        "firered": [
-          "Bronzong",
-          "Clefairy"
-        ],
-        "leafgreen": [
-          "Bronzong",
-          "Clefairy"
-        ]
+        "ruby": ["Solrock", "Solrock"],
+        "sapphire": ["Lunatone", "Lunatone"],
+        "emerald": ["Bronzong", "Clefairy"],
+        "firered": ["Bronzong", "Clefairy"],
+        "leafgreen": ["Bronzong", "Clefairy"]
       },
       "surf": [
         {
@@ -4090,49 +3482,17 @@
           "level": 32
         }
       ],
-      "swarm": [
-        307,
-        75
-      ],
-      "day": [
-        35,
-        42
-      ],
-      "night": [
-        35,
-        42
-      ],
-      "radar": [
-        67,
-        42,
-        307,
-        35
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Meditite", "Graveler"],
+      "day": ["Clefairy", "Golbat"],
+      "night": ["Clefairy", "Golbat"],
+      "radar": ["Machoke", "Golbat", "Meditite", "Clefairy"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Meditite",
-          "Clefairy"
-        ],
-        "sapphire": [
-          "Meditite",
-          "Clefairy"
-        ],
-        "emerald": [
-          "Meditite",
-          "Clefairy"
-        ],
-        "firered": [
-          "Meditite",
-          "Clefairy"
-        ],
-        "leafgreen": [
-          "Meditite",
-          "Clefairy"
-        ]
+        "ruby": ["Meditite", "Clefairy"],
+        "sapphire": ["Meditite", "Clefairy"],
+        "emerald": ["Meditite", "Clefairy"],
+        "firered": ["Meditite", "Clefairy"],
+        "leafgreen": ["Meditite", "Clefairy"]
       },
       "surf": [
         {
@@ -4302,49 +3662,17 @@
           "level": 12
         }
       ],
-      "swarm": [
-        307,
-        74
-      ],
-      "day": [
-        74,
-        41
-      ],
-      "night": [
-        74,
-        41
-      ],
-      "radar": [
-        66,
-        41,
-        307,
-        173
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Meditite", "Geodude"],
+      "day": ["Geodude", "Zubat"],
+      "night": ["Geodude", "Zubat"],
+      "radar": ["Machop", "Zubat", "Meditite", "Cleffa"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Meditite",
-          "Cleffa"
-        ],
-        "sapphire": [
-          "Cleffa",
-          "Cleffa"
-        ],
-        "emerald": [
-          "Meditite",
-          "Cleffa"
-        ],
-        "firered": [
-          "Meditite",
-          "Cleffa"
-        ],
-        "leafgreen": [
-          "Meditite",
-          "Cleffa"
-        ]
+        "ruby": ["Meditite", "Cleffa"],
+        "sapphire": ["Cleffa", "Cleffa"],
+        "emerald": ["Meditite", "Cleffa"],
+        "firered": ["Meditite", "Cleffa"],
+        "leafgreen": ["Meditite", "Cleffa"]
       },
       "surf": [
         {
@@ -4514,49 +3842,17 @@
           "level": 32
         }
       ],
-      "swarm": [
-        307,
-        75
-      ],
-      "day": [
-        35,
-        42
-      ],
-      "night": [
-        35,
-        42
-      ],
-      "radar": [
-        67,
-        42,
-        307,
-        35
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Meditite", "Graveler"],
+      "day": ["Clefairy", "Golbat"],
+      "night": ["Clefairy", "Golbat"],
+      "radar": ["Machoke", "Golbat", "Meditite", "Clefairy"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Meditite",
-          "Clefairy"
-        ],
-        "sapphire": [
-          "Meditite",
-          "Clefairy"
-        ],
-        "emerald": [
-          "Meditite",
-          "Clefairy"
-        ],
-        "firered": [
-          "Meditite",
-          "Clefairy"
-        ],
-        "leafgreen": [
-          "Meditite",
-          "Clefairy"
-        ]
+        "ruby": ["Meditite", "Clefairy"],
+        "sapphire": ["Meditite", "Clefairy"],
+        "emerald": ["Meditite", "Clefairy"],
+        "firered": ["Meditite", "Clefairy"],
+        "leafgreen": ["Meditite", "Clefairy"]
       },
       "surf": [
         {
@@ -4726,49 +4022,17 @@
           "level": 25
         }
       ],
-      "swarm": [
-        201,
-        201
-      ],
-      "day": [
-        201,
-        201
-      ],
-      "night": [
-        201,
-        201
-      ],
-      "radar": [
-        201,
-        201,
-        201,
-        201
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Unown", "Unown"],
+      "day": ["Unown", "Unown"],
+      "night": ["Unown", "Unown"],
+      "radar": ["Unown", "Unown", "Unown", "Unown"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Unown",
-          "Unown"
-        ],
-        "sapphire": [
-          "Unown",
-          "Unown"
-        ],
-        "emerald": [
-          "Unown",
-          "Unown"
-        ],
-        "firered": [
-          "Unown",
-          "Unown"
-        ],
-        "leafgreen": [
-          "Unown",
-          "Unown"
-        ]
+        "ruby": ["Unown", "Unown"],
+        "sapphire": ["Unown", "Unown"],
+        "emerald": ["Unown", "Unown"],
+        "firered": ["Unown", "Unown"],
+        "leafgreen": ["Unown", "Unown"]
       },
       "surf": [
         {
@@ -4938,49 +4202,17 @@
           "level": 25
         }
       ],
-      "swarm": [
-        201,
-        201
-      ],
-      "day": [
-        201,
-        201
-      ],
-      "night": [
-        201,
-        201
-      ],
-      "radar": [
-        201,
-        201,
-        201,
-        201
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Unown", "Unown"],
+      "day": ["Unown", "Unown"],
+      "night": ["Unown", "Unown"],
+      "radar": ["Unown", "Unown", "Unown", "Unown"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Unown",
-          "Unown"
-        ],
-        "sapphire": [
-          "Unown",
-          "Unown"
-        ],
-        "emerald": [
-          "Unown",
-          "Unown"
-        ],
-        "firered": [
-          "Unown",
-          "Unown"
-        ],
-        "leafgreen": [
-          "Unown",
-          "Unown"
-        ]
+        "ruby": ["Unown", "Unown"],
+        "sapphire": ["Unown", "Unown"],
+        "emerald": ["Unown", "Unown"],
+        "firered": ["Unown", "Unown"],
+        "leafgreen": ["Unown", "Unown"]
       },
       "surf": [
         {
@@ -5150,49 +4382,17 @@
           "level": 25
         }
       ],
-      "swarm": [
-        201,
-        201
-      ],
-      "day": [
-        201,
-        201
-      ],
-      "night": [
-        201,
-        201
-      ],
-      "radar": [
-        201,
-        201,
-        201,
-        201
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Unown", "Unown"],
+      "day": ["Unown", "Unown"],
+      "night": ["Unown", "Unown"],
+      "radar": ["Unown", "Unown", "Unown", "Unown"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Unown",
-          "Unown"
-        ],
-        "sapphire": [
-          "Unown",
-          "Unown"
-        ],
-        "emerald": [
-          "Unown",
-          "Unown"
-        ],
-        "firered": [
-          "Unown",
-          "Unown"
-        ],
-        "leafgreen": [
-          "Unown",
-          "Unown"
-        ]
+        "ruby": ["Unown", "Unown"],
+        "sapphire": ["Unown", "Unown"],
+        "emerald": ["Unown", "Unown"],
+        "firered": ["Unown", "Unown"],
+        "leafgreen": ["Unown", "Unown"]
       },
       "surf": [
         {
@@ -5362,49 +4562,17 @@
           "level": 25
         }
       ],
-      "swarm": [
-        201,
-        201
-      ],
-      "day": [
-        201,
-        201
-      ],
-      "night": [
-        201,
-        201
-      ],
-      "radar": [
-        201,
-        201,
-        201,
-        201
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Unown", "Unown"],
+      "day": ["Unown", "Unown"],
+      "night": ["Unown", "Unown"],
+      "radar": ["Unown", "Unown", "Unown", "Unown"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Unown",
-          "Unown"
-        ],
-        "sapphire": [
-          "Unown",
-          "Unown"
-        ],
-        "emerald": [
-          "Unown",
-          "Unown"
-        ],
-        "firered": [
-          "Unown",
-          "Unown"
-        ],
-        "leafgreen": [
-          "Unown",
-          "Unown"
-        ]
+        "ruby": ["Unown", "Unown"],
+        "sapphire": ["Unown", "Unown"],
+        "emerald": ["Unown", "Unown"],
+        "firered": ["Unown", "Unown"],
+        "leafgreen": ["Unown", "Unown"]
       },
       "surf": [
         {
@@ -5574,49 +4742,17 @@
           "level": 25
         }
       ],
-      "swarm": [
-        201,
-        201
-      ],
-      "day": [
-        201,
-        201
-      ],
-      "night": [
-        201,
-        201
-      ],
-      "radar": [
-        201,
-        201,
-        201,
-        201
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Unown", "Unown"],
+      "day": ["Unown", "Unown"],
+      "night": ["Unown", "Unown"],
+      "radar": ["Unown", "Unown", "Unown", "Unown"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Unown",
-          "Unown"
-        ],
-        "sapphire": [
-          "Unown",
-          "Unown"
-        ],
-        "emerald": [
-          "Unown",
-          "Unown"
-        ],
-        "firered": [
-          "Unown",
-          "Unown"
-        ],
-        "leafgreen": [
-          "Unown",
-          "Unown"
-        ]
+        "ruby": ["Unown", "Unown"],
+        "sapphire": ["Unown", "Unown"],
+        "emerald": ["Unown", "Unown"],
+        "firered": ["Unown", "Unown"],
+        "leafgreen": ["Unown", "Unown"]
       },
       "surf": [
         {
@@ -5786,49 +4922,17 @@
           "level": 25
         }
       ],
-      "swarm": [
-        201,
-        201
-      ],
-      "day": [
-        201,
-        201
-      ],
-      "night": [
-        201,
-        201
-      ],
-      "radar": [
-        201,
-        201,
-        201,
-        201
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Unown", "Unown"],
+      "day": ["Unown", "Unown"],
+      "night": ["Unown", "Unown"],
+      "radar": ["Unown", "Unown", "Unown", "Unown"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Unown",
-          "Unown"
-        ],
-        "sapphire": [
-          "Unown",
-          "Unown"
-        ],
-        "emerald": [
-          "Unown",
-          "Unown"
-        ],
-        "firered": [
-          "Unown",
-          "Unown"
-        ],
-        "leafgreen": [
-          "Unown",
-          "Unown"
-        ]
+        "ruby": ["Unown", "Unown"],
+        "sapphire": ["Unown", "Unown"],
+        "emerald": ["Unown", "Unown"],
+        "firered": ["Unown", "Unown"],
+        "leafgreen": ["Unown", "Unown"]
       },
       "surf": [
         {
@@ -5998,49 +5102,17 @@
           "level": 25
         }
       ],
-      "swarm": [
-        201,
-        201
-      ],
-      "day": [
-        201,
-        201
-      ],
-      "night": [
-        201,
-        201
-      ],
-      "radar": [
-        201,
-        201,
-        201,
-        201
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Unown", "Unown"],
+      "day": ["Unown", "Unown"],
+      "night": ["Unown", "Unown"],
+      "radar": ["Unown", "Unown", "Unown", "Unown"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Unown",
-          "Unown"
-        ],
-        "sapphire": [
-          "Unown",
-          "Unown"
-        ],
-        "emerald": [
-          "Unown",
-          "Unown"
-        ],
-        "firered": [
-          "Unown",
-          "Unown"
-        ],
-        "leafgreen": [
-          "Unown",
-          "Unown"
-        ]
+        "ruby": ["Unown", "Unown"],
+        "sapphire": ["Unown", "Unown"],
+        "emerald": ["Unown", "Unown"],
+        "firered": ["Unown", "Unown"],
+        "leafgreen": ["Unown", "Unown"]
       },
       "surf": [
         {
@@ -6210,49 +5282,17 @@
           "level": 25
         }
       ],
-      "swarm": [
-        201,
-        201
-      ],
-      "day": [
-        201,
-        201
-      ],
-      "night": [
-        201,
-        201
-      ],
-      "radar": [
-        201,
-        201,
-        201,
-        201
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Unown", "Unown"],
+      "day": ["Unown", "Unown"],
+      "night": ["Unown", "Unown"],
+      "radar": ["Unown", "Unown", "Unown", "Unown"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Unown",
-          "Unown"
-        ],
-        "sapphire": [
-          "Unown",
-          "Unown"
-        ],
-        "emerald": [
-          "Unown",
-          "Unown"
-        ],
-        "firered": [
-          "Unown",
-          "Unown"
-        ],
-        "leafgreen": [
-          "Unown",
-          "Unown"
-        ]
+        "ruby": ["Unown", "Unown"],
+        "sapphire": ["Unown", "Unown"],
+        "emerald": ["Unown", "Unown"],
+        "firered": ["Unown", "Unown"],
+        "leafgreen": ["Unown", "Unown"]
       },
       "surf": [
         {
@@ -6422,49 +5462,17 @@
           "level": 44
         }
       ],
-      "swarm": [
-        67,
-        75
-      ],
-      "day": [
-        308,
-        42
-      ],
-      "night": [
-        308,
-        42
-      ],
-      "radar": [
-        95,
-        208,
-        67,
-        308
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Machoke", "Graveler"],
+      "day": ["Medicham", "Golbat"],
+      "night": ["Medicham", "Golbat"],
+      "radar": ["Onix", "Steelix", "Machoke", "Medicham"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Machoke",
-          "Medicham"
-        ],
-        "sapphire": [
-          "Machoke",
-          "Medicham"
-        ],
-        "emerald": [
-          "Machoke",
-          "Medicham"
-        ],
-        "firered": [
-          "Machoke",
-          "Medicham"
-        ],
-        "leafgreen": [
-          "Machoke",
-          "Medicham"
-        ]
+        "ruby": ["Machoke", "Medicham"],
+        "sapphire": ["Machoke", "Medicham"],
+        "emerald": ["Machoke", "Medicham"],
+        "firered": ["Machoke", "Medicham"],
+        "leafgreen": ["Machoke", "Medicham"]
       },
       "surf": [
         {
@@ -6634,49 +5642,17 @@
           "level": 45
         }
       ],
-      "swarm": [
-        64,
-        75
-      ],
-      "day": [
-        308,
-        42
-      ],
-      "night": [
-        308,
-        42
-      ],
-      "radar": [
-        95,
-        208,
-        64,
-        308
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Kadabra", "Graveler"],
+      "day": ["Medicham", "Golbat"],
+      "night": ["Medicham", "Golbat"],
+      "radar": ["Onix", "Steelix", "Kadabra", "Medicham"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Kadabra",
-          "Medicham"
-        ],
-        "sapphire": [
-          "Kadabra",
-          "Medicham"
-        ],
-        "emerald": [
-          "Kadabra",
-          "Medicham"
-        ],
-        "firered": [
-          "Kadabra",
-          "Medicham"
-        ],
-        "leafgreen": [
-          "Kadabra",
-          "Medicham"
-        ]
+        "ruby": ["Kadabra", "Medicham"],
+        "sapphire": ["Kadabra", "Medicham"],
+        "emerald": ["Kadabra", "Medicham"],
+        "firered": ["Kadabra", "Medicham"],
+        "leafgreen": ["Kadabra", "Medicham"]
       },
       "surf": [
         {
@@ -6846,49 +5822,17 @@
           "level": 44
         }
       ],
-      "swarm": [
-        67,
-        419
-      ],
-      "day": [
-        308,
-        42
-      ],
-      "night": [
-        308,
-        42
-      ],
-      "radar": [
-        419,
-        208,
-        67,
-        308
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Machoke", "Floatzel"],
+      "day": ["Medicham", "Golbat"],
+      "night": ["Medicham", "Golbat"],
+      "radar": ["Floatzel", "Steelix", "Machoke", "Medicham"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Machoke",
-          "Medicham"
-        ],
-        "sapphire": [
-          "Machoke",
-          "Medicham"
-        ],
-        "emerald": [
-          "Machoke",
-          "Medicham"
-        ],
-        "firered": [
-          "Machoke",
-          "Medicham"
-        ],
-        "leafgreen": [
-          "Machoke",
-          "Medicham"
-        ]
+        "ruby": ["Machoke", "Medicham"],
+        "sapphire": ["Machoke", "Medicham"],
+        "emerald": ["Machoke", "Medicham"],
+        "firered": ["Machoke", "Medicham"],
+        "leafgreen": ["Machoke", "Medicham"]
       },
       "surf": [
         {
@@ -7058,49 +6002,17 @@
           "level": 50
         }
       ],
-      "swarm": [
-        67,
-        419
-      ],
-      "day": [
-        308,
-        42
-      ],
-      "night": [
-        308,
-        42
-      ],
-      "radar": [
-        419,
-        208,
-        67,
-        308
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Machoke", "Floatzel"],
+      "day": ["Medicham", "Golbat"],
+      "night": ["Medicham", "Golbat"],
+      "radar": ["Floatzel", "Steelix", "Machoke", "Medicham"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Machoke",
-          "Medicham"
-        ],
-        "sapphire": [
-          "Machoke",
-          "Medicham"
-        ],
-        "emerald": [
-          "Machoke",
-          "Medicham"
-        ],
-        "firered": [
-          "Machoke",
-          "Medicham"
-        ],
-        "leafgreen": [
-          "Machoke",
-          "Medicham"
-        ]
+        "ruby": ["Machoke", "Medicham"],
+        "sapphire": ["Machoke", "Medicham"],
+        "emerald": ["Machoke", "Medicham"],
+        "firered": ["Machoke", "Medicham"],
+        "leafgreen": ["Machoke", "Medicham"]
       },
       "surf": [
         {
@@ -7270,49 +6182,17 @@
           "level": 50
         }
       ],
-      "swarm": [
-        67,
-        75
-      ],
-      "day": [
-        308,
-        42
-      ],
-      "night": [
-        308,
-        42
-      ],
-      "radar": [
-        95,
-        208,
-        67,
-        308
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Machoke", "Graveler"],
+      "day": ["Medicham", "Golbat"],
+      "night": ["Medicham", "Golbat"],
+      "radar": ["Onix", "Steelix", "Machoke", "Medicham"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Machoke",
-          "Medicham"
-        ],
-        "sapphire": [
-          "Machoke",
-          "Medicham"
-        ],
-        "emerald": [
-          "Machoke",
-          "Medicham"
-        ],
-        "firered": [
-          "Machoke",
-          "Medicham"
-        ],
-        "leafgreen": [
-          "Machoke",
-          "Medicham"
-        ]
+        "ruby": ["Machoke", "Medicham"],
+        "sapphire": ["Machoke", "Medicham"],
+        "emerald": ["Machoke", "Medicham"],
+        "firered": ["Machoke", "Medicham"],
+        "leafgreen": ["Machoke", "Medicham"]
       },
       "surf": [
         {
@@ -7482,49 +6362,17 @@
           "level": 50
         }
       ],
-      "swarm": [
-        67,
-        75
-      ],
-      "day": [
-        308,
-        42
-      ],
-      "night": [
-        308,
-        42
-      ],
-      "radar": [
-        95,
-        208,
-        67,
-        308
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Machoke", "Graveler"],
+      "day": ["Medicham", "Golbat"],
+      "night": ["Medicham", "Golbat"],
+      "radar": ["Onix", "Steelix", "Machoke", "Medicham"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Machoke",
-          "Medicham"
-        ],
-        "sapphire": [
-          "Machoke",
-          "Medicham"
-        ],
-        "emerald": [
-          "Machoke",
-          "Medicham"
-        ],
-        "firered": [
-          "Machoke",
-          "Medicham"
-        ],
-        "leafgreen": [
-          "Machoke",
-          "Medicham"
-        ]
+        "ruby": ["Machoke", "Medicham"],
+        "sapphire": ["Machoke", "Medicham"],
+        "emerald": ["Machoke", "Medicham"],
+        "firered": ["Machoke", "Medicham"],
+        "leafgreen": ["Machoke", "Medicham"]
       },
       "surf": [
         {
@@ -7694,49 +6542,17 @@
           "level": 5
         }
       ],
-      "swarm": [
-        41,
-        41
-      ],
-      "day": [
-        74,
-        74
-      ],
-      "night": [
-        74,
-        74
-      ],
-      "radar": [
-        41,
-        41,
-        54,
-        54
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Zubat", "Zubat"],
+      "day": ["Geodude", "Geodude"],
+      "night": ["Geodude", "Geodude"],
+      "radar": ["Zubat", "Zubat", "Psyduck", "Psyduck"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Zubat",
-          "Zubat"
-        ],
-        "sapphire": [
-          "Zubat",
-          "Zubat"
-        ],
-        "emerald": [
-          "Zubat",
-          "Zubat"
-        ],
-        "firered": [
-          "Zubat",
-          "Zubat"
-        ],
-        "leafgreen": [
-          "Zubat",
-          "Zubat"
-        ]
+        "ruby": ["Zubat", "Zubat"],
+        "sapphire": ["Zubat", "Zubat"],
+        "emerald": ["Zubat", "Zubat"],
+        "firered": ["Zubat", "Zubat"],
+        "leafgreen": ["Zubat", "Zubat"]
       },
       "surf": [
         {
@@ -7906,49 +6722,17 @@
           "level": 4
         }
       ],
-      "swarm": [
-        74,
-        74
-      ],
-      "day": [
-        41,
-        41
-      ],
-      "night": [
-        41,
-        41
-      ],
-      "radar": [
-        74,
-        74,
-        74,
-        74
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Geodude", "Geodude"],
+      "day": ["Zubat", "Zubat"],
+      "night": ["Zubat", "Zubat"],
+      "radar": ["Geodude", "Geodude", "Geodude", "Geodude"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Geodude",
-          "Geodude"
-        ],
-        "sapphire": [
-          "Geodude",
-          "Geodude"
-        ],
-        "emerald": [
-          "Geodude",
-          "Geodude"
-        ],
-        "firered": [
-          "Geodude",
-          "Geodude"
-        ],
-        "leafgreen": [
-          "Geodude",
-          "Geodude"
-        ]
+        "ruby": ["Geodude", "Geodude"],
+        "sapphire": ["Geodude", "Geodude"],
+        "emerald": ["Geodude", "Geodude"],
+        "firered": ["Geodude", "Geodude"],
+        "leafgreen": ["Geodude", "Geodude"]
       },
       "surf": [
         {
@@ -8118,49 +6902,17 @@
           "level": 10
         }
       ],
-      "swarm": [
-        41,
-        41
-      ],
-      "day": [
-        54,
-        74
-      ],
-      "night": [
-        54,
-        74
-      ],
-      "radar": [
-        54,
-        41,
-        41,
-        41
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Zubat", "Zubat"],
+      "day": ["Psyduck", "Geodude"],
+      "night": ["Psyduck", "Geodude"],
+      "radar": ["Psyduck", "Zubat", "Zubat", "Zubat"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Zubat",
-          "Zubat"
-        ],
-        "sapphire": [
-          "Zubat",
-          "Zubat"
-        ],
-        "emerald": [
-          "Zubat",
-          "Zubat"
-        ],
-        "firered": [
-          "Zubat",
-          "Zubat"
-        ],
-        "leafgreen": [
-          "Zubat",
-          "Zubat"
-        ]
+        "ruby": ["Zubat", "Zubat"],
+        "sapphire": ["Zubat", "Zubat"],
+        "emerald": ["Zubat", "Zubat"],
+        "firered": ["Zubat", "Zubat"],
+        "leafgreen": ["Zubat", "Zubat"]
       },
       "surf": [
         {
@@ -8330,49 +7082,17 @@
           "level": 24
         }
       ],
-      "swarm": [
-        323,
-        112
-      ],
-      "day": [
-        22,
-        75
-      ],
-      "night": [
-        354,
-        42
-      ],
-      "radar": [
-        324,
-        324,
-        324,
-        324
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Camerupt", "Rhydon"],
+      "day": ["Fearow", "Graveler"],
+      "night": ["Banette", "Golbat"],
+      "radar": ["Torkoal", "Torkoal", "Torkoal", "Torkoal"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Numel",
-          "Rhyhorn"
-        ],
-        "sapphire": [
-          "Numel",
-          "Rhyhorn"
-        ],
-        "emerald": [
-          "Gligar",
-          "Gligar"
-        ],
-        "firered": [
-          "Numel",
-          "Rhyhorn"
-        ],
-        "leafgreen": [
-          "Magby",
-          "Magby"
-        ]
+        "ruby": ["Numel", "Rhyhorn"],
+        "sapphire": ["Numel", "Rhyhorn"],
+        "emerald": ["Gligar", "Gligar"],
+        "firered": ["Numel", "Rhyhorn"],
+        "leafgreen": ["Magby", "Magby"]
       },
       "surf": [
         {
@@ -8542,49 +7262,17 @@
           "level": 27
         }
       ],
-      "swarm": [
-        75,
-        219
-      ],
-      "day": [
-        42,
-        67
-      ],
-      "night": [
-        42,
-        67
-      ],
-      "radar": [
-        219,
-        110,
-        74,
-        218
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Graveler", "Magcargo"],
+      "day": ["Golbat", "Machoke"],
+      "night": ["Golbat", "Machoke"],
+      "radar": ["Magcargo", "Weezing", "Geodude", "Slugma"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Geodude",
-          "Slugma"
-        ],
-        "sapphire": [
-          "Geodude",
-          "Slugma"
-        ],
-        "emerald": [
-          "Geodude",
-          "Slugma"
-        ],
-        "firered": [
-          "Geodude",
-          "Slugma"
-        ],
-        "leafgreen": [
-          "Magby",
-          "Magby"
-        ]
+        "ruby": ["Geodude", "Slugma"],
+        "sapphire": ["Geodude", "Slugma"],
+        "emerald": ["Geodude", "Slugma"],
+        "firered": ["Geodude", "Slugma"],
+        "leafgreen": ["Magby", "Magby"]
       },
       "surf": [
         {
@@ -8754,49 +7442,17 @@
           "level": 29
         }
       ],
-      "swarm": [
-        75,
-        219
-      ],
-      "day": [
-        42,
-        67
-      ],
-      "night": [
-        42,
-        67
-      ],
-      "radar": [
-        219,
-        110,
-        74,
-        218
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Graveler", "Magcargo"],
+      "day": ["Golbat", "Machoke"],
+      "night": ["Golbat", "Machoke"],
+      "radar": ["Magcargo", "Weezing", "Geodude", "Slugma"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Geodude",
-          "Slugma"
-        ],
-        "sapphire": [
-          "Geodude",
-          "Slugma"
-        ],
-        "emerald": [
-          "Geodude",
-          "Slugma"
-        ],
-        "firered": [
-          "Geodude",
-          "Slugma"
-        ],
-        "leafgreen": [
-          "Magby",
-          "Magby"
-        ]
+        "ruby": ["Geodude", "Slugma"],
+        "sapphire": ["Geodude", "Slugma"],
+        "emerald": ["Geodude", "Slugma"],
+        "firered": ["Geodude", "Slugma"],
+        "leafgreen": ["Magby", "Magby"]
       },
       "surf": [
         {
@@ -8966,49 +7622,17 @@
           "level": 52
         }
       ],
-      "swarm": [
-        400,
-        400
-      ],
-      "day": [
-        397,
-        397
-      ],
-      "night": [
-        164,
-        164
-      ],
-      "radar": [
-        55,
-        55,
-        400,
-        397
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Bibarel", "Bibarel"],
+      "day": ["Staravia", "Staravia"],
+      "night": ["Noctowl", "Noctowl"],
+      "radar": ["Golduck", "Golduck", "Bibarel", "Staravia"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Solrock",
-          "Solrock"
-        ],
-        "sapphire": [
-          "Lunatone",
-          "Lunatone"
-        ],
-        "emerald": [
-          "Bibarel",
-          "Staravia"
-        ],
-        "firered": [
-          "Bibarel",
-          "Staravia"
-        ],
-        "leafgreen": [
-          "Bibarel",
-          "Staravia"
-        ]
+        "ruby": ["Solrock", "Solrock"],
+        "sapphire": ["Lunatone", "Lunatone"],
+        "emerald": ["Bibarel", "Staravia"],
+        "firered": ["Bibarel", "Staravia"],
+        "leafgreen": ["Bibarel", "Staravia"]
       },
       "surf": [
         {
@@ -9178,49 +7802,17 @@
           "level": 46
         }
       ],
-      "swarm": [
-        42,
-        437
-      ],
-      "day": [
-        93,
-        42
-      ],
-      "night": [
-        93,
-        42
-      ],
-      "radar": [
-        93,
-        437,
-        436,
-        437
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Golbat", "Bronzong"],
+      "day": ["Haunter", "Golbat"],
+      "night": ["Haunter", "Golbat"],
+      "radar": ["Haunter", "Bronzong", "Bronzor", "Bronzong"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Solrock",
-          "Solrock"
-        ],
-        "sapphire": [
-          "Lunatone",
-          "Lunatone"
-        ],
-        "emerald": [
-          "Bronzor",
-          "Bronzong"
-        ],
-        "firered": [
-          "Bronzor",
-          "Bronzong"
-        ],
-        "leafgreen": [
-          "Bronzor",
-          "Bronzong"
-        ]
+        "ruby": ["Solrock", "Solrock"],
+        "sapphire": ["Lunatone", "Lunatone"],
+        "emerald": ["Bronzor", "Bronzong"],
+        "firered": ["Bronzor", "Bronzong"],
+        "leafgreen": ["Bronzor", "Bronzong"]
       },
       "surf": [
         {
@@ -9390,49 +7982,17 @@
           "level": 50
         }
       ],
-      "swarm": [
-        42,
-        215
-      ],
-      "day": [
-        75,
-        42
-      ],
-      "night": [
-        75,
-        42
-      ],
-      "radar": [
-        215,
-        95,
-        95,
-        42
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Golbat", "Sneasel"],
+      "day": ["Graveler", "Golbat"],
+      "night": ["Graveler", "Golbat"],
+      "radar": ["Sneasel", "Onix", "Onix", "Golbat"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Onix",
-          "Golbat"
-        ],
-        "sapphire": [
-          "Onix",
-          "Golbat"
-        ],
-        "emerald": [
-          "Onix",
-          "Golbat"
-        ],
-        "firered": [
-          "Onix",
-          "Golbat"
-        ],
-        "leafgreen": [
-          "Onix",
-          "Golbat"
-        ]
+        "ruby": ["Onix", "Golbat"],
+        "sapphire": ["Onix", "Golbat"],
+        "emerald": ["Onix", "Golbat"],
+        "firered": ["Onix", "Golbat"],
+        "leafgreen": ["Onix", "Golbat"]
       },
       "surf": [
         {
@@ -9602,49 +8162,17 @@
           "level": 52
         }
       ],
-      "swarm": [
-        42,
-        215
-      ],
-      "day": [
-        75,
-        42
-      ],
-      "night": [
-        75,
-        42
-      ],
-      "radar": [
-        215,
-        208,
-        95,
-        42
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Golbat", "Sneasel"],
+      "day": ["Graveler", "Golbat"],
+      "night": ["Graveler", "Golbat"],
+      "radar": ["Sneasel", "Steelix", "Onix", "Golbat"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Onix",
-          "Golbat"
-        ],
-        "sapphire": [
-          "Onix",
-          "Golbat"
-        ],
-        "emerald": [
-          "Onix",
-          "Golbat"
-        ],
-        "firered": [
-          "Onix",
-          "Golbat"
-        ],
-        "leafgreen": [
-          "Onix",
-          "Golbat"
-        ]
+        "ruby": ["Onix", "Golbat"],
+        "sapphire": ["Onix", "Golbat"],
+        "emerald": ["Onix", "Golbat"],
+        "firered": ["Onix", "Golbat"],
+        "leafgreen": ["Onix", "Golbat"]
       },
       "surf": [
         {
@@ -9814,49 +8342,17 @@
           "level": 52
         }
       ],
-      "swarm": [
-        42,
-        215
-      ],
-      "day": [
-        75,
-        42
-      ],
-      "night": [
-        75,
-        42
-      ],
-      "radar": [
-        215,
-        208,
-        95,
-        42
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Golbat", "Sneasel"],
+      "day": ["Graveler", "Golbat"],
+      "night": ["Graveler", "Golbat"],
+      "radar": ["Sneasel", "Steelix", "Onix", "Golbat"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Onix",
-          "Golbat"
-        ],
-        "sapphire": [
-          "Onix",
-          "Golbat"
-        ],
-        "emerald": [
-          "Onix",
-          "Golbat"
-        ],
-        "firered": [
-          "Onix",
-          "Golbat"
-        ],
-        "leafgreen": [
-          "Onix",
-          "Golbat"
-        ]
+        "ruby": ["Onix", "Golbat"],
+        "sapphire": ["Onix", "Golbat"],
+        "emerald": ["Onix", "Golbat"],
+        "firered": ["Onix", "Golbat"],
+        "leafgreen": ["Onix", "Golbat"]
       },
       "surf": [
         {
@@ -10026,49 +8522,17 @@
           "level": 52
         }
       ],
-      "swarm": [
-        42,
-        215
-      ],
-      "day": [
-        75,
-        42
-      ],
-      "night": [
-        75,
-        42
-      ],
-      "radar": [
-        215,
-        208,
-        95,
-        42
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Golbat", "Sneasel"],
+      "day": ["Graveler", "Golbat"],
+      "night": ["Graveler", "Golbat"],
+      "radar": ["Sneasel", "Steelix", "Onix", "Golbat"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Onix",
-          "Golbat"
-        ],
-        "sapphire": [
-          "Onix",
-          "Golbat"
-        ],
-        "emerald": [
-          "Onix",
-          "Golbat"
-        ],
-        "firered": [
-          "Onix",
-          "Golbat"
-        ],
-        "leafgreen": [
-          "Onix",
-          "Golbat"
-        ]
+        "ruby": ["Onix", "Golbat"],
+        "sapphire": ["Onix", "Golbat"],
+        "emerald": ["Onix", "Golbat"],
+        "firered": ["Onix", "Golbat"],
+        "leafgreen": ["Onix", "Golbat"]
       },
       "surf": [
         {
@@ -10238,49 +8702,17 @@
           "level": 54
         }
       ],
-      "swarm": [
-        42,
-        215
-      ],
-      "day": [
-        75,
-        42
-      ],
-      "night": [
-        75,
-        42
-      ],
-      "radar": [
-        215,
-        208,
-        208,
-        42
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Golbat", "Sneasel"],
+      "day": ["Graveler", "Golbat"],
+      "night": ["Graveler", "Golbat"],
+      "radar": ["Sneasel", "Steelix", "Steelix", "Golbat"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Steelix",
-          "Golbat"
-        ],
-        "sapphire": [
-          "Steelix",
-          "Golbat"
-        ],
-        "emerald": [
-          "Steelix",
-          "Golbat"
-        ],
-        "firered": [
-          "Steelix",
-          "Golbat"
-        ],
-        "leafgreen": [
-          "Steelix",
-          "Golbat"
-        ]
+        "ruby": ["Steelix", "Golbat"],
+        "sapphire": ["Steelix", "Golbat"],
+        "emerald": ["Steelix", "Golbat"],
+        "firered": ["Steelix", "Golbat"],
+        "leafgreen": ["Steelix", "Golbat"]
       },
       "surf": [
         {
@@ -10450,49 +8882,17 @@
           "level": 54
         }
       ],
-      "swarm": [
-        42,
-        215
-      ],
-      "day": [
-        75,
-        42
-      ],
-      "night": [
-        75,
-        42
-      ],
-      "radar": [
-        215,
-        208,
-        208,
-        42
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Golbat", "Sneasel"],
+      "day": ["Graveler", "Golbat"],
+      "night": ["Graveler", "Golbat"],
+      "radar": ["Sneasel", "Steelix", "Steelix", "Golbat"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Steelix",
-          "Golbat"
-        ],
-        "sapphire": [
-          "Steelix",
-          "Golbat"
-        ],
-        "emerald": [
-          "Steelix",
-          "Golbat"
-        ],
-        "firered": [
-          "Steelix",
-          "Golbat"
-        ],
-        "leafgreen": [
-          "Steelix",
-          "Golbat"
-        ]
+        "ruby": ["Steelix", "Golbat"],
+        "sapphire": ["Steelix", "Golbat"],
+        "emerald": ["Steelix", "Golbat"],
+        "firered": ["Steelix", "Golbat"],
+        "leafgreen": ["Steelix", "Golbat"]
       },
       "surf": [
         {
@@ -10662,49 +9062,17 @@
           "level": 16
         }
       ],
-      "swarm": [
-        436,
-        41
-      ],
-      "day": [
-        74,
-        41
-      ],
-      "night": [
-        74,
-        41
-      ],
-      "radar": [
-        436,
-        41,
-        74,
-        41
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Bronzor", "Zubat"],
+      "day": ["Geodude", "Zubat"],
+      "night": ["Geodude", "Zubat"],
+      "radar": ["Bronzor", "Zubat", "Geodude", "Zubat"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Geodude",
-          "Zubat"
-        ],
-        "sapphire": [
-          "Geodude",
-          "Zubat"
-        ],
-        "emerald": [
-          "Geodude",
-          "Zubat"
-        ],
-        "firered": [
-          "Geodude",
-          "Zubat"
-        ],
-        "leafgreen": [
-          "Sandshrew",
-          "Sandshrew"
-        ]
+        "ruby": ["Geodude", "Zubat"],
+        "sapphire": ["Geodude", "Zubat"],
+        "emerald": ["Geodude", "Zubat"],
+        "firered": ["Geodude", "Zubat"],
+        "leafgreen": ["Sandshrew", "Sandshrew"]
       },
       "surf": [
         {
@@ -10874,49 +9242,17 @@
           "level": 17
         }
       ],
-      "swarm": [
-        436,
-        41
-      ],
-      "day": [
-        74,
-        41
-      ],
-      "night": [
-        74,
-        41
-      ],
-      "radar": [
-        436,
-        443,
-        443,
-        41
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Bronzor", "Zubat"],
+      "day": ["Geodude", "Zubat"],
+      "night": ["Geodude", "Zubat"],
+      "radar": ["Bronzor", "Gible", "Gible", "Zubat"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Gible",
-          "Zubat"
-        ],
-        "sapphire": [
-          "Gible",
-          "Zubat"
-        ],
-        "emerald": [
-          "Gible",
-          "Zubat"
-        ],
-        "firered": [
-          "Gible",
-          "Zubat"
-        ],
-        "leafgreen": [
-          "Sandshrew",
-          "Sandshrew"
-        ]
+        "ruby": ["Gible", "Zubat"],
+        "sapphire": ["Gible", "Zubat"],
+        "emerald": ["Gible", "Zubat"],
+        "firered": ["Gible", "Zubat"],
+        "leafgreen": ["Sandshrew", "Sandshrew"]
       },
       "surf": [
         {
@@ -11086,49 +9422,17 @@
           "level": 23
         }
       ],
-      "swarm": [
-        74,
-        74
-      ],
-      "day": [
-        74,
-        74
-      ],
-      "night": [
-        74,
-        74
-      ],
-      "radar": [
-        74,
-        74,
-        74,
-        449
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Geodude", "Geodude"],
+      "day": ["Geodude", "Geodude"],
+      "night": ["Geodude", "Geodude"],
+      "radar": ["Geodude", "Geodude", "Geodude", "Hippopotas"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Geodude",
-          "Hippopotas"
-        ],
-        "sapphire": [
-          "Geodude",
-          "Hippopotas"
-        ],
-        "emerald": [
-          "Geodude",
-          "Hippopotas"
-        ],
-        "firered": [
-          "Geodude",
-          "Hippopotas"
-        ],
-        "leafgreen": [
-          "Geodude",
-          "Hippopotas"
-        ]
+        "ruby": ["Geodude", "Hippopotas"],
+        "sapphire": ["Geodude", "Hippopotas"],
+        "emerald": ["Geodude", "Hippopotas"],
+        "firered": ["Geodude", "Hippopotas"],
+        "leafgreen": ["Geodude", "Hippopotas"]
       },
       "surf": [
         {
@@ -11298,49 +9602,17 @@
           "level": 16
         }
       ],
-      "swarm": [
-        397,
-        315
-      ],
-      "day": [
-        397,
-        397
-      ],
-      "night": [
-        402,
-        402
-      ],
-      "radar": [
-        315,
-        402,
-        25,
-        172
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Staravia", "Roselia"],
+      "day": ["Staravia", "Staravia"],
+      "night": ["Kricketune", "Kricketune"],
+      "radar": ["Roselia", "Kricketune", "Pikachu", "Pichu"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Pikachu",
-          "Pichu"
-        ],
-        "sapphire": [
-          "Pikachu",
-          "Pichu"
-        ],
-        "emerald": [
-          "Pikachu",
-          "Pichu"
-        ],
-        "firered": [
-          "Pikachu",
-          "Pichu"
-        ],
-        "leafgreen": [
-          "Pikachu",
-          "Pichu"
-        ]
+        "ruby": ["Pikachu", "Pichu"],
+        "sapphire": ["Pikachu", "Pichu"],
+        "emerald": ["Pikachu", "Pichu"],
+        "firered": ["Pikachu", "Pichu"],
+        "leafgreen": ["Pikachu", "Pichu"]
       },
       "surf": [
         {
@@ -11510,49 +9782,17 @@
           "level": 0
         }
       ],
-      "swarm": [
-        0,
-        0
-      ],
-      "day": [
-        0,
-        0
-      ],
-      "night": [
-        0,
-        0
-      ],
-      "radar": [
-        0,
-        0,
-        0,
-        0
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": [0, 0],
+      "day": [0, 0],
+      "night": [0, 0],
+      "radar": [0, 0, 0, 0],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          0,
-          0
-        ],
-        "sapphire": [
-          0,
-          0
-        ],
-        "emerald": [
-          0,
-          0
-        ],
-        "firered": [
-          0,
-          0
-        ],
-        "leafgreen": [
-          0,
-          0
-        ]
+        "ruby": [0, 0],
+        "sapphire": [0, 0],
+        "emerald": [0, 0],
+        "firered": [0, 0],
+        "leafgreen": [0, 0]
       },
       "surf": [
         {
@@ -11722,49 +9962,17 @@
           "level": 33
         }
       ],
-      "swarm": [
-        74,
-        75
-      ],
-      "day": [
-        41,
-        42
-      ],
-      "night": [
-        41,
-        42
-      ],
-      "radar": [
-        74,
-        75,
-        74,
-        75
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Geodude", "Graveler"],
+      "day": ["Zubat", "Golbat"],
+      "night": ["Zubat", "Golbat"],
+      "radar": ["Geodude", "Graveler", "Geodude", "Graveler"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Geodude",
-          "Graveler"
-        ],
-        "sapphire": [
-          "Geodude",
-          "Graveler"
-        ],
-        "emerald": [
-          "Geodude",
-          "Graveler"
-        ],
-        "firered": [
-          "Geodude",
-          "Graveler"
-        ],
-        "leafgreen": [
-          "Geodude",
-          "Graveler"
-        ]
+        "ruby": ["Geodude", "Graveler"],
+        "sapphire": ["Geodude", "Graveler"],
+        "emerald": ["Geodude", "Graveler"],
+        "firered": ["Geodude", "Graveler"],
+        "leafgreen": ["Geodude", "Graveler"]
       },
       "surf": [
         {
@@ -11934,49 +10142,17 @@
           "level": 33
         }
       ],
-      "swarm": [
-        75,
-        75
-      ],
-      "day": [
-        42,
-        42
-      ],
-      "night": [
-        42,
-        42
-      ],
-      "radar": [
-        75,
-        75,
-        74,
-        75
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Graveler", "Graveler"],
+      "day": ["Golbat", "Golbat"],
+      "night": ["Golbat", "Golbat"],
+      "radar": ["Graveler", "Graveler", "Geodude", "Graveler"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Mawile",
-          "Mawile"
-        ],
-        "sapphire": [
-          "Sableye",
-          "Sableye"
-        ],
-        "emerald": [
-          "Graveler",
-          "Graveler"
-        ],
-        "firered": [
-          "Graveler",
-          "Graveler"
-        ],
-        "leafgreen": [
-          "Graveler",
-          "Graveler"
-        ]
+        "ruby": ["Mawile", "Mawile"],
+        "sapphire": ["Sableye", "Sableye"],
+        "emerald": ["Graveler", "Graveler"],
+        "firered": ["Graveler", "Graveler"],
+        "leafgreen": ["Graveler", "Graveler"]
       },
       "surf": [
         {
@@ -12146,49 +10322,17 @@
           "level": 33
         }
       ],
-      "swarm": [
-        75,
-        75
-      ],
-      "day": [
-        42,
-        42
-      ],
-      "night": [
-        42,
-        42
-      ],
-      "radar": [
-        75,
-        75,
-        74,
-        75
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Graveler", "Graveler"],
+      "day": ["Golbat", "Golbat"],
+      "night": ["Golbat", "Golbat"],
+      "radar": ["Graveler", "Graveler", "Geodude", "Graveler"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Mawile",
-          "Mawile"
-        ],
-        "sapphire": [
-          "Sableye",
-          "Sableye"
-        ],
-        "emerald": [
-          "Graveler",
-          "Graveler"
-        ],
-        "firered": [
-          "Graveler",
-          "Graveler"
-        ],
-        "leafgreen": [
-          "Graveler",
-          "Graveler"
-        ]
+        "ruby": ["Mawile", "Mawile"],
+        "sapphire": ["Sableye", "Sableye"],
+        "emerald": ["Graveler", "Graveler"],
+        "firered": ["Graveler", "Graveler"],
+        "leafgreen": ["Graveler", "Graveler"]
       },
       "surf": [
         {
@@ -12358,49 +10502,17 @@
           "level": 33
         }
       ],
-      "swarm": [
-        75,
-        95
-      ],
-      "day": [
-        42,
-        42
-      ],
-      "night": [
-        42,
-        42
-      ],
-      "radar": [
-        75,
-        75,
-        74,
-        75
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Graveler", "Onix"],
+      "day": ["Golbat", "Golbat"],
+      "night": ["Golbat", "Golbat"],
+      "radar": ["Graveler", "Graveler", "Geodude", "Graveler"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Mawile",
-          "Mawile"
-        ],
-        "sapphire": [
-          "Sableye",
-          "Sableye"
-        ],
-        "emerald": [
-          "Graveler",
-          "Graveler"
-        ],
-        "firered": [
-          "Graveler",
-          "Graveler"
-        ],
-        "leafgreen": [
-          "Graveler",
-          "Graveler"
-        ]
+        "ruby": ["Mawile", "Mawile"],
+        "sapphire": ["Sableye", "Sableye"],
+        "emerald": ["Graveler", "Graveler"],
+        "firered": ["Graveler", "Graveler"],
+        "leafgreen": ["Graveler", "Graveler"]
       },
       "surf": [
         {
@@ -12570,49 +10682,17 @@
           "level": 34
         }
       ],
-      "swarm": [
-        75,
-        95
-      ],
-      "day": [
-        42,
-        42
-      ],
-      "night": [
-        42,
-        42
-      ],
-      "radar": [
-        75,
-        95,
-        74,
-        75
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Graveler", "Onix"],
+      "day": ["Golbat", "Golbat"],
+      "night": ["Golbat", "Golbat"],
+      "radar": ["Graveler", "Onix", "Geodude", "Graveler"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Mawile",
-          "Mawile"
-        ],
-        "sapphire": [
-          "Sableye",
-          "Sableye"
-        ],
-        "emerald": [
-          "Graveler",
-          "Graveler"
-        ],
-        "firered": [
-          "Graveler",
-          "Graveler"
-        ],
-        "leafgreen": [
-          "Graveler",
-          "Graveler"
-        ]
+        "ruby": ["Mawile", "Mawile"],
+        "sapphire": ["Sableye", "Sableye"],
+        "emerald": ["Graveler", "Graveler"],
+        "firered": ["Graveler", "Graveler"],
+        "leafgreen": ["Graveler", "Graveler"]
       },
       "surf": [
         {
@@ -12782,49 +10862,17 @@
           "level": 34
         }
       ],
-      "swarm": [
-        75,
-        95
-      ],
-      "day": [
-        42,
-        42
-      ],
-      "night": [
-        42,
-        42
-      ],
-      "radar": [
-        75,
-        95,
-        74,
-        75
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Graveler", "Onix"],
+      "day": ["Golbat", "Golbat"],
+      "night": ["Golbat", "Golbat"],
+      "radar": ["Graveler", "Onix", "Geodude", "Graveler"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Mawile",
-          "Mawile"
-        ],
-        "sapphire": [
-          "Sableye",
-          "Sableye"
-        ],
-        "emerald": [
-          "Graveler",
-          "Graveler"
-        ],
-        "firered": [
-          "Graveler",
-          "Graveler"
-        ],
-        "leafgreen": [
-          "Graveler",
-          "Graveler"
-        ]
+        "ruby": ["Mawile", "Mawile"],
+        "sapphire": ["Sableye", "Sableye"],
+        "emerald": ["Graveler", "Graveler"],
+        "firered": ["Graveler", "Graveler"],
+        "leafgreen": ["Graveler", "Graveler"]
       },
       "surf": [
         {
@@ -12994,49 +11042,17 @@
           "level": 15
         }
       ],
-      "swarm": [
-        92,
-        92
-      ],
-      "day": [
-        92,
-        92
-      ],
-      "night": [
-        92,
-        92
-      ],
-      "radar": [
-        92,
-        92,
-        92,
-        92
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Gastly", "Gastly"],
+      "day": ["Gastly", "Gastly"],
+      "night": ["Gastly", "Gastly"],
+      "radar": ["Gastly", "Gastly", "Gastly", "Gastly"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Haunter",
-          "Haunter"
-        ],
-        "sapphire": [
-          "Haunter",
-          "Haunter"
-        ],
-        "emerald": [
-          "Haunter",
-          "Haunter"
-        ],
-        "firered": [
-          "Haunter",
-          "Haunter"
-        ],
-        "leafgreen": [
-          "Haunter",
-          "Haunter"
-        ]
+        "ruby": ["Haunter", "Haunter"],
+        "sapphire": ["Haunter", "Haunter"],
+        "emerald": ["Haunter", "Haunter"],
+        "firered": ["Haunter", "Haunter"],
+        "leafgreen": ["Haunter", "Haunter"]
       },
       "surf": [
         {
@@ -13206,49 +11222,17 @@
           "level": 15
         }
       ],
-      "swarm": [
-        92,
-        92
-      ],
-      "day": [
-        92,
-        92
-      ],
-      "night": [
-        92,
-        92
-      ],
-      "radar": [
-        92,
-        92,
-        92,
-        92
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Gastly", "Gastly"],
+      "day": ["Gastly", "Gastly"],
+      "night": ["Gastly", "Gastly"],
+      "radar": ["Gastly", "Gastly", "Gastly", "Gastly"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Gengar",
-          "Haunter"
-        ],
-        "sapphire": [
-          "Gengar",
-          "Haunter"
-        ],
-        "emerald": [
-          "Gengar",
-          "Haunter"
-        ],
-        "firered": [
-          "Gengar",
-          "Haunter"
-        ],
-        "leafgreen": [
-          "Gengar",
-          "Haunter"
-        ]
+        "ruby": ["Gengar", "Haunter"],
+        "sapphire": ["Gengar", "Haunter"],
+        "emerald": ["Gengar", "Haunter"],
+        "firered": ["Gengar", "Haunter"],
+        "leafgreen": ["Gengar", "Haunter"]
       },
       "surf": [
         {
@@ -13418,49 +11402,17 @@
           "level": 4
         }
       ],
-      "swarm": [
-        283,
-        283
-      ],
-      "day": [
-        396,
-        399
-      ],
-      "night": [
-        399,
-        399
-      ],
-      "radar": [
-        202,
-        202,
-        202,
-        202
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Surskit", "Surskit"],
+      "day": ["Starly", "Bidoof"],
+      "night": ["Bidoof", "Bidoof"],
+      "radar": ["Wobbuffet", "Wobbuffet", "Wobbuffet", "Wobbuffet"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Solrock",
-          "Solrock"
-        ],
-        "sapphire": [
-          "Lunatone",
-          "Lunatone"
-        ],
-        "emerald": [
-          "Bibarel",
-          "Staravia"
-        ],
-        "firered": [
-          "Bibarel",
-          "Staravia"
-        ],
-        "leafgreen": [
-          "Bibarel",
-          "Staravia"
-        ]
+        "ruby": ["Solrock", "Solrock"],
+        "sapphire": ["Lunatone", "Lunatone"],
+        "emerald": ["Bibarel", "Staravia"],
+        "firered": ["Bibarel", "Staravia"],
+        "leafgreen": ["Bibarel", "Staravia"]
       },
       "surf": [
         {
@@ -13630,49 +11582,17 @@
           "level": 4
         }
       ],
-      "swarm": [
-        283,
-        283
-      ],
-      "day": [
-        396,
-        399
-      ],
-      "night": [
-        399,
-        399
-      ],
-      "radar": [
-        202,
-        202,
-        202,
-        202
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Surskit", "Surskit"],
+      "day": ["Starly", "Bidoof"],
+      "night": ["Bidoof", "Bidoof"],
+      "radar": ["Wobbuffet", "Wobbuffet", "Wobbuffet", "Wobbuffet"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Solrock",
-          "Solrock"
-        ],
-        "sapphire": [
-          "Lunatone",
-          "Lunatone"
-        ],
-        "emerald": [
-          "Bibarel",
-          "Staravia"
-        ],
-        "firered": [
-          "Bibarel",
-          "Staravia"
-        ],
-        "leafgreen": [
-          "Bibarel",
-          "Staravia"
-        ]
+        "ruby": ["Solrock", "Solrock"],
+        "sapphire": ["Lunatone", "Lunatone"],
+        "emerald": ["Bibarel", "Staravia"],
+        "firered": ["Bibarel", "Staravia"],
+        "leafgreen": ["Bibarel", "Staravia"]
       },
       "surf": [
         {
@@ -13842,49 +11762,17 @@
           "level": 35
         }
       ],
-      "swarm": [
-        108,
-        108
-      ],
-      "day": [
-        397,
-        397
-      ],
-      "night": [
-        164,
-        164
-      ],
-      "radar": [
-        202,
-        202,
-        202,
-        202
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Lickitung", "Lickitung"],
+      "day": ["Staravia", "Staravia"],
+      "night": ["Noctowl", "Noctowl"],
+      "radar": ["Wobbuffet", "Wobbuffet", "Wobbuffet", "Wobbuffet"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Solrock",
-          "Solrock"
-        ],
-        "sapphire": [
-          "Lunatone",
-          "Lunatone"
-        ],
-        "emerald": [
-          "Bibarel",
-          "Staravia"
-        ],
-        "firered": [
-          "Bibarel",
-          "Staravia"
-        ],
-        "leafgreen": [
-          "Bibarel",
-          "Staravia"
-        ]
+        "ruby": ["Solrock", "Solrock"],
+        "sapphire": ["Lunatone", "Lunatone"],
+        "emerald": ["Bibarel", "Staravia"],
+        "firered": ["Bibarel", "Staravia"],
+        "leafgreen": ["Bibarel", "Staravia"]
       },
       "surf": [
         {
@@ -14054,49 +11942,17 @@
           "level": 36
         }
       ],
-      "swarm": [
-        238,
-        238
-      ],
-      "day": [
-        400,
-        54
-      ],
-      "night": [
-        164,
-        164
-      ],
-      "radar": [
-        202,
-        202,
-        202,
-        202
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Smoochum", "Smoochum"],
+      "day": ["Bibarel", "Psyduck"],
+      "night": ["Noctowl", "Noctowl"],
+      "radar": ["Wobbuffet", "Wobbuffet", "Wobbuffet", "Wobbuffet"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Solrock",
-          "Solrock"
-        ],
-        "sapphire": [
-          "Lunatone",
-          "Lunatone"
-        ],
-        "emerald": [
-          "Ursaring",
-          "Ursaring"
-        ],
-        "firered": [
-          "Bibarel",
-          "Sneasel"
-        ],
-        "leafgreen": [
-          "Bibarel",
-          "Sneasel"
-        ]
+        "ruby": ["Solrock", "Solrock"],
+        "sapphire": ["Lunatone", "Lunatone"],
+        "emerald": ["Ursaring", "Ursaring"],
+        "firered": ["Bibarel", "Sneasel"],
+        "leafgreen": ["Bibarel", "Sneasel"]
       },
       "surf": [
         {
@@ -14266,49 +12122,17 @@
           "level": 22
         }
       ],
-      "swarm": [
-        203,
-        74
-      ],
-      "day": [
-        397,
-        75
-      ],
-      "night": [
-        402,
-        402
-      ],
-      "radar": [
-        30,
-        30,
-        33,
-        33
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Girafarig", "Geodude"],
+      "day": ["Staravia", "Graveler"],
+      "night": ["Kricketune", "Kricketune"],
+      "radar": ["Nidorina", "Nidorina", "Nidorino", "Nidorino"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Bibarel",
-          "Graveler"
-        ],
-        "sapphire": [
-          "Bibarel",
-          "Graveler"
-        ],
-        "emerald": [
-          "Bibarel",
-          "Graveler"
-        ],
-        "firered": [
-          "Bibarel",
-          "Graveler"
-        ],
-        "leafgreen": [
-          "Bibarel",
-          "Graveler"
-        ]
+        "ruby": ["Bibarel", "Graveler"],
+        "sapphire": ["Bibarel", "Graveler"],
+        "emerald": ["Bibarel", "Graveler"],
+        "firered": ["Bibarel", "Graveler"],
+        "leafgreen": ["Bibarel", "Graveler"]
       },
       "surf": [
         {
@@ -14478,49 +12302,17 @@
           "level": 36
         }
       ],
-      "swarm": [
-        459,
-        215
-      ],
-      "day": [
-        307,
-        67
-      ],
-      "night": [
-        41,
-        164
-      ],
-      "radar": [
-        361,
-        361,
-        361,
-        361
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Snover", "Sneasel"],
+      "day": ["Meditite", "Machoke"],
+      "night": ["Zubat", "Noctowl"],
+      "radar": ["Snorunt", "Snorunt", "Snorunt", "Snorunt"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Medicham",
-          "Medicham"
-        ],
-        "sapphire": [
-          "Medicham",
-          "Medicham"
-        ],
-        "emerald": [
-          "Teddiursa",
-          "Teddiursa"
-        ],
-        "firered": [
-          "Medicham",
-          "Medicham"
-        ],
-        "leafgreen": [
-          "Medicham",
-          "Medicham"
-        ]
+        "ruby": ["Medicham", "Medicham"],
+        "sapphire": ["Medicham", "Medicham"],
+        "emerald": ["Teddiursa", "Teddiursa"],
+        "firered": ["Medicham", "Medicham"],
+        "leafgreen": ["Medicham", "Medicham"]
       },
       "surf": [
         {
@@ -14690,49 +12482,17 @@
           "level": 2
         }
       ],
-      "swarm": [
-        84,
-        84
-      ],
-      "day": [
-        396,
-        399
-      ],
-      "night": [
-        399,
-        399
-      ],
-      "radar": [
-        29,
-        29,
-        32,
-        32
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Doduo", "Doduo"],
+      "day": ["Starly", "Bidoof"],
+      "night": ["Bidoof", "Bidoof"],
+      "radar": ["Nidoran♀", "Nidoran♀", "Nidoran♂", "Nidoran♂"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Starly",
-          "Starly"
-        ],
-        "sapphire": [
-          "Starly",
-          "Starly"
-        ],
-        "emerald": [
-          "Starly",
-          "Starly"
-        ],
-        "firered": [
-          "Growlithe",
-          "Growlithe"
-        ],
-        "leafgreen": [
-          "Starly",
-          "Starly"
-        ]
+        "ruby": ["Starly", "Starly"],
+        "sapphire": ["Starly", "Starly"],
+        "emerald": ["Starly", "Starly"],
+        "firered": ["Growlithe", "Growlithe"],
+        "leafgreen": ["Starly", "Starly"]
       },
       "surf": [
         {
@@ -14902,49 +12662,17 @@
           "level": 2
         }
       ],
-      "swarm": [
-        263,
-        263
-      ],
-      "day": [
-        396,
-        396
-      ],
-      "night": [
-        401,
-        401
-      ],
-      "radar": [
-        161,
-        161,
-        161,
-        161
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Zigzagoon", "Zigzagoon"],
+      "day": ["Starly", "Starly"],
+      "night": ["Kricketot", "Kricketot"],
+      "radar": ["Sentret", "Sentret", "Sentret", "Sentret"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Starly",
-          "Bidoof"
-        ],
-        "sapphire": [
-          "Starly",
-          "Bidoof"
-        ],
-        "emerald": [
-          "Starly",
-          "Bidoof"
-        ],
-        "firered": [
-          "Growlithe",
-          "Growlithe"
-        ],
-        "leafgreen": [
-          "Starly",
-          "Bidoof"
-        ]
+        "ruby": ["Starly", "Bidoof"],
+        "sapphire": ["Starly", "Bidoof"],
+        "emerald": ["Starly", "Bidoof"],
+        "firered": ["Growlithe", "Growlithe"],
+        "leafgreen": ["Starly", "Bidoof"]
       },
       "surf": [
         {
@@ -15114,49 +12842,17 @@
           "level": 6
         }
       ],
-      "swarm": [
-        104,
-        104
-      ],
-      "day": [
-        396,
-        396
-      ],
-      "night": [
-        41,
-        401
-      ],
-      "radar": [
-        280,
-        280,
-        280,
-        281
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Cubone", "Cubone"],
+      "day": ["Starly", "Starly"],
+      "night": ["Zubat", "Kricketot"],
+      "radar": ["Ralts", "Ralts", "Ralts", "Kirlia"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Seedot",
-          "Seedot"
-        ],
-        "sapphire": [
-          "Lotad",
-          "Lotad"
-        ],
-        "emerald": [
-          "Pineco",
-          "Pineco"
-        ],
-        "firered": [
-          "Starly",
-          "Bidoof"
-        ],
-        "leafgreen": [
-          "Starly",
-          "Bidoof"
-        ]
+        "ruby": ["Seedot", "Seedot"],
+        "sapphire": ["Lotad", "Lotad"],
+        "emerald": ["Pineco", "Pineco"],
+        "firered": ["Starly", "Bidoof"],
+        "leafgreen": ["Starly", "Bidoof"]
       },
       "surf": [
         {
@@ -15326,49 +13022,17 @@
           "level": 6
         }
       ],
-      "swarm": [
-        396,
-        399
-      ],
-      "day": [
-        406,
-        396
-      ],
-      "night": [
-        41,
-        401
-      ],
-      "radar": [
-        280,
-        280,
-        280,
-        281
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Starly", "Bidoof"],
+      "day": ["Budew", "Starly"],
+      "night": ["Zubat", "Kricketot"],
+      "radar": ["Ralts", "Ralts", "Ralts", "Kirlia"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Seedot",
-          "Seedot"
-        ],
-        "sapphire": [
-          "Lotad",
-          "Lotad"
-        ],
-        "emerald": [
-          "Pineco",
-          "Pineco"
-        ],
-        "firered": [
-          "Caterpie",
-          "Caterpie"
-        ],
-        "leafgreen": [
-          "Weedle",
-          "Weedle"
-        ]
+        "ruby": ["Seedot", "Seedot"],
+        "sapphire": ["Lotad", "Lotad"],
+        "emerald": ["Pineco", "Pineco"],
+        "firered": ["Caterpie", "Caterpie"],
+        "leafgreen": ["Weedle", "Weedle"]
       },
       "surf": [
         {
@@ -15538,49 +13202,17 @@
           "level": 8
         }
       ],
-      "swarm": [
-        396,
-        399
-      ],
-      "day": [
-        406,
-        396
-      ],
-      "night": [
-        41,
-        401
-      ],
-      "radar": [
-        191,
-        191,
-        191,
-        191
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Starly", "Bidoof"],
+      "day": ["Budew", "Starly"],
+      "night": ["Zubat", "Kricketot"],
+      "radar": ["Sunkern", "Sunkern", "Sunkern", "Sunkern"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Seedot",
-          "Seedot"
-        ],
-        "sapphire": [
-          "Lotad",
-          "Lotad"
-        ],
-        "emerald": [
-          "Pineco",
-          "Pineco"
-        ],
-        "firered": [
-          "Starly",
-          "Bidoof"
-        ],
-        "leafgreen": [
-          "Starly",
-          "Bidoof"
-        ]
+        "ruby": ["Seedot", "Seedot"],
+        "sapphire": ["Lotad", "Lotad"],
+        "emerald": ["Pineco", "Pineco"],
+        "firered": ["Starly", "Bidoof"],
+        "leafgreen": ["Starly", "Bidoof"]
       },
       "surf": [
         {
@@ -15750,49 +13382,17 @@
           "level": 10
         }
       ],
-      "swarm": [
-        418,
-        422
-      ],
-      "day": [
-        418,
-        422
-      ],
-      "night": [
-        418,
-        422
-      ],
-      "radar": [
-        187,
-        187,
-        187,
-        187
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Buizel", "Shellos"],
+      "day": ["Buizel", "Shellos"],
+      "night": ["Buizel", "Shellos"],
+      "radar": ["Hoppip", "Hoppip", "Hoppip", "Hoppip"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Buizel",
-          "Shellos"
-        ],
-        "sapphire": [
-          "Buizel",
-          "Shellos"
-        ],
-        "emerald": [
-          "Buizel",
-          "Shellos"
-        ],
-        "firered": [
-          "Elekid",
-          "Elekid"
-        ],
-        "leafgreen": [
-          "Buizel",
-          "Shellos"
-        ]
+        "ruby": ["Buizel", "Shellos"],
+        "sapphire": ["Buizel", "Shellos"],
+        "emerald": ["Buizel", "Shellos"],
+        "firered": ["Elekid", "Elekid"],
+        "leafgreen": ["Buizel", "Shellos"]
       },
       "surf": [
         {
@@ -15962,49 +13562,17 @@
           "level": 12
         }
       ],
-      "swarm": [
-        418,
-        399
-      ],
-      "day": [
-        418,
-        399
-      ],
-      "night": [
-        418,
-        399
-      ],
-      "radar": [
-        187,
-        187,
-        188,
-        188
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Buizel", "Bidoof"],
+      "day": ["Buizel", "Bidoof"],
+      "night": ["Buizel", "Bidoof"],
+      "radar": ["Hoppip", "Hoppip", "Skiploom", "Skiploom"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Buizel",
-          "Bidoof"
-        ],
-        "sapphire": [
-          "Lotad",
-          "Lotad"
-        ],
-        "emerald": [
-          "Buizel",
-          "Bidoof"
-        ],
-        "firered": [
-          "Buizel",
-          "Bidoof"
-        ],
-        "leafgreen": [
-          "Buizel",
-          "Bidoof"
-        ]
+        "ruby": ["Buizel", "Bidoof"],
+        "sapphire": ["Lotad", "Lotad"],
+        "emerald": ["Buizel", "Bidoof"],
+        "firered": ["Buizel", "Bidoof"],
+        "leafgreen": ["Buizel", "Bidoof"]
       },
       "surf": [
         {
@@ -16174,49 +13742,17 @@
           "level": 16
         }
       ],
-      "swarm": [
-        299,
-        299
-      ],
-      "day": [
-        77,
-        77
-      ],
-      "night": [
-        41,
-        402
-      ],
-      "radar": [
-        343,
-        343,
-        343,
-        343
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Nosepass", "Nosepass"],
+      "day": ["Ponyta", "Ponyta"],
+      "night": ["Zubat", "Kricketune"],
+      "radar": ["Baltoy", "Baltoy", "Baltoy", "Baltoy"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Ponyta",
-          "Stunky"
-        ],
-        "sapphire": [
-          "Ponyta",
-          "Stunky"
-        ],
-        "emerald": [
-          "Gligar",
-          "Gligar"
-        ],
-        "firered": [
-          "Ponyta",
-          "Stunky"
-        ],
-        "leafgreen": [
-          "Ponyta",
-          "Stunky"
-        ]
+        "ruby": ["Ponyta", "Stunky"],
+        "sapphire": ["Ponyta", "Stunky"],
+        "emerald": ["Gligar", "Gligar"],
+        "firered": ["Ponyta", "Stunky"],
+        "leafgreen": ["Ponyta", "Stunky"]
       },
       "surf": [
         {
@@ -16386,49 +13922,17 @@
           "level": 7
         }
       ],
-      "swarm": [
-        231,
-        231
-      ],
-      "day": [
-        66,
-        66
-      ],
-      "night": [
-        41,
-        401
-      ],
-      "radar": [
-        246,
-        246,
-        246,
-        246
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Phanpy", "Phanpy"],
+      "day": ["Machop", "Machop"],
+      "night": ["Zubat", "Kricketot"],
+      "radar": ["Larvitar", "Larvitar", "Larvitar", "Larvitar"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Machop",
-          "Geodude"
-        ],
-        "sapphire": [
-          "Machop",
-          "Geodude"
-        ],
-        "emerald": [
-          "Gligar",
-          "Gligar"
-        ],
-        "firered": [
-          "Machop",
-          "Geodude"
-        ],
-        "leafgreen": [
-          "Machop",
-          "Geodude"
-        ]
+        "ruby": ["Machop", "Geodude"],
+        "sapphire": ["Machop", "Geodude"],
+        "emerald": ["Gligar", "Gligar"],
+        "firered": ["Machop", "Geodude"],
+        "leafgreen": ["Machop", "Geodude"]
       },
       "surf": [
         {
@@ -16598,49 +14102,17 @@
           "level": 18
         }
       ],
-      "swarm": [
-        206,
-        206
-      ],
-      "day": [
-        307,
-        66
-      ],
-      "night": [
-        41,
-        41
-      ],
-      "radar": [
-        236,
-        236,
-        236,
-        236
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Dunsparce", "Dunsparce"],
+      "day": ["Meditite", "Machop"],
+      "night": ["Zubat", "Zubat"],
+      "radar": ["Tyrogue", "Tyrogue", "Tyrogue", "Tyrogue"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Zangoose",
-          "Zangoose"
-        ],
-        "sapphire": [
-          "Seviper",
-          "Seviper"
-        ],
-        "emerald": [
-          "Psyduck",
-          "Bibarel"
-        ],
-        "firered": [
-          "Psyduck",
-          "Bibarel"
-        ],
-        "leafgreen": [
-          "Psyduck",
-          "Bibarel"
-        ]
+        "ruby": ["Zangoose", "Zangoose"],
+        "sapphire": ["Seviper", "Seviper"],
+        "emerald": ["Psyduck", "Bibarel"],
+        "firered": ["Psyduck", "Bibarel"],
+        "leafgreen": ["Psyduck", "Bibarel"]
       },
       "surf": [
         {
@@ -16810,49 +14282,17 @@
           "level": 16
         }
       ],
-      "swarm": [
-        209,
-        209
-      ],
-      "day": [
-        397,
-        400
-      ],
-      "night": [
-        92,
-        41
-      ],
-      "radar": [
-        128,
-        128,
-        241,
-        241
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Snubbull", "Snubbull"],
+      "day": ["Staravia", "Bibarel"],
+      "night": ["Gastly", "Zubat"],
+      "radar": ["Tauros", "Tauros", "Miltank", "Miltank"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Chansey",
-          "Mime Jr."
-        ],
-        "sapphire": [
-          "Chansey",
-          "Mime Jr."
-        ],
-        "emerald": [
-          "Chansey",
-          "Mime Jr."
-        ],
-        "firered": [
-          "Chansey",
-          "Mime Jr."
-        ],
-        "leafgreen": [
-          "Vulpix",
-          "Vulpix"
-        ]
+        "ruby": ["Chansey", "Mime Jr."],
+        "sapphire": ["Chansey", "Mime Jr."],
+        "emerald": ["Chansey", "Mime Jr."],
+        "firered": ["Chansey", "Mime Jr."],
+        "leafgreen": ["Vulpix", "Vulpix"]
       },
       "surf": [
         {
@@ -17022,49 +14462,17 @@
           "level": 18
         }
       ],
-      "swarm": [
-        92,
-        41
-      ],
-      "day": [
-        92,
-        41
-      ],
-      "night": [
-        198,
-        198
-      ],
-      "radar": [
-        92,
-        41,
-        92,
-        41
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Gastly", "Zubat"],
+      "day": ["Gastly", "Zubat"],
+      "night": ["Murkrow", "Murkrow"],
+      "radar": ["Gastly", "Zubat", "Gastly", "Zubat"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Gastly",
-          "Zubat"
-        ],
-        "sapphire": [
-          "Gastly",
-          "Zubat"
-        ],
-        "emerald": [
-          "Gastly",
-          "Zubat"
-        ],
-        "firered": [
-          "Gastly",
-          "Zubat"
-        ],
-        "leafgreen": [
-          "Gastly",
-          "Zubat"
-        ]
+        "ruby": ["Gastly", "Zubat"],
+        "sapphire": ["Gastly", "Zubat"],
+        "emerald": ["Gastly", "Zubat"],
+        "firered": ["Gastly", "Zubat"],
+        "leafgreen": ["Gastly", "Zubat"]
       },
       "surf": [
         {
@@ -17234,49 +14642,17 @@
           "level": 19
         }
       ],
-      "swarm": [
-        92,
-        41
-      ],
-      "day": [
-        92,
-        41
-      ],
-      "night": [
-        198,
-        198
-      ],
-      "radar": [
-        92,
-        41,
-        92,
-        41
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Gastly", "Zubat"],
+      "day": ["Gastly", "Zubat"],
+      "night": ["Murkrow", "Murkrow"],
+      "radar": ["Gastly", "Zubat", "Gastly", "Zubat"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Gastly",
-          "Zubat"
-        ],
-        "sapphire": [
-          "Gastly",
-          "Zubat"
-        ],
-        "emerald": [
-          "Gastly",
-          "Zubat"
-        ],
-        "firered": [
-          "Gastly",
-          "Zubat"
-        ],
-        "leafgreen": [
-          "Gastly",
-          "Zubat"
-        ]
+        "ruby": ["Gastly", "Zubat"],
+        "sapphire": ["Gastly", "Zubat"],
+        "emerald": ["Gastly", "Zubat"],
+        "firered": ["Gastly", "Zubat"],
+        "leafgreen": ["Gastly", "Zubat"]
       },
       "surf": [
         {
@@ -17446,49 +14822,17 @@
           "level": 19
         }
       ],
-      "swarm": [
-        92,
-        41
-      ],
-      "day": [
-        92,
-        41
-      ],
-      "night": [
-        198,
-        198
-      ],
-      "radar": [
-        92,
-        41,
-        92,
-        42
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Gastly", "Zubat"],
+      "day": ["Gastly", "Zubat"],
+      "night": ["Murkrow", "Murkrow"],
+      "radar": ["Gastly", "Zubat", "Gastly", "Golbat"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Gastly",
-          "Zubat"
-        ],
-        "sapphire": [
-          "Gastly",
-          "Zubat"
-        ],
-        "emerald": [
-          "Gastly",
-          "Zubat"
-        ],
-        "firered": [
-          "Gastly",
-          "Zubat"
-        ],
-        "leafgreen": [
-          "Gastly",
-          "Zubat"
-        ]
+        "ruby": ["Gastly", "Zubat"],
+        "sapphire": ["Gastly", "Zubat"],
+        "emerald": ["Gastly", "Zubat"],
+        "firered": ["Gastly", "Zubat"],
+        "leafgreen": ["Gastly", "Zubat"]
       },
       "surf": [
         {
@@ -17658,49 +15002,17 @@
           "level": 21
         }
       ],
-      "swarm": [
-        92,
-        41
-      ],
-      "day": [
-        92,
-        41
-      ],
-      "night": [
-        198,
-        198
-      ],
-      "radar": [
-        92,
-        41,
-        92,
-        42
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Gastly", "Zubat"],
+      "day": ["Gastly", "Zubat"],
+      "night": ["Murkrow", "Murkrow"],
+      "radar": ["Gastly", "Zubat", "Gastly", "Golbat"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Gastly",
-          "Golbat"
-        ],
-        "sapphire": [
-          "Gastly",
-          "Golbat"
-        ],
-        "emerald": [
-          "Gastly",
-          "Golbat"
-        ],
-        "firered": [
-          "Gastly",
-          "Golbat"
-        ],
-        "leafgreen": [
-          "Gastly",
-          "Golbat"
-        ]
+        "ruby": ["Gastly", "Golbat"],
+        "sapphire": ["Gastly", "Golbat"],
+        "emerald": ["Gastly", "Golbat"],
+        "firered": ["Gastly", "Golbat"],
+        "leafgreen": ["Gastly", "Golbat"]
       },
       "surf": [
         {
@@ -17870,49 +15182,17 @@
           "level": 23
         }
       ],
-      "swarm": [
-        92,
-        41
-      ],
-      "day": [
-        92,
-        41
-      ],
-      "night": [
-        198,
-        198
-      ],
-      "radar": [
-        92,
-        41,
-        92,
-        42
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Gastly", "Zubat"],
+      "day": ["Gastly", "Zubat"],
+      "night": ["Murkrow", "Murkrow"],
+      "radar": ["Gastly", "Zubat", "Gastly", "Golbat"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Gastly",
-          "Golbat"
-        ],
-        "sapphire": [
-          "Gastly",
-          "Golbat"
-        ],
-        "emerald": [
-          "Gastly",
-          "Golbat"
-        ],
-        "firered": [
-          "Gastly",
-          "Golbat"
-        ],
-        "leafgreen": [
-          "Gastly",
-          "Golbat"
-        ]
+        "ruby": ["Gastly", "Golbat"],
+        "sapphire": ["Gastly", "Golbat"],
+        "emerald": ["Gastly", "Golbat"],
+        "firered": ["Gastly", "Golbat"],
+        "leafgreen": ["Gastly", "Golbat"]
       },
       "surf": [
         {
@@ -18082,49 +15362,17 @@
           "level": 20
         }
       ],
-      "swarm": [
-        77,
-        74
-      ],
-      "day": [
-        77,
-        77
-      ],
-      "night": [
-        402,
-        402
-      ],
-      "radar": [
-        128,
-        128,
-        241,
-        241
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Ponyta", "Geodude"],
+      "day": ["Ponyta", "Ponyta"],
+      "night": ["Kricketune", "Kricketune"],
+      "radar": ["Tauros", "Tauros", "Miltank", "Miltank"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Seedot",
-          "Nuzleaf"
-        ],
-        "sapphire": [
-          "Chansey",
-          "Mime Jr."
-        ],
-        "emerald": [
-          "Pineco",
-          "Pineco"
-        ],
-        "firered": [
-          "Chansey",
-          "Mime Jr."
-        ],
-        "leafgreen": [
-          "Chansey",
-          "Mime Jr."
-        ]
+        "ruby": ["Seedot", "Nuzleaf"],
+        "sapphire": ["Chansey", "Mime Jr."],
+        "emerald": ["Pineco", "Pineco"],
+        "firered": ["Chansey", "Mime Jr."],
+        "leafgreen": ["Chansey", "Mime Jr."]
       },
       "surf": [
         {
@@ -18294,49 +15542,17 @@
           "level": 26
         }
       ],
-      "swarm": [
-        54,
-        400
-      ],
-      "day": [
-        307,
-        66
-      ],
-      "night": [
-        163,
-        164
-      ],
-      "radar": [
-        352,
-        352,
-        352,
-        352
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Psyduck", "Bibarel"],
+      "day": ["Meditite", "Machop"],
+      "night": ["Hoothoot", "Noctowl"],
+      "radar": ["Kecleon", "Kecleon", "Kecleon", "Kecleon"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Zangoose",
-          "Zangoose"
-        ],
-        "sapphire": [
-          "Seviper",
-          "Seviper"
-        ],
-        "emerald": [
-          "Machoke",
-          "Meditite"
-        ],
-        "firered": [
-          "Machoke",
-          "Meditite"
-        ],
-        "leafgreen": [
-          "Machoke",
-          "Meditite"
-        ]
+        "ruby": ["Zangoose", "Zangoose"],
+        "sapphire": ["Seviper", "Seviper"],
+        "emerald": ["Machoke", "Meditite"],
+        "firered": ["Machoke", "Meditite"],
+        "leafgreen": ["Machoke", "Meditite"]
       },
       "surf": [
         {
@@ -18506,49 +15722,17 @@
           "level": 14
         }
       ],
-      "swarm": [
-        307,
-        399
-      ],
-      "day": [
-        307,
-        399
-      ],
-      "night": [
-        41,
-        163
-      ],
-      "radar": [
-        236,
-        236,
-        236,
-        236
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Meditite", "Bidoof"],
+      "day": ["Meditite", "Bidoof"],
+      "night": ["Zubat", "Hoothoot"],
+      "radar": ["Tyrogue", "Tyrogue", "Tyrogue", "Tyrogue"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Bidoof",
-          "Meditite"
-        ],
-        "sapphire": [
-          "Bidoof",
-          "Meditite"
-        ],
-        "emerald": [
-          "Teddiursa",
-          "Teddiursa"
-        ],
-        "firered": [
-          "Bidoof",
-          "Meditite"
-        ],
-        "leafgreen": [
-          "Bidoof",
-          "Meditite"
-        ]
+        "ruby": ["Bidoof", "Meditite"],
+        "sapphire": ["Bidoof", "Meditite"],
+        "emerald": ["Teddiursa", "Teddiursa"],
+        "firered": ["Bidoof", "Meditite"],
+        "leafgreen": ["Bidoof", "Meditite"]
       },
       "surf": [
         {
@@ -18718,49 +15902,17 @@
           "level": 28
         }
       ],
-      "swarm": [
-        307,
-        75
-      ],
-      "day": [
-        77,
-        67
-      ],
-      "night": [
-        41,
-        164
-      ],
-      "radar": [
-        333,
-        333,
-        333,
-        333
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Meditite", "Graveler"],
+      "day": ["Ponyta", "Machoke"],
+      "night": ["Zubat", "Noctowl"],
+      "radar": ["Swablu", "Swablu", "Swablu", "Swablu"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Meditite",
-          "Ponyta"
-        ],
-        "sapphire": [
-          "Meditite",
-          "Ponyta"
-        ],
-        "emerald": [
-          "Teddiursa",
-          "Teddiursa"
-        ],
-        "firered": [
-          "Meditite",
-          "Ponyta"
-        ],
-        "leafgreen": [
-          "Meditite",
-          "Ponyta"
-        ]
+        "ruby": ["Meditite", "Ponyta"],
+        "sapphire": ["Meditite", "Ponyta"],
+        "emerald": ["Teddiursa", "Teddiursa"],
+        "firered": ["Meditite", "Ponyta"],
+        "leafgreen": ["Meditite", "Ponyta"]
       },
       "surf": [
         {
@@ -18930,49 +16082,17 @@
           "level": 18
         }
       ],
-      "swarm": [
-        396,
-        406
-      ],
-      "day": [
-        397,
-        397
-      ],
-      "night": [
-        402,
-        402
-      ],
-      "radar": [
-        235,
-        235,
-        235,
-        235
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Starly", "Budew"],
+      "day": ["Staravia", "Staravia"],
+      "night": ["Kricketune", "Kricketune"],
+      "radar": ["Smeargle", "Smeargle", "Smeargle", "Smeargle"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Kricketune",
-          "Kricketune"
-        ],
-        "sapphire": [
-          "Kricketune",
-          "Kricketune"
-        ],
-        "emerald": [
-          "Kricketune",
-          "Kricketune"
-        ],
-        "firered": [
-          "Kricketune",
-          "Kricketune"
-        ],
-        "leafgreen": [
-          "Kricketune",
-          "Kricketune"
-        ]
+        "ruby": ["Kricketune", "Kricketune"],
+        "sapphire": ["Kricketune", "Kricketune"],
+        "emerald": ["Kricketune", "Kricketune"],
+        "firered": ["Kricketune", "Kricketune"],
+        "leafgreen": ["Kricketune", "Kricketune"]
       },
       "surf": [
         {
@@ -19142,49 +16262,17 @@
           "level": 18
         }
       ],
-      "swarm": [
-        194,
-        400
-      ],
-      "day": [
-        315,
-        400
-      ],
-      "night": [
-        402,
-        402
-      ],
-      "radar": [
-        88,
-        88,
-        88,
-        88
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Wooper", "Bibarel"],
+      "day": ["Roselia", "Bibarel"],
+      "night": ["Kricketune", "Kricketune"],
+      "radar": ["Grimer", "Grimer", "Grimer", "Grimer"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Bibarel",
-          "Wooper"
-        ],
-        "sapphire": [
-          "Lombre",
-          "Lotad"
-        ],
-        "emerald": [
-          "Bibarel",
-          "Wooper"
-        ],
-        "firered": [
-          "Ekans",
-          "Ekans"
-        ],
-        "leafgreen": [
-          "Bibarel",
-          "Wooper"
-        ]
+        "ruby": ["Bibarel", "Wooper"],
+        "sapphire": ["Lombre", "Lotad"],
+        "emerald": ["Bibarel", "Wooper"],
+        "firered": ["Ekans", "Ekans"],
+        "leafgreen": ["Bibarel", "Wooper"]
       },
       "surf": [
         {
@@ -19354,49 +16442,17 @@
           "level": 22
         }
       ],
-      "swarm": [
-        359,
-        359
-      ],
-      "day": [
-        418,
-        278
-      ],
-      "night": [
-        418,
-        422
-      ],
-      "radar": [
-        277,
-        277,
-        277,
-        277
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Absol", "Absol"],
+      "day": ["Buizel", "Wingull"],
+      "night": ["Buizel", "Shellos"],
+      "radar": ["Swellow", "Swellow", "Swellow", "Swellow"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Floatzel",
-          "Shellos"
-        ],
-        "sapphire": [
-          "Floatzel",
-          "Shellos"
-        ],
-        "emerald": [
-          "Floatzel",
-          "Shellos"
-        ],
-        "firered": [
-          "Floatzel",
-          "Shellos"
-        ],
-        "leafgreen": [
-          "Floatzel",
-          "Shellos"
-        ]
+        "ruby": ["Floatzel", "Shellos"],
+        "sapphire": ["Floatzel", "Shellos"],
+        "emerald": ["Floatzel", "Shellos"],
+        "firered": ["Floatzel", "Shellos"],
+        "leafgreen": ["Floatzel", "Shellos"]
       },
       "surf": [
         {
@@ -19566,49 +16622,17 @@
           "level": 24
         }
       ],
-      "swarm": [
-        325,
-        325
-      ],
-      "day": [
-        77,
-        75
-      ],
-      "night": [
-        402,
-        402
-      ],
-      "radar": [
-        262,
-        262,
-        262,
-        262
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Spoink", "Spoink"],
+      "day": ["Ponyta", "Graveler"],
+      "night": ["Kricketune", "Kricketune"],
+      "radar": ["Mightyena", "Mightyena", "Mightyena", "Mightyena"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Stunky",
-          "Graveler"
-        ],
-        "sapphire": [
-          "Stunky",
-          "Graveler"
-        ],
-        "emerald": [
-          "Gligar",
-          "Gligar"
-        ],
-        "firered": [
-          "Stunky",
-          "Graveler"
-        ],
-        "leafgreen": [
-          "Vulpix",
-          "Vulpix"
-        ]
+        "ruby": ["Stunky", "Graveler"],
+        "sapphire": ["Stunky", "Graveler"],
+        "emerald": ["Gligar", "Gligar"],
+        "firered": ["Stunky", "Graveler"],
+        "leafgreen": ["Vulpix", "Vulpix"]
       },
       "surf": [
         {
@@ -19778,49 +16802,17 @@
           "level": 22
         }
       ],
-      "swarm": [
-        96,
-        96
-      ],
-      "day": [
-        77,
-        77
-      ],
-      "night": [
-        402,
-        402
-      ],
-      "radar": [
-        262,
-        262,
-        262,
-        262
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Drowzee", "Drowzee"],
+      "day": ["Ponyta", "Ponyta"],
+      "night": ["Kricketune", "Kricketune"],
+      "radar": ["Mightyena", "Mightyena", "Mightyena", "Mightyena"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Geodude",
-          "Kadabra"
-        ],
-        "sapphire": [
-          "Geodude",
-          "Kadabra"
-        ],
-        "emerald": [
-          "Gligar",
-          "Gligar"
-        ],
-        "firered": [
-          "Geodude",
-          "Kadabra"
-        ],
-        "leafgreen": [
-          "Geodude",
-          "Kadabra"
-        ]
+        "ruby": ["Geodude", "Kadabra"],
+        "sapphire": ["Geodude", "Kadabra"],
+        "emerald": ["Gligar", "Gligar"],
+        "firered": ["Geodude", "Kadabra"],
+        "leafgreen": ["Geodude", "Kadabra"]
       },
       "surf": [
         {
@@ -19990,49 +16982,17 @@
           "level": 34
         }
       ],
-      "swarm": [
-        225,
-        225
-      ],
-      "day": [
-        307,
-        67
-      ],
-      "night": [
-        41,
-        164
-      ],
-      "radar": [
-        361,
-        361,
-        361,
-        361
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Delibird", "Delibird"],
+      "day": ["Meditite", "Machoke"],
+      "night": ["Zubat", "Noctowl"],
+      "radar": ["Snorunt", "Snorunt", "Snorunt", "Snorunt"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Graveler",
-          "Graveler"
-        ],
-        "sapphire": [
-          "Graveler",
-          "Graveler"
-        ],
-        "emerald": [
-          "Ursaring",
-          "Ursaring"
-        ],
-        "firered": [
-          "Graveler",
-          "Graveler"
-        ],
-        "leafgreen": [
-          "Graveler",
-          "Graveler"
-        ]
+        "ruby": ["Graveler", "Graveler"],
+        "sapphire": ["Graveler", "Graveler"],
+        "emerald": ["Ursaring", "Ursaring"],
+        "firered": ["Graveler", "Graveler"],
+        "leafgreen": ["Graveler", "Graveler"]
       },
       "surf": [
         {
@@ -20202,49 +17162,17 @@
           "level": 36
         }
       ],
-      "swarm": [
-        220,
-        220
-      ],
-      "day": [
-        307,
-        67
-      ],
-      "night": [
-        41,
-        164
-      ],
-      "radar": [
-        361,
-        361,
-        361,
-        361
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Swinub", "Swinub"],
+      "day": ["Meditite", "Machoke"],
+      "night": ["Zubat", "Noctowl"],
+      "radar": ["Snorunt", "Snorunt", "Snorunt", "Snorunt"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Medicham",
-          "Medicham"
-        ],
-        "sapphire": [
-          "Medicham",
-          "Medicham"
-        ],
-        "emerald": [
-          "Ursaring",
-          "Ursaring"
-        ],
-        "firered": [
-          "Medicham",
-          "Medicham"
-        ],
-        "leafgreen": [
-          "Medicham",
-          "Medicham"
-        ]
+        "ruby": ["Medicham", "Medicham"],
+        "sapphire": ["Medicham", "Medicham"],
+        "emerald": ["Ursaring", "Ursaring"],
+        "firered": ["Medicham", "Medicham"],
+        "leafgreen": ["Medicham", "Medicham"]
       },
       "surf": [
         {
@@ -20414,49 +17342,17 @@
           "level": 30
         }
       ],
-      "swarm": [
-        100,
-        100
-      ],
-      "day": [
-        419,
-        423
-      ],
-      "night": [
-        419,
-        423
-      ],
-      "radar": [
-        132,
-        132,
-        132,
-        132
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Voltorb", "Voltorb"],
+      "day": ["Floatzel", "Gastrodon"],
+      "night": ["Floatzel", "Gastrodon"],
+      "radar": ["Ditto", "Ditto", "Ditto", "Ditto"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Mr. Mime",
-          "Gastrodon"
-        ],
-        "sapphire": [
-          "Mr. Mime",
-          "Gastrodon"
-        ],
-        "emerald": [
-          "Mr. Mime",
-          "Gastrodon"
-        ],
-        "firered": [
-          "Mr. Mime",
-          "Gastrodon"
-        ],
-        "leafgreen": [
-          "Mr. Mime",
-          "Gastrodon"
-        ]
+        "ruby": ["Mr. Mime", "Gastrodon"],
+        "sapphire": ["Mr. Mime", "Gastrodon"],
+        "emerald": ["Mr. Mime", "Gastrodon"],
+        "firered": ["Mr. Mime", "Gastrodon"],
+        "leafgreen": ["Mr. Mime", "Gastrodon"]
       },
       "surf": [
         {
@@ -20626,49 +17522,17 @@
           "level": 0
         }
       ],
-      "swarm": [
-        0,
-        0
-      ],
-      "day": [
-        0,
-        0
-      ],
-      "night": [
-        0,
-        0
-      ],
-      "radar": [
-        0,
-        0,
-        0,
-        0
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": [0, 0],
+      "day": [0, 0],
+      "night": [0, 0],
+      "radar": [0, 0, 0, 0],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          0,
-          0
-        ],
-        "sapphire": [
-          0,
-          0
-        ],
-        "emerald": [
-          0,
-          0
-        ],
-        "firered": [
-          0,
-          0
-        ],
-        "leafgreen": [
-          0,
-          0
-        ]
+        "ruby": [0, 0],
+        "sapphire": [0, 0],
+        "emerald": [0, 0],
+        "firered": [0, 0],
+        "leafgreen": [0, 0]
       },
       "surf": [
         {
@@ -20838,49 +17702,17 @@
           "level": 30
         }
       ],
-      "swarm": [
-        83,
-        83
-      ],
-      "day": [
-        315,
-        422
-      ],
-      "night": [
-        315,
-        422
-      ],
-      "radar": [
-        30,
-        30,
-        33,
-        33
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": ["Farfetch’d", "Farfetch’d"],
+      "day": ["Roselia", "Shellos"],
+      "night": ["Roselia", "Shellos"],
+      "radar": ["Nidorina", "Nidorina", "Nidorino", "Nidorino"],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          "Skuntank",
-          "Gastrodon"
-        ],
-        "sapphire": [
-          "Skuntank",
-          "Gastrodon"
-        ],
-        "emerald": [
-          "Skuntank",
-          "Gastrodon"
-        ],
-        "firered": [
-          "Skuntank",
-          "Gastrodon"
-        ],
-        "leafgreen": [
-          "Skuntank",
-          "Gastrodon"
-        ]
+        "ruby": ["Skuntank", "Gastrodon"],
+        "sapphire": ["Skuntank", "Gastrodon"],
+        "emerald": ["Skuntank", "Gastrodon"],
+        "firered": ["Skuntank", "Gastrodon"],
+        "leafgreen": ["Skuntank", "Gastrodon"]
       },
       "surf": [
         {
@@ -21050,49 +17882,17 @@
           "level": 42
         }
       ],
-      "swarm": [
-        300,
-        300
-      ],
-      "day": [
-        441,
-        441
-      ],
-      "night": [
-        419,
-        423
-      ],
-      "radar": [
-        180,
-        180,
-        180,
-        180
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Skitty", "Skitty"],
+      "day": ["Chatot", "Chatot"],
+      "night": ["Floatzel", "Gastrodon"],
+      "radar": ["Flaaffy", "Flaaffy", "Flaaffy", "Flaaffy"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Mr. Mime",
-          "Gastrodon"
-        ],
-        "sapphire": [
-          "Mr. Mime",
-          "Gastrodon"
-        ],
-        "emerald": [
-          "Mr. Mime",
-          "Gastrodon"
-        ],
-        "firered": [
-          "Mr. Mime",
-          "Gastrodon"
-        ],
-        "leafgreen": [
-          "Mr. Mime",
-          "Gastrodon"
-        ]
+        "ruby": ["Mr. Mime", "Gastrodon"],
+        "sapphire": ["Mr. Mime", "Gastrodon"],
+        "emerald": ["Mr. Mime", "Gastrodon"],
+        "firered": ["Mr. Mime", "Gastrodon"],
+        "leafgreen": ["Mr. Mime", "Gastrodon"]
       },
       "surf": [
         {
@@ -21262,49 +18062,17 @@
           "level": 23
         }
       ],
-      "swarm": [
-        177,
-        177
-      ],
-      "day": [
-        441,
-        441
-      ],
-      "night": [
-        419,
-        423
-      ],
-      "radar": [
-        356,
-        356,
-        355,
-        355
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Natu", "Natu"],
+      "day": ["Chatot", "Chatot"],
+      "night": ["Floatzel", "Gastrodon"],
+      "radar": ["Dusclops", "Dusclops", "Duskull", "Duskull"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Buizel",
-          "Beautifly"
-        ],
-        "sapphire": [
-          "Buizel",
-          "Beautifly"
-        ],
-        "emerald": [
-          "Shuckle",
-          "Shuckle"
-        ],
-        "firered": [
-          "Buizel",
-          "Beautifly"
-        ],
-        "leafgreen": [
-          "Buizel",
-          "Beautifly"
-        ]
+        "ruby": ["Buizel", "Beautifly"],
+        "sapphire": ["Buizel", "Beautifly"],
+        "emerald": ["Shuckle", "Shuckle"],
+        "firered": ["Buizel", "Beautifly"],
+        "leafgreen": ["Buizel", "Beautifly"]
       },
       "surf": [
         {
@@ -21474,49 +18242,17 @@
           "level": 22
         }
       ],
-      "swarm": [
-        296,
-        296
-      ],
-      "day": [
-        22,
-        22
-      ],
-      "night": [
-        354,
-        354
-      ],
-      "radar": [
-        57,
-        57,
-        56,
-        56
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Makuhita", "Makuhita"],
+      "day": ["Fearow", "Fearow"],
+      "night": ["Banette", "Banette"],
+      "radar": ["Primeape", "Primeape", "Mankey", "Mankey"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Spearow",
-          "Rattata"
-        ],
-        "sapphire": [
-          "Spearow",
-          "Rattata"
-        ],
-        "emerald": [
-          "Spearow",
-          "Rattata"
-        ],
-        "firered": [
-          "Spearow",
-          "Rattata"
-        ],
-        "leafgreen": [
-          "Spearow",
-          "Rattata"
-        ]
+        "ruby": ["Spearow", "Rattata"],
+        "sapphire": ["Spearow", "Rattata"],
+        "emerald": ["Spearow", "Rattata"],
+        "firered": ["Spearow", "Rattata"],
+        "leafgreen": ["Spearow", "Rattata"]
       },
       "surf": [
         {
@@ -21686,49 +18422,17 @@
           "level": 24
         }
       ],
-      "swarm": [
-        327,
-        327
-      ],
-      "day": [
-        22,
-        75
-      ],
-      "night": [
-        354,
-        42
-      ],
-      "radar": [
-        324,
-        324,
-        324,
-        324
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Spinda", "Spinda"],
+      "day": ["Fearow", "Graveler"],
+      "night": ["Banette", "Golbat"],
+      "radar": ["Torkoal", "Torkoal", "Torkoal", "Torkoal"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Numel",
-          "Rhyhorn"
-        ],
-        "sapphire": [
-          "Numel",
-          "Rhyhorn"
-        ],
-        "emerald": [
-          "Gligar",
-          "Gligar"
-        ],
-        "firered": [
-          "Numel",
-          "Rhyhorn"
-        ],
-        "leafgreen": [
-          "Magby",
-          "Magby"
-        ]
+        "ruby": ["Numel", "Rhyhorn"],
+        "sapphire": ["Numel", "Rhyhorn"],
+        "emerald": ["Gligar", "Gligar"],
+        "firered": ["Numel", "Rhyhorn"],
+        "leafgreen": ["Magby", "Magby"]
       },
       "surf": [
         {
@@ -21898,49 +18602,17 @@
           "level": 25
         }
       ],
-      "swarm": [
-        374,
-        374
-      ],
-      "day": [
-        450,
-        112
-      ],
-      "night": [
-        332,
-        332
-      ],
-      "radar": [
-        329,
-        329,
-        328,
-        328
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Beldum", "Beldum"],
+      "day": ["Hippowdon", "Rhydon"],
+      "night": ["Cacturne", "Cacturne"],
+      "radar": ["Vibrava", "Vibrava", "Trapinch", "Trapinch"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Diglett",
-          "Cacnea"
-        ],
-        "sapphire": [
-          "Diglett",
-          "Cacnea"
-        ],
-        "emerald": [
-          "Diglett",
-          "Cacnea"
-        ],
-        "firered": [
-          "Diglett",
-          "Cacnea"
-        ],
-        "leafgreen": [
-          "Sandslash",
-          "Sandslash"
-        ]
+        "ruby": ["Diglett", "Cacnea"],
+        "sapphire": ["Diglett", "Cacnea"],
+        "emerald": ["Diglett", "Cacnea"],
+        "firered": ["Diglett", "Cacnea"],
+        "leafgreen": ["Sandslash", "Sandslash"]
       },
       "surf": [
         {
@@ -22110,49 +18782,17 @@
           "level": 22
         }
       ],
-      "swarm": [
-        16,
-        16
-      ],
-      "day": [
-        70,
-        44
-      ],
-      "night": [
-        168,
-        168
-      ],
-      "radar": [
-        49,
-        49,
-        48,
-        48
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Pidgey", "Pidgey"],
+      "day": ["Weepinbell", "Gloom"],
+      "night": ["Ariados", "Ariados"],
+      "radar": ["Venomoth", "Venomoth", "Venonat", "Venonat"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Nuzleaf",
-          "Nuzleaf"
-        ],
-        "sapphire": [
-          "Lombre",
-          "Lombre"
-        ],
-        "emerald": [
-          "Pineco",
-          "Pineco"
-        ],
-        "firered": [
-          "Bellsprout",
-          "Oddish"
-        ],
-        "leafgreen": [
-          "Bellsprout",
-          "Oddish"
-        ]
+        "ruby": ["Nuzleaf", "Nuzleaf"],
+        "sapphire": ["Lombre", "Lombre"],
+        "emerald": ["Pineco", "Pineco"],
+        "firered": ["Bellsprout", "Oddish"],
+        "leafgreen": ["Bellsprout", "Oddish"]
       },
       "surf": [
         {
@@ -22322,49 +18962,17 @@
           "level": 0
         }
       ],
-      "swarm": [
-        0,
-        0
-      ],
-      "day": [
-        0,
-        0
-      ],
-      "night": [
-        0,
-        0
-      ],
-      "radar": [
-        0,
-        0,
-        0,
-        0
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": [0, 0],
+      "day": [0, 0],
+      "night": [0, 0],
+      "radar": [0, 0, 0, 0],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          0,
-          0
-        ],
-        "sapphire": [
-          0,
-          0
-        ],
-        "emerald": [
-          0,
-          0
-        ],
-        "firered": [
-          0,
-          0
-        ],
-        "leafgreen": [
-          0,
-          0
-        ]
+        "ruby": [0, 0],
+        "sapphire": [0, 0],
+        "emerald": [0, 0],
+        "firered": [0, 0],
+        "leafgreen": [0, 0]
       },
       "surf": [
         {
@@ -22534,49 +19142,17 @@
           "level": 0
         }
       ],
-      "swarm": [
-        0,
-        0
-      ],
-      "day": [
-        0,
-        0
-      ],
-      "night": [
-        0,
-        0
-      ],
-      "radar": [
-        0,
-        0,
-        0,
-        0
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": [0, 0],
+      "day": [0, 0],
+      "night": [0, 0],
+      "radar": [0, 0, 0, 0],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          0,
-          0
-        ],
-        "sapphire": [
-          0,
-          0
-        ],
-        "emerald": [
-          0,
-          0
-        ],
-        "firered": [
-          0,
-          0
-        ],
-        "leafgreen": [
-          0,
-          0
-        ]
+        "ruby": [0, 0],
+        "sapphire": [0, 0],
+        "emerald": [0, 0],
+        "firered": [0, 0],
+        "leafgreen": [0, 0]
       },
       "surf": [
         {
@@ -22746,49 +19322,17 @@
           "level": 0
         }
       ],
-      "swarm": [
-        0,
-        0
-      ],
-      "day": [
-        0,
-        0
-      ],
-      "night": [
-        0,
-        0
-      ],
-      "radar": [
-        0,
-        0,
-        0,
-        0
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": [0, 0],
+      "day": [0, 0],
+      "night": [0, 0],
+      "radar": [0, 0, 0, 0],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          0,
-          0
-        ],
-        "sapphire": [
-          0,
-          0
-        ],
-        "emerald": [
-          0,
-          0
-        ],
-        "firered": [
-          0,
-          0
-        ],
-        "leafgreen": [
-          0,
-          0
-        ]
+        "ruby": [0, 0],
+        "sapphire": [0, 0],
+        "emerald": [0, 0],
+        "firered": [0, 0],
+        "leafgreen": [0, 0]
       },
       "surf": [
         {
@@ -22958,49 +19502,17 @@
           "level": 0
         }
       ],
-      "swarm": [
-        0,
-        0
-      ],
-      "day": [
-        0,
-        0
-      ],
-      "night": [
-        0,
-        0
-      ],
-      "radar": [
-        0,
-        0,
-        0,
-        0
-      ],
-      "form": [
-        0,
-        0
-      ],
+      "swarm": [0, 0],
+      "day": [0, 0],
+      "night": [0, 0],
+      "radar": [0, 0, 0, 0],
+      "form": [0, 0],
       "dualSlot": {
-        "ruby": [
-          0,
-          0
-        ],
-        "sapphire": [
-          0,
-          0
-        ],
-        "emerald": [
-          0,
-          0
-        ],
-        "firered": [
-          0,
-          0
-        ],
-        "leafgreen": [
-          0,
-          0
-        ]
+        "ruby": [0, 0],
+        "sapphire": [0, 0],
+        "emerald": [0, 0],
+        "firered": [0, 0],
+        "leafgreen": [0, 0]
       },
       "surf": [
         {
@@ -23170,49 +19682,17 @@
           "level": 0
         }
       ],
-      "swarm": [
-        0,
-        0
-      ],
-      "day": [
-        0,
-        0
-      ],
-      "night": [
-        0,
-        0
-      ],
-      "radar": [
-        0,
-        0,
-        0,
-        0
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": [0, 0],
+      "day": [0, 0],
+      "night": [0, 0],
+      "radar": [0, 0, 0, 0],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          0,
-          0
-        ],
-        "sapphire": [
-          0,
-          0
-        ],
-        "emerald": [
-          0,
-          0
-        ],
-        "firered": [
-          0,
-          0
-        ],
-        "leafgreen": [
-          0,
-          0
-        ]
+        "ruby": [0, 0],
+        "sapphire": [0, 0],
+        "emerald": [0, 0],
+        "firered": [0, 0],
+        "leafgreen": [0, 0]
       },
       "surf": [
         {
@@ -23382,49 +19862,17 @@
           "level": 22
         }
       ],
-      "swarm": [
-        98,
-        98
-      ],
-      "day": [
-        22,
-        22
-      ],
-      "night": [
-        354,
-        354
-      ],
-      "radar": [
-        57,
-        57,
-        56,
-        56
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Krabby", "Krabby"],
+      "day": ["Fearow", "Fearow"],
+      "night": ["Banette", "Banette"],
+      "radar": ["Primeape", "Primeape", "Mankey", "Mankey"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Spearow",
-          "Rattata"
-        ],
-        "sapphire": [
-          "Spearow",
-          "Rattata"
-        ],
-        "emerald": [
-          "Spearow",
-          "Rattata"
-        ],
-        "firered": [
-          "Spearow",
-          "Rattata"
-        ],
-        "leafgreen": [
-          "Spearow",
-          "Rattata"
-        ]
+        "ruby": ["Spearow", "Rattata"],
+        "sapphire": ["Spearow", "Rattata"],
+        "emerald": ["Spearow", "Rattata"],
+        "firered": ["Spearow", "Rattata"],
+        "leafgreen": ["Spearow", "Rattata"]
       },
       "surf": [
         {
@@ -23594,49 +20042,17 @@
           "level": 23
         }
       ],
-      "swarm": [
-        222,
-        222
-      ],
-      "day": [
-        55,
-        267
-      ],
-      "night": [
-        55,
-        267
-      ],
-      "radar": [
-        175,
-        175,
-        175,
-        175
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Corsola", "Corsola"],
+      "day": ["Golduck", "Beautifly"],
+      "night": ["Golduck", "Beautifly"],
+      "radar": ["Togepi", "Togepi", "Togepi", "Togepi"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Floatzel",
-          "Floatzel"
-        ],
-        "sapphire": [
-          "Floatzel",
-          "Floatzel"
-        ],
-        "emerald": [
-          "Floatzel",
-          "Floatzel"
-        ],
-        "firered": [
-          "Floatzel",
-          "Floatzel"
-        ],
-        "leafgreen": [
-          "Floatzel",
-          "Floatzel"
-        ]
+        "ruby": ["Floatzel", "Floatzel"],
+        "sapphire": ["Floatzel", "Floatzel"],
+        "emerald": ["Floatzel", "Floatzel"],
+        "firered": ["Floatzel", "Floatzel"],
+        "leafgreen": ["Floatzel", "Floatzel"]
       },
       "surf": [
         {
@@ -23806,49 +20222,17 @@
           "level": 24
         }
       ],
-      "swarm": [
-        194,
-        400
-      ],
-      "day": [
-        406,
-        396
-      ],
-      "night": [
-        163,
-        164
-      ],
-      "radar": [
-        183,
-        195,
-        399,
-        298
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Wooper", "Bibarel"],
+      "day": ["Budew", "Starly"],
+      "night": ["Hoothoot", "Noctowl"],
+      "radar": ["Marill", "Quagsire", "Bidoof", "Azurill"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Psyduck",
-          "Psyduck"
-        ],
-        "sapphire": [
-          "Psyduck",
-          "Psyduck"
-        ],
-        "emerald": [
-          "Psyduck",
-          "Psyduck"
-        ],
-        "firered": [
-          "Arbok",
-          "Arbok"
-        ],
-        "leafgreen": [
-          "Psyduck",
-          "Psyduck"
-        ]
+        "ruby": ["Psyduck", "Psyduck"],
+        "sapphire": ["Psyduck", "Psyduck"],
+        "emerald": ["Psyduck", "Psyduck"],
+        "firered": ["Arbok", "Arbok"],
+        "leafgreen": ["Psyduck", "Psyduck"]
       },
       "surf": [
         {
@@ -24018,49 +20402,17 @@
           "level": 24
         }
       ],
-      "swarm": [
-        194,
-        400
-      ],
-      "day": [
-        406,
-        396
-      ],
-      "night": [
-        163,
-        164
-      ],
-      "radar": [
-        183,
-        195,
-        399,
-        298
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Wooper", "Bibarel"],
+      "day": ["Budew", "Starly"],
+      "night": ["Hoothoot", "Noctowl"],
+      "radar": ["Marill", "Quagsire", "Bidoof", "Azurill"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Psyduck",
-          "Psyduck"
-        ],
-        "sapphire": [
-          "Psyduck",
-          "Psyduck"
-        ],
-        "emerald": [
-          "Psyduck",
-          "Psyduck"
-        ],
-        "firered": [
-          "Arbok",
-          "Arbok"
-        ],
-        "leafgreen": [
-          "Psyduck",
-          "Psyduck"
-        ]
+        "ruby": ["Psyduck", "Psyduck"],
+        "sapphire": ["Psyduck", "Psyduck"],
+        "emerald": ["Psyduck", "Psyduck"],
+        "firered": ["Arbok", "Arbok"],
+        "leafgreen": ["Psyduck", "Psyduck"]
       },
       "surf": [
         {
@@ -24230,49 +20582,17 @@
           "level": 22
         }
       ],
-      "swarm": [
-        194,
-        400
-      ],
-      "day": [
-        406,
-        396
-      ],
-      "night": [
-        163,
-        163
-      ],
-      "radar": [
-        183,
-        195,
-        399,
-        298
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Wooper", "Bibarel"],
+      "day": ["Budew", "Starly"],
+      "night": ["Hoothoot", "Hoothoot"],
+      "radar": ["Marill", "Quagsire", "Bidoof", "Azurill"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Psyduck",
-          "Psyduck"
-        ],
-        "sapphire": [
-          "Psyduck",
-          "Psyduck"
-        ],
-        "emerald": [
-          "Psyduck",
-          "Psyduck"
-        ],
-        "firered": [
-          "Arbok",
-          "Arbok"
-        ],
-        "leafgreen": [
-          "Psyduck",
-          "Psyduck"
-        ]
+        "ruby": ["Psyduck", "Psyduck"],
+        "sapphire": ["Psyduck", "Psyduck"],
+        "emerald": ["Psyduck", "Psyduck"],
+        "firered": ["Arbok", "Arbok"],
+        "leafgreen": ["Psyduck", "Psyduck"]
       },
       "surf": [
         {
@@ -24442,49 +20762,17 @@
           "level": 22
         }
       ],
-      "swarm": [
-        194,
-        400
-      ],
-      "day": [
-        406,
-        396
-      ],
-      "night": [
-        163,
-        163
-      ],
-      "radar": [
-        183,
-        195,
-        399,
-        298
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Wooper", "Bibarel"],
+      "day": ["Budew", "Starly"],
+      "night": ["Hoothoot", "Hoothoot"],
+      "radar": ["Marill", "Quagsire", "Bidoof", "Azurill"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Psyduck",
-          "Psyduck"
-        ],
-        "sapphire": [
-          "Psyduck",
-          "Psyduck"
-        ],
-        "emerald": [
-          "Psyduck",
-          "Psyduck"
-        ],
-        "firered": [
-          "Arbok",
-          "Arbok"
-        ],
-        "leafgreen": [
-          "Psyduck",
-          "Psyduck"
-        ]
+        "ruby": ["Psyduck", "Psyduck"],
+        "sapphire": ["Psyduck", "Psyduck"],
+        "emerald": ["Psyduck", "Psyduck"],
+        "firered": ["Arbok", "Arbok"],
+        "leafgreen": ["Psyduck", "Psyduck"]
       },
       "surf": [
         {
@@ -24654,49 +20942,17 @@
           "level": 20
         }
       ],
-      "swarm": [
-        194,
-        400
-      ],
-      "day": [
-        406,
-        396
-      ],
-      "night": [
-        163,
-        163
-      ],
-      "radar": [
-        183,
-        195,
-        399,
-        298
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Wooper", "Bibarel"],
+      "day": ["Budew", "Starly"],
+      "night": ["Hoothoot", "Hoothoot"],
+      "radar": ["Marill", "Quagsire", "Bidoof", "Azurill"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Bidoof",
-          "Azurill"
-        ],
-        "sapphire": [
-          "Bidoof",
-          "Azurill"
-        ],
-        "emerald": [
-          "Bidoof",
-          "Azurill"
-        ],
-        "firered": [
-          "Arbok",
-          "Arbok"
-        ],
-        "leafgreen": [
-          "Bidoof",
-          "Azurill"
-        ]
+        "ruby": ["Bidoof", "Azurill"],
+        "sapphire": ["Bidoof", "Azurill"],
+        "emerald": ["Bidoof", "Azurill"],
+        "firered": ["Arbok", "Arbok"],
+        "leafgreen": ["Bidoof", "Azurill"]
       },
       "surf": [
         {
@@ -24866,49 +21122,17 @@
           "level": 20
         }
       ],
-      "swarm": [
-        194,
-        400
-      ],
-      "day": [
-        406,
-        396
-      ],
-      "night": [
-        163,
-        163
-      ],
-      "radar": [
-        183,
-        195,
-        399,
-        298
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Wooper", "Bibarel"],
+      "day": ["Budew", "Starly"],
+      "night": ["Hoothoot", "Hoothoot"],
+      "radar": ["Marill", "Quagsire", "Bidoof", "Azurill"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Psyduck",
-          "Psyduck"
-        ],
-        "sapphire": [
-          "Psyduck",
-          "Psyduck"
-        ],
-        "emerald": [
-          "Psyduck",
-          "Psyduck"
-        ],
-        "firered": [
-          "Arbok",
-          "Arbok"
-        ],
-        "leafgreen": [
-          "Psyduck",
-          "Psyduck"
-        ]
+        "ruby": ["Psyduck", "Psyduck"],
+        "sapphire": ["Psyduck", "Psyduck"],
+        "emerald": ["Psyduck", "Psyduck"],
+        "firered": ["Arbok", "Arbok"],
+        "leafgreen": ["Psyduck", "Psyduck"]
       },
       "surf": [
         {
@@ -25078,49 +21302,17 @@
           "level": 24
         }
       ],
-      "swarm": [
-        74,
-        74
-      ],
-      "day": [
-        74,
-        74
-      ],
-      "night": [
-        74,
-        74
-      ],
-      "radar": [
-        74,
-        74,
-        74,
-        449
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Geodude", "Geodude"],
+      "day": ["Geodude", "Geodude"],
+      "night": ["Geodude", "Geodude"],
+      "radar": ["Geodude", "Geodude", "Geodude", "Hippopotas"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Geodude",
-          "Hippopotas"
-        ],
-        "sapphire": [
-          "Geodude",
-          "Hippopotas"
-        ],
-        "emerald": [
-          "Geodude",
-          "Hippopotas"
-        ],
-        "firered": [
-          "Geodude",
-          "Hippopotas"
-        ],
-        "leafgreen": [
-          "Geodude",
-          "Hippopotas"
-        ]
+        "ruby": ["Geodude", "Hippopotas"],
+        "sapphire": ["Geodude", "Hippopotas"],
+        "emerald": ["Geodude", "Hippopotas"],
+        "firered": ["Geodude", "Hippopotas"],
+        "leafgreen": ["Geodude", "Hippopotas"]
       },
       "surf": [
         {
@@ -25290,49 +21482,17 @@
           "level": 25
         }
       ],
-      "swarm": [
-        74,
-        74
-      ],
-      "day": [
-        74,
-        74
-      ],
-      "night": [
-        74,
-        74
-      ],
-      "radar": [
-        74,
-        449,
-        74,
-        449
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Geodude", "Geodude"],
+      "day": ["Geodude", "Geodude"],
+      "night": ["Geodude", "Geodude"],
+      "radar": ["Geodude", "Hippopotas", "Geodude", "Hippopotas"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Geodude",
-          "Hippopotas"
-        ],
-        "sapphire": [
-          "Geodude",
-          "Hippopotas"
-        ],
-        "emerald": [
-          "Geodude",
-          "Hippopotas"
-        ],
-        "firered": [
-          "Geodude",
-          "Hippopotas"
-        ],
-        "leafgreen": [
-          "Geodude",
-          "Hippopotas"
-        ]
+        "ruby": ["Geodude", "Hippopotas"],
+        "sapphire": ["Geodude", "Hippopotas"],
+        "emerald": ["Geodude", "Hippopotas"],
+        "firered": ["Geodude", "Hippopotas"],
+        "leafgreen": ["Geodude", "Hippopotas"]
       },
       "surf": [
         {
@@ -25502,49 +21662,17 @@
           "level": 56
         }
       ],
-      "swarm": [
-        42,
-        437
-      ],
-      "day": [
-        93,
-        42
-      ],
-      "night": [
-        93,
-        42
-      ],
-      "radar": [
-        93,
-        437,
-        436,
-        437
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Golbat", "Bronzong"],
+      "day": ["Haunter", "Golbat"],
+      "night": ["Haunter", "Golbat"],
+      "radar": ["Haunter", "Bronzong", "Bronzor", "Bronzong"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Solrock",
-          "Solrock"
-        ],
-        "sapphire": [
-          "Lunatone",
-          "Lunatone"
-        ],
-        "emerald": [
-          "Bronzor",
-          "Bronzong"
-        ],
-        "firered": [
-          "Bronzor",
-          "Bronzong"
-        ],
-        "leafgreen": [
-          "Bronzor",
-          "Bronzong"
-        ]
+        "ruby": ["Solrock", "Solrock"],
+        "sapphire": ["Lunatone", "Lunatone"],
+        "emerald": ["Bronzor", "Bronzong"],
+        "firered": ["Bronzor", "Bronzong"],
+        "leafgreen": ["Bronzor", "Bronzong"]
       },
       "surf": [
         {
@@ -25714,49 +21842,17 @@
           "level": 66
         }
       ],
-      "swarm": [
-        42,
-        437
-      ],
-      "day": [
-        93,
-        42
-      ],
-      "night": [
-        93,
-        42
-      ],
-      "radar": [
-        93,
-        437,
-        436,
-        437
-      ],
-      "form": [
-        100,
-        100
-      ],
+      "swarm": ["Golbat", "Bronzong"],
+      "day": ["Haunter", "Golbat"],
+      "night": ["Haunter", "Golbat"],
+      "radar": ["Haunter", "Bronzong", "Bronzor", "Bronzong"],
+      "form": [100, 100],
       "dualSlot": {
-        "ruby": [
-          "Solrock",
-          "Solrock"
-        ],
-        "sapphire": [
-          "Lunatone",
-          "Lunatone"
-        ],
-        "emerald": [
-          "Bronzor",
-          "Bronzong"
-        ],
-        "firered": [
-          "Bronzor",
-          "Bronzong"
-        ],
-        "leafgreen": [
-          "Bronzor",
-          "Bronzong"
-        ]
+        "ruby": ["Solrock", "Solrock"],
+        "sapphire": ["Lunatone", "Lunatone"],
+        "emerald": ["Bronzor", "Bronzong"],
+        "firered": ["Bronzor", "Bronzong"],
+        "leafgreen": ["Bronzor", "Bronzong"]
       },
       "surf": [
         {

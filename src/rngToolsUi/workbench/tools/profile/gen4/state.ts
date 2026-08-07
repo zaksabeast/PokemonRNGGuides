@@ -1,6 +1,6 @@
 import { atomWithPersistence } from "~/state/localStorage";
 import { z } from "zod";
-import { Gen4GameVersions } from "~/rngToolsUi/gen4/gen4types";
+import { Gen4GameVersions } from "~/types/games";
 
 export const Gen4ProfileSchema = z.object({
   id: z.string(),
@@ -11,7 +11,9 @@ export const Gen4ProfileSchema = z.object({
   nationalDex: z.boolean(),
 });
 
-const defaultProfile: z.infer<typeof Gen4ProfileSchema> = {
+export type Gen4Profile = z.infer<typeof Gen4ProfileSchema>;
+
+const defaultProfile: Gen4Profile = {
   id: "",
   name: "",
   tid: 0,

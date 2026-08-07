@@ -1,4 +1,5 @@
 import React from "react";
+import { uniqueId, sortBy } from "lodash-es";
 import {
   ResultColumn,
   FormikNumberInput,
@@ -9,7 +10,7 @@ import {
   Button,
   FormikSelect,
 } from "~/components";
-import { rngTools, Egg3PickupState, Gen3PickupMethod } from "~/rngTools";
+import { rngTools, Egg3PickupState } from "~/rngTools";
 import { maxIvs, minIvs } from "~/types/ivs";
 import {
   flattenIvs,
@@ -33,15 +34,11 @@ import {
 import { HexSchema } from "~/utils/number";
 import { usePickupEggState } from "./state";
 import { useCurrentStep } from "~/components/stepper/state";
-import pmap from "p-map";
-import { sortBy } from "lodash-es";
 import { approximateGen3FrameTime } from "~/utils/approximateGen3FrameTime";
 import { getIvMethodOptions, ivMethodLabels, ivMethods } from "./constants";
 import { Translations } from "~/translations";
 
-type Result = FlattenIvs<
-  Egg3PickupState & { method: Gen3PickupMethod; key: string }
->;
+type Result = FlattenIvs<Egg3PickupState & { key: string }>;
 
 const SelectButton = ({ result }: { result: Result }) => {
   const [, setCurrentStep] = useCurrentStep();
@@ -221,28 +218,19 @@ export const RetailEmeraldPickupEgg = () => {
       opts.parent1_ivs,
       opts.parent2_ivs,
     ];
-    const methodResults = await pmap(
-      opts.methods,
-      async (method) => {
-        const spreads = await rngTools.emerald_egg_pickup_states({
-          ...opts,
-          delay: 0,
-          method,
-          parent_ivs: parentIvs,
-        });
-        return spreads.map((spread) =>
-          flattenIvs({
-            ...spread,
-            method,
-            key: `${method}-${spread.advance}`,
-          }),
-        );
-      },
-      { concurrency: 3 },
+    const spreads = await rngTools.emerald_egg_pickup_states({
+      ...opts,
+      delay: 0,
+      parent_ivs: parentIvs,
+    });
+    const res = spreads.map((spread) =>
+      flattenIvs({
+        ...spread,
+        key: uniqueId(),
+      }),
     );
 
-    const flattenedResults = methodResults.flat();
-    const sortedResults = sortBy(flattenedResults, (result) => result.advance);
+    const sortedResults = sortBy(res, (result) => result.advance);
 
     setResults(sortedResults);
     setPickupEggState((prev) => ({ ...prev, seed: opts.seed, parentIvs }));

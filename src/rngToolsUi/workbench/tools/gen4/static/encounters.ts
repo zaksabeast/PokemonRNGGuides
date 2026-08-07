@@ -1,7 +1,7 @@
 import { map, sortBy } from "lodash-es";
 import { EncountersByGame as NonStarterEncounters } from "~/rngToolsUi/gen4/encounters/static";
 import { Encounter } from "~/rngToolsUi/gen4/encounters/encounter";
-import { Gen4GameVersion } from "~/rngToolsUi/gen4/gen4types";
+import { Gen4GameVersion } from "~/types/games";
 import { formatSpeciesLabel } from "~/types/species";
 
 const DpptStarters = {

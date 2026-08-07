@@ -16,7 +16,7 @@ import { gen4StateAtom } from "../shared/state";
 import { useAtom } from "jotai";
 import { rngTools } from "~/rngTools";
 import { toOptions } from "~/utils/options";
-import { DpPt } from "../gen4types";
+import { DpPt } from "~/types/games";
 
 const Validator = z.object({
   game: z.enum(DpPt),

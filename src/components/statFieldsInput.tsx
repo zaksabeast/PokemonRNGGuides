@@ -1,6 +1,6 @@
 import { GenericForm, GuaranteeFormNameType } from "~/types/form";
 import { Flex } from "./flex";
-import { Grid } from "./grid";
+import { Grid, GridProps } from "./grid";
 import { Ivs } from "~/rngTools";
 import { FormikNumberInput } from "./numberInput";
 import { useFormState } from "react-hook-form";
@@ -66,6 +66,7 @@ export type StatFieldsInputProps<
 > = {
   name: GuaranteeFormNameType<FormState, FieldType>;
   onChange?: (value: FieldType) => void;
+  gridOverrides?: Partial<GridProps>;
 };
 
 export const StatFieldsInput = <
@@ -74,6 +75,7 @@ export const StatFieldsInput = <
 >({
   name,
   onChange,
+  gridOverrides,
 }: StatFieldsInputProps<FormState, FieldType>) => {
   const { errors } = useFormState<FormState>();
   const watchedValue = useWatch_UNSAFE({ name });
@@ -97,7 +99,7 @@ export const StatFieldsInput = <
 
   return (
     <Flex vertical>
-      <Grid mobile={2} smallTablet={3} tablet={6} gap={4}>
+      <Grid mobile={2} smallTablet={3} tablet={6} gap={4} {...gridOverrides}>
         <SingleField stat="hp" parentName={name} />
         <SingleField stat="atk" parentName={name} />
         <SingleField stat="def" parentName={name} />

@@ -1,10 +1,18 @@
 import * as tst from "ts-toolbelt";
-import { Descriptions as AntdDescriptions, DescriptionsProps } from "antd";
+import {
+  Descriptions as AntdDescriptions,
+  DescriptionsProps,
+  Tooltip,
+} from "antd";
+import { Flex, Icon } from "~/components";
 import styled from "@emotion/styled";
 
 type BaseField = tst.U.Exclude<DescriptionsProps["items"], undefined>[number];
 
-export type Field = tst.O.Merge<BaseField, { show?: boolean }>;
+export type Field = tst.O.Merge<
+  BaseField,
+  { show?: boolean; tooltip?: React.ReactNode }
+>;
 
 const StyledDescriptions = styled(AntdDescriptions)({
   ".ant-descriptions-view": { border: "none !important" },
@@ -27,6 +35,21 @@ export const Descriptions = ({
   items,
   ...props
 }: tst.O.Overwrite<DescriptionsProps, { items: Field[] }>) => {
-  const filteredItems = items?.filter((item) => item.show !== false);
+  const filteredItems: BaseField[] = (items ?? [])
+    .filter((item) => item.show !== false)
+    .map((item) => ({
+      children: item.children,
+      label:
+        item.tooltip == null ? (
+          item.label
+        ) : (
+          <Flex gap={4}>
+            {item.label}
+            <Tooltip title={item.tooltip}>
+              <Icon color="TextDescription" name="Question" cursor="help" />
+            </Tooltip>
+          </Flex>
+        ),
+    }));
   return <StyledDescriptions items={filteredItems} {...props} />;
 };

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-#[derive(Debug, Clone, PartialEq, Eq, Tsify, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum Gen3PickupMethod {
     EmeraldBred,
@@ -52,7 +52,7 @@ pub struct Egg3PickupOptions {
     pub initial_advances: usize,
     pub max_advances: usize,
     pub parent_ivs: [PartialIvs; 2],
-    pub method: Gen3PickupMethod,
+    pub methods: Vec<Gen3PickupMethod>,
     pub filter_min_ivs: Ivs,
     pub filter_max_ivs: Ivs,
     pub filter_hidden_power: HiddenPowerFilter,
@@ -79,16 +79,18 @@ pub struct Egg3PickupState {
     pub advance: usize,
     pub ivs: InheritedIvs,
     pub hidden_power: Option<HiddenPower>,
+    pub method: Gen3PickupMethod,
 }
 
 impl Egg3PickupState {
-    fn new(advance: usize, ivs: InheritedIvs) -> Self {
+    fn new(advance: usize, ivs: InheritedIvs, method: Gen3PickupMethod) -> Self {
         let hidden_power = ivs.try_as_ivs().map(|ivs| HiddenPower::from_ivs(&ivs));
 
         Self {
             advance,
             ivs,
             hidden_power,
+            method,
         }
     }
 }
@@ -99,16 +101,24 @@ pub fn emerald_egg_pickup_states(opts: &Egg3PickupOptions) -> Vec<Egg3PickupStat
         .enumerate()
         .skip(opts.initial_advances)
         .take(opts.max_advances.saturating_add(1))
-        .filter_map(|(advance, rng)| {
-            let ivs = generate_pickup_ivs(opts, rng);
-            if opts.pass_filter(&ivs) {
-                Some(Egg3PickupState::new(
-                    advance.saturating_sub(opts.delay),
-                    ivs,
-                ))
-            } else {
-                None
+        .flat_map(|(advance, rng)| {
+            opts.methods.iter().map(move |method| {
+                (
+                    advance,
+                    method,
+                    generate_pickup_ivs(method, &opts.parent_ivs, rng),
+                )
+            })
+        })
+        .filter_map(|(advance, method, ivs)| {
+            if !opts.pass_filter(&ivs) {
+                return None;
             }
+            Some(Egg3PickupState::new(
+                advance.saturating_sub(opts.delay),
+                ivs,
+                *method,
+            ))
         })
         .collect()
 }
@@ -120,15 +130,19 @@ fn get_inherited_iv(parent_ivs: &[PartialIvs; 2], slot: usize, stat: G3Idx) -> I
     }
 }
 
-fn generate_pickup_ivs(opts: &Egg3PickupOptions, mut rng: Pokerng) -> InheritedIvs {
-    rng.advance(opts.method.iv1_advance());
+fn generate_pickup_ivs(
+    method: &Gen3PickupMethod,
+    parent_ivs: &[PartialIvs; 2],
+    mut rng: Pokerng,
+) -> InheritedIvs {
+    rng.advance(method.iv1_advance());
     let iv1 = rng.rand::<u16>();
-    rng.advance(opts.method.iv2_advance());
+    rng.advance(method.iv2_advance());
     let iv2 = rng.rand::<u16>();
 
     let mut ivs: InheritedIvs = Ivs::new_g3(iv1, iv2).into();
 
-    rng.advance(opts.method.iv_inherit_advance());
+    rng.advance(method.iv_inherit_advance());
     let inherited_ivs: [usize; 3] = [
         rng.rand_max::<u16>(6).into(),
         rng.rand_max::<u16>(5).into(),
@@ -145,13 +159,13 @@ fn generate_pickup_ivs(opts: &Egg3PickupOptions, mut rng: Pokerng) -> InheritedI
     let available3: [G3Idx; 4] = [Atk, Spe, Spa, Spd];
 
     let stat = available1[inherited_ivs[0]];
-    ivs[stat] = get_inherited_iv(&opts.parent_ivs, parent_slot[0], stat);
+    ivs[stat] = get_inherited_iv(parent_ivs, parent_slot[0], stat);
 
     let stat = available2[inherited_ivs[1]];
-    ivs[stat] = get_inherited_iv(&opts.parent_ivs, parent_slot[1], stat);
+    ivs[stat] = get_inherited_iv(parent_ivs, parent_slot[1], stat);
 
     let stat = available3[inherited_ivs[2]];
-    ivs[stat] = get_inherited_iv(&opts.parent_ivs, parent_slot[2], stat);
+    ivs[stat] = get_inherited_iv(parent_ivs, parent_slot[2], stat);
 
     ivs
 }
@@ -162,8 +176,8 @@ mod test {
     use crate::assert_list_eq;
     use crate::ivs::InheritedIv::*;
 
-    fn state(advance: usize, ivs: InheritedIvs) -> Egg3PickupState {
-        Egg3PickupState::new(advance, ivs)
+    fn state(advance: usize, method: Gen3PickupMethod, ivs: InheritedIvs) -> Egg3PickupState {
+        Egg3PickupState::new(advance, ivs, method)
     }
 
     const MALE_IVS: PartialIvs = PartialIvs {
@@ -188,7 +202,7 @@ mod test {
         let opts = Egg3PickupOptions {
             delay: 0,
             parent_ivs: [MALE_IVS, FEMALE_IVS],
-            method: Gen3PickupMethod::EmeraldBred,
+            methods: vec![Gen3PickupMethod::EmeraldBred],
             initial_advances: 0,
             max_advances: 10,
             seed: 0,
@@ -201,6 +215,7 @@ mod test {
         let expected = [
             state(
                 0,
+                Gen3PickupMethod::EmeraldBred,
                 InheritedIvs {
                     hp: Parent2(Some(7)),
                     atk: Parent2(Some(8)),
@@ -212,6 +227,7 @@ mod test {
             ),
             state(
                 1,
+                Gen3PickupMethod::EmeraldBred,
                 InheritedIvs {
                     hp: Random(30),
                     atk: Parent2(Some(8)),
@@ -223,6 +239,7 @@ mod test {
             ),
             state(
                 2,
+                Gen3PickupMethod::EmeraldBred,
                 InheritedIvs {
                     hp: Random(17),
                     atk: Random(19),
@@ -234,6 +251,7 @@ mod test {
             ),
             state(
                 3,
+                Gen3PickupMethod::EmeraldBred,
                 InheritedIvs {
                     hp: Random(16),
                     atk: Random(13),
@@ -245,6 +263,7 @@ mod test {
             ),
             state(
                 4,
+                Gen3PickupMethod::EmeraldBred,
                 InheritedIvs {
                     hp: Random(2),
                     atk: Parent1(Some(2)),
@@ -256,6 +275,7 @@ mod test {
             ),
             state(
                 5,
+                Gen3PickupMethod::EmeraldBred,
                 InheritedIvs {
                     hp: Random(12),
                     atk: Random(22),
@@ -267,6 +287,7 @@ mod test {
             ),
             state(
                 6,
+                Gen3PickupMethod::EmeraldBred,
                 InheritedIvs {
                     hp: Random(5),
                     atk: Random(30),
@@ -278,6 +299,7 @@ mod test {
             ),
             state(
                 7,
+                Gen3PickupMethod::EmeraldBred,
                 InheritedIvs {
                     hp: Random(27),
                     atk: Random(30),
@@ -289,6 +311,7 @@ mod test {
             ),
             state(
                 8,
+                Gen3PickupMethod::EmeraldBred,
                 InheritedIvs {
                     hp: Random(19),
                     atk: Random(1),
@@ -300,6 +323,7 @@ mod test {
             ),
             state(
                 9,
+                Gen3PickupMethod::EmeraldBred,
                 InheritedIvs {
                     hp: Random(12),
                     atk: Parent1(Some(2)),
@@ -311,6 +335,7 @@ mod test {
             ),
             state(
                 10,
+                Gen3PickupMethod::EmeraldBred,
                 InheritedIvs {
                     hp: Random(30),
                     atk: Parent1(Some(2)),
@@ -330,7 +355,7 @@ mod test {
         let opts = Egg3PickupOptions {
             delay: 0,
             parent_ivs: [MALE_IVS, FEMALE_IVS],
-            method: Gen3PickupMethod::EmeraldBredSplit,
+            methods: vec![Gen3PickupMethod::EmeraldBredSplit],
             initial_advances: 0,
             max_advances: 10,
             seed: 0,
@@ -343,6 +368,7 @@ mod test {
         let expected = [
             state(
                 0,
+                Gen3PickupMethod::EmeraldBredSplit,
                 InheritedIvs {
                     hp: Random(0),
                     atk: Parent2(Some(8)),
@@ -354,6 +380,7 @@ mod test {
             ),
             state(
                 1,
+                Gen3PickupMethod::EmeraldBredSplit,
                 InheritedIvs {
                     hp: Random(30),
                     atk: Random(11),
@@ -365,6 +392,7 @@ mod test {
             ),
             state(
                 2,
+                Gen3PickupMethod::EmeraldBredSplit,
                 InheritedIvs {
                     hp: Random(17),
                     atk: Random(19),
@@ -376,6 +404,7 @@ mod test {
             ),
             state(
                 3,
+                Gen3PickupMethod::EmeraldBredSplit,
                 InheritedIvs {
                     hp: Random(16),
                     atk: Parent1(Some(2)),
@@ -387,6 +416,7 @@ mod test {
             ),
             state(
                 4,
+                Gen3PickupMethod::EmeraldBredSplit,
                 InheritedIvs {
                     hp: Random(2),
                     atk: Random(18),
@@ -398,6 +428,7 @@ mod test {
             ),
             state(
                 5,
+                Gen3PickupMethod::EmeraldBredSplit,
                 InheritedIvs {
                     hp: Random(12),
                     atk: Random(22),
@@ -409,6 +440,7 @@ mod test {
             ),
             state(
                 6,
+                Gen3PickupMethod::EmeraldBredSplit,
                 InheritedIvs {
                     hp: Random(5),
                     atk: Random(30),
@@ -420,6 +452,7 @@ mod test {
             ),
             state(
                 7,
+                Gen3PickupMethod::EmeraldBredSplit,
                 InheritedIvs {
                     hp: Random(27),
                     atk: Random(30),
@@ -431,6 +464,7 @@ mod test {
             ),
             state(
                 8,
+                Gen3PickupMethod::EmeraldBredSplit,
                 InheritedIvs {
                     hp: Random(19),
                     atk: Parent1(Some(2)),
@@ -442,6 +476,7 @@ mod test {
             ),
             state(
                 9,
+                Gen3PickupMethod::EmeraldBredSplit,
                 InheritedIvs {
                     hp: Random(12),
                     atk: Parent1(Some(2)),
@@ -453,6 +488,7 @@ mod test {
             ),
             state(
                 10,
+                Gen3PickupMethod::EmeraldBredSplit,
                 InheritedIvs {
                     hp: Random(30),
                     atk: Parent1(Some(2)),
@@ -472,7 +508,7 @@ mod test {
         let opts = Egg3PickupOptions {
             delay: 0,
             parent_ivs: [MALE_IVS, FEMALE_IVS],
-            method: Gen3PickupMethod::EmeraldBredAlternate,
+            methods: vec![Gen3PickupMethod::EmeraldBredAlternate],
             initial_advances: 0,
             max_advances: 10,
             seed: 0,
@@ -485,6 +521,7 @@ mod test {
         let expected = [
             state(
                 0,
+                Gen3PickupMethod::EmeraldBredAlternate,
                 InheritedIvs {
                     hp: Random(0),
                     atk: Parent2(Some(8)),
@@ -496,6 +533,7 @@ mod test {
             ),
             state(
                 1,
+                Gen3PickupMethod::EmeraldBredAlternate,
                 InheritedIvs {
                     hp: Random(30),
                     atk: Random(11),
@@ -507,6 +545,7 @@ mod test {
             ),
             state(
                 2,
+                Gen3PickupMethod::EmeraldBredAlternate,
                 InheritedIvs {
                     hp: Random(17),
                     atk: Random(19),
@@ -518,6 +557,7 @@ mod test {
             ),
             state(
                 3,
+                Gen3PickupMethod::EmeraldBredAlternate,
                 InheritedIvs {
                     hp: Random(16),
                     atk: Parent1(Some(2)),
@@ -529,6 +569,7 @@ mod test {
             ),
             state(
                 4,
+                Gen3PickupMethod::EmeraldBredAlternate,
                 InheritedIvs {
                     hp: Random(2),
                     atk: Random(18),
@@ -540,6 +581,7 @@ mod test {
             ),
             state(
                 5,
+                Gen3PickupMethod::EmeraldBredAlternate,
                 InheritedIvs {
                     hp: Random(12),
                     atk: Random(22),
@@ -551,6 +593,7 @@ mod test {
             ),
             state(
                 6,
+                Gen3PickupMethod::EmeraldBredAlternate,
                 InheritedIvs {
                     hp: Random(5),
                     atk: Random(30),
@@ -562,6 +605,7 @@ mod test {
             ),
             state(
                 7,
+                Gen3PickupMethod::EmeraldBredAlternate,
                 InheritedIvs {
                     hp: Random(27),
                     atk: Random(30),
@@ -573,6 +617,7 @@ mod test {
             ),
             state(
                 8,
+                Gen3PickupMethod::EmeraldBredAlternate,
                 InheritedIvs {
                     hp: Random(19),
                     atk: Parent1(Some(2)),
@@ -584,6 +629,7 @@ mod test {
             ),
             state(
                 9,
+                Gen3PickupMethod::EmeraldBredAlternate,
                 InheritedIvs {
                     hp: Random(12),
                     atk: Parent1(Some(2)),
@@ -595,6 +641,7 @@ mod test {
             ),
             state(
                 10,
+                Gen3PickupMethod::EmeraldBredAlternate,
                 InheritedIvs {
                     hp: Random(30),
                     atk: Parent1(Some(2)),
@@ -614,7 +661,7 @@ mod test {
         let opts = Egg3PickupOptions {
             delay: 0,
             parent_ivs: [MALE_IVS, FEMALE_IVS],
-            method: Gen3PickupMethod::EmeraldBred,
+            methods: vec![Gen3PickupMethod::EmeraldBred],
             initial_advances: 0,
             max_advances: 10,
             seed: 0,
@@ -640,6 +687,7 @@ mod test {
         let results = emerald_egg_pickup_states(&opts);
         let expected = [state(
             5,
+            Gen3PickupMethod::EmeraldBred,
             InheritedIvs {
                 hp: Random(12),
                 atk: Random(22),
@@ -657,7 +705,7 @@ mod test {
         let mut opts = Egg3PickupOptions {
             delay: 0,
             parent_ivs: [MALE_IVS, FEMALE_IVS],
-            method: Gen3PickupMethod::EmeraldBred,
+            methods: vec![Gen3PickupMethod::EmeraldBred],
             initial_advances: 100,
             max_advances: 10,
             seed: 0,
@@ -690,7 +738,7 @@ mod test {
                     ..FEMALE_IVS
                 },
             ],
-            method: Gen3PickupMethod::EmeraldBred,
+            methods: vec![Gen3PickupMethod::EmeraldBred],
             initial_advances: 0,
             max_advances: 10,
             seed: 0,
@@ -729,7 +777,7 @@ mod test {
                     ..FEMALE_IVS
                 },
             ],
-            method: Gen3PickupMethod::EmeraldBred,
+            methods: vec![Gen3PickupMethod::EmeraldBred],
             initial_advances: 0,
             max_advances: 10,
             seed: 0,
@@ -755,6 +803,7 @@ mod test {
         let results = emerald_egg_pickup_states(&opts);
         let expected = [state(
             5,
+            Gen3PickupMethod::EmeraldBred,
             InheritedIvs {
                 hp: Random(12),
                 atk: Random(22),
@@ -782,7 +831,7 @@ mod test {
         let opts = Egg3PickupOptions {
             delay: 0,
             parent_ivs: [MALE_IVS, FEMALE_IVS],
-            method: Gen3PickupMethod::EmeraldBred,
+            methods: vec![Gen3PickupMethod::EmeraldBred],
             initial_advances: 0,
             max_advances: 10,
             seed: 0,
@@ -799,6 +848,7 @@ mod test {
         let results = emerald_egg_pickup_states(&opts);
         let expected = [state(
             5,
+            Gen3PickupMethod::EmeraldBred,
             InheritedIvs {
                 hp: Random(12),
                 atk: Random(22),
@@ -832,7 +882,7 @@ mod test {
                     ..FEMALE_IVS
                 },
             ],
-            method: Gen3PickupMethod::EmeraldBred,
+            methods: vec![Gen3PickupMethod::EmeraldBred],
             initial_advances: 0,
             max_advances: 10,
             seed: 0,
@@ -857,7 +907,7 @@ mod test {
 
         use super::*;
 
-        fn parse_pokefinder(str: &str) -> Vec<Egg3PickupState> {
+        fn parse_pokefinder(str: &str, method: Gen3PickupMethod) -> Vec<Egg3PickupState> {
             str.lines()
                 .map(|raw_line| {
                     let line = raw_line.trim();
@@ -873,6 +923,7 @@ mod test {
                     let hp_bp: u8 = parts[14].parse().unwrap();
 
                     Egg3PickupState {
+                        method,
                         advance,
                         ivs: ivs.into(),
                         hidden_power: Some(HiddenPower::new(hp_type, hp_bp)),
@@ -881,9 +932,22 @@ mod test {
                 .collect()
         }
 
+        fn set_method(
+            results: Vec<Egg3PickupState>,
+            method: Gen3PickupMethod,
+        ) -> Vec<Egg3PickupState> {
+            results
+                .into_iter()
+                .map(|mut state| {
+                    state.method = method;
+                    state
+                })
+                .collect()
+        }
+
         macro_rules! pokefinder {
-            ($file:expr) => {
-                parse_pokefinder(include_str!($file))
+            ($file:expr, $method:expr) => {
+                parse_pokefinder(include_str!($file), $method)
             };
         }
 
@@ -903,7 +967,7 @@ mod test {
             let opts = Egg3PickupOptions {
                 delay: 0,
                 parent_ivs: [MALE_IVS, FEMALE_IVS],
-                method: Gen3PickupMethod::EmeraldBred,
+                methods: vec![Gen3PickupMethod::EmeraldBred],
                 initial_advances: 0,
                 max_advances: 100,
                 seed: 0,
@@ -913,7 +977,7 @@ mod test {
             };
 
             let results: Vec<Egg3PickupState> = clear_inheritance(emerald_egg_pickup_states(&opts));
-            let expected = pokefinder!("test_data/pickup/bred.txt");
+            let expected = pokefinder!("test_data/pickup/bred.txt", Gen3PickupMethod::EmeraldBred);
 
             assert_list_eq!(results, expected);
         }
@@ -923,7 +987,7 @@ mod test {
             let opts = Egg3PickupOptions {
                 delay: 0,
                 parent_ivs: [MALE_IVS, FEMALE_IVS],
-                method: Gen3PickupMethod::EmeraldBredSplit,
+                methods: vec![Gen3PickupMethod::EmeraldBredSplit],
                 initial_advances: 0,
                 max_advances: 100,
                 seed: 0,
@@ -933,7 +997,10 @@ mod test {
             };
 
             let results = clear_inheritance(emerald_egg_pickup_states(&opts));
-            let expected = pokefinder!("test_data/pickup/split.txt");
+            let expected = pokefinder!(
+                "test_data/pickup/split.txt",
+                Gen3PickupMethod::EmeraldBredSplit
+            );
 
             assert_list_eq!(results, expected);
         }
@@ -943,7 +1010,7 @@ mod test {
             let opts = Egg3PickupOptions {
                 delay: 0,
                 parent_ivs: [MALE_IVS, FEMALE_IVS],
-                method: Gen3PickupMethod::EmeraldBredAlternate,
+                methods: vec![Gen3PickupMethod::EmeraldBredAlternate],
                 initial_advances: 0,
                 max_advances: 100,
                 seed: 0,
@@ -953,7 +1020,38 @@ mod test {
             };
 
             let results = clear_inheritance(emerald_egg_pickup_states(&opts));
-            let expected = pokefinder!("test_data/pickup/alternate.txt");
+            let expected = pokefinder!(
+                "test_data/pickup/alternate.txt",
+                Gen3PickupMethod::EmeraldBredAlternate
+            );
+
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn all_results() {
+            let opts = Egg3PickupOptions {
+                delay: 0,
+                parent_ivs: [MALE_IVS, FEMALE_IVS],
+                methods: vec![
+                    Gen3PickupMethod::EmeraldBredAlternate,
+                    Gen3PickupMethod::EmeraldBredSplit,
+                    Gen3PickupMethod::EmeraldBred,
+                ],
+                initial_advances: 0,
+                max_advances: 100,
+                seed: 0,
+                filter_min_ivs: Ivs::new_all0(),
+                filter_max_ivs: Ivs::new_all31(),
+                filter_hidden_power: HiddenPowerFilter::default(),
+            };
+
+            // Set all results to the same method since PokeFinder doesn't make a distinction between the methods
+            let results = set_method(
+                clear_inheritance(emerald_egg_pickup_states(&opts)),
+                Gen3PickupMethod::EmeraldBred,
+            );
+            let expected = pokefinder!("test_data/pickup/all.txt", Gen3PickupMethod::EmeraldBred);
 
             assert_list_eq!(results, expected);
         }

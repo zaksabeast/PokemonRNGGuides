@@ -1,7 +1,7 @@
 import { Select, AtomSelect, Field, FormFieldTable } from "~/components";
 import { swarmAtom } from "./state";
 import { gameRoutes, gameMons, SwarmRoute } from "./constants";
-import { Gen4GameVersion, Gen4GameVersions } from "../gen4types";
+import { Gen4GameVersion, Gen4GameVersions } from "~/types/games";
 import type { Species } from "~/rngTools";
 import { formatSpeciesLabel } from "~/types";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";

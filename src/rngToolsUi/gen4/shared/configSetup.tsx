@@ -7,12 +7,8 @@ import {
   Link,
 } from "~/components";
 import { gen4StateAtom } from "./state";
-import {
-  DpPt,
-  Gen4GameVersions,
-  Gen4GameVersion,
-  Gen4ConsoleSchema,
-} from "../gen4types";
+import { Gen4ConsoleSchema } from "../gen4types";
+import { DpPt, Gen4GameVersions, Gen4GameVersion } from "~/types/games";
 import { useAtom } from "jotai";
 import { toOptions } from "~/utils/options";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";

@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import * as tst from "ts-toolbelt";
 
-type ExtraGridItemProps = {
+export type GridProps = {
   mobile?: tst.L.KeySet<1, 12>;
   smallTablet?: tst.L.KeySet<1, 12>;
   tablet?: tst.L.KeySet<1, 12>;
@@ -9,7 +9,7 @@ type ExtraGridItemProps = {
   gap?: number | string;
 };
 
-export const Grid = styled.div<ExtraGridItemProps>(
+export const Grid = styled.div<GridProps>(
   ({ theme, mobile, smallTablet, tablet, desktop, gap = 16 }) => {
     const mobileColumns = mobile ?? 1;
     const smallTabletColumns = smallTablet ?? mobileColumns;

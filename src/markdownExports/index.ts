@@ -483,7 +483,6 @@ const tools = {
   ),
 };
 
-
 export const markdownComponents = {
   ...nonTools,
   ...mapValues(tools, (Component) => {

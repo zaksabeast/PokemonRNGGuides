@@ -1,9 +1,9 @@
 use super::simulate::pokeradar4_simulate_advance;
 use super::types::{BattleResult, PokeRadar4AdvanceOpts, ShakeType};
-use crate::gen4::search::search_static4;
-use crate::gen4::stationary::{BaseStatic4State, Static4State};
 use crate::gen4::pokeradar::types::RadarShinyPatchResult;
 use crate::gen4::pokeradar::types::SearchRadarShinyPatchOpts;
+use crate::gen4::search::search_static4;
+use crate::gen4::stationary::{BaseStatic4State, Static4State};
 use wasm_bindgen::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -64,7 +64,6 @@ pub fn search_shiny_patches_range(opts: SearchRadarShinyPatchOpts) -> Vec<RadarS
     matches
         .into_iter()
         .filter_map(|candidate| {
-            
             let static4_state = static4_states
                 .iter()
                 .find(|s| s.state.seed == candidate.seed)?;

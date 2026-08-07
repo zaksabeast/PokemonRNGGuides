@@ -91,8 +91,7 @@ pub fn get_gen4_radar_species(opts: RadarSpeciesOpts) -> Vec<RadarSpecies> {
     };
 
     let entries = entries_for_game(&opts.game);
-    let resolved =
-        get_wild_pokemon_from_entries(entries, &opts.location, Method::Grass, &cond);
+    let resolved = get_wild_pokemon_from_entries(entries, &opts.location, Method::Grass, &cond);
     let _ = game;
 
     let mut out: Vec<RadarSpecies> = Vec::new();

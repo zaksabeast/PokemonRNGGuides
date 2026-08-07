@@ -128,7 +128,9 @@ const Validator = z
     minAdvancePatch: z.number().int().min(0),
     maxAdvancePatch: z.number().int().min(0),
     route: z.string().min(1, "Select a route"),
-    species: z.string().min(1, "Select a species") as unknown as z.ZodType<Species>,
+    species: z
+      .string()
+      .min(1, "Select a species") as unknown as z.ZodType<Species>,
     time: z.enum(TIMES),
     swarm: z.boolean(),
     dualSlot: z.boolean(),
@@ -319,7 +321,9 @@ const FormContent = () => {
   const staticFields: Field[] = [
     {
       label: "Game",
-      input: <FormikSelect<FormState> name="game" options={toOptions([...GAMES])} />,
+      input: (
+        <FormikSelect<FormState> name="game" options={toOptions([...GAMES])} />
+      ),
     },
     {
       label: "TID / SID",
@@ -336,7 +340,9 @@ const FormContent = () => {
     },
     {
       label: "Time",
-      input: <FormikSelect<FormState> name="time" options={toOptions([...TIMES])} />,
+      input: (
+        <FormikSelect<FormState> name="time" options={toOptions([...TIMES])} />
+      ),
     },
     {
       label: "Swarm",
@@ -361,7 +367,9 @@ const FormContent = () => {
       : []),
     {
       label: "Species",
-      input: <FormikSelect<FormState> name="species" options={speciesOptions} />,
+      input: (
+        <FormikSelect<FormState> name="species" options={speciesOptions} />
+      ),
     },
     {
       label: "Lead",
@@ -378,8 +386,12 @@ const FormContent = () => {
       label: "Delay",
       input: (
         <MinMaxContainer
-          min={<FormikNumberInput<FormState> name="minDelay" numType="decimal" />}
-          max={<FormikNumberInput<FormState> name="maxDelay" numType="decimal" />}
+          min={
+            <FormikNumberInput<FormState> name="minDelay" numType="decimal" />
+          }
+          max={
+            <FormikNumberInput<FormState> name="maxDelay" numType="decimal" />
+          }
         />
       ),
     },
@@ -388,10 +400,16 @@ const FormContent = () => {
       input: (
         <MinMaxContainer
           min={
-            <FormikNumberInput<FormState> name="minAdvanceSpread" numType="decimal" />
+            <FormikNumberInput<FormState>
+              name="minAdvanceSpread"
+              numType="decimal"
+            />
           }
           max={
-            <FormikNumberInput<FormState> name="maxAdvanceSpread" numType="decimal" />
+            <FormikNumberInput<FormState>
+              name="maxAdvanceSpread"
+              numType="decimal"
+            />
           }
         />
       ),
@@ -401,10 +419,16 @@ const FormContent = () => {
       input: (
         <MinMaxContainer
           min={
-            <FormikNumberInput<FormState> name="minAdvancePatch" numType="decimal" />
+            <FormikNumberInput<FormState>
+              name="minAdvancePatch"
+              numType="decimal"
+            />
           }
           max={
-            <FormikNumberInput<FormState> name="maxAdvancePatch" numType="decimal" />
+            <FormikNumberInput<FormState>
+              name="maxAdvancePatch"
+              numType="decimal"
+            />
           }
         />
       ),

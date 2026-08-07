@@ -1,6 +1,12 @@
 import React from "react";
 import { Button, Flex, NumberInput, Select } from "~/components";
-import { rngTools, Patch, PokeRadarPatch, ShakeType, BattleResult } from "~/rngTools";
+import {
+  rngTools,
+  Patch,
+  PokeRadarPatch,
+  ShakeType,
+  BattleResult,
+} from "~/rngTools";
 import { toOptions } from "~/utils/options";
 import { PokeRadarPatches } from "~/rngToolsUi/gen6/xyPokeRadar/patch";
 
@@ -37,7 +43,8 @@ export const PokeRadar4PatchGrid: React.FC<PokeRadar4PatchGridProps> = ({
   const [seed, setSeed] = React.useState<number>(initialSeed);
   const [advance, setAdvance] = React.useState<number>(initialAdvance);
   const [chainCount, setChainCount] = React.useState<number>(initialChainCount);
-  const [battleResult, setBattleResult] = React.useState<BattleResult>(initialBattleResult);
+  const [battleResult, setBattleResult] =
+    React.useState<BattleResult>(initialBattleResult);
   const [selectedShake, setSelectedShake] = React.useState<ShakeType>("Slow");
   const [patches, setPatches] = React.useState<Patch[]>([]);
 
@@ -80,11 +87,19 @@ export const PokeRadar4PatchGrid: React.FC<PokeRadar4PatchGridProps> = ({
         </Flex>
         <Flex vertical style={{ gap: 4 }}>
           <span>Advance</span>
-          <NumberInput numType="decimal" value={advance} onChange={setAdvance} />
+          <NumberInput
+            numType="decimal"
+            value={advance}
+            onChange={setAdvance}
+          />
         </Flex>
         <Flex vertical style={{ gap: 4 }}>
           <span>Chain Count</span>
-          <NumberInput numType="decimal" value={chainCount} onChange={setChainCount} />
+          <NumberInput
+            numType="decimal"
+            value={chainCount}
+            onChange={setChainCount}
+          />
         </Flex>
         <Flex vertical style={{ gap: 4 }}>
           <span>Battle Result</span>
@@ -103,7 +118,10 @@ export const PokeRadar4PatchGrid: React.FC<PokeRadar4PatchGridProps> = ({
           />
         </Flex>
       </Flex>
-      <Button onClick={handleCalculate} style={{ alignSelf: "flex-start", width: "auto" }}>
+      <Button
+        onClick={handleCalculate}
+        style={{ alignSelf: "flex-start", width: "auto" }}
+      >
         Calculate
       </Button>
       <div style={{ marginTop: 8 }}>

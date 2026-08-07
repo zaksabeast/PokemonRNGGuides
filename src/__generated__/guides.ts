@@ -2488,7 +2488,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-07-08",
+      lastUpdated: "2026-08-07",
       type: "baseGuide",
       canonical: "/dppt-pokeradar-rng/",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/PokeRadar.mdx",
@@ -2501,7 +2501,7 @@ export const guides = {
         retail: { type: "slug", slug: "/dppt-pokeradar-rng/" },
         cfwEmu: { type: "slug", slug: "/dppt-pokeradar-rng/" },
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: ["web_tool", "rough_draft"],
     },
     Guide: React.lazy(
       () =>
@@ -8982,7 +8982,7 @@ export const guides = {
       section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "false-Swarm RNG",
-      isNew: true,
+      isNew: false,
       title: "Diamond, Pearl, and Platinum Swarm RNG",
       navDrawerTitle: "Swarm RNG",
       description:
@@ -9142,7 +9142,7 @@ export const guides = {
       section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "false-Swarm RNG",
-      isNew: true,
+      isNew: false,
       title: "HeartGold and SoulSilver Swarm RNG",
       navDrawerTitle: "Swarm RNG",
       description:
@@ -9180,7 +9180,7 @@ export const guides = {
       section: "other_rng",
       guideVariants: ["retail"],
       guideKey: "false-Voltorb Flip RNG",
-      isNew: true,
+      isNew: false,
       title: "HeartGold and SoulSilver Voltorb Flip RNG",
       navDrawerTitle: "Voltorb Flip RNG",
       description:

@@ -1016,7 +1016,13 @@ mod tests {
             &Conditions::default(),
         );
         assert_eq!(result.len(), 5);
-        let expected_species = ["Tentacool", "Shellos", "Tentacruel", "Tentacruel", "Gastrodon"];
+        let expected_species = [
+            "Tentacool",
+            "Shellos",
+            "Tentacruel",
+            "Tentacruel",
+            "Gastrodon",
+        ];
         let expected_rates = [60, 30, 5, 4, 1];
         for (i, enc) in result.iter().enumerate() {
             assert_eq!(enc.species, expected_species[i], "slot {i}");
@@ -1151,13 +1157,18 @@ mod tests {
         let entries = [honey_145()];
         let munchlax_trees = get_muchlax_trees(0, 0);
         assert!(munchlax_trees.contains(&HoneyTreeLocation::from(0u8)));
-        let result =
-            get_honey_tree_pokemon_from_entries(&entries, "Route 205 (South)", 0, 0);
+        let result = get_honey_tree_pokemon_from_entries(&entries, "Route 205 (South)", 0, 0);
         let species: Vec<&str> = result.iter().map(|e| e.species).collect();
         assert_eq!(
             species,
             vec![
-                "Combee", "Wurmple", "Burmy", "Cherubi", "Aipom", "Heracross", "Munchlax"
+                "Combee",
+                "Wurmple",
+                "Burmy",
+                "Cherubi",
+                "Aipom",
+                "Heracross",
+                "Munchlax"
             ]
         );
         let groups: Vec<HoneyGroup> = result.iter().map(|e| e.group).collect();
@@ -1178,8 +1189,7 @@ mod tests {
     #[test]
     fn honey_tree_without_valid_tree_id_never_includes_munchlax() {
         let entries = [honey_entry_at_unknown_location()];
-        let result =
-            get_honey_tree_pokemon_from_entries(&entries, "UnknownHoneyLocation", 0, 0);
+        let result = get_honey_tree_pokemon_from_entries(&entries, "UnknownHoneyLocation", 0, 0);
         assert!(!result.iter().any(|e| e.group == HoneyGroup::Munchlax));
         assert!(!result.iter().any(|e| e.species == "Munchlax"));
     }

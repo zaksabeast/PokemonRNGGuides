@@ -480,6 +480,10 @@ const tools = {
     () => import("~/rngToolsUi/gen4/pokeradar/patchGrid"),
     (mod) => mod.PokeRadar4PatchGrid,
   ),
+  PokeRadar4: lazyLoad(
+    () => import("~/rngToolsUi/gen4/pokeradar/finalTool"),
+    (mod) => mod.PokeRadar4,
+  ),
 };
 
 export const markdownComponents = {

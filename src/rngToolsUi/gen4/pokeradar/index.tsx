@@ -13,6 +13,7 @@ import {
   Field,
   FormFieldTable,
   NumberInput,
+  Button,
 } from "~/components";
 import {
   multiWorkerRngTools,
@@ -23,6 +24,7 @@ import {
   SearchStatic4Opts,
   RadarShinyPatchResult,
   Patch,
+  BattleResult,
 } from "~/rngTools";
 import { formatSpeciesLabel, species } from "~/types/species";
 import { useWatch } from "~/hooks/form";
@@ -125,28 +127,17 @@ const toResultRow = (result: RadarShinyPatchResult): ResultRow => {
   };
 };
 
-const columns: ResultColumn<ResultRow>[] = [
-  {
-    title: "Seed",
-    dataIndex: "seed",
-    monospace: true,
-    render: (value) => formatHex(value),
-  },
-  { title: "Patch Advance", dataIndex: "patchAdvance" },
-  { title: "Spread Advance", dataIndex: "advance" },
-  { title: "Delay", dataIndex: "delay" },
-  {
-    title: "PID",
-    dataIndex: "pid",
-    monospace: true,
-    render: (value) => formatHex(value),
-  },
-  { title: "Nature", dataIndex: "nature" },
-  { title: "Ability", dataIndex: "ability" },
-  { title: "Gender", dataIndex: "gender" },
-  ...ivColumns,
-  { title: "Level", dataIndex: "level" },
-];
+// Data passed up when the user picks a row to seed the patch grid with.
+export type SelectedShinyPatch = {
+  seed: number;
+  advance: number;
+  chainCount: number;
+  battleResult: BattleResult;
+};
+
+type PokeRadar4ShinySearcherProps = {
+  onSelectResult?: (selection: SelectedShinyPatch) => void;
+};
 
 const FormContent = () => {
   const { game, route, species, timeOfDay, swarmActive, dualSlotGame } =
@@ -345,7 +336,61 @@ const FormContent = () => {
   );
 };
 
-export const PokeRadar4ShinySearcher = () => {
+export const PokeRadar4ShinySearcher: React.FC<
+  PokeRadar4ShinySearcherProps
+> = ({ onSelectResult }) => {
+  // Tracks the chain/battle-result settings used for the most recent search,
+  // since those aren't part of each individual result row.
+  const [searchMeta, setSearchMeta] = React.useState<{
+    chainCount: number;
+    battleResult: BattleResult;
+  }>({
+    chainCount: initialValues.chainCount,
+    battleResult: initialValues.battleResult,
+  });
+
+  const columns: ResultColumn<ResultRow>[] = [
+    {
+      title: "",
+      dataIndex: "key",
+      render: (_value, row: ResultRow) => (
+        <Button
+          trackerId="poke_radar4_shiny_select_patch"
+          onClick={() =>
+            onSelectResult?.({
+              seed: row.seed,
+              advance: row.patchAdvance,
+              chainCount: searchMeta.chainCount,
+              battleResult: searchMeta.battleResult,
+            })
+          }
+        >
+          Select
+        </Button>
+      ),
+    },
+    {
+      title: "Seed",
+      dataIndex: "seed",
+      monospace: true,
+      render: (value) => formatHex(value),
+    },
+    { title: "Patch Advance", dataIndex: "patchAdvance" },
+    { title: "Spread Advance", dataIndex: "advance" },
+    { title: "Delay", dataIndex: "delay" },
+    {
+      title: "PID",
+      dataIndex: "pid",
+      monospace: true,
+      render: (value) => formatHex(value),
+    },
+    { title: "Nature", dataIndex: "nature" },
+    { title: "Ability", dataIndex: "ability" },
+    { title: "Gender", dataIndex: "gender" },
+    ...ivColumns,
+    { title: "Level", dataIndex: "level" },
+  ];
+
   const {
     run: searchShinyPatches,
     data: results,
@@ -362,6 +407,11 @@ export const PokeRadar4ShinySearcher = () => {
   );
 
   const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+    setSearchMeta({
+      chainCount: opts.chainCount,
+      battleResult: opts.battleResult,
+    });
+
     const baseSearch: Omit<RustOption<SearchStatic4Opts>, "filter"> = {
       tid: opts.tid,
       sid: opts.sid,

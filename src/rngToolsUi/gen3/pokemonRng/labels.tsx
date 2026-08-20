@@ -58,6 +58,9 @@ export const targetAdvanceAfterPaintingTitle = (targetPaintingAdvs: {
     targetPaintingAdvs.after,
   );
   const seedTxt = `Seed: ${formatHex(seed, 4)}`;
+  if (targetPaintingAdvs.before === 0) {
+    return seedTxt;
+  }
 
   return (
     <Flex vertical>

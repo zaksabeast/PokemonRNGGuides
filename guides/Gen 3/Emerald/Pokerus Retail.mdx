@@ -1,0 +1,83 @@
+---
+- title: "Pokérus in Emerald"
+  navDrawerTitle: "Pokérus"
+  description: "How to be infected by Pokérus"
+  slug: "emerald-pokerus-retail"
+  category: "Emerald"
+  section: "other_rng"
+  variant: "retail"
+  addedOn: "2026-08-06"
+---
+
+<Gist>Gist: Be infected by Pokérus</Gist>
+
+## Pokérus
+
+After each wild battle, there is a 1 / 21,845 chance that one of your Pokémon will be infected with Pokérus. While infected by Pokérus, EVs gained from battling are doubled. Pokérus is notably required to get optimal low-level Pokémon such as Level 5 Smeargle with Dragon Rage.
+
+## Steps Overview
+
+- **Step 1:** Determine the best setup to obtain Pokérus.
+- **Step 2:** Create a Battle Video, optionally combined with Painting Reseeding, to speed up attempts.
+- **Step 3:** Complete the battle and calibrate until obtaining Pokérus.
+
+After selecting a setup, you can return directly to Step 2 or Step 3 while it remains selected. If the selected setup uses Painting Reseeding, you must complete Step 2 before continuing.
+
+<Stepper titles={["Find Best Setup", "Create Battle Video", "Battle and Calibrate"]}>
+
+<Step step={0}>
+
+### Find Best Setup
+
+1. Fill the considered setup fields. Choose between stationary and wild encounters:
+   - **Stationary encounter:** Kecleon and Voltorb encounters are recommended.
+     - **Pros:** Pokémon generation has stable RNG advances (always 4 advances). Access to 6 Pickup Pokémon for easier calibration.
+     - **Cons:** You must reset the game after each attempt. Your lead Pokémon must be high level to defeat the encounter in 1-shot.
+   - **Wild encounter:**
+     - **Pros:** Always available. Faster attempts.
+     - **Cons:** Pokémon generation advances RNG unpredictably (between 18 and 100 advances). Hitting your target requires luck.
+1. Press "Find best setup".
+1. Select a setup from the results. Prefer one with a low wait, several advances resulting in Pokérus, and a high calibration chance.
+1. Prepare the party shown in the selected setup. Pickup Pokémon must not be holding items.
+1. Go to an encounter location with no wandering NPCs and save the game.
+
+<Gen3PokerusEmeraldFindSetup />
+
+</Step>
+
+<Step step={1}>
+
+### Create Battle Video
+
+Battle Video is an RNG technique that saves and restores the RNG state. It lets you wait through most of the delay once, then retry the manipulation much more quickly.
+
+Creating a Battle Video is optional unless the selected setup uses Painting Reseeding. It requires access to the Battle Frontier after entering the Hall of Fame.
+
+<Gen3PokerusEmeraldCreateBattleVideo />
+
+</Step>
+
+<Step step={2}>
+
+### Battle and Calibrate
+
+1. Start the timer in the tool below.
+1. When the first timer reaches 0, close the Battle Video. If no Battle Video was created, soft reset with `Start + Select + A + B` instead.
+1. At the next timer, trigger Sweet Scent (wild encounter) or interact with the selected stationary Pokémon.
+1. Defeat the Pokémon, then wait on the final message indicated by the timer. Don't flee because the Pickup ability won't be triggered.
+1. When the final timer reaches 0, press `A` to end the battle.
+1. Check every Pokémon in your party for Pokérus. If one is infected, congratulations!
+1. If none of your Pickup Pokémon has an item, try again. This attempt can't be calibrated.
+1. If they have items, enter the items in the fields below and press "Generate".
+1. Remove held items from your Pokémon.
+1. Select the update action for the closest result, then repeat this step with the adjusted calibration.
+
+<Gen3PokerusEmeraldBattleAndCalibrate />
+
+</Step>
+
+</Stepper>
+
+## Credits
+
+- Guide and tools: RainingChain.

@@ -1,32 +1,145 @@
-import { PickUpItem } from "~/rngTools";
-import { match } from "ts-pattern";
-
-export const pickupItems = [
-  "None",
-  "SuperPotion",
-  "FullHeal",
-  "UltraBall",
-  "RareCandy",
-  "FullRestore",
+export const pickupItems_rs = [
+  "Super Potion",
+  "Full Heal",
+  "Ultra Ball",
+  "Rare Candy",
+  "Full Restore",
   "Revive",
   "Nugget",
   "Protein",
-  "PpUp",
-  "KingsRock",
-] as const satisfies PickUpItem[];
+  "Pp Up",
+  "King's Rock",
+];
 
-export const pickupIdToName = (id: PickUpItem) => {
-  return match(id)
-    .with("None", () => "None")
-    .with("SuperPotion", () => "Super Potion")
-    .with("FullHeal", () => "Full Heal")
-    .with("UltraBall", () => "Ultra Ball")
-    .with("RareCandy", () => "Rare Candy")
-    .with("FullRestore", () => "Full Restore")
-    .with("Revive", () => "Revive")
-    .with("Nugget", () => "Nugget")
-    .with("Protein", () => "Protein")
-    .with("PpUp", () => "PP Up")
-    .with("KingsRock", () => "King's Rock")
-    .otherwise(() => "Unknown Item");
-};
+export const pickupItems_emerald = [
+  [
+    "Potion",
+    "Antidote",
+    "Super Potion",
+    "Great Ball",
+    "Repel",
+    "Escape Rope",
+    "X Attack",
+    "Full Heal",
+    "Ultra Ball",
+    "Hyper Potion",
+    "Nugget",
+  ],
+  [
+    "Antidote",
+    "Super Potion",
+    "Great Ball",
+    "Repel",
+    "Escape Rope",
+    "X Attack",
+    "Full Heal",
+    "Ultra Ball",
+    "Hyper Potion",
+    "Nugget",
+    "King's Rock",
+  ],
+  [
+    "Super Potion",
+    "Great Ball",
+    "Repel",
+    "Escape Rope",
+    "X Attack",
+    "Full Heal",
+    "Ultra Ball",
+    "Hyper Potion",
+    "Rare Candy",
+    "King's Rock",
+    "Full Restore",
+  ],
+  [
+    "Great Ball",
+    "Repel",
+    "Escape Rope",
+    "X Attack",
+    "Full Heal",
+    "Ultra Ball",
+    "Hyper Potion",
+    "Rare Candy",
+    "Protein",
+    "Full Restore",
+    "Ether",
+  ],
+  [
+    "Repel",
+    "Escape Rope",
+    "X Attack",
+    "Full Heal",
+    "Ultra Ball",
+    "Hyper Potion",
+    "Rare Candy",
+    "Protein",
+    "Revive",
+    "Ether",
+    "White Herb",
+  ],
+  [
+    "Escape Rope",
+    "X Attack",
+    "Full Heal",
+    "Ultra Ball",
+    "Hyper Potion",
+    "Rare Candy",
+    "Protein",
+    "Revive",
+    "HP Up",
+    "White Herb",
+    "TM44 (Rest)",
+  ],
+  [
+    "X Attack",
+    "Full Heal",
+    "Ultra Ball",
+    "Hyper Potion",
+    "Rare Candy",
+    "Protein",
+    "Revive",
+    "HP Up",
+    "Full Restore",
+    "TM44 (Rest)",
+    "Elixir",
+  ],
+  [
+    "Full Heal",
+    "Ultra Ball",
+    "Hyper Potion",
+    "Rare Candy",
+    "Protein",
+    "Revive",
+    "HP Up",
+    "Full Restore",
+    "Max Revive",
+    "Elixir",
+    "TM01 (Focus Punch)",
+  ],
+  [
+    "Ultra Ball",
+    "Hyper Potion",
+    "Rare Candy",
+    "Protein",
+    "Revive",
+    "HP Up",
+    "Full Restore",
+    "Max Revive",
+    "PP Up",
+    "TM01 (Focus Punch)",
+    "Leftovers",
+  ],
+  [
+    "Hyper Potion",
+    "Rare Candy",
+    "Protein",
+    "Revive",
+    "HP Up",
+    "Full Restore",
+    "Max Revive",
+    "PP Up",
+    "Max Elixir",
+    "Leftovers",
+    "TM26 (Earthquake)",
+  ],
+];

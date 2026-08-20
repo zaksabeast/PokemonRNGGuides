@@ -295,6 +295,10 @@
     "hash": "c38d4aeb3d57feb51f4f97433237d6c26353a5cc95d437bc73419f2bd039866e",
     "lastUpdated": null
   },
+  "/emerald-pokerus-retail/": {
+    "hash": "a0e030215b848c7a0fc551920db68f98d0c6ee3d40713c04162f15af974d4cae",
+    "lastUpdated": "2026-08-17"
+  },
   "/emerald-rng-with-ace/": {
     "hash": "2a4620f07070914319352150e26bb76f2f0661e585060201ec06bd7744d94a82",
     "lastUpdated": "2026-07-13"
@@ -1036,8 +1040,8 @@
     "lastUpdated": null
   },
   "/rs-pokerus-retail/": {
-    "hash": "8dfc119cb9ee1fe68841a144e4982459fa2c053d446e6bc28f0da2b16ef25edd",
-    "lastUpdated": null
+    "hash": "7680cbfefdfb4c976ac75634935453008c66dc375cd2ec70a377f0f78ffdde30",
+    "lastUpdated": "2026-08-08"
   },
   "/rs-sid-feebas/": {
     "hash": "f9297dc219fb5fcddea4519a866b355058095adfcae4829ac6d246555315600b",
@@ -1588,8 +1592,8 @@
     "lastUpdated": "2026-03-20"
   },
   "/zh-rs-pokerus-retail/": {
-    "hash": "ec9bf7aaefcf554bd4bc34e5603a898299bc6a8e6fd646d77e192a78b3bda5d6",
-    "lastUpdated": "2026-03-20"
+    "hash": "9d006d7dcff8ecf7c4fe076af5c755307c3595d39a89790860f991c7f155408e",
+    "lastUpdated": "2026-08-08"
   },
   "/zh-rs-sid-feebas/": {
     "hash": "8b399a2b81de44e7fac5e5144cafd8ef2702bb7463e62298a25391fd7697ee8e",

@@ -261,7 +261,6 @@ const CalibrationInputs = ({
     "leadPickupLvlIndex"
   >({ name: "leadPickupLvlIndex" });
 
-  const fields: Field[] = [];
   const isStatic = setup.encounter_type === "Stationary";
   const hasBattleVideo = battleVideoInfo.battleVideoAdvAfterPainting > 0;
 
@@ -316,49 +315,25 @@ const CalibrationInputs = ({
 
   const calibration = calibBattleStart + CALIB_DURING_BATTLE;
 
-  /*
-  For debugging:
-  const advanceBreakdownIncr = [
-    [`Battle video ends`, battleVideoAdvance ?? 0],
-    [`Press A to interact with encounter`, waitFrameBeforeSweetScent],
-    [
-      `Battle loop starts (x2 adv / frame)`,
-      offsetFromInputToBattleStart + calibBattleStart,
-    ],
-    [`Press A to end battle`, CALIB_DURING_BATTLE + frameDuringBattle * 2],
-  ] as const;
-
-  const advanceBreakdown = advanceBreakdownIncr.map((info, i) => {
-    const sum = advanceBreakdownIncr
-      .slice(0, i + 1)
-      .reduce((adv, val) => adv + val[1], 0);
-    return [info[0], sum];
-  }).concat([
-    ['Pickup logic', setup.target_advs.adv_after_painting],
-  ];
-  */
-
-  fields.push(
-    ...(isStatic
-      ? [
-          {
-            label: "Stationary Pokémon",
-            input: (
-              <Select<Species>
-                value={staticSpecies}
-                options={toOptions(getPossibleStatic3Species("emerald"))}
-                onSelect={setStaticSpecies}
-              />
-            ),
-          },
-          {
-            label: "Offset to start battle",
-            tooltip:
-              "Number of frames between interacting with the stationary Pokémon and the start of the battle.",
-            input: `~${offsetFromInputToBattleStart} frames`,
-          },
-        ]
-      : []),
+  const fields: Field[] = [
+    {
+      label: "Stationary Pokémon",
+      input: (
+        <Select<Species>
+          value={staticSpecies}
+          options={toOptions(getPossibleStatic3Species("emerald"))}
+          onSelect={setStaticSpecies}
+        />
+      ),
+      show: isStatic,
+    },
+    {
+      label: "Offset to start battle",
+      tooltip:
+        "Number of frames between interacting with the stationary Pokémon and the start of the battle.",
+      input: `~${offsetFromInputToBattleStart} frames`,
+      show: isStatic,
+    },
     {
       label: "Console",
       input: (
@@ -438,10 +413,7 @@ const CalibrationInputs = ({
         />
       ),
     },
-  );
-
-  if (isStatic) {
-    fields.push({
+    {
       label: "Lead Pickup Pokémon level",
       input: (
         <FormikSelect<CalibrationOptions, "leadPickupLvlIndex">
@@ -452,13 +424,13 @@ const CalibrationInputs = ({
           }))}
         />
       ),
-    });
-  }
-
-  fields.push({
-    label: "Filters?",
-    input: <Switch value={filterActive} onChange={setFilterActive} />,
-  });
+      show: isStatic,
+    },
+    {
+      label: "Filters?",
+      input: <Switch value={filterActive} onChange={setFilterActive} />,
+    },
+  ];
 
   if (filterActive) {
     const info = [

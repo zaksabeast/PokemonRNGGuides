@@ -35,7 +35,7 @@ import {
 } from "./pokerus_emerald_atoms";
 
 type EncounterType = "Stationary" | "Wild";
-type YesNoUnknown = "Yes" | "No" | "Unknown";
+export type YesNoUnknown = "Yes" | "No" | "Unknown";
 
 export type SetupOptions = {
   consider_painting_reseeding: boolean;

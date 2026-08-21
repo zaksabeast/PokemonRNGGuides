@@ -3,14 +3,22 @@ import {
   Pokerus3SearcherForCalibOptions,
   rngTools,
 } from "~/rngTools";
-import type { CalibrationOptions } from "./pokerus_emerald";
+import type { CalibrationOptions } from "./pokerus_emerald_calibration";
 import type {
   Pokerus3Setup,
   SetupOptions,
+  YesNoUnknown,
 } from "./pokerus_emerald_select_setup";
 import { lcrng_distance } from "~/utils/lcrng";
 import { pickupItems_emerald } from "~/types/pickupItems";
 import { match } from "ts-pattern";
+
+export type Pokerus3Column = Pokerus3GeneratorResult & {
+  advance_before_pickup: number;
+  target_advance_before_pickup: number;
+  frame_before_painting: number;
+  leadPickupLvlIndex: number;
+};
 
 let nextUid = 0;
 
@@ -28,7 +36,7 @@ export const estimateSetupWaitFrames = (
     : advancesAfterPainting * 20;
 };
 
-const boolTextToVal = (val: "Yes" | "No" | "Unknown") => {
+const boolTextToVal = (val: YesNoUnknown) => {
   return match(val)
     .with("Yes", () => true)
     .with("No", () => false)
@@ -48,10 +56,9 @@ export const findOptimalSetups = async (
       ),
       has_empty_pokenews_slot: boolTextToVal(values.has_empty_pokenews_slot),
       permit_level_up: values.permit_level_up,
+      // Ignore low pickup_pokemon_count to improve performance. They are unlikely to have good calibration.
       pickup_pokemon_count:
-        values.max_pickup_pokemon_count === 6
-          ? [1, 2, 3, 4, 5, 6]
-          : [1, 2, 3, 4, 5],
+        values.max_pickup_pokemon_count === 6 ? [4, 5, 6] : [3, 4, 5],
     },
     max_result_count: 100,
   });
@@ -146,11 +153,4 @@ export const generateResults = async (
       (res1, res2) => res1.advance_before_pickup - res2.advance_before_pickup,
     );
   return sortedResults;
-};
-
-export type Pokerus3Column = Pokerus3GeneratorResult & {
-  advance_before_pickup: number;
-  target_advance_before_pickup: number;
-  frame_before_painting: number;
-  leadPickupLvlIndex: number;
 };

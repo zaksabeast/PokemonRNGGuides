@@ -13,7 +13,7 @@ import {
 } from "~/components";
 import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
 import { useFormContext, useWatch_UNSAFE } from "~/hooks/form";
-import { Pokerus3BestResult, rngTools } from "~/rngTools";
+import { Pokerus3ResultInfo, rngTools } from "~/rngTools";
 import { GBA_FPS } from "~/utils/consts";
 import { formatDuration } from "~/utils/formatDuration";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
@@ -47,7 +47,7 @@ export type SetupOptions = {
   permit_level_up: boolean;
 };
 
-export type Pokerus3Setup = Pokerus3BestResult & {
+export type Pokerus3Setup = Pokerus3ResultInfo & {
   encounter_type: EncounterType;
   uid: number;
   has_unknown_can_have_new_mass_outbreak: boolean;
@@ -244,7 +244,6 @@ export const EnterSpecificSetup = ({
     setOptimalSetup({
       encounter_type: values.encounter_type,
       uid: 0,
-      consider_painting_reseeding: values.frame_before_painting !== 0,
       has_unknown_can_have_new_mass_outbreak: false,
       has_unknown_has_empty_pokenews_slot: false,
       gen_opts: {
@@ -255,25 +254,23 @@ export const EnterSpecificSetup = ({
         level_up: values.level_up,
         pickup_pokemon_count: values.pickup_pokemon_count,
       },
-      result_info: {
-        target_advs: {
-          frame_before_painting: values.frame_before_painting,
-          adv_after_painting: values.adv_after_painting,
-        },
-        advs_at_pickup: [
-          lcrng_distance(
-            0,
-            pokerng_with_jump(
-              values.frame_before_painting,
-              values.adv_after_painting,
-            ),
-          ),
-        ],
-        seed_at_pokerus: 0,
-        short_range_calibrable_ratio: 0,
-        long_range_calibrable_ratio: 0,
-        score: { from_pokerus: 0, from_items: 0, from_wait: 0 },
+      target_advs: {
+        frame_before_painting: values.frame_before_painting,
+        adv_after_painting: values.adv_after_painting,
       },
+      advs_at_pickup: [
+        lcrng_distance(
+          0,
+          pokerng_with_jump(
+            values.frame_before_painting,
+            values.adv_after_painting,
+          ),
+        ),
+      ],
+      seed_at_pokerus: 0,
+      short_range_calibrable_ratio: 0,
+      long_range_calibrable_ratio: 0,
+      score: { from_pokerus: 0, from_items: 0, from_wait: 0 },
     });
   };
 
@@ -455,8 +452,8 @@ const SelectSetupOptions = ({
   const columns: ResultColumn<Pokerus3Setup>[] = [
     {
       title: "Advances",
-      dataIndex: "result_info",
-      render: ({ target_advs }, { gen_opts }) => {
+      dataIndex: "target_advs",
+      render: (target_advs, { gen_opts }) => {
         const { frame_before_painting: before, adv_after_painting: after } =
           target_advs;
         const text =
@@ -483,8 +480,8 @@ const SelectSetupOptions = ({
         </div>
       ),
       key: "adv",
-      dataIndex: "result_info",
-      render: ({ advs_at_pickup }) => advs_at_pickup.length,
+      dataIndex: "advs_at_pickup",
+      render: (advs_at_pickup) => advs_at_pickup.length,
     },
     {
       title: (
@@ -496,14 +493,14 @@ const SelectSetupOptions = ({
       key: "calibration",
       tooltip:
         "Percentage of advances surrounding the target that give a Pickup item which permits calibration. Near from target is within 10 advances. Far from target is within 100.",
-      dataIndex: "result_info",
-      render: ({ short_range_calibrable_ratio, long_range_calibrable_ratio }) =>
+      dataIndex: "short_range_calibrable_ratio",
+      render: (short_range_calibrable_ratio, { long_range_calibrable_ratio }) =>
         `${formatProbability(short_range_calibrable_ratio)} | ${formatProbability(long_range_calibrable_ratio)}`,
     },
     {
       title: "Level up?",
       dataIndex: "gen_opts",
-      render: ({ level_up }) => (level_up ? "Yes" : "No"),
+      render: (gen_opts) => (gen_opts.level_up ? "Yes" : "No"),
     },
     {
       title: "Pickup Pokémon",
@@ -512,8 +509,8 @@ const SelectSetupOptions = ({
     },
     {
       title: "Score",
-      dataIndex: "result_info",
-      render: ({ score }) => {
+      dataIndex: "score",
+      render: (score) => {
         const total = score.from_pokerus + score.from_items + score.from_wait;
 
         return (

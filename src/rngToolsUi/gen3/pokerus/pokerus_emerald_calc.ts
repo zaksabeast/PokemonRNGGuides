@@ -76,10 +76,9 @@ export const generateResults = async (
 
   const advFromPainting = lcrng_distance(
     0,
-    setup.result_info.target_advs.frame_before_painting,
+    setup.target_advs.frame_before_painting,
   );
-  const targetAdv =
-    advFromPainting + setup.result_info.target_advs.adv_after_painting;
+  const targetAdv = advFromPainting + setup.target_advs.adv_after_painting;
 
   if (filterActive) {
     const filterItems = [
@@ -112,8 +111,7 @@ export const generateResults = async (
         ...result,
         advance_before_pickup: lcrng_distance(0, result.seed_at_pickup),
         target_advance_before_pickup: targetAdv,
-        frame_before_painting:
-          setup.result_info.target_advs.frame_before_painting,
+        frame_before_painting: setup.target_advs.frame_before_painting,
         leadPickupLvlIndex,
       }))
       .sort(
@@ -141,8 +139,7 @@ export const generateResults = async (
       ...result,
       advance_before_pickup: lcrng_distance(0, result.seed_at_pickup),
       target_advance_before_pickup: targetAdv,
-      frame_before_painting:
-        setup.result_info.target_advs.frame_before_painting,
+      frame_before_painting: setup.target_advs.frame_before_painting,
       leadPickupLvlIndex,
     }))
     .sort(

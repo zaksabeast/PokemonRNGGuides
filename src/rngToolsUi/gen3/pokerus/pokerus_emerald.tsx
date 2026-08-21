@@ -152,12 +152,11 @@ const OptimalSetupInfo = ({ setup }: { setup: Pokerus3Setup }) => {
     </Flex>
   );
 
-  const usingPaintingReseeding =
-    setup.result_info.target_advs.frame_before_painting !== 0;
+  const usingPaintingReseeding = setup.target_advs.frame_before_painting !== 0;
 
-  const advs_at_pickup = setup.result_info.advs_at_pickup.map((adv: number) => {
+  const advs_at_pickup = setup.advs_at_pickup.map((adv: number) => {
     return convertTotalAdvToAdvRelativeToPaintingReseeding(
-      setup.result_info.target_advs.frame_before_painting,
+      setup.target_advs.frame_before_painting,
       adv,
     );
   });
@@ -195,7 +194,7 @@ const OptimalSetupInfo = ({ setup }: { setup: Pokerus3Setup }) => {
     },
     {
       ...targetFrameBeforePaintingLabel(
-        setup.result_info.target_advs.frame_before_painting,
+        setup.target_advs.frame_before_painting,
       ),
     },
     {
@@ -211,11 +210,11 @@ const OptimalSetupInfo = ({ setup }: { setup: Pokerus3Setup }) => {
       input: (
         <Tooltip
           title={targetAdvanceAfterPaintingTitle({
-            before: setup.result_info.target_advs.frame_before_painting,
-            after: setup.result_info.target_advs.adv_after_painting,
+            before: setup.target_advs.frame_before_painting,
+            after: setup.target_advs.adv_after_painting,
           })}
         >
-          {formatLargeInteger(setup.result_info.target_advs.adv_after_painting)}
+          {formatLargeInteger(setup.target_advs.adv_after_painting)}
         </Tooltip>
       ),
     },
@@ -279,15 +278,14 @@ const CalibrationInputs = ({
     setBattleVideoAdvance(battleVideoInfo.battleVideoAdvAfterPainting);
   }, [battleVideoInfo]);
 
-  const { adv_after_painting, frame_before_painting } =
-    setup.result_info.target_advs;
+  const { adv_after_painting, frame_before_painting } = setup.target_advs;
   React.useEffect(() => {
     setFieldValue("minimum_advances", adv_after_painting - 50);
     setFieldValue("maximum_advances", adv_after_painting + 50);
   }, [adv_after_painting, frame_before_painting, setFieldValue]);
 
   const advAtLastInput =
-    setup.result_info.target_advs.adv_after_painting -
+    setup.target_advs.adv_after_painting -
     OFFSET_END_BATTLE_TO_PICKUP -
     CALIB_DURING_BATTLE -
     (humanInputDelay ?? 0);
@@ -336,7 +334,7 @@ const CalibrationInputs = ({
       .reduce((adv, val) => adv + val[1], 0);
     return [info[0], sum];
   }).concat([
-    ['Pickup logic', setup.result_info.target_advs.adv_after_painting],
+    ['Pickup logic', setup.target_advs.adv_after_painting],
   ];
   */
 
@@ -661,8 +659,8 @@ export const Gen3PokerusEmeraldCreateBattleVideo = () => {
   }
 
   const targetPaintingAdvs = {
-    before: setup.result_info.target_advs.frame_before_painting,
-    after: setup.result_info.target_advs.adv_after_painting,
+    before: setup.target_advs.frame_before_painting,
+    after: setup.target_advs.adv_after_painting,
   };
 
   return (
@@ -697,8 +695,8 @@ export const Gen3PokerusEmeraldBattleAndCalibrate = () => {
   }
 
   const targetPaintingAdvs = {
-    before: setup.result_info.target_advs.frame_before_painting,
-    after: setup.result_info.target_advs.adv_after_painting,
+    before: setup.target_advs.frame_before_painting,
+    after: setup.target_advs.adv_after_painting,
   };
 
   if (

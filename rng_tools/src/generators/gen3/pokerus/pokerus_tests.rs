@@ -403,30 +403,32 @@ mod tests {
                 seed_at_pokerus: 0x4000004F,
                 short_range_calibrable_ratio: 0.7,
                 long_range_calibrable_ratio: 0.415,
+                gen_opts: gen_opts.clone(),
             }
         );
     }
 
-    /*
-    // Kept to help future debugging
+    // Around 0.45s
     #[test]
-    fn test_gen3_pokerus_search_reverse() {
+    fn test_gen3_pokerus_search_reverse_perf() {
+        if cfg!(debug_assertions) {
+            return;
+        }
+
         let opts = Pokerus3SearcherOptions {
-            consider_painting_reseeding: false,
+            consider_painting_reseeding: true,
             considered_setups: Pokerus3ConsideredSetups {
                 entered_hall_of_fame: true,
                 can_have_new_mass_outbreak: None,
                 has_empty_pokenews_slot: None,
                 permit_level_up: true,
-                pickup_pokemon_count: vec![4],
+                pickup_pokemon_count: vec![1, 2, 3, 4, 5, 6],
             },
             max_result_count: 2,
         };
 
         let results = gen3_pokerus_search_reverse(&opts);
 
-        assert_eq!(results, vec![]);
+        assert_eq!(results.len(), 2);
     }
-
-    */
 }

@@ -135,13 +135,6 @@ pub struct Pokerus3ResultInfo {
     pub seed_at_pokerus: u32,
     pub short_range_calibrable_ratio: f64,
     pub long_range_calibrable_ratio: f64,
-}
-
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Pokerus3BestResult {
-    pub result_info: Pokerus3ResultInfo,
-    pub consider_painting_reseeding: bool,
     pub gen_opts: Pokerus3GeneratorOptions,
 }
 
@@ -274,6 +267,7 @@ pub fn calculate_result_info_for_seed_at_pokerus(
         seed_at_pokerus: seed_at_pokerus.seed(),
         short_range_calibrable_ratio,
         long_range_calibrable_ratio,
+        gen_opts: gen_opts.clone(),
     })
 }
 
@@ -309,7 +303,7 @@ fn debug_print_range_result(res: &Pokerus3ResultInfo, gen_opts: &Pokerus3Generat
 }
 
 #[wasm_bindgen]
-pub fn gen3_pokerus_search_reverse(opts: &Pokerus3SearcherOptions) -> Vec<Pokerus3BestResult> {
+pub fn gen3_pokerus_search_reverse(opts: &Pokerus3SearcherOptions) -> Vec<Pokerus3ResultInfo> {
     let all_opts_groups = opts.considered_setups.get_all_gen_opts_groups();
 
     let initial_seed = Pokerng::new(EMERALD_INITIAL_SEED);
@@ -327,58 +321,43 @@ pub fn gen3_pokerus_search_reverse(opts: &Pokerus3SearcherOptions) -> Vec<Pokeru
     all_opts_groups
         .iter()
         .flat_map(|gen_opts_group| {
-            seeds_at_pokerus
-                .iter()
-                .filter_map(|seed_at_pokerus| {
-                    // Reminder: When can_have_mass_outbreak or has_empty_pokenews_slot are Unknown,
-                    // only setups that result in Pokérus no matter their real value will be considered.
-                    // The exact target advance may change a little bit between the setups (more or less 1 advance), which is acceptable.
-                    // can_have_mass_outbreak or has_empty_pokenews_slot don't affect calibration because the advances are after pickup logic.
+            seeds_at_pokerus.iter().filter_map(|seed_at_pokerus| {
+                // Reminder: When can_have_mass_outbreak or has_empty_pokenews_slot are Unknown,
+                // only setups that result in Pokérus no matter their real value will be considered.
+                // The exact target advance may change a little bit between the setups (more or less 1 advance), which is acceptable.
+                // can_have_mass_outbreak or has_empty_pokenews_slot don't affect calibration because the advances are after pickup logic.
 
-                    // The score of a group of options is the minimum of their score.
-                    gen_opts_group
-                        .iter()
-                        .enumerate()
-                        .try_fold(
-                            None::<(Pokerus3ResultInfo, usize)>,
-                            |current_minimum, (opts_idx, gen_opts)| {
-                                let score = calculate_result_info_for_seed_at_pokerus(
-                                    opts.consider_painting_reseeding,
-                                    gen_opts,
-                                    &painting_adv_finder,
-                                    *seed_at_pokerus,
-                                )?; // ? operator will cause the score to be None if an option can't trigger Pokerus.
+                // The score of a group of options is the minimum of their score.
+                gen_opts_group
+                    .iter()
+                    .try_fold(None::<Pokerus3ResultInfo>, |current_minimum, gen_opts| {
+                        let candidate = calculate_result_info_for_seed_at_pokerus(
+                            opts.consider_painting_reseeding,
+                            gen_opts,
+                            &painting_adv_finder,
+                            *seed_at_pokerus,
+                        )?; // ? operator will cause the score to be None if an option can't trigger Pokerus.
 
-                                /* For debugging:
-                                println!(
-                                    "Seed={:08X}, opts_idx=${opts_idx}, score={}",
-                                    seed_at_pokerus.seed(),
-                                    score.score.total_score()
-                                );
-                                */
-                                let candidate = (score, opts_idx);
-                                Some(match current_minimum {
-                                    Some(best)
-                                        if best.0.score.total_score()
-                                            <= candidate.0.score.total_score() =>
-                                    {
-                                        Some(best)
-                                    }
-                                    _ => Some(candidate),
-                                })
-                            },
-                        )
-                        .flatten()
-                })
-                .k_largest_by_key(opts.max_result_count, |res| res.0.score.total_score())
-                .map(|res: (Pokerus3ResultInfo, usize)| Pokerus3BestResult {
-                    result_info: res.0,
-                    consider_painting_reseeding: opts.consider_painting_reseeding,
-                    gen_opts: gen_opts_group[res.1].clone(),
-                })
+                        /* For debugging:
+                        println!(
+                            "Seed={:08X}, opts_idx=${opts_idx}, score={}",
+                            seed_at_pokerus.seed(),
+                            score.score.total_score()
+                        );
+                        */
+                        Some(match current_minimum {
+                            Some(current_minimum)
+                                if current_minimum.score.total_score()
+                                    <= candidate.score.total_score() =>
+                            {
+                                Some(current_minimum)
+                            }
+                            _ => Some(candidate),
+                        })
+                    })
+                    .flatten()
+            })
         })
-        .k_largest_by_key(opts.max_result_count, |res| {
-            res.result_info.score.total_score()
-        })
+        .k_largest_by_key(opts.max_result_count, |res| res.score.total_score())
         .collect()
 }

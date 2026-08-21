@@ -19,8 +19,15 @@ use wasm_bindgen::prelude::*;
 
 // Only emerald is supported.
 
-const SCORE_POKERUS: i64 = 100;
-const SCORE_ITEM: i64 = 1;
+const SCORE_POKERUS_SHORT_RANGE: i64 = 1000;
+const SCORE_POKERUS_LONG_RANGE: i64 = 100;
+
+// max score from item is about 20 * 2 (short) + 120 * 2 (long) = ~350
+const SCORE_ITEM_SHORT_RANGE: i64 = 2;
+const SCORE_ITEM_LONG_RANGE: i64 = 1;
+
+const SCORE_BY_ADV_WAIT: f64 = -1f64 / 2000f64; // typically 300k advances -> score = -150
+
 const MIN_RATIO_ITEM_SHORT_RANGE: f64 = 0.5f64;
 const MIN_RATIO_ITEM_LONG_RANGE: f64 = 0.4f64;
 const SHORT_RANGE_ADV: usize = 10;
@@ -190,20 +197,18 @@ pub fn calculate_result_info_for_seed_at_pokerus(
             let dist_from_center = (idx as i32 - LONG_RANGE_ADV as i32).unsigned_abs() as usize;
 
             if res_at_adv.gives_pokerus {
-                let score_mult = if dist_from_center <= SHORT_RANGE_ADV {
-                    10
+                score.from_pokerus += if dist_from_center <= SHORT_RANGE_ADV {
+                    SCORE_POKERUS_SHORT_RANGE
                 } else {
-                    1
+                    SCORE_POKERUS_LONG_RANGE
                 };
-                score.from_pokerus += SCORE_POKERUS * score_mult;
                 seeds_at_pickup.push(rng);
             } else if res_at_adv.gives_item {
-                let score_mult = if dist_from_center <= SHORT_RANGE_ADV {
-                    2
+                score.from_items += if dist_from_center <= SHORT_RANGE_ADV {
+                    SCORE_ITEM_SHORT_RANGE
                 } else {
-                    1
+                    SCORE_ITEM_LONG_RANGE
                 };
-                score.from_items += SCORE_ITEM * score_mult;
             } else {
                 return;
             };
@@ -214,8 +219,6 @@ pub fn calculate_result_info_for_seed_at_pokerus(
                 short_range_calibrable_count += 1;
             }
         });
-
-    // max score from item is about 20 * 2 (short) + 120 * 2 (long) = ~350
 
     // Check if enough items for easy calibration.
     let short_range_calibrable_ratio =
@@ -258,7 +261,7 @@ pub fn calculate_result_info_for_seed_at_pokerus(
         }
     };
 
-    score.from_wait -= advs_dur.wait_dur as i64 / 2000; // typically around 300k adv => -300 score
+    score.from_wait = (advs_dur.wait_dur as f64 * SCORE_BY_ADV_WAIT) as i64;
 
     Some(Pokerus3ResultInfo {
         score,
@@ -271,45 +274,14 @@ pub fn calculate_result_info_for_seed_at_pokerus(
     })
 }
 
-#[allow(dead_code)]
-fn debug_print_range_result(res: &Pokerus3ResultInfo, gen_opts: &Pokerus3GeneratorOptions) {
-    println!("{:?}", gen_opts);
-    println!(
-        "Seed at pokerus {:X}, Adv at pokerus: {}, Score: {}",
-        res.seed_at_pokerus,
-        lcrng_distance(0, res.seed_at_pokerus),
-        res.score.total_score()
-    );
-    let rng = Pokerng::with_jump(
-        EMERALD_INITIAL_SEED,
-        res.target_advs.adv_after_painting as usize - LONG_RANGE_ADV,
-    );
-
-    StateIterator::new(rng)
-        .take(LONG_RANGE_ADV * 2)
-        .for_each(|rng| {
-            let res_at_adv = gen3_pokerus_generate::<false>(rng, gen_opts);
-            let adv = lcrng_distance(EMERALD_INITIAL_SEED, rng.seed());
-            let seed = rng.seed();
-
-            if res_at_adv.gives_pokerus {
-                println!("{adv}, 0x{seed:08X}: pokerus");
-            } else if res_at_adv.gives_item {
-                println!("{adv}, 0x{seed:08X}: item");
-            } else {
-                println!("{adv}, 0x{seed:08X}: nothing");
-            }
-        });
-}
-
 #[wasm_bindgen]
 pub fn gen3_pokerus_search_reverse(opts: &Pokerus3SearcherOptions) -> Vec<Pokerus3ResultInfo> {
-    let all_opts_groups = opts.considered_setups.get_all_gen_opts_groups();
+    let gen_opts_groups = opts.considered_setups.get_all_gen_opts_groups();
 
-    let initial_seed = Pokerng::new(EMERALD_INITIAL_SEED);
     let seeds_at_pokerus = if opts.consider_painting_reseeding {
         get_all_pokerus_rng_seeds()
     } else {
+        let initial_seed = Pokerng::new(EMERALD_INITIAL_SEED);
         get_pokerus_seeds_with_fewest_advs(initial_seed, 100)
     };
 
@@ -318,7 +290,7 @@ pub fn gen3_pokerus_search_reverse(opts: &Pokerus3SearcherOptions) -> Vec<Pokeru
         min_adv_after_painting: 4000, // enough time to complete the battle.
     });
 
-    all_opts_groups
+    gen_opts_groups
         .iter()
         .flat_map(|gen_opts_group| {
             seeds_at_pokerus.iter().filter_map(|seed_at_pokerus| {
@@ -338,13 +310,6 @@ pub fn gen3_pokerus_search_reverse(opts: &Pokerus3SearcherOptions) -> Vec<Pokeru
                             *seed_at_pokerus,
                         )?; // ? operator will cause the score to be None if an option can't trigger Pokerus.
 
-                        /* For debugging:
-                        println!(
-                            "Seed={:08X}, opts_idx=${opts_idx}, score={}",
-                            seed_at_pokerus.seed(),
-                            score.score.total_score()
-                        );
-                        */
                         Some(match current_minimum {
                             Some(current_minimum)
                                 if current_minimum.score.total_score()

@@ -6,16 +6,17 @@ use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 /*
-Setup: Input for the generator (see Pokerus3GeneratorOptions). Ex: has_entered_hall_of_fame
+Definitions:
+    Setup: Input for the generator (see Pokerus3GeneratorOptions). Ex: has_entered_hall_of_fame
 
-Setup quality: A setup is better than another if it's easiest to calibrate (more frequent items near target)
-               and has multiple advances resulting in pokerus.
+    Setup quality: A setup is better than another if it's easiest to calibrate (more frequent items near target)
+                   and has multiple advances resulting in pokerus.
 
-Generator: For a given setup, return the Pokerus result (item/pokerus given).
+    Generator: For a given setup, return the Pokerus result (item/pokerus given).
 
-There are 3 searchers (check pokerus_searcher.rs):
-    - Calibration: For a given setup and filter, generate each outcome for all advances from the initial seed until max_advances.
-    - Reverse: Find the best setup, for all (or a subset) of seeds. Can only be used to find seeds giving pokerus.
+    There are 2 searchers (check pokerus_searcher.rs):
+        - Calibration: For a given setup and filter, generate each outcome for all advances from the initial seed until max_advances.
+        - Reverse: Find the best setup, for all (or a subset) of seeds. Can only be used to find seeds giving pokerus.
 */
 
 const PICKUP_ITEM_CHANCE_RS: [u16; 11] = [30, 40, 50, 60, 70, 80, 90, 95, 99, 0xFFFF, 0xFFFF];
@@ -49,43 +50,7 @@ pub struct Pokerus3GeneratorResult {
     pub gives_item: bool,
 }
 
-pub fn get_min_max_advance_before_pickup(gen_opts: &Pokerus3GeneratorOptions) -> (usize, usize) {
-    let mut min = 0usize;
-    let mut max = 0usize;
-
-    min += gen_opts.pickup_pokemon_count;
-    max += gen_opts.pickup_pokemon_count * 2;
-
-    min += 4;
-    max += 4;
-
-    if gen_opts.entered_hall_of_fame {
-        if gen_opts.has_empty_pokenews_slot {
-            min += 1;
-            max += 1;
-        }
-        if gen_opts.can_have_new_mass_outbreak {
-            min += 1;
-            max += 2;
-        }
-    }
-    min += 1;
-    max += 1;
-
-    min += 74;
-    max += 74;
-
-    if gen_opts.level_up {
-        min += 2;
-        max += 2;
-    }
-
-    // more or less 1 for safety
-    min -= 1;
-    max += 1;
-    (min, max)
-}
-
+// To improve performance of searcher_reverse, item ids are not calculated if WITH_ITEM_IDS is false.
 pub fn gen3_pokerus_generate<const WITH_ITEM_IDS: bool>(
     mut rng: Pokerng,
     gen_opts: &Pokerus3GeneratorOptions,
@@ -161,4 +126,41 @@ pub fn gen3_pokerus_generate<const WITH_ITEM_IDS: bool>(
         gives_item,
         gives_pokerus,
     }
+}
+
+pub fn get_min_max_advance_before_pickup(gen_opts: &Pokerus3GeneratorOptions) -> (usize, usize) {
+    let mut min = 0usize;
+    let mut max = 0usize;
+
+    min += gen_opts.pickup_pokemon_count;
+    max += gen_opts.pickup_pokemon_count * 2;
+
+    min += 4;
+    max += 4;
+
+    if gen_opts.entered_hall_of_fame {
+        if gen_opts.has_empty_pokenews_slot {
+            min += 1;
+            max += 1;
+        }
+        if gen_opts.can_have_new_mass_outbreak {
+            min += 1;
+            max += 2;
+        }
+    }
+    min += 1;
+    max += 1;
+
+    min += 74;
+    max += 74;
+
+    if gen_opts.level_up {
+        min += 2;
+        max += 2;
+    }
+
+    // more or less 1 for safety
+    min -= 1;
+    max += 1;
+    (min, max)
 }

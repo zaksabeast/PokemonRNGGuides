@@ -5,7 +5,7 @@ mod tests {
         gen3::{
             NO_ITEM, Pokerus3ConsideredSetups, Pokerus3GeneratorOptions, Pokerus3GeneratorResult,
             Pokerus3ResultInfo, Pokerus3Score, Pokerus3SearcherForCalibOptions,
-            Pokerus3SearcherOptions, calculate_score_for_seed_at_pokerus,
+            Pokerus3SearcherOptions, calculate_result_info_for_seed_at_pokerus,
             gen3_pokerus_search_for_calib, gen3_pokerus_search_reverse, lcrng_distance,
             searcher_painter::{Wild3PaintingAdvFinder, Wild3PaintingAdvs, Wild3PaintingOpts},
         },
@@ -314,7 +314,59 @@ mod tests {
     }
 
     #[test]
-    fn test_calculate_score_for_pokerus() {
+    fn test_get_all_generator_options_with_unknown_pokenews_values() {
+        let setups = Pokerus3ConsideredSetups {
+            entered_hall_of_fame: true,
+            can_have_new_mass_outbreak: None,
+            has_empty_pokenews_slot: None,
+            permit_level_up: false,
+            pickup_pokemon_count: vec![4],
+        };
+
+        let options = setups.get_all_gen_opts_groups();
+
+        assert_eq!(options.len(), 1);
+        assert_eq!(options[0].len(), 4);
+        assert!(
+            options[0]
+                .iter()
+                .any(|opts| { !opts.can_have_new_mass_outbreak && opts.has_empty_pokenews_slot })
+        );
+        assert!(
+            options[0]
+                .iter()
+                .any(|opts| { !opts.can_have_new_mass_outbreak && !opts.has_empty_pokenews_slot })
+        );
+        assert!(
+            options[0]
+                .iter()
+                .any(|opts| { opts.can_have_new_mass_outbreak && opts.has_empty_pokenews_slot })
+        );
+        assert!(
+            options[0]
+                .iter()
+                .any(|opts| { opts.can_have_new_mass_outbreak && !opts.has_empty_pokenews_slot })
+        );
+
+        let painting_adv_finder = Wild3PaintingAdvFinder::new(&Wild3PaintingOpts {
+            min_frame_before_painting: 850,
+            min_adv_after_painting: 4000,
+        });
+        let res_info = calculate_result_info_for_seed_at_pokerus(
+            false,
+            &options[0][0],
+            &painting_adv_finder,
+            Pokerng::new(0x80007AF8),
+        );
+
+        assert_eq!(
+            res_info.map(|res_info| { res_info.score.total_score() }),
+            Some(1007)
+        );
+    }
+
+    #[test]
+    fn test_calculate_result_info_for_pokerus_known_values() {
         let gen_opts = Pokerus3GeneratorOptions {
             is_emerald_game: true,
             entered_hall_of_fame: true,
@@ -327,7 +379,7 @@ mod tests {
             min_frame_before_painting: 850,
             min_adv_after_painting: 4000,
         });
-        let score = calculate_score_for_seed_at_pokerus(
+        let score = calculate_result_info_for_seed_at_pokerus(
             true,
             &gen_opts,
             &painting_adv_finder,

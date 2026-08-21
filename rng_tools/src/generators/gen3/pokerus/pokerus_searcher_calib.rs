@@ -9,7 +9,7 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-// RS and emerald are supported.
+// RS (dead battery) and emerald are supported.
 
 pub const RS_INITIAL_SEED: u32 = 0x5a0;
 pub const EMERALD_INITIAL_SEED: u32 = 0;

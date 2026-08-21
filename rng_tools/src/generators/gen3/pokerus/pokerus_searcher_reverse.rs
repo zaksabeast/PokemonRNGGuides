@@ -1,3 +1,4 @@
+use crate::gen3::lcrng_distance;
 use crate::gen3::{
     EMERALD_INITIAL_SEED,
     pokerus::pokerus_generator::{
@@ -8,8 +9,6 @@ use crate::gen3::{
         evaluate_dur_to_perform_battle_video,
     },
 };
-
-use crate::gen3::lcrng_distance;
 use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
 use arrayvec::ArrayVec;
@@ -21,11 +20,11 @@ use wasm_bindgen::prelude::*;
 // Only emerald is supported.
 
 const SCORE_POKERUS: i64 = 100;
+const SCORE_ITEM: i64 = 1;
 const MIN_RATIO_ITEM_SHORT_RANGE: f64 = 0.5f64;
 const MIN_RATIO_ITEM_LONG_RANGE: f64 = 0.4f64;
-const SHORT_RANGE: usize = 10;
-const SCORE_ITEM: i64 = 1;
-const LONG_RANGE: usize = 100;
+const SHORT_RANGE_ADV: usize = 10;
+const LONG_RANGE_ADV: usize = 100;
 
 #[derive(Debug, Default, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -39,14 +38,17 @@ pub struct Pokerus3SearcherOptions {
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Pokerus3ConsideredSetups {
     pub entered_hall_of_fame: bool,
-    pub can_have_new_mass_outbreak: Option<bool>,
-    pub has_empty_pokenews_slot: Option<bool>,
+    pub can_have_new_mass_outbreak: Option<bool>, // None means Unknown
+    pub has_empty_pokenews_slot: Option<bool>,    // None means Unknown
     pub permit_level_up: bool,
     pub pickup_pokemon_count: Vec<usize>,
 }
 
 impl Pokerus3ConsideredSetups {
-    pub fn get_all_generator_options(&self) -> Vec<Vec<Pokerus3GeneratorOptions>> {
+    // The options within a particular group of options have the
+    // same values for entered_hall_of_fame, level_up, pickup_pokemon_count
+    // and every possible values for can_have_mass_outbreak and has_empty_pokenews_slot.
+    pub fn get_all_gen_opts_groups(&self) -> Vec<Vec<Pokerus3GeneratorOptions>> {
         let level_up_values = if self.permit_level_up {
             vec![true, false]
         } else {
@@ -160,7 +162,7 @@ fn find_seeds_at_pickup_for_seed_at_pokerus(
         .collect()
 }
 
-pub fn calculate_score_for_seed_at_pokerus(
+pub fn calculate_result_info_for_seed_at_pokerus(
     consider_painting_reseeding: bool,
     gen_opts: &Pokerus3GeneratorOptions,
     painting_adv_finder: &Wild3PaintingAdvFinder,
@@ -172,31 +174,30 @@ pub fn calculate_score_for_seed_at_pokerus(
         return None;
     }
     if consider_painting_reseeding && seeds_at_pickup_for_pokerus_seed.len() < 2 {
-        // when considering painting, we know the score will be bad if there's only 1 seed at pickup.
-        // this greatly improves performance.
+        // When considering painting, we know the score will be bad if there's only 1 seed at pickup.
+        // This greatly improves performance.
         return None;
     }
 
-    // ex: if advs_at_pickup is 10 and 14, then player aims for adv 12
     let mut seeds_at_pickup: ArrayVec<Pokerng, 6> = Default::default();
 
     let mut score: Pokerus3Score = Default::default();
 
     let mut min_rng = seeds_at_pickup_for_pokerus_seed[0];
-    min_rng.reverse_jump_const::<LONG_RANGE>();
+    min_rng.reverse_jump_const::<LONG_RANGE_ADV>();
 
     let mut short_range_calibrable_count: usize = 0;
     let mut long_range_calibrable_count: usize = 0;
     StateIterator::new(min_rng)
-        .take(LONG_RANGE * 2)
+        .take(LONG_RANGE_ADV * 2)
         .enumerate()
         .for_each(|(idx, rng)| {
             let res_at_adv = gen3_pokerus_generate::<false>(rng, gen_opts);
 
-            let dist_from_center = (idx as i32 - LONG_RANGE as i32).unsigned_abs() as usize;
+            let dist_from_center = (idx as i32 - LONG_RANGE_ADV as i32).unsigned_abs() as usize;
 
             if res_at_adv.gives_pokerus {
-                let score_mult = if dist_from_center <= SHORT_RANGE {
+                let score_mult = if dist_from_center <= SHORT_RANGE_ADV {
                     10
                 } else {
                     1
@@ -204,7 +205,7 @@ pub fn calculate_score_for_seed_at_pokerus(
                 score.from_pokerus += SCORE_POKERUS * score_mult;
                 seeds_at_pickup.push(rng);
             } else if res_at_adv.gives_item {
-                let score_mult = if dist_from_center <= SHORT_RANGE {
+                let score_mult = if dist_from_center <= SHORT_RANGE_ADV {
                     2
                 } else {
                     1
@@ -216,7 +217,7 @@ pub fn calculate_score_for_seed_at_pokerus(
 
             long_range_calibrable_count += 1;
 
-            if dist_from_center <= SHORT_RANGE {
+            if dist_from_center <= SHORT_RANGE_ADV {
                 short_range_calibrable_count += 1;
             }
         });
@@ -225,12 +226,13 @@ pub fn calculate_score_for_seed_at_pokerus(
 
     // Check if enough items for easy calibration.
     let short_range_calibrable_ratio =
-        short_range_calibrable_count as f64 / (SHORT_RANGE * 2) as f64;
+        short_range_calibrable_count as f64 / (SHORT_RANGE_ADV * 2) as f64;
     if short_range_calibrable_ratio < MIN_RATIO_ITEM_SHORT_RANGE {
         return None;
     }
 
-    let long_range_calibrable_ratio = long_range_calibrable_count as f64 / (LONG_RANGE * 2) as f64;
+    let long_range_calibrable_ratio =
+        long_range_calibrable_count as f64 / (LONG_RANGE_ADV * 2) as f64;
     if long_range_calibrable_ratio < MIN_RATIO_ITEM_LONG_RANGE {
         return None;
     }
@@ -286,11 +288,11 @@ fn debug_print_range_result(res: &Pokerus3ResultInfo, gen_opts: &Pokerus3Generat
     );
     let rng = Pokerng::with_jump(
         EMERALD_INITIAL_SEED,
-        res.target_advs.adv_after_painting as usize - LONG_RANGE,
+        res.target_advs.adv_after_painting as usize - LONG_RANGE_ADV,
     );
 
     StateIterator::new(rng)
-        .take(LONG_RANGE * 2)
+        .take(LONG_RANGE_ADV * 2)
         .for_each(|rng| {
             let res_at_adv = gen3_pokerus_generate::<false>(rng, gen_opts);
             let adv = lcrng_distance(EMERALD_INITIAL_SEED, rng.seed());
@@ -308,7 +310,7 @@ fn debug_print_range_result(res: &Pokerus3ResultInfo, gen_opts: &Pokerus3Generat
 
 #[wasm_bindgen]
 pub fn gen3_pokerus_search_reverse(opts: &Pokerus3SearcherOptions) -> Vec<Pokerus3BestResult> {
-    let all_opts_groups = opts.considered_setups.get_all_generator_options();
+    let all_opts_groups = opts.considered_setups.get_all_gen_opts_groups();
 
     let initial_seed = Pokerng::new(EMERALD_INITIAL_SEED);
     let seeds_at_pokerus = if opts.consider_painting_reseeding {
@@ -331,8 +333,8 @@ pub fn gen3_pokerus_search_reverse(opts: &Pokerus3SearcherOptions) -> Vec<Pokeru
                     // Reminder: When can_have_mass_outbreak or has_empty_pokenews_slot are Unknown,
                     // only setups that result in Pokérus no matter their real value will be considered.
                     // The exact target advance may change a little bit between the setups (more or less 1 advance), which is acceptable.
+                    // can_have_mass_outbreak or has_empty_pokenews_slot don't affect calibration because the advances are after pickup logic.
 
-                    // A group of options represent the possible values of can_have_mass_outbreak and has_empty_pokenews_slot.
                     // The score of a group of options is the minimum of their score.
                     gen_opts_group
                         .iter()
@@ -340,7 +342,7 @@ pub fn gen3_pokerus_search_reverse(opts: &Pokerus3SearcherOptions) -> Vec<Pokeru
                         .try_fold(
                             None::<(Pokerus3ResultInfo, usize)>,
                             |current_minimum, (opts_idx, gen_opts)| {
-                                let score = calculate_score_for_seed_at_pokerus(
+                                let score = calculate_result_info_for_seed_at_pokerus(
                                     opts.consider_painting_reseeding,
                                     gen_opts,
                                     &painting_adv_finder,

@@ -432,7 +432,7 @@ const CalibrationInputs = ({
               : "Trigger Sweet Scent",
             setup.gen_opts.level_up === true
               ? `Press A on the menu showing new stats after level up`
-              : `End "XXX gained YY EXP. Points!" message`,
+              : `Dismiss the final EXP message`,
           ]}
           minutesBeforeTarget={3}
           startButtonTrackerId="pokerus_emerald_timer_start"

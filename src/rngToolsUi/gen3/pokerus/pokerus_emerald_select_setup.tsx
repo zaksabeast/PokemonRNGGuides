@@ -12,7 +12,7 @@ import {
   RngToolSubmit,
 } from "~/components";
 import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
-import { useFormContext, useWatch_UNSAFE } from "~/hooks/form";
+import { useFormContext, useWatch } from "~/hooks/form";
 import { Pokerus3ResultInfo, rngTools } from "~/rngTools";
 import { GBA_FPS } from "~/utils/consts";
 import { formatDuration } from "~/utils/formatDuration";
@@ -29,10 +29,7 @@ import {
   estimateSetupWaitFrames,
   findOptimalSetups,
 } from "./pokerus_emerald_calc";
-import {
-  selectedSetupAtom,
-  battleVideoInfoAtom,
-} from "./pokerus_emerald_atoms";
+import { selectedSetupAtom, battleVideoInfoAtom } from "./pokerus_emerald_vars";
 
 type EncounterType = "Stationary" | "Wild";
 export type YesNoUnknown = "Yes" | "No" | "Unknown";
@@ -54,27 +51,27 @@ export type Pokerus3Setup = Pokerus3ResultInfo & {
   has_unknown_has_empty_pokenews_slot: boolean;
 };
 
+/**
+ * User enters fields for the searcher, which will find the exact optimal setup.
+ * */
 const SetupFieldsForSearcher = () => {
   const { setFieldValue } = useFormContext<SetupOptions>();
-  const considerPainting = useWatch_UNSAFE<
-    SetupOptions,
-    "consider_painting_reseeding"
-  >({ name: "consider_painting_reseeding" });
-  const encounterType = useWatch_UNSAFE<SetupOptions, "encounter_type">({
-    name: "encounter_type",
+  const {
+    consider_painting_reseeding: considerPainting,
+    encounter_type: encounterType,
+    entered_hall_of_fame: enteredHallOfFame,
+    can_have_new_mass_outbreak: canHaveNewMassOutbreak,
+    has_empty_pokenews_slot: hasEmptyPokenewsSlot,
+  } = useWatch({
+    names: {
+      consider_painting_reseeding: true,
+      encounter_type: true,
+      entered_hall_of_fame: true,
+      can_have_new_mass_outbreak: true,
+      has_empty_pokenews_slot: true,
+    },
+    validationSchema: setupValidator,
   });
-  const enteredHallOfFame = useWatch_UNSAFE<
-    SetupOptions,
-    "entered_hall_of_fame"
-  >({ name: "entered_hall_of_fame" });
-  const canHaveNewMassOutbreak = useWatch_UNSAFE<
-    SetupOptions,
-    "can_have_new_mass_outbreak"
-  >({ name: "can_have_new_mass_outbreak" });
-  const hasEmptyPokenewsSlot = useWatch_UNSAFE<
-    SetupOptions,
-    "has_empty_pokenews_slot"
-  >({ name: "has_empty_pokenews_slot" });
 
   const unknownBooleanOptions = toOptions(["Yes", "No", "Unknown"] as const);
 
@@ -130,7 +127,7 @@ const SetupFieldsForSearcher = () => {
       ),
     },
     {
-      show: enteredHallOfFame,
+      show: enteredHallOfFame === true,
       label: "Can trigger mass outbreak?",
       input: (
         <Flex vertical gap={8}>
@@ -150,7 +147,7 @@ const SetupFieldsForSearcher = () => {
         "You can only trigger a mass outbreak if you haven't triggered one already. Each battle after entering the Hall of Fame has 1/200 chance to trigger a mass outbreak. On dead battery, it's not possible to know if a mass outbreak has already been triggered or not. You have 95% chance to trigger a mass outbreak after 598 battles.",
     },
     {
-      show: enteredHallOfFame,
+      show: enteredHallOfFame === true,
       label: "Has empty Pokénews TV slot?",
       input: (
         <Flex vertical gap={8}>
@@ -210,6 +207,9 @@ const specificSetupValidator = z.object({
   adv_after_painting: z.number().int().min(0),
 });
 
+/**
+ * User manually enters the wanted setup.
+ * */
 export const EnterSpecificSetup = ({
   setOptimalSetup,
 }: {

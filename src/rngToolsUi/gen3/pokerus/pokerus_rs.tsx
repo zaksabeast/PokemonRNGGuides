@@ -382,20 +382,16 @@ export const Gen3PokerusRs = () => {
 
   const columns: ResultColumn<Column>[] = [
     {
-      title: "Target (Pickup | Pokérus)",
+      title: "Target",
       dataIndex: "target_advance_before_pickup",
       render: (
         target_advance_before_pickup: Column["target_advance_before_pickup"],
       ) => {
-        const target =
-          target_advance_before_pickup > POKERUS_TARGETS[0]
-            ? POKERUS_TARGETS[1]
-            : POKERUS_TARGETS[0];
-        return `${target_advance_before_pickup} | ${target}`;
+        return `${target_advance_before_pickup}`;
       },
     },
     {
-      title: "Hit (Pickup | Pokérus)",
+      title: "Hit",
       dataIndex: "advance_before_pickup",
       render: (
         advance_before_pickup: Column["advance_before_pickup"],

@@ -1,26 +1,58 @@
 import {
-  Button, Field, Flex, FormFieldTable, FormikNumberInput, FormikSelect, Icon,
-  MultiTimer, NumberInput, ResultColumn, RngToolForm, RngToolSubmit, Select, Switch,
+  Button,
+  Field,
+  Flex,
+  FormFieldTable,
+  FormikNumberInput,
+  FormikSelect,
+  Icon,
+  MultiTimer,
+  NumberInput,
+  ResultColumn,
+  RngToolForm,
+  RngToolSubmit,
+  Select,
+  Switch,
 } from "~/components";
-import { useFormContext, useWatch_UNSAFE } from "~/hooks/form";
+import { useFormContext, useWatch } from "~/hooks/form";
 import { Species } from "~/rngTools";
-import { Gen3Console, gen3ConsoleFpsMap, gen3ConsoleOptions } from "~/types/console";
+import {
+  Gen3Console,
+  gen3ConsoleFpsMap,
+  gen3ConsoleOptions,
+} from "~/types/console";
 import { pickupItems_emerald } from "~/types/pickupItems";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
-import { lcrng_distance } from "~/utils/lcrng";
 import { toOptions } from "~/utils/options";
 import React from "react";
 import { z } from "zod";
 import { BattleVideoInfo } from "../battleVideo/battleVideo";
-import { getEmeraldStaticCalibData, getPossibleStatic3Species } from "../static/constants.tsx";
+import {
+  getEmeraldStaticCalibData,
+  getPossibleStatic3Species,
+} from "../static/constants.tsx";
 import { generateResults, Pokerus3Column } from "./pokerus_emerald_calc";
 import { Pokerus3Setup } from "./pokerus_emerald_select_setup";
+import { convertTotalAdvToAdvRelativeToPaintingReseeding } from "./pokerus_emerald_vars.tsx";
 
-const CALIB_BATTLE_VIDEO_TO_BATTLE_WILD = 3 + 1 + 1 + 1 + 2 * 25 + 2 + 3 + 4 + 1;
+// Advs not caused by vblanks between the closing battle video and when the battle loop starts (x2 adv/frame):
+// +3 move ptrs, +1 choose_slot, +1 choose_lvl, +1 choose_nature, +50 pid_tries, +2 ivs, +3 move ptrs, +4 ai, +1 held_item
+const CALIB_BATTLE_VIDEO_TO_BATTLE_WILD =
+  3 + 1 + 1 + 1 + 2 * 25 + 2 + 3 + 4 + 1;
+
+// Advs not caused by vblanks between the closing battle video and when the battle loop starts (x2 adv/frame):
+// +3 move ptrs, +4 gen pokemon, +3 move ptrs, +4 ai, +1 held_item
 const CALIB_BATTLE_VIDEO_TO_BATTLE_STATIC = 3 + 4 + 3 + 4 + 1;
+
+// Advs not caused by vblanks between the start of battle loop and pressing A to end battle:
+// +1 BattleStartClearSetData, +1 TryDoEventsBeforeFirstTurn, +2 OpponentHandleChooseMove (variable), +1 Cmd_accuracycheck, +1 Cmd_critcalc, +1 Cmd_adjustnormaldamage, +1 Cmd_seteffectwithchance
 const CALIB_DURING_BATTLE = 8;
+
+// 360 vblanks between sweet scent and battle
 const OFFSET_SWEET_SCENT_TO_BATTLE = 360;
 const OFFSET_END_BATTLE_TO_PICKUP = 68;
+
+// Advance between generation the pokemon in static encounter and the start of the battle loop.
 const ADV_STATIC_GENERATE_MON_TO_BATTLE = 120;
 
 const pickupItemSchema = z.string();
@@ -38,17 +70,14 @@ const Validator = z.object({
 export type CalibrationOptions = z.infer<typeof Validator>;
 const initialValues: CalibrationOptions = {
   leadPickupLvlIndex: 0,
-  filter_pickup_items_0: "None", filter_pickup_items_1: "None",
-  filter_pickup_items_2: "None", filter_pickup_items_3: "None",
-  filter_pickup_items_4: "None", filter_pickup_items_5: "None",
-  minimum_advances: 0, maximum_advances: 2000,
-};
-export const convertTotalAdvToAdvRelativeToPaintingReseeding = (
-  frame_before_painting: number, totalAdv: number,
-) => {
-  if (frame_before_painting === 0) return totalAdv;
-  const advDiff = totalAdv - lcrng_distance(0, frame_before_painting);
-  return advDiff >= 0 ? advDiff : advDiff + 2 ** 32;
+  filter_pickup_items_0: "None",
+  filter_pickup_items_1: "None",
+  filter_pickup_items_2: "None",
+  filter_pickup_items_3: "None",
+  filter_pickup_items_4: "None",
+  filter_pickup_items_5: "None",
+  minimum_advances: 0,
+  maximum_advances: 2000,
 };
 
 const CalibrationInputs = ({
@@ -68,10 +97,10 @@ const CalibrationInputs = ({
 }) => {
   const { setFieldValue } = useFormContext<CalibrationOptions>();
 
-  const leadPickupLvlIndex = useWatch_UNSAFE<
-    CalibrationOptions,
-    "leadPickupLvlIndex"
-  >({ name: "leadPickupLvlIndex" });
+  const { leadPickupLvlIndex } = useWatch({
+    names: { leadPickupLvlIndex: true },
+    validationSchema: Validator,
+  });
 
   const isStatic = setup.encounter_type === "Stationary";
   const hasBattleVideo = battleVideoInfo.battleVideoAdvAfterPainting > 0;
@@ -106,7 +135,8 @@ const CalibrationInputs = ({
       ADV_STATIC_GENERATE_MON_TO_BATTLE
     : OFFSET_SWEET_SCENT_TO_BATTLE;
 
-  const waitFrameBeforeSweetScent = hasBattleVideo ? 600 : 1000; // 10s between closing battle video and triggering sweet scent
+  // 10s between closing battle video and triggering sweet scent. 1k adv when rebooting the game
+  const waitFrameBeforeSweetScent = hasBattleVideo ? 600 : 1000;
   const calibBattleStart = isStatic
     ? CALIB_BATTLE_VIDEO_TO_BATTLE_STATIC
     : CALIB_BATTLE_VIDEO_TO_BATTLE_WILD;
@@ -226,7 +256,7 @@ const CalibrationInputs = ({
       ),
     },
     {
-      label: "Lead Pickup Pokémon level",
+      label: "1st Pickup Pokémon level",
       input: (
         <FormikSelect<CalibrationOptions, "leadPickupLvlIndex">
           name="leadPickupLvlIndex"
@@ -274,7 +304,7 @@ const CalibrationInputs = ({
 
     for (let slot = 0; slot < setup.gen_opts.pickup_pokemon_count; slot++) {
       const { name, label } = info[slot];
-      const levelIndex = isStatic && slot === 0 ? leadPickupLvlIndex : 0;
+      const levelIndex = isStatic && slot === 0 ? (leadPickupLvlIndex ?? 0) : 0;
       const options = [
         { label: "None", value: "None" },
         ...toOptions(pickupItems_emerald[levelIndex]),
@@ -432,5 +462,3 @@ export const Calibration = ({
     </RngToolForm>
   );
 };
-
-

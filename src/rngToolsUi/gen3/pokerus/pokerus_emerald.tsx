@@ -19,11 +19,9 @@ import { Pokerus3Setup } from "./pokerus_emerald_select_setup";
 import {
   battleVideoInfoAtom,
   selectedSetupAtom,
-} from "./pokerus_emerald_atoms";
-import {
-  Calibration,
   convertTotalAdvToAdvRelativeToPaintingReseeding,
-} from "./pokerus_emerald_calibration";
+} from "./pokerus_emerald_vars";
+import { Calibration } from "./pokerus_emerald_calibration";
 
 const BATTLE_VIDEO_BUFFER = 5000; // enough time to trigger the battle and end the battle
 

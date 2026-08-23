@@ -12,7 +12,11 @@ import {
   FormFieldTable,
   FormikNumberInput,
 } from "~/components";
-import { rngTools, Pokerus3GeneratorResult } from "~/rngTools";
+import {
+  rngTools,
+  Pokerus3GeneratorResult,
+  Pokerus3SearcherForCalibOptions,
+} from "~/rngTools";
 import { FormikRadio } from "~/components/radio";
 import React from "react";
 import { z } from "zod";
@@ -20,8 +24,9 @@ import { toOptions } from "~/utils/options";
 import { range } from "lodash-es";
 import { useFormContext, useWatch_UNSAFE } from "~/hooks/form";
 import { match, P } from "ts-pattern";
-import { pickupIdToName, pickupItems } from "~/types/pickupItems";
+import { pickupItems_rs } from "~/types/pickupItems";
 import { MS_PER_GBA_FRAME } from "~/utils/consts";
+import { lcrng_distance } from "~/utils/lcrng";
 
 const HAS_EMPTY_TV_NEWS_SLOT = true; // The tool assumes the player always has a empty TV News slot.
 const LEVEL_UP = false; // The tool assumes the player's Pokémon won't level-up after the battle.
@@ -29,9 +34,10 @@ const POKERUS_TARGETS = [26923, 101199, 101236];
 
 type Column = Pokerus3GeneratorResult & {
   target_advance_before_pickup: number;
+  advance_before_pickup: number;
 };
 
-const pickupItemSchema = z.enum(pickupItems);
+const pickupItemSchema = z.enum(["None", ...pickupItems_rs]);
 
 const Validator = z.object({
   entered_hall_of_fame: z.boolean(),
@@ -70,50 +76,66 @@ const getTargetAdvanceBeforePickup = async (values: {
   had_mass_outbreak: boolean;
   pickup_pokemon_count: number;
 }) => {
-  const target_advances_before_pickup =
-    await rngTools.get_target_advances_before_pickup(
-      values.entered_hall_of_fame,
-      values.had_mass_outbreak,
-      HAS_EMPTY_TV_NEWS_SLOT,
-      LEVEL_UP,
-      values.pickup_pokemon_count,
-    );
-  return target_advances_before_pickup.length > 0
-    ? target_advances_before_pickup[0]
-    : 0;
+  const opts: Pokerus3SearcherForCalibOptions = {
+    initial_advance_before_pickup: 0,
+    max_advances: 110_000,
+    gen_opts: {
+      is_emerald_game: false,
+      entered_hall_of_fame: values.entered_hall_of_fame,
+      can_have_new_mass_outbreak: !values.had_mass_outbreak,
+      has_empty_pokenews_slot: HAS_EMPTY_TV_NEWS_SLOT,
+      pickup_pokemon_count: values.pickup_pokemon_count,
+      level_up: LEVEL_UP,
+    },
+    max_result_count: 10_000,
+    filter_pickup_items: undefined,
+    filter_gives_pokerus: true,
+  };
+
+  const res = await rngTools.gen3_pokerus_search_for_calib(opts);
+
+  if (res.length === 0) {
+    return 0;
+  }
+  return lcrng_distance(0x5a0, res[0].seed_at_pickup);
 };
 
 const generateResults = async (values: FormState): Promise<Column[]> => {
   const target_advance_before_pickup =
     await getTargetAdvanceBeforePickup(values);
 
-  const opts = {
+  const opts: Pokerus3SearcherForCalibOptions = {
     initial_advance_before_pickup: values.filter_active
       ? 0
       : values.initial_advance_before_pickup,
     max_advances: 110_000,
-    entered_hall_of_fame: values.entered_hall_of_fame,
-    can_have_new_mass_outbreak: !values.had_mass_outbreak,
-    has_empty_pokenews_slot: HAS_EMPTY_TV_NEWS_SLOT,
-    pickup_pokemon_count: values.pickup_pokemon_count,
-    level_up: LEVEL_UP,
+    gen_opts: {
+      is_emerald_game: false,
+      entered_hall_of_fame: values.entered_hall_of_fame,
+      can_have_new_mass_outbreak: !values.had_mass_outbreak,
+      has_empty_pokenews_slot: HAS_EMPTY_TV_NEWS_SLOT,
+      pickup_pokemon_count: values.pickup_pokemon_count,
+      level_up: LEVEL_UP,
+    },
+    max_result_count: 110_000,
     filter_pickup_items: values.filter_active
       ? [
-          values.filter_pickup_items_0,
-          values.filter_pickup_items_1,
-          values.filter_pickup_items_2,
-          values.filter_pickup_items_3,
-          values.filter_pickup_items_4,
+          pickupItems_rs.indexOf(values.filter_pickup_items_0),
+          pickupItems_rs.indexOf(values.filter_pickup_items_1),
+          pickupItems_rs.indexOf(values.filter_pickup_items_2),
+          pickupItems_rs.indexOf(values.filter_pickup_items_3),
+          pickupItems_rs.indexOf(values.filter_pickup_items_4),
         ].slice(0, values.pickup_pokemon_count)
       : null,
-    filter_gives_pokerus: null,
+    filter_gives_pokerus: undefined,
   };
 
-  const results = await rngTools.gen3_pokerus_generator_states(opts);
+  const results = await rngTools.gen3_pokerus_search_for_calib(opts);
 
   const cols: Column[] = results.map((res) => ({
     ...res,
     target_advance_before_pickup,
+    advance_before_pickup: lcrng_distance(0x5a0, res.seed_at_pickup),
   }));
 
   if (!values.filter_active) {
@@ -284,10 +306,10 @@ export const Fields = () => {
     }
 
     if (filterActive) {
-      const itemOptions = pickupItems.map((id) => ({
-        label: pickupIdToName(id),
-        value: id,
-      }));
+      const itemOptions = [
+        { label: "None", value: "None" },
+        ...toOptions(pickupItems_rs),
+      ];
 
       const info = [
         [
@@ -349,7 +371,7 @@ const formatAdvDiff = (hit: number, target: number) => {
     .otherwise(() => `${hit} (${diff})`);
 };
 
-export const Gen3Pokerus = () => {
+export const Gen3PokerusRs = () => {
   const [results, setResults] = React.useState<Column[]>([]);
 
   const onSubmit: RngToolSubmit<FormState> = async (values) => {
@@ -360,20 +382,21 @@ export const Gen3Pokerus = () => {
 
   const columns: ResultColumn<Column>[] = [
     {
-      title: "Target (Pickup | Pokérus)",
+      title: "Target",
       dataIndex: "target_advance_before_pickup",
-      render: (target_advance_before_pickup) => {
-        const target =
-          target_advance_before_pickup > POKERUS_TARGETS[0]
-            ? POKERUS_TARGETS[1]
-            : POKERUS_TARGETS[0];
-        return `${target_advance_before_pickup} | ${target}`;
+      render: (
+        target_advance_before_pickup: Column["target_advance_before_pickup"],
+      ) => {
+        return `${target_advance_before_pickup}`;
       },
     },
     {
-      title: "Hit (Pickup | Pokérus)",
+      title: "Hit",
       dataIndex: "advance_before_pickup",
-      render: (advance_before_pickup, values) => {
+      render: (
+        advance_before_pickup: Column["advance_before_pickup"],
+        values: Column,
+      ) => {
         if (advance_before_pickup === values.target_advance_before_pickup) {
           return "Pokérus";
         }
@@ -383,23 +406,13 @@ export const Gen3Pokerus = () => {
           values.target_advance_before_pickup,
         );
 
-        const pokerusTarget =
-          values.target_advance_before_pickup > POKERUS_TARGETS[0]
-            ? POKERUS_TARGETS[1]
-            : POKERUS_TARGETS[0];
-
-        const pokerusAdv = formatAdvDiff(
-          values.advance_before_pokerus,
-          pokerusTarget,
-        );
-
-        return `${pickupAdv} | ${pokerusAdv}`;
+        return `${pickupAdv}`;
       },
     },
     {
       title: "",
-      dataIndex: "advance_before_pokerus",
-      render: (_val, values) => {
+      dataIndex: "advance_before_pickup",
+      render: (_val: Column["advance_before_pickup"], values: Column) => {
         return (
           <UpdateCalibrationBtn
             colValues={values}
@@ -408,19 +421,18 @@ export const Gen3Pokerus = () => {
         );
       },
     },
-
     {
       title: "Pickup Items",
       dataIndex: "pickup_items",
-      render: (val) => {
+      render: (val: Column["pickup_items"]) => {
         const items = val
-          .map((itemId, pokemonSlot) => {
-            if (itemId === "None") {
+          .map((itemId: number, pokemonSlot: number) => {
+            if (itemId === -1) {
               return null;
             }
-            return `${pokemonSlot + 1}: ${pickupIdToName(itemId)}`;
+            return `${pokemonSlot + 1}: ${pickupItems_rs[itemId]}`;
           })
-          .filter((txt) => txt != null);
+          .filter((txt: string | null) => txt != null);
         return items.length === 0 ? "No items" : items.join(", ");
       },
     },

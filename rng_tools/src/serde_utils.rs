@@ -63,4 +63,43 @@ pub mod arrayvec {
             marker: PhantomData,
         })
     }
+
+    pub mod option {
+        use super::*;
+
+        pub fn serialize<S, T, const N: usize>(
+            arrayvec: &Option<ArrayVec<T, N>>,
+            serializer: S,
+        ) -> Result<S::Ok, S::Error>
+        where
+            S: Serializer,
+            T: Serialize,
+        {
+            match arrayvec {
+                Some(arrayvec) => serializer.serialize_some(arrayvec.as_slice()),
+                None => serializer.serialize_none(),
+            }
+        }
+
+        pub fn deserialize<'de, D, T, const N: usize>(
+            deserializer: D,
+        ) -> Result<Option<ArrayVec<T, N>>, D::Error>
+        where
+            D: Deserializer<'de>,
+            T: Deserialize<'de>,
+        {
+            Option::<Vec<T>>::deserialize(deserializer)?
+                .map(|items| {
+                    if items.len() > N {
+                        return Err(D::Error::custom(format!(
+                            "expected a sequence of at most {N} items, got {}",
+                            items.len(),
+                        )));
+                    }
+
+                    Ok(items.into_iter().collect())
+                })
+                .transpose()
+        }
+    }
 }

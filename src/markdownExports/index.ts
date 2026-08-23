@@ -132,9 +132,21 @@ const tools = {
     () => import("~/rngToolsUi/gen2/gen2Rng"),
     (mod) => mod.Gen2Rng,
   ),
-  Gen3Pokerus: lazyLoad(
-    () => import("~/rngToolsUi/gen3/pokerus"),
-    (mod) => mod.Gen3Pokerus,
+  Gen3PokerusRs: lazyLoad(
+    () => import("~/rngToolsUi/gen3/pokerus/pokerus_rs"),
+    (mod) => mod.Gen3PokerusRs,
+  ),
+  Gen3PokerusEmeraldFindSetup: lazyLoad(
+    () => import("~/rngToolsUi/gen3/pokerus/pokerus_emerald_select_setup"),
+    (mod) => mod.Gen3PokerusEmeraldFindSetup,
+  ),
+  Gen3PokerusEmeraldCreateBattleVideo: lazyLoad(
+    () => import("~/rngToolsUi/gen3/pokerus/pokerus_emerald"),
+    (mod) => mod.Gen3PokerusEmeraldCreateBattleVideo,
+  ),
+  Gen3PokerusEmeraldBattleAndCalibrate: lazyLoad(
+    () => import("~/rngToolsUi/gen3/pokerus/pokerus_emerald"),
+    (mod) => mod.Gen3PokerusEmeraldBattleAndCalibrate,
   ),
   Gen3Sid: lazyLoad(
     () => import("~/rngToolsUi/gen3/sid"),

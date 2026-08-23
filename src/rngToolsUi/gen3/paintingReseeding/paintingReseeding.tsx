@@ -152,6 +152,7 @@ type Props = AllOrNone<{
   onBattleVideoCreatedOrSkipped: (info: BattleVideoInfo) => void;
   targetAction: Wild3Action;
   clearAll?: () => void;
+  specifiedBuffer?: number;
 }>;
 
 export const EmeraldPaintingReseeding = ({
@@ -159,6 +160,7 @@ export const EmeraldPaintingReseeding = ({
   onBattleVideoCreatedOrSkipped,
   targetAction,
   clearAll,
+  specifiedBuffer,
 }: Props) => {
   const [targetPaintingAdvs, setTargetPaintingAdvs] = useState<{
     before: number;
@@ -281,6 +283,7 @@ export const EmeraldPaintingReseeding = ({
           <h2>Create Battle Video (without Painting Reseeding)</h2>
           <BattleVideo
             key={`${targetPaintingAdvs.after}-${consoleType}`}
+            specifiedBuffer={specifiedBuffer}
             fixedData={{
               targetAdvance: targetPaintingAdvs.after,
               isUpdatingExisting: false,
@@ -358,6 +361,7 @@ export const EmeraldPaintingReseeding = ({
         <h2>Update Battle Video</h2>
         <BattleVideo
           key={`${targetPaintingAdvs.after}-${consoleType}-${battleVideoAdvAfterPaintingConfirmed}`}
+          specifiedBuffer={specifiedBuffer}
           fixedData={{
             consoleType,
             targetAdvance: targetPaintingAdvs.after,

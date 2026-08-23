@@ -32,6 +32,8 @@ import {
 import { Wild3Action } from "~/rngTools";
 import { isFishingAction } from "../wild/utils";
 import { advanceAfterTxt, targetAdvanceLabel } from "../pokemonRng/labels";
+import { pokerng_with_jump } from "~/utils/lcrng";
+import { formatHex } from "~/utils/formatHex";
 
 // No waiting in battle
 const ADV_MISC_NO_BATTLE = 100; // Advances before last input not caused by frames when not waiting in battle
@@ -57,6 +59,8 @@ const MIN_ADV_FOR_UPDATING_EXISTING = 2500; // It takes 2500 adv to watch battle
 
 // All
 const POST_BV_SWEET_SCENT_BUFFER = 600; // It takes about 600 advances to close the battle video and trigger Sweet Scent.
+const DEFAULT_RECOMMENDED_BUFFER =
+  POST_BV_SWEET_SCENT_BUFFER + SAFETY_BUFFER_NO_BATTLE;
 const POST_BV_FISHING_BUFFER = 1500; // It takes about 800 advances to close the battle video and trigger fishing 1st try. 1500 is for 3 tries
 const OFFSET_DIALOGUE_TO_BV = 280; // Advances between last player input and battle video creation.
 
@@ -111,7 +115,7 @@ const createInitialValues = (fixedData?: FixedData): FormState => ({
   considerWaitingInBattle: true,
   displayAdvancedBreakdown: false,
   useRecommendedBuffer: true,
-  specifiedBuffer: POST_BV_SWEET_SCENT_BUFFER + SAFETY_BUFFER_NO_BATTLE,
+  specifiedBuffer: DEFAULT_RECOMMENDED_BUFFER,
   existingBattleVideoAdv: fixedData?.existingBattleVideoAdv ?? 0,
 });
 
@@ -249,7 +253,10 @@ const columns: ResultColumn<BreakdownInfo>[] = [
   },
 ];
 
-const calculateWithoutBattle = (opts: FormState) => {
+const calculateWithoutBattle = (
+  opts: FormState,
+  recommendedBuffer?: number,
+) => {
   const consoleFps = gen3ConsoleFpsMap[opts.console];
   const actionBufferPostVideo = opts.forFishing
     ? POST_BV_FISHING_BUFFER
@@ -259,7 +266,7 @@ const calculateWithoutBattle = (opts: FormState) => {
     ? SAFETY_BUFFER_UPDATE_EXISTING
     : SAFETY_BUFFER_NO_BATTLE;
   const safetyBufferAdv = opts.useRecommendedBuffer
-    ? actionBufferPostVideo + safetyBufferNoAction
+    ? (recommendedBuffer ?? actionBufferPostVideo + safetyBufferNoAction)
     : opts.specifiedBuffer;
 
   const initialAdv = opts.isUpdatingExisting ? opts.existingBattleVideoAdv : 0;
@@ -329,10 +336,12 @@ const calculateWithoutBattle = (opts: FormState) => {
         name: "Target",
         adv: initialAdv + targetAdvance,
         advSources: opts.useRecommendedBuffer
-          ? [
-              { name: "Performing action", adv: actionBufferPostVideo },
-              { name: "Safety buffer", adv: safetyBufferNoAction },
-            ]
+          ? recommendedBuffer == null
+            ? [
+                { name: "Performing action", adv: actionBufferPostVideo },
+                { name: "Safety buffer", adv: safetyBufferNoAction },
+              ]
+            : [{ name: "Recommended buffer", adv: safetyBufferAdv }]
           : [{ name: "Specified buffer", adv: safetyBufferAdv }],
       },
     ],
@@ -348,13 +357,13 @@ const calculateWithoutBattle = (opts: FormState) => {
   };
 };
 
-const calculateWithBattle = (opts: FormState) => {
+const calculateWithBattle = (opts: FormState, recommendedBuffer?: number) => {
   const actionBufferPostVideo = opts.forFishing
     ? POST_BV_FISHING_BUFFER
     : POST_BV_SWEET_SCENT_BUFFER;
 
   const safetyBufferAdv = opts.useRecommendedBuffer
-    ? actionBufferPostVideo + SAFETY_BUFFER_BATTLE
+    ? (recommendedBuffer ?? actionBufferPostVideo + SAFETY_BUFFER_BATTLE)
     : opts.specifiedBuffer;
 
   const initialAdv = opts.isUpdatingExisting ? opts.existingBattleVideoAdv : 0;
@@ -493,10 +502,12 @@ const calculateWithBattle = (opts: FormState) => {
         name: "Target",
         adv: initialAdv + targetAdvance,
         advSources: opts.useRecommendedBuffer
-          ? [
-              { name: "Time for action", adv: actionBufferPostVideo },
-              { name: "Safety buffer", adv: POST_BATTLE_BUFFER },
-            ]
+          ? recommendedBuffer == null
+            ? [
+                { name: "Time for action", adv: actionBufferPostVideo },
+                { name: "Safety buffer", adv: SAFETY_BUFFER_BATTLE },
+              ]
+            : [{ name: "Recommended buffer", adv: safetyBufferAdv }]
           : [{ name: "Specified buffer", adv: safetyBufferAdv }],
       },
     ],
@@ -512,7 +523,7 @@ const calculateWithBattle = (opts: FormState) => {
   };
 };
 
-const calculate = (opts: FormState) => {
+const calculate = (opts: FormState, recommendedBuffer?: number) => {
   const initialAdv = opts.isUpdatingExisting ? opts.existingBattleVideoAdv : 0;
   const targetAdvance = opts.targetAdvance - initialAdv;
 
@@ -520,10 +531,10 @@ const calculate = (opts: FormState) => {
     !opts.considerWaitingInBattle ||
     targetAdvance < THRESHOLD_ADV_FOR_BATTLE
   ) {
-    return calculateWithoutBattle(opts);
+    return calculateWithoutBattle(opts, recommendedBuffer);
   }
 
-  return calculateWithBattle(opts);
+  return calculateWithBattle(opts, recommendedBuffer);
 };
 
 type FixedData = {
@@ -546,13 +557,18 @@ export type BattleVideoInfo = {
 
 export type Props = {
   fixedData?: FixedData;
+  specifiedBuffer?: number;
   setBattleVideoAdv?: (
     adv: number | null,
     consoleType: Gen3Console | null,
   ) => void;
 };
 
-export const BattleVideo = ({ fixedData, setBattleVideoAdv }: Props) => {
+export const BattleVideo = ({
+  fixedData,
+  specifiedBuffer,
+  setBattleVideoAdv,
+}: Props) => {
   const [milliseconds, setMilliseconds] = React.useState<number[]>([]);
   const [timerLabels, setTimerLabels] = React.useState<string[]>([]);
   const [submitError, setSubmitError] = React.useState("");
@@ -578,7 +594,7 @@ export const BattleVideo = ({ fixedData, setBattleVideoAdv }: Props) => {
       timerLabels,
       breakdown,
       battleVideoInfo,
-    } = calculate(opts);
+    } = calculate(opts, specifiedBuffer);
     setSubmitError(submitError);
     setMilliseconds(milliseconds);
     setTimerLabels(timerLabels);
@@ -591,6 +607,11 @@ export const BattleVideo = ({ fixedData, setBattleVideoAdv }: Props) => {
     : {};
 
   const initialValues = createInitialValues(fixedData);
+
+  const battleVideoSeedTxt =
+    battleVideoInfo == null
+      ? ""
+      : `Seed: ${formatHex(pokerng_with_jump(0, battleVideoInfo.battleVideoAdv))}`;
 
   return (
     <>
@@ -631,7 +652,10 @@ export const BattleVideo = ({ fixedData, setBattleVideoAdv }: Props) => {
 
           <div>
             Battle Video will be created at advance ~
-            {formatLargeInteger(battleVideoInfo.battleVideoAdv)}.
+            <Tooltip title={battleVideoSeedTxt}>
+              {formatLargeInteger(battleVideoInfo.battleVideoAdv)}
+            </Tooltip>
+            .
             {battleVideoInfo.isUpdatingExisting && (
               <>
                 {" "}

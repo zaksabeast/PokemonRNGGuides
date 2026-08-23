@@ -97,54 +97,50 @@ const InnerChallengePageComponent = ({ state, setState }: InnerProps) => {
 
   const completionPercent = (completedTasks / totalTasks) * 100;
 
-  const metrics: Metric[] = React.useMemo(() => {
-    return [
-      {
-        label: "Tasks Completed",
-        value: (
-          <>
-            {completedTasks} / {totalTasks}
-          </>
-        ),
-      },
-      {
-        label: "Rank",
-        value: getRank(completionPercent),
-      },
-      {
-        label: "Completion Percentage",
-        value: `${completionPercent.toFixed(2)}%`,
-      },
-    ];
-  }, [completionPercent, totalTasks, completedTasks]);
+  const metrics: Metric[] = [
+    {
+      label: "Tasks Completed",
+      value: (
+        <>
+          {completedTasks} / {totalTasks}
+        </>
+      ),
+    },
+    {
+      label: "Rank",
+      value: getRank(completionPercent),
+    },
+    {
+      label: "Completion Percentage",
+      value: `${completionPercent.toFixed(2)}%`,
+    },
+  ];
 
-  const items: TabsProps["items"] = React.useMemo(() => {
-    return [
-      {
-        key: "tasks",
-        label: "Tasks",
-        children: (
-          <Tasks
-            tasks={tasks}
-            onUpdateTask={(task) =>
-              setState(
-                hydrationLock({
-                  [task.challengeId]: tasks.map((oldTask) =>
-                    oldTask.id === task.id ? task : oldTask,
-                  ),
-                }),
-              )
-            }
-          />
-        ),
-      },
-      {
-        key: "leaderboard",
-        label: "Discord Leaderboard",
-        children: <Leaderboard />,
-      },
-    ];
-  }, [tasks, setState]);
+  const items: TabsProps["items"] = [
+    {
+      key: "tasks",
+      label: "Tasks",
+      children: (
+        <Tasks
+          tasks={tasks}
+          onUpdateTask={(task) =>
+            setState(
+              hydrationLock({
+                [task.challengeId]: tasks.map((oldTask) =>
+                  oldTask.id === task.id ? task : oldTask,
+                ),
+              }),
+            )
+          }
+        />
+      ),
+    },
+    {
+      key: "leaderboard",
+      label: "Discord Leaderboard",
+      children: <Leaderboard />,
+    },
+  ];
 
   return (
     <Flex gap={24} vertical>

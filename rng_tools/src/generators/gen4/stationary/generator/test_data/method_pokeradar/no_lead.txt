@@ -1,0 +1,201 @@
+0	33	H 97	None	0: Snover	33	17440814	No	Lax	0: Snow Warning	30	15	10	16	16	22	Fighting	39	♀	Loves to eat
+1	26	MH 78	None	0: Snover	33	C2873928	No	Gentle	0: Snow Warning	27	18	6	3	0	0	Rock	44	♀	Nods off a lot
+2	77	M 52	None	0: Snover	33	80E0B46D	No	Lonely	1: Snow Warning	26	8	23	3	29	2	Psychic	48	♀	Somewhat stubborn
+3	42	L 10	None	0: Snover	33	C1F0C321	No	Docile	1: Snow Warning	8	26	9	17	1	17	Dragon	31	♀	Likes to thrash about
+4	31	H 81	None	0: Snover	33	672EC0BE	No	Gentle	0: Snow Warning	20	0	2	26	5	4	Steel	42	♂	Mischievous
+5	32	H 91	None	0: Snover	33	0814672E	No	Serious	0: Snow Warning	4	26	5	15	10	30	Rock	66	♀	Likes to run
+6	53	M 44	None	0: Snover	33	1381ECF3	No	Relaxed	1: Snow Warning	13	13	22	26	5	19	Grass	47	♂	Mischievous
+7	50	MH 70	None	0: Snover	33	2D0BCE35	No	Bold	1: Snow Warning	2	18	10	7	27	19	Ice	70	♀	Strongly defiant
+8	51	M 58	None	0: Snover	33	2A422D0B	No	Naughty	1: Snow Warning	19	7	27	28	4	1	Ground	34	♀	Often lost in thought
+9	36	L 18	None	0: Snover	33	285CC216	No	Jolly	0: Snow Warning	0	12	1	11	29	12	Psychic	40	♀	Somewhat stubborn
+10	85	H 83	None	0: Snover	33	66A2CCFC	No	Modest	0: Snow Warning	18	31	18	3	29	0	Electric	44	♂	Likes to thrash about
+11	82	MH 66	None	0: Snover	33	CE128D05	No	Calm	1: Snow Warning	28	12	16	7	19	28	Electric	60	♀	Somewhat of a clown
+12	25	MH 62	Never-Melt Ice	0: Snover	33	3928A279	No	Calm	1: Snow Warning	7	20	16	18	6	27	Poison	66	♀	Impetuous and silly
+13	206	ML 22	None	0: Snover	33	AD05863A	No	Timid	0: Snow Warning	18	14	4	0	12	25	Flying	31	♀	Likes to run
+14	61	ML 33	None	0: Snover	33	79E7BA1A	No	Rash	0: Snow Warning	7	10	20	2	27	12	Steel	62	♀	Strongly defiant
+15	76	M 40	None	0: Snover	33	B46D49CE	No	Careful	0: Snow Warning	0	7	0	8	23	26	Fire	56	♂	Alert to sounds
+16	57	MH 71	None	0: Snover	33	4D4C5ADB	No	Brave	1: Snow Warning	3	6	4	6	4	8	Fighting	42	♂	Somewhat of a clown
+17	42	L 0	None	0: Snover	33	C1F0C321	No	Docile	1: Snow Warning	8	26	9	17	1	17	Dragon	31	♀	Likes to thrash about
+18	33	L 13	None	0: Snover	33	17440814	No	Lax	0: Snow Warning	30	15	10	16	16	22	Fighting	39	♀	Loves to eat
+19	94	L 7	Never-Melt Ice	0: Snover	33	452E8552	No	Modest	0: Snow Warning	3	30	5	6	9	19	Grass	47	♀	Proud of its power
+20	45	MH 78	None	0: Snover	33	CEAB8631	No	Bold	1: Snow Warning	27	17	11	23	29	28	Ice	43	♀	Somewhat stubborn
+21	54	L 7	None	0: Snover	33	D9AD1381	No	Bashful	1: Snow Warning	19	26	5	22	22	27	Ground	67	♂	Impetuous and silly
+22	85	H 82	None	0: Snover	33	66A2CCFC	No	Modest	0: Snow Warning	18	31	18	3	29	0	Electric	44	♂	Likes to thrash about
+23	84	L 1	None	0: Snover	33	CCFCC19C	No	Hardy	0: Snow Warning	2	21	25	31	18	18	Bug	66	♂	Mischievous
+24	39	MH 70	None	0: Snover	33	1DD9756C	No	Hasty	0: Snow Warning	27	20	15	25	16	1	Ghost	33	♀	Nods off a lot
+25	54	L 2	None	0: Snover	33	D9AD1381	No	Bashful	1: Snow Warning	19	26	5	22	22	27	Ground	67	♂	Impetuous and silly
+26	41	ML 22	None	0: Snover	33	C3213E9B	No	Timid	1: Snow Warning	16	15	16	26	9	8	Fire	41	♂	Mischievous
+27	84	ML 25	None	0: Snover	33	CCFCC19C	No	Hardy	0: Snow Warning	2	21	25	31	18	18	Bug	66	♂	Mischievous
+28	57	MH 72	None	0: Snover	33	4D4C5ADB	No	Brave	1: Snow Warning	3	6	4	6	4	8	Fighting	42	♂	Somewhat of a clown
+29	152	ML 31	Never-Melt Ice	0: Snover	33	AA8931AA	No	Mild	0: Snow Warning	5	30	20	31	16	10	Rock	46	♂	Mischievous
+30	37	L 6	None	0: Snover	33	8580285C	No	Bashful	0: Snow Warning	12	11	29	14	7	25	Grass	61	♀	Good perseverance
+31	80	ML 26	None	0: Snover	33	2EFFF462	No	Adamant	0: Snow Warning	5	8	3	16	19	18	Fire	57	♀	Somewhat stubborn
+32	59	L 17	None	0: Snover	33	90C890C3	No	Jolly	1: Snow Warning	26	16	14	15	30	7	Bug	68	♂	Strong willed
+33	86	MH 66	None	0: Snover	33	4BF266A2	No	Hasty	0: Snow Warning	0	3	29	23	30	25	Steel	61	♂	Strong willed
+34	57	H 93	None	0: Snover	33	4D4C5ADB	No	Brave	1: Snow Warning	3	6	4	6	4	8	Fighting	42	♂	Somewhat of a clown
+35	42	H 95	None	0: Snover	33	C1F0C321	No	Docile	1: Snow Warning	8	26	9	17	1	17	Dragon	31	♀	Likes to thrash about
+36	61	L 9	None	0: Snover	33	79E7BA1A	No	Rash	0: Snow Warning	7	10	20	2	27	12	Steel	62	♀	Strongly defiant
+37	54	L 6	None	0: Snover	33	D9AD1381	No	Bashful	1: Snow Warning	19	26	5	22	22	27	Ground	67	♂	Impetuous and silly
+38	73	ML 22	None	0: Snover	33	62577C7A	No	Mild	0: Snow Warning	9	5	28	14	18	14	Fighting	65	♀	Good endurance
+39	56	L 19	None	0: Snover	33	5ADB9753	No	Jolly	1: Snow Warning	12	10	19	6	4	3	Poison	49	♀	Good perseverance
+40	107	M 45	None	0: Snover	33	0A842795	No	Calm	1: Snow Warning	17	6	31	17	4	27	Ghost	38	♂	Capable of taking hits
+41	120	M 44	None	0: Snover	33	67DBAFC5	No	Naughty	1: Snow Warning	19	1	31	25	27	12	Ice	53	♂	Capable of taking hits
+42	127	MH 71	None	0: Snover	33	7ABC993D	No	Quirky	1: Snow Warning	7	29	18	14	23	22	Fire	68	♀	Quick tempered
+43	64	H 81	None	0: Snover	33	8DA4EC4C	No	Brave	0: Snow Warning	6	24	27	14	10	15	Poison	68	♀	Highly persistent
+44	107	M 44	None	0: Snover	33	0A842795	No	Calm	1: Snow Warning	17	6	31	17	4	27	Ghost	38	♂	Capable of taking hits
+45	120	M 40	None	0: Snover	33	67DBAFC5	No	Naughty	1: Snow Warning	19	1	31	25	27	12	Ice	53	♂	Capable of taking hits
+46	55	ML 32	None	0: Snover	33	9753D9AD	No	Naughty	1: Snow Warning	27	22	22	10	19	12	Steel	64	♂	Nods off a lot
+47	76	M 40	None	0: Snover	33	B46D49CE	No	Careful	0: Snow Warning	0	7	0	8	23	26	Fire	56	♂	Alert to sounds
+48	77	MH 60	None	0: Snover	33	80E0B46D	No	Lonely	1: Snow Warning	26	8	23	3	29	2	Psychic	48	♀	Somewhat stubborn
+49	122	H 80	None	0: Snover	33	EF2CFC33	No	Gentle	1: Snow Warning	30	2	31	22	18	5	Poison	64	♀	Capable of taking hits
+50	89	MH 72	None	0: Snover	33	122D7AF9	No	Naive	1: Snow Warning	13	28	23	4	27	17	Grass	52	♂	Likes to fight
+51	100	H 83	None	0: Snover	33	09913934	No	Impish	0: Snow Warning	27	25	8	7	25	8	Psychic	40	♀	Nods off a lot
+52	165	M 41	None	0: Snover	33	40C4007F	No	Relaxed	1: Snow Warning	8	2	18	30	15	17	Water	64	♂	Highly curious
+53	78	M 52	None	0: Snover	33	DD1A80E0	No	Naive	0: Snow Warning	2	3	29	23	11	31	Dragon	67	♂	Alert to sounds
+54	89	M 52	None	0: Snover	33	122D7AF9	No	Naive	1: Snow Warning	13	28	23	4	27	17	Grass	52	♂	Likes to fight
+55	126	H 81	None	0: Snover	33	993DEBD6	No	Bashful	0: Snow Warning	28	21	30	29	18	7	Ghost	57	♂	Sturdy body
+56	69	H 80	None	0: Snover	33	0AD83E03	No	Hasty	1: Snow Warning	17	16	13	20	3	9	Grass	50	♀	Highly curious
+57	142	M 53	None	0: Snover	33	3D69DFA3	No	Relaxed	1: Snow Warning	30	28	24	9	7	9	Ice	50	♂	Loves to eat
+58	95	ML 38	None	0: Snover	33	17C3452E	No	Careful	0: Snow Warning	19	6	9	5	10	31	Ghost	57	♀	Alert to sounds
+59	112	M 42	None	0: Snover	33	00000A35	No	Jolly	1: Snow Warning	0	0	0	11	26	30	Ground	65	♀	Likes to run
+60	105	M 46	None	0: Snover	33	C1FD9019	No	Timid	1: Snow Warning	21	28	9	20	2	4	Flying	50	♀	Likes to fight
+61	120	ML 30	None	0: Snover	33	67DBAFC5	No	Naughty	1: Snow Warning	19	1	31	25	27	12	Ice	53	♂	Capable of taking hits
+62	101	L 1	None	0: Snover	33	A33B0991	No	Docile	1: Snow Warning	8	7	25	7	15	29	Dragon	61	♂	Quick to flee
+63	238	H 93	None	0: Snover	33	BE037D3A	No	Docile	0: Snow Warning	12	7	16	15	30	16	Rock	61	♀	Strong willed
+64	77	ML 33	None	0: Snover	33	80E0B46D	No	Lonely	1: Snow Warning	26	8	23	3	29	2	Psychic	48	♀	Somewhat stubborn
+65	96	MH 68	None	0: Snover	33	24D317C3	No	Bold	1: Snow Warning	31	5	10	30	18	31	Poison	68	♂	Alert to sounds
+66	77	M 45	None	0: Snover	33	80E0B46D	No	Lonely	1: Snow Warning	26	8	23	3	29	2	Psychic	48	♀	Somewhat stubborn
+67	130	H 88	None	0: Snover	33	91785DD6	No	Serious	0: Snow Warning	6	29	9	12	24	13	Ground	30	♂	Quick tempered
+68	79	L 7	None	0: Snover	33	F462DD1A	No	Lax	0: Snow Warning	31	23	11	8	3	5	Electric	54	♀	Takes plenty of siestas
+69	76	M 52	None	0: Snover	33	B46D49CE	No	Careful	0: Snow Warning	0	7	0	8	23	26	Fire	56	♂	Alert to sounds
+70	165	ML 30	None	0: Snover	33	40C4007F	No	Relaxed	1: Snow Warning	8	2	18	30	15	17	Water	64	♂	Highly curious
+71	104	MH 63	None	0: Snover	33	90193CFD	No	Quiet	1: Snow Warning	29	15	16	28	9	21	Grass	31	♂	Likes to relax
+72	159	L 2	None	0: Snover	33	5A5F4E3B	No	Serious	1: Snow Warning	8	1	9	29	30	19	Steel	55	♀	Strong willed
+73	122	H 90	None	0: Snover	33	EF2CFC33	No	Gentle	1: Snow Warning	30	2	31	22	18	5	Poison	64	♀	Capable of taking hits
+74	95	MH 63	None	0: Snover	33	17C3452E	No	Careful	0: Snow Warning	19	6	9	5	10	31	Ghost	57	♀	Alert to sounds
+75	120	M 46	None	0: Snover	33	67DBAFC5	No	Naughty	1: Snow Warning	19	1	31	25	27	12	Ice	53	♂	Capable of taking hits
+76	109	M 40	None	0: Snover	33	923B7CD1	No	Jolly	1: Snow Warning	28	9	19	17	2	21	Steel	52	♂	Scatters things often
+77	178	M 43	None	0: Snover	33	60A1E414	No	Calm	0: Snow Warning	11	25	10	25	3	24	Psychic	53	♀	Highly curious
+78	117	L 5	None	0: Snover	33	8E4231B0	No	Bashful	0: Snow Warning	12	22	24	30	11	5	Water	61	♂	Highly curious
+79	178	M 40	None	0: Snover	33	60A1E414	No	Calm	0: Snow Warning	11	25	10	25	3	24	Psychic	53	♀	Highly curious
+80	105	ML 20	None	0: Snover	33	C1FD9019	No	Timid	1: Snow Warning	21	28	9	20	2	4	Flying	50	♀	Likes to fight
+81	142	ML 37	None	0: Snover	33	3D69DFA3	No	Relaxed	1: Snow Warning	30	28	24	9	7	9	Ice	50	♂	Loves to eat
+82	95	MH 63	None	0: Snover	33	17C3452E	No	Careful	0: Snow Warning	19	6	9	5	10	31	Ghost	57	♀	Alert to sounds
+83	130	H 84	None	0: Snover	33	91785DD6	No	Serious	0: Snow Warning	6	29	9	12	24	13	Ground	30	♂	Quick tempered
+84	163	M 56	None	0: Snover	33	7B8EBFE1	No	Lonely	1: Snow Warning	31	3	0	6	16	4	Fighting	42	♂	Takes plenty of siestas
+85	122	H 98	None	0: Snover	33	EF2CFC33	No	Gentle	1: Snow Warning	30	2	31	22	18	5	Poison	64	♀	Capable of taking hits
+86	95	ML 39	None	0: Snover	33	17C3452E	No	Careful	0: Snow Warning	19	6	9	5	10	31	Ghost	57	♀	Alert to sounds
+87	282	L 11	None	0: Snover	33	EBAF9DA7	No	Rash	1: Snow Warning	3	5	20	7	22	21	Ghost	61	♂	Strongly defiant
+88	109	L 16	None	0: Snover	33	923B7CD1	No	Jolly	1: Snow Warning	28	9	19	17	2	21	Steel	52	♂	Scatters things often
+89	238	L 16	None	0: Snover	33	BE037D3A	No	Docile	0: Snow Warning	12	7	16	15	30	16	Rock	61	♀	Strong willed
+90	119	MH 74	None	0: Snover	33	AFC5E2CC	No	Brave	0: Snow Warning	27	30	25	1	31	19	Dragon	57	♂	Somewhat vain
+91	118	L 15	None	0: Snover	33	E2CC8E42	No	Adamant	0: Snow Warning	5	30	11	30	25	27	Grass	49	♀	Highly curious
+92	141	ML 27	None	0: Snover	33	DFA3FEE7	No	Mild	1: Snow Warning	9	11	15	28	24	30	Flying	38	♂	Likes to run
+93	282	ML 37	None	0: Snover	33	EBAF9DA7	No	Rash	1: Snow Warning	3	5	20	7	22	21	Ghost	61	♂	Strongly defiant
+94	121	MH 78	None	0: Snover	33	FC3367DB	No	Bold	1: Snow Warning	12	25	27	2	31	30	Water	68	♂	Somewhat vain
+95	108	ML 29	None	0: Snover	33	7CD10A84	No	Hardy	0: Snow Warning	27	17	4	9	19	28	Psychic	50	♂	Somewhat of a clown
+96	111	L 10	None	0: Snover	33	0A354D3C	No	Modest	0: Snow Warning	0	0	0	0	0	0	Fighting	30	♀	Sturdy body
+97	150	L 15	None	0: Snover	33	6E031C49	No	Lax	1: Snow Warning	10	13	12	20	10	9	Poison	50	♀	Highly curious
+98	121	H 90	None	0: Snover	33	FC3367DB	No	Bold	1: Snow Warning	12	25	27	2	31	30	Water	68	♂	Somewhat vain
+99	114	M 50	None	0: Snover	33	E97E0000	No	Naive	0: Snow Warning	17	19	20	13	12	16	Rock	31	♀	Sturdy body
+100	117	L 6	None	0: Snover	33	8E4231B0	No	Bashful	0: Snow Warning	12	22	24	30	11	5	Water	61	♂	Highly curious
+101	118	ML 23	None	0: Snover	33	E2CC8E42	No	Adamant	0: Snow Warning	5	30	11	30	25	27	Grass	49	♀	Highly curious
+102	163	ML 32	None	0: Snover	33	7B8EBFE1	No	Lonely	1: Snow Warning	31	3	0	6	16	4	Fighting	42	♂	Takes plenty of siestas
+103	130	H 90	None	0: Snover	33	91785DD6	No	Serious	0: Snow Warning	6	29	9	12	24	13	Ground	30	♂	Quick tempered
+104	223	M 56	None	0: Snover	33	2843F223	No	Naive	1: Snow Warning	20	18	9	27	18	0	Rock	61	♀	Thoroughly cunning
+105	142	M 41	None	0: Snover	33	3D69DFA3	No	Relaxed	1: Snow Warning	30	28	24	9	7	9	Ice	50	♂	Loves to eat
+106	113	ML 31	None	0: Snover	33	00000000	No	Hardy	0: Snow Warning	30	11	26	19	20	17	Ghost	44	♀	Loves to eat
+107	116	L 0	Never-Melt Ice	0: Snover	33	31B05271	No	Hardy	1: Snow Warning	2	18	3	22	24	12	Fighting	44	♀	Somewhat stubborn
+108	153	L 0	None	0: Snover	33	D3C5AA89	No	Hardy	1: Snow Warning	10	31	16	22	0	25	Poison	42	♂	Likes to thrash about
+109	166	ML 29	None	0: Snover	33	C84840C4	No	Sassy	0: Snow Warning	17	30	15	5	14	22	Bug	59	♂	Proud of its power
+110	201	M 57	None	0: Snover	33	B7A2A7C4	No	Impish	0: Snow Warning	21	2	10	2	7	28	Steel	64	♂	Somewhat of a clown
+111	120	M 55	None	0: Snover	33	67DBAFC5	No	Naughty	1: Snow Warning	19	1	31	25	27	12	Ice	53	♂	Capable of taking hits
+112	175	M 44	None	0: Snover	33	DFC5706A	No	Jolly	0: Snow Warning	4	20	14	0	25	20	Steel	32	♀	Strong willed
+113	166	L 8	None	0: Snover	33	C84840C4	No	Sassy	0: Snow Warning	17	30	15	5	14	22	Bug	59	♂	Proud of its power
+114	139	M 49	None	0: Snover	33	321348FB	No	Quiet	1: Snow Warning	7	23	31	29	23	3	Dark	59	♂	Capable of taking hits
+115	206	ML 24	None	0: Snover	33	AD05863A	No	Timid	0: Snow Warning	18	14	4	0	12	25	Flying	31	♀	Likes to run
+116	127	H 88	None	0: Snover	33	7ABC993D	No	Quirky	1: Snow Warning	7	29	18	14	23	22	Fire	68	♀	Quick tempered
+117	182	M 47	None	0: Snover	33	4160B6A0	No	Careful	0: Snow Warning	22	17	5	0	28	9	Ground	30	♂	Hates to lose
+118	127	H 88	None	0: Snover	33	7ABC993D	No	Quirky	1: Snow Warning	7	29	18	14	23	22	Fire	68	♀	Quick tempered
+119	282	ML 33	None	0: Snover	33	EBAF9DA7	No	Rash	1: Snow Warning	3	5	20	7	22	21	Ghost	61	♂	Strongly defiant
+120	179	ML 36	None	0: Snover	33	2B2B60A1	No	Careful	1: Snow Warning	24	25	3	21	13	0	Psychic	32	♂	Proud of its power
+121	134	MH 78	None	0: Snover	33	CFB81692	No	Naive	0: Snow Warning	29	26	13	4	12	0	Flying	31	♂	Likes to relax
+122	181	H 83	None	0: Snover	33	B6A08F38	No	Hasty	0: Snow Warning	0	11	16	17	5	22	Electric	36	♀	Impetuous and silly
+123	282	ML 36	None	0: Snover	33	EBAF9DA7	No	Rash	1: Snow Warning	3	5	20	7	22	21	Ghost	61	♂	Strongly defiant
+124	225	H 93	None	0: Snover	33	CB60A654	No	Lax	0: Snow Warning	2	2	16	19	21	2	Electric	47	♀	Somewhat vain
+125	134	M 54	None	0: Snover	33	CFB81692	No	Naive	0: Snow Warning	29	26	13	4	12	0	Flying	31	♂	Likes to relax
+126	203	ML 23	None	0: Snover	33	1C5CA855	No	Adamant	1: Snow Warning	2	18	8	17	1	26	Electric	36	♀	Alert to sounds
+127	150	L 4	None	0: Snover	33	6E031C49	No	Lax	1: Snow Warning	10	13	12	20	10	9	Poison	50	♀	Highly curious
+128	167	MH 70	None	0: Snover	33	BFD1C848	No	Brave	0: Snow Warning	22	5	14	1	4	27	Ghost	38	♀	Impetuous and silly
+129	178	M 49	None	0: Snover	33	60A1E414	No	Calm	0: Snow Warning	11	25	10	25	3	24	Psychic	53	♀	Highly curious
+130	149	MH 73	None	0: Snover	33	1C49A397	No	Bold	1: Snow Warning	3	16	27	13	12	10	Bug	38	♂	Highly persistent
+131	290	M 51	None	0: Snover	33	47441306	No	Naughty	0: Snow Warning	18	23	21	4	0	12	Flying	31	♀	Likes to fight
+132	209	L 1	None	0: Snover	33	57FDB019	No	Docile	1: Snow Warning	9	23	19	19	14	0	Bug	64	♀	Likes to fight
+133	142	ML 28	None	0: Snover	33	3D69DFA3	No	Relaxed	1: Snow Warning	30	28	24	9	7	9	Ice	50	♂	Loves to eat
+134	247	M 56	None	0: Snover	33	7BE7A3A7	No	Naughty	1: Snow Warning	6	29	26	30	10	20	Fighting	63	♂	Highly curious
+135	148	H 96	None	0: Snover	33	A3979268	No	Quirky	0: Snow Warning	9	2	7	16	27	3	Grass	59	♀	Strongly defiant
+136	155	H 98	None	0: Snover	33	82D9C3EA	No	Gentle	0: Snow Warning	6	6	24	2	5	28	Steel	42	♂	Somewhat of a clown
+137	180	H 91	None	0: Snover	33	8F382B2B	No	Bold	1: Snow Warning	0	21	13	11	16	0	Bug	40	♀	Likes to thrash about
+138	225	L 11	None	0: Snover	33	CB60A654	No	Lax	0: Snow Warning	2	2	16	19	21	2	Electric	47	♀	Somewhat vain
+139	158	H 91	None	0: Snover	33	4E3B945C	No	Brave	0: Snow Warning	31	18	22	1	9	8	Electric	34	♀	Takes plenty of siestas
+140	157	ML 32	None	0: Snover	33	945CE0C6	No	Sassy	0: Snow Warning	27	17	19	18	22	31	Ground	68	♂	Alert to sounds
+141	150	L 8	None	0: Snover	33	6E031C49	No	Lax	1: Snow Warning	10	13	12	20	10	9	Poison	50	♀	Highly curious
+142	223	M 57	None	0: Snover	33	2843F223	No	Naive	1: Snow Warning	20	18	9	27	18	0	Rock	61	♀	Thoroughly cunning
+143	188	L 11	None	0: Snover	33	7B43B6A8	No	Modest	0: Snow Warning	11	14	30	7	26	15	Bug	70	♂	Sturdy body
+144	167	H 88	None	0: Snover	33	BFD1C848	No	Brave	0: Snow Warning	22	5	14	1	4	27	Ghost	38	♀	Impetuous and silly
+145	206	M 43	None	0: Snover	33	AD05863A	No	Timid	0: Snow Warning	18	14	4	0	12	25	Flying	31	♀	Likes to run
+146	247	M 55	None	0: Snover	33	7BE7A3A7	No	Naughty	1: Snow Warning	6	29	26	30	10	20	Fighting	63	♂	Highly curious
+147	162	ML 32	None	0: Snover	33	BFE1FBB3	No	Mild	1: Snow Warning	14	28	30	3	0	31	Bug	48	♂	Alert to sounds
+148	185	MH 61	None	0: Snover	33	B54BF009	No	Calm	1: Snow Warning	14	16	9	21	13	8	Psychic	30	♀	Mischievous
+149	282	L 12	None	0: Snover	33	EBAF9DA7	No	Rash	1: Snow Warning	3	5	20	7	22	21	Ghost	61	♂	Strongly defiant
+150	159	L 8	None	0: Snover	33	5A5F4E3B	No	Serious	1: Snow Warning	8	1	9	29	30	19	Steel	55	♀	Strong willed
+151	240	L 2	None	0: Snover	33	79F040EC	No	Gentle	0: Snow Warning	17	13	1	5	23	21	Dark	50	♂	Hates to lose
+152	223	MH 63	None	0: Snover	33	2843F223	No	Naive	1: Snow Warning	20	18	9	27	18	0	Rock	61	♀	Thoroughly cunning
+153	250	M 44	None	0: Snover	33	87A9ABD4	No	Relaxed	0: Snow Warning	5	7	17	30	1	18	Water	46	♂	Highly curious
+154	201	H 82	None	0: Snover	33	B7A2A7C4	No	Impish	0: Snow Warning	21	2	10	2	7	28	Steel	64	♂	Somewhat of a clown
+155	168	L 12	None	0: Snover	33	38B6BFD1	No	Adamant	1: Snow Warning	27	1	4	25	30	3	Ghost	56	♂	Strong willed
+156	313	H 86	Never-Melt Ice	0: Snover	33	530E92F1	No	Quirky	1: Snow Warning	27	17	9	2	27	22	Water	66	♂	Strongly defiant
+157	230	H 99	None	0: Snover	33	3DCD8D5B	No	Bashful	1: Snow Warning	19	28	1	5	8	17	Ghost	30	♀	Likes to fight
+158	195	H 86	None	0: Snover	33	9895E061	No	Serious	1: Snow Warning	17	7	1	13	4	26	Bug	36	♀	Alert to sounds
+159	184	L 1	None	0: Snover	33	F0091636	No	Hardy	0: Snow Warning	11	10	13	16	9	14	Fire	36	♀	Mischievous
+160	209	L 2	None	0: Snover	33	57FDB019	No	Docile	1: Snow Warning	9	23	19	19	14	0	Bug	64	♀	Likes to fight
+161	282	ML 25	None	0: Snover	33	EBAF9DA7	No	Rash	1: Snow Warning	3	5	20	7	22	21	Ghost	61	♂	Strongly defiant
+162	215	H 99	None	0: Snover	33	2D9334A9	No	Bashful	1: Snow Warning	6	11	2	9	4	13	Ghost	34	♂	Somewhat of a clown
+163	180	MH 77	None	0: Snover	33	8F382B2B	No	Bold	1: Snow Warning	0	21	13	11	16	0	Bug	40	♀	Likes to thrash about
+164	223	M 50	None	0: Snover	33	2843F223	No	Naive	1: Snow Warning	20	18	9	27	18	0	Rock	61	♀	Thoroughly cunning
+165	196	H 84	None	0: Snover	33	84F19895	No	Quirky	1: Snow Warning	26	13	4	3	9	2	Electric	45	♂	Takes plenty of siestas
+166	195	H 91	None	0: Snover	33	9895E061	No	Serious	1: Snow Warning	17	7	1	13	4	26	Bug	36	♀	Alert to sounds
+167	230	H 94	None	0: Snover	33	3DCD8D5B	No	Bashful	1: Snow Warning	19	28	1	5	8	17	Ghost	30	♀	Likes to fight
+168	261	H 81	None	0: Snover	33	CB8F2C6F	No	Gentle	1: Snow Warning	17	18	28	25	19	19	Ice	56	♀	Good endurance
+169	206	M 51	None	0: Snover	33	AD05863A	No	Timid	0: Snow Warning	18	14	4	0	12	25	Flying	31	♀	Likes to run
+170	261	H 99	None	0: Snover	33	CB8F2C6F	No	Gentle	1: Snow Warning	17	18	28	25	19	19	Ice	56	♀	Good endurance
+171	230	H 82	None	0: Snover	33	3DCD8D5B	No	Bashful	1: Snow Warning	19	28	1	5	8	17	Ghost	30	♀	Likes to fight
+172	189	L 12	None	0: Snover	33	F9CB7B43	No	Sassy	1: Snow Warning	15	7	26	30	11	20	Fire	64	♀	Highly curious
+173	252	L 1	None	0: Snover	33	07D244E5	No	Lax	1: Snow Warning	5	24	18	20	29	30	Steel	37	♂	Likes to run
+174	247	ML 34	None	0: Snover	33	7BE7A3A7	No	Naughty	1: Snow Warning	6	29	26	30	10	20	Fighting	63	♂	Highly curious
+175	192	M 47	None	0: Snover	33	745FAFD4	No	Jolly	0: Snow Warning	30	29	16	3	24	1	Ghost	40	♂	Loves to eat
+176	237	MH 70	None	0: Snover	33	7D3AF699	No	Quiet	1: Snow Warning	3	16	15	7	16	12	Bug	43	♂	Somewhat vain
+177	238	L 4	None	0: Snover	33	BE037D3A	No	Docile	0: Snow Warning	12	7	16	15	30	16	Rock	61	♀	Strong willed
+178	187	MH 69	None	0: Snover	33	B6A8260E	No	Brave	0: Snow Warning	3	26	30	14	30	11	Poison	70	♀	Sturdy body
+179	186	M 50	None	0: Snover	33	260EB54B	No	Careful	1: Snow Warning	8	21	13	26	30	3	Ground	65	♀	Strong willed
+180	237	MH 66	None	0: Snover	33	7D3AF699	No	Quiet	1: Snow Warning	3	16	15	7	16	12	Bug	43	♂	Somewhat vain
+181	204	L 18	None	0: Snover	33	A2421C5C	No	Adamant	0: Snow Warning	26	17	1	8	11	5	Grass	50	♀	Takes plenty of siestas
+182	237	MH 70	None	0: Snover	33	7D3AF699	No	Quiet	1: Snow Warning	3	16	15	7	16	12	Bug	43	♂	Somewhat vain
+183	218	H 85	None	0: Snover	33	A1E0112D	No	Serious	1: Snow Warning	20	19	16	30	28	4	Fighting	41	♀	Highly curious
+184	313	H 80	Never-Melt Ice	0: Snover	33	530E92F1	No	Quirky	1: Snow Warning	27	17	9	2	27	22	Water	66	♂	Strongly defiant
+185	206	ML 27	None	0: Snover	33	AD05863A	No	Timid	0: Snow Warning	18	14	4	0	12	25	Flying	31	♀	Likes to run
+186	237	M 49	None	0: Snover	33	7D3AF699	No	Quiet	1: Snow Warning	3	16	15	7	16	12	Bug	43	♂	Somewhat vain
+187	194	MH 63	None	0: Snover	33	E061C3BE	No	Hasty	0: Snow Warning	21	4	6	7	1	17	Ice	42	♂	Takes plenty of siestas
+188	249	L 11	None	0: Snover	33	ABD4EBA6	No	Rash	0: Snow Warning	9	29	1	7	17	5	Dark	40	♂	Quick tempered
+189	240	L 1	None	0: Snover	33	79F040EC	No	Gentle	0: Snow Warning	17	13	1	5	23	21	Dark	50	♂	Hates to lose
+190	223	MH 76	None	0: Snover	33	2843F223	No	Naive	1: Snow Warning	20	18	9	27	18	0	Rock	61	♀	Thoroughly cunning
+191	218	L 15	None	0: Snover	33	A1E0112D	No	Serious	1: Snow Warning	20	19	16	30	28	4	Fighting	41	♀	Highly curious
+192	275	M 55	Never-Melt Ice	0: Snover	33	F6C3FD4D	No	Lonely	1: Snow Warning	10	14	17	20	29	16	Fire	31	♀	Somewhat stubborn
+193	204	L 13	None	0: Snover	33	A2421C5C	No	Adamant	0: Snow Warning	26	17	1	8	11	5	Grass	50	♀	Takes plenty of siestas
+194	249	ML 39	None	0: Snover	33	ABD4EBA6	No	Rash	0: Snow Warning	9	29	1	7	17	5	Dark	40	♂	Quick tempered
+195	292	ML 24	None	0: Snover	33	008CD6F2	No	Mild	0: Snow Warning	30	1	30	29	8	22	Rock	38	♂	Sturdy body
+196	237	MH 73	None	0: Snover	33	7D3AF699	No	Quiet	1: Snow Warning	3	16	15	7	16	12	Bug	43	♂	Somewhat vain
+197	292	ML 26	None	0: Snover	33	008CD6F2	No	Mild	0: Snow Warning	30	1	30	29	8	22	Rock	38	♂	Sturdy body
+198	351	H 88	None	0: Snover	33	8ADFA38A	No	Brave	0: Snow Warning	14	1	29	15	3	5	Dragon	61	♂	Good perseverance
+199	316	L 7	None	0: Snover	33	ECB46C56	No	Modest	0: Snow Warning	4	22	17	4	14	9	Poison	51	♀	A little quick tempered
+200	239	L 19	None	0: Snover	33	40ECBE03	No	Jolly	1: Snow Warning	16	15	30	13	1	17	Ice	33	♀	Sturdy body

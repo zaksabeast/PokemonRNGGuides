@@ -7,19 +7,27 @@ import { Timer } from "./timer";
 import { RadioGroup } from "./radio";
 import { Select } from "./select";
 import firstBeepMp3 from "~/assets/first-beep.mp3";
-import secondBeepMp3 from "~/assets/second-beep.mp3";
+import countdownBeepsAudio from "~/assets/timer-11-beeps.mp3";
 import { useAudio } from "~/hooks/useAudio";
-import { FormFieldTable } from "./formFieldTable";
+import { useCountdownBeeps } from "~/hooks/useCountdownBeeps";
+import { COUNTDOWN_INTERVAL_MS } from "~/hooks/useCanvasTimer";
+import { Field, FormFieldTable } from "./formFieldTable";
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
 import { z } from "zod";
 import { hydrationLock, HydrationLock } from "~/utils/hydration";
 import { useHydrate } from "~/hooks/useHydrate";
 import * as tst from "ts-toolbelt";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
-const MultiTimerStateSchema = z.object({
-  showAllTimers: z.boolean(),
-  maxBeepCount: z.number(),
-});
+const MultiTimerStateSchema = z
+  .object({
+    showAllTimers: z.boolean(),
+    maxBeepCount: z.number().optional(),
+  })
+  .transform((obj) => ({
+    ...obj,
+    maxBeepCount: obj.maxBeepCount ?? 5,
+  }));
 
 type MultiTimerState = z.infer<typeof MultiTimerStateSchema>;
 
@@ -29,15 +37,22 @@ const multiTimerStateAtom = atomWithPersistence(
   { showAllTimers: false, maxBeepCount: 5 },
 );
 
-const countdownIntervalMs = 500;
+const calculateOffset = (timers: number[], index: number) =>
+  timers.slice(0, index).reduce((sum, ms) => sum + ms, 0);
 
 type InnerProps = {
   state: MultiTimerState;
   setState: (state: HydrationLock<MultiTimerState>) => void;
   minutesBeforeTarget: number;
   milliseconds: number[];
+  labels?: React.ReactNode[];
+  disableStart?: boolean;
   startButtonTrackerId: string;
   stopButtonTrackerId: string;
+  slots?: {
+    aboveStartButton?: React.ReactNode;
+    belowStartButton?: React.ReactNode;
+  };
 };
 
 const InnerMultiTimer = ({
@@ -45,93 +60,121 @@ const InnerMultiTimer = ({
   setState,
   minutesBeforeTarget,
   milliseconds,
+  disableStart = false,
   startButtonTrackerId,
   stopButtonTrackerId,
+  labels,
+  slots,
 }: InnerProps) => {
-  const [isRunning, setIsRunning] = React.useState(false);
+  const t = useActiveRouteTranslations();
+  const [startTimeMs, setStartTimeMs] = React.useState<number | null>(null);
   const [currentTimerIndex, setCurrentTimerIndex] = React.useState(0);
-  const firstBeep = useAudio(firstBeepMp3);
-  const secondBeep = useAudio(secondBeepMp3);
+  const { playBeeps: playKeepAlive, stopBeeps: stopKeepAlive } = useAudio({
+    url: firstBeepMp3,
+  });
+
+  const countdownBeeps = Math.min(
+    Math.floor((milliseconds[currentTimerIndex] ?? 0) / COUNTDOWN_INTERVAL_MS),
+    state.maxBeepCount,
+  );
+
+  const { playTrimmedBeeps, stopBeeps } = useCountdownBeeps({
+    audioUrl: countdownBeepsAudio,
+    countdownBeeps,
+  });
 
   const currentMs = milliseconds[currentTimerIndex] ?? 0;
   const nextMs = milliseconds[currentTimerIndex + 1] ?? 0;
   const displayTimerMs = milliseconds.length === 0 ? [0] : milliseconds;
-  const countdownBeeps = Math.min(
-    Math.floor(currentMs / countdownIntervalMs),
-    state.maxBeepCount,
-  );
-  const countdownMs = countdownBeeps * countdownIntervalMs;
+  const countdownMs = countdownBeeps * COUNTDOWN_INTERVAL_MS;
 
-  const onCountdown = React.useCallback(
-    () => firstBeep.playBeeps(countdownBeeps),
-    [firstBeep, countdownBeeps],
-  );
+  // Calculate when this timer starts in the global timeline (sum of all previous timers)
+  const timerStartOffset = calculateOffset(displayTimerMs, currentTimerIndex);
 
-  const onExpire = React.useCallback(() => {
-    secondBeep.playBeeps(1);
+  // Keep audio system alive with quiet beeps
+  React.useEffect(() => {
+    if (startTimeMs == null) {
+      return () => {};
+    }
+    const timer = setInterval(
+      () => playKeepAlive({ count: 1, gain: 0.001 }),
+      1000,
+    );
+    return () => clearInterval(timer);
+  }, [startTimeMs, playKeepAlive]);
+
+  // Play countdown beeps once at first countdown beep time
+  React.useEffect(() => {
+    if (startTimeMs == null) {
+      return;
+    }
+
+    // First beep fires at: expirationMs - countdownMs
+    const delayUntilFirstBeep = currentMs - countdownMs;
+    const timeout = window.setTimeout(() => {
+      playTrimmedBeeps();
+    }, delayUntilFirstBeep);
+
+    return () => clearTimeout(timeout);
+  }, [startTimeMs, playTrimmedBeeps, currentMs, countdownMs]);
+
+  const onExpire = () => {
     setCurrentTimerIndex((prev) => prev + 1);
 
     if (currentTimerIndex + 1 >= milliseconds.length) {
-      setIsRunning(false);
+      setStartTimeMs(null);
       setCurrentTimerIndex(0);
     }
-  }, [currentTimerIndex, secondBeep, milliseconds.length]);
+  };
 
-  React.useEffect(() => {
-    setIsRunning(false);
-    setCurrentTimerIndex(0);
-  }, [milliseconds]);
-
-  const timerSettingFields = React.useMemo(
-    () => [
-      {
-        label: "Display All Timers?",
-        input: (
-          <Flex justify="flex-end">
-            <RadioGroup
-              name="timerDisplay"
-              optionType="button"
-              value={state.showAllTimers ? "showAllTimers" : "showCurrentTimer"}
-              onChange={({ target }) => {
-                setState(
-                  hydrationLock({
-                    showAllTimers: target.value === "showAllTimers",
-                    maxBeepCount: state.maxBeepCount,
-                  }),
-                );
-              }}
-              options={[
-                { label: "Yes", value: "showAllTimers" },
-                { label: "No", value: "showCurrentTimer" },
-              ]}
-            />
-          </Flex>
-        ),
-      },
-      {
-        label: "Countdown beeps",
-        input: (
-          <Select<number>
-            name="countdownBeeps"
-            value={state.maxBeepCount}
-            onChange={(value) => {
+  const timerSettingFields: Field[] = [
+    {
+      label: t["Display All Timers?"],
+      input: (
+        <Flex justify="flex-end">
+          <RadioGroup
+            name="timerDisplay"
+            optionType="button"
+            value={state.showAllTimers ? "showAllTimers" : "showCurrentTimer"}
+            onChange={({ target }) => {
               setState(
                 hydrationLock({
-                  maxBeepCount: value,
-                  showAllTimers: state.showAllTimers,
+                  ...state,
+                  showAllTimers: target.value === "showAllTimers",
                 }),
               );
             }}
-            options={new Array(11).fill(0).map((_, index) => ({
-              label: index.toString(),
-              value: index,
-            }))}
+            options={[
+              { label: t["Yes"], value: "showAllTimers" },
+              { label: t["No"], value: "showCurrentTimer" },
+            ]}
           />
-        ),
-      },
-    ],
-    [state.maxBeepCount, state.showAllTimers, setState],
-  );
+        </Flex>
+      ),
+    },
+    {
+      label: t["Beeps"],
+      input: (
+        <Select<number>
+          name="countdownBeeps"
+          disabled={startTimeMs != null}
+          value={state.maxBeepCount}
+          onChange={(value) => {
+            setState(
+              hydrationLock({
+                ...state,
+                maxBeepCount: value,
+              }),
+            );
+          }}
+          options={new Array(11).fill(0).map((_, index) => ({
+            label: (index + 1).toString(),
+            value: index,
+          }))}
+        />
+      ),
+    },
+  ];
 
   return (
     <Flex vertical gap={24}>
@@ -139,62 +182,86 @@ const InnerMultiTimer = ({
         <>
           <Flex vertical gap={16} justify="center" align="center">
             <Timer
+              label={labels?.[currentTimerIndex]}
               expirationMs={currentMs}
               countdownMs={countdownMs}
-              run={isRunning && currentTimerIndex < milliseconds.length}
-              onCountdown={onCountdown}
+              startTimeMs={startTimeMs}
+              timerStartOffset={timerStartOffset}
+              run={
+                startTimeMs != null && currentTimerIndex < milliseconds.length
+              }
               onExpire={onExpire}
             />
           </Flex>
-          <Flex vertical gap={8}>
-            <Typography.Title level={5} p={0} m={0}>
-              Next Phase: {nextMs == null ? "None" : nextMs / 1000}
-            </Typography.Title>
-            <Typography.Title level={5} p={0} m={0}>
-              Minutes Before Target: {minutesBeforeTarget}
-            </Typography.Title>
+          <Flex vertical gap={4}>
+            <Typography.Text strong>
+              {t["Next Phase"]}:{" "}
+              {nextMs == null ? "None" : (nextMs / 1000).toFixed(3)}
+            </Typography.Text>
+            <Typography.Text strong>
+              {t["Minutes Before Target"]}: {minutesBeforeTarget}
+            </Typography.Text>
           </Flex>
         </>
       )}
 
       {state.showAllTimers && (
         <>
-          <Flex wrap gap={16} justify="center" align="center">
-            {displayTimerMs.map((ms, index) => (
-              <Timer
-                key={index}
-                expirationMs={ms}
-                countdownMs={countdownMs}
-                run={isRunning && index === currentTimerIndex}
-                onCountdown={onCountdown}
-                onExpire={onExpire}
-              />
-            ))}
+          <Flex wrap gap={16} justify="center" align="flex-start">
+            {displayTimerMs.map((ms, index) => {
+              const offsetForTimer = calculateOffset(displayTimerMs, index);
+              return (
+                <Timer
+                  key={index}
+                  label={labels?.[index]}
+                  expirationMs={ms}
+                  countdownMs={index === currentTimerIndex ? countdownMs : 0}
+                  startTimeMs={startTimeMs}
+                  timerStartOffset={offsetForTimer}
+                  run={startTimeMs != null && index === currentTimerIndex}
+                  onExpire={onExpire}
+                />
+              );
+            })}
           </Flex>
           <Flex vertical gap={8}>
-            <Typography.Title level={5} p={0} m={0}>
-              Minutes Before Target: {minutesBeforeTarget}
-            </Typography.Title>
+            <Typography.Text strong>
+              {t["Minutes Before Target"]}: {minutesBeforeTarget}
+            </Typography.Text>
           </Flex>
         </>
       )}
 
-      <FormFieldTable fields={timerSettingFields} />
+      <Flex gap={8} vertical>
+        <FormFieldTable fields={timerSettingFields} />
+        {slots?.aboveStartButton}
 
-      <Button
-        trackerId={isRunning ? startButtonTrackerId : stopButtonTrackerId}
-        onClick={() => {
-          const newIsRunning = !isRunning;
-          setIsRunning(newIsRunning);
-          setCurrentTimerIndex(0);
-          if (!newIsRunning) {
-            firstBeep.stopBeeps();
-            secondBeep.stopBeeps();
+        <Button
+          disabled={disableStart && startTimeMs == null}
+          trackerId={
+            startTimeMs != null ? startButtonTrackerId : stopButtonTrackerId
           }
-        }}
-      >
-        {isRunning ? "Stop" : "Start"}
-      </Button>
+          onClick={() => {
+            const newStartTimeMs =
+              startTimeMs == null ? performance.now() : null;
+            setStartTimeMs(newStartTimeMs);
+            setCurrentTimerIndex(0);
+            // Stop audio when timer is stopped
+            if (newStartTimeMs == null) {
+              stopBeeps();
+              stopKeepAlive();
+            }
+          }}
+        >
+          {startTimeMs == null ? t["Start Timer"] : t["Stop Timer"]}
+        </Button>
+
+        {slots?.belowStartButton != null && (
+          <Flex vertical gap={8} mt={16}>
+            {slots?.belowStartButton}
+          </Flex>
+        )}
+      </Flex>
     </Flex>
   );
 };
@@ -204,12 +271,12 @@ const getMinutesBeforeTarget = (milliseconds: number[]) => {
   return Math.floor(summedMs / 60000);
 };
 
-type Props = tst.O.Optional<
+export type MultiTimerProps = tst.O.Optional<
   tst.O.Omit<InnerProps, "state" | "setState">,
   "minutesBeforeTarget"
 >;
 
-export const MultiTimer = (props: Props) => {
+export const MultiTimer = (props: MultiTimerProps) => {
   const [lockedState, setState] = useAtom(multiTimerStateAtom);
   const { hydrated, client: state } = useHydrate(lockedState);
 

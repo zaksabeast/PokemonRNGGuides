@@ -4,7 +4,7 @@ use crate::rng::Rng;
 use crate::rng::tinymt::TinyMT;
 use chrono::{Days, NaiveDate};
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 const MIRAGE_SPOT_NAMES: [&str; 34] = [
@@ -135,10 +135,10 @@ pub fn generate_mirage_spots(opts: MirageSpotOptions) -> Vec<MirageSpot> {
             let date = start_date.checked_add_days(days)?;
             let spot = MirageSpot::new(rand.wrapping_add(opts.tid), date);
 
-            if let Some(species) = opts.filter_species {
-                if !spot.pokemon.contains(&species) {
-                    return Option::None;
-                }
+            if let Some(species) = opts.filter_species
+                && !spot.pokemon.contains(&species)
+            {
+                return Option::None;
             }
 
             Some(spot)

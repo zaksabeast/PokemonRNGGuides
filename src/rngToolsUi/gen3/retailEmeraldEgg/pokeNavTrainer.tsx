@@ -1,15 +1,15 @@
-import React from "react";
 import { Skeleton } from "antd";
 import { Button, Switch, Flex, Typography, List, ListItem } from "~/components";
 import {
   pokeNavTrainers,
   useRegisteredTrainers,
   RegisteredPokeNavTrainers,
-  formatTrainerName,
 } from "./state";
 import styled from "@emotion/styled";
 import { useHydrate } from "~/hooks/useHydrate";
 import { hydrationLock } from "~/utils/hydration";
+import { usePokeNavTranslations } from "~/translations";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 const Label = styled.label({
   display: "flex",
@@ -41,38 +41,34 @@ const updateTrainerState = ({
 };
 
 export const PokeNavInput = () => {
+  const t = useActiveRouteTranslations();
+  const translatedTrainers = usePokeNavTranslations(t.language);
   const [lockedState, setRegisteredTrainers] = useRegisteredTrainers();
   const { hydrated, client } = useHydrate(lockedState);
 
-  const handleSelectAll = React.useCallback(
-    () =>
-      setRegisteredTrainers(
-        hydrationLock({
-          registeredTrainers: pokeNavTrainers.gameOrder,
-        }),
-      ),
-    [setRegisteredTrainers],
-  );
+  const handleSelectAll = () =>
+    setRegisteredTrainers(
+      hydrationLock({
+        registeredTrainers: pokeNavTrainers,
+      }),
+    );
 
-  const handleDeselectAll = React.useCallback(
-    () =>
-      setRegisteredTrainers(
-        hydrationLock({
-          registeredTrainers: [],
-        }),
-      ),
-    [setRegisteredTrainers],
-  );
+  const handleDeselectAll = () =>
+    setRegisteredTrainers(
+      hydrationLock({
+        registeredTrainers: [],
+      }),
+    );
 
   if (!hydrated) {
     return <Skeleton />;
   }
 
-  const fields = pokeNavTrainers.gameOrder.map((trainer) => (
+  const fields = pokeNavTrainers.map((trainer) => (
     <ListItem key={trainer}>
       <Label>
         <Typography.Text strong>
-          {formatTrainerName({ name: trainer })}
+          {translatedTrainers.withTitle[trainer]}
         </Typography.Text>
         <Switch
           id={`${trainer}-switch`}

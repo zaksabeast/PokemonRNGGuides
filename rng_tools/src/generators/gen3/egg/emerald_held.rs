@@ -4,8 +4,22 @@ use crate::rng::{Rng, StateIterator};
 use crate::{Gender, Species, gen3_shiny};
 use num_enum::FromPrimitive;
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
+
+fn apply_roamer(calibration: usize, has_roamer: bool) -> usize {
+    match has_roamer {
+        true => calibration.wrapping_add(1),
+        false => calibration,
+    }
+}
+
+fn remove_roamer(calibration: usize, has_roamer: bool) -> usize {
+    match has_roamer {
+        true => calibration.wrapping_sub(1),
+        false => calibration,
+    }
+}
 
 #[derive(Default, Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -20,6 +34,7 @@ struct Gen3HeldEggPid {
     advance: usize,
     redraws: usize,
     calibration: usize,
+    has_roamer: bool,
     pid: u32,
     match_call: PokeNavTrainer,
 }
@@ -29,6 +44,7 @@ struct Gen3HeldEggPid {
 pub struct Gen3HeldEgg {
     pub advance: usize,
     pub redraws: usize,
+    pub has_roamer: bool,
     pub calibration: usize,
     pub pid: u32,
     pub gender: Gender,
@@ -75,6 +91,7 @@ impl Gen3HeldEgg {
             pid,
             advance,
             gender,
+            has_roamer: egg.has_roamer,
             redraws: egg.redraws,
             calibration: egg.calibration,
             nature: Nature::from_pid(pid),
@@ -89,8 +106,9 @@ impl Gen3HeldEgg {
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Egg3HeldFilters {
     pub shiny: bool,
-    pub nature: Option<Nature>,
+    pub nature: Vec<Nature>,
     pub gender: Option<Gender>,
+    pub match_call: Option<PokeNavTrainer>,
 }
 
 impl Egg3HeldFilters {
@@ -99,16 +117,20 @@ impl Egg3HeldFilters {
             return false;
         }
 
-        if let Some(nature) = self.nature {
-            if egg.nature != nature {
-                return false;
-            }
+        if !self.nature.is_empty() && !self.nature.contains(&egg.nature) {
+            return false;
         }
 
-        if let Some(gender) = self.gender {
-            if egg.gender != gender {
-                return false;
-            }
+        if let Some(gender) = self.gender
+            && egg.gender != gender
+        {
+            return false;
+        }
+
+        if let Some(match_call) = self.match_call
+            && egg.match_call != match_call
+        {
+            return false;
         }
 
         true
@@ -121,8 +143,6 @@ pub struct Egg3HeldOptions {
     pub delay: i16,
     pub initial_advances: usize,
     pub max_advances: usize,
-    pub female_has_everstone: bool,
-    pub female_nature: Nature,
     pub has_roamer: bool,
     pub has_lightning_rod: bool,
     pub registered_trainers: Vec<PokeNavTrainer>,
@@ -146,7 +166,7 @@ pub fn emerald_egg_held_states(opts: &Egg3HeldOptions) -> Vec<Gen3HeldEgg> {
         .take(opts.max_advances.saturating_add(1))
         .flat_map(|(advance, rng)| generate_redraw_states(rng, opts, advance))
         .collect::<Vec<Gen3HeldEgg>>();
-    result.sort_by(|a, b| a.advance.cmp(&b.advance));
+    result.sort_by_key(|a| a.advance);
     result
 }
 
@@ -160,19 +180,14 @@ fn generate_redraw_states(
     }
 
     let ordered_trainers = order_trainer_list(&opts.registered_trainers);
-    let roamer_calib = match opts.has_roamer {
-        true => 1,
-        false => 0,
-    };
-    let calibration = opts.calibration.saturating_add(roamer_calib);
+    let calibration = apply_roamer(opts.calibration, opts.has_roamer);
 
     let mut generate_state_opts = GenerateStateOpts {
         go: rng,
         ordered_trainers: &ordered_trainers,
         calibration,
+        has_roamer: opts.has_roamer,
         has_lightning_rod: opts.has_lightning_rod,
-        female_has_everstone: opts.female_has_everstone,
-        female_nature: opts.female_nature,
         filter_impossible_to_hit: opts.filter_impossible_to_hit,
         advance: 0,
         redraws: 0,
@@ -322,13 +337,13 @@ fn generate_match_call(
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct NoEggMatchCallOpts {
     seed: u32,
-    redraws: usize,
     initial_advances: usize,
     calibration: usize,
     max_advances: usize,
     has_lightning_rod: bool,
     has_roamer: bool,
     registered_trainers: Vec<PokeNavTrainer>,
+    match_call_filter: Option<PokeNavTrainer>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -342,27 +357,23 @@ pub struct NoEggMatchCall {
 pub fn generate_no_egg_match_calls(opts: NoEggMatchCallOpts) -> Vec<NoEggMatchCall> {
     let rng = Pokerng::new(opts.seed);
     let ordered_trainers = order_trainer_list(&opts.registered_trainers);
-
-    let roamer_calib = match opts.has_roamer {
-        true => 1,
-        false => 0,
-    };
-    let calibration = opts.calibration.saturating_add(roamer_calib);
-
-    let initial_advances = opts
-        .redraws
-        .saturating_mul(3)
-        .saturating_add(calibration)
-        .saturating_add(opts.initial_advances);
+    let skip = apply_roamer(opts.calibration, opts.has_roamer);
 
     StateIterator::new(rng)
-        .skip(1) // egg rand
+        .skip(skip)
         .enumerate()
-        .skip(initial_advances)
+        .skip(opts.initial_advances)
         .take(opts.max_advances.saturating_add(1))
-        .map(|(advance, mut rng)| NoEggMatchCall {
-            advance,
-            match_call: generate_match_call(&mut rng, opts.has_lightning_rod, &ordered_trainers),
+        .filter_map(|(advance, mut rng)| {
+            let match_call =
+                generate_match_call(&mut rng, opts.has_lightning_rod, &ordered_trainers);
+            match opts.match_call_filter {
+                Some(filter) if match_call != filter => None,
+                _ => Some(NoEggMatchCall {
+                    advance,
+                    match_call,
+                }),
+            }
         })
         .collect()
 }
@@ -371,9 +382,8 @@ struct GenerateStateOpts<'a> {
     go: Pokerng,
     ordered_trainers: &'a [PokeNavTrainer],
     calibration: usize,
+    has_roamer: bool,
     has_lightning_rod: bool,
-    female_has_everstone: bool,
-    female_nature: Nature,
     advance: usize,
     redraws: usize,
     filter_impossible_to_hit: bool,
@@ -385,11 +395,6 @@ fn generate_state(opts: &GenerateStateOpts) -> Option<Gen3HeldEggPid> {
     let advance = opts.advance;
     let calibration = opts.calibration;
     let has_lightning_rod = opts.has_lightning_rod;
-
-    let use_everstone = match opts.female_has_everstone {
-        true => (go.rand::<u16>() >> 15) == 0,
-        false => false,
-    };
 
     let offset = redraws.wrapping_mul(3).wrapping_add(calibration);
     // PokeFinder lets held_advance can wrap backwards as a u32
@@ -409,41 +414,25 @@ fn generate_state(opts: &GenerateStateOpts) -> Option<Gen3HeldEggPid> {
         return None;
     }
 
-    if !use_everstone {
-        let pid = (go.rand_max::<u16>(0xfffe) + 1) as u32 | ((trng.rand::<u16>() as u32) << 16);
-        return Some(Gen3HeldEggPid {
-            redraws,
-            calibration,
-            pid,
-            advance: held_advance,
-            match_call: generate_match_call(&mut go, has_lightning_rod, opts.ordered_trainers),
-        });
-    }
-
-    // Stop after 17 due to vblank.
-    // If we haven't found a result yet, we probably won't find one after this.
-    (0..17)
-        .find_map(|_| {
-            let test_pid = (go.rand::<u16>() as u32) | ((trng.rand::<u16>() as u32) << 16);
-            match Nature::from_pid(test_pid) == opts.female_nature {
-                true => Some(test_pid),
-                false => None,
-            }
-        })
-        .map(|pid| Gen3HeldEggPid {
-            redraws,
-            calibration,
-            pid,
-            advance: held_advance,
-            match_call: generate_match_call(&mut go, has_lightning_rod, opts.ordered_trainers),
-        })
+    let pid = (go.rand_max::<u16>(0xfffe) + 1) as u32 | ((trng.rand::<u16>() as u32) << 16);
+    Some(Gen3HeldEggPid {
+        redraws,
+        calibration: remove_roamer(calibration, opts.has_roamer),
+        has_roamer: opts.has_roamer,
+        pid,
+        advance: held_advance,
+        match_call: generate_match_call(&mut go, has_lightning_rod, opts.ordered_trainers),
+    })
 }
 
 #[cfg(test)]
 mod test {
+    use itertools::Itertools;
+
     use super::Gender::*;
     use super::Nature::*;
     use super::*;
+    use crate::AbilityType;
     use crate::assert_list_eq;
 
     fn register_all_trainers() -> Vec<PokeNavTrainer> {
@@ -464,16 +453,15 @@ mod test {
             max_advances: 10,
             min_redraw: 0,
             max_redraw: 5,
-            female_has_everstone: false,
-            female_nature: Nature::Hardy,
             tid: 0,
             sid: 0,
             lua_adjustment: false,
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
                 shiny: false,
-                nature: None,
+                nature: vec![],
                 gender: None,
+                match_call: None,
             },
         };
 
@@ -483,6 +471,7 @@ mod test {
                 advance: 4294967278,
                 redraws: 0,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xf042e97f,
                 gender: Male,
                 shiny: false,
@@ -494,6 +483,7 @@ mod test {
                 advance: 4294967278,
                 redraws: 1,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x2aefe97f,
                 gender: Male,
                 shiny: false,
@@ -505,6 +495,7 @@ mod test {
                 advance: 4294967278,
                 redraws: 2,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x659ce97f,
                 gender: Male,
                 shiny: false,
@@ -516,6 +507,7 @@ mod test {
                 advance: 4294967278,
                 redraws: 3,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xa049e97f,
                 gender: Male,
                 shiny: false,
@@ -527,6 +519,7 @@ mod test {
                 advance: 4294967278,
                 redraws: 4,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xdaf6e97f,
                 gender: Male,
                 shiny: false,
@@ -538,6 +531,7 @@ mod test {
                 advance: 4294967278,
                 redraws: 5,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x15a3e97f,
                 gender: Male,
                 shiny: false,
@@ -549,6 +543,7 @@ mod test {
                 advance: 4294967281,
                 redraws: 0,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xb5958e43,
                 gender: Male,
                 shiny: false,
@@ -560,6 +555,7 @@ mod test {
                 advance: 4294967281,
                 redraws: 1,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xf0428e43,
                 gender: Male,
                 shiny: false,
@@ -571,6 +567,7 @@ mod test {
                 advance: 4294967281,
                 redraws: 2,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x2aef8e43,
                 gender: Male,
                 shiny: false,
@@ -582,6 +579,7 @@ mod test {
                 advance: 4294967281,
                 redraws: 3,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x659c8e43,
                 gender: Male,
                 shiny: false,
@@ -593,6 +591,7 @@ mod test {
                 advance: 4294967281,
                 redraws: 4,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xa0498e43,
                 gender: Male,
                 shiny: false,
@@ -604,6 +603,7 @@ mod test {
                 advance: 4294967281,
                 redraws: 5,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xdaf68e43,
                 gender: Male,
                 shiny: false,
@@ -630,16 +630,15 @@ mod test {
             max_advances: 10,
             min_redraw: 0,
             max_redraw: 5,
-            female_has_everstone: false,
-            female_nature: Nature::Hardy,
             tid: 0,
             sid: 0,
             lua_adjustment: false,
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
                 shiny: false,
-                nature: None,
+                nature: vec![],
                 gender: None,
+                match_call: None,
             },
         };
 
@@ -649,6 +648,7 @@ mod test {
                 advance: 983,
                 redraws: 0,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xd23d2c1d,
                 gender: Female,
                 shiny: false,
@@ -660,6 +660,7 @@ mod test {
                 advance: 983,
                 redraws: 1,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xcea2c1d,
                 gender: Female,
                 shiny: false,
@@ -671,6 +672,7 @@ mod test {
                 advance: 983,
                 redraws: 2,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x47972c1d,
                 gender: Female,
                 shiny: false,
@@ -682,6 +684,7 @@ mod test {
                 advance: 983,
                 redraws: 3,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x82452c1d,
                 gender: Female,
                 shiny: false,
@@ -693,6 +696,7 @@ mod test {
                 advance: 983,
                 redraws: 4,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xbcf22c1d,
                 gender: Female,
                 shiny: false,
@@ -704,6 +708,7 @@ mod test {
                 advance: 983,
                 redraws: 5,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xf79f2c1d,
                 gender: Female,
                 shiny: false,
@@ -715,6 +720,7 @@ mod test {
                 advance: 984,
                 redraws: 0,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x1404aa0a,
                 gender: Female,
                 shiny: false,
@@ -726,6 +732,7 @@ mod test {
                 advance: 984,
                 redraws: 1,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x4eb1aa0a,
                 gender: Female,
                 shiny: false,
@@ -737,6 +744,7 @@ mod test {
                 advance: 984,
                 redraws: 2,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x895eaa0a,
                 gender: Female,
                 shiny: false,
@@ -748,6 +756,7 @@ mod test {
                 advance: 984,
                 redraws: 3,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xc40baa0a,
                 gender: Female,
                 shiny: false,
@@ -759,6 +768,7 @@ mod test {
                 advance: 984,
                 redraws: 4,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xfeb8aa0a,
                 gender: Female,
                 shiny: false,
@@ -770,6 +780,7 @@ mod test {
                 advance: 984,
                 redraws: 5,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x3965aa0a,
                 gender: Female,
                 shiny: false,
@@ -781,6 +792,7 @@ mod test {
                 advance: 987,
                 redraws: 0,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xd957c6ec,
                 gender: Male,
                 shiny: false,
@@ -792,6 +804,7 @@ mod test {
                 advance: 987,
                 redraws: 1,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x1404c6ec,
                 gender: Male,
                 shiny: false,
@@ -803,6 +816,7 @@ mod test {
                 advance: 987,
                 redraws: 2,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x4eb1c6ec,
                 gender: Male,
                 shiny: false,
@@ -814,6 +828,7 @@ mod test {
                 advance: 987,
                 redraws: 3,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x895ec6ec,
                 gender: Male,
                 shiny: false,
@@ -825,6 +840,7 @@ mod test {
                 advance: 987,
                 redraws: 4,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xc40bc6ec,
                 gender: Male,
                 shiny: false,
@@ -836,6 +852,7 @@ mod test {
                 advance: 987,
                 redraws: 5,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xfeb8c6ec,
                 gender: Male,
                 shiny: false,
@@ -862,16 +879,15 @@ mod test {
             max_advances: 3,
             min_redraw: 0,
             max_redraw: 1,
-            female_has_everstone: false,
-            female_nature: Nature::Hardy,
             tid: 0,
             sid: 0,
             lua_adjustment: false,
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
                 shiny: false,
-                nature: None,
+                nature: vec![],
                 gender: None,
+                match_call: None,
             },
         };
 
@@ -881,6 +897,7 @@ mod test {
                 advance: 982,
                 redraws: 0,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x907710c8,
                 gender: Male,
                 shiny: false,
@@ -892,6 +909,7 @@ mod test {
                 advance: 982,
                 redraws: 1,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xcb2410c8,
                 gender: Male,
                 shiny: false,
@@ -903,6 +921,7 @@ mod test {
                 advance: 983,
                 redraws: 0,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xd23d2c1d,
                 gender: Female,
                 shiny: false,
@@ -914,6 +933,7 @@ mod test {
                 advance: 983,
                 redraws: 1,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xcea2c1d,
                 gender: Female,
                 shiny: false,
@@ -925,6 +945,7 @@ mod test {
                 advance: 984,
                 redraws: 0,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x1404aa0a,
                 gender: Female,
                 shiny: false,
@@ -936,6 +957,7 @@ mod test {
                 advance: 984,
                 redraws: 1,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x4eb1aa0a,
                 gender: Female,
                 shiny: false,
@@ -962,16 +984,15 @@ mod test {
             max_advances: 3,
             min_redraw: 0,
             max_redraw: 1,
-            female_has_everstone: false,
-            female_nature: Nature::Hardy,
             tid: 0,
             sid: 0,
             lua_adjustment: false,
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
                 shiny: false,
-                nature: None,
+                nature: vec![],
                 gender: None,
+                match_call: None,
             },
         };
 
@@ -981,6 +1002,7 @@ mod test {
                 advance: 982,
                 redraws: 0,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x907710c8,
                 gender: Male,
                 shiny: false,
@@ -992,6 +1014,7 @@ mod test {
                 advance: 982,
                 redraws: 1,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xcb2410c8,
                 gender: Male,
                 shiny: false,
@@ -1003,6 +1026,7 @@ mod test {
                 advance: 983,
                 redraws: 0,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xd23d2c1d,
                 gender: Female,
                 shiny: false,
@@ -1014,6 +1038,7 @@ mod test {
                 advance: 983,
                 redraws: 1,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xcea2c1d,
                 gender: Female,
                 shiny: false,
@@ -1025,6 +1050,7 @@ mod test {
                 advance: 984,
                 redraws: 0,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x1404aa0a,
                 gender: Female,
                 shiny: false,
@@ -1036,6 +1062,7 @@ mod test {
                 advance: 984,
                 redraws: 1,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x4eb1aa0a,
                 gender: Female,
                 shiny: false,
@@ -1047,6 +1074,7 @@ mod test {
                 advance: 985,
                 redraws: 0,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x55cae766,
                 gender: Male,
                 shiny: false,
@@ -1058,6 +1086,7 @@ mod test {
                 advance: 985,
                 redraws: 1,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x9077e766,
                 gender: Male,
                 shiny: false,
@@ -1084,16 +1113,15 @@ mod test {
             max_advances: 3,
             min_redraw: 0,
             max_redraw: 1,
-            female_has_everstone: false,
-            female_nature: Nature::Hardy,
             tid: 53821,
             sid: 11293,
             lua_adjustment: false,
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
                 shiny: true,
-                nature: None,
+                nature: vec![],
                 gender: None,
+                match_call: None,
             },
         };
 
@@ -1102,6 +1130,7 @@ mod test {
             advance: 983,
             redraws: 0,
             calibration: 18,
+            has_roamer: false,
             pid: 0xD23D2C1D,
             shiny: true,
             nature: Nature::Quirky,
@@ -1109,73 +1138,6 @@ mod test {
             gender: Gender::Female,
             match_call: PokeNavTrainer::None,
         }];
-
-        assert_list_eq!(results, expected);
-    }
-
-    #[test]
-    fn everstone() {
-        let opts = Egg3HeldOptions {
-            delay: 0,
-            filter_impossible_to_hit: false,
-            compatability: Compatability::GetAlong,
-            calibration: 18,
-            has_roamer: false,
-            has_lightning_rod: false,
-            registered_trainers: vec![],
-            initial_advances: 1000,
-            max_advances: 3,
-            min_redraw: 0,
-            max_redraw: 1,
-            female_has_everstone: true,
-            female_nature: Nature::Hardy,
-            tid: 0,
-            sid: 0,
-            lua_adjustment: false,
-            egg_species: Species::Bulbasaur,
-            filters: Egg3HeldFilters {
-                shiny: false,
-                nature: None,
-                gender: None,
-            },
-        };
-
-        let results = emerald_egg_held_states(&opts);
-        let expected = [
-            Gen3HeldEgg {
-                advance: 982,
-                redraws: 1,
-                calibration: 18,
-                pid: 0x89c7d6a,
-                gender: Male,
-                shiny: false,
-                nature: Hardy,
-                ability: 1,
-                match_call: PokeNavTrainer::None,
-            },
-            Gen3HeldEgg {
-                advance: 984,
-                redraws: 0,
-                calibration: 18,
-                pid: 0x1404e766,
-                gender: Male,
-                shiny: false,
-                nature: Brave,
-                ability: 1,
-                match_call: PokeNavTrainer::None,
-            },
-            Gen3HeldEgg {
-                advance: 984,
-                redraws: 1,
-                calibration: 18,
-                pid: 0x4eb1e766,
-                gender: Male,
-                shiny: false,
-                nature: Impish,
-                ability: 1,
-                match_call: PokeNavTrainer::None,
-            },
-        ];
 
         assert_list_eq!(results, expected);
     }
@@ -1194,16 +1156,15 @@ mod test {
             max_advances: 3,
             min_redraw: 0,
             max_redraw: 1,
-            female_has_everstone: true,
-            female_nature: Nature::Hardy,
             tid: 0,
             sid: 0,
             lua_adjustment: false,
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
                 shiny: false,
-                nature: None,
+                nature: vec![],
                 gender: None,
+                match_call: None,
             },
         };
 
@@ -1234,16 +1195,15 @@ mod test {
             max_advances: 3,
             min_redraw: 0,
             max_redraw: 1,
-            female_has_everstone: true,
-            female_nature: Nature::Hardy,
             tid: 0,
             sid: 0,
             lua_adjustment: false,
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
                 shiny: false,
-                nature: None,
+                nature: vec![],
                 gender: None,
+                match_call: None,
             },
         };
 
@@ -1274,16 +1234,15 @@ mod test {
             max_advances: 3,
             min_redraw: 0,
             max_redraw: 1,
-            female_has_everstone: true,
-            female_nature: Nature::Hardy,
             tid: 0,
             sid: 0,
             lua_adjustment: false,
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
                 shiny: false,
-                nature: None,
+                nature: vec![],
                 gender: None,
+                match_call: None,
             },
         };
 
@@ -1314,16 +1273,15 @@ mod test {
             max_advances: 5,
             min_redraw: 0,
             max_redraw: 0,
-            female_has_everstone: false,
-            female_nature: Nature::Adamant,
             tid: 0,
             sid: 0,
             lua_adjustment: false,
             egg_species: Species::Illumise,
             filters: Egg3HeldFilters {
                 shiny: false,
-                nature: None,
+                nature: vec![],
                 gender: None,
+                match_call: None,
             },
         };
 
@@ -1334,6 +1292,7 @@ mod test {
                 advance: 83,
                 redraws: 0,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x95122D94,
                 shiny: false,
                 nature: Nature::Hardy,
@@ -1345,6 +1304,7 @@ mod test {
                 advance: 84,
                 redraws: 0,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xD6D80967,
                 shiny: false,
                 nature: Nature::Relaxed,
@@ -1356,6 +1316,7 @@ mod test {
                 advance: 85,
                 redraws: 0,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x189E112E,
                 shiny: false,
                 nature: Nature::Calm,
@@ -1367,6 +1328,7 @@ mod test {
                 advance: 86,
                 redraws: 0,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x5A65A1E1,
                 shiny: false,
                 nature: Nature::Quiet,
@@ -1378,6 +1340,7 @@ mod test {
                 advance: 88,
                 redraws: 0,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xDDF173C5,
                 shiny: false,
                 nature: Nature::Quirky,
@@ -1404,16 +1367,15 @@ mod test {
             max_advances: 5,
             min_redraw: 0,
             max_redraw: 0,
-            female_has_everstone: false,
-            female_nature: Nature::Adamant,
             tid: 0,
             sid: 0,
             lua_adjustment: false,
             egg_species: Species::NidoranF,
             filters: Egg3HeldFilters {
                 shiny: false,
-                nature: None,
+                nature: vec![],
                 gender: None,
+                match_call: None,
             },
         };
 
@@ -1424,6 +1386,7 @@ mod test {
                 advance: 83,
                 redraws: 0,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x95122D94,
                 shiny: false,
                 nature: Nature::Hardy,
@@ -1435,6 +1398,7 @@ mod test {
                 advance: 84,
                 redraws: 0,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xD6D80967,
                 shiny: false,
                 nature: Nature::Relaxed,
@@ -1446,6 +1410,7 @@ mod test {
                 advance: 85,
                 redraws: 0,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x189E112E,
                 shiny: false,
                 nature: Nature::Calm,
@@ -1457,6 +1422,7 @@ mod test {
                 advance: 86,
                 redraws: 0,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0x5A65A1E1,
                 shiny: false,
                 nature: Nature::Quiet,
@@ -1468,6 +1434,7 @@ mod test {
                 advance: 88,
                 redraws: 0,
                 calibration: 18,
+                has_roamer: false,
                 pid: 0xDDF173C5,
                 shiny: false,
                 nature: Nature::Quirky,
@@ -1494,16 +1461,15 @@ mod test {
             max_advances: 2100,
             min_redraw: 0,
             max_redraw: 0,
-            female_has_everstone: false,
-            female_nature: Nature::Adamant,
             tid: 12345,
             sid: 54321,
             lua_adjustment: true,
             egg_species: Species::Ralts,
             filters: Egg3HeldFilters {
                 shiny: true,
-                nature: None,
+                nature: vec![],
                 gender: None,
+                match_call: None,
             },
         };
 
@@ -1513,6 +1479,7 @@ mod test {
             advance: 2040,
             redraws: 0,
             calibration: 21,
+            has_roamer: false,
             pid: 0x2441C04C,
             shiny: true,
             nature: Nature::Rash,
@@ -1550,16 +1517,15 @@ mod test {
             max_advances: 2100,
             min_redraw: 0,
             max_redraw: 0,
-            female_has_everstone: false,
-            female_nature: Nature::Adamant,
             tid: 12345,
             sid: 54321,
             lua_adjustment: true,
             egg_species: Species::Ralts,
             filters: Egg3HeldFilters {
                 shiny: true,
-                nature: Option::None,
+                nature: vec![],
                 gender: Option::None,
+                match_call: Option::None,
             },
         };
 
@@ -1569,6 +1535,7 @@ mod test {
             advance: 2040,
             redraws: 0,
             calibration: 21,
+            has_roamer: false,
             pid: 0x2441C04C,
             shiny: true,
             nature: Nature::Rash,
@@ -1576,6 +1543,64 @@ mod test {
             gender: Gender::Female,
             match_call: PokeNavTrainer::RuinManiacDusty,
         }];
+
+        assert_list_eq!(result, expected);
+    }
+
+    #[test]
+    fn filter_match_calls() {
+        let opts = Egg3HeldOptions {
+            delay: 0,
+            filter_impossible_to_hit: false,
+            compatability: Compatability::GetAlong,
+            calibration: 21,
+            has_roamer: false,
+            has_lightning_rod: true,
+            registered_trainers: register_all_trainers(),
+            initial_advances: 2000,
+            max_advances: 100,
+            min_redraw: 0,
+            max_redraw: 0,
+            tid: 12345,
+            sid: 54321,
+            lua_adjustment: true,
+            egg_species: Species::Ralts,
+            filters: Egg3HeldFilters {
+                shiny: false,
+                nature: vec![],
+                gender: None,
+                match_call: Some(PokeNavTrainer::FishermanElliot),
+            },
+        };
+
+        let result = emerald_egg_held_states(&opts);
+
+        let expected = [
+            Gen3HeldEgg {
+                advance: 1996,
+                redraws: 0,
+                has_roamer: false,
+                calibration: 21,
+                pid: 0xd62b19f8,
+                gender: Male,
+                shiny: false,
+                nature: Calm,
+                ability: 1,
+                match_call: PokeNavTrainer::FishermanElliot,
+            },
+            Gen3HeldEgg {
+                advance: 2042,
+                redraws: 0,
+                has_roamer: false,
+                calibration: 21,
+                pid: 0xa7cdf7d3,
+                gender: Male,
+                shiny: false,
+                nature: Calm,
+                ability: 2,
+                match_call: PokeNavTrainer::FishermanElliot,
+            },
+        ];
 
         assert_list_eq!(result, expected);
     }
@@ -1594,16 +1619,15 @@ mod test {
             max_advances: 2100,
             min_redraw: 0,
             max_redraw: 0,
-            female_has_everstone: false,
-            female_nature: Nature::Adamant,
             tid: 12345,
             sid: 54321,
             lua_adjustment: true,
             egg_species: Species::Ralts,
             filters: Egg3HeldFilters {
                 shiny: true,
-                nature: None,
+                nature: vec![],
                 gender: None,
+                match_call: None,
             },
         };
 
@@ -1613,6 +1637,7 @@ mod test {
             advance: 2040,
             redraws: 0,
             calibration: 21,
+            has_roamer: false,
             pid: 0x2441C04C,
             shiny: true,
             nature: Nature::Rash,
@@ -1638,16 +1663,15 @@ mod test {
             max_advances: 200,
             min_redraw: 0,
             max_redraw: 0,
-            female_has_everstone: false,
-            female_nature: Nature::Adamant,
             tid: 12345,
             sid: 54321,
             lua_adjustment: true,
             egg_species: Species::Ralts,
             filters: Egg3HeldFilters {
                 shiny: true,
-                nature: None,
+                nature: vec![],
                 gender: None,
+                match_call: None,
             },
         };
 
@@ -1656,7 +1680,8 @@ mod test {
         let expected = [Gen3HeldEgg {
             advance: 6695,
             redraws: 0,
-            calibration: 23,
+            calibration: 22,
+            has_roamer: true,
             pid: 0x292DCD22,
             shiny: true,
             nature: Nature::Modest,
@@ -1673,17 +1698,18 @@ mod test {
         let opts = NoEggMatchCallOpts {
             initial_advances: 0,
             calibration: 20,
-            redraws: 0,
             has_lightning_rod: true,
             has_roamer: false,
             max_advances: 12,
             registered_trainers: register_all_trainers(),
             seed: 0,
+            match_call_filter: None,
         };
 
         let results = generate_no_egg_match_calls(opts);
 
         let expected: Vec<NoEggMatchCall> = [
+            PokeNavTrainer::None,
             PokeNavTrainer::None,
             PokeNavTrainer::AromaLadyRose,
             PokeNavTrainer::None,
@@ -1696,16 +1722,200 @@ mod test {
             PokeNavTrainer::TriathleteBenjamin,
             PokeNavTrainer::RichBoyWinston,
             PokeNavTrainer::OldCoupleJohnJay,
-            PokeNavTrainer::None,
         ]
         .into_iter()
         .enumerate()
         .map(|(advance, match_call)| NoEggMatchCall {
-            advance: advance + 20,
+            advance,
             match_call,
         })
         .collect();
 
         assert_list_eq!(results, expected);
+    }
+
+    #[test]
+    fn match_call_filter() {
+        let opts = NoEggMatchCallOpts {
+            initial_advances: 0,
+            calibration: 20,
+            has_lightning_rod: true,
+            has_roamer: false,
+            max_advances: 12,
+            registered_trainers: register_all_trainers(),
+            seed: 0,
+            match_call_filter: Some(PokeNavTrainer::TriathleteBenjamin),
+        };
+
+        let results = generate_no_egg_match_calls(opts);
+
+        let expected: [NoEggMatchCall; 2] = [
+            NoEggMatchCall {
+                advance: 8,
+                match_call: PokeNavTrainer::TriathleteBenjamin,
+            },
+            NoEggMatchCall {
+                advance: 10,
+                match_call: PokeNavTrainer::TriathleteBenjamin,
+            },
+        ];
+
+        assert_list_eq!(results, expected);
+    }
+
+    mod pokefinder {
+        use super::*;
+
+        fn parse_pokefinder(str: &str) -> Vec<Gen3HeldEgg> {
+            str.lines()
+                .map(|raw_line| {
+                    let line = raw_line.trim();
+
+                    if line.is_empty() {
+                        panic!("Empty line in chatter data");
+                    }
+
+                    let parts: Vec<&str> = line.split("\t").collect();
+                    let advance: usize = parts[0].parse().unwrap();
+                    let redraws: usize = parts[2].parse().unwrap();
+                    let pid = u32::from_str_radix(parts[3], 16).unwrap();
+                    let shiny = parts[4] != "No";
+                    let nature = Nature::from_str(parts[5]);
+                    let ability = AbilityType::from_pokefinder_str(parts[6]);
+                    let gender = Gender::from_pokefinder_str(parts[15]);
+
+                    Gen3HeldEgg {
+                        advance: advance + (redraws * 3),
+                        redraws,
+                        has_roamer: false,
+                        calibration: 18,
+                        pid,
+                        gender,
+                        shiny,
+                        nature,
+                        ability: (ability as u8) + 1,
+                        match_call: PokeNavTrainer::None,
+                    }
+                })
+                .collect()
+        }
+
+        macro_rules! pokefinder {
+            ($file:expr) => {
+                parse_pokefinder(include_str!($file))
+            };
+        }
+
+        fn clear_match_call(results: Vec<Gen3HeldEgg>) -> Vec<Gen3HeldEgg> {
+            results
+                .into_iter()
+                .map(|egg| Gen3HeldEgg {
+                    match_call: PokeNavTrainer::None,
+                    ..egg
+                })
+                .collect()
+        }
+
+        fn sort(eggs: Vec<Gen3HeldEgg>) -> Vec<Gen3HeldEgg> {
+            eggs.into_iter()
+                .sorted_by(|a, b| a.redraws.cmp(&b.redraws).then(a.advance.cmp(&b.advance)))
+                .collect()
+        }
+
+        #[test]
+        fn dont_like_each_other() {
+            let opts = Egg3HeldOptions {
+                delay: 0,
+                filter_impossible_to_hit: false,
+                compatability: Compatability::DontLikeEachOther,
+                calibration: 18,
+                has_roamer: false,
+                has_lightning_rod: false,
+                registered_trainers: vec![],
+                initial_advances: 100,
+                max_advances: 100,
+                min_redraw: 0,
+                max_redraw: 5,
+                tid: 12345,
+                sid: 54321,
+                lua_adjustment: false,
+                egg_species: Species::Bulbasaur,
+                filters: Egg3HeldFilters {
+                    shiny: false,
+                    nature: vec![],
+                    gender: None,
+                    match_call: None,
+                },
+            };
+
+            let results = sort(clear_match_call(emerald_egg_held_states(&opts)));
+            let expected = sort(pokefinder!("test_data/held/dont_like_each_other.txt"));
+
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn get_along() {
+            let opts = Egg3HeldOptions {
+                delay: 0,
+                filter_impossible_to_hit: false,
+                compatability: Compatability::GetAlong,
+                calibration: 18,
+                has_roamer: false,
+                has_lightning_rod: false,
+                registered_trainers: vec![],
+                initial_advances: 100,
+                max_advances: 100,
+                min_redraw: 0,
+                max_redraw: 5,
+                tid: 0,
+                sid: 0,
+                lua_adjustment: false,
+                egg_species: Species::Bulbasaur,
+                filters: Egg3HeldFilters {
+                    shiny: false,
+                    nature: vec![],
+                    gender: None,
+                    match_call: None,
+                },
+            };
+
+            let results = sort(clear_match_call(emerald_egg_held_states(&opts)));
+            let expected = sort(pokefinder!("test_data/held/get_along.txt"));
+
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn get_along_well() {
+            let opts = Egg3HeldOptions {
+                delay: 0,
+                filter_impossible_to_hit: false,
+                compatability: Compatability::GetAlongVeryWell,
+                calibration: 18,
+                has_roamer: false,
+                has_lightning_rod: false,
+                registered_trainers: vec![],
+                initial_advances: 100,
+                max_advances: 100,
+                min_redraw: 0,
+                max_redraw: 5,
+                tid: 0,
+                sid: 0,
+                lua_adjustment: false,
+                egg_species: Species::Bulbasaur,
+                filters: Egg3HeldFilters {
+                    shiny: false,
+                    nature: vec![],
+                    gender: None,
+                    match_call: None,
+                },
+            };
+
+            let results = sort(clear_match_call(emerald_egg_held_states(&opts)));
+            let expected = sort(pokefinder!("test_data/held/get_along_very_well.txt"));
+
+            assert_list_eq!(results, expected);
+        }
     }
 }

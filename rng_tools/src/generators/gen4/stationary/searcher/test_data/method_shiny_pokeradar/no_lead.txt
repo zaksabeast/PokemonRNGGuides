@@ -1,0 +1,84 @@
+83130354	19	None	0: Snover	33	AF7857DB	Star	Hasty	1: Snow Warning	28	28	31	30	29	31	Grass	47	♂	Capable of taking hits
+03130354	19	None	0: Snover	33	AF7857DB	Star	Hasty	1: Snow Warning	28	28	31	30	29	31	Grass	47	♂	Capable of taking hits
+84040377	23	None	0: Snover	33	0929F189	Star	Adamant	1: Snow Warning	28	29	30	28	31	31	Grass	57	♂	Somewhat vain
+04040377	23	None	0: Snover	33	0929F189	Star	Adamant	1: Snow Warning	28	29	30	28	31	31	Grass	57	♂	Somewhat vain
+66030349	28	Never-Melt Ice	0: Snover	33	A28B5A2F	Star	Impish	1: Snow Warning	28	29	30	29	28	31	Ghost	37	♀	Alert to sounds
+E6030349	28	None	0: Snover	33	A28B5A2F	Star	Impish	1: Snow Warning	28	29	30	29	28	31	Ghost	37	♀	Alert to sounds
+9A020374	14	None	0: Snover	33	FBFA0359	Star	Careful	1: Snow Warning	28	29	30	31	28	28	Rock	42	♀	Mischievous
+1A020374	14	None	0: Snover	33	FBFA0359	Star	Careful	1: Snow Warning	28	29	30	31	28	28	Rock	42	♀	Mischievous
+C8030363	16	None	0: Snover	33	A2CD5A6D	Star	Gentle	1: Snow Warning	28	29	31	30	28	30	Flying	47	♀	Capable of taking hits
+48030363	16	None	0: Snover	33	A2CD5A6D	Star	Gentle	1: Snow Warning	28	29	31	30	28	30	Flying	47	♀	Capable of taking hits
+B60B0376	24	None	0: Snover	33	EF38179D	Star	Timid	1: Snow Warning	28	30	28	29	30	31	Bug	56	♂	Alert to sounds
+360B0376	24	None	0: Snover	33	EF38179D	Star	Timid	1: Snow Warning	28	30	28	29	30	31	Bug	56	♂	Alert to sounds
+0810037B	30	None	0: Snover	33	06A3FE05	Star	Bashful	1: Snow Warning	28	30	29	31	28	28	Rock	41	♀	Mischievous
+8810037B	30	None	0: Snover	33	06A3FE05	Star	Bashful	1: Snow Warning	28	30	29	31	28	28	Rock	41	♀	Mischievous
+A209033A	0	None	0: Snover	33	F8FD005E	Star	Calm	0: Snow Warning	28	30	31	28	30	31	Poison	59	♀	Capable of taking hits
+2209033A	0	None	0: Snover	33	F8FD005E	Star	Calm	0: Snow Warning	28	30	31	28	30	31	Poison	59	♀	Capable of taking hits
+DA030334	3	None	0: Snover	33	968C6E2A	Star	Quiet	0: Snow Warning	28	31	28	30	28	30	Fighting	46	♀	Likes to thrash about
+5A030334	3	None	0: Snover	33	968C6E2A	Star	Quiet	0: Snow Warning	28	31	28	30	28	30	Fighting	46	♀	Likes to thrash about
+5A060341	11	None	0: Snover	33	D7EA2F4B	Star	Gentle	1: Snow Warning	28	31	29	28	29	28	Water	31	♀	Likes to thrash about
+DA060341	11	None	0: Snover	33	D7EA2F4B	Star	Gentle	1: Snow Warning	28	31	29	28	29	28	Water	31	♀	Likes to thrash about
+37100377	26	None	0: Snover	33	2694DE32	Star	Bashful	0: Snow Warning	28	31	29	28	30	28	Flying	51	♀	Likes to thrash about
+B7100377	26	None	0: Snover	33	2694DE32	Star	Bashful	0: Snow Warning	28	31	29	28	30	28	Flying	51	♀	Likes to thrash about
+6E080333	16	Never-Melt Ice	0: Snover	33	790181A1	Star	Relaxed	1: Snow Warning	29	28	28	29	31	29	Ice	50	♂	Somewhat vain
+EE080333	16	None	0: Snover	33	790181A1	Star	Relaxed	1: Snow Warning	29	28	28	29	31	29	Ice	50	♂	Somewhat vain
+05110383	19	None	0: Snover	33	3847C0E3	Star	Docile	1: Snow Warning	29	28	31	29	30	28	Bug	52	♂	Capable of taking hits
+85110383	19	None	0: Snover	33	3847C0E3	Star	Docile	1: Snow Warning	29	28	31	29	30	28	Bug	52	♂	Capable of taking hits
+9209032E	9	None	0: Snover	33	96966E32	Star	Timid	0: Snow Warning	29	28	31	31	29	29	Dragon	42	♀	Mischievous
+1209032E	9	Never-Melt Ice	0: Snover	33	96966E32	Star	Timid	0: Snow Warning	29	28	31	31	29	29	Dragon	42	♀	Mischievous
+B30B035E	7	None	0: Snover	33	790081A4	Star	Quirky	0: Snow Warning	29	29	29	30	28	30	Flying	45	♂	Likes to run
+330B035E	7	None	0: Snover	33	790081A4	Star	Quirky	0: Snow Warning	29	29	29	30	28	30	Flying	45	♂	Likes to run
+DC080371	28	None	0: Snover	33	4183B920	Star	Careful	0: Snow Warning	29	29	29	31	31	30	Ice	65	♀	Mischievous
+5C080371	28	None	0: Snover	33	4183B920	Star	Careful	0: Snow Warning	29	29	29	31	31	30	Ice	65	♀	Mischievous
+AC060370	2	None	0: Snover	33	D7332F97	Star	Lax	1: Snow Warning	29	30	29	31	31	28	Psychic	61	♂	Somewhat vain
+2C060370	2	Never-Melt Ice	0: Snover	33	D7332F97	Star	Lax	1: Snow Warning	29	30	29	31	31	28	Psychic	61	♂	Somewhat vain
+8F16035D	19	None	0: Snover	33	33B8CB1E	Star	Jolly	0: Snow Warning	29	30	30	30	28	30	Fighting	49	♀	Proud of its power
+0F16035D	19	None	0: Snover	33	33B8CB1E	Star	Jolly	0: Snow Warning	29	30	30	30	28	30	Fighting	49	♀	Proud of its power
+C80D033B	10	None	0: Snover	33	0EBFF61A	Star	Brave	0: Snow Warning	29	30	30	31	28	31	Bug	49	♀	Alert to sounds
+480D033B	10	None	0: Snover	33	0EBFF61A	Star	Brave	0: Snow Warning	29	30	30	31	28	31	Bug	49	♀	Alert to sounds
+A80C035A	8	None	0: Snover	33	0D5DF5FD	Star	Naughty	1: Snow Warning	29	30	31	28	29	31	Grass	38	♂	Capable of taking hits
+280C035A	8	None	0: Snover	33	0D5DF5FD	Star	Naughty	1: Snow Warning	29	30	31	28	29	31	Grass	38	♂	Capable of taking hits
+8C080370	24	None	0: Snover	33	BA9C4238	Star	Rash	0: Snow Warning	29	31	28	31	28	28	Rock	41	♀	Mischievous
+0C080370	24	None	0: Snover	33	BA9C4238	Star	Rash	0: Snow Warning	29	31	28	31	28	28	Rock	41	♀	Mischievous
+3E130341	26	None	0: Snover	33	1441ECE5	Star	Bold	1: Snow Warning	29	31	28	31	31	29	Dragon	61	♂	Likes to thrash about
+BE130341	26	None	0: Snover	33	1441ECE5	Star	Bold	1: Snow Warning	29	31	28	31	31	29	Dragon	61	♂	Likes to thrash about
+3B080335	5	None	0: Snover	33	BD7045D2	Square	Bold	0: Snow Warning	29	31	31	28	28	28	Flying	33	♂	Likes to thrash about
+BB080335	5	None	0: Snover	33	BD7045D2	Square	Bold	0: Snow Warning	29	31	31	28	28	28	Flying	33	♂	Likes to thrash about
+730B035A	5	None	0: Snover	33	A8A45006	Square	Adamant	0: Snow Warning	30	28	28	30	28	30	Fighting	45	♀	Highly curious
+F30B035A	5	None	0: Snover	33	A8A45006	Square	Adamant	0: Snow Warning	30	28	28	30	28	30	Fighting	45	♀	Highly curious
+CA06037F	8	None	0: Snover	33	D6312E93	Square	Hasty	1: Snow Warning	30	28	30	29	28	30	Ground	38	♂	Likes to run
+4A06037F	8	None	0: Snover	33	D6312E93	Square	Hasty	1: Snow Warning	30	28	30	29	28	30	Ground	38	♂	Likes to run
+47080350	20	None	0: Snover	33	AD7F55D8	Star	Mild	0: Snow Warning	30	28	31	29	28	31	Ghost	38	♂	Capable of taking hits
+C7080350	20	None	0: Snover	33	AD7F55D8	Star	Mild	0: Snow Warning	30	28	31	29	28	31	Ghost	38	♂	Capable of taking hits
+E012035C	0	None	0: Snover	33	63BF9B19	Star	Modest	1: Snow Warning	30	28	31	31	30	31	Ghost	68	♀	Capable of taking hits
+6012035C	0	Never-Melt Ice	0: Snover	33	63BF9B19	Star	Modest	1: Snow Warning	30	28	31	31	30	31	Ghost	68	♀	Capable of taking hits
+B201037D	12	None	0: Snover	33	AEE55644	Star	Serious	0: Snow Warning	30	29	31	29	30	30	Bug	58	♀	Capable of taking hits
+3201037D	12	None	0: Snover	33	AEE55644	Star	Serious	0: Snow Warning	30	29	31	29	30	30	Bug	58	♀	Capable of taking hits
+B40E0326	29	None	0: Snover	33	FE5306F0	Star	Adamant	0: Snow Warning	30	29	31	29	31	28	Psychic	53	♂	Somewhat vain
+340E0326	29	None	0: Snover	33	FE5306F0	Star	Adamant	0: Snow Warning	30	29	31	29	31	28	Psychic	53	♂	Somewhat vain
+AB120335	0	None	0: Snover	33	42A9BA0B	Square	Quiet	1: Snow Warning	30	30	31	30	31	30	Fire	70	♀	Somewhat vain
+2B120335	0	None	0: Snover	33	42A9BA0B	Square	Quiet	1: Snow Warning	30	30	31	30	31	30	Fire	70	♀	Somewhat vain
+4811036C	24	None	0: Snover	33	CC6E34CB	Star	Naive	1: Snow Warning	30	31	28	30	31	31	Grass	67	♂	Somewhat vain
+C811036C	24	None	0: Snover	33	CC6E34CB	Star	Naive	1: Snow Warning	30	31	28	30	31	31	Grass	67	♂	Somewhat vain
+57120354	25	None	0: Snover	33	1E04E6A2	Star	Mild	0: Snow Warning	30	31	29	28	31	30	Water	57	♂	Likes to thrash about
+D7120354	25	None	0: Snover	33	1E04E6A2	Star	Mild	0: Snow Warning	30	31	29	28	31	30	Water	57	♂	Likes to thrash about
+31040379	9	None	0: Snover	33	82557AF5	Star	Quiet	1: Snow Warning	30	31	30	28	31	30	Fire	59	♂	Somewhat vain
+B1040379	9	None	0: Snover	33	82557AF5	Star	Quiet	1: Snow Warning	30	31	30	28	31	30	Fire	59	♂	Somewhat vain
+CE170332	16	None	0: Snover	33	8EB17613	Square	Gentle	1: Snow Warning	30	31	30	31	30	28	Rock	64	♀	Mischievous
+4E170332	16	None	0: Snover	33	8EB17613	Square	Gentle	1: Snow Warning	30	31	30	31	30	28	Rock	64	♀	Mischievous
+970A0360	23	None	0: Snover	33	F41B0CBE	Star	Jolly	0: Snow Warning	30	31	31	28	28	31	Ground	39	♂	Capable of taking hits
+170A0360	23	Never-Melt Ice	0: Snover	33	F41B0CBE	Star	Jolly	0: Snow Warning	30	31	31	28	28	31	Ground	39	♂	Capable of taking hits
+94010368	12	Never-Melt Ice	0: Snover	33	F7590FFB	Square	Sassy	1: Snow Warning	31	28	30	28	30	29	Poison	53	♂	Takes plenty of siestas
+14010368	12	None	0: Snover	33	F7590FFB	Square	Sassy	1: Snow Warning	31	28	30	28	30	29	Poison	53	♂	Takes plenty of siestas
+C3140352	23	None	0: Snover	33	03FBFB5A	Star	Bold	0: Snow Warning	31	28	30	28	31	29	Water	53	♀	Somewhat vain
+43140352	23	None	0: Snover	33	03FBFB5A	Star	Bold	0: Snow Warning	31	28	30	28	31	29	Water	53	♀	Somewhat vain
+1D0E035B	12	None	0: Snover	33	9C2D648E	Star	Impish	0: Snow Warning	31	28	31	28	28	31	Ground	38	♂	Capable of taking hits
+9D0E035B	12	None	0: Snover	33	9C2D648E	Star	Impish	0: Snow Warning	31	28	31	28	28	31	Ground	38	♂	Capable of taking hits
+EE030348	15	None	0: Snover	33	4BEBB34D	Star	Hasty	1: Snow Warning	31	31	28	30	29	31	Grass	47	♀	Takes plenty of siestas
+6E030348	15	None	0: Snover	33	4BEBB34D	Star	Hasty	1: Snow Warning	31	31	28	30	29	31	Grass	47	♀	Takes plenty of siestas
+B5150330	25	None	0: Snover	33	48F9B05C	Star	Naive	0: Snow Warning	31	31	28	31	29	29	Dragon	42	♀	Mischievous
+35150330	25	None	0: Snover	33	48F9B05C	Star	Naive	0: Snow Warning	31	31	28	31	29	29	Dragon	42	♀	Mischievous
+C1080340	3	None	0: Snover	33	31B5C915	Star	Brave	1: Snow Warning	31	31	30	31	29	30	Psychic	49	♀	Takes plenty of siestas
+41080340	3	Never-Melt Ice	0: Snover	33	31B5C915	Star	Brave	1: Snow Warning	31	31	30	31	29	30	Psychic	49	♀	Takes plenty of siestas
+3701034F	22	None	0: Snover	33	D0BE2818	Star	Relaxed	0: Snow Warning	31	31	31	31	28	28	Bug	44	♀	Takes plenty of siestas
+B701034F	22	None	0: Snover	33	D0BE2818	Star	Relaxed	0: Snow Warning	31	31	31	31	28	28	Bug	44	♀	Takes plenty of siestas

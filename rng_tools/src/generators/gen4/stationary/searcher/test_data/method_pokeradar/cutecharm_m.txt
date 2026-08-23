@@ -1,0 +1,48 @@
+8717033C	8	None	0: Snover	33	00000001	No	Lonely	1: Snow Warning	28	28	30	29	30	28	Ground	52	♀	Sturdy body
+0717033C	8	None	0: Snover	33	0000000D	No	Jolly	1: Snow Warning	28	28	30	29	30	28	Ground	52	♀	Sturdy body
+A80C033B	11	None	0: Snover	33	00000001	No	Lonely	1: Snow Warning	28	29	29	28	31	29	Grass	50	♀	Somewhat vain
+280C033B	11	None	0: Snover	33	0000000D	No	Jolly	1: Snow Warning	28	29	29	28	31	29	Grass	50	♀	Somewhat vain
+B011036A	0	None	0: Snover	33	00000015	No	Gentle	1: Snow Warning	28	29	29	31	28	31	Steel	45	♀	Alert to sounds
+06170350	1	None	0: Snover	33	00000003	No	Adamant	1: Snow Warning	28	29	29	31	31	28	Psychic	60	♀	Mischievous
+86170350	1	None	0: Snover	33	00000010	No	Mild	0: Snow Warning	28	29	29	31	31	28	Psychic	60	♀	Mischievous
+9A020374	27	None	0: Snover	33	00000006	No	Docile	0: Snow Warning	28	29	30	31	28	28	Rock	42	♀	Mischievous
+1A020374	27	None	0: Snover	33	00000012	No	Bashful	0: Snow Warning	28	29	30	31	28	28	Rock	42	♀	Mischievous
+C8030363	29	None	0: Snover	33	00000008	No	Impish	0: Snow Warning	28	29	31	30	28	30	Flying	47	♀	Capable of taking hits
+A209033A	13	None	0: Snover	33	00000013	No	Rash	1: Snow Warning	28	30	31	28	30	31	Poison	59	♀	Capable of taking hits
+E704034A	6	None	0: Snover	33	00000008	No	Impish	0: Snow Warning	28	30	31	28	30	31	Poison	59	♀	Capable of taking hits
+6704034A	6	None	0: Snover	33	00000015	No	Gentle	1: Snow Warning	28	30	31	28	30	31	Poison	59	♀	Alert to sounds
+DA030334	16	None	0: Snover	33	00000016	No	Sassy	0: Snow Warning	28	31	28	30	28	30	Fighting	46	♀	Likes to thrash about
+5A030334	16	None	0: Snover	33	00000009	No	Lax	1: Snow Warning	28	31	28	30	28	30	Fighting	46	♀	Likes to thrash about
+5A060341	24	None	0: Snover	33	00000015	No	Gentle	1: Snow Warning	28	31	29	28	29	28	Water	31	♀	Likes to thrash about
+DA060341	24	None	0: Snover	33	00000009	No	Lax	1: Snow Warning	28	31	29	28	29	28	Water	31	♀	Likes to thrash about
+EE080333	29	None	0: Snover	33	00000015	No	Gentle	1: Snow Warning	29	28	28	29	31	29	Ice	50	♀	Somewhat vain
+1209032E	22	Never-Melt Ice	0: Snover	33	00000006	No	Docile	0: Snow Warning	29	28	31	31	29	29	Dragon	42	♀	Capable of taking hits
+330B035E	20	None	0: Snover	33	0000000C	No	Serious	0: Snow Warning	29	29	29	30	28	30	Flying	45	♀	Likes to run
+DA160324	10	None	0: Snover	33	0000000A	No	Timid	0: Snow Warning	29	29	31	30	29	30	Water	47	♀	Capable of taking hits
+AC060370	15	None	0: Snover	33	0000000B	No	Hasty	1: Snow Warning	29	30	29	31	31	28	Psychic	61	♀	Somewhat vain
+480D033B	23	None	0: Snover	33	00000014	No	Calm	0: Snow Warning	29	30	30	31	28	31	Bug	49	♀	Alert to sounds
+7408035A	9	None	0: Snover	33	00000016	No	Sassy	0: Snow Warning	29	30	30	31	30	31	Bug	69	♀	Mischievous
+F408035A	9	None	0: Snover	33	0000000A	No	Timid	0: Snow Warning	29	30	30	31	30	31	Bug	69	♀	Mischievous
+A80C035A	21	None	0: Snover	33	00000006	No	Docile	0: Snow Warning	29	30	31	28	29	31	Grass	38	♀	Capable of taking hits
+4012036B	11	None	0: Snover	33	0000000B	No	Hasty	1: Snow Warning	29	31	28	30	29	30	Fire	46	♀	Likes to thrash about
+75080324	0	None	0: Snover	33	00000000	No	Hardy	0: Snow Warning	29	31	30	28	30	31	Poison	59	♀	Likes to thrash about
+F5080324	0	None	0: Snover	33	0000000C	No	Serious	0: Snow Warning	29	31	30	28	30	31	Poison	59	♀	Likes to thrash about
+BA130370	5	None	0: Snover	33	00000000	No	Hardy	0: Snow Warning	29	31	30	29	29	30	Psychic	38	♀	Likes to thrash about
+3B080335	18	None	0: Snover	33	00000012	No	Bashful	0: Snow Warning	29	31	31	28	28	28	Flying	33	♀	Likes to thrash about
+D3090361	12	None	0: Snover	33	00000006	No	Docile	0: Snow Warning	29	31	31	28	30	28	Flying	54	♀	Likes to thrash about
+F30B035A	18	None	0: Snover	33	0000000F	No	Modest	1: Snow Warning	30	28	28	30	28	30	Fighting	45	♀	Likes to run
+4E11035C	8	None	0: Snover	33	00000005	No	Bold	1: Snow Warning	30	28	28	31	29	28	Electric	40	♀	Mischievous
+CA06037F	21	None	0: Snover	33	00000007	No	Relaxed	1: Snow Warning	30	28	30	29	28	30	Ground	38	♀	Sturdy body
+6012035C	13	Never-Melt Ice	0: Snover	33	0000000D	No	Jolly	1: Snow Warning	30	28	31	31	30	31	Ghost	68	♀	Capable of taking hits
+B201037D	25	None	0: Snover	33	00000005	No	Bold	1: Snow Warning	30	29	31	29	30	30	Bug	58	♀	Capable of taking hits
+2B120335	13	None	0: Snover	33	00000012	No	Bashful	0: Snow Warning	30	30	31	30	31	30	Fire	70	♀	Capable of taking hits
+B1040379	22	None	0: Snover	33	00000009	No	Lax	1: Snow Warning	30	31	30	28	31	30	Fire	59	♀	Somewhat vain
+4E170332	29	None	0: Snover	33	0000000A	No	Timid	0: Snow Warning	30	31	30	31	30	28	Rock	64	♀	Mischievous
+17010347	12	None	0: Snover	33	00000001	No	Lonely	1: Snow Warning	31	28	28	29	30	31	Bug	56	♀	Alert to sounds
+94010368	25	Never-Melt Ice	0: Snover	33	0000000B	No	Hasty	1: Snow Warning	31	28	30	28	30	29	Poison	53	♀	Takes plenty of siestas
+1A0D032A	3	None	0: Snover	33	00000018	No	Quirky	0: Snow Warning	31	28	30	29	31	31	Ice	58	♀	Takes plenty of siestas
+9D0E035B	25	None	0: Snover	33	00000008	No	Impish	0: Snow Warning	31	28	31	28	28	31	Ground	38	♀	Capable of taking hits
+2B090357	0	None	0: Snover	33	00000000	No	Hardy	0: Snow Warning	31	29	31	31	30	28	Bug	63	♀	Takes plenty of siestas
+1908037A	2	None	0: Snover	33	00000008	No	Impish	0: Snow Warning	31	30	28	28	31	30	Steel	57	♀	Somewhat vain
+6E030348	28	None	0: Snover	33	00000004	No	Naughty	0: Snow Warning	31	31	28	30	29	31	Grass	47	♀	Takes plenty of siestas
+C1080340	16	None	0: Snover	33	00000002	No	Brave	0: Snow Warning	31	31	30	31	29	30	Psychic	49	♀	Mischievous

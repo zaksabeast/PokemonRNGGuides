@@ -1,7 +1,7 @@
 use crate::{RngDate, RngDateTime, rng::mt::MT};
 use chrono::{DateTime, NaiveDateTime};
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 const EPOCH_OFFSET_3DS: i64 = 946684800000; // Jan 1, 2000

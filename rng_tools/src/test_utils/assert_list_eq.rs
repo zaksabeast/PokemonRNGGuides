@@ -2,7 +2,7 @@
 #[macro_export]
 macro_rules! assert_list_eq {
     ($result:expr, $expected:expr) => {
-        if $result.len() == $expected.len() {
+        if $result.len() != $expected.len() {
             assert_eq!($result, $expected, "length mismatch");
         }
         $result

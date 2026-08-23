@@ -5,37 +5,21 @@ import { Icon } from "./icons";
 import { match } from "ts-pattern";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { Route } from "~/routes/defs";
-import { LanguageKey } from "~/guides";
 import { Link } from "./link";
+import { LanguageKey, languages } from "~/types/language";
+import styled from "@emotion/styled";
 
-type LanguageItem = {
-  key: LanguageKey;
-  label: string;
-  type: "item";
-};
-
-const languages: LanguageItem[] = [
-  {
-    key: "en",
-    label: "English",
-    type: "item",
-  },
-  {
-    key: "es",
-    label: "Español",
-    type: "item",
-  },
-  {
-    key: "zh",
-    label: "简体中文",
-    type: "item",
-  },
-];
+const StyledLink = styled(Link)({
+  fontWeight: "normal",
+});
 
 type Props = {
   en: Route;
   es?: Route;
   zh?: Route;
+  fr?: Route;
+  it?: Route;
+  de?: Route;
 };
 
 export const LanguageButton = (props: Props) => {
@@ -46,6 +30,9 @@ export const LanguageButton = (props: Props) => {
     .with(slugs.en, () => "en")
     .with(slugs.es, () => "es")
     .with(slugs.zh, () => "zh")
+    .with(slugs.fr, () => "fr")
+    .with(slugs.it, () => "it")
+    .with(slugs.de, () => "de")
     .otherwise(() => "en");
 
   const availableLanguages = languages
@@ -58,9 +45,9 @@ export const LanguageButton = (props: Props) => {
       return {
         key: lang.key,
         label: (
-          <Link href={slug} key={lang.key}>
+          <StyledLink href={slug} key={lang.key}>
             {lang.label}
-          </Link>
+          </StyledLink>
         ),
       };
     })

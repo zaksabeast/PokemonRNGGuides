@@ -1,0 +1,101 @@
+0	0	L 0	0D7A2B9A	No	Serious	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+1	0	L 0	56EF3827	No	Bold	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+2	0	L 0	3A139D24	No	Modest	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+3	0	L 0	074F760C	No	Lonely	0: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+4	0	L 0	45417CAC	No	Timid	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+5	0	L 0	CF34E90A	No	Quiet	0: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Mischievous
+6	0	L 0	8122DADA	No	Naive	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+7	0	L 0	3CED1D1C	No	Rash	0: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+8	0	L 0	98D0E918	No	Quiet	0: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Alert to sounds
+9	0	L 0	05CD564D	No	Adamant	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+10	0	L 0	86773AE4	No	Naughty	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+11	0	L 0	27E9FDE2	No	Docile	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+12	0	L 0	BDC958CF	No	Calm	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+13	0	L 0	80DF1F87	No	Sassy	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+14	0	L 0	0460E81A	No	Jolly	0: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Mischievous
+15	0	L 0	4212A72E	No	Brave	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+16	0	L 0	F253D365	No	Brave	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+17	0	L 0	DC215F7A	No	Hardy	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+18	0	L 0	78199717	No	Quirky	1: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+19	0	L 0	FA756C26	No	Careful	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+20	0	L 0	AAE9ACC8	No	Modest	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+21	0	L 0	5B405F49	No	Adamant	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+22	0	L 0	58305E57	No	Serious	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+23	0	L 0	81F73F8F	No	Brave	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+24	0	L 0	5C33E775	No	Hasty	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+25	0	L 0	8FC67719	No	Bold	1: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+26	0	L 0	E1CDABC6	No	Naughty	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+27	0	L 0	25131946	No	Gentle	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+28	0	L 0	B9A59AD3	No	Timid	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+29	0	L 0	D2EC6AB0	No	Bashful	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+30	0	L 0	8E3C05D9	No	Naughty	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+31	0	L 0	78E000B5	No	Modest	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+32	0	L 0	07225286	No	Serious	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+33	0	L 0	AED71067	No	Careful	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+34	0	L 0	45FD12D0	No	Adamant	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+35	0	L 0	0A26ACD7	No	Hardy	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+36	0	L 0	B84C0A52	No	Sassy	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+37	0	L 0	E837D437	No	Rash	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+38	0	L 0	E775E61C	No	Mild	0: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+39	0	L 0	2A6BA1FE	No	Rash	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+40	0	L 0	91743996	No	Jolly	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+41	0	L 0	C5962C1C	No	Rash	0: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Alert to sounds
+42	0	L 0	2D888DA1	No	Careful	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+43	0	L 0	0E4BC80B	No	Timid	1: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Alert to sounds
+44	0	L 0	1ED26E29	No	Mild	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+45	0	L 0	F5625A03	No	Mild	1: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+46	0	L 0	B9797133	No	Calm	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+47	0	L 0	F56F4141	No	Gentle	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+48	0	L 0	3FD25711	No	Relaxed	1: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+49	0	L 0	036DF699	No	Lonely	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+50	0	L 0	AF581763	No	Bold	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+51	0	L 0	22BD70CD	No	Hardy	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+52	0	L 0	C4B9EF54	No	Naive	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+53	0	L 0	CD9DD7DA	No	Modest	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+54	0	L 0	9A5B44F3	No	Mild	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+55	0	L 0	E9FB7CDA	No	Lonely	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+56	0	L 0	E7358209	No	Bashful	1: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Alert to sounds
+57	0	L 0	E49E60AC	No	Lax	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+58	0	L 0	2C21DD9D	No	Hardy	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+59	0	L 0	A82C42BA	No	Naughty	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+60	0	L 0	215361AE	No	Sassy	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+61	0	L 0	B386E0A1	No	Bashful	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+62	0	L 0	CC85F573	No	Serious	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+63	0	L 0	57A1FCC4	No	Gentle	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+64	0	L 0	2F417B03	No	Impish	1: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+65	0	L 0	21C3FC60	No	Docile	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+66	0	L 0	B684732D	No	Quirky	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+67	0	L 0	F186D4AA	No	Sassy	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+68	0	L 0	F4A582A1	No	Timid	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+69	0	L 0	28FD3BF1	No	Bashful	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+70	0	L 0	D4E4BBFA	No	Sassy	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+71	0	L 0	C82F932F	No	Gentle	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+72	0	L 0	79BFA2FA	No	Lax	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+73	0	L 0	89C2E5F5	No	Calm	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+74	0	L 0	FBE45C84	No	Impish	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+75	0	L 0	68740F6C	No	Jolly	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+76	0	L 0	F86A7D2C	No	Adamant	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+77	0	L 0	F48B3894	No	Quiet	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+78	0	L 0	3E61CD31	No	Jolly	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+79	0	L 0	7EF43FF8	No	Lonely	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+80	0	L 0	3147E7F9	No	Hardy	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+81	0	L 0	81AC1168	No	Serious	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+82	0	L 0	873ACEFE	No	Jolly	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+83	0	L 0	3144CB4D	No	Brave	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+84	0	L 0	1648C99D	No	Relaxed	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+85	0	L 0	8677890B	No	Hasty	1: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+86	0	L 0	73A5C4FD	No	Lax	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+87	0	L 0	73C89578	No	Naughty	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+88	0	L 0	0FF633C3	No	Sassy	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+89	0	L 0	DDA35BB4	No	Bold	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+90	0	L 0	42393250	No	Jolly	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Mischievous
+91	0	L 0	5D20228A	No	Relaxed	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+92	0	L 0	8F310691	No	Impish	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+93	0	L 0	FB1C41D3	No	Hardy	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+94	0	L 0	69400517	No	Serious	1: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+95	0	L 0	5FAD3D21	No	Sassy	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+96	0	L 0	C3324A13	No	Impish	1: Overgrow	0	31	0	31	26	31	Ghost	66	♀	Likes to thrash about
+97	0	L 0	2F15E1EF	No	Sassy	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+98	0	L 0	2D96FCD4	No	Rash	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Alert to sounds
+99	0	L 0	CD0C70FA	No	Lax	0: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about
+100	0	L 0	DBDEE393	No	Bold	1: Overgrow	0	31	0	31	26	31	Ghost	66	♂	Likes to thrash about

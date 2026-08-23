@@ -1,0 +1,218 @@
+8A150320	129	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	127	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	123	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	121	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	119	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	113	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	109	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	105	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	99	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	97	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	87	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	81	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	75	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	73	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	71	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	69	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	65	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	53	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	49	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	45	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	43	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	41	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	39	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	38	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	37	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	35	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	33	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+8A150320	31	C0F0D814	No	Adamant	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	125	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	117	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	115	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	111	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	107	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	103	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	101	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	95	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	93	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	91	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	89	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	85	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	83	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	79	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	77	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	67	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	63	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	61	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	59	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	57	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	55	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	51	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	47	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	29	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+0A150320	27	40F05814	No	Serious	0: Aftermath	30	30	30	30	31	22	Steel	70	♀	Somewhat vain
+4C090321	171	511597DF	No	Docile	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+4C090321	167	511597DF	No	Docile	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+4C090321	165	511597DF	No	Docile	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+4C090321	163	511597DF	No	Docile	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+4C090321	162	511597DF	No	Docile	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+4C090321	159	511597DF	No	Docile	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+4C090321	151	511597DF	No	Docile	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+4C090321	149	511597DF	No	Docile	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+4C090321	143	511597DF	No	Docile	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+4C090321	141	511597DF	No	Docile	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+4C090321	139	511597DF	No	Docile	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+4C090321	137	511597DF	No	Docile	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+4C090321	135	511597DF	No	Docile	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+4C090321	127	511597DF	No	Docile	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+4C090321	125	511597DF	No	Docile	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+4C090321	119	511597DF	No	Docile	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+4C090321	117	511597DF	No	Docile	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+CC090321	177	D11517DF	No	Hasty	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+CC090321	175	D11517DF	No	Hasty	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+CC090321	173	D11517DF	No	Hasty	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+CC090321	172	D11517DF	No	Hasty	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+CC090321	169	D11517DF	No	Hasty	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+CC090321	161	D11517DF	No	Hasty	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+CC090321	157	D11517DF	No	Hasty	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+CC090321	155	D11517DF	No	Hasty	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+CC090321	153	D11517DF	No	Hasty	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+CC090321	147	D11517DF	No	Hasty	1: Unburden	30	30	31	28	29	21	Grass	34	♂	Capable of taking hits
+79010320	165	0F3AA6E7	No	Bold	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+79010320	163	0F3AA6E7	No	Bold	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+79010320	159	0F3AA6E7	No	Bold	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+79010320	158	0F3AA6E7	No	Bold	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+79010320	157	0F3AA6E7	No	Bold	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+79010320	147	0F3AA6E7	No	Bold	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+79010320	145	0F3AA6E7	No	Bold	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+79010320	141	0F3AA6E7	No	Bold	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+79010320	125	0F3AA6E7	No	Bold	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+79010320	121	0F3AA6E7	No	Bold	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+79010320	119	0F3AA6E7	No	Bold	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+79010320	113	0F3AA6E7	No	Bold	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+79010320	111	0F3AA6E7	No	Bold	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+79010320	109	0F3AA6E7	No	Bold	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+79010320	105	0F3AA6E7	No	Bold	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+79010320	103	0F3AA6E7	No	Bold	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+79010320	101	0F3AA6E7	No	Bold	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+79010320	99	0F3AA6E7	No	Bold	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+79010320	97	0F3AA6E7	No	Bold	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+79010320	95	0F3AA6E7	No	Bold	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+79010320	93	0F3AA6E7	No	Bold	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+F9010320	167	8F3A26E7	No	Timid	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+F9010320	161	8F3A26E7	No	Timid	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+F9010320	155	8F3A26E7	No	Timid	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+F9010320	153	8F3A26E7	No	Timid	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+F9010320	151	8F3A26E7	No	Timid	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+F9010320	149	8F3A26E7	No	Timid	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+F9010320	143	8F3A26E7	No	Timid	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+F9010320	139	8F3A26E7	No	Timid	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+F9010320	137	8F3A26E7	No	Timid	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+F9010320	135	8F3A26E7	No	Timid	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+F9010320	133	8F3A26E7	No	Timid	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+F9010320	132	8F3A26E7	No	Timid	1: Unburden	30	31	31	27	30	28	Bug	64	♂	Likes to thrash about
+95100321	128	FDDA0F78	No	Docile	0: Aftermath	30	31	31	28	31	29	Grass	54	♀	Likes to thrash about
+95100321	124	FDDA0F78	No	Docile	0: Aftermath	30	31	31	28	31	29	Grass	54	♀	Likes to thrash about
+95100321	122	FDDA0F78	No	Docile	0: Aftermath	30	31	31	28	31	29	Grass	54	♀	Likes to thrash about
+95100321	120	FDDA0F78	No	Docile	0: Aftermath	30	31	31	28	31	29	Grass	54	♀	Likes to thrash about
+15100321	126	7DDA8F78	No	Lonely	0: Aftermath	30	31	31	28	31	29	Grass	54	♀	Likes to thrash about
+15100321	118	7DDA8F78	No	Lonely	0: Aftermath	30	31	31	28	31	29	Grass	54	♀	Likes to thrash about
+B70E0320	90	86B29068	No	Calm	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+B70E0320	88	86B29068	No	Calm	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+B70E0320	82	86B29068	No	Calm	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+B70E0320	80	86B29068	No	Calm	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+B70E0320	76	86B29068	No	Calm	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+B70E0320	68	86B29068	No	Calm	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+B70E0320	60	86B29068	No	Calm	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+B70E0320	58	86B29068	No	Calm	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+B70E0320	54	86B29068	No	Calm	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+B70E0320	52	86B29068	No	Calm	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+B70E0320	48	86B29068	No	Calm	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+370E0320	92	06B21068	No	Naughty	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+370E0320	91	06B21068	No	Naughty	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+370E0320	86	06B21068	No	Naughty	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+370E0320	84	06B21068	No	Naughty	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+370E0320	78	06B21068	No	Naughty	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+370E0320	74	06B21068	No	Naughty	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+370E0320	72	06B21068	No	Naughty	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+370E0320	71	06B21068	No	Naughty	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+370E0320	70	06B21068	No	Naughty	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+370E0320	66	06B21068	No	Naughty	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+370E0320	64	06B21068	No	Naughty	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+370E0320	62	06B21068	No	Naughty	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+370E0320	56	06B21068	No	Naughty	0: Aftermath	31	31	30	26	29	21	Grass	44	♀	Takes plenty of siestas
+82150320	189	2ACEAD91	No	Gentle	1: Unburden	31	31	30	28	26	24	Fighting	54	♂	Takes plenty of siestas
+82150320	187	2ACEAD91	No	Gentle	1: Unburden	31	31	30	28	26	24	Fighting	54	♂	Takes plenty of siestas
+82150320	183	2ACEAD91	No	Gentle	1: Unburden	31	31	30	28	26	24	Fighting	54	♂	Takes plenty of siestas
+82150320	181	2ACEAD91	No	Gentle	1: Unburden	31	31	30	28	26	24	Fighting	54	♂	Takes plenty of siestas
+82150320	179	2ACEAD91	No	Gentle	1: Unburden	31	31	30	28	26	24	Fighting	54	♂	Takes plenty of siestas
+02150320	185	AACE2D91	No	Lonely	1: Unburden	31	31	30	28	26	24	Fighting	54	♂	Takes plenty of siestas
+DA0A0320	164	97324B3E	No	Adamant	0: Aftermath	31	31	30	30	28	28	Fighting	44	♀	Takes plenty of siestas
+DA0A0320	160	97324B3E	No	Adamant	0: Aftermath	31	31	30	30	28	28	Fighting	44	♀	Takes plenty of siestas
+DA0A0320	154	97324B3E	No	Adamant	0: Aftermath	31	31	30	30	28	28	Fighting	44	♀	Takes plenty of siestas
+5A0A0320	162	1732CB3E	No	Careful	0: Aftermath	31	31	30	30	28	28	Fighting	44	♀	Takes plenty of siestas
+5A0A0320	158	1732CB3E	No	Careful	0: Aftermath	31	31	30	30	28	28	Fighting	44	♀	Takes plenty of siestas
+5A0A0320	156	1732CB3E	No	Careful	0: Aftermath	31	31	30	30	28	28	Fighting	44	♀	Takes plenty of siestas
+5A0A0320	152	1732CB3E	No	Careful	0: Aftermath	31	31	30	30	28	28	Fighting	44	♀	Takes plenty of siestas
+5A0A0320	150	1732CB3E	No	Careful	0: Aftermath	31	31	30	30	28	28	Fighting	44	♀	Takes plenty of siestas
+080A0320	199	13B33CAF	No	Impish	1: Unburden	31	31	31	25	28	23	Steel	39	♂	Likes to thrash about
+080A0320	197	13B33CAF	No	Impish	1: Unburden	31	31	31	25	28	23	Steel	39	♂	Likes to thrash about
+080A0320	191	13B33CAF	No	Impish	1: Unburden	31	31	31	25	28	23	Steel	39	♂	Likes to thrash about
+080A0320	189	13B33CAF	No	Impish	1: Unburden	31	31	31	25	28	23	Steel	39	♂	Likes to thrash about
+080A0320	183	13B33CAF	No	Impish	1: Unburden	31	31	31	25	28	23	Steel	39	♂	Likes to thrash about
+080A0320	179	13B33CAF	No	Impish	1: Unburden	31	31	31	25	28	23	Steel	39	♂	Likes to thrash about
+080A0320	177	13B33CAF	No	Impish	1: Unburden	31	31	31	25	28	23	Steel	39	♂	Likes to thrash about
+080A0320	173	13B33CAF	No	Impish	1: Unburden	31	31	31	25	28	23	Steel	39	♂	Likes to thrash about
+080A0320	172	13B33CAF	No	Impish	1: Unburden	31	31	31	25	28	23	Steel	39	♂	Likes to thrash about
+080A0320	171	13B33CAF	No	Impish	1: Unburden	31	31	31	25	28	23	Steel	39	♂	Likes to thrash about
+080A0320	167	13B33CAF	No	Impish	1: Unburden	31	31	31	25	28	23	Steel	39	♂	Likes to thrash about
+080A0320	165	13B33CAF	No	Impish	1: Unburden	31	31	31	25	28	23	Steel	39	♂	Likes to thrash about
+880A0320	195	93B3BCAF	No	Quirky	1: Unburden	31	31	31	25	28	23	Steel	39	♂	Takes plenty of siestas
+880A0320	193	93B3BCAF	No	Quirky	1: Unburden	31	31	31	25	28	23	Steel	39	♂	Takes plenty of siestas
+880A0320	187	93B3BCAF	No	Quirky	1: Unburden	31	31	31	25	28	23	Steel	39	♂	Takes plenty of siestas
+880A0320	185	93B3BCAF	No	Quirky	1: Unburden	31	31	31	25	28	23	Steel	39	♂	Takes plenty of siestas
+880A0320	181	93B3BCAF	No	Quirky	1: Unburden	31	31	31	25	28	23	Steel	39	♂	Takes plenty of siestas
+880A0320	175	93B3BCAF	No	Quirky	1: Unburden	31	31	31	25	28	23	Steel	39	♂	Takes plenty of siestas
+880A0320	169	93B3BCAF	No	Quirky	1: Unburden	31	31	31	25	28	23	Steel	39	♂	Takes plenty of siestas
+37030321	178	06502A3F	No	Mild	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+37030321	170	06502A3F	No	Mild	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+37030321	154	06502A3F	No	Mild	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+37030321	150	06502A3F	No	Mild	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+37030321	148	06502A3F	No	Mild	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+37030321	146	06502A3F	No	Mild	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+B7030321	180	8650AA3F	No	Relaxed	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+B7030321	176	8650AA3F	No	Relaxed	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+B7030321	174	8650AA3F	No	Relaxed	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+B7030321	172	8650AA3F	No	Relaxed	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+B7030321	168	8650AA3F	No	Relaxed	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+B7030321	166	8650AA3F	No	Relaxed	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+B7030321	164	8650AA3F	No	Relaxed	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+B7030321	162	8650AA3F	No	Relaxed	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+B7030321	160	8650AA3F	No	Relaxed	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+B7030321	158	8650AA3F	No	Relaxed	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+B7030321	156	8650AA3F	No	Relaxed	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+B7030321	152	8650AA3F	No	Relaxed	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+B7030321	144	8650AA3F	No	Relaxed	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+B7030321	142	8650AA3F	No	Relaxed	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+B7030321	136	8650AA3F	No	Relaxed	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+B7030321	130	8650AA3F	No	Relaxed	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+B7030321	128	8650AA3F	No	Relaxed	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+B7030321	126	8650AA3F	No	Relaxed	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+B7030321	116	8650AA3F	No	Relaxed	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+B7030321	102	8650AA3F	No	Relaxed	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+B7030321	98	8650AA3F	No	Relaxed	1: Unburden	31	31	31	28	27	20	Water	54	♀	Takes plenty of siestas
+5D050321	113	380C606D	No	Jolly	1: Unburden	31	31	31	30	26	28	Flying	64	♀	Takes plenty of siestas
+5D050321	107	380C606D	No	Jolly	1: Unburden	31	31	31	30	26	28	Flying	64	♀	Takes plenty of siestas
+DD050321	111	B80CE06D	No	Naughty	1: Unburden	31	31	31	30	26	28	Flying	64	♀	Likes to thrash about
+DD050321	109	B80CE06D	No	Naughty	1: Unburden	31	31	31	30	26	28	Flying	64	♀	Likes to thrash about
+DD050321	105	B80CE06D	No	Naughty	1: Unburden	31	31	31	30	26	28	Flying	64	♀	Likes to thrash about
+DD050321	101	B80CE06D	No	Naughty	1: Unburden	31	31	31	30	26	28	Flying	64	♀	Likes to thrash about
+DD050321	99	B80CE06D	No	Naughty	1: Unburden	31	31	31	30	26	28	Flying	64	♀	Likes to thrash about
+DD050321	98	B80CE06D	No	Naughty	1: Unburden	31	31	31	30	26	28	Flying	64	♀	Likes to thrash about
+DD050321	97	B80CE06D	No	Naughty	1: Unburden	31	31	31	30	26	28	Flying	64	♀	Likes to thrash about
+DD050321	93	B80CE06D	No	Naughty	1: Unburden	31	31	31	30	26	28	Flying	64	♀	Likes to thrash about
+DD050321	91	B80CE06D	No	Naughty	1: Unburden	31	31	31	30	26	28	Flying	64	♀	Likes to thrash about
+DD050321	89	B80CE06D	No	Naughty	1: Unburden	31	31	31	30	26	28	Flying	64	♀	Likes to thrash about
+DD050321	83	B80CE06D	No	Naughty	1: Unburden	31	31	31	30	26	28	Flying	64	♀	Likes to thrash about
+DD050321	81	B80CE06D	No	Naughty	1: Unburden	31	31	31	30	26	28	Flying	64	♀	Likes to thrash about
+DD050321	80	B80CE06D	No	Naughty	1: Unburden	31	31	31	30	26	28	Flying	64	♀	Likes to thrash about

@@ -3,7 +3,7 @@ use crate::{
     rng::{Rng, lcrng::Pokerng},
 };
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
@@ -62,6 +62,10 @@ impl PkmState for JirachiSpread {
 
     fn gender(&self) -> Gender {
         Gender::Genderless
+    }
+
+    fn pid(&self) -> u32 {
+        self.pid
     }
 }
 

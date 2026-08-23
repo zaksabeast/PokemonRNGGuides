@@ -4,18 +4,18 @@ import {
   ResultColumn,
   RngToolSubmit,
   FormikNumberInput,
+  FormFieldTable,
 } from "~/components";
 import { FormikRadio } from "~/components/radio";
 import { rngTools, MirageIslandResult } from "~/rngTools";
+import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import React from "react";
 import { clamp } from "lodash-es";
 import { z } from "zod";
+import { useWatch_UNSAFE } from "~/hooks/form";
+import { toOptions } from "~/utils/options";
 
 type Game = "emerald" | "rs";
-
-const formatLargeInteger = (number: number) => {
-  return number.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-};
 
 const getColumns = (
   game: Game,
@@ -89,19 +89,23 @@ type Props = {
   game?: Game;
 };
 
-const getFields = (values: FormState) => {
+const Fields = () => {
+  const battery = useWatch_UNSAFE<FormState, "battery">({
+    name: "battery",
+  });
+
   const fields: Field[] = [
     {
       label: "Battery",
       input: (
-        <FormikRadio<FormState, "battery">
+        <FormikRadio<FormState>
           name="battery"
-          options={["Live", "Dead"]}
+          options={toOptions(["Live", "Dead"] as const)}
         />
       ),
     },
   ];
-  if (values.battery === "Live") {
+  if (battery === "Live") {
     fields.push({
       label: "Rocket Launched",
       input: (
@@ -112,31 +116,25 @@ const getFields = (values: FormState) => {
       ),
     });
   }
-  return fields;
+
+  return <FormFieldTable fields={fields} />;
 };
 
 export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
   const [results, setResults] = React.useState<MirageIslandResult[]>([]);
   const [resultsBattery, setResultsBattery] = React.useState<Battery>("Live");
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (values) => {
-      const { battery } = values;
-      const res = await generateResults(game, values);
-      setResults(res);
-      setResultsBattery(battery);
-    },
-    [game],
-  );
+  const onSubmit: RngToolSubmit<FormState> = async (values) => {
+    const { battery } = values;
+    const res = await generateResults(game, values);
+    setResults(res);
+    setResultsBattery(battery);
+  };
 
-  const columns = React.useMemo(
-    () => getColumns(game, resultsBattery),
-    [game, resultsBattery],
-  );
+  const columns = getColumns(game, resultsBattery);
 
   return (
     <RngToolForm<FormState, MirageIslandResult>
-      getFields={getFields}
       columns={columns}
       results={results}
       initialValues={initialValues}
@@ -144,6 +142,8 @@ export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
       onSubmit={onSubmit}
       rowKey="day"
       submitTrackerId="mirage_island"
-    />
+    >
+      <Fields />
+    </RngToolForm>
   );
 };

@@ -31,3 +31,7 @@ export const nature = [
   "Careful",
   "Quirky",
 ] as const satisfies Nature[];
+
+export const nature_from_pid = (pid: number) => {
+  return nature[pid % 25];
+};

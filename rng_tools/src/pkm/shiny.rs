@@ -21,3 +21,10 @@ pub fn gen6_psv(pid: u32) -> u16 {
     let pidl = pid as u16;
     (pidh ^ pidl) >> 4
 }
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum ShinyType {
+    Star,
+    Square,
+    NotShiny,
+}

@@ -1,38 +1,70 @@
 import React from "react";
 import { Flex } from "./flex";
-import { Formik, FormikHelpers } from "formik";
-import { Form } from "./form";
 import { FormFieldTable, Field } from "./formFieldTable";
 import { Button } from "./button";
 import { FormikResultTable, ResultColumn } from "./resultTable";
-import { GenericForm } from "~/types/form";
 import * as tst from "ts-toolbelt";
 import { AllOrNone, FeatureConfig, OneOf } from "~/types/utils";
-import { z } from "zod";
-import { toFormikValidationSchema } from "zod-formik-adapter";
+import * as z from "zod";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { Translations } from "~/translations";
+import {
+  useForm,
+  FormProvider,
+  UseFormSetValue,
+  DefaultValues,
+  useFormState,
+} from "react-hook-form";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
+import { GenericForm } from "~/types";
+import { Typography, Progress, TableProps } from "antd";
 
-export type RngToolSubmit<Values> = (
-  values: Values,
-  formikHelpers: FormikHelpers<Values>,
+export type RngToolSubmit<FormState extends GenericForm> = (
+  values: FormState,
+  helpers: { setValue: UseFormSetValue<FormState> },
 ) => Promise<unknown>;
 
-type Props<FormState, Result> = {
-  submitTrackerId: string;
-  initialValues: FormState;
-  onSubmit: RngToolSubmit<FormState>;
-  validationSchema?: z.ZodSchema<FormState>;
+type Props<FormState extends GenericForm, Result> = {
+  initialValues: DefaultValues<FormState>;
+  values?: FormState;
+  validationSchema?: z.ZodType<FormState>;
   submitButtonLabel?: string;
   formContainerId?: string;
+  filters?: React.ReactNode;
+  disableGenerate?: boolean;
+  additionalButtons?: React.ReactNode;
+  progressPercent?: number;
+  pagination?: TableProps["pagination"];
 } & OneOf<{
   fields: Field[];
-  getFields: (values: FormState) => Field[];
+  getFields: (t: Translations) => Field[];
+  children: React.ReactNode;
 }> &
-  AllOrNone<{ columns: ResultColumn<Result>[]; results: Result[] }> &
+  AllOrNone<
+    OneOf<{
+      columns: ResultColumn<Result>[];
+      getColumns: (t: Translations) => ResultColumn<Result>[];
+    }> & {
+      results: Result[];
+    }
+  > &
   AllOrNone<{
     rowKey: keyof Result;
-    onClickResultRow?: (record: Result) => void;
+    onClickResultRow?: (record: Result | null) => void;
   }> &
-  FeatureConfig<"allowReset", { resetTrackerId: string; onReset?: () => void }>;
+  AllOrNone<{ submitTrackerId: string; onSubmit: RngToolSubmit<FormState> }> &
+  FeatureConfig<
+    "allowReset",
+    { resetTrackerId: string; onReset?: () => void }
+  > &
+  FeatureConfig<
+    "allowCancel",
+    {
+      cancelTrackerId: string;
+      onCancel: () => void;
+      cancelButtonLabel?: string;
+    }
+  >;
 
 export const RngToolForm = <
   FormState extends GenericForm,
@@ -40,71 +72,133 @@ export const RngToolForm = <
 >({
   submitTrackerId,
   initialValues,
+  values,
   fields,
   validationSchema,
   getFields,
   columns,
-  onSubmit,
+  getColumns,
   onReset,
   onClickResultRow,
   rowKey,
   results,
+  children,
   formContainerId,
-  allowReset = false,
+  filters,
   resetTrackerId,
+  additionalButtons,
+  progressPercent,
+  allowReset = false,
+  disableGenerate = false,
+  onSubmit = async () => {},
   submitButtonLabel = "Generate",
+  cancelButtonLabel = "Cancel",
+  allowCancel = false,
+  cancelTrackerId,
+  pagination,
+  onCancel,
 }: Props<FormState, Result>) => {
-  const _validationSchema = React.useMemo(() => {
-    return validationSchema == null
-      ? undefined
-      : toFormikValidationSchema(validationSchema);
-  }, [validationSchema]);
+  const t = useActiveRouteTranslations();
+  const { handleSubmit, setValue, control, ...form } = useForm<FormState>({
+    mode: "onTouched",
+    resolver:
+      validationSchema === undefined
+        ? validationSchema
+        : standardSchemaResolver(validationSchema),
+    resetOptions: { keepDirtyValues: false },
+    defaultValues: initialValues,
+    values,
+  });
+  const { errors } = useFormState({ control });
+
+  const translatedSubmitLabel =
+    submitButtonLabel === "Generate" ? t["Generate"] : submitButtonLabel;
+  const translatedCancelLabel =
+    cancelButtonLabel === "Cancel" ? t["Cancel"] : cancelButtonLabel;
+
+  const fieldsReactNode = (() => {
+    if (children != null) {
+      return children;
+    }
+    const fieldsToUse = fields ?? getFields?.(t) ?? [];
+    return <FormFieldTable fields={fieldsToUse} />;
+  })();
+
+  const columnsToUse = columns ?? getColumns?.(t) ?? null;
+
+  const onValidSubmit = (values: FormState) => {
+    return onSubmit(values, {
+      setValue,
+    });
+  };
+
+  const hasErrors = Object.keys(errors).length > 0;
 
   return (
-    <Formik
-      enableReinitialize
-      initialValues={initialValues}
-      onSubmit={onSubmit}
-      onReset={onReset}
-      validationSchema={_validationSchema}
+    <FormProvider
+      handleSubmit={handleSubmit}
+      setValue={setValue}
+      control={control}
+      {...form}
     >
-      {(formik) => {
-        const fieldsToUse = fields || getFields(formik.values);
-
-        return (
-          <Flex vertical gap={16} id={formContainerId}>
-            <Form>
-              <Flex vertical gap={8}>
-                <FormFieldTable fields={fieldsToUse} />
-                <Button trackerId={submitTrackerId} htmlType="submit">
-                  {submitButtonLabel}
-                </Button>
-                {allowReset && resetTrackerId != null && (
-                  <Button trackerId={resetTrackerId} htmlType="reset">
-                    Reset
-                  </Button>
-                )}
-              </Flex>
-            </Form>
-
-            {columns != null && (
-              <FormikResultTable<Result>
-                columns={columns}
-                rowKey={rowKey}
-                dataSource={results}
-                rowSelection={
-                  onClickResultRow == null
-                    ? undefined
-                    : {
-                        type: "radio",
-                        onSelect: (record) => onClickResultRow?.(record),
-                      }
-                }
-              />
+      <Flex vertical gap={16} id={formContainerId}>
+        <form onSubmit={handleSubmit(onValidSubmit)} onReset={onReset}>
+          <Flex vertical gap={8}>
+            {fieldsReactNode}
+            {hasErrors && (
+              <Typography.Text type="danger">
+                {t["At least 1 input field is invalid"]}
+              </Typography.Text>
+            )}
+            {submitTrackerId != null && (
+              <Button
+                trackerId={submitTrackerId}
+                htmlType="submit"
+                disabled={disableGenerate}
+              >
+                {translatedSubmitLabel}
+              </Button>
+            )}
+            {additionalButtons}
+            {allowCancel && cancelTrackerId != null && (
+              <Button
+                trackerId={cancelTrackerId}
+                htmlType="button"
+                onClick={onCancel}
+              >
+                {translatedCancelLabel}
+              </Button>
+            )}
+            {allowReset && resetTrackerId != null && (
+              <Button trackerId={resetTrackerId} htmlType="reset">
+                {t["Reset"]}
+              </Button>
             )}
           </Flex>
-        );
-      }}
-    </Formik>
+        </form>
+
+        {filters != null && (
+          <Flex vertical gap={8} mt={24}>
+            {filters}
+          </Flex>
+        )}
+
+        {progressPercent != null && (
+          <Flex mv={8} flex={1}>
+            <Progress percent={progressPercent} size={["100%", 12]} />
+          </Flex>
+        )}
+
+        {columnsToUse != null && (
+          <FormikResultTable<Result>
+            columns={columnsToUse}
+            rowKey={rowKey}
+            dataSource={results}
+            pagination={pagination}
+            onClickResultRow={onClickResultRow}
+          />
+        )}
+      </Flex>
+    </FormProvider>
   );
 };

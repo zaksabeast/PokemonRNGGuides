@@ -4,15 +4,37 @@ navDrawerTitle: "Egg RNG"
 description: "Learn how to Retail RNG eggs in Pokémon Emerald using the Daycare. Get perfect IVs, natures, and shinies."
 slug: "retail-emerald-egg"
 category: "Emerald"
-tag: "retail"
+section: "pokemon_rng"
+variant: "retail"
 addedOn: "2025-05-18"
 ---
+
+## Video Guides
+
+<YouTubeTable
+  videos={[
+    {
+      title: "Getting Shiny Eggs",
+      id: "yNWmpMTBOlc",
+    },
+    {
+      title: "Getting Pefect IVs",
+      id: "Kdqbl08xmVQ",
+    },
+    {
+      title: "Match Call Trainers by El Terapagos Mexicano",
+      id: "oQl6Knrydnc",
+    },
+  ]}
+/>
+
+## Written Guide
 
 <Stepper titles={["PokeNav", "Setup", "Pick Target", "Get PID", "Pick IVs", "Get Stats"]}>
 
 <Step step={0}>
 
-## PokeNav
+### PokeNav
 
 1. Register as many trainers to the PokeNav as possible.
 2. Open the PokeNav Match Call feature and select all the trainers you registered in the tool below.
@@ -23,26 +45,27 @@ addedOn: "2025-05-18"
 
 <Step step={1}>
 
-## Step 1: Prepare
+### Step 1: Prepare
 
 1. Optional, but highly recommended: Put a Pokemon with Lightning Rod and Flame Body in your party.
    - Electrike with Lightning Rod is on Route 110, just South of Mauville.
    - Slugma with Flame Body is in Fiery Path, just North of Mauville.
 2. Buy at least 3 normal repels from Verdanturf.
 3. Go to the Daycare and withdraw any Pokemon currently there.
-4. Stand in front of the top right edge of the white path on Route 118.
-5. Use the first repel.
+4. Make sure both parent Pokemon are over 400xp away from leveling up. **The RNG will fail if they level up in the daycare!**
+5. Stand in front of the top right edge of the white path on Route 118.
+6. Use the first repel.
 
 ![White Path](/images/Emerald/Retail-Egg/start-point.webp)
 
-## Step 2: Deposit Pokemon
+### Step 2: Deposit Pokemon
 
 1. Walk left until you're in front of the Daycare, then walk up until you're in front of the Daycare lady.
 2. Deposit your parent Pokemon into the Daycare.
 3. Exit the Daycare.
 4. Talk to the Daycare Man to get the egg compatibility and write it down for later.
 
-## Step 3: Get into position
+### Step 3: Get into position
 
 1. Walk to Verdanturf and run around.
 2. Use the second repel.
@@ -57,53 +80,75 @@ addedOn: "2025-05-18"
 
 <Step step={2}>
 
-## Pick a Target
+### Pick a Target
 
 1. Enter your egg details in the tool below and press "Generate".
-2. Press "Select" on the target Pokemon you want to hatch.
+2. If you don't know the parent IVs, leave them blank.
+3. Press "Select" on the target Pokemon you want to hatch.
+
+If you are using a Ditto with a genderless or male parent, enter the information for the Ditto as the "Female".
 
   <RetailEmeraldHeldEgg />
 </Step>
 
 <Step step={3}>
 
-## Step 1: RNGing the PID
+### Step 1: RNGing the PID
 
 1. Make sure the Lightning Rod Pokemon is in the front of your party and save.
 2. Start the timer below.
 3. When first timer goes off, soft reset your game and load your save as fast as possible.
-4. Walk back and forth on the two tiles in front of the PokeCenter for 9 steps.
-5. Open the PokeDex however many times the tool below says.
-6. Take 1 step on the same two tiles when the timer goes off.
+4. Walk back and forth on the two tiles in front of the PokeCenter for 9 steps. **DO NOT** move anywhere else.
+   - <Flex gap={16}>
+       <Image
+         pixelated
+         alt="Tile 1"
+         src="/images/Emerald/Retail-Egg/tile1.webp"
+       />
+       <Image
+         pixelated
+         alt="Tile 2"
+         src="/images/Emerald/Retail-Egg/tile2.webp"
+       />
+     </Flex>
+5. Open and close the Pokedex this many times: **<RetailEmeraldEggStateText item="pokedex" />**
+6. Take 1 step on the **same two tiles** when the timer goes off.
 7. If you received a PokeNav call that matches your expected call and the Daycare man has an egg, save the game. If not, scroll down to the "Calibrate" section.
 
 <CalibrateHeldEggTimer />
 
-## Step 2: Calibrate
+### Step 2: Calibrate
 
-1. Put the Flame Body Pokemon in the front of your party.
-2. Pick up your egg from the daycare man and hatch it. If it's shiny, proceed to the next step.
-3. If the egg wasn't shiny, fill in the tool below with the match call and egg nature.
-4. Press "Find advances matching eggs" to view a list of possible eggs.
-5. Press "Calibrate" on the egg with the offset closest to 0 to adjust the timer.
-6. Restart the PID RNG process.
+1. Pick up your egg from the daycare man and hatch it. If it's shiny, proceed to the next step.
+2. If the egg wasn't shiny, fill in the tool below with the match call and egg nature.
+3. Press "Find advances matching eggs" to view a list of possible eggs.
+4. Press "Calibrate" on the egg with the offset closest to 0 to adjust the timer.
+5. Restart the PID RNG process.
 
-  <CalibrateHeldEgg />
+> [!TIP]
+> No results? You may be outside the search window or miscounted Pokedex opens.
+>
+> - **Advance range:** expands how far from your target the tool searches.
+> - **Pokedex range:** checks nearby counts if you miscounted openings.
+
+<CalibrateHeldEgg />
+
 </Step>
 
 <Step step={4}>
 
-## Picking IVs
+### Picking IVs
 
-1. Fill in the tool below and press "Generate" to get a list of possible IVs.
-2. Press "Select" on the target Pokemon you want to hatch.
+1. Fill in the tool below. Leave any parent IV empty if you do not know it.
+2. Press "Generate" to get a list of possible IVs.
+3. Press "Select" on the target Pokemon you want to hatch.
 
   <RetailEmeraldPickupEgg />
 </Step>
 
 <Step step={5}>
 
-## Step 1: RNGing the IVs
+### Step 1: RNGing the IVs
 
 1. Stand next to the Daycare man and save.
 2. Start the timer below.
@@ -114,7 +159,7 @@ addedOn: "2025-05-18"
 
 <CalibratePickupEggTimer />
 
-## Step 2: Calibrate
+### Step 2: Calibrate
 
 1. Enter the stats in the tool below and press "Find advances matching hatched egg".
 2. If the result with offset 0 matches your target stats and method, congratulations! You got your egg!
@@ -131,7 +176,9 @@ addedOn: "2025-05-18"
 
 ## Credits
 
-- Zaksabesat for writing this web tool.
+- Zaksabeast for writing this web tool.
 - Lincoln for the [PokeNav tool](https://github.com/Lincoln-LM/PokeNav-Egg-RNG-Tool), which this tool is based on.
 - Thanks to all [PokeFinder](https://github.com/Admiral-Fish/PokeFinder) contributors, which this tool is based on.
 - El Terapagos Mexicano, jafet0022, and everyone who contributed to [this Discord thread](https://discord.com/channels/285269328469950464/1257368429107875992), which is filled with lots of retail Emerald egg research and info.
+- Chinese translation: xuanyelin, Hakuhiro.
+- German translation: Parasite on Discord.

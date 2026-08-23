@@ -12,13 +12,15 @@ import {
 } from "~/components";
 import { Game } from "./index";
 import { rngTools, Gen3NearbySid, Gen3TidSidShinyResult } from "~/rngTools";
+import { useWatch_UNSAFE } from "~/hooks/form";
+import { GBA_FPS, MS_PER_GBA_FRAME } from "~/utils/consts";
 
 const Validator = z.object({
   offset: z.number().int().min(-999).max(999),
   tid: z.number().int().min(0).max(65535),
 });
 
-type FormState = z.infer<typeof Validator>;
+export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   offset: 50, // offset on Emerald on mgba 0.11-8764
@@ -75,7 +77,7 @@ const columns: ResultColumn<Result>[] = [
     title: "Earliest Method-1 advance for shiny starter",
     dataIndex: "earliest_shiny_adv",
     render: (val) => {
-      const durInMinutes = (val / 59.7275 / 60).toFixed(1);
+      const durInMinutes = (val / GBA_FPS / 60).toFixed(1);
       return `${val} (~${durInMinutes} min)`;
     },
   },
@@ -87,7 +89,7 @@ export const GenerateTidSidRating = ({
   result: Gen3TidSidShinyResult;
 }) => {
   const durInMinutes = Math.round(
-    result.avg_adv_to_determine_sid / 59.7275 / 60,
+    result.avg_adv_to_determine_sid / GBA_FPS / 60,
   );
   const pct = result.avg_adv_to_determine_sid_percentile;
   const qualitativeRating = (() => {
@@ -130,85 +132,88 @@ export const GenerateTidSidRating = ({
   return <FormFieldTable fields={fields} />;
 };
 
+type FieldsProps = {
+  idealAdvance: number;
+};
+
+const Fields = ({ idealAdvance }: FieldsProps) => {
+  const advFromOffset = useWatch_UNSAFE<FormState, "offset">({
+    name: "offset",
+  });
+
+  const milliseconds = (() => {
+    const advFromTimer = idealAdvance - advFromOffset;
+    let milliseconds = Math.round(advFromTimer * MS_PER_GBA_FRAME);
+    if (milliseconds < 0) {
+      milliseconds = 0;
+    }
+    return [5000, milliseconds];
+  })();
+
+  const fields: Field[] = [
+    {
+      label: "Offset",
+      input: <FormikNumberInput<FormState> name="offset" numType="decimal" />,
+    },
+    {
+      label: "TID/SID Timer",
+      direction: "column",
+      input: (
+        <MultiTimer
+          milliseconds={milliseconds}
+          startButtonTrackerId="start_gen3_shiny_starter_tidsid_timer"
+          stopButtonTrackerId="stop_gen3_shiny_starter_tidsid_timer"
+        />
+      ),
+    },
+    {
+      label: "Obtained TID",
+      input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
+    },
+  ];
+
+  return <FormFieldTable fields={fields} />;
+};
+
 export const GenerateHoennTidSid = ({ game }: Props) => {
   const idealAdvance = IDEAL_TIDSID_ADVANCE_WITH_OFFSET(game);
-
-  const getFields = React.useCallback(
-    (values: FormState): Field[] => {
-      const milliseconds = (() => {
-        const advFromOffset = values.offset;
-        const advFromTimer = idealAdvance - advFromOffset;
-        let milliseconds = Math.round((advFromTimer * 1000) / 59.7275);
-        if (milliseconds < 0) {
-          milliseconds = 0;
-        }
-        return [5000, milliseconds];
-      })();
-
-      return [
-        {
-          label: "Offset",
-          input: (
-            <FormikNumberInput<FormState> name="offset" numType="decimal" />
-          ),
-        },
-        {
-          label: "TID/SID Timer",
-          direction: "column",
-          input: (
-            <MultiTimer
-              milliseconds={milliseconds}
-              startButtonTrackerId="start_gen3_shiny_starter_tidsid_timer"
-              stopButtonTrackerId="stop_gen3_shiny_starter_tidsid_timer"
-            />
-          ),
-        },
-        {
-          label: "Obtained TID",
-          input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-        },
-      ];
-    },
-    [idealAdvance],
-  );
 
   const [formResults, setFormResults] = React.useState<Result[]>([]);
   const [result, setResult] = React.useState<Gen3TidSidShinyResult | null>(
     null,
   );
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts) => {
-      const seed = game === "emerald" ? 0 : 0x5a0;
-      const rng_res = await rngTools.gen3_calculate_tidsid_shiny_for_tid(
-        seed,
-        idealAdvance,
-        opts.tid,
-      );
-      const res = rng_res.nearby_sids.map((res) => {
-        return { ...res, tid_gen_target_adv: idealAdvance };
-      });
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+    const seed = game === "emerald" ? 0 : 0x5a0;
+    const rng_res = await rngTools.gen3_calculate_tidsid_shiny_for_tid(
+      seed,
+      idealAdvance,
+      opts.tid,
+    );
+    const res = rng_res.nearby_sids.map((res) => {
+      return { ...res, tid_gen_target_adv: idealAdvance };
+    });
 
-      setResult(rng_res);
+    setResult(rng_res);
 
-      setFormResults(res);
-    },
-    [game, idealAdvance, setResult, setFormResults],
-  );
+    setFormResults(res);
+  };
 
   return (
     <Flex vertical>
       <RngToolForm<FormState, Result>
+        formContainerId="generate-tid-sid-for-shiny-starter"
         results={formResults}
-        getFields={getFields}
         columns={columns}
         validationSchema={Validator}
         initialValues={initialValues}
         submitButtonLabel="Generate possible SIDs"
         submitTrackerId="generate_tid_sid_for_shiny_starter"
         onSubmit={onSubmit}
-      />
-      {result && <GenerateTidSidRating result={result} />}
+      >
+        <Fields idealAdvance={idealAdvance} />
+      </RngToolForm>
+      {result != null && <GenerateTidSidRating result={result} />}
     </Flex>
   );
 };

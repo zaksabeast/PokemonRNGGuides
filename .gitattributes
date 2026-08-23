@@ -1,0 +1,25 @@
+# Normalize all text files to LF in the repo and working tree
+* text eol=lf
+
+# Explicitly mark common text types (optional but self-documenting)
+*.mdx  text
+*.md   text
+*.ts   text
+*.tsx  text
+*.js   text
+*.jsx  text
+*.json text
+*.yaml text
+*.yml  text
+*.rs   text
+*.toml text
+*.gm9  text
+
+# Binary files
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.zip  binary
+*.ico  binary
+*.webp binary

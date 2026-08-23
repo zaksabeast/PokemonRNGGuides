@@ -16,6 +16,8 @@ import {
 import { PokeRadarPatches } from "./patch";
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";
+import { Translations } from "~/translations";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 type ChainResult = {
   WithChain: PokeRadarChainState[];
@@ -31,18 +33,18 @@ type Result = ChainResult | NoChainResult;
 
 type LooseColumns = Partial<PokeRadarChainState & PokeRadarNoChainState>;
 
-const withChainColumns: ResultColumn<LooseColumns>[] = [
+const getWithChainColumns = (t: Translations): ResultColumn<LooseColumns>[] => [
   {
-    title: "Advance",
+    title: t["Advance"],
     dataIndex: "advance",
   },
   {
-    title: "Shiny",
+    title: t["Shiny"],
     dataIndex: "shiny",
     render: (shiny) => (shiny ? "Yes" : "No"),
   },
   {
-    title: "State",
+    title: t["State"],
     dataIndex: "state",
     monospace: true,
     render: (state) =>
@@ -53,23 +55,23 @@ const withChainColumns: ResultColumn<LooseColumns>[] = [
   },
 ];
 
-const noChainColumns: ResultColumn<LooseColumns>[] = [
+const getNoChainColumns = (t: Translations): ResultColumn<LooseColumns>[] => [
   {
-    title: "Advance",
+    title: t["Advance"],
     dataIndex: "advance",
   },
   {
-    title: "Shiny",
+    title: t["Shiny"],
     dataIndex: "shiny",
     render: (shiny) => (shiny ? "Yes" : "No"),
   },
   {
-    title: "Sync",
+    title: t["Sync"],
     dataIndex: "sync",
     render: (sync) => (sync ? "Yes" : "No"),
   },
   {
-    title: "State",
+    title: t["State"],
     dataIndex: "state",
     render: (state) =>
       state
@@ -80,10 +82,7 @@ const noChainColumns: ResultColumn<LooseColumns>[] = [
 ];
 
 const Validator = z.object({
-  state3: HexSchema(0xffffffff),
-  state2: HexSchema(0xffffffff),
-  state1: HexSchema(0xffffffff),
-  state0: HexSchema(0xffffffff),
+  seed: HexSchema(0xffffffff),
   party_count: z.number().int().min(1).max(6),
   initial_advances: z.number().int().min(0),
   max_advances: z.number().int().min(0),
@@ -95,10 +94,7 @@ const Validator = z.object({
 export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
-  state3: 0,
-  state2: 0,
-  state1: 0,
-  state0: 0,
+  seed: 0,
   party_count: 1,
   initial_advances: 0,
   max_advances: 0,
@@ -109,20 +105,8 @@ const initialValues: FormState = {
 
 const fields: Field[] = [
   {
-    label: "State[3]",
-    input: <FormikNumberInput<FormState> name="state3" numType="hex" />,
-  },
-  {
-    label: "State[2]",
-    input: <FormikNumberInput<FormState> name="state2" numType="hex" />,
-  },
-  {
-    label: "State[1]",
-    input: <FormikNumberInput<FormState> name="state1" numType="hex" />,
-  },
-  {
-    label: "State[0]",
-    input: <FormikNumberInput<FormState> name="state0" numType="hex" />,
+    label: "Tiny u32 Seed",
+    input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
   },
   {
     label: "Initial Advances",
@@ -148,15 +132,16 @@ const fields: Field[] = [
   },
   {
     label: "Bonus Music",
-    input: <FormikSwitch<FormState, "bonus_music"> name="bonus_music" />,
+    input: <FormikSwitch<FormState> name="bonus_music" />,
   },
   {
     label: "Filter Shiny",
-    input: <FormikSwitch<FormState, "filter_shiny"> name="filter_shiny" />,
+    input: <FormikSwitch<FormState> name="filter_shiny" />,
   },
 ];
 
 export const XyPokeRadar = () => {
+  const t = useActiveRouteTranslations();
   const [results, setResults] = React.useState<Result>({
     NoChain: [],
   });
@@ -164,9 +149,9 @@ export const XyPokeRadar = () => {
     PokeRadarPatch[]
   >([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
     const results = await rngTools.generate_poke_radar_states({
-      state: [opts.state0, opts.state1, opts.state2, opts.state3],
+      seed: opts.seed,
       initial_advances: opts.initial_advances,
       max_advances: opts.max_advances,
       party_count: opts.party_count,
@@ -177,20 +162,24 @@ export const XyPokeRadar = () => {
     });
 
     setResults(results);
-  }, []);
+  };
 
   return (
     <>
       <RngToolForm<FormState, LooseColumns>
         fields={fields}
-        columns={results.NoChain == null ? withChainColumns : noChainColumns}
+        columns={
+          results.NoChain == null
+            ? getWithChainColumns(t)
+            : getNoChainColumns(t)
+        }
         results={results.NoChain == null ? results.WithChain : results.NoChain}
         initialValues={initialValues}
         validationSchema={Validator}
         onSubmit={onSubmit}
         onClickResultRow={
           results.NoChain == null
-            ? (row) => setSelectedPatches(row.patches ?? [])
+            ? (row) => setSelectedPatches(row?.patches ?? [])
             : undefined
         }
         rowKey="advance"

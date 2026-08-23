@@ -1,6 +1,7 @@
-import { Flex, Card, Typography, Grid } from "~/components";
+import { Flex, Card, Grid, BadgeRibbon, Typography } from "~/components";
 import { Route } from "~/routes/defs";
 import styled from "@emotion/styled";
+import { categoryHasNewContent } from "~/guides";
 import brilliantDiamondLogoSrc from "~/assets/logos/brilliant_diamond_logo.webp";
 import shiningPearlLogoSrc from "~/assets/logos/shining_pearl_logo.webp";
 import swordLogoSrc from "~/assets/logos/sword_logo.webp";
@@ -32,6 +33,7 @@ import sapphireLogoSrc from "~/assets/logos/sapphire_logo.webp";
 import crystalLogoSrc from "~/assets/logos/crystal.webp";
 import transporterLogoSrc from "~/assets/logos/transporter_logo.webp";
 import dreamRadarLogoSrc from "~/assets/logos/dream_radar_logo.webp";
+import jirachiSrc from "~/assets/jirachi.webp";
 
 type Game = {
   name: string;
@@ -40,71 +42,20 @@ type Game = {
 };
 
 const games = [
-  // Temporarily don't show this since we only have one post
-  // {
-  //   name: "Legends: Arceus",
-  //   images: [],
-  //   slug: "/legends-arceus",
-  // },
   {
-    name: "Brilliant Diamond and Shining Pearl",
-    images: [brilliantDiamondLogoSrc, shiningPearlLogoSrc],
-    slug: "/brilliant-diamond-and-shining-pearl/",
+    name: "Crystal",
+    images: [crystalLogoSrc],
+    slug: "/crystal/",
   },
   {
-    name: "Sword and Shield",
-    images: [swordLogoSrc, shieldLogoSrc],
-    slug: "/sword-and-shield/",
+    name: "Ruby and Sapphire",
+    images: [rubyLogoSrc, sapphireLogoSrc],
+    slug: "/ruby-and-sapphire/",
   },
   {
-    name: "Ultra Sun and Ultra Moon",
-    images: [ultraSunLogoSrc, ultraMoonLogoSrc],
-    slug: "/ultra-sun-and-ultra-moon/",
-  },
-  {
-    name: "Sun and Moon",
-    images: [sunLogoSrc, moonLogoSrc],
-    slug: "/sun-and-moon/",
-  },
-  {
-    name: "Omega Ruby and Alpha Sapphire",
-    images: [omegaRubyLogoSrc, alphaSapphireLogoSrc],
-    slug: "/omega-ruby-and-alpha-sapphire/",
-  },
-  {
-    name: "X and Y",
-    images: [xLogoSrc, yLogoSrc],
-    slug: "/x-and-y/",
-  },
-  {
-    name: "Transporter and Dream Radar",
-    images: [transporterLogoSrc, dreamRadarLogoSrc],
-    slug: "/transporter-dream-radar/",
-  },
-  {
-    name: "Black 2 and White 2",
-    images: [black2LogoSrc, white2LogoSrc],
-    slug: "/black-2-and-white-2/",
-  },
-  {
-    name: "Black and White",
-    images: [blackLogoSrc, whiteLogoSrc],
-    slug: "/black-and-white/",
-  },
-  {
-    name: "HeartGold and SoulSilver",
-    images: [heartGoldLogoSrc, soulSilverLogoSrc],
-    slug: "/heart-gold-and-soul-silver/",
-  },
-  {
-    name: "Platinum",
-    images: [platinumLogoSrc],
-    slug: "/diamond-pearl-and-platinum/",
-  },
-  {
-    name: "Diamond and Pearl",
-    images: [diamondLogoSrc, pearlLogoSrc],
-    slug: "/diamond-pearl-and-platinum/",
+    name: "Gamecube",
+    images: [colosseumLogoSrc, xdLogoSrc],
+    slug: "/gamecube/",
   },
   {
     name: "FireRed and LeafGreen",
@@ -117,20 +68,71 @@ const games = [
     slug: "/emerald/",
   },
   {
-    name: "Gamecube",
-    images: [xdLogoSrc, colosseumLogoSrc],
-    slug: "/gamecube/",
+    name: "Diamond and Pearl",
+    images: [diamondLogoSrc, pearlLogoSrc],
+    slug: "/diamond-pearl-and-platinum/",
   },
   {
-    name: "Ruby and Sapphire",
-    images: [rubyLogoSrc, sapphireLogoSrc],
-    slug: "/ruby-and-sapphire/",
+    name: "Platinum",
+    images: [platinumLogoSrc],
+    slug: "/diamond-pearl-and-platinum/",
   },
   {
-    name: "Crystal",
-    images: [crystalLogoSrc],
-    slug: "/crystal/",
+    name: "HeartGold and SoulSilver",
+    images: [heartGoldLogoSrc, soulSilverLogoSrc],
+    slug: "/heart-gold-and-soul-silver/",
   },
+  {
+    name: "Black and White",
+    images: [blackLogoSrc, whiteLogoSrc],
+    slug: "/black-and-white/",
+  },
+  {
+    name: "Black 2 and White 2",
+    images: [black2LogoSrc, white2LogoSrc],
+    slug: "/black-2-and-white-2/",
+  },
+  {
+    name: "Transporter and Dream Radar",
+    images: [transporterLogoSrc, dreamRadarLogoSrc],
+    slug: "/transporter-dream-radar/",
+  },
+  {
+    name: "X and Y",
+    images: [xLogoSrc, yLogoSrc],
+    slug: "/x-and-y/",
+  },
+  {
+    name: "Omega Ruby and Alpha Sapphire",
+    images: [omegaRubyLogoSrc, alphaSapphireLogoSrc],
+    slug: "/omega-ruby-and-alpha-sapphire/",
+  },
+  {
+    name: "Sun and Moon",
+    images: [sunLogoSrc, moonLogoSrc],
+    slug: "/sun-and-moon/",
+  },
+  {
+    name: "Ultra Sun and Ultra Moon",
+    images: [ultraSunLogoSrc, ultraMoonLogoSrc],
+    slug: "/ultra-sun-and-ultra-moon/",
+  },
+  {
+    name: "Sword and Shield",
+    images: [swordLogoSrc, shieldLogoSrc],
+    slug: "/sword-and-shield/",
+  },
+  {
+    name: "Brilliant Diamond and Shining Pearl",
+    images: [brilliantDiamondLogoSrc, shiningPearlLogoSrc],
+    slug: "/brilliant-diamond-and-shining-pearl/",
+  },
+  // Temporarily don't show this since we only have one post
+  // {
+  //   name: "Legends: Arceus",
+  //   images: [],
+  //   slug: "/legends-arceus",
+  // },
 ] satisfies Game[];
 
 const GameCard = styled(Card)(({ theme }) => ({
@@ -138,11 +140,16 @@ const GameCard = styled(Card)(({ theme }) => ({
   ":hover": {
     boxShadow: theme.token.boxShadow,
     transform: "scale(1.10)",
+    zIndex: 1,
   },
   ".ant-card-body": {
+    padding: 0,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  },
+  "& .ant-ribbon-wrapper": {
+    width: "100%",
   },
 }));
 
@@ -160,13 +167,22 @@ const Container = styled(Flex)(({ theme }) => {
   };
 });
 
-const FeaturedChallengeContainer = styled(Flex)(({ theme }) => ({
-  justifyContent: "space-around",
+const TimerContent = styled(Flex)(({ theme }) => ({
   alignItems: "center",
-  gap: 8,
-  height: "100%",
-  [theme.mediaQueries.down("mobile")]: {
+  justifyContent: "center",
+  flex: 1,
+  gap: 16,
+  [theme.mediaQueries.down("smallTablet")]: {
     flexDirection: "column",
+    gap: 12,
+  },
+}));
+
+const TimerTextContent = styled(Flex)(({ theme }) => ({
+  [theme.mediaQueries.down("smallTablet")]: {
+    alignItems: "center",
+    flexDirection: "column",
+    textAlign: "center",
   },
 }));
 
@@ -176,39 +192,51 @@ const LogoImg = styled.img({
   objectFit: "contain",
 });
 
+const TimerLogo = styled.img({
+  maxWidth: 110,
+});
+
 export const HomePageComponent = () => {
   return (
     <Container gap={24} vertical>
-      <Flex>
-        <GameCard
-          id="featured-challenge"
-          borderColor="PrimaryBorder"
-          border="2px solid"
-          href="/challenge-usum-ta/"
-          fullBody
-        >
-          <FeaturedChallengeContainer>
-            <Typography.Title level={2}>Featured Challenge</Typography.Title>
-            <img src={ultraMoonLogoSrc} />
-          </FeaturedChallengeContainer>
-        </GameCard>
-      </Flex>
+      <Card
+        id="home-welcome-card"
+        fullBody
+        slug="/mystic-timer/"
+        borderColor="PrimaryBorder"
+        border="2px solid"
+      >
+        <TimerContent>
+          <TimerLogo src={jirachiSrc} alt="Jirachi" />
+          <TimerTextContent vertical>
+            <Typography.Title level={3} m={0}>
+              Mystic Timer
+            </Typography.Title>
+            <Typography.Text>Web-based • Frame-accurate</Typography.Text>
+          </TimerTextContent>
+        </TimerContent>
+      </Card>
 
-      <Grid mobile={1} tablet={2} desktop={3}>
+      <Grid mobile={1} smallTablet={2} tablet={3} desktop={3}>
         {games.map((game) => (
           <GameCard
             id={`home-game-${game.name}`}
             key={game.name}
-            href={game.slug}
+            slug={game.slug}
             borderColor="PrimaryBorder"
             border="2px solid"
             fullBody
           >
-            <Flex justify="center" align="center" gap={8} flex={1}>
-              {game.images.map((src) => (
-                <LogoImg key={src} src={src} alt={`${game.name} logo`} />
-              ))}
-            </Flex>
+            <BadgeRibbon
+              $show={categoryHasNewContent(game.slug)}
+              text="New Content"
+            >
+              <Flex justify="center" align="center" gap={8} flex={1} p={24}>
+                {game.images.map((src) => (
+                  <LogoImg key={src} src={src} alt={`${game.name} logo`} />
+                ))}
+              </Flex>
+            </BadgeRibbon>
           </GameCard>
         ))}
       </Grid>

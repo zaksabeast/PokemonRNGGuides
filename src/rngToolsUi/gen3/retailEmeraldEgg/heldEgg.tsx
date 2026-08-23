@@ -8,33 +8,60 @@ import {
   RngToolForm,
   RngToolSubmit,
   Button,
+  Switch,
+  Flex,
+  FormFieldTable,
 } from "~/components";
 import { useCurrentStep } from "~/components/stepper/state";
 import { rngTools, Gen3HeldEgg, PokeNavTrainer } from "~/rngTools";
-import { gen3SpeciesOptions, species } from "~/types/species";
-import { nature } from "~/types/nature";
-import { gender } from "~/types/gender";
-import { genderOptions, natureOptions } from "~/components/pkmFilter";
+import { getGen3SpeciesOptions, species } from "~/types/species";
+import {
+  getPkmFilterFields,
+  getPkmFilterInitialValues,
+  pkmFilterSchema,
+} from "~/components/pkmFilter";
 import { z } from "zod";
-import { startCase } from "lodash-es";
 import { useHeldEggState, useRegisteredTrainers } from "./state";
 import { useHydrate } from "~/hooks/useHydrate";
 import { Skeleton } from "antd";
-import { toOptions } from "~/utils/options";
-import { match } from "ts-pattern";
 import { approximateGen3FrameTime } from "~/utils/approximateGen3FrameTime";
+import { Translations, usePokeNavTranslations } from "~/translations";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { PokeNavTrainerTranslations } from "~/translations/en/pokeNav";
+import { useWatch } from "~/hooks/form";
+import { compatability, getCompatabilityOptions } from "./constants";
 
-type Result = Gen3HeldEgg;
+const Calibration = () => {
+  const [disabled, setDisabled] = React.useState(true);
+  return (
+    <Flex gap={8} justify="space-between" align="center">
+      <Switch
+        id="enable-calibration"
+        onClick={() => setDisabled((prev) => !prev)}
+      />
+      <div style={{ width: "100%" }}>
+        <FormikNumberInput<FormState>
+          name="calibration"
+          numType="decimal"
+          disabled={disabled}
+        />
+      </div>
+    </Flex>
+  );
+};
+
+type Result = Gen3HeldEgg & { key: string; time: string };
 
 type SelectButtonProps = {
   result: Result;
 };
 
 const SelectButton = ({ result }: SelectButtonProps) => {
+  const t = useActiveRouteTranslations();
   const [, setCurrentStep] = useCurrentStep();
   const [, setState] = useHeldEggState();
 
-  const onClick = React.useCallback(() => {
+  const onClick = () => {
     setState((prev) => ({
       ...prev,
       target: {
@@ -45,220 +72,205 @@ const SelectButton = ({ result }: SelectButtonProps) => {
       },
     }));
     setCurrentStep((prev) => prev + 1);
-  }, [result, setState, setCurrentStep]);
+  };
 
   return (
     <Button trackerId="select_retail_emerald_held_egg" onClick={onClick}>
-      Select
+      {t["Select"]}
     </Button>
   );
 };
 
-const columns: ResultColumn<Result>[] = [
+const getColumns = ({
+  t,
+  translatedTrainers,
+}: {
+  t: Translations;
+  translatedTrainers: PokeNavTrainerTranslations;
+}): ResultColumn<Result>[] => [
   {
-    title: "Select",
+    title: t["Select"],
     dataIndex: "advance",
+    disableVerticalPadding: true,
     render: (_, result) => <SelectButton result={result} />,
   },
   {
-    title: "Time",
-    dataIndex: "advance",
-    render: approximateGen3FrameTime,
+    title: t["Time"],
+    dataIndex: "time",
   },
   {
-    title: "Shiny",
+    title: t["Shiny"],
     dataIndex: "shiny",
     render: (shiny) => (shiny ? "Yes" : "No"),
   },
   {
-    title: "PokeDex",
+    title: t["Pokedex"],
     dataIndex: "redraws",
-    render: (redraws) => `PokeDex x${redraws}`,
+    render: (redraws) => `${t["Pokedex"]} x${redraws}`,
   },
   {
-    title: "Match call",
+    title: t["Match call"],
     dataIndex: "match_call",
-    render: (match_call) => startCase(match_call),
+    render: (match_call) => translatedTrainers[match_call],
   },
   {
-    title: "PID",
+    title: t["PID"],
     dataIndex: "pid",
     monospace: true,
     render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
   },
-  { title: "Gender", dataIndex: "gender" },
-  { title: "Nature", dataIndex: "nature" },
-  { title: "Ability", dataIndex: "ability" },
+  { title: t["Gender"], dataIndex: "gender" },
+  { title: t["Nature"], dataIndex: "nature" },
+  { title: t["Ability"], dataIndex: "ability" },
+  {
+    title: t["Advance"],
+    dataIndex: "advance",
+  },
 ];
 
-const compatability = [
-  "DontLikeEachOther",
-  "GetAlong",
-  "GetAlongVeryWell",
-] as const;
-
-const Validator = z.object({
-  max_advances: z.number().int().min(0),
-  has_roamer: z.boolean(),
-  has_lightning_rod: z.boolean(),
-  female_has_everstone: z.boolean(),
-  female_nature: z.enum(nature),
-  compatability: z.enum(compatability),
-  tid: z.number().int().min(0).max(65535),
-  sid: z.number().int().min(0).max(65535),
-  egg_species: z.enum(species),
-  filter_shiny: z.boolean(),
-  filter_nature: z.enum(nature).nullable(),
-  filter_gender: z.enum(gender).nullable(),
-});
+const Validator = z
+  .object({
+    max_advances: z.number().int().min(0),
+    calibration: z.number().int().min(0),
+    has_roamer: z.boolean(),
+    has_lightning_rod: z.boolean(),
+    compatability: z.enum(compatability),
+    tid: z.number().int().min(0).max(65535),
+    sid: z.number().int().min(0).max(65535),
+    egg_species: z.enum(species),
+  })
+  .extend(pkmFilterSchema.shape);
 
 export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   max_advances: 10000,
+  calibration: 19,
   has_roamer: false,
   has_lightning_rod: true,
-  female_has_everstone: false,
-  female_nature: "Adamant",
   compatability: "GetAlong",
   tid: 0,
   sid: 0,
   egg_species: "Bulbasaur",
-  filter_shiny: false,
-  filter_nature: null,
-  filter_gender: null,
+  ...getPkmFilterInitialValues(),
 };
 
-const compatabilityOptions = toOptions(compatability, (option) => {
-  return match(option)
-    .with("GetAlong", () => "The two seem to get along")
-    .with("GetAlongVeryWell", () => "The two seem to get along very well")
-    .with("DontLikeEachOther", () => "The two don't seem to like each other")
-    .exhaustive();
-});
+type FieldsProps = {
+  t: Translations;
+};
 
-const fields: Field[] = [
-  {
-    label: "Has lightning rod",
-    input: (
-      <FormikSwitch<FormState, "has_lightning_rod"> name="has_lightning_rod" />
+const Fields = ({ t }: FieldsProps) => {
+  const { egg_species } = useWatch({
+    validationSchema: Validator,
+    names: { egg_species: true },
+  });
+
+  const fields: Field[] = [
+    {
+      label: t["Has lightning rod"],
+      input: <FormikSwitch<FormState> name="has_lightning_rod" />,
+    },
+    {
+      label: t["Roamer is active"],
+      input: <FormikSwitch<FormState> name="has_roamer" />,
+    },
+    {
+      label: t["Egg species"],
+      input: (
+        <FormikSelect<FormState, "egg_species">
+          name="egg_species"
+          options={getGen3SpeciesOptions().byName}
+        />
+      ),
+    },
+    {
+      label: t["Compatability"],
+      input: (
+        <FormikSelect<FormState, "compatability">
+          name="compatability"
+          options={getCompatabilityOptions(t)}
+        />
+      ),
+    },
+    {
+      label: t["TID"],
+      input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
+    },
+    {
+      label: t["SID"],
+      input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
+    },
+    {
+      label: t["Max advances"],
+      input: (
+        <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
+      ),
+    },
+    {
+      label: t["Calibration"],
+      tooltip: t["Do not change. Only for advanced users."],
+      input: <Calibration />,
+    },
+    ...getPkmFilterFields(
+      {
+        displayIvs: false,
+        displayHiddenPower: false,
+        displayAbility: false,
+        species: egg_species ?? undefined,
+      },
+      t,
     ),
-  },
-  {
-    label: "Has roamer",
-    input: <FormikSwitch<FormState, "has_roamer"> name="has_roamer" />,
-  },
-  {
-    label: "Female has everstone",
-    input: (
-      <FormikSwitch<
-        FormState,
-        "female_has_everstone"
-      > name="female_has_everstone" />
-    ),
-  },
-  {
-    label: "Female nature",
-    input: (
-      <FormikSelect<FormState, "female_nature">
-        name="female_nature"
-        options={natureOptions.required}
-      />
-    ),
-  },
-  {
-    label: "Egg species",
-    input: (
-      <FormikSelect<FormState, "egg_species">
-        name="egg_species"
-        options={gen3SpeciesOptions.byName}
-      />
-    ),
-  },
-  {
-    label: "Compatability",
-    input: (
-      <FormikSelect<FormState, "compatability">
-        name="compatability"
-        options={compatabilityOptions}
-      />
-    ),
-  },
-  {
-    label: "TID",
-    input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-  },
-  {
-    label: "SID",
-    input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
-  },
-  {
-    label: "Max advances",
-    input: (
-      <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
-    ),
-  },
-  {
-    label: "Filter shiny",
-    input: <FormikSwitch<FormState, "filter_shiny"> name="filter_shiny" />,
-  },
-  {
-    label: "Filter nature",
-    input: (
-      <FormikSelect<FormState, "filter_nature">
-        name="filter_nature"
-        options={natureOptions.optional}
-      />
-    ),
-  },
-  {
-    label: "Filter gender",
-    input: (
-      <FormikSelect<FormState, "filter_gender">
-        name="filter_gender"
-        options={genderOptions}
-      />
-    ),
-  },
-];
+  ];
+
+  return <FormFieldTable fields={fields} />;
+};
 
 type InnerProps = {
   registeredTrainers: PokeNavTrainer[];
 };
 
 const InnerRetailEmeraldHeldEgg = ({ registeredTrainers }: InnerProps) => {
+  const t = useActiveRouteTranslations();
+  const translatedTrainers = usePokeNavTranslations(t.language);
   const [, setState] = useHeldEggState();
   const [results, setResults] = React.useState<Result[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts) => {
-      const results = await rngTools.emerald_egg_held_states({
-        ...opts,
-        delay: 0,
-        registered_trainers: registeredTrainers,
-        lua_adjustment: true,
-        min_redraw: 0,
-        max_redraw: 100,
-        calibration: 19,
-        initial_advances: 2000,
-        filter_impossible_to_hit: true,
-        filters: {
-          shiny: opts.filter_shiny,
-          nature: opts.filter_nature,
-          gender: opts.filter_gender,
-        },
-      });
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+    const results = await rngTools.emerald_egg_held_states({
+      ...opts,
+      delay: 0,
+      registered_trainers: registeredTrainers,
+      lua_adjustment: true,
+      min_redraw: 0,
+      max_redraw: 100,
+      initial_advances: 2000,
+      filter_impossible_to_hit: true,
+      filters: {
+        shiny: opts.filter_shiny,
+        nature: opts.filter_nature,
+        gender: opts.filter_gender,
+        match_call: null,
+      },
+    });
 
-      setResults(results);
+    setResults(
+      results.map((result) => ({
+        ...result,
+        time: approximateGen3FrameTime(result.advance),
+        key: `${result.advance}-${result.pid}`,
+      })),
+    );
 
-      setState((prev) => ({ ...prev, eggSettings: opts }));
-    },
-    [registeredTrainers, setState],
-  );
+    setState((prev) => ({ ...prev, eggSettings: opts }));
+  };
+
+  const columns = getColumns({
+    t,
+    translatedTrainers: translatedTrainers.withoutTitle,
+  });
 
   return (
     <RngToolForm<FormState, Result>
-      fields={fields}
       columns={columns}
       results={results}
       initialValues={initialValues}
@@ -266,8 +278,10 @@ const InnerRetailEmeraldHeldEgg = ({ registeredTrainers }: InnerProps) => {
       onSubmit={onSubmit}
       formContainerId="retail_emerald_held_egg_form"
       submitTrackerId="generate_retail_emerald_held_egg"
-      rowKey="advance"
-    />
+      rowKey="key"
+    >
+      <Fields t={t} />
+    </RngToolForm>
   );
 };
 

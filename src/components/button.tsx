@@ -10,6 +10,7 @@ import styled from "@emotion/styled";
 import { withCss } from "./withCss";
 import * as tst from "ts-toolbelt";
 import { track } from "~/analytics";
+import { useSize } from "~/theme/size";
 
 const _StyledButton = withCss(AntdButton);
 
@@ -32,18 +33,16 @@ export const Button = ({
   ...props
 }: ButtonProps) => {
   const id = _id ?? trackerId;
-  const trackedClick = React.useCallback<tst.U.NonNullable<typeof onClick>>(
-    (event) => {
-      track("Button clicked", { id: trackerId });
-      onClick?.(event);
-    },
-    [trackerId, onClick],
-  );
+  const size = useSize();
+  const trackedClick: tst.U.NonNullable<typeof onClick> = (event) => {
+    track("Button clicked", { id: trackerId });
+    onClick?.(event);
+  };
   return (
     <StyledButton
       id={id}
       onClick={trackedClick}
-      size="large"
+      size={size}
       // @ts-expect-error styled doesn't overwrite prop types correctly when shouldForwardProp prevents a passthrough
       color={color}
       {...props}
@@ -53,34 +52,48 @@ export const Button = ({
 
 const _BaseButton = withCss(
   styled(AntdButton)({
-    whiteSpace: "unset",
-    padding: "unset",
-    border: "unset",
-    background: "unset",
-    textAlign: "unset",
-    width: "unset",
-    height: "unset",
-    boxShadow: "unset",
+    "&&&": {
+      whiteSpace: "unset",
+      padding: "unset",
+      border: "unset",
+      background: "unset",
+      textAlign: "unset",
+      width: "unset",
+      height: "unset",
+      boxShadow: "unset",
+      "&:hover": {
+        border: "unset",
+        boxShadow: "unset",
+      },
+    },
   }),
 );
 
-type BaseButtonProps = { trackerId: string } & React.ComponentProps<
-  typeof _BaseButton
->;
+const NEW_TAB_PROPS = { target: "_blank", rel: "noopener noreferrer" };
+const SAME_TAB_PROPS = {};
+
+type BaseButtonProps = {
+  trackerId: string;
+  newTab?: boolean;
+} & React.ComponentProps<typeof _BaseButton>;
 
 export const BaseButton = ({
   trackerId,
   id: _id,
   onClick,
+  newTab,
   ...props
 }: BaseButtonProps) => {
   const id = _id ?? trackerId;
-  const trackedClick = React.useCallback<tst.U.NonNullable<typeof onClick>>(
-    (event) => {
-      track("Button clicked", { id: trackerId });
-      onClick?.(event);
-    },
-    [trackerId, onClick],
+  const trackedClick: tst.U.NonNullable<typeof onClick> = (event) => {
+    track("Button clicked", { id: trackerId });
+    onClick?.(event);
+  };
+
+  const linkProps =
+    props.href != null && newTab ? NEW_TAB_PROPS : SAME_TAB_PROPS;
+
+  return (
+    <_BaseButton {...props} id={id} onClick={trackedClick} {...linkProps} />
   );
-  return <_BaseButton {...props} id={id} onClick={trackedClick} />;
 };

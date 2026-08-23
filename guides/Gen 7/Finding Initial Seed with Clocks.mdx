@@ -4,13 +4,15 @@
   description: "Learn how to find your initial seed in Ultra Sun and Ultra Moon using clock patterns — no custom firmware required."
   slug: "retail-usum-initial-seed-clocks"
   category: "Ultra Sun and Ultra Moon"
-  tag: "retail"
+  section: "rng_technique"
+  variant: "retail"
 - title: "Sun and Moon finding your initial seed in with clocks"
   navDrawerTitle: "Find Initial Seed"
   description: "Learn how to find your initial seed in Sun and Moon using clock patterns — no custom firmware required."
   slug: "retail-sm-initial-seed-clocks"
   category: "Sun and Moon"
-  tag: "retail"
+  section: "rng_technique"
+  variant: "retail"
   canonical: "retail-usum-initial-seed-clocks"
 ---
 
@@ -25,7 +27,7 @@ Each time you boot your game, an `initial seed` (also called `seed`) is created.
 
 At the "Continue" screen of the game, before your character picture loads, you can see a clock. By checking the clock needle's position, we can find the initial seed. You need to check between 8 and 10 clocks without restarting the game. You can leave the "Continue" screen by pressing `B`.
 
-![](https://i.imgur.com/2Nh45HB.gif)
+![Clocks Needles](/images/UltraSun-UltraMoon/Initial-Seed/ClockNeedles.gif)
 
 ## Step 1: Setup 3DSRNGTool
 
@@ -66,3 +68,7 @@ After recording 10 clock movements, list them in the tool to find the initial se
 - If you still can't find results, restart the game and record 10 new clocks.
 
 Your seed should appear in the `Results` field if you did everything correctly.
+
+## Credits
+
+- Chinese translation: xuanyelin, Hakuhiro.

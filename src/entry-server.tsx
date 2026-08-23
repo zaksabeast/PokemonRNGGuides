@@ -9,13 +9,11 @@ import {
 } from "@ant-design/cssinjs";
 import createEmotionCache from "@emotion/cache";
 import { CacheProvider as EmotionCacheProvider } from "@emotion/react";
-import createEmotionServer from "@emotion/server/create-instance";
 import { extractStyle } from "@ant-design/static-style-extract";
 import { ConfigProvider } from "antd";
-import { themePalette, getTheme } from "~/theme/index";
+import { getTheme } from "~/theme/index";
 import { getGuide } from "~/guides";
 import { HelmetProvider, HelmetDataContext } from "@dr.pogodin/react-helmet";
-// @ts-expect-error -- react-dom/server is a commonjs module for some reason.  react-dom/server.browser doesn't have proper types, but works as expected.
 import { renderToReadableStream as _renderToReadableStream } from "react-dom/server.browser";
 
 // Type hack to get the correct type for renderToReadableStream
@@ -23,7 +21,7 @@ import type { renderToReadableStream as TrenderToReadableStream } from "react-do
 const renderToReadableStream: typeof TrenderToReadableStream =
   _renderToReadableStream;
 
-const renderToStringAsync = async (element: React.ReactNode) => {
+export const renderToStringAsync = async (element: React.ReactNode) => {
   const stream = await renderToReadableStream(element);
   const reader = stream.getReader();
   let html = "";
@@ -49,36 +47,47 @@ const renderAntdStyles = () => {
         -webkit-tap-highlight-color: transparent;
       }
 
+      a {
+        font-weight: 600;
+      }
+
       button,
       .ant-btn {
         /* Adjust selector to target the affected buttons */
         -webkit-tap-highlight-color: transparent;
       }`;
-  const lightAntdStyles = extractStyle((node) => (
-    <ConfigProvider theme={getTheme(themePalette.light)}>{node}</ConfigProvider>
+  const antdLightStyles = extractStyle((node) => (
+    <ConfigProvider
+      theme={getTheme({ UNSAFE_mode: "light" })}
+      wave={{ disabled: true }}
+    >
+      {node}
+    </ConfigProvider>
   ));
 
-  const darkAntdStyles = extractStyle((node) => (
-    <ConfigProvider theme={getTheme(themePalette.dark)}>{node}</ConfigProvider>
+  const antdDarkStyles = extractStyle((node) => (
+    <ConfigProvider
+      theme={getTheme({ UNSAFE_mode: "dark" })}
+      wave={{ disabled: true }}
+    >
+      {node}
+    </ConfigProvider>
   ));
 
-  return {
-    light: `${resetStyles}${lightAntdStyles}`,
-    dark: `${resetStyles}${darkAntdStyles}`,
-  };
+  const antdScopedDarkStyles = antdDarkStyles
+    .replaceAll("._,:root", '._[data-theme="dark"],:root[data-theme="dark"]')
+    .replaceAll("css-var-_R_397_", 'css-var-_R_397_[data-theme="dark"]');
+
+  return `${resetStyles}${antdLightStyles}${antdScopedDarkStyles}`;
 };
 
 const antdStyles = renderAntdStyles();
 
 type RenderResult = {
   html: string;
-  emotionStyles: string;
   metaTags: string;
   lang: string;
-  antdStyles: {
-    light: string;
-    dark: string;
-  };
+  antdStyles: string;
 };
 
 export const render = async (url: string): Promise<RenderResult> => {
@@ -102,9 +111,6 @@ export const render = async (url: string): Promise<RenderResult> => {
     </HelmetProvider>,
   );
 
-  const { css: emotionStyles } =
-    createEmotionServer(emotionCache).extractCritical(html);
-
   const { helmet } = helmetContext;
   const metaTags =
     helmet == null
@@ -118,7 +124,6 @@ export const render = async (url: string): Promise<RenderResult> => {
 
   return {
     html,
-    emotionStyles,
     metaTags,
     antdStyles,
     lang: guide.meta.translation?.language ?? "en",

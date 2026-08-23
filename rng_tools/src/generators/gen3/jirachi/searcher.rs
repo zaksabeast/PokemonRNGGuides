@@ -1,12 +1,11 @@
-use crate::PkmFilter;
-
 use super::{
-    gba_save::{Sav3, SaveSlot, chk_u16},
+    gba_save::{Sav3, Sav3ReadError, SaveSlot, chk_u16},
     generator::{JirachiSpread, MultibootJirachiType},
     save_time::{MAX_FRAMES, SaveTime, hours_to_frames},
 };
+use crate::PkmFilter;
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -20,7 +19,7 @@ pub struct MultibootJirachiSaveSpread {
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum JirachiSaveError {
-    InvalidSave,
+    InvalidSave(Sav3ReadError),
     NeedToSaveAgain,
 }
 
@@ -37,7 +36,7 @@ pub struct MultibootJirachiOptions {
 
 #[wasm_bindgen]
 pub fn search_mb_jirachi_times(opts: MultibootJirachiOptions) -> JirachiSaveResult {
-    let save = Sav3::new(&opts.save).ok_or(JirachiSaveError::InvalidSave)?;
+    let save = Sav3::new(&opts.save).map_err(JirachiSaveError::InvalidSave)?;
 
     // Wishmaker/Meteor uses the first block 0.
     // If s0 is newer and the user saves, it'll update s1.
@@ -61,10 +60,7 @@ pub fn search_mb_jirachi_times(opts: MultibootJirachiOptions) -> JirachiSaveResu
     let results = (current_frames..=max_frames)
         .filter_map(|frames| {
             let save_time = SaveTime::from_total_frames(frames);
-            let words = block0
-                .time_words(&save_time)
-                .into_iter()
-                .chain([base_chk].into_iter());
+            let words = block0.time_words(&save_time).into_iter().chain([base_chk]);
             let chk = chk_u16(words);
             let jirachi = JirachiSpread::new(chk, opts.jirachi_type);
 

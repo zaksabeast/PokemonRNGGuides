@@ -1,8 +1,21 @@
 import { List, Divider } from "antd";
-import { Typography, Flex, Image, Link } from "~/components";
+import {
+  Typography,
+  Flex,
+  Image,
+  type ImageProps,
+  Link,
+  Alert,
+  type AlertProps,
+} from "~/components";
 import styled from "@emotion/styled";
 import { formatRelativeUrl } from "~/utils/formatRelativeUrl";
 import { RouteSchema } from "~/routes/defs";
+import { get } from "lodash-es";
+import { guides } from "~/guides";
+import { usePageLanguage } from "~/markdownExports/languageContext";
+import type React from "react";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 type Props = { children: React.ReactNode };
 
@@ -36,21 +49,6 @@ export const MarkdownH5 = (props: Props) => (
 );
 
 export const MarkdownH6 = MarkdownParagraph;
-
-const Ul = styled.ul({
-  margin: 0,
-  marginBlock: 0,
-  "& > .ant-list-item": {
-    display: "block",
-    listStyleType: "none",
-  },
-});
-
-export const MarkdownList = ({ children }: Props) => (
-  <List>
-    <Ul>{children}</Ul>
-  </List>
-);
 
 const Ol = styled.ol({
   margin: 0,
@@ -105,47 +103,114 @@ export const MarkdownCode = ({ children }: Props) => {
   return <_Code>{children}</_Code>;
 };
 
-export const MarkdownImage = ({ src, alt }: { src: string; alt: string }) => (
+export const MarkdownImage = (props: Partial<ImageProps>) => (
   <Flex justify="center">
-    <Image src={src} alt={alt} />
+    <Image {...props} />
   </Flex>
 );
 
-export const MarkdownTable = ({ children }: Props) => (
-  <table cellSpacing={0} cellPadding={0}>
-    {children}
-  </table>
-);
-
-const _Th = styled.th(({ theme }) => ({
-  padding: 16,
-  backgroundColor: theme.token.colorFillQuaternary,
-  borderBottom: `1px solid ${theme.token.colorBorderSecondary}`,
-}));
-
-export const MarkdownTh = ({ children }: Props) => <_Th>{children}</_Th>;
-
-const _Tr = styled.tr(({ theme }) => ({
-  borderCollapse: "collapse",
-  textAlign: "left",
-  ":hover": {
-    backgroundColor: theme.token.colorFillQuaternary,
-  },
-}));
-
-export const MarkdownTr = ({ children }: Props) => <_Tr>{children}</_Tr>;
-
-const _Td = styled.td({
-  padding: 16,
-});
-
-export const MarkdownTd = ({ children }: Props) => <_Td>{children}</_Td>;
-
 export const MarkdownA = ({ href, children }: { href: string } & Props) => {
-  const internalHref = RouteSchema.safeParse(formatRelativeUrl(href));
+  const currentLanguage = usePageLanguage();
+
+  const internalHref = RouteSchema.safeParse(
+    formatRelativeUrl({ url: href, leadingSlash: true, trailingSlash: true }),
+  );
   if (internalHref.success) {
-    return <Link href={internalHref.data}>{children}</Link>;
+    const linkedGuide = guides[internalHref.data];
+    const translations = linkedGuide?.meta?.translations;
+    const translatedSlug = get(translations, currentLanguage);
+    const finalHref =
+      translatedSlug != null ? translatedSlug : internalHref.data;
+    return <Link href={finalHref}>{children}</Link>;
   }
 
-  return <a href={href}>{children}</a>;
+  if (href.startsWith("/downloads/")) {
+    return <a href={href}>{children}</a>;
+  }
+
+  let parsedHref: URL | null = null;
+  try {
+    parsedHref = new URL(href);
+  } catch {
+    // not a valid URL
+  }
+
+  if (parsedHref?.protocol === "https:") {
+    return <a href={href}>{children}</a>;
+  }
+
+  return <>{children}</>;
+};
+
+export const MarkdownSummary = styled.summary({
+  cursor: "pointer",
+  listStyle: "none",
+  fontWeight: 800,
+  position: "relative",
+  paddingLeft: "1.5em",
+  "::-webkit-details-marker": { display: "none" },
+  "::marker": { content: '""' },
+  "&::before": {
+    content: '"▶"',
+    position: "absolute",
+    left: 0,
+    transition: "transform 0.2s ease",
+  },
+  "details[open] &::before": {
+    transform: "rotate(90deg)",
+  },
+});
+
+const Blockquote = styled.blockquote(({ theme }) => ({
+  borderLeft: "4px solid",
+  borderColor: theme.token.colorBorder,
+  paddingLeft: 16,
+  margin: 0,
+}));
+
+const ALERT_CONFIG = {
+  NOTE: { type: "info", message: "Note" },
+  WARNING: { type: "warning", message: "Warning" },
+  TIP: { type: "tip", message: "Tip" },
+  CAUTION: { type: "error", message: "Caution" },
+  IMPORTANT: { type: "important", message: "Important" },
+} as const satisfies Record<string, Pick<AlertProps, "type" | "message">>;
+
+const isAlertType = (
+  alertType?: string,
+): alertType is keyof typeof ALERT_CONFIG => {
+  if (alertType == null) {
+    return false;
+  }
+
+  return alertType in ALERT_CONFIG;
+};
+
+const getAlertProps = (alertType?: string) => {
+  if (isAlertType(alertType)) {
+    return ALERT_CONFIG[alertType];
+  }
+
+  return null;
+};
+
+export const MarkdownBlockquote = ({
+  children,
+  "alert-type": alertType,
+}: { "alert-type"?: string } & Props) => {
+  const t = useActiveRouteTranslations();
+  const alertProps = getAlertProps(alertType);
+
+  if (alertProps != null) {
+    return (
+      <Alert
+        showIcon
+        description={children}
+        type={alertProps.type}
+        title={t[alertProps.message]}
+      />
+    );
+  }
+
+  return <Blockquote>{children}</Blockquote>;
 };

@@ -1,6 +1,35 @@
 import type { RngDate, RngDateTime } from "~/rngTools";
 import dayjs, { Dayjs } from "dayjs";
 import { z } from "zod";
+import utc from "dayjs/plugin/utc";
+
+export const MONTH = {
+  Any: 0,
+  January: 1,
+  February: 2,
+  March: 3,
+  April: 4,
+  May: 5,
+  June: 6,
+  July: 7,
+  August: 8,
+  September: 9,
+  October: 10,
+  November: 11,
+  December: 12,
+} as const;
+
+type Month = keyof typeof MONTH;
+
+export const MONTHS = Object.keys(MONTH) as Month[];
+
+export const MonthSchema = z.enum(MONTHS);
+
+export const monthToRustFilter = (month: Month): number | null => {
+  return month === "Any" ? null : MONTH[month];
+};
+
+dayjs.extend(utc);
 
 export const RngDateSchema: z.Schema<RngDate> = z.object({
   year: z.number(),
@@ -34,7 +63,12 @@ export const toRngDate = (date: Dayjs): RngDate => {
 };
 
 export const fromRngDate = (date: RngDate): Dayjs => {
-  return dayjs(new Date(date.year, date.month - 1, date.day));
+  return dayjs()
+    .utc()
+    .year(date.year)
+    .month(date.month - 1)
+    .date(date.day)
+    .startOf("day");
 };
 
 export const formatRngDate = (date: RngDate): string => {
@@ -53,16 +87,14 @@ export const toRngDateTime = (date: Dayjs): RngDateTime => {
 };
 
 export const fromRngDateTime = (date: RngDateTime): Dayjs => {
-  return dayjs(
-    new Date(
-      date.year,
-      date.month - 1,
-      date.day,
-      date.hour,
-      date.minute,
-      date.second,
-    ),
-  );
+  return dayjs()
+    .utc()
+    .year(date.year)
+    .month(date.month - 1)
+    .date(date.day)
+    .hour(date.hour)
+    .minute(date.minute)
+    .second(date.second);
 };
 
 export const formatRngDateTime = (
@@ -76,7 +108,11 @@ export const formatRngDateTime = (
 };
 
 export const rngDate = (): RngDate => {
-  return toRngDate(dayjs());
+  return {
+    day: 1,
+    month: 1,
+    year: 2000,
+  };
 };
 
 export const toRngTime = (date: Dayjs): RngTime => {
@@ -92,7 +128,11 @@ export const fromRngTime = (time: RngTime): Dayjs => {
 };
 
 export const rngTime = (): RngTime => {
-  return toRngTime(dayjs());
+  return {
+    hour: 0,
+    minute: 0,
+    second: 0,
+  };
 };
 
 export const addRngTime = (date: RngDate, time: RngTime): RngDateTime => {

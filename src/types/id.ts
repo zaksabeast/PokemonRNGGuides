@@ -5,32 +5,32 @@ import { HexSchema } from "~/utils/number";
 
 const NoFilterSchema = z.object({
   type: z.literal("none"),
-  value0: z.null(),
-  value1: z.null(),
+  value0: z.number().int().nullable(),
+  value1: z.number().int().nullable(),
 });
 
 const TidFilterSchema = z.object({
   type: z.literal("tid"),
   value0: HexSchema(0xffff),
-  value1: z.null(),
+  value1: z.number().int().nullable(),
 });
 
 const SidFilterSchema = z.object({
   type: z.literal("sid"),
   value0: HexSchema(0xffff),
-  value1: z.null(),
+  value1: z.number().int().nullable(),
 });
 
 const PidFilterSchema = z.object({
   type: z.literal("pid"),
   value0: HexSchema(0xffffffff),
-  value1: z.null(),
+  value1: z.number().int().nullable(),
 });
 
 const TsvFilterSchema = z.object({
   type: z.literal("tsv"),
   value0: z.number().int().min(0).max(9999),
-  value1: z.null(),
+  value1: z.number().int().nullable(),
 });
 
 const TidSidFilterSchema = z.object({
@@ -48,28 +48,28 @@ const TidPidFilterSchema = z.object({
 export type IdFilter =
   | {
       type: "none";
-      value0: null;
-      value1: null;
+      value0: number | null;
+      value1: number | null;
     }
   | {
       type: "tid";
       value0: number;
-      value1: null;
+      value1: number | null;
     }
   | {
       type: "sid";
       value0: number;
-      value1: null;
+      value1: number | null;
     }
   | {
       type: "pid";
       value0: number;
-      value1: null;
+      value1: number | null;
     }
   | {
       type: "tsv";
       value0: number;
-      value1: null;
+      value1: number | null;
     }
   | {
       type: "tidsid";

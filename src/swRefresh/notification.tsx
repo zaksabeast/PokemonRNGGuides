@@ -18,6 +18,7 @@ export const NeedsUpdateNotification = ({ updateSw }: Props) => {
         message: "Guide and RNG Tool updates are available!",
         actions: [
           <Button
+            key="refresh_for_update"
             trackerId="refresh_for_update"
             color="Primary"
             size="middle"

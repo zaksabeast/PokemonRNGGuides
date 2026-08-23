@@ -4,13 +4,14 @@ navDrawerTitle: "PokeRadar RNG"
 description: "Learn how to RNG using the PokéRadar in X and Y for shiny Pokémon."
 slug: "xy-pokeradar"
 category: "X and Y"
-tag: "cfw"
+section: "pokemon_rng"
+variant: "cfw-emu"
 addedOn: "2025-03-24"
 ---
 
 ## Video Guide
 
-<YouTubeVideo src="https://www.youtube.com/embed/5Pkw195YiLQ" />
+<YouTubeVideo id="5Pkw195YiLQ" />
 
 ## Tools
 
@@ -20,7 +21,7 @@ addedOn: "2025-03-24"
 ## Step 1: Setting Up
 
 1. Ensure you have PokeReader installed and running.
-2. Open PokéReader and lock it in place by pressing `X` and `Y`.
+2. Open PokeReader to the "Radar" screen and lock it in place by pressing `X` and `Y`.
 3. Use the PokeRadar and encounter the Pokemon you want to be shiny.
 4. Knock out or catch the Pokémon to start the chain of 1 and lock the species.
    - Chain 0 patches are not determined the same as chain 1 or higher. You must randomly encounter a Pokemon or use Wild RNG to get your species.
@@ -33,7 +34,7 @@ Note: Avoid using roller skates, running into the wrong species, or stepping int
 
 1. Open your bag to pause TinyMT advancements.
 2. Enter the following data from PokeReader into the RNG tool at the bottom of this guide:
-   - TinyMT seeds
+   - Tiny u32 Seed
    - Current advances
    - Max advances (e.g., 20,000)
    - Number of Pokémon in your party
@@ -72,3 +73,4 @@ Congrats—you've successfully RNGed a shiny Pokémon!
 - wwwwwwzx for reverse engineering this logic, [3DSRNGTool, and TinyTimeline](https://github.com/wwwwwwzx/3DSRNGTool).
 - Bambo_Rambo for [TinyFinder](https://github.com/Bambo-Rambo/TinyFinder), which this tool is based on, and their [DexNav guide](https://github.com/Bambo-Rambo/RNG-Guides/blob/main/DexNavRNG.md), which has help info.
 - Vlad and Shiny_Sylveon for answering questions while this tool was being built.
+- Chinese translation: xuanyelin, Hakuhiro.

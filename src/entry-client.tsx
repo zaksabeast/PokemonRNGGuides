@@ -36,6 +36,7 @@ const antdCache = createAntdCache();
 const emotionCache = createEmotionCache({ key: "css" });
 
 hydrateRoot(
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- Let's assume this exists or else the entire app is broken
   document.getElementById("root")!,
   <HelmetProvider>
     <EmotionCacheProvider value={emotionCache}>

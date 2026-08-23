@@ -2,39 +2,97 @@ import React from "react";
 import styled from "@emotion/styled";
 import { withCss } from "./withCss";
 import {
+  MdAddCircleOutline,
   MdArrowRightAlt,
+  MdBlock,
   MdCheckCircle,
   MdCheck,
   MdClose,
-  MdRocketLaunch,
+  MdOpenInNew,
   MdUpdate,
+  MdEdit,
+  MdFullscreen,
+  MdFullscreenExit,
+  MdOutlineTipsAndUpdates,
+  MdOutlineInfo,
+  MdZoomIn,
+  MdZoomOut,
+  MdOutlineLightMode,
+  MdOutlineDarkMode,
 } from "react-icons/md";
-import { AiOutlineSearch, AiOutlineMenu } from "react-icons/ai";
-import { FaGithub, FaDiscord, FaCoffee } from "react-icons/fa";
+import { BiMessageAltError } from "react-icons/bi";
+import { TiWarningOutline } from "react-icons/ti";
+import { AiOutlineSearch } from "react-icons/ai";
+import {
+  FaDiscord,
+  FaRegCopy,
+  FaEye,
+  FaCaretLeft,
+  FaCaretRight,
+  FaCaretUp,
+  FaCaretDown,
+  FaRegQuestionCircle,
+} from "react-icons/fa";
 import { IoLanguage, IoSparkles } from "react-icons/io5";
-import { PiPersonSimpleWalkBold } from "react-icons/pi";
-import { FaHeart, FaPlay, FaFire } from "react-icons/fa6";
-import { TbPokeball } from "react-icons/tb";
+import { PiPersonSimpleWalkBold, PiWarningOctagonBold } from "react-icons/pi";
+import {
+  FaHeart,
+  FaPlay,
+  FaPatreon,
+  FaArrowUp,
+  FaArrowDown,
+  FaStar,
+} from "react-icons/fa6";
+import { TbEar, TbPokeball } from "react-icons/tb";
+import { IoIosInformationCircle } from "react-icons/io";
+import { BsTranslate } from "react-icons/bs";
+import { RiTreeLine, RiResetLeftLine } from "react-icons/ri";
 
 const icons = {
+  AddCircleOutline: MdAddCircleOutline,
   ArrowRightAlt: MdArrowRightAlt,
+  Block: MdBlock,
   Check: MdCheck,
   CheckCircle: MdCheckCircle,
   Close: MdClose,
-  Coffee: FaCoffee,
   Discord: FaDiscord,
-  Github: FaGithub,
   Heart: FaHeart,
   Language: IoLanguage,
-  Menu: AiOutlineMenu,
   PersonSimpleWalkBold: PiPersonSimpleWalkBold,
-  RocketLaunch: MdRocketLaunch,
   Sparkles: IoSparkles,
+  Star: FaStar,
   Update: MdUpdate,
   Play: FaPlay,
-  Fire: FaFire,
   Pokeball: TbPokeball,
   OutlineSearch: AiOutlineSearch,
+  InformationCircle: IoIosInformationCircle,
+  Patreon: FaPatreon,
+  Copy: FaRegCopy,
+  ArrowUp: FaArrowUp,
+  ArrowDown: FaArrowDown,
+  OpenInNew: MdOpenInNew,
+  Edit: MdEdit,
+  Translate: BsTranslate,
+  TipOutline: MdOutlineTipsAndUpdates,
+  InfoOutline: MdOutlineInfo,
+  WarningOutline: TiWarningOutline,
+  CautionOutline: PiWarningOctagonBold,
+  MessageOutline: BiMessageAltError,
+  Ear: TbEar,
+  TreeLine: RiTreeLine,
+  ZoomIn: MdZoomIn,
+  ZoomOut: MdZoomOut,
+  Fullscreen: MdFullscreen,
+  FullscreenExit: MdFullscreenExit,
+  Reset: RiResetLeftLine,
+  LightMode: MdOutlineLightMode,
+  DarkMode: MdOutlineDarkMode,
+  Eye: FaEye,
+  CaretLeft: FaCaretLeft,
+  CaretRight: FaCaretRight,
+  CaretUp: FaCaretUp,
+  CaretDown: FaCaretDown,
+  Question: FaRegQuestionCircle,
 } as const;
 
 export type IconName = keyof typeof icons;

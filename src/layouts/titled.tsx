@@ -12,7 +12,7 @@ export const TitledLayout = ({ guideMeta, children }: Props) => {
     <MainLayout>
       <NavBreadcrumbs route={guideMeta.slug} />
       <Typography.Title level={1} mt={0}>
-        {guideMeta.title}
+        {guideMeta.navDrawerTitle}
       </Typography.Title>
       {children}
     </MainLayout>

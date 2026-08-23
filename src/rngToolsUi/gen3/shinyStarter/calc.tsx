@@ -1,8 +1,18 @@
 import type { Game, Starter, TargetStarter } from "./index";
 import type { FormState } from "./caughtMon";
-import { rngTools } from "~/rngTools";
-import { gen3BaseStats } from "~/types/baseStats";
-import { MinMax } from "~/types/stat";
+import { rngTools, type Gen3StaticMethod } from "~/rngTools";
+import {
+  gen3PkmFilterFieldsToRustInput,
+  getGen3PkmFilterInitialValues,
+} from "~/components/gen3PkmFilter";
+import {
+  getPkmFilterInitialValues,
+  pkmFilterFieldsToRustInput,
+  pkmFilterNatureFieldToRustInput,
+} from "~/components/pkmFilter";
+import { defaultHiddenPowerFilter } from "~/components/hiddenPowerInput";
+import { getIvRangeFromStats } from "~/types/statRange";
+import { nature_from_pid } from "~/types";
 
 export type CaughtMonResult = {
   advance: number;
@@ -10,6 +20,7 @@ export type CaughtMonResult = {
 };
 
 const MINIMAL_ADV = 500;
+const staticStarterMethods: Gen3StaticMethod[] = ["Static1"];
 
 export const findTargetAdvanceForShinyPokemon = async (
   game: Game,
@@ -32,53 +43,49 @@ export const getTargetPokemonDesc = async (
   targetAdv: number,
   pokemonSpecies: Starter,
 ): Promise<string> => {
+  const encounterGenderRatio =
+    await rngTools.get_species_gender_ratio(pokemonSpecies);
   const opts = {
-    offset: 0,
-    initial_advances: targetAdv,
-    max_advances: 0,
-    seed: game === "emerald" ? 0 : 0x5a0,
-    method4: false,
-    filter: {
-      nature: null,
-      gender: null,
-      ability: null,
-      shiny: false,
-      stats: null,
-      min_ivs: { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
-      max_ivs: { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 },
-    },
     tid: 0, // doesn't matter
     sid: 0, // doesn't matter
+    max_advances: 0,
+    max_result_count: 1,
+    filter: pkmFilterFieldsToRustInput(getPkmFilterInitialValues()),
+    gen3_filter: gen3PkmFilterFieldsToRustInput(
+      getGen3PkmFilterInitialValues(),
+      pokemonSpecies,
+    ),
+    painting_opts: null,
     bugged_roamer: false, // doesn't matter
-    species: pokemonSpecies, // doesn't matter
+    species: pokemonSpecies,
+    methods: staticStarterMethods,
+    encounter_gender_ratio: encounterGenderRatio,
   };
 
-  const genResults = await rngTools.gen3_static_generator_states(opts);
+  const genResults = await rngTools.generate_gen3_static_wasm(
+    game === "emerald" ? 0 : 0x5a0,
+    targetAdv,
+    opts,
+  );
   if (genResults.length === 0) {
     return "";
   }
   const res = genResults[0];
+  const nature = nature_from_pid(res.pid);
 
   const stats = await rngTools.calculate_stats(
-    gen3BaseStats[pokemonSpecies],
+    pokemonSpecies,
     5,
-    res.nature,
+    nature,
     res.ivs,
     { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
   );
+  const gender = await rngTools.get_species_gender_from_pid(
+    pokemonSpecies,
+    res.pid,
+  );
 
-  return `${res.gender}, ${res.nature}, HP ${stats.hp}, ATK ${stats.atk}, DEF ${stats.def}, SPA ${stats.spa}, SPD ${stats.spd}, SPE ${stats.spe}`;
-};
-
-const getMinMaxStat = (
-  isMin: boolean,
-  selected: number,
-  { min, max }: MinMax,
-) => {
-  if (selected >= min && selected <= max) {
-    return selected;
-  }
-  return isMin ? min : max;
+  return `${gender}, ${nature}, HP ${stats.hp}, ATK ${stats.atk}, DEF ${stats.def}, SPA ${stats.spa}, SPD ${stats.spd}, SPE ${stats.spe}`;
 };
 
 export const generateCaughtMonResults = async (
@@ -87,44 +94,52 @@ export const generateCaughtMonResults = async (
   targetStarter: TargetStarter,
   caughtMonValues: FormState,
 ): Promise<CaughtMonResult[]> => {
-  const { species: targetSpecies, minMaxStats } = targetStarter;
-  const [min_stats, max_stats] = [true, false].map((isMin) => ({
-    hp: getMinMaxStat(isMin, caughtMonValues.hpStat, minMaxStats.hp),
-    atk: getMinMaxStat(isMin, caughtMonValues.atkStat, minMaxStats.atk),
-    def: getMinMaxStat(isMin, caughtMonValues.defStat, minMaxStats.def),
-    spa: getMinMaxStat(isMin, caughtMonValues.spaStat, minMaxStats.spa),
-    spd: getMinMaxStat(isMin, caughtMonValues.spdStat, minMaxStats.spd),
-    spe: getMinMaxStat(isMin, caughtMonValues.speStat, minMaxStats.spe),
-  }));
+  const { species } = targetStarter;
 
-  const opts = {
-    offset: 0,
-    initial_advances: Math.max(targetAdvance - 3000, MINIMAL_ADV),
-    max_advances: 6000,
-    seed: game === "emerald" ? 0 : 0x5a0,
-
-    method4: false,
-    filter: {
-      nature: caughtMonValues.nature || null,
-      gender: caughtMonValues.gender || null,
-      ability: null,
-      shiny: false,
-      stats: {
-        lvl: 5,
-        base_stats: gen3BaseStats[targetSpecies],
-        min_stats,
-        max_stats,
-      },
-      min_ivs: { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
-      max_ivs: { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 },
+  const minMaxIvs = await getIvRangeFromStats({
+    species,
+    lvl: 5,
+    nature: caughtMonValues.nature,
+    stats: {
+      hp: caughtMonValues.hpStat,
+      atk: caughtMonValues.atkStat,
+      def: caughtMonValues.defStat,
+      spa: caughtMonValues.spaStat,
+      spd: caughtMonValues.spdStat,
+      spe: caughtMonValues.speStat,
     },
+  });
+  if (minMaxIvs == null) {
+    return [];
+  }
+
+  const maxAdvances = 6000;
+  const opts = {
+    initial_seed: game === "emerald" ? 0 : 0x5a0,
     tid: 0, // doesn't matter
     sid: 0, // doesn't matter
+    initial_advances: Math.max(targetAdvance - 3000, MINIMAL_ADV),
+    max_advances: maxAdvances,
+    max_result_count: maxAdvances + 1,
+    filter: {
+      nature: pkmFilterNatureFieldToRustInput([caughtMonValues.nature]),
+      gender: caughtMonValues.gender,
+      ability: null,
+      shiny: false,
+      ...minMaxIvs,
+      hidden_power: defaultHiddenPowerFilter,
+    },
+    gen3_filter: gen3PkmFilterFieldsToRustInput(
+      getGen3PkmFilterInitialValues(),
+      species,
+    ),
+    painting_opts: null,
     bugged_roamer: false, // doesn't matter
-    species: targetSpecies, // doesn't matter
-  } as const;
+    species,
+    methods: staticStarterMethods,
+  };
 
-  const genResults = await rngTools.gen3_static_generator_states(opts);
+  const genResults = await rngTools.search_static3_reverse(opts);
   const caughtMonResults = genResults.map((res) => {
     return {
       advance: res.advance,

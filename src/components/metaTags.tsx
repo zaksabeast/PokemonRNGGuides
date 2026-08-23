@@ -2,6 +2,7 @@ import { getGuide } from "~/guides";
 import { map } from "lodash-es";
 import { Helmet } from "@dr.pogodin/react-helmet";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
+import { metaTagThemeColor } from "~/theme";
 
 const domain = "https://www.pokemonrng.com";
 
@@ -48,7 +49,7 @@ export const MetaTags = () => {
       <title>{title}</title>
       <meta name="title" content={title} />
       <meta name="description" content={description} />
-      <meta name="theme-color" content="#ffffff" />
+      <meta name="theme-color" content={metaTagThemeColor} />
       <link rel="icon" href="/favicon.ico" type="image/x-icon" />
       <link rel="icon" href="/jirachi.png" type="image/png" sizes="128x128" />
       <link rel="canonical" href={canonicalUrl} />

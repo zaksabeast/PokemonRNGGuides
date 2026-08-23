@@ -1,0 +1,201 @@
+0	L 0	C84840C4	No	Sassy	0: Aftermath	17	30	15	5	14	22	Bug	59	♂	Proud of its power
+1	ML 29	0000009E	No	Impish	0: Aftermath	16	13	12	18	3	2	Fire	65	♂	Often lost in thought
+2	M 57	67DBAFC5	No	Naughty	1: Unburden	19	1	31	25	27	12	Ice	53	♂	Capable of taking hits
+3	M 55	DFC5706A	No	Jolly	0: Aftermath	4	20	14	0	25	20	Steel	32	♀	Strong willed
+4	M 44	000000AC	No	Sassy	0: Aftermath	5	30	11	30	25	27	Grass	49	♂	Highly curious
+5	L 8	000000A7	No	Quiet	1: Unburden	27	30	25	1	31	19	Dragon	57	♂	Somewhat vain
+6	M 49	000000A0	No	Timid	0: Aftermath	19	1	31	25	27	12	Ice	53	♂	Capable of taking hits
+7	ML 24	000000AE	No	Quirky	0: Aftermath	12	25	27	2	31	30	Water	68	♂	Somewhat vain
+8	H 88	000000AD	No	Careful	1: Unburden	30	2	31	22	18	5	Poison	64	♂	Capable of taking hits
+9	M 47	000000AE	No	Quirky	0: Aftermath	5	22	18	30	26	22	Fighting	69	♂	Highly curious
+10	H 88	000000A9	No	Rash	1: Unburden	22	30	26	9	6	29	Bug	54	♂	Proud of its power
+11	ML 33	000000AD	No	Careful	1: Unburden	29	9	6	21	30	28	Rock	52	♂	Strong willed
+12	ML 36	000000A4	No	Naive	0: Aftermath	28	21	30	29	18	7	Ghost	57	♂	Sturdy body
+13	MH 78	000000A1	No	Hasty	1: Unburden	7	29	18	14	23	22	Fire	68	♂	Quick tempered
+14	H 83	000000A9	No	Rash	1: Unburden	22	14	23	11	4	24	Rock	44	♂	Quick to flee
+15	ML 36	0000009F	No	Lax	1: Unburden	24	11	4	29	9	6	Electric	36	♂	Very finicky
+16	H 93	000000A4	No	Naive	0: Aftermath	6	29	9	12	24	13	Ground	30	♂	Quick tempered
+17	M 54	00000099	No	Adamant	1: Unburden	13	12	24	20	5	18	Steel	35	♂	Good perseverance
+18	ML 23	6E031C49	No	Lax	1: Unburden	10	13	12	20	10	9	Poison	50	♀	Highly curious
+19	L 4	00000098	No	Brave	0: Aftermath	24	29	19	26	13	29	Grass	42	♂	Quick to flee
+20	MH 70	60A1E414	No	Calm	0: Aftermath	11	25	10	25	3	24	Psychic	53	♀	Highly curious
+21	M 49	0000009B	No	Bold	1: Unburden	0	4	12	3	16	28	Ground	40	♂	Somewhat of a clown
+22	MH 73	47441306	No	Naughty	0: Aftermath	18	23	21	4	0	12	Flying	31	♀	Likes to fight
+23	M 51	57FDB019	No	Docile	1: Unburden	9	23	19	19	14	0	Bug	64	♀	Likes to fight
+24	L 1	3D69DFA3	No	Relaxed	1: Unburden	30	28	24	9	7	9	Ice	50	♂	Loves to eat
+25	ML 28	7BE7A3A7	No	Naughty	1: Unburden	6	29	26	30	10	20	Fighting	63	♂	Highly curious
+26	M 56	A3979268	No	Quirky	0: Aftermath	9	2	7	16	27	3	Grass	59	♀	Strongly defiant
+27	H 96	000000AB	No	Gentle	1: Unburden	9	11	15	28	24	30	Flying	38	♂	Likes to run
+28	H 98	0000009B	No	Bold	1: Unburden	30	28	24	9	7	9	Ice	50	♂	Loves to eat
+29	H 91	CB60A654	No	Lax	0: Aftermath	2	2	16	19	21	2	Electric	47	♀	Somewhat vain
+30	L 11	00000098	No	Brave	0: Aftermath	13	20	26	20	24	22	Fighting	37	♂	Capable of taking hits
+31	H 91	945CE0C6	No	Sassy	0: Aftermath	27	17	19	18	22	31	Ground	68	♂	Alert to sounds
+32	ML 32	0000009F	No	Lax	1: Unburden	8	19	4	28	8	23	Poison	36	♂	Often lost in thought
+33	L 8	000000A4	No	Naive	0: Aftermath	23	28	8	2	7	9	Water	61	♂	Likes to fight
+34	M 57	000000A5	No	Modest	1: Unburden	9	2	7	16	27	3	Grass	59	♂	Strongly defiant
+35	L 11	00000098	No	Brave	0: Aftermath	3	16	27	13	12	10	Bug	38	♂	Highly persistent
+36	H 88	AD05863A	No	Timid	0: Aftermath	18	14	4	0	12	25	Flying	31	♀	Likes to run
+37	M 43	0000009A	No	Naughty	0: Aftermath	9	20	10	30	20	5	Poison	42	♂	Highly curious
+38	M 55	BFE1FBB3	No	Mild	1: Unburden	14	28	30	3	0	31	Bug	48	♂	Alert to sounds
+39	ML 32	000000AA	No	Calm	0: Aftermath	10	31	16	22	0	25	Poison	42	♂	Likes to thrash about
+40	MH 61	000000A9	No	Rash	1: Unburden	25	22	0	6	24	6	Fighting	46	♂	Loves to eat
+41	L 12	000000A2	No	Serious	0: Aftermath	6	6	24	2	5	28	Steel	42	♂	Somewhat of a clown
+42	L 8	000000AB	No	Gentle	1: Unburden	28	2	5	17	19	27	Dragon	56	♂	Scatters things often
+43	L 2	000000A4	No	Naive	0: Aftermath	27	17	19	18	22	31	Ground	68	♂	Alert to sounds
+44	MH 63	0000009D	No	Relaxed	1: Unburden	31	18	22	1	9	8	Electric	34	♂	Takes plenty of siestas
+45	M 44	B7A2A7C4	No	Impish	0: Aftermath	21	2	10	2	7	28	Steel	64	♂	Somewhat of a clown
+46	H 82	00000099	No	Adamant	1: Unburden	19	29	30	31	15	1	Dragon	63	♂	Mischievous
+47	L 12	530E92F1	No	Quirky	1: Unburden	27	17	9	2	27	22	Water	66	♂	Strongly defiant
+48	H 86	000000A8	No	Bashful	0: Aftermath	14	28	30	3	0	31	Bug	48	♂	Alert to sounds
+49	H 99	000000A2	No	Serious	0: Aftermath	31	3	0	6	16	4	Fighting	42	♂	Takes plenty of siestas
+50	H 86	00000096	No	Hardy	0: Aftermath	4	6	16	2	18	8	Fighting	61	♂	Hates to lose
+51	L 1	57FDB019	No	Docile	1: Unburden	9	23	19	19	14	0	Bug	64	♀	Likes to fight
+52	L 2	EBAF9DA7	No	Rash	1: Unburden	3	5	20	7	22	21	Ghost	61	♂	Strongly defiant
+53	ML 25	000000A8	No	Bashful	0: Aftermath	22	5	14	1	4	27	Ghost	38	♂	Impetuous and silly
+54	H 99	0000009B	No	Bold	1: Unburden	27	1	4	25	30	3	Ghost	56	♂	Strong willed
+55	MH 77	2843F223	No	Naive	1: Unburden	20	18	9	27	18	0	Rock	61	♀	Thoroughly cunning
+56	M 50	000000AE	No	Quirky	0: Aftermath	3	9	31	17	15	20	Ice	53	♂	Capable of taking hits
+57	H 84	000000A2	No	Serious	0: Aftermath	20	17	15	16	22	0	Flying	52	♂	Strongly defiant
+58	H 91	000000A8	No	Bashful	0: Aftermath	0	16	22	3	28	10	Ground	47	♂	Hates to lose
+59	H 94	000000AB	No	Gentle	1: Unburden	10	3	28	30	23	5	Grass	62	♂	Highly curious
+60	H 81	000000A0	No	Timid	0: Aftermath	5	30	23	20	14	4	Flying	54	♂	Proud of its power
+61	M 51	000000AB	No	Gentle	1: Unburden	4	20	14	0	25	20	Steel	32	♂	Strong willed
+62	H 99	000000A8	No	Bashful	0: Aftermath	20	0	25	5	24	1	Ghost	30	♂	Sturdy body
+63	H 82	000000AC	No	Sassy	0: Aftermath	1	5	24	25	10	11	Ghost	55	♂	Highly curious
+64	L 12	0000009F	No	Lax	1: Unburden	11	25	10	25	3	24	Psychic	53	♂	Highly curious
+65	L 1	0000009A	No	Naughty	0: Aftermath	24	25	3	21	13	0	Psychic	32	♂	Proud of its power
+66	ML 34	745FAFD4	No	Jolly	0: Aftermath	30	29	16	3	24	1	Ghost	40	♂	Loves to eat
+67	M 47	000000A7	No	Quiet	1: Unburden	0	11	16	17	5	22	Electric	36	♂	Impetuous and silly
+68	MH 70	0000009C	No	Docile	0: Aftermath	22	17	5	0	28	9	Ground	30	♂	Hates to lose
+69	L 4	B6A8260E	No	Brave	0: Aftermath	3	26	30	14	30	11	Poison	70	♀	Sturdy body
+70	MH 69	260EB54B	No	Careful	1: Unburden	8	21	13	26	30	3	Ground	65	♀	Strong willed
+71	M 50	000000A7	No	Quiet	1: Unburden	14	16	9	21	13	8	Psychic	30	♂	Mischievous
+72	MH 66	00000099	No	Adamant	1: Unburden	8	21	13	26	30	3	Ground	65	♂	Strong willed
+73	L 18	7D3AF699	No	Quiet	1: Unburden	3	16	15	7	16	12	Bug	43	♂	Somewhat vain
+74	MH 70	000000A2	No	Serious	0: Aftermath	11	14	30	7	26	15	Bug	70	♂	Sturdy body
+75	H 85	000000AE	No	Quirky	0: Aftermath	15	7	26	30	11	20	Fire	64	♂	Highly curious
+76	H 80	000000A0	No	Timid	0: Aftermath	20	30	11	2	29	31	Grass	49	♂	Alert to sounds
+77	ML 27	000000A7	No	Quiet	1: Unburden	31	2	29	29	16	30	Bug	36	♂	Takes plenty of siestas
+78	M 49	000000A1	No	Hasty	1: Unburden	30	29	16	3	24	1	Ghost	40	♂	Loves to eat
+79	MH 63	000000A9	No	Rash	1: Unburden	1	3	24	4	6	21	Poison	51	♂	Good perseverance
+80	L 11	000000AB	No	Gentle	1: Unburden	21	4	6	7	1	17	Ice	42	♂	Takes plenty of siestas
+81	L 1	000000A4	No	Naive	0: Aftermath	17	7	1	13	4	26	Bug	36	♂	Alert to sounds
+82	MH 76	000000A2	No	Serious	0: Aftermath	26	13	4	3	9	2	Electric	45	♂	Takes plenty of siestas
+83	L 15	00000097	No	Lonely	1: Unburden	2	3	9	4	19	0	Water	52	♂	Somewhat stubborn
+84	M 55	A2421C5C	No	Adamant	0: Aftermath	26	17	1	8	11	5	Grass	50	♀	Takes plenty of siestas
+85	L 13	ABD4EBA6	No	Rash	0: Aftermath	9	29	1	7	17	5	Dark	40	♂	Quick tempered
+86	ML 39	000000A6	No	Mild	0: Aftermath	2	29	13	2	10	21	Ground	61	♂	Quick tempered
+87	ML 24	000000A7	No	Quiet	1: Unburden	21	2	10	2	7	28	Steel	64	♂	Somewhat of a clown
+88	MH 73	000000A6	No	Mild	0: Aftermath	28	2	7	18	8	2	Fighting	49	♂	Scatters things often
+89	ML 26	00000098	No	Brave	0: Aftermath	2	18	8	17	1	26	Electric	36	♂	Alert to sounds
+90	H 88	ECB46C56	No	Modest	0: Aftermath	4	22	17	4	14	9	Poison	51	♀	A little quick tempered
+91	L 7	000000A3	No	Jolly	1: Unburden	5	8	11	14	4	18	Flying	47	♂	Somewhat of a clown
+92	L 19	000000A6	No	Mild	0: Aftermath	18	14	4	0	12	25	Flying	31	♂	Likes to run
+93	M 40	00000097	No	Lonely	1: Unburden	25	0	12	31	21	29	Ice	40	♂	Mischievous
+94	M 55	A63B530E	No	Quiet	0: Aftermath	22	2	27	5	27	20	Psychic	54	♀	Strongly defiant
+95	M 50	0000009E	No	Impish	0: Aftermath	9	23	19	19	14	0	Bug	64	♂	Likes to fight
+96	MH 74	0000009D	No	Relaxed	1: Unburden	0	19	14	8	17	27	Grass	38	♂	Impetuous and silly
+97	M 46	2D9334A9	No	Bashful	1: Unburden	6	11	2	9	4	13	Ghost	34	♂	Somewhat of a clown
+98	H 82	0000009C	No	Docile	0: Aftermath	14	25	5	5	13	9	Dragon	30	♂	Proud of its power
+99	L 15	8ADFA38A	No	Brave	0: Aftermath	14	1	29	15	3	5	Dragon	61	♂	Good perseverance
+100	MH 72	7ED91119	No	Bold	1: Unburden	6	3	13	20	29	25	Grass	31	♀	Somewhat stubborn
+101	MH 64	7BE7A3A7	No	Naughty	1: Unburden	6	29	26	30	10	20	Fighting	63	♂	Highly curious
+102	M 42	F9C9D1B0	No	Hardy	0: Aftermath	28	30	2	29	8	7	Bug	38	♂	Proud of its power
+103	ML 29	F6C3FD4D	No	Lonely	1: Unburden	10	14	17	20	29	16	Fire	31	♀	Somewhat stubborn
+104	M 53	ECB46C56	No	Modest	0: Aftermath	4	22	17	4	14	9	Poison	51	♀	A little quick tempered
+105	L 5	0000009C	No	Docile	0: Aftermath	4	30	28	24	10	11	Flying	56	♂	Proud of its power
+106	L 7	DCB585B1	No	Hasty	1: Unburden	16	13	20	14	30	9	Poison	60	♂	Strong willed
+107	MH 61	0000009A	No	Naughty	0: Aftermath	3	17	28	2	10	3	Poison	66	♂	Good endurance
+108	ML 34	6AC05DE8	No	Careful	0: Aftermath	7	31	26	17	28	13	Ghost	34	♂	Likes to thrash about
+109	M 56	00000099	No	Adamant	1: Unburden	20	18	9	27	18	0	Rock	61	♂	Thoroughly cunning
+110	ML 25	008CD6F2	No	Mild	0: Aftermath	30	1	30	29	8	22	Rock	38	♂	Sturdy body
+111	L 19	000000A9	No	Rash	1: Unburden	2	2	16	19	21	2	Electric	47	♂	Somewhat vain
+112	ML 35	000000A8	No	Bashful	0: Aftermath	2	19	21	11	28	9	Steel	42	♂	Hates to lose
+113	L 0	000000AA	No	Calm	0: Aftermath	9	11	28	10	3	27	Grass	66	♂	Good endurance
+114	MH 69	000000A1	No	Hasty	1: Unburden	27	10	3	14	15	13	Grass	64	♂	Nods off a lot
+115	M 54	000000A3	No	Jolly	1: Unburden	13	14	15	28	1	19	Grass	38	♂	Often lost in thought
+116	M 41	0000009C	No	Docile	0: Aftermath	19	28	1	5	8	17	Ghost	30	♂	Likes to fight
+117	H 93	40ECBE03	No	Jolly	1: Unburden	16	15	30	13	1	17	Ice	33	♀	Sturdy body
+118	ML 23	000000A5	No	Modest	1: Unburden	25	8	4	22	31	25	Water	60	♂	Somewhat vain
+119	L 2	00000097	No	Lonely	1: Unburden	25	22	31	3	13	6	Psychic	49	♂	Capable of taking hits
+120	M 53	70CBFC00	No	Serious	0: Aftermath	31	4	0	3	11	15	Ice	66	♀	Takes plenty of siestas
+121	H 96	000000A7	No	Quiet	1: Unburden	25	20	29	9	31	26	Psychic	55	♂	Somewhat vain
+122	MH 63	000000AE	No	Quirky	0: Aftermath	26	9	31	16	15	3	Grass	58	♂	Capable of taking hits
+123	MH 70	000000A2	No	Serious	0: Aftermath	3	16	15	7	16	12	Bug	43	♂	Likes to thrash about
+124	H 91	000000A8	No	Bashful	0: Aftermath	12	7	16	15	30	16	Rock	61	♂	Strong willed
+125	H 93	0000009C	No	Docile	0: Aftermath	16	15	30	13	1	17	Ice	33	♂	Sturdy body
+126	L 2	DCB585B1	No	Hasty	1: Unburden	16	13	20	14	30	9	Poison	60	♂	Strong willed
+127	H 81	000000A3	No	Jolly	1: Unburden	21	5	23	13	20	16	Bug	32	♂	Good endurance
+128	L 17	000000AB	No	Gentle	1: Unburden	16	13	20	14	30	9	Poison	60	♂	Strong willed
+129	H 89	000000AA	No	Calm	0: Aftermath	9	14	30	30	2	28	Fighting	64	♂	Sturdy body
+130	M 55	000000AE	No	Quirky	0: Aftermath	28	30	2	29	8	7	Bug	38	♂	Proud of its power
+131	H 80	00000097	No	Lonely	1: Unburden	7	29	8	31	30	7	Ghost	66	♂	Mischievous
+132	ML 37	ECB46C56	No	Modest	0: Aftermath	4	22	17	4	14	9	Poison	51	♀	A little quick tempered
+133	L 11	000000A2	No	Serious	0: Aftermath	6	29	26	30	10	20	Fighting	63	♂	Highly curious
+134	H 87	000000AD	No	Careful	1: Unburden	20	30	10	29	1	9	Ice	33	♂	Proud of its power
+135	ML 36	000000A6	No	Mild	0: Aftermath	9	29	1	7	17	5	Dark	40	♂	Quick tempered
+136	ML 36	000000A3	No	Jolly	1: Unburden	5	7	17	30	1	18	Water	46	♂	Highly curious
+137	ML 23	0000009C	No	Docile	0: Aftermath	18	30	1	24	18	5	Poison	52	♂	Proud of its power
+138	L 15	704AB585	No	Hardy	1: Unburden	25	30	25	7	13	24	Psychic	41	♂	Proud of its power
+139	ML 24	4B096A86	No	Rash	0: Aftermath	23	7	28	15	23	8	Psychic	62	♂	Good endurance
+140	ML 34	000000AE	No	Quirky	0: Aftermath	19	6	9	0	18	14	Flying	57	♂	Likes to relax
+141	MH 70	00000099	No	Adamant	1: Unburden	14	0	18	0	31	0	Steel	53	♂	Somewhat vain
+142	L 15	AFD1395B	No	Relaxed	1: Unburden	7	13	7	29	26	15	Steel	58	♀	Very finicky
+143	ML 25	530E92F1	No	Quirky	1: Unburden	27	17	9	2	27	22	Water	66	♂	Strongly defiant
+144	H 87	000000A1	No	Hasty	1: Unburden	31	4	0	3	11	15	Ice	66	♂	Takes plenty of siestas
+145	M 52	000000A2	No	Serious	0: Aftermath	15	3	11	28	18	15	Ground	59	♂	Often lost in thought
+146	L 1	0000009A	No	Naughty	0: Aftermath	15	28	18	18	28	17	Poison	43	♂	Hates to lose
+147	ML 38	4B096A86	No	Rash	0: Aftermath	23	7	28	15	23	8	Psychic	62	♂	Good endurance
+148	ML 36	000000AD	No	Careful	1: Unburden	19	25	19	20	26	6	Flying	58	♂	Somewhat vain
+149	M 57	0000009D	No	Relaxed	1: Unburden	6	20	26	24	18	9	Flying	53	♂	Capable of taking hits
+150	M 47	722DEBE7	No	Timid	1: Unburden	28	1	26	0	14	16	Fighting	52	♂	Scatters things often
+151	ML 32	0000009D	No	Relaxed	1: Unburden	23	7	28	15	23	8	Psychic	62	♂	Good endurance
+152	ML 34	F42E8ADF	No	Hasty	1: Unburden	5	15	3	25	3	6	Ice	59	♂	Highly curious
+153	M 53	0000009F	No	Lax	1: Unburden	0	22	26	31	26	7	Bug	69	♂	Mischievous
+154	H 93	000000A0	No	Timid	0: Aftermath	7	31	26	17	28	13	Ghost	34	♂	Likes to thrash about
+155	ML 33	000000AD	No	Careful	1: Unburden	13	17	28	1	26	28	Rock	50	♂	Good endurance
+156	ML 37	000000A1	No	Hasty	1: Unburden	28	1	26	0	14	16	Fighting	52	♂	Scatters things often
+157	M 56	000000A0	No	Timid	0: Aftermath	16	0	14	4	0	23	Flying	37	♂	Somewhat of a clown
+158	ML 25	0000009B	No	Bold	1: Unburden	23	4	0	10	31	13	Water	61	♂	Somewhat vain
+159	MH 75	A1DA46F3	No	Serious	1: Unburden	21	7	23	8	3	4	Water	54	♂	Good endurance
+160	L 1	000000AE	No	Quirky	0: Aftermath	3	22	29	14	17	10	Fire	47	♂	Good perseverance
+161	H 91	000000AE	No	Quirky	0: Aftermath	10	14	17	20	29	16	Fire	31	♂	Somewhat stubborn
+162	MH 71	000000A9	No	Rash	1: Unburden	16	20	29	17	27	3	Dragon	55	♂	Good perseverance
+163	L 18	000000A1	No	Hasty	1: Unburden	3	17	27	10	14	27	Ground	68	♂	Highly persistent
+164	MH 70	000000A0	No	Timid	0: Aftermath	27	10	14	30	11	17	Water	64	♂	Highly curious
+165	M 44	0000009B	No	Bold	1: Unburden	17	30	11	13	7	7	Dragon	59	♂	Proud of its power
+166	MH 79	A63B530E	No	Quiet	0: Aftermath	22	2	27	5	27	20	Psychic	54	♀	Strongly defiant
+167	M 49	000000A5	No	Modest	1: Unburden	15	29	26	5	20	3	Ghost	38	♂	Quick tempered
+168	H 92	000000AD	No	Careful	1: Unburden	3	5	20	7	22	21	Ghost	61	♂	Strongly defiant
+169	ML 36	0000009D	No	Relaxed	1: Unburden	21	7	22	4	4	31	Poison	38	♂	Alert to sounds
+170	M 51	1240A58B	No	Gentle	1: Unburden	10	25	4	2	7	9	Grass	61	♂	Proud of its power
+171	MH 77	00000097	No	Lonely	1: Unburden	8	25	1	21	14	13	Steel	50	♂	Proud of its power
+172	M 51	8B96BAAD	No	Jolly	1: Unburden	6	24	4	26	17	4	Steel	40	♂	Mischievous
+173	ML 22	000000A8	No	Bashful	0: Aftermath	22	28	2	24	4	6	Fighting	38	♂	Likes to fight
+174	H 83	000000A3	No	Jolly	1: Unburden	6	24	4	26	17	4	Steel	40	♂	Mischievous
+175	ML 36	00000097	No	Lonely	1: Unburden	4	26	17	23	21	18	Psychic	46	♂	Likes to thrash about
+176	M 59	28B199B0	No	Docile	0: Aftermath	3	18	25	16	29	11	Grass	36	♂	Somewhat stubborn
+177	ML 22	C6C4ECB4	No	Calm	0: Aftermath	9	4	14	23	12	25	Bug	42	♂	Likes to run
+178	MH 71	00000096	No	Hardy	0: Aftermath	30	1	30	29	8	22	Rock	38	♂	Loves to eat
+179	L 1	530E92F1	No	Quirky	1: Unburden	27	17	9	2	27	22	Water	66	♂	Strongly defiant
+180	MH 75	000000A5	No	Modest	1: Unburden	5	12	13	2	28	10	Flying	45	♂	Hates to lose
+181	L 11	000000A7	No	Quiet	1: Unburden	10	2	28	30	25	25	Water	42	♂	Highly curious
+182	MH 67	000000A0	No	Timid	0: Aftermath	25	30	25	7	13	24	Psychic	41	♂	Proud of its power
+183	M 50	000000A0	No	Timid	0: Aftermath	24	7	13	12	9	11	Grass	36	♂	Likes to relax
+184	ML 24	0000009B	No	Bold	1: Unburden	11	12	9	18	4	0	Flying	40	♂	Often lost in thought
+185	MH 65	738764F1	No	Mild	1: Unburden	14	10	12	4	4	15	Flying	36	♂	Likes to run
+186	L 17	00000097	No	Lonely	1: Unburden	10	25	4	2	7	9	Grass	61	♂	Proud of its power
+187	M 57	8BF74522	No	Naive	0: Aftermath	1	5	25	31	17	10	Ice	45	♀	Mischievous
+188	M 59	000000A5	No	Modest	1: Unburden	11	23	13	20	11	1	Electric	52	♂	Likes to fight
+189	H 88	0000009B	No	Bold	1: Unburden	1	20	11	0	12	24	Flying	32	♂	Quick to flee
+190	MH 71	A63B530E	No	Quiet	0: Aftermath	22	2	27	5	27	20	Psychic	54	♀	Strongly defiant
+191	M 45	0000009A	No	Naughty	0: Aftermath	25	31	25	26	8	1	Ground	41	♂	Likes to thrash about
+192	M 50	1C480D04	No	Sassy	0: Aftermath	17	26	20	30	13	4	Steel	41	♀	Highly curious
+193	ML 24	000000A5	No	Modest	1: Unburden	5	13	9	9	19	20	Ice	50	♂	Likes to run
+194	L 10	000000A6	No	Mild	0: Aftermath	20	9	19	31	29	4	Psychic	42	♂	Mischievous
+195	L 17	0000009D	No	Relaxed	1: Unburden	4	31	29	16	20	23	Ground	36	♂	Likes to thrash about
+196	M 41	DCF5A1DA	No	Quirky	0: Aftermath	4	8	3	2	7	8	Fire	63	♂	Likes to fight
+197	MH 74	000000AA	No	Calm	0: Aftermath	17	23	4	24	20	14	Fighting	36	♂	Very finicky
+198	M 56	000000A4	No	Naive	0: Aftermath	14	24	20	17	9	27	Ice	35	♂	Impetuous and silly
+199	M 59	0000009E	No	Impish	0: Aftermath	27	17	9	2	27	22	Water	66	♂	Strongly defiant
+200	M 59	454C101E	No	Mild	0: Aftermath	27	28	19	0	6	1	Ground	53	♀	Likes to fight

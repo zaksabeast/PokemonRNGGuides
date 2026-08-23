@@ -13,7 +13,9 @@ const ShowIfInner = ({ slug, slugs, children }: Props) => {
   const route = useActiveRoute();
   const allSlugs = [slug, ...(slugs ?? [])]
     .filter((item) => item != null)
-    .map(formatRelativeUrl);
+    .map((url) =>
+      formatRelativeUrl({ url, leadingSlash: true, trailingSlash: true }),
+    );
 
   if (allSlugs.includes(route)) {
     return <>{children}</>;

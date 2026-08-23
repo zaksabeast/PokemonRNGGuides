@@ -1,48 +1,66 @@
-import {
-  Switch as AntdSwitch,
-  SwitchProps as AntdSwitchProps,
-  Tooltip,
-} from "antd";
-import { useField } from "formik";
+import { Switch as AntdSwitch, SwitchProps as AntdSwitchProps } from "antd";
+import { useField } from "~/hooks/form";
 import * as tst from "ts-toolbelt";
-import { GenericForm, GuaranteeFormNameType } from "~/types/form";
+import { GenericForm } from "~/types/form";
 import { withCss } from "./withCss";
+import { Flex } from "./flex";
+import { Typography } from "./typography";
+import { Paths } from "~/types";
+import { PrimitiveAtom, useAtom } from "jotai";
 
 export const Switch = withCss(AntdSwitch);
 
-type FormikSwitchProps<
-  FormState extends GenericForm,
-  FieldKey extends keyof FormState,
-> = tst.O.Merge<
-  Omit<AntdSwitchProps, "onChange" | "value">,
+type FormikSwitchProps<FormState extends GenericForm> = tst.O.Merge<
+  Omit<AntdSwitchProps, "value">,
   {
-    name: FieldKey extends GuaranteeFormNameType<FormState, boolean>
-      ? FieldKey
-      : never;
+    name: Paths<FormState, boolean>;
   }
 >;
 
-export const FormikSwitch = <
-  FormState extends GenericForm,
-  FieldKey extends keyof FormState,
->({
+export const FormikSwitch = <FormState extends GenericForm>({
   name,
+  onChange: _onChange,
   ...props
-}: FormikSwitchProps<FormState, FieldKey>) => {
-  const [{ value }, { error }, { setValue, setTouched }] =
-    useField<boolean>(name);
+}: FormikSwitchProps<FormState>) => {
+  const [{ value }, { error }, { setValue }] = useField<boolean>(name);
 
   return (
-    <Tooltip color="red" title={error} placement="top">
+    <Flex vertical align="start">
       <Switch
         data-name={name}
-        onChange={(updatedValue) => {
+        onChange={(updatedValue, event) => {
           setValue(updatedValue);
-          setTouched(true, false);
+          _onChange?.(updatedValue, event);
         }}
         value={value}
         {...props}
       />
-    </Tooltip>
+      {error != null && (
+        <Typography.Text type="danger">{error}</Typography.Text>
+      )}
+    </Flex>
+  );
+};
+
+type AtomSwitchProps<State> = {
+  atom: PrimitiveAtom<State>;
+  getValue: (state: State) => boolean;
+  nextState: (state: State, option: boolean) => State;
+};
+
+export const AtomSwitch = <State,>({
+  atom,
+  getValue,
+  nextState,
+}: AtomSwitchProps<State>) => {
+  const [state, setState] = useAtom(atom);
+
+  return (
+    <Switch
+      onChange={(updatedValue) => {
+        setState((prev) => nextState(prev, updatedValue));
+      }}
+      value={getValue(state)}
+    />
   );
 };

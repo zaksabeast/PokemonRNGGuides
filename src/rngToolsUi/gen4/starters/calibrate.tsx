@@ -1,0 +1,299 @@
+import React from "react";
+import {
+  Field,
+  FormFieldTable,
+  FormikSelect,
+  Icon,
+  ResultColumn,
+  RngToolForm,
+} from "~/components";
+import { MinMaxStats, defaultMinMaxStats } from "~/types/stat";
+import { CalibrateTimerButton } from "../shared/calibrateTimerButton";
+import {
+  Gen4StaticPokemon,
+  RngDateTime,
+  rngTools,
+  StatsValue,
+} from "~/rngTools";
+import { z } from "zod";
+import {
+  getNatureInputProps,
+  pkmFilterNatureFieldToRustInput,
+} from "~/components/pkmFilter";
+import { toOptions } from "~/utils/options";
+import { useStarterState } from "./state";
+import { useAtom } from "jotai";
+import { gen4StateAtom } from "../shared/state";
+import { maleFemale, nature, StatFieldsSchema } from "~/types";
+import { getStatFields } from "~/rngToolsUi/shared/statFields";
+import { FormikRadio } from "~/components/radio";
+import { formatOffset } from "~/utils/offsetSymbol";
+import { sortBy } from "lodash-es";
+import pMap from "p-map";
+import { characteristics, Characteristic4Options } from "../gen4types";
+import { fromRngDateTime, toRngDateTime } from "~/utils/time";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { Translations } from "~/translations";
+import { defaultHiddenPowerFilter } from "~/components/hiddenPowerInput";
+import { getStatRange, getIvRangeFromStats } from "~/types/statRange";
+
+type Result = Gen4StaticPokemon & {
+  key: string;
+  flipDelay: boolean;
+  delayOffset: number;
+  advanceOffset: number;
+  secondOffset: number;
+  seed: number;
+  second: number;
+  delay: number;
+};
+
+const Validator = z
+  .object({
+    level: z.number().int().min(1).max(100),
+    nature: z.enum(nature),
+    gender: z.enum(maleFemale),
+    filter_characteristic: z.enum(characteristics),
+  })
+  .extend(StatFieldsSchema.shape);
+
+export type FormState = z.infer<typeof Validator>;
+
+const initialValues: FormState = {
+  level: 5,
+  hpStat: 0,
+  atkStat: 0,
+  defStat: 0,
+  spaStat: 0,
+  spdStat: 0,
+  speStat: 0,
+  nature: "Adamant",
+  gender: "Male",
+  filter_characteristic: "AlertToSounds",
+};
+
+const getColumns = (t: Translations): ResultColumn<Result>[] => [
+  {
+    title: t["Calibrate"],
+    dataIndex: "key",
+    disableVerticalPadding: true,
+    render: (_, target) => (
+      <CalibrateTimerButton
+        hitDelay={target.delay}
+        trackerId="calibrate_gen4_starter"
+      />
+    ),
+  },
+  {
+    title: t["Delay Offset"],
+    dataIndex: "delayOffset",
+    render: formatOffset,
+  },
+  {
+    title: t["Advance Offset"],
+    dataIndex: "advanceOffset",
+    render: formatOffset,
+  },
+  {
+    title: t["Second Offset"],
+    dataIndex: "secondOffset",
+    render: formatOffset,
+  },
+  {
+    title: t["Flip Delay"],
+    dataIndex: "flipDelay",
+    render: (flipDelay) =>
+      flipDelay ? <Icon name="CheckCircle" color="Success" size={30} /> : null,
+  },
+  {
+    title: t["Seed"],
+    dataIndex: "seed",
+    monospace: true,
+    render: (val) => val.toString(16).padStart(8, "0").toUpperCase(),
+  },
+  {
+    title: t["Second"],
+    dataIndex: "second",
+  },
+];
+
+const defaultDateTime: RngDateTime = {
+  day: 1,
+  month: 1,
+  year: 2000,
+  hour: 0,
+  minute: 0,
+  second: 0,
+};
+
+type FieldsProps = {
+  t: Translations;
+};
+
+const Fields = ({ t }: FieldsProps) => {
+  const [starter] = useStarterState();
+  const [minMaxStats, setMinMaxStats] =
+    React.useState<MinMaxStats>(defaultMinMaxStats);
+
+  React.useEffect(() => {
+    const run = async () => {
+      const stats = await getStatRange({
+        species: starter.species,
+        levelRange: [5, 6],
+      });
+      setMinMaxStats(stats);
+    };
+
+    run();
+  }, [starter.species]);
+
+  const fields: Field[] = [
+    {
+      label: t["Gender"],
+      input: (
+        <FormikRadio<FormState> name="gender" options={toOptions(maleFemale)} />
+      ),
+    },
+    {
+      label: t["Nature"],
+      input: (
+        <FormikSelect<FormState, "nature">
+          name="nature"
+          {...getNatureInputProps(t)}
+        />
+      ),
+    },
+    {
+      label: t["Characteristic"],
+      input: (
+        <FormikSelect<FormState, "filter_characteristic">
+          name="filter_characteristic"
+          options={Characteristic4Options}
+        />
+      ),
+    },
+    {
+      label: t["Level"],
+      input: (
+        <FormikRadio<FormState> name="level" options={toOptions([5, 6])} />
+      ),
+    },
+    ...getStatFields<FormState>(minMaxStats, t),
+  ];
+
+  return <FormFieldTable fields={fields} />;
+};
+
+export const CalibrateStarter4 = () => {
+  const t = useActiveRouteTranslations();
+  const [state] = useAtom(gen4StateAtom);
+  const [starter] = useStarterState();
+  const [results, setResults] = React.useState<Result[]>([]);
+
+  const targetDateTime = state.target.seedTime?.datetime ?? defaultDateTime;
+  const targetDelay = state.target.seedTime?.delay ?? 0;
+  const targetAdvance = state.target.lcrngAdvance ?? 0;
+  const targetSpecies = starter.species;
+
+  const onSubmit = async (opts: FormState) => {
+    const minDelay = Math.max(targetDelay - 500, 0);
+    const maxDelay = targetDelay + 500;
+
+    const caughtStats: StatsValue = {
+      hp: opts.hpStat,
+      atk: opts.atkStat,
+      def: opts.defStat,
+      spa: opts.spaStat,
+      spd: opts.spdStat,
+      spe: opts.speStat,
+    };
+
+    const minMaxIvs = await getIvRangeFromStats({
+      species: targetSpecies,
+      lvl: opts.level,
+      nature: opts.nature,
+      stats: caughtStats,
+    });
+
+    if (minMaxIvs == null) {
+      setResults([]);
+      return;
+    }
+
+    const datetime = toRngDateTime(
+      fromRngDateTime(targetDateTime).subtract(1, "seconds"),
+    );
+
+    const maxAdvances = state.config.game === "Platinum" ? 40 : 20;
+
+    const seedTimes = await rngTools.generate_seedtime4s({
+      datetime,
+      seconds_increment: 2,
+      min_delay: minDelay,
+      max_delay: maxDelay,
+    });
+
+    const results = await pMap(seedTimes, async (seedTime) => {
+      const states = await rngTools.generate_static4_states({
+        tid: 0,
+        sid: 0,
+        offset: 0,
+        initial_advances: Math.max(targetAdvance - maxAdvances / 2, 0),
+        max_advances: maxAdvances,
+        method: "One",
+        species: targetSpecies,
+        lead: "None",
+        seed: seedTime.seed,
+        // Starters will always be level 5
+        // If the user levels up to 6, that only impacts their stats, not their encounter level
+        // If we ever combine starter 4 and static 4 some day (and we should), we need to keep this in mind
+        encounter_min_level: 5,
+        encounter_max_level: 5,
+        filter_level: 5,
+        filter_characteristic: opts.filter_characteristic,
+        filter: {
+          shiny: false,
+          ability: null,
+          ...minMaxIvs,
+          nature: pkmFilterNatureFieldToRustInput([opts.nature]),
+          gender: opts.gender,
+          hidden_power: defaultHiddenPowerFilter,
+        },
+      });
+      return states.map((state): Result => {
+        const secondOffset = seedTime.datetime.second - targetDateTime.second;
+        return {
+          ...state,
+          seed: seedTime.seed,
+          delay: seedTime.delay,
+          advanceOffset: state.advance - targetAdvance,
+          flipDelay: targetDelay % 2 !== seedTime.delay % 2,
+          key: `${seedTime.seed}-${state.pid}`,
+          delayOffset: seedTime.delay - targetDelay,
+          second: seedTime.datetime.second,
+          secondOffset,
+        };
+      });
+    });
+
+    const sortedResults = sortBy(results.flat(), [
+      (res) => Math.abs(res.advanceOffset),
+      (res) => Math.abs(res.delayOffset),
+    ]);
+    setResults(sortedResults);
+  };
+
+  return (
+    <RngToolForm<FormState, Result>
+      getColumns={getColumns}
+      results={results}
+      initialValues={initialValues}
+      validationSchema={Validator}
+      onSubmit={onSubmit}
+      rowKey="key"
+      submitTrackerId="calibrate_gen4_starter"
+    >
+      <Fields t={t} />
+    </RngToolForm>
+  );
+};

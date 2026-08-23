@@ -3,13 +3,13 @@ import {
   TimePickerProps as AntdTimePickerProps,
   DatePicker as AntdDatePicker,
   DatePickerProps as AntdDatePickerProps,
-  Tooltip,
 } from "antd";
 import dayjs, { Dayjs } from "dayjs";
-import styled from "@emotion/styled";
-import { useField } from "formik";
+import { useField } from "~/hooks/form";
 import * as tst from "ts-toolbelt";
 import { match, P } from "ts-pattern";
+import { Flex } from "./flex";
+import { Typography } from "./typography";
 import { GenericForm, GuaranteeFormNameType } from "~/types/form";
 import {
   rngChronoFormat,
@@ -20,68 +20,43 @@ import {
   toRngTime,
 } from "~/utils/time";
 import { RngDate } from "~/rngTools";
-
-type DatePickerContainerProps = { fullWidth?: boolean };
-
-const PickerContainer = styled.div<DatePickerContainerProps>(
-  ({ fullWidth }) => ({
-    ".ant-picker": {
-      borderTop: "none",
-      borderLeft: "none",
-      borderRight: "none",
-      outline: "none",
-      boxShadow: "none",
-      borderRadius: 0,
-      width: fullWidth ? "100%" : undefined,
-    },
-    ".ant-picker-input > input": {
-      fontSize: 20,
-    },
-  }),
-);
-
-type _TimePickerProps = tst.O.Merge<
-  DatePickerContainerProps,
-  AntdTimePickerProps
->;
+import { useSize } from "~/theme/size";
 
 type TimePickerProps = tst.O.Omit<
-  _TimePickerProps,
+  AntdTimePickerProps,
   keyof NullableDate | "allowClear"
 > &
   NullableDate & { nullable?: boolean };
 
 const TimePicker = ({
   nullable,
-  fullWidth = true,
   showSecond,
   onChange,
   ...props
 }: TimePickerProps) => {
   return (
-    <PickerContainer fullWidth={fullWidth}>
-      <AntdTimePicker
-        showMinute
-        showHour
-        showSecond={showSecond}
-        // Virtual keyboards get in the way of the pop
-        inputReadOnly
-        allowClear={false}
-        // antd types lie, so we're fixing them and making them more accurate
-        // @ts-expect-error Type '(date: Dayjs | null, dateString: string) => void' is not assignable to type '(date: Dayjs, dateString: string | string[]) => void'.
-        onChange={(date: Dayjs | null, dateString: string) => {
-          if (nullable || date != null) {
-            onChange?.(date, dateString);
-          }
-        }}
-        format={
-          showSecond
-            ? rngChronoFormat.hoursMinutesSeconds
-            : rngChronoFormat.hoursMinutes
+    <AntdTimePicker
+      showMinute
+      showHour
+      showSecond={showSecond}
+      // Virtual keyboards get in the way of the pop
+      inputReadOnly
+      allowClear={false}
+      // antd types lie, so we're fixing them and making them more accurate
+      // @ts-expect-error Type '(date: Dayjs | null, dateString: string) => void' is not assignable to type '(date: Dayjs, dateString: string | string[]) => void'.
+      onChange={(date: Dayjs | null, dateString: string) => {
+        if (nullable || date != null) {
+          const dateToUse = showSecond ? date : date?.clone().second(0);
+          onChange?.(dateToUse ?? null, dateString);
         }
-        {...props}
-      />
-    </PickerContainer>
+      }}
+      format={
+        showSecond
+          ? rngChronoFormat.hoursMinutesSeconds
+          : rngChronoFormat.hoursMinutes
+      }
+      {...props}
+    />
   );
 };
 
@@ -99,25 +74,29 @@ export const FormikTimePicker = <FormState extends GenericForm>({
   onChange,
   ...props
 }: FormikTimePickerProps<FormState>) => {
-  const [{ value: formTime, onBlur }, { error, touched }, { setValue }] =
+  const size = useSize();
+  const [{ value: formTime }, { error, status }, { setValue }] =
     useField<RngTime | null>(name);
   const value = formTime == null ? null : fromRngTime(formTime);
 
   return (
-    <Tooltip placement="top" color="red" title={error}>
+    <Flex vertical>
       <TimePicker
         {...props}
         name={name}
         value={value}
-        onBlur={onBlur}
-        status={error && touched ? "error" : ""}
+        size={size}
+        status={status}
         onChange={(date) => {
           const rngTime = date == null ? null : toRngTime(date);
           setValue(rngTime);
           onChange?.(rngTime ?? null);
         }}
       />
-    </Tooltip>
+      {error != null && (
+        <Typography.Text type="danger">{error}</Typography.Text>
+      )}
+    </Flex>
   );
 };
 
@@ -126,47 +105,33 @@ type NullableDate = {
   value?: Dayjs | null;
 };
 
-type _DatePickerProps = tst.O.Merge<
-  DatePickerContainerProps,
-  AntdDatePickerProps
->;
-
 type DatePickerProps = tst.O.Omit<
-  _DatePickerProps,
+  AntdDatePickerProps,
   // Time + date doesn't work well on small screens.
   // We'll always want to separate time and date pickers
-  "showTime" | keyof NullableDate
+  "showTime" | keyof NullableDate | "allowClear"
 > &
   NullableDate;
 
-export const DatePicker = ({
-  allowClear,
-  onChange,
-  fullWidth,
-  picker,
-  ...props
-}: DatePickerProps) => {
+export const DatePicker = ({ onChange, picker, ...props }: DatePickerProps) => {
   return (
-    <PickerContainer fullWidth={fullWidth}>
-      <AntdDatePicker
-        picker={picker}
-        size="large"
-        format={
-          picker === "month" ? rngChronoFormat.monthYear : rngChronoFormat.date
+    <AntdDatePicker
+      picker={picker}
+      format={
+        picker === "month" ? rngChronoFormat.monthYear : rngChronoFormat.date
+      }
+      // Virtual keyboards get in the way of the pop
+      inputReadOnly
+      allowClear={false}
+      {...props}
+      // antd types lie, so we're fixing them and making them more accurate
+      // @ts-expect-error Type '(date: Dayjs | null, dateString: string) => void' is not assignable to type '(date: Dayjs, dateString: string | string[]) => void'.
+      onChange={(date: Dayjs | null, dateString: string) => {
+        if (date != null) {
+          onChange?.(date, dateString);
         }
-        // Virtual keyboards get in the way of the pop
-        inputReadOnly
-        allowClear={allowClear}
-        {...props}
-        // antd types lie, so we're fixing them and making them more accurate
-        // @ts-expect-error Type '(date: Dayjs | null, dateString: string) => void' is not assignable to type '(date: Dayjs, dateString: string | string[]) => void'.
-        onChange={(date: Dayjs | null, dateString: string) => {
-          if (allowClear || date != null) {
-            onChange?.(date, dateString);
-          }
-        }}
-      />
-    </PickerContainer>
+      }}
+    />
   );
 };
 
@@ -181,36 +146,35 @@ type FormikDatePickerProps<FormState extends GenericForm> = Omit<
 
 export const FormikDatePicker = <FormState extends GenericForm>({
   name,
-  fullWidth = true,
-  allowClear = false,
   onChange,
   ...props
 }: FormikDatePickerProps<FormState>) => {
-  const [{ value: formDate, onBlur }, { error, touched }, { setValue }] =
+  const size = useSize();
+  const [{ value: formDate }, { error, status }, { setValue }] =
     useField<RngDate | null>(name);
-  const dateValue = match({ allowClear, formDate })
-    .with({ formDate: P.not(null) }, (matched) => fromRngDate(matched.formDate))
-    .with({ allowClear: true, formDate: null }, () => null)
-    .with({ allowClear: P.not(P.nullish), formDate: null }, () => dayjs())
-    .with({ allowClear: undefined, formDate: null }, () => null)
-    .exhaustive();
+  const dateValue = match({ formDate })
+    .with({ formDate: P.not(P.nullish) }, (matched) =>
+      fromRngDate(matched.formDate),
+    )
+    .otherwise(() => dayjs());
 
   return (
-    <Tooltip placement="top" color="red" title={error}>
+    <Flex vertical>
       <DatePicker
         {...props}
         name={name}
-        allowClear={allowClear}
-        fullWidth={fullWidth}
+        size={size}
         value={dateValue}
-        onBlur={onBlur}
-        status={error && touched ? "error" : ""}
+        status={status}
         onChange={(date) => {
           const rngDate = date == null ? null : toRngDate(date);
           setValue(rngDate);
           onChange?.(rngDate ?? null);
         }}
       />
-    </Tooltip>
+      {error != null && (
+        <Typography.Text type="danger">{error}</Typography.Text>
+      )}
+    </Flex>
   );
 };

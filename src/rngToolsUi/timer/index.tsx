@@ -7,9 +7,10 @@ import { z } from "zod";
 import { hydrationLock } from "~/utils/hydration";
 import { useHydrate } from "~/hooks/useHydrate";
 import styled from "@emotion/styled";
+import { CustomTimer } from "./custom";
 
 const TimerSkeleton = styled(Skeleton.Node)({
-  "&& .ant-skeleton-image": {
+  "&& .ant-skeleton-node": {
     width: "100%",
     height: 300,
     borderRadius: 20,
@@ -42,6 +43,12 @@ const items: TabsProps["items"] = [
     label: "Gen 3",
     forceRender: true,
     children: <Gen3Timer />,
+  },
+  {
+    key: "custom",
+    label: "Custom",
+    forceRender: true,
+    children: <CustomTimer />,
   },
 ];
 

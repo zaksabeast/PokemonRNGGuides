@@ -7,6 +7,8 @@ import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { GuideLayout } from "~/layouts/guide";
 import { TitledLayout } from "~/layouts/titled";
 import styled from "@emotion/styled";
+import { useIsHydrated } from "~/hooks/useHydrate";
+import { ApplicationLayout } from "~/layouts/application";
 
 const StyledSkeletonTitle = styled(Skeleton)({
   marginTop: 24,
@@ -44,21 +46,27 @@ const loading = (
 
 export const MarkdownScreen = () => {
   const route = useActiveRoute();
+  const isHydrated = useIsHydrated();
+
   const { Guide, meta } = getGuide(route);
+
+  // If not hydrated, show the pre-rendered page
+  // Once hydrated, suspend while loading the content
+  const content = !isHydrated ? (
+    <Guide />
+  ) : (
+    <React.Suspense fallback={loading}>
+      <Guide />
+    </React.Suspense>
+  );
+
   return match(meta.layout)
-    .with("guide", () => (
-      <GuideLayout guideMeta={meta}>
-        <React.Suspense fallback={loading}>
-          <Guide />
-        </React.Suspense>
-      </GuideLayout>
+    .with("application", () => (
+      <ApplicationLayout trackerName={meta.slug}>{content}</ApplicationLayout>
     ))
+    .with("guide", () => <GuideLayout guideMeta={meta}>{content}</GuideLayout>)
     .with("titled", () => (
-      <TitledLayout guideMeta={meta}>
-        <React.Suspense fallback={loading}>
-          <Guide />
-        </React.Suspense>
-      </TitledLayout>
+      <TitledLayout guideMeta={meta}>{content}</TitledLayout>
     ))
     .exhaustive();
 };

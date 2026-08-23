@@ -5,7 +5,7 @@ use crate::rng::Rng;
 use crate::rng::lcrng::Pokerng;
 use crate::{gen3_psv, gen3_tsv};
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 /// ---------------------------------------------------------------------------------------------------------------------------
@@ -146,7 +146,7 @@ fn generate_earliest_shiny_advance_by_tsv(initial_seed: u32) -> Vec<usize> {
 
     let mut unmatched_count = earliest_adv_by_tsv.len();
     let mut pid_rng = Pokerng::new(initial_seed);
-    pid_rng.advance(EARLIEST_VALID_ADVANCE);
+    pid_rng.jump_const::<EARLIEST_VALID_ADVANCE>();
     for pid_rng_adv in EARLIEST_VALID_ADVANCE..1_000_000_usize {
         // 1_000_000 to avoid infinite loop in case of bug
         let pid_high = pid_rng.rand::<u16>() as u32;
@@ -308,7 +308,7 @@ fn sort_nearby_sids(nearby_sids: &[Gen3NearbySid]) -> Vec<Gen3NearbySid> {
 
     let mut res: Vec<Gen3NearbySid> = vec![];
     for priorized_nearby_sids in nearby_sids_by_priority_order {
-        res.extend(priorized_nearby_sids.nearby_sids.into_iter());
+        res.extend(priorized_nearby_sids.nearby_sids);
     }
     res
 }
@@ -389,13 +389,13 @@ fn find_best_tid_gen_adv(seed: u32, tid_gen_adv_min: usize, tid_gen_adv_max: usi
         })
         .collect();
 
-    avg_adv_by_tid_gen_adv_with_nearby.sort_by(|a, b| a.method1_adv.cmp(&b.method1_adv));
+    avg_adv_by_tid_gen_adv_with_nearby.sort_by_key(|a| a.method1_adv);
 
     avg_adv_by_tid_gen_adv_with_nearby[0].tidsid_adv
 }
 
 /// Returns the average advance needed to determine SID for a given tid_gen_adv,
-/// assuming all TID have same probability of occuring.
+/// assuming all TID have same probability of occurring.
 fn calculate_avg_adv_for_all_tids(
     earliest_shiny_advance_by_tsv: &[usize],
     tid_gen_adv: usize,
@@ -407,7 +407,7 @@ fn calculate_avg_adv_for_all_tids(
     for res in res_by_tid.iter() {
         sum += res.avg_adv_to_determine_sid;
     }
-    (sum / len) as usize
+    sum / len
 }
 
 #[cfg(test)]

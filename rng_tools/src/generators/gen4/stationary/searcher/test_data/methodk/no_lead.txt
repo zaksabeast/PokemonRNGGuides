@@ -1,0 +1,246 @@
+FB090373	17	2B97D038	No	Adamant	0: Immunity	30	30	30	20	22	27	Flying	59	♂	Sturdy body
+640A037E	5	30FB2234	No	Timid	0: Immunity	30	30	30	20	27	26	Steel	59	♂	Loves to eat
+2D010373	9	D1F99528	No	Quiet	0: Immunity	30	30	30	20	27	27	Water	59	♂	Sturdy body
+060F0325	25	D767D4F9	No	Rash	1: Thick Fat	30	30	30	20	31	31	Water	59	♂	Somewhat vain
+060F0325	13	D767D4F9	No	Rash	1: Thick Fat	30	30	30	20	31	31	Water	59	♂	Somewhat vain
+2E00034B	4	976AB190	No	Jolly	0: Immunity	30	30	30	21	30	26	Ground	59	♂	Sturdy body
+E0030380	13	62145156	No	Timid	0: Immunity	30	30	30	22	24	24	Fighting	44	♂	Loves to eat
+4E120321	4	FC614CEC	No	Mild	0: Immunity	30	30	30	22	29	28	Steel	44	♂	Loves to eat
+1D0B0330	18	9D5662FE	No	Hardy	0: Immunity	30	30	30	23	20	30	Ground	49	♂	Loves to eat
+1D0B0330	4	9D5662FE	No	Hardy	0: Immunity	30	30	30	23	20	30	Ground	49	♂	Loves to eat
+9D0B0330	8	1D56E2FE	No	Calm	0: Immunity	30	30	30	23	20	30	Ground	49	♂	Loves to eat
+160D0377	29	FE600F6C	No	Bashful	0: Immunity	30	30	30	23	28	26	Ground	49	♂	Sturdy body
+2C05036D	24	6EDC48C0	No	Naughty	0: Immunity	30	30	30	24	23	25	Water	54	♂	Loves to eat
+47000360	6	14AEE24F	No	Rash	1: Thick Fat	30	30	30	24	24	26	Fighting	39	♂	Proud of its power
+D80F0360	22	B63B80A4	No	Bashful	0: Immunity	30	30	30	24	28	26	Fighting	39	♂	Sturdy body
+D80F0360	0	B63B80A4	No	Bashful	0: Immunity	30	30	30	24	28	26	Fighting	39	♂	Sturdy body
+DB0F0352	8	2007429A	No	Naive	0: Immunity	30	30	30	25	28	28	Ground	34	♂	Loves to eat
+5B060384	17	6B982AFF	No	Mild	1: Thick Fat	30	30	30	26	22	25	Flying	64	♂	Proud of its power
+C217036A	13	E212CF86	No	Modest	0: Immunity	30	30	30	27	25	27	Ice	49	♂	Loves to eat
+CC06037A	21	721D64B1	No	Calm	1: Thick Fat	30	30	30	27	25	27	Ice	49	♂	Loves to eat
+CC06037A	3	721D64B1	No	Calm	1: Thick Fat	30	30	30	27	25	27	Ice	49	♂	Loves to eat
+41110324	23	C3139F12	No	Lonely	0: Immunity	30	30	30	28	24	23	Flying	39	♀	Loves to eat
+A9110344	29	C05085AF	No	Hardy	1: Thick Fat	30	30	30	28	30	26	Fighting	59	♂	Proud of its power
+9D160366	24	5913428C	No	Rash	0: Immunity	30	30	30	29	23	27	Ice	59	♂	Sturdy body
+ED09032F	2	2D7FB36D	No	Hardy	1: Thick Fat	30	30	30	31	25	20	Electric	44	♂	Mischievous
+7A14032E	22	9BF808AA	No	Lonely	0: Immunity	30	30	31	20	24	24	Fighting	34	♂	Capable of taking hits
+AB070353	7	53D479E3	No	Jolly	1: Thick Fat	30	30	31	21	24	24	Rock	34	♂	Capable of taking hits
+340A0346	9	4BAC0E84	No	Impish	0: Immunity	30	30	31	21	25	28	Psychic	34	♂	Capable of taking hits
+C70D0330	13	173DE5F6	No	Lax	0: Immunity	30	30	31	21	29	20	Psychic	34	♂	Capable of taking hits
+D1070322	8	8C488452	No	Docile	0: Immunity	30	30	31	22	27	28	Fire	64	♂	Capable of taking hits
+51070322	18	0C480452	No	Modest	0: Immunity	30	30	31	22	27	28	Fire	64	♂	Capable of taking hits
+8108037B	1	1AFF9738	No	Impish	0: Immunity	30	30	31	23	28	31	Ghost	49	♂	Capable of taking hits
+6D17034F	7	13AB18CD	No	Lax	1: Thick Fat	30	30	31	23	31	25	Dragon	64	♂	Somewhat vain
+110B0381	25	1BD4151F	No	Gentle	1: Thick Fat	30	30	31	24	20	26	Fighting	39	♂	Capable of taking hits
+110B0381	5	1BD4151F	No	Gentle	1: Thick Fat	30	30	31	24	20	26	Fighting	39	♂	Capable of taking hits
+CC000380	21	099511F3	No	Adamant	1: Thick Fat	30	30	31	24	30	27	Poison	59	♂	Capable of taking hits
+88060328	8	2B6882CE	No	Bashful	0: Immunity	30	30	31	25	22	23	Ghost	59	♂	Capable of taking hits
+D1120350	9	ABF82E30	No	Jolly	0: Immunity	30	30	31	25	26	22	Rock	59	♂	Capable of taking hits
+D1120350	1	ABF82E30	No	Jolly	0: Immunity	30	30	31	25	26	22	Rock	59	♂	Capable of taking hits
+7707036C	9	506C57A4	No	Naughty	0: Immunity	30	30	31	26	29	20	Fire	44	♂	Capable of taking hits
+F707036C	13	D06CD7A4	No	Calm	0: Immunity	30	30	31	26	29	20	Fire	44	♂	Capable of taking hits
+FC100364	3	E077ECCE	No	Modest	0: Immunity	30	30	31	26	29	21	Grass	44	♂	Capable of taking hits
+0E060321	21	F00BEB71	No	Lax	1: Thick Fat	30	30	31	28	21	24	Fire	34	♂	Capable of taking hits
+0E060321	17	F00BEB71	No	Lax	1: Thick Fat	30	30	31	28	21	24	Fire	34	♂	Capable of taking hits
+D4090325	21	776E7FEC	No	Serious	0: Immunity	30	30	31	29	25	21	Dragon	34	♂	Capable of taking hits
+54090325	15	F76EFFEC	No	Adamant	0: Immunity	30	30	31	29	25	21	Dragon	34	♂	Capable of taking hits
+6F130335	24	E7A5F7AD	No	Mild	1: Thick Fat	30	30	31	30	22	29	Poison	64	♂	Capable of taking hits
+5613036E	18	00940329	No	Serious	1: Thick Fat	30	30	31	31	29	30	Psychic	49	♂	Mischievous
+44110326	20	3368890C	No	Rash	0: Immunity	30	31	30	20	24	29	Poison	34	♀	Likes to thrash about
+C4110326	28	B368090C	No	Quirky	0: Immunity	30	31	30	20	24	29	Poison	34	♀	Likes to thrash about
+C80B0324	20	44517900	No	Bold	0: Immunity	30	31	30	20	25	24	Fire	34	♀	Likes to thrash about
+22010375	4	2165EA90	No	Serious	0: Immunity	30	31	30	21	23	21	Ice	54	♂	Likes to thrash about
+FF12035D	13	6CBB6E45	No	Naive	1: Thick Fat	30	31	30	21	28	27	Ghost	39	♂	Likes to thrash about
+7F12035D	21	ECBBEE45	No	Bold	1: Thick Fat	30	31	30	21	28	27	Ghost	39	♂	Likes to thrash about
+F7050376	8	6D54877C	No	Brave	0: Immunity	30	31	30	21	31	31	Ice	59	♂	Alert to sounds
+77050376	30	ED54077C	No	Relaxed	0: Immunity	30	31	30	21	31	31	Ice	59	♂	Alert to sounds
+71000347	24	A28F401B	No	Lonely	1: Thick Fat	30	31	30	22	20	30	Fighting	49	♀	Likes to thrash about
+20020376	30	51F74B34	No	Modest	0: Immunity	30	31	30	22	25	20	Fire	44	♂	Likes to thrash about
+61020338	19	30B596AD	No	Relaxed	1: Thick Fat	30	31	30	22	27	28	Fire	64	♂	Likes to thrash about
+FA0D0345	14	25FB88C6	No	Quiet	0: Immunity	30	31	30	23	24	21	Ghost	44	♂	Likes to thrash about
+FA0D0345	10	25FB88C6	No	Quiet	0: Immunity	30	31	30	23	24	21	Ghost	44	♂	Likes to thrash about
+55110320	3	EBED3A7F	No	Quiet	1: Thick Fat	30	31	30	23	24	29	Ghost	44	♂	Likes to thrash about
+2C02036B	8	649A3C15	No	Hardy	1: Thick Fat	30	31	30	23	27	23	Ice	70	♀	Likes to thrash about
+DC0C0346	19	FB81A82E	No	Naive	0: Immunity	30	31	30	24	26	27	Poison	59	♂	Likes to thrash about
+450B035F	1	A92DFDB3	No	Gentle	1: Thick Fat	30	31	30	24	29	28	Fire	34	♂	Likes to thrash about
+7F12032A	7	BD3E85B2	No	Relaxed	0: Immunity	30	31	30	26	26	30	Fighting	70	♂	Likes to thrash about
+200F036D	21	2D2A02B2	No	Sassy	0: Immunity	30	31	30	26	27	24	Fire	64	♂	Likes to thrash about
+E70D0376	5	700DB13A	No	Bold	0: Immunity	30	31	30	26	27	26	Fire	70	♂	Likes to thrash about
+F7140365	14	AAB518B8	No	Naive	0: Immunity	30	31	30	26	30	23	Poison	70	♂	Likes to thrash about
+49130357	13	42A357AE	No	Calm	0: Immunity	30	31	30	26	31	28	Fire	64	♂	Somewhat vain
+6F17032C	22	00286D68	No	Careful	0: Immunity	30	31	30	28	24	23	Poison	39	♂	Likes to thrash about
+9D130364	14	4ED135E1	No	Modest	1: Thick Fat	30	31	30	28	27	25	Grass	54	♂	Likes to thrash about
+3A0D0336	20	85962D39	No	Bold	1: Thick Fat	30	31	30	28	28	27	Poison	39	♂	Likes to thrash about
+3A0D0336	12	85962D39	No	Bold	1: Thick Fat	30	31	30	28	28	27	Poison	39	♂	Likes to thrash about
+330D0380	12	E4866F8D	No	Naughty	1: Thick Fat	30	31	30	29	20	21	Ghost	34	♂	Likes to thrash about
+AA13036B	10	DD3CDEF8	No	Lonely	0: Immunity	30	31	30	29	22	20	Rock	54	♂	Likes to thrash about
+8912036F	0	1F37C4E0	No	Lonely	0: Immunity	30	31	30	29	22	22	Rock	59	♂	Likes to thrash about
+E9170369	6	5B125ECC	No	Sassy	0: Immunity	30	31	30	29	31	27	Ice	59	♂	Somewhat vain
+5011036C	6	4AB03D56	No	Sassy	0: Immunity	30	31	30	30	25	31	Grass	49	♂	Likes to thrash about
+C8040365	20	54E9B5ED	No	Bold	1: Thick Fat	30	31	30	30	31	29	Grass	64	♂	Somewhat vain
+4E170332	20	66F28D97	No	Mild	1: Thick Fat	30	31	30	31	30	28	Rock	64	♂	Mischievous
+75020323	11	0830A086	No	Hardy	0: Immunity	30	31	31	20	31	23	Grass	59	♂	Capable of taking hits
+75020323	7	0830A086	No	Hardy	0: Immunity	30	31	31	20	31	23	Grass	59	♂	Capable of taking hits
+F5020323	19	88302086	No	Bold	0: Immunity	30	31	31	20	31	23	Grass	59	♂	Capable of taking hits
+BC09036C	13	BE9D0B93	No	Bold	1: Thick Fat	30	31	31	21	26	30	Bug	59	♂	Likes to thrash about
+210A0355	27	68E3D19C	No	Gentle	0: Immunity	30	31	31	22	23	30	Water	70	♂	Likes to thrash about
+870B0373	19	BCA68242	No	Bold	0: Immunity	30	31	31	22	25	23	Grass	49	♂	Likes to thrash about
+1C080376	9	56E99003	No	Docile	1: Thick Fat	30	31	31	22	31	22	Water	70	♀	Likes to thrash about
+E30D034E	29	99BAF3D2	No	Serious	0: Immunity	30	31	31	23	23	20	Psychic	64	♂	Likes to thrash about
+B415033C	22	91928874	No	Impish	0: Immunity	30	31	31	23	24	24	Bug	44	♂	Likes to thrash about
+B415033C	16	91928874	No	Impish	0: Immunity	30	31	31	23	24	24	Bug	44	♂	Likes to thrash about
+B415033C	10	91928874	No	Impish	0: Immunity	30	31	31	23	24	24	Bug	44	♂	Likes to thrash about
+19050323	3	8604FCA6	No	Mild	0: Immunity	30	31	31	23	29	22	Psychic	49	♂	Likes to thrash about
+BA0B034C	25	2AF7BB6A	No	Quiet	0: Immunity	30	31	31	23	29	28	Psychic	44	♂	Likes to thrash about
+BA0B034C	23	2AF7BB6A	No	Quiet	0: Immunity	30	31	31	23	29	28	Psychic	44	♂	Likes to thrash about
+340F0381	26	01D25D18	No	Impish	0: Immunity	30	31	31	23	30	31	Steel	70	♀	Likes to thrash about
+340F0381	24	01D25D18	No	Impish	0: Immunity	30	31	31	23	30	31	Steel	70	♀	Likes to thrash about
+5D120374	26	18A7FE79	No	Mild	1: Thick Fat	30	31	31	25	21	30	Psychic	39	♂	Likes to thrash about
+5D120374	6	18A7FE79	No	Mild	1: Thick Fat	30	31	31	25	21	30	Psychic	39	♂	Likes to thrash about
+860A034E	23	115D6DE4	No	Brave	0: Immunity	30	31	31	25	23	29	Dragon	54	♂	Likes to thrash about
+860A034E	11	115D6DE4	No	Brave	0: Immunity	30	31	31	25	23	29	Dragon	54	♂	Likes to thrash about
+55060359	22	47CAC7FF	No	Relaxed	1: Thick Fat	30	31	31	25	28	30	Bug	39	♂	Likes to thrash about
+A4050357	29	E7B87A41	No	Quiet	1: Thick Fat	30	31	31	26	27	24	Water	64	♂	Likes to thrash about
+9F110352	25	F544C88E	No	Timid	0: Immunity	30	31	31	27	21	24	Psychic	44	♂	Likes to thrash about
+9F110352	21	F544C88E	No	Timid	0: Immunity	30	31	31	27	21	24	Psychic	44	♂	Likes to thrash about
+2408037D	20	176B001B	No	Sassy	1: Thick Fat	30	31	31	27	28	28	Bug	44	♀	Likes to thrash about
+4E090345	19	901992A3	No	Bashful	1: Thick Fat	30	31	31	28	21	28	Water	34	♂	Likes to thrash about
+4E090345	3	901992A3	No	Bashful	1: Thick Fat	30	31	31	28	21	28	Water	34	♂	Likes to thrash about
+E10B0328	23	E861BA7C	No	Rash	0: Immunity	30	31	31	28	27	24	Water	54	♂	Likes to thrash about
+CB0A0378	5	C9628A07	No	Naughty	1: Thick Fat	30	31	31	29	26	21	Steel	54	♀	Likes to thrash about
+BC01033A	1	38B6D3ED	No	Lonely	1: Thick Fat	31	30	30	21	27	23	Ice	59	♂	Takes plenty of siestas
+880C0372	28	A85D8F5A	No	Lax	0: Immunity	31	30	30	21	30	27	Bug	59	♂	Takes plenty of siestas
+C3060323	16	857100EA	No	Bold	0: Immunity	31	30	30	22	28	24	Fighting	44	♂	Takes plenty of siestas
+C3060323	2	857100EA	No	Bold	0: Immunity	31	30	30	22	28	24	Fighting	44	♂	Takes plenty of siestas
+1B170342	26	1B8AB93E	No	Sassy	0: Immunity	31	30	30	25	23	29	Ice	54	♂	Takes plenty of siestas
+1B170342	4	1B8AB93E	No	Sassy	0: Immunity	31	30	30	25	23	29	Ice	54	♂	Takes plenty of siestas
+2D140377	16	FFFA061B	No	Bashful	1: Thick Fat	31	30	30	25	27	31	Ice	59	♀	Alert to sounds
+A4010343	1	6BAB75B8	No	Naughty	0: Immunity	31	30	30	25	30	30	Rock	59	♂	Takes plenty of siestas
+B6070358	19	3A9910B6	No	Naive	0: Immunity	31	30	30	26	21	28	Steel	44	♂	Takes plenty of siestas
+57160326	23	DF84E1A6	No	Hasty	0: Immunity	31	30	30	26	22	29	Poison	64	♂	Takes plenty of siestas
+57160326	17	DF84E1A6	No	Hasty	0: Immunity	31	30	30	26	22	29	Poison	64	♂	Takes plenty of siestas
+1000036C	24	0D7478BD	No	Bashful	1: Thick Fat	31	30	30	26	23	21	Water	64	♂	Takes plenty of siestas
+1000036C	20	0D7478BD	No	Bashful	1: Thick Fat	31	30	30	26	23	21	Water	64	♂	Takes plenty of siestas
+9000036C	18	8D74F8BD	No	Lax	1: Thick Fat	31	30	30	26	23	21	Water	64	♂	Takes plenty of siestas
+AA03035C	27	7090C356	No	Relaxed	0: Immunity	31	30	30	27	28	26	Rock	49	♂	Takes plenty of siestas
+AA03035C	3	7090C356	No	Relaxed	0: Immunity	31	30	30	27	28	26	Rock	49	♂	Takes plenty of siestas
+DC02036A	5	82096F9E	No	Adamant	0: Immunity	31	30	30	28	23	26	Steel	59	♂	Takes plenty of siestas
+5C02036A	11	0209EF9E	No	Careful	0: Immunity	31	30	30	28	23	26	Steel	59	♂	Takes plenty of siestas
+C1090373	22	D4ED457B	No	Hasty	1: Thick Fat	31	30	30	28	24	24	Fighting	34	♂	Takes plenty of siestas
+C1090373	14	D4ED457B	No	Hasty	1: Thick Fat	31	30	30	28	24	24	Fighting	34	♂	Takes plenty of siestas
+320C0353	19	141C242B	No	Serious	1: Thick Fat	31	30	30	28	31	24	Steel	54	♂	Somewhat vain
+A10F0377	29	18E7EDE3	No	Quirky	1: Thick Fat	31	30	30	29	23	24	Electric	54	♂	Takes plenty of siestas
+A10F0377	21	18E7EDE3	No	Quirky	1: Thick Fat	31	30	30	29	23	24	Electric	54	♂	Takes plenty of siestas
+A10F0377	17	18E7EDE3	No	Quirky	1: Thick Fat	31	30	30	29	23	24	Electric	54	♂	Takes plenty of siestas
+800B035A	24	90B614AE	No	Hardy	0: Immunity	31	30	30	29	25	24	Electric	34	♂	Takes plenty of siestas
+AC100326	20	538F5561	No	Impish	1: Thick Fat	31	30	30	29	26	21	Bug	54	♂	Takes plenty of siestas
+ED05033C	3	4148F552	No	Lax	0: Immunity	31	30	30	30	27	22	Steel	70	♂	Takes plenty of siestas
+23070355	8	5097A16F	No	Bashful	1: Thick Fat	31	30	30	31	31	29	Ice	64	♂	Somewhat vain
+C600034D	28	0BF76156	No	Hasty	0: Immunity	31	30	31	20	23	28	Fire	54	♂	Takes plenty of siestas
+E515037C	21	33378110	No	Hasty	0: Immunity	31	30	31	20	29	23	Grass	39	♀	Capable of taking hits
+35110354	8	B457E8C5	No	Lonely	1: Thick Fat	31	30	31	21	27	26	Psychic	59	♂	Takes plenty of siestas
+C711036E	0	384DB496	No	Careful	0: Immunity	31	30	31	21	27	31	Dragon	59	♂	Takes plenty of siestas
+92070351	8	B104A401	No	Hasty	1: Thick Fat	31	30	31	21	29	30	Psychic	39	♀	Capable of taking hits
+2B030368	9	2DECB2FA	No	Lax	0: Immunity	31	30	31	21	30	20	Bug	54	♂	Takes plenty of siestas
+2B030368	7	2DECB2FA	No	Lax	0: Immunity	31	30	31	21	30	20	Bug	54	♂	Takes plenty of siestas
+2B030368	3	2DECB2FA	No	Lax	0: Immunity	31	30	31	21	30	20	Bug	54	♂	Takes plenty of siestas
+21140366	24	03DF8C08	No	Quirky	0: Immunity	31	30	31	21	31	23	Dragon	59	♀	Capable of taking hits
+A00D0325	24	5AC39B8B	No	Naughty	1: Thick Fat	31	30	31	21	31	31	Dragon	59	♂	Alert to sounds
+1C12036D	29	0E189591	No	Brave	1: Thick Fat	31	30	31	22	27	27	Grass	70	♂	Takes plenty of siestas
+1C12036D	23	0E189591	No	Brave	1: Thick Fat	31	30	31	22	27	27	Grass	70	♂	Takes plenty of siestas
+1C12036D	1	0E189591	No	Brave	1: Thick Fat	31	30	31	22	27	27	Grass	70	♂	Takes plenty of siestas
+07070371	27	AF0C1AB0	No	Naive	0: Immunity	31	30	31	22	28	23	Ground	49	♂	Capable of taking hits
+04070347	4	FE944EE5	No	Naive	1: Thick Fat	31	30	31	23	22	26	Bug	70	♂	Capable of taking hits
+DB100337	26	01223CC6	No	Careful	0: Immunity	31	30	31	24	25	23	Grass	39	♂	Capable of taking hits
+6B080383	19	78FA5167	No	Lax	1: Thick Fat	31	30	31	24	26	27	Ground	59	♂	Takes plenty of siestas
+6B080383	15	78FA5167	No	Lax	1: Thick Fat	31	30	31	24	26	27	Ground	59	♂	Takes plenty of siestas
+FF0E0372	30	59FB20F3	No	Calm	1: Thick Fat	31	30	31	25	25	24	Psychic	34	♂	Takes plenty of siestas
+42100334	15	20C1BFA0	No	Mild	0: Immunity	31	30	31	25	27	21	Dragon	54	♂	Takes plenty of siestas
+42100334	13	20C1BFA0	No	Mild	0: Immunity	31	30	31	25	27	21	Dragon	54	♂	Takes plenty of siestas
+C2100334	21	A0C13FA0	No	Gentle	0: Immunity	31	30	31	25	27	21	Dragon	54	♂	Takes plenty of siestas
+C2100334	3	A0C13FA0	No	Gentle	0: Immunity	31	30	31	25	27	21	Dragon	54	♂	Takes plenty of siestas
+1B0E035E	24	1C90A012	No	Timid	0: Immunity	31	30	31	25	28	31	Ghost	39	♀	Capable of taking hits
+9B0E035E	18	9C902012	No	Modest	0: Immunity	31	30	31	25	28	31	Ghost	39	♀	Capable of taking hits
+A8120384	30	09FDD635	No	Naive	1: Thick Fat	31	30	31	26	23	24	Fire	64	♂	Capable of taking hits
+CA130358	29	BBE4391D	No	Gentle	1: Thick Fat	31	30	31	26	24	21	Ground	44	♀	Takes plenty of siestas
+95170340	18	E9900EA2	No	Impish	0: Immunity	31	30	31	26	27	22	Fire	70	♂	Takes plenty of siestas
+F509037F	11	59E00A4A	No	Sassy	0: Immunity	31	30	31	28	30	26	Flying	59	♂	Takes plenty of siestas
+7509037F	27	D9E08A4A	No	Jolly	0: Immunity	31	30	31	28	30	26	Flying	59	♂	Capable of taking hits
+7509037F	17	D9E08A4A	No	Jolly	0: Immunity	31	30	31	28	30	26	Flying	59	♂	Capable of taking hits
+B8100374	0	57585597	No	Gentle	1: Thick Fat	31	30	31	29	25	20	Psychic	34	♂	Takes plenty of siestas
+0508037C	5	63324B34	No	Hasty	0: Immunity	31	30	31	29	26	30	Bug	59	♂	Takes plenty of siestas
+8508037C	17	E332CB34	No	Brave	0: Immunity	31	30	31	29	26	30	Bug	59	♂	Takes plenty of siestas
+8508037C	3	E332CB34	No	Brave	0: Immunity	31	30	31	29	26	30	Bug	59	♂	Takes plenty of siestas
+FC050346	7	4F4AFF12	No	Lonely	0: Immunity	31	30	31	31	22	25	Ghost	64	♀	Takes plenty of siestas
+7C050346	3	CF4A7F12	No	Docile	0: Immunity	31	30	31	31	22	25	Ghost	64	♀	Takes plenty of siestas
+7C050346	1	CF4A7F12	No	Docile	0: Immunity	31	30	31	31	22	25	Ghost	64	♀	Takes plenty of siestas
+B30D0375	21	AA127EBA	No	Timid	0: Immunity	31	30	31	31	24	28	Bug	44	♂	Capable of taking hits
+B30D0375	1	AA127EBA	No	Timid	0: Immunity	31	30	31	31	24	28	Bug	44	♂	Capable of taking hits
+6C000338	4	0DDF448B	No	Impish	1: Thick Fat	31	30	31	31	26	22	Bug	70	♂	Takes plenty of siestas
+F50F0349	20	2361875C	No	Naughty	0: Immunity	31	30	31	31	29	31	Dragon	49	♂	Capable of taking hits
+30160341	28	45346745	No	Jolly	1: Thick Fat	31	30	31	31	31	22	Psychic	70	♂	Somewhat vain
+30160341	20	45346745	No	Jolly	1: Thick Fat	31	30	31	31	31	22	Psychic	70	♂	Somewhat vain
+CC150353	28	A7457782	No	Hardy	0: Immunity	31	30	31	31	31	26	Psychic	70	♂	Capable of taking hits
+CC150353	24	A7457782	No	Hardy	0: Immunity	31	30	31	31	31	26	Psychic	70	♂	Capable of taking hits
+A8070364	17	7465F8FB	No	Docile	1: Thick Fat	31	31	30	20	31	29	Grass	54	♂	Somewhat vain
+D3070320	19	DA3B6F21	No	Hasty	1: Thick Fat	31	31	30	21	31	25	Dragon	54	♂	Likes to thrash about
+9D060324	25	7F1CE32D	No	Sassy	1: Thick Fat	31	31	30	22	23	27	Grass	70	♂	Likes to thrash about
+9D060324	3	7F1CE32D	No	Sassy	1: Thick Fat	31	31	30	22	23	27	Grass	70	♂	Likes to thrash about
+DB15033F	24	E20BCE34	No	Hardy	0: Immunity	31	31	30	22	24	26	Fighting	49	♂	Takes plenty of siestas
+DB15033F	16	E20BCE34	No	Hardy	0: Immunity	31	31	30	22	24	26	Fighting	49	♂	Takes plenty of siestas
+470B0350	8	A22BE359	No	Mild	1: Thick Fat	31	31	30	22	30	31	Poison	70	♂	Takes plenty of siestas
+690A0356	0	5CCA6DF4	No	Quiet	0: Immunity	31	31	30	23	24	28	Rock	44	♂	Takes plenty of siestas
+3C09036B	28	F1A03BE3	No	Sassy	1: Thick Fat	31	31	30	23	26	23	Ghost	70	♂	Takes plenty of siestas
+80090375	2	3479FC96	No	Hardy	0: Immunity	31	31	30	23	27	21	Dragon	64	♂	Takes plenty of siestas
+13130359	19	1148AC93	No	Bashful	1: Thick Fat	31	31	30	24	27	27	Grass	59	♂	Takes plenty of siestas
+13130359	9	1148AC93	No	Bashful	1: Thick Fat	31	31	30	24	27	27	Grass	59	♂	Takes plenty of siestas
+1007036C	28	E0C772F3	No	Hardy	1: Thick Fat	31	31	30	25	22	24	Rock	54	♂	Takes plenty of siestas
+9007036C	18	60C7F2F3	No	Calm	1: Thick Fat	31	31	30	25	22	24	Rock	54	♂	Takes plenty of siestas
+91070349	20	9B784846	No	Brave	0: Immunity	31	31	30	25	24	26	Rock	39	♂	Takes plenty of siestas
+38020356	4	1F652641	No	Hardy	1: Thick Fat	31	31	30	25	25	26	Psychic	39	♂	Likes to thrash about
+E213033D	26	C537BFD0	No	Hasty	0: Immunity	31	31	30	25	26	27	Ghost	59	♂	Takes plenty of siestas
+6213033D	22	45373FD0	No	Calm	0: Immunity	31	31	30	25	26	27	Ghost	59	♂	Takes plenty of siestas
+6213033D	10	45373FD0	No	Calm	0: Immunity	31	31	30	25	26	27	Ghost	59	♂	Takes plenty of siestas
+68040337	14	7448BE9D	No	Calm	1: Thick Fat	31	31	30	26	25	22	Fire	49	♂	Likes to thrash about
+180E0328	21	11F2ECCD	No	Bold	1: Thick Fat	31	31	30	26	27	27	Grass	70	♂	Likes to thrash about
+2C0E0365	19	BF9E4252	No	Sassy	0: Immunity	31	31	30	26	30	28	Fighting	64	♂	Takes plenty of siestas
+71010343	17	C8A4196D	No	Jolly	1: Thick Fat	31	31	30	27	20	24	Rock	44	♂	Takes plenty of siestas
+B90D037B	24	98BB6812	No	Docile	0: Immunity	31	31	30	27	28	20	Rock	44	♀	Takes plenty of siestas
+8502032D	16	FA56D0D4	No	Docile	0: Immunity	31	31	30	28	30	21	Poison	54	♂	Takes plenty of siestas
+FD0F0342	14	BCFB76F7	No	Quirky	1: Thick Fat	31	31	30	30	30	24	Fighting	64	♂	Takes plenty of siestas
+FD0F0342	6	BCFB76F7	No	Quirky	1: Thick Fat	31	31	30	30	30	24	Fighting	64	♂	Takes plenty of siestas
+4C140366	9	404AAB16	No	Hasty	0: Immunity	31	31	31	20	21	28	Water	34	♀	Takes plenty of siestas
+2405035D	14	412885E0	No	Brave	0: Immunity	31	31	31	20	22	23	Ground	59	♂	Takes plenty of siestas
+87080363	7	704C4F66	No	Naughty	0: Immunity	31	31	31	20	29	23	Electric	39	♂	Takes plenty of siestas
+5012037B	5	93E11E10	No	Careful	0: Immunity	31	31	31	21	31	26	Ice	59	♀	Somewhat vain
+7E03032D	24	216EEC5D	No	Sassy	1: Thick Fat	31	31	31	22	25	26	Water	49	♂	Likes to thrash about
+FE03032D	26	A16E6C5D	No	Brave	1: Thick Fat	31	31	31	22	25	26	Water	49	♂	Likes to thrash about
+D7060343	14	56635277	No	Lonely	1: Thick Fat	31	31	31	22	26	28	Flying	64	♂	Takes plenty of siestas
+D7060343	10	56635277	No	Lonely	1: Thick Fat	31	31	31	22	26	28	Flying	64	♂	Takes plenty of siestas
+3C130334	9	8C50A834	No	Bold	0: Immunity	31	31	31	24	24	26	Flying	39	♂	Capable of taking hits
+3C130334	1	8C50A834	No	Bold	0: Immunity	31	31	31	24	24	26	Flying	39	♂	Capable of taking hits
+0808037D	9	AD4E9B28	No	Gentle	0: Immunity	31	31	31	24	24	27	Ground	39	♂	Capable of taking hits
+0808037D	1	AD4E9B28	No	Gentle	0: Immunity	31	31	31	24	24	27	Ground	39	♂	Capable of taking hits
+A80F037A	24	DA79DB5C	No	Hardy	0: Immunity	31	31	31	25	30	20	Bug	54	♂	Capable of taking hits
+F10B0343	8	E3CB1C46	No	Adamant	0: Immunity	31	31	31	26	26	24	Flying	64	♂	Takes plenty of siestas
+20050376	19	2B344200	No	Docile	0: Immunity	31	31	31	26	30	30	Flying	70	♀	Capable of taking hits
+8717037B	26	EA1736E1	No	Gentle	1: Thick Fat	31	31	31	26	31	23	Electric	70	♂	Somewhat vain
+30040322	28	23483B51	No	Serious	1: Thick Fat	31	31	31	27	20	26	Bug	49	♂	Likes to thrash about
+B0040322	18	A348BB51	No	Adamant	1: Thick Fat	31	31	31	27	20	26	Bug	49	♂	Takes plenty of siestas
+B0040322	14	A348BB51	No	Adamant	1: Thick Fat	31	31	31	27	20	26	Bug	49	♂	Takes plenty of siestas
+5300037B	21	30D4F8AC	No	Timid	0: Immunity	31	31	31	27	24	20	Bug	44	♂	Capable of taking hits
+5300037B	1	30D4F8AC	No	Timid	0: Immunity	31	31	31	27	24	20	Bug	44	♂	Capable of taking hits
+6E0A0339	18	C63A82EF	No	Hardy	1: Thick Fat	31	31	31	28	20	20	Flying	34	♂	Likes to thrash about
+6E0A0339	14	C63A82EF	No	Hardy	1: Thick Fat	31	31	31	28	20	20	Flying	34	♂	Likes to thrash about
+6E0A0339	12	C63A82EF	No	Hardy	1: Thick Fat	31	31	31	28	20	20	Flying	34	♂	Likes to thrash about
+2B140324	30	091D3177	No	Lonely	1: Thick Fat	31	31	31	28	20	22	Flying	39	♂	Takes plenty of siestas
+C80E0372	19	F7E6921A	No	Lax	0: Immunity	31	31	31	28	22	31	Ground	59	♀	Takes plenty of siestas
+C80E0372	17	F7E6921A	No	Lax	0: Immunity	31	31	31	28	22	31	Ground	59	♀	Takes plenty of siestas
+C80E0372	11	F7E6921A	No	Lax	0: Immunity	31	31	31	28	22	31	Ground	59	♀	Takes plenty of siestas
+510A0373	7	F96EAD1F	No	Jolly	1: Thick Fat	31	31	31	30	23	26	Water	70	♂	Takes plenty of siestas
+A708035E	16	3584ABBB	No	Jolly	1: Thick Fat	31	31	31	31	21	22	Ice	49	♂	Mischievous
+A708035E	6	3584ABBB	No	Jolly	1: Thick Fat	31	31	31	31	21	22	Ice	49	♂	Mischievous
+A30B0375	19	C58F40E5	No	Jolly	1: Thick Fat	31	31	31	31	21	23	Dark	49	♂	Mischievous
+A30B0375	15	C58F40E5	No	Jolly	1: Thick Fat	31	31	31	31	21	23	Dark	49	♂	Mischievous
+93120335	30	5AFF280B	No	Gentle	1: Thick Fat	31	31	31	31	26	22	Bug	70	♀	Mischievous
+3701034F	24	08B46B66	No	Brave	0: Immunity	31	31	31	31	28	28	Bug	44	♂	Mischievous

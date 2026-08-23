@@ -1,14 +1,24 @@
 use num_enum::{FromPrimitive, IntoPrimitive};
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 
 #[derive(
-    Clone, Copy, Debug, Eq, PartialEq, FromPrimitive, IntoPrimitive, Tsify, Serialize, Deserialize,
+    Default,
+    Clone,
+    Copy,
+    Debug,
+    Eq,
+    PartialEq,
+    FromPrimitive,
+    IntoPrimitive,
+    Tsify,
+    Serialize,
+    Deserialize,
 )]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 #[repr(u8)]
 pub enum Nature {
-    #[num_enum(default)]
+    #[default]
     Hardy = 0,
     Lonely = 1,
     Brave = 2,
@@ -36,6 +46,8 @@ pub enum Nature {
     Quirky = 24,
 }
 
+pub const NATURE_COUNT: usize = 25;
+
 impl Nature {
     pub fn from_pid(pid: u32) -> Self {
         ((pid % 25) as u8).into()
@@ -45,11 +57,37 @@ impl Nature {
         let idx: u8 = (*self).into();
         &NATURE_STAT_FACTORS[idx as usize]
     }
-}
 
-impl Default for Nature {
-    fn default() -> Self {
-        Self::Hardy
+    #[cfg(test)]
+    pub fn from_str(str: &str) -> Self {
+        match str {
+            "Hardy" => Nature::Hardy,
+            "Lonely" => Nature::Lonely,
+            "Brave" => Nature::Brave,
+            "Adamant" => Nature::Adamant,
+            "Naughty" => Nature::Naughty,
+            "Bold" => Nature::Bold,
+            "Docile" => Nature::Docile,
+            "Relaxed" => Nature::Relaxed,
+            "Impish" => Nature::Impish,
+            "Lax" => Nature::Lax,
+            "Timid" => Nature::Timid,
+            "Hasty" => Nature::Hasty,
+            "Serious" => Nature::Serious,
+            "Jolly" => Nature::Jolly,
+            "Naive" => Nature::Naive,
+            "Modest" => Nature::Modest,
+            "Mild" => Nature::Mild,
+            "Quiet" => Nature::Quiet,
+            "Bashful" => Nature::Bashful,
+            "Rash" => Nature::Rash,
+            "Calm" => Nature::Calm,
+            "Gentle" => Nature::Gentle,
+            "Sassy" => Nature::Sassy,
+            "Careful" => Nature::Careful,
+            "Quirky" => Nature::Quirky,
+            _ => Nature::Hardy,
+        }
     }
 }
 

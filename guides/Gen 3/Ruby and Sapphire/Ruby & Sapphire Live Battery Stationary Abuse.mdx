@@ -4,7 +4,8 @@ navDrawerTitle: "Static Live Battery RNG"
 description: "Learn how to RNG static Pokémon in Ruby and Sapphire for perfect IVs, natures, and shinies."
 slug: "emulator-rs-stationary"
 category: "Ruby and Sapphire"
-tag: "emu"
+section: "pokemon_rng"
+variant: "cfw-emu"
 ---
 
 ## Tools
@@ -48,7 +49,7 @@ Note: Unlike Generations 4 and 5, only the hours and minutes matter for hitting 
 3. Check the IVs of the encountered Pokémon.
 4. In PokeFinder, enter the IVs and search for the advance you hit.
 5. Calculate the delay:  
-   `Delay = Target Advance - Advance Hit`
+   `Delay = Advance Hit - Target Advance`
 6. Input this delay into PokeFinder and generate results again.
 7. Find your target advance and note the new advance number.
 
@@ -59,3 +60,7 @@ Note: Unlike Generations 4 and 5, only the hours and minutes matter for hitting 
 3. If off, check how many advances you missed, reload a save state, adjust, and try again.
 
 ![Success](/images/Ruby-Sapphire/Stationary/Success.png)
+
+## Credits
+
+- Chinese translation: xuanyelin, Hakuhiro.

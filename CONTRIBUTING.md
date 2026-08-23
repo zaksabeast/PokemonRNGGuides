@@ -1,63 +1,228 @@
-If you're interested in contributing, reach out on Discord in our [#discussion channel](https://discord.com/channels/285269328469950464/888240330628005898) to coordinate with us.
+If you're interested in contributing, reach out on Discord in our [#site-content channel](https://discord.com/channels/285269328469950464/888240330628005898) to coordinate with us.
 
-<details>
-  <summary><b>Read this if you're interested in adding, translating, or editing guides</b></summary>
+## Submitting Translations
+
+1. Use our [translation helper](https://www.pokemonrng.com/help-translate/).
+2. Open a PR or send it in the Discord [#site-content channel](https://discord.com/channels/285269328469950464/888240330628005898).
+
+If you'd like to see an example, check out any of the files in `guides/Translations`.
 
 ## Guide writing and updating
 
-Follow our [Style Guide](./Style%20Guide.mdx) when writing the guide.
+1. Write the guide using our [Style Guide](./Style%20Guide.mdx).
+2. Open a PR or send it in the Discord [#site-content channel](https://discord.com/channels/285269328469950464/888240330628005898).
 
-ChatGPT can help with wording, grammar, and formatting. Feel free to use this prompt when writing guides:
+<details>
+<summary>
+  ChatGPT can help with wording, grammar, and formatting. Feel free to use this prompt when writing guides:
+</summary>
 
 ```
-You’re helping to clean up and simplify guides for Pokémon RNG. The goal is to make them **clear, easy to follow, and concise**, without removing or adding any information. Here's the format to follow:
+You're helping clean up and simplify guides for Pokémon RNG.
 
-**Guide Format Template:**
+Your goal is to make the guide **clear, concise, and easy to follow**, while preserving **100% of the original meaning and information**.
 
-_INSERT THE CURRENT STYLE GUIDE HERE_
+---
 
-**Important Things to Keep in Mind:**
-- **NO nested bullets**. If there’s any nested list, flatten it, but keep the original content. Everything should be a simple list with no indentation.
-- **Keep the structure** exactly as shown in the template, including the bullet points, titles, and descriptions.
-- **Don’t add extra info or change anything** in the guide that isn’t already there.
-- **Don’t mess with images, links, or any formatting**. Leave them as-is.
-- Keep everything **casual and simple**, making it easier for people who are not native English speakers to understand.
-- Any "Note:" should be in a code block
+## Core Rules (Strict)
 
-**Context to Remember:**
-- Pokémon RNG is about exploiting the RNG to get perfect shiny Pokémon.
-- Citra, Lime3DS, and Azahar are 3DS emulators for computers and Android.
-- PCalc is an older software that shows RNG info for the 3DS.
-- PokeReader is a new, updated software for the 3DS that shows RNG info and hidden Pokémon data. It replaces PCalc and can also run on 3DS emulators.
-- RNG Reporter is an old calculator for predicting RNG in GBA, NDS, and GameCube games.
-- PokeFinder is a new calculator for predicting RNG in GBA, NDS, GameCube, and Switch games.
-- 3DSRNGTool is a computer calculator for predicting RNG in 3DS games.
-- A "Frame" is one advancement of the RNG.  Prefer the term "Advance" over "Frame".
-- "Final screen" is where you push the \`A\` button to generate a Pokémon.
-- "Initial seed" is the seed of the RNG.
-- A "PID" is a Personality ID that affects Pokémon properties, like shininess.
-- "PSV" is a Pokémon Shiny Value, derived from the PID. It's called "ESV" (Egg Shiny Value) for eggs.
-- "TID" is a trainer ID, and "SID" is a secret ID. Together they create the TSV (Trainer Shiny Value).
-- A Pokémon is shiny when the TSV and PSV match.
-- "IVs" are Individual Values that affect Pokémon strength.
-- Some RNGs involve "Chains", where you catch multiple Pokémon in a row.
-- NPCs can advance RNG and create noise that needs to be handled.
+1. **Do NOT remove, add, or reinterpret any information.**
+2. You **may reword sentences** for clarity and conciseness.
+3. You **may reorganize structure** to match the required format.
+4. You **may normalize terminology** (e.g., "Frame" → "Advance").
+5. **Do NOT break or modify links, images, or existing special formatting.**
 
-**Your job**: Take the guide text, simplify the wording, fix any structure, and **follow this format exactly**. Don’t change anything except to make it simpler and more concise. Don't add extra info or remove anything—just make it easier to follow!
+---
+
+## Priority Order
+
+When rules conflict, follow this order:
+
+1. Preserve meaning and all information.
+2. Apply formatting rules.
+3. Improve clarity and conciseness.
+
+---
+
+## Required Output Structure
+
+Always format the guide like this:
+
+### ## Tools
+
+* List all required tools (if any are mentioned).
+
+### ## Step 1: Title
+
+* Add a short introductory context sentence if needed.
+
+* Use ordered lists for steps:
+
+1. First step.
+2. Second step.
+3. Third step.
+
+* Use unordered lists for non-sequential info:
+* Item one.
+* Item two.
+
+### ## Step 2: Terminology
+
+* Use the term **"Advance"**, not "Frame".
+
+---
+
+## Formatting Rules
+
+### Lists
+
+* **No nested lists.**
+* Flatten all nested content into a single-level list.
+* Convert nested items into standalone steps while preserving all information.
+* Do not leave blank lines between list items.
+* End each list item with a full stop, unless it is 1–2 words.
+
+---
+
+### Buttons & Inputs
+
+* Console inputs → use `single ticks` (example: `A`, `Start`).
+* Web/app UI buttons → use "double quotes".
+
+---
+
+### Values
+
+* Seeds, PIDs, and similar values:
+
+  * Use **uppercase hex**
+  * Use `single ticks`
+  * Do NOT prefix with `0x`
+  * Example: `AABBCCDD`
+
+---
+
+### Notes
+
+* Extract notes from the original guide and convert them to GitHub alert syntax based on their purpose:
+  * **TIP**: Positive, optimization or time-saving advice.
+  * **NOTE**: Optional clarification or background info.
+  * **IMPORTANT**: Required knowledge to succeed, and may cause issues if skipped.
+  * **WARNING**: Action that will cause problems if skipped.
+  * **CAUTION**: Issue already encountered by the user. Use sparingly.
+
+* Format alerts like this:
+
+```
+
+> [!TIP]
+> Save time by doing this instead.
+
+> [!NOTE]
+> This guide is interactive.
+
+> [!IMPORTANT]
+> Make a save state before proceeding.
+
+> [!WARNING]
+> Don't do this, it will corrupt your save.
+
+> [!CAUTION]
+> This RNG is not possible with your current settings.
+
+```
+
+---
+
+### Tables
+
+Use tables when appropriate:
+
+**Comparisons:**
+
+| Item     | Value proposition |
+| -------- | ----------------- |
+| Method A | Good for X        |
+| Method B | Good for Y        |
+
+**Data lists:**
+
+| Pokémon | Obtain from   |
+| ------- | ------------- |
+| Abra    | Route above X |
+| Golem   | Trade         |
+
+---
+
+## Behavior Rules
+
+* First, fully understand the original guide.
+* Then rewrite it into the required structure.
+* Do NOT rewrite line-by-line blindly.
+* Keep wording **simple, casual, and easy to understand**, especially for non-native English speakers.
+
+---
+
+## Handling Messy Input
+
+If the original guide:
+
+* Has no structure → organize it into the required format.
+* Has nested lists → flatten them.
+* Mixes steps and notes → separate them properly.
+* Is unclear → simplify wording without losing meaning.
+
+---
+
+## Context Reference
+
+Use these definitions consistently:
+
+* "Advance" = one step of RNG progression (preferred over "Frame").
+* "Initial seed" = starting RNG seed.
+* "PID" = Personality ID.
+* "PSV/ESV" = Shiny values derived from PID.
+* "TSV" = Trainer Shiny Value (TID + SID).
+* Pokémon is shiny when **TSV = PSV**.
+* "Final screen" = where you press `A` to generate a Pokémon.
+
+### Tools
+
+* **PokeFinder**: modern RNG calculator (GBA, NDS, GameCube, Switch).
+* **RNG Reporter**: older calculator.
+* **3DSRNGTool**: 3DS RNG calculator.
+* **PokeReader**: modern 3DS overlay tool (replaces PCalc).
+* **PCalc**: legacy 3DS tool.
+* **Citra / Lime3DS / Azahar**: 3DS emulators.
+
+---
+
+## Final Output Requirement
+
+* The result must follow this format exactly.
+* The guide must be **shorter, cleaner, and easier to follow** than the original.
+* **No information loss.**
+
+---
+
+## Optional Ending
+
+If appropriate, end with:
+
+**Congrats! You've now got your Pokémon!**
 ```
 
 </details>
 
-<details>
-  <summary><b>Read this if you're interested in helping code</b></summary>
+## Dev contributions
 
-## Setting up
+### Setting up
 
 First, install these tools:
 
 - [bun](https://bun.sh/)
 - [rust](https://www.rust-lang.org/tools/install)
-- [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/)
+- [wasm-pack](https://wasm-bindgen.github.io/wasm-pack/installer/)
 - (Windows only) [Required linker](https://stackoverflow.com/a/55603112)
 
 Next, install dependencies:
@@ -77,7 +242,7 @@ Finally, start the site:
 bun run dev
 ```
 
-### Additional Windows setup
+#### Additional Windows setup
 
 To avoid wrongly flagging unmodified files as modified, those git settings must be changed:
 
@@ -86,14 +251,14 @@ git config core.filemode false
 git config core.autocrlf input
 ```
 
-## Dev Workflow
+### Dev Workflow
 
 Rust workflow:
 
 1. Make rust changes and ensure tests are written to guarantee logic works as expected
 2. Run `cargo test` to make sure tests pass
 3. Run `cargo fmt` to format code
-4. Run `cargo clippy` to make sure changes don't violate repo rules
+4. Run `bun run lint` to make sure TS and rust changes don't violate repo rules
 5. Run `bun run dev` to build rust as wasm and load the web app
 
 TypeScript workflow:
@@ -103,7 +268,11 @@ TypeScript workflow:
 3. Run `bun run format` to format code
 4. Run `bun run lint` to make sure changes don't violate repo rules
 
-## Helpful tips for VSCode users
+If you run into problems with `bun run build:guides`, try `bun run build:guides:force` to rebuild guides from the ground up. Please use it sparingly, as it ignores some protections.
+
+`bun run build:guides:force` is primarily for automatically resolving merge conflicts with `src/__generated/guides.ts`, or if changes were made to `build-guides.tsx` that aren't compatible with your current branch.
+
+### Helpful tips for VSCode users
 
 Automatic formatting:
 
@@ -116,5 +285,3 @@ Other helpful plugins:
 - [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) to view code violations without running commands
 - [MDX](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx) for mdx highlighting
 - [Bun](https://marketplace.visualstudio.com/items?itemName=oven.bun-vscode) for better bun integration
-
-</details>

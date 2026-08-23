@@ -50,9 +50,9 @@ const Validator = z.object({
 export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
-  offset: 0,
   initial_advances: 0,
   max_advances: 1000,
+  offset: 0,
   rs_input_type: "Dead Battery",
   seed: 0,
   date: rngDate(),
@@ -111,10 +111,6 @@ const getFields = (game: Game) => {
 
   return [
     {
-      label: "Offset",
-      input: <FormikNumberInput<FormState> name="offset" numType="decimal" />,
-    },
-    {
       label: "Initial Advances",
       input: (
         <FormikNumberInput<FormState>
@@ -128,6 +124,10 @@ const getFields = (game: Game) => {
       input: (
         <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
       ),
+    },
+    {
+      label: "Offset",
+      input: <FormikNumberInput<FormState> name="offset" numType="decimal" />,
     },
     ...dynamic,
     {
@@ -144,48 +144,45 @@ type Props = {
 export const Gen3TidSidGenerator = ({ game = "rs" }: Props) => {
   const [results, setResults] = React.useState<Gen3TidSidResult[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts) => {
-      const versionOpts: Gen3TidSidVersionOptions = match(game)
-        .with("rs", () => ({
-          Rs: match(opts.rs_input_type)
-            .with("Dead Battery", (): "DeadBattery" => "DeadBattery")
-            .with("DateTime", () => {
-              return {
-                DateTime: addRngTime(opts.date, opts.time),
-              };
-            })
-            .with("Seed", () => ({
-              Seed: opts.seed,
-            }))
-            .exhaustive(),
-        }))
-        .with("frlge", () => ({
-          Frlge: {
-            tid: opts.tid,
-          },
-        }))
-        .with("xdcolo", () => ({
-          XdColo: {
-            seed: opts.seed,
-          },
-        }))
-        .exhaustive();
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+    const versionOpts: Gen3TidSidVersionOptions = match(game)
+      .with("rs", () => ({
+        Rs: match(opts.rs_input_type)
+          .with("Dead Battery", (): "DeadBattery" => "DeadBattery")
+          .with("DateTime", () => {
+            return {
+              DateTime: addRngTime(opts.date, opts.time),
+            };
+          })
+          .with("Seed", () => ({
+            Seed: opts.seed,
+          }))
+          .exhaustive(),
+      }))
+      .with("frlge", () => ({
+        Frlge: {
+          tid: opts.tid,
+        },
+      }))
+      .with("xdcolo", () => ({
+        XdColo: {
+          seed: opts.seed,
+        },
+      }))
+      .exhaustive();
 
-      const results = await rngTools.gen3_tidsid_states({
-        offset: opts.offset,
-        initial_advances: opts.initial_advances,
-        max_advances: opts.max_advances,
-        version_options: versionOpts,
-        filter: denormalizeIdFilter(opts.filter),
-      });
+    const results = await rngTools.gen3_tidsid_states({
+      offset: opts.offset,
+      initial_advances: opts.initial_advances,
+      max_advances: opts.max_advances,
+      version_options: versionOpts,
+      filter: denormalizeIdFilter(opts.filter),
+    });
 
-      setResults(results);
-    },
-    [game],
-  );
+    setResults(results);
+  };
 
-  const fields = React.useMemo(() => getFields(game), [game]);
+  const fields = getFields(game);
 
   return (
     <RngToolForm<FormState, Gen3TidSidResult>

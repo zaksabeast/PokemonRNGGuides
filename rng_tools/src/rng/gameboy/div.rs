@@ -7,7 +7,7 @@ const DIV_INCREMENTS: [u8; 16] = [
 const ADJUSTED_INDEXES: [usize; 6] = [0x8, 0x9, 0x562, 0x563, 0x22b5, 0x22b6];
 
 fn div_increment(index: usize) -> u8 {
-    let is_adjusted = ADJUSTED_INDEXES.iter().any(|&i| i == index);
+    let is_adjusted = ADJUSTED_INDEXES.contains(&index);
     let expected_increment = DIV_INCREMENTS[index % 16];
     match (is_adjusted, expected_increment) {
         (true, 0x12) => 0x13,

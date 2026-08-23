@@ -1,0 +1,101 @@
+0	0	M 42	8C7F0AAC	No	Rash	0: Overgrow	31	31	11	11	10	31	Steel	70	♂	Alert to sounds
+0	1	ML 29	8C7F0AAC	No	Rash	0: Overgrow	25	31	10	15	31	16	Psychic	64	♂	Somewhat vain
+0	2	L 18	8C7F0AAC	No	Rash	0: Overgrow	31	15	9	31	16	1	Steel	42	♂	Mischievous
+0	3	L 6	8C7F0AAC	No	Rash	0: Overgrow	1	31	16	26	31	31	Grass	66	♂	Alert to sounds
+0	4	ML 22	8C7F0AAC	No	Rash	0: Overgrow	28	26	31	24	4	31	Poison	38	♂	Capable of taking hits
+0	5	M 59	8C7F0AAC	No	Rash	0: Overgrow	31	24	4	9	31	31	Ice	56	♂	Alert to sounds
+0	6	L 3	8C7F0AAC	No	Rash	0: Overgrow	14	31	16	9	28	31	Ghost	36	♂	Alert to sounds
+0	7	M 53	8C7F0AAC	No	Rash	0: Overgrow	17	31	28	2	31	1	Grass	61	♂	Somewhat vain
+0	8	MH 75	8C7F0AAC	No	Rash	0: Overgrow	1	2	6	31	31	3	Ice	69	♂	Mischievous
+0	9	MH 75	8C7F0AAC	No	Rash	0: Overgrow	3	0	14	31	31	31	Ice	68	♂	Alert to sounds
+0	10	M 49	8C7F0AAC	No	Rash	0: Overgrow	13	30	19	31	31	31	Dragon	69	♂	Alert to sounds
+0	11	H 89	8C7F0AAC	No	Rash	0: Overgrow	3	6	31	15	19	31	Dragon	70	♂	Capable of taking hits
+0	12	M 43	8C7F0AAC	No	Rash	0: Overgrow	3	31	19	31	4	31	Steel	49	♂	Alert to sounds
+0	13	M 56	8C7F0AAC	No	Rash	0: Overgrow	18	31	4	24	23	31	Grass	57	♂	Alert to sounds
+0	14	H 97	8C7F0AAC	No	Rash	0: Overgrow	26	24	31	31	11	31	Dragon	68	♂	Capable of taking hits
+0	15	M 46	8C7F0AAC	No	Rash	0: Overgrow	5	31	11	2	31	31	Electric	69	♂	Alert to sounds
+0	16	H 88	8C7F0AAC	No	Rash	0: Overgrow	12	31	31	2	30	13	Ground	64	♂	Capable of taking hits
+0	17	MH 75	8C7F0AAC	No	Rash	0: Overgrow	13	2	31	18	31	31	Grass	69	♂	Capable of taking hits
+0	18	L 19	8C7F0AAC	No	Rash	0: Overgrow	31	18	25	31	24	31	Ghost	47	♂	Alert to sounds
+0	19	L 9	8C7F0AAC	No	Rash	0: Overgrow	5	31	24	31	31	4	Psychic	61	♂	Mischievous
+0	20	H 97	8C7F0AAC	No	Rash	0: Overgrow	4	31	23	31	30	17	Steel	64	♂	Mischievous
+0	21	H 81	8C7F0AAC	No	Rash	0: Overgrow	31	15	30	9	31	2	Psychic	59	♂	Somewhat vain
+0	22	M 41	8C7F0AAC	No	Rash	0: Overgrow	2	9	31	13	3	31	Dragon	58	♂	Capable of taking hits
+0	23	M 42	8C7F0AAC	No	Rash	0: Overgrow	22	31	3	22	31	0	Water	64	♂	Somewhat vain
+0	24	H 83	8C7F0AAC	No	Rash	0: Overgrow	0	22	31	30	31	23	Grass	69	♂	Capable of taking hits
+0	25	ML 24	8C7F0AAC	No	Rash	0: Overgrow	23	31	17	31	0	31	Steel	47	♂	Alert to sounds
+0	26	L 9	8C7F0AAC	No	Rash	0: Overgrow	5	23	0	31	31	19	Dragon	66	♂	Mischievous
+0	27	L 3	8C7F0AAC	No	Rash	0: Overgrow	31	31	24	20	31	23	Grass	57	♂	Somewhat vain
+0	28	M 45	8C7F0AAC	No	Rash	0: Overgrow	23	20	3	31	31	31	Dragon	68	♂	Alert to sounds
+0	29	M 50	8C7F0AAC	No	Rash	0: Overgrow	28	31	20	30	31	14	Fire	66	♂	Somewhat vain
+0	30	H 86	8C7F0AAC	No	Rash	0: Overgrow	14	31	14	14	31	3	Grass	70	♂	Somewhat vain
+0	31	ML 30	8C7F0AAC	No	Rash	0: Overgrow	3	14	31	31	4	27	Ghost	49	♂	Capable of taking hits
+0	32	M 54	8C7F0AAC	No	Rash	0: Overgrow	31	11	4	31	28	4	Rock	42	♂	Mischievous
+0	33	M 50	8C7F0AAC	No	Rash	0: Overgrow	4	0	31	22	31	16	Fire	63	♂	Capable of taking hits
+0	34	ML 21	8C7F0AAC	No	Rash	0: Overgrow	31	22	31	31	19	30	Psychic	70	♂	Capable of taking hits
+0	35	M 40	8C7F0AAC	No	Rash	0: Overgrow	30	7	31	25	31	6	Psychic	59	♂	Capable of taking hits
+0	36	ML 22	8C7F0AAC	No	Rash	0: Overgrow	31	25	25	31	31	27	Dark	66	♂	Mischievous
+0	37	L 0	8C7F0AAC	No	Rash	0: Overgrow	27	31	24	7	12	31	Ghost	47	♂	Alert to sounds
+0	38	M 53	8C7F0AAC	No	Rash	0: Overgrow	26	31	12	31	31	15	Ice	67	♂	Mischievous
+0	39	ML 38	8C7F0AAC	No	Rash	0: Overgrow	15	3	31	14	31	31	Electric	70	♂	Capable of taking hits
+0	40	L 18	8C7F0AAC	No	Rash	0: Overgrow	19	14	31	20	31	31	Grass	59	♂	Capable of taking hits
+0	41	H 95	8C7F0AAC	No	Rash	0: Overgrow	28	31	15	31	10	15	Steel	69	♂	Mischievous
+0	42	ML 31	8C7F0AAC	No	Rash	0: Overgrow	15	16	10	4	31	31	Water	58	♂	Alert to sounds
+0	43	M 51	8C7F0AAC	No	Rash	0: Overgrow	27	4	31	23	31	31	Dragon	68	♂	Capable of taking hits
+0	44	H 96	8C7F0AAC	No	Rash	0: Overgrow	15	31	31	0	31	22	Water	59	♂	Capable of taking hits
+0	45	H 87	8C7F0AAC	No	Rash	0: Overgrow	22	31	23	18	23	31	Grass	70	♂	Alert to sounds
+0	46	H 94	8C7F0AAC	No	Rash	0: Overgrow	21	18	31	31	16	31	Ghost	49	♂	Capable of taking hits
+0	47	L 0	8C7F0AAC	No	Rash	0: Overgrow	1	2	16	24	31	31	Water	56	♂	Alert to sounds
+0	48	H 97	8C7F0AAC	No	Rash	0: Overgrow	16	24	7	18	31	31	Grass	68	♂	Alert to sounds
+0	49	M 44	8C7F0AAC	No	Rash	0: Overgrow	13	31	11	13	30	31	Steel	59	♂	Alert to sounds
+0	50	H 80	8C7F0AAC	No	Rash	0: Overgrow	13	31	30	31	31	3	Dragon	69	♂	Mischievous
+0	51	ML 24	8C7F0AAC	No	Rash	0: Overgrow	3	31	9	9	31	31	Dark	57	♂	Alert to sounds
+0	52	MH 78	8C7F0AAC	No	Rash	0: Overgrow	5	31	6	10	31	31	Grass	69	♂	Alert to sounds
+0	53	M 41	8C7F0AAC	No	Rash	0: Overgrow	29	31	3	31	31	31	Dark	69	♂	Alert to sounds
+0	54	ML 24	8C7F0AAC	No	Rash	0: Overgrow	3	31	31	12	31	5	Electric	54	♂	Capable of taking hits
+0	55	MH 67	8C7F0AAC	No	Rash	0: Overgrow	5	31	29	7	31	31	Dark	66	♂	Alert to sounds
+0	56	M 52	8C7F0AAC	No	Rash	0: Overgrow	15	31	28	31	31	5	Dragon	62	♂	Mischievous
+0	57	H 97	8C7F0AAC	No	Rash	0: Overgrow	5	31	7	31	31	7	Dark	69	♂	Mischievous
+0	58	L 19	8C7F0AAC	No	Rash	0: Overgrow	7	31	31	5	3	21	Dark	54	♂	Capable of taking hits
+0	59	ML 39	8C7F0AAC	No	Rash	0: Overgrow	31	5	3	31	6	31	Steel	68	♂	Alert to sounds
+0	60	MH 77	8C7F0AAC	No	Rash	0: Overgrow	15	31	31	7	31	2	Ice	70	♂	Capable of taking hits
+0	61	MH 65	8C7F0AAC	No	Rash	0: Overgrow	2	7	31	31	14	31	Steel	70	♂	Capable of taking hits
+0	62	H 82	8C7F0AAC	No	Rash	0: Overgrow	28	19	31	22	31	10	Water	69	♂	Capable of taking hits
+0	63	MH 71	8C7F0AAC	No	Rash	0: Overgrow	10	31	5	17	31	31	Dragon	57	♂	Alert to sounds
+0	64	MH 69	8C7F0AAC	No	Rash	0: Overgrow	0	31	31	24	31	25	Grass	54	♂	Capable of taking hits
+0	65	H 97	8C7F0AAC	No	Rash	0: Overgrow	31	24	31	31	16	15	Ghost	48	♂	Capable of taking hits
+0	66	L 7	8C7F0AAC	No	Rash	0: Overgrow	15	31	16	31	12	16	Rock	42	♂	Mischievous
+0	67	MH 60	8C7F0AAC	No	Rash	0: Overgrow	16	27	31	21	31	31	Dragon	59	♂	Capable of taking hits
+0	68	L 8	8C7F0AAC	No	Rash	0: Overgrow	7	21	31	29	31	31	Dark	58	♂	Capable of taking hits
+0	69	H 86	8C7F0AAC	No	Rash	0: Overgrow	26	29	14	31	4	31	Ghost	48	♂	Alert to sounds
+0	70	M 57	8C7F0AAC	No	Rash	0: Overgrow	10	18	31	31	11	31	Dragon	70	♂	Capable of taking hits
+0	71	M 41	8C7F0AAC	No	Rash	0: Overgrow	3	11	11	31	31	31	Dark	70	♂	Alert to sounds
+0	72	H 83	8C7F0AAC	No	Rash	0: Overgrow	31	22	31	20	16	31	Ground	39	♂	Capable of taking hits
+0	73	L 7	8C7F0AAC	No	Rash	0: Overgrow	2	31	31	14	31	10	Water	70	♂	Capable of taking hits
+0	74	M 55	8C7F0AAC	No	Rash	0: Overgrow	10	31	31	27	31	25	Dragon	64	♂	Capable of taking hits
+0	75	MH 73	8C7F0AAC	No	Rash	0: Overgrow	25	31	31	31	20	29	Steel	43	♂	Capable of taking hits
+0	76	M 52	8C7F0AAC	No	Rash	0: Overgrow	29	31	20	31	20	0	Rock	41	♂	Mischievous
+0	77	MH 61	8C7F0AAC	No	Rash	0: Overgrow	0	29	20	31	20	31	Ghost	45	♂	Alert to sounds
+0	78	M 54	8C7F0AAC	No	Rash	0: Overgrow	15	10	31	31	29	6	Psychic	49	♂	Capable of taking hits
+0	79	MH 68	8C7F0AAC	No	Rash	0: Overgrow	6	15	31	31	31	2	Psychic	70	♂	Capable of taking hits
+0	80	MH 71	8C7F0AAC	No	Rash	0: Overgrow	31	24	21	31	31	26	Psychic	66	♂	Mischievous
+0	81	ML 39	8C7F0AAC	No	Rash	0: Overgrow	26	31	3	31	31	18	Psychic	70	♂	Mischievous
+0	82	L 19	8C7F0AAC	No	Rash	0: Overgrow	31	31	31	29	21	27	Dark	39	♂	Capable of taking hits
+0	83	MH 74	8C7F0AAC	No	Rash	0: Overgrow	27	29	31	2	31	31	Electric	68	♂	Capable of taking hits
+0	84	MH 63	8C7F0AAC	No	Rash	0: Overgrow	31	2	21	27	31	31	Dragon	67	♂	Alert to sounds
+0	85	ML 23	8C7F0AAC	No	Rash	0: Overgrow	18	31	9	31	17	28	Psychic	42	♂	Mischievous
+0	86	L 18	8C7F0AAC	No	Rash	0: Overgrow	28	31	31	5	1	31	Dragon	38	♂	Capable of taking hits
+0	87	L 14	8C7F0AAC	No	Rash	0: Overgrow	15	5	31	31	30	31	Steel	68	♂	Capable of taking hits
+0	88	MH 79	8C7F0AAC	No	Rash	0: Overgrow	23	31	30	31	26	31	Ghost	70	♂	Alert to sounds
+0	89	ML 25	8C7F0AAC	No	Rash	0: Overgrow	4	31	26	31	4	31	Ghost	49	♂	Alert to sounds
+0	90	M 50	8C7F0AAC	No	Rash	0: Overgrow	21	0	4	31	31	31	Ice	65	♂	Alert to sounds
+0	91	L 9	8C7F0AAC	No	Rash	0: Overgrow	2	25	24	31	31	29	Ice	61	♂	Mischievous
+0	92	ML 24	8C7F0AAC	No	Rash	0: Overgrow	29	31	31	29	30	31	Steel	59	♂	Capable of taking hits
+0	93	H 86	8C7F0AAC	No	Rash	0: Overgrow	31	29	30	31	0	31	Ghost	48	♂	Alert to sounds
+0	94	L 3	8C7F0AAC	No	Rash	0: Overgrow	27	31	0	18	30	31	Poison	67	♂	Alert to sounds
+0	95	H 82	8C7F0AAC	No	Rash	0: Overgrow	30	18	30	31	31	31	Ice	70	♂	Alert to sounds
+0	96	L 4	8C7F0AAC	No	Rash	0: Overgrow	9	31	16	26	11	31	Grass	66	♂	Alert to sounds
+0	97	M 47	8C7F0AAC	No	Rash	0: Overgrow	1	26	11	24	31	31	Grass	59	♂	Alert to sounds
+0	98	H 84	8C7F0AAC	No	Rash	0: Overgrow	21	31	14	8	31	31	Grass	59	♂	Alert to sounds
+0	99	MH 66	8C7F0AAC	No	Rash	0: Overgrow	31	31	13	31	31	9	Dark	62	♂	Mischievous
+0	100	M 56	8C7F0AAC	No	Rash	0: Overgrow	9	31	12	24	31	31	Grass	56	♂	Alert to sounds

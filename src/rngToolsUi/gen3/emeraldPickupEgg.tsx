@@ -13,29 +13,30 @@ import { maxIvs, minIvs } from "~/types/ivs";
 import {
   flattenIvs,
   FlattenIvs,
-  ivColumns,
+  inheritedIvColumns,
 } from "~/rngToolsUi/shared/ivColumns";
 import { z } from "zod";
-import { IvSchema } from "~/components/ivInput";
+import { defaultHiddenPowerFilter } from "~/components/hiddenPowerInput";
+import { IvsSchema } from "~/components/ivInput";
 import { HexSchema } from "~/utils/number";
+import { Translations } from "~/translations";
 
 type Result = FlattenIvs<Egg3PickupState>;
 
-const columns: ResultColumn<Result>[] = [
-  { title: "Advance", dataIndex: "advance" },
-  ...ivColumns,
-];
+const getColumns = (t: Translations): ResultColumn<Result>[] => {
+  return [{ title: t["Advance"], dataIndex: "advance" }, ...inheritedIvColumns];
+};
 
 const Validator = z.object({
-  delay: z.number().int().min(0),
+  delay: z.number().int(),
   seed: HexSchema(0xffffffff),
   initial_advances: z.number().int().min(0),
   max_advances: z.number().int().min(0),
   method: z.enum(["EmeraldBred", "EmeraldBredSplit", "EmeraldBredAlternate"]),
-  parent1_ivs: IvSchema,
-  parent2_ivs: IvSchema,
-  filter_min_ivs: IvSchema,
-  filter_max_ivs: IvSchema,
+  parent1_ivs: IvsSchema,
+  parent2_ivs: IvsSchema,
+  filter_min_ivs: IvsSchema,
+  filter_max_ivs: IvsSchema,
 });
 
 export type FormState = z.infer<typeof Validator>;
@@ -52,86 +53,81 @@ const initialValues: FormState = {
   filter_max_ivs: maxIvs,
 };
 
-const fields: Field[] = [
-  {
-    label: "Seed",
-    input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
-  },
-  {
-    label: "Initial advances",
-    input: (
-      <FormikNumberInput<FormState> name="initial_advances" numType="decimal" />
-    ),
-  },
-  {
-    label: "Max advances",
-    input: (
-      <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
-    ),
-  },
-  {
-    label: "Delay",
-    input: <FormikNumberInput<FormState> name="delay" numType="decimal" />,
-  },
-  {
-    label: "Parent 1 IVs",
-    input: <IvInput<FormState> name="parent1_ivs" />,
-  },
-  {
-    label: "Parent 2 IVs",
-    input: <IvInput<FormState> name="parent2_ivs" />,
-  },
-  {
-    label: "Method",
-    input: (
-      <FormikSelect<FormState, "method">
-        name="method"
-        options={[
-          { label: "Normal", value: "EmeraldBred" },
-          { label: "Split", value: "EmeraldBredSplit" },
-          { label: "Alternate", value: "EmeraldBredAlternate" },
-        ]}
-      />
-    ),
-  },
-  {
-    label: "Egg min IVs",
-    input: <IvInput<FormState> name="filter_min_ivs" />,
-  },
-  {
-    label: "Egg max IVs",
-    input: <IvInput<FormState> name="filter_max_ivs" />,
-  },
-];
-
-type Props = {
-  lua?: boolean;
+const getFields = (t: Translations): Field[] => {
+  return [
+    {
+      label: t["Seed"],
+      input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
+    },
+    {
+      label: t["Initial advances"],
+      input: (
+        <FormikNumberInput<FormState>
+          name="initial_advances"
+          numType="decimal"
+        />
+      ),
+    },
+    {
+      label: t["Max advances"],
+      input: (
+        <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
+      ),
+    },
+    {
+      label: t["Delay"],
+      input: <FormikNumberInput<FormState> name="delay" numType="decimal" />,
+    },
+    {
+      label: t["Parent 1 IVs"],
+      input: <IvInput<FormState> name="parent1_ivs" />,
+    },
+    {
+      label: t["Parent 2 IVs"],
+      input: <IvInput<FormState> name="parent2_ivs" />,
+    },
+    {
+      label: t["Method"],
+      input: (
+        <FormikSelect<FormState, "method">
+          name="method"
+          options={[
+            { label: t["Normal"], value: "EmeraldBred" },
+            { label: t["Split"], value: "EmeraldBredSplit" },
+            { label: t["Alternate"], value: "EmeraldBredAlternate" },
+          ]}
+        />
+      ),
+    },
+    {
+      label: t["Egg min IVs"],
+      input: <IvInput<FormState> name="filter_min_ivs" />,
+    },
+    {
+      label: t["Egg max IVs"],
+      input: <IvInput<FormState> name="filter_max_ivs" />,
+    },
+  ];
 };
 
-export const EmeraldPickupEgg = ({ lua = false }: Props) => {
+export const EmeraldPickupEgg = () => {
   const [results, setResults] = React.useState<Result[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts) => {
-      const results = await rngTools.emerald_egg_pickup_states({
-        ...opts,
-        parent_ivs: [opts.parent1_ivs, opts.parent2_ivs],
-        lua_adjustment: lua,
-        filter: {
-          max_ivs: opts.filter_max_ivs,
-          min_ivs: opts.filter_min_ivs,
-        },
-      });
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+    const results = await rngTools.emerald_egg_pickup_states({
+      ...opts,
+      parent_ivs: [opts.parent1_ivs, opts.parent2_ivs],
+      filter_hidden_power: defaultHiddenPowerFilter,
+      methods: [opts.method],
+    });
 
-      setResults(results.map(flattenIvs));
-    },
-    [lua],
-  );
+    setResults(results.map(flattenIvs));
+  };
 
   return (
     <RngToolForm<FormState, Result>
-      fields={fields}
-      columns={columns}
+      getFields={getFields}
+      getColumns={getColumns}
       results={results}
       initialValues={initialValues}
       validationSchema={Validator}

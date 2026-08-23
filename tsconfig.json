@@ -1,13 +1,14 @@
 {
   "files": [],
   "compilerOptions": {
-    "baseUrl": "./",
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["./src/*"],
+      "rng_tools": ["./rng_tools/pkg"]
     }
   },
   "references": [
     { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
+    { "path": "./tsconfig.node.json" },
+    { "path": "./tsconfig.test.json" }
   ]
 }

@@ -2958,7 +2958,7 @@ export const guides = {
       addedOn: "2025-04-08",
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-07-12",
+      lastUpdated: "2026-08-23",
       type: "baseGuide",
       canonical: "/emerald-overview/",
       file: "guides/Gen 3/Emerald/Emerald Overview.mdx",

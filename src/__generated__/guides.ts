@@ -2850,27 +2850,47 @@ export const guides = {
       return file.default;
     }),
   },
-  "/emerald-lotad-seedot/": {
+  "/emerald-largest-lotad-seedot/": {
     meta: {
+      id: "/emerald-largest-lotad-seedot/",
       categories: ["Emerald"],
+      section: "other_rng",
+      guideVariants: ["retail"],
+      guideKey: "false-Largest Lotad/Seedot",
+      isNew: true,
       title: "Largest Lotad/Seedot",
       navDrawerTitle: "Largest Lotad/Seedot",
       description:
         "Catching the largest possible Lotad and Seedot to show to Sootopolis City brothers",
-      slug: "/emerald-lotad-seedot/",
+      slug: "/emerald-largest-lotad-seedot/",
       isRoughDraft: false,
-      tag: "any",
+      orderPriority: 20,
+      difficulty: null,
       hideFromNavDrawer: false,
-      addedOn: "2025-05-06",
+      addedOn: "2026-08-23",
       translation: null,
       layout: "guide",
-      canonical: null,
+      lastUpdated: "2026-08-23",
+      type: "baseGuide",
+      canonical: "/emerald-largest-lotad-seedot/",
       file: "guides/Gen 3/Emerald/Largest Pokemon.mdx",
       translations: null,
+      guideGroupId: "en:false-Largest Lotad/Seedot:Emerald",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/emerald-largest-lotad-seedot/" },
+        cfwEmu: null,
+      },
+      displayAttributes: [],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Largest Pokemon.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Largest Pokemon.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emerald-mirage-island/": {
     meta: {
@@ -17183,12 +17203,9 @@ export const guideSlugs = [
   "/dream-radar-cart-patches/",
   "/dream-radar-patches/",
   "/e-tips-rng/",
-<<<<<<< HEAD
-  "/emerald-lotad-seedot/",
-=======
   "/emerald-advancing-rng-techniques/",
   "/emerald-battle-video/",
->>>>>>> c0b2bb664f04a4ef052e6dd4d831351703fa4047
+  "/emerald-largest-lotad-seedot/",
   "/emerald-mirage-island/",
   "/emerald-overview/",
   "/emerald-painting-reseeding/",

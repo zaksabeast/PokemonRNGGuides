@@ -66,7 +66,7 @@ const Validator = z
     timeOfDay: z.enum(TIMES),
     swarmActive: z.boolean(),
     dualSlotGame: z.enum(Gen3GameVersions).nullable(),
-    chainCount: z.number().int().min(0),
+    chainCount: z.number().int().min(0).max(1000),
     battleResult: z.enum(BATTLE_RESULTS),
   })
   .extend(pkmFilterSchema.shape);
@@ -90,7 +90,7 @@ const initialValues: FormState = {
   timeOfDay: "day",
   swarmActive: false,
   dualSlotGame: null,
-  chainCount: 40,
+  chainCount: 1,
   battleResult: "Catch",
   ...getPkmFilterInitialValues(),
 };
@@ -315,6 +315,12 @@ const FormContent = () => {
           name="battleResult"
           options={toOptions(BATTLE_RESULTS)}
         />
+      ),
+    },
+    {
+      label: "Chain",
+      input: (
+        <FormikNumberInput<FormState> name="chainCount" numType="decimal" />
       ),
     },
   ];

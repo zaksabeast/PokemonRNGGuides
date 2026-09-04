@@ -1,0 +1,1 @@
+import{t as e}from"./battleVideo-Dw8-iNnx.js";export{e as BattleVideo};

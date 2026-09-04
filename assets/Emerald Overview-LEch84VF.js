@@ -1,0 +1,43 @@
+var e=`---
+title: "绿宝石概述"
+description: "宝可梦绿宝石乱数操作的实际应用与操作技巧"
+slug: "zh-emerald-overview"
+translation:
+  enSlug: "emerald-overview"
+  language: "zh"
+---
+
+<Gist>要点：宝可梦绿宝石乱数操作的实际应用与操作技巧</Gist>
+
+### 乱数操作的实际应用
+
+- 获得超稀有的宝可梦（例如：异色、完美个体、性格、特性）：
+  - 定点宝可梦（最容易进行乱数操作，也是绝大多数传说宝可梦唯一的乱数获取途径）。
+  - [野生宝可梦](/emerald-wild)（百变怪唯一的乱数获取方式）。
+  - [孵化乱数](/zh-retail-emerald-egg)（获取完美宝可梦所需耗时更短）。
+- [前往幻之岛](/zh-emerald-mirage-island)（获取利木果的唯一途径）。
+- [预判对战开拓区对手阵容](https://pokemoncompletion.com/BattleFacilities/Emerald/RngManipulation)，更轻松获得金色象征。
+- [获取宝可病毒](/zh-emerald-pokerus-emu)，培育完美低等级宝可梦必不可少，例如习得龙之怒的 5 级图图犬。
+- 获取超大尺寸的莲叶童子与橡实果，可前往琉璃市向俩 NPC 兄弟展示。
+
+### 乱数操作技巧
+
+- [查找你的 SID](/zh-gen3-sid)，这是进行异色宝可梦乱数操作的必要条件。
+- 控制你的 TID/SID，缩短遭遇特定异色宝可梦的等待时间。
+- 缩短超高目标帧乱数的等待时间：
+  - [利用绘画重置乱数帧数](/zh-emerald-painting-rng)。
+  - [通过对战录像来保存和恢复乱数帧数](/zh-e-tips-rng)。
+- 通过任意代码执行（ACE） 操控宝可梦生成结果。
+- 携带 PID 小于 25 的队首宝可梦强制触发 Wild-1，提高宝可梦生成的稳定性。
+- 通过宝可梦的个体值反推其 PID 值。
+
+### 其他有趣的文章
+
+- [GBA 乱数操作概述](/zh-gba-overview).
+
+### 特别鸣谢
+
+- RainingChain for contributing this page.
+- Fiask for Italian translation.
+- 中文翻译：白希洛/Hakuhiro
+`;export{e as default};

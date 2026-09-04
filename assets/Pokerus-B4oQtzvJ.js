@@ -1,0 +1,66 @@
+var e=`---
+- title: "Pokérus in Smaragd"
+  navDrawerTitle: "Pokérus"
+  description: "Wie man sich mit dem Pokérus infiziert"
+  slug: "de-emerald-pokerus-emu"
+  translation:
+    enSlug: "emerald-pokerus-emu"
+    language: "de"
+- title: "Pokérus in Rubin und Saphir"
+  navDrawerTitle: "Pokérus"
+  description: "Wie man sich mit dem Pokérus infiziert"
+  slug: "de-rs-pokerus-emu"
+  translation:
+    enSlug: "rs-pokerus-emu"
+    language: "de"
+---
+
+<Gist>Zusammenfassung: Infiziere deine Pokémon mit dem Pokérus</Gist>
+
+## Tools
+
+- [mGBA](/mgba-setup)
+- Download [Pokérus lua script](https://raw.githubusercontent.com/RainingChain/pk_emu_scripts/refs/heads/main/Gen3/pokerus.lua)
+
+## Pokérus
+
+Nach jedem Kampf gegen ein wildes Pokémon besteht eine Chance von 1 / 21.845, dass eines deiner Pokémon mit dem Pokérus infiziert wird. Während der Infektion werden die im Kampf erhaltenen EVs verdoppelt. Der Pokérus wird vor allem benötigt, um optimale Low-Level-Pokémon zu erhalten, wie zum Beispiel ein Farbeagle auf Level 5 mit Drachenwut.
+
+![Pokémon infected by Pokérus](/images/Emerald/pokerus.png)
+
+## Schritt 1: Setup
+
+1. <ShowIf slug="/de-emerald-pokerus-emu">Öffne mGBA.</ShowIf>
+   <ShowIf slug="/de-rs-pokerus-emu">
+     Öffne mGBA. Stelle sicher, dass die "Realtime clock" deaktiviert ist (Tools
+     -> Game overrides...).
+   </ShowIf>
+1. Starte dein Spiel und lade das \`pokerus.lua\` Script.
+1. Starte das Spiel mit \`Strg + R\` neu.
+
+## Schritt 2: Kalibrierung
+
+1. Starte einen Pokémon-Kampf und greife das wilde Pokémon an, bis es besiegt ist.
+1. Erstelle einen Savestate bei der Nachricht "XXX erhält YY EP.".
+1. Pausiere das Spiel mit \`Strg + P\`.
+1. Notiere dir den "Current advance", der im Scripting-Fenster angezeigt wird.
+1. Drücke \`A\` während das Spiel pausiert ist, halte \`A\` gedrückt und setze das Spiel mit \`Strg + P\` fort.
+1. Wenn das Scripting-Fenster meldet, dass der aktuelle Kampf keinen Pokérus liefern kann, beende den Kampf und kehre zu Schritt 1 der Kalibrierung zurück.
+1. Andernfalls berechne deinen Target Advance, indem du den Current Advance aus Schritt 4 mit der im Scripting-Fenster angezeigten "Advance Difference" addierst.
+
+## Schritt 3: Den Target Advance treffen
+
+1. Lade deinen vorherigen Savestate (den aus dem Kampf) und spule die Zeit mit \`Strg + N\` vor, bis der Current Advance mit dem im letzten Schritt berechneten Target Advance übereinstimmt.
+1. Sobald sie übereinstimmen, drücke \`A\` während das Spiel pausiert ist, halte \`A\` gedrückt und setze das Spiel mit \`Strg + P\` fort.
+1. Überprüfe den Bericht all deiner Pokémon, um zu verifizieren, ob eines von ihnen den Pokérus hat.
+
+<YouTubeVideo id="ySpe6-4xCNc" />
+
+## Credits
+
+- Guide und Scripts: RainingChain.
+- Script Inspiration: Real96.
+- Decompil Projekte: [pret team](https://github.com/pret/pokeemerald).
+- Chinesische Übersetzung: xuanyelin, Hakuhiro.
+- Deutsche Übersetzung: Parasite.
+`;export{e as default};

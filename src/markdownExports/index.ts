@@ -472,17 +472,17 @@ const tools = {
     () => import("~/rngToolsUi/workbench"),
     (mod) => mod.RngWorkbench,
   ),
+  PokeRadar4: lazyLoad(
+    () => import("~/rngToolsUi/gen4/pokeradar/finalTool"),
+    (mod) => mod.PokeRadar4,
+  ),
   PokeRadar4ShinySearcher: lazyLoad(
     () => import("~/rngToolsUi/gen4/pokeradar/index"),
     (mod) => mod.PokeRadar4ShinySearcher,
   ),
-  PokeRadar4PatchGrid: lazyLoad(
-    () => import("~/rngToolsUi/gen4/pokeradar/patchGrid"),
-    (mod) => mod.PokeRadar4PatchGrid,
-  ),
-  PokeRadar4: lazyLoad(
-    () => import("~/rngToolsUi/gen4/pokeradar/finalTool"),
-    (mod) => mod.PokeRadar4,
+  PokeRadar4ChainStarter: lazyLoad(
+    () => import("~/rngToolsUi/gen4/pokeradar/chainStarter"),
+    (mod) => mod.PokeRadar4ChainStarter,
   ),
 };
 

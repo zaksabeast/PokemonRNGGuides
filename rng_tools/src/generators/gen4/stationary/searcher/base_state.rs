@@ -20,11 +20,10 @@ pub struct BaseStatic4State {
     pub characteristic: Characteristic,
     pub lead: LeadAbility,
     pub level: u8,
+    pub encounter_slot: u8,
 }
 
 impl BaseStatic4State {
-    /// All parameters are tightly coupled inputs needed to construct the complete state.
-    /// Wrapping them in a struct would add boilerplate without improving clarity.
     #[allow(clippy::too_many_arguments)]
     pub fn new(
         seed: u32,
@@ -36,6 +35,7 @@ impl BaseStatic4State {
         sid: u16,
         ivs: Ivs,
         lead: LeadAbility,
+        encounter_slot: u8,
     ) -> Self {
         Self {
             ivs,
@@ -45,6 +45,7 @@ impl BaseStatic4State {
             lead,
             level,
             advance: 0,
+            encounter_slot,
             shiny: gen3_shiny(pid, tid, sid),
             ability: AbilityType::from_gen3_pid(pid),
             characteristic: Characteristic::new(pid, &ivs),

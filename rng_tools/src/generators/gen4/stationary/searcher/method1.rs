@@ -35,6 +35,7 @@ pub fn get_method1_states(
         sid,
         ivs,
         LeadAbility::None,
+        0,
     );
     std::iter::once(state)
 }

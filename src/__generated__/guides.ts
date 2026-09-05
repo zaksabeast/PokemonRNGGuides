@@ -2488,7 +2488,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-08-07",
+      lastUpdated: "2026-09-02",
       type: "baseGuide",
       canonical: "/dppt-pokeradar-rng/",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/PokeRadar.mdx",

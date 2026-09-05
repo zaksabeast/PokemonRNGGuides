@@ -15,10 +15,19 @@ pub struct Gen4StaticPokemon {
     pub nature: Nature,
     pub advance: usize,
     pub characteristic: Characteristic,
+    pub encounter_slot: u8,
 }
 
 impl Gen4StaticPokemon {
-    pub fn new(tid: u16, sid: u16, species: Species, level: u8, pid: u32, ivs: Ivs) -> Self {
+    pub fn new(
+        tid: u16,
+        sid: u16,
+        species: Species,
+        level: u8,
+        pid: u32,
+        ivs: Ivs,
+        encounter_slot: u8,
+    ) -> Self {
         Self {
             pid,
             level,
@@ -29,6 +38,7 @@ impl Gen4StaticPokemon {
             ivs,
             nature: Nature::from_pid(pid),
             advance: 0,
+            encounter_slot,
         }
     }
 }

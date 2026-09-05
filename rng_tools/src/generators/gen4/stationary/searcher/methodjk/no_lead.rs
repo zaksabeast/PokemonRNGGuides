@@ -1,19 +1,19 @@
 use crate::gen4::LeadAbility;
 use crate::gen4::calc_level::LevelCalculator;
 use crate::gen4::game_logic::GameSpecificLogic;
+use crate::gen4::stationary::generator::encounter_strategy::encounter_slot_from_roll;
 use crate::gen4::stationary::searcher::base_state::BaseStatic4State;
 use crate::rng::Rng;
 use crate::rng::lcrng::{Pokerng, PokerngR};
 use crate::{Ivs, Nature, Species};
 
-/// Iterator for MethodJ/K no lead that generates states on-demand.
-/// This avoids collecting millions of intermediate states into memory.
 struct MethodJKNoPidLeadStateIterator<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>>
 {
     species: Species,
     min_level: u8,
     max_level: u8,
     pressure: bool,
+    wild: bool,
     tid: u16,
     sid: u16,
     ivs: Ivs,
@@ -34,6 +34,7 @@ struct MethodJKNoPidLeadStateIterator<Game: GameSpecificLogic, LevelCalc: LevelC
 impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>>
     MethodJKNoPidLeadStateIterator<Game, LevelCalc>
 {
+    #[allow(clippy::too_many_arguments)]
     fn new(
         species: Species,
         min_level: u8,
@@ -43,6 +44,7 @@ impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>>
         ivs: Ivs,
         seed: u32,
         pressure: bool,
+        wild: bool,
     ) -> Self {
         let mut rng = Pokerng::new(seed).reverse();
 
@@ -72,6 +74,7 @@ impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>>
             min_level,
             max_level,
             pressure,
+            wild,
             finished: false,
             _phantom_game: std::marker::PhantomData,
             _phantom_level: std::marker::PhantomData,
@@ -98,6 +101,13 @@ impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>> Iterator
                     self.max_level,
                     self.pressure,
                 );
+
+                let encounter_slot = if self.wild {
+                    encounter_slot_from_roll(seed_rng.rand::<u16>())
+                } else {
+                    0
+                };
+
                 let origin_seed = seed_rng.rand::<u32>();
 
                 let result = Some(BaseStatic4State::new(
@@ -113,9 +123,9 @@ impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>> Iterator
                         true => LeadAbility::Pressure,
                         false => LeadAbility::None,
                     },
+                    encounter_slot,
                 ));
 
-                // Advance before returning to prepare for next iteration
                 let hunt_nature =
                     (((self.next_rng as u32) << 16 | self.next_rng_2 as u32) % 25) as u16;
 
@@ -130,7 +140,6 @@ impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>> Iterator
                 return result;
             }
 
-            // Advance and check termination
             let hunt_nature = (((self.next_rng as u32) << 16 | self.next_rng_2 as u32) % 25) as u16;
             self.full_seed = self.rng.rand::<u32>();
             self.next_rng = (self.full_seed >> 16) as u16;
@@ -143,6 +152,7 @@ impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>> Iterator
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 pub fn get_methodjk_no_lead_state<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>>(
     species: Species,
     min_level: u8,
@@ -152,8 +162,9 @@ pub fn get_methodjk_no_lead_state<Game: GameSpecificLogic, LevelCalc: LevelCalcu
     ivs: Ivs,
     seed: u32,
     pressure: bool,
+    wild: bool,
 ) -> impl Iterator<Item = BaseStatic4State> {
     MethodJKNoPidLeadStateIterator::<Game, LevelCalc>::new(
-        species, min_level, max_level, tid, sid, ivs, seed, pressure,
+        species, min_level, max_level, tid, sid, ivs, seed, pressure, wild,
     )
 }

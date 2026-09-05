@@ -84,6 +84,7 @@ pub fn get_radar_shiny_states(
                     sid,
                     ivs,
                     out_lead,
+                    0,
                 ));
             }
 
@@ -110,6 +111,7 @@ pub fn get_radar_shiny_states(
             sid,
             ivs,
             out_lead,
+            0,
         ));
     }
 

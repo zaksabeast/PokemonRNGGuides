@@ -11,26 +11,41 @@
     - "cfw-emu"
 ---
 
+## Tools
+
+- Having PokeRadar unlocked
+- A ton of PokeBalls for max results (Quick Ball are recommended)
+- Chatot with Chatter (use 2 to speed up the process)
+- Coin Toss Pokètch application
+- [Chatot Pitch Finder](/chatot-pitch-elm-call-finder/)
+- [PokeFinder](/pokefinder/) (Only to calibrate if it doesn't work).
+
+> [!WARNING]
+> The process itself is easy, but randomly moving NPCs can make it tricky in some areas. Be aware this requires a lot of patience!
+
 ## Intro
 
 In this guide we will explain how PokéRadar works and how to perform RNG Manipulation with it on Pokemon Diamond, Pearl and Platinum!
 
-PokéRadar is an item that allows you to find particular wild Pokémon in the tall grass and create "chains" of consecutive encounters with the same species. It is the most famous method of Gen 4 together with the Masuda method for hunting Shiny Pokémon, because long chains greatly increase the chances of finding one.
+The PokéRadar is an item that allows you to find particular wild Pokémon in the tall grass and create "chains" of consecutive encounters with the same species. It is the most famous method of hunting shiny Pokémon in Gen 4 together with the Masuda method. The longer the chain, the higher the chances of finding a shiny.
 
-It is usually used to catch exclusive Pokémon or perform RNG manipulation where it is not possible to do so, such as during a blizzard or a sandstorm.
+It is usually used to catch PokéRadar exclusive Pokémon or perform wild RNG manipulation in areas that sweet scent fails in, such as during a Routes 216 or 228 due to the blizzard and sandstorm.
 
 ## How does PokéRadar work?
 
-Once used, 4 "rings" are created, each spaced 1 tile where at least one piece of tall grass per ring will vibrate, indicating that at that specific point if the user passes over that tile, a wild encounter will be started.
+Once used, the game checks 4 "rings" of grass around the user, a 9x9 area in total, and then attempts to spawn 1 patch of shaking grass on each of the 4 rings. If the player walks into such a shaking grass tile, a wild encounter will be started.
 
-The first pokemon encountered, if it is captured or knocked out, will start a chain with that pokemon species. The longer the chain becomes, the more the game increases the chance that a special lump containing a Shiny Pokémon will appear.
+The first pokemon encountered, if it is captured or knocked out, will start a chain with that pokemon species. The longer the chain becomes, the more the game increases the chance that a sparkling grass patch cont
 
 ### Grass shake types
 
-The grass can shake in two different ways:
+The grass can shake in two different ways: **Slow** and **Fast**
 
-- **Slow**
-- **Fast**
+See the image here below: on the left we have the slow ones, and on the right, the fast ones. The difference is noticeable.
+
+| Patch types                                             |
+| ------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/shaking-patches.gif) |
 
 Once you start a chain with one shake type, you must continue entering patches with the same shake type for the entire chain.
 
@@ -50,6 +65,7 @@ Your chain will break if:
 - You encounter a Pokémon other than the one in the chain.
 - You enter a patch of grass that doesn't have the same vibration.
 - You change route, enter a building or leave the area.
+- You move so far away from the grass patches that all the shaking patches are no longer on your screen.
 - You turn off the game or restart it.
 - You use the bike.
 - PokéRadar usage fails.
@@ -63,9 +79,59 @@ This tool can also be used simply to build very long chains, as it will show whi
 2. Go to the area with as much tall grass as possible, trying to cover the entire 9x9. If this is not possible, try to cover as many tiles as possible.
 3. Once done, save the game.
 
+Always keep a repel activated.
+
 ## Webtool
+
+### Step 1: Search for Your Target
+
+1. Fill in the Searcher form below with your desired target, then click "Select" once you find the result you like.
+2. Hit your target seed, then press `X` as fast as possible to open the menu and stop the RNG from advancing.
+
+### Step 2: Start the Chain
+
+1. Use PokéRadar and choose a patch, then get in front of it without entering.
+2. Use the "Chain Starter" tool (under the Searcher tool) to get the Advance, then use Chatot and stop 1 advance before your target and then take the step, since taking a step in tall grass advances the RNG. If 1 advance before doesn't line up, see the Troubleshooting section.
+3. Close the menu while holding the D-Pad on the same side as the patch to take a step and start the battle. If the target doesn't appear, repeat from Step 1.
+4. Defeat or catch it to end the battle and start the chain (catching increases the chance of continuing the chain).
+
+If possible, exit the tall grass, take 50 steps, then reposition yourself as before.
+
+> [!WARNING]
+> Don't exit the location, or the chain will break.
+
+### Step 3: Get the Shiny Patch
+
+1. Advance the RNG to the Shiny Patch Advance, then activate PokéRadar. If done correctly, you'll get a shiny patch. Shiny guaranteed!
+
+> [!NOTE]
+> You can stop here if you only want a shiny, without RNGing the spread.
+
+### Step 4: Catch the Shiny
+
+1. Get in front of it without entering, then use Chatot and stop 1 advance before your target and then take the step, and take a step to start the battle. If 1 advance before doesn't line up, see the Troubleshooting section.
+2. Catch the Pokémon and check its IVs. If they're correct, congrats. Otherwise, repeat from Step 1.
+
+> [!TIP]
+> To create a long chain, input the Initial Seed into the "Grid" tool and advance the RNG to any advance — the specific one doesn't matter, as long as you know which one it is.
 
 <PokeRadar4 />
 
-> [!NOTE]
-> WIP, it will be available in the next few days.
+**Congrats! You've now got your Pokémon!**
+
+## Troubleshooting
+
+> [!IMPORTANT]
+> The "Stop 1 advance before your target Advance" rule may not always be accurate, since NPCs can advance the RNG unpredictably.
+
+1. Wait 5 seconds, save the game, and try again. This will reposition NPCs.
+2. If that doesn't fix it, adjust using the formula `Advance - n`, where `n` is the number of advances you were off by.
+3. To find `n`, create a profile in PokeFinder under Gen 4 -> Wild.
+4. In the Generator tab, enter the Initial Seed and the location info. Be sure `PokeRadar` and `PokeRadar Shiny` are activated.
+5. Use the IV Calculator to get the advance of your target.
+
+## Credits
+
+- Fiask, for writing and translating this guide into Italian, as well as developing the tool.
+- Real96 and Sergi, for helping to read the source code and understand how it works.
+- Thanks to all [Pret](https://github.com/pret/pokeplatinum) contributors for their research.

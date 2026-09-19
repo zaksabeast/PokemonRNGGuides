@@ -11,6 +11,7 @@ import {
   Icon,
   Tag,
   FormikRadio,
+  FormFieldTable,
 } from "~/components";
 import { CalibrateTimerButton } from "~/components/calibrateTimerButton";
 import {
@@ -21,9 +22,13 @@ import {
   useRegisteredTrainers,
 } from "../state";
 import { pokeNavTrainers } from "../constants";
-import { rngTools, Gen3HeldEgg, PokeNavTrainer } from "~/rngTools";
+import { rngTools, Gen3HeldEgg, PokeNavTrainer, Species } from "~/rngTools";
 import { sortBy, uniqueId } from "lodash-es";
-import { getNatureInputProps } from "~/components/pkmFilter";
+import {
+  getNatureInputProps,
+  getPkmFilterFields,
+  getPkmFilterInitialValues,
+} from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import { useHydrate } from "~/hooks/useHydrate";
 import { Skeleton } from "antd";
@@ -32,9 +37,11 @@ import { formatOffset } from "~/utils/offsetSymbol";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { useWatch } from "~/hooks/form";
 import { Translations, usePokeNavTranslations } from "~/translations";
-import { PokeNavTrainerTranslations } from "~/translations/en/pokeNav";
+import {
+  PokeNavTrainerTranslationPair,
+  PokeNavTrainerTranslations,
+} from "~/translations/en/pokeNav";
 import { sortLocale } from "~/utils/sortLocale";
-import { gender } from "~/types";
 import { createGen3TimerAtom } from "~/rngToolsUi/timer/atoms";
 import { Validator, HeldEggCalibrationFilters as FormState } from "./validator";
 import { HeldEggCalibrationResult as Result } from "./result";
@@ -118,58 +125,28 @@ const getColumns = ({
 
 const initialValues: FormState = {
   nature: "Adamant",
-  gender: "Male",
   hasEgg: "true",
   pokeNavCall: "None",
   advanceRange: 1000,
   redrawRange: 0,
   calibration: null,
+  ...getPkmFilterInitialValues(),
 };
 
-const HatchedGenderField = ({ t }: { t: Translations }) => {
-  const { hasEgg } = useWatch({
-    names: { hasEgg: true },
-    validationSchema: Validator,
-  });
-  const hatchedGenderOptions = gender.map((option) => ({
-    label: t[option],
-    value: option,
-  }));
-
-  return (
-    <FormikSelect<FormState, "gender">
-      name="gender"
-      disabled={hasEgg !== "true"}
-      options={hatchedGenderOptions}
-    />
-  );
-};
-
-const HatchedNatureField = ({ t }: { t: Translations }) => {
-  const { hasEgg } = useWatch({
-    names: { hasEgg: true },
-    validationSchema: Validator,
-  });
-
-  return (
-    <FormikSelect<FormState, "nature">
-      name="nature"
-      disabled={hasEgg !== "true"}
-      {...getNatureInputProps(t)}
-    />
-  );
-};
-
-const getFields = ({
-  t,
-  translatedTrainers,
-}: {
+type FieldProps = {
   t: Translations;
-  translatedTrainers: PokeNavTrainerTranslations;
-}): Field[] => {
+  eggSpecies: Species;
+  translatedTrainers: PokeNavTrainerTranslationPair;
+};
+
+const Fields = ({ t, translatedTrainers, eggSpecies }: FieldProps) => {
+  const { hasEgg: hasEggString } = useWatch({
+    validationSchema: Validator,
+    names: { hasEgg: true },
+  });
   const unsortedTrainerOptions = toOptions(
     pokeNavTrainers,
-    (name) => translatedTrainers[name],
+    (name) => translatedTrainers.withoutTitle[name],
   );
   const sortedOptions = sortLocale(unsortedTrainerOptions, "label");
   const trainerOptions = [
@@ -177,7 +154,18 @@ const getFields = ({
     ...sortedOptions,
   ] satisfies { value: PokeNavTrainer; label: string }[];
 
-  return [
+  const hasEgg = hasEggString === "true";
+
+  const filterFields = getPkmFilterFields<FormState>({
+    species: eggSpecies,
+    displayHiddenAbility: false,
+    displayHiddenPower: false,
+    displayIvs: false,
+    displayShiny: false,
+    displayNature: false,
+  });
+
+  const fields: Field[] = [
     {
       label: t["PokeNav Call"],
       input: (
@@ -199,13 +187,22 @@ const getFields = ({
         />
       ),
     },
+    ...filterFields.map((field) => ({
+      ...field,
+      show: hasEgg,
+      label:
+        field.id === "ability" ? t["Hatched Ability"] : t["Hatched Gender"],
+    })),
     {
       label: t["Hatched Nature"],
-      input: <HatchedNatureField t={t} />,
-    },
-    {
-      label: t["Hatched Gender"],
-      input: <HatchedGenderField t={t} />,
+      show: hasEgg,
+      input: (
+        <FormikSelect<FormState, "nature">
+          name="nature"
+          {...getNatureInputProps(t)}
+          placeholder={t["None"]}
+        />
+      ),
     },
     {
       label: t["Advance Range ±"],
@@ -230,6 +227,8 @@ const getFields = ({
       ),
     },
   ];
+
+  return <FormFieldTable fields={fields} />;
 };
 
 const calcNoEggs = async ({
@@ -318,8 +317,8 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
           filters: {
             shiny: false,
             nature: [filters.nature],
-            ability: null,
-            gender: filters.gender,
+            ability: filters.filter_ability,
+            gender: filters.filter_gender,
             match_call: filters.pokeNavCall,
           },
         })
@@ -361,10 +360,6 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
     });
   };
 
-  const fields = getFields({
-    t,
-    translatedTrainers: translatedTrainers.withoutTitle,
-  });
   const columns = getColumns({
     t,
     target: state.target,
@@ -381,7 +376,6 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
       </Typography.Text>
 
       <RngToolForm<FormState, Result>
-        fields={fields}
         columns={columns}
         results={results ?? []}
         initialValues={initialValues}
@@ -391,7 +385,13 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
         submitTrackerId="filter_retail_emerald_held_egg"
         submitButtonLabel="Find advances matching eggs"
         rowKey="id"
-      />
+      >
+        <Fields
+          t={t}
+          translatedTrainers={translatedTrainers}
+          eggSpecies={state.eggSettings.egg_species}
+        />
+      </RngToolForm>
     </Flex>
   );
 };

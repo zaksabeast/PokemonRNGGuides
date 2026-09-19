@@ -257,6 +257,7 @@ export const EmeraldEggHeldGenerator = () => {
         filters: {
           gender: opts.filter_gender ?? undefined,
           nature: opts.filter_nature,
+          ability: opts.filter_ability ?? undefined,
           shiny: opts.filter_shiny,
           match_call: opts.filter_match_call ?? undefined,
         },
@@ -306,11 +307,7 @@ export const EmeraldEggHeldGenerator = () => {
     },
     { title: "Gender", dataIndex: "gender" },
     { title: "Nature", dataIndex: "nature" },
-    {
-      title: "Ability",
-      dataIndex: "ability",
-      render: (ability) => (ability === 1 ? "First" : "Second"),
-    },
+    { title: "Ability", dataIndex: "ability" },
   ];
 
   return (

@@ -215,7 +215,6 @@ const Fields = ({ t }: FieldsProps) => {
       {
         displayIvs: false,
         displayHiddenPower: false,
-        displayAbility: false,
         species: egg_species ?? undefined,
       },
       t,
@@ -248,6 +247,7 @@ const InnerRetailEmeraldHeldEgg = ({ registeredTrainers }: InnerProps) => {
       filters: {
         shiny: opts.filter_shiny,
         nature: opts.filter_nature,
+        ability: opts.filter_ability,
         gender: opts.filter_gender,
         match_call: null,
       },

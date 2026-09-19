@@ -1,7 +1,7 @@
 use crate::Nature;
 use crate::rng::lcrng::Pokerng;
 use crate::rng::{Rng, StateIterator};
-use crate::{Gender, Species, gen3_shiny};
+use crate::{AbilityType, Gender, Species, gen3_shiny};
 use num_enum::FromPrimitive;
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
@@ -50,7 +50,7 @@ pub struct Gen3HeldEgg {
     pub gender: Gender,
     pub shiny: bool,
     pub nature: Nature,
-    pub ability: u8,
+    pub ability: AbilityType,
     pub match_call: PokeNavTrainer,
 }
 
@@ -96,7 +96,7 @@ impl Gen3HeldEgg {
             calibration: egg.calibration,
             nature: Nature::from_pid(pid),
             shiny: gen3_shiny(pid, tid, sid),
-            ability: ((pid & 1) as u8) + 1,
+            ability: AbilityType::from_gen3_pid(pid),
             match_call: egg.match_call,
         }
     }
@@ -107,6 +107,7 @@ impl Gen3HeldEgg {
 pub struct Egg3HeldFilters {
     pub shiny: bool,
     pub nature: Vec<Nature>,
+    pub ability: Option<AbilityType>,
     pub gender: Option<Gender>,
     pub match_call: Option<PokeNavTrainer>,
 }
@@ -118,6 +119,12 @@ impl Egg3HeldFilters {
         }
 
         if !self.nature.is_empty() && !self.nature.contains(&egg.nature) {
+            return false;
+        }
+
+        if let Some(ability) = self.ability
+            && egg.ability != ability
+        {
             return false;
         }
 
@@ -458,6 +465,7 @@ mod test {
             lua_adjustment: false,
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
+                ability: None,
                 shiny: false,
                 nature: vec![],
                 gender: None,
@@ -476,7 +484,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Mild,
-                ability: 2,
+                ability: AbilityType::Second,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -488,7 +496,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Lonely,
-                ability: 2,
+                ability: AbilityType::Second,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -500,7 +508,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Relaxed,
-                ability: 2,
+                ability: AbilityType::Second,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -512,7 +520,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Jolly,
-                ability: 2,
+                ability: AbilityType::Second,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -524,7 +532,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Rash,
-                ability: 2,
+                ability: AbilityType::Second,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -536,7 +544,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Naughty,
-                ability: 2,
+                ability: AbilityType::Second,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -548,7 +556,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Naughty,
-                ability: 2,
+                ability: AbilityType::Second,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -560,7 +568,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Timid,
-                ability: 2,
+                ability: AbilityType::Second,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -572,7 +580,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Calm,
-                ability: 2,
+                ability: AbilityType::Second,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -584,7 +592,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Lonely,
-                ability: 2,
+                ability: AbilityType::Second,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -596,7 +604,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Relaxed,
-                ability: 2,
+                ability: AbilityType::Second,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -608,7 +616,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Jolly,
-                ability: 2,
+                ability: AbilityType::Second,
                 match_call: PokeNavTrainer::None,
             },
         ];
@@ -635,6 +643,7 @@ mod test {
             lua_adjustment: false,
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
+                ability: None,
                 shiny: false,
                 nature: vec![],
                 gender: None,
@@ -653,7 +662,7 @@ mod test {
                 gender: Female,
                 shiny: false,
                 nature: Quirky,
-                ability: 2,
+                ability: AbilityType::Second,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -665,7 +674,7 @@ mod test {
                 gender: Female,
                 shiny: false,
                 nature: Lax,
-                ability: 2,
+                ability: AbilityType::Second,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -677,7 +686,7 @@ mod test {
                 gender: Female,
                 shiny: false,
                 nature: Modest,
-                ability: 2,
+                ability: AbilityType::Second,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -689,7 +698,7 @@ mod test {
                 gender: Female,
                 shiny: false,
                 nature: Relaxed,
-                ability: 2,
+                ability: AbilityType::Second,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -701,7 +710,7 @@ mod test {
                 gender: Female,
                 shiny: false,
                 nature: Jolly,
-                ability: 2,
+                ability: AbilityType::Second,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -713,7 +722,7 @@ mod test {
                 gender: Female,
                 shiny: false,
                 nature: Rash,
-                ability: 2,
+                ability: AbilityType::Second,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -725,7 +734,7 @@ mod test {
                 gender: Female,
                 shiny: false,
                 nature: Rash,
-                ability: 1,
+                ability: AbilityType::First,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -737,7 +746,7 @@ mod test {
                 gender: Female,
                 shiny: false,
                 nature: Hardy,
-                ability: 1,
+                ability: AbilityType::First,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -749,7 +758,7 @@ mod test {
                 gender: Female,
                 shiny: false,
                 nature: Docile,
-                ability: 1,
+                ability: AbilityType::First,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -761,7 +770,7 @@ mod test {
                 gender: Female,
                 shiny: false,
                 nature: Serious,
-                ability: 1,
+                ability: AbilityType::First,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -773,7 +782,7 @@ mod test {
                 gender: Female,
                 shiny: false,
                 nature: Bashful,
-                ability: 1,
+                ability: AbilityType::First,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -785,7 +794,7 @@ mod test {
                 gender: Female,
                 shiny: false,
                 nature: Adamant,
-                ability: 1,
+                ability: AbilityType::First,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -797,7 +806,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Adamant,
-                ability: 1,
+                ability: AbilityType::First,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -809,7 +818,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Jolly,
-                ability: 1,
+                ability: AbilityType::First,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -821,7 +830,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Rash,
-                ability: 1,
+                ability: AbilityType::First,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -833,7 +842,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Hardy,
-                ability: 1,
+                ability: AbilityType::First,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -845,7 +854,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Docile,
-                ability: 1,
+                ability: AbilityType::First,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -857,7 +866,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Serious,
-                ability: 1,
+                ability: AbilityType::First,
                 match_call: PokeNavTrainer::None,
             },
         ];
@@ -884,6 +893,7 @@ mod test {
             lua_adjustment: false,
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
+                ability: None,
                 shiny: false,
                 nature: vec![],
                 gender: None,
@@ -902,7 +912,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Lax,
-                ability: 1,
+                ability: AbilityType::First,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -914,7 +924,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Modest,
-                ability: 1,
+                ability: AbilityType::First,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -926,7 +936,7 @@ mod test {
                 gender: Female,
                 shiny: false,
                 nature: Quirky,
-                ability: 2,
+                ability: AbilityType::Second,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -938,7 +948,7 @@ mod test {
                 gender: Female,
                 shiny: false,
                 nature: Lax,
-                ability: 2,
+                ability: AbilityType::Second,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -950,7 +960,7 @@ mod test {
                 gender: Female,
                 shiny: false,
                 nature: Rash,
-                ability: 1,
+                ability: AbilityType::First,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -962,7 +972,7 @@ mod test {
                 gender: Female,
                 shiny: false,
                 nature: Hardy,
-                ability: 1,
+                ability: AbilityType::First,
                 match_call: PokeNavTrainer::None,
             },
         ];
@@ -989,6 +999,7 @@ mod test {
             lua_adjustment: false,
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
+                ability: None,
                 shiny: false,
                 nature: vec![],
                 gender: None,
@@ -1007,7 +1018,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Lax,
-                ability: 1,
+                ability: AbilityType::First,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -1019,7 +1030,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Modest,
-                ability: 1,
+                ability: AbilityType::First,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -1031,7 +1042,7 @@ mod test {
                 gender: Female,
                 shiny: false,
                 nature: Quirky,
-                ability: 2,
+                ability: AbilityType::Second,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -1043,7 +1054,7 @@ mod test {
                 gender: Female,
                 shiny: false,
                 nature: Lax,
-                ability: 2,
+                ability: AbilityType::Second,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -1055,7 +1066,7 @@ mod test {
                 gender: Female,
                 shiny: false,
                 nature: Rash,
-                ability: 1,
+                ability: AbilityType::First,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -1067,7 +1078,7 @@ mod test {
                 gender: Female,
                 shiny: false,
                 nature: Hardy,
-                ability: 1,
+                ability: AbilityType::First,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -1079,7 +1090,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Calm,
-                ability: 1,
+                ability: AbilityType::First,
                 match_call: PokeNavTrainer::None,
             },
             Gen3HeldEgg {
@@ -1091,7 +1102,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Lonely,
-                ability: 1,
+                ability: AbilityType::First,
                 match_call: PokeNavTrainer::None,
             },
         ];
@@ -1118,6 +1129,7 @@ mod test {
             lua_adjustment: false,
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
+                ability: None,
                 shiny: true,
                 nature: vec![],
                 gender: None,
@@ -1134,10 +1146,92 @@ mod test {
             pid: 0xD23D2C1D,
             shiny: true,
             nature: Nature::Quirky,
-            ability: 2,
+            ability: AbilityType::Second,
             gender: Gender::Female,
             match_call: PokeNavTrainer::None,
         }];
+
+        assert_list_eq!(results, expected);
+    }
+
+    #[test]
+    fn ability_filter() {
+        let opts = Egg3HeldOptions {
+            delay: 0,
+            filter_impossible_to_hit: false,
+            compatability: Compatability::GetAlong,
+            calibration: 18,
+            has_roamer: false,
+            has_lightning_rod: false,
+            registered_trainers: vec![],
+            initial_advances: 1000,
+            max_advances: 3,
+            min_redraw: 0,
+            max_redraw: 1,
+            tid: 0,
+            sid: 0,
+            lua_adjustment: false,
+            egg_species: Species::Bulbasaur,
+            filters: Egg3HeldFilters {
+                ability: Some(AbilityType::First),
+                shiny: false,
+                nature: vec![],
+                gender: None,
+                match_call: None,
+            },
+        };
+
+        let results = emerald_egg_held_states(&opts);
+        let expected = [
+            Gen3HeldEgg {
+                advance: 982,
+                redraws: 0,
+                calibration: 18,
+                has_roamer: false,
+                pid: 0x907710c8,
+                gender: Male,
+                shiny: false,
+                nature: Lax,
+                ability: AbilityType::First,
+                match_call: PokeNavTrainer::None,
+            },
+            Gen3HeldEgg {
+                advance: 982,
+                redraws: 1,
+                calibration: 18,
+                has_roamer: false,
+                pid: 0xcb2410c8,
+                gender: Male,
+                shiny: false,
+                nature: Modest,
+                ability: AbilityType::First,
+                match_call: PokeNavTrainer::None,
+            },
+            Gen3HeldEgg {
+                advance: 984,
+                redraws: 0,
+                calibration: 18,
+                has_roamer: false,
+                pid: 0x1404aa0a,
+                gender: Female,
+                shiny: false,
+                nature: Rash,
+                ability: AbilityType::First,
+                match_call: PokeNavTrainer::None,
+            },
+            Gen3HeldEgg {
+                advance: 984,
+                redraws: 1,
+                calibration: 18,
+                has_roamer: false,
+                pid: 0x4eb1aa0a,
+                gender: Female,
+                shiny: false,
+                nature: Hardy,
+                ability: AbilityType::First,
+                match_call: PokeNavTrainer::None,
+            },
+        ];
 
         assert_list_eq!(results, expected);
     }
@@ -1161,6 +1255,7 @@ mod test {
             lua_adjustment: false,
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
+                ability: None,
                 shiny: false,
                 nature: vec![],
                 gender: None,
@@ -1200,6 +1295,7 @@ mod test {
             lua_adjustment: false,
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
+                ability: None,
                 shiny: false,
                 nature: vec![],
                 gender: None,
@@ -1239,6 +1335,7 @@ mod test {
             lua_adjustment: false,
             egg_species: Species::Bulbasaur,
             filters: Egg3HeldFilters {
+                ability: None,
                 shiny: false,
                 nature: vec![],
                 gender: None,
@@ -1278,6 +1375,7 @@ mod test {
             lua_adjustment: false,
             egg_species: Species::Illumise,
             filters: Egg3HeldFilters {
+                ability: None,
                 shiny: false,
                 nature: vec![],
                 gender: None,
@@ -1296,7 +1394,7 @@ mod test {
                 pid: 0x95122D94,
                 shiny: false,
                 nature: Nature::Hardy,
-                ability: 1,
+                ability: AbilityType::First,
                 gender: Gender::Female,
                 match_call: PokeNavTrainer::None,
             },
@@ -1308,7 +1406,7 @@ mod test {
                 pid: 0xD6D80967,
                 shiny: false,
                 nature: Nature::Relaxed,
-                ability: 2,
+                ability: AbilityType::Second,
                 gender: Gender::Female,
                 match_call: PokeNavTrainer::None,
             },
@@ -1320,7 +1418,7 @@ mod test {
                 pid: 0x189E112E,
                 shiny: false,
                 nature: Nature::Calm,
-                ability: 1,
+                ability: AbilityType::First,
                 gender: Gender::Female,
                 match_call: PokeNavTrainer::None,
             },
@@ -1332,7 +1430,7 @@ mod test {
                 pid: 0x5A65A1E1,
                 shiny: false,
                 nature: Nature::Quiet,
-                ability: 2,
+                ability: AbilityType::Second,
                 gender: Gender::Male,
                 match_call: PokeNavTrainer::None,
             },
@@ -1344,7 +1442,7 @@ mod test {
                 pid: 0xDDF173C5,
                 shiny: false,
                 nature: Nature::Quirky,
-                ability: 2,
+                ability: AbilityType::Second,
                 gender: Gender::Female,
                 match_call: PokeNavTrainer::None,
             },
@@ -1372,6 +1470,7 @@ mod test {
             lua_adjustment: false,
             egg_species: Species::NidoranF,
             filters: Egg3HeldFilters {
+                ability: None,
                 shiny: false,
                 nature: vec![],
                 gender: None,
@@ -1390,7 +1489,7 @@ mod test {
                 pid: 0x95122D94,
                 shiny: false,
                 nature: Nature::Hardy,
-                ability: 1,
+                ability: AbilityType::First,
                 gender: Gender::Female,
                 match_call: PokeNavTrainer::None,
             },
@@ -1402,7 +1501,7 @@ mod test {
                 pid: 0xD6D80967,
                 shiny: false,
                 nature: Nature::Relaxed,
-                ability: 2,
+                ability: AbilityType::Second,
                 gender: Gender::Female,
                 match_call: PokeNavTrainer::None,
             },
@@ -1414,7 +1513,7 @@ mod test {
                 pid: 0x189E112E,
                 shiny: false,
                 nature: Nature::Calm,
-                ability: 1,
+                ability: AbilityType::First,
                 gender: Gender::Female,
                 match_call: PokeNavTrainer::None,
             },
@@ -1426,7 +1525,7 @@ mod test {
                 pid: 0x5A65A1E1,
                 shiny: false,
                 nature: Nature::Quiet,
-                ability: 2,
+                ability: AbilityType::Second,
                 gender: Gender::Male,
                 match_call: PokeNavTrainer::None,
             },
@@ -1438,7 +1537,7 @@ mod test {
                 pid: 0xDDF173C5,
                 shiny: false,
                 nature: Nature::Quirky,
-                ability: 2,
+                ability: AbilityType::Second,
                 gender: Gender::Female,
                 match_call: PokeNavTrainer::None,
             },
@@ -1466,6 +1565,7 @@ mod test {
             lua_adjustment: true,
             egg_species: Species::Ralts,
             filters: Egg3HeldFilters {
+                ability: None,
                 shiny: true,
                 nature: vec![],
                 gender: None,
@@ -1483,7 +1583,7 @@ mod test {
             pid: 0x2441C04C,
             shiny: true,
             nature: Nature::Rash,
-            ability: 1,
+            ability: AbilityType::First,
             gender: Gender::Female,
             match_call: PokeNavTrainer::GuitaristFernando,
         }];
@@ -1522,6 +1622,7 @@ mod test {
             lua_adjustment: true,
             egg_species: Species::Ralts,
             filters: Egg3HeldFilters {
+                ability: Option::None,
                 shiny: true,
                 nature: vec![],
                 gender: Option::None,
@@ -1539,7 +1640,7 @@ mod test {
             pid: 0x2441C04C,
             shiny: true,
             nature: Nature::Rash,
-            ability: 1,
+            ability: AbilityType::First,
             gender: Gender::Female,
             match_call: PokeNavTrainer::RuinManiacDusty,
         }];
@@ -1566,6 +1667,7 @@ mod test {
             lua_adjustment: true,
             egg_species: Species::Ralts,
             filters: Egg3HeldFilters {
+                ability: None,
                 shiny: false,
                 nature: vec![],
                 gender: None,
@@ -1585,7 +1687,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Calm,
-                ability: 1,
+                ability: AbilityType::First,
                 match_call: PokeNavTrainer::FishermanElliot,
             },
             Gen3HeldEgg {
@@ -1597,7 +1699,7 @@ mod test {
                 gender: Male,
                 shiny: false,
                 nature: Calm,
-                ability: 2,
+                ability: AbilityType::Second,
                 match_call: PokeNavTrainer::FishermanElliot,
             },
         ];
@@ -1624,6 +1726,7 @@ mod test {
             lua_adjustment: true,
             egg_species: Species::Ralts,
             filters: Egg3HeldFilters {
+                ability: None,
                 shiny: true,
                 nature: vec![],
                 gender: None,
@@ -1641,7 +1744,7 @@ mod test {
             pid: 0x2441C04C,
             shiny: true,
             nature: Nature::Rash,
-            ability: 1,
+            ability: AbilityType::First,
             gender: Gender::Female,
             match_call: PokeNavTrainer::None,
         }];
@@ -1668,6 +1771,7 @@ mod test {
             lua_adjustment: true,
             egg_species: Species::Ralts,
             filters: Egg3HeldFilters {
+                ability: None,
                 shiny: true,
                 nature: vec![],
                 gender: None,
@@ -1685,7 +1789,7 @@ mod test {
             pid: 0x292DCD22,
             shiny: true,
             nature: Nature::Modest,
-            ability: 1,
+            ability: AbilityType::First,
             gender: Gender::Female,
             match_call: PokeNavTrainer::CoolTrainerCristin,
         }];
@@ -1793,7 +1897,7 @@ mod test {
                         gender,
                         shiny,
                         nature,
-                        ability: (ability as u8) + 1,
+                        ability,
                         match_call: PokeNavTrainer::None,
                     }
                 })
@@ -1841,6 +1945,7 @@ mod test {
                 lua_adjustment: false,
                 egg_species: Species::Bulbasaur,
                 filters: Egg3HeldFilters {
+                    ability: None,
                     shiny: false,
                     nature: vec![],
                     gender: None,
@@ -1873,6 +1978,7 @@ mod test {
                 lua_adjustment: false,
                 egg_species: Species::Bulbasaur,
                 filters: Egg3HeldFilters {
+                    ability: None,
                     shiny: false,
                     nature: vec![],
                     gender: None,
@@ -1905,6 +2011,7 @@ mod test {
                 lua_adjustment: false,
                 egg_species: Species::Bulbasaur,
                 filters: Egg3HeldFilters {
+                    ability: None,
                     shiny: false,
                     nature: vec![],
                     gender: None,

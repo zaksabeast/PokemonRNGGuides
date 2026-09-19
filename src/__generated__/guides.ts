@@ -9116,7 +9116,7 @@ export const guides = {
       addedOn: "2025-05-18",
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-06-01",
+      lastUpdated: "2026-09-19",
       type: "baseGuide",
       canonical: "/retail-emerald-egg/",
       file: "guides/Gen 3/Emerald/Retail Egg.mdx",

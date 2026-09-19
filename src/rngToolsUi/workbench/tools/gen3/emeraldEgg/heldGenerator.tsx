@@ -23,6 +23,7 @@ import { useWatch } from "~/hooks/form";
 import { getGen3SpeciesOptions, species } from "~/types/species";
 import {
   compatability,
+  pokeNavTrainers,
   getCompatabilityOptions,
 } from "~/rngToolsUi/gen3/retailEmeraldEgg/constants";
 import { Gen3HeldEgg, multiWorkerRngTools, Egg3HeldOptions } from "~/rngTools";
@@ -35,7 +36,6 @@ import {
 } from "~/rngToolsUi/workbench/tools/profile/gen3/state";
 import { FormikProfileSelect } from "~/rngToolsUi/workbench/components/formikProfileSelect";
 import { usePokeNavTranslations } from "~/translations";
-import { pokeNavTrainers } from "~/rngToolsUi/gen3/retailEmeraldEgg/state";
 import { toOptions } from "~/utils/options";
 
 const CHUNK = 200;

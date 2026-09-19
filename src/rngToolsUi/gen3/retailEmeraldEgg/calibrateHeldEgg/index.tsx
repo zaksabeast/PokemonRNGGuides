@@ -12,21 +12,21 @@ import {
   Tag,
   FormikRadio,
 } from "~/components";
-import { z } from "zod";
 import { CalibrateTimerButton } from "~/components/calibrateTimerButton";
 import {
   HeldEggState,
-  pokeNavTrainers,
+  initialCalibrationState,
+  useHeldEggCalibrationState,
   useHeldEggState,
   useRegisteredTrainers,
-} from "./state";
+} from "../state";
+import { pokeNavTrainers } from "../constants";
 import { rngTools, Gen3HeldEgg, PokeNavTrainer } from "~/rngTools";
 import { sortBy, uniqueId } from "lodash-es";
 import { getNatureInputProps } from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import { useHydrate } from "~/hooks/useHydrate";
 import { Skeleton } from "antd";
-import * as tst from "ts-toolbelt";
 import { Gen3Timer } from "~/components/gen3Timer";
 import { formatOffset } from "~/utils/offsetSymbol";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
@@ -34,18 +34,12 @@ import { useWatch } from "~/hooks/form";
 import { Translations, usePokeNavTranslations } from "~/translations";
 import { PokeNavTrainerTranslations } from "~/translations/en/pokeNav";
 import { sortLocale } from "~/utils/sortLocale";
-import { gender, nature } from "~/types";
+import { gender } from "~/types";
 import { createGen3TimerAtom } from "~/rngToolsUi/timer/atoms";
+import { Validator, HeldEggCalibrationFilters as FormState } from "./validator";
+import { HeldEggCalibrationResult as Result } from "./result";
 
 const timerAtom = createGen3TimerAtom();
-
-type Result = tst.O.Nullable<
-  tst.O.Merge<
-    tst.O.Required<Partial<Gen3HeldEgg>, "advance" | "match_call">,
-    { id: string; advanceOffset: number; redrawOffset: number | null }
-  >,
-  "redraws"
->;
 
 const getColumns = ({
   t,
@@ -121,18 +115,6 @@ const getColumns = ({
     render: (matchCall) => translatedTrainers[matchCall],
   },
 ];
-
-const Validator = z.object({
-  pokeNavCall: z.enum([...pokeNavTrainers, "None"]),
-  hasEgg: z.enum(["true", "false"]),
-  gender: z.enum(gender),
-  nature: z.enum(nature),
-  advanceRange: z.number().min(0),
-  redrawRange: z.number().min(0),
-  calibration: z.number().nullable(),
-});
-
-export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   nature: "Adamant",
@@ -293,58 +275,62 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
   const [state] = useHeldEggState();
   const t = useActiveRouteTranslations();
   const translatedTrainers = usePokeNavTranslations(t.language);
-  const [{ results, previousOffsets }, setResults] = React.useState<{
-    results: Result[] | null;
-    previousOffsets: number[] | null;
-  }>({ results: null, previousOffsets: null });
+  const [{ results, previousOffsets }, setCalibration] =
+    useHeldEggCalibrationState();
+
+  // The form always starts from its default values,
+  // so previous results and filters shouldn't outlive a remount.
+  React.useEffect(() => {
+    setCalibration(initialCalibrationState);
+  }, [setCalibration]);
 
   const onSubmit: RngToolSubmit<FormState> = async (filters) => {
     const target = state.target;
 
     if (target == null) {
-      setResults({
-        results: [],
-        previousOffsets:
-          results?.map((egg) => egg.advanceOffset).slice(0, 20) ?? [],
-      });
+      setCalibration(initialCalibrationState);
       return;
     }
 
     const maxAdvances = filters.advanceRange * 2;
     const initialAdvances = Math.max(target.advance - filters.advanceRange, 0);
+    const hasEgg = filters.hasEgg === "true";
+    const calibration = filters.calibration ?? target.calibration;
+    const minRedraw = Math.max(target.redraws - filters.redrawRange, 0);
+    const maxRedraw = target.redraws + filters.redrawRange;
 
-    const eggResults =
-      filters.hasEgg === "true"
-        ? await rngTools.emerald_egg_held_states({
-            ...state.eggSettings,
-            has_roamer: target.has_roamer,
-            // preset
-            tid: 0,
-            sid: 0,
-            delay: 0,
-            registered_trainers: registeredTrainers,
-            lua_adjustment: true,
-            min_redraw: Math.max(target.redraws - filters.redrawRange, 0),
-            max_redraw: target.redraws + filters.redrawRange,
-            calibration: filters.calibration ?? target.calibration,
-            initial_advances: initialAdvances,
-            max_advances: maxAdvances,
-            filter_impossible_to_hit: false,
-            filters: {
-              shiny: false,
-              nature: [filters.nature],
-              gender: filters.gender,
-              match_call: filters.pokeNavCall,
-            },
-          })
-        : await calcNoEggs({
-            filters,
-            maxAdvances,
-            initialAdvances,
-            target,
-            state,
-            registeredTrainers,
-          });
+    const eggResults = hasEgg
+      ? await rngTools.emerald_egg_held_states({
+          ...state.eggSettings,
+          has_roamer: target.has_roamer,
+          // preset
+          tid: 0,
+          sid: 0,
+          delay: 0,
+          registered_trainers: registeredTrainers,
+          lua_adjustment: true,
+          min_redraw: minRedraw,
+          max_redraw: maxRedraw,
+          calibration,
+          initial_advances: initialAdvances,
+          max_advances: maxAdvances,
+          filter_impossible_to_hit: false,
+          filters: {
+            shiny: false,
+            nature: [filters.nature],
+            ability: null,
+            gender: filters.gender,
+            match_call: filters.pokeNavCall,
+          },
+        })
+      : await calcNoEggs({
+          filters,
+          maxAdvances,
+          initialAdvances,
+          target,
+          state,
+          registeredTrainers,
+        });
 
     const offsetResults = eggResults.map((result) => ({
       ...result,
@@ -358,7 +344,17 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
       (res) => Math.abs(res.redrawOffset ?? 0),
     ]);
 
-    setResults({
+    setCalibration({
+      debug: {
+        filters,
+        search: {
+          calibration,
+          initialAdvances,
+          maxAdvances,
+          minRedraw: hasEgg ? minRedraw : null,
+          maxRedraw: hasEgg ? maxRedraw : null,
+        },
+      },
       results: sortedResults,
       previousOffsets:
         results?.map((egg) => egg.advanceOffset).slice(0, 20) ?? [],

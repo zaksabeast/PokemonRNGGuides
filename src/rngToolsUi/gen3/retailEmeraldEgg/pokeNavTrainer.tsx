@@ -1,10 +1,7 @@
 import { Skeleton } from "antd";
 import { Button, Switch, Flex, Typography, List, ListItem } from "~/components";
-import {
-  pokeNavTrainers,
-  useRegisteredTrainers,
-  RegisteredPokeNavTrainers,
-} from "./state";
+import { useRegisteredTrainers, RegisteredPokeNavTrainers } from "./state";
+import { pokeNavTrainers } from "./constants";
 import styled from "@emotion/styled";
 import { useHydrate } from "~/hooks/useHydrate";
 import { hydrationLock } from "~/utils/hydration";

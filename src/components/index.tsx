@@ -53,7 +53,6 @@ export { CalibrateTimerButton } from "./calibrateTimerButton";
 export { BadgeRibbon } from "./badgeRibbon";
 export { MetronomeButton } from "./metronome";
 export { WhatNext } from "./whatNext";
-export { Gen4Timer } from "./gen4Timer";
 export {
   MediaTable,
   MediaTableBody,

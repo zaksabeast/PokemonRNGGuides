@@ -293,7 +293,7 @@ export const RunView = <FieldId extends string = string>({
         onClick={toggle}
         height={PRIMARY_BUTTON_HEIGHT}
       >
-        {isRunning ? "Stop Timer" : "Start Timer"}
+        {isRunning ? t["Stop Timer"] : t["Start Timer"]}
       </Button>
 
       {belowStartButton}

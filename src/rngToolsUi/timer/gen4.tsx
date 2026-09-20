@@ -6,6 +6,7 @@ import { ZodSerializedDecimal, ZodSerializedOptional } from "~/utils/number";
 import { ZodConsole } from "~/rngTools";
 import {
   createGen4TimerAtom,
+  GEN4_PHASE_LABELS,
   type Gen4TimerUpdates,
 } from "~/rngToolsUi/timer/atoms";
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
@@ -47,9 +48,6 @@ const timerSettingsAtom = atomWithPersistence(
   FormStateSchema,
   defaultValues,
 );
-
-// The timer is [phase up to the delay, delay]
-const PHASE_LABELS = ["Seconds", "Delay"];
 
 type Mode = "setup" | "run";
 
@@ -117,7 +115,7 @@ const InnerGen4Timer = ({
           listTitle="Timers"
           rows={timer.ms.map((ms, index) => ({
             id: index,
-            label: PHASE_LABELS[index] ?? `Phase ${index + 1}`,
+            label: GEN4_PHASE_LABELS[index] ?? `Phase ${index + 1}`,
             ms,
           }))}
           onEdit={() => setMode("setup")}

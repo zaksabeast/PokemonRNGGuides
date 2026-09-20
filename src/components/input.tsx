@@ -16,6 +16,9 @@ const InputContainer = styled.div<{ textAlign?: "center"; fullFlex?: boolean }>(
     ".ant-input": {
       textAlign,
     },
+    ".ant-input, .ant-input-affix-wrapper": {
+      borderRadius: 4,
+    },
     ...(fullFlex ? { flex: 1 } : {}),
   }),
 );

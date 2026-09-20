@@ -1,4 +1,4 @@
-export { Button, BaseButton } from "./button";
+export { Button } from "./button";
 export { Flex } from "./flex";
 export { Gist } from "./gist";
 export { Header } from "./header";

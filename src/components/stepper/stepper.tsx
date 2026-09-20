@@ -1,7 +1,15 @@
 import React from "react";
 import { Steps } from "antd";
+import styled from "@emotion/styled";
 import { Flex, Button } from "~/components";
 import { useCurrentStep } from "./state";
+
+const StyledSteps = styled(Steps)(({ theme }) => ({
+  "&&&& .ant-steps-item-active .ant-steps-item-icon": {
+    backgroundColor: theme.token.colorPrimaryBorder,
+    color: theme.token.colorPrimaryActive,
+  },
+}));
 
 type StepperProps = {
   titles: string[];
@@ -37,7 +45,7 @@ export const Stepper = React.memo(
     return (
       <Flex vertical gap={40}>
         <div ref={scrollRef} />
-        <Steps
+        <StyledSteps
           onChange={setCurrentStep}
           current={currentStep}
           size="small"

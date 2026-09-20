@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Layout } from "antd";
 import { Typography } from "./typography";
-import { Button, BaseButton } from "./button";
+import { Button } from "./button";
 import { Icon } from "./icons";
 import { Flex } from "./flex";
 import { settings } from "~/settings";
@@ -9,6 +9,47 @@ import { Link } from "./link";
 import { LinkButton } from "./linkButton";
 import { setTheme, type ThemeMode } from "~/theme/themeMode";
 import { styledPropGuard } from "~/utils/styled";
+import React from "react";
+
+const MobileDisplay = styled(Flex)(({ theme }) => ({
+  [theme.mediaQueries.up("mobile")]: {
+    display: "none",
+  },
+}));
+
+const NonMobileDisplay = styled(Flex)(({ theme }) => ({
+  [theme.mediaQueries.down("mobile")]: {
+    display: "none",
+  },
+}));
+
+type BaseContributeButtonProps = { id: string; children?: React.ReactNode };
+
+const BaseContributeButton = (props: BaseContributeButtonProps) => {
+  return (
+    <LinkButton
+      {...props}
+      trackerId="contribute_url"
+      link={CONTRIBUTE_LINK}
+      icon={<Icon name="Edit" size={20} />}
+    />
+  );
+};
+
+const ContributeButton = () => {
+  return (
+    <>
+      <MobileDisplay>
+        <BaseContributeButton id="mobile_contribute_url" />
+      </MobileDisplay>
+      <NonMobileDisplay>
+        <BaseContributeButton id="desktop_contribute_url">
+          Contribute
+        </BaseContributeButton>
+      </NonMobileDisplay>
+    </>
+  );
+};
 
 const ShowIfTheme = styled(
   "div",
@@ -33,8 +74,6 @@ const StyledHeader = styled(Layout.Header)({
   paddingRight: 0,
   paddingTop: 0,
   paddingBottom: 0,
-  boxShadow:
-    "0 1px 2px 0 rgba(0, 0, 0, 0.03),0 1px 6px -1px rgba(0, 0, 0, 0.02),0 2px 4px 0 rgba(0, 0, 0, 0.02)",
   display: "flex",
 });
 
@@ -50,24 +89,19 @@ export const Header = () => {
       >
         <Flex align="center">
           <Link href="/" display="flex">
-            <BaseButton trackerId="home">
+            <Button trackerId="home" type="text">
               <Typography.Title level={4} mv={0} mr={0}>
                 Pokemon RNG
               </Typography.Title>
-            </BaseButton>
+            </Button>
           </Link>
         </Flex>
 
         <Flex align="center" gap={8}>
-          <LinkButton
-            trackerId="contribute_url"
-            link={CONTRIBUTE_LINK}
-            icon={<Icon name="Edit" size={20} />}
-          >
-            Contribute
-          </LinkButton>
+          <ContributeButton />
           <ShowIfTheme $themeMode="light">
             <Button
+              type="text"
               trackerId="switch_to_dark_mode"
               onClick={() => setTheme("dark")}
               icon={<Icon name="DarkMode" size={20} />}
@@ -75,6 +109,7 @@ export const Header = () => {
           </ShowIfTheme>
           <ShowIfTheme $themeMode="dark">
             <Button
+              type="text"
               trackerId="switch_to_light_mode"
               onClick={() => setTheme("light")}
               icon={<Icon name="LightMode" size={20} />}

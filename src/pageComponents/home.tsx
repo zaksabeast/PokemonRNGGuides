@@ -200,11 +200,13 @@ export const HomePageComponent = () => {
   return (
     <Container gap={24} vertical>
       <Card
-        id="home-welcome-card"
         fullBody
-        slug="/mystic-timer/"
         borderColor="PrimaryBorder"
         border="2px solid"
+        actionProps={{
+          id: "home-welcome-card",
+          slug: "/mystic-timer/",
+        }}
       >
         <TimerContent>
           <TimerLogo src={jirachiSrc} alt="Jirachi" />
@@ -220,12 +222,14 @@ export const HomePageComponent = () => {
       <Grid mobile={1} smallTablet={2} tablet={3} desktop={3}>
         {games.map((game) => (
           <GameCard
-            id={`home-game-${game.name}`}
             key={game.name}
-            slug={game.slug}
             borderColor="PrimaryBorder"
             border="2px solid"
             fullBody
+            actionProps={{
+              id: `home-game-${game.name}`,
+              slug: game.slug,
+            }}
           >
             <BadgeRibbon
               $show={categoryHasNewContent(game.slug)}

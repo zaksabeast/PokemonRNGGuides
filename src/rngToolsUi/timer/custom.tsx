@@ -278,7 +278,7 @@ export const CustomTimer = () => {
 
       {timerSettings.timers.map((timer) => {
         return (
-          <Card id={`custom_timer_${timer.timer_id}`} key={timer.timer_id}>
+          <Card key={timer.timer_id}>
             <TimerSettings
               timerId={timer.timer_id}
               onSubmit={onSubmit}

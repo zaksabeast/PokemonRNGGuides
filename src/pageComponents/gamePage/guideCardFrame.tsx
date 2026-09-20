@@ -65,7 +65,6 @@ const GuideCardTitle = ({ title, difficulty, isNew }: GuideCardTitleProps) => {
 };
 
 type Props = {
-  cardId: string;
   title: ReactNode;
   isNew: boolean;
   cardProps?: Partial<ComponentProps<typeof GuideCard>>;
@@ -76,7 +75,6 @@ type Props = {
 };
 
 export const GuideCardFrame = ({
-  cardId,
   title,
   isNew,
   cardProps,
@@ -87,7 +85,6 @@ export const GuideCardFrame = ({
 }: Props) => {
   return (
     <GuideCard
-      id={cardId}
       fullBody
       borderColor={isNew ? "PrimaryBorderHover" : undefined}
       {...(cardProps ?? {})}

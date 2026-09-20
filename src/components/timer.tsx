@@ -43,7 +43,7 @@ export const Timer = ({
 }: Props) => {
   const colors: TimerColors = {
     background: useComputedCssVar("--ant-color-fill-content-hover") ?? "",
-    ringActive: useComputedCssVar("--ant-color-info") ?? "",
+    ringActive: useComputedCssVar("--ant-color-primary") ?? "",
     ringFlash: useComputedCssVar("--ant-color-warning-active") ?? "",
     text: useComputedCssVar("--ant-color-text") ?? "",
   };

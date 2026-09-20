@@ -4,6 +4,7 @@ import {
   DatePicker as AntdDatePicker,
   DatePickerProps as AntdDatePickerProps,
 } from "antd";
+import styled from "@emotion/styled";
 import dayjs, { Dayjs } from "dayjs";
 import { useField } from "~/hooks/form";
 import * as tst from "ts-toolbelt";
@@ -21,6 +22,17 @@ import {
 } from "~/utils/time";
 import { RngDate } from "~/rngTools";
 import { useSize } from "~/theme/size";
+
+const PickerContainer = styled(Flex)(({ theme }) => ({
+  "&&&": {
+    ".ant-picker": {
+      borderRadius: 4,
+    },
+    ".ant-picker-suffix": {
+      color: theme.token.colorTextSecondary,
+    },
+  },
+}));
 
 type TimePickerProps = tst.O.Omit<
   AntdTimePickerProps,
@@ -80,7 +92,7 @@ export const FormikTimePicker = <FormState extends GenericForm>({
   const value = formTime == null ? null : fromRngTime(formTime);
 
   return (
-    <Flex vertical>
+    <PickerContainer vertical>
       <TimePicker
         {...props}
         name={name}
@@ -96,7 +108,7 @@ export const FormikTimePicker = <FormState extends GenericForm>({
       {error != null && (
         <Typography.Text type="danger">{error}</Typography.Text>
       )}
-    </Flex>
+    </PickerContainer>
   );
 };
 
@@ -159,7 +171,7 @@ export const FormikDatePicker = <FormState extends GenericForm>({
     .otherwise(() => dayjs());
 
   return (
-    <Flex vertical>
+    <PickerContainer vertical>
       <DatePicker
         {...props}
         name={name}
@@ -175,6 +187,6 @@ export const FormikDatePicker = <FormState extends GenericForm>({
       {error != null && (
         <Typography.Text type="danger">{error}</Typography.Text>
       )}
-    </Flex>
+    </PickerContainer>
   );
 };

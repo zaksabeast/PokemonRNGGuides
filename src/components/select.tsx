@@ -16,11 +16,17 @@ import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { Translation } from "~/translations";
 import { useSize } from "~/theme/size";
 
-const SelectContainer = styled(Flex)({
-  ".ant-select": {
-    width: "100%",
+const SelectContainer = styled(Flex)(({ theme }) => ({
+  "&&&": {
+    ".ant-select": {
+      width: "100%",
+      borderRadius: 4,
+    },
+    ".ant-select-suffix": {
+      color: theme.token.colorTextSecondary,
+    },
   },
-});
+}));
 
 const SelectAllContainer = styled(Flex)({
   flexFlow: "row wrap",

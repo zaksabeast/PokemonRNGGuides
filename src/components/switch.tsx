@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import { Switch as AntdSwitch, SwitchProps as AntdSwitchProps } from "antd";
 import { useField } from "~/hooks/form";
 import * as tst from "ts-toolbelt";
@@ -8,7 +9,35 @@ import { Typography } from "./typography";
 import { Paths } from "~/types";
 import { PrimitiveAtom, useAtom } from "jotai";
 
-export const Switch = withCss(AntdSwitch);
+const StyledSwitch = styled(AntdSwitch)(({ theme }) => ({
+  // active
+  "&&&.ant-switch-checked": {
+    background: theme.token.colorPrimary,
+    ":hover": {
+      background: theme.token.colorPrimaryHover,
+    },
+    ".ant-switch-handle": {
+      "::before": {
+        backgroundColor: theme.token.colorPrimaryBg,
+      },
+    },
+  },
+
+  // inactive
+  "&&&": {
+    backgroundColor: theme.token.colorFillTertiary,
+    ".ant-switch-handle": {
+      "::before": {
+        backgroundColor: theme.token.colorTextTertiary,
+      },
+    },
+    ":hover": {
+      background: theme.token.colorFillSecondary,
+    },
+  },
+}));
+
+export const Switch = withCss(StyledSwitch);
 
 type FormikSwitchProps<FormState extends GenericForm> = tst.O.Merge<
   Omit<AntdSwitchProps, "value">,

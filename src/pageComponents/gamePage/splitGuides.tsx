@@ -16,7 +16,6 @@ const SplitGuideCard = ({ isTop, isBottom, guide }: SplitGuideCardProps) => {
         $isTop: isTop,
         $isBottom: isBottom,
       }}
-      cardId={`guide-${guide.id}`}
       title={guide.navDrawerTitle}
       isNew={guide.isNew}
       displayAttributes={guide.displayAttributes}

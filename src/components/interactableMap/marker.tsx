@@ -1,7 +1,11 @@
-import { BaseButton } from "../button";
+import { Button, ButtonProps } from "../button";
 import styled from "@emotion/styled";
 
-export const MapMarker = styled(BaseButton)<{ onClick?: () => void }>(
+const TextButton = (props: ButtonProps) => {
+  return <Button type="text" height="unset" {...props} />;
+};
+
+export const MapMarker = styled(TextButton)<{ onClick?: () => void }>(
   ({ theme, onClick }) => ({
     "&&&": {
       cursor: onClick != null ? "pointer" : "default",

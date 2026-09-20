@@ -19,6 +19,9 @@ import {
   MdZoomOut,
   MdOutlineLightMode,
   MdOutlineDarkMode,
+  MdChevronRight,
+  MdVideogameAsset,
+  MdOutlineTablet,
 } from "react-icons/md";
 import { BiMessageAltError } from "react-icons/bi";
 import { TiWarningOutline } from "react-icons/ti";
@@ -33,7 +36,7 @@ import {
   FaCaretDown,
   FaRegQuestionCircle,
 } from "react-icons/fa";
-import { IoLanguage, IoSparkles } from "react-icons/io5";
+import { IoLanguage, IoSparkles, IoGameController } from "react-icons/io5";
 import { PiPersonSimpleWalkBold, PiWarningOctagonBold } from "react-icons/pi";
 import {
   FaHeart,
@@ -42,6 +45,9 @@ import {
   FaArrowUp,
   FaArrowDown,
   FaStar,
+  FaGamepad,
+  FaLaptop,
+  FaLaptopMedical,
 } from "react-icons/fa6";
 import { TbEar, TbPokeball } from "react-icons/tb";
 import { IoIosInformationCircle } from "react-icons/io";
@@ -93,6 +99,13 @@ const icons = {
   CaretUp: FaCaretUp,
   CaretDown: FaCaretDown,
   Question: FaRegQuestionCircle,
+  ChevronRight: MdChevronRight,
+  VideogameAsset: MdVideogameAsset,
+  OutlineTablet: MdOutlineTablet,
+  GameController: IoGameController,
+  Gamepad: FaGamepad,
+  Laptop: FaLaptop,
+  LaptopMedical: FaLaptopMedical,
 } as const;
 
 export type IconName = keyof typeof icons;

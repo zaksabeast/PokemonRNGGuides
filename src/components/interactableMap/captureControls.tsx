@@ -70,7 +70,7 @@ export const CaptureControls = ({
   const previewText = getPreviewText(draftGeometry);
 
   return (
-    <Card id="map_marker_submission_panel" width="100%">
+    <Card width="100%">
       <Flex vertical gap={16}>
         <Flex vertical gap={4}>
           <Typography.Title level={4} mb={0} mt={0}>

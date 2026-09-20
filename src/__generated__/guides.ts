@@ -4249,7 +4249,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: null,
+      lastUpdated: "2026-09-20",
       type: "baseGuide",
       canonical: "/emulator-flrg-stationary-and-gift/",
       file: "guides/Gen 3/FireRed and LeafGreen/Static RNG.mdx",
@@ -4322,38 +4322,38 @@ export const guides = {
       categories: ["FireRed and LeafGreen"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
-      guideKey: "true-Static RNG",
+      guideKey: "/emulator-frlg-stationary/",
       isNew: false,
       title: "FireRed and LeafGreen Static RNG",
       navDrawerTitle: "Static RNG",
-      description: "Static v2 RNG",
+      description:
+        "Learn how to RNG shiny 6IV legendaries in Pokémon FireRed and LeafGreen using static encounters.",
       slug: "/emulator-frlg-stationary/",
-      isRoughDraft: true,
+      isRoughDraft: false,
       orderPriority: 20,
       difficulty: null,
-      hideFromNavDrawer: false,
+      hideFromNavDrawer: true,
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: null,
+      lastUpdated: "2026-09-20",
       type: "baseGuide",
-      canonical: "/emulator-frlg-stationary/",
-      file: "guides/Gen 3/FireRed and LeafGreen/Stationary v2 Emu.mdx",
+      canonical: "/emulator-flrg-stationary-and-gift/",
+      file: "guides/Gen 3/FireRed and LeafGreen/Static RNG.mdx",
       translations: null,
-      guideGroupId: "en:true-Static RNG:FireRed and LeafGreen",
+      guideGroupId: "en:/emulator-frlg-stationary/:FireRed and LeafGreen",
       guideVariantLinks: {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-frlg-stationary/" },
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: [],
     },
     Guide: React.lazy(
-      () =>
-        import("~/../guides/Gen 3/FireRed and LeafGreen/Stationary v2 Emu.mdx"),
+      () => import("~/../guides/Gen 3/FireRed and LeafGreen/Static RNG.mdx"),
     ),
     getRawFile: memoize(async () => {
       const file = await import(
-        "~/../guides/Gen 3/FireRed and LeafGreen/Stationary v2 Emu.mdx?raw"
+        "~/../guides/Gen 3/FireRed and LeafGreen/Static RNG.mdx?raw"
       );
       return file.default;
     }),

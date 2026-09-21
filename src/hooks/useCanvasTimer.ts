@@ -12,10 +12,27 @@ export type TimerColors = {
   text: string;
 };
 
-const syncCanvasResolution = (canvas: HTMLCanvasElement) => {
+export type TimerFrame = {
+  ctx: CanvasRenderingContext2D;
+  width: number;
+  height: number;
+  remaining: number;
+  expirationMs: number;
+  currentTime: number;
+  isFlashing: boolean;
+  colors: TimerColors;
+};
+
+export type TimerRenderer = (frame: TimerFrame) => void;
+
+const syncCanvasResolution = (
+  canvas: HTMLCanvasElement,
+  logicalWidth: number,
+  logicalHeight: number,
+) => {
   const dpr = window.devicePixelRatio ?? 1;
-  const width = CANVAS_SIZE * dpr;
-  const height = CANVAS_SIZE * dpr;
+  const width = Math.round(logicalWidth * dpr);
+  const height = Math.round(logicalHeight * dpr);
 
   if (canvas.width !== width || canvas.height !== height) {
     // eslint-disable-next-line no-param-reassign
@@ -27,42 +44,32 @@ const syncCanvasResolution = (canvas: HTMLCanvasElement) => {
   return dpr;
 };
 
-// Draw text (only called when milliseconds value changes noticeably)
+// Draw text (only changes when the milliseconds value changes noticeably)
 const drawText = ({
+  ctx,
+  width,
+  height,
   remaining,
-  canvasRef,
-  contextRef,
   textColor,
 }: {
+  ctx: CanvasRenderingContext2D;
+  width: number;
+  height: number;
   remaining: number;
-  canvasRef: React.RefObject<HTMLCanvasElement | null>;
-  contextRef: React.RefObject<CanvasRenderingContext2D | null>;
   textColor: string;
 }) => {
-  const canvas = canvasRef.current;
-  if (canvas === null) {
-    return;
-  }
-
-  let ctx = contextRef.current;
-  if (ctx === null) {
-    ctx = canvas.getContext("2d");
-    if (ctx === null) {
-      return;
-    }
-
-    // eslint-disable-next-line -- We expect react refs to be mutable
-    contextRef.current = ctx;
-  }
-
-  const CENTER = CANVAS_SIZE / 2;
+  const centerX = width / 2;
+  const centerY = height / 2;
   const flooredRemaining = Math.floor(remaining);
   const seconds = Math.floor(flooredRemaining / 1000);
   const milliseconds = flooredRemaining % 1000;
   const text = `${seconds.toString().padStart(2, "0")}:${milliseconds.toString().padStart(3, "0")}`;
 
+  // eslint-disable-next-line no-param-reassign
   ctx.font = "700 24px Menlo, Monaco, 'Courier New', monospace";
+  // eslint-disable-next-line no-param-reassign
   ctx.textAlign = "center";
+  // eslint-disable-next-line no-param-reassign
   ctx.textBaseline = "middle";
 
   const metrics = ctx.measureText(text);
@@ -71,97 +78,114 @@ const drawText = ({
     (metrics.actualBoundingBoxAscent ?? 18) +
     (metrics.actualBoundingBoxDescent ?? 8);
   ctx.clearRect(
-    CENTER - maxTextWidth / 2 - TEXT_CLEAR_PADDING,
-    CENTER - textHeight / 2 - TEXT_CLEAR_PADDING,
+    centerX - maxTextWidth / 2 - TEXT_CLEAR_PADDING,
+    centerY - textHeight / 2 - TEXT_CLEAR_PADDING,
     maxTextWidth + TEXT_CLEAR_PADDING * 2,
     textHeight + TEXT_CLEAR_PADDING * 2,
   );
 
+  // eslint-disable-next-line no-param-reassign
   ctx.fillStyle = textColor;
-  ctx.fillText(text, CENTER, CENTER);
+  ctx.fillText(text, centerX, centerY);
 };
 
 // Draw progress ring every frame for smooth animation
 const drawRing = ({
+  ctx,
+  width,
+  height,
   remaining,
-  currentTime,
   expirationMs,
-  canvasRef,
-  contextRef,
-  lastFlashTimeRef,
+  isFlashing,
   backgroundColor,
   ringFlashColor,
   ringActiveColor,
 }: {
+  ctx: CanvasRenderingContext2D;
+  width: number;
+  height: number;
   remaining: number;
-  currentTime: number;
   expirationMs: number;
-  canvasRef: React.RefObject<HTMLCanvasElement | null>;
-  contextRef: React.RefObject<CanvasRenderingContext2D | null>;
-  lastFlashTimeRef: React.RefObject<number>;
+  isFlashing: boolean;
   backgroundColor: string;
   ringFlashColor: string;
   ringActiveColor: string;
 }) => {
-  const canvas = canvasRef.current;
-  if (canvas === null) {
-    return;
-  }
-
-  let ctx = contextRef.current;
-  if (ctx === null) {
-    ctx = canvas.getContext("2d");
-    if (ctx === null) {
-      return;
-    }
-
-    // eslint-disable-next-line -- We expect react refs to be mutable
-    contextRef.current = ctx;
-  }
-
-  const CENTER = CANVAS_SIZE / 2;
+  const centerX = width / 2;
+  const centerY = height / 2;
   const RADIUS = 85;
   const LINE_WIDTH = 8;
   const RING_CLEAR_PADDING = LINE_WIDTH + 2;
 
-  const dpr = syncCanvasResolution(canvas);
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
   ctx.save();
   ctx.beginPath();
-  ctx.arc(CENTER, CENTER, RADIUS + RING_CLEAR_PADDING, 0, Math.PI * 2);
+  ctx.arc(centerX, centerY, RADIUS + RING_CLEAR_PADDING, 0, Math.PI * 2);
   ctx.arc(
-    CENTER,
-    CENTER,
+    centerX,
+    centerY,
     Math.max(RADIUS - RING_CLEAR_PADDING, 0),
     0,
     Math.PI * 2,
     true,
   );
   ctx.clip();
-  ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+  ctx.clearRect(0, 0, width, height);
   ctx.restore();
 
   // Draw background circle
   ctx.beginPath();
-  ctx.arc(CENTER, CENTER, RADIUS, 0, Math.PI * 2);
+  ctx.arc(centerX, centerY, RADIUS, 0, Math.PI * 2);
+  // eslint-disable-next-line no-param-reassign
   ctx.strokeStyle = backgroundColor;
+  // eslint-disable-next-line no-param-reassign
   ctx.lineWidth = LINE_WIDTH;
   ctx.stroke();
 
   // Draw progress ring - use bright color if recently flashed
-  const isFlashing = currentTime - lastFlashTimeRef.current < FLASH_DURATION;
   const ringColor = isFlashing ? ringFlashColor : ringActiveColor;
 
   const percent = expirationMs > 0 ? Math.max(0, remaining / expirationMs) : 0;
   const endAngle = -Math.PI / 2 + percent * Math.PI * 2;
 
   ctx.beginPath();
-  ctx.arc(CENTER, CENTER, RADIUS, -Math.PI / 2, endAngle);
+  ctx.arc(centerX, centerY, RADIUS, -Math.PI / 2, endAngle);
+  // eslint-disable-next-line no-param-reassign
   ctx.strokeStyle = ringColor;
+  // eslint-disable-next-line no-param-reassign
   ctx.lineWidth = LINE_WIDTH;
+  // eslint-disable-next-line no-param-reassign
   ctx.lineCap = "round";
   ctx.stroke();
+};
+
+export const defaultTimerRenderer: TimerRenderer = ({
+  ctx,
+  width,
+  height,
+  remaining,
+  expirationMs,
+  isFlashing,
+  colors,
+}) => {
+  drawRing({
+    ctx,
+    width,
+    height,
+    remaining,
+    expirationMs,
+    isFlashing,
+    backgroundColor: colors.background,
+    ringFlashColor: colors.ringFlash,
+    ringActiveColor: colors.ringActive,
+  });
+
+  drawText({
+    ctx,
+    width,
+    height,
+    remaining,
+    textColor: colors.text,
+  });
 };
 
 type CanvasTimerConfig = {
@@ -171,6 +195,15 @@ type CanvasTimerConfig = {
   startTimeMs?: number | null;
   timerStartOffset?: number;
   colors: TimerColors;
+  /**
+   * Draws a single frame. Held in a ref, so its identity is irrelevant and it
+   * must never be added to a dependency array in this file - doing so would
+   * restart the timer and reschedule its beeps.
+   */
+  render?: TimerRenderer;
+  /** Logical canvas size in CSS pixels. */
+  width?: number;
+  height?: number;
 };
 
 export const useCanvasTimer = ({
@@ -180,6 +213,9 @@ export const useCanvasTimer = ({
   startTimeMs,
   timerStartOffset = 0,
   colors,
+  render,
+  width = CANVAS_SIZE,
+  height = CANVAS_SIZE,
 }: CanvasTimerConfig) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const contextRef = React.useRef<CanvasRenderingContext2D | null>(null);
@@ -194,12 +230,18 @@ export const useCanvasTimer = ({
   const startTimeMsRef = React.useRef(startTimeMs);
   const timerStartOffsetRef = React.useRef(timerStartOffset);
   const colorsRef = React.useRef(colors);
+  const renderRef = React.useRef(render);
+  const widthRef = React.useRef(width);
+  const heightRef = React.useRef(height);
 
   expirationMsRef.current = expirationMs;
   countdownMsRef.current = countdownMs;
   startTimeMsRef.current = startTimeMs;
   timerStartOffsetRef.current = timerStartOffset;
   colorsRef.current = colors;
+  renderRef.current = render;
+  widthRef.current = width;
+  heightRef.current = height;
 
   // Store callback as ref to avoid stale closures
   const onExpireRef = React.useRef(onExpire);
@@ -214,47 +256,81 @@ export const useCanvasTimer = ({
     beepTimeouts.current = [];
   }, []);
 
-  const tick = React.useCallback(function tick(now: number) {
-    if (startTime.current == null) {
-      return;
-    }
-
-    const currentExpirationMs = expirationMsRef.current;
-    const currentTimerStartOffset = timerStartOffsetRef.current;
-    const currentColors = colorsRef.current;
-
-    // Calculate elapsed time, accounting for this timer's offset in the sequence
-    const elapsed = now - startTime.current - currentTimerStartOffset;
-    const remaining = Math.max(currentExpirationMs - elapsed, 0);
-    msRemaining.current = remaining;
-
-    // Always draw ring for smooth animation
-    drawRing({
+  const drawFrame = React.useCallback(
+    ({
       remaining,
-      currentTime: now,
-      expirationMs: currentExpirationMs,
-      canvasRef,
-      contextRef,
-      lastFlashTimeRef: lastFlashTime,
-      backgroundColor: currentColors.background,
-      ringFlashColor: currentColors.ringFlash,
-      ringActiveColor: currentColors.ringActive,
-    });
+      currentTime,
+      expirationMs: frameExpirationMs,
+    }: {
+      remaining: number;
+      currentTime: number;
+      expirationMs: number;
+    }) => {
+      const canvas = canvasRef.current;
+      if (canvas == null) {
+        return;
+      }
 
-    drawText({
-      remaining,
-      canvasRef,
-      contextRef,
-      textColor: currentColors.text,
-    });
+      let ctx = contextRef.current;
+      if (ctx == null) {
+        ctx = canvas.getContext("2d");
+        if (ctx == null) {
+          return;
+        }
 
-    if (remaining <= 0) {
-      frameId.current = null;
-      return;
-    }
+        contextRef.current = ctx;
+      }
 
-    frameId.current = requestAnimationFrame(tick);
-  }, []);
+      const canvasWidth = widthRef.current;
+      const canvasHeight = heightRef.current;
+      const dpr = syncCanvasResolution(canvas, canvasWidth, canvasHeight);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const renderFrame = renderRef.current ?? defaultTimerRenderer;
+      renderFrame({
+        ctx,
+        width: canvasWidth,
+        height: canvasHeight,
+        remaining,
+        expirationMs: frameExpirationMs,
+        currentTime,
+        isFlashing: currentTime - lastFlashTime.current < FLASH_DURATION,
+        colors: colorsRef.current,
+      });
+    },
+    [],
+  );
+
+  const tick = React.useCallback(
+    function tick(now: number) {
+      if (startTime.current == null) {
+        return;
+      }
+
+      const currentExpirationMs = expirationMsRef.current;
+      const currentTimerStartOffset = timerStartOffsetRef.current;
+
+      // Calculate elapsed time, accounting for this timer's offset in the sequence
+      const elapsed = now - startTime.current - currentTimerStartOffset;
+      const remaining = Math.max(currentExpirationMs - elapsed, 0);
+      msRemaining.current = remaining;
+
+      // Always draw for smooth animation
+      drawFrame({
+        remaining,
+        currentTime: now,
+        expirationMs: currentExpirationMs,
+      });
+
+      if (remaining <= 0) {
+        frameId.current = null;
+        return;
+      }
+
+      frameId.current = requestAnimationFrame(tick);
+    },
+    [drawFrame],
+  );
 
   const start = React.useCallback(() => {
     // Stop any existing animation
@@ -315,7 +391,6 @@ export const useCanvasTimer = ({
 
   const stop = React.useCallback(() => {
     const currentExpirationMs = expirationMsRef.current;
-    const currentColors = colorsRef.current;
 
     if (frameId.current != null) {
       cancelAnimationFrame(frameId.current);
@@ -332,24 +407,12 @@ export const useCanvasTimer = ({
     contextRef.current = null; // Clear cached context on stop
 
     // Draw final state
-    drawRing({
+    drawFrame({
       remaining: currentExpirationMs,
       currentTime: performance.now(),
       expirationMs: currentExpirationMs,
-      canvasRef,
-      contextRef,
-      lastFlashTimeRef: lastFlashTime,
-      backgroundColor: currentColors.background,
-      ringFlashColor: currentColors.ringFlash,
-      ringActiveColor: currentColors.ringActive,
     });
-    drawText({
-      remaining: currentExpirationMs,
-      canvasRef,
-      contextRef,
-      textColor: currentColors.text,
-    });
-  }, [clearScheduledBeeps]);
+  }, [clearScheduledBeeps, drawFrame]);
 
   React.useEffect(() => {
     return () => {
@@ -364,29 +427,17 @@ export const useCanvasTimer = ({
   // Set up canvas at display resolution for crisp rendering
   React.useEffect(() => {
     const canvas = canvasRef.current;
-    if (canvas === null) {
+    if (canvas == null) {
       return;
     }
 
-    syncCanvasResolution(canvas);
+    syncCanvasResolution(canvas, widthRef.current, heightRef.current);
 
     // Initial render
-    drawRing({
+    drawFrame({
       remaining: expirationMs,
       currentTime: performance.now(),
       expirationMs,
-      canvasRef,
-      contextRef,
-      lastFlashTimeRef: lastFlashTime,
-      backgroundColor: colors.background,
-      ringFlashColor: colors.ringFlash,
-      ringActiveColor: colors.ringActive,
-    });
-    drawText({
-      remaining: expirationMs,
-      canvasRef,
-      contextRef,
-      textColor: colors.text,
     });
   }, [
     expirationMs,
@@ -394,6 +445,7 @@ export const useCanvasTimer = ({
     colors.ringFlash,
     colors.ringActive,
     colors.text,
+    drawFrame,
   ]);
 
   return {

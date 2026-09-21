@@ -81,7 +81,7 @@ export const deserializers = {
 } satisfies Record<NumberInputType, (str: string) => number | bigint>;
 
 const isValidNumberInputValue = (value: number | bigint) =>
-  typeof value === "bigint" || !Number.isNaN(value);
+  typeof value === "bigint" || Number.isFinite(value);
 
 export type NumberInputChangeResult =
   | { accepted: false }

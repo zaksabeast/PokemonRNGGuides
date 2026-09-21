@@ -6,39 +6,21 @@ import { Typography } from "./typography";
 import { Timer } from "./timer";
 import { RadioGroup } from "./radio";
 import { Select } from "./select";
-import firstBeepMp3 from "~/assets/first-beep.mp3";
-import countdownBeepsAudio from "~/assets/timer-11-beeps.mp3";
-import { useAudio } from "~/hooks/useAudio";
-import { useCountdownBeeps } from "~/hooks/useCountdownBeeps";
-import { COUNTDOWN_INTERVAL_MS } from "~/hooks/useCanvasTimer";
 import { Field, FormFieldTable } from "./formFieldTable";
-import { atomWithPersistence, useAtom } from "~/state/localStorage";
-import { z } from "zod";
+import { useAtom } from "~/state/localStorage";
+import {
+  multiTimerStateAtom,
+  type MultiTimerState,
+} from "~/state/multiTimerState";
 import { hydrationLock, HydrationLock } from "~/utils/hydration";
 import { useHydrate } from "~/hooks/useHydrate";
 import * as tst from "ts-toolbelt";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
-
-const MultiTimerStateSchema = z
-  .object({
-    showAllTimers: z.boolean(),
-    maxBeepCount: z.number().optional(),
-  })
-  .transform((obj) => ({
-    ...obj,
-    maxBeepCount: obj.maxBeepCount ?? 5,
-  }));
-
-type MultiTimerState = z.infer<typeof MultiTimerStateSchema>;
-
-const multiTimerStateAtom = atomWithPersistence(
-  "multiTimerState",
-  MultiTimerStateSchema,
-  { showAllTimers: false, maxBeepCount: 5 },
-);
-
-const calculateOffset = (timers: number[], index: number) =>
-  timers.slice(0, index).reduce((sum, ms) => sum + ms, 0);
+import {
+  calculateOffset,
+  getMinutesBeforeTarget,
+  useTimerSequence,
+} from "~/hooks/useTimerSequence";
 
 type InnerProps = {
   state: MultiTimerState;
@@ -67,65 +49,20 @@ const InnerMultiTimer = ({
   slots,
 }: InnerProps) => {
   const t = useActiveRouteTranslations();
-  const [startTimeMs, setStartTimeMs] = React.useState<number | null>(null);
-  const [currentTimerIndex, setCurrentTimerIndex] = React.useState(0);
-  const { playBeeps: playKeepAlive, stopBeeps: stopKeepAlive } = useAudio({
-    url: firstBeepMp3,
+  const {
+    startTimeMs,
+    currentTimerIndex,
+    currentMs,
+    nextMs,
+    displayTimerMs,
+    countdownMs,
+    timerStartOffset,
+    onExpire,
+    toggle,
+  } = useTimerSequence({
+    milliseconds,
+    maxBeepCount: state.maxBeepCount,
   });
-
-  const countdownBeeps = Math.min(
-    Math.floor((milliseconds[currentTimerIndex] ?? 0) / COUNTDOWN_INTERVAL_MS),
-    state.maxBeepCount,
-  );
-
-  const { playTrimmedBeeps, stopBeeps } = useCountdownBeeps({
-    audioUrl: countdownBeepsAudio,
-    countdownBeeps,
-  });
-
-  const currentMs = milliseconds[currentTimerIndex] ?? 0;
-  const nextMs = milliseconds[currentTimerIndex + 1] ?? 0;
-  const displayTimerMs = milliseconds.length === 0 ? [0] : milliseconds;
-  const countdownMs = countdownBeeps * COUNTDOWN_INTERVAL_MS;
-
-  // Calculate when this timer starts in the global timeline (sum of all previous timers)
-  const timerStartOffset = calculateOffset(displayTimerMs, currentTimerIndex);
-
-  // Keep audio system alive with quiet beeps
-  React.useEffect(() => {
-    if (startTimeMs == null) {
-      return () => {};
-    }
-    const timer = setInterval(
-      () => playKeepAlive({ count: 1, gain: 0.001 }),
-      1000,
-    );
-    return () => clearInterval(timer);
-  }, [startTimeMs, playKeepAlive]);
-
-  // Play countdown beeps once at first countdown beep time
-  React.useEffect(() => {
-    if (startTimeMs == null) {
-      return;
-    }
-
-    // First beep fires at: expirationMs - countdownMs
-    const delayUntilFirstBeep = currentMs - countdownMs;
-    const timeout = window.setTimeout(() => {
-      playTrimmedBeeps();
-    }, delayUntilFirstBeep);
-
-    return () => clearTimeout(timeout);
-  }, [startTimeMs, playTrimmedBeeps, currentMs, countdownMs]);
-
-  const onExpire = () => {
-    setCurrentTimerIndex((prev) => prev + 1);
-
-    if (currentTimerIndex + 1 >= milliseconds.length) {
-      setStartTimeMs(null);
-      setCurrentTimerIndex(0);
-    }
-  };
 
   const timerSettingFields: Field[] = [
     {
@@ -241,17 +178,7 @@ const InnerMultiTimer = ({
           trackerId={
             startTimeMs != null ? startButtonTrackerId : stopButtonTrackerId
           }
-          onClick={() => {
-            const newStartTimeMs =
-              startTimeMs == null ? performance.now() : null;
-            setStartTimeMs(newStartTimeMs);
-            setCurrentTimerIndex(0);
-            // Stop audio when timer is stopped
-            if (newStartTimeMs == null) {
-              stopBeeps();
-              stopKeepAlive();
-            }
-          }}
+          onClick={toggle}
         >
           {startTimeMs == null ? t["Start Timer"] : t["Stop Timer"]}
         </Button>
@@ -264,11 +191,6 @@ const InnerMultiTimer = ({
       </Flex>
     </Flex>
   );
-};
-
-const getMinutesBeforeTarget = (milliseconds: number[]) => {
-  const summedMs = milliseconds.reduce((acc, ms) => acc + ms, 0);
-  return Math.floor(summedMs / 60000);
 };
 
 export type MultiTimerProps = tst.O.Optional<

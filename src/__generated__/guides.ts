@@ -8296,7 +8296,7 @@ export const guides = {
       addedOn: "2025-03-18",
       translation: null,
       layout: "guide",
-      lastUpdated: null,
+      lastUpdated: "2026-09-24",
       type: "baseGuide",
       canonical: "/mystic-timer/",
       file: "guides/Tools and Emulators/Timer.mdx",

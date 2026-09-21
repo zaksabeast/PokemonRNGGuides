@@ -109,6 +109,12 @@ describe("numberInputUtils", () => {
         accepted: false,
       });
     });
+
+    it("rejects values too large to be finite", () => {
+      expect(getNumberInputChangeResult("decimal", "9".repeat(400))).toEqual({
+        accepted: false,
+      });
+    });
   });
 
   describe("float input changes", () => {
@@ -237,6 +243,12 @@ describe("numberInputUtils", () => {
 
     it("rejects malformed pasted values", () => {
       expect(getNumberInputChangeResult("hex", "ffz")).toEqual({
+        accepted: false,
+      });
+    });
+
+    it("rejects values too large to be finite", () => {
+      expect(getNumberInputChangeResult("hex", "f".repeat(300))).toEqual({
         accepted: false,
       });
     });

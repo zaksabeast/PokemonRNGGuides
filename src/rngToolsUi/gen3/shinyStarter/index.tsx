@@ -4,13 +4,13 @@ import {
   Alert,
   Button,
   Flex,
-  MultiTimer,
   Field,
   NumberInput,
   ResultColumn,
   ResultTable,
   Typography,
 } from "~/components";
+import { EmbeddedRunTimer } from "~/rngToolsUi/timer/embeddedRunTimer";
 import { CaughtMon } from "./caughtMon";
 import { FormFieldTable } from "~/components/formFieldTable";
 import { TargetPokemon } from "./targetPokemon";
@@ -225,14 +225,14 @@ export const ShinyEmeraldStarter = ({ game }: Props) => {
       {selectedTarget != null && targetAdvance !== 0 && (
         <>
           <FormFieldTable fields={fields} />
-          <MultiTimer
+          <EmbeddedRunTimer
             milliseconds={milliseconds}
             labels={[
               "Soft reset START+SELECT+A+B",
               "Select YES to choose your Pokémon",
             ]}
-            startButtonTrackerId="start_gen3_shiny_starter_timer"
-            stopButtonTrackerId="stop_gen3_shiny_starter_timer"
+            startTrackerId="start_gen3_shiny_starter_timer"
+            stopTrackerId="stop_gen3_shiny_starter_timer"
           />
           <TargetPokemon
             game={game}

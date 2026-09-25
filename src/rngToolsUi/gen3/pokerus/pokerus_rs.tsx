@@ -5,13 +5,13 @@ import {
   FormikSwitch,
   ResultColumn,
   RngToolSubmit,
-  MultiTimer,
   FormikSelect,
   Button,
   Icon,
   FormFieldTable,
   FormikNumberInput,
 } from "~/components";
+import { EmbeddedRunTimer } from "~/rngToolsUi/timer/embeddedRunTimer";
 import {
   rngTools,
   Pokerus3GeneratorResult,
@@ -273,11 +273,10 @@ export const Fields = () => {
         label: "",
         direction: "column",
         input: (
-          <MultiTimer
+          <EmbeddedRunTimer
             milliseconds={timerMilliseconds}
-            minutesBeforeTarget={3}
-            startButtonTrackerId="pokerus_timer_start"
-            stopButtonTrackerId="pokerus_timer_stop"
+            startTrackerId="pokerus_timer_start"
+            stopTrackerId="pokerus_timer_stop"
           />
         ),
       },

@@ -1,5 +1,6 @@
 import React from "react";
-import { Flex, MultiTimer, Field, Button } from "~/components";
+import { Flex, Field, Button } from "~/components";
+import { EmbeddedRunTimer } from "~/rngToolsUi/timer/embeddedRunTimer";
 import { FormFieldTable } from "~/components/formFieldTable";
 import { TargetSetup } from "./wild3TargetSetupInput";
 import { Wild3CalibCaughtMon } from "./wild3CalibCaughtMon.component";
@@ -340,11 +341,11 @@ export const Wild3Calib = ({
               <Instructions_calib_without_battle_video />
             ))}
           <FormFieldTable fields={calibFields} />
-          <MultiTimer
+          <EmbeddedRunTimer
             milliseconds={milliseconds}
             labels={labels}
-            startButtonTrackerId="start_wild3_calib_timer"
-            stopButtonTrackerId="stop_wild3_calib_timer"
+            startTrackerId="start_wild3_calib_timer"
+            stopTrackerId="stop_wild3_calib_timer"
           />
           <Wild3CalibCaughtMon
             targetSetup={targetSetup}

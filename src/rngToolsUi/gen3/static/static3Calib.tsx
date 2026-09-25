@@ -1,5 +1,6 @@
 import React from "react";
-import { Flex, MultiTimer, Field, Button } from "~/components";
+import { Flex, Field, Button } from "~/components";
+import { EmbeddedRunTimer } from "~/rngToolsUi/timer/embeddedRunTimer";
 import { FormFieldTable } from "~/components/formFieldTable";
 import { TargetSetup } from "./static3TargetSetupSearcher";
 import { Static3CalibCaughtMon } from "./static3CalibCaughtMon";
@@ -231,11 +232,11 @@ export const Static3Calib = ({
           {displayInstructions && instructions}
 
           <FormFieldTable fields={calibFields} />
-          <MultiTimer
+          <EmbeddedRunTimer
             milliseconds={milliseconds}
             labels={labels}
-            startButtonTrackerId="start_static3_calib_timer"
-            stopButtonTrackerId="stop_static3_calib_timer"
+            startTrackerId="start_static3_calib_timer"
+            stopTrackerId="stop_static3_calib_timer"
           />
           <Static3CalibCaughtMon
             targetSetup={targetSetup}

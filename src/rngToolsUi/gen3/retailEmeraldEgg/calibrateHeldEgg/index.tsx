@@ -32,7 +32,7 @@ import {
 import { toOptions } from "~/utils/options";
 import { useHydrate } from "~/hooks/useHydrate";
 import { Skeleton } from "antd";
-import { Gen3Timer } from "~/components/gen3Timer";
+import { Gen3EmbeddedTimer } from "~/rngToolsUi/gen3/shared/timer";
 import { formatOffset } from "~/utils/offsetSymbol";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { useWatch } from "~/hooks/form";
@@ -414,7 +414,7 @@ export const CalibrateHeldEggTimer = () => {
   const targetAdvance = state.target?.advance ?? 0;
 
   return (
-    <Gen3Timer
+    <Gen3EmbeddedTimer
       trackerId="retail_emerald_held_egg"
       targetAdvance={targetAdvance}
       timer={timerAtom}

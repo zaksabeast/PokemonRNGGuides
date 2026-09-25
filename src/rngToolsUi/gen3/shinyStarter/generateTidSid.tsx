@@ -7,12 +7,12 @@ import {
   Field,
   FormFieldTable,
   RngToolSubmit,
-  MultiTimer,
   Flex,
   NumberInput,
   Select,
   Switch,
 } from "~/components";
+import { EmbeddedRunTimer } from "~/rngToolsUi/timer/embeddedRunTimer";
 import { rngTools, Gen3TidSidShinyResult } from "~/rngTools";
 import {
   Gen3Console,
@@ -203,11 +203,11 @@ const TimerFields = ({
   return (
     <Flex vertical gap={10}>
       <FormFieldTable fields={fields} />
-      <MultiTimer
+      <EmbeddedRunTimer
         milliseconds={milliseconds}
         labels={["Confirm your name.", "Close Professor Birch's message."]}
-        startButtonTrackerId="start_gen3_shiny_starter_tidsid_timer"
-        stopButtonTrackerId="stop_gen3_shiny_starter_tidsid_timer"
+        startTrackerId="start_gen3_shiny_starter_tidsid_timer"
+        stopTrackerId="stop_gen3_shiny_starter_tidsid_timer"
       />
     </Flex>
   );

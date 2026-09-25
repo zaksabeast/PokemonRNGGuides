@@ -35,7 +35,7 @@ import { defaultHiddenPowerFilter } from "~/components/hiddenPowerInput";
 import pmap from "p-map";
 import { sortBy, startCase, mapValues } from "lodash-es";
 import { ivMethods } from "./constants";
-import { Gen3Timer } from "~/components/gen3Timer";
+import { Gen3EmbeddedTimer } from "~/rngToolsUi/gen3/shared/timer";
 import { match, P } from "ts-pattern";
 import { Nullable } from "~/types/utils";
 import { getGen3SpeciesOptions } from "~/types/species";
@@ -395,7 +395,7 @@ export const CalibratePickupEggTimer = () => {
   const targetAdvance = state.targetAdvance;
 
   return (
-    <Gen3Timer
+    <Gen3EmbeddedTimer
       trackerId="retail_emerald_pickup_egg"
       targetAdvance={targetAdvance}
       timer={timerAtom}

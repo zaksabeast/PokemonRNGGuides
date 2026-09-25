@@ -4,7 +4,6 @@ import z from "zod";
 import {
   Typography,
   RngToolForm,
-  MultiTimer,
   RngToolSubmit,
   ResultColumn,
   FormikSwitch,
@@ -15,6 +14,7 @@ import {
   Button,
   Flex,
 } from "~/components";
+import { EmbeddedRunTimer } from "~/rngToolsUi/timer/embeddedRunTimer";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import InstructionsNoBattleNoExisting from "./instructions_no_battle_no_existing.mdx";
 import InstructionsWithBattleNoExisting from "./instructions_with_battle_no_existing.mdx";
@@ -681,11 +681,11 @@ export const BattleVideo = ({
       )}
 
       {milliseconds.length > 0 && (
-        <MultiTimer
+        <EmbeddedRunTimer
           milliseconds={milliseconds}
           labels={timerLabels}
-          startButtonTrackerId="battle_video_timer_start"
-          stopButtonTrackerId="battle_video_timer_stop"
+          startTrackerId="battle_video_timer_start"
+          stopTrackerId="battle_video_timer_stop"
         />
       )}
 

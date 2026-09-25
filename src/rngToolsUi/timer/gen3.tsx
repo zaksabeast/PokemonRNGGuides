@@ -9,6 +9,7 @@ import { z } from "zod";
 import { hydrationLock, HydrationLock } from "~/utils/hydration";
 import { useHydrate } from "~/hooks/useHydrate";
 import { useTimerSequence } from "~/hooks/useTimerSequence";
+import { getGen3PhaseLabels } from "~/rngToolsUi/timer/atoms";
 import { Gen3Setup } from "./gen3Setup";
 import { RunView } from "./runView";
 
@@ -114,6 +115,8 @@ const InnerGen3Timer = ({
     updateTimerSettings({ ...updated.settings, version: 1, frameHit: null });
   };
 
+  const labels = getGen3PhaseLabels(settings);
+
   return (
     <Flex vertical gap={16}>
       <RadioGroup<Mode>
@@ -136,11 +139,7 @@ const InnerGen3Timer = ({
           listTitle="Timers"
           rows={timer.milliseconds.map((ms, index) => ({
             id: index,
-            // The first timer is the pre-timer, the second is the target frame
-            label:
-              index === 0
-                ? `${settings.preTimer} ms`
-                : `${settings.targetFrame} advances`,
+            label: labels[index] ?? `Phase ${index + 1}`,
             ms,
           }))}
           onEdit={() => setMode("setup")}

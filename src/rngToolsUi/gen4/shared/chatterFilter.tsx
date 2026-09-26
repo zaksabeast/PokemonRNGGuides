@@ -1,7 +1,10 @@
 import React from "react";
 import { match } from "ts-pattern";
 import Chatter900 from "~/assets/chatter-900.wav";
-import { getSharedAudioContext } from "~/utils/sharedAudio";
+import {
+  getSharedAudioContext,
+  resumeSharedAudioContext,
+} from "~/utils/sharedAudio";
 import { ChatterPitch, ChatterState, rngTools } from "~/rngTools";
 import { type Translations } from "~/translations";
 import { useAtom } from "jotai";
@@ -105,6 +108,9 @@ const useChatterAudio = () => {
     async (rate: number) => {
       try {
         const ctx = getSharedAudioContext();
+        // The context may have just been created, so resume it before the
+        // awaits below end the user gesture that allows it
+        resumeSharedAudioContext();
         const base = await ensureBuffer(ctx);
         const pitched = await resampleBuffer(ctx, base, rate);
         playBuffer(ctx, pitched, 1.0);

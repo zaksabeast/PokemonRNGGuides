@@ -1,16 +1,22 @@
 import React from "react";
-import firstBeepMp3 from "~/assets/first-beep.mp3";
+import { isEqual } from "lodash-es";
 import countdownBeepsAudio from "~/assets/timer-11-beeps.mp3";
-import { useAudio } from "~/hooks/useAudio";
+import { useAudioKeepAlive } from "~/hooks/useAudioKeepAlive";
 import { useCountdownBeeps } from "~/hooks/useCountdownBeeps";
+import { useWakeLock } from "~/hooks/useWakeLock";
 import { COUNTDOWN_INTERVAL_MS } from "~/hooks/useCanvasTimer";
 
-export const calculateOffset = (timers: number[], index: number) =>
-  timers.slice(0, index).reduce((sum, ms) => sum + ms, 0);
+export const calculateOffset = (timers: number[], index: number) => {
+  return timers.slice(0, index).reduce((sum, ms) => sum + ms, 0);
+};
 
 export const getMinutesBeforeTarget = (milliseconds: number[]) => {
   const summedMs = milliseconds.reduce((acc, ms) => acc + ms, 0);
   return Math.floor(summedMs / 60000);
+};
+
+const getCountdownBeeps = (ms: number, maxBeepCount: number) => {
+  return Math.min(Math.floor(ms / COUNTDOWN_INTERVAL_MS), maxBeepCount);
 };
 
 type TimerSequenceConfig = {
@@ -33,54 +39,64 @@ export const useTimerSequence = ({
 }: TimerSequenceConfig) => {
   const [startTimeMs, setStartTimeMs] = React.useState<number | null>(null);
   const [currentTimerIndex, setCurrentTimerIndex] = React.useState(0);
-  const { playBeeps: playKeepAlive, stopBeeps: stopKeepAlive } = useAudio({
-    url: firstBeepMp3,
-  });
+  // Rescheduling restarts the playing countdown, so only a change in values
+  // (not a new array with the same values) should reschedule
+  const [scheduledMilliseconds, setScheduledMilliseconds] =
+    React.useState(milliseconds);
 
-  const countdownBeeps = Math.min(
-    Math.floor((milliseconds[currentTimerIndex] ?? 0) / COUNTDOWN_INTERVAL_MS),
-    maxBeepCount,
-  );
+  if (!isEqual(scheduledMilliseconds, milliseconds)) {
+    setScheduledMilliseconds(milliseconds);
+  }
 
-  const { playTrimmedBeeps, stopBeeps } = useCountdownBeeps({
+  const { scheduleBeeps, realignBeeps, stopBeeps } = useCountdownBeeps({
     audioUrl: countdownBeepsAudio,
-    countdownBeeps,
   });
 
   const currentMs = milliseconds[currentTimerIndex] ?? 0;
   const nextMs = milliseconds[currentTimerIndex + 1] ?? 0;
   const displayTimerMs = milliseconds.length === 0 ? [0] : milliseconds;
-  const countdownMs = countdownBeeps * COUNTDOWN_INTERVAL_MS;
+  const countdownMs =
+    getCountdownBeeps(currentMs, maxBeepCount) * COUNTDOWN_INTERVAL_MS;
 
   // Calculate when this timer starts in the global timeline (sum of all previous timers)
   const timerStartOffset = calculateOffset(displayTimerMs, currentTimerIndex);
 
-  // Keep audio system alive with quiet beeps
+  // Screen locking suspends timers and interrupts audio on mobile
+  useWakeLock(startTimeMs != null);
+
+  // Keeps the audio output open and the page treated as playing audio while
+  // the browser is in the background
+  useAudioKeepAlive(startTimeMs != null);
+
   React.useEffect(() => {
     if (startTimeMs == null) {
       return () => {};
     }
-    const timer = setInterval(
-      () => playKeepAlive({ count: 1, gain: 0.001 }),
-      1000,
-    );
+    const timer = setInterval(realignBeeps, 1000);
     return () => clearInterval(timer);
-  }, [startTimeMs, playKeepAlive]);
+  }, [startTimeMs, realignBeeps]);
 
-  // Play countdown beeps once at first countdown beep time
+  // Schedule every phase's countdown up front so each first beep plays at
+  // expirationMs - countdownMs, without waiting on the canvas to advance phases
+  // (which is late on slow devices and paused while the page is hidden)
   React.useEffect(() => {
     if (startTimeMs == null) {
       return;
     }
 
-    // First beep fires at: expirationMs - countdownMs
-    const delayUntilFirstBeep = currentMs - countdownMs;
-    const timeout = window.setTimeout(() => {
-      playTrimmedBeeps();
-    }, delayUntilFirstBeep);
-
-    return () => clearTimeout(timeout);
-  }, [startTimeMs, playTrimmedBeeps, currentMs, countdownMs]);
+    const countdowns = scheduledMilliseconds.map((ms, index) => {
+      const countdownBeeps = getCountdownBeeps(ms, maxBeepCount);
+      return {
+        firstBeepTimeMs:
+          startTimeMs +
+          calculateOffset(scheduledMilliseconds, index) +
+          ms -
+          countdownBeeps * COUNTDOWN_INTERVAL_MS,
+        countdownBeeps,
+      };
+    });
+    return scheduleBeeps(countdowns);
+  }, [startTimeMs, scheduledMilliseconds, maxBeepCount, scheduleBeeps]);
 
   const onExpire = () => {
     setCurrentTimerIndex((prev) => prev + 1);
@@ -98,7 +114,6 @@ export const useTimerSequence = ({
     // Stop audio when timer is stopped
     if (newStartTimeMs == null) {
       stopBeeps();
-      stopKeepAlive();
     }
   };
 

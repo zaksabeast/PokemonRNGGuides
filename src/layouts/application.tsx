@@ -13,12 +13,12 @@ const Main = styled.main({
   display: "flex",
   flexDirection: "column",
   width: "100%",
-  height: "100%",
+  flex: 1,
   gap: 24,
 });
 
 const BodyContainer = styled.div({
-  height: "100%",
+  flex: 1,
   width: "100%",
   display: "flex",
 });
@@ -27,11 +27,13 @@ const ContentLayout = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  height: `calc(100% - ${theme.token.layoutHeaderHeight})`,
+  minHeight: `calc(100dvh - ${theme.token.layoutHeaderHeight})`,
   width: "100%",
+  minWidth: 0,
+  // Keeps wide content scrolling sideways here instead of widening the page
+  overflowX: "auto",
   gap: 24,
   boxSizing: "border-box",
-  overflowY: "scroll",
   marginTop: theme.token.layoutHeaderHeight,
 }));
 

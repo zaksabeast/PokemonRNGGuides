@@ -22,13 +22,15 @@ const ContentLayout = styled(
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  height: `calc(100% - ${theme.token.layoutHeaderHeight})`,
+  // The document scrolls instead of this container so mobile browsers can hide their toolbars
+  minHeight: `calc(100dvh - ${theme.token.layoutHeaderHeight})`,
   width: "100%",
+  minWidth: 0,
+  overflowX: "auto",
   gap: 24,
   boxSizing: "border-box",
   paddingLeft: $fullWidth ? 0 : SIDE_MARGIN,
   paddingRight: $fullWidth ? 0 : SIDE_MARGIN,
-  overflowY: "scroll",
   marginTop: theme.token.layoutHeaderHeight,
 
   backgroundColor: theme.token.colorBgContainer,
@@ -48,7 +50,10 @@ const Main = styled.main(({ theme }) => ({
 const DesktopNavDrawerContainer = styled.div(({ theme }) => ({
   display: "none",
   flexDirection: "column",
-  height: `calc(100% - ${theme.token.layoutHeaderHeight})`,
+  position: "sticky",
+  top: theme.token.layoutHeaderHeight,
+  alignSelf: "flex-start",
+  height: `calc(100dvh - ${theme.token.layoutHeaderHeight})`,
   width: "100%",
   marginTop: theme.token.layoutHeaderHeight,
   maxWidth: 286,
@@ -59,7 +64,7 @@ const DesktopNavDrawerContainer = styled.div(({ theme }) => ({
 }));
 
 const BodyContainer = styled.div(({ theme }) => ({
-  height: "100%",
+  flex: 1,
   width: "100%",
   display: "flex",
   backgroundColor: theme.token.colorBgLayout,

@@ -45,6 +45,12 @@ const renderAntdStyles = () => {
         padding: 0;
         margin: 0;
         -webkit-tap-highlight-color: transparent;
+        background-color: var(--ant-color-bg-base);
+      }
+
+      html {
+        /* Keeps scrolled-to elements below the fixed header */
+        scroll-padding-top: var(--ant-layout-header-height);
       }
 
       a {

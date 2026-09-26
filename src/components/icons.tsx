@@ -24,6 +24,10 @@ import {
   MdOutlineTablet,
   MdOutlineTimer,
   MdArrowDownward,
+  MdArrowForward,
+  MdOutlineBuild,
+  MdOutlinePlayCircle,
+  MdSwapHoriz,
 } from "react-icons/md";
 import { BiMessageAltError } from "react-icons/bi";
 import { TiWarningOutline } from "react-icons/ti";
@@ -110,6 +114,10 @@ const icons = {
   LaptopMedical: FaLaptopMedical,
   Timer: MdOutlineTimer,
   ArrowDownward: MdArrowDownward,
+  ArrowForward: MdArrowForward,
+  Build: MdOutlineBuild,
+  PlayCircle: MdOutlinePlayCircle,
+  SwapHoriz: MdSwapHoriz,
 } as const;
 
 export type IconName = keyof typeof icons;

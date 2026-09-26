@@ -1,52 +1,52 @@
 import styled from "@emotion/styled";
+import { type Theme } from "@emotion/react";
 import { Button, Flex, Icon, Link, Typography } from "~/components";
 import { trackCardClick } from "~/analytics";
 import { formatTimerReadout } from "~/rngToolsUi/timer/format";
-import { homeQueries, interactiveStyles, stateLayer } from "./styles";
 
 export const CHOOSE_YOUR_GAME_ID = "choose-your-game";
 
 // Gaps and directions change by container size, so they're set here instead of as Flex props
-const HeroLayout = styled(Flex)({
+const HeroLayout = styled(Flex)(({ theme }) => ({
   "&&": {
     alignItems: "center",
     gap: 48,
-    [homeQueries.medium]: {
+    [theme.containerQueries.medium]: {
       flexDirection: "column",
       alignItems: "stretch",
       gap: 32,
     },
-    [homeQueries.mobile]: {
+    [theme.containerQueries.mobile]: {
       flexDirection: "column",
       alignItems: "stretch",
       gap: 16,
     },
   },
-});
+}));
 
-const HeroCopy = styled(Flex)({
+const HeroCopy = styled(Flex)(({ theme }) => ({
   "&&": {
     flex: 1,
     minWidth: 0,
     flexDirection: "column",
     gap: 12,
-    [homeQueries.mobile]: {
+    [theme.containerQueries.mobile]: {
       // Lets the text, gauge, and buttons be reordered on mobile
       display: "contents",
     },
   },
-});
+}));
 
-const HeroText = styled(Flex)({
+const HeroText = styled(Flex)(({ theme }) => ({
   "&&": {
     flexDirection: "column",
     gap: 12,
-    [homeQueries.mobile]: {
+    [theme.containerQueries.mobile]: {
       gap: 6,
       marginBottom: 12,
     },
   },
-});
+}));
 
 const Title = styled(Typography.Title)(({ theme }) => ({
   "&&": {
@@ -57,7 +57,7 @@ const Title = styled(Typography.Title)(({ theme }) => ({
     lineHeight: "64px",
     letterSpacing: -0.25,
     textWrapStyle: "balance",
-    [homeQueries.mobile]: {
+    [theme.containerQueries.mobile]: {
       fontSize: 36,
       lineHeight: "44px",
       letterSpacing: 0,
@@ -71,19 +71,19 @@ const Subtitle = styled(Typography.Paragraph)(({ theme }) => ({
     color: theme.token.colorTextSecondary,
     fontSize: 22,
     lineHeight: "30px",
-    [homeQueries.mobile]: {
+    [theme.containerQueries.mobile]: {
       fontSize: 16,
       lineHeight: "24px",
     },
   },
 }));
 
-const Actions = styled(Flex)({
+const Actions = styled(Flex)(({ theme }) => ({
   "&&": {
     flexWrap: "wrap",
     gap: 12,
     marginTop: 20,
-    [homeQueries.mobile]: {
+    [theme.containerQueries.mobile]: {
       order: 2,
       flexDirection: "column",
       gap: 16,
@@ -93,9 +93,9 @@ const Actions = styled(Flex)({
       },
     },
   },
-});
+}));
 
-const heroButtonStyles = {
+const heroButtonStyles = (theme: Theme) => ({
   height: 56,
   paddingLeft: 24,
   paddingRight: 28,
@@ -105,53 +105,53 @@ const heroButtonStyles = {
   lineHeight: "24px",
   letterSpacing: 0.15,
   gap: 8,
-  [homeQueries.mobile]: {
+  [theme.containerQueries.mobile]: {
     width: "100%",
     height: 48,
     borderRadius: 24,
   },
-};
+});
 
-const PrimaryHeroButton = styled(Button)({
-  "&&&&.ant-btn-primary": heroButtonStyles,
-  [homeQueries.mobile]: {
+const PrimaryHeroButton = styled(Button)(({ theme }) => ({
+  "&&&&.ant-btn-primary": heroButtonStyles(theme),
+  [theme.containerQueries.mobile]: {
     "&& .ant-btn-icon": {
       display: "none",
     },
   },
-});
+}));
 
-const TrailingIcon = styled.span({
+const TrailingIcon = styled.span(({ theme }) => ({
   display: "none",
-  [homeQueries.mobile]: {
+  [theme.containerQueries.mobile]: {
     display: "flex",
   },
-});
+}));
 
 const OutlinedHeroButton = styled(Button)(({ theme }) => ({
   "&&&&.ant-btn-default": {
-    ...heroButtonStyles,
+    ...heroButtonStyles(theme),
     color: theme.token.colorText,
     backgroundColor: "transparent",
     borderColor: theme.token.colorBorder,
     ":hover": {
-      backgroundColor: stateLayer(0.08),
+      backgroundColor: theme.token.colorStateLayerHover,
     },
     ":active": {
-      backgroundColor: stateLayer(0.12),
+      backgroundColor: theme.token.colorStateLayerPressed,
     },
   },
 }));
 
-const HeroLink = styled(Link)({
+const HeroLink = styled(Link)(({ theme }) => ({
   display: "flex",
-  [homeQueries.mobile]: {
+  [theme.containerQueries.mobile]: {
     width: "100%",
   },
-});
+}));
 
 const GaugeLink = styled(Link)(({ theme }) => ({
-  ...interactiveStyles(theme),
+  ...theme.interactive,
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -160,11 +160,11 @@ const GaugeLink = styled(Link)(({ theme }) => ({
   borderRadius: 20,
   color: "inherit",
   fontWeight: 400,
-  [homeQueries.wide]: {
+  [theme.containerQueries.wide]: {
     flex: "none",
     width: 440,
   },
-  [homeQueries.mobile]: {
+  [theme.containerQueries.mobile]: {
     order: 1,
     gap: 12,
   },
@@ -179,15 +179,15 @@ const GaugeCaption = styled(Typography.Text)(({ theme }) => ({
   },
 }));
 
-const GaugeSvg = styled.svg({
+const GaugeSvg = styled.svg(({ theme }) => ({
   display: "block",
   width: 400,
   maxWidth: "100%",
   height: "auto",
-  [homeQueries.mobile]: {
+  [theme.containerQueries.mobile]: {
     width: 280,
   },
-});
+}));
 
 const GaugeTrack = styled.path(({ theme }) => ({
   fill: "none",

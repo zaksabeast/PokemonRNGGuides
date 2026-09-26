@@ -16,6 +16,7 @@ import { Translation } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import React from "react";
 import isEqual from "lodash-es/isEqual";
+import styled from "@emotion/styled";
 
 type RadioOptions<OptionValues extends string | number> =
   CheckboxOptionType<OptionValues>[];
@@ -42,7 +43,24 @@ type RadioGroupProps<OptionValues extends string | number> = tst.O.Overwrite<
   }
 >;
 
-const _RadioGroup = withCss(AntdRadio.Group);
+const _RadioGroup = styled(withCss(AntdRadio.Group))(({ theme }) => ({
+  "&& .ant-radio-button-wrapper:not(.ant-radio-button-wrapper-disabled):hover":
+    {
+      color: theme.token.colorText,
+      backgroundColor: theme.token.colorStateLayerHover,
+    },
+  "&& .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)":
+    {
+      "&, &:hover, &:active, &:first-of-type": {
+        color: theme.token.colorPrimaryActive,
+        backgroundColor: theme.token.colorPrimaryBg,
+        borderColor: theme.token.colorBorder,
+      },
+      "&::before, &:hover::before, &:active::before": {
+        backgroundColor: theme.token.colorBorder,
+      },
+    },
+}));
 
 export const RadioGroup = <OptionValues extends string | number>(
   props: RadioGroupProps<OptionValues>,

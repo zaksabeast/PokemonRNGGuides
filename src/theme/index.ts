@@ -217,20 +217,10 @@ export const getTheme = ({
         itemBorderRadius: 28,
         borderRadiusLG: 28,
       },
-      Radio: isLightMode
-        ? {
-            buttonCheckedBg: tokens.colorPrimaryBg,
-            colorPrimary: tokens.colorPrimaryActive,
-          }
-        : {},
       Splitter: {
         splitBarDraggableSize: 100,
         splitBarSize: 4,
         splitTriggerSize: 10,
-      },
-      Tag: {
-        defaultBg: tokens.colorPrimaryBg,
-        defaultColor: isLightMode ? "#04475F" : tokens.colorLinkHover,
       },
     },
   };

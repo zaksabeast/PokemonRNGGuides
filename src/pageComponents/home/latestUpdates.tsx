@@ -1,32 +1,30 @@
 import styled from "@emotion/styled";
 import dayjs from "dayjs";
-import { Flex, Link } from "~/components";
-import { trackCardClick } from "~/analytics";
-import { getLatestGuideUpdates, type GuideUpdate } from "~/guides";
-import { styledPropGuard } from "~/utils/styled";
 import {
   DesktopOnly,
+  Flex,
+  Link,
+  ListRow,
+  ListSurface,
   MobileOnly,
   Section,
-  SectionHeading,
-  TitleText,
-  MetaText,
-  homeQueries,
-  interactiveStyles,
-  stateLayer,
-} from "./styles";
+  Tag,
+  Typography,
+} from "~/components";
+import { trackCardClick } from "~/analytics";
+import { getLatestGuideUpdates, type GuideUpdate } from "~/guides";
 
-const UpdateGrid = styled.div({
+const UpdateGrid = styled.div(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
   gap: 16,
-  [homeQueries.medium]: {
+  [theme.containerQueries.medium]: {
     gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
   },
-});
+}));
 
 const UpdateCard = styled(Link)(({ theme }) => ({
-  ...interactiveStyles(theme),
+  ...theme.interactive,
   display: "flex",
   flexDirection: "column",
   gap: 12,
@@ -37,48 +35,37 @@ const UpdateCard = styled(Link)(({ theme }) => ({
   ":hover": {
     color: theme.token.colorText,
     // Layers the hover tint over the card color, which a flat token can't do in both themes
-    backgroundImage: `linear-gradient(${stateLayer(0.05)}, ${stateLayer(0.05)})`,
+    backgroundImage: `linear-gradient(${theme.token.colorStateLayerHover}, ${theme.token.colorStateLayerHover})`,
   },
 }));
 
-const UpdateRow = styled(Link)(({ theme }) => ({
-  ...interactiveStyles(theme),
-  display: "flex",
-  alignItems: "center",
-  gap: 12,
+const UpdateRow = styled(ListRow)({
   minHeight: 64,
-  padding: "8px 16px",
-  boxSizing: "border-box",
-  color: theme.token.colorText,
-  ":hover": {
-    color: theme.token.colorText,
-    backgroundColor: stateLayer(0.08),
-  },
-}));
+  // A tag needs more room from the edge than a trailing icon does
+  paddingRight: 16,
+});
 
-const Badge = styled(
-  "span",
-  styledPropGuard,
-)<{ $status: GuideUpdate["status"] }>(({ theme, $status }) => ({
-  display: "inline-flex",
-  alignItems: "center",
-  flex: "none",
-  height: 24,
-  padding: "0 10px",
-  borderRadius: 8,
-  fontSize: 12,
-  fontWeight: 500,
-  lineHeight: "16px",
-  letterSpacing: 0.4,
-  backgroundColor:
-    $status === "New"
-      ? theme.token.colorSuccessBg
-      : theme.token.colorFillTertiary,
-  color:
-    $status === "New"
-      ? theme.token.colorSuccess
-      : theme.token.colorTextSecondary,
-}));
+const StatusTag = ({ status }: { status: GuideUpdate["status"] }) => {
+  return status === "New" ? (
+    <Tag
+      variant="filled"
+      flexShrink={0}
+      color="Success"
+      backgroundColor="SuccessBg"
+    >
+      {status}
+    </Tag>
+  ) : (
+    <Tag
+      variant="filled"
+      flexShrink={0}
+      color="TextSecondary"
+      backgroundColor="FillTertiary"
+    >
+      {status}
+    </Tag>
+  );
+};
 
 const formatDate = (date: string) => dayjs(date).format("D MMM");
 
@@ -98,10 +85,14 @@ export const LatestUpdates = () => {
   return (
     <Section>
       <DesktopOnly>
-        <SectionHeading level={2}>Latest guide updates</SectionHeading>
+        <Typography.SectionHeading level={2}>
+          Latest guide updates
+        </Typography.SectionHeading>
       </DesktopOnly>
       <MobileOnly>
-        <SectionHeading level={2}>Latest updates</SectionHeading>
+        <Typography.SectionHeading level={2}>
+          Latest updates
+        </Typography.SectionHeading>
       </MobileOnly>
 
       <DesktopOnly>
@@ -113,12 +104,12 @@ export const LatestUpdates = () => {
               onClick={trackUpdate(update)}
             >
               <Flex align="center" justify="space-between" gap={8}>
-                <Badge $status={update.status}>{update.status}</Badge>
-                <MetaText>{formatDate(update.date)}</MetaText>
+                <StatusTag status={update.status} />
+                <Typography.Meta>{formatDate(update.date)}</Typography.Meta>
               </Flex>
               <Flex vertical>
-                <TitleText>{update.name}</TitleText>
-                <MetaText>{formatGame(update)}</MetaText>
+                <Typography.ItemTitle>{update.name}</Typography.ItemTitle>
+                <Typography.Meta>{formatGame(update)}</Typography.Meta>
               </Flex>
             </UpdateCard>
           ))}
@@ -126,7 +117,7 @@ export const LatestUpdates = () => {
       </DesktopOnly>
 
       <MobileOnly>
-        <Flex vertical pv={4} borderRadius={20} backgroundColor="BgLayout">
+        <ListSurface>
           {updates.map((update) => (
             <UpdateRow
               key={update.slug}
@@ -134,15 +125,15 @@ export const LatestUpdates = () => {
               onClick={trackUpdate(update)}
             >
               <Flex vertical flex={1} minWidth={0}>
-                <TitleText>{update.name}</TitleText>
-                <MetaText>
+                <Typography.ItemTitle>{update.name}</Typography.ItemTitle>
+                <Typography.Meta>
                   {formatGame(update)} · {formatDate(update.date)}
-                </MetaText>
+                </Typography.Meta>
               </Flex>
-              <Badge $status={update.status}>{update.status}</Badge>
+              <StatusTag status={update.status} />
             </UpdateRow>
           ))}
-        </Flex>
+        </ListSurface>
       </MobileOnly>
     </Section>
   );

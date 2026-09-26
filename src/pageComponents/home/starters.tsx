@@ -1,15 +1,7 @@
 import styled from "@emotion/styled";
-import { Icon, Link } from "~/components";
+import { Icon, Link, Section, Typography } from "~/components";
 import { trackCardClick } from "~/analytics";
 import { starterSteps } from "./data";
-import {
-  Section,
-  SectionHeading,
-  TitleText,
-  homeQueries,
-  interactiveStyles,
-  stateLayer,
-} from "./styles";
 
 const StarterList = styled.ol(({ theme }) => ({
   display: "grid",
@@ -18,10 +10,10 @@ const StarterList = styled.ol(({ theme }) => ({
   margin: 0,
   padding: 0,
   listStyle: "none",
-  [homeQueries.medium]: {
+  [theme.containerQueries.medium]: {
     gridTemplateColumns: "minmax(0, 1fr)",
   },
-  [homeQueries.mobile]: {
+  [theme.containerQueries.mobile]: {
     gridTemplateColumns: "minmax(0, 1fr)",
     gap: 0,
     padding: "4px 0",
@@ -31,7 +23,7 @@ const StarterList = styled.ol(({ theme }) => ({
 }));
 
 const StarterRow = styled(Link)(({ theme }) => ({
-  ...interactiveStyles(theme),
+  ...theme.interactive,
   display: "flex",
   alignItems: "center",
   gap: 16,
@@ -41,17 +33,17 @@ const StarterRow = styled(Link)(({ theme }) => ({
   color: theme.token.colorText,
   ":hover": {
     color: theme.token.colorText,
-    backgroundColor: stateLayer(0.05),
+    backgroundColor: theme.token.colorStateLayerHover,
     borderColor: theme.token.colorBorder,
   },
-  [homeQueries.mobile]: {
+  [theme.containerQueries.mobile]: {
     gap: 14,
     minHeight: 56,
     padding: "4px 8px 4px 16px",
     border: "none",
     borderRadius: 0,
     ":hover": {
-      backgroundColor: stateLayer(0.08),
+      backgroundColor: theme.token.colorStateLayerHover,
     },
   },
 }));
@@ -67,7 +59,7 @@ const StepBadge = styled.span(({ theme }) => ({
   color: theme.token.colorPrimaryActive,
   fontSize: 16,
   fontWeight: 500,
-  [homeQueries.mobile]: {
+  [theme.containerQueries.mobile]: {
     width: 32,
     height: 32,
     fontSize: 14,
@@ -77,7 +69,9 @@ const StepBadge = styled.span(({ theme }) => ({
 export const Starters = () => {
   return (
     <Section>
-      <SectionHeading level={2}>New to RNG? Start here</SectionHeading>
+      <Typography.SectionHeading level={2}>
+        New to RNG? Start here
+      </Typography.SectionHeading>
       <StarterList>
         {starterSteps.map((step, index) => {
           const number = index + 1;
@@ -88,7 +82,9 @@ export const Starters = () => {
                 onClick={() => trackCardClick({ id: `home-starter-${number}` })}
               >
                 <StepBadge>{number}</StepBadge>
-                <TitleText flex={1}>{step.title}</TitleText>
+                <Typography.ItemTitle flex={1}>
+                  {step.title}
+                </Typography.ItemTitle>
                 <Icon name="ChevronRight" size={24} color="TextTertiary" />
               </StarterRow>
             </li>

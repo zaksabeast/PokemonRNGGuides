@@ -15,10 +15,11 @@ type Props = {
 
 export const SIDE_MARGIN = 24;
 
-const ContentLayout = styled(
-  "div",
-  styledPropGuard,
-)<{ $fullWidth: boolean }>(({ theme, $fullWidth }) => ({
+const CONTENT_MAX_WIDTH = 800;
+const CONTENT_PADDING_X = 32;
+
+const ContentLayout = styled.div(({ theme }) => ({
+  ...theme.pageContainer,
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -29,8 +30,6 @@ const ContentLayout = styled(
   overflowX: "auto",
   gap: 24,
   boxSizing: "border-box",
-  paddingLeft: $fullWidth ? 0 : SIDE_MARGIN,
-  paddingRight: $fullWidth ? 0 : SIDE_MARGIN,
   marginTop: theme.token.layoutHeaderHeight,
 
   backgroundColor: theme.token.colorBgContainer,
@@ -82,16 +81,15 @@ const ContentContainer = styled(
   return {
     height: "100%",
     width: "100%",
-    maxWidth: useMaxWidth ? 750 : "none",
+    // Includes the padding so the content itself gets the full max width
+    maxWidth: useMaxWidth ? CONTENT_MAX_WIDTH + CONTENT_PADDING_X * 2 : "none",
     display: "flex",
     flexDirection: "column",
     gap: 32,
-    paddingTop: $fullWidth ? 0 : 24,
-    [theme.mediaQueries.up("tablet")]: {
-      width: useMaxWidth ? "90%" : "100%",
-    },
-    [theme.mediaQueries.up("desktop")]: {
-      width: useMaxWidth ? "80%" : "100%",
+    boxSizing: "border-box",
+    padding: $fullWidth ? 0 : `28px ${CONTENT_PADDING_X}px 0`,
+    [theme.containerQueries.mobile]: {
+      padding: $fullWidth ? 0 : "8px 16px 0",
     },
   };
 });
@@ -138,7 +136,7 @@ export const MainLayout = ({
             <DesktopDrawer />
           </Flex>
         </DesktopNavDrawerContainer>
-        <ContentLayout $fullWidth={fullWidth}>
+        <ContentLayout>
           <ContentContainer
             $useMaxWidth={maxWidthEnabled}
             $fullWidth={fullWidth}

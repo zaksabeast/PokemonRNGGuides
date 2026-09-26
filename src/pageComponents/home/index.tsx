@@ -4,12 +4,10 @@ import { Hero } from "./hero";
 import { Starters } from "./starters";
 import { LatestUpdates } from "./latestUpdates";
 import { GameDirectory } from "./gameDirectory";
-import { homeContainerStyles, homeQueries } from "./styles";
-
-const HomeContainer = styled.div({
-  ...homeContainerStyles,
+const HomeContainer = styled.div(({ theme }) => ({
+  ...theme.pageContainer,
   width: "100%",
-});
+}));
 
 const HomeContent = styled(Flex)(({ theme }) => ({
   "&&": {
@@ -20,7 +18,7 @@ const HomeContent = styled(Flex)(({ theme }) => ({
     padding: "48px 64px 64px",
     boxSizing: "border-box",
     color: theme.token.colorText,
-    [homeQueries.mobile]: {
+    [theme.containerQueries.mobile]: {
       gap: 28,
       padding: "8px 16px 32px",
     },

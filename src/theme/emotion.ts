@@ -13,6 +13,10 @@ const screenSizeMap = {
   desktop: 1200,
 };
 
+const PAGE_CONTAINER = "page";
+const PAGE_MOBILE_MAX_WIDTH = 840;
+const PAGE_WIDE_MIN_WIDTH = 1040;
+
 export const emotionTheme: Theme = {
   token: {
     layoutHeaderHeight: "var(--ant-layout-header-height)",
@@ -117,16 +121,31 @@ export const emotionTheme: Theme = {
     colorInfoActive: "var(--ant-color-info-active)",
     colorInfoTextHover: "var(--ant-color-info-text-hover)",
 
-    colorGuideTagNew: "#AF52DE",
-    colorGuideTagNewBg: "rgba(175, 82, 222, 0.1)",
-    colorGuideTagWebTool: "#7E5BEF",
-    colorGuideTagWebToolBg: "rgba(126, 91, 239, 0.08)",
-    colorGuideTagVideoGuide: "#007AFF",
-    colorGuideTagVideoGuideBg: "rgba(0, 122, 255, 0.1)",
-    colorGuideTagRoughDraft: "#FF3B30",
-    colorGuideTagRoughDraftBg: "rgba(255, 59, 48, 0.1)",
-    colorGuideTagTranslated: "#00B894",
-    colorGuideTagTranslatedBg: "rgba(0, 184, 148, 0.1)",
+    // Info tinted over the surface, for elements that should read apart from the primary color
+    colorInfoTonal:
+      "color-mix(in srgb, var(--ant-color-info), var(--ant-color-text))",
+    colorInfoTonalBg: "rgb(from var(--ant-color-info) r g b / 0.14)",
+    colorInfoTonalBorder: "rgb(from var(--ant-color-info) r g b / 0.5)",
+
+    colorStateLayerHover: "rgb(from var(--ant-color-text) r g b / 0.08)",
+    colorStateLayerPressed: "rgb(from var(--ant-color-text) r g b / 0.12)",
+  },
+  pageContainer: {
+    containerType: "inline-size",
+    containerName: PAGE_CONTAINER,
+  },
+  containerQueries: {
+    mobile: `@container ${PAGE_CONTAINER} (max-width: ${PAGE_MOBILE_MAX_WIDTH - 1}px)`,
+    medium: `@container ${PAGE_CONTAINER} (min-width: ${PAGE_MOBILE_MAX_WIDTH}px) and (max-width: ${PAGE_WIDE_MIN_WIDTH - 1}px)`,
+    wide: `@container ${PAGE_CONTAINER} (min-width: ${PAGE_WIDE_MIN_WIDTH}px)`,
+  },
+  interactive: {
+    cursor: "pointer",
+    transition: "background-color 150ms ease, border-color 150ms ease",
+    ":focus-visible": {
+      outline: "2px solid var(--ant-color-primary)",
+      outlineOffset: 2,
+    },
   },
   mediaQueries: {
     up: (size: ScreenSize) => {

@@ -1,49 +1,31 @@
 import styled from "@emotion/styled";
-import { Flex, Icon, Link, Typography } from "~/components";
+import { Icon, ListRow, ListSurface, Typography } from "~/components";
 import { consoleIcons } from "~/components/consoleIcons";
-import { track } from "~/analytics";
+import { trackCardClick } from "~/analytics";
 import { platforms } from "./data";
 import { CHOOSE_YOUR_GAME_ID } from "./hero";
-import {
-  SectionHeading,
-  homeQueries,
-  interactiveStyles,
-  stateLayer,
-} from "./styles";
 
-const GameSection = styled.section({
+const GameSection = styled.section(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   gap: 20,
   scrollMarginTop: 16,
-  [homeQueries.mobile]: {
+  [theme.containerQueries.mobile]: {
     gap: 14,
   },
-});
+}));
 
-const PlatformGrid = styled.div({
+const PlatformGrid = styled.div(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
   alignItems: "start",
   gap: 16,
-  [homeQueries.medium]: {
+  [theme.containerQueries.medium]: {
     gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
   },
-  [homeQueries.mobile]: {
+  [theme.containerQueries.mobile]: {
     gridTemplateColumns: "minmax(0, 1fr)",
     gap: 14,
-  },
-});
-
-const PlatformCard = styled(Flex)(({ theme }) => ({
-  "&&": {
-    flexDirection: "column",
-    padding: "8px 0",
-    borderRadius: 20,
-    backgroundColor: theme.token.colorBgLayout,
-    [homeQueries.mobile]: {
-      padding: "4px 0",
-    },
   },
 }));
 
@@ -53,36 +35,15 @@ const PlatformHeader = styled(Typography.Title)(({ theme }) => ({
     alignItems: "center",
     gap: 10,
     margin: 0,
-    padding: "12px 20px 8px",
+    padding: "12px var(--list-inset) 8px",
     color: theme.token.colorPrimary,
     fontSize: 14,
     fontWeight: 500,
     lineHeight: "20px",
     letterSpacing: 0.1,
-    [homeQueries.mobile]: {
-      padding: "12px 16px 4px",
+    [theme.containerQueries.mobile]: {
+      paddingBottom: 4,
     },
-  },
-}));
-
-const GameRow = styled(Link)(({ theme }) => ({
-  ...interactiveStyles(theme),
-  display: "flex",
-  alignItems: "center",
-  gap: 14,
-  minHeight: 48,
-  padding: "6px 12px 6px 20px",
-  color: theme.token.colorText,
-  fontWeight: 400,
-  ":hover": {
-    color: theme.token.colorText,
-    backgroundColor: stateLayer(0.08),
-  },
-  ":active": {
-    backgroundColor: stateLayer(0.12),
-  },
-  [homeQueries.mobile]: {
-    padding: "6px 8px 6px 16px",
   },
 }));
 
@@ -95,30 +56,30 @@ const GameName = styled(Typography.Text)({
 export const GameDirectory = () => {
   return (
     <GameSection id={CHOOSE_YOUR_GAME_ID}>
-      <SectionHeading level={2}>Choose your game</SectionHeading>
+      <Typography.SectionHeading level={2}>
+        Choose your game
+      </Typography.SectionHeading>
 
       <PlatformGrid>
         {platforms.map((platform) => (
-          <PlatformCard key={platform.console}>
+          <ListSurface key={platform.console}>
             <PlatformHeader level={3}>
               <Icon name={consoleIcons[platform.console]} size={20} />
               {platform.label}
             </PlatformHeader>
             {platform.games.map((game) => (
-              <GameRow
+              <ListRow
                 key={game.name}
                 href={game.slug}
-                onClick={() =>
-                  track("Card Clicked", { id: `home-game-${game.name}` })
-                }
+                onClick={() => trackCardClick({ id: `home-game-${game.name}` })}
               >
                 <GameName flex={1} fontSize={16}>
                   {game.name}
                 </GameName>
                 <Icon name="ChevronRight" size={20} color="TextTertiary" />
-              </GameRow>
+              </ListRow>
             ))}
-          </PlatformCard>
+          </ListSurface>
         ))}
       </PlatformGrid>
     </GameSection>

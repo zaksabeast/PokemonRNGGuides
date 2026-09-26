@@ -9,6 +9,8 @@ import { tempThemeColorAtom, useThemeMode } from "./tempThemeColor";
 // This controls things like a radiating glow animation when clicking buttons
 const DISABLED_WAVE = { disabled: true };
 
+const TAG_CONFIG = { variant: "outlined" } as const;
+
 const TOOLTIP_CONFIG = {
   styles: {
     container: {
@@ -40,6 +42,7 @@ export const ThemeProvider = ({ children }: Props) => {
         theme={theme}
         wave={DISABLED_WAVE}
         tooltip={TOOLTIP_CONFIG}
+        tag={TAG_CONFIG}
       >
         {children}
       </ConfigProvider>

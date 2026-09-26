@@ -1,0 +1,1 @@
+import{r as e}from"./react-DFI7aX18.js";var t=e(!0),n=e(`GBA`),r=e([]);export{r as n,t as r,n as t};

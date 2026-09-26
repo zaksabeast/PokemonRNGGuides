@@ -1,0 +1,1 @@
+import{r as e,t}from"./react-DFI7aX18.js";var n=e({target:null,coinFlipFilter:``,chatotSummaryCount:null}),r=()=>t(n);export{r as t};

@@ -1,0 +1,1 @@
+var e=e=>{let t=e/60;return`~${Math.floor(t/60)}m ${Math.floor(t%60)}s`};export{e as t};

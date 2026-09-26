@@ -1,0 +1,1 @@
+import{r as e}from"./index-hlKme-i2.js";var t=()=>(e(),null);export{t as Gen4Reset};

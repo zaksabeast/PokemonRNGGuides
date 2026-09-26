@@ -37,7 +37,8 @@ export const App = ({ updateSw }: Props) => {
             <PageLanguageContext.Provider value={currentLanguage}>
               <MDXProvider components={markdownComponents}>
                 <NeedsUpdateNotification updateSw={updateSw} />
-                <Flex height="100vh" vertical backgroundColor="BgBase">
+                {/* dvh matches the visible viewport, so mobile browser toolbars can't make the page itself scroll */}
+                <Flex height="100dvh" vertical backgroundColor="BgBase">
                   <Router />
                 </Flex>
               </MDXProvider>

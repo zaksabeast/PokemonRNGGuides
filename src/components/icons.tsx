@@ -22,6 +22,8 @@ import {
   MdChevronRight,
   MdVideogameAsset,
   MdOutlineTablet,
+  MdOutlineTimer,
+  MdArrowDownward,
 } from "react-icons/md";
 import { BiMessageAltError } from "react-icons/bi";
 import { TiWarningOutline } from "react-icons/ti";
@@ -106,6 +108,8 @@ const icons = {
   Gamepad: FaGamepad,
   Laptop: FaLaptop,
   LaptopMedical: FaLaptopMedical,
+  Timer: MdOutlineTimer,
+  ArrowDownward: MdArrowDownward,
 } as const;
 
 export type IconName = keyof typeof icons;

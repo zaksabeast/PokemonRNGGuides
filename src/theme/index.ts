@@ -183,6 +183,7 @@ export const getTheme = ({
         defaultActiveBg: tokens.colorBgElevated,
         colorBgContainerDisabled: tokens.colorFillTertiary,
         borderColorDisabled: tokens.colorFillTertiary,
+        primaryColor: isLightMode ? "#FFFFFF" : "#003546",
         primaryShadow: "none",
         defaultShadow: "none",
       },

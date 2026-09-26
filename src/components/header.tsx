@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import { Layout } from "antd";
-import { Typography } from "./typography";
 import { Button } from "./button";
 import { Icon } from "./icons";
 import { Flex } from "./flex";
@@ -63,6 +62,16 @@ const ShowIfTheme = styled(
 
 const CONTRIBUTE_LINK = { type: "slug", slug: "/contributing/" } as const;
 
+const HeaderTitle = styled.span(({ theme }) => ({
+  color: theme.token.colorText,
+  fontSize: 22,
+  fontWeight: 500,
+  lineHeight: "28px",
+  [theme.mediaQueries.down("mobile")]: {
+    fontSize: 20,
+  },
+}));
+
 const StyledHeader = styled(Layout.Header)({
   zIndex: 100,
   position: "fixed",
@@ -90,9 +99,7 @@ export const Header = () => {
         <Flex align="center">
           <Link href="/" display="flex">
             <Button trackerId="home" type="text">
-              <Typography.Title level={4} mv={0} mr={0}>
-                Pokemon RNG
-              </Typography.Title>
+              <HeaderTitle>Pokemon RNG</HeaderTitle>
             </Button>
           </Link>
         </Flex>

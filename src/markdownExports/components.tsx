@@ -7,6 +7,7 @@ import {
   Link,
   Alert,
   type AlertProps,
+  LinkButton,
 } from "~/components";
 import styled from "@emotion/styled";
 import { formatRelativeUrl } from "~/utils/formatRelativeUrl";
@@ -15,7 +16,9 @@ import { get } from "lodash-es";
 import { guides } from "~/guides";
 import { usePageLanguage } from "~/markdownExports/languageContext";
 import type React from "react";
+import { z } from "zod";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { SlugOrExternalLinkSchema } from "~/types/navigation";
 
 type Props = { children: React.ReactNode };
 
@@ -213,4 +216,20 @@ export const MarkdownBlockquote = ({
   }
 
   return <Blockquote>{children}</Blockquote>;
+};
+
+const MarkdownLinkButtonPropsSchema = z.object({
+  trackerId: z.string(),
+  link: SlugOrExternalLinkSchema,
+  type: z.union([z.literal("primary"), z.literal("default")]).optional(),
+});
+
+export const MarkdownLinkButton = (props: Props) => {
+  const parsedProps = MarkdownLinkButtonPropsSchema.safeParse(props);
+
+  if (!parsedProps.success) {
+    return null;
+  }
+
+  return <LinkButton {...parsedProps.data}>{props.children} </LinkButton>;
 };

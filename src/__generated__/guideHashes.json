@@ -1,7 +1,7 @@
 {
   "/": {
-    "hash": "f49475ca9277c627af50c89b789fbd914a121a0b281f210212a2c2ee4e4c2f7f",
-    "lastUpdated": null
+    "hash": "03f8ddf318d449d20d66f75bde1e1ff5180bbbd4ee26226f2390014a5cace5c4",
+    "lastUpdated": "2026-09-26"
   },
   "/3ds-alt-settings/": {
     "hash": "fe168aa9cb78c99a2dcaf88d1fca3007b4c08d4e6520e08f045186e27bbf058c",
@@ -875,6 +875,10 @@
     "hash": "48c00452c4590e3da12373b17a442e7fa470ce9de2fa84d17b74852621670da6",
     "lastUpdated": "2026-07-26"
   },
+  "/retail-or-emulator/": {
+    "hash": "c222f357ea684ffd906461a92e6aeed327ceda559fd5f26d50c3ef20c8791f07",
+    "lastUpdated": "2026-10-03"
+  },
   "/retail-oras-egg-mmsc/": {
     "hash": "385d5514055e517e42a5156117967821c9cee3435cde862439c734c6b98cfa08",
     "lastUpdated": "2026-03-25"
@@ -1107,6 +1111,10 @@
     "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",
     "lastUpdated": "2026-03-08"
   },
+  "/what-is-rng/": {
+    "hash": "e721739544b52aaea364ee9aa945b1d2f1710568011ea887fe06cca99995de44",
+    "lastUpdated": "2026-10-03"
+  },
   "/wishing-star-jirachi/": {
     "hash": "41a390cc0757e6ad7f2bfa8137c2620539d7a326a209bfbe0e58cf035a5dc2ca",
     "lastUpdated": null
@@ -1126,6 +1134,10 @@
   "/xy-pokeradar/": {
     "hash": "3df51b4cb864e6872339265d8c6c633f31c2f8734f022c7c380b8d9da59c8b64",
     "lastUpdated": "2026-04-26"
+  },
+  "/your-first-rng/": {
+    "hash": "2a724c0df457e597aea9985b823960e0375c762ace6d97c010378201ab45f3d8",
+    "lastUpdated": "2026-10-04"
   },
   "/zh-3ds-alt-settings/": {
     "hash": "73e10a7a0b995fe8c8901861ca4e3a33f6fe73d7774f7b38ec5252dc0ec5439c",

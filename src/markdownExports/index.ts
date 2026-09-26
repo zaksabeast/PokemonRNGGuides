@@ -18,6 +18,7 @@ import {
   MarkdownA,
   MarkdownSummary,
   MarkdownBlockquote,
+  MarkdownLinkButton,
 } from "./components";
 import {
   Flex,
@@ -107,6 +108,7 @@ const nonTools = {
   blockquote: MarkdownBlockquote,
   TextArea: Input.TextArea,
   Pixelate,
+  LinkButton: MarkdownLinkButton,
 };
 
 const lazyLoad = <ImportRes, Props>(

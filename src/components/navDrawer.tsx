@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "./link";
 import { Icon, IconName } from "./icons";
+import { consoleIcons } from "./consoleIcons";
 import { Menu, MenuProps } from "antd";
 import { Flex } from "./flex";
-import { Divider } from "./divider";
 import { Typography } from "./typography";
 import { settings } from "~/settings";
 import {
@@ -102,13 +102,13 @@ const createMenu = ({
 const gameMenu = [
   createMenu({
     label: "GB",
-    icon: <CategoryIcon name="VideogameAsset" />,
+    icon: <CategoryIcon name={consoleIcons.GB} />,
     items: [{ label: "Crystal", href: "/crystal/" }],
     categories: ["Gold, Silver, Crystal"],
   }),
   createMenu({
     label: "GBA",
-    icon: <CategoryIcon name="Gamepad" />,
+    icon: <CategoryIcon name={consoleIcons.GBA} />,
     items: [
       { label: "Ruby and Sapphire", href: "/ruby-and-sapphire/" },
       { label: "FireRed and LeafGreen", href: "/fire-red-and-leaf-green/" },
@@ -123,13 +123,13 @@ const gameMenu = [
   }),
   createMenu({
     label: "Gamecube",
-    icon: <CategoryIcon name="GameController" />,
+    icon: <CategoryIcon name={consoleIcons.Gamecube} />,
     items: [{ label: "Colosseum / Gales", href: "/gamecube/" }],
     categories: ["Gamecube"],
   }),
   createMenu({
     label: "NDS",
-    icon: <CategoryIcon name="Laptop" />,
+    icon: <CategoryIcon name={consoleIcons.NDS} />,
     items: [
       {
         label: "Diamond, Pearl, and Platinum",
@@ -151,7 +151,7 @@ const gameMenu = [
   }),
   createMenu({
     label: "3DS",
-    icon: <CategoryIcon name="LaptopMedical" />,
+    icon: <CategoryIcon name={consoleIcons["3DS"]} />,
     items: [
       {
         label: "Transporter and Dream Radar",
@@ -178,7 +178,7 @@ const gameMenu = [
   }),
   createMenu({
     label: "Switch",
-    icon: <CategoryIcon name="OutlineTablet" />,
+    icon: <CategoryIcon name={consoleIcons.Switch} />,
     items: [
       { label: "Sword and Shield", href: "/sword-and-shield/" },
       {
@@ -233,8 +233,7 @@ const NavDrawerContent = React.memo(() => {
           defaultSelectedKeys={openKeys}
         />
       </Flex>
-      <Divider />
-      <Flex vertical gap={16}>
+      <Flex vertical p={16}>
         <Typography>Build {settings.gitCommit}</Typography>
       </Flex>
     </Flex>

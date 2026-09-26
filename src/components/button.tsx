@@ -14,25 +14,11 @@ import { useSize } from "~/theme/size";
 
 const _StyledButton = withCss(AntdButton);
 
-const StyledButton = styled(_StyledButton)(({ theme }) => ({
-  "&&&.ant-btn-primary": {
-    // colorPrimaryActive is used as resting text because it has
-    // enough contrast on colorPrimaryBg in both light and dark mode.
-    color: theme.token.colorPrimaryActive,
-    backgroundColor: theme.token.colorPrimaryBg,
-    ":hover": {
-      backgroundColor: theme.token.colorPrimaryBgHover,
-    },
-    // Must come after :hover so disabled buttons don't change on hover.
-    "&:disabled, &.ant-btn-disabled": {
-      color: theme.token.colorTextDisabled,
-      backgroundColor: theme.token.colorBgContainerDisabled,
-    },
-  },
+const StyledButton = styled(_StyledButton)({
   ".ant-btn-icon": {
     display: "flex",
   },
-}));
+});
 
 export type ButtonProps = tst.O.Overwrite<
   { trackerId: string } & React.ComponentProps<typeof StyledButton>,

@@ -1,7 +1,8 @@
 import * as tst from "ts-toolbelt";
 import { match } from "ts-pattern";
 import { guides, categories, externalGuides } from "./__generated__/guides";
-import { groupBy, flatMap, get, uniq } from "lodash-es";
+import { groupBy, flatMap, get, uniq, uniqBy, orderBy } from "lodash-es";
+import dayjs from "dayjs";
 import { Route } from "./routes/defs";
 import { SlugOrExternalLink } from "./types/navigation";
 import { LanguageKey, LanguageSchema } from "~/types/language";
@@ -278,6 +279,80 @@ export const getGuidesBySectionForSlug = (slug: GuideSlug): GuidesBySection => {
 };
 
 export type CategorySlug = keyof typeof routeToCategory;
+
+export type GuideUpdate = {
+  slug: GuideSlug;
+  name: string;
+  game: string;
+  status: "New" | "Updated";
+  /** Only set when the guide is for a single variant */
+  variant: "Retail" | "Emu" | null;
+  /** ISO date (YYYY-MM-DD) */
+  date: string;
+};
+
+// Guides added within this many days of their latest change are shown as new
+const NEW_GUIDE_DAYS = 30;
+const LATEST_GUIDE_COUNT = 4;
+
+const getVariantLabel = (
+  variants: readonly GuideVariant[] | null,
+): GuideUpdate["variant"] => {
+  if (variants == null || variants.length !== 1) {
+    return null;
+  }
+  return variants[0] === "retail" ? "Retail" : "Emu";
+};
+
+export const getLatestGuideUpdates = (): GuideUpdate[] => {
+  const updates = Object.values(guides).flatMap(({ meta }) => {
+    const categories: readonly Category[] = meta.categories;
+
+    if (
+      meta.type !== "baseGuide" ||
+      meta.isRoughDraft ||
+      meta.hideFromNavDrawer ||
+      meta.section === "site_info" ||
+      categories.includes("Game Hub") ||
+      categories.includes("Home")
+    ) {
+      return [];
+    }
+
+    const dates = [meta.addedOn, meta.lastUpdated].filter(
+      (date) => date != null,
+    );
+    if (dates.length === 0) {
+      return [];
+    }
+
+    const date = dates.sort().at(-1) ?? dates[0];
+    const isNew =
+      meta.addedOn != null &&
+      dayjs(date).diff(dayjs(meta.addedOn), "day") <= NEW_GUIDE_DAYS;
+
+    return [
+      {
+        groupId: meta.guideGroupId,
+        slug: meta.slug,
+        name: meta.navDrawerTitle,
+        game:
+          meta.categories.length === 1 ? meta.categories[0] : "Multiple games",
+        status: isNew ? ("New" as const) : ("Updated" as const),
+        variant: getVariantLabel(meta.guideVariants),
+        date,
+      },
+    ];
+  });
+
+  // Retail and emulator variants share a group, so only show the group once
+  return uniqBy(
+    orderBy(updates, (update) => update.date, "desc"),
+    (update) => update.groupId,
+  )
+    .slice(0, LATEST_GUIDE_COUNT)
+    .map(({ groupId: _groupId, ...update }) => update);
+};
 
 export const categoryHasNewContent = (slug: CategorySlug) => {
   const categories = get(routeToCategory, slug) ?? [];

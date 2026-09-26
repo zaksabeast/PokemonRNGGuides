@@ -1,4 +1,5 @@
 import React from "react";
+import { formatTimerReadout } from "~/rngToolsUi/timer/format";
 
 export const CANVAS_SIZE = 200;
 export const FLASH_DURATION = 150; // milliseconds to show flash color
@@ -60,10 +61,7 @@ const drawText = ({
 }) => {
   const centerX = width / 2;
   const centerY = height / 2;
-  const flooredRemaining = Math.floor(remaining);
-  const seconds = Math.floor(flooredRemaining / 1000);
-  const milliseconds = flooredRemaining % 1000;
-  const text = `${seconds.toString().padStart(2, "0")}:${milliseconds.toString().padStart(3, "0")}`;
+  const text = formatTimerReadout(remaining);
 
   // eslint-disable-next-line no-param-reassign
   ctx.font = "700 24px Menlo, Monaco, 'Courier New', monospace";

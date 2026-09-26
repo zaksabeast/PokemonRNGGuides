@@ -20,3 +20,7 @@ export const track = (
     amplitudeTrack(eventName, eventProperties);
   }
 };
+
+export const trackCardClick = ({ id }: { id: string }) => {
+  track("Card Clicked", { id });
+};

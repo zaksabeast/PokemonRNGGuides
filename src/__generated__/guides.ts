@@ -21,8 +21,8 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
-      layout: "titled",
-      lastUpdated: null,
+      layout: "wide",
+      lastUpdated: "2026-09-26",
       type: "baseGuide",
       canonical: "/",
       file: "guides/Home.mdx",
@@ -9294,6 +9294,45 @@ export const guides = {
       return file.default;
     }),
   },
+  "/retail-or-emulator/": {
+    meta: {
+      id: "/retail-or-emulator/",
+      categories: ["Home"],
+      section: "getting_started",
+      guideVariants: null,
+      guideKey: "false-Pick Retail or Emulator",
+      isNew: false,
+      title: "Pick Retail or Emulator",
+      navDrawerTitle: "Pick Retail or Emulator",
+      description:
+        "Compare RNG manipulation on retail hardware and on emulators to pick the right setup.",
+      slug: "/retail-or-emulator/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-10-03",
+      type: "baseGuide",
+      canonical: "/retail-or-emulator/",
+      file: "guides/Getting Started/Retail or Emulator.mdx",
+      translations: null,
+      guideGroupId: "en:false-Pick Retail or Emulator:Home",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Getting Started/Retail or Emulator.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Getting Started/Retail or Emulator.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/retail-oras-egg-mmsc/": {
     meta: {
       id: "/retail-oras-egg-mmsc/",
@@ -11728,6 +11767,45 @@ export const guides = {
       return file.default;
     }),
   },
+  "/what-is-rng/": {
+    meta: {
+      id: "/what-is-rng/",
+      categories: ["Home"],
+      section: "getting_started",
+      guideVariants: null,
+      guideKey: "false-What is RNG?",
+      isNew: false,
+      title: "What is RNG?",
+      navDrawerTitle: "What is RNG?",
+      description:
+        "An introduction to RNG manipulation in Pokémon games for beginners.",
+      slug: "/what-is-rng/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-10-03",
+      type: "baseGuide",
+      canonical: "/what-is-rng/",
+      file: "guides/Getting Started/What Is RNG.mdx",
+      translations: null,
+      guideGroupId: "en:false-What is RNG?:Home",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Getting Started/What Is RNG.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Getting Started/What Is RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/wishing-star-jirachi/": {
     meta: {
       id: "/wishing-star-jirachi/",
@@ -11923,6 +12001,45 @@ export const guides = {
     Guide: React.lazy(() => import("~/../guides/Gen 6/PokeRadar.mdx")),
     getRawFile: memoize(async () => {
       const file = await import("~/../guides/Gen 6/PokeRadar.mdx?raw");
+      return file.default;
+    }),
+  },
+  "/your-first-rng/": {
+    meta: {
+      id: "/your-first-rng/",
+      categories: ["Home"],
+      section: "getting_started",
+      guideVariants: null,
+      guideKey: "false-Your First RNG",
+      isNew: false,
+      title: "Your First RNG",
+      navDrawerTitle: "Your First RNG",
+      description:
+        "Learn how to manipulate RNG in Pokémon games to get your first shiny.",
+      slug: "/your-first-rng/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-10-04",
+      type: "baseGuide",
+      canonical: "/your-first-rng/",
+      file: "guides/Getting Started/Your First Shiny.mdx",
+      translations: null,
+      guideGroupId: "en:false-Your First RNG:Home",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Getting Started/Your First Shiny.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Getting Started/Your First Shiny.mdx?raw"
+      );
       return file.default;
     }),
   },
@@ -17397,6 +17514,7 @@ export const guideSlugs = [
   "/retail-hgss-starter/",
   "/retail-hgss-swarm/",
   "/retail-hgss-voltorb-flip/",
+  "/retail-or-emulator/",
   "/retail-oras-egg-mmsc/",
   "/retail-oras-egg-no-mmsc/",
   "/retail-oras-tid/",
@@ -17455,11 +17573,13 @@ export const guideSlugs = [
   "/transporter-rng-offline/",
   "/transporter-rng/",
   "/ultra-sun-and-ultra-moon/",
+  "/what-is-rng/",
   "/wishing-star-jirachi/",
   "/x-and-y/",
   "/xdcolo-tidsid-generator/",
   "/xy-friend-safari-patch/",
   "/xy-pokeradar/",
+  "/your-first-rng/",
   "/zh-3ds-alt-settings/",
   "/zh-3ds-helper/",
   "/zh-bdsp-advance-rng/",

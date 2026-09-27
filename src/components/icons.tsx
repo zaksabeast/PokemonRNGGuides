@@ -28,6 +28,10 @@ import {
   MdOutlineBuild,
   MdOutlinePlayCircle,
   MdSwapHoriz,
+  MdArrowDropDown,
+  MdSearch,
+  MdOutlineCalendarToday,
+  MdOutlineSchedule,
 } from "react-icons/md";
 import { BiMessageAltError } from "react-icons/bi";
 import { TiWarningOutline } from "react-icons/ti";
@@ -118,6 +122,10 @@ const icons = {
   Build: MdOutlineBuild,
   PlayCircle: MdOutlinePlayCircle,
   SwapHoriz: MdSwapHoriz,
+  ArrowDropDown: MdArrowDropDown,
+  Search: MdSearch,
+  Calendar: MdOutlineCalendarToday,
+  Schedule: MdOutlineSchedule,
 } as const;
 
 export type IconName = keyof typeof icons;

@@ -24,6 +24,26 @@ const TOOLTIP_CONFIG = {
   },
 };
 
+const SELECT_CONFIG = {
+  styles: {
+    popup: {
+      root: {
+        // The popup is the same color as cards, so shadows alone don't separate it in dark mode
+        border: "1px solid var(--ant-color-border-secondary)",
+      },
+    },
+  },
+};
+
+// Pickers render their background on the panel container rather than the popup root
+const PICKER_CONFIG = {
+  styles: {
+    popup: {
+      container: SELECT_CONFIG.styles.popup.root,
+    },
+  },
+};
+
 type Props = {
   children: React.ReactNode;
 };
@@ -43,6 +63,9 @@ export const ThemeProvider = ({ children }: Props) => {
         wave={DISABLED_WAVE}
         tooltip={TOOLTIP_CONFIG}
         tag={TAG_CONFIG}
+        select={SELECT_CONFIG}
+        datePicker={PICKER_CONFIG}
+        timePicker={PICKER_CONFIG}
       >
         {children}
       </ConfigProvider>

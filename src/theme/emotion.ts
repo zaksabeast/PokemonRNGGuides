@@ -129,6 +129,71 @@ export const emotionTheme: Theme = {
 
     colorStateLayerHover: "rgb(from var(--ant-color-text) r g b / 0.08)",
     colorStateLayerPressed: "rgb(from var(--ant-color-text) r g b / 0.12)",
+
+    colorOnPrimary: "var(--ant-color-on-primary)",
+  },
+  typography: {
+    titleMedium: {
+      fontSize: 16,
+      lineHeight: 24 / 16,
+      fontWeight: 500,
+      letterSpacing: 0.15,
+    },
+    titleSmall: {
+      fontSize: 14,
+      lineHeight: 20 / 14,
+      fontWeight: 500,
+      letterSpacing: 0.1,
+    },
+    bodyLarge: {
+      fontSize: 16,
+      lineHeight: 24 / 16,
+      fontWeight: 400,
+      letterSpacing: 0,
+    },
+    bodyMedium: {
+      fontSize: 14,
+      lineHeight: 20 / 14,
+      fontWeight: 400,
+      letterSpacing: 0.25,
+    },
+    bodySmall: {
+      fontSize: 12,
+      lineHeight: 16 / 12,
+      fontWeight: 400,
+      letterSpacing: 0.4,
+    },
+    labelLarge: {
+      fontSize: 14,
+      lineHeight: 20 / 14,
+      fontWeight: 500,
+      letterSpacing: 0.1,
+    },
+    labelMedium: {
+      fontSize: 12,
+      lineHeight: 16 / 12,
+      fontWeight: 500,
+      letterSpacing: 0.4,
+    },
+  },
+  shape: {
+    medium: 12,
+    large: 16,
+    largeIncreased: 20,
+    extraLarge: 28,
+    full: 9999,
+  },
+  size: {
+    field: 48,
+    button: 56,
+    listItem: 56,
+    touchTarget: 44,
+    dense: {
+      field: 40,
+      button: 48,
+      listItem: 48,
+      touchTarget: 36,
+    },
   },
   pageContainer: {
     containerType: "inline-size",
@@ -148,6 +213,7 @@ export const emotionTheme: Theme = {
     },
   },
   mediaQueries: {
+    dense: `@media (min-width: ${screenSizeMap.tablet}px)`,
     up: (size: ScreenSize) => {
       return match(size)
         .with("mobile", () => `@media (min-width: ${screenSizeMap.mobile}px)`)

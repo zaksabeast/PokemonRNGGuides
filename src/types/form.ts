@@ -27,6 +27,14 @@ export type FormFieldProps<
   { name: Paths<FormState, Value> }
 >;
 
+/**
+ * For components that write to fixed field names.
+ * Adds an impossible required prop when the form is missing those fields.
+ */
+export type RequireFormFields<FormState, Fields> = FormState extends Fields
+  ? unknown
+  : { "The form is missing fields this component uses": Fields };
+
 export type GuaranteeFormNameType<FormState extends GenericForm, Type> = {
   [K in keyof FormState]: FormState[K] extends Type
     ? K extends string

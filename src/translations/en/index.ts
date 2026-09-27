@@ -358,6 +358,14 @@ export const translations = {
   Board: "Board",
   "Board Count": "Board Count",
   "Chatot Pitches": "Chatot Pitches",
+  "Select All": "Select All",
+  "Select None": "Select None",
+  "Hidden Power": "Hidden Power",
+  Type: "Type",
+  "Min power": "Min power",
+  "Max power": "Max power",
+  "Leave a stat blank if you don't know it.":
+    "Leave a stat blank if you don't know it.",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

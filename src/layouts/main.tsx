@@ -13,7 +13,7 @@ type Props = {
   fullWidth?: boolean;
 };
 
-export const SIDE_MARGIN = 24;
+export const SIDE_MARGIN = 18;
 
 const CONTENT_MAX_WIDTH = 800;
 const CONTENT_PADDING_X = 32;

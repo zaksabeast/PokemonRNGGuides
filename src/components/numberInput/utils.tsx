@@ -176,4 +176,7 @@ export const serializers = {
   hex_bigint: (num: number | bigint | null) => num?.toString(16),
   decimal: (num: number | bigint | null) => num?.toString(10),
   float: (num: number | bigint | null) => num?.toString(10),
-};
+} satisfies Record<
+  NumberInputType,
+  (num: number | bigint | null) => string | undefined
+>;

@@ -1,9 +1,8 @@
 import React from "react";
 import { Input } from "../input";
-import { GenericForm } from "~/types/form";
+import { FormFieldProps, GenericForm } from "~/types/form";
 import { useField } from "~/hooks/form";
 import { InputProps as AntdInputProps } from "antd";
-import { Paths } from "~/types";
 import * as tst from "ts-toolbelt";
 import {
   getNumberInputBlurValue,
@@ -28,7 +27,7 @@ type SharedNumberInputProps = {
   disabled?: boolean;
   fullFlex?: boolean;
   name?: string;
-  value?: number | bigint | null;
+  value: number | bigint | null;
   status?: AntdInputProps["status"];
   numType: NumberInputType;
   onChange?: (value: number | bigint | null) => void;
@@ -43,7 +42,7 @@ export type NumberInputProps = Omit<
   SharedNumberInputProps,
   "numType" | "value" | "onChange"
 > & {
-  value?: number | null;
+  value: number | null;
   numType: NumericNumberInputType;
   onChange?: (value: number | null) => void;
 };
@@ -52,7 +51,7 @@ export type BigIntInputProps = Omit<
   SharedNumberInputProps,
   "numType" | "value" | "onChange"
 > & {
-  value?: bigint | null;
+  value: bigint | null;
   numType: "hex_bigint";
   onChange?: (value: bigint | null) => void;
 };
@@ -60,7 +59,7 @@ export type BigIntInputProps = Omit<
 const InternalNumberInput = ({
   name,
   numType,
-  value: externalValue,
+  value,
   onChange,
   onBlur,
   ...props
@@ -69,39 +68,29 @@ const InternalNumberInput = ({
   const [transientValue, setTransientValue] = React.useState<string | null>(
     null,
   );
-  const isExternallyControlled = React.useRef(externalValue !== undefined);
-  const previousExternalValue = React.useRef(externalValue);
-  const [internalValue, setInternalValue] = React.useState<
-    number | bigint | null
-  >(null);
+  const [previousValue, setPreviousValue] = React.useState(value);
 
-  React.useEffect(() => {
+  // Adjusting state during render avoids an effect and a stale render.
+  if (!Object.is(value, previousValue)) {
+    setPreviousValue(value);
+
     if (
       shouldClearTransientValue({
         numType,
         transientValue,
-        externalValue,
-        previousExternalValue: previousExternalValue.current,
+        externalValue: value,
+        previousExternalValue: previousValue,
       })
     ) {
       setTransientValue(null);
     }
+  }
 
-    previousExternalValue.current = externalValue;
-  }, [externalValue, numType, transientValue]);
-
-  const setValue = (value: number | bigint | null) => {
-    onChange?.(value);
-    if (!isExternallyControlled.current) {
-      setInternalValue(value);
-    }
-  };
-
-  const commitTransientValue = (value: string) => {
-    const deserialized = getNumberInputBlurValue(numType, value);
+  const commitTransientValue = (transient: string) => {
+    const deserialized = getNumberInputBlurValue(numType, transient);
 
     if (deserialized !== undefined) {
-      setValue(deserialized);
+      onChange?.(deserialized);
     }
   };
 
@@ -115,7 +104,7 @@ const InternalNumberInput = ({
     setTransientValue(result.transientValue);
 
     if (result.nextValue !== undefined) {
-      setValue(result.nextValue);
+      onChange?.(result.nextValue);
     }
   };
 
@@ -128,8 +117,7 @@ const InternalNumberInput = ({
     onBlur?.(event);
   };
 
-  const value = externalValue === undefined ? internalValue : externalValue;
-  const displayedValue = transientValue ?? serialize(value ?? null) ?? "";
+  const displayedValue = transientValue ?? serialize(value) ?? "";
 
   return (
     <Input
@@ -152,11 +140,9 @@ export const NumberInput = InternalNumberInput as NumberInputComponent;
 export const BigIntInput = InternalNumberInput as BigIntInputComponent;
 
 type FormikNumberInputOverrides<
-  FormState extends GenericForm,
   Value extends number | bigint | null,
   NumType extends NumberInputType,
 > = {
-  name: Paths<FormState, Value>;
   numType: NumType;
   onChange?: (value: Value) => void;
   /*
@@ -167,67 +153,44 @@ type FormikNumberInputOverrides<
   errorMessage?: string | null;
 };
 
-type SharedFormikNumberInputProps<FormState extends GenericForm> =
-  tst.O.Required<
-    tst.O.Overwrite<
-      SharedNumberInputProps,
-      FormikNumberInputOverrides<
-        FormState,
-        number | bigint | null,
-        NumberInputType
-      >
-    >,
-    "name"
-  >;
+type SharedFormikNumberInputProps<FormState extends GenericForm> = tst.O.Merge<
+  FormikNumberInputOverrides<number | bigint | null, NumberInputType>,
+  FormFieldProps<FormState, number | bigint | null, SharedNumberInputProps>
+>;
 
-export type FormikNumberInputProps<FormState extends GenericForm> =
-  tst.O.Required<
-    tst.O.Overwrite<
-      SharedNumberInputProps,
-      FormikNumberInputOverrides<
-        FormState,
-        number | null,
-        NumericNumberInputType
-      >
-    >,
-    "name"
-  >;
+export type FormikNumberInputProps<FormState extends GenericForm> = tst.O.Merge<
+  FormikNumberInputOverrides<number | null, NumericNumberInputType>,
+  FormFieldProps<FormState, number | null, NumberInputProps>
+>;
 
-export type FormikBigIntInputProps<FormState extends GenericForm> =
-  tst.O.Required<
-    tst.O.Overwrite<
-      SharedNumberInputProps,
-      FormikNumberInputOverrides<FormState, bigint | null, "hex_bigint">
-    >,
-    "name"
-  >;
+export type FormikBigIntInputProps<FormState extends GenericForm> = tst.O.Merge<
+  FormikNumberInputOverrides<bigint | null, "hex_bigint">,
+  FormFieldProps<FormState, bigint | null, BigIntInputProps>
+>;
 
 const InternalFormikNumberInput = <FormState extends GenericForm>({
   name,
-  errorMessage: _errorMessage,
-  onChange: _onChange,
+  errorMessage,
+  onChange,
   ...props
 }: SharedFormikNumberInputProps<FormState>) => {
-  const [{ value, onBlur }, { error, status }, { setValue }] = useField<
+  const [{ value, onBlur }, { error }, { setValue }] = useField<
     number | bigint | null
   >(name);
 
-  const onChange = (value: number | bigint | null) => {
-    setValue(value);
-    _onChange?.(value);
-  };
-
-  const errorMessage = _errorMessage === undefined ? error : _errorMessage;
-
   return (
     <InternalNumberInput
-      status={status}
       {...props}
       name={name}
-      onBlur={onBlur}
-      onChange={onChange}
       value={value}
-      errorMessage={errorMessage ?? undefined}
+      onBlur={onBlur}
+      onChange={(updatedValue) => {
+        setValue(updatedValue);
+        onChange?.(updatedValue);
+      }}
+      errorMessage={
+        (errorMessage === undefined ? error : errorMessage) ?? undefined
+      }
     />
   );
 };

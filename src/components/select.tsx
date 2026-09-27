@@ -4,7 +4,7 @@ import { isEqual } from "lodash-es";
 import styled from "@emotion/styled";
 import { Select as AntdSelect, SelectProps as AntdSelectProps } from "antd";
 import { useField } from "~/hooks/form";
-import { GenericForm } from "~/types/form";
+import { FormControlledProps, GenericForm } from "~/types/form";
 import { Flex } from "./flex";
 import { Icon } from "./icons";
 import { Button } from "./button";
@@ -32,10 +32,14 @@ const SelectAllContainer = styled(Flex)({
   flexFlow: "row wrap",
 });
 
-type SelectProps<ValueType> = {
-  fullFlex?: boolean;
-  name?: string;
-} & AntdSelectProps<ValueType>;
+type SelectProps<ValueType> = tst.O.Merge<
+  {
+    fullFlex?: boolean;
+    name?: string;
+    errorMessage?: string;
+  },
+  AntdSelectProps<ValueType>
+>;
 
 export const Select = <ValueType,>({
   fullFlex,
@@ -44,6 +48,8 @@ export const Select = <ValueType,>({
   onSelect,
   mode,
   options,
+  errorMessage,
+  status,
   ...props
 }: SelectProps<ValueType>) => {
   const size = useSize();
@@ -65,7 +71,7 @@ export const Select = <ValueType,>({
   }, [mode, options, onChange, onSelect, value]);
 
   return (
-    <SelectContainer flex={fullFlex ? 1 : undefined}>
+    <SelectContainer vertical flex={fullFlex ? 1 : undefined}>
       <AntdSelect
         size={size}
         showSearch={{ optionFilterProp: "label" }}
@@ -75,77 +81,71 @@ export const Select = <ValueType,>({
         onChange={onChange}
         options={options}
         {...props}
+        status={errorMessage != null ? "error" : status}
       />
+      {errorMessage != null && (
+        <Typography.Text type="danger">{errorMessage}</Typography.Text>
+      )}
     </SelectContainer>
   );
 };
 
-type SingleFormikSelectValue<
-  FormState extends GenericForm,
-  FieldKey extends Paths<FormState>,
-> =
-  Path<FormState, FieldKey> extends string | number | null
-    ? {
-        label: React.ReactNode;
-        value: Path<FormState, FieldKey>;
-      }[]
-    : never;
+type SelectOption<Value> = {
+  label: React.ReactNode;
+  value: Value;
+};
+
+type FormikSelectBaseProps = Omit<
+  SelectProps<unknown>,
+  FormControlledProps | "options" | "mode"
+>;
 
 type SingleFormikSelectProps<
   FormState extends GenericForm,
   FieldKey extends Paths<FormState>,
 > = tst.O.Merge<
-  Omit<
-    SelectProps<SingleFormikSelectValue<FormState, FieldKey>>,
-    "onChange" | "defaultValue" | "options" | "mode"
-  >,
+  FormikSelectBaseProps,
   {
     selectAllNoneButtons?: undefined;
     mode?: undefined;
     name: FieldKey;
-    options: SingleFormikSelectValue<FormState, FieldKey>;
+    options: Path<FormState, FieldKey> extends string | number | null
+      ? SelectOption<Path<FormState, FieldKey>>[]
+      : never;
   }
 >;
-
-type MultiFormikSelectValue<
-  FormState extends GenericForm,
-  FieldKey extends Paths<FormState>,
-> =
-  Path<FormState, FieldKey> extends string[] | number[] | null
-    ? {
-        label: React.ReactNode;
-        value: Path<FormState, FieldKey>[keyof Path<FormState, FieldKey>];
-      }[]
-    : never;
 
 type MultiFormikSelectProps<
   FormState extends GenericForm,
   FieldKey extends Paths<FormState>,
 > = tst.O.Merge<
-  Omit<
-    SelectProps<MultiFormikSelectValue<FormState, FieldKey>>,
-    "onChange" | "defaultValue" | "options" | "mode"
-  >,
+  FormikSelectBaseProps,
   {
     selectAllNoneButtons?: boolean;
     mode: "multiple";
     name: FieldKey;
-    options: MultiFormikSelectValue<FormState, FieldKey>;
+    options: Path<FormState, FieldKey> extends string[] | number[] | null
+      ? SelectOption<NonNullable<Path<FormState, FieldKey>>[number]>[]
+      : never;
   }
 >;
 
-export const FormikSelect = <
-  FormState extends GenericForm,
-  FieldKey extends Paths<FormState>,
->({
+type InternalFormikSelectProps = tst.O.Merge<
+  FormikSelectBaseProps,
+  {
+    selectAllNoneButtons?: boolean;
+    mode?: "multiple";
+    name: string;
+    options: SelectOption<string | number | null>[];
+  }
+>;
+
+const InternalFormikSelect = ({
   name,
   selectAllNoneButtons,
   ...props
-}:
-  | SingleFormikSelectProps<FormState, FieldKey>
-  | MultiFormikSelectProps<FormState, FieldKey>) => {
-  const [{ value, onBlur }, { error, status }, { setValue }] =
-    useField<Path<FormState, typeof name>>(name);
+}: InternalFormikSelectProps) => {
+  const [{ value, onBlur }, { error }, { setValue }] = useField<unknown>(name);
 
   const selectAllNonePopupRender = (menu: React.ReactElement) => {
     return (
@@ -155,11 +155,7 @@ export const FormikSelect = <
             <Button
               type="text"
               trackerId="select-all-button"
-              onClick={() => {
-                const newVals = props.options.map(({ value }) => value);
-                // @ts-expect-error -- prop types guarantee this is correct
-                setValue(newVals);
-              }}
+              onClick={() => setValue(props.options.map(({ value }) => value))}
             >
               <Icon name="AddCircleOutline" /> Select All
             </Button>
@@ -168,7 +164,6 @@ export const FormikSelect = <
             <Button
               type="text"
               trackerId="select-none-button"
-              // @ts-expect-error -- prop types guarantee this is correct
               onClick={() => setValue([])}
             >
               <Icon name="Block" /> Select None
@@ -180,29 +175,31 @@ export const FormikSelect = <
     );
   };
 
-  const popupRender = selectAllNoneButtons
-    ? selectAllNonePopupRender
-    : undefined;
-
   return (
-    <>
-      <Select
-        {...props}
-        name={String(name)}
-        onBlur={onBlur}
-        // @ts-expect-error -- prop types guarantee this is correct
-        onChange={(value) => setValue(value)}
-        // @ts-expect-error -- prop types guarantee this is correct
-        value={value}
-        popupRender={popupRender}
-        status={status}
-      />
-      {error != null && (
-        <Typography.Text type="danger">{error}</Typography.Text>
-      )}
-    </>
+    <Select
+      {...props}
+      name={name}
+      value={value}
+      onBlur={onBlur}
+      onChange={setValue}
+      popupRender={selectAllNoneButtons ? selectAllNonePopupRender : undefined}
+      errorMessage={error}
+    />
   );
 };
+
+type FormikSelectComponent = <
+  FormState extends GenericForm,
+  FieldKey extends Paths<FormState>,
+>(
+  props:
+    | SingleFormikSelectProps<FormState, FieldKey>
+    | MultiFormikSelectProps<FormState, FieldKey>,
+) => React.JSX.Element;
+
+// The public props tie options to the field's type, which TS can't follow
+// internally, so the implementation works with loosely typed values.
+export const FormikSelect = InternalFormikSelect as FormikSelectComponent;
 
 type AtomSelectProps<State, Option> = {
   options: Option[] | Readonly<Option[]>;

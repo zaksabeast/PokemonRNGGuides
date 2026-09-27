@@ -132,7 +132,7 @@ export const HoneyTreeFindEncounter = () => {
           errorMessage={
             initialSeed == null ? "Find your seed first" : undefined
           }
-          value={initialSeed}
+          value={initialSeed ?? null}
         />
       ),
     },

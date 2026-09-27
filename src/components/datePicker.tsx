@@ -5,13 +5,12 @@ import {
   DatePickerProps as AntdDatePickerProps,
 } from "antd";
 import styled from "@emotion/styled";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 import { useField } from "~/hooks/form";
 import * as tst from "ts-toolbelt";
-import { match, P } from "ts-pattern";
 import { Flex } from "./flex";
 import { Typography } from "./typography";
-import { GenericForm, GuaranteeFormNameType } from "~/types/form";
+import { FormFieldProps, GenericForm } from "~/types/form";
 import {
   rngChronoFormat,
   toRngDate,
@@ -34,159 +33,154 @@ const PickerContainer = styled(Flex)(({ theme }) => ({
   },
 }));
 
-type TimePickerProps = tst.O.Omit<
-  AntdTimePickerProps,
-  keyof NullableDate | "allowClear"
-> &
-  NullableDate & { nullable?: boolean };
+// Clearing is disabled, so the pickers only emit dates.
+type PickerValueProps = {
+  onChange?: (date: Dayjs) => void;
+  value?: Dayjs | null;
+  errorMessage?: string;
+};
+
+type TimePickerProps = tst.O.Merge<
+  PickerValueProps,
+  tst.O.Omit<AntdTimePickerProps, keyof PickerValueProps | "allowClear">
+>;
 
 const TimePicker = ({
-  nullable,
   showSecond,
   onChange,
+  errorMessage,
+  status,
   ...props
 }: TimePickerProps) => {
+  const size = useSize();
+
   return (
-    <AntdTimePicker
-      showMinute
-      showHour
-      showSecond={showSecond}
-      // Virtual keyboards get in the way of the pop
-      inputReadOnly
-      allowClear={false}
-      // antd types lie, so we're fixing them and making them more accurate
-      // @ts-expect-error Type '(date: Dayjs | null, dateString: string) => void' is not assignable to type '(date: Dayjs, dateString: string | string[]) => void'.
-      onChange={(date: Dayjs | null, dateString: string) => {
-        if (nullable || date != null) {
-          const dateToUse = showSecond ? date : date?.clone().second(0);
-          onChange?.(dateToUse ?? null, dateString);
+    <PickerContainer vertical>
+      <AntdTimePicker
+        size={size}
+        showHour
+        showMinute
+        format={
+          showSecond
+            ? rngChronoFormat.hoursMinutesSeconds
+            : rngChronoFormat.hoursMinutes
         }
-      }}
-      format={
-        showSecond
-          ? rngChronoFormat.hoursMinutesSeconds
-          : rngChronoFormat.hoursMinutes
-      }
-      {...props}
-    />
+        // Virtual keyboards get in the way of the popup
+        inputReadOnly
+        {...props}
+        showSecond={showSecond}
+        allowClear={false}
+        status={errorMessage != null ? "error" : status}
+        onChange={(date: Dayjs | null) => {
+          if (date != null) {
+            onChange?.(showSecond ? date : date.second(0));
+          }
+        }}
+      />
+      {errorMessage != null && (
+        <Typography.Text type="danger">{errorMessage}</Typography.Text>
+      )}
+    </PickerContainer>
   );
 };
 
-type FormikTimePickerProps<FormState extends GenericForm> = Omit<
-  TimePickerProps,
-  "onChange" | "value"
-> & {
-  name: GuaranteeFormNameType<FormState, RngTime | null>;
-  value?: RngTime;
-  onChange?: (date: RngTime | null) => void;
-};
+type FormikTimePickerProps<FormState extends GenericForm> = tst.O.Merge<
+  { onChange?: (time: RngTime) => void },
+  FormFieldProps<FormState, RngTime | null, TimePickerProps>
+>;
 
 export const FormikTimePicker = <FormState extends GenericForm>({
   name,
   onChange,
   ...props
 }: FormikTimePickerProps<FormState>) => {
-  const size = useSize();
-  const [{ value: formTime }, { error, status }, { setValue }] =
-    useField<RngTime | null>(name);
-  const value = formTime == null ? null : fromRngTime(formTime);
+  const [{ value }, { error }, { setValue }] = useField<RngTime | null>(name);
 
   return (
-    <PickerContainer vertical>
-      <TimePicker
-        {...props}
-        name={name}
-        value={value}
-        size={size}
-        status={status}
-        onChange={(date) => {
-          const rngTime = date == null ? null : toRngTime(date);
-          setValue(rngTime);
-          onChange?.(rngTime ?? null);
-        }}
-      />
-      {error != null && (
-        <Typography.Text type="danger">{error}</Typography.Text>
-      )}
-    </PickerContainer>
-  );
-};
-
-type NullableDate = {
-  onChange?: (date: Dayjs | null, dateString: string) => void;
-  value?: Dayjs | null;
-};
-
-type DatePickerProps = tst.O.Omit<
-  AntdDatePickerProps,
-  // Time + date doesn't work well on small screens.
-  // We'll always want to separate time and date pickers
-  "showTime" | keyof NullableDate | "allowClear"
-> &
-  NullableDate;
-
-export const DatePicker = ({ onChange, picker, ...props }: DatePickerProps) => {
-  return (
-    <AntdDatePicker
-      picker={picker}
-      format={
-        picker === "month" ? rngChronoFormat.monthYear : rngChronoFormat.date
-      }
-      // Virtual keyboards get in the way of the pop
-      inputReadOnly
-      allowClear={false}
+    <TimePicker
       {...props}
-      // antd types lie, so we're fixing them and making them more accurate
-      // @ts-expect-error Type '(date: Dayjs | null, dateString: string) => void' is not assignable to type '(date: Dayjs, dateString: string | string[]) => void'.
-      onChange={(date: Dayjs | null, dateString: string) => {
-        if (date != null) {
-          onChange?.(date, dateString);
-        }
+      name={name}
+      value={value == null ? null : fromRngTime(value)}
+      errorMessage={error}
+      onChange={(date) => {
+        const time = toRngTime(date);
+        setValue(time);
+        onChange?.(time);
       }}
     />
   );
 };
 
-type FormikDatePickerProps<FormState extends GenericForm> = Omit<
-  DatePickerProps,
-  "onChange" | "value"
-> & {
-  name: GuaranteeFormNameType<FormState, RngDate | null>;
-  value?: RngDate;
-  onChange?: (date: RngDate | null) => void;
+type DatePickerProps = tst.O.Merge<
+  PickerValueProps,
+  tst.O.Omit<
+    AntdDatePickerProps,
+    // Time + date doesn't work well on small screens.
+    // We'll always want to separate time and date pickers
+    "showTime" | keyof PickerValueProps | "allowClear"
+  >
+>;
+
+export const DatePicker = ({
+  onChange,
+  errorMessage,
+  status,
+  ...props
+}: DatePickerProps) => {
+  const size = useSize();
+
+  return (
+    <PickerContainer vertical>
+      <AntdDatePicker
+        size={size}
+        format={
+          props.picker === "month"
+            ? rngChronoFormat.monthYear
+            : rngChronoFormat.date
+        }
+        // Virtual keyboards get in the way of the popup
+        inputReadOnly
+        {...props}
+        allowClear={false}
+        status={errorMessage != null ? "error" : status}
+        // antd types lie, so we're fixing them and making them more accurate
+        // @ts-expect-error Type '(date: Dayjs | null) => void' is not assignable to type '(date: Dayjs, dateString: string | string[]) => void'.
+        onChange={(date: Dayjs | null) => {
+          if (date != null) {
+            onChange?.(date);
+          }
+        }}
+      />
+      {errorMessage != null && (
+        <Typography.Text type="danger">{errorMessage}</Typography.Text>
+      )}
+    </PickerContainer>
+  );
 };
+
+type FormikDatePickerProps<FormState extends GenericForm> = tst.O.Merge<
+  { onChange?: (date: RngDate) => void },
+  FormFieldProps<FormState, RngDate | null, DatePickerProps>
+>;
 
 export const FormikDatePicker = <FormState extends GenericForm>({
   name,
   onChange,
   ...props
 }: FormikDatePickerProps<FormState>) => {
-  const size = useSize();
-  const [{ value: formDate }, { error, status }, { setValue }] =
-    useField<RngDate | null>(name);
-  const dateValue = match({ formDate })
-    .with({ formDate: P.not(P.nullish) }, (matched) =>
-      fromRngDate(matched.formDate),
-    )
-    .otherwise(() => dayjs());
+  const [{ value }, { error }, { setValue }] = useField<RngDate | null>(name);
 
   return (
-    <PickerContainer vertical>
-      <DatePicker
-        {...props}
-        name={name}
-        size={size}
-        value={dateValue}
-        status={status}
-        onChange={(date) => {
-          const rngDate = date == null ? null : toRngDate(date);
-          setValue(rngDate);
-          onChange?.(rngDate ?? null);
-        }}
-      />
-      {error != null && (
-        <Typography.Text type="danger">{error}</Typography.Text>
-      )}
-    </PickerContainer>
+    <DatePicker
+      {...props}
+      name={name}
+      value={value == null ? null : fromRngDate(value)}
+      errorMessage={error}
+      onChange={(date) => {
+        const rngDate = toRngDate(date);
+        setValue(rngDate);
+        onChange?.(rngDate);
+      }}
+    />
   );
 };

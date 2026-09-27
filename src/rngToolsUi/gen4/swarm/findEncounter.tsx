@@ -124,7 +124,7 @@ export const SwarmFindEncounter = () => {
           name="seed"
           numType="hex"
           errorMessage={seed == null ? "Find your seed first" : undefined}
-          value={seed}
+          value={seed ?? null}
         />
       ),
     },

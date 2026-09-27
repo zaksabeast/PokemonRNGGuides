@@ -52,7 +52,7 @@ const Fields = ({ initialSeed }: FieldsProps) => {
           errorMessage={
             initialSeed == null ? "Find your seed first" : undefined
           }
-          value={initialSeed}
+          value={initialSeed ?? null}
         />
       ),
     },

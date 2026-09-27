@@ -131,9 +131,9 @@ export const FormikAbilityFilter = <FormState extends GenericForm>({
 
   if (species == null) {
     return (
+      // @ts-expect-error -- prop types guarantee this is correct
       <FormikRadio<FormState>
         name={name}
-        // @ts-expect-error -- prop types guarantee this is correct
         options={
           displayHiddenAbility
             ? ability12HOptionsIfNoSpecies

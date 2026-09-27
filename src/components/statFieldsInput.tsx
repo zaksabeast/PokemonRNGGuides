@@ -53,8 +53,7 @@ const SingleField = ({ parentName, stat }: SingleFieldProps) => {
       }
       textAlign="center"
       numType="decimal"
-      // Explicitly unset errors and error statuses
-      status=""
+      // Explicitly unset errors
       errorMessage={null}
     />
   );

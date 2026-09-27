@@ -6,9 +6,11 @@ const ICON_SIZE = 20;
 
 const pillStyles = (theme: Theme) => ({
   ...theme.typography.titleMedium,
-  height: theme.size.button,
+  // A min height lets taller content, like images, grow the button
+  height: "auto",
+  minHeight: theme.size.button,
   [theme.mediaQueries.dense]: {
-    height: theme.size.dense.button,
+    minHeight: theme.size.dense.button,
   },
   paddingInline: 24,
   gap: 8,

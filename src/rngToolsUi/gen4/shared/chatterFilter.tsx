@@ -9,16 +9,15 @@ import { ChatterPitch, ChatterState, rngTools } from "~/rngTools";
 import { type Translations } from "~/translations";
 import { useAtom } from "jotai";
 import { gen4StateAtom } from "./state";
+import { Icon, type ResultColumn, Alert } from "~/components";
 import {
-  Flex,
-  Button,
-  Icon,
-  type ResultColumn,
-  RngToolForm,
-  Input,
-  Typography,
-  Alert,
-} from "~/components";
+  FormSection,
+  OutlinedButton,
+  TextField,
+  ToolForm,
+} from "~/components/form";
+import { SequenceButtons } from "./advanceFilter/sequenceButtons";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { findSubArrayIndices } from "~/utils/findIndexBy";
 import {
   advanceFilterValidator,
@@ -125,44 +124,41 @@ const useChatterAudio = () => {
 };
 
 const ChatterSounds = () => {
+  const t = useActiveRouteTranslations();
   const { playChatter } = useChatterAudio();
 
   return (
-    <Flex vertical>
-      <Typography.Title level={5}>Reference sounds:</Typography.Title>
-      <Typography.Text mb={6}>
-        Record the "Low" sound with the "Chatter" ability to use these.
-      </Typography.Text>
-      <Flex gap={8}>
-        <Button
-          flex={1}
+    <FormSection
+      title={t["Reference sounds"]}
+      description='Record the "Low" sound with the "Chatter" ability to use these.'
+    >
+      <SequenceButtons>
+        <OutlinedButton
           trackerId="chatter_play_low"
           onClick={() => playChatter(1.0)}
           icon={<Icon name="Play" />}
           iconPlacement="end"
         >
           Low
-        </Button>
-        <Button
-          flex={1}
+        </OutlinedButton>
+        <OutlinedButton
           trackerId="chatter_play_medium"
           onClick={() => playChatter(1.125)}
           icon={<Icon name="Play" />}
           iconPlacement="end"
         >
           Medium
-        </Button>
-        <Button
-          flex={1}
+        </OutlinedButton>
+        <OutlinedButton
           trackerId="chatter_play_high"
           onClick={() => playChatter(1.25)}
           icon={<Icon name="Play" />}
           iconPlacement="end"
         >
           High
-        </Button>
-      </Flex>
-    </Flex>
+        </OutlinedButton>
+      </SequenceButtons>
+    </FormSection>
   );
 };
 
@@ -262,40 +258,37 @@ const ChatterFilterButtons = ({
   setPitches,
   onClickPitch,
 }: ChatterFilterButtonsProps) => {
+  const t = useActiveRouteTranslations();
+
   return (
-    <Flex vertical gap={8}>
-      <Typography.Title level={5}>Filters:</Typography.Title>
-      <Flex gap={8}>
-        <Button
-          flex={1}
+    <FormSection title={t["Filters"]}>
+      <SequenceButtons>
+        <OutlinedButton
           trackerId="chatter_filter_low"
           onClick={() => onClickPitch("L")}
         >
           Low
-        </Button>
-        <Button
-          flex={1}
+        </OutlinedButton>
+        <OutlinedButton
           trackerId="chatter_filter_medium"
           onClick={() => onClickPitch("M")}
         >
           Medium
-        </Button>
-        <Button
-          flex={1}
+        </OutlinedButton>
+        <OutlinedButton
           trackerId="chatter_filter_high"
           onClick={() => onClickPitch("H")}
         >
           High
-        </Button>
-      </Flex>
-      <Input
+        </OutlinedButton>
+      </SequenceButtons>
+      <TextField
+        label={t["Chatot Pitches"]}
         value={pitches.join("")}
         placeholder="LMH"
-        onChange={(event) =>
-          setPitches(event.target.value.split("").filter(isMiniPitch))
-        }
+        onChange={(value) => setPitches(value.split("").filter(isMiniPitch))}
       />
-    </Flex>
+    </FormSection>
   );
 };
 
@@ -357,8 +350,8 @@ export const ChatterFilterBase = ({
   );
 
   return (
-    <RngToolForm<LooseAdvanceFilterFormState, Result>
-      additionalButtons={
+    <ToolForm<LooseAdvanceFilterFormState, Result>
+      filters={
         <>
           <ChatterSounds />
           <ChatterFilterButtons
@@ -398,7 +391,7 @@ export const ChatterFilterBase = ({
       submitTrackerId={submitTrackerId}
     >
       <AdvanceFilterFields mode={mode} targetAdvance={resolvedTargetAdvance} />
-    </RngToolForm>
+    </ToolForm>
   );
 };
 

@@ -31,7 +31,7 @@ type Props<FormState extends GenericForm, Result> = {
   values?: FormState;
   validationSchema?: z.ZodType<FormState>;
   submitButtonLabel?: string;
-  submitButtonIcon?: IconName;
+  submitButtonIcon?: IconName | null;
   formContainerId?: string;
   filters?: React.ReactNode;
   disableGenerate?: boolean;
@@ -114,7 +114,7 @@ export const ToolForm = <
   disableGenerate = false,
   onSubmit = async () => {},
   submitButtonLabel = "Generate",
-  submitButtonIcon,
+  submitButtonIcon = "Search",
   cancelButtonLabel = "Cancel",
   allowCancel = false,
   cancelTrackerId,

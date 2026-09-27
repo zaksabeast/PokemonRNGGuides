@@ -119,7 +119,6 @@ const SampleToolForm = () => {
       validationSchema={PreviewSchema}
       onSubmit={onSubmit}
       submitTrackerId="form_preview_generate"
-      submitButtonIcon="Search"
       allowReset
       resetTrackerId="form_preview_reset"
       onReset={() => setResults([])}

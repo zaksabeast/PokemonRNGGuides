@@ -1,20 +1,20 @@
 import * as tst from "ts-toolbelt";
 import { uniqueId } from "lodash-es";
+import { Button, ResultColumn } from "~/components";
 import {
-  Button,
-  Field,
-  FormFieldTable,
-  FormikNumberInput,
-  FormikSelect,
-  FormikSwitch,
-  MinMaxContainer,
-  ResultColumn,
-  RngToolForm,
-  RngToolSubmit,
-} from "~/components";
+  FieldRow,
+  FormNumberField,
+  FormSection,
+  FormSelectField,
+  FormSwitchField,
+  NullableIvFields,
+  PkmFilter,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
 import { useWatch } from "~/hooks/form";
 import { species, getGen4SpeciesOptions } from "~/types/species";
-import { IvInput, IvsSchema, NullableIvsSchema } from "~/components/ivInput";
+import { IvsSchema, NullableIvsSchema } from "~/components/ivInput";
 import { maxIvs } from "~/types/ivs";
 import { useAtom } from "jotai";
 import { gen4StateAtom } from "../shared/state";
@@ -29,7 +29,6 @@ import {
   SeedTime4,
 } from "~/rngTools";
 import {
-  getPkmFilterFields,
   getPkmFilterInitialValues,
   pkmFilterSchema,
   pkmFilterFieldsToRustInput,
@@ -90,97 +89,92 @@ const Fields = () => {
     names: { species: true },
   });
 
-  const fields: Field[] = [
-    {
-      label: t["TID / SID"],
-      input: (
-        <MinMaxContainer
-          min={<FormikNumberInput<FormState> name="tid" numType="decimal" />}
-          max={<FormikNumberInput<FormState> name="sid" numType="decimal" />}
-          delimeter="/"
-        />
-      ),
-    },
-    {
-      label: t["Year"],
-      input: <FormikNumberInput<FormState> name="year" numType="decimal" />,
-    },
-    {
-      label: t["Delay"],
-      input: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
-          }
-          max={
-            <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
-          }
-        />
-      ),
-    },
-    {
-      label: t["Held Advance"],
-      input: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState>
-              name="held_min_advances"
-              numType="decimal"
-            />
-          }
-          max={
-            <FormikNumberInput<FormState>
-              name="held_max_advances"
-              numType="decimal"
-            />
-          }
-        />
-      ),
-    },
-    {
-      label: t["Pickup Advance"],
-      input: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState>
-              name="pickup_min_advances"
-              numType="decimal"
-            />
-          }
-          max={
-            <FormikNumberInput<FormState>
-              name="pickup_max_advances"
-              numType="decimal"
-            />
-          }
-        />
-      ),
-    },
-    {
-      label: t["Species"],
-      input: (
-        <FormikSelect<FormState, "species">
+  return (
+    <>
+      <FormSection title={t["Your game"]}>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="tid"
+            label={t["TID"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="sid"
+            label={t["SID"]}
+            numType="decimal"
+          />
+        </FieldRow>
+        <FormSelectField<FormState>
           name="species"
+          label={t["Species"]}
           options={getGen4SpeciesOptions().byName}
         />
-      ),
-    },
-    {
-      label: t["Masuda Method"],
-      input: <FormikSwitch<FormState> name="is_masuda" />,
-    },
-    {
-      label: t["Parent 1 IVs"],
-      input: <IvInput<FormState, "nullable"> name="parent1_ivs" />,
-    },
-    {
-      label: t["Parent 2 IVs"],
-      input: <IvInput<FormState, "nullable"> name="parent2_ivs" />,
-    },
-    ...getPkmFilterFields({ species: species ?? undefined }, t),
-  ];
+        <FormSwitchField<FormState>
+          name="is_masuda"
+          label={t["Masuda Method"]}
+        />
+      </FormSection>
 
-  return <FormFieldTable fields={fields} />;
+      <FormSection title={t["Parents"]}>
+        <NullableIvFields<FormState>
+          name="parent1_ivs"
+          title={t["Parent 1 IVs"]}
+        />
+        <NullableIvFields<FormState>
+          name="parent2_ivs"
+          title={t["Parent 2 IVs"]}
+        />
+      </FormSection>
+
+      <FormSection title={t["Search"]}>
+        <FormNumberField<FormState>
+          name="year"
+          label={t["Year"]}
+          numType="decimal"
+        />
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="min_delay"
+            label={t["Min Delay"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="max_delay"
+            label={t["Max Delay"]}
+            numType="decimal"
+          />
+        </FieldRow>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="held_min_advances"
+            label={t["Min Held Advance"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="held_max_advances"
+            label={t["Max Held Advance"]}
+            numType="decimal"
+          />
+        </FieldRow>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="pickup_min_advances"
+            label={t["Min Pickup Advance"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="pickup_max_advances"
+            label={t["Max Pickup Advance"]}
+            numType="decimal"
+          />
+        </FieldRow>
+      </FormSection>
+
+      <FormSection title={t["Filters"]}>
+        <PkmFilter<FormState> species={species ?? undefined} />
+      </FormSection>
+    </>
+  );
 };
 
 const initialValues: FormState = {
@@ -231,7 +225,7 @@ export const Egg4Search = () => {
 
   const game = state.config.game;
 
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     const chunked = chunkRange([opts.min_delay, opts.max_delay], 200);
     const chunkedOpts = chunked.map(
       ([min_delay, max_delay]): RustOption<SearchEgg4Opts> => ({
@@ -321,7 +315,7 @@ export const Egg4Search = () => {
   ];
 
   return (
-    <RngToolForm<FormState, Result>
+    <ToolForm<FormState, Result>
       initialValues={initialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
@@ -334,6 +328,6 @@ export const Egg4Search = () => {
       onCancel={cancel}
     >
       <Fields />
-    </RngToolForm>
+    </ToolForm>
   );
 };

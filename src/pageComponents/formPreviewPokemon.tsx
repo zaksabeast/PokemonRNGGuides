@@ -74,7 +74,6 @@ export const PokemonFormPreview = () => {
         initialValues={initialValues}
         validationSchema={PokemonPreviewSchema}
         submitTrackerId="form_preview_pokemon_generate"
-        submitButtonIcon="Search"
         onSubmit={async (values) => {
           setSubmitted(JSON.stringify(values, null, 2));
         }}

@@ -9,6 +9,10 @@ import { GenericForm } from "~/types/form";
 import { Paths } from "~/types";
 import { statLabels, stats, type Stat } from "~/types/stat";
 import { NumberField } from "~/components/form/base/numberField";
+import {
+  HeadingDescription,
+  HeadingGroup,
+} from "~/components/form/base/layout";
 
 type StatValues = Record<Stat, number | null>;
 
@@ -45,20 +49,9 @@ const Block = styled.div({
   minWidth: 0,
 });
 
-const Heading = styled.div({
-  display: "flex",
-  flexDirection: "column",
-  gap: 2,
-});
-
 const Title = styled.div(({ theme }) => ({
   ...theme.typography.titleSmall,
   color: theme.token.colorText,
-}));
-
-const Description = styled.div(({ theme }) => ({
-  ...theme.typography.bodySmall,
-  color: theme.token.colorTextTertiary,
 }));
 
 const Grid = styled.div(({ theme }) => ({
@@ -134,10 +127,12 @@ export const StatGrid = <
   return (
     <Block>
       {title != null && (
-        <Heading>
+        <HeadingGroup>
           <Title>{title}</Title>
-          {description != null && <Description>{description}</Description>}
-        </Heading>
+          {description != null && (
+            <HeadingDescription>{description}</HeadingDescription>
+          )}
+        </HeadingGroup>
       )}
       <Grid>
         {stats.map((stat) => (

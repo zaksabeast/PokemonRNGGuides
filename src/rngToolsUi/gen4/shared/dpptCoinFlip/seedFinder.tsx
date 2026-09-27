@@ -1,21 +1,22 @@
 import React from "react";
 import { type SeedTime4 } from "~/rngTools";
+import { type ResultColumn, Button } from "~/components";
 import {
-  RngToolForm,
-  FormikNumberInput,
-  type RngToolSubmit,
-  type ResultColumn,
-  Field,
-  MinMaxContainer,
-  Button,
-} from "~/components";
+  FieldRow,
+  FormDateField,
+  FormNumberField,
+  FormSection,
+  FormTimeField,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { z } from "zod";
 import { matchesCoinFlipFilter, SmallCoinFlip } from "./utils";
 import { CoinFlipFilterButtons } from "./coinFlipButtons";
 import { rngDate, RngDateSchema, rngTime, RngTimeSchema } from "~/utils/time";
 import { gen4StateAtom } from "../state";
 import { useAtom } from "jotai";
-import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
 import { useCurrentStep } from "~/components/stepper/state";
 import { Translations } from "~/translations";
 import { getSeedTime4WithMarkers } from "../getFindableSeeds";
@@ -97,44 +98,47 @@ const getColumns = (t: Translations): ResultColumn<ResultRow>[] => [
   },
 ];
 
-const getFields = (t: Translations): Field[] => [
-  {
-    label: t["Date"],
-    input: <FormikDatePicker<FormState> name="date" />,
-  },
-  {
-    label: t["Time"],
-    input: <FormikTimePicker<FormState> name="time" />,
-  },
-  {
-    label: t["Seconds"],
-    input: (
-      <MinMaxContainer
-        min={
-          <FormikNumberInput<FormState> name="minSeconds" numType="decimal" />
-        }
-        max={
-          <FormikNumberInput<FormState> name="maxSeconds" numType="decimal" />
-        }
+const Fields = () => {
+  const t = useActiveRouteTranslations();
+
+  return (
+    <FormSection>
+      <FieldRow>
+        <FormDateField<FormState> name="date" label={t["Date"]} />
+        <FormTimeField<FormState> name="time" label={t["Time"]} />
+      </FieldRow>
+      <FieldRow>
+        <FormNumberField<FormState>
+          name="minSeconds"
+          label={t["Min Seconds"]}
+          numType="decimal"
+        />
+        <FormNumberField<FormState>
+          name="maxSeconds"
+          label={t["Max Seconds"]}
+          numType="decimal"
+        />
+      </FieldRow>
+      <FieldRow>
+        <FormNumberField<FormState>
+          name="minDelay"
+          label={t["Min Delay"]}
+          numType="decimal"
+        />
+        <FormNumberField<FormState>
+          name="maxDelay"
+          label={t["Max Delay"]}
+          numType="decimal"
+        />
+      </FieldRow>
+      <FormNumberField<FormState>
+        name="filterItemCount"
+        label={t["Coin Flip Count"]}
+        numType="decimal"
       />
-    ),
-  },
-  {
-    label: t["Delay"],
-    input: (
-      <MinMaxContainer
-        min={<FormikNumberInput<FormState> name="minDelay" numType="decimal" />}
-        max={<FormikNumberInput<FormState> name="maxDelay" numType="decimal" />}
-      />
-    ),
-  },
-  {
-    label: t["Coin Flip Count"],
-    input: (
-      <FormikNumberInput<FormState> name="filterItemCount" numType="decimal" />
-    ),
-  },
-];
+    </FormSection>
+  );
+};
 
 export const DpptCoinFlipSeedFinder = () => {
   const [allResults, setAllResults] = React.useState<ResultRow[]>([]);
@@ -147,7 +151,7 @@ export const DpptCoinFlipSeedFinder = () => {
     matchesCoinFlipFilter(result.coinFlips, state.gameState.coinFlips),
   );
 
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     const results = await getSeedTime4WithMarkers({
       ...opts,
       includeCoinFlips: true,
@@ -158,8 +162,7 @@ export const DpptCoinFlipSeedFinder = () => {
   };
 
   return (
-    <RngToolForm<FormState, ResultRow>
-      getFields={getFields}
+    <ToolForm<FormState, ResultRow>
       getColumns={getColumns}
       results={filteredResults}
       initialValues={initialValues}
@@ -179,6 +182,8 @@ export const DpptCoinFlipSeedFinder = () => {
       onSubmit={onSubmit}
       rowKey="id"
       submitTrackerId="coin_flip_seed_search"
-    />
+    >
+      <Fields />
+    </ToolForm>
   );
 };

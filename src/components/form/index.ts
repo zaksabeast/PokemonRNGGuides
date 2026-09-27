@@ -1,6 +1,6 @@
 export { type LabeledFieldProps } from "./base/field";
 export { type InfoTooltipContent } from "./base/infoTooltip";
-export { FormBody, FormSection, FieldRow } from "./base/layout";
+export { FormBody, FormCard, FormSection, FieldRow } from "./base/layout";
 export {
   TextField,
   FormTextField,
@@ -45,10 +45,12 @@ export { StatGrid, type StatGridProps } from "./pokemon/statGrid";
 export { IvFields, NullableIvFields, IvRangeFields } from "./pokemon/ivFields";
 export { StatRadioFields } from "./pokemon/statRadioFields";
 export { NatureField, NatureFilterField } from "./pokemon/natureFields";
+export { getNatureOptions } from "./pokemon/natureOptions";
 export { GenderFilterField } from "./pokemon/genderField";
 export { AbilityFilterField } from "./pokemon/abilityField";
 export { HiddenPowerField } from "./pokemon/hiddenPowerField";
 export { PkmFilter } from "./pokemon/pkmFilter";
+export { IdFilterField } from "./pokemon/idFilterField";
 export {
   SwitchField,
   FormSwitchField,

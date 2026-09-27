@@ -462,7 +462,7 @@ fn test_search_reverse_wild3_feebas_many_cyles() {
             advance: 15520,
             seed: Pokerng::with_jump(options.initial_seed, 15520).seed(),
             feebas_cycles: 500_000,
-            cycle_instability: 0.5,
+            cycle_instability: 0f32, // 0 because consider_cycles is false
             ..expected_mon
         },
     ];

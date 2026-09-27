@@ -145,7 +145,7 @@ export const calculateTargetSetupResult = async (
     return { content: null, hasEncounter: false };
   }
 
-  const genRes = await rngTools.generate_gen3_wild_wasm(
+  const genRes = await rngTools.generate_wild3_wasm(
     targetSetup.targetPaintingAdvs.before,
     targetSetup.targetPaintingAdvs.after,
     opts,

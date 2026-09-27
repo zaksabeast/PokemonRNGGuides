@@ -10,8 +10,29 @@ pub const BASE_LEAD_PID_MOD_24_CYCLES: usize = calc_modulo_cycle_unsigned(BASE_L
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[allow(non_camel_case_types)]
+#[repr(u8)]
 pub enum Moment {
+    Fishing_StartEncounter,
+    GenerateFishingWildMon,
+    ChooseWildMonIndex_Fishing,
+    WildEncounterCheck,
+    EncounterOddsCheck,
+    TrySweetScentEncounter,
     SweetScentWildEncounter,
+    TryStartRoamerEncounter,
+    DoMassOutbreakEncounterTest,
+    SetUpMassOutbreakEncounter,
+    TryGenerateWildMon,
+    TryGetAbilityInfluencedWildMonIndex,
+    TryGetRandomWildMonIndexByType,
+    ChooseWildMonIndex_Land,
+    ChooseWildMonIndex_WaterRock,
+    ChooseWildMonLevel,
+    CreateWildMon,
+    PickWildMonNature,
+    CreateMonWithNature,
+    CreateMonWithGenderNatureLetter,
+    CreateMon,
     RockSmashWildEncounter,
     FishingWildEncounter,
     CheckFeebas,
@@ -29,7 +50,7 @@ pub enum Moment {
     CreateBoxMon_RandomIvs2,
 }
 
-pub const MOMENT_COUNT: usize = 15;
+pub const MOMENT_COUNT: usize = (Moment::CreateBoxMon_RandomIvs2 as usize) + 1;
 
 #[derive(Default, Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]

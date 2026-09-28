@@ -3,9 +3,12 @@ import { Image as AntdImage, type ImageProps as AntdImageProps } from "antd";
 import { withCss } from "./withCss";
 import { ClassNames } from "@emotion/react";
 
-type _ImageProps = AntdImageProps & { pixelated?: boolean };
+type _ImageProps = AntdImageProps & {
+  pixelated?: boolean;
+  popupWidth?: number | string;
+};
 
-const _Image = ({ pixelated, ...props }: _ImageProps) => {
+const _Image = ({ pixelated, popupWidth, ...props }: _ImageProps) => {
   return (
     <ClassNames>
       {({ css }) => (
@@ -17,7 +20,16 @@ const _Image = ({ pixelated, ...props }: _ImageProps) => {
               imageRendering: pixelated ? "pixelated" : "auto",
             }),
             popup: {
-              root: css({ imageRendering: pixelated ? "pixelated" : "auto" }),
+              root: css({
+                imageRendering: pixelated ? "pixelated" : "auto",
+                img:
+                  popupWidth != null
+                    ? {
+                        width: popupWidth ?? "auto",
+                        objectFit: "contain",
+                      }
+                    : undefined,
+              }),
             },
           }}
         />

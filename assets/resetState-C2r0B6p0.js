@@ -1,0 +1,1 @@
+import{c as e}from"./index-IxoildfQ.js";var t=()=>(e(),null);export{t as Gen4Reset};

@@ -6,12 +6,17 @@ import { MarkdownScreen } from "~/screens/markdownScreen";
 
 export const NavRoute: React.FC<RouteProps<never, Route>> = WRoute;
 
-// These routes used to exist before the site rewrite. Redirect them to the home page.
-const backwardsCompatibleRoutes = ["tools-and-emulators", "transporter"];
+// These routes used to exist before the site rewrite. Redirect them to their new pages.
+const backwardsCompatibleRoutes: Record<string, Route | `${Route}?${string}`> =
+  {
+    "tools-and-emulators": "/",
+    transporter: "/transporter-dream-radar/",
+    "/guides/tools/en/install pcalc.md": "/install-pokereader/?from=pcalc",
+  };
 
-const BackwardsCompatiblePage = () => {
+const BackwardsCompatiblePage = ({ to }: { to: string }) => {
   useTrackPageNotFound();
-  return <Redirect to="/" />;
+  return <Redirect to={to} />;
 };
 
 export const Router = () => {
@@ -21,9 +26,9 @@ export const Router = () => {
         <NavRoute key={route} path={route} component={MarkdownScreen} />
       ))}
 
-      {backwardsCompatibleRoutes.map((route) => (
+      {Object.entries(backwardsCompatibleRoutes).map(([route, to]) => (
         <WRoute key={route} path={route}>
-          <BackwardsCompatiblePage />
+          <BackwardsCompatiblePage to={to} />
         </WRoute>
       ))}
 

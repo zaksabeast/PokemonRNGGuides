@@ -4,8 +4,10 @@ import fs from "node:fs/promises";
 import express from "express";
 import { toNativeAbsolute } from "./path";
 import type * as _EntryServer from "../src/entry-server";
+import type * as _RouteDefs from "../src/routes/defs";
 
 type EntryServer = typeof _EntryServer;
+type RouteDefs = typeof _RouteDefs;
 
 const port = process.env.PORT || 5173;
 
@@ -31,7 +33,19 @@ app.use("*all", async (req, res) => {
     );
     template = await vite.transformIndexHtml(url, template);
 
-    const renderUrl = url.endsWith("/") ? url : `${url}/`;
+    const { pathname } = new URL(url, "http://localhost");
+    const renderUrl = pathname.endsWith("/") ? pathname : `${pathname}/`;
+
+    // Unknown routes (e.g. backwards compatible redirects) get the unrendered
+    // template, matching the 404.html fallback used in production.
+    const { RouteSchema }: RouteDefs = await vite.ssrLoadModule(
+      "src/routes/defs.ts",
+    );
+    if (!RouteSchema.safeParse(renderUrl).success) {
+      res.status(200).set({ "Content-Type": "text/html" }).send(template);
+      return;
+    }
+
     const rendered = await render(renderUrl);
     const result = template
       .replace("<!--injected-meta-tags-->", rendered.metaTags)

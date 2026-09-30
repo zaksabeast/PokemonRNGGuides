@@ -3,6 +3,7 @@ use crate::{
     gen3::{
         CycleRange, Gen3Lead, Gen3Method, INFINITE_CYCLE, Wild3EncounterIndex,
         Wild3GeneratorMonResult, Wild3GeneratorOptions, Wild3MapGameData, generate_wild3,
+        generate_wild3_old,
     },
     rng::lcrng::Pokerng,
 };
@@ -63,14 +64,20 @@ fn test_generate_wild3_cycle_method_3_specified_lead_speed() {
     assert!(generate_wild3(rng, &options, &map).mon_results.is_empty());
 
     options.lead_cycle_speed = Some(800);
-    assert_eq!(generate_wild3(rng, &options, &map).mon_results, unrestricted);
+    assert_eq!(
+        generate_wild3(rng, &options, &map).mon_results,
+        unrestricted
+    );
 
     options.lead_cycle_speed = Some(100);
     options.generate_even_if_impossible = true;
     let including_impossible = generate_wild3(rng, &options, &map).mon_results;
     assert!(including_impossible.len() > unrestricted.len());
     options.lead_cycle_speed = None;
-    assert_eq!(generate_wild3(rng, &options, &map).mon_results, including_impossible);
+    assert_eq!(
+        generate_wild3(rng, &options, &map).mon_results,
+        including_impossible
+    );
 }
 
 #[test]
@@ -163,7 +170,7 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
         &Wild3MapGameData::default(),
     )
     .mon_results;
-    let results_old = generate_wild3(
+    let results_old = generate_wild3_old(
         Pokerng::with_advances(0, 3001),
         &options,
         &Wild3MapGameData::default(),

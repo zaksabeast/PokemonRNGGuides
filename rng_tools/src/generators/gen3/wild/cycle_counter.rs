@@ -314,8 +314,18 @@ impl CycleFrameCounter {
         match self {
             CycleFrameCounter::Inactive => true,
             CycleFrameCounter::DetailedBreakdown { current_cycle, .. } => current_cycle.frame == 0,
-            CycleFrameCounter::MinMaxRange { min_max_cycles, .. } => {
-                min_max_cycles.min_cycle.frame == 0
+            CycleFrameCounter::MinMaxRange {
+                min_max_cycles,
+                consider_rng_manipulated_lead_pid,
+                ..
+            } => {
+                if *consider_rng_manipulated_lead_pid {
+                    min_max_cycles.min_cycle.frame == 0
+                } else {
+                    // when consider_rng_manipulated_lead_pid is false, both min and max must be able to have no vblank.
+                    // if max doesn't have a vblank, when min surely doesn't either.
+                    min_max_cycles.max_cycle.frame == 0
+                }
             }
         }
     }
@@ -344,30 +354,6 @@ impl CycleFrameCounter {
             CycleFrameCounter::MinMaxRange {
                 lead_pid_mod_count, ..
             } => CycleAndModRange::new(self.get_current_cycle_count(), *lead_pid_mod_count, len),
-        }
-    }
-    pub fn to_cycle_counter(&self) -> CycleCounter {
-        match self {
-            CycleFrameCounter::Inactive => CycleCounter::default(),
-            CycleFrameCounter::DetailedBreakdown { .. } => CycleCounter {
-                cycle: CycleAndModCount {
-                    cycle: self.get_current_cycle_count(),
-                    lead_pid_mod: 0,
-                },
-                ..Default::default()
-            },
-            CycleFrameCounter::MinMaxRange {
-                lead_pid_mod_count,
-                cycle_instability,
-                ..
-            } => CycleCounter {
-                cycle: CycleAndModCount {
-                    cycle: self.get_current_cycle_count(),
-                    lead_pid_mod: *lead_pid_mod_count,
-                },
-                cycle_instability: *cycle_instability,
-                ..Default::default()
-            },
         }
     }
 

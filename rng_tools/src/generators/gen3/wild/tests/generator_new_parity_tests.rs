@@ -195,7 +195,7 @@ fn all_methods_with_common_leads_match_existing_generation() {
 }
 
 #[test]
-fn all_methods_and_cycle_ranges_match_existing_generation() {
+fn all_methods_and_cycle_ranges_match_existing_generation() {can_vblank_occur_soon_for_min_and_max
     let mut map = Wild3MapGameData::default();
     map.is_safari = true;
     for (action, lead, seed) in products!(

@@ -194,12 +194,7 @@ impl Wild3SearcherResultMon {
     ) -> Wild3SearcherResultMon {
         let cycle_data_by_lead = gen_res.cycle_range.map(|cycle_range| {
             let is_egg = matches!(gen_opts.lead, Gen3Lead::Egg);
-            calculate_cycle_data_by_lead(
-                &cycle_range,
-                gen_opts.action,
-                is_egg,
-                gen_opts.cycle_opts.lead_cycle_spd,
-            )
+            calculate_cycle_data_by_lead(&cycle_range, gen_opts.action, is_egg, None)
         });
 
         Wild3SearcherResultMon {

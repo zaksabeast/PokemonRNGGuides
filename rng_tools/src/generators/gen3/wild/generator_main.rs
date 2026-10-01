@@ -5,10 +5,9 @@ use wasm_bindgen::prelude::*;
 use crate::{
     Ivs, PkmFilter,
     gen3::{
-        CycleAndModCount, CycleAndModRange, CycleFrameCounter, CycleRange, Gen3Lead,
-        Gen3Method, Gen3PkmFilter, Wild3Action, Wild3EncounterIndex, Wild3FeebasState,
-        Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
-        generate_wild3_new,
+        CycleAndModCount, CycleAndModRange, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method,
+        Gen3PkmFilter, Wild3Action, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData,
+        Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt, generate_wild3_new,
     },
     rng::lcrng::Pokerng,
 };
@@ -18,14 +17,24 @@ pub const VBLANK_FREQ: usize = 280_896;
 
 #[derive(Debug, Clone, Default, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Wild3GeneratorCycleOpts {
-    pub consider_cycles: bool,
-    pub generate_even_if_impossible: bool,
-    pub generate_cycle_at_moment: bool,
-    pub consider_rng_manipulated_lead_pid: bool,
-    pub lead_cycle_spd: Option<usize>,
-    pub initial_cycle_at_sweet_scent: Option<usize>,
-    pub vblank_cycles: Option<Vec<usize>>,
+pub enum Wild3GeneratorCycleOpts {
+    #[default]
+    Inactive,
+    Searching {
+        generate_even_if_impossible: bool,
+        consider_rng_manipulated_lead_pid: bool,
+    },
+    LikelihoodForLead {
+        lead_cycle_spd: usize,
+    },
+    CycleAtMomentNoEmuLog {
+        lead_cycle_spd: usize,
+    },
+    CycleAtMomentWithEmuLog {
+        lead_cycle_spd: usize,
+        initial_cycle_at_sweet_scent: usize,
+        vblank_cycles: Vec<usize>,
+    },
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]

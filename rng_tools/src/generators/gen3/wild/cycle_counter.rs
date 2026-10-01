@@ -4,7 +4,7 @@ use wasm_bindgen::prelude::*;
 
 use crate::gen3::{
     BASE_LEAD_PID_MOD_24_CYCLES, COMMON_LEAD_RANGE, CycleAndModCount, CycleAndModRange,
-    CycleCounter, FASTEST_MODULO_CYCLE_24, Gen3Lead, INFINITE_CYCLE,
+    CycleCounter, CycleFrameCounter::Inactive, FASTEST_MODULO_CYCLE_24, Gen3Lead, INFINITE_CYCLE,
     MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE, Moment, SLOWEST_MODULO_CYCLE_24, VBLANK_FREQ, Wild3Action,
     Wild3GeneratorCycleOpts, Wild3GeneratorOptions, get_min_mid_max_pre_sweet_scent_cycle,
     get_min_mid_max_vblank_cycle_duration, is_method_possible_to_trigger,
@@ -69,35 +69,35 @@ impl MinMaxCycleFrame {
         }
     }
 
-    pub fn new(
+    pub fn min_max_lead_cycle_spd(
         is_egg_lead: bool,
-        action: Wild3Action,
         consider_rng_manipulated_lead_pid: bool,
-    ) -> Self {
-        let (min_cycle, _, max_cycle) = get_min_mid_max_pre_sweet_scent_cycle(action);
+        lead_cycle_spd: Option<usize>,
+    ) -> (usize, usize) {
+        if let Some(lead_cycle_spd) = lead_cycle_spd {
+            return (lead_cycle_spd, lead_cycle_spd);
+        }
+        if is_egg_lead {
+            return (0, 0);
+        }
+        if consider_rng_manipulated_lead_pid {
+            return (FASTEST_MODULO_CYCLE_24, SLOWEST_MODULO_CYCLE_24);
+        }
+
+        (COMMON_LEAD_RANGE.start, COMMON_LEAD_RANGE.end)
+    }
+    pub fn new(min_max_initial_cycle: (usize, usize), min_max_lead_spd: (usize, usize)) -> Self {
         Self {
             min_cycle: CycleFrame {
-                cycle: min_cycle,
+                cycle: min_max_initial_cycle.0,
                 frame: 0,
             },
             max_cycle: CycleFrame {
-                cycle: max_cycle,
+                cycle: min_max_initial_cycle.1,
                 frame: 0,
             },
-            min_lead_cycle_spd: if is_egg_lead {
-                0
-            } else if consider_rng_manipulated_lead_pid {
-                FASTEST_MODULO_CYCLE_24
-            } else {
-                COMMON_LEAD_RANGE.start
-            },
-            max_lead_cycle_spd: if is_egg_lead {
-                0
-            } else if consider_rng_manipulated_lead_pid {
-                SLOWEST_MODULO_CYCLE_24
-            } else {
-                COMMON_LEAD_RANGE.end
-            },
+            min_lead_cycle_spd: min_max_lead_spd.0,
+            max_lead_cycle_spd: min_max_lead_spd.1,
         }
     }
     pub fn add_cycle(&mut self, cycle: usize) {
@@ -131,6 +131,7 @@ pub enum CycleFrameCounter {
         cycle_instability: f32,
         base_cycle_count: usize,
         lead_pid_mod_count: usize,
+        generate_even_if_impossible: bool,
     },
 
     // It is used to debug issues with the cycle counter, by reproducing a very specific case then
@@ -146,50 +147,68 @@ pub enum CycleFrameCounter {
 
 impl CycleFrameCounter {
     pub fn new(opts: &Wild3GeneratorOptions) -> Self {
-        if !opts.cycle_opts.consider_cycles {
-            CycleFrameCounter::Inactive
-        } else if opts.cycle_opts.generate_cycle_at_moment {
-            CycleFrameCounter::new_for_detailed_breakdown(opts.action, &opts.cycle_opts)
-        } else {
-            CycleFrameCounter::new_for_min_max_range(
-                opts.lead == Gen3Lead::Egg,
-                opts.action,
-                opts.cycle_opts.consider_rng_manipulated_lead_pid,
-            )
-        }
-    }
-    pub fn new_for_detailed_breakdown(
-        action: Wild3Action,
-        cycle_opts: &Wild3GeneratorCycleOpts,
-    ) -> Self {
-        Self::DetailedBreakdown {
-            lead_cycle_spd: cycle_opts.lead_cycle_spd.unwrap_or(775),
-            current_cycle: CycleFrame {
-                cycle: cycle_opts
-                    .initial_cycle_at_sweet_scent
-                    .unwrap_or(get_min_mid_max_pre_sweet_scent_cycle(action).1),
-                frame: 0,
-            },
-            vblank_cycles: cycle_opts.vblank_cycles.clone().unwrap_or_default(),
-            cycle_at_moments: vec![],
-        }
-    }
-    pub fn new_for_min_max_range(
-        is_egg_lead: bool,
-        action: Wild3Action,
-        consider_rng_manipulated_lead_pid: bool,
-    ) -> Self {
-        CycleFrameCounter::MinMaxRange {
-            min_max_cycles: MinMaxCycleFrame::new(
-                is_egg_lead,
-                action,
+        match &opts.cycle_opts {
+            Wild3GeneratorCycleOpts::Inactive => CycleFrameCounter::Inactive,
+            Wild3GeneratorCycleOpts::Searching {
+                generate_even_if_impossible,
                 consider_rng_manipulated_lead_pid,
-            ),
-            cycle_instability: 0.0,
-            base_cycle_count: 0,
-            lead_pid_mod_count: 0,
+            } => {
+                let min_mid_max_initial = get_min_mid_max_pre_sweet_scent_cycle(opts.action);
+                CycleFrameCounter::MinMaxRange {
+                    min_max_cycles: MinMaxCycleFrame::new(
+                        (min_mid_max_initial.0, min_mid_max_initial.2),
+                        MinMaxCycleFrame::min_max_lead_cycle_spd(
+                            opts.lead == Gen3Lead::Egg,
+                            *consider_rng_manipulated_lead_pid,
+                            None,
+                        ),
+                    ),
+                    cycle_instability: 0.0,
+                    base_cycle_count: 0,
+                    lead_pid_mod_count: 0,
+                    generate_even_if_impossible: *generate_even_if_impossible,
+                }
+            }
+            Wild3GeneratorCycleOpts::LikelihoodForLead { lead_cycle_spd } => {
+                let min_mid_max_initial = get_min_mid_max_pre_sweet_scent_cycle(opts.action);
+                CycleFrameCounter::MinMaxRange {
+                    min_max_cycles: MinMaxCycleFrame::new(
+                        (min_mid_max_initial.0, min_mid_max_initial.2),
+                        (*lead_cycle_spd, *lead_cycle_spd),
+                    ),
+                    cycle_instability: 0.0,
+                    base_cycle_count: 0,
+                    lead_pid_mod_count: 0,
+                    generate_even_if_impossible: true,
+                }
+            }
+            Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog { lead_cycle_spd } => {
+                CycleFrameCounter::DetailedBreakdown {
+                    lead_cycle_spd: *lead_cycle_spd,
+                    current_cycle: CycleFrame {
+                        cycle: get_min_mid_max_pre_sweet_scent_cycle(opts.action).1,
+                        frame: 0,
+                    },
+                    vblank_cycles: vec![], // will use average vblank
+                    cycle_at_moments: vec![],
+                }
+            }
+            Wild3GeneratorCycleOpts::CycleAtMomentWithEmuLog {
+                lead_cycle_spd,
+                initial_cycle_at_sweet_scent,
+                vblank_cycles,
+            } => CycleFrameCounter::DetailedBreakdown {
+                lead_cycle_spd: *lead_cycle_spd,
+                current_cycle: CycleFrame {
+                    cycle: *initial_cycle_at_sweet_scent,
+                    frame: 0,
+                },
+                vblank_cycles: vblank_cycles.clone(),
+                cycle_at_moments: vec![],
+            },
         }
     }
+
     pub fn add(&mut self, cycle: usize, lead_pid_mod: usize) {
         match self {
             CycleFrameCounter::Inactive => {}
@@ -283,11 +302,7 @@ impl CycleFrameCounter {
             }
         }
     }
-    pub fn can_generate_method(&self, opts: &Wild3GeneratorOptions, len: usize) -> bool {
-        if opts.cycle_opts.generate_even_if_impossible {
-            return true;
-        }
-
+    pub fn can_generate_method(&self, len: usize) -> bool {
         match self {
             CycleFrameCounter::Inactive => true,
             CycleFrameCounter::DetailedBreakdown { .. } => {
@@ -297,18 +312,14 @@ impl CycleFrameCounter {
                     self.can_vblank_occur_soon(len)
                 }
             }
-            CycleFrameCounter::MinMaxRange { .. } => {
-                if opts.cycle_opts.lead_cycle_spd.is_some()
-                    || !opts.cycle_opts.consider_rng_manipulated_lead_pid
-                {
-                    return is_method_possible_to_trigger(
-                        &self.create_cycle_range(len),
-                        opts.action,
-                        opts.lead == Gen3Lead::Egg,
-                        opts.cycle_opts.consider_rng_manipulated_lead_pid,
-                        opts.cycle_opts.lead_cycle_spd,
-                    );
+            CycleFrameCounter::MinMaxRange {
+                generate_even_if_impossible,
+                ..
+            } => {
+                if *generate_even_if_impossible {
+                    return true;
                 }
+
                 if len == INFINITE_CYCLE {
                     self.is_possible_that_no_vblank_yet()
                 } else {

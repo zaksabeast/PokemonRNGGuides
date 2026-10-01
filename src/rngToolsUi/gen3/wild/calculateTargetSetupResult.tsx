@@ -126,15 +126,15 @@ export const calculateTargetSetupResult = async (
     mass_outbreak_state: targetSetup.massOutbreakState,
     feebas_state: targetSetup.feebasState,
     feebas_cycles: targetSetup.feebasCycles,
-    cycle_opts: {
-      generate_even_if_impossible: true,
-      generate_cycle_at_moment: false,
-      initial_cycle_at_sweet_scent: null,
-      consider_cycles: true,
-      consider_rng_manipulated_lead_pid: true,
-      lead_cycle_spd: lead_cycle_speed,
-      vblank_cycles: [],
-    },
+    cycle_opts:
+      lead_cycle_speed == null
+        ? {
+            Searching: {
+              generate_even_if_impossible: true,
+              consider_rng_manipulated_lead_pid: true,
+            },
+          }
+        : { LikelihoodForLead: { lead_cycle_spd: lead_cycle_speed } },
     safari_pokeblock:
       targetSetup.safariPokeblock != null
         ? {

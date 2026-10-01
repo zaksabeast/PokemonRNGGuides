@@ -84,22 +84,12 @@ export const setupToDistributions = async (
       getGen3PkmFilterInitialValues(),
       null,
     ),
-    consider_cycles: true,
-    consider_rng_manipulated_lead_pid: true,
-    generate_e    using_white_flute: targetSetup.requiresWhiteFlute,
+    using_white_flute: targetSetup.requiresWhiteFlute,
     roamer_state: targetSetup.roamerState,
     mass_outbreak_state: targetSetup.massOutbreakState,
     feebas_state: targetSetup.feebasState,
     feebas_cycles: targetSetup.feebasCycles,
-    cycle_opts: {
-      generate_even_if_impossible: true,
-      generate_cycle_at_moment: false,
-      initial_cycle_at_sweet_scent: null,
-      consider_cycles: true,
-      consider_rng_manipulated_lead_pid: true,
-      lead_cycle_spd: lead_cycle_speed,
-      vblank_cycles: [],
-    },
+    cycle_opts: { LikelihoodForLead: { lead_cycle_spd: lead_cycle_speed } },
     safari_pokeblock:
       canUsePokeblock && targetSetup.safariPokeblock !== null
         ? {
@@ -121,12 +111,13 @@ export const setupToDistributions = async (
     };
   }
 
-  const { results, cycle_at_moments } =
+  const { results } =
     await rngTools.generate_gen3_wild_distribution(
       targetSetup.targetPaintingAdvs.before,
       targetSetup.targetPaintingAdvs.after,
       opts,
       map_data,
+      lead_cycle_speed,
     );
 
   const resultForTargetMethod = results.find(
@@ -138,7 +129,12 @@ export const setupToDistributions = async (
 
   return {
     uiResults: convertSearcherResultsToUIResults(results),
-    cycle_at_moments,
-idealLeadCycleSpd,
+    cycle_at_moments: [],
+    advanceAtSweetScent:
+      (lcrng_distance(0, targetSetup.targetPaintingAdvs.before) +
+        targetSetup.targetPaintingAdvs.after) %
+      2 ** 32,
+    hasError: false,
+    idealLeadCycleSpd,
   };
 };

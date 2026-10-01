@@ -1,12 +1,13 @@
 import React from "react";
+import { ResultColumn } from "~/components";
 import {
-  FormikNumberInput,
-  ResultColumn,
-  RngToolForm,
-  RngToolSubmit,
-  Field,
-  FormikSwitch,
-} from "~/components";
+  FieldRow,
+  FormNumberField,
+  FormSection,
+  FormSwitchField,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
 import {
   rngTools,
   PokeRadarNoChainState,
@@ -103,42 +104,56 @@ const initialValues: FormState = {
   filter_shiny: false,
 };
 
-const fields: Field[] = [
-  {
-    label: "Tiny u32 Seed",
-    input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
-  },
-  {
-    label: "Initial Advances",
-    input: (
-      <FormikNumberInput<FormState> name="initial_advances" numType="decimal" />
-    ),
-  },
-  {
-    label: "Max Advances",
-    input: (
-      <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
-    ),
-  },
-  {
-    label: "Party Count",
-    input: (
-      <FormikNumberInput<FormState> name="party_count" numType="decimal" />
-    ),
-  },
-  {
-    label: "Chain",
-    input: <FormikNumberInput<FormState> name="chain" numType="decimal" />,
-  },
-  {
-    label: "Bonus Music",
-    input: <FormikSwitch<FormState> name="bonus_music" />,
-  },
-  {
-    label: "Filter Shiny",
-    input: <FormikSwitch<FormState> name="filter_shiny" />,
-  },
-];
+const Fields = () => {
+  const t = useActiveRouteTranslations();
+
+  return (
+    <>
+      <FormSection title={t["Your game"]}>
+        <FormNumberField<FormState>
+          name="seed"
+          label={t["TinyMT u32 Seed"]}
+          numType="hex"
+        />
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="party_count"
+            label={t["Party Count"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="chain"
+            label={t["Chain"]}
+            numType="decimal"
+          />
+        </FieldRow>
+        <FormSwitchField<FormState>
+          name="bonus_music"
+          label={t["Bonus Music"]}
+        />
+      </FormSection>
+
+      <FormSection title={t["Search"]}>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="initial_advances"
+            label={t["Initial Advances"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="max_advances"
+            label={t["Max Advances"]}
+            numType="decimal"
+          />
+        </FieldRow>
+      </FormSection>
+
+      <FormSection title={t["Filters"]}>
+        <FormSwitchField<FormState> name="filter_shiny" label={t["Shiny"]} />
+      </FormSection>
+    </>
+  );
+};
 
 export const XyPokeRadar = () => {
   const t = useActiveRouteTranslations();
@@ -149,7 +164,7 @@ export const XyPokeRadar = () => {
     PokeRadarPatch[]
   >([]);
 
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     const results = await rngTools.generate_poke_radar_states({
       seed: opts.seed,
       initial_advances: opts.initial_advances,
@@ -166,8 +181,7 @@ export const XyPokeRadar = () => {
 
   return (
     <>
-      <RngToolForm<FormState, LooseColumns>
-        fields={fields}
+      <ToolForm<FormState, LooseColumns>
         columns={
           results.NoChain == null
             ? getWithChainColumns(t)
@@ -184,7 +198,9 @@ export const XyPokeRadar = () => {
         }
         rowKey="advance"
         submitTrackerId="generate_xy_poke_radar"
-      />
+      >
+        <Fields />
+      </ToolForm>
       {results.WithChain != null && (
         <PokeRadarPatches patches={selectedPatches} />
       )}

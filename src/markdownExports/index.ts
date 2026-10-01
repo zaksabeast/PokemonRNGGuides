@@ -280,6 +280,10 @@ const tools = {
     () => import("~/rngToolsUi/gen6/xyPokeRadar"),
     (mod) => mod.XyPokeRadar,
   ),
+  Gen7TimelineFinder: lazyLoad(
+    () => import("~/rngToolsUi/gen7/timelineFinder"),
+    (mod) => mod.Gen7TimelineFinder,
+  ),
   ShinyEmeraldStarter: lazyLoad(
     () => import("~/rngToolsUi/gen3/shinyStarter"),
     (mod) => mod.ShinyEmeraldStarter,

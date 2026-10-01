@@ -358,6 +358,18 @@ export const translations = {
   Board: "Board",
   "Board Count": "Board Count",
   "Chatot Pitches": "Chatot Pitches",
+  "Initial Seed": "Initial Seed",
+  "NPC Count": "NPC Count",
+  "Current Advance": "Current Advance",
+  "Find Safe Advances": "Find Safe Advances",
+  "Step one frame at a time until you land on one of these":
+    "Step one frame at a time until you land on one of these",
+  "No safe advances found": "No safe advances found",
+  "Show More": "Show More",
+  "Keep stepping and compare": "Keep stepping and compare",
+  "Press A at": "Press A at",
+  "{target} isn't on this timeline. Pick another target in 3DSRNGTool.":
+    "{target} isn't on this timeline. Pick another target in 3DSRNGTool.",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

@@ -9974,7 +9974,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-timeline/",
-      lastUpdated: "2026-03-25",
+      lastUpdated: "2026-10-01",
       type: "baseGuide",
       file: "guides/Gen 7/Timeline Guide.mdx",
       translations: {
@@ -9986,7 +9986,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-sm-timeline/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Timeline Guide.mdx")),
     getRawFile: memoize(async () => {
@@ -10665,7 +10665,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-03-25",
+      lastUpdated: "2026-10-01",
       type: "baseGuide",
       canonical: "/retail-usum-timeline/",
       file: "guides/Gen 7/Timeline Guide.mdx",
@@ -10678,7 +10678,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-usum-timeline/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Timeline Guide.mdx")),
     getRawFile: memoize(async () => {

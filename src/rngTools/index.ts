@@ -65,6 +65,15 @@ const throwIfCancelled = (signal?: AbortSignal): void => {
   }
 };
 
+const rejectOnAbort = (signal: AbortSignal) =>
+  new Promise<never>((_, reject) => {
+    signal.addEventListener(
+      "abort",
+      () => reject(new CancellationError("Worker request was cancelled")),
+      { once: true },
+    );
+  });
+
 const waitUntilAvailable = async (signal?: AbortSignal): Promise<void> => {
   const maxWorkers = getMaxWorkerCount();
   while (workerCount >= maxWorkers) {
@@ -191,7 +200,12 @@ const callRngToolInTempWorker = <
     try {
       const tool = rngToolWorker.tools[functionName];
       // @ts-expect-error -- Distributed union type from comlink makes this complex to type correctly
-      const result = await tool(...(args as Parameters<typeof tool>));
+      const call = tool(...(args as Parameters<typeof tool>));
+      // Terminating the worker doesn't settle a running call, so reject on abort.
+      const result = await Promise.race([
+        call,
+        rejectOnAbort(controller.signal),
+      ]);
       return result as tst.F.Return<AdjustedRngTools[FuncName]>;
     } catch (error) {
       if (controller.signal.aborted) {

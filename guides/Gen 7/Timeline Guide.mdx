@@ -21,42 +21,44 @@
 - [A 3DS with PokeReader](/install-pokereader)
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
 
-## Step 1: Setting Up 3DSRNGTool
+## What is a Timeline?
 
-Only create a timeline if there are one or more NPCs in your area. If you have 0 NPCs, you don't need a timeline.
+Only use a timeline if there are one or more NPCs in your area. If you have 0 NPCs, you don't need a timeline.
 
-1. Enter your game version and TSV.
+NPCs use RNG advances when they blink. Each video frame, every NPC on screen may use an advance, so the RNG doesn't move forward one advance at a time. Only some advances can be landed on. The advances you can land on are your timeline.
+
+To know which timeline you're on, you need to land on a safe advance. A safe advance is one where no NPC is blinking, so every future blink can be predicted.
+
+## Step 1: Find Your Target
+
+1. In 3DSRNGTool, enter your game version and TSV.
 2. Input the initial seed, found in the main RNG view under `Init Seed:`.
 3. If you have the Shiny Charm, check the Shiny Charm box.
+4. Search for the Pokémon you want and note its advance. 3DSRNGTool calls this the "frame".
 
-```
-Note: In Gen 7 games, NPCs affect the RNG frames. Usually each NPC advances the frame by one. Therefore, an area with four NPCs typically progresses five frames each time. Things like Rotom or character blinks also have an effect. Accurate predictions can be achieved if the timeline is correctly created, ensuring you don't miss your target frame due to NPCs.
-```
+## Step 2: Get Ready in Game
 
-## Step 2: Timeline Creation
+1. Go through the dialogue until the next `A` press gives you the Pokémon.
+2. Stay there. Any more dialogue can change your timeline.
+3. In PokeReader, note your initial seed, current advance, and NPC count.
 
-1. Enable “Safe F Only” in 3DSRNGTool.
-2. Enter the count of NPCs for the area. Confirm this count with PokeReader.
-3. In the game, advance to the Pokémon's final screen you are RNGing for. Input the current frame in the frame range.
-4. Click "Calculate", then advance to any listed frames with a "-" in the Mark column. These are "Safe Frames", useful for accurate frame landing predictions.
-5. Press `Start` to advance frames by unpausing the game. You can then pause again with `Start + Select` when close to your frame and slowly advance with `Select` button while paused.
+## Step 3: Find Your Timeline
 
-## Step 3: Timeline and NPC Number Confirmation
+1. Enter your values below and click "Find Safe Advances".
+2. Pause the game with `Start + Select`, then press `Select` to step one video frame at a time.
+3. Keep stepping until you land exactly on one of the listed safe advances, then click it.
+4. Keep stepping and compare your advances to the ones shown.
+   - If they match, you're on the right timeline.
+   - If they don't match, check your initial seed and NPC count, then try again.
 
-1. After reaching any safe frame, input your current frame into 3DSRNGTool, then enable “Create Timeline” and click "Calculate".
-2. Advance several times by pressing `Select` and compare with the subsequent frames in 3DSRNGTool.
-   - If they match, the NPC count is correct.
-   - If they do not match, recreate your timeline.
+<Gen7TimelineFinder />
 
-Errors in making the timeline are typically discovered at this point. Verify the initial seed and ensure PokeReader's NPC counter hasn't changed during timeline creation.
+## Step 4: Press A on Your Target
 
-```
-Note: Do not adjust filters during timeline creation. Only "Safe F Only" box should have been activated by this point. If any other filter has been adjusted, start again from the beginning.
-```
-
-```
-Note: Check if your desired frame is still within the timeline by redoing the timeline with your current frame, then searching for your target. If it doesn't appear in the results, your timeline has shifted.
-```
+1. If the tool says your target isn't on this timeline, pick another target in 3DSRNGTool.
+2. Press `Start` to unpause, then pause again with `Start + Select` when you're close to your target.
+3. Press `Select` to step one video frame at a time until you reach your target advance.
+4. Press `A` on your target advance.
 
 ## Credits
 

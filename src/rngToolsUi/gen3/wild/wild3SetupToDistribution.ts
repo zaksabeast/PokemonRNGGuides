@@ -84,7 +84,9 @@ export const setupToDistributions = async (
       getGen3PkmFilterInitialValues(),
       null,
     ),
-    using_white_flute: targetSetup.requiresWhiteFlute,
+    consider_cycles: true,
+    consider_rng_manipulated_lead_pid: true,
+    generate_e    using_white_flute: targetSetup.requiresWhiteFlute,
     roamer_state: targetSetup.roamerState,
     mass_outbreak_state: targetSetup.massOutbreakState,
     feebas_state: targetSetup.feebasState,
@@ -137,11 +139,6 @@ export const setupToDistributions = async (
   return {
     uiResults: convertSearcherResultsToUIResults(results),
     cycle_at_moments,
-    advanceAtSweetScent:
-      (lcrng_distance(0, targetSetup.targetPaintingAdvs.before) +
-        targetSetup.targetPaintingAdvs.after) %
-      2 ** 32,
-    hasError: false,
-    idealLeadCycleSpd,
+idealLeadCycleSpd,
   };
 };

@@ -4,10 +4,9 @@ use wasm_bindgen::prelude::*;
 
 use crate::gen3::{
     BASE_LEAD_PID_MOD_24_CYCLES, COMMON_LEAD_RANGE, CycleAndModCount, CycleAndModRange,
-    CycleCounter, FASTEST_MODULO_CYCLE_24, Gen3Lead, INFINITE_CYCLE, Moment,
-    MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE,
-    SLOWEST_MODULO_CYCLE_24, VBLANK_FREQ, Wild3Action, Wild3GeneratorCycleOpts,
-    Wild3GeneratorOptions, get_min_mid_max_pre_sweet_scent_cycle,
+    CycleCounter, FASTEST_MODULO_CYCLE_24, Gen3Lead, INFINITE_CYCLE,
+    MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE, Moment, SLOWEST_MODULO_CYCLE_24, VBLANK_FREQ, Wild3Action,
+    Wild3GeneratorCycleOpts, Wild3GeneratorOptions, get_min_mid_max_pre_sweet_scent_cycle,
     get_min_mid_max_vblank_cycle_duration, is_method_possible_to_trigger,
 };
 
@@ -147,26 +146,31 @@ pub enum CycleFrameCounter {
 
 impl CycleFrameCounter {
     pub fn new(opts: &Wild3GeneratorOptions) -> Self {
-        if opts.cycle_opts.consider_cycles {
+        if !opts.cycle_opts.consider_cycles {
+            CycleFrameCounter::Inactive
+        } else if opts.cycle_opts.generate_cycle_at_moment {
+            CycleFrameCounter::new_for_detailed_breakdown(opts.action, &opts.cycle_opts)
+        } else {
             CycleFrameCounter::new_for_min_max_range(
                 opts.lead == Gen3Lead::Egg,
                 opts.action,
                 opts.cycle_opts.consider_rng_manipulated_lead_pid,
             )
-        } else {
-            CycleFrameCounter::Inactive
         }
     }
-    pub fn new_for_detailed_breakdown(cycle_opts: Wild3GeneratorCycleOpts) -> Self {
+    pub fn new_for_detailed_breakdown(
+        action: Wild3Action,
+        cycle_opts: &Wild3GeneratorCycleOpts,
+    ) -> Self {
         Self::DetailedBreakdown {
             lead_cycle_spd: cycle_opts.lead_cycle_spd.unwrap_or(775),
             current_cycle: CycleFrame {
                 cycle: cycle_opts
                     .initial_cycle_at_sweet_scent
-                    .unwrap_or(MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE),
+                    .unwrap_or(get_min_mid_max_pre_sweet_scent_cycle(action).1),
                 frame: 0,
             },
-            vblank_cycles: cycle_opts.vblank_cycles.unwrap_or_default(),
+            vblank_cycles: cycle_opts.vblank_cycles.clone().unwrap_or_default(),
             cycle_at_moments: vec![],
         }
     }

@@ -6,8 +6,7 @@ use wasm_bindgen::prelude::*;
 use super::{Wild3GeneratorOptions, generate_wild3};
 use crate::{
     gen3::{
-        CycleRange, Gen3Method, Wild3MapGameData, Wild3SearcherResultMon,
-        calculate_cycle_data,
+        CycleRange, Gen3Method, Wild3MapGameData, Wild3SearcherResultMon, calculate_cycle_data,
     },
     rng::lcrng::Pokerng,
 };
@@ -26,19 +25,23 @@ pub struct Wild3MethodDistributionResults {
     pub results: Vec<Wild3MethodDistributionResult>,
 }
 
+// The output is each method with their likelihood, for a specific lead_cycle_speed.
+// This function doesn't create a detailed breakdown.
 #[wasm_bindgen]
 pub fn generate_gen3_wild_distribution(
     initial_seed: u32,
     advances: usize,
     opts: &Wild3GeneratorOptions,
     game_data: &Wild3MapGameData,
+    lead_cycle_spd: usize,
 ) -> Wild3MethodDistributionResults {
-    let lead_cycle_speed = opts.cycle_opts.lead_cycle_spd.unwrap_or(0);
-
+    // Overwrite opts to ensure minimal required options are used.
     let opts = Wild3GeneratorOptions {
         cycle_opts: crate::gen3::Wild3GeneratorCycleOpts {
             generate_even_if_impossible: true,
             consider_cycles: true,
+            generate_cycle_at_moment: false,
+            lead_cycle_spd: Some(lead_cycle_spd),
             ..opts.cycle_opts.clone()
         },
         methods: vec![
@@ -76,7 +79,7 @@ pub fn generate_gen3_wild_distribution(
                     .unwrap()
                     .post_sweet_scent_range,
                 opts.action,
-                lead_cycle_speed,
+                lead_cycle_spd,
             );
             (searcher_res, cycle_data)
         })
@@ -160,6 +163,8 @@ pub fn generate_gen3_wild_distribution(
     }
 }
 
+// NO_PROD create another variant that generates a detailed breakdown for a specific lead, initial cycle, vblanks.
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -198,15 +203,9 @@ mod test {
     #[ignore]
     #[test]
     fn test_distribution_generator() {
-        let opts = Wild3GeneratorOptions {
-            cycle_opts: crate::gen3::Wild3GeneratorCycleOpts {
-                lead_cycle_spd: Some(700),
-                ..Default::default()
-            },
-            ..Default::default()
-        };
+        let opts = Wild3GeneratorOptions::default();
         let dist_results =
-            generate_gen3_wild_distribution(0, 44, &opts, &Wild3MapGameData::default());
+            generate_gen3_wild_distribution(0, 44, &opts, &Wild3MapGameData::default(), 700);
 
         let results = dist_results
             .results
@@ -289,6 +288,5 @@ mod test {
             ),
         ];
         assert_list_eq!(results, expected_results);
-
     }
 }

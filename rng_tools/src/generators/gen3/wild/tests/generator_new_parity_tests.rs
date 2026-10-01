@@ -3,7 +3,7 @@ use itertools::iproduct as products;
 use super::*;
 use crate::{
     Species,
-    gen3::{Gen3Method, Wild3SpecialEncounterGameData, generate_wild3_old},
+    gen3::{Wild3GeneratorCycleOpts,Gen3Method, Wild3SpecialEncounterGameData, generate_wild3_old},
 };
 
 #[track_caller]
@@ -39,10 +39,9 @@ pub fn assert_mon_results_eq_unordered(
 fn method5_cycle_ranges_match_existing_generation() {
     let opts = Wild3GeneratorOptions {
         methods: vec![Gen3Method::Wild5],
-        cycle_opts: crate::gen3::Wild3GeneratorCycleOpts {
-            consider_cycles: true,
+        cycle_opts: Wild3GeneratorCycleOpts::Searching {
+            generate_even_if_impossible: false,
             consider_rng_manipulated_lead_pid: true,
-            ..Default::default()
         },
         ..Default::default()
     };
@@ -96,10 +95,13 @@ fn all_actions_and_leads_match_existing_generation() {
             methods: vec![Gen3Method::Wild1],
             roamer_state: Wild3RoamerState::ActiveInMapLatios,
             mass_outbreak_state: Wild3MassOutbreakState::Route102Seedot,
-            cycle_opts: crate::gen3::Wild3GeneratorCycleOpts {
-                generate_even_if_impossible,
-                consider_cycles,
-                ..Default::default()
+            cycle_opts: if consider_cycles {
+                Wild3GeneratorCycleOpts::Searching {
+                    generate_even_if_impossible,
+                    consider_rng_manipulated_lead_pid: false,
+                }
+            } else {
+                Wild3GeneratorCycleOpts::Inactive
             },
             ..Default::default()
         };
@@ -134,10 +136,13 @@ fn fishing_and_rock_smash_match_existing_generation() {
             action,
             feebas_state,
             methods: vec![Gen3Method::Wild1],
-            cycle_opts: crate::gen3::Wild3GeneratorCycleOpts {
-                generate_even_if_impossible: true,
-                consider_cycles,
-                ..Default::default()
+            cycle_opts: if consider_cycles {
+                Wild3GeneratorCycleOpts::Searching {
+                    generate_even_if_impossible: true,
+                    consider_rng_manipulated_lead_pid: false,
+                }
+            } else {
+                Wild3GeneratorCycleOpts::Inactive
             },
             ..Default::default()
         };
@@ -171,11 +176,9 @@ fn all_methods_with_common_leads_match_existing_generation() {
                 Gen3Method::Wild4,
                 Gen3Method::Wild5,
             ],
-            cycle_opts: crate::gen3::Wild3GeneratorCycleOpts {
+            cycle_opts: Wild3GeneratorCycleOpts::Searching {
                 generate_even_if_impossible: false,
-                consider_cycles: true,
                 consider_rng_manipulated_lead_pid: false,
-                ..Default::default()
             },
             ..Default::default()
         };
@@ -219,10 +222,9 @@ fn all_methods_and_cycle_ranges_match_existing_generation() {
                 Gen3Method::Wild4,
                 Gen3Method::Wild5,
             ],
-            cycle_opts: crate::gen3::Wild3GeneratorCycleOpts {
+            cycle_opts: Wild3GeneratorCycleOpts::Searching {
                 generate_even_if_impossible: true,
-                consider_cycles: true,
-                ..Default::default()
+                consider_rng_manipulated_lead_pid: false,
             },
             ..Default::default()
         };

@@ -3,13 +3,12 @@ use super::generator_main::{
     Wild3GeneratorResults,
 };
 use super::{calc_modulo_cycle_signed, calc_modulo_cycle_unsigned, is_method_possible_to_trigger};
-use crate::gen3::CycleFrameCounter;
 use crate::{
     EncounterSlot, Gender, GenderRatio, Ivs, NATURE_COUNT, Nature,
     PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE, PERTINENT_SOLO_POKEBLOCKS_BY_NATURE,
     POKEBLOCK_NATURE_STAT_FACTORS,
     gen3::{
-        CycleAndModRange, CycleCounter, CycleRange, Gen3Lead, Gen3Method, Moment, Wild3Action,
+        CycleAndModRange, CycleCounter, CycleFrameCounter, CycleRange, Wild3GeneratorCycleOpts, Gen3Lead, Gen3Method, Moment, Wild3Action,
         Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData,
         Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
         get_min_mid_max_pre_sweet_scent_cycle, get_min_mid_max_vblank_cycle_duration,
@@ -58,19 +57,22 @@ fn rand_next_u16_with_debug_print(rng: &mut Pokerng, reason: &str, modulo: u16) 
     ret
 }
 
-fn retain_methods_possible_to_trigger(
+pub(super) fn retain_methods_possible_to_trigger(
     opts: &Wild3GeneratorOptions,
     results: &mut Vec<Wild3GeneratorMonResult>,
 ) {
-    if opts.cycle_opts.consider_cycles && !opts.cycle_opts.generate_even_if_impossible {
+    if let Wild3GeneratorCycleOpts::Searching {
+        generate_even_if_impossible: false,
+        consider_rng_manipulated_lead_pid,
+    } = &opts.cycle_opts {
         let is_egg = matches!(opts.lead, Gen3Lead::Egg);
         results.retain(|res| {
             is_method_possible_to_trigger(
                 &res.cycle_range.unwrap(),
                 opts.action,
                 is_egg,
-                opts.cycle_opts.consider_rng_manipulated_lead_pid,
-                opts.cycle_opts.lead_cycle_spd,
+                *consider_rng_manipulated_lead_pid,
+                None,
             )
         });
     }
@@ -234,7 +236,7 @@ fn select_encounter_idx(
             rng,
             cycle_counter,
             opts.feebas_cycles,
-            opts.cycle_opts.consider_cycles,
+            !matches!(opts.cycle_opts, Wild3GeneratorCycleOpts::Inactive),
         );
 
         if opts.feebas_state == Wild3FeebasState::OnFeebasTile {
@@ -500,7 +502,7 @@ fn generate_wild3_from_encounter(
             ivs: Ivs::default(),
             lvl,
             method: Gen3Method::Wild1,
-            cycle_range: if opts.cycle_opts.consider_cycles {
+            cycle_range: if !matches!(opts.cycle_opts, Wild3GeneratorCycleOpts::Inactive) {
                 Some(CycleRange::new(0, 0, INFINITE_CYCLE))
             } else {
                 None
@@ -889,7 +891,7 @@ fn create_if_passes_filter(
         return None;
     }
 
-    let cycle_range = if gen_data.opts.cycle_opts.consider_cycles {
+    let cycle_range = if !matches!(gen_data.opts.cycle_opts, Wild3GeneratorCycleOpts::Inactive) {
         Some(cycle_range)
     } else {
         None

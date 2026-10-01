@@ -6,6 +6,7 @@ use wasm_bindgen::prelude::*;
 use super::{Wild3GeneratorOptions, generate_wild3};
 use crate::{
     gen3::{
+        Wild3GeneratorCycleOpts,
         CycleRange, Gen3Method, Wild3MapGameData, Wild3SearcherResultMon, calculate_cycle_data,
     },
     rng::lcrng::Pokerng,
@@ -37,12 +38,8 @@ pub fn generate_gen3_wild_distribution(
 ) -> Wild3MethodDistributionResults {
     // Overwrite opts to ensure minimal required options are used.
     let opts = Wild3GeneratorOptions {
-        cycle_opts: crate::gen3::Wild3GeneratorCycleOpts {
-            generate_even_if_impossible: true,
-            consider_cycles: true,
-            generate_cycle_at_moment: false,
-            lead_cycle_spd: Some(lead_cycle_spd),
-            ..opts.cycle_opts.clone()
+        cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead {
+            lead_cycle_spd,
         },
         methods: vec![
             Gen3Method::Wild1,

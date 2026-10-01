@@ -12,7 +12,8 @@ use super::super::{
 use crate::{
     AbilityType, Gender, HiddenPower, Ivs, Nature, PkmFilter, Species,
     gen3::{
-        Gen3Lead, Gen3Method, Gen3PkmFilter, SpeciesData, search_wild3_naive, search_wild3_reverse,
+        Gen3Lead, Gen3Method, Gen3PkmFilter, SpeciesData, Wild3GeneratorCycleOpts,
+        is_method_possible_to_trigger, search_wild3_naive, search_wild3_reverse,
         searcher_painter::Wild3PaintingOpts,
         wild::{
             Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex, Wild3MapGameData,
@@ -121,6 +122,39 @@ pub struct Wild3SearcherOptions {
     pub feebas_cycles: Vec<usize>,
 }
 
+impl Wild3SearcherOptions {
+    pub fn generator_cycle_opts(&self) -> Wild3GeneratorCycleOpts {
+        if !self.consider_cycles {
+            Wild3GeneratorCycleOpts::Inactive
+        } else if let Some(lead_cycle_spd) = self.lead_cycle_speed {
+            Wild3GeneratorCycleOpts::LikelihoodForLead { lead_cycle_spd }
+        } else {
+            Wild3GeneratorCycleOpts::Searching {
+                generate_even_if_impossible: self.generate_even_if_impossible,
+                consider_rng_manipulated_lead_pid: self.consider_rng_manipulated_lead_pid,
+            }
+        }
+    }
+
+    pub fn retain_possible_results(
+        &self,
+        gen_opts: &Wild3GeneratorOptions,
+        results: &mut Vec<Wild3GeneratorMonResult>,
+    ) {
+        if self.consider_cycles && !self.generate_even_if_impossible {
+            results.retain(|result| {
+                is_method_possible_to_trigger(
+                    &result.cycle_range.unwrap(),
+                    gen_opts.action,
+                    gen_opts.lead == Gen3Lead::Egg,
+                    self.consider_rng_manipulated_lead_pid,
+                    self.lead_cycle_speed,
+                )
+            });
+        }
+    }
+}
+
 impl Default for Wild3SearcherOptions {
     fn default() -> Self {
         Self {
@@ -194,7 +228,14 @@ impl Wild3SearcherResultMon {
     ) -> Wild3SearcherResultMon {
         let cycle_data_by_lead = gen_res.cycle_range.map(|cycle_range| {
             let is_egg = matches!(gen_opts.lead, Gen3Lead::Egg);
-            calculate_cycle_data_by_lead(&cycle_range, gen_opts.action, is_egg, None)
+            // TODO: add a function on Wild3GeneratorCycleOpts
+            let lead_cycle_spd = match &gen_opts.cycle_opts {
+                Wild3GeneratorCycleOpts::LikelihoodForLead { lead_cycle_spd } => {
+                    Some(*lead_cycle_spd)
+                }
+                _ => None,
+            };
+            calculate_cycle_data_by_lead(&cycle_range, gen_opts.action, is_egg, lead_cycle_spd)
         });
 
         Wild3SearcherResultMon {

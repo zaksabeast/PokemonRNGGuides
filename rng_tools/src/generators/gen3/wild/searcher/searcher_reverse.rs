@@ -358,13 +358,7 @@ fn create_result(
         mass_outbreak_state,
         feebas_state,
         safari_pokeblock: safari_pokeblock.clone(),
-        cycle_opts: crate::gen3::Wild3GeneratorCycleOpts {
-            generate_even_if_impossible: opts.generate_even_if_impossible,
-            consider_cycles: opts.consider_cycles,
-            consider_rng_manipulated_lead_pid: opts.consider_rng_manipulated_lead_pid,
-            lead_cycle_spd: opts.lead_cycle_speed,
-            ..Default::default()
-        },
+        cycle_opts: opts.generator_cycle_opts(),
         using_white_flute: opts.using_white_flute,
 
         // overwritten below
@@ -381,8 +375,9 @@ fn create_result(
         for &feebas_cycles in feebas_cycles_list {
             gen_opts.feebas_cycles = feebas_cycles;
 
-            let gen_results =
+            let mut gen_results =
                 generate_wild3(Pokerng::new(path.seed), &gen_opts, &map_setups.map_data);
+            opts.retain_possible_results(&gen_opts, &mut gen_results.mon_results);
 
             for gen_res in &gen_results.mon_results {
                 let encounter = map_setups

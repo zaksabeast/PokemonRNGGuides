@@ -6,14 +6,12 @@ use super::generator_main::{
     Wild3GeneratorResults,
 };
 use super::{calc_modulo_cycle_signed, calc_modulo_cycle_unsigned};
-use crate::gen3::Wild3GeneratorCycleOpts;
-use crate::gen3::wild::cycle_counter::CycleFrameCounter;
 use crate::{
     EncounterSlot, Gender, GenderRatio, Ivs, NATURE_COUNT, Nature,
     PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE, PERTINENT_SOLO_POKEBLOCKS_BY_NATURE,
     POKEBLOCK_NATURE_STAT_FACTORS,
     gen3::{
-        CycleAndModRange, CycleRange, Gen3Lead, Gen3Method, Moment, Wild3Action,
+        CycleAndModRange, CycleFrameCounter, CycleRange, Wild3GeneratorCycleOpts, Gen3Lead, Gen3Method, Moment, Wild3Action,
         Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData,
         Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
         get_min_mid_max_pre_sweet_scent_cycle, get_min_mid_max_vblank_cycle_duration,
@@ -37,7 +35,7 @@ pub fn generate_wild3_new(
 ) -> Wild3GeneratorResults {
     let mut cycle_counter = CycleFrameCounter::new(opts);
 
-    match opts.action {
+    let mut generated = match opts.action {
         Wild3Action::SweetScentLand | Wild3Action::SweetScentWater => {
             TrySweetScentEncounter(&mut rng, opts, map_data, &mut cycle_counter)
         }
@@ -48,7 +46,9 @@ pub fn generate_wild3_new(
             RockSmashWildEncounter(&mut rng, opts, map_data, &mut cycle_counter)
         }
     }
-    .unwrap_or_else(Wild3GeneratorResults::empty)
+    .unwrap_or_else(Wild3GeneratorResults::empty);
+    super::generator_old::retain_methods_possible_to_trigger(opts, &mut generated.mon_results);
+    generated
 }
 
 fn Fishing_StartEncounter(
@@ -1163,7 +1163,7 @@ fn create_if_passes_filter(
         return None;
     }
 
-    let cycle_range = if gen_data.opts.cycle_opts.consider_cycles {
+    let cycle_range = if !matches!(gen_data.opts.cycle_opts, Wild3GeneratorCycleOpts::Inactive) {
         Some(cycle_range)
     } else {
         None

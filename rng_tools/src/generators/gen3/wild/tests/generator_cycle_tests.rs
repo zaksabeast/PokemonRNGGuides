@@ -1,6 +1,7 @@
 use crate::{
     EncounterSlot, Ivs, Nature, PkmFilter,
     gen3::{
+        Wild3GeneratorCycleOpts, is_method_possible_to_trigger,
         CycleRange, Gen3Lead, Gen3Method, INFINITE_CYCLE, Wild3EncounterIndex,
         Wild3GeneratorMonResult, Wild3GeneratorOptions, Wild3MapGameData, generate_wild3,
         generate_wild3_old,
@@ -13,10 +14,9 @@ fn test_generate_wild3_cycle_method_3() {
     let options = Wild3GeneratorOptions {
         methods: vec![Gen3Method::Wild3],
         lead: Gen3Lead::Synchronize(Nature::Serious),
-        cycle_opts: crate::gen3::Wild3GeneratorCycleOpts {
-            consider_cycles: true,
+        cycle_opts: Wild3GeneratorCycleOpts::Searching {
+            generate_even_if_impossible: false,
             consider_rng_manipulated_lead_pid: true,
-            ..Default::default()
         },
         ..Default::default()
     };
@@ -53,10 +53,9 @@ fn test_generate_wild3_cycle_method_3_specified_lead_speed() {
     let mut options = Wild3GeneratorOptions {
         methods: vec![Gen3Method::Wild3],
         lead: Gen3Lead::Synchronize(Nature::Serious),
-        cycle_opts: crate::gen3::Wild3GeneratorCycleOpts {
-            consider_cycles: true,
+        cycle_opts: Wild3GeneratorCycleOpts::Searching {
+            generate_even_if_impossible: false,
             consider_rng_manipulated_lead_pid: true,
-            ..Default::default()
         },
         ..Default::default()
     };
@@ -66,20 +65,42 @@ fn test_generate_wild3_cycle_method_3_specified_lead_speed() {
     let unrestricted = generate_wild3(rng, &options, &map).mon_results;
     assert_eq!(unrestricted.len(), 2);
 
-    options.cycle_opts.lead_cycle_spd = Some(100);
-    assert!(generate_wild3(rng, &options, &map).mon_results.is_empty());
+    let possible_for_lead = |options: &Wild3GeneratorOptions, lead_cycle_spd| {
+        let mut results = generate_wild3(rng, options, &map).mon_results;
+        results.retain(|result| {
+            is_method_possible_to_trigger(
+                &result.cycle_range.unwrap(),
+                options.action,
+                options.lead == Gen3Lead::Egg,
+                true,
+                Some(lead_cycle_spd),
+            )
+        });
+        results
+    };
 
-    options.cycle_opts.lead_cycle_spd = Some(800);
+    options.cycle_opts = Wild3GeneratorCycleOpts::LikelihoodForLead {
+        lead_cycle_spd: 100,
+    };
+    assert!(possible_for_lead(&options, 100).is_empty());
+
+    options.cycle_opts = Wild3GeneratorCycleOpts::LikelihoodForLead {
+        lead_cycle_spd: 800,
+    };
     assert_eq!(
-        generate_wild3(rng, &options, &map).mon_results,
+        possible_for_lead(&options, 800),
         unrestricted
     );
 
-    options.cycle_opts.lead_cycle_spd = Some(100);
-    options.cycle_opts.generate_even_if_impossible = true;
+    options.cycle_opts = Wild3GeneratorCycleOpts::LikelihoodForLead {
+        lead_cycle_spd: 100,
+    };
     let including_impossible = generate_wild3(rng, &options, &map).mon_results;
     assert!(including_impossible.len() > unrestricted.len());
-    options.cycle_opts.lead_cycle_spd = None;
+    options.cycle_opts = Wild3GeneratorCycleOpts::Searching {
+        generate_even_if_impossible: true,
+        consider_rng_manipulated_lead_pid: true,
+    };
     assert_eq!(
         generate_wild3(rng, &options, &map).mon_results,
         including_impossible
@@ -94,10 +115,9 @@ fn test_generate_wild3_cycle_method_3_no_rng_lead_pid() {
         methods: vec![Gen3Method::Wild3],
         lead: Gen3Lead::Synchronize(Nature::Serious),
         filter: PkmFilter::new_allow_all(),
-        cycle_opts: crate::gen3::Wild3GeneratorCycleOpts {
-            consider_cycles: true,
+        cycle_opts: Wild3GeneratorCycleOpts::Searching {
+            generate_even_if_impossible: false,
             consider_rng_manipulated_lead_pid: false,
-            ..Default::default()
         },
         ..Default::default()
     };
@@ -115,10 +135,9 @@ fn test_generate_wild3_cycle_method_3_no_rng_lead_pid() {
 fn test_generate_wild3_cycle_method_5() {
     let options = Wild3GeneratorOptions {
         methods: vec![Gen3Method::Wild5],
-        cycle_opts: crate::gen3::Wild3GeneratorCycleOpts {
-            consider_cycles: true,
+        cycle_opts: Wild3GeneratorCycleOpts::Searching {
+            generate_even_if_impossible: false,
             consider_rng_manipulated_lead_pid: true,
-            ..Default::default()
         },
         ..Default::default()
     };
@@ -171,10 +190,9 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
     let options = Wild3GeneratorOptions {
         methods: vec![Gen3Method::Wild1, Gen3Method::Wild2, Gen3Method::Wild4],
         lead: Gen3Lead::Synchronize(Nature::Hardy),
-        cycle_opts: crate::gen3::Wild3GeneratorCycleOpts {
-            consider_cycles: true,
+        cycle_opts: Wild3GeneratorCycleOpts::Searching {
+            generate_even_if_impossible: false,
             consider_rng_manipulated_lead_pid: true,
-            ..Default::default()
         },
         ..Default::default()
     };

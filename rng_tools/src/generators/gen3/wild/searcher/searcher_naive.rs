@@ -92,17 +92,12 @@ fn search_wild3_naive_at_given_advance(
                     feebas_state: *feebas_state,
                     feebas_cycles: *feebas_cycles,
                     safari_pokeblock: safari_pokeblock.clone(),
-                    cycle_opts: crate::gen3::Wild3GeneratorCycleOpts {
-                        generate_even_if_impossible: opts.generate_even_if_impossible,
-                        consider_cycles: opts.consider_cycles,
-                        consider_rng_manipulated_lead_pid: opts.consider_rng_manipulated_lead_pid,
-                        lead_cycle_spd: opts.lead_cycle_speed,
-                        ..Default::default()
-                    },
+                    cycle_opts: opts.generator_cycle_opts(),
                     using_white_flute: opts.using_white_flute,
                 };
 
-                let generated = generate_wild3(rng, &gen_opts, &map_setups.map_data);
+                let mut generated = generate_wild3(rng, &gen_opts, &map_setups.map_data);
+                opts.retain_possible_results(&gen_opts, &mut generated.mon_results);
                 generated.mon_results.iter().for_each(|gen_res| {
                     let encounter = map_setups
                         .map_data

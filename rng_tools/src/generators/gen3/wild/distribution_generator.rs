@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-use super::{Wild3GeneratorOptions, generate_wild3};
+use super::Wild3GeneratorOptions;
 use crate::{
     gen3::{
         CycleAtMoment, CycleRange, Gen3Method, Wild3MapGameData, Wild3SearcherResultMon,

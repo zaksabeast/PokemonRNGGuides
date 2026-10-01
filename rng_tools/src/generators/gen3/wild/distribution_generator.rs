@@ -3,11 +3,11 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-use super::{Wild3GeneratorOptions, generate_gen3_wild};
+use super::Wild3GeneratorOptions;
 use crate::{
     gen3::{
         CycleAtMoment, CycleRange, Gen3Method, Wild3MapGameData, Wild3SearcherResultMon,
-        calculate_cycle_data,
+        calculate_cycle_data, generate_wild3_old,
     },
     rng::lcrng::Pokerng,
 };
@@ -51,7 +51,7 @@ pub fn generate_gen3_wild_distribution(
     };
 
     let rng = Pokerng::with_jump(initial_seed, advances);
-    let generated = generate_gen3_wild(rng, &opts, game_data);
+    let generated = generate_wild3_old(rng, &opts, game_data);
     let gen_results = generated.mon_results;
     let cycle_counter = generated.cycle_counter;
     let search_results = gen_results

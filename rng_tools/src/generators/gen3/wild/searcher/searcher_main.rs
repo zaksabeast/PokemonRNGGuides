@@ -7,7 +7,7 @@ use wasm_bindgen::prelude::*;
 
 use super::super::{
     Wild3FeebasState, Wild3GeneratorMonResult, Wild3GeneratorOptions, Wild3MassOutbreakState,
-    Wild3RoamerState, generate_gen3_wild,
+    Wild3RoamerState, generate_wild3,
 };
 use crate::{
     AbilityType, Gender, HiddenPower, Ivs, Nature, PkmFilter, Species,

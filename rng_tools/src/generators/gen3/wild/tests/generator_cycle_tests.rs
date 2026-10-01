@@ -2,7 +2,8 @@ use crate::{
     EncounterSlot, Ivs, Nature, PkmFilter,
     gen3::{
         CycleRange, Gen3Lead, Gen3Method, INFINITE_CYCLE, Wild3EncounterIndex,
-        Wild3GeneratorMonResult, Wild3GeneratorOptions, Wild3MapGameData, generate_gen3_wild,
+        Wild3GeneratorMonResult, Wild3GeneratorOptions, Wild3MapGameData, generate_wild3,
+        generate_wild3_old,
     },
     rng::lcrng::Pokerng,
 };
@@ -17,7 +18,7 @@ fn test_generate_wild3_cycle_method_3() {
         ..Default::default()
     };
 
-    let result = generate_gen3_wild(
+    let result = generate_wild3(
         Pokerng::with_advances(0, 3012),
         &options,
         &Wild3MapGameData::default(),
@@ -45,6 +46,41 @@ fn test_generate_wild3_cycle_method_3() {
 }
 
 #[test]
+fn test_generate_wild3_cycle_method_3_specified_lead_speed() {
+    let mut options = Wild3GeneratorOptions {
+        methods: vec![Gen3Method::Wild3],
+        lead: Gen3Lead::Synchronize(Nature::Serious),
+        consider_cycles: true,
+        consider_rng_manipulated_lead_pid: true,
+        ..Default::default()
+    };
+    let map = Wild3MapGameData::default();
+    let rng = Pokerng::with_advances(0, 3012);
+
+    let unrestricted = generate_wild3(rng, &options, &map).mon_results;
+    assert_eq!(unrestricted.len(), 2);
+
+    options.lead_cycle_speed = Some(100);
+    assert!(generate_wild3(rng, &options, &map).mon_results.is_empty());
+
+    options.lead_cycle_speed = Some(800);
+    assert_eq!(
+        generate_wild3(rng, &options, &map).mon_results,
+        unrestricted
+    );
+
+    options.lead_cycle_speed = Some(100);
+    options.generate_even_if_impossible = true;
+    let including_impossible = generate_wild3(rng, &options, &map).mon_results;
+    assert!(including_impossible.len() > unrestricted.len());
+    options.lead_cycle_speed = None;
+    assert_eq!(
+        generate_wild3(rng, &options, &map).mon_results,
+        including_impossible
+    );
+}
+
+#[test]
 fn test_generate_wild3_cycle_method_3_no_rng_lead_pid() {
     // Same as test_generate_wild3_cycle_method_3, but consider_rng_manipulated_lead_pid is false.
     // This should return an empty result, as the method cannot be triggered with a common lead PID.
@@ -57,7 +93,7 @@ fn test_generate_wild3_cycle_method_3_no_rng_lead_pid() {
         ..Default::default()
     };
 
-    let result = generate_gen3_wild(
+    let result = generate_wild3(
         Pokerng::with_advances(0, 3013),
         &options,
         &Wild3MapGameData::default(),
@@ -75,7 +111,7 @@ fn test_generate_wild3_cycle_method_5() {
         ..Default::default()
     };
 
-    let result = generate_gen3_wild(
+    let result = generate_wild3(
         Pokerng::with_advances(0, 4894),
         &options,
         &Wild3MapGameData::default(),
@@ -128,12 +164,20 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
         ..Default::default()
     };
 
-    let result = generate_gen3_wild(
+    let result = generate_wild3(
         Pokerng::with_advances(0, 3001),
         &options,
         &Wild3MapGameData::default(),
     )
     .mon_results;
+    let results_old = generate_wild3_old(
+        Pokerng::with_advances(0, 3001),
+        &options,
+        &Wild3MapGameData::default(),
+    )
+    .mon_results;
+    assert_eq!(results_old, result);
+
     let expected_result = vec![
         Wild3GeneratorMonResult {
             encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot3),
@@ -160,5 +204,6 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
             ..Default::default()
         },
     ];
+
     assert_eq!(result, expected_result);
 }

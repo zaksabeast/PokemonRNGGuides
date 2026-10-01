@@ -99,7 +99,7 @@ fn search_wild3_naive_at_given_advance(
                     using_white_flute: opts.using_white_flute,
                 };
 
-                let generated = generate_gen3_wild(rng, &gen_opts, &map_setups.map_data);
+                let generated = generate_wild3(rng, &gen_opts, &map_setups.map_data);
                 generated.mon_results.iter().for_each(|gen_res| {
                     let encounter = map_setups
                         .map_data

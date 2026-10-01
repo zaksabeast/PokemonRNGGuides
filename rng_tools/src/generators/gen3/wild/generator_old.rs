@@ -1,77 +1,28 @@
-use serde::{Deserialize, Serialize};
-use tsify::Tsify;
-use wasm_bindgen::prelude::*;
-
+use super::generator_main::{
+    INFINITE_CYCLE, VBLANK_FREQ, Wild3GeneratorMonResult, Wild3GeneratorOptions,
+    Wild3GeneratorResults,
+};
 use super::{calc_modulo_cycle_signed, calc_modulo_cycle_unsigned, is_method_possible_to_trigger};
 use crate::{
     EncounterSlot, Gender, GenderRatio, Ivs, NATURE_COUNT, Nature,
     PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE, PERTINENT_SOLO_POKEBLOCKS_BY_NATURE,
-    POKEBLOCK_NATURE_STAT_FACTORS, PkmFilter,
+    POKEBLOCK_NATURE_STAT_FACTORS,
     gen3::{
-        CycleAndModCount, CycleAndModRange, CycleCounter, CycleRange, Gen3Lead, Gen3Method,
-        Gen3PkmFilter, Moment, Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex,
-        Wild3FeebasState, Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState,
-        Wild3SafariPokeblockGenOpt, get_min_mid_max_pre_sweet_scent_cycle,
-        get_min_mid_max_vblank_cycle_duration, passes_pid_filter, wild::lcrng_distance,
+        CycleAndModRange, CycleCounter, CycleRange, Gen3Lead, Gen3Method, Moment, Wild3Action,
+        Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData,
+        Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
+        get_min_mid_max_pre_sweet_scent_cycle, get_min_mid_max_vblank_cycle_duration,
+        passes_pid_filter, wild::lcrng_distance,
     },
     gen3_tsv, is_max_size,
     rng::{Rng, lcrng::Pokerng},
 };
 
 /*
+Main entry point: generate_gen3_wild
+
 Limitation: When generating Wild5, only 1 vblank is supported. There's a very small chance that multiple vblanks occur.
 */
-
-pub const INFINITE_CYCLE: usize = 10_000_000;
-pub const VBLANK_FREQ: usize = 280_896;
-
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Wild3GeneratorOptions {
-    pub tid: u16,
-    pub sid: u16,
-    pub map_idx: usize,
-    pub action: Wild3Action,
-    pub methods: Vec<Gen3Method>,
-    pub lead: Gen3Lead,
-    pub filter: PkmFilter,
-    pub gen3_filter: Gen3PkmFilter,
-    pub consider_cycles: bool,
-    pub consider_rng_manipulated_lead_pid: bool,
-    pub lead_cycle_speed: Option<usize>,
-    pub generate_even_if_impossible: bool,
-    pub roamer_state: Wild3RoamerState,
-    pub mass_outbreak_state: Wild3MassOutbreakState,
-    pub feebas_state: Wild3FeebasState,
-    pub feebas_cycles: usize,
-    pub using_white_flute: bool,
-    pub safari_pokeblock: Option<Wild3SafariPokeblockGenOpt>,
-}
-
-impl Default for Wild3GeneratorOptions {
-    fn default() -> Self {
-        Self {
-            tid: 0,
-            sid: 0,
-            map_idx: 0,
-            action: Wild3Action::default(),
-            methods: vec![],
-            lead: Gen3Lead::default(),
-            filter: PkmFilter::default(),
-            gen3_filter: Gen3PkmFilter::default(),
-            consider_cycles: false,
-            consider_rng_manipulated_lead_pid: false,
-            lead_cycle_speed: None,
-            generate_even_if_impossible: false,
-            roamer_state: Wild3RoamerState::default(),
-            mass_outbreak_state: Wild3MassOutbreakState::default(),
-            feebas_state: Wild3FeebasState::default(),
-            feebas_cycles: 0,
-            using_white_flute: true,
-            safari_pokeblock: None,
-        }
-    }
-}
 
 struct GenTmpData<'a> {
     opts: &'a Wild3GeneratorOptions,
@@ -82,35 +33,6 @@ struct GenTmpData<'a> {
     required_nature: Nature,
     used_safari_pokeblock: Option<[u8; 5]>,
     tsv: u16,
-}
-
-#[derive(Clone, Debug, Default, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Wild3GeneratorMonResult {
-    pub encounter_idx: Wild3EncounterIndex,
-    pub pid: u32,
-    pub ivs: Ivs,
-    pub lvl: u8,
-    pub method: Gen3Method,
-    pub cycle_range: Option<CycleRange<CycleAndModCount>>,
-    pub used_safari_pokeblock: Option<[u8; 5]>,
-}
-
-impl Wild3GeneratorMonResult {
-    pub fn clone_with_cycle_end(&self, cycle_end: usize) -> Self {
-        if let Some(cycle_range) = self.cycle_range {
-            let new_cycle_range = CycleAndModRange {
-                start: cycle_range.start,
-                len: cycle_end - cycle_range.start.cycle,
-            };
-            Self {
-                cycle_range: Some(new_cycle_range),
-                ..self.clone()
-            }
-        } else {
-            self.clone()
-        }
-    }
 }
 
 fn rand_next_u16(rng: &mut Pokerng, _reason: &str, _modulo: u16) -> u16 {
@@ -184,7 +106,7 @@ fn select_encounter_idx_ability_attract_type(
     }
 }
 
-pub fn apply_cycles_causing_vblanks_on_cycle_counter(
+fn apply_cycles_causing_vblanks_on_cycle_counter(
     cycle: usize,
     cycle_to_add: usize,
     vblank_dur: usize,
@@ -202,24 +124,13 @@ pub fn apply_cycles_causing_vblanks_on_cycle_counter(
     (new_cycle, vblank_count)
 }
 
-pub const MAX_FEEBAS_VBLANK: usize = 4;
-
-#[wasm_bindgen]
-// Only returns the mid case (which is the one used by the generator)
-pub fn get_feebas_vblank_from_feebas_cycle(feebas_cycles: usize) -> usize {
-    let (_, mid, _) = get_min_mid_max_pre_sweet_scent_cycle(Wild3Action::OldRod);
-    let (_, mid_vblank, _) = get_min_mid_max_vblank_cycle_duration();
-
-    let (_, mid_case_vblank) =
-        apply_cycles_causing_vblanks_on_cycle_counter(mid, feebas_cycles, mid_vblank);
-
-    mid_case_vblank
-}
+const MAX_FEEBAS_VBLANK: usize = 4;
 
 fn handle_feebas_cycle_counter(
     rng: &mut Pokerng,
     cycle_counter: &mut CycleCounter,
     feebas_cycles: usize,
+    consider_cycles: bool,
 ) {
     cycle_counter.on_moment_reached(Moment::CheckFeebas);
 
@@ -245,6 +156,10 @@ fn handle_feebas_cycle_counter(
 
     // The generator always calculates for the mid case (most probable case).
     rng.jump(mid_case_vblank);
+
+    if !consider_cycles {
+        return;
+    }
 
     let abs_cycle_from_cycle_counter = cycle_counter.cycle.cycle + mid; // At this points, lead_pid_mod is 0.
     // Limitation: We can only add cycles. In most cases, mid_case_cycle should be > abs_cycle_from_cycle_counter, because abs_cycle_from_cycle_counter is small.
@@ -314,7 +229,7 @@ fn select_encounter_idx(
         && opts.feebas_state != Wild3FeebasState::NotInMap
         && rand_next_u16(rng, "select_encounter_idx.OnFeebasTile", 100) % 100 <= 49
     {
-        handle_feebas_cycle_counter(rng, cycle_counter, opts.feebas_cycles);
+        handle_feebas_cycle_counter(rng, cycle_counter, opts.feebas_cycles, opts.consider_cycles);
 
         if opts.feebas_state == Wild3FeebasState::OnFeebasTile {
             return Some(Wild3EncounterIndex::Feebas);
@@ -422,7 +337,7 @@ fn pick_wild_mon_nature_safari(
         .map(|pokeblock_gen_opt| calculate_nature_from_safari_pokeblock(rng, pokeblock_gen_opt))
 }
 
-pub fn calculate_nature_from_safari_pokeblock(
+fn calculate_nature_from_safari_pokeblock(
     rng: &mut Pokerng,
     pokeblock_gen_opt: &Wild3SafariPokeblockGenOpt,
 ) -> (Nature, Option<[u8; 5]>) {
@@ -523,33 +438,8 @@ pub fn calculate_nature_from_safari_pokeblock(
     }
 }
 
-#[derive(Clone, Debug, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Wild3GeneratorResults {
-    pub mon_results: Vec<Wild3GeneratorMonResult>,
-    pub cycle_counter: CycleCounter,
-}
-
-impl Wild3GeneratorResults {
-    pub fn empty() -> Wild3GeneratorResults {
-        Wild3GeneratorResults {
-            mon_results: vec![],
-            cycle_counter: CycleCounter::default(),
-        }
-    }
-}
-
-#[wasm_bindgen]
-pub fn generate_gen3_wild_wasm(
-    initial_seed: u32,
-    advances: usize,
-    opts: &Wild3GeneratorOptions,
-    map_data: &Wild3MapGameData,
-) -> Wild3GeneratorResults {
-    generate_gen3_wild(Pokerng::with_jump(initial_seed, advances), opts, map_data)
-}
-
-pub fn generate_gen3_wild(
+// Entry point
+pub fn generate_wild3_old(
     mut rng: Pokerng,
     opts: &Wild3GeneratorOptions,
     map_data: &Wild3MapGameData,
@@ -563,6 +453,17 @@ pub fn generate_gen3_wild(
     }
 
     let encounter_idx = encounter_idx.unwrap();
+    generate_wild3_from_encounter(rng, opts, map_data, cycle_counter, encounter_idx, None)
+}
+
+fn generate_wild3_from_encounter(
+    mut rng: Pokerng,
+    opts: &Wild3GeneratorOptions,
+    map_data: &Wild3MapGameData,
+    mut cycle_counter: CycleCounter,
+    encounter_idx: Wild3EncounterIndex,
+    selected_level: Option<u8>,
+) -> Wild3GeneratorResults {
     let encounter = map_data.get_encounter(opts.action, encounter_idx);
     if encounter.is_none() {
         // impossible to trigger in-game
@@ -576,7 +477,8 @@ pub fn generate_gen3_wild(
         return Wild3GeneratorResults::empty();
     }
 
-    let lvl = select_lvl(&mut rng, opts.lead, encounter, &mut cycle_counter);
+    let lvl = selected_level
+        .unwrap_or_else(|| select_lvl(&mut rng, opts.lead, encounter, &mut cycle_counter));
 
     if let Some(wanted_lvl) = opts.gen3_filter.lvl
         && lvl != wanted_lvl
@@ -601,7 +503,7 @@ pub fn generate_gen3_wild(
         });
         return Wild3GeneratorResults {
             mon_results: results,
-            cycle_counter,
+            cycle_counter: CycleCounter::default(),
         };
     }
 

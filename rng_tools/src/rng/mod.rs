@@ -4,6 +4,7 @@ pub mod lcrng64;
 pub mod mt;
 pub mod mt_fast;
 mod rng_trait;
+pub mod sfmt;
 mod state_iter;
 pub mod tinymt;
 

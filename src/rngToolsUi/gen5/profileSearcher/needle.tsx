@@ -1,17 +1,16 @@
+import styled from "@emotion/styled";
 import {
-  Field,
-  FormikRadio,
-  FormikSwitch,
-  Flex,
-  Button,
-  Grid,
-  FormikTextArea,
-} from "~/components";
+  FormRadioField,
+  FormSection,
+  FormSwitchField,
+  FormTextField,
+  OutlinedButton,
+} from "~/components/form";
 import { z } from "zod";
 import { initialProfile5Values, Profile5Validator } from "./shared/validator";
-import { profile5Fields } from "./shared/fields";
 import { Profile5Searcher, ValidatorMapper } from "./shared/form";
 import { useField } from "~/hooks/form";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { type Profile5Needle } from "~/rngTools";
 
 const NEEDLES = ["↑", "↗", "→", "↘", "↓", "↙", "←", "↖"] as const;
@@ -59,78 +58,70 @@ const initialValues: FormState = {
 
 const needleId = (needle: string) => `profile5-searcher-needle-${needle}`;
 
-type NeedlButtonProps = {
-  needle: string;
-  onClick: () => void;
-};
+const NeedleButtons = styled.div({
+  display: "grid",
+  gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+  gap: 8,
+  width: "100%",
+  maxWidth: 300,
+  marginInline: "auto",
+});
 
-const NeedlButton = ({ needle, onClick }: NeedlButtonProps) => {
-  return (
-    <Button trackerId={needleId(needle)} onClick={onClick}>
-      {needle}
-    </Button>
-  );
-};
+// Laid out like a compass, with the center left empty
+const needleLayout = [
+  "↖",
+  "↑",
+  "↗",
+  "←",
+  null,
+  "→",
+  "↙",
+  "↓",
+  "↘",
+] as const;
 
 const NeedleGrid = () => {
   const [{ value }, , { setValue }] = useField<string>("needles");
 
-  const getOnClick = (needle: string) => {
-    return () => setValue(value + needle);
-  };
-
   return (
-    <Flex justify="center">
-      <Flex maxWidth={300}>
-        <Grid mobile={3} tablet={3} desktop={3}>
-          <NeedlButton needle="↖" onClick={getOnClick("↖")} />
-          <NeedlButton needle="↑" onClick={getOnClick("↑")} />
-          <NeedlButton needle="↗" onClick={getOnClick("↗")} />
-          <NeedlButton needle="←" onClick={getOnClick("←")} />
-          <div />
-          <NeedlButton needle="→" onClick={getOnClick("→")} />
-          <NeedlButton needle="↙" onClick={getOnClick("↙")} />
-          <NeedlButton needle="↓" onClick={getOnClick("↓")} />
-          <NeedlButton needle="↘" onClick={getOnClick("↘")} />
-        </Grid>
-      </Flex>
-    </Flex>
+    <NeedleButtons>
+      {needleLayout.map((needle, index) =>
+        needle == null ? (
+          <div key={index} />
+        ) : (
+          <OutlinedButton
+            key={needle}
+            trackerId={needleId(needle)}
+            onClick={() => setValue(value + needle)}
+          >
+            {needle}
+          </OutlinedButton>
+        ),
+      )}
+    </NeedleButtons>
   );
 };
 
-const NeedleInput = () => {
-  return (
-    <Flex gap={8} mv={16}>
-      <NeedleGrid />
-      <FormikTextArea<FormState> name="needles" />
-    </Flex>
-  );
-};
+const Fields = () => {
+  const t = useActiveRouteTranslations();
 
-const fields: Field[] = [
-  ...profile5Fields,
-  {
-    label: "Memory Link",
-    input: <FormikSwitch<FormState> name="memory_link" />,
-  },
-  {
-    label: "Unova Link",
-    input: (
-      <FormikRadio<FormState>
+  return (
+    <FormSection title={t["Calibration"]}>
+      <FormSwitchField<FormState> name="memory_link" label={t["Memory Link"]} />
+      <FormRadioField<FormState>
         name="unova_link"
+        label={t["Unova Link"]}
+        cellSize="word"
         options={[
-          { label: "Unova Link", value: "unova_link" },
-          { label: "Save", value: "save" },
+          { label: t["Unova Link"], value: "unova_link" },
+          { label: t["Save"], value: "save" },
         ]}
       />
-    ),
-  },
-  {
-    label: "Needles",
-    direction: "column",
-    input: <NeedleInput />,
-  },
-];
+      <NeedleGrid />
+      <FormTextField<FormState> name="needles" label={t["Needles"]} />
+    </FormSection>
+  );
+};
 
 const mapValidator: ValidatorMapper<FormState> = (opts) => ({
   Needle: {
@@ -146,12 +137,13 @@ const mapValidator: ValidatorMapper<FormState> = (opts) => ({
 export const Profile5SearcherNeedle = () => {
   return (
     <Profile5Searcher<FormState>
-      fields={fields}
       initialValues={initialValues}
       validationSchema={Validator}
       cancelTrackerId="profile5-searcher-seed-cancel"
       submitTrackerId="profile5-searcher-seed"
       mapValidator={mapValidator}
-    />
+    >
+      <Fields />
+    </Profile5Searcher>
   );
 };

@@ -13,6 +13,11 @@ export {
   type NumberFieldProps,
 } from "./base/numberField";
 export {
+  BigIntField,
+  FormBigIntField,
+  type BigIntFieldProps,
+} from "./base/bigIntField";
+export {
   SelectField,
   MultiSelectField,
   FormSelectField,

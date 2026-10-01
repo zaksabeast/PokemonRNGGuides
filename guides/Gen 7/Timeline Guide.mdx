@@ -23,40 +23,30 @@
 
 ## What is a Timeline?
 
-Only use a timeline if there are one or more NPCs in your area. If you have 0 NPCs, you don't need a timeline.
-
 NPCs use RNG advances when they blink. Each video frame, every NPC on screen may use an advance, so the RNG doesn't move forward one advance at a time. Only some advances can be landed on. The advances you can land on are your timeline.
 
 To know which timeline you're on, you need to land on a safe advance. A safe advance is one where no NPC is blinking, so every future blink can be predicted.
 
-## Step 1: Find Your Target
+Only use a timeline if there are one or more NPCs in your area. If you have no NPCs, you don't need a timeline.
 
-1. In 3DSRNGTool, enter your game version and TSV.
-2. Input the initial seed, found in the main RNG view under `Init Seed:`.
-3. If you have the Shiny Charm, check the Shiny Charm box.
-4. Search for the Pokémon you want and note its advance. 3DSRNGTool calls this the "frame".
+## Step 1: Create a Timeline
 
-## Step 2: Get Ready in Game
-
-1. Go through the dialogue until the next `A` press gives you the Pokémon.
-2. Stay there. Any more dialogue can change your timeline.
+1. Follow the appropriate guide for finding a target advance (3DSRNGTool's "frames").
+   - You should be at the part of the guide that has you generate a timeline.
+2. Pause the game with `Start + Select`.
 3. In PokeReader, note your initial seed, current advance, and NPC count.
-
-## Step 3: Find Your Timeline
-
-1. Enter your values below and click "Find Safe Advances".
-2. Pause the game with `Start + Select`, then press `Select` to step one video frame at a time.
-3. Keep stepping until you land exactly on one of the listed safe advances, then click it.
-4. Keep stepping and compare your advances to the ones shown.
+4. Enter your values below and click "Find Safe Advances".
+5. Press `Select` to step one video frame at a time until you land exactly on one of the listed safe advances, then click it.
+6. Keep stepping and compare your advances to the ones shown.
    - If they match, you're on the right timeline.
    - If they don't match, check your initial seed and NPC count, then try again.
 
 <Gen7TimelineFinder />
 
-## Step 4: Press A on Your Target
+## Step 2: Press A on Your Target
 
-1. If the tool says your target isn't on this timeline, pick another target in 3DSRNGTool.
-2. Press `Start` to unpause, then pause again with `Start + Select` when you're close to your target.
+1. If the tool says your target isn't on this timeline, pick another target in 3DSRNGTool, then repeat starting from Step 1.3.
+2. Press `Start` to unpause. Use the tool's "Time" as a guide, and pause again with `Start + Select` when you're close to your target.
 3. Press `Select` to step one video frame at a time until you reach your target advance.
 4. Press `A` on your target advance.
 

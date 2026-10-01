@@ -7,7 +7,7 @@ use crate::gen3::{
     CycleCounter, FASTEST_MODULO_CYCLE_24, Gen3Lead, INFINITE_CYCLE,
     Moment, SLOWEST_MODULO_CYCLE_24, VBLANK_FREQ,
     Wild3GeneratorCycleOpts, Wild3GeneratorOptions, get_min_mid_max_pre_sweet_scent_cycle,
-    get_min_mid_max_vblank_cycle_duration,
+    get_min_mid_max_vblank_cycle_duration, is_method_possible_to_trigger,
 };
 
 #[derive(Default, Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -302,7 +302,7 @@ impl CycleFrameCounter {
             }
         }
     }
-    pub fn can_generate_method(&self, len: usize) -> bool {
+    pub fn can_generate_method(&self, opts: &Wild3GeneratorOptions, len: usize) -> bool {
         match self {
             CycleFrameCounter::Inactive => true,
             CycleFrameCounter::DetailedBreakdown { .. } => {
@@ -318,6 +318,22 @@ impl CycleFrameCounter {
             } => {
                 if *generate_even_if_impossible {
                     return true;
+                }
+
+                if matches!(
+                    opts.cycle_opts,
+                    Wild3GeneratorCycleOpts::Searching {
+                        consider_rng_manipulated_lead_pid: false,
+                        ..
+                    }
+                ) {
+                    return is_method_possible_to_trigger(
+                        &self.create_cycle_range(len),
+                        opts.action,
+                        opts.lead == Gen3Lead::Egg,
+                        false,
+                        None,
+                    );
                 }
 
                 if len == INFINITE_CYCLE {

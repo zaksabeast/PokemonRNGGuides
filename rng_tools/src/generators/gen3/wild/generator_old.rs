@@ -57,7 +57,7 @@ fn rand_next_u16_with_debug_print(rng: &mut Pokerng, reason: &str, modulo: u16) 
     ret
 }
 
-pub(super) fn retain_methods_possible_to_trigger(
+fn retain_methods_possible_to_trigger(
     opts: &Wild3GeneratorOptions,
     results: &mut Vec<Wild3GeneratorMonResult>,
 ) {

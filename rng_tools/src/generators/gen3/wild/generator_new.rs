@@ -11,9 +11,9 @@ use crate::{
     PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE, PERTINENT_SOLO_POKEBLOCKS_BY_NATURE,
     POKEBLOCK_NATURE_STAT_FACTORS,
     gen3::{
-        CycleAndModRange, CycleFrameCounter, CycleRange, Wild3GeneratorCycleOpts, Gen3Lead, Gen3Method, Moment, Wild3Action,
-        Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData,
-        Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
+        CycleAndModRange, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method, Moment, Wild3Action,
+        Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState, Wild3GeneratorCycleOpts,
+        Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
         get_min_mid_max_pre_sweet_scent_cycle, get_min_mid_max_vblank_cycle_duration,
         passes_pid_filter,
     },
@@ -35,7 +35,7 @@ pub fn generate_wild3_new(
 ) -> Wild3GeneratorResults {
     let mut cycle_counter = CycleFrameCounter::new(opts);
 
-    let mut generated = match opts.action {
+    match opts.action {
         Wild3Action::SweetScentLand | Wild3Action::SweetScentWater => {
             TrySweetScentEncounter(&mut rng, opts, map_data, &mut cycle_counter)
         }
@@ -46,9 +46,7 @@ pub fn generate_wild3_new(
             RockSmashWildEncounter(&mut rng, opts, map_data, &mut cycle_counter)
         }
     }
-    .unwrap_or_else(Wild3GeneratorResults::empty);
-    super::generator_old::retain_methods_possible_to_trigger(opts, &mut generated.mon_results);
-    generated
+    .unwrap_or_else(Wild3GeneratorResults::empty)
 }
 
 fn Fishing_StartEncounter(
@@ -454,7 +452,7 @@ fn generate_personality(
 
         let method3_range = 80;
         if methods_contains_wild3
-            && cycle_counter.can_generate_method(method3_range)
+            && cycle_counter.can_generate_method(opts, method3_range)
             && let Some(gen_mon_wild3) = simulate_wild_method3(
                 &gen_data,
                 rng,
@@ -501,7 +499,7 @@ fn generate_personality(
                     get_wild_method5_retry_count(&gen_data, rng, pid);
 
                 if let Some((pid, ivs)) = opt_pid_ivs {
-                    if cycle_counter.can_generate_method(method5_range) {
+                    if cycle_counter.can_generate_method(opts, method5_range) {
                         if let Some(res) = create_if_passes_filter(
                             &gen_data,
                             pid,
@@ -545,7 +543,7 @@ fn CreateMon(
         calc_modulo_cycle_unsigned(pid, 25) + 100 * calc_modulo_cycle_unsigned(pid, 24) + 36900;
 
     if opts.methods.contains(&Gen3Method::Wild2)
-        && cycle_counter.can_generate_method(method2_range)
+        && cycle_counter.can_generate_method(opts, method2_range)
         && let Some(gen_mon_wild2) = simulate_wild_method2(
             &gen_data,
             rng,
@@ -564,7 +562,7 @@ fn CreateMon(
     let method4_range = 36 * calc_modulo_cycle_unsigned(pid, 24) + 11103; // between CreateBoxMon_ivs1 and CreateBoxMon_ivs2
 
     if opts.methods.contains(&Gen3Method::Wild4)
-        && cycle_counter.can_generate_method(method4_range)
+        && cycle_counter.can_generate_method(opts, method4_range)
         && let Some(gen_mon_wild4) = simulate_wild_method4(
             &gen_data,
             rng,
@@ -579,7 +577,7 @@ fn CreateMon(
 
     cycle_counter.on_moment_reached(Moment::CreateBoxMon_RandomIvs2);
     if opts.methods.contains(&Gen3Method::Wild1)
-        && cycle_counter.can_generate_method(INFINITE_CYCLE)
+        && cycle_counter.can_generate_method(opts, INFINITE_CYCLE)
     {
         let ivs = Ivs::new_g3(iv1, rand_next_u16(&mut rng, "iv2_wild1", 1));
 

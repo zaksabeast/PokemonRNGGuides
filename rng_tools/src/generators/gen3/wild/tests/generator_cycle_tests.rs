@@ -13,8 +13,11 @@ fn test_generate_wild3_cycle_method_3() {
     let options = Wild3GeneratorOptions {
         methods: vec![Gen3Method::Wild3],
         lead: Gen3Lead::Synchronize(Nature::Serious),
-        consider_cycles: true,
-        consider_rng_manipulated_lead_pid: true,
+        cycle_opts: crate::gen3::Wild3GeneratorCycleOpts {
+            consider_cycles: true,
+            consider_rng_manipulated_lead_pid: true,
+            ..Default::default()
+        },
         ..Default::default()
     };
 
@@ -50,8 +53,11 @@ fn test_generate_wild3_cycle_method_3_specified_lead_speed() {
     let mut options = Wild3GeneratorOptions {
         methods: vec![Gen3Method::Wild3],
         lead: Gen3Lead::Synchronize(Nature::Serious),
-        consider_cycles: true,
-        consider_rng_manipulated_lead_pid: true,
+        cycle_opts: crate::gen3::Wild3GeneratorCycleOpts {
+            consider_cycles: true,
+            consider_rng_manipulated_lead_pid: true,
+            ..Default::default()
+        },
         ..Default::default()
     };
     let map = Wild3MapGameData::default();
@@ -60,20 +66,20 @@ fn test_generate_wild3_cycle_method_3_specified_lead_speed() {
     let unrestricted = generate_wild3(rng, &options, &map).mon_results;
     assert_eq!(unrestricted.len(), 2);
 
-    options.lead_cycle_speed = Some(100);
+    options.cycle_opts.lead_cycle_spd = Some(100);
     assert!(generate_wild3(rng, &options, &map).mon_results.is_empty());
 
-    options.lead_cycle_speed = Some(800);
+    options.cycle_opts.lead_cycle_spd = Some(800);
     assert_eq!(
         generate_wild3(rng, &options, &map).mon_results,
         unrestricted
     );
 
-    options.lead_cycle_speed = Some(100);
-    options.generate_even_if_impossible = true;
+    options.cycle_opts.lead_cycle_spd = Some(100);
+    options.cycle_opts.generate_even_if_impossible = true;
     let including_impossible = generate_wild3(rng, &options, &map).mon_results;
     assert!(including_impossible.len() > unrestricted.len());
-    options.lead_cycle_speed = None;
+    options.cycle_opts.lead_cycle_spd = None;
     assert_eq!(
         generate_wild3(rng, &options, &map).mon_results,
         including_impossible
@@ -88,8 +94,11 @@ fn test_generate_wild3_cycle_method_3_no_rng_lead_pid() {
         methods: vec![Gen3Method::Wild3],
         lead: Gen3Lead::Synchronize(Nature::Serious),
         filter: PkmFilter::new_allow_all(),
-        consider_cycles: true,
-        consider_rng_manipulated_lead_pid: false,
+        cycle_opts: crate::gen3::Wild3GeneratorCycleOpts {
+            consider_cycles: true,
+            consider_rng_manipulated_lead_pid: false,
+            ..Default::default()
+        },
         ..Default::default()
     };
 
@@ -106,8 +115,11 @@ fn test_generate_wild3_cycle_method_3_no_rng_lead_pid() {
 fn test_generate_wild3_cycle_method_5() {
     let options = Wild3GeneratorOptions {
         methods: vec![Gen3Method::Wild5],
-        consider_cycles: true,
-        consider_rng_manipulated_lead_pid: true,
+        cycle_opts: crate::gen3::Wild3GeneratorCycleOpts {
+            consider_cycles: true,
+            consider_rng_manipulated_lead_pid: true,
+            ..Default::default()
+        },
         ..Default::default()
     };
 
@@ -159,8 +171,11 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
     let options = Wild3GeneratorOptions {
         methods: vec![Gen3Method::Wild1, Gen3Method::Wild2, Gen3Method::Wild4],
         lead: Gen3Lead::Synchronize(Nature::Hardy),
-        consider_cycles: true,
-        consider_rng_manipulated_lead_pid: true,
+        cycle_opts: crate::gen3::Wild3GeneratorCycleOpts {
+            consider_cycles: true,
+            consider_rng_manipulated_lead_pid: true,
+            ..Default::default()
+        },
         ..Default::default()
     };
 

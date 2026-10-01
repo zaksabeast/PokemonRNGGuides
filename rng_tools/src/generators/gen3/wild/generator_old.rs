@@ -3,6 +3,7 @@ use super::generator_main::{
     Wild3GeneratorResults,
 };
 use super::{calc_modulo_cycle_signed, calc_modulo_cycle_unsigned, is_method_possible_to_trigger};
+use crate::gen3::CycleFrameCounter;
 use crate::{
     EncounterSlot, Gender, GenderRatio, Ivs, NATURE_COUNT, Nature,
     PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE, PERTINENT_SOLO_POKEBLOCKS_BY_NATURE,
@@ -61,15 +62,15 @@ fn retain_methods_possible_to_trigger(
     opts: &Wild3GeneratorOptions,
     results: &mut Vec<Wild3GeneratorMonResult>,
 ) {
-    if opts.consider_cycles && !opts.generate_even_if_impossible {
+    if opts.cycle_opts.consider_cycles && !opts.cycle_opts.generate_even_if_impossible {
         let is_egg = matches!(opts.lead, Gen3Lead::Egg);
         results.retain(|res| {
             is_method_possible_to_trigger(
                 &res.cycle_range.unwrap(),
                 opts.action,
                 is_egg,
-                opts.consider_rng_manipulated_lead_pid,
-                opts.lead_cycle_speed,
+                opts.cycle_opts.consider_rng_manipulated_lead_pid,
+                opts.cycle_opts.lead_cycle_spd,
             )
         });
     }
@@ -229,7 +230,12 @@ fn select_encounter_idx(
         && opts.feebas_state != Wild3FeebasState::NotInMap
         && rand_next_u16(rng, "select_encounter_idx.OnFeebasTile", 100) % 100 <= 49
     {
-        handle_feebas_cycle_counter(rng, cycle_counter, opts.feebas_cycles, opts.consider_cycles);
+        handle_feebas_cycle_counter(
+            rng,
+            cycle_counter,
+            opts.feebas_cycles,
+            opts.cycle_opts.consider_cycles,
+        );
 
         if opts.feebas_state == Wild3FeebasState::OnFeebasTile {
             return Some(Wild3EncounterIndex::Feebas);
@@ -494,7 +500,7 @@ fn generate_wild3_from_encounter(
             ivs: Ivs::default(),
             lvl,
             method: Gen3Method::Wild1,
-            cycle_range: if opts.consider_cycles {
+            cycle_range: if opts.cycle_opts.consider_cycles {
                 Some(CycleRange::new(0, 0, INFINITE_CYCLE))
             } else {
                 None
@@ -503,7 +509,7 @@ fn generate_wild3_from_encounter(
         });
         return Wild3GeneratorResults {
             mon_results: results,
-            cycle_counter: CycleCounter::default(),
+            cycle_counter: CycleFrameCounter::Inactive,
         };
     }
 
@@ -684,7 +690,7 @@ fn generate_wild3_from_encounter(
         retain_methods_possible_to_trigger(opts, &mut results);
         return Wild3GeneratorResults {
             mon_results: results,
-            cycle_counter,
+            cycle_counter: CycleFrameCounter::Inactive,
         };
     }
 
@@ -742,7 +748,7 @@ fn generate_wild3_from_encounter(
 
     Wild3GeneratorResults {
         mon_results: results,
-        cycle_counter,
+        cycle_counter: CycleFrameCounter::Inactive,
     }
 }
 
@@ -883,7 +889,7 @@ fn create_if_passes_filter(
         return None;
     }
 
-    let cycle_range = if gen_data.opts.consider_cycles {
+    let cycle_range = if gen_data.opts.cycle_opts.consider_cycles {
         Some(cycle_range)
     } else {
         None

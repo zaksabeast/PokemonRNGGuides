@@ -6,7 +6,6 @@ use super::generator_main::{
     Wild3GeneratorResults,
 };
 use super::{calc_modulo_cycle_signed, calc_modulo_cycle_unsigned};
-use crate::gen3::CycleCounter;
 use crate::gen3::wild::cycle_counter::CycleFrameCounter;
 use crate::{
     EncounterSlot, Gender, GenderRatio, Ivs, NATURE_COUNT, Nature,
@@ -255,14 +254,14 @@ fn CreateRoamerMonInstance(
             ivs: Ivs::default(),
             lvl,
             method: Gen3Method::Wild1,
-            cycle_range: if opts.consider_cycles {
+            cycle_range: if opts.cycle_opts.consider_cycles {
                 Some(CycleRange::new(0, 0, INFINITE_CYCLE))
             } else {
                 None
             },
             used_safari_pokeblock: None,
         }],
-        cycle_counter: CycleCounter::default(),
+        cycle_counter: CycleFrameCounter::Inactive,
     }
 }
 
@@ -523,7 +522,7 @@ fn generate_personality(
     if !passes_pid_filter_internal(&gen_data, pid) {
         return Wild3GeneratorResults {
             mon_results: results,
-            cycle_counter: cycle_counter.to_cycle_counter(),
+            cycle_counter,
         };
     }
 
@@ -596,7 +595,7 @@ fn CreateMon(
 
     Wild3GeneratorResults {
         mon_results: results,
-        cycle_counter: cycle_counter.to_cycle_counter(),
+        cycle_counter,
     }
 }
 
@@ -1163,7 +1162,7 @@ fn create_if_passes_filter(
         return None;
     }
 
-    let cycle_range = if gen_data.opts.consider_cycles {
+    let cycle_range = if gen_data.opts.cycle_opts.consider_cycles {
         Some(cycle_range)
     } else {
         None

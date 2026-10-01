@@ -121,15 +121,20 @@ export const calculateTargetSetupResult = async (
       getGen3PkmFilterInitialValues(),
       null,
     ),
-    consider_cycles: true,
-    consider_rng_manipulated_lead_pid: true,
-    generate_even_if_impossible: true,
     using_white_flute: targetSetup.requiresWhiteFlute,
     roamer_state: targetSetup.roamerState,
     mass_outbreak_state: targetSetup.massOutbreakState,
     feebas_state: targetSetup.feebasState,
     feebas_cycles: targetSetup.feebasCycles,
-    lead_cycle_speed,
+    cycle_opts: {
+      generate_even_if_impossible: true,
+      generate_cycle_at_moment: false,
+      initial_cycle_at_sweet_scent: null,
+      consider_cycles: true,
+      consider_rng_manipulated_lead_pid: true,
+      lead_cycle_spd: lead_cycle_speed,
+      vblank_cycles: [],
+    },
     safari_pokeblock:
       targetSetup.safariPokeblock != null
         ? {

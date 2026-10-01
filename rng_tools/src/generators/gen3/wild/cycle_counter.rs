@@ -5,9 +5,9 @@ use wasm_bindgen::prelude::*;
 use crate::gen3::{
     BASE_LEAD_PID_MOD_24_CYCLES, COMMON_LEAD_RANGE, CycleAndModCount, CycleAndModRange,
     CycleCounter, FASTEST_MODULO_CYCLE_24, Gen3Lead, INFINITE_CYCLE, Moment,
-    SLOWEST_MODULO_CYCLE_24, VBLANK_FREQ, Wild3Action, Wild3GeneratorOptions,
-    get_min_mid_max_pre_sweet_scent_cycle, get_min_mid_max_vblank_cycle_duration,
-    is_method_possible_to_trigger,
+    SLOWEST_MODULO_CYCLE_24, VBLANK_FREQ, Wild3Action, Wild3GeneratorCycleOpts,
+    Wild3GeneratorOptions, get_min_mid_max_pre_sweet_scent_cycle,
+    get_min_mid_max_vblank_cycle_duration, is_method_possible_to_trigger,
 };
 
 #[derive(Default, Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -146,24 +146,22 @@ pub enum CycleFrameCounter {
 
 impl CycleFrameCounter {
     pub fn new(opts: &Wild3GeneratorOptions) -> Self {
-        if opts.consider_cycles {
+        if opts.cycle_opts.consider_cycles {
             CycleFrameCounter::new_for_min_max_range(
                 opts.lead == Gen3Lead::Egg,
                 opts.action,
-                opts.consider_rng_manipulated_lead_pid,
+                opts.cycle_opts.consider_rng_manipulated_lead_pid,
             )
         } else {
             CycleFrameCounter::Inactive
         }
     }
-    pub fn new_for_detailed_breakdown(
-        lead_cycle_spd: usize,
-        start_cycle_frame: CycleFrame,
-        vblank_cycles: Vec<usize>,
-    ) -> Self {
+    pub fn new_for_detailed_breakdown(cycle_opts: Wild3GeneratorCycleOpts) -> Self {
         Self::DetailedBreakdown {
-            lead_cycle_spd,
-            current_cycle: start_cycle_frame,
+            lead_cycle_spd: cycle_opts.lead_cycle_spd.unwrap(775),
+            current_cycle: cycle_opts
+                .initial_cycle_at_sweet_scent
+                .unwrap_or(MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE),
             vblank_cycles,
             cycle_at_moments: vec![],
         }
@@ -233,12 +231,10 @@ impl CycleFrameCounter {
                 self.add_cycle(cycle);
             }
             CycleFrameCounter::MinMaxRange {
-                base_cycle_count,
                 lead_pid_mod_count,
                 min_max_cycles,
                 ..
             } => {
-                *base_cycle_count += lead_pid_mod * BASE_LEAD_PID_MOD_24_CYCLES;
                 *lead_pid_mod_count += lead_pid_mod;
                 min_max_cycles.add_mod(lead_pid_mod);
             }
@@ -280,7 +276,7 @@ impl CycleFrameCounter {
         }
     }
     pub fn can_generate_method(&self, opts: &Wild3GeneratorOptions, len: usize) -> bool {
-        if opts.generate_even_if_impossible {
+        if opts.cycle_opts.generate_even_if_impossible {
             return true;
         }
 
@@ -294,13 +290,15 @@ impl CycleFrameCounter {
                 }
             }
             CycleFrameCounter::MinMaxRange { .. } => {
-                if opts.lead_cycle_speed.is_some() || !opts.consider_rng_manipulated_lead_pid {
+                if opts.cycle_opts.lead_cycle_spd.is_some()
+                    || !opts.cycle_opts.consider_rng_manipulated_lead_pid
+                {
                     return is_method_possible_to_trigger(
                         &self.create_cycle_range(len),
                         opts.action,
                         opts.lead == Gen3Lead::Egg,
-                        opts.consider_rng_manipulated_lead_pid,
-                        opts.lead_cycle_speed,
+                        opts.cycle_opts.consider_rng_manipulated_lead_pid,
+                        opts.cycle_opts.lead_cycle_spd,
                     );
                 }
                 if len == INFINITE_CYCLE {
@@ -318,10 +316,8 @@ impl CycleFrameCounter {
                 CycleAndModRange::new(self.get_current_cycle_count(), 0, len)
             }
             CycleFrameCounter::MinMaxRange {
-                lead_pid_mod_count,
-                base_cycle_count,
-                ..
-            } => CycleAndModRange::new(*base_cycle_count, *lead_pid_mod_count, len),
+                lead_pid_mod_count, ..
+            } => CycleAndModRange::new(self.get_current_cycle_count(), *lead_pid_mod_count, len),
         }
     }
     pub fn to_cycle_counter(&self) -> CycleCounter {
@@ -335,13 +331,12 @@ impl CycleFrameCounter {
                 ..Default::default()
             },
             CycleFrameCounter::MinMaxRange {
-                base_cycle_count,
                 lead_pid_mod_count,
                 cycle_instability,
                 ..
             } => CycleCounter {
                 cycle: CycleAndModCount {
-                    cycle: *base_cycle_count,
+                    cycle: self.get_current_cycle_count(),
                     lead_pid_mod: *lead_pid_mod_count,
                 },
                 cycle_instability: *cycle_instability,
@@ -357,8 +352,10 @@ impl CycleFrameCounter {
                 current_cycle.frame * VBLANK_FREQ + current_cycle.cycle
             }
             CycleFrameCounter::MinMaxRange {
-                base_cycle_count, ..
-            } => *base_cycle_count,
+                base_cycle_count,
+                lead_pid_mod_count,
+                ..
+            } => *base_cycle_count + *lead_pid_mod_count * BASE_LEAD_PID_MOD_24_CYCLES,
         }
     }
     pub fn set_cycle_instability(&mut self, instability: f32) {
@@ -367,6 +364,23 @@ impl CycleFrameCounter {
             CycleFrameCounter::MinMaxRange {
                 cycle_instability, ..
             } => *cycle_instability = instability,
+        }
+    }
+    pub fn get_cycle_instability(&self) -> f32 {
+        match self {
+            CycleFrameCounter::Inactive | CycleFrameCounter::DetailedBreakdown { .. } => 0.0,
+            CycleFrameCounter::MinMaxRange {
+                cycle_instability, ..
+            } => *cycle_instability,
+        }
+    }
+
+    pub fn get_cycle_at_moments(&self) -> Vec<CycleFrameMoment> {
+        match self {
+            CycleFrameCounter::Inactive | CycleFrameCounter::MinMaxRange { .. } => vec![],
+            CycleFrameCounter::DetailedBreakdown {
+                cycle_at_moments, ..
+            } => cycle_at_moments.clone(),
         }
     }
 }

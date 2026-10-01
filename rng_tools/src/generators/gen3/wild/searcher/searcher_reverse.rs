@@ -353,15 +353,18 @@ fn create_result(
         action: path.action,
         methods: vec![path.pid_path.method()],
         filter: opts.filter.clone(),
-        consider_cycles: opts.consider_cycles,
-        consider_rng_manipulated_lead_pid: opts.consider_rng_manipulated_lead_pid,
-        generate_even_if_impossible: opts.generate_even_if_impossible,
         gen3_filter: opts.gen3_filter.clone(),
         roamer_state: Wild3RoamerState::Inactive,
         mass_outbreak_state,
         feebas_state,
         safari_pokeblock: safari_pokeblock.clone(),
-        lead_cycle_speed: opts.lead_cycle_speed,
+        cycle_opts: crate::gen3::Wild3GeneratorCycleOpts {
+            generate_even_if_impossible: opts.generate_even_if_impossible,
+            consider_cycles: opts.consider_cycles,
+            consider_rng_manipulated_lead_pid: opts.consider_rng_manipulated_lead_pid,
+            lead_cycle_spd: opts.lead_cycle_speed,
+            ..Default::default()
+        },
         using_white_flute: opts.using_white_flute,
 
         // overwritten below

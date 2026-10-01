@@ -24,7 +24,6 @@ pub struct Wild3MethodDistributionResult {
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3MethodDistributionResults {
     pub results: Vec<Wild3MethodDistributionResult>,
-    pub cycle_at_moments: Vec<CycleAtMoment>,
 }
 
 #[wasm_bindgen]
@@ -34,11 +33,14 @@ pub fn generate_gen3_wild_distribution(
     opts: &Wild3GeneratorOptions,
     game_data: &Wild3MapGameData,
 ) -> Wild3MethodDistributionResults {
-    let lead_cycle_speed = opts.lead_cycle_speed.unwrap_or(0);
+    let lead_cycle_speed = opts.cycle_opts.lead_cycle_spd.unwrap_or(0);
 
     let opts = Wild3GeneratorOptions {
-        consider_cycles: true,
-        generate_even_if_impossible: true,
+        cycle_opts: crate::gen3::Wild3GeneratorCycleOpts {
+            generate_even_if_impossible: true,
+            consider_cycles: true,
+            ..opts.cycle_opts.clone()
+        },
         methods: vec![
             Gen3Method::Wild1,
             Gen3Method::Wild2,
@@ -46,12 +48,11 @@ pub fn generate_gen3_wild_distribution(
             Gen3Method::Wild4,
             Gen3Method::Wild5,
         ],
-        lead_cycle_speed: opts.lead_cycle_speed,
         ..opts.clone()
     };
 
     let rng = Pokerng::with_jump(initial_seed, advances);
-    let generated = generate_wild3_old(rng, &opts, game_data);
+    let generated = generate_wild3(rng, &opts, game_data);
     let gen_results = generated.mon_results;
     let cycle_counter = generated.cycle_counter;
     let search_results = gen_results
@@ -66,7 +67,7 @@ pub fn generate_gen3_wild_distribution(
                 rng.seed(),
                 advances,
                 encounter,
-                cycle_counter.cycle_instability,
+                cycle_counter.get_cycle_instability(),
             );
             let cycle_data = calculate_cycle_data(
                 &searcher_res
@@ -156,11 +157,6 @@ pub fn generate_gen3_wild_distribution(
 
     Wild3MethodDistributionResults {
         results: dist_results,
-        cycle_at_moments: cycle_counter
-            .cycle_at_moments
-            .iter()
-            .map(|cycle_at_moment| cycle_at_moment.apply_lead_pid_speed(lead_cycle_speed))
-            .collect(),
     }
 }
 
@@ -203,7 +199,7 @@ mod test {
     #[test]
     fn test_distribution_generator() {
         let opts = Wild3GeneratorOptions {
-            lead_cycle_speed: Some(700),
+            cycle_opts: 700.into(),
             ..Default::default()
         };
         let dist_results =

@@ -198,7 +198,7 @@ impl Wild3SearcherResultMon {
                 &cycle_range,
                 gen_opts.action,
                 is_egg,
-                gen_opts.lead_cycle_speed,
+                gen_opts.cycle_opts.lead_cycle_spd,
             )
         });
 

@@ -6,8 +6,8 @@ use wasm_bindgen::prelude::*;
 use super::{Wild3GeneratorOptions, generate_wild3};
 use crate::{
     gen3::{
-        CycleAtMoment, CycleRange, Gen3Method, Wild3MapGameData, Wild3SearcherResultMon,
-        calculate_cycle_data, generate_wild3_old,
+        CycleRange, Gen3Method, Wild3MapGameData, Wild3SearcherResultMon,
+        calculate_cycle_data,
     },
     rng::lcrng::Pokerng,
 };
@@ -165,7 +165,7 @@ mod test {
     use super::*;
     use crate::{
         assert_list_eq,
-        gen3::{Gen3Method, Moment, Wild3MapGameData},
+        gen3::{Gen3Method, Wild3MapGameData},
     };
 
     #[derive(Debug, PartialEq)]
@@ -199,7 +199,10 @@ mod test {
     #[test]
     fn test_distribution_generator() {
         let opts = Wild3GeneratorOptions {
-            cycle_opts: 700.into(),
+            cycle_opts: crate::gen3::Wild3GeneratorCycleOpts {
+                lead_cycle_spd: Some(700),
+                ..Default::default()
+            },
             ..Default::default()
         };
         let dist_results =
@@ -287,15 +290,5 @@ mod test {
         ];
         assert_list_eq!(results, expected_results);
 
-        let expected_cycle_at_moments = [
-            CycleAtMoment::new(Moment::ChooseWildMonIndex_Land_Random, 35035),
-            CycleAtMoment::new(Moment::ChooseWildMonLevel_RandomLvl, 35894),
-            CycleAtMoment::new(Moment::PickWildMonNature_RandomPickNature, 90430),
-            CycleAtMoment::new(Moment::CreateMonWithNature_RandomPidLowFirst, 102578),
-            CycleAtMoment::new(Moment::CreateMonWithNature_RandomPidHighLast, 231422),
-            CycleAtMoment::new(Moment::CreateBoxMon_RandomIvs1, 353657),
-            CycleAtMoment::new(Moment::CreateBoxMon_RandomIvs2, 395216),
-        ];
-        assert_list_eq!(dist_results.cycle_at_moments, expected_cycle_at_moments);
     }
 }

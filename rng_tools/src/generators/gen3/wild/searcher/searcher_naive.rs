@@ -114,7 +114,7 @@ fn search_wild3_naive_at_given_advance(
                         rng.seed(),
                         advance,
                         encounter,
-                        generated.cycle_counter.cycle_instability,
+                        generated.cycle_counter.get_cycle_instability(),
                     ));
                 });
             }

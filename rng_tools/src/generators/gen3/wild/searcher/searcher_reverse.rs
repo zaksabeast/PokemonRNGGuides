@@ -395,7 +395,7 @@ fn create_result(
                     path.seed,
                     advance,
                     encounter,
-                    gen_results.cycle_counter.cycle_instability,
+                    gen_results.cycle_counter.get_cycle_instability(),
                 ));
             }
         }

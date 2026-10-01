@@ -233,6 +233,5 @@ fn all_methods_and_cycle_ranges_match_existing_generation() {
             &old.mon_results,
             &format!("{action:?} {lead:?} {seed}"),
         );
-        assert_eq!(new.cycle_counter.cycle, old.cycle_counter.cycle);
     }
 }

@@ -5,6 +5,7 @@ use wasm_bindgen::prelude::*;
 use crate::gen3::{
     BASE_LEAD_PID_MOD_24_CYCLES, COMMON_LEAD_RANGE, CycleAndModCount, CycleAndModRange,
     CycleCounter, FASTEST_MODULO_CYCLE_24, Gen3Lead, INFINITE_CYCLE, Moment,
+    MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE,
     SLOWEST_MODULO_CYCLE_24, VBLANK_FREQ, Wild3Action, Wild3GeneratorCycleOpts,
     Wild3GeneratorOptions, get_min_mid_max_pre_sweet_scent_cycle,
     get_min_mid_max_vblank_cycle_duration, is_method_possible_to_trigger,
@@ -158,11 +159,14 @@ impl CycleFrameCounter {
     }
     pub fn new_for_detailed_breakdown(cycle_opts: Wild3GeneratorCycleOpts) -> Self {
         Self::DetailedBreakdown {
-            lead_cycle_spd: cycle_opts.lead_cycle_spd.unwrap(775),
-            current_cycle: cycle_opts
-                .initial_cycle_at_sweet_scent
-                .unwrap_or(MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE),
-            vblank_cycles,
+            lead_cycle_spd: cycle_opts.lead_cycle_spd.unwrap_or(775),
+            current_cycle: CycleFrame {
+                cycle: cycle_opts
+                    .initial_cycle_at_sweet_scent
+                    .unwrap_or(MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE),
+                frame: 0,
+            },
+            vblank_cycles: cycle_opts.vblank_cycles.unwrap_or_default(),
             cycle_at_moments: vec![],
         }
     }

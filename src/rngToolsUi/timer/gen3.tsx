@@ -1,22 +1,17 @@
+import React from "react";
 import { Skeleton } from "antd";
-import {
-  FormikNumberInput,
-  RngToolForm,
-  RngToolSubmit,
-  Field,
-  FormikSelect,
-  Flex,
-  MultiTimer,
-} from "~/components";
+import { Flex, RadioGroup } from "~/components";
 import { ZodSerializedDecimal, ZodSerializedOptional } from "~/utils/number";
 import { ZodConsole, minutesBefore, updateGen3Timer } from "~/rngTools";
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
-import { useTimerSettings } from "~/state/timerSettings";
+import { multiTimerStateAtom } from "~/state/multiTimerState";
 import { z } from "zod";
 import { hydrationLock, HydrationLock } from "~/utils/hydration";
 import { useHydrate } from "~/hooks/useHydrate";
-import { useStateHistory } from "~/hooks/useStateHistory";
-import { UndoButton } from "./undoButton";
+import { useTimerSequence } from "~/hooks/useTimerSequence";
+import { getGen3PhaseLabels } from "~/rngToolsUi/timer/atoms";
+import { Gen3Setup } from "./gen3Setup";
+import { RunView } from "./runView";
 
 const TimerStateSchema = z.object({
   milliseconds: z.array(z.number()),
@@ -79,54 +74,31 @@ const timerSettingsAtom = atomWithPersistence(
   initialValues,
 );
 
-const fields: Field[] = [
-  {
-    label: "Console",
-    input: (
-      <FormikSelect<FormState, "console">
-        name="console"
-        options={[
-          { label: "GBA", value: "Gba" },
-          { label: "NDS - Slot 2", value: "NdsSlot2" },
-          { label: "NDS - Slot 1", value: "NdsSlot1" },
-          { label: "DSI", value: "Dsi" },
-          { label: "3DS", value: "ThreeDs" },
-          { label: "Switch - FR/LG", value: "SwitchFrLg" },
-        ]}
-      />
-    ),
-  },
-  {
-    label: "Pre-Timer",
-    input: <FormikNumberInput<FormState> name="preTimer" numType="float" />,
-  },
-  {
-    label: "Target Frame",
-    input: <FormikNumberInput<FormState> name="targetFrame" numType="float" />,
-  },
-  {
-    label: "Calibration",
-    input: <FormikNumberInput<FormState> name="calibration" numType="float" />,
-  },
-  {
-    label: "Frame Hit",
-    input: <FormikNumberInput<FormState> name="frameHit" numType="float" />,
-  },
-];
+type Mode = "setup" | "run";
 
 type InnerProps = {
   timer: TimerState;
   setTimer: (timer: HydrationLock<TimerState>) => void;
-  initialSettings: FormState;
+  settings: FormState;
   onUpdate: (opts: HydrationLock<FormState>) => void;
+  maxBeepCount: number;
+  setMaxBeepCount: (maxBeepCount: number) => void;
 };
 
 const InnerGen3Timer = ({
   timer,
   setTimer,
-  initialSettings,
+  settings,
   onUpdate,
+  maxBeepCount,
+  setMaxBeepCount,
 }: InnerProps) => {
+  const [mode, setMode] = React.useState<Mode>("run");
+  const sequence = useTimerSequence({
+    milliseconds: timer.milliseconds,
+    maxBeepCount,
+  });
+
   const updateTimerSettings = (formState: FormState) => {
     const updatedTimer = updateGen3Timer(formState);
     setTimer(
@@ -138,74 +110,97 @@ const InnerGen3Timer = ({
     onUpdate(hydrationLock(formState));
   };
 
-  const history = useStateHistory({
-    initialSettings,
-    updateTimerSettings,
-  });
-
-  const onSubmit: RngToolSubmit<FormState> = async (opts, { setValue }) => {
-    let settings = opts;
-
-    if (opts.frameHit != null) {
-      const updated = updateGen3Timer(settings, opts.frameHit);
-      settings = {
-        ...updated.settings,
-        version: 1,
-        frameHit: null,
-      };
-      setValue("console", settings.console);
-      setValue("preTimer", settings.preTimer);
-      setValue("targetFrame", settings.targetFrame);
-      setValue("calibration", settings.calibration);
-      setValue("frameHit", settings.frameHit);
-    }
-
-    updateTimerSettings(settings);
-    history.addIfNew(settings);
+  const onCalibrate = (frameHit: number) => {
+    const updated = updateGen3Timer(settings, frameHit);
+    updateTimerSettings({ ...updated.settings, version: 1, frameHit: null });
   };
 
+  const labels = getGen3PhaseLabels(settings);
+
   return (
-    <Flex vertical gap={12}>
-      <MultiTimer
-        startButtonTrackerId="start_gen3_timer"
-        stopButtonTrackerId="stop_gen3_timer"
-        milliseconds={timer.milliseconds}
-        minutesBeforeTarget={timer.minutesBeforeTarget}
+    <Flex vertical gap={16}>
+      <RadioGroup<Mode>
+        name="timerMode"
+        optionType="button"
+        value={mode}
+        onChange={({ target }) => setMode(target.value)}
+        options={[
+          { label: "Setup", value: "setup", disabled: sequence.isRunning },
+          { label: "Run", value: "run" },
+        ]}
       />
 
-      <RngToolForm<FormState, number[]>
-        fields={fields}
-        initialValues={initialSettings}
-        additionalButtons={
-          <UndoButton
-            history={history}
-            trackerId="undo_gen3_calibration"
-            fields={{
-              version: true,
-              console: true,
-              preTimer: true,
-              targetFrame: true,
-              calibration: true,
-              frameHit: true,
-            }}
-          />
-        }
-        onSubmit={onSubmit}
-        submitTrackerId="set_gen3_timer"
-        submitButtonLabel="Set Timer"
-      />
+      {mode === "run" && (
+        <RunView
+          sequence={sequence}
+          milliseconds={timer.milliseconds}
+          startTrackerId="start_gen3_timer"
+          stopTrackerId="stop_gen3_timer"
+          listTitle="Timers"
+          rows={timer.milliseconds.map((ms, index) => ({
+            id: index,
+            label: labels[index] ?? `Phase ${index + 1}`,
+            ms,
+          }))}
+          onEdit={() => setMode("setup")}
+          hit={{
+            id: 0,
+            type: "single",
+            label: "Frame Hit",
+            numType: "float",
+            trackerId: "calibrate_gen3_timer",
+            onCalibrate,
+          }}
+        />
+      )}
+
+      {mode === "setup" && (
+        <Gen3Setup
+          settings={settings}
+          maxBeepCount={maxBeepCount}
+          setMaxBeepCount={setMaxBeepCount}
+          onSet={(draft) => {
+            updateTimerSettings({
+              ...settings,
+              ...draft,
+              version: 1,
+              frameHit: null,
+            });
+            setMode("run");
+          }}
+        />
+      )}
     </Flex>
   );
 };
 
 export const Gen3Timer = () => {
-  const { initialSettings, onUpdate } = useTimerSettings(timerSettingsAtom);
+  const [settings, setSettings] = useAtom(timerSettingsAtom);
   const [timer, setTimer] = useAtom(timerStateAtom);
-  const { hydrated, client } = useHydrate({ initialSettings, timer });
+  const [lockedMultiTimerState, setLockedMultiTimerState] =
+    useAtom(multiTimerStateAtom);
+  const { hydrated, client } = useHydrate({
+    settings,
+    timer,
+    multiTimerState: lockedMultiTimerState,
+  });
 
   if (!hydrated) {
     return <Skeleton />;
   }
 
-  return <InnerGen3Timer {...client} setTimer={setTimer} onUpdate={onUpdate} />;
+  return (
+    <InnerGen3Timer
+      timer={client.timer}
+      setTimer={setTimer}
+      settings={client.settings}
+      onUpdate={setSettings}
+      maxBeepCount={client.multiTimerState.maxBeepCount}
+      setMaxBeepCount={(maxBeepCount) =>
+        setLockedMultiTimerState(
+          hydrationLock({ ...client.multiTimerState, maxBeepCount }),
+        )
+      }
+    />
+  );
 };

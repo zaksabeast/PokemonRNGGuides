@@ -1,3 +1,4 @@
+import * as tst from "ts-toolbelt";
 import type {
   AbilityType,
   Gender,
@@ -236,20 +237,34 @@ export const getPkmFilterInitialValues = (): PkmFilterFields => ({
   filter_hidden_power: defaultHiddenPowerFilter,
 });
 
+type PkmFilterId =
+  | "shiny"
+  | "nature"
+  | "ability"
+  | "gender"
+  | "min_ivs"
+  | "max_ivs"
+  | "hidden_power_switch"
+  | "hidden_power_input";
+type PkmFilterField = tst.O.Merge<Field, { id: PkmFilterId }>;
+
 const _getPkmFilterFields = (
   props: PkmFilterProps = {},
   t?: Translations,
-): Field[] =>
+): PkmFilterField[] =>
   [
     optOut(props?.displayShiny, {
+      id: "shiny" as const,
       label: t?.["Shiny"] ?? "Shiny",
       input: <FormikSwitch<PkmFilterFields> name="filter_shiny" />,
     }),
     optOut(props?.displayNature, {
+      id: "nature" as const,
       label: t?.["Nature"] ?? "Nature",
       input: <NatureFilterInput />,
     }),
     optOut(props?.displayAbility, {
+      id: "ability" as const,
       label: t?.["Ability"] ?? "Ability",
       input: (
         <FormikAbilityFilter<PkmFilterFields>
@@ -261,6 +276,7 @@ const _getPkmFilterFields = (
       ),
     }),
     optOut(props?.displayGender, {
+      id: "gender" as const,
       label: t?.["Gender"] ?? "Gender",
       input: (
         <FormikRadio
@@ -270,21 +286,25 @@ const _getPkmFilterFields = (
       ),
     }),
     optOut(props?.displayIvs, {
+      id: "min_ivs" as const,
       label: t?.["Min IVs"] ?? "Min IVs",
       input: <IvInput<PkmFilterFields> name="filter_min_ivs" />,
     }),
     optOut(props?.displayIvs, {
+      id: "max_ivs" as const,
       label: t?.["Max IVs"] ?? "Max IVs",
       input: <IvInput<PkmFilterFields> name="filter_max_ivs" />,
     }),
     optOut(props?.displayHiddenPower, {
+      id: "hidden_power_switch" as const,
       label: "Hidden Power",
       input: <HiddenPowerSwitch />,
     }),
     optOut(props?.displayHiddenPower, {
+      id: "hidden_power_input" as const,
       label: "",
       key: "_getPkmFilterFields.hidden_power",
-      direction: "column",
+      direction: "column" as const,
       showWhen: {
         fieldName: "filter_hidden_power.active",
         when: (active: unknown) => active === true,
@@ -297,8 +317,8 @@ const _getPkmFilterFields = (
 export const getPkmFilterFields = <FormField,>(
   props?: PkmFilterProps,
   t?: Translations,
-): FormField extends PkmFilterFields ? Field[] : never => {
+): FormField extends PkmFilterFields ? PkmFilterField[] : never => {
   return _getPkmFilterFields(props, t) as FormField extends PkmFilterFields
-    ? Field[]
+    ? PkmFilterField[]
     : never;
 };

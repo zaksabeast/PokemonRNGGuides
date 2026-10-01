@@ -6,75 +6,92 @@ import { Route } from "~/routes/defs";
 import { Link } from "./link";
 import { track } from "~/analytics";
 import * as tst from "ts-toolbelt";
-import { BaseButton } from "./button";
+import { OneOf } from "~/types";
+import { styledPropGuard } from "~/utils/styled";
+
+const StyledCard = styled(AntdCard)(({ theme }) => ({
+  // The theme can't override this for card specifically,
+  // so we do it here.
+  background: theme.token.colorBgElevated,
+}));
+
+// Matches the wrapper Link used for internal slugs, so external cards
+// look the same as other cards. External links always open in a new tab.
+const ExternalLink = styled(
+  "a",
+  styledPropGuard,
+)<{ $fullBody?: boolean }>(({ $fullBody }) => ({
+  display: "block",
+  height: $fullBody ? "100%" : undefined,
+  width: $fullBody ? "100%" : undefined,
+  cursor: "pointer",
+}));
+
+type ActionProps = tst.O.Merge<
+  {
+    id: string;
+  },
+  OneOf<{
+    slug: Route;
+    externalHref: string;
+    onClick: React.MouseEventHandler<HTMLDivElement>;
+  }>
+>;
 
 type ExtraProps = {
-  slug?: Route;
-  externalHref?: string;
   fullBody?: boolean;
-  newTab?: boolean;
+  actionProps?: ActionProps;
 };
 
 type LinkCardProps = tst.O.Merge<
-  tst.O.Required<AntdCardProps, "id">,
+  tst.O.Omit<AntdCardProps, "id" | "onClick">,
   ExtraProps
 >;
 
-const LinkCard = ({
-  slug,
-  externalHref,
-  fullBody,
-  id,
-  newTab,
-  onClick: _onClick,
-  ...props
-}: LinkCardProps) => {
+const LinkCard = ({ fullBody, actionProps, ...props }: LinkCardProps) => {
   const onClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
-    if (_onClick == null && slug == null && externalHref == null) {
+    if (actionProps == null) {
       return;
     }
 
-    _onClick?.(event);
-
-    track("Card Clicked", { id });
+    actionProps.onClick?.(event);
+    track("Card Clicked", { id: actionProps.id });
   };
 
-  if (externalHref != null) {
+  if (actionProps?.externalHref != null) {
     return (
-      <BaseButton
-        trackerId={`${id}-card-button`}
-        href={externalHref}
-        newTab={newTab}
+      <ExternalLink
+        href={actionProps.externalHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        $fullBody={fullBody}
       >
-        <AntdCard onClick={onClick} {...props} />
-      </BaseButton>
+        <StyledCard onClick={onClick} {...props} />
+      </ExternalLink>
     );
   }
 
-  if (slug != null) {
+  if (actionProps?.slug != null) {
     return (
       <Link
-        href={slug}
-        newTab={newTab}
+        href={actionProps.slug}
         height={fullBody ? "100%" : undefined}
         width={fullBody ? "100%" : undefined}
       >
-        <AntdCard onClick={onClick} {...props} />
+        <StyledCard onClick={onClick} {...props} />
       </Link>
     );
   }
 
-  return <AntdCard onClick={onClick} {...props} />;
+  return <StyledCard onClick={onClick} {...props} />;
 };
 
 export const Card = styled(withCss(LinkCard))<ExtraProps>(({
-  slug,
-  externalHref,
+  actionProps,
   fullBody,
-  onClick,
   theme,
 }) => {
-  const isClickable = slug != null || externalHref != null || onClick != null;
+  const isClickable = actionProps != null;
 
   return {
     cursor: isClickable ? "pointer" : "default",

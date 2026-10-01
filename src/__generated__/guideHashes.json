@@ -244,8 +244,8 @@
     "lastUpdated": "2026-05-05"
   },
   "/dppt-tid-sid/": {
-    "hash": "6c8534a9070ee9106cde0e101957b852edb7ce3ce2c1e1b49f130889a173c222",
-    "lastUpdated": "2026-05-11"
+    "hash": "bac465d83e1967ae0132577f06c998ec0d01a7428f55707c2d5764e935ace920",
+    "lastUpdated": "2026-09-19"
   },
   "/dppt-wild/": {
     "hash": "aeb881560a0f42098e4a691d6dfcfc4a49927a0213b2b7a5c960aac9da31ce58",
@@ -404,16 +404,16 @@
     "lastUpdated": "2026-03-18"
   },
   "/emulator-flrg-stationary-and-gift/": {
-    "hash": "14aef9cfc3bdc490f4af26c0abc76d2342ca6b1040882debddf2d5ee290a2efe",
-    "lastUpdated": null
+    "hash": "3c2ced3cfc300dfa80f7361e5448d978ea4ea0e1590bed91c3d6a2ee7a7c8dfe",
+    "lastUpdated": "2026-09-20"
   },
   "/emulator-frlg-egg/": {
     "hash": "00299100f79802ac5d549b944f74119a35b4ca7788e34350b6fc6eac33c21381",
     "lastUpdated": null
   },
   "/emulator-frlg-stationary/": {
-    "hash": "b5ba67b169146bc5ec9819ef80218229897c6fcbde585c099569f4288a91e3c4",
-    "lastUpdated": null
+    "hash": "3c2ced3cfc300dfa80f7361e5448d978ea4ea0e1590bed91c3d6a2ee7a7c8dfe",
+    "lastUpdated": "2026-09-20"
   },
   "/emulator-frlg-wild-v2/": {
     "hash": "c17f7ce0f4bc3268b94fb57d1cfea1ab95f7255bdfe1ad5d9cbb2cb0cf80b14c",
@@ -636,8 +636,8 @@
     "lastUpdated": "2026-05-14"
   },
   "/hgss-tid-sid/": {
-    "hash": "6c8534a9070ee9106cde0e101957b852edb7ce3ce2c1e1b49f130889a173c222",
-    "lastUpdated": "2026-05-11"
+    "hash": "bac465d83e1967ae0132577f06c998ec0d01a7428f55707c2d5764e935ace920",
+    "lastUpdated": "2026-09-19"
   },
   "/install-capturesight/": {
     "hash": "acf0cdf304196b7719bc0821271b378975706791c58bfe712c963ca542150f20",
@@ -776,8 +776,8 @@
     "lastUpdated": "2026-03-25"
   },
   "/mystic-timer/": {
-    "hash": "0c4559723903098b16c9943b56627c9b228c10e3eb4ce419e9b9dda5a55fd551",
-    "lastUpdated": null
+    "hash": "6da5c06dc9cc299869636d109a1026f550a8ae3bac3736e86e67552f61f74eba",
+    "lastUpdated": "2026-09-24"
   },
   "/no-dolphin-patch/": {
     "hash": "76594e710897275595ce75219e1b53c58f1e705a5ee16ede58248a7ffc9fbd9b",
@@ -832,8 +832,8 @@
     "lastUpdated": "2026-07-04"
   },
   "/retail-dppt-honey-pokemon/": {
-    "hash": "d9e529ba112d54f6e84cc5cb199b324b87d919f4f6204d92b3b6a5bd31d40653",
-    "lastUpdated": "2026-05-31"
+    "hash": "83d1c00e7754b97bd64fe070be4d174e45784d5993140915c0df708bb04ab793",
+    "lastUpdated": "2026-09-19"
   },
   "/retail-dppt-honey-tree/": {
     "hash": "bd30a6e97c252c6a949bfe59fa7d2132e91300789f2eaa4b416ac19720cc0042",
@@ -844,28 +844,28 @@
     "lastUpdated": "2026-07-19"
   },
   "/retail-dppt-starter/": {
-    "hash": "ae1bc8e4a73dbd48a63764e2d4066556372236d4fba41ee5b73242678f6ab994",
-    "lastUpdated": "2026-04-10"
+    "hash": "f03666b7cd152819ed9d79fdd91cf8328eac4f155e0814e08fe6989e1d8c358b",
+    "lastUpdated": "2026-09-28"
   },
   "/retail-dppt-static/": {
-    "hash": "d9e529ba112d54f6e84cc5cb199b324b87d919f4f6204d92b3b6a5bd31d40653",
-    "lastUpdated": "2026-05-31"
+    "hash": "83d1c00e7754b97bd64fe070be4d174e45784d5993140915c0df708bb04ab793",
+    "lastUpdated": "2026-09-19"
   },
   "/retail-dppt-swarm/": {
     "hash": "74f76fb16088082990d587a47dd0ecf0004fe5b0e226cb4307d3bee36ef096cd",
     "lastUpdated": "2026-07-26"
   },
   "/retail-emerald-egg/": {
-    "hash": "40b7fdb9460d5302f64205225507ec569c0c2e5f2da635578c96c0e19e9e9944",
-    "lastUpdated": "2026-06-01"
+    "hash": "e9c04bd7c59190efbeb7638ff8e32118c15c5fc8772dd555dda8a5fc35301e6b",
+    "lastUpdated": "2026-09-19"
   },
   "/retail-emerald-wild/": {
     "hash": "886f854e39099f4503124988519474a618a2abd68bbfe54493f9301a5f31686c",
     "lastUpdated": "2026-09-20"
   },
   "/retail-hgss-starter/": {
-    "hash": "ae1bc8e4a73dbd48a63764e2d4066556372236d4fba41ee5b73242678f6ab994",
-    "lastUpdated": "2026-04-10"
+    "hash": "f03666b7cd152819ed9d79fdd91cf8328eac4f155e0814e08fe6989e1d8c358b",
+    "lastUpdated": "2026-09-28"
   },
   "/retail-hgss-swarm/": {
     "hash": "74f76fb16088082990d587a47dd0ecf0004fe5b0e226cb4307d3bee36ef096cd",

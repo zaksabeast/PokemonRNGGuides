@@ -1,4 +1,4 @@
-import { MultiTimer } from "~/components/multiTimer";
+import { EmbeddedRunTimer } from "~/rngToolsUi/timer/embeddedRunTimer";
 import { EmeraldSeedToAdvances } from "./seedToAdvances";
 import React, { useState } from "react";
 import {
@@ -125,20 +125,20 @@ export const PaintingReseedingTimers = ({
       <Instructions_0_createBattleVideo />
 
       <FormFieldTable fields={fields} />
-      <MultiTimer
+      <EmbeddedRunTimer
         milliseconds={millisecondsCreateVideo}
         labels={labelsCreateVideo}
-        startButtonTrackerId="painting_battle_video_timer_start"
-        stopButtonTrackerId="painting_battle_video_timer_stop"
+        startTrackerId="painting_battle_video_timer_start"
+        stopTrackerId="painting_battle_video_timer_stop"
       />
 
       <h2>Step 3: Validate that the painting frame was hit</h2>
       <Instructions_1_validateFrame />
-      <MultiTimer
+      <EmbeddedRunTimer
         milliseconds={millisecondsValidateFrame}
         labels={labelsValidateFrame}
-        startButtonTrackerId="painting_battle_video_timer_start"
-        stopButtonTrackerId="painting_battle_video_timer_stop"
+        startTrackerId="painting_battle_video_timer_start"
+        stopTrackerId="painting_battle_video_timer_stop"
       />
     </>
   );

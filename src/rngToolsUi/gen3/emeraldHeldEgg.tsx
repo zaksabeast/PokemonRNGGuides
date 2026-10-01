@@ -188,6 +188,7 @@ export const EmeraldHeldEgg = ({ lua = false }: Props) => {
       filters: {
         shiny: opts.filter_shiny,
         nature: opts.filter_nature,
+        ability: null,
         gender: opts.filter_gender,
         match_call: null,
       },

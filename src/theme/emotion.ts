@@ -144,11 +144,11 @@ export const emotionTheme: Theme = {
       return match(size)
         .with(
           "mobile",
-          () => `@media (max-width: ${screenSizeMap.smallTablet - 1}px)`,
+          () => `@media (max-width: ${screenSizeMap.mobile - 1}px)`,
         )
         .with(
           "smallTablet",
-          () => `@media (max-width: ${screenSizeMap.tablet - 1}px)`,
+          () => `@media (max-width: ${screenSizeMap.smallTablet - 1}px)`,
         )
         .with(
           "tablet",

@@ -1,6 +1,5 @@
 import React from "react";
 import { HydrationLock } from "~/utils/hydration";
-import * as tst from "ts-toolbelt";
 import { atom, useAtom, useAtomValue } from "jotai";
 
 const isHydratedAtom = atom(false);
@@ -25,22 +24,14 @@ export const useIsHydrated = () => {
   return useAtomValue(isHydratedAtom);
 };
 
-type _HydrationUnlock<T> = T extends HydrationLock<infer U> ? U : T;
-
-export type HydrationUnlock<T> = T extends tst.O.Object
-  ? {
-      [K in keyof T]: _HydrationUnlock<T[K]>;
-    }
-  : _HydrationUnlock<T>;
-
 export type HydrationLockObj<T> = {
   [K in keyof T]: HydrationLock<T[K]>;
 };
 
 export type LockedValue<T> = HydrationLock<T> | HydrationLockObj<T>;
 
-const unlockHydration = <T>(value: LockedValue<T>): HydrationUnlock<T> => {
-  return value as unknown as HydrationUnlock<T>;
+const unlockHydration = <T>(value: LockedValue<T>): T => {
+  return value as unknown as T;
 };
 
 type HydratedResult<T> =
@@ -50,7 +41,7 @@ type HydratedResult<T> =
     }
   | {
       hydrated: true;
-      client: HydrationUnlock<T>;
+      client: T;
     };
 
 /**

@@ -1,42 +1,20 @@
-import { Skeleton } from "antd";
-import {
-  FormikNumberInput,
-  RngToolForm,
-  RngToolSubmit,
-  Field,
-  FormikSelect,
-  Flex,
-  MultiTimer,
-} from "~/components";
 import { ZodSerializedDecimal, ZodSerializedOptional } from "~/utils/number";
 import {
   ZodConsole,
   calibrateGen5EntralinkPlusTimer,
   createGen5EntralinkPlusTimer,
-  minutesBefore,
+  type Gen5EntralinkPlusTimerSettings,
 } from "~/rngTools";
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
 import { useTimerSettings } from "~/state/timerSettings";
 import { z } from "zod";
-import { useHydrate } from "~/hooks/useHydrate";
-import { hydrationLock, HydrationLock } from "~/utils/hydration";
-import { useStateHistory } from "~/hooks/useStateHistory";
-import { UndoButton } from "../undoButton";
-
-const TimerStateSchema = z.object({
-  milliseconds: z.array(z.number()),
-  minutesBeforeTarget: z.number(),
-});
-
-type TimerState = z.infer<typeof TimerStateSchema>;
+import { TimerStateSchema, initialTimerState } from "./timerState";
+import { Gen5VariantTimer, type Gen5VariantConfigMulti } from "./variantTimer";
 
 const timerStateAtom = atomWithPersistence(
   "gen5EntralinkPlusTimer",
   TimerStateSchema,
-  {
-    milliseconds: [],
-    minutesBeforeTarget: 0,
-  },
+  initialTimerState,
 );
 
 const V0FormStateSchema = z
@@ -112,194 +90,60 @@ const timerSettingsAtom = atomWithPersistence(
   initialValues,
 );
 
-const fields: Field[] = [
-  {
-    label: "Console",
-    input: (
-      <FormikSelect<FormState, "console">
-        name="console"
-        options={[
-          { label: "NDS - Slot 1", value: "NdsSlot1" },
-          { label: "DSI", value: "Dsi" },
-          { label: "3DS", value: "ThreeDs" },
-        ]}
-      />
-    ),
-  },
-  {
-    label: "Min Time (ms)",
-    input: <FormikNumberInput<FormState> name="minTimeMs" numType="float" />,
-  },
-  {
-    label: "Target Delay",
-    input: <FormikNumberInput<FormState> name="targetDelay" numType="float" />,
-  },
-  {
-    label: "Target Second",
-    input: <FormikNumberInput<FormState> name="targetSecond" numType="float" />,
-  },
-  {
-    label: "Target Advance",
-    input: (
-      <FormikNumberInput<FormState> name="targetAdvances" numType="float" />
-    ),
-  },
-  {
-    label: "Calibration",
-    input: <FormikNumberInput<FormState> name="calibration" numType="float" />,
-  },
-  {
-    label: "Entralink Calibration",
-    input: (
-      <FormikNumberInput<FormState>
-        name="entralinkCalibration"
-        numType="float"
-      />
-    ),
-  },
-  {
-    label: "Frame Calibration",
-    input: (
-      <FormikNumberInput<FormState> name="frameCalibration" numType="float" />
-    ),
-  },
-  {
-    label: "Delay Hit",
-    input: <FormikNumberInput<FormState> name="delayHit" numType="float" />,
-  },
-  {
-    label: "Second Hit",
-    input: <FormikNumberInput<FormState> name="secondHit" numType="float" />,
-  },
-  {
-    label: "Advance Hit",
-    input: <FormikNumberInput<FormState> name="advanceHit" numType="float" />,
-  },
-];
-
-type InnerProps = {
-  timer: TimerState;
-  setTimer: (timer: HydrationLock<TimerState>) => void;
-  initialSettings: FormState;
-  onUpdate: (opts: HydrationLock<FormState>) => void;
-};
-
-const InnerGen5EntralinkPlusTimer = ({
-  timer,
-  setTimer,
-  initialSettings,
-  onUpdate,
-}: InnerProps) => {
-  const updateTimerSettings = (formState: FormState) => {
-    const milliseconds = createGen5EntralinkPlusTimer(formState);
-    setTimer(
-      hydrationLock({
-        milliseconds,
-        minutesBeforeTarget: minutesBefore(milliseconds),
-      }),
-    );
-    onUpdate(hydrationLock(formState));
-  };
-
-  const history = useStateHistory({
-    initialSettings,
-    updateTimerSettings,
-  });
-
-  const onSubmit: RngToolSubmit<FormState> = async (opts, { setValue }) => {
-    let settings = opts;
-
-    if (
-      opts.secondHit != null &&
-      opts.delayHit != null &&
-      opts.advanceHit != null
-    ) {
-      const calibrated = calibrateGen5EntralinkPlusTimer({
-        settings,
-        hitSecond: opts.secondHit,
-        hitDelay: opts.delayHit,
-        hitAdvances: opts.advanceHit,
-      });
-      settings = {
-        ...calibrated,
-        version: 1,
-        console: opts.console,
-        delayHit: null,
-        secondHit: null,
-        advanceHit: null,
-      };
-
-      setValue("console", settings.console);
-      setValue("minTimeMs", settings.minTimeMs);
-      setValue("targetDelay", settings.targetDelay);
-      setValue("targetSecond", settings.targetSecond);
-      setValue("targetAdvances", settings.targetAdvances);
-      setValue("calibration", settings.calibration);
-      setValue("entralinkCalibration", settings.entralinkCalibration);
-      setValue("frameCalibration", settings.frameCalibration);
-      setValue("delayHit", settings.delayHit);
-      setValue("secondHit", settings.secondHit);
-      setValue("advanceHit", settings.advanceHit);
-    }
-
-    updateTimerSettings(settings);
-    history.addIfNew(settings);
-  };
-
-  return (
-    <Flex vertical gap={12}>
-      <MultiTimer
-        startButtonTrackerId="start_gen5_entralink_plus_timer"
-        stopButtonTrackerId="stop_gen5_entralink_plus_timer"
-        milliseconds={timer.milliseconds}
-        minutesBeforeTarget={timer.minutesBeforeTarget}
-      />
-
-      <RngToolForm<FormState, number[]>
-        fields={fields}
-        initialValues={initialSettings}
-        onSubmit={onSubmit}
-        submitTrackerId="set_gen5_entralink_plus_timer"
-        submitButtonLabel="Set Timer"
-        additionalButtons={
-          <UndoButton
-            history={history}
-            trackerId="undo_gen5_entralink_plus_calibration"
-            fields={{
-              version: true,
-              console: true,
-              minTimeMs: true,
-              targetDelay: true,
-              targetSecond: true,
-              targetAdvances: true,
-              calibration: true,
-              entralinkCalibration: true,
-              frameCalibration: true,
-              delayHit: true,
-              secondHit: true,
-              advanceHit: true,
-            }}
-          />
-        }
-      />
-    </Flex>
-  );
+const config: Gen5VariantConfigMulti<
+  Gen5EntralinkPlusTimerSettings,
+  FormState,
+  "second" | "delay" | "advances"
+> = {
+  type: "multi",
+  trackerPrefix: "gen5_entralink_plus",
+  listTitle: "Timers",
+  rowLabels: ["Seconds", "Delay", "Advances"],
+  hitLabel: "Hits",
+  hitFields: [
+    { id: "second", label: "Second Hit", numType: "float" },
+    { id: "delay", label: "Delay Hit", numType: "float" },
+    { id: "advances", label: "Advance Hit", numType: "float" },
+  ],
+  targetFields: [
+    { key: "targetAdvances", label: "Target Advance" },
+    { key: "targetDelay", label: "Target Delay" },
+    { key: "targetSecond", label: "Target Second" },
+    { key: "minTimeMs", label: "Min Time (ms)" },
+  ],
+  calibrationFields: [
+    { key: "calibration", label: "Calibration" },
+    { key: "entralinkCalibration", label: "Entralink Calibration" },
+    { key: "frameCalibration", label: "Frame Calibration" },
+  ],
+  create: createGen5EntralinkPlusTimer,
+  calibrate: (settings, { second, delay, advances }) =>
+    calibrateGen5EntralinkPlusTimer({
+      settings,
+      hitSecond: second,
+      hitDelay: delay,
+      hitAdvances: advances,
+    }),
+  toPersisted: (settings) => ({
+    ...settings,
+    version: 1,
+    delayHit: null,
+    secondHit: null,
+    advanceHit: null,
+  }),
 };
 
 export const Gen5EntralinkPlusTimer = () => {
   const { initialSettings, onUpdate } = useTimerSettings(timerSettingsAtom);
   const [timer, setTimer] = useAtom(timerStateAtom);
-  const { hydrated, client } = useHydrate({ initialSettings, timer });
-
-  if (!hydrated) {
-    return <Skeleton />;
-  }
 
   return (
-    <InnerGen5EntralinkPlusTimer
-      {...client}
-      setTimer={setTimer}
+    <Gen5VariantTimer
+      config={config}
+      initialSettings={initialSettings}
       onUpdate={onUpdate}
+      timer={timer}
+      setTimer={setTimer}
     />
   );
 };

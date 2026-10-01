@@ -11,7 +11,7 @@ import { denormalizeIdFilter } from "~/types/id";
 import { z } from "zod";
 import { useRsTidState } from "./rsTidState";
 import { CalibrateButton } from "./calibrateButton";
-import { Gen3Timer } from "~/components/gen3Timer";
+import { Gen3EmbeddedTimer } from "~/rngToolsUi/gen3/shared/timer";
 import { createGen3TimerAtom } from "~/rngToolsUi/timer/atoms";
 
 const timerAtom = createGen3TimerAtom();
@@ -71,7 +71,7 @@ const fields: Field[] = [
 export const RsTidTimer = () => {
   const [state] = useRsTidState();
   return (
-    <Gen3Timer
+    <Gen3EmbeddedTimer
       trackerId="retail_tid_timer"
       targetAdvance={state.targetAdvance}
       timer={timerAtom}

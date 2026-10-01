@@ -4,10 +4,10 @@ use wasm_bindgen::prelude::*;
 
 use crate::gen3::{
     BASE_LEAD_PID_MOD_24_CYCLES, COMMON_LEAD_RANGE, CycleAndModCount, CycleAndModRange,
-    CycleCounter, FASTEST_MODULO_CYCLE_24, Gen3Lead, INFINITE_CYCLE,
-    Moment, SLOWEST_MODULO_CYCLE_24, VBLANK_FREQ,
-    Wild3GeneratorCycleOpts, Wild3GeneratorOptions, get_min_mid_max_pre_sweet_scent_cycle,
-    get_min_mid_max_vblank_cycle_duration, is_method_possible_to_trigger,
+    CycleCounter, FASTEST_MODULO_CYCLE_24, Gen3Lead, INFINITE_CYCLE, Moment,
+    SLOWEST_MODULO_CYCLE_24, VBLANK_FREQ, Wild3GeneratorCycleOpts, Wild3GeneratorOptions,
+    get_min_mid_max_pre_sweet_scent_cycle, get_min_mid_max_vblank_cycle_duration,
+    is_method_possible_to_trigger,
 };
 
 #[derive(Default, Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]

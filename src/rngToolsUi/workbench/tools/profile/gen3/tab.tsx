@@ -21,7 +21,7 @@ import { hydrationLock } from "~/utils/hydration";
 import { toOptions } from "~/utils/options";
 import { ToolLayout } from "~/rngToolsUi/workbench/layouts/tool";
 import { gen3ProfilesAtom, Gen3ProfileSchema } from "./state";
-import { pokeNavTrainers } from "~/rngToolsUi/gen3/retailEmeraldEgg/state";
+import { pokeNavTrainers } from "~/rngToolsUi/gen3/retailEmeraldEgg/constants";
 import { usePokeNavTranslations } from "~/translations";
 
 type FormState = z.infer<typeof Gen3ProfileSchema>;

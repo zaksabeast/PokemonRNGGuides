@@ -17,19 +17,20 @@ type DirectGuideCardProps = {
 };
 
 const DirectGuideCard = ({ isTop, isBottom, guide }: DirectGuideCardProps) => {
-  const linkProps = match(guide)
+  const id = `guide-${guide.id}`;
+  const actionProps = match(guide)
     .with({ type: "baseGuide" }, (matched) => ({
+      id,
       slug: matched.slug,
     }))
     .with({ type: "externalLink" }, (matched) => ({
+      id,
       externalHref: matched.url,
-      newTab: true,
     }))
     .exhaustive();
 
   return (
     <GuideCardFrame
-      cardId={`guide-${guide.id}`}
       title={
         <>
           {guide.navDrawerTitle}
@@ -38,7 +39,7 @@ const DirectGuideCard = ({ isTop, isBottom, guide }: DirectGuideCardProps) => {
       }
       isNew={guide.isNew}
       cardProps={{
-        ...linkProps,
+        actionProps,
         $isTop: isTop,
         $isBottom: isBottom,
       }}

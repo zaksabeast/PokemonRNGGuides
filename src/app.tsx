@@ -31,7 +31,7 @@ export const App = ({ updateSw }: Props) => {
 
   return (
     <StrictMode>
-      <SizeContext.Provider value="large">
+      <SizeContext.Provider value="medium">
         <ThemeProvider>
           <AntdApp>
             <PageLanguageContext.Provider value={currentLanguage}>

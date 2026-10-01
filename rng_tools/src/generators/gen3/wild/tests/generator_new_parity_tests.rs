@@ -3,7 +3,9 @@ use itertools::iproduct as products;
 use super::*;
 use crate::{
     Species,
-    gen3::{Wild3GeneratorCycleOpts,Gen3Method, Wild3SpecialEncounterGameData, generate_wild3_old},
+    gen3::{
+        Gen3Method, Wild3GeneratorCycleOpts, Wild3SpecialEncounterGameData, generate_wild3_old,
+    },
 };
 
 #[track_caller]

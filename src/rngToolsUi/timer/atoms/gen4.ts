@@ -1,6 +1,8 @@
 import { atom } from "jotai";
 import { Gen4Timer, Gen4TimerSettings, updateGen4Timer } from "~/rngTools";
 
+export const GEN4_PHASE_LABELS = ["Seconds", "Delay"];
+
 export const initialGen4Timer: Gen4Timer = {
   ms: [],
   settings: {

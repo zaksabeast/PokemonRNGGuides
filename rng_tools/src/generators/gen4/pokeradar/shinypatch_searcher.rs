@@ -2,11 +2,13 @@ use super::simulate::pokeradar4_simulate_advance;
 use super::types::{BattleResult, PokeRadar4AdvanceOpts, ShakeType};
 use crate::gen4::stationary::BaseStatic4State;
 
+#[allow(dead_code)]
 pub struct ShinyPatchCandidate {
     pub seed: u32,
     pub advance: usize,
 }
 
+#[allow(dead_code)]
 pub fn search_shiny_patches(
     candidates: &[BaseStatic4State],
     chain_count: u16,

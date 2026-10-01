@@ -1,7 +1,7 @@
 import { atomWithPersistence } from "~/state/localStorage";
 import { z } from "zod";
 import { Gen3GameVersions } from "~/types/games";
-import { pokeNavTrainers } from "~/rngToolsUi/gen3/retailEmeraldEgg/state";
+import { pokeNavTrainers } from "~/rngToolsUi/gen3/retailEmeraldEgg/constants";
 
 export const Gen3ProfileSchema = z.object({
   id: z.string(),

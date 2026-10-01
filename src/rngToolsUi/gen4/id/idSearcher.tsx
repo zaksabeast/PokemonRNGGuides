@@ -137,12 +137,12 @@ const getColumns = ({
       title: t["SID"],
       dataIndex: "sid",
     },
+  ];
+  const endColumns: ResultColumn<Result>[] = [
     {
       title: t["TSV"],
       dataIndex: "tsv",
     },
-  ];
-  const endColumns: ResultColumn<Result>[] = [
     {
       title: t["Delay"],
       dataIndex: "delay",
@@ -160,16 +160,16 @@ const getColumns = ({
   return [
     ...startColumns,
     {
-      title: t["Target Gender"],
-      dataIndex: "targetGender",
-    },
-    {
       title: t["Gender Ratios"],
       dataIndex: "genderRatios",
       render: (genderRatios) =>
         genderRatios.length === 0
           ? "All"
           : genderRatios.map(formatGenderRatio).join(", "),
+    },
+    {
+      title: t["Target Gender"],
+      dataIndex: "targetGender",
     },
     {
       title: t["Natures"],

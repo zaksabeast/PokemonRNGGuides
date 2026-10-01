@@ -38,3 +38,11 @@ export const createGen3TimerAtom = () => {
 };
 
 export type Gen3TimerAtom = ReturnType<typeof createGen3TimerAtom>;
+
+export const getGen3PhaseLabels = ({
+  preTimer,
+  targetFrame,
+}: Pick<Gen3TimerSettings, "preTimer" | "targetFrame">) => [
+  `${preTimer} ms`,
+  `${targetFrame} advances`,
+];

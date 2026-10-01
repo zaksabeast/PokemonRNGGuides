@@ -17,7 +17,7 @@ import {
   gen3ProfilesAtom,
   findProfileOrDefault,
 } from "~/rngToolsUi/workbench/tools/profile/gen3/state";
-import { pokeNavTrainers } from "~/rngToolsUi/gen3/retailEmeraldEgg/state";
+import { pokeNavTrainers } from "~/rngToolsUi/gen3/retailEmeraldEgg/constants";
 import { useAtom } from "~/state/localStorage";
 import { chunkRange } from "~/utils/chunkRange";
 import { ResultColumn } from "~/components/resultTable";

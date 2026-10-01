@@ -144,7 +144,7 @@ const InnerChallengePageComponent = ({ state, setState }: InnerProps) => {
 
   return (
     <Flex gap={24} vertical>
-      <Card id="challenge-header">
+      <Card>
         <Flex gap={8} vertical>
           <Typography.Title fontSize={24}>Completion Stats</Typography.Title>
 

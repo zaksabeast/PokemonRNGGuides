@@ -14,13 +14,27 @@ import { useSize } from "~/theme/size";
 
 const _StyledButton = withCss(AntdButton);
 
-const StyledButton = styled(_StyledButton)({
+const StyledButton = styled(_StyledButton)(({ theme }) => ({
+  "&&&.ant-btn-primary": {
+    // colorPrimaryActive is used as resting text because it has
+    // enough contrast on colorPrimaryBg in both light and dark mode.
+    color: theme.token.colorPrimaryActive,
+    backgroundColor: theme.token.colorPrimaryBg,
+    ":hover": {
+      backgroundColor: theme.token.colorPrimaryBgHover,
+    },
+    // Must come after :hover so disabled buttons don't change on hover.
+    "&:disabled, &.ant-btn-disabled": {
+      color: theme.token.colorTextDisabled,
+      backgroundColor: theme.token.colorBgContainerDisabled,
+    },
+  },
   ".ant-btn-icon": {
     display: "flex",
   },
-});
+}));
 
-type ButtonProps = tst.O.Overwrite<
+export type ButtonProps = tst.O.Overwrite<
   { trackerId: string } & React.ComponentProps<typeof StyledButton>,
   { color: Color }
 >;
@@ -30,6 +44,9 @@ export const Button = ({
   id: _id,
   onClick,
   color,
+  shape: _shape,
+  icon,
+  children,
   ...props
 }: ButtonProps) => {
   const id = _id ?? trackerId;
@@ -38,6 +55,10 @@ export const Button = ({
     track("Button clicked", { id: trackerId });
     onClick?.(event);
   };
+
+  const shape =
+    _shape == null && icon != null && children == null ? "circle" : _shape;
+
   return (
     <StyledButton
       id={id}
@@ -45,55 +66,11 @@ export const Button = ({
       size={size}
       // @ts-expect-error styled doesn't overwrite prop types correctly when shouldForwardProp prevents a passthrough
       color={color}
+      icon={icon}
+      shape={shape}
       {...props}
-    />
-  );
-};
-
-const _BaseButton = withCss(
-  styled(AntdButton)({
-    "&&&": {
-      whiteSpace: "unset",
-      padding: "unset",
-      border: "unset",
-      background: "unset",
-      textAlign: "unset",
-      width: "unset",
-      height: "unset",
-      boxShadow: "unset",
-      "&:hover": {
-        border: "unset",
-        boxShadow: "unset",
-      },
-    },
-  }),
-);
-
-const NEW_TAB_PROPS = { target: "_blank", rel: "noopener noreferrer" };
-const SAME_TAB_PROPS = {};
-
-type BaseButtonProps = {
-  trackerId: string;
-  newTab?: boolean;
-} & React.ComponentProps<typeof _BaseButton>;
-
-export const BaseButton = ({
-  trackerId,
-  id: _id,
-  onClick,
-  newTab,
-  ...props
-}: BaseButtonProps) => {
-  const id = _id ?? trackerId;
-  const trackedClick: tst.U.NonNullable<typeof onClick> = (event) => {
-    track("Button clicked", { id: trackerId });
-    onClick?.(event);
-  };
-
-  const linkProps =
-    props.href != null && newTab ? NEW_TAB_PROPS : SAME_TAB_PROPS;
-
-  return (
-    <_BaseButton {...props} id={id} onClick={trackedClick} {...linkProps} />
+    >
+      {children}
+    </StyledButton>
   );
 };

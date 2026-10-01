@@ -1,9 +1,16 @@
 import { Breadcrumb, BreadcrumbProps } from "antd";
+import { Flex } from "./flex";
+import { Icon } from "./icons";
 import { guides, getGuide, categoryOwners } from "~/guides";
 import { Route, RouteSchema } from "~/routes/defs";
 import { mapValues } from "lodash-es";
 import { Link } from "./link";
 import { track } from "~/analytics";
+import styled from "@emotion/styled";
+
+const ColorlessLink = styled(Link)({
+  "&&&": { color: "unset" },
+});
 
 type Screen = {
   route: Route;
@@ -65,9 +72,9 @@ const itemRender: BreadcrumbProps["itemRender"] = (item) => {
 
   if (route.success) {
     return (
-      <Link href={route.data} onClick={item.onClick}>
+      <ColorlessLink href={route.data} onClick={item.onClick}>
         {item.title}
-      </Link>
+      </ColorlessLink>
     );
   }
 
@@ -85,5 +92,15 @@ export const NavBreadcrumbs = ({ route }: Props) => {
     return null;
   }
 
-  return <Breadcrumb items={breadcrumbItems} itemRender={itemRender} />;
+  return (
+    <Breadcrumb
+      items={breadcrumbItems}
+      itemRender={itemRender}
+      separator={
+        <Flex height="100%">
+          <Icon name="ChevronRight" size={18} />
+        </Flex>
+      }
+    />
+  );
 };

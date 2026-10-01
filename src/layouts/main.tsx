@@ -54,14 +54,20 @@ const ContentLayout = styled.div(({ theme }) => ({
   paddingRight: SIDE_MARGIN,
   overflowY: "scroll",
   marginTop: theme.token.layoutHeaderHeight,
+
+  backgroundColor: theme.token.colorBgContainer,
+  [theme.mediaQueries.up("desktop")]: {
+    borderTopLeftRadius: 16,
+  },
 }));
 
-const Main = styled.main({
+const Main = styled.main(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   width: "100%",
   gap: 24,
-});
+  backgroundColor: theme.token.colorBgContainer,
+}));
 
 const DesktopNavDrawerContainer = styled.div(({ theme }) => ({
   display: "none",
@@ -69,19 +75,19 @@ const DesktopNavDrawerContainer = styled.div(({ theme }) => ({
   height: `calc(100% - ${theme.token.layoutHeaderHeight})`,
   width: "100%",
   marginTop: theme.token.layoutHeaderHeight,
-  maxWidth: 300,
-  backgroundColor: "var(--ant-color-bg-container)",
-  borderRight: `1px solid ${theme.token.colorBorder}`,
+  maxWidth: 286,
+  backgroundColor: theme.token.colorBgLayout,
   [theme.mediaQueries.up("desktop")]: {
     display: "flex",
   },
 }));
 
-const BodyContainer = styled.div({
+const BodyContainer = styled.div(({ theme }) => ({
   height: "100%",
   width: "100%",
   display: "flex",
-});
+  backgroundColor: theme.token.colorBgLayout,
+}));
 
 const ContentContainer = styled(
   "div",
@@ -129,7 +135,7 @@ export const MainLayout = ({ children, trackerName }: Props) => {
 
       <BodyContainer>
         <DesktopNavDrawerContainer>
-          <Flex flex={1} vertical p={16} overflowY="auto">
+          <Flex flex={1} vertical p={8} overflowY="auto">
             <DesktopDrawer />
           </Flex>
         </DesktopNavDrawerContainer>

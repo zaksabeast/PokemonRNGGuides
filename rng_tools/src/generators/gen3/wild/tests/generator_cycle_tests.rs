@@ -1,10 +1,9 @@
 use crate::{
     EncounterSlot, Ivs, Nature, PkmFilter,
     gen3::{
-        Wild3GeneratorCycleOpts, is_method_possible_to_trigger,
         CycleRange, Gen3Lead, Gen3Method, INFINITE_CYCLE, Wild3EncounterIndex,
-        Wild3GeneratorMonResult, Wild3GeneratorOptions, Wild3MapGameData, generate_wild3,
-        generate_wild3_old,
+        Wild3GeneratorCycleOpts, Wild3GeneratorMonResult, Wild3GeneratorOptions, Wild3MapGameData,
+        generate_wild3, generate_wild3_old, is_method_possible_to_trigger,
     },
     rng::lcrng::Pokerng,
 };
@@ -87,10 +86,7 @@ fn test_generate_wild3_cycle_method_3_specified_lead_speed() {
     options.cycle_opts = Wild3GeneratorCycleOpts::LikelihoodForLead {
         lead_cycle_spd: 800,
     };
-    assert_eq!(
-        possible_for_lead(&options, 800),
-        unrestricted
-    );
+    assert_eq!(possible_for_lead(&options, 800), unrestricted);
 
     options.cycle_opts = Wild3GeneratorCycleOpts::LikelihoodForLead {
         lead_cycle_spd: 100,

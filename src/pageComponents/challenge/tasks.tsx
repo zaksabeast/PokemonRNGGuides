@@ -32,8 +32,10 @@ const TaskCard = ({ task, onClick }: TaskCardProps) => {
   return (
     <Card
       fullBody
-      onClick={() => onClick?.(task.id)}
-      id={`task-card-${task.id}`}
+      actionProps={{
+        onClick: () => onClick?.(task.id),
+        id: `task-card-${task.id}`,
+      }}
     >
       <Flex gap={8} justify="space-between" align="center" height="100%">
         <Flex vertical gap={12} justify="space-between" height="100%">

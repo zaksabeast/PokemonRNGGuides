@@ -6,7 +6,6 @@ import {
   FormikNumberInput,
   FormikSelect,
   Icon,
-  MultiTimer,
   NumberInput,
   ResultColumn,
   RngToolForm,
@@ -14,6 +13,7 @@ import {
   Select,
   Switch,
 } from "~/components";
+import { EmbeddedRunTimer } from "~/rngToolsUi/timer/embeddedRunTimer";
 import { useFormContext, useWatch } from "~/hooks/form";
 import { Species } from "~/rngTools";
 import {
@@ -225,7 +225,7 @@ const CalibrationInputs = ({
       label: "",
       direction: "column",
       input: (
-        <MultiTimer
+        <EmbeddedRunTimer
           milliseconds={[
             5000,
             Math.round(
@@ -249,9 +249,8 @@ const CalibrationInputs = ({
               ? `Press A on the menu showing new stats after level up`
               : `Dismiss the final EXP message`,
           ]}
-          minutesBeforeTarget={3}
-          startButtonTrackerId="pokerus_emerald_timer_start"
-          stopButtonTrackerId="pokerus_emerald_timer_stop"
+          startTrackerId="pokerus_emerald_timer_start"
+          stopTrackerId="pokerus_emerald_timer_stop"
         />
       ),
     },

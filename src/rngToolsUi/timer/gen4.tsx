@@ -1,26 +1,23 @@
 import React from "react";
 import { Skeleton } from "antd";
-import {
-  FormikNumberInput,
-  RngToolForm,
-  RngToolSubmit,
-  Field,
-  FormikSelect,
-  Alert,
-  Link,
-  Typography,
-  Flex,
-} from "~/components";
-import { Gen4Timer as Gen4TimerComponent } from "~/components/gen4Timer";
+import { Flex, RadioGroup } from "~/components";
+import { MetronomeButton } from "~/components/metronome";
 import { ZodSerializedDecimal, ZodSerializedOptional } from "~/utils/number";
 import { ZodConsole } from "~/rngTools";
-import { createGen4TimerAtom } from "~/rngToolsUi/timer/atoms";
+import {
+  createGen4TimerAtom,
+  GEN4_PHASE_LABELS,
+  type Gen4TimerUpdates,
+} from "~/rngToolsUi/timer/atoms";
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
+import { multiTimerStateAtom } from "~/state/multiTimerState";
 import { z } from "zod";
 import { useHydrate } from "~/hooks/useHydrate";
+import { useMetronome } from "~/hooks/useMetronome";
+import { useTimerSequence } from "~/hooks/useTimerSequence";
 import { hydrationLock, HydrationLock } from "~/utils/hydration";
-import { useStateHistory } from "~/hooks/useStateHistory";
-import { UndoButton } from "./undoButton";
+import { Gen4Setup } from "./gen4Setup";
+import { RunView } from "./runView";
 
 const timerStateAtom = createGen4TimerAtom();
 
@@ -52,58 +49,26 @@ const timerSettingsAtom = atomWithPersistence(
   defaultValues,
 );
 
-const fields: Field[] = [
-  {
-    label: "Console",
-    input: (
-      <FormikSelect<FormState, "console">
-        name="console"
-        options={[
-          { label: "NDS - Slot 1", value: "NdsSlot1" },
-          { label: "DSI", value: "Dsi" },
-          { label: "3DS", value: "ThreeDs" },
-        ]}
-      />
-    ),
-  },
-  {
-    label: "Min Time (ms)",
-    input: <FormikNumberInput<FormState> name="minTimeMs" numType="float" />,
-  },
-  {
-    label: "Calibrated Delay",
-    input: (
-      <FormikNumberInput<FormState> name="calibratedDelay" numType="float" />
-    ),
-  },
-  {
-    label: "Calibrated Seconds",
-    input: (
-      <FormikNumberInput<FormState> name="calibratedSecond" numType="float" />
-    ),
-  },
-  {
-    label: "Target Delay",
-    input: <FormikNumberInput<FormState> name="targetDelay" numType="float" />,
-  },
-  {
-    label: "Target Seconds",
-    input: <FormikNumberInput<FormState> name="targetSecond" numType="float" />,
-  },
-  {
-    label: "Delay Hit",
-    input: <FormikNumberInput<FormState> name="delayHit" numType="float" />,
-  },
-];
+type Mode = "setup" | "run";
 
 type InnerProps = {
   initialSettings: FormState;
   onUpdate: (opts: HydrationLock<FormState>) => void;
+  maxBeepCount: number;
+  setMaxBeepCount: (maxBeepCount: number) => void;
 };
 
-const InnerGen4Timer = ({ initialSettings, onUpdate }: InnerProps) => {
+const InnerGen4Timer = ({
+  initialSettings,
+  onUpdate,
+  maxBeepCount,
+  setMaxBeepCount,
+}: InnerProps) => {
   const hasInited = React.useRef(false);
   const [timer, updateTimer] = useAtom(timerStateAtom);
+  const [mode, setMode] = React.useState<Mode>("run");
+  const metronome = useMetronome({ enableAudio: true });
+  const sequence = useTimerSequence({ milliseconds: timer.ms, maxBeepCount });
 
   React.useEffect(() => {
     if (hasInited.current) {
@@ -113,8 +78,8 @@ const InnerGen4Timer = ({ initialSettings, onUpdate }: InnerProps) => {
     updateTimer(initialSettings);
   }, [updateTimer, initialSettings]);
 
-  const updateTimerSettings = (formState: FormState) => {
-    const newTimer = updateTimer(formState);
+  const updateTimerSettings = (updates: Gen4TimerUpdates) => {
+    const newTimer = updateTimer(updates);
 
     onUpdate(
       hydrationLock({
@@ -126,89 +91,89 @@ const InnerGen4Timer = ({ initialSettings, onUpdate }: InnerProps) => {
     return newTimer.settings;
   };
 
-  const history = useStateHistory({
-    initialSettings,
-    updateTimerSettings,
-  });
-
-  const onSubmit: RngToolSubmit<FormState> = async (opts, { setValue }) => {
-    const updatedTimer = updateTimerSettings(opts);
-
-    setValue("calibratedDelay", updatedTimer.calibratedDelay);
-    setValue("calibratedSecond", updatedTimer.calibratedSecond);
-    setValue("console", updatedTimer.console);
-    setValue("delayHit", null);
-    setValue("minTimeMs", updatedTimer.minTimeMs);
-    setValue("targetDelay", updatedTimer.targetDelay);
-    setValue("targetSecond", updatedTimer.targetSecond);
-
-    history.addIfNew({ ...updatedTimer, delayHit: null });
-  };
+  const is3ds = timer.settings.console === "ThreeDs";
 
   return (
-    <Gen4TimerComponent
-      timer={timerStateAtom}
-      trackerId="mystic_timer_gen4"
-      disableAdvancedSettings
-      is3ds={timer.settings.console === "ThreeDs"}
-      slots={{
-        belowStartButton: (
-          <>
-            <RngToolForm<FormState, number[]>
-              fields={fields}
-              initialValues={initialSettings}
-              onSubmit={onSubmit}
-              submitTrackerId="set_gen4_timer"
-              submitButtonLabel="Set Timer"
-              additionalButtons={
-                <UndoButton
-                  history={history}
-                  trackerId="undo_gen4_calibration"
-                  fields={{
-                    console: true,
-                    minTimeMs: true,
-                    calibratedDelay: true,
-                    calibratedSecond: true,
-                    targetDelay: true,
-                    targetSecond: true,
-                    delayHit: true,
-                  }}
-                />
-              }
-            />
-            <Alert
-              type="tip"
-              showIcon
-              title="Want easier 3ds RNG?"
-              mt={12}
-              description={
-                <Flex vertical>
-                  <Typography.Text>
-                    Set the console to 3ds and click "Set Timer" to see the 3ds
-                    helper.
-                  </Typography.Text>
-                  <Link href="/3ds-helper/">
-                    View the 3ds Helper guide for more details.
-                  </Link>
-                </Flex>
-              }
-            />
-          </>
-        ),
-      }}
-    />
+    <Flex vertical gap={16}>
+      <RadioGroup<Mode>
+        name="timerMode"
+        optionType="button"
+        value={mode}
+        onChange={({ target }) => setMode(target.value)}
+        options={[
+          { label: "Setup", value: "setup", disabled: sequence.isRunning },
+          { label: "Run", value: "run" },
+        ]}
+      />
+
+      {mode === "run" && (
+        <RunView
+          sequence={sequence}
+          milliseconds={timer.ms}
+          startTrackerId="mystic_timer_gen4_start"
+          stopTrackerId="mystic_timer_gen4_stop"
+          listTitle="Timers"
+          rows={timer.ms.map((ms, index) => ({
+            id: index,
+            label: GEN4_PHASE_LABELS[index] ?? `Phase ${index + 1}`,
+            ms,
+          }))}
+          onEdit={() => setMode("setup")}
+          disableStart={
+            (is3ds && !metronome.isRunning) ||
+            (metronome.isRunning && !metronome.justTicked)
+          }
+          belowStartButton={is3ds && <MetronomeButton {...metronome} />}
+          hit={{
+            id: 0,
+            type: "single",
+            label: "Delay Hit",
+            numType: "float",
+            trackerId: "calibrate_gen4_timer",
+            onCalibrate: (delayHit: number) =>
+              updateTimerSettings({ ...timer.settings, delayHit }),
+          }}
+        />
+      )}
+
+      {mode === "setup" && (
+        <Gen4Setup
+          settings={timer.settings}
+          maxBeepCount={maxBeepCount}
+          setMaxBeepCount={setMaxBeepCount}
+          onSet={(settings) => {
+            updateTimerSettings(settings);
+            setMode("run");
+          }}
+        />
+      )}
+    </Flex>
   );
 };
 
 export const Gen4Timer = () => {
   const [timerSettings, setTimerSettings] = useAtom(timerSettingsAtom);
-  const { hydrated, client } = useHydrate(timerSettings);
+  const [lockedMultiTimerState, setLockedMultiTimerState] =
+    useAtom(multiTimerStateAtom);
+  const { hydrated, client } = useHydrate({
+    settings: timerSettings,
+    multiTimerState: lockedMultiTimerState,
+  });
 
   if (!hydrated) {
     return <Skeleton />;
   }
 
   return (
-    <InnerGen4Timer initialSettings={client} onUpdate={setTimerSettings} />
+    <InnerGen4Timer
+      initialSettings={client.settings}
+      onUpdate={setTimerSettings}
+      maxBeepCount={client.multiTimerState.maxBeepCount}
+      setMaxBeepCount={(maxBeepCount) =>
+        setLockedMultiTimerState(
+          hydrationLock({ ...client.multiTimerState, maxBeepCount }),
+        )
+      }
+    />
   );
 };

@@ -1,11 +1,10 @@
+import { Alert, Button, Flex, Typography } from "~/components";
 import {
-  Alert,
-  Button,
-  Field,
-  Flex,
-  FormFieldTable,
-  Typography,
-} from "~/components";
+  FormCard,
+  FormSection,
+  FormSummary,
+  type SummaryRow,
+} from "~/components/form";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { useAtom } from "jotai";
 import { Tooltip } from "antd";
@@ -28,7 +27,6 @@ const BATTLE_VIDEO_BUFFER = 5000; // enough time to trigger the battle and end t
 const OptimalSetupInfo = ({ setup }: { setup: Pokerus3Setup }) => {
   const [, setSetup] = useAtom(selectedSetupAtom);
   const [, setBattleVideoInfo] = useAtom(battleVideoInfoAtom);
-  const fields: Field[] = [];
   const needPickupLead = setup.gen_opts.pickup_pokemon_count === 6;
   const partyLead = needPickupLead
     ? setup.gen_opts.level_up === true
@@ -66,23 +64,23 @@ const OptimalSetupInfo = ({ setup }: { setup: Pokerus3Setup }) => {
     );
   });
 
-  fields.push(
+  const rows: SummaryRow[] = [
     {
       label: "Encounter type",
-      input: setup.encounter_type,
+      value: setup.encounter_type,
     },
     {
       label: "Party Pokémon",
-      input: partyInfo,
+      value: partyInfo,
     },
     {
       label: "Has entered hall of fame?",
-      input: setup.gen_opts.entered_hall_of_fame === true ? "Yes" : "No",
+      value: setup.gen_opts.entered_hall_of_fame === true ? "Yes" : "No",
     },
     {
       label: "Had triggered mass outbreak?",
       show: setup.gen_opts.entered_hall_of_fame,
-      input: setup.has_unknown_can_have_new_mass_outbreak
+      value: setup.has_unknown_can_have_new_mass_outbreak
         ? "Unknown"
         : setup.gen_opts.can_have_new_mass_outbreak === false
           ? "Yes"
@@ -91,28 +89,24 @@ const OptimalSetupInfo = ({ setup }: { setup: Pokerus3Setup }) => {
     {
       label: "Has empty TV slot?",
       show: setup.gen_opts.entered_hall_of_fame,
-      input: setup.has_unknown_has_empty_pokenews_slot
+      value: setup.has_unknown_has_empty_pokenews_slot
         ? "Unknown"
         : setup.gen_opts.has_empty_pokenews_slot === true
           ? "Yes"
           : "No",
     },
-    {
-      ...targetFrameBeforePaintingLabel(
-        setup.target_advs.frame_before_painting,
-      ),
-    },
+    targetFrameBeforePaintingLabel(setup.target_advs.frame_before_painting),
     {
       label: usingPaintingReseeding
         ? "Advances after painting resulting in Pokérus"
         : "Advances resulting in Pokérus",
-      input: advs_at_pickup.map(formatLargeInteger).join("; "),
+      value: advs_at_pickup.map(formatLargeInteger).join("; "),
     },
     {
       label: usingPaintingReseeding
         ? "Target advance after painting"
         : "Target advance",
-      input: (
+      value: (
         <Tooltip
           title={targetAdvanceAfterPaintingTitle({
             before: setup.target_advs.frame_before_painting,
@@ -123,24 +117,26 @@ const OptimalSetupInfo = ({ setup }: { setup: Pokerus3Setup }) => {
         </Tooltip>
       ),
     },
-  );
+  ];
+
   return (
-    <Flex vertical>
-      <h3>Setup</h3>
-      <FormFieldTable fields={fields} />
-      <Button
-        trackerId="Pokerus3Emerald_clearAll"
-        danger
-        maxWidth={150}
-        size="small"
-        onClick={() => {
-          setSetup(null);
-          setBattleVideoInfo(null);
-        }}
-      >
-        Clear All
-      </Button>
-    </Flex>
+    <FormCard>
+      <FormSection title="Setup">
+        <FormSummary rows={rows} />
+        <Button
+          trackerId="Pokerus3Emerald_clearAll"
+          danger
+          maxWidth={150}
+          size="small"
+          onClick={() => {
+            setSetup(null);
+            setBattleVideoInfo(null);
+          }}
+        >
+          Clear All
+        </Button>
+      </FormSection>
+    </FormCard>
   );
 };
 

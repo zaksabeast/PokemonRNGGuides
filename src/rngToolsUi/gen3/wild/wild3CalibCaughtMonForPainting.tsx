@@ -1,7 +1,6 @@
 import React from "react";
-import { RngToolForm, Flex, ResultColumn, Icon } from "~/components";
-import { RngToolSubmit } from "~/components/rngToolForm";
-import { Typography } from "~/components/typography";
+import { ResultColumn, Icon } from "~/components";
+import { ToolForm, type ToolFormSubmit } from "~/components/form";
 import { Button } from "~/components/button";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { createAllStats0 } from "~/types";
@@ -160,7 +159,7 @@ export const Wild3CalibCaughtMonForPainting = ({
 
   const targetSetup = createTargetSetupAtVictoryRoad(targetPaintingAdvs);
 
-  const onSubmit: RngToolSubmit<FormState> = async (values) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (values) => {
     setResults(await searchCaughtMon(values, targetSetup));
   };
 
@@ -282,28 +281,18 @@ export const Wild3CalibCaughtMonForPainting = ({
   };
 
   return (
-    <Flex vertical gap={8}>
-      <Typography.Title level={5} p={0} m={0}>
-        Caught Pokémon
-      </Typography.Title>
-      <RngToolForm<FormState, CaughtMonResult>
-        formContainerId="generate-wild3-caught"
-        columns={columns}
-        results={results}
-        initialValues={initialValues}
-        validationSchema={validator}
-        onSubmit={onSubmit}
-        submitTrackerId="generate_wild3_caught"
-        submitButtonLabel="Find advances matching caught Pokémon"
-        rowKey="uid"
-      >
-        <Flex vertical ml={20}>
-          <Fields
-            targetSetup={targetSetup}
-            onRareCandyChange={onRareCandyChange}
-          />
-        </Flex>
-      </RngToolForm>
-    </Flex>
+    <ToolForm<FormState, CaughtMonResult>
+      formContainerId="generate-wild3-caught"
+      columns={columns}
+      results={results}
+      initialValues={initialValues}
+      validationSchema={validator}
+      onSubmit={onSubmit}
+      submitTrackerId="generate_wild3_caught"
+      submitButtonLabel="Find caught Pokémon"
+      rowKey="uid"
+    >
+      <Fields targetSetup={targetSetup} onRareCandyChange={onRareCandyChange} />
+    </ToolForm>
   );
 };

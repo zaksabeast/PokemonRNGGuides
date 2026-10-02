@@ -5,7 +5,7 @@ import { styledPropGuard } from "~/utils/styled";
 
 export type InfoTooltipContent = {
   title: React.ReactNode;
-  description: string;
+  description: React.ReactNode;
 };
 
 const INFO_ICON_SIZE = 18;

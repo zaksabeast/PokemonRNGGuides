@@ -140,6 +140,7 @@ export const translations = {
   "Hatched Nature": "Hatched Nature",
   "Hatched Gender": "Hatched Gender",
   "Hatched Ability": "Hatched Ability",
+  "Hatched Egg": "Hatched Egg",
   "Number of times to open the Pokedex": "Number of times to open the Pokedex",
   "Target caller": "Target caller",
   Offset: "Offset",

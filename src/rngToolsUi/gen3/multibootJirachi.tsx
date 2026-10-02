@@ -1,14 +1,15 @@
 import React from "react";
+import { Flex, ResultColumn, FileUpload, Alert } from "~/components";
 import {
-  Flex,
-  ResultColumn,
-  Field,
-  FileUpload,
-  RngToolForm,
-  Alert,
-  FormikNumberInput,
-  RngToolSubmit,
-} from "~/components";
+  FieldFrame,
+  FormNumberField,
+  FormSection,
+  PkmFilter,
+  ToolForm,
+  useFieldIds,
+  type ToolFormSubmit,
+} from "~/components/form";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import {
   rngTools,
   MultibootJirachiType,
@@ -20,7 +21,6 @@ import * as tst from "ts-toolbelt";
 import { match } from "ts-pattern";
 import { z } from "zod";
 import {
-  getPkmFilterFields,
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
   pkmFilterSchema,
@@ -77,35 +77,52 @@ type Props = {
   jirachi: MultibootJirachiType;
 };
 
+type FieldsProps = {
+  onUploadSave: (save: Uint8Array) => void;
+};
+
+const Fields = ({ onUploadSave }: FieldsProps) => {
+  const t = useActiveRouteTranslations();
+  const saveFileIds = useFieldIds();
+
+  return (
+    <>
+      <FormSection title={t["Your game"]}>
+        <FieldFrame
+          ids={saveFileIds}
+          labelTarget="group"
+          label={t["Save file"]}
+        >
+          <Flex>
+            <FileUpload
+              id="multiboot_jirachi_save"
+              onUpload={async ([file]) => onUploadSave(file)}
+            />
+          </Flex>
+        </FieldFrame>
+      </FormSection>
+
+      <FormSection title={t["Search"]}>
+        <FormNumberField<FormState>
+          name="hours"
+          label={t["Search Hours"]}
+          numType="decimal"
+        />
+      </FormSection>
+
+      <FormSection title={t["Filters"]}>
+        <PkmFilter<FormState> displayAbility={false} displayGender={false} />
+      </FormSection>
+    </>
+  );
+};
+
 export const MultibootJirachi = ({ jirachi }: Props) => {
   const [save, setSave] = React.useState<Uint8Array>(Uint8Array.from([]));
   const [results, setResults] = React.useState<Result[]>([]);
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
-  const getFields = (t: Translations): Field[] => [
-    {
-      label: t["Search Hours"],
-      input: <FormikNumberInput<FormState> name="hours" numType="decimal" />,
-    },
-    ...getPkmFilterFields<FormState>({
-      displayAbility: false,
-      displayGender: false,
-    }),
-    {
-      label: t["Save file"],
-      input: (
-        <Flex width="100%">
-          <FileUpload
-            id="multiboot_jirachi_save"
-            flex={1}
-            onUpload={async ([file]) => setSave(file)}
-          />
-        </Flex>
-      ),
-    },
-  ];
-
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     try {
       const results = await rngTools.search_mb_jirachi_times({
         save: [...save],
@@ -149,8 +166,7 @@ export const MultibootJirachi = ({ jirachi }: Props) => {
       {errorMessage != null && (
         <Alert showIcon type="error" title={errorMessage} />
       )}
-      <RngToolForm<FormState, Result>
-        getFields={getFields}
+      <ToolForm<FormState, Result>
         getColumns={getColumns}
         results={results}
         initialValues={initialValues}
@@ -158,7 +174,9 @@ export const MultibootJirachi = ({ jirachi }: Props) => {
         onSubmit={onSubmit}
         formContainerId="multiboot_jirachi_form"
         submitTrackerId="generate_multiboot_jirachi"
-      />
+      >
+        <Fields onUploadSave={setSave} />
+      </ToolForm>
     </Flex>
   );
 };

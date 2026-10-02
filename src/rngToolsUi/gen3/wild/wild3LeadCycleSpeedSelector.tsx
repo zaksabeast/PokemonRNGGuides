@@ -1,13 +1,11 @@
 import {
-  Field,
   ResultColumn,
   Icon,
   Typography,
   ResultTable,
-  FormFieldTable,
   Flex,
-  Switch,
 } from "~/components";
+import { FormCard, FormSection, SwitchField } from "~/components/form";
 import { formatProbability } from "~/utils/formatProbability";
 import React from "react";
 
@@ -124,33 +122,25 @@ export const Wild3LeadCycleSpeedSelector = ({
     });
   }, [leadCycleSpeed, targetSetup]);
 
-  const fields: Field[] =
-    targetSetup.lead === "Egg"
-      ? [
-          {
-            label: "",
-            input: "Egg lead can't be calibrated.",
-          },
-        ]
-      : [
-          {
-            label: "Lead Cycle Speed",
-            ...leadCycleSpeedTooltip(),
-            input: (
-              <Wild3LeadCycleSpeedInput
-                idealLeadCycleSpeed={
-                  distributions?.idealLeadCycleSpd ?? AVERAGE_LEAD_CYCLE_SPEED
-                }
-                leadCycleSpeed={leadCycleSpeed ?? AVERAGE_LEAD_CYCLE_SPEED}
-                setLeadCycleSpeed={setLeadCycleSpeedProp}
-              />
-            ),
-          },
-        ];
-
   return (
     <>
-      {fields.length > 0 && <FormFieldTable fields={fields} />}
+      {targetSetup.lead === "Egg" ? (
+        <Typography.Text>Egg lead can't be calibrated.</Typography.Text>
+      ) : (
+        <FormCard>
+          <FormSection>
+            <Wild3LeadCycleSpeedInput
+              label="Lead Cycle Speed"
+              {...leadCycleSpeedTooltip()}
+              idealLeadCycleSpeed={
+                distributions?.idealLeadCycleSpd ?? AVERAGE_LEAD_CYCLE_SPEED
+              }
+              leadCycleSpeed={leadCycleSpeed ?? AVERAGE_LEAD_CYCLE_SPEED}
+              setLeadCycleSpeed={setLeadCycleSpeedProp}
+            />
+          </FormSection>
+        </FormCard>
+      )}
 
       <ResultTable<UiResult>
         columns={getColumns(targetSetup)}
@@ -192,19 +182,13 @@ export const Wild3LeadCycleSpeedSelectorWithBtn = ({
   return (
     <Flex vertical gap={20}>
       {!displayLeadCycleSpeed && (
-        <FormFieldTable
-          fields={[
-            {
-              label: "Display lead cycle speed calibration?",
-              input: (
-                <Switch
-                  onChange={setDisplayLeadCycleSpeed}
-                  value={displayLeadCycleSpeed}
-                />
-              ),
-            },
-          ]}
-        />
+        <FormCard>
+          <SwitchField
+            label="Display lead cycle speed calibration?"
+            onChange={setDisplayLeadCycleSpeed}
+            value={displayLeadCycleSpeed}
+          />
+        </FormCard>
       )}
       {displayLeadCycleSpeed && (
         <Wild3LeadCycleSpeedSelector

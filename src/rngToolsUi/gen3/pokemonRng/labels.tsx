@@ -1,5 +1,8 @@
+import React from "react";
 import { Tooltip } from "antd";
 import { Flex, Link } from "~/components";
+import { type InfoTooltipContent, type SummaryRow } from "~/components/form";
+import { type BattleVideoInfo } from "../battleVideo/battleVideo";
 import { formatHex } from "~/utils/formatHex";
 import {
   formatLargeInteger,
@@ -7,40 +10,56 @@ import {
 } from "~/utils/formatLargeInteger";
 import { lcrng_distance, pokerng_with_jump } from "~/utils/lcrng";
 
-export const minFramesBeforePaintingLabel = () => ({
+type FieldLabel = {
+  label: string;
+  tooltip: InfoTooltipContent;
+};
+
+export const minFramesBeforePaintingLabel = (): FieldLabel => ({
   label: "Min frames before painting",
-  tooltip:
-    "For advanced users. Those frames ensure there is enough time between booting the game and interacting with the painting.",
+  tooltip: {
+    title: "Min frames before painting",
+    description:
+      "For advanced users. Those frames ensure there is enough time between booting the game and interacting with the painting.",
+  },
 });
 
-export const minAdvsAfterPaintingLabel = () => ({
+export const minAdvsAfterPaintingLabel = (): FieldLabel => ({
   label: "Min advances after painting",
-  tooltip:
-    "To ensure there is enough time between interacting with the painting and creating a Battle Video.",
+  tooltip: {
+    title: "Min advances after painting",
+    description:
+      "To ensure there is enough time between interacting with the painting and creating a Battle Video.",
+  },
 });
 
-export const usingPaintingReseedingLabel = () => ({
+export const usingPaintingReseedingLabel = (): FieldLabel => ({
   label: "Using Painting Reseeding?",
-  tooltip: (
-    <>
-      <Link href="/emerald-painting-reseeding/" newTab>
-        Painting Reseeding
-      </Link>{" "}
-      is a RNG technique to make the RNG state jump by millions of advances
-      instantly, giving access to RNG states that would normally not be
-      reachable realistically.
-    </>
-  ),
+  tooltip: {
+    title: "Painting Reseeding",
+    description: (
+      <>
+        <Link href="/emerald-painting-reseeding/" newTab>
+          Painting Reseeding
+        </Link>{" "}
+        is a RNG technique to make the RNG state jump by millions of advances
+        instantly, giving access to RNG states that would normally not be
+        reachable realistically.
+      </>
+    ),
+  },
 });
 
 export const advanceFromSeed0Txt = (seed: number) => {
   return `Equivalent to ${formatLargeInteger(lcrng_distance(0, seed))} advances without painting reseeding`;
 };
 
-export const targetFrameBeforePaintingLabel = (advBefore: number) => {
+export const targetFrameBeforePaintingLabel = (
+  advBefore: number,
+): SummaryRow => {
   return {
     label: "Target frame before painting",
-    input: (
+    value: (
       <Tooltip title={advanceFromSeed0Txt(advBefore)}>
         {formatLargeInteger(advBefore)} (Seed: {formatHex(advBefore, 2)})
       </Tooltip>
@@ -76,7 +95,7 @@ export const targetAdvanceAfterPaintingLabel = (
     after: number;
   },
   initialAdvFromBattleVideo = 0,
-) => {
+): SummaryRow => {
   let afterTxt = `${formatLargeInteger(targetPaintingAdvs.after)}`;
   if (initialAdvFromBattleVideo > 0) {
     afterTxt += ` (${formatLargeIntegerWithSign(targetPaintingAdvs.after - initialAdvFromBattleVideo)} from Battle Video)`;
@@ -84,7 +103,7 @@ export const targetAdvanceAfterPaintingLabel = (
 
   return {
     label: "Target advance after painting",
-    input: (
+    value: (
       <Tooltip title={targetAdvanceAfterPaintingTitle(targetPaintingAdvs)}>
         {afterTxt}
       </Tooltip>
@@ -104,18 +123,52 @@ export const advanceAfterTxt = (
   return afterTxt;
 };
 
+type CalibTargetSetup = {
+  targetMethod: React.ReactNode;
+  targetPaintingAdvs: { before: number; after: number };
+};
+
+export const getGen3CalibPreviousStepRows = ({
+  targetSetup,
+  battleVideoInfo,
+  initialAdv,
+}: {
+  targetSetup: CalibTargetSetup;
+  battleVideoInfo: BattleVideoInfo;
+  initialAdv: number;
+}): SummaryRow[] => {
+  return [
+    {
+      label: "Target method",
+      value: targetSetup.targetMethod,
+    },
+    targetFrameBeforePaintingLabel(battleVideoInfo.targetPaintingAdvs.before),
+    {
+      label: "Battle Video advance",
+      value: formatLargeInteger(battleVideoInfo.battleVideoAdvAfterPainting),
+      show: battleVideoInfo.battleVideoAdvAfterPainting > 0,
+    },
+    targetAdvanceLabel(
+      targetSetup.targetPaintingAdvs.after,
+      targetSetup.targetPaintingAdvs.before === 0,
+      initialAdv,
+    ),
+    targetAdvanceAfterPaintingLabel(targetSetup.targetPaintingAdvs, initialAdv),
+  ];
+};
+
 // For non-painting cases
 export const targetAdvanceLabel = (
   advAfter: number,
   show: boolean,
   initialAdvFromBattleVideo = 0,
-) => {
+): SummaryRow => {
   const seed = pokerng_with_jump(0, advAfter);
   const seedTxt = `Seed: ${formatHex(seed, 4)}`;
 
   return {
     label: "Target advance",
-    input: (
+    value: (
       <Tooltip title={seedTxt}>
         {advanceAfterTxt(advAfter, initialAdvFromBattleVideo)}
       </Tooltip>

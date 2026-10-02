@@ -1,5 +1,7 @@
-export { type LabeledFieldProps } from "./base/field";
+export { FieldFrame, type LabeledFieldProps } from "./base/field";
+export { useFieldIds } from "./base/hooks";
 export { type InfoTooltipContent } from "./base/infoTooltip";
+export { FormSummary, type SummaryRow } from "./base/summary";
 export { FormBody, FormCard, FormSection, FieldRow } from "./base/layout";
 export {
   TextField,
@@ -56,6 +58,10 @@ export { AbilityFilterField } from "./pokemon/abilityField";
 export { HiddenPowerField } from "./pokemon/hiddenPowerField";
 export { PkmFilter } from "./pokemon/pkmFilter";
 export { IdFilterField } from "./pokemon/idFilterField";
+export { Gen3PkmFilter } from "./pokemon/gen3PkmFilter";
+export { TargetAdvanceField } from "./pokemon/targetAdvanceField";
+export { FrameBeforePaintingField } from "./pokemon/frameBeforePaintingField";
+export { PokeblockField } from "./pokemon/pokeblockField";
 export {
   SwitchField,
   FormSwitchField,

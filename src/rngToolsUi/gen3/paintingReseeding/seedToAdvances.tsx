@@ -3,16 +3,19 @@ import {
   Wild3PaintingAdvsAndDur,
   Wild3PaintingOpts,
 } from "~/rngTools";
+import { ResultColumn } from "~/components";
 import {
-  ResultColumn,
-  RngToolSubmit,
-  RngToolForm,
-  FormikNumberInput,
-  FormikSwitch,
-  FormFieldTable,
-  Field,
-  FormikRadio,
-} from "~/components";
+  FieldRow,
+  FormNumberField,
+  FormRadioField,
+  FormSection,
+  FormSummary,
+  FormSwitchField,
+  FrameBeforePaintingField,
+  TargetAdvanceField,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
 import React from "react";
 import { formatHex } from "~/utils/formatHex";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
@@ -21,9 +24,7 @@ import { z } from "zod";
 import { useWatch_UNSAFE } from "~/hooks/form";
 import { GBA_FPS } from "~/utils/consts";
 import { lcrng_distance, pokerng_with_jump } from "~/utils/lcrng";
-import { FormikEmeraldTargetAdvance } from "~/components/emeraldTargetAdvance";
 import { match } from "ts-pattern";
-import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
 import {
   minAdvsAfterPaintingLabel,
   minFramesBeforePaintingLabel,
@@ -146,10 +147,6 @@ const MyFields = () => {
   >({
     name: "alreadyKnowPaintingFrameAndAdv",
   });
-  const showAdvanced = useWatch_UNSAFE<FormState, "showAdvancedSettings">({
-    name: "showAdvancedSettings",
-  });
-
   const frameBeforePainting = useWatch_UNSAFE<FormState, "frameBeforePainting">(
     {
       name: "frameBeforePainting",
@@ -163,111 +160,76 @@ const MyFields = () => {
     after: advAfterPainting ?? 0,
   });
 
-  const fields: Field[] = [
-    {
-      label: "I already know my painting frame and advance",
-      key: "alreadyKnowPaintingFrameAndAdv",
-      input: <FormikSwitch<FormState> name="alreadyKnowPaintingFrameAndAdv" />,
-    },
-    {
-      label: "Frame before painting (Painting seed)",
-      input: (
-        <FormikEmeraldFrameBeforePaintingInput<FormState> name="frameBeforePainting" />
-      ),
-      show: alreadyKnowPaintingFrameAndAdv,
-      indent: 1,
-    },
-    {
-      label: "Advances after painting",
-      input: (
-        <FormikNumberInput<FormState>
-          numType="decimal"
+  return (
+    <FormSection>
+      <FormSwitchField<FormState>
+        name="alreadyKnowPaintingFrameAndAdv"
+        label="I already know my painting frame and advance"
+      >
+        <FrameBeforePaintingField<FormState>
+          name="frameBeforePainting"
+          label="Frame before painting (Painting seed)"
+        />
+        <FormNumberField<FormState>
           name="advAfterPainting"
-        />
-      ),
-      show: alreadyKnowPaintingFrameAndAdv,
-      indent: 1,
-    },
-    {
-      label: "Resulting Target",
-      input: resultingTargetTxt,
-      show: alreadyKnowPaintingFrameAndAdv,
-      indent: 1,
-    },
-    {
-      label: "Target of the RNG manipulation",
-      tooltip: "Ex: Target advance to generate the wanted Pokémon.",
-      show: !alreadyKnowPaintingFrameAndAdv,
-      input: <FormikEmeraldTargetAdvance name="targetAdvance" />,
-    },
-    {
-      label: "Show advanced settings?",
-      input: <FormikSwitch<FormState> name="showAdvancedSettings" />,
-      show: !alreadyKnowPaintingFrameAndAdv,
-    },
-    {
-      ...minFramesBeforePaintingLabel(),
-      input: (
-        <FormikNumberInput<FormState>
-          name="min_frame_before_painting"
+          label="Advances after painting"
           numType="decimal"
         />
-      ),
-      show: !alreadyKnowPaintingFrameAndAdv && showAdvanced,
-      indent: 1,
-    },
-    {
-      label: "Max frames before painting",
-      key: "max_frame_before_painting",
-      input: (
-        <FormikNumberInput<FormState>
-          name="max_frame_before_painting"
-          numType="decimal"
+        <FormSummary
+          rows={[{ label: "Resulting Target", value: resultingTargetTxt }]}
         />
-      ),
-      show: !alreadyKnowPaintingFrameAndAdv && showAdvanced,
-      indent: 1,
-    },
-    {
-      ...minAdvsAfterPaintingLabel(),
-      input: (
-        <FormikNumberInput<FormState>
-          name="min_adv_after_painting"
-          numType="decimal"
-        />
-      ),
-      show: !alreadyKnowPaintingFrameAndAdv && showAdvanced,
-      indent: 1,
-    },
-    {
-      label: "Max result count",
-      input: (
-        <FormikNumberInput<FormState>
-          name="max_result_count"
-          numType="decimal"
-        />
-      ),
-      show: !alreadyKnowPaintingFrameAndAdv && showAdvanced,
-      indent: 1,
-    },
-    {
-      label: "Sort by",
-      input: (
-        <FormikRadio<FormState>
-          name="sortBy"
-          options={[
-            { label: "Manip Time", value: "time" },
-            { label: "Frame Before", value: "frameBeforePainting" },
-            { label: "RNG State After", value: "rngStateAfterPainting" },
-          ]}
-        />
-      ),
-      show: !alreadyKnowPaintingFrameAndAdv && showAdvanced,
-      indent: 1,
-    },
-  ];
-
-  return <FormFieldTable fields={fields} />;
+      </FormSwitchField>
+      {!alreadyKnowPaintingFrameAndAdv && (
+        <>
+          <TargetAdvanceField<FormState>
+            name="targetAdvance"
+            label="Target of the RNG manipulation"
+            tooltip={{
+              title: "Target of the RNG manipulation",
+              description: "Ex: Target advance to generate the wanted Pokémon.",
+            }}
+          />
+          <FormSwitchField<FormState>
+            name="showAdvancedSettings"
+            label="Show advanced settings?"
+          >
+            <FieldRow>
+              <FormNumberField<FormState>
+                name="min_frame_before_painting"
+                numType="decimal"
+                {...minFramesBeforePaintingLabel()}
+              />
+              <FormNumberField<FormState>
+                name="max_frame_before_painting"
+                label="Max frames before painting"
+                numType="decimal"
+              />
+            </FieldRow>
+            <FormNumberField<FormState>
+              name="min_adv_after_painting"
+              numType="decimal"
+              {...minAdvsAfterPaintingLabel()}
+            />
+            <FormNumberField<FormState>
+              name="max_result_count"
+              label="Max result count"
+              numType="decimal"
+            />
+            <FormRadioField<FormState>
+              name="sortBy"
+              label="Sort by"
+              cellSize="word"
+              options={[
+                { label: "Manip Time", value: "time" },
+                { label: "Frame Before", value: "frameBeforePainting" },
+                { label: "RNG State After", value: "rngStateAfterPainting" },
+              ]}
+            />
+          </FormSwitchField>
+        </>
+      )}
+    </FormSection>
+  );
 };
 
 type Props = {
@@ -279,7 +241,7 @@ let nextUid = 0;
 export const EmeraldSeedToAdvances = ({ onSelected }: Props) => {
   const [results, setResults] = React.useState<Result[]>([]);
 
-  const onSubmit: RngToolSubmit<FormState> = async (opts: FormState) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts: FormState) => {
     if (opts.alreadyKnowPaintingFrameAndAdv) {
       setResults([
         {
@@ -369,7 +331,7 @@ export const EmeraldSeedToAdvances = ({ onSelected }: Props) => {
         };
 
   return (
-    <RngToolForm<FormState, Result>
+    <ToolForm<FormState, Result>
       getColumns={getColumns}
       onClickResultRow={onClickResultRow}
       rowKey="uid"
@@ -380,6 +342,6 @@ export const EmeraldSeedToAdvances = ({ onSelected }: Props) => {
       submitTrackerId="emerald_seed_to_advances"
     >
       <MyFields />
-    </RngToolForm>
+    </ToolForm>
   );
 };

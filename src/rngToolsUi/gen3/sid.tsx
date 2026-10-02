@@ -1,11 +1,13 @@
 import React from "react";
+import { ResultColumn } from "~/components";
 import {
-  FormikNumberInput,
-  ResultColumn,
-  RngToolForm,
-  RngToolSubmit,
-  Field,
-} from "~/components";
+  FieldRow,
+  FormNumberField,
+  FormSection,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { rngTools } from "~/rngTools";
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";
@@ -35,28 +37,43 @@ const initialValues: FormState = {
   maxAdvances: 10000,
 };
 
-const fields: Field[] = [
-  {
-    label: "TID",
-    input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-  },
-  {
-    label: "Feebas Seed",
-    input: <FormikNumberInput<FormState> name="feebasSeed" numType="hex" />,
-  },
-  {
-    label: "Initial Advances",
-    input: (
-      <FormikNumberInput<FormState> name="initialAdvances" numType="decimal" />
-    ),
-  },
-  {
-    label: "Max Advances",
-    input: (
-      <FormikNumberInput<FormState> name="maxAdvances" numType="decimal" />
-    ),
-  },
-];
+const Fields = () => {
+  const t = useActiveRouteTranslations();
+
+  return (
+    <>
+      <FormSection title={t["Your game"]}>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="tid"
+            label={t["TID"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="feebasSeed"
+            label="Feebas Seed"
+            numType="hex"
+          />
+        </FieldRow>
+      </FormSection>
+
+      <FormSection title={t["Search"]}>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="initialAdvances"
+            label={t["Initial Advances"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="maxAdvances"
+            label={t["Max Advances"]}
+            numType="decimal"
+          />
+        </FieldRow>
+      </FormSection>
+    </>
+  );
+};
 
 type Props = {
   game: "rs" | "emerald";
@@ -65,7 +82,7 @@ type Props = {
 export const Gen3Sid = ({ game }: Props) => {
   const [results, setResults] = React.useState<GeneratorResult[]>([]);
 
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     const generate =
       game === "rs"
         ? rngTools.rs_sid_from_feebas_seed
@@ -82,14 +99,15 @@ export const Gen3Sid = ({ game }: Props) => {
   };
 
   return (
-    <RngToolForm<FormState, GeneratorResult>
-      fields={fields}
+    <ToolForm<FormState, GeneratorResult>
       columns={columns}
       results={results}
       initialValues={initialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
       submitTrackerId="generate_gen3_sid"
-    />
+    >
+      <Fields />
+    </ToolForm>
   );
 };

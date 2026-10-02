@@ -1,13 +1,6 @@
 import { Wild3PaintingAdvsAndDur, Wild3SearcherResultMon } from "~/rngTools";
-import {
-  Flex,
-  Icon,
-  Link,
-  ResultColumn,
-  RngToolForm,
-  RngToolSubmit,
-  TooltipWithIcon,
-} from "~/components";
+import { Flex, Icon, Link, ResultColumn, TooltipWithIcon } from "~/components";
+import { ToolForm, type ToolFormSubmit } from "~/components/form";
 import { formatProbability } from "~/utils/formatProbability";
 import React from "react";
 import { z } from "zod";
@@ -207,7 +200,7 @@ export const Wild3TargetSetupSearcher = ({
     null,
   );
 
-  const onSubmit: RngToolSubmit<FormState> = async (values) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (values) => {
     const pidPathResults = await searchWild3Target(values);
 
     setRngManipulatedLeadPid(values.rngManipulatedLeadPid);
@@ -245,7 +238,7 @@ export const Wild3TargetSetupSearcher = ({
 
   return (
     <>
-      <RngToolForm<FormState, PidPathResult>
+      <ToolForm<FormState, PidPathResult>
         columns={pidPathColumns}
         results={pidPathResults}
         validationSchema={Validator}
@@ -256,9 +249,8 @@ export const Wild3TargetSetupSearcher = ({
         onClickResultRow={setSelectedPidPathResult}
       >
         <Wild3TargetMon />
-        <br />
         <Wild3SetupFilter />
-      </RngToolForm>
+      </ToolForm>
 
       {selectedPidPathResult != null && (
         <Wild3ResultSetupInfos

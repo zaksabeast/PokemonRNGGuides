@@ -1,11 +1,13 @@
 import { Gen3TidSidResult, rngTools } from "~/rngTools";
+import { ResultColumn } from "~/components";
 import {
-  Field,
-  FormikNumberInput,
-  ResultColumn,
-  RngToolForm,
-  RngToolSubmit,
-} from "~/components";
+  FieldRow,
+  FormNumberField,
+  FormSection,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import React from "react";
 import { denormalizeIdFilter } from "~/types/id";
 import { z } from "zod";
@@ -49,24 +51,36 @@ const initialValues: FormState = {
   hit_tid: 0,
 };
 
-const fields: Field[] = [
-  {
-    label: "Initial Advances",
-    input: (
-      <FormikNumberInput<FormState> name="initial_advances" numType="decimal" />
-    ),
-  },
-  {
-    label: "Max Advances",
-    input: (
-      <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
-    ),
-  },
-  {
-    label: "Hit TID",
-    input: <FormikNumberInput<FormState> name="hit_tid" numType="decimal" />,
-  },
-];
+const Fields = () => {
+  const t = useActiveRouteTranslations();
+
+  return (
+    <>
+      <FormSection title={t["Your game"]}>
+        <FormNumberField<FormState>
+          name="hit_tid"
+          label="Hit TID"
+          numType="decimal"
+        />
+      </FormSection>
+
+      <FormSection title={t["Search"]}>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="initial_advances"
+            label={t["Initial Advances"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="max_advances"
+            label={t["Max Advances"]}
+            numType="decimal"
+          />
+        </FieldRow>
+      </FormSection>
+    </>
+  );
+};
 
 export const RsTidTimer = () => {
   const [state] = useRsTidState();
@@ -83,7 +97,7 @@ export const RsTidSearcher = () => {
   const [results, setResults] = React.useState<Result[]>([]);
   const [state] = useRsTidState();
 
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     const results = await rngTools.gen3_tidsid_states({
       offset: opts.offset,
       initial_advances: opts.initial_advances,
@@ -107,8 +121,7 @@ export const RsTidSearcher = () => {
   };
 
   return (
-    <RngToolForm<FormState, Result>
-      fields={fields}
+    <ToolForm<FormState, Result>
       columns={columns}
       results={results}
       initialValues={initialValues}
@@ -116,6 +129,8 @@ export const RsTidSearcher = () => {
       onSubmit={onSubmit}
       submitTrackerId="search_rs_tidsid"
       rowKey="advance"
-    />
+    >
+      <Fields />
+    </ToolForm>
   );
 };

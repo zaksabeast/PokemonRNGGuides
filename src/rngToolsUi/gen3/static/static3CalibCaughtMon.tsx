@@ -1,5 +1,5 @@
 import React from "react";
-import { Field, Flex, FormFieldTable, RngToolForm } from "~/components";
+import { ToolForm, type ToolFormSubmit } from "~/components/form";
 import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
@@ -23,15 +23,14 @@ import {
   createColumns,
   createUiResultBase,
   FormState,
-  getCommonFieldInputs,
   initialValues,
   isType,
   updateResultsForRareCandy,
   validator,
 } from "../pokemonRng/calibCaughtMon";
+import { CaughtMonFields } from "../pokemonRng/caughtMonFields";
 import { getStaticEncounterLvl } from "./calculateTargetSetupResult";
-import { RngToolSubmit } from "~/components/rngToolForm";
-import { Typography } from "~/components/typography";
+import { defaultMinMaxStats, MinMaxStats } from "~/types/stat";
 import { useFormContext, useWatch } from "~/hooks/form";
 import clamp from "lodash-es/clamp";
 import { gen3StaticMethods } from "./constants.tsx";
@@ -173,7 +172,8 @@ export const Fields = ({
   const selectedNature = watchedValues.nature ?? initialValues.nature;
   const rareCandy = watchedValues.rareCandy ?? initialValues.rareCandy;
 
-  const [fields, setFields] = React.useState<Field[]>([]);
+  const [minMaxStats, setMinMaxStats] =
+    React.useState<MinMaxStats>(defaultMinMaxStats);
 
   React.useEffect(() => {
     onRareCandyChange(targetSpecies, targetLvl, selectedNature, rareCandy);
@@ -181,31 +181,22 @@ export const Fields = ({
 
   React.useEffect(() => {
     getStatRange({
-      species: targetSetup.species,
+      species: targetSpecies,
       levelRange: [targetLvl, targetLvl],
       nature: selectedNature,
-    }).then((minMaxStats) => {
-      setFields([
-        ...getCommonFieldInputs(
-          targetSpecies,
-          minMaxStats,
-          rareCandy,
-          (count) => {
-            setFieldValue("rareCandy", count);
-          },
-        ),
-      ]);
-    });
-  }, [
-    targetSetup,
-    targetSpecies,
-    targetLvl,
-    selectedNature,
-    setFieldValue,
-    rareCandy,
-  ]);
+    }).then(setMinMaxStats);
+  }, [targetSpecies, targetLvl, selectedNature]);
 
-  return <FormFieldTable fields={fields} />;
+  return (
+    <CaughtMonFields
+      species={targetSpecies}
+      minMaxStats={minMaxStats}
+      rareCandy={rareCandy}
+      setRareCandyCount={(count) => {
+        setFieldValue("rareCandy", count);
+      }}
+    />
+  );
 };
 
 type Props = {
@@ -228,7 +219,7 @@ export const Static3CalibCaughtMon = ({
   const { targetMethod, targetPaintingAdvs } = targetSetup;
   const usingPaintingReseeding = targetSetup.targetPaintingAdvs.before > 0;
 
-  const onSubmit: RngToolSubmit<FormState> = async (values) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (values) => {
     setResults(await searchCaughtMon(values, targetSetup));
   };
 
@@ -273,28 +264,18 @@ export const Static3CalibCaughtMon = ({
   };
 
   return (
-    <Flex vertical gap={8}>
-      <Typography.Title level={5} p={0} m={0}>
-        Caught Pokémon
-      </Typography.Title>
-      <RngToolForm<FormState, CaughtMonResult>
-        formContainerId="generate-static3-caught"
-        columns={columns}
-        results={results}
-        initialValues={initialValues}
-        validationSchema={validator}
-        onSubmit={onSubmit}
-        submitTrackerId="generate_static3_caught"
-        submitButtonLabel="Find advances matching caught Pokémon"
-        rowKey="uid"
-      >
-        <Flex vertical ml={20}>
-          <Fields
-            targetSetup={targetSetup}
-            onRareCandyChange={onRareCandyChange}
-          />
-        </Flex>
-      </RngToolForm>
-    </Flex>
+    <ToolForm<FormState, CaughtMonResult>
+      formContainerId="generate-static3-caught"
+      columns={columns}
+      results={results}
+      initialValues={initialValues}
+      validationSchema={validator}
+      onSubmit={onSubmit}
+      submitTrackerId="generate_static3_caught"
+      submitButtonLabel="Find caught Pokémon"
+      rowKey="uid"
+    >
+      <Fields targetSetup={targetSetup} onRareCandyChange={onRareCandyChange} />
+    </ToolForm>
   );
 };

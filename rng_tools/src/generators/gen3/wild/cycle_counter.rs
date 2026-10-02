@@ -3,11 +3,10 @@ use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 use crate::gen3::{
-    BASE_LEAD_PID_MOD_24_CYCLES, COMMON_LEAD_RANGE, CycleAndModCount, CycleAndModRange,
-    CycleCounter, FASTEST_MODULO_CYCLE_24, Gen3Lead, INFINITE_CYCLE, Moment,
-    SLOWEST_MODULO_CYCLE_24, VBLANK_FREQ, Wild3GeneratorCycleOpts, Wild3GeneratorOptions,
-    get_min_mid_max_pre_sweet_scent_cycle, get_min_mid_max_vblank_cycle_duration,
-    is_method_possible_to_trigger,
+    BASE_LEAD_PID_MOD_24_CYCLES, COMMON_LEAD_RANGE, CycleAndModRange, FASTEST_MODULO_CYCLE_24,
+    Gen3Lead, INFINITE_CYCLE, Moment, SLOWEST_MODULO_CYCLE_24, VBLANK_FREQ,
+    Wild3GeneratorCycleOpts, Wild3GeneratorOptions, get_min_mid_max_pre_sweet_scent_cycle,
+    get_min_mid_max_vblank_cycle_duration,
 };
 
 #[derive(Default, Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -130,6 +129,25 @@ pub enum CycleFrameCounter {
     // Ignore cycle counting. All methods are possibles and likelihood can't be determined.
     Inactive,
 
+    // The main goal is to determine whether a method can be triggered.
+    // A method can be triggered if all of the leads between min_lead_cycle_spd and max_lead_cycle_spd
+    // can trigger the method for at least one given initial cycle.
+    // Note: If there's a valid initial cycle for fastest and slowest lead, there's a valid initial cycle for all lead inbetween.
+    // This is the equivalent of ensuring that the slowest lead can trigger the method on the earliest initial cycle
+    // and the fastest lead can trigger it on the latest initial cycle.
+    // It also gives approximative likelihood for each method.
+    CheckValidAllLeadSpds {
+        min_lead_cycle_spd: usize,
+        max_lead_cycle_spd: usize,
+        // Cycles assuming earliest initial timing with the slowest lead
+        earliest_slowest_cycle: usize,
+        // Cycles assuming latest initial timing with the fastest lead
+        latest_fastest_cycle: usize,
+        cycle_instability: f32,
+        base_cycle_count: usize,
+        lead_pid_mod_count: usize,
+    },
+
     // The main goal is to determine whether a method can be triggered or not.
     // It also gives approximative likelihood for each method.
     MinMaxRange {
@@ -161,6 +179,23 @@ impl CycleFrameCounter {
                 consider_rng_manipulated_lead_pid,
             } => {
                 let min_mid_max_initial = get_min_mid_max_pre_sweet_scent_cycle(opts.action);
+                if !*consider_rng_manipulated_lead_pid && !*generate_even_if_impossible {
+                    let (min_lead_cycle_spd, max_lead_cycle_spd) =
+                        MinMaxCycleFrame::min_max_lead_cycle_spd(
+                            opts.lead == Gen3Lead::Egg,
+                            false,
+                            None,
+                        );
+                    return CycleFrameCounter::CheckValidAllLeadSpds {
+                        min_lead_cycle_spd,
+                        max_lead_cycle_spd,
+                        earliest_slowest_cycle: min_mid_max_initial.0,
+                        latest_fastest_cycle: min_mid_max_initial.2,
+                        cycle_instability: 0.0,
+                        base_cycle_count: 0,
+                        lead_pid_mod_count: 0,
+                    };
+                }
                 CycleFrameCounter::MinMaxRange {
                     min_max_cycles: MinMaxCycleFrame::new(
                         (min_mid_max_initial.0, min_mid_max_initial.2),
@@ -225,7 +260,8 @@ impl CycleFrameCounter {
                 let total = cycle + lead_pid_mod * *lead_cycle_spd;
                 self.add_cycle(total);
             }
-            CycleFrameCounter::MinMaxRange { .. } => {
+            CycleFrameCounter::MinMaxRange { .. }
+            | CycleFrameCounter::CheckValidAllLeadSpds { .. } => {
                 self.add_cycle(cycle);
                 self.add_mod(lead_pid_mod);
             }
@@ -234,6 +270,16 @@ impl CycleFrameCounter {
     pub fn add_cycle(&mut self, cycle: usize) {
         match self {
             CycleFrameCounter::Inactive => {}
+            CycleFrameCounter::CheckValidAllLeadSpds {
+                earliest_slowest_cycle,
+                latest_fastest_cycle,
+                base_cycle_count,
+                ..
+            } => {
+                *base_cycle_count += cycle;
+                *earliest_slowest_cycle += cycle;
+                *latest_fastest_cycle += cycle;
+            }
             CycleFrameCounter::DetailedBreakdown {
                 current_cycle,
                 vblank_cycles,
@@ -262,6 +308,21 @@ impl CycleFrameCounter {
     pub fn add_mod(&mut self, lead_pid_mod: usize) {
         match self {
             CycleFrameCounter::Inactive => {}
+            CycleFrameCounter::CheckValidAllLeadSpds {
+                min_lead_cycle_spd,
+                max_lead_cycle_spd,
+                earliest_slowest_cycle,
+                latest_fastest_cycle,
+                lead_pid_mod_count,
+                ..
+            } => {
+                *lead_pid_mod_count += lead_pid_mod;
+                // CycleAndModRange includes the base modulo cost as well as the lead speed.
+                *earliest_slowest_cycle +=
+                    lead_pid_mod * (BASE_LEAD_PID_MOD_24_CYCLES + *max_lead_cycle_spd);
+                *latest_fastest_cycle +=
+                    lead_pid_mod * (BASE_LEAD_PID_MOD_24_CYCLES + *min_lead_cycle_spd);
+            }
             CycleFrameCounter::DetailedBreakdown { lead_cycle_spd, .. } => {
                 let cycle = lead_pid_mod * *lead_cycle_spd;
                 self.add_cycle(cycle);
@@ -294,6 +355,15 @@ impl CycleFrameCounter {
     pub fn can_vblank_occur_soon(&self, cycle_range: usize) -> bool {
         match self {
             CycleFrameCounter::Inactive => true,
+            CycleFrameCounter::CheckValidAllLeadSpds {
+                earliest_slowest_cycle: earliest_slowest,
+                latest_fastest_cycle: latest_fastest,
+                ..
+            } => {
+                cycle_range > 0
+                    && *earliest_slowest < VBLANK_FREQ
+                    && latest_fastest.saturating_add(cycle_range) > VBLANK_FREQ
+            }
             CycleFrameCounter::DetailedBreakdown { current_cycle, .. } => {
                 cycle_range > VBLANK_FREQ.saturating_sub(current_cycle.cycle)
             }
@@ -313,6 +383,10 @@ impl CycleFrameCounter {
     pub fn is_possible_that_no_vblank_yet(&self) -> bool {
         match self {
             CycleFrameCounter::Inactive => true,
+            CycleFrameCounter::CheckValidAllLeadSpds {
+                earliest_slowest_cycle: earliest_slowest,
+                ..
+            } => *earliest_slowest < VBLANK_FREQ,
             CycleFrameCounter::DetailedBreakdown { current_cycle, .. } => current_cycle.frame == 0,
             CycleFrameCounter::MinMaxRange {
                 min_max_cycles,
@@ -353,6 +427,9 @@ impl CycleFrameCounter {
             }
             CycleFrameCounter::MinMaxRange {
                 lead_pid_mod_count, ..
+            }
+            | CycleFrameCounter::CheckValidAllLeadSpds {
+                lead_pid_mod_count, ..
             } => CycleAndModRange::new(self.get_current_cycle_count(), *lead_pid_mod_count, len),
         }
     }
@@ -367,6 +444,11 @@ impl CycleFrameCounter {
                 base_cycle_count,
                 lead_pid_mod_count,
                 ..
+            }
+            | CycleFrameCounter::CheckValidAllLeadSpds {
+                base_cycle_count,
+                lead_pid_mod_count,
+                ..
             } => *base_cycle_count + *lead_pid_mod_count * BASE_LEAD_PID_MOD_24_CYCLES,
         }
     }
@@ -374,6 +456,9 @@ impl CycleFrameCounter {
         match self {
             CycleFrameCounter::Inactive | CycleFrameCounter::DetailedBreakdown { .. } => {}
             CycleFrameCounter::MinMaxRange {
+                cycle_instability, ..
+            }
+            | CycleFrameCounter::CheckValidAllLeadSpds {
                 cycle_instability, ..
             } => *cycle_instability = instability,
         }
@@ -383,13 +468,18 @@ impl CycleFrameCounter {
             CycleFrameCounter::Inactive | CycleFrameCounter::DetailedBreakdown { .. } => 0.0,
             CycleFrameCounter::MinMaxRange {
                 cycle_instability, ..
+            }
+            | CycleFrameCounter::CheckValidAllLeadSpds {
+                cycle_instability, ..
             } => *cycle_instability,
         }
     }
 
     pub fn get_cycle_at_moments(&self) -> Vec<CycleFrameMoment> {
         match self {
-            CycleFrameCounter::Inactive | CycleFrameCounter::MinMaxRange { .. } => vec![],
+            CycleFrameCounter::Inactive
+            | CycleFrameCounter::MinMaxRange { .. }
+            | CycleFrameCounter::CheckValidAllLeadSpds { .. } => vec![],
             CycleFrameCounter::DetailedBreakdown {
                 cycle_at_moments, ..
             } => cycle_at_moments.clone(),

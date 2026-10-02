@@ -8,11 +8,11 @@ use crate::{
     PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE, PERTINENT_SOLO_POKEBLOCKS_BY_NATURE,
     POKEBLOCK_NATURE_STAT_FACTORS,
     gen3::{
-        CycleAndModRange, CycleCounter, CycleFrameCounter, CycleRange, Wild3GeneratorCycleOpts, Gen3Lead, Gen3Method, Moment, Wild3Action,
-        Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData,
-        Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
-        get_min_mid_max_pre_sweet_scent_cycle, get_min_mid_max_vblank_cycle_duration,
-        passes_pid_filter, wild::lcrng_distance,
+        CycleAndModRange, CycleCounter, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method,
+        Moment, Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState,
+        Wild3GeneratorCycleOpts, Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState,
+        Wild3SafariPokeblockGenOpt, get_min_mid_max_pre_sweet_scent_cycle,
+        get_min_mid_max_vblank_cycle_duration, passes_pid_filter, wild::lcrng_distance,
     },
     gen3_tsv, is_max_size,
     rng::{Rng, lcrng::Pokerng},
@@ -64,7 +64,8 @@ fn retain_methods_possible_to_trigger(
     if let Wild3GeneratorCycleOpts::Searching {
         generate_even_if_impossible: false,
         consider_rng_manipulated_lead_pid,
-    } = &opts.cycle_opts {
+    } = &opts.cycle_opts
+    {
         let is_egg = matches!(opts.lead, Gen3Lead::Egg);
         results.retain(|res| {
             is_method_possible_to_trigger(
@@ -236,7 +237,7 @@ fn select_encounter_idx(
             rng,
             cycle_counter,
             opts.feebas_cycles,
-            !matches!(opts.cycle_opts, Wild3GeneratorCycleOpts::Inactive),
+            opts.cycle_opts != Wild3GeneratorCycleOpts::Inactive,
         );
 
         if opts.feebas_state == Wild3FeebasState::OnFeebasTile {
@@ -502,7 +503,7 @@ fn generate_wild3_from_encounter(
             ivs: Ivs::default(),
             lvl,
             method: Gen3Method::Wild1,
-            cycle_range: if !matches!(opts.cycle_opts, Wild3GeneratorCycleOpts::Inactive) {
+            cycle_range: if opts.cycle_opts != Wild3GeneratorCycleOpts::Inactive {
                 Some(CycleRange::new(0, 0, INFINITE_CYCLE))
             } else {
                 None
@@ -891,7 +892,7 @@ fn create_if_passes_filter(
         return None;
     }
 
-    let cycle_range = if !matches!(gen_data.opts.cycle_opts, Wild3GeneratorCycleOpts::Inactive) {
+    let cycle_range = if gen_data.opts.cycle_opts != Wild3GeneratorCycleOpts::Inactive {
         Some(cycle_range)
     } else {
         None

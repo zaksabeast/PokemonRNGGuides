@@ -38,9 +38,11 @@ pub enum Wild3GeneratorCycleOpts {
 }
 
 impl Wild3GeneratorCycleOpts {
-    pub fn likelihood_lead_cycle_spd(&self) -> Option<usize> {
+    pub fn lead_cycle_spd(&self) -> Option<usize> {
         match self {
-            Self::LikelihoodForLead { lead_cycle_spd } => Some(*lead_cycle_spd),
+            Self::LikelihoodForLead { lead_cycle_spd }
+            | Self::CycleAtMomentNoEmuLog { lead_cycle_spd }
+            | Self::CycleAtMomentWithEmuLog { lead_cycle_spd, .. } => Some(*lead_cycle_spd),
             _ => None,
         }
     }

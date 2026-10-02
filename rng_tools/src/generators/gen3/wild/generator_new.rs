@@ -500,15 +500,16 @@ fn generate_personality(
 
                 if let Some((pid, ivs)) = opt_pid_ivs
                     && cycle_counter.can_generate_method(method5_range)
-                        && let Some(res) = create_if_passes_filter(
-                            &gen_data,
-                            pid,
-                            ivs,
-                            Gen3Method::Wild5,
-                            cycle_counter.create_cycle_range(method5_range),
-                        ) {
-                            results.push(res);
-                        }
+                    && let Some(res) = create_if_passes_filter(
+                        &gen_data,
+                        pid,
+                        ivs,
+                        Gen3Method::Wild5,
+                        cycle_counter.create_cycle_range(method5_range),
+                    )
+                {
+                    results.push(res);
+                }
             }
         }
 
@@ -1159,7 +1160,7 @@ fn create_if_passes_filter(
         return None;
     }
 
-    let cycle_range = if !matches!(gen_data.opts.cycle_opts, Wild3GeneratorCycleOpts::Inactive) {
+    let cycle_range = if gen_data.opts.cycle_opts != Wild3GeneratorCycleOpts::Inactive {
         Some(cycle_range)
     } else {
         None

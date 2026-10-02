@@ -23,7 +23,7 @@ TODO:
 - Improve calculate_method_probability by using real distribution, and consider the active map/audio.
 */
 
-pub const MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE: usize = 55000;
+const MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE: usize = 55000;
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]

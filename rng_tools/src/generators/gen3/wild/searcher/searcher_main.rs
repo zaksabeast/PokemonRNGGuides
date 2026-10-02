@@ -12,7 +12,8 @@ use super::super::{
 use crate::{
     AbilityType, Gender, HiddenPower, Ivs, Nature, PkmFilter, Species,
     gen3::{
-        Gen3Lead, Gen3Method, Gen3PkmFilter, SpeciesData, Wild3GeneratorCycleOpts, search_wild3_naive, search_wild3_reverse,
+        Gen3Lead, Gen3Method, Gen3PkmFilter, SpeciesData, Wild3GeneratorCycleOpts,
+        search_wild3_naive, search_wild3_reverse,
         searcher_painter::Wild3PaintingOpts,
         wild::{
             Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex, Wild3MapGameData,
@@ -205,7 +206,7 @@ impl Wild3SearcherResultMon {
     ) -> Wild3SearcherResultMon {
         let cycle_data_by_lead = gen_res.cycle_range.map(|cycle_range| {
             let is_egg = matches!(gen_opts.lead, Gen3Lead::Egg);
-            let lead_cycle_spd = gen_opts.cycle_opts.likelihood_lead_cycle_spd();
+            let lead_cycle_spd = gen_opts.cycle_opts.lead_cycle_spd();
             calculate_cycle_data_by_lead(&cycle_range, gen_opts.action, is_egg, lead_cycle_spd)
         });
 

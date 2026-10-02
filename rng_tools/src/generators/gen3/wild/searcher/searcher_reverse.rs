@@ -377,7 +377,6 @@ fn create_result(
 
             let mut gen_results =
                 generate_wild3(Pokerng::new(path.seed), &gen_opts, &map_setups.map_data);
-            opts.retain_possible_results(&gen_opts, &mut gen_results.mon_results);
 
             for gen_res in &gen_results.mon_results {
                 let encounter = map_setups

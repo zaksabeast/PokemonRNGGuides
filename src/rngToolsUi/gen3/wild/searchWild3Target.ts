@@ -213,6 +213,7 @@ export const searchWild3Target = async (values: FormState) => {
       ? true
       : values.using_white_flute,
     painting_opts,
+    lead_cycle_speed: null,
     considered_safari_pokeblocks: values.considered_safari_pokeblocks,
   };
 

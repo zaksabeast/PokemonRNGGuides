@@ -29,6 +29,7 @@ fn test_search_wild3_cycle_methods_1_2_4() {
             gender: Some(Gender::Male),
             ..Default::default()
         },
+        lead_cycle_speed: Some(500),
         ..Default::default()
     };
     let expected_results = [
@@ -39,7 +40,12 @@ fn test_search_wild3_cycle_methods_1_2_4() {
             encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot1),
             cycle_data_by_lead: Some(Wild3SearcherCycleDataByLead {
                 post_sweet_scent_range: CycleRange::new(72102, 80, 114265),
-                specified_lead: None,
+                specified_lead: Some(Wild3SearcherCycleData::new(
+                    500,
+                    54529,
+                    114265,
+                    0.6823666666666667,
+                )),
                 slowest_lead: Wild3SearcherCycleData::new(900, 22529, 114265, 1.0),
                 fastest_lead: Wild3SearcherCycleData::new(18, 93089, 114265, 0.0),
                 ideal_lead: Wild3SearcherCycleData::new(900, 22529, 114265, 1.0),
@@ -70,7 +76,12 @@ fn test_search_wild3_cycle_methods_1_2_4() {
             encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot1),
             cycle_data_by_lead: Some(Wild3SearcherCycleDataByLead {
                 post_sweet_scent_range: CycleRange::new(186367, 80, 38679),
-                specified_lead: None,
+                specified_lead: Some(Wild3SearcherCycleData::new(
+                    500,
+                    15850,
+                    38679,
+                    0.3176333333333333,
+                )),
                 slowest_lead: Wild3SearcherCycleData::new(900, 0, 22529, 0.0),
                 fastest_lead: Wild3SearcherCycleData::new(18, 54410, 38679, 0.6863333333333334),
                 ideal_lead: Wild3SearcherCycleData::new(252, 35690, 38679, 0.9789666666666667),
@@ -101,7 +112,7 @@ fn test_search_wild3_cycle_methods_1_2_4() {
             encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot1),
             cycle_data_by_lead: Some(Wild3SearcherCycleDataByLead {
                 post_sweet_scent_range: CycleRange::new(225046, 80, 10000000),
-                specified_lead: None,
+                specified_lead: Some(Wild3SearcherCycleData::new(500, 0, 15850, 0.0)),
                 slowest_lead: Wild3SearcherCycleData::new(900, 0, 0, 0.0),
                 fastest_lead: Wild3SearcherCycleData::new(18, 0, 54410, 0.31366666666666665),
                 ideal_lead: Wild3SearcherCycleData::new(18, 0, 54410, 0.31366666666666665),

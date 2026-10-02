@@ -1,10 +1,10 @@
 use crate::{
     AbilityType, EncounterSlot, Gender, Ivs, Nature, PkmFilter, Species,
-    gen3::{Wild3GeneratorCycleOpts,
+    gen3::{
         Gen3Lead, Gen3Method, Gen3PkmFilter, Wild3Action, Wild3EncounterGameData,
-        Wild3EncounterIndex, Wild3FeebasState, Wild3GeneratorMonResult, Wild3GeneratorOptions,
-        Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
-        Wild3SpecialEncounterGameData, generate_wild3,
+        Wild3EncounterIndex, Wild3FeebasState, Wild3GeneratorCycleOpts, Wild3GeneratorMonResult,
+        Wild3GeneratorOptions, Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState,
+        Wild3SafariPokeblockGenOpt, Wild3SpecialEncounterGameData, generate_wild3,
     },
     rng::lcrng::Pokerng,
 };

@@ -114,6 +114,7 @@ pub struct Wild3SearcherOptions {
     pub methods: Vec<Gen3Method>,
     pub consider_cycles: bool,
     pub consider_rng_manipulated_lead_pid: bool,
+    pub lead_cycle_speed: Option<usize>,
     pub generate_even_if_impossible: bool,
     pub painting_opts: Option<Wild3PaintingOpts>,
     pub using_white_flute: bool,
@@ -125,6 +126,8 @@ impl Wild3SearcherOptions {
     pub fn generator_cycle_opts(&self) -> Wild3GeneratorCycleOpts {
         if !self.consider_cycles {
             Wild3GeneratorCycleOpts::Inactive
+        } else if let Some(lead_cycle_spd) = self.lead_cycle_speed {
+            Wild3GeneratorCycleOpts::LikelihoodForLead { lead_cycle_spd }
         } else {
             Wild3GeneratorCycleOpts::Searching {
                 generate_even_if_impossible: self.generate_even_if_impossible,
@@ -152,6 +155,7 @@ impl Default for Wild3SearcherOptions {
             consider_rng_manipulated_lead_pid: false,
             generate_even_if_impossible: false,
             painting_opts: None,
+            lead_cycle_speed: None,
             using_white_flute: true,
             considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt::default(),
             feebas_cycles: vec![0],

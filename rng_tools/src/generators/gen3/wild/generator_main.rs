@@ -37,6 +37,15 @@ pub enum Wild3GeneratorCycleOpts {
     },
 }
 
+impl Wild3GeneratorCycleOpts {
+    pub fn likelihood_lead_cycle_spd(&self) -> Option<usize> {
+        match self {
+            Self::LikelihoodForLead { lead_cycle_spd } => Some(*lead_cycle_spd),
+            _ => None,
+        }
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3GeneratorOptions {

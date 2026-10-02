@@ -115,12 +115,6 @@ impl MinMaxCycleFrame {
         }
         self.max_cycle.cycle > VBLANK_FREQ - cycle_range
     }
-    pub fn can_vblank_occur_soon_for_min_and_max(&self, cycle_range: usize) -> bool {
-        if self.max_cycle.frame > self.min_cycle.frame {
-            return false; // vblank already occured for max case
-        }
-        self.min_cycle.cycle > VBLANK_FREQ - cycle_range
-    }
 }
 
 #[derive(Debug, Clone, Tsify, Serialize, Deserialize)]
@@ -156,7 +150,6 @@ pub enum CycleFrameCounter {
         base_cycle_count: usize,
         lead_pid_mod_count: usize,
         generate_even_if_impossible: bool,
-        consider_rng_manipulated_lead_pid: bool,
     },
 
     // It is used to debug issues with the cycle counter, by reproducing a very specific case then
@@ -201,7 +194,7 @@ impl CycleFrameCounter {
                         (min_mid_max_initial.0, min_mid_max_initial.2),
                         MinMaxCycleFrame::min_max_lead_cycle_spd(
                             opts.lead == Gen3Lead::Egg,
-                            *consider_rng_manipulated_lead_pid,
+                            true,
                             None,
                         ),
                     ),
@@ -209,7 +202,6 @@ impl CycleFrameCounter {
                     base_cycle_count: 0,
                     lead_pid_mod_count: 0,
                     generate_even_if_impossible: *generate_even_if_impossible,
-                    consider_rng_manipulated_lead_pid: *consider_rng_manipulated_lead_pid,
                 }
             }
             Wild3GeneratorCycleOpts::LikelihoodForLead { lead_cycle_spd } => {
@@ -223,7 +215,6 @@ impl CycleFrameCounter {
                     base_cycle_count: 0,
                     lead_pid_mod_count: 0,
                     generate_even_if_impossible: true,
-                    consider_rng_manipulated_lead_pid: true,
                 }
             }
             Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog { lead_cycle_spd } => {
@@ -367,16 +358,8 @@ impl CycleFrameCounter {
             CycleFrameCounter::DetailedBreakdown { current_cycle, .. } => {
                 cycle_range > VBLANK_FREQ.saturating_sub(current_cycle.cycle)
             }
-            CycleFrameCounter::MinMaxRange {
-                min_max_cycles,
-                consider_rng_manipulated_lead_pid,
-                ..
-            } => {
-                if *consider_rng_manipulated_lead_pid {
-                    min_max_cycles.can_vblank_occur_soon(cycle_range)
-                } else {
-                    min_max_cycles.can_vblank_occur_soon_for_min_and_max(cycle_range)
-                }
+            CycleFrameCounter::MinMaxRange { min_max_cycles, .. } => {
+                min_max_cycles.can_vblank_occur_soon(cycle_range)
             }
         }
     }
@@ -388,18 +371,8 @@ impl CycleFrameCounter {
                 ..
             } => *earliest_slowest < VBLANK_FREQ,
             CycleFrameCounter::DetailedBreakdown { current_cycle, .. } => current_cycle.frame == 0,
-            CycleFrameCounter::MinMaxRange {
-                min_max_cycles,
-                consider_rng_manipulated_lead_pid,
-                ..
-            } => {
-                if *consider_rng_manipulated_lead_pid {
-                    min_max_cycles.min_cycle.frame == 0
-                } else {
-                    // when consider_rng_manipulated_lead_pid is false, both min and max must be able to have no vblank.
-                    // if max doesn't have a vblank, when min surely doesn't either.
-                    min_max_cycles.max_cycle.frame == 0
-                }
+            CycleFrameCounter::MinMaxRange { min_max_cycles, .. } => {
+                min_max_cycles.min_cycle.frame == 0
             }
         }
     }

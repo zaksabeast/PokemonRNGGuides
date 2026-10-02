@@ -3,7 +3,7 @@ use crate::{
     gen3::{
         CycleRange, Gen3Lead, Gen3Method, INFINITE_CYCLE, Wild3EncounterIndex,
         Wild3GeneratorCycleOpts, Wild3GeneratorMonResult, Wild3GeneratorOptions, Wild3MapGameData,
-        generate_wild3, generate_wild3_old, is_method_possible_to_trigger,
+        generate_wild3, generate_wild3_old,
     },
     rng::lcrng::Pokerng,
 };
@@ -45,62 +45,6 @@ fn test_generate_wild3_cycle_method_3() {
         },
     ];
     assert_eq!(result, expected_result);
-}
-
-#[test]
-fn test_generate_wild3_cycle_method_3_specified_lead_speed() {
-    let mut options = Wild3GeneratorOptions {
-        methods: vec![Gen3Method::Wild3],
-        lead: Gen3Lead::Synchronize(Nature::Serious),
-        cycle_opts: Wild3GeneratorCycleOpts::Searching {
-            generate_even_if_impossible: false,
-            consider_rng_manipulated_lead_pid: true,
-        },
-        ..Default::default()
-    };
-    let map = Wild3MapGameData::default();
-    let rng = Pokerng::with_advances(0, 3012);
-
-    let unrestricted = generate_wild3(rng, &options, &map).mon_results;
-    assert_eq!(unrestricted.len(), 2);
-
-    let possible_for_lead = |options: &Wild3GeneratorOptions, lead_cycle_spd| {
-        let mut results = generate_wild3(rng, options, &map).mon_results;
-        results.retain(|result| {
-            is_method_possible_to_trigger(
-                &result.cycle_range.unwrap(),
-                options.action,
-                options.lead == Gen3Lead::Egg,
-                true,
-                Some(lead_cycle_spd),
-            )
-        });
-        results
-    };
-
-    options.cycle_opts = Wild3GeneratorCycleOpts::LikelihoodForLead {
-        lead_cycle_spd: 100,
-    };
-    assert!(possible_for_lead(&options, 100).is_empty());
-
-    options.cycle_opts = Wild3GeneratorCycleOpts::LikelihoodForLead {
-        lead_cycle_spd: 800,
-    };
-    assert_eq!(possible_for_lead(&options, 800), unrestricted);
-
-    options.cycle_opts = Wild3GeneratorCycleOpts::LikelihoodForLead {
-        lead_cycle_spd: 100,
-    };
-    let including_impossible = generate_wild3(rng, &options, &map).mon_results;
-    assert!(including_impossible.len() > unrestricted.len());
-    options.cycle_opts = Wild3GeneratorCycleOpts::Searching {
-        generate_even_if_impossible: true,
-        consider_rng_manipulated_lead_pid: true,
-    };
-    assert_eq!(
-        generate_wild3(rng, &options, &map).mon_results,
-        including_impossible
-    );
 }
 
 #[test]

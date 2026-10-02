@@ -507,7 +507,6 @@ fn test_search_wild3_naive_magikarp_in_feebas_map() {
             methods: vec![Gen3Method::Wild4],
             consider_cycles: true,
             using_white_flute: false,
-            lead_cycle_speed: Some(calculate_pid_speed(0x7933A9CB)),
             ..Default::default()
         };
 

@@ -206,13 +206,7 @@ impl Wild3SearcherResultMon {
     ) -> Wild3SearcherResultMon {
         let cycle_data_by_lead = gen_res.cycle_range.map(|cycle_range| {
             let is_egg = matches!(gen_opts.lead, Gen3Lead::Egg);
-            // TODO: add a function on Wild3GeneratorCycleOpts
-            let lead_cycle_spd = match &gen_opts.cycle_opts {
-                Wild3GeneratorCycleOpts::LikelihoodForLead { lead_cycle_spd } => {
-                    Some(*lead_cycle_spd)
-                }
-                _ => None,
-            };
+            let lead_cycle_spd = gen_opts.cycle_opts.likelihood_lead_cycle_spd();
             calculate_cycle_data_by_lead(&cycle_range, gen_opts.action, is_egg, lead_cycle_spd)
         });
 

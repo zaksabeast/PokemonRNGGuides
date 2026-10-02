@@ -73,7 +73,7 @@ fn FishingWildEncounter(
         let encounter_idx = Wild3EncounterIndex::Feebas;
         let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, level)?;
         return Some(CreateWildMon(
-            rng.clone(),
+            *rng,
             opts,
             map_data,
             cycle_counter.clone(),
@@ -87,7 +87,7 @@ fn FishingWildEncounter(
 
     let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, level)?;
     Some(CreateWildMon(
-        rng.clone(),
+        *rng,
         opts,
         map_data,
         cycle_counter.clone(),
@@ -152,7 +152,7 @@ fn RockSmashWildEncounter(
     let (encounter_idx, level) = TryGenerateWildMon(rng, opts, map_data, 0, cycle_counter)?;
     let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, level)?;
     Some(CreateWildMon(
-        rng.clone(),
+        *rng,
         opts,
         map_data,
         cycle_counter.clone(),
@@ -213,7 +213,7 @@ fn SweetScentWildEncounter(
         let (outbreak, level) = SetUpMassOutbreakEncounter(rng, 0, opts, map_data, cycle_counter)?;
         let encounter = get_encounter_if_respects_filter(opts, map_data, outbreak, level)?;
         return Some(CreateWildMon(
-            rng.clone(),
+            *rng,
             opts,
             map_data,
             cycle_counter.clone(),
@@ -226,7 +226,7 @@ fn SweetScentWildEncounter(
     let (encounter_idx, level) = TryGenerateWildMon(rng, opts, map_data, 0, cycle_counter)?;
     let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, level)?;
     Some(CreateWildMon(
-        rng.clone(),
+        *rng,
         opts,
         map_data,
         cycle_counter.clone(),
@@ -498,9 +498,9 @@ fn generate_personality(
                 (skip_method5_counter, method5_range, opt_pid_ivs) =
                     get_wild_method5_retry_count(&gen_data, rng, pid);
 
-                if let Some((pid, ivs)) = opt_pid_ivs {
-                    if cycle_counter.can_generate_method(method5_range) {
-                        if let Some(res) = create_if_passes_filter(
+                if let Some((pid, ivs)) = opt_pid_ivs
+                    && cycle_counter.can_generate_method(method5_range)
+                        && let Some(res) = create_if_passes_filter(
                             &gen_data,
                             pid,
                             ivs,
@@ -509,8 +509,6 @@ fn generate_personality(
                         ) {
                             results.push(res);
                         }
-                    }
-                }
             }
         }
 

@@ -375,7 +375,7 @@ fn create_result(
         for &feebas_cycles in feebas_cycles_list {
             gen_opts.feebas_cycles = feebas_cycles;
 
-            let mut gen_results =
+            let gen_results =
                 generate_wild3(Pokerng::new(path.seed), &gen_opts, &map_setups.map_data);
 
             for gen_res in &gen_results.mon_results {

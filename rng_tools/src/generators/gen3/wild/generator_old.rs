@@ -1,6 +1,5 @@
 use super::generator_main::{
     INFINITE_CYCLE, VBLANK_FREQ, Wild3GeneratorMonResult, Wild3GeneratorOptions,
-    Wild3GeneratorResults,
 };
 use super::{calc_modulo_cycle_signed, calc_modulo_cycle_unsigned, is_method_possible_to_trigger};
 use crate::{
@@ -8,7 +7,7 @@ use crate::{
     PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE, PERTINENT_SOLO_POKEBLOCKS_BY_NATURE,
     POKEBLOCK_NATURE_STAT_FACTORS,
     gen3::{
-        CycleAndModRange, CycleCounter, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method,
+        CycleAndModRange, CycleCounter, CycleRange, Gen3Lead, Gen3Method,
         Moment, Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState,
         Wild3GeneratorCycleOpts, Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState,
         Wild3SafariPokeblockGenOpt, get_min_mid_max_pre_sweet_scent_cycle,
@@ -447,18 +446,24 @@ fn calculate_nature_from_safari_pokeblock(
     }
 }
 
+#[derive(Debug, Default)]
+pub struct Wild3OldGeneratorResults {
+    pub mon_results: Vec<Wild3GeneratorMonResult>,
+    pub cycle_counter: CycleCounter,
+}
+
 // Entry point
 pub fn generate_wild3_old(
     mut rng: Pokerng,
     opts: &Wild3GeneratorOptions,
     map_data: &Wild3MapGameData,
-) -> Wild3GeneratorResults {
+) -> Wild3OldGeneratorResults {
     let mut cycle_counter = CycleCounter::default();
 
     let encounter_idx = select_encounter_idx(&mut rng, opts, map_data, &mut cycle_counter);
     if encounter_idx.is_none() {
         // no encounter
-        return Wild3GeneratorResults::empty();
+        return Wild3OldGeneratorResults::default();
     }
 
     let encounter_idx = encounter_idx.unwrap();
@@ -472,18 +477,18 @@ fn generate_wild3_from_encounter(
     mut cycle_counter: CycleCounter,
     encounter_idx: Wild3EncounterIndex,
     selected_level: Option<u8>,
-) -> Wild3GeneratorResults {
+) -> Wild3OldGeneratorResults {
     let encounter = map_data.get_encounter(opts.action, encounter_idx);
     if encounter.is_none() {
         // impossible to trigger in-game
-        return Wild3GeneratorResults::empty();
+        return Wild3OldGeneratorResults::default();
     }
 
     let encounter = encounter.unwrap();
     if let Some(species) = opts.gen3_filter.species
         && species != encounter.species_data.species
     {
-        return Wild3GeneratorResults::empty();
+        return Wild3OldGeneratorResults::default();
     }
 
     let lvl = selected_level
@@ -492,7 +497,7 @@ fn generate_wild3_from_encounter(
     if let Some(wanted_lvl) = opts.gen3_filter.lvl
         && lvl != wanted_lvl
     {
-        return Wild3GeneratorResults::empty();
+        return Wild3OldGeneratorResults::default();
     }
 
     let mut results: Vec<Wild3GeneratorMonResult> = vec![];
@@ -510,9 +515,9 @@ fn generate_wild3_from_encounter(
             },
             used_safari_pokeblock: None,
         });
-        return Wild3GeneratorResults {
+        return Wild3OldGeneratorResults {
             mon_results: results,
-            cycle_counter: CycleFrameCounter::Inactive,
+            cycle_counter,
         };
     }
 
@@ -691,9 +696,9 @@ fn generate_wild3_from_encounter(
 
     if !passes_pid_filter_internal(&gen_data, pid) {
         retain_methods_possible_to_trigger(opts, &mut results);
-        return Wild3GeneratorResults {
+        return Wild3OldGeneratorResults {
             mon_results: results,
-            cycle_counter: CycleFrameCounter::Inactive,
+            cycle_counter,
         };
     }
 
@@ -749,9 +754,9 @@ fn generate_wild3_from_encounter(
 
     retain_methods_possible_to_trigger(opts, &mut results);
 
-    Wild3GeneratorResults {
+    Wild3OldGeneratorResults {
         mon_results: results,
-        cycle_counter: CycleFrameCounter::Inactive,
+        cycle_counter,
     }
 }
 

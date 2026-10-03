@@ -4,6 +4,7 @@ import {
   rngTools,
   Species,
   Wild3GeneratorOptions,
+  Wild3GeneratorCycleOpts,
   Wild3MethodDistributionResult,
   Wild3SearcherResultMon,
 } from "~/rngTools";
@@ -65,7 +66,7 @@ export type Wild3Distributions = {
 
 export const setupToDistributions = async (
   targetSetup: TargetSetup,
-  lead_cycle_speed: number,
+  cycle_opts: Wild3GeneratorCycleOpts,
 ): Promise<Wild3Distributions> => {
   const { canUsePokeblock } = getPossibleValuesForMap(
     targetSetup.map,
@@ -89,7 +90,7 @@ export const setupToDistributions = async (
     mass_outbreak_state: targetSetup.massOutbreakState,
     feebas_state: targetSetup.feebasState,
     feebas_cycles: targetSetup.feebasCycles,
-    cycle_opts: { LikelihoodForLead: { lead_cycle_spd: lead_cycle_speed } },
+    cycle_opts,
     safari_pokeblock:
       canUsePokeblock && targetSetup.safariPokeblock !== null
         ? {
@@ -117,7 +118,7 @@ export const setupToDistributions = async (
       targetSetup.targetPaintingAdvs.after,
       opts,
       map_data,
-      { CycleAtMomentNoEmuLog: { lead_cycle_spd: lead_cycle_speed } },
+      cycle_opts,
     );
 
   const resultForTargetMethod = results.find(

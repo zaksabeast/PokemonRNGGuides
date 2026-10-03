@@ -112,7 +112,9 @@ export const Wild3LeadCycleSpeedSelector = ({
   }, [leadCycleSpeedProp]);
 
   React.useEffect(() => {
-    setupToDistributions(targetSetup, leadCycleSpeed ?? 0).then((val) => {
+    setupToDistributions(targetSetup, {
+      CycleAtMomentNoEmuLog: { lead_cycle_spd: leadCycleSpeed ?? 0 },
+    }).then((val) => {
       setDistributions(val);
     });
   }, [leadCycleSpeed, targetSetup]);
@@ -162,10 +164,7 @@ export const Wild3LeadCycleSpeedSelector = ({
       {permitEnablingDebugOptions && (
         <Wild3CycleAtMoments
           leadCycleSpeed={leadCycleSpeed}
-          // TODO: Replace cycleAtMomentsFromTool and advanceAtSweetScent with targetSetup.
-          // Recalculate distributions inside Wild3CycleAtMoments
-          cycleAtMomentsFromTool={distributions.cycle_at_moments}
-          advanceAtSweetScent={distributions.advanceAtSweetScent}
+          targetSetup={targetSetup}
         />
       )}
     </>

@@ -9,6 +9,8 @@ import {
   Typography,
 } from "~/components";
 import React from "react";
+import { TargetSetup } from "./wild3TargetSetupInput";
+import { setupToDistributions } from "./wild3SetupToDistribution";
 import { TextArea } from "~/components/textArea";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import {
@@ -167,10 +169,9 @@ const parseCycleAtMomentsJsonStr = (input: string) => {
 };
 
 type Props = {
-  cycleAtMomentsFromTool: CycleAtMoment[];
+  targetSetup: TargetSetup;
   /** leadCycleSpeedFromTool is null if egg lead */
   leadCycleSpeed: number | null;
-  advanceAtSweetScent: number;
 };
 
 let nextUid = 0;
@@ -261,11 +262,7 @@ const createUiResult = async (
   return uiResult;
 };
 
-export const Wild3CycleAtMoments = ({
-  cycleAtMomentsFromTool,
-  leadCycleSpeed,
-  advanceAtSweetScent,
-}: Props) => {
+export const Wild3CycleAtMoments = ({ targetSetup, leadCycleSpeed }: Props) => {
   const [compareCycleAtMomentsStr, setCompareCycleAtMomentsStr] =
     React.useState("");
 
@@ -275,25 +272,45 @@ export const Wild3CycleAtMoments = ({
   const [uiResult, setUiResult] = React.useState(createEmptyUiResult(null, []));
 
   React.useEffect(() => {
-    const cyclesWithSweetScent = [
-      { moment: "SweetScentWildEncounter" as const, cycle: 0 },
-      ...cycleAtMomentsFromTool,
-    ];
-    createUiResult(
-      compareCycleAtMomentsStr,
-      cyclesWithSweetScent,
-      leadCycleSpeed,
-      advanceAtSweetScent,
-    ).then((uiResult) => {
-      setUiResult(uiResult);
-    });
-  }, [
-    compareCycleAtMomentsStr,
-    cycleAtMomentsFromTool,
-    leadCycleSpeed,
-    setUiResult,
-    advanceAtSweetScent,
-  ]);
+    let cancelled = false;
+    const updateUiResult = async () => {
+      const json = parseCycleAtMomentsJsonStr(compareCycleAtMomentsStr);
+      const distributions = await setupToDistributions(
+        targetSetup,
+        json == null
+          ? { CycleAtMomentNoEmuLog: { lead_cycle_spd: leadCycleSpeed ?? 0 } }
+          : {
+              CycleAtMomentWithEmuLog: {
+                lead_cycle_spd: leadCycleSpeed ?? 0,
+                initial_cycle_at_sweet_scent:
+                  json.cycleAtMoments.find(
+                    (cam) => cam.moment === "SweetScentWildEncounter",
+                  )?.cycle ?? 0,
+                vblank_cycles: json.cycleAtMoments
+                  .filter((cam) => cam.moment === "VblankIntr_End")
+                  .map((cam) => cam.cycle),
+              },
+            },
+      );
+      const cyclesWithSweetScent = [
+        { moment: "SweetScentWildEncounter" as const, cycle: 0 },
+        ...distributions.cycle_at_moments,
+      ];
+      const result = await createUiResult(
+        compareCycleAtMomentsStr,
+        cyclesWithSweetScent,
+        leadCycleSpeed,
+        distributions.advanceAtSweetScent,
+      );
+      if (!cancelled) {
+        setUiResult(result);
+      }
+    };
+    void updateUiResult();
+    return () => {
+      cancelled = true;
+    };
+  }, [compareCycleAtMomentsStr, targetSetup, leadCycleSpeed]);
 
   const fields: Field[] = [
     {

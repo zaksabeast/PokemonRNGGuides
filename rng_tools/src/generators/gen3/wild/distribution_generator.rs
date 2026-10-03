@@ -6,8 +6,8 @@ use wasm_bindgen::prelude::*;
 use super::Wild3GeneratorOptions;
 use crate::{
     gen3::{
-        CycleAtMoment, CycleRange, Gen3Method, Wild3GeneratorCycleOpts, Wild3MapGameData,
-        Wild3SearcherResultMon, calculate_cycle_data, generate_wild3_old,
+        CycleFrameMoment, CycleRange, Gen3Method, Wild3GeneratorCycleOpts, Wild3MapGameData,
+        Wild3SearcherResultMon, calculate_cycle_data, generate_wild3,
     },
     rng::lcrng::Pokerng,
 };
@@ -24,7 +24,7 @@ pub struct Wild3MethodDistributionResult {
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3MethodDistributionResults {
     pub results: Vec<Wild3MethodDistributionResult>,
-    pub cycle_at_moments: Vec<CycleAtMoment>,
+    pub cycle_at_moments: Vec<CycleFrameMoment>,
 }
 
 #[wasm_bindgen]
@@ -36,7 +36,7 @@ pub fn generate_gen3_wild_distribution(
     lead_cycle_speed: usize,
 ) -> Wild3MethodDistributionResults {
     let opts = Wild3GeneratorOptions {
-        cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead {
+        cycle_opts: Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog {
             lead_cycle_spd: lead_cycle_speed,
         },
         methods: vec![
@@ -50,7 +50,7 @@ pub fn generate_gen3_wild_distribution(
     };
 
     let rng = Pokerng::with_jump(initial_seed, advances);
-    let generated = generate_wild3_old(rng, &opts, game_data);
+    let generated = generate_wild3(rng, &opts, game_data);
     let gen_results = generated.mon_results;
     let cycle_counter = generated.cycle_counter;
     let search_results = gen_results
@@ -65,7 +65,7 @@ pub fn generate_gen3_wild_distribution(
                 rng.seed(),
                 advances,
                 encounter,
-                cycle_counter.cycle_instability,
+                cycle_counter.get_cycle_instability(),
             );
             let cycle_data = calculate_cycle_data(
                 &searcher_res
@@ -155,16 +155,7 @@ pub fn generate_gen3_wild_distribution(
 
     Wild3MethodDistributionResults {
         results: dist_results,
-        cycle_at_moments: cycle_counter
-            .cycle_at_moments
-            .iter()
-            .map(|cycle_at_moment| {
-                CycleAtMoment::new(
-                    cycle_at_moment.moment,
-                    cycle_at_moment.cycle + cycle_at_moment.lead_pid_mod * lead_cycle_speed,
-                )
-            })
-            .collect(),
+        cycle_at_moments: cycle_counter.get_cycle_at_moments(),
     }
 }
 
@@ -292,14 +283,14 @@ mod test {
         assert_list_eq!(results, expected_results);
 
         let expected_cycle_at_moments = [
-            CycleAtMoment::new(Moment::ChooseWildMonIndex_Land_Random, 35035),
-            CycleAtMoment::new(Moment::ChooseWildMonLevel_RandomLvl, 35894),
-            CycleAtMoment::new(Moment::PickWildMonNature_RandomPickNature, 90430),
-            CycleAtMoment::new(Moment::CreateMonWithNature_RandomPidLowFirst, 102578),
-            CycleAtMoment::new(Moment::CreateMonWithNature_RandomPidLowLast, 231342),
-            CycleAtMoment::new(Moment::CreateMonWithNature_RandomPidHighLast, 231422),
-            CycleAtMoment::new(Moment::CreateBoxMon_RandomIvs1, 353657),
-            CycleAtMoment::new(Moment::CreateBoxMon_RandomIvs2, 395216),
+            CycleFrameMoment::new(Moment::ChooseWildMonIndex_Land_Random, 0, 35035),
+            CycleFrameMoment::new(Moment::ChooseWildMonLevel_RandomLvl, 0, 35894),
+            CycleFrameMoment::new(Moment::PickWildMonNature_RandomPickNature, 0, 90430),
+            CycleFrameMoment::new(Moment::CreateMonWithNature_RandomPidLowFirst, 0, 102578),
+            CycleFrameMoment::new(Moment::CreateMonWithNature_RandomPidLowLast, 0, 231342),
+            CycleFrameMoment::new(Moment::CreateMonWithNature_RandomPidHighLast, 0, 231422),
+            CycleFrameMoment::new(Moment::CreateBoxMon_RandomIvs1, 0, 353657),
+            CycleFrameMoment::new(Moment::CreateBoxMon_RandomIvs2, 0, 395216),
         ];
         assert_list_eq!(dist_results.cycle_at_moments, expected_cycle_at_moments);
     }

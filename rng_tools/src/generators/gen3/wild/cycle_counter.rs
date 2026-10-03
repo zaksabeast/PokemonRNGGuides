@@ -37,6 +37,16 @@ pub struct CycleFrameMoment {
     pub moment: Moment,
 }
 
+impl CycleFrameMoment {
+    pub fn new(moment: Moment, frame: usize, cycle: usize) -> Self {
+        Self {
+            cycle,
+            frame,
+            moment,
+        }
+    }
+}
+
 impl CycleFrame {
     pub fn add_cycle(&mut self, cycle: usize) {
         self.cycle += cycle;

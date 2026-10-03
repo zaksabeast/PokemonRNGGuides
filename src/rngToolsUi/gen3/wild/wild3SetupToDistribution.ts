@@ -117,7 +117,7 @@ export const setupToDistributions = async (
       targetSetup.targetPaintingAdvs.after,
       opts,
       map_data,
-      lead_cycle_speed,
+      { CycleAtMomentNoEmuLog: { lead_cycle_spd: lead_cycle_speed } },
     );
 
   const resultForTargetMethod = results.find(

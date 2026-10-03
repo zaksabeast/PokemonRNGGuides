@@ -33,12 +33,10 @@ pub fn generate_gen3_wild_distribution(
     advances: usize,
     opts: &Wild3GeneratorOptions,
     game_data: &Wild3MapGameData,
-    lead_cycle_speed: usize,
+    cycle_opts: &Wild3GeneratorCycleOpts,
 ) -> Wild3MethodDistributionResults {
     let opts = Wild3GeneratorOptions {
-        cycle_opts: Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog {
-            lead_cycle_spd: lead_cycle_speed,
-        },
+        cycle_opts: cycle_opts.clone(),
         methods: vec![
             Gen3Method::Wild1,
             Gen3Method::Wild2,
@@ -53,6 +51,8 @@ pub fn generate_gen3_wild_distribution(
     let generated = generate_wild3(rng, &opts, game_data);
     let gen_results = generated.mon_results;
     let cycle_counter = generated.cycle_counter;
+    let lead_cycle_spd = cycle_opts.lead_cycle_spd().unwrap();
+
     let dist_results = gen_results
         .iter()
         .sorted_by_key(|data| data.cycle_range.unwrap().start.cycle)
@@ -75,7 +75,7 @@ pub fn generate_gen3_wild_distribution(
                     .unwrap()
                     .post_sweet_scent_range,
                 opts.action,
-                lead_cycle_speed,
+                lead_cycle_spd,
             );
 
             Wild3MethodDistributionResult {
@@ -91,6 +91,21 @@ pub fn generate_gen3_wild_distribution(
         cycle_at_moments: cycle_counter.get_cycle_at_moments(),
     }
 }
+
+// TODO: Create generate_gen3_wild_distribution_with_emu_log()
+/*
+initial_seed: u32,
+advances: usize,
+opts: &Wild3GeneratorOptions,
+game_data: &Wild3MapGameData,
+lead_cycle_speed: usize,
+
+    CycleAtMomentWithEmuLog {
+        lead_cycle_spd: usize,
+        initial_cycle_at_sweet_scent: usize,
+        vblank_cycles: Vec<usize>,
+    },
+*/
 
 #[cfg(test)]
 mod test {
@@ -131,8 +146,15 @@ mod test {
     #[test]
     fn test_distribution_generator() {
         let opts = Wild3GeneratorOptions::default();
-        let dist_results =
-            generate_gen3_wild_distribution(0, 44, &opts, &Wild3MapGameData::default(), 700);
+        let dist_results = generate_gen3_wild_distribution(
+            0,
+            44,
+            &opts,
+            &Wild3MapGameData::default(),
+            &Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog {
+                lead_cycle_spd: 700,
+            },
+        );
 
         let results = dist_results
             .results

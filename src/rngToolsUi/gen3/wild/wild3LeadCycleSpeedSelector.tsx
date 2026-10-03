@@ -159,9 +159,11 @@ export const Wild3LeadCycleSpeedSelector = ({
           </Typography.Text>
         )}
 
-      {distributions != null && permitEnablingDebugOptions && (
+      {permitEnablingDebugOptions && (
         <Wild3CycleAtMoments
           leadCycleSpeed={leadCycleSpeed}
+          // TODO: Replace cycleAtMomentsFromTool and advanceAtSweetScent with targetSetup.
+          // Recalculate distributions inside Wild3CycleAtMoments
           cycleAtMomentsFromTool={distributions.cycle_at_moments}
           advanceAtSweetScent={distributions.advanceAtSweetScent}
         />

@@ -111,14 +111,13 @@ export const setupToDistributions = async (
     };
   }
 
-  const { results } =
-    await rngTools.generate_gen3_wild_distribution(
-      targetSetup.targetPaintingAdvs.before,
-      targetSetup.targetPaintingAdvs.after,
-      opts,
-      map_data,
-      lead_cycle_speed,
-    );
+  const { results } = await rngTools.generate_gen3_wild_distribution(
+    targetSetup.targetPaintingAdvs.before,
+    targetSetup.targetPaintingAdvs.after,
+    opts,
+    map_data,
+    lead_cycle_speed,
+  );
 
   const resultForTargetMethod = results.find(
     (res) => res.searcher_res.method === targetSetup.targetMethod,

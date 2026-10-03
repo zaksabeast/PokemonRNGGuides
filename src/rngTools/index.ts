@@ -264,6 +264,8 @@ export type Wild3MapGameData = RustOption<RngTools.Wild3MapGameData>;
 
 export type Wild3SearcherOptions = RustOption<RngTools.Wild3SearcherOptions>;
 
+export type Wild3SearcherCycleOpts = RustOption<RngTools.Wild3SearcherCycleOpts>;
+
 export type Static3SearcherOptions =
   RustOption<RngTools.Static3SearcherOptions>;
 

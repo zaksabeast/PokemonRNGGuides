@@ -358,7 +358,7 @@ fn create_result(
         mass_outbreak_state,
         feebas_state,
         safari_pokeblock: safari_pokeblock.clone(),
-        cycle_opts: opts.generator_cycle_opts(),
+        cycle_opts: opts.cycle_opts.generator_cycle_opts(),
         using_white_flute: opts.using_white_flute,
 
         // overwritten below

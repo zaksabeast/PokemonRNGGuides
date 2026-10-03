@@ -124,7 +124,7 @@ pub enum CycleFrameCounter {
     Inactive,
 
     // The main goal is to determine whether a method can be triggered.
-    // A method can be triggered if all of the leads between min_lead_cycle_spd and max_lead_cycle_spd
+    // In that mode, a method is considered triggerable if all of the leads between min_lead_cycle_spd and max_lead_cycle_spd
     // can trigger the method for at least one given initial cycle.
     // Note: If there's a valid initial cycle for fastest and slowest lead, there's a valid initial cycle for all lead inbetween.
     // This is the equivalent of ensuring that the slowest lead can trigger the method on the earliest initial cycle

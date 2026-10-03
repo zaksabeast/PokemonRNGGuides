@@ -222,7 +222,10 @@ fn test_search_perf_find_pid_paths_shiny_feebas() {
             Gen3Lead::Synchronize(Nature::Quirky),
         ],
         methods: vec![Gen3Method::Wild1, Gen3Method::Wild2, Gen3Method::Wild4],
-        consider_cycles: true,
+        cycle_opts: crate::gen3::Wild3SearcherCycleOpts::SearchNewTarget {
+            consider_rng_manipulated_lead_pid: false,
+            generate_even_if_impossible: false,
+        },
         using_white_flute: true,
         considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt::SoloOnly,
         ..Default::default()

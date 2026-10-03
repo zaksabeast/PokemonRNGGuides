@@ -1,39 +1,11 @@
 import React from "react";
-import {
-  Typography,
-  Flex,
-  Header,
-  DesktopDrawer,
-  List,
-  ListItem,
-  Icon,
-  IconName,
-} from "~/components";
+import { Typography, Flex, Header, DesktopDrawer } from "~/components";
 import { useScreenViewed } from "~/hooks/useScreenViewed";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { settings } from "~/settings";
-import { match } from "ts-pattern";
-import { Color } from "@emotion/react";
 import { useMaxWidthEnabled } from "~/state/contentMaxWidth";
 import styled from "@emotion/styled";
 import { styledPropGuard } from "~/utils/styled";
-
-type SupporterType = (typeof settings)["hallOfFameSupporters"][number]["type"];
-
-type IconProps = { name: IconName; color: Color };
-
-const DISCORD_SUPPORTER_PROPS: IconProps = {
-  name: "Discord",
-  color: "Primary",
-};
-const PATREON_SUPPORTER_PROPS: IconProps = { name: "Patreon", color: "Error" };
-
-const getSupporterIconProps = (type: SupporterType): IconProps => {
-  return match(type)
-    .with("discord", () => DISCORD_SUPPORTER_PROPS)
-    .with("patreon", () => PATREON_SUPPORTER_PROPS)
-    .exhaustive();
-};
 
 type Props = {
   children: React.ReactNode;
@@ -129,6 +101,7 @@ const Footer = styled(
 )<{ $fullWidth: boolean }>(({ theme, $fullWidth }) => ({
   width: "100%",
   boxSizing: "border-box",
+  marginTop: 100,
   paddingTop: 24,
   paddingBottom: 36,
   paddingLeft: $fullWidth ? SIDE_MARGIN : 0,
@@ -169,19 +142,14 @@ export const MainLayout = ({
             {settings.hallOfFameSupporters.length === 0 && <BottomSpace />}
             {settings.hallOfFameSupporters.length > 0 && (
               <Footer $fullWidth={fullWidth}>
-                <Typography.Text strong fontSize={20}>
-                  Special thanks to our Hall of Fame supporters!
+                <Typography.Text color="TextSecondary">
+                  <Typography.Text strong>
+                    Special thanks to our Hall of Fame supporters:{" "}
+                  </Typography.Text>
+                  {settings.hallOfFameSupporters
+                    .map((supporter) => supporter.name)
+                    .join(", ")}
                 </Typography.Text>
-                <List ml={24} pv={12}>
-                  {settings.hallOfFameSupporters.map((supporter) => (
-                    <ListItem fontSize={18} key={supporter.name}>
-                      <Flex gap={8} align="center">
-                        <Icon {...getSupporterIconProps(supporter.type)} />
-                        {supporter.name}
-                      </Flex>
-                    </ListItem>
-                  ))}
-                </List>
               </Footer>
             )}
           </ContentContainer>

@@ -438,12 +438,13 @@ fn generate_personality(
     let required_nature = gen_data.required_nature;
     let required_gender = gen_data.required_gender;
     let encounter_gender_ratio = gen_data.encounter_gender_ratio;
-    let mut results = Vec::new();
+    let mut results: Vec<Wild3GeneratorMonResult> = Vec::new();
 
     let methods_contains_wild3 = opts.methods.contains(&Gen3Method::Wild3);
     let methods_contains_wild5 = opts.methods.contains(&Gen3Method::Wild5);
 
     let mut skip_method5_counter = 0;
+    let mut pending_method5_index: Option<usize> = None;
     let mut pid: u32;
     cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidLowFirst);
 
@@ -451,6 +452,7 @@ fn generate_personality(
         let pid_low = rand_next_u16(&mut rng, "pid_low", 1) as u32;
 
         let method3_range = 80;
+
         if methods_contains_wild3
             && cycle_counter.can_generate_method(method3_range)
             && let Some(gen_mon_wild3) = simulate_wild_method3(
@@ -460,6 +462,26 @@ fn generate_personality(
                 cycle_counter.create_cycle_range(method3_range),
             )
         {
+            // Exclude the Method3 window from the pending Method5 cycle range, keeping
+            // the portion before it and any remaining tail as separate results.
+            if let Some(index) = pending_method5_index.take() {
+                let range = results[index].cycle_range.unwrap();
+                let method3_start = cycle_counter.get_current_cycle_count();
+                let range_end = range.end().cycle;
+                if method3_start < range_end {
+                    let tail_start = (method3_start + method3_range).min(range_end);
+                    let mut tail = results[index].clone();
+                    results[index].cycle_range.as_mut().unwrap().len =
+                        method3_start - range.start.cycle;
+                    if tail_start < range_end {
+                        let tail_range = tail.cycle_range.as_mut().unwrap();
+                        tail_range.start.cycle = tail_start;
+                        tail_range.len = range_end - tail_start;
+                        pending_method5_index = Some(results.len());
+                        results.push(tail);
+                    }
+                }
+            }
             results.push(gen_mon_wild3);
         }
 
@@ -486,6 +508,7 @@ fn generate_personality(
 
         // between CreateMonWithNature_pidhigh and CreateMonWithNature_pidlow (retry)
         let retry_pid_cycle = if good_nature { 140 } else { 158 }; // 18 cycles to check gender
+
         if methods_contains_wild5 {
             // Multiple iterations will result in the same Method5 Pokémon.
             // To avoid duplicates, we add the generated Pokémon only in the first possible PID reroll
@@ -508,6 +531,9 @@ fn generate_personality(
                         cycle_counter.create_cycle_range(method5_range),
                     )
                 {
+                    if res.cycle_range.is_some() {
+                        pending_method5_index = Some(results.len());
+                    }
                     results.push(res);
                 }
             }

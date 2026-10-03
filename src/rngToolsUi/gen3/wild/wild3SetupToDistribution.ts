@@ -111,13 +111,14 @@ export const setupToDistributions = async (
     };
   }
 
-  const { results } = await rngTools.generate_gen3_wild_distribution(
-    targetSetup.targetPaintingAdvs.before,
-    targetSetup.targetPaintingAdvs.after,
-    opts,
-    map_data,
-    lead_cycle_speed,
-  );
+  const { results, cycle_at_moments } =
+    await rngTools.generate_gen3_wild_distribution(
+      targetSetup.targetPaintingAdvs.before,
+      targetSetup.targetPaintingAdvs.after,
+      opts,
+      map_data,
+      lead_cycle_speed,
+    );
 
   const resultForTargetMethod = results.find(
     (res) => res.searcher_res.method === targetSetup.targetMethod,
@@ -128,7 +129,7 @@ export const setupToDistributions = async (
 
   return {
     uiResults: convertSearcherResultsToUIResults(results),
-    cycle_at_moments: [],
+    cycle_at_moments,
     advanceAtSweetScent:
       (lcrng_distance(0, targetSetup.targetPaintingAdvs.before) +
         targetSetup.targetPaintingAdvs.after) %

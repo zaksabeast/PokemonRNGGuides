@@ -388,11 +388,12 @@ impl CycleFrameCounter {
     }
     pub fn can_generate_method(&self, len: usize) -> bool {
         match self {
-            CycleFrameCounter::Inactive => true,
-            CycleFrameCounter::MinMaxRange {
+            CycleFrameCounter::Inactive
+            | CycleFrameCounter::MinMaxRange {
                 generate_even_if_impossible: true,
                 ..
-            } => true,
+            }
+            | CycleFrameCounter::DetailedBreakdown { .. } => true,
             _ => {
                 if len == INFINITE_CYCLE {
                     self.is_possible_that_no_vblank_yet()

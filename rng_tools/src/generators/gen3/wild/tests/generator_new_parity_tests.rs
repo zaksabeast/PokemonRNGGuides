@@ -26,9 +26,27 @@ pub fn assert_mon_results_eq_unordered(
     expected: &[Wild3GeneratorMonResult],
     context: &str,
 ) {
+    // Wild5 is now handled differntly between old and new. The results are the same, but the cycle range
+    // excludes Wild3 occurences in the new generator.
+    let normalize = |results: &[Wild3GeneratorMonResult]| {
+        let mut unique = Vec::with_capacity(results.len());
+        for result in results {
+            let mut result = result.clone();
+            if result.method == Gen3Method::Wild5 {
+                result.cycle_range = None;
+            }
+            if !unique.contains(&result) {
+                unique.push(result);
+            }
+        }
+        unique
+    };
+    let actual = normalize(actual);
+    let expected = normalize(expected);
+
     assert_eq!(actual.len(), expected.len(), "{context}");
     let mut unmatched: Vec<_> = expected.iter().collect();
-    for result in actual {
+    for result in &actual {
         let index = unmatched.iter().position(|expected| *expected == result);
         let Some(index) = index else {
             panic!("{context}: unexpected result {result:?}; unmatched results: {unmatched:?}");

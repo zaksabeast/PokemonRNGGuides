@@ -16,7 +16,7 @@ use crate::{
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3MethodDistributionResult {
     pub searcher_res: Wild3SearcherResultMon,
-    pub pre_sweet_scent_cycle_ranges: Vec<CycleRange<usize>>,
+    pub pre_sweet_scent_cycle_range: CycleRange<i32>,
     pub method_probability: f64,
 }
 
@@ -78,14 +78,9 @@ pub fn generate_gen3_wild_distribution(
                 lead_cycle_speed,
             );
 
-            let mut ranges: Vec<CycleRange<usize>> = vec![];
-            if cycle_data.pre_sweet_scent_cycle_range.len > 0 {
-                ranges.push(cycle_data.pre_sweet_scent_cycle_range);
-            }
-
             Wild3MethodDistributionResult {
                 searcher_res: searcher_res.clone(),
-                pre_sweet_scent_cycle_ranges: ranges,
+                pre_sweet_scent_cycle_range: cycle_data.pre_sweet_scent_cycle_range,
                 method_probability: cycle_data.method_probability,
             }
         })
@@ -108,25 +103,25 @@ mod test {
     #[derive(Debug, PartialEq)]
     struct ResultForTest {
         pub method: Gen3Method,
-        pub pre_sweet_scent_cycle_ranges: Vec<CycleRange<usize>>,
+        pub pre_sweet_scent_cycle_range: CycleRange<i32>,
         pub method_probability: f64,
     }
     impl ResultForTest {
         pub fn new_from_dist_res(dist_res: &Wild3MethodDistributionResult) -> Self {
             Self {
                 method: dist_res.searcher_res.method,
-                pre_sweet_scent_cycle_ranges: dist_res.pre_sweet_scent_cycle_ranges.clone(),
+                pre_sweet_scent_cycle_range: dist_res.pre_sweet_scent_cycle_range,
                 method_probability: dist_res.method_probability,
             }
         }
         pub fn new(
             method: Gen3Method,
             method_probability: f64,
-            pre_sweet_scent_cycle_ranges: &[CycleRange<usize>],
+            pre_sweet_scent_cycle_range: CycleRange<i32>,
         ) -> Self {
             Self {
                 method,
-                pre_sweet_scent_cycle_ranges: pre_sweet_scent_cycle_ranges.to_vec(),
+                pre_sweet_scent_cycle_range,
                 method_probability,
             }
         }
@@ -148,7 +143,7 @@ mod test {
         let expected_results = [ResultForTest::new(
             Gen3Method::Wild5,
             0.0,
-            &[CycleRange::from_start_len(0, 10142)],
+            CycleRange::from_start_len(0, 10142),
         )];
         assert_list_eq!(results, expected_results);
 

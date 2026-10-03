@@ -28,7 +28,7 @@ export type UiResult = FlattenIvs<
     species: Species;
     uid: number;
     method_probability: Wild3MethodDistributionResult["method_probability"];
-    pre_sweet_scent_cycle_ranges: Wild3MethodDistributionResult["pre_sweet_scent_cycle_ranges"];
+    pre_sweet_scent_cycle_range: Wild3MethodDistributionResult["pre_sweet_scent_cycle_range"];
   }
 >;
 
@@ -40,7 +40,7 @@ const convertSearcherResultToUIResult = (
     ...res.searcher_res,
     ...res.searcher_res.ivs,
     method_probability: res.method_probability,
-    pre_sweet_scent_cycle_ranges: res.pre_sweet_scent_cycle_ranges,
+    pre_sweet_scent_cycle_range: res.pre_sweet_scent_cycle_range,
     species: res.searcher_res.species,
     uid: nextUid++,
   };
@@ -50,8 +50,8 @@ const convertSearcherResultsToUIResults = (
   results: Wild3MethodDistributionResult[],
 ) => {
   return sortBy(results.map(convertSearcherResultToUIResult), [
-    (el) => el.pre_sweet_scent_cycle_ranges[0]?.start ?? -1,
-    (el) => el.pre_sweet_scent_cycle_ranges[0]?.len ?? 0,
+    (el) => el.pre_sweet_scent_cycle_range.start,
+    (el) => el.pre_sweet_scent_cycle_range.len,
   ]);
 };
 

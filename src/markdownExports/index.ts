@@ -2,9 +2,6 @@ import React from "react";
 import { Input } from "antd";
 import {
   MarkdownBreak,
-  MarkdownH1,
-  MarkdownH2,
-  MarkdownH3,
   MarkdownH4,
   MarkdownH5,
   MarkdownH6,
@@ -31,6 +28,7 @@ import {
   Stepper,
   Step,
   WhatNext,
+  Typography,
   List,
   MediaTable,
   MediaTableBody,
@@ -57,9 +55,9 @@ import { TranslationHelperSelectLanguage } from "~/rngToolsUi/translationHelper/
 
 const nonTools = {
   br: MarkdownBreak,
-  h1: MarkdownH1,
-  h2: MarkdownH2,
-  h3: MarkdownH3,
+  h1: Typography.H1,
+  h2: Typography.H2,
+  h3: Typography.H3,
   h4: MarkdownH4,
   h5: MarkdownH5,
   h6: MarkdownH6,

@@ -22,21 +22,8 @@ import { SlugOrExternalLinkSchema } from "~/types/navigation";
 
 type Props = { children: React.ReactNode };
 
-export const MarkdownH1 = (props: Props) => {
-  return <Typography.Title level={1} m={0} {...props} />;
-};
-
-export const MarkdownH2 = (props: Props) => (
-  <Typography.Title level={2} m={0} {...props} />
-);
-
-export const MarkdownH3 = (props: Props) => (
-  <Typography.Title level={3} m={0} {...props} />
-);
-
-const _MarkdownParagraph = styled(Typography.Text)({
+const _MarkdownParagraph = styled(Typography.Body)({
   display: "block",
-  color: "inherit",
 });
 
 export const MarkdownParagraph = (props: Props) => (
@@ -231,5 +218,5 @@ export const MarkdownLinkButton = (props: Props) => {
     return null;
   }
 
-  return <LinkButton {...parsedProps.data}>{props.children} </LinkButton>;
+  return <LinkButton {...parsedProps.data}>{props.children}</LinkButton>;
 };

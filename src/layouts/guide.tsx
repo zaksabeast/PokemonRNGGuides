@@ -40,11 +40,9 @@ export const GuideLayout = ({ guideMeta, children }: Props) => {
   return (
     <MainLayout>
       <Flex ref={topRef} mb={20} vertical gap={14}>
-        <Flex vertical>
+        <Flex vertical gap={12}>
           <NavBreadcrumbs route={guideMeta.slug} />
-          <Typography.PageTitle level={1}>
-            {guideMeta.navDrawerTitle}
-          </Typography.PageTitle>
+          <Typography.H1>{guideMeta.navDrawerTitle}</Typography.H1>
         </Flex>
 
         {guideMeta.lastUpdated != null && (

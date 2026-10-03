@@ -18,6 +18,12 @@ const StyledButton = styled(_StyledButton)({
   ".ant-btn-icon": {
     display: "flex",
   },
+  // Typography inside a label (e.g. MDX paragraphs) sets its own color, so match the button's text
+  "&& .ant-typography": {
+    color: "inherit",
+    font: "inherit",
+    letterSpacing: "inherit",
+  },
 });
 
 export type ButtonProps = tst.O.Overwrite<

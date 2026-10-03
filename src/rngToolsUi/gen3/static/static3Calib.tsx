@@ -185,7 +185,7 @@ export const Static3Calib = ({
 
     return (
       <Flex vertical>
-        <h3>Info from previous steps</h3>
+        <h4>Info from previous steps</h4>
         <Flex ml={20} vertical>
           <FormFieldTable fields={fields} />
           {clearAll != null && (

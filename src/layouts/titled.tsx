@@ -10,11 +10,9 @@ type Props = {
 export const TitledLayout = ({ guideMeta, children }: Props) => {
   return (
     <MainLayout>
-      <Flex vertical>
+      <Flex vertical gap={12}>
         <NavBreadcrumbs route={guideMeta.slug} />
-        <Typography.PageTitle level={1}>
-          {guideMeta.navDrawerTitle}
-        </Typography.PageTitle>
+        <Typography.H1>{guideMeta.navDrawerTitle}</Typography.H1>
       </Flex>
       {children}
     </MainLayout>

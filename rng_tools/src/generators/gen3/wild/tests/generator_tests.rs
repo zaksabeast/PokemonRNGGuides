@@ -2,9 +2,9 @@ use crate::{
     AbilityType, EncounterSlot, Gender, Ivs, Nature, PkmFilter, Species,
     gen3::{
         Gen3Lead, Gen3Method, Gen3PkmFilter, Wild3Action, Wild3EncounterGameData,
-        Wild3EncounterIndex, Wild3FeebasState, Wild3GeneratorMonResult, Wild3GeneratorOptions,
-        Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
-        Wild3SpecialEncounterGameData, generate_wild3,
+        Wild3EncounterIndex, Wild3FeebasState, Wild3GeneratorCycleOpts, Wild3GeneratorMonResult,
+        Wild3GeneratorOptions, Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState,
+        Wild3SafariPokeblockGenOpt, Wild3SpecialEncounterGameData, generate_wild3,
     },
     rng::lcrng::Pokerng,
 };
@@ -269,10 +269,10 @@ fn test_generate_wild3_fishing() {
 #[test]
 fn test_generate_wild3_feebas() {
     let mut options = Wild3GeneratorOptions {
+        cycle_opts: Wild3GeneratorCycleOpts::Inactive,
         action: Wild3Action::GoodRod,
         methods: vec![Gen3Method::Wild1],
         feebas_state: Wild3FeebasState::OnFeebasTile,
-        generate_even_if_impossible: true,
         ..Default::default()
     };
     let mut game_data = Wild3MapGameData::default();
@@ -325,10 +325,10 @@ fn test_generate_wild3_feebas() {
 #[test]
 fn test_generate_wild3_roamer() {
     let mut options = Wild3GeneratorOptions {
+        cycle_opts: Wild3GeneratorCycleOpts::Inactive,
         action: Wild3Action::SweetScentLand,
         methods: vec![Gen3Method::Wild1],
         roamer_state: Wild3RoamerState::ActiveInMapLatios,
-        generate_even_if_impossible: true,
         ..Default::default()
     };
     let mut game_data = Wild3MapGameData::default();
@@ -369,10 +369,10 @@ fn test_generate_wild3_roamer() {
 #[test]
 fn test_generate_wild3_magnet_pull() {
     let mut options = Wild3GeneratorOptions {
+        cycle_opts: Wild3GeneratorCycleOpts::Inactive,
         action: Wild3Action::SweetScentLand,
         methods: vec![Gen3Method::Wild1],
         lead: Gen3Lead::MagnetPull,
-        generate_even_if_impossible: true,
         ..Default::default()
     };
     let mut game_data = Wild3MapGameData::default();
@@ -430,10 +430,10 @@ fn test_generate_wild3_magnet_pull() {
 #[test]
 fn test_generate_wild3_static() {
     let mut options = Wild3GeneratorOptions {
+        cycle_opts: Wild3GeneratorCycleOpts::Inactive,
         action: Wild3Action::SweetScentLand,
         methods: vec![Gen3Method::Wild1],
         lead: Gen3Lead::Static,
-        generate_even_if_impossible: true,
         ..Default::default()
     };
     let mut game_data = Wild3MapGameData::default();
@@ -491,9 +491,9 @@ fn test_generate_wild3_static() {
 #[test]
 fn test_generate_wild3_hustle() {
     let mut options = Wild3GeneratorOptions {
+        cycle_opts: Wild3GeneratorCycleOpts::Inactive,
         action: Wild3Action::SweetScentLand,
         methods: vec![Gen3Method::Wild1],
-        generate_even_if_impossible: true,
         ..Default::default()
     };
     let mut game_data = Wild3MapGameData::default();
@@ -540,9 +540,9 @@ fn test_generate_wild3_hustle() {
 #[test]
 fn test_generate_wild3_rock_smash() {
     let options = Wild3GeneratorOptions {
+        cycle_opts: Wild3GeneratorCycleOpts::Inactive,
         action: Wild3Action::RockSmash,
         methods: vec![Gen3Method::Wild1],
-        generate_even_if_impossible: true,
         ..Default::default()
     };
 
@@ -569,9 +569,9 @@ fn test_generate_wild3_rock_smash() {
 #[test]
 fn test_generate_wild3_rock_smash_white_flute() {
     let mut options = Wild3GeneratorOptions {
+        cycle_opts: Wild3GeneratorCycleOpts::Inactive,
         action: Wild3Action::RockSmash,
         methods: vec![Gen3Method::Wild1],
-        generate_even_if_impossible: true,
         using_white_flute: true,
         ..Default::default()
     };
@@ -589,9 +589,9 @@ fn test_generate_wild3_rock_smash_white_flute() {
 #[test]
 fn test_generate_wild3_mass_outbreak() {
     let mut options = Wild3GeneratorOptions {
+        cycle_opts: Wild3GeneratorCycleOpts::Inactive,
         action: Wild3Action::SweetScentLand,
         methods: vec![Gen3Method::Wild1],
-        generate_even_if_impossible: true,
         mass_outbreak_state: Wild3MassOutbreakState::Route102Seedot,
         ..Default::default()
     };

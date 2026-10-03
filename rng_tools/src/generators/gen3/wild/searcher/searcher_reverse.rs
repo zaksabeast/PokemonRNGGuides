@@ -353,15 +353,12 @@ fn create_result(
         action: path.action,
         methods: vec![path.pid_path.method()],
         filter: opts.filter.clone(),
-        consider_cycles: opts.consider_cycles,
-        consider_rng_manipulated_lead_pid: opts.consider_rng_manipulated_lead_pid,
-        generate_even_if_impossible: opts.generate_even_if_impossible,
         gen3_filter: opts.gen3_filter.clone(),
         roamer_state: Wild3RoamerState::Inactive,
         mass_outbreak_state,
         feebas_state,
         safari_pokeblock: safari_pokeblock.clone(),
-        lead_cycle_speed: opts.lead_cycle_speed,
+        cycle_opts: opts.cycle_opts.generator_cycle_opts(),
         using_white_flute: opts.using_white_flute,
 
         // overwritten below
@@ -392,7 +389,7 @@ fn create_result(
                     path.seed,
                     advance,
                     encounter,
-                    gen_results.cycle_counter.cycle_instability,
+                    gen_results.cycle_counter.get_cycle_instability(),
                 ));
             }
         }

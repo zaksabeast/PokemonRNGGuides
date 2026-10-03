@@ -134,15 +134,6 @@ pub struct CycleAndModAtMoment {
     pub moment: Moment,
 }
 
-impl CycleAndModAtMoment {
-    pub fn apply_lead_pid_speed(&self, lead_pid_speed: usize) -> CycleAtMoment {
-        CycleAtMoment {
-            cycle: self.cycle + lead_pid_speed * self.lead_pid_mod,
-            moment: self.moment,
-        }
-    }
-}
-
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct CycleAtMoment {

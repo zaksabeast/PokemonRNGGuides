@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
+import * as tst from "ts-toolbelt";
 import { type Theme } from "@emotion/react";
 import { styledPropGuard } from "~/utils/styled";
 import {
@@ -75,7 +76,7 @@ const Helper = styled(
   color: $invalid ? theme.token.colorError : theme.token.colorTextTertiary,
 }));
 
-type FieldFrameProps = LabeledFieldProps & {
+type FieldFrameProps = tst.O.Optional<LabeledFieldProps, "label"> & {
   ids: FieldIds;
   /** Use "group" for controls like radio grids that have no single input for the label to point at */
   labelTarget?: "input" | "group";
@@ -98,36 +99,43 @@ export const FieldFrame = ({
 
   return (
     <Frame $invalid={invalid}>
-      <Header>
-        <LabelRow>
-          {labelTarget === "input" ? (
-            <InputLabel id={ids.labelId} htmlFor={ids.inputId} data-field-label>
-              {label}
-            </InputLabel>
-          ) : (
-            <GroupLabel id={ids.labelId} data-field-label>
-              {label}
-            </GroupLabel>
+      {(label != null || tooltip != null) && (
+        <Header>
+          <LabelRow>
+            {label != null &&
+              (labelTarget === "input" ? (
+                <InputLabel
+                  id={ids.labelId}
+                  htmlFor={ids.inputId}
+                  data-field-label
+                >
+                  {label}
+                </InputLabel>
+              ) : (
+                <GroupLabel id={ids.labelId} data-field-label>
+                  {label}
+                </GroupLabel>
+              ))}
+            {tooltip != null && (
+              <InfoTooltipButton
+                open={infoTooltip.open}
+                cardId={infoTooltip.cardId}
+                onClick={infoTooltip.toggle}
+              />
+            )}
+          </LabelRow>
+          {tooltip != null && infoTooltip.open && (
+            <TooltipCardSlot>
+              <InfoTooltipCard
+                id={infoTooltip.cardId}
+                title={tooltip.title}
+                description={tooltip.description}
+                onClose={infoTooltip.close}
+              />
+            </TooltipCardSlot>
           )}
-          {tooltip != null && (
-            <InfoTooltipButton
-              open={infoTooltip.open}
-              cardId={infoTooltip.cardId}
-              onClick={infoTooltip.toggle}
-            />
-          )}
-        </LabelRow>
-        {tooltip != null && infoTooltip.open && (
-          <TooltipCardSlot>
-            <InfoTooltipCard
-              id={infoTooltip.cardId}
-              title={tooltip.title}
-              description={tooltip.description}
-              onClose={infoTooltip.close}
-            />
-          </TooltipCardSlot>
-        )}
-      </Header>
+        </Header>
+      )}
       <Control data-field-control>{children}</Control>
       {message != null && (
         <Helper id={ids.helperId} $invalid={invalid}>

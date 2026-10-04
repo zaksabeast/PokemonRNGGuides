@@ -1,19 +1,18 @@
 import React from "react";
 import { Skeleton } from "antd";
-import { Card, Flex, RadioGroup } from "~/components";
+import { Card, Flex } from "~/components";
 import { MetronomeButton } from "~/components/metronome";
 import { useHydrate } from "~/hooks/useHydrate";
 import { useMetronome } from "~/hooks/useMetronome";
 import { useTimerSequence } from "~/hooks/useTimerSequence";
 import { GEN4_PHASE_LABELS } from "~/rngToolsUi/timer/atoms";
 import { RunView } from "~/rngToolsUi/timer/runView";
+import { TimerModeField, type TimerMode } from "~/rngToolsUi/timer/setupParts";
 import { useAtom } from "~/state/localStorage";
 import { multiTimerStateAtom } from "~/state/multiTimerState";
 import { hydrationLock } from "~/utils/hydration";
 import { Gen4EmbeddedSetup } from "./embeddedSetup";
 import { gen4StateAtom, gen4TimerAtom } from "./state";
-
-type Mode = "setup" | "run";
 
 type InnerProps = {
   maxBeepCount: number;
@@ -26,7 +25,7 @@ const InnerGen4EmbeddedTimer = ({
 }: InnerProps) => {
   const [{ config, timer }] = useAtom(gen4StateAtom);
   const [, updateTimer] = useAtom(gen4TimerAtom);
-  const [mode, setMode] = React.useState<Mode>("run");
+  const [mode, setMode] = React.useState<TimerMode>("run");
   const metronome = useMetronome({ enableAudio: true });
   const sequence = useTimerSequence({ milliseconds: timer.ms, maxBeepCount });
 
@@ -34,15 +33,10 @@ const InnerGen4EmbeddedTimer = ({
 
   return (
     <Flex vertical gap={16}>
-      <RadioGroup<Mode>
-        name="timerMode"
-        optionType="button"
+      <TimerModeField
         value={mode}
-        onChange={({ target }) => setMode(target.value)}
-        options={[
-          { label: "Setup", value: "setup", disabled: sequence.isRunning },
-          { label: "Run", value: "run" },
-        ]}
+        onChange={setMode}
+        isRunning={sequence.isRunning}
       />
 
       {mode === "run" && (

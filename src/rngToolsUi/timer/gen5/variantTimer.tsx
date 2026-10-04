@@ -1,6 +1,6 @@
 import React from "react";
 import { Skeleton } from "antd";
-import { Flex, RadioGroup } from "~/components";
+import { Flex } from "~/components";
 import { type GameConsole, minutesBefore } from "~/rngTools";
 import { useTimerSequence } from "~/hooks/useTimerSequence";
 import { hydrationLock, HydrationLock } from "~/utils/hydration";
@@ -8,6 +8,7 @@ import { useHydrate } from "~/hooks/useHydrate";
 import { useAtom } from "~/state/localStorage";
 import { multiTimerStateAtom } from "~/state/multiTimerState";
 import { RunView, type HitField } from "../runView";
+import { TimerModeField, type TimerMode } from "../setupParts";
 import { Gen5Setup, type SetupField } from "./setup";
 import { type TimerState } from "./timerState";
 
@@ -58,8 +59,6 @@ export type Gen5VariantConfig<
   | Gen5VariantConfigSingle<Settings, Persisted>
   | Gen5VariantConfigMulti<Settings, Persisted, HitId>;
 
-type Mode = "setup" | "run";
-
 type InnerProps<
   Settings extends { console: GameConsole },
   Persisted extends Settings,
@@ -88,7 +87,7 @@ const InnerGen5Timer = <
   setMaxBeepCount,
 }: InnerProps<Settings, Persisted, HitId>) => {
   const [settings, setSettings] = React.useState(initialSettings);
-  const [mode, setMode] = React.useState<Mode>("run");
+  const [mode, setMode] = React.useState<TimerMode>("run");
   const sequence = useTimerSequence({
     milliseconds: timer.milliseconds,
     maxBeepCount,
@@ -108,15 +107,10 @@ const InnerGen5Timer = <
 
   return (
     <Flex vertical gap={16}>
-      <RadioGroup<Mode>
-        name="timerMode"
-        optionType="button"
+      <TimerModeField
         value={mode}
-        onChange={({ target }) => setMode(target.value)}
-        options={[
-          { label: "Setup", value: "setup", disabled: sequence.isRunning },
-          { label: "Run", value: "run" },
-        ]}
+        onChange={setMode}
+        isRunning={sequence.isRunning}
       />
 
       {mode === "run" && (

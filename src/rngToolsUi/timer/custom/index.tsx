@@ -1,14 +1,15 @@
 import { Skeleton } from "antd";
 import styled from "@emotion/styled";
 import React from "react";
-import { Button, Flex, RadioGroup } from "~/components";
+import { Flex } from "~/components";
+import { FormCard, PrimaryButton } from "~/components/form";
 import { multiTimerStateAtom } from "~/state/multiTimerState";
 import { useHydrate } from "~/hooks/useHydrate";
 import { useTimerSequence } from "~/hooks/useTimerSequence";
 import { useAtom } from "~/state/localStorage";
 import { hydrationLock } from "~/utils/hydration";
-import { PRIMARY_BUTTON_HEIGHT } from "../constants";
 import { formatDuration } from "../format";
+import { TimerModeField, type TimerMode } from "../setupParts";
 import { RunDisplay } from "./runDisplay";
 import { SetupMode } from "./setupMode";
 import {
@@ -17,8 +18,6 @@ import {
   getMilliseconds,
   type AllTimerSettings,
 } from "./state";
-
-type Mode = "setup" | "run";
 
 const Screen = styled(Flex)({
   width: "100%",
@@ -44,7 +43,7 @@ const InnerCustomTimer = ({
   maxBeepCount,
   setMaxBeepCount,
 }: InnerProps) => {
-  const [mode, setMode] = React.useState<Mode>(
+  const [mode, setMode] = React.useState<TimerMode>(
     saved.timers.length === 0 ? "setup" : "run",
   );
   const [draft, setDraft] = React.useState(saved);
@@ -76,15 +75,10 @@ const InnerCustomTimer = ({
 
   return (
     <Screen vertical gap={16}>
-      <RadioGroup<Mode>
-        name="timerMode"
-        optionType="button"
+      <TimerModeField
         value={mode}
-        onChange={({ target }) => setMode(target.value)}
-        options={[
-          { label: "Setup", value: "setup", disabled: sequence.isRunning },
-          { label: "Run", value: "run" },
-        ]}
+        onChange={setMode}
+        isRunning={sequence.isRunning}
       />
 
       {mode === "run" && (
@@ -104,27 +98,25 @@ const InnerCustomTimer = ({
             <span>{`${formatDuration(totalMs)} total`}</span>
           </SummaryRow>
 
-          <SetupMode
-            draft={draft}
-            setDraft={setDraft}
-            milliseconds={draftMilliseconds}
-            maxBeepCount={maxBeepCount}
-            setMaxBeepCount={setMaxBeepCount}
-          />
+          <FormCard>
+            <SetupMode
+              draft={draft}
+              setDraft={setDraft}
+              milliseconds={draftMilliseconds}
+              maxBeepCount={maxBeepCount}
+              setMaxBeepCount={setMaxBeepCount}
+            />
 
-          <Flex flex={1} />
-
-          <Button
-            trackerId="set_custom_timer"
-            type="primary"
-            height={PRIMARY_BUTTON_HEIGHT}
-            onClick={() => {
-              setSaved(draft);
-              setMode("run");
-            }}
-          >
-            Set Timer
-          </Button>
+            <PrimaryButton
+              trackerId="set_custom_timer"
+              onClick={() => {
+                setSaved(draft);
+                setMode("run");
+              }}
+            >
+              Set Timer
+            </PrimaryButton>
+          </FormCard>
         </>
       )}
     </Screen>

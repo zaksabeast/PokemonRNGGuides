@@ -141,18 +141,26 @@ const HiddenInput = styled.input({
   pointerEvents: "none",
 });
 
-export type RadioFieldProps<Value extends OptionValue> = LabeledFieldProps & {
-  value: Value;
-  options: readonly RadioOption<Value>[];
-  onChange?: (value: Value) => void;
-  cellSize: RadioCellSize;
-  name?: string;
-  disabled?: boolean;
-  onBlur?: () => void;
-};
+export type RadioFieldProps<Value extends OptionValue> = tst.O.Merge<
+  {
+    /** Leave out for controls that explain themselves, like a Setup/Run toggle */
+    label?: React.ReactNode;
+    /** Names the group for screen readers when there's no visible label */
+    ariaLabel?: string;
+    value: Value;
+    options: readonly RadioOption<Value>[];
+    onChange?: (value: Value) => void;
+    cellSize: RadioCellSize;
+    name?: string;
+    disabled?: boolean;
+    onBlur?: () => void;
+  },
+  Omit<LabeledFieldProps, "label">
+>;
 
 export const RadioField = <Value extends OptionValue>({
   label,
+  ariaLabel,
   tooltip,
   helperText,
   errorMessage,
@@ -185,7 +193,8 @@ export const RadioField = <Value extends OptionValue>({
       >
         <Grid
           role="radiogroup"
-          aria-labelledby={ids.labelId}
+          aria-label={ariaLabel}
+          aria-labelledby={label == null ? undefined : ids.labelId}
           aria-describedby={ids.helperId}
           aria-invalid={invalid}
           $cellSize={cellSize}

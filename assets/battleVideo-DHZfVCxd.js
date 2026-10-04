@@ -1,0 +1,1 @@
+import{t as e}from"./battleVideo-CiDSjTEt.js";export{e as BattleVideo};

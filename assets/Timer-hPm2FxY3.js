@@ -1,0 +1,21 @@
+var e=`---
+title: "Mystic Timer - Online Pokémon RNG Timer for Gens 3-7"
+navDrawerTitle: Mystic Timer
+description: "Mystic Timer is a mobile-friendly alternative to Eon Timer. Perfect for Gen 3, 4, 5, 6, and 7 Pokémon RNG on any device, including Mac, Linux, iOS, and Android."
+slug: "mystic-timer"
+category:
+  - "GBA Tools"
+  - "NDS Tools"
+  - "3DS Tools"
+section: "tool"
+addedOn: "2025-03-18"
+---
+
+<RngTimer />
+
+### Credits
+
+- DasAmpharos for [Eon Timer](https://github.com/DasAmpharos/EonTimer), originally ported from its Python version.
+- not-an-aardvark for their [web RNG timer](https://github.com/not-an-aardvark/rng-timer/), the first web timer and a key reference.
+- The [Pokemon RNG Discord](https://www.discord.gg/d8JuAvg) for helping name the tool.
+`;export{e as default};

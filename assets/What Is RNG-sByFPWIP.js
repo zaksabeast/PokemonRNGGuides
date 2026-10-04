@@ -1,0 +1,8 @@
+import{t as e}from"./jsx-runtime-CLxixnhA.js";import{S as t}from"./index-DT5DzPOU.js";var n=e(),r={title:`What is RNG?`,description:`An introduction to RNG manipulation in Pokémon games for beginners.`,slug:`what-is-rng`,category:`Home`,section:`getting_started`};function i(e){let r={h2:`h2`,p:`p`,...t(),...e.components},{LinkButton:i}=r;return i||o(`LinkButton`,!0),(0,n.jsxs)(n.Fragment,{children:[(0,n.jsx)(r.h2,{children:`Welcome to Pokemon RNG!`}),`
+`,(0,n.jsx)(r.p,{children:`Simply put: RNG lets you get shinies easily.`}),`
+`,(0,n.jsx)(r.p,{children:`Everything in the game is random...and we know how the game generates random numbers. We can predict them, so we can tell you exactly when to press "A" to get the Pokemon you want.`}),`
+`,(0,n.jsx)(r.p,{children:`You can start with a shiny, catch shiny legendaries, and hatch shiny eggs.`}),`
+`,(0,n.jsx)(r.h2,{children:`Beyond Shinies`}),`
+`,(0,n.jsx)(r.p,{children:`RNG also lets you get max stats, infinite Master Balls from the lottery, perfect game corner plays, and more!`}),`
+`,(0,n.jsx)(r.p,{children:`It's a fun way to add an extra challenge with great rewards.`}),`
+`,(0,n.jsx)(i,{type:`primary`,trackerId:`retail-or-emulator`,link:{type:`slug`,slug:`/retail-or-emulator/`},children:(0,n.jsx)(r.p,{children:`Learn about RNG methods`})})]})}function a(e={}){let{wrapper:r}={...t(),...e.components};return r?(0,n.jsx)(r,{...e,children:(0,n.jsx)(i,{...e})}):i(e)}function o(e,t){throw Error(`Expected `+(t?`component`:`object`)+" `"+e+"` to be defined: you likely forgot to import, pass, or provide it.")}export{a as default,r as frontmatter};

@@ -1,0 +1,30 @@
+var e=`---
+title: "What is RNG?"
+description: "An introduction to RNG manipulation in Pokémon games for beginners."
+slug: "what-is-rng"
+category: "Home"
+section: "getting_started"
+---
+
+## Welcome to Pokemon RNG!
+
+Simply put: RNG lets you get shinies easily.
+
+Everything in the game is random...and we know how the game generates random numbers. We can predict them, so we can tell you exactly when to press "A" to get the Pokemon you want.
+
+You can start with a shiny, catch shiny legendaries, and hatch shiny eggs.
+
+## Beyond Shinies
+
+RNG also lets you get max stats, infinite Master Balls from the lottery, perfect game corner plays, and more!
+
+It's a fun way to add an extra challenge with great rewards.
+
+<LinkButton
+  type="primary"
+  trackerId="retail-or-emulator"
+  link={{ type: "slug", slug: "/retail-or-emulator/" }}
+>
+  Learn about RNG methods
+</LinkButton>
+`;export{e as default};

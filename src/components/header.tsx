@@ -31,6 +31,7 @@ const BaseContributeButton = (props: BaseContributeButtonProps) => {
       trackerId="contribute_url"
       link={CONTRIBUTE_LINK}
       icon={<Icon name="Edit" size={20} />}
+      aria-label="Contribute to the project"
     />
   );
 };
@@ -112,6 +113,7 @@ export const Header = () => {
               trackerId="switch_to_dark_mode"
               onClick={() => setTheme("dark")}
               icon={<Icon name="DarkMode" size={20} />}
+              aria-label="Switch to dark mode"
             />
           </ShowIfTheme>
           <ShowIfTheme $themeMode="dark">
@@ -120,6 +122,7 @@ export const Header = () => {
               trackerId="switch_to_light_mode"
               onClick={() => setTheme("light")}
               icon={<Icon name="LightMode" size={20} />}
+              aria-label="Switch to light mode"
             />
           </ShowIfTheme>
           <Button
@@ -127,6 +130,7 @@ export const Header = () => {
             href={settings.discordUrl}
             icon={<Icon name="Discord" size={20} />}
             type="primary"
+            aria-label="Join our Discord server"
           />
         </Flex>
       </Flex>

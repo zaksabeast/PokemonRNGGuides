@@ -1,4 +1,4 @@
-import { CycleAtMoment, rngTools } from "~/rngTools";
+import { rngTools } from "~/rngTools";
 import {
   Field,
   ResultColumn,
@@ -10,9 +10,15 @@ import {
 } from "~/components";
 import React from "react";
 import { TargetSetup } from "./wild3TargetSetupInput";
-import { setupToDistributions } from "./wild3SetupToDistribution";
+import {
+  setupToDistributions,
+  Wild3Distributions,
+} from "./wild3SetupToDistribution";
 import { TextArea } from "~/components/textArea";
-import { formatLargeInteger } from "~/utils/formatLargeInteger";
+import {
+  formatLargeInteger,
+  formatLargeIntegerWithSign,
+} from "~/utils/formatLargeInteger";
 import {
   fillDataFromTool,
   fillDataFromJson,
@@ -20,8 +26,9 @@ import {
   cycleAtMomentsFromJsonSchema,
   type UiResult,
   type UiResultCycleAtMoment,
-  type CycleAtMomentsJson,
 } from "./wild3CycleAtMomentsFormatting";
+import { match } from "ts-pattern";
+import { Tooltip } from "antd";
 
 const uiCycleAtMomentColumns: ResultColumn<UiResultCycleAtMoment>[] = [
   {
@@ -45,31 +52,31 @@ const uiCycleAtMomentColumns: ResultColumn<UiResultCycleAtMoment>[] = [
         key: "dataFromTool_Cycle",
         dataIndex: "dataFromTool",
         render: (dataFromTool) => {
-          return formatLargeInteger(dataFromTool.cycle);
-        },
-      },
-      {
-        title: (
-          <>
-            Cycle from
-            <br />
-            Sweet Scent start
-            <br />
-            excluding Vblank
-          </>
-        ),
-        key: "dataFromJson_CycleSweetScent",
-        dataIndex: "dataFromTool",
-        render: (dataFromTool) => {
-          return formatLargeInteger(dataFromTool.cycleFromSweetScent);
+          return (
+            <Tooltip
+              title={
+                "Total cycle: " + formatLargeInteger(dataFromTool.totalCycle)
+              }
+            >
+              {formatLargeInteger(dataFromTool.cycle)}
+            </Tooltip>
+          );
         },
       },
       {
         title: "Increment",
-        key: "dataFromJson_Increment",
+        key: "dataFromTool_Increment",
         dataIndex: "dataFromTool",
         render: (dataFromTool) => {
-          return `+${formatLargeInteger(dataFromTool.cycleFromSweetScentIncrement)}`;
+          return `+${formatLargeInteger(dataFromTool.totalCycleWithoutVblankIncrement)}`;
+        },
+      },
+      {
+        title: "Total Increment",
+        key: "dataFromTool_TotalIncrement",
+        dataIndex: "dataFromTool",
+        render: (dataFromTool) => {
+          return formatLargeInteger(dataFromTool.totalCycleWithoutVblank);
         },
       },
     ],
@@ -95,27 +102,19 @@ const uiCycleAtMomentColumns: ResultColumn<UiResultCycleAtMoment>[] = [
         },
       },
       {
-        title: (
-          <>
-            Cycle from
-            <br />
-            Sweet Scent start
-            <br />
-            excluding Vblank
-          </>
-        ),
-        key: "dataFromJson_CycleSweetScent",
-        dataIndex: "dataFromJson",
-        render: (dataFromJson) => {
-          return formatLargeInteger(dataFromJson.cycleFromSweetScent);
-        },
-      },
-      {
         title: "Increment",
         key: "dataFromJson_Increment",
         dataIndex: "dataFromJson",
         render: (dataFromJson) => {
-          return `+${formatLargeInteger(dataFromJson.cycleFromSweetScentIncrement)}`;
+          return `+${formatLargeInteger(dataFromJson.totalCycleWithoutVblankIncrement)}`;
+        },
+      },
+      {
+        title: "Total Increment",
+        key: "dataFromJson_TotalIncrement",
+        dataIndex: "dataFromJson",
+        render: (dataFromJson) => {
+          return formatLargeInteger(dataFromJson.totalCycleWithoutVblank);
         },
       },
     ],
@@ -125,28 +124,27 @@ const uiCycleAtMomentColumns: ResultColumn<UiResultCycleAtMoment>[] = [
     title: "Webtool difference with JSON",
     columns: [
       {
-        title: (
-          <>
-            Cycle from
-            <br />
-            Sweet Scent start
-            <br />
-            excluding Vblank
-          </>
-        ),
-        key: "dataDiff_CycleSweetScent",
-        dataIndex: "dataDiff",
-        render: (dataDiff) => {
-          return formatLargeInteger(dataDiff.cycleFromSweetScent);
-        },
-      },
-      {
         title: "Increment",
         key: "dataDiff_Increment",
         dataIndex: "dataDiff",
         render: (dataDiff) => {
-          const prefix = dataDiff.cycleFromSweetScentIncrement >= 0 ? "+" : "";
-          return `${prefix}${formatLargeInteger(dataDiff.cycleFromSweetScentIncrement)}`;
+          if (dataDiff.totalCycleWithoutVblankIncrement == null) {
+            return "";
+          }
+          return formatLargeIntegerWithSign(
+            dataDiff.totalCycleWithoutVblankIncrement,
+          );
+        },
+      },
+      {
+        title: "Total Increment",
+        key: "dataDiff_TotalIncrement",
+        dataIndex: "dataDiff",
+        render: (dataDiff) => {
+          if (dataDiff.totalCycleWithoutVblank == null) {
+            return "";
+          }
+          return formatLargeIntegerWithSign(dataDiff.totalCycleWithoutVblank);
         },
       },
     ],
@@ -174,49 +172,13 @@ type Props = {
   leadCycleSpeed: number | null;
 };
 
-let nextUid = 0;
-
-const createEmptyUiResult = (
-  json: CycleAtMomentsJson | null,
-  cycleAtMomentsFromToolForFallback: CycleAtMoment[],
-): UiResult => {
-  const moments =
-    json == null
-      ? cycleAtMomentsFromToolForFallback.map((cam) => cam.moment)
-      : json.cycleAtMoments
-          .filter((cam) => cam.moment !== "VblankIntr_End")
-          .map((cam) => cam.moment);
-
-  const uiCycleAtMoments: UiResultCycleAtMoment[] = moments.map((moment) => {
-    return {
-      uid: nextUid++,
-      moment,
-      dataFromJson: {
-        cycle: 0,
-        frame: 0,
-        cycleFromSweetScent: 0,
-        cycleFromSweetScentIncrement: 0,
-      },
-      dataFromTool: {
-        cycle: 0,
-        frame: 0,
-        cycleFromSweetScent: 0,
-        cycleFromSweetScentIncrement: 0,
-      },
-      dataDiff: {
-        cycleFromSweetScent: 0,
-        cycleFromSweetScentIncrement: 0,
-      },
-    };
-  });
-
+const createEmptyUiResult = (): UiResult => {
   return {
     methodFromJson: null,
     methodFromTool: null,
-    cycleAtSweetScent: 0,
     frameAtSweetScent: 0,
     advanceAtSweetScent: 0,
-    uiCycleAtMoments,
+    uiCycleAtMoments: [],
     vblankDurations: [],
     errorMsg: "",
   };
@@ -224,39 +186,47 @@ const createEmptyUiResult = (
 
 const createUiResult = async (
   compareCycleAtMomentsStr: string,
-  cycleAtMomentsFromTool: CycleAtMoment[],
-  leadCycleSpeedFromTool: number | null,
-  advanceAtSweetScent: number,
+  distFromTool: Wild3Distributions,
 ) => {
   const json = parseCycleAtMomentsJsonStr(compareCycleAtMomentsStr);
-  const uiResult = createEmptyUiResult(json, cycleAtMomentsFromTool);
+  const uiResult = createEmptyUiResult();
 
   if (compareCycleAtMomentsStr !== "" && json == null) {
     uiResult.errorMsg = "Error: Invalid JSON format or content.";
   }
 
+  fillDataFromTool(uiResult, distFromTool);
+
   if (json != null) {
     fillDataFromJson(uiResult, json);
 
-    if (uiResult.advanceAtSweetScent !== advanceAtSweetScent) {
-      uiResult.errorMsg = `Error: The advance used in the emulator ${uiResult.advanceAtSweetScent} doesn't match the advance provided on the webtool ${advanceAtSweetScent}.`;
+    if (uiResult.advanceAtSweetScent !== distFromTool.advanceAtSweetScent) {
+      uiResult.errorMsg = `Error: The advance used in the emulator ${uiResult.advanceAtSweetScent} doesn't match the advance provided on the webtool ${distFromTool.advanceAtSweetScent}.`;
     }
 
-    if (leadCycleSpeedFromTool !== null) {
-      const leadPIDFromJson = parseInt(json.leadPID, 16);
+    const leadCycleSpeedFromTool = match(distFromTool.cycle_opts)
+      .with(
+        { CycleAtMomentNoEmuLog: {} },
+        ({ CycleAtMomentNoEmuLog }) => CycleAtMomentNoEmuLog.lead_cycle_spd,
+      )
+      .with(
+        { CycleAtMomentWithEmuLog: {} },
+        ({ CycleAtMomentWithEmuLog }) => CycleAtMomentWithEmuLog.lead_cycle_spd,
+      )
+      .otherwise(() => 0);
 
-      const leadCycleSpeedFromJson = isNaN(leadPIDFromJson)
-        ? 0
-        : await rngTools.calculate_pid_speed(leadPIDFromJson);
+    const leadPIDFromJson = parseInt(json.leadPID, 16);
 
-      if (leadCycleSpeedFromJson !== leadCycleSpeedFromTool) {
-        uiResult.errorMsg =
-          "Error: The lead used in the emulator doesn't match the lead provided on the webtool.";
-      }
+    const leadCycleSpeedFromJson = isNaN(leadPIDFromJson)
+      ? 0
+      : await rngTools.calculate_pid_speed(leadPIDFromJson);
+
+    if (leadCycleSpeedFromJson !== leadCycleSpeedFromTool) {
+      uiResult.errorMsg =
+        "Error: The lead used in the emulator doesn't match the lead provided on the webtool.";
     }
   }
 
-  fillDataFromTool(uiResult, cycleAtMomentsFromTool);
   calculateDataDiff(uiResult);
 
   return uiResult;
@@ -269,14 +239,13 @@ export const Wild3CycleAtMoments = ({ targetSetup, leadCycleSpeed }: Props) => {
   const [displayDebuggingOptions, setDisplayDebuggingOptions] =
     React.useState(false);
 
-  const [uiResult, setUiResult] = React.useState(createEmptyUiResult(null, []));
+  const [uiResult, setUiResult] = React.useState(createEmptyUiResult());
 
   React.useEffect(() => {
     let cancelled = false;
     const updateUiResult = async () => {
       const json = parseCycleAtMomentsJsonStr(compareCycleAtMomentsStr);
-      const distributions = await setupToDistributions(
-        targetSetup,
+      const cycle_opts =
         json == null
           ? { CycleAtMomentNoEmuLog: { lead_cycle_spd: leadCycleSpeed ?? 0 } }
           : {
@@ -290,17 +259,13 @@ export const Wild3CycleAtMoments = ({ targetSetup, leadCycleSpeed }: Props) => {
                   .filter((cam) => cam.moment === "VblankIntr_End")
                   .map((cam) => cam.cycle),
               },
-            },
-      );
-      const cyclesWithSweetScent = [
-        { moment: "SweetScentWildEncounter" as const, cycle: 0 },
-        ...distributions.cycle_at_moments,
-      ];
+            };
+
+      const distributions = await setupToDistributions(targetSetup, cycle_opts);
+
       const result = await createUiResult(
         compareCycleAtMomentsStr,
-        cyclesWithSweetScent,
-        leadCycleSpeed,
-        distributions.advanceAtSweetScent,
+        distributions,
       );
       if (!cancelled) {
         setUiResult(result);
@@ -354,7 +319,9 @@ export const Wild3CycleAtMoments = ({ targetSetup, leadCycleSpeed }: Props) => {
   const resultFields: Field[] = [
     {
       label: "Cycle at start of Sweet Scent",
-      input: formatLargeInteger(uiResult.cycleAtSweetScent),
+      input: formatLargeInteger(
+        uiResult.uiCycleAtMoments[0]?.dataFromTool.cycle ?? 0,
+      ),
     },
     {
       label: "Method hit according to JSON (emu)",
@@ -387,6 +354,7 @@ export const Wild3CycleAtMoments = ({ targetSetup, leadCycleSpeed }: Props) => {
             columns={uiCycleAtMomentColumns}
             rowKey="uid"
             dataSource={uiResult.uiCycleAtMoments}
+            pagination={{ pageSize: 1000 }}
           />
         </Flex>
       )}

@@ -625,7 +625,7 @@ fn generate_wild3_from_encounter(
     let mut skip_method5_counter = 0;
     let mut last_generated_method5: Option<Wild3GeneratorMonResult> = None;
     let mut pid: u32;
-    cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidLowFirst);
+    cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidLow);
 
     loop {
         let pid_low = rand_next_u16(&mut rng, "pid_low", 1) as u32;
@@ -655,7 +655,7 @@ fn generate_wild3_from_encounter(
         };
 
         if good_nature && good_gender {
-            cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidLowLast);
+            cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidLow);
 
             cycle_counter.add_cycle(method3_range);
             // cycle increment done after the loop
@@ -688,7 +688,7 @@ fn generate_wild3_from_encounter(
 
         cycle_counter.add_cycle(retry_pid_cycle + calc_modulo_cycle_unsigned(pid, 25));
     }
-    cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidHighLast);
+    cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidHigh);
 
     if let Some(last_generated_method5) = last_generated_method5 {
         results.push(last_generated_method5.clone_with_cycle_end(cycle_counter.cycle.cycle));

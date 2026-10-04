@@ -43,9 +43,8 @@ pub enum Moment {
     PickWildMonNature_RandomTestSynchro,
     CreateWildMon_RandomTestCuteCharm,
     PickWildMonNature_RandomPickNature,
-    CreateMonWithNature_RandomPidLowFirst,
-    CreateMonWithNature_RandomPidLowLast,
-    CreateMonWithNature_RandomPidHighLast,
+    CreateMonWithNature_RandomPidLow,
+    CreateMonWithNature_RandomPidHigh,
     CreateBoxMon_RandomIvs1,
     CreateBoxMon_RandomIvs2,
 }

@@ -446,7 +446,7 @@ fn generate_personality(
     let mut skip_method5_counter = 0;
     let mut pending_method5_index: Option<usize> = None;
     let mut pid: u32;
-    cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidLowFirst);
+    cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidLow);
 
     loop {
         let pid_low = rand_next_u16(&mut rng, "pid_low", 1) as u32;
@@ -498,7 +498,7 @@ fn generate_personality(
         };
 
         if good_nature && good_gender {
-            cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidLowLast);
+            cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidLow);
 
             cycle_counter.add_cycle(method3_range);
             // cycle increment done after the loop
@@ -541,7 +541,7 @@ fn generate_personality(
 
         cycle_counter.add_cycle(retry_pid_cycle + calc_modulo_cycle_unsigned(pid, 25));
     }
-    cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidHighLast);
+    cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidHigh);
 
     if !passes_pid_filter_internal(&gen_data, pid) {
         return Wild3GeneratorResults {

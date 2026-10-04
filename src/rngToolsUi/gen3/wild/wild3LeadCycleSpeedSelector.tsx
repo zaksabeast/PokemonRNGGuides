@@ -26,7 +26,7 @@ import {
   UiResult,
   Wild3Distributions,
 } from "./wild3SetupToDistribution";
-import { formatLargeIntegerWithSign } from "~/utils/formatLargeInteger";
+import { formatLargeInteger } from "~/utils/formatLargeInteger";
 
 /*
 Wild3LeadCycleSpeedSelector is used to set/calibrate leadCycleSpeed.
@@ -70,7 +70,7 @@ const getColumns = (targetSetup: TargetSetup): ResultColumn<UiResult>[] => {
       dataIndex: "pre_sweet_scent_cycle_range",
       render: (pre_sweet_scent_cycle_range) => {
         const range = pre_sweet_scent_cycle_range;
-        return `${formatLargeIntegerWithSign(range.start)} to ${formatLargeIntegerWithSign(range.start + range.len - 1)}`;
+        return `${formatLargeInteger(range.start)} to ${formatLargeInteger(range.start + range.len - 1)}`;
       },
     },
     {

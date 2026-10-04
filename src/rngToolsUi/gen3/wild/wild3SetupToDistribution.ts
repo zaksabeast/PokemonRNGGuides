@@ -1,5 +1,4 @@
 import {
-  CycleAtMoment,
   Gen3Method,
   rngTools,
   Species,
@@ -7,6 +6,7 @@ import {
   Wild3GeneratorCycleOpts,
   Wild3MethodDistributionResult,
   Wild3SearcherResultMon,
+  CycleFrameMoment,
 } from "~/rngTools";
 import { getPossibleValuesForMap } from "./dataUtils";
 import { TargetSetup } from "./wild3TargetSetupInput";
@@ -58,10 +58,11 @@ const convertSearcherResultsToUIResults = (
 
 export type Wild3Distributions = {
   uiResults: UiResult[];
-  cycle_at_moments: CycleAtMoment[];
+  cycle_at_moments: CycleFrameMoment[];
   advanceAtSweetScent: number;
   hasError: boolean;
   idealLeadCycleSpd: number | null;
+  cycle_opts: Wild3GeneratorCycleOpts;
 };
 
 export const setupToDistributions = async (
@@ -109,6 +110,7 @@ export const setupToDistributions = async (
       advanceAtSweetScent: 0,
       hasError: true,
       idealLeadCycleSpd: null,
+      cycle_opts,
     };
   }
 
@@ -137,5 +139,6 @@ export const setupToDistributions = async (
       2 ** 32,
     hasError: false,
     idealLeadCycleSpd,
+    cycle_opts,
   };
 };

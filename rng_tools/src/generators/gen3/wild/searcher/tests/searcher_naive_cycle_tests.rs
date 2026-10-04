@@ -113,7 +113,12 @@ fn test_search_wild3_cycle_methods_1_2_4() {
                 post_sweet_scent_range: CycleRange::new(225046, 80, 10000000),
                 specified_lead: Some(Wild3SearcherCycleData::new(500, -1000000, 1015850, 0.0)),
                 slowest_lead: Wild3SearcherCycleData::new(900, -1000000, 983850, 0.0),
-                fastest_lead: Wild3SearcherCycleData::new(18, -1000000, 1054410, 0.31366666666666665),
+                fastest_lead: Wild3SearcherCycleData::new(
+                    18,
+                    -1000000,
+                    1054410,
+                    0.31366666666666665,
+                ),
                 ideal_lead: Wild3SearcherCycleData::new(18, -1000000, 1054410, 0.31366666666666665),
                 common_lower_lead: Wild3SearcherCycleData::new(608, -1000000, 1007210, 0.0),
                 common_upper_lead: Wild3SearcherCycleData::new(868, -1000000, 986410, 0.0),

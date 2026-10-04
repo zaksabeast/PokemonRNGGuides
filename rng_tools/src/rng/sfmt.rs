@@ -35,29 +35,23 @@ impl Sfmt {
     }
 
     fn period_certification(&mut self) {
-        let mut inner = 0;
-        for (state, parity) in self.state.iter().zip(PARITY) {
-            inner ^= state & parity;
-        }
-        let mut shift = 16;
-        while shift > 0 {
-            inner ^= inner >> shift;
-            shift >>= 1;
-        }
+        let inner = self
+            .state
+            .iter()
+            .zip(PARITY)
+            .fold(0, |inner, (state, parity)| inner ^ (state & parity));
 
-        if inner & 1 == 1 {
+        if inner.count_ones() % 2 == 1 {
             return;
         }
 
-        for (state, parity) in self.state.iter_mut().zip(PARITY) {
-            let mut work = 1u32;
-            for _ in 0..32 {
-                if work & parity != 0 {
-                    *state ^= work;
-                    return;
-                }
-                work <<= 1;
-            }
+        if let Some((state, parity)) = self
+            .state
+            .iter_mut()
+            .zip(PARITY)
+            .find(|(_, parity)| *parity != 0)
+        {
+            *state ^= 1 << parity.trailing_zeros();
         }
     }
 

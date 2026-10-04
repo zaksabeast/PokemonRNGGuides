@@ -53,7 +53,7 @@ pub struct Gen7TimelineOpts {
 
 /// Returns a list with one item so it can run in `multiWorkerRngTools`.
 #[wasm_bindgen]
-pub fn gen7_is_target_timeline(opts: Gen7TimelineOpts) -> Vec<Gen7TargetTimeline> {
+pub fn gen7_target_timeline(opts: Gen7TimelineOpts) -> Vec<Gen7TargetTimeline> {
     vec![target_timeline(
         opts.seed,
         model_count_from_npcs(opts.npc_count),
@@ -94,8 +94,8 @@ mod test {
     }
 
     #[test]
-    fn is_target_timeline_uses_the_npc_count() {
-        let result = gen7_is_target_timeline(Gen7TimelineOpts {
+    fn target_timeline_uses_the_npc_count() {
+        let result = gen7_target_timeline(Gen7TimelineOpts {
             seed: SEED,
             npc_count: 4,
             safe_advance: 1240,

@@ -59,14 +59,11 @@ impl BlinkFlagScanner {
             long_unsafe_advances,
             unsafe_advances_left: 0,
         };
-        scanner.advance_by(start_advance - warm_up_advance);
         scanner
-    }
-
-    fn advance_by(&mut self, count: usize) {
-        for _ in 0..count {
-            self.next_flag();
-        }
+            .by_ref()
+            .take(start_advance - warm_up_advance)
+            .for_each(drop);
+        scanner
     }
 
     /// Another blink before this one ends, or a long blink cooldown,

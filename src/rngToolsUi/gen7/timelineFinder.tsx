@@ -1,5 +1,4 @@
 import React from "react";
-import { Color } from "@emotion/react";
 import { z } from "zod";
 import {
   Alert,
@@ -102,7 +101,7 @@ const Fields = () => {
 
 type SectionCardProps = {
   title: string;
-  borderColor?: Color;
+  borderColor?: React.ComponentProps<typeof Card>["borderColor"];
   children: React.ReactNode;
 };
 
@@ -130,6 +129,7 @@ type SafeAdvancesCardProps = {
   safeAdvances: number[] | null;
   selected: number | null;
   disabled: boolean;
+  canShowMore: boolean;
   onSelect: (safeAdvance: number) => void;
   onShowMore: () => void;
 };
@@ -138,6 +138,7 @@ const SafeAdvancesCard = ({
   safeAdvances,
   selected,
   disabled,
+  canShowMore,
   onSelect,
   onShowMore,
 }: SafeAdvancesCardProps) => {
@@ -183,7 +184,7 @@ const SafeAdvancesCard = ({
           <Button
             trackerId="gen7_show_more_safe_advances"
             type="link"
-            disabled={!hasResults || disabled}
+            disabled={!hasResults || !canShowMore || disabled}
             onClick={onShowMore}
           >
             {t["Show More"]}
@@ -245,7 +246,7 @@ const formatStepsTime = (steps: number) => {
 };
 
 type PressAValuesProps = {
-  labelColor: Color;
+  labelColor: React.ComponentProps<typeof Typography.Text>["color"];
   advance: number | null;
   timeLabel: string;
   steps: number | null;
@@ -354,6 +355,7 @@ export const Gen7TimelineFinder = () => {
   const [submitted, setSubmitted] = React.useState<FormState | null>(null);
   const [safeAdvances, setSafeAdvances] = React.useState<number[] | null>(null);
   const [selection, setSelection] = React.useState<Selection | null>(null);
+  const [canShowMore, setCanShowMore] = React.useState(true);
   const { loading, waitFor, cancel } = useCancellablePromise();
 
   const findSafeAdvances = async (
@@ -378,6 +380,7 @@ export const Gen7TimelineFinder = () => {
     setSubmitted(opts);
     setSelection(null);
     setSafeAdvances(null);
+    setCanShowMore(true);
     const results = await findSafeAdvances({
       ...opts,
       from_advance: opts.current_advance,
@@ -394,9 +397,15 @@ export const Gen7TimelineFinder = () => {
       ...submitted,
       from_advance: last + 1,
     });
-    if (more != null) {
-      setSafeAdvances([...(safeAdvances ?? []), ...more]);
+    if (more == null) {
+      return;
     }
+    // Searching again from the same advance would find nothing again.
+    if (more.length === 0) {
+      setCanShowMore(false);
+      return;
+    }
+    setSafeAdvances([...(safeAdvances ?? []), ...more]);
   };
 
   const onSelectSafeAdvance = async (safeAdvance: number) => {
@@ -405,7 +414,7 @@ export const Gen7TimelineFinder = () => {
     }
     setSelection(null);
     const results = await waitFor(
-      multiWorkerRngTools.gen7_is_target_timeline({
+      multiWorkerRngTools.gen7_target_timeline({
         seed: submitted.seed,
         npc_count: submitted.npc_count,
         safe_advance: safeAdvance,
@@ -439,6 +448,7 @@ export const Gen7TimelineFinder = () => {
         safeAdvances={safeAdvances}
         selected={selection?.safeAdvance ?? null}
         disabled={loading}
+        canShowMore={canShowMore}
         onSelect={onSelectSafeAdvance}
         onShowMore={onShowMore}
       />

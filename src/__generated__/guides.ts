@@ -9974,7 +9974,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-timeline/",
-      lastUpdated: "2026-10-01",
+      lastUpdated: "2026-10-04",
       type: "baseGuide",
       file: "guides/Gen 7/Timeline Guide.mdx",
       translations: {
@@ -10665,7 +10665,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-10-01",
+      lastUpdated: "2026-10-04",
       type: "baseGuide",
       canonical: "/retail-usum-timeline/",
       file: "guides/Gen 7/Timeline Guide.mdx",

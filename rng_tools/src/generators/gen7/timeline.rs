@@ -99,12 +99,20 @@ struct MissedStates(HashSet<(usize, NpcModel)>);
 impl MissedStates {
     const SAMPLE_EVERY: usize = 64;
 
-    fn is_sampled(timeline: &Timeline) -> bool {
-        timeline.advance.is_multiple_of(Self::SAMPLE_EVERY)
+    /// The key to record for `timeline`, or `None` if it isn't sampled.
+    fn sample(timeline: &Timeline) -> Option<(usize, NpcModel)> {
+        timeline
+            .advance
+            .is_multiple_of(Self::SAMPLE_EVERY)
+            .then(|| (timeline.advance, timeline.npcs.clone()))
     }
 
-    fn key(timeline: &Timeline) -> (usize, NpcModel) {
-        (timeline.advance, timeline.npcs.clone())
+    fn contains(&self, key: &(usize, NpcModel)) -> bool {
+        self.0.contains(key)
+    }
+
+    fn record(&mut self, keys: impl IntoIterator<Item = (usize, NpcModel)>) {
+        self.0.extend(keys);
     }
 }
 
@@ -139,9 +147,8 @@ fn branch_steps_to_target(
         if branch.advance == target {
             break;
         }
-        if MissedStates::is_sampled(&branch) {
-            let key = MissedStates::key(&branch);
-            if missed.0.contains(&key) {
+        if let Some(key) = MissedStates::sample(&branch) {
+            if missed.contains(&key) {
                 break;
             }
             visited.push(key);
@@ -156,7 +163,7 @@ fn branch_steps_to_target(
     if !merged && !base_hits && branch.advance == target {
         return Some(branch.steps_from_safe_advance);
     }
-    missed.0.extend(visited);
+    missed.record(visited);
     None
 }
 

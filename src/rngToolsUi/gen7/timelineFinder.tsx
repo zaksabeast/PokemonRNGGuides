@@ -122,7 +122,7 @@ const SectionCard = ({ title, borderColor, children }: SectionCardProps) => (
 const NEXT_ADVANCE_COUNT = 5;
 const ADVANCE_BUTTON_MIN_WIDTH = 80;
 const ADVANCE_TAG_MIN_WIDTH = 64;
-// Fits the target values, so the warning doesn't change the card's height.
+// Fits the "Press A at" values, so the other states don't change a card's height.
 const TARGET_CONTENT_MIN_HEIGHT = 78;
 const PLACEHOLDER = "-";
 
@@ -234,69 +234,116 @@ const NextAdvancesCard = ({ selection }: { selection: Selection | null }) => {
   );
 };
 
-type TargetValuesProps = {
-  target: number | null;
-  stepsToTarget: number | null;
+// Each step is 2/60 of a second, the same as 3DSRNGTool's timeline.
+const formatStepsTime = (steps: number) => {
+  const seconds = (steps * 2) / 60;
+  if (seconds < 60) {
+    return `~${seconds.toFixed(1)} s`;
+  }
+  const totalSeconds = Math.round(seconds);
+  return `~${Math.floor(totalSeconds / 60)} min ${totalSeconds % 60} s`;
 };
 
-const TargetValues = ({ target, stepsToTarget }: TargetValuesProps) => {
+type PressAValuesProps = {
+  labelColor: Color;
+  advance: number | null;
+  timeLabel: string;
+  steps: number | null;
+};
+
+const PressAValues = ({
+  labelColor,
+  advance,
+  timeLabel,
+  steps,
+}: PressAValuesProps) => {
   const t = useActiveRouteTranslations();
-  // Each step is 2/60 of a second, the same as 3DSRNGTool's timeline.
-  const time =
-    stepsToTarget == null
-      ? PLACEHOLDER
-      : `~${((stepsToTarget * 2) / 60).toFixed(1)} s`;
 
   return (
     <Flex gap={32} wrap align="flex-end">
       <Flex vertical>
-        <Typography.Text color="Success">{t["Press A at"]}</Typography.Text>
+        <Typography.Text color={labelColor}>{t["Press A at"]}</Typography.Text>
         <Typography.Text fontSize={36} strong>
-          {target ?? PLACEHOLDER}
+          {advance ?? PLACEHOLDER}
         </Typography.Text>
       </Flex>
       <Flex vertical>
-        <Typography.Text color="TextSecondary">{t["Time"]}</Typography.Text>
-        <Typography.Text fontSize={24}>{time}</Typography.Text>
+        <Typography.Text color="TextSecondary">{timeLabel}</Typography.Text>
+        <Typography.Text fontSize={24}>
+          {steps == null ? PLACEHOLDER : formatStepsTime(steps)}
+        </Typography.Text>
       </Flex>
     </Flex>
   );
 };
 
-type TargetCardProps = {
+type ResultCardProps = {
   target: number | null;
   selection: Selection | null;
 };
 
-const TargetCard = ({ target, selection }: TargetCardProps) => {
+const LeapCard = ({ target, selection }: ResultCardProps) => {
   const t = useActiveRouteTranslations();
-  const stepsToTarget = selection?.targetTimeline.steps_to_target;
-  const notOnTimeline =
-    selection != null && target != null && stepsToTarget == null;
+  const targetTimeline = selection?.targetTimeline ?? null;
+  const leap = targetTimeline?.leap ?? null;
+  // The guide always starts the dialogue, so the target needs a leap even
+  // when it's on the timeline.
+  const unreachable = targetTimeline != null && target != null && leap == null;
 
   const borderColor = (() => {
-    if (selection == null) {
-      return undefined;
+    if (unreachable) {
+      return "Warning";
     }
-    return notOnTimeline ? "Warning" : "Success";
+    return leap == null ? undefined : "Primary";
+  })();
+
+  const content = (() => {
+    if (unreachable) {
+      return (
+        <Alert
+          type="warning"
+          title={t[
+            "{target} can't be reached from this timeline. Pick another target in 3DSRNGTool."
+          ].replace("{target}", target.toString())}
+        />
+      );
+    }
+    return (
+      <PressAValues
+        labelColor="Primary"
+        advance={leap?.leap_advance ?? null}
+        timeLabel={t["Time"]}
+        steps={leap?.steps_to_leap ?? null}
+      />
+    );
   })();
 
   return (
-    <SectionCard title={t["Target Advance"]} borderColor={borderColor}>
+    <SectionCard title={t["Timeline Leap"]} borderColor={borderColor}>
       <Flex vertical justify="center" minHeight={TARGET_CONTENT_MIN_HEIGHT}>
-        {notOnTimeline ? (
-          <Alert
-            type="warning"
-            title={t[
-              "{target} isn't on this timeline. Pick another target in 3DSRNGTool."
-            ].replace("{target}", target.toString())}
-          />
-        ) : (
-          <TargetValues
-            target={selection == null ? null : target}
-            stepsToTarget={stepsToTarget ?? null}
-          />
-        )}
+        {content}
+      </Flex>
+    </SectionCard>
+  );
+};
+
+const TargetCard = ({ target, selection }: ResultCardProps) => {
+  const t = useActiveRouteTranslations();
+  const targetTimeline = selection?.targetTimeline ?? null;
+  const leap = targetTimeline?.leap ?? null;
+
+  return (
+    <SectionCard
+      title={t["Target Advance"]}
+      borderColor={leap == null ? undefined : "Success"}
+    >
+      <Flex vertical justify="center" minHeight={TARGET_CONTENT_MIN_HEIGHT}>
+        <PressAValues
+          labelColor="Success"
+          advance={leap == null ? null : target}
+          timeLabel={t["Time after leap"]}
+          steps={leap?.steps_from_leap_to_target ?? null}
+        />
       </Flex>
     </SectionCard>
   );
@@ -396,6 +443,10 @@ export const Gen7TimelineFinder = () => {
         onShowMore={onShowMore}
       />
       <NextAdvancesCard selection={selection} />
+      <LeapCard
+        target={submitted?.target_advance ?? null}
+        selection={selection}
+      />
       <TargetCard
         target={submitted?.target_advance ?? null}
         selection={selection}

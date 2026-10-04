@@ -106,6 +106,7 @@ mod test {
             vec![Gen7TargetTimeline {
                 next_advances: vec![1245, 1250, 1255, 1260, 1265],
                 steps_to_target: Some(51),
+                leap: None,
             }]
         );
     }

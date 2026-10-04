@@ -368,8 +368,10 @@ export const translations = {
   "Show More": "Show More",
   "Keep stepping and compare": "Keep stepping and compare",
   "Press A at": "Press A at",
-  "{target} isn't on this timeline. Pick another target in 3DSRNGTool.":
-    "{target} isn't on this timeline. Pick another target in 3DSRNGTool.",
+  "Timeline Leap": "Timeline Leap",
+  "Time after leap": "Time after leap",
+  "{target} can't be reached from this timeline. Pick another target in 3DSRNGTool.":
+    "{target} can't be reached from this timeline. Pick another target in 3DSRNGTool.",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

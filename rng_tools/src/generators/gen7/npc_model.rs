@@ -18,7 +18,7 @@ pub(super) fn has_long_cooldown(rand: u64) -> bool {
     rand.is_multiple_of(3)
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 enum ModelState {
     /// Uses an RNG advance each step to check for a blink.
     Idle,
@@ -64,7 +64,7 @@ impl ModelState {
 /// Each step (one video frame step in PokeReader), every idle model uses one
 /// RNG advance to decide if it blinks, so NPCs move the RNG forward by a
 /// varying number of advances per step.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct NpcModel {
     models: Vec<ModelState>,
 }

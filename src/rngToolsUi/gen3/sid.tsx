@@ -29,8 +29,8 @@ const Validator = z.object({
 export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
-  tid: 14223,
-  feebasSeed: 0xa4fd,
+  tid: 0,
+  feebasSeed: 0,
   initialAdvances: 0,
   maxAdvances: 10000,
 };

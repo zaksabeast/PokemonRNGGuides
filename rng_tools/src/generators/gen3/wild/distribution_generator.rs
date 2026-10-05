@@ -7,7 +7,7 @@ use super::Wild3GeneratorOptions;
 use crate::{
     gen3::{
         CycleFrameMoment, CycleRange, Gen3Method, Wild3GeneratorCycleOpts, Wild3MapGameData,
-        Wild3SearcherResultMon, calculate_cycle_data, generate_wild3,
+        Wild3SearcherResultMon, calculate_cycle_data, generate_wild3, generate_wild3_old,
     },
     rng::lcrng::Pokerng,
 };
@@ -33,27 +33,79 @@ pub fn generate_gen3_wild_distribution(
     advances: usize,
     opts: &Wild3GeneratorOptions,
     game_data: &Wild3MapGameData,
-    cycle_opts: &Wild3GeneratorCycleOpts,
+    lead_cycle_spd: usize,
+    initial_cycle_at_sweet_scent: Option<usize>,
+    vblank_cycles: Option<Vec<usize>>,
 ) -> Wild3MethodDistributionResults {
-    let opts = Wild3GeneratorOptions {
-        cycle_opts: cycle_opts.clone(),
-        methods: vec![
-            Gen3Method::Wild1,
-            Gen3Method::Wild2,
-            Gen3Method::Wild3,
-            Gen3Method::Wild4,
-            Gen3Method::Wild5,
-        ],
-        ..opts.clone()
+    let cycle_opts_for_cycle = match (initial_cycle_at_sweet_scent, vblank_cycles) {
+        (Some(initial_cycle_at_sweet_scent), Some(vblank_cycles)) => {
+            Wild3GeneratorCycleOpts::CycleAtMomentWithEmuLog {
+                lead_cycle_spd,
+                initial_cycle_at_sweet_scent,
+                vblank_cycles,
+            }
+        }
+        _ => Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog { lead_cycle_spd },
     };
 
-    let rng = Pokerng::with_jump(initial_seed, advances);
-    let generated = generate_wild3(rng, &opts, game_data);
-    let gen_results = generated.mon_results;
-    let cycle_counter = generated.cycle_counter;
-    let lead_cycle_spd = cycle_opts.lead_cycle_spd().unwrap();
+    let methods = vec![
+        Gen3Method::Wild1,
+        Gen3Method::Wild2,
+        Gen3Method::Wild3,
+        Gen3Method::Wild4,
+        Gen3Method::Wild5,
+    ];
 
-    let dist_results = gen_results
+    let rng = Pokerng::with_jump(initial_seed, advances);
+
+    let cycle_at_moments = generate_cycle_at_moments(
+        rng,
+        &Wild3GeneratorOptions {
+            cycle_opts: cycle_opts_for_cycle,
+            methods: methods.clone(),
+            ..opts.clone()
+        },
+        game_data,
+    );
+
+    let results = generate_dist_results(
+        rng,
+        advances,
+        &Wild3GeneratorOptions {
+            cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead { lead_cycle_spd },
+            methods,
+            ..opts.clone()
+        },
+        game_data,
+    );
+
+    Wild3MethodDistributionResults {
+        results,
+        cycle_at_moments,
+    }
+}
+
+fn generate_cycle_at_moments(
+    rng: Pokerng,
+    opts: &Wild3GeneratorOptions,
+    game_data: &Wild3MapGameData,
+) -> Vec<CycleFrameMoment> {
+    let generated = generate_wild3(rng, opts, game_data);
+    generated.cycle_counter.get_cycle_at_moments()
+}
+
+fn generate_dist_results(
+    rng: Pokerng,
+    advances: usize,
+    opts: &Wild3GeneratorOptions,
+    game_data: &Wild3MapGameData,
+) -> Vec<Wild3MethodDistributionResult> {
+    let generated = generate_wild3_old(rng, opts, game_data);
+    let cycle_instability = generated.cycle_counter.cycle_instability;
+    let lead_cycle_spd = opts.cycle_opts.lead_cycle_spd().unwrap();
+
+    generated
+        .mon_results
         .iter()
         .sorted_by_key(|data| data.cycle_range.unwrap().start.cycle)
         .map(|gen_res| {
@@ -62,11 +114,11 @@ pub fn generate_gen3_wild_distribution(
                 .unwrap();
             let searcher_res = Wild3SearcherResultMon::new(
                 gen_res,
-                &opts,
+                opts,
                 rng.seed(),
                 advances,
                 encounter,
-                cycle_counter.get_cycle_instability(),
+                cycle_instability,
             );
             let cycle_data = calculate_cycle_data(
                 &searcher_res
@@ -79,17 +131,12 @@ pub fn generate_gen3_wild_distribution(
             );
 
             Wild3MethodDistributionResult {
-                searcher_res: searcher_res.clone(),
+                searcher_res,
                 pre_sweet_scent_cycle_range: cycle_data.pre_sweet_scent_cycle_range,
                 method_probability: cycle_data.method_probability,
             }
         })
-        .collect();
-
-    Wild3MethodDistributionResults {
-        results: dist_results,
-        cycle_at_moments: cycle_counter.get_cycle_at_moments(),
-    }
+        .collect()
 }
 
 // TODO: Create generate_gen3_wild_distribution_with_emu_log()
@@ -142,7 +189,6 @@ mod test {
         }
     }
 
-    #[ignore]
     #[test]
     fn test_distribution_generator() {
         let opts = Wild3GeneratorOptions::default();
@@ -151,9 +197,9 @@ mod test {
             44,
             &opts,
             &Wild3MapGameData::default(),
-            &Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog {
-                lead_cycle_spd: 700,
-            },
+            700,
+            None,
+            None,
         );
 
         let results = dist_results

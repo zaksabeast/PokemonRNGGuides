@@ -465,7 +465,7 @@ fn generate_personality(
             // the portion before it and any remaining tail as separate results.
             if let Some(index) = pending_method5_index.take() {
                 let range = results[index].cycle_range.unwrap();
-                let method3_start = cycle_counter.get_current_cycle_count();
+                let method3_start = cycle_counter.get_current_post_sweet_scent_cycle_count();
                 let range_end = range.end().cycle;
                 if method3_start < range_end {
                     let tail_start = (method3_start + method3_range).min(range_end);
@@ -888,7 +888,8 @@ fn handle_feebas_cycle_counter(
     // The generator always calculates for the mid case (most probable case).
     rng.jump(mid_case_vblank);
 
-    let abs_cycle_from_cycle_counter = cycle_counter.get_current_cycle_count() + mid; // At this points, lead_pid_mod is 0.
+    let abs_cycle_from_cycle_counter =
+        cycle_counter.get_current_post_sweet_scent_cycle_count() + mid; // At this points, lead_pid_mod is 0.
     // Limitation: We can only add cycles. In most cases, mid_case_cycle should be > abs_cycle_from_cycle_counter, because abs_cycle_from_cycle_counter is small.
     if mid_case_cycle > abs_cycle_from_cycle_counter {
         cycle_counter.add_cycle(mid_case_cycle - abs_cycle_from_cycle_counter);

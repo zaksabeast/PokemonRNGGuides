@@ -355,7 +355,7 @@ impl CycleFrameCounter {
     /** can a vblank occurs between now and the next <cycle_range> cycles */
     pub fn can_vblank_occur_soon(&self, cycle_range: usize) -> bool {
         match self {
-            CycleFrameCounter::Inactive => true,
+            CycleFrameCounter::Inactive | CycleFrameCounter::DetailedBreakdown { .. } => true,
             CycleFrameCounter::CheckValidAllLeadSpds {
                 earliest_slowest_cycle: earliest_slowest,
                 latest_fastest_cycle: latest_fastest,
@@ -365,9 +365,6 @@ impl CycleFrameCounter {
                     && *earliest_slowest < VBLANK_FREQ
                     && latest_fastest.saturating_add(cycle_range) > VBLANK_FREQ
             }
-            CycleFrameCounter::DetailedBreakdown { current_cycle, .. } => {
-                cycle_range > VBLANK_FREQ.saturating_sub(current_cycle.cycle)
-            }
             CycleFrameCounter::MinMaxRange { min_max_cycles, .. } => {
                 min_max_cycles.can_vblank_occur_soon(cycle_range)
             }
@@ -375,12 +372,11 @@ impl CycleFrameCounter {
     }
     pub fn is_possible_that_no_vblank_yet(&self) -> bool {
         match self {
-            CycleFrameCounter::Inactive => true,
+            CycleFrameCounter::Inactive | CycleFrameCounter::DetailedBreakdown { .. } => true,
             CycleFrameCounter::CheckValidAllLeadSpds {
                 earliest_slowest_cycle: earliest_slowest,
                 ..
             } => *earliest_slowest < VBLANK_FREQ,
-            CycleFrameCounter::DetailedBreakdown { current_cycle, .. } => current_cycle.frame == 0,
             CycleFrameCounter::MinMaxRange { min_max_cycles, .. } => {
                 min_max_cycles.min_cycle.frame == 0
             }
@@ -389,11 +385,11 @@ impl CycleFrameCounter {
     pub fn can_generate_method(&self, len: usize) -> bool {
         match self {
             CycleFrameCounter::Inactive
+            | CycleFrameCounter::DetailedBreakdown { .. }
             | CycleFrameCounter::MinMaxRange {
                 generate_even_if_impossible: true,
                 ..
-            }
-            | CycleFrameCounter::DetailedBreakdown { .. } => true,
+            } => true,
             _ => {
                 if len == INFINITE_CYCLE {
                     self.is_possible_that_no_vblank_yet()
@@ -405,25 +401,25 @@ impl CycleFrameCounter {
     }
     pub fn create_cycle_range(&self, len: usize) -> CycleAndModRange {
         match self {
-            CycleFrameCounter::Inactive => CycleAndModRange::new(0, 0, 0),
-            CycleFrameCounter::DetailedBreakdown { .. } => {
-                CycleAndModRange::new(self.get_current_cycle_count(), 0, len)
+            CycleFrameCounter::Inactive | CycleFrameCounter::DetailedBreakdown { .. } => {
+                CycleAndModRange::new(0, 0, 0)
             }
             CycleFrameCounter::MinMaxRange {
                 lead_pid_mod_count, ..
             }
             | CycleFrameCounter::CheckValidAllLeadSpds {
                 lead_pid_mod_count, ..
-            } => CycleAndModRange::new(self.get_current_cycle_count(), *lead_pid_mod_count, len),
+            } => CycleAndModRange::new(
+                self.get_current_post_sweet_scent_cycle_count(),
+                *lead_pid_mod_count,
+                len,
+            ),
         }
     }
 
-    pub fn get_current_cycle_count(&self) -> usize {
+    pub fn get_current_post_sweet_scent_cycle_count(&self) -> usize {
         match self {
-            CycleFrameCounter::Inactive => 0,
-            CycleFrameCounter::DetailedBreakdown { current_cycle, .. } => {
-                current_cycle.frame * VBLANK_FREQ + current_cycle.cycle
-            }
+            CycleFrameCounter::Inactive | CycleFrameCounter::DetailedBreakdown { .. } => 0,
             CycleFrameCounter::MinMaxRange {
                 base_cycle_count,
                 lead_pid_mod_count,

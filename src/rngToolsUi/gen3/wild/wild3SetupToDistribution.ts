@@ -114,16 +114,28 @@ export const setupToDistributions = async (
     };
   }
 
+  const timingOpts =
+    typeof cycle_opts === "object" && "CycleAtMomentWithEmuLog" in cycle_opts
+      ? cycle_opts.CycleAtMomentWithEmuLog
+      : null;
+  const leadCycleSpd = timingOpts?.lead_cycle_spd ?? (
+    typeof cycle_opts === "object" && "CycleAtMomentNoEmuLog" in cycle_opts
+      ? cycle_opts.CycleAtMomentNoEmuLog.lead_cycle_spd
+      : typeof cycle_opts === "object" && "LikelihoodForLead" in cycle_opts
+        ? cycle_opts.LikelihoodForLead.lead_cycle_spd
+        : AVERAGE_LEAD_CYCLE_SPEED
+  );
+
   const { results, cycle_at_moments } =
     await rngTools.generate_gen3_wild_distribution(
       targetSetup.targetPaintingAdvs.before,
       targetSetup.targetPaintingAdvs.after,
       opts,
       map_data,
-      cycle_opts,
+      leadCycleSpd,
+      timingOpts?.initial_cycle_at_sweet_scent,
+      timingOpts === null ? undefined : new Uint32Array(timingOpts.vblank_cycles),
     );
-
-  console.log(results, cycle_at_moments);
 
   const resultForTargetMethod = results.find(
     (res) => res.searcher_res.method === targetSetup.targetMethod,

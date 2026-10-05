@@ -20,16 +20,15 @@ fn test_search_wild3_cycle_methods_1_2_4() {
         ],
         initial_advances: 65,
         max_result_count: 10,
-        consider_cycles: true,
-        consider_rng_manipulated_lead_pid: true,
-        generate_even_if_impossible: true,
+        cycle_opts: crate::gen3::Wild3SearcherCycleOpts::Calibrate {
+            lead_cycle_speed: Some(500),
+        },
         leads: vec![Gen3Lead::Vanilla],
         filter: PkmFilter {
             nature: PkmFilter::new_nature_filter(&[Nature::Naive]),
             gender: Some(Gender::Male),
             ..Default::default()
         },
-        lead_cycle_speed: Some(500),
         ..Default::default()
     };
     let expected_results = [

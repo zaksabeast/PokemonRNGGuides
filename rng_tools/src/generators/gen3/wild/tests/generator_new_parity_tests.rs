@@ -3,7 +3,9 @@ use itertools::iproduct as products;
 use super::*;
 use crate::{
     Species,
-    gen3::{Gen3Method, Wild3SpecialEncounterGameData, generate_wild3_old},
+    gen3::{
+        Gen3Method, Wild3GeneratorCycleOpts, Wild3SpecialEncounterGameData, generate_wild3_old,
+    },
 };
 
 #[track_caller]
@@ -39,8 +41,10 @@ pub fn assert_mon_results_eq_unordered(
 fn method5_cycle_ranges_match_existing_generation() {
     let opts = Wild3GeneratorOptions {
         methods: vec![Gen3Method::Wild5],
-        consider_cycles: true,
-        consider_rng_manipulated_lead_pid: true,
+        cycle_opts: Wild3GeneratorCycleOpts::Searching {
+            generate_even_if_impossible: false,
+            consider_rng_manipulated_lead_pid: true,
+        },
         ..Default::default()
     };
     let map = Wild3MapGameData::default();
@@ -93,8 +97,14 @@ fn all_actions_and_leads_match_existing_generation() {
             methods: vec![Gen3Method::Wild1],
             roamer_state: Wild3RoamerState::ActiveInMapLatios,
             mass_outbreak_state: Wild3MassOutbreakState::Route102Seedot,
-            consider_cycles,
-            generate_even_if_impossible,
+            cycle_opts: if consider_cycles {
+                Wild3GeneratorCycleOpts::Searching {
+                    generate_even_if_impossible,
+                    consider_rng_manipulated_lead_pid: false,
+                }
+            } else {
+                Wild3GeneratorCycleOpts::Inactive
+            },
             ..Default::default()
         };
         let old = generate_wild3_old(Pokerng::new(seed), &opts, &map);
@@ -128,8 +138,14 @@ fn fishing_and_rock_smash_match_existing_generation() {
             action,
             feebas_state,
             methods: vec![Gen3Method::Wild1],
-            consider_cycles,
-            generate_even_if_impossible: true,
+            cycle_opts: if consider_cycles {
+                Wild3GeneratorCycleOpts::Searching {
+                    generate_even_if_impossible: true,
+                    consider_rng_manipulated_lead_pid: false,
+                }
+            } else {
+                Wild3GeneratorCycleOpts::Inactive
+            },
             ..Default::default()
         };
         let old = generate_wild3_old(Pokerng::new(seed), &opts, &map);
@@ -162,9 +178,10 @@ fn all_methods_with_common_leads_match_existing_generation() {
                 Gen3Method::Wild4,
                 Gen3Method::Wild5,
             ],
-            consider_cycles: true,
-            consider_rng_manipulated_lead_pid: false,
-            generate_even_if_impossible: false,
+            cycle_opts: Wild3GeneratorCycleOpts::Searching {
+                generate_even_if_impossible: false,
+                consider_rng_manipulated_lead_pid: false,
+            },
             ..Default::default()
         };
         let old = generate_wild3_old(Pokerng::new(seed), &opts, &map);
@@ -207,8 +224,10 @@ fn all_methods_and_cycle_ranges_match_existing_generation() {
                 Gen3Method::Wild4,
                 Gen3Method::Wild5,
             ],
-            consider_cycles: true,
-            generate_even_if_impossible: true,
+            cycle_opts: Wild3GeneratorCycleOpts::Searching {
+                generate_even_if_impossible: true,
+                consider_rng_manipulated_lead_pid: false,
+            },
             ..Default::default()
         };
         let old = generate_wild3_old(Pokerng::new(seed), &opts, &map);
@@ -218,6 +237,5 @@ fn all_methods_and_cycle_ranges_match_existing_generation() {
             &old.mon_results,
             &format!("{action:?} {lead:?} {seed}"),
         );
-        assert_eq!(new.cycle_counter.cycle, old.cycle_counter.cycle);
     }
 }

@@ -84,15 +84,12 @@ export const setupToDistributions = async (
       getGen3PkmFilterInitialValues(),
       null,
     ),
-    consider_cycles: true,
-    consider_rng_manipulated_lead_pid: true,
-    generate_even_if_impossible: true,
     using_white_flute: targetSetup.requiresWhiteFlute,
     roamer_state: targetSetup.roamerState,
     mass_outbreak_state: targetSetup.massOutbreakState,
     feebas_state: targetSetup.feebasState,
     feebas_cycles: targetSetup.feebasCycles,
-    lead_cycle_speed,
+    cycle_opts: { LikelihoodForLead: { lead_cycle_spd: lead_cycle_speed } },
     safari_pokeblock:
       canUsePokeblock && targetSetup.safariPokeblock !== null
         ? {
@@ -114,13 +111,13 @@ export const setupToDistributions = async (
     };
   }
 
-  const { results, cycle_at_moments } =
-    await rngTools.generate_gen3_wild_distribution(
-      targetSetup.targetPaintingAdvs.before,
-      targetSetup.targetPaintingAdvs.after,
-      opts,
-      map_data,
-    );
+  const { results } = await rngTools.generate_gen3_wild_distribution(
+    targetSetup.targetPaintingAdvs.before,
+    targetSetup.targetPaintingAdvs.after,
+    opts,
+    map_data,
+    lead_cycle_speed,
+  );
 
   const resultForTargetMethod = results.find(
     (res) => res.searcher_res.method === targetSetup.targetMethod,
@@ -131,7 +128,7 @@ export const setupToDistributions = async (
 
   return {
     uiResults: convertSearcherResultsToUIResults(results),
-    cycle_at_moments,
+    cycle_at_moments: [],
     advanceAtSweetScent:
       (lcrng_distance(0, targetSetup.targetPaintingAdvs.before) +
         targetSetup.targetPaintingAdvs.after) %

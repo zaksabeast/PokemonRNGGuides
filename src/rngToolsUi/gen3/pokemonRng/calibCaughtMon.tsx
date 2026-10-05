@@ -81,6 +81,7 @@ export type CaughtMonResult = {
     adv_after_painting: number;
   };
   method: Gen3Method | Gen3StaticMethod;
+  // lower score is between
   score: number;
   probabilityHitMethodsAtAdvance: number;
   distanceFromTargetAfter: number;
@@ -130,7 +131,7 @@ export const confidenceRatingColumn: ResultColumn<CaughtMonResult> = {
   key: "Confidence Rating",
   dataIndex: "score",
   render: (score, values) => {
-    const ratingTxt = match(score)
+    const ratingTxtFromScore = match(score)
       .with(P.number.between(0, 500), () => "Very High")
       .with(P.number.between(500, 1000), () => "High")
       .with(P.number.between(1000, 2000), () => "Medium")
@@ -139,6 +140,11 @@ export const confidenceRatingColumn: ResultColumn<CaughtMonResult> = {
 
     const { method } = values;
     const prob = formatProbability(values.probabilityHitMethodsAtAdvance);
+
+    const ratingTxt =
+      values.probabilityHitMethodsAtAdvance === 0
+        ? "Very Low"
+        : ratingTxtFromScore;
 
     const dist = formatLargeInteger(
       values.distanceFromTargetBefore + values.distanceFromTargetAfter,

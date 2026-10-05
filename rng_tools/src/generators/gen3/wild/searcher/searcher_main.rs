@@ -12,7 +12,8 @@ use super::super::{
 use crate::{
     AbilityType, Gender, HiddenPower, Ivs, Nature, PkmFilter, Species,
     gen3::{
-        Gen3Lead, Gen3Method, Gen3PkmFilter, SpeciesData, search_wild3_naive, search_wild3_reverse,
+        Gen3Lead, Gen3Method, Gen3PkmFilter, SpeciesData, Wild3GeneratorCycleOpts,
+        search_wild3_naive, search_wild3_reverse,
         searcher_painter::Wild3PaintingOpts,
         wild::{
             Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex, Wild3MapGameData,
@@ -97,6 +98,46 @@ pub enum Wild3SafariPokeblockSearchOpt {
     Specific([u8; 5]),
 }
 
+#[derive(Debug, Default, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub enum Wild3SearcherCycleOpts {
+    #[default]
+    Inactive,
+    SearchNewTarget {
+        consider_rng_manipulated_lead_pid: bool,
+        generate_even_if_impossible: bool, // different than Inactive because it still generates likelihood
+    },
+    Calibrate {
+        lead_cycle_speed: Option<usize>,
+    },
+}
+
+impl Wild3SearcherCycleOpts {
+    pub fn generator_cycle_opts(&self) -> Wild3GeneratorCycleOpts {
+        match self {
+            Self::Inactive => Wild3GeneratorCycleOpts::Inactive,
+            Self::SearchNewTarget {
+                consider_rng_manipulated_lead_pid,
+                generate_even_if_impossible,
+            } => Wild3GeneratorCycleOpts::Searching {
+                generate_even_if_impossible: *generate_even_if_impossible,
+                consider_rng_manipulated_lead_pid: *consider_rng_manipulated_lead_pid,
+            },
+            Self::Calibrate {
+                lead_cycle_speed: Some(lead_cycle_spd),
+            } => Wild3GeneratorCycleOpts::LikelihoodForLead {
+                lead_cycle_spd: *lead_cycle_spd,
+            },
+            Self::Calibrate {
+                lead_cycle_speed: None,
+            } => Wild3GeneratorCycleOpts::Searching {
+                generate_even_if_impossible: true,
+                consider_rng_manipulated_lead_pid: true,
+            },
+        }
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3SearcherOptions {
@@ -111,10 +152,7 @@ pub struct Wild3SearcherOptions {
     pub leads: Vec<Gen3Lead>,
     pub map_setups: Vec<Wild3MapSetups>,
     pub methods: Vec<Gen3Method>,
-    pub consider_cycles: bool,
-    pub consider_rng_manipulated_lead_pid: bool,
-    pub lead_cycle_speed: Option<usize>,
-    pub generate_even_if_impossible: bool,
+    pub cycle_opts: Wild3SearcherCycleOpts,
     pub painting_opts: Option<Wild3PaintingOpts>,
     pub using_white_flute: bool,
     pub considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt,
@@ -135,11 +173,8 @@ impl Default for Wild3SearcherOptions {
             leads: vec![],
             map_setups: vec![Wild3MapSetups::default()],
             methods: vec![],
-            consider_cycles: false,
-            consider_rng_manipulated_lead_pid: false,
-            generate_even_if_impossible: false,
+            cycle_opts: Wild3SearcherCycleOpts::default(),
             painting_opts: None,
-            lead_cycle_speed: None,
             using_white_flute: true,
             considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt::default(),
             feebas_cycles: vec![0],
@@ -194,12 +229,8 @@ impl Wild3SearcherResultMon {
     ) -> Wild3SearcherResultMon {
         let cycle_data_by_lead = gen_res.cycle_range.map(|cycle_range| {
             let is_egg = matches!(gen_opts.lead, Gen3Lead::Egg);
-            calculate_cycle_data_by_lead(
-                &cycle_range,
-                gen_opts.action,
-                is_egg,
-                gen_opts.lead_cycle_speed,
-            )
+            let lead_cycle_spd = gen_opts.cycle_opts.lead_cycle_spd();
+            calculate_cycle_data_by_lead(&cycle_range, gen_opts.action, is_egg, lead_cycle_spd)
         });
 
         Wild3SearcherResultMon {

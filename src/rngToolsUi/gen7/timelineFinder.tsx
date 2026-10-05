@@ -2,25 +2,28 @@ import React from "react";
 import { z } from "zod";
 import {
   Alert,
-  Button,
   Card,
   Field,
   Flex,
   FormFieldTable,
   FormikNumberInput,
   Grid,
-  Icon,
   RngToolForm,
   RngToolSubmit,
-  Tag,
-  Typography,
+  SectionCard,
 } from "~/components";
 import { multiWorkerRngTools, Gen7TargetTimeline } from "~/rngTools";
 import { HexSchema } from "~/utils/number";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { useCancellablePromise } from "~/hooks/useCancellablePromise";
+import {
+  NextAdvancesCard,
+  PressTiming,
+  SafeAdvancesCard,
+  PRESS_TIMING_MIN_HEIGHT,
+} from "./sectionCards";
+import { useSafeAdvances } from "./useSafeAdvances";
 
-const SAFE_ADVANCE_COUNT = 10;
 // Advances are usize in wasm (32 bits). This leaves room to scan past the
 // target and keep pressing "Show More" without overflowing.
 const MAX_ADVANCE = 4_000_000_000;
@@ -99,183 +102,9 @@ const Fields = () => {
   );
 };
 
-type SectionCardProps = {
-  title: string;
-  borderColor?: React.ComponentProps<typeof Card>["borderColor"];
-  children: React.ReactNode;
-};
-
-// The title is in the body instead of the card header so it can wrap on phones.
-const SectionCard = ({ title, borderColor, children }: SectionCardProps) => (
-  <Card borderColor={borderColor}>
-    <Flex vertical gap={16}>
-      <Typography.Text strong fontSize={16}>
-        {title}
-      </Typography.Text>
-      {children}
-    </Flex>
-  </Card>
-);
-
-// Placeholders keep the same size as real results, so nothing shifts when results load.
-const NEXT_ADVANCE_COUNT = 5;
-const ADVANCE_BUTTON_MIN_WIDTH = 80;
-const ADVANCE_TAG_MIN_WIDTH = 64;
-// Fits the "Press A at" values, so the other states don't change a card's height.
-const TARGET_CONTENT_MIN_HEIGHT = 78;
-const PLACEHOLDER = "-";
-
-type SafeAdvancesCardProps = {
-  safeAdvances: number[] | null;
-  selected: number | null;
-  disabled: boolean;
-  canShowMore: boolean;
-  onSelect: (safeAdvance: number) => void;
-  onShowMore: () => void;
-};
-
-const SafeAdvancesCard = ({
-  safeAdvances,
-  selected,
-  disabled,
-  canShowMore,
-  onSelect,
-  onShowMore,
-}: SafeAdvancesCardProps) => {
-  const t = useActiveRouteTranslations();
-  const hasResults = safeAdvances != null && safeAdvances.length > 0;
-
-  const buttons =
-    safeAdvances == null
-      ? Array.from({ length: SAFE_ADVANCE_COUNT }, (_, index) => (
-          <Button
-            key={index}
-            trackerId="gen7_select_safe_advance"
-            minWidth={ADVANCE_BUTTON_MIN_WIDTH}
-            disabled
-          >
-            {PLACEHOLDER}
-          </Button>
-        ))
-      : safeAdvances.map((safeAdvance) => (
-          <Button
-            key={safeAdvance}
-            trackerId="gen7_select_safe_advance"
-            minWidth={ADVANCE_BUTTON_MIN_WIDTH}
-            type={selected === safeAdvance ? "primary" : "default"}
-            disabled={disabled}
-            onClick={() => onSelect(safeAdvance)}
-          >
-            {safeAdvance}
-          </Button>
-        ));
-
-  return (
-    <SectionCard
-      title={t["Step one frame at a time until you land on one of these"]}
-    >
-      {safeAdvances?.length === 0 ? (
-        <Typography.Text color="TextSecondary">
-          {t["No safe advances found"]}
-        </Typography.Text>
-      ) : (
-        <Flex gap={8} wrap align="center">
-          {buttons}
-          <Button
-            trackerId="gen7_show_more_safe_advances"
-            type="link"
-            disabled={!hasResults || !canShowMore || disabled}
-            onClick={onShowMore}
-          >
-            {t["Show More"]}
-          </Button>
-        </Flex>
-      )}
-    </SectionCard>
-  );
-};
-
 type Selection = {
   safeAdvance: number;
   targetTimeline: Gen7TargetTimeline;
-};
-
-const NextAdvancesCard = ({ selection }: { selection: Selection | null }) => {
-  const t = useActiveRouteTranslations();
-  const nextAdvances =
-    selection?.targetTimeline.next_advances ??
-    Array.from({ length: NEXT_ADVANCE_COUNT }, () => null);
-
-  return (
-    <SectionCard title={t["Keep stepping and compare"]}>
-      <Flex gap={8} wrap align="center">
-        <Tag
-          backgroundColor={selection == null ? undefined : "Primary"}
-          color={selection == null ? undefined : "TextLightSolid"}
-          border={0}
-          fontSize={16}
-          minWidth={ADVANCE_TAG_MIN_WIDTH}
-          textAlign="center"
-        >
-          {selection?.safeAdvance ?? PLACEHOLDER}
-        </Tag>
-        <Icon name="ArrowRightAlt" />
-        {nextAdvances.map((advance, index) => (
-          <Tag
-            key={index}
-            fontSize={16}
-            minWidth={ADVANCE_TAG_MIN_WIDTH}
-            textAlign="center"
-          >
-            {advance ?? PLACEHOLDER}
-          </Tag>
-        ))}
-      </Flex>
-    </SectionCard>
-  );
-};
-
-// Each step is 2/60 of a second, the same as 3DSRNGTool's timeline.
-const formatStepsTime = (steps: number) => {
-  const seconds = (steps * 2) / 60;
-  if (seconds < 60) {
-    return `~${seconds.toFixed(1)} s`;
-  }
-  const totalSeconds = Math.round(seconds);
-  return `~${Math.floor(totalSeconds / 60)} min ${totalSeconds % 60} s`;
-};
-
-type PressAValuesProps = {
-  labelColor: React.ComponentProps<typeof Typography.Text>["color"];
-  advance: number | null;
-  timeLabel: string;
-  steps: number | null;
-};
-
-const PressAValues = ({
-  labelColor,
-  advance,
-  timeLabel,
-  steps,
-}: PressAValuesProps) => {
-  const t = useActiveRouteTranslations();
-
-  return (
-    <Flex gap={32} wrap align="flex-end">
-      <Flex vertical>
-        <Typography.Text color={labelColor}>{t["Press A at"]}</Typography.Text>
-        <Typography.Text fontSize={36} strong>
-          {advance ?? PLACEHOLDER}
-        </Typography.Text>
-      </Flex>
-      <Flex vertical>
-        <Typography.Text color="TextSecondary">{timeLabel}</Typography.Text>
-        <Typography.Text fontSize={24}>
-          {steps == null ? PLACEHOLDER : formatStepsTime(steps)}
-        </Typography.Text>
-      </Flex>
-    </Flex>
-  );
 };
 
 type ResultCardProps = {
@@ -310,18 +139,19 @@ const LeapCard = ({ target, selection }: ResultCardProps) => {
       );
     }
     return (
-      <PressAValues
+      <PressTiming
+        label={t["Press A at"]}
         labelColor="Primary"
         advance={leap?.leap_advance ?? null}
-        timeLabel={t["Time"]}
-        steps={leap?.steps_to_leap ?? null}
+        waitLabel={t["Time"]}
+        waitSteps={leap?.steps_to_leap ?? null}
       />
     );
   })();
 
   return (
     <SectionCard title={t["Timeline Leap"]} borderColor={borderColor}>
-      <Flex vertical justify="center" minHeight={TARGET_CONTENT_MIN_HEIGHT}>
+      <Flex vertical justify="center" minHeight={PRESS_TIMING_MIN_HEIGHT}>
         {content}
       </Flex>
     </SectionCard>
@@ -338,74 +168,44 @@ const TargetCard = ({ target, selection }: ResultCardProps) => {
       title={t["Target Advance"]}
       borderColor={leap == null ? undefined : "Success"}
     >
-      <Flex vertical justify="center" minHeight={TARGET_CONTENT_MIN_HEIGHT}>
-        <PressAValues
+      <Flex vertical justify="center" minHeight={PRESS_TIMING_MIN_HEIGHT}>
+        <PressTiming
+          label={t["Press A at"]}
           labelColor="Success"
           advance={leap == null ? null : target}
-          timeLabel={t["Time after leap"]}
-          steps={leap?.steps_from_leap_to_target ?? null}
+          waitLabel={t["Time after leap"]}
+          waitSteps={leap?.steps_from_leap_to_target ?? null}
         />
       </Flex>
     </SectionCard>
   );
 };
 
+const fetchSafeAdvances = (
+  opts: FormState,
+  fromAdvance: number,
+  count: number,
+) =>
+  multiWorkerRngTools.gen7_next_safe_advances({
+    seed: opts.seed,
+    npc_count: opts.npc_count,
+    current_advance: opts.current_advance,
+    from_advance: fromAdvance,
+    safe_advance_count: count,
+  });
+
 export const Gen7TimelineFinder = () => {
   const t = useActiveRouteTranslations();
   const [submitted, setSubmitted] = React.useState<FormState | null>(null);
-  const [safeAdvances, setSafeAdvances] = React.useState<number[] | null>(null);
   const [selection, setSelection] = React.useState<Selection | null>(null);
-  const [canShowMore, setCanShowMore] = React.useState(true);
   const { loading, waitFor, cancel } = useCancellablePromise();
-
-  const findSafeAdvances = async (
-    opts: FormState & { from_advance: number },
-  ) => {
-    const results = await waitFor(
-      multiWorkerRngTools.gen7_next_safe_advances({
-        seed: opts.seed,
-        npc_count: opts.npc_count,
-        current_advance: opts.current_advance,
-        from_advance: opts.from_advance,
-        safe_advance_count: SAFE_ADVANCE_COUNT,
-      }),
-    );
-    if (results == null) {
-      return null;
-    }
-    return results.map((safeAdvance) => safeAdvance.advance);
-  };
+  const { safeAdvances, canShowMore, findSafeAdvances, showMore } =
+    useSafeAdvances(fetchSafeAdvances, waitFor);
 
   const onSubmit: RngToolSubmit<FormState> = async (opts) => {
     setSubmitted(opts);
     setSelection(null);
-    setSafeAdvances(null);
-    setCanShowMore(true);
-    const results = await findSafeAdvances({
-      ...opts,
-      from_advance: opts.current_advance,
-    });
-    setSafeAdvances(results);
-  };
-
-  const onShowMore = async () => {
-    const last = safeAdvances?.at(-1);
-    if (submitted == null || last == null) {
-      return;
-    }
-    const more = await findSafeAdvances({
-      ...submitted,
-      from_advance: last + 1,
-    });
-    if (more == null) {
-      return;
-    }
-    // Searching again from the same advance would find nothing again.
-    if (more.length === 0) {
-      setCanShowMore(false);
-      return;
-    }
-    setSafeAdvances([...(safeAdvances ?? []), ...more]);
+    await findSafeAdvances(opts, opts.current_advance);
   };
 
   const onSelectSafeAdvance = async (safeAdvance: number) => {
@@ -450,9 +250,12 @@ export const Gen7TimelineFinder = () => {
         disabled={loading}
         canShowMore={canShowMore}
         onSelect={onSelectSafeAdvance}
-        onShowMore={onShowMore}
+        onShowMore={showMore}
       />
-      <NextAdvancesCard selection={selection} />
+      <NextAdvancesCard
+        safeAdvance={selection?.safeAdvance ?? null}
+        nextAdvances={selection?.targetTimeline.next_advances ?? null}
+      />
       <LeapCard
         target={submitted?.target_advance ?? null}
         selection={selection}

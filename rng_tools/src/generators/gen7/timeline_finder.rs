@@ -4,7 +4,7 @@ use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 /// How far ahead to look for safe advances before giving up.
-const MAX_SAFE_SCAN: usize = 100_000;
+pub const MAX_SAFE_SCAN: usize = 100_000;
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -22,12 +22,12 @@ pub struct Gen7SafeAdvancesOpts {
 /// An object instead of a number so the list can run in `multiWorkerRngTools`.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Gen7SafeAdvance {
+pub struct Gen7Advance {
     pub advance: usize,
 }
 
 #[wasm_bindgen]
-pub fn gen7_next_safe_advances(opts: Gen7SafeAdvancesOpts) -> Vec<Gen7SafeAdvance> {
+pub fn gen7_next_safe_advances(opts: Gen7SafeAdvancesOpts) -> Vec<Gen7Advance> {
     next_safe_advances(
         opts.seed,
         model_count_from_npcs(opts.npc_count),
@@ -38,7 +38,7 @@ pub fn gen7_next_safe_advances(opts: Gen7SafeAdvancesOpts) -> Vec<Gen7SafeAdvanc
     )
     .unwrap_or_default()
     .into_iter()
-    .map(|advance| Gen7SafeAdvance { advance })
+    .map(|advance| Gen7Advance { advance })
     .collect()
 }
 

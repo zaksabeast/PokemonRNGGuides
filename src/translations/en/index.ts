@@ -414,6 +414,19 @@ export const translations = {
   "Time after leap": "Time after leap",
   "{target} can't be reached from this timeline. Pick another target in 3DSRNGTool.":
     "{target} can't be reached from this timeline. Pick another target in 3DSRNGTool.",
+  EC: "EC",
+  "Time after Yes": "Time after Yes",
+  "Press Yes": "Press Yes",
+  "Press Yes at": "Press Yes at",
+  "Select a target in the search above": "Select a target in the search above",
+  "Press A on Kukui's Dialogue": "Press A on Kukui's Dialogue",
+  "Time until A press": "Time until A press",
+  "Time after comparing": "Time after comparing",
+  "{target} can't be reached from this timeline. Pick another target.":
+    "{target} can't be reached from this timeline. Pick another target.",
+  "Kukui's Dialogue": "Kukui's Dialogue",
+  "Choose Starter": "Choose Starter",
+  "Select Yes at": "Select Yes at",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

@@ -1,7 +1,7 @@
 use crate::rng::GetRand;
 
 /// The player is always on screen, so it counts as one model on top of the NPCs.
-pub fn model_count_from_npcs(npc_count: u8) -> usize {
+pub const fn model_count_from_npcs(npc_count: u8) -> usize {
     npc_count as usize + 1
 }
 
@@ -19,7 +19,7 @@ pub(super) fn has_long_cooldown(rand: u64) -> bool {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-enum ModelState {
+pub(super) enum ModelState {
     /// Uses an RNG advance each step to check for a blink.
     Idle,
     /// Uses an RNG advance on the step `steps_left` reaches 0 to pick the cooldown.
@@ -76,39 +76,35 @@ impl NpcModel {
         }
     }
 
+    #[cfg(test)]
+    pub(super) fn from_states(models: Vec<ModelState>) -> Self {
+        Self { models }
+    }
+
+    pub(super) fn player(&self) -> Option<ModelState> {
+        self.models.first().copied()
+    }
+
+    #[cfg(test)]
+    pub(super) fn last_npc(&self) -> Option<ModelState> {
+        self.models.get(1..)?.last().copied()
+    }
+
     /// Returns how many RNG advances the step used.
     pub fn step<R: GetRand<u64>>(&mut self, rng: &mut R) -> usize {
         self.models.iter_mut().map(|model| model.step(rng)).sum()
+    }
+
+    pub(super) fn step_player_only<R: GetRand<u64>>(&mut self, rng: &mut R) -> usize {
+        self.models.first_mut().map_or(0, |player| player.step(rng))
     }
 }
 
 #[cfg(test)]
 mod test {
     use super::*;
-    use std::collections::VecDeque;
-
-    struct FakeRng {
-        values: VecDeque<u64>,
-    }
-
-    impl FakeRng {
-        fn new(values: &[u64]) -> Self {
-            Self {
-                values: values.iter().copied().collect(),
-            }
-        }
-    }
-
-    impl GetRand<u64> for FakeRng {
-        fn get(&mut self) -> u64 {
-            self.values.pop_front().expect("ran out of fake rands")
-        }
-    }
-
-    // Low 7 bits are not all 0, so an idle model doesn't blink.
-    const NO_BLINK: u64 = 0b0000_0001;
-    // Low 7 bits are all 0, so an idle model blinks.
-    const BLINK: u64 = 0b1000_0000;
+    use crate::gen7::test_utils::{BLINK, NO_BLINK};
+    use crate::test_utils::FakeRng;
 
     #[test]
     fn player_counts_as_a_model() {

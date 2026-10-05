@@ -1,38 +1,98 @@
 use super::NpcModel;
-use crate::rng::{Rng, sfmt::Sfmt};
+use crate::rng::{GetRand, Rng, sfmt::Sfmt};
 use serde::{Deserialize, Serialize};
 use std::collections::HashSet;
+use std::ops::RangeInclusive;
 use tsify::Tsify;
 
-const NEXT_ADVANCE_COUNT: usize = 5;
+pub(super) const NEXT_ADVANCE_COUNT: usize = 5;
 /// 10 seconds of steps (2/60 s each) after the last next advance, so the
 /// leap comes soon after the user checks the timeline.
 const MAX_LEAP_STEPS: usize = 300;
 
 #[derive(Clone)]
-pub struct Timeline {
-    rng: Sfmt,
+pub struct Timeline<R = Sfmt> {
+    rng: R,
     npcs: NpcModel,
     advance: usize,
-    steps_from_safe_advance: u32,
+    steps_since_start: u32,
+    npc_frozen_steps: &'static [RangeInclusive<u32>],
 }
 
 impl Timeline {
     pub fn new(seed: u32, model_count: usize, safe_advance: usize) -> Self {
         let mut rng = Sfmt::new(seed);
         rng.advance(safe_advance);
+        Self::from_npcs(rng, NpcModel::new(model_count), safe_advance)
+    }
+}
 
+impl<R: Rng + GetRand<u64>> Timeline<R> {
+    /// `rng` must be at `safe_advance`.
+    pub(super) fn from_npcs(rng: R, npcs: NpcModel, safe_advance: usize) -> Self {
         Self {
             rng,
-            npcs: NpcModel::new(model_count),
+            npcs,
             advance: safe_advance,
-            steps_from_safe_advance: 0,
+            steps_since_start: 0,
+            npc_frozen_steps: &[],
         }
     }
 
-    fn step(&mut self) {
-        self.advance += self.npcs.step(&mut self.rng);
-        self.steps_from_safe_advance += 1;
+    /// Makes the current advance the start of a new scene.
+    pub(super) fn start_next_scene(self, npc_frozen_steps: &'static [RangeInclusive<u32>]) -> Self {
+        Self {
+            npc_frozen_steps,
+            ..Self::from_npcs(self.rng, self.npcs, self.advance)
+        }
+    }
+
+    pub(super) fn step(&mut self) {
+        self.steps_since_start += 1;
+        self.advance += self.step_models();
+    }
+
+    /// Returns how many RNG advances the step used.
+    fn step_models(&mut self) -> usize {
+        if self.are_npcs_frozen() {
+            return self.npcs.step_player_only(&mut self.rng);
+        }
+        self.npcs.step(&mut self.rng)
+    }
+
+    fn are_npcs_frozen(&self) -> bool {
+        self.npc_frozen_steps
+            .iter()
+            .any(|steps| steps.contains(&self.steps_since_start))
+    }
+
+    pub(super) fn skip_steps(&mut self, count: u32) {
+        for _ in 0..count {
+            self.step();
+        }
+    }
+
+    pub(super) fn advance(&self) -> usize {
+        self.advance
+    }
+
+    pub(super) fn steps_since_start(&self) -> u32 {
+        self.steps_since_start
+    }
+
+    pub(super) fn into_rng(self) -> R {
+        self.rng
+    }
+
+    pub(super) fn npcs(&self) -> &NpcModel {
+        &self.npcs
+    }
+
+    pub(super) fn current(&self) -> TimelineStep {
+        TimelineStep {
+            advance: self.advance,
+            steps_since_start: self.steps_since_start,
+        }
     }
 
     /// Pressing A to advance dialogue uses one RNG advance while the NPCs
@@ -41,7 +101,7 @@ impl Timeline {
     fn leap_dialogue(&mut self) {
         self.step();
         self.step();
-        self.rng.next_u64();
+        self.rng.rand::<u64>();
         self.advance += 1;
         self.step();
     }
@@ -55,17 +115,14 @@ impl Timeline {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct TimelineStep {
     pub advance: usize,
-    pub steps_from_safe_advance: u32,
+    pub steps_since_start: u32,
 }
 
-impl Iterator for Timeline {
+impl<R: Rng + GetRand<u64>> Iterator for Timeline<R> {
     type Item = TimelineStep;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let current = TimelineStep {
-            advance: self.advance,
-            steps_from_safe_advance: self.steps_from_safe_advance,
-        };
+        let current = self.current();
         self.step();
         Some(current)
     }
@@ -158,10 +215,10 @@ fn branch_steps_to_target(
 
     if merged && base_hits {
         let hit = branch.find(|step| step.advance >= target);
-        return hit.map(|step| step.steps_from_safe_advance);
+        return hit.map(|step| step.steps_since_start);
     }
     if !merged && !base_hits && branch.advance == target {
-        return Some(branch.steps_from_safe_advance);
+        return Some(branch.steps_since_start);
     }
     missed.record(visited);
     None
@@ -194,8 +251,8 @@ fn find_dialogue_leap(
         if let Some(steps) = branch_steps_to_target(branch, base, base_hits, target, &mut missed) {
             return Some(Gen7TimelineLeap {
                 leap_advance: timeline.advance,
-                steps_to_leap: timeline.steps_from_safe_advance,
-                steps_from_leap_to_target: steps - timeline.steps_from_safe_advance,
+                steps_to_leap: timeline.steps_since_start,
+                steps_from_leap_to_target: steps - timeline.steps_since_start,
             });
         }
 
@@ -224,7 +281,7 @@ pub fn target_timeline(
         .clone()
         .find(|step| step.advance >= target)
         .filter(|step| step.advance == target)
-        .map(|step| step.steps_from_safe_advance);
+        .map(|step| step.steps_since_start);
 
     let leap = find_dialogue_leap(timeline, steps_to_target.is_some(), target);
 
@@ -298,14 +355,14 @@ mod test {
             timeline.next(),
             Some(TimelineStep {
                 advance: 1039,
-                steps_from_safe_advance: 0,
+                steps_since_start: 0,
             })
         );
         assert_eq!(
             timeline.next(),
             Some(TimelineStep {
                 advance: 1044,
-                steps_from_safe_advance: 1,
+                steps_since_start: 1,
             })
         );
     }
@@ -382,7 +439,7 @@ mod test {
 
         assert_eq!(stepped.advance, 1054);
         assert_eq!(leaped.advance, 1055);
-        assert_eq!(leaped.steps_from_safe_advance, 3);
+        assert_eq!(leaped.steps_since_start, 3);
     }
 
     #[test]
@@ -429,9 +486,9 @@ mod test {
             if hits {
                 return Some(Gen7TimelineLeap {
                     leap_advance: timeline.advance,
-                    steps_to_leap: timeline.steps_from_safe_advance,
-                    steps_from_leap_to_target: branch.steps_from_safe_advance
-                        - timeline.steps_from_safe_advance,
+                    steps_to_leap: timeline.steps_since_start,
+                    steps_from_leap_to_target: branch.steps_since_start
+                        - timeline.steps_since_start,
                 });
             }
             timeline.step();

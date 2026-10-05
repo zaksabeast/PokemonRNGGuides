@@ -40,6 +40,7 @@ export { FormikIdFilter } from "./idFilter";
 export { Alert, type AlertProps } from "./alert";
 export { FileUpload } from "./fileUpload";
 export { Card } from "./card";
+export { SectionCard } from "./sectionCard";
 export { Tag } from "./tag";
 export { FormikRadio, RadioGroup, AtomRadio } from "./radio";
 export { Divider } from "./divider";

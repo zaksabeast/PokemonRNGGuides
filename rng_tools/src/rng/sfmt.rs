@@ -1,5 +1,5 @@
-use super::GetRand;
 use super::Rng;
+use super::{GetMaxRand, GetRand};
 
 const MEXP: usize = 19937;
 const N: usize = MEXP / 128 + 1;
@@ -145,6 +145,12 @@ impl Iterator for Sfmt {
 impl GetRand<u64> for Sfmt {
     fn get(&mut self) -> u64 {
         self.next_u64()
+    }
+}
+
+impl GetMaxRand<u64> for Sfmt {
+    fn get_max(&mut self, max: u64) -> u64 {
+        self.next_u64() % max
     }
 }
 

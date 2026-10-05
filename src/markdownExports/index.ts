@@ -284,6 +284,26 @@ const tools = {
     () => import("~/rngToolsUi/gen7/timelineFinder"),
     (mod) => mod.Gen7TimelineFinder,
   ),
+  Gen7StarterSearch: lazyLoad(
+    () => import("~/rngToolsUi/gen7/starterSearch"),
+    (mod) => mod.Gen7StarterSearch,
+  ),
+  Gen7StarterKukuiTimeline: lazyLoad(
+    () => import("~/rngToolsUi/gen7/starterPresses"),
+    (mod) => mod.Gen7StarterKukuiTimeline,
+  ),
+  Gen7StarterPressKukuiA: lazyLoad(
+    () => import("~/rngToolsUi/gen7/starterPresses"),
+    (mod) => mod.Gen7StarterPressKukuiA,
+  ),
+  Gen7StarterPressYes: lazyLoad(
+    () => import("~/rngToolsUi/gen7/starterPresses"),
+    (mod) => mod.Gen7StarterPressYes,
+  ),
+  Gen7StarterTargetAdvance: lazyLoad(
+    () => import("~/rngToolsUi/gen7/starterPresses"),
+    (mod) => mod.Gen7StarterTargetAdvance,
+  ),
   ShinyEmeraldStarter: lazyLoad(
     () => import("~/rngToolsUi/gen3/shinyStarter"),
     (mod) => mod.ShinyEmeraldStarter,

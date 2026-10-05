@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { rngTools } from "~/rngTools";
 import {
   Field,
@@ -72,7 +73,13 @@ const uiCycleAtMomentColumns: ResultColumn<UiResultCycleAtMoment>[] = [
         },
       },
       {
-        title: "Total Increment",
+        title: (
+          <div>
+            Total Increment
+            <br />
+            excluding VBlank
+          </div>
+        ),
         key: "dataFromTool_TotalIncrement",
         dataIndex: "dataFromTool",
         render: (dataFromTool) => {
@@ -110,7 +117,13 @@ const uiCycleAtMomentColumns: ResultColumn<UiResultCycleAtMoment>[] = [
         },
       },
       {
-        title: "Total Increment",
+        title: (
+          <div>
+            Total Increment
+            <br />
+            excluding VBlank
+          </div>
+        ),
         key: "dataFromJson_TotalIncrement",
         dataIndex: "dataFromJson",
         render: (dataFromJson) => {
@@ -160,7 +173,15 @@ const uiCycleAtMomentColumns: ResultColumn<UiResultCycleAtMoment>[] = [
 const parseCycleAtMomentsJsonStr = (input: string) => {
   try {
     const info = JSON.parse(input);
-    return cycleAtMomentsFromJsonSchema.parse(info);
+    const el = cycleAtMomentsFromJsonSchema.parse(info);
+    if (el == null) {
+      return null;
+    }
+    const firstFrame = el.cycleAtMoments[0]?.frame ?? 0;
+    el.cycleAtMoments.forEach((cam) => {
+      cam.frame -= firstFrame;
+    });
+    return el;
   } catch {
     return null;
   }
@@ -177,7 +198,7 @@ const createEmptyUiResult = (): UiResult => {
     methodFromJson: null,
     methodFromTool: null,
     frameAtSweetScent: 0,
-    advanceAtSweetScent: 0,
+    advanceAtSweetScentFromJson: 0,
     uiCycleAtMoments: [],
     vblankDurations: [],
     errorMsg: "",
@@ -200,8 +221,10 @@ const createUiResult = async (
   if (json != null) {
     fillDataFromJson(uiResult, json);
 
-    if (uiResult.advanceAtSweetScent !== distFromTool.advanceAtSweetScent) {
-      uiResult.errorMsg = `Error: The advance used in the emulator ${uiResult.advanceAtSweetScent} doesn't match the advance provided on the webtool ${distFromTool.advanceAtSweetScent}.`;
+    if (
+      uiResult.advanceAtSweetScentFromJson !== distFromTool.advanceAtSweetScent
+    ) {
+      uiResult.errorMsg = `Error: The advance used in the emulator (${uiResult.advanceAtSweetScentFromJson}) doesn't match the advance provided on the webtool (${distFromTool.advanceAtSweetScent}).`;
     }
 
     const leadCycleSpeedFromTool = match(distFromTool.cycle_opts)
@@ -217,13 +240,13 @@ const createUiResult = async (
 
     const leadPIDFromJson = parseInt(json.leadPID, 16);
 
-    const leadCycleSpeedFromJson = isNaN(leadPIDFromJson)
-      ? 0
-      : await rngTools.calculate_pid_speed(leadPIDFromJson);
+    const leadCycleSpeedFromJson =
+      isNaN(leadPIDFromJson) || leadCycleSpeedFromTool === 0
+        ? 0
+        : await rngTools.calculate_pid_speed(leadPIDFromJson);
 
     if (leadCycleSpeedFromJson !== leadCycleSpeedFromTool) {
-      uiResult.errorMsg =
-        "Error: The lead used in the emulator doesn't match the lead provided on the webtool.";
+      uiResult.errorMsg = `Error: The lead used in the emulator (cycle speed ${leadCycleSpeedFromJson}) doesn't match the lead provided on the webtool (cycle speed ${leadCycleSpeedFromTool}).`;
     }
   }
 

@@ -102,23 +102,6 @@ pub struct Wild3GeneratorMonResult {
     pub used_safari_pokeblock: Option<[u8; 5]>,
 }
 
-impl Wild3GeneratorMonResult {
-    pub fn clone_with_cycle_end(&self, cycle_end: usize) -> Self {
-        if let Some(cycle_range) = self.cycle_range {
-            let new_cycle_range = CycleAndModRange {
-                start: cycle_range.start,
-                len: cycle_end - cycle_range.start.cycle,
-            };
-            Self {
-                cycle_range: Some(new_cycle_range),
-                ..self.clone()
-            }
-        } else {
-            self.clone()
-        }
-    }
-}
-
 #[derive(Clone, Debug, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3GeneratorResults {

@@ -446,9 +446,8 @@ fn generate_personality(
     let mut skip_method5_counter = 0;
     let mut pending_method5_index: Option<usize> = None;
     let mut pid: u32;
-    cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidLow);
-
     loop {
+        cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidLow);
         let pid_low = rand_next_u16(&mut rng, "pid_low", 1) as u32;
 
         let method3_range = 80;
@@ -485,6 +484,8 @@ fn generate_personality(
             results.push(gen_mon_wild3);
         }
 
+        cycle_counter.add_cycle(method3_range);
+        cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidHigh);
         let pid_high = rand_next_u16(&mut rng, "pid_high", 1) as u32;
         pid = (pid_high << 16) | pid_low;
 
@@ -498,13 +499,8 @@ fn generate_personality(
         };
 
         if good_nature && good_gender {
-            cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidLow);
-
-            cycle_counter.add_cycle(method3_range);
-            // cycle increment done after the loop
             break;
         }
-        cycle_counter.add_cycle(method3_range);
 
         // between CreateMonWithNature_pidhigh and CreateMonWithNature_pidlow (retry)
         let retry_pid_cycle = if good_nature { 140 } else { 158 }; // 18 cycles to check gender
@@ -541,7 +537,6 @@ fn generate_personality(
 
         cycle_counter.add_cycle(retry_pid_cycle + calc_modulo_cycle_unsigned(pid, 25));
     }
-    cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidHigh);
 
     if !passes_pid_filter_internal(&gen_data, pid) {
         return Wild3GeneratorResults {

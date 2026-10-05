@@ -20,7 +20,7 @@ export type UiResult = {
   methodFromJson: Gen3Method | null;
   methodFromTool: Gen3Method | null;
   frameAtSweetScent: number;
-  advanceAtSweetScent: number;
+  advanceAtSweetScentFromJson: number;
   uiCycleAtMoments: UiResultCycleAtMoment[];
   vblankDurations: number[];
   errorMsg: string;
@@ -116,7 +116,7 @@ export const fillDataFromTool = (
         cycle: cam.cycle,
         frame: cam.frame,
         totalCycle,
-        totalCycleWithoutVblank: vblankCycle,
+        totalCycleWithoutVblank: totalCycle - vblankCycle,
         totalCycleWithoutVblankIncrement: 0, // init below
         hasValue: true,
       },
@@ -144,6 +144,7 @@ export const fillDataFromJson = (
   json: CycleAtMomentsJson,
 ) => {
   uiResult.methodFromJson = json.method;
+  uiResult.advanceAtSweetScentFromJson = json.cycleAtMoments[0]?.adv ?? 0;
 
   uiResult.vblankDurations = json.vblankDurations;
 
@@ -164,7 +165,7 @@ export const fillDataFromJson = (
       cycle: cam.cycle,
       frame: cam.frame,
       totalCycle,
-      totalCycleWithoutVblank: vblankCycle,
+      totalCycleWithoutVblank: totalCycle - vblankCycle,
       totalCycleWithoutVblankIncrement: 0, // init below
       hasValue: true,
     };

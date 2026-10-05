@@ -39,6 +39,23 @@ fn rand_next_u16(rng: &mut Pokerng, _reason: &str, _modulo: u16) -> u16 {
     // rand_next_u16_with_debug_print(rng, _reason, _modulo) // Uncomment for debugging
 }
 
+impl Wild3GeneratorMonResult {
+    pub fn clone_with_cycle_end(&self, cycle_end: usize) -> Self {
+        if let Some(cycle_range) = self.cycle_range {
+            let new_cycle_range = CycleAndModRange {
+                start: cycle_range.start,
+                len: cycle_end - cycle_range.start.cycle,
+            };
+            Self {
+                cycle_range: Some(new_cycle_range),
+                ..self.clone()
+            }
+        } else {
+            self.clone()
+        }
+    }
+}
+
 #[allow(dead_code)]
 fn rand_next_u16_with_debug_print(rng: &mut Pokerng, reason: &str, modulo: u16) -> u16 {
     let prev = rng.seed();
@@ -688,6 +705,7 @@ fn generate_wild3_from_encounter(
 
         cycle_counter.add_cycle(retry_pid_cycle + calc_modulo_cycle_unsigned(pid, 25));
     }
+
     cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidHigh);
 
     if let Some(last_generated_method5) = last_generated_method5 {

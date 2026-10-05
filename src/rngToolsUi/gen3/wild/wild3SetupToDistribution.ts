@@ -123,6 +123,8 @@ export const setupToDistributions = async (
       cycle_opts,
     );
 
+  console.log(results, cycle_at_moments);
+
   const resultForTargetMethod = results.find(
     (res) => res.searcher_res.method === targetSetup.targetMethod,
   );

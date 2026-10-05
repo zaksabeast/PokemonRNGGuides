@@ -106,6 +106,7 @@ export const Wild3LeadCycleSpeedSelector = ({
   const [leadCycleSpeed, setLeadCycleSpeed] = React.useState<number | null>(
     leadCycleSpeedProp ?? null,
   );
+  const actualLeadCycleSpeed = targetSetup.lead === "Egg" ? 0 : leadCycleSpeed;
 
   React.useEffect(() => {
     setLeadCycleSpeed(leadCycleSpeedProp ?? null);
@@ -113,11 +114,11 @@ export const Wild3LeadCycleSpeedSelector = ({
 
   React.useEffect(() => {
     setupToDistributions(targetSetup, {
-      CycleAtMomentNoEmuLog: { lead_cycle_spd: leadCycleSpeed ?? 0 },
+      CycleAtMomentNoEmuLog: { lead_cycle_spd: actualLeadCycleSpeed ?? 0 },
     }).then((val) => {
       setDistributions(val);
     });
-  }, [leadCycleSpeed, targetSetup]);
+  }, [actualLeadCycleSpeed, targetSetup]);
 
   const fields: Field[] =
     targetSetup.lead === "Egg"
@@ -136,7 +137,9 @@ export const Wild3LeadCycleSpeedSelector = ({
                 idealLeadCycleSpeed={
                   distributions?.idealLeadCycleSpd ?? AVERAGE_LEAD_CYCLE_SPEED
                 }
-                leadCycleSpeed={leadCycleSpeed ?? AVERAGE_LEAD_CYCLE_SPEED}
+                leadCycleSpeed={
+                  actualLeadCycleSpeed ?? AVERAGE_LEAD_CYCLE_SPEED
+                }
                 setLeadCycleSpeed={setLeadCycleSpeedProp}
               />
             ),
@@ -163,7 +166,7 @@ export const Wild3LeadCycleSpeedSelector = ({
 
       {permitEnablingDebugOptions && (
         <Wild3CycleAtMoments
-          leadCycleSpeed={leadCycleSpeed}
+          leadCycleSpeed={actualLeadCycleSpeed}
           targetSetup={targetSetup}
         />
       )}

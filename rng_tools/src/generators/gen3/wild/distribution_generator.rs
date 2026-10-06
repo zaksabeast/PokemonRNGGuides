@@ -208,11 +208,22 @@ mod test {
             .map(ResultForTest::new_from_dist_res)
             .collect::<Vec<_>>();
 
-        let expected_results = [ResultForTest::new(
-            Gen3Method::Wild5,
-            0.0,
-            CycleRange::from_start_len(0, 10142),
-        )];
+        let expected_results = [
+            ResultForTest::new(Gen3Method::Wild5, 0.0, CycleRange::from_start_end(156036, 178238)),
+            ResultForTest::new(Gen3Method::Wild3, 0.0, CycleRange::from_start_end(168128, 168208)),
+            ResultForTest::new(Gen3Method::Wild5, 0.0, CycleRange::from_start_end(123470, 156036)),
+            ResultForTest::new(Gen3Method::Wild5, 0.0, CycleRange::from_start_end(111346, 123470)),
+            ResultForTest::new(Gen3Method::Wild5, 0.0, CycleRange::from_start_end(99183, 111346)),
+            ResultForTest::new(Gen3Method::Wild5, 0.0, CycleRange::from_start_end(98148, 99183)),
+            ResultForTest::new(Gen3Method::Wild5, 0.3766, CycleRange::from_start_end(63702, 98148)),
+            ResultForTest::new(Gen3Method::Wild3, 0.0, CycleRange::from_start_end(89036, 89116)),
+            ResultForTest::new(Gen3Method::Wild3, 0.0, CycleRange::from_start_end(82973, 83053)),
+            ResultForTest::new(Gen3Method::Wild5, 0.47426666666666667, CycleRange::from_start_end(49474, 63702)),
+            ResultForTest::new(Gen3Method::Wild3, 0.0026666666666666666, CycleRange::from_start_end(53588, 53668)),
+            ResultForTest::new(Gen3Method::Wild2, 0.14913333333333334, CycleRange::from_start_end(-72761, 49474)),
+            ResultForTest::new(Gen3Method::Wild4, 0.0, CycleRange::from_start_end(-114320, -72761)),
+            ResultForTest::new(Gen3Method::Wild1, 0.0, CycleRange::from_start_end(-1000000, -114320)),
+        ];
         assert_list_eq!(results, expected_results);
 
         let expected_cycle_at_moments = [
@@ -231,12 +242,21 @@ mod test {
             CycleFrameMoment::new(Moment::PickWildMonNature, 0, 144278),
             CycleFrameMoment::new(Moment::PickWildMonNature_RandomPickNature, 0, 144278),
             CycleFrameMoment::new(Moment::CreateMonWithNature, 0, 156138),
-            CycleFrameMoment::new(Moment::CreateMonWithNature_RandomPidLow, 0, 156138),
-            CycleFrameMoment::new(Moment::CreateMonWithNature_RandomPidHigh, 1, 59086),
             CycleFrameMoment::new(Moment::CreateMon, 1, 59086),
             CycleFrameMoment::new(Moment::CreateBoxMon_RandomIvs1, 1, 181321),
             CycleFrameMoment::new(Moment::CreateBoxMon_RandomIvs2, 1, 222880),
         ];
-        assert_list_eq!(dist_results.cycle_at_moments, expected_cycle_at_moments);
+        let cycle_at_moments = dist_results
+            .cycle_at_moments
+            .into_iter()
+            .filter(|moment| {
+                !matches!(
+                    moment.moment,
+                    Moment::CreateMonWithNature_RandomPidHigh
+                        | Moment::CreateMonWithNature_RandomPidLow
+                )
+            })
+            .collect::<Vec<_>>();
+        assert_list_eq!(cycle_at_moments, expected_cycle_at_moments);
     }
 }

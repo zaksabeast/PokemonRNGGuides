@@ -71,17 +71,21 @@ impl<T> CycleRange<T> {
     pub fn from_start_len(start: T, len: usize) -> CycleRange<T> {
         CycleRange { start, len }
     }
+
+    pub fn from_start_end(start: T, end: T) -> CycleRange<T>
+    where
+        T: Copy + std::ops::Sub<Output = T> + TryInto<usize>,
+    {
+        CycleRange {
+            start,
+            len: (end - start).try_into().ok().expect("Invalid cycle range length"),
+        }
+    }
 }
 
 impl CycleRange<usize> {
     pub fn end(&self) -> usize {
         self.start + self.len
-    }
-    pub fn from_start_end(start: usize, end: usize) -> CycleRange<usize> {
-        CycleRange {
-            start,
-            len: end - start,
-        }
     }
     pub fn set_end(&mut self, end: usize) {
         self.len = end - self.start;

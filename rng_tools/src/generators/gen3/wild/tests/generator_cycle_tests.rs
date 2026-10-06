@@ -102,7 +102,7 @@ fn test_generate_wild3_cycle_method_5() {
             pid: 26625321,
             ivs: Ivs::new(21, 2, 31, 1, 18, 19),
             method: Gen3Method::Wild5,
-            cycle_range: Some(CycleRange::new(139231, 80, 7094)),
+            cycle_range: Some(CycleRange::new(139231, 80, 7014)),
             ..Default::default()
         },
         Wild3GeneratorMonResult {

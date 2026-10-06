@@ -7,7 +7,7 @@ use super::Wild3GeneratorOptions;
 use crate::{
     gen3::{
         CycleFrameMoment, CycleRange, Gen3Method, Wild3GeneratorCycleOpts, Wild3MapGameData,
-        Wild3SearcherResultMon, calculate_cycle_data, generate_wild3, generate_wild3_old,
+        Wild3SearcherResultMon, calculate_cycle_data, generate_wild3,
     },
     rng::lcrng::Pokerng,
 };
@@ -100,8 +100,8 @@ fn generate_dist_results(
     opts: &Wild3GeneratorOptions,
     game_data: &Wild3MapGameData,
 ) -> Vec<Wild3MethodDistributionResult> {
-    let generated = generate_wild3_old(rng, opts, game_data);
-    let cycle_instability = generated.cycle_counter.cycle_instability;
+    let generated = generate_wild3(rng, opts, game_data);
+    let cycle_instability = generated.cycle_counter.get_cycle_instability();
     let lead_cycle_spd = opts.cycle_opts.lead_cycle_spd().unwrap();
 
     generated
@@ -208,22 +208,40 @@ mod test {
             .map(ResultForTest::new_from_dist_res)
             .collect::<Vec<_>>();
 
+        let sorted_ranges = dist_results.results.iter()
+            .map(|result| result.pre_sweet_scent_cycle_range)
+            .sorted_by_key(|range| range.start)
+            .collect::<Vec<_>>();
+        for pair in sorted_ranges.windows(2) {
+            assert!(pair[0].start + pair[0].len as i32 <= pair[1].start);
+        }
+        let total_probability: f64 = dist_results.results.iter()
+            .map(|result| result.method_probability).sum();
+        assert!((total_probability - 1.0).abs() < 1e-10);
+
         let expected_results = [
-            ResultForTest::new(Gen3Method::Wild5, 0.0, CycleRange::from_start_end(156036, 178238)),
+            ResultForTest::new(Gen3Method::Wild5, 0.0, CycleRange::from_start_end(168208, 178238)),
+            ResultForTest::new(Gen3Method::Wild5, 0.0, CycleRange::from_start_end(156036, 168128)),
             ResultForTest::new(Gen3Method::Wild3, 0.0, CycleRange::from_start_end(168128, 168208)),
             ResultForTest::new(Gen3Method::Wild5, 0.0, CycleRange::from_start_end(123470, 156036)),
             ResultForTest::new(Gen3Method::Wild5, 0.0, CycleRange::from_start_end(111346, 123470)),
             ResultForTest::new(Gen3Method::Wild5, 0.0, CycleRange::from_start_end(99183, 111346)),
             ResultForTest::new(Gen3Method::Wild5, 0.0, CycleRange::from_start_end(98148, 99183)),
-            ResultForTest::new(Gen3Method::Wild5, 0.3766, CycleRange::from_start_end(63702, 98148)),
+            ResultForTest::new(Gen3Method::Wild5, 0.0, CycleRange::from_start_end(89116, 98148)),
+            ResultForTest::new(Gen3Method::Wild5, 0.0, CycleRange::from_start_end(83053, 89036)),
+            ResultForTest::new(Gen3Method::Wild5, 0.3766, CycleRange::from_start_end(63702, 82973)),
             ResultForTest::new(Gen3Method::Wild3, 0.0, CycleRange::from_start_end(89036, 89116)),
             ResultForTest::new(Gen3Method::Wild3, 0.0, CycleRange::from_start_end(82973, 83053)),
-            ResultForTest::new(Gen3Method::Wild5, 0.47426666666666667, CycleRange::from_start_end(49474, 63702)),
+            ResultForTest::new(Gen3Method::Wild5, 10034.0 / 30000.0, CycleRange::from_start_end(53668, 63702)),
+            ResultForTest::new(Gen3Method::Wild5, 4114.0 / 30000.0, CycleRange::from_start_end(49474, 53588)),
             ResultForTest::new(Gen3Method::Wild3, 0.0026666666666666666, CycleRange::from_start_end(53588, 53668)),
             ResultForTest::new(Gen3Method::Wild2, 0.14913333333333334, CycleRange::from_start_end(-72761, 49474)),
             ResultForTest::new(Gen3Method::Wild4, 0.0, CycleRange::from_start_end(-114320, -72761)),
             ResultForTest::new(Gen3Method::Wild1, 0.0, CycleRange::from_start_end(-1000000, -114320)),
         ];
+        let expected_results = expected_results.into_iter()
+            .sorted_by_key(|result| std::cmp::Reverse(result.pre_sweet_scent_cycle_range.start))
+            .collect::<Vec<_>>();
         assert_list_eq!(results, expected_results);
 
         let expected_cycle_at_moments = [

@@ -452,14 +452,9 @@ fn generate_personality(
 
         let method3_range = 80;
 
-        if methods_contains_wild3
+        if (methods_contains_wild3 || methods_contains_wild5)
             && cycle_counter.can_generate_method(method3_range)
-            && let Some(gen_mon_wild3) = simulate_wild_method3(
-                &gen_data,
-                rng,
-                pid_low,
-                cycle_counter.create_cycle_range(method3_range),
-            )
+            && let Some((wild3_pid, wild3_ivs)) = simulate_wild_method3(&gen_data, rng, pid_low)
         {
             // Exclude the Method3 window from the pending Method5 cycle range, keeping
             // the portion before it and any remaining tail as separate results.
@@ -481,7 +476,18 @@ fn generate_personality(
                     }
                 }
             }
-            results.push(gen_mon_wild3);
+            if methods_contains_wild3
+                && passes_pid_filter_internal(&gen_data, wild3_pid)
+                && let Some(result) = create_if_passes_filter(
+                    &gen_data,
+                    wild3_pid,
+                    wild3_ivs,
+                    Gen3Method::Wild3,
+                    cycle_counter.create_cycle_range(method3_range),
+                )
+            {
+                results.push(result);
+            }
         }
 
         cycle_counter.add_cycle(method3_range);
@@ -1038,8 +1044,7 @@ fn simulate_wild_method3(
     gen_data: &GenTmpData,
     mut rng: Pokerng,
     pid_low: u32,
-    cycle_range: CycleAndModRange,
-) -> Option<Wild3GeneratorMonResult> {
+) -> Option<(u32, Ivs)> {
     rand_next_u16(&mut rng, "vblank_between_pid_low_high_for_wild3", 1); // Vblank from method3
 
     let pid_high = rand_next_u16(&mut rng, "pid_high_wild3", 1) as u32;
@@ -1054,16 +1059,13 @@ fn simulate_wild_method3(
         }
     }
 
-    if !passes_pid_filter_internal(gen_data, pid) {
-        return None;
-    }
-
     let ivs = Ivs::new_g3(
         rand_next_u16(&mut rng, "iv1_wild3", 1),
         rand_next_u16(&mut rng, "iv2_wild3", 1),
     );
 
-    create_if_passes_filter(gen_data, pid, ivs, Gen3Method::Wild3, cycle_range)
+    // Detect the window independently of filters; result creation happens after splitting Wild5.
+    Some((pid, ivs))
 }
 
 fn simulate_wild_method4(

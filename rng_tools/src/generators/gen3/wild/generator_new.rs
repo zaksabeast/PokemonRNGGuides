@@ -429,6 +429,33 @@ fn CreateMonWithGenderNatureLetter(
     generate_personality(rng, gen_data, cycle_counter)
 }
 
+fn exclude_method3_from_pending_method5(
+    results: &mut Vec<Wild3GeneratorMonResult>,
+    pending_method5_index: &mut Option<usize>,
+    method3_start: usize,
+    method3_range: usize,
+) {
+    // Exclude the Method3 window from the pending Method5 cycle range, keeping
+    // the portion before it and any remaining tail as separate results.
+    if let Some(index) = pending_method5_index.take() {
+        let range = results[index].cycle_range.unwrap();
+        let range_end = range.end().cycle;
+        if method3_start < range_end {
+            let tail_start = (method3_start + method3_range).min(range_end);
+            let mut tail = results[index].clone();
+            results[index].cycle_range.as_mut().unwrap().len =
+                method3_start - range.start.cycle;
+            if tail_start < range_end {
+                let tail_range = tail.cycle_range.as_mut().unwrap();
+                tail_range.start.cycle = tail_start;
+                tail_range.len = range_end - tail_start;
+                *pending_method5_index = Some(results.len());
+                results.push(tail);
+            }
+        }
+    }
+}
+
 fn generate_personality(
     mut rng: Pokerng,
     gen_data: GenTmpData<'_>,
@@ -456,26 +483,12 @@ fn generate_personality(
             && cycle_counter.can_generate_method(method3_range)
             && let Some((wild3_pid, wild3_ivs)) = simulate_wild_method3(&gen_data, rng, pid_low)
         {
-            // Exclude the Method3 window from the pending Method5 cycle range, keeping
-            // the portion before it and any remaining tail as separate results.
-            if let Some(index) = pending_method5_index.take() {
-                let range = results[index].cycle_range.unwrap();
-                let method3_start = cycle_counter.get_current_post_sweet_scent_cycle_count();
-                let range_end = range.end().cycle;
-                if method3_start < range_end {
-                    let tail_start = (method3_start + method3_range).min(range_end);
-                    let mut tail = results[index].clone();
-                    results[index].cycle_range.as_mut().unwrap().len =
-                        method3_start - range.start.cycle;
-                    if tail_start < range_end {
-                        let tail_range = tail.cycle_range.as_mut().unwrap();
-                        tail_range.start.cycle = tail_start;
-                        tail_range.len = range_end - tail_start;
-                        pending_method5_index = Some(results.len());
-                        results.push(tail);
-                    }
-                }
-            }
+            exclude_method3_from_pending_method5(
+                &mut results,
+                &mut pending_method5_index,
+                cycle_counter.get_current_post_sweet_scent_cycle_count(),
+                method3_range,
+            );
             if methods_contains_wild3
                 && passes_pid_filter_internal(&gen_data, wild3_pid)
                 && let Some(result) = create_if_passes_filter(

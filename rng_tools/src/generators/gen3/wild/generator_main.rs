@@ -5,8 +5,8 @@ use wasm_bindgen::prelude::*;
 use crate::{
     Ivs, PkmFilter,
     gen3::{
-        CycleAndModCount, CycleAndModRange, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method,
-        Gen3PkmFilter, Wild3Action, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData,
+        CycleAndModCount, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method, Gen3PkmFilter,
+        Wild3Action, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData,
         Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt, generate_wild3_new,
     },
     rng::lcrng::Pokerng,

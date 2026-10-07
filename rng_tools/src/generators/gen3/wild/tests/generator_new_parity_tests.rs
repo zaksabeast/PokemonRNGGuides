@@ -58,25 +58,50 @@ pub fn assert_mon_results_eq_unordered(
 #[test]
 fn generated_cycle_ranges_do_not_overlap() {
     let opts = Wild3GeneratorOptions {
-        methods: vec![Gen3Method::Wild1, Gen3Method::Wild2, Gen3Method::Wild3,
-            Gen3Method::Wild4, Gen3Method::Wild5],
-        cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead { lead_cycle_spd: 700 },
+        methods: vec![
+            Gen3Method::Wild1,
+            Gen3Method::Wild2,
+            Gen3Method::Wild3,
+            Gen3Method::Wild4,
+            Gen3Method::Wild5,
+        ],
+        cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead {
+            lead_cycle_spd: 700,
+        },
         ..Default::default()
     };
     let map = Wild3MapGameData::default();
     for advances in 0..100 {
         let generated = generate_wild3_new(Pokerng::with_advances(0, advances), &opts, &map);
-        let wild5_only = generate_wild3_new(Pokerng::with_advances(0, advances),
-            &Wild3GeneratorOptions { methods: vec![Gen3Method::Wild5], ..opts.clone() }, &map);
-        let expected_wild5 = generated.mon_results.iter()
-            .filter(|mon| mon.method == Gen3Method::Wild5).cloned().collect::<Vec<_>>();
-        assert_eq!(wild5_only.mon_results, expected_wild5, "advances {advances}");
-        let mut ranges = generated.mon_results.iter()
+        let wild5_only = generate_wild3_new(
+            Pokerng::with_advances(0, advances),
+            &Wild3GeneratorOptions {
+                methods: vec![Gen3Method::Wild5],
+                ..opts.clone()
+            },
+            &map,
+        );
+        let expected_wild5 = generated
+            .mon_results
+            .iter()
+            .filter(|mon| mon.method == Gen3Method::Wild5)
+            .cloned()
+            .collect::<Vec<_>>();
+        assert_eq!(
+            wild5_only.mon_results, expected_wild5,
+            "advances {advances}"
+        );
+        let mut ranges = generated
+            .mon_results
+            .iter()
             .map(|mon| mon.cycle_range.unwrap().apply_mod_cycle_count(700))
             .collect::<Vec<_>>();
         ranges.sort_by_key(|range| range.start);
         for pair in ranges.windows(2) {
-            assert!(pair[0].end() <= pair[1].start, "advances {advances}: {pair:?}");
+            assert!(
+                pair[0].end() <= pair[1].start,
+                "advances {advances}: {pair:?}"
+            );
         }
     }
 }

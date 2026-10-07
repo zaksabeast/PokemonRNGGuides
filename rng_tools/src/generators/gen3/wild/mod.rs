@@ -1,5 +1,7 @@
 mod calc_modulo_cycle_count;
 mod cycle_counter;
+#[cfg(test)]
+mod cycle_calibration_tests;
 mod cycle_data_calculator;
 mod cycle_range;
 mod distribution_generator;

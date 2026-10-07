@@ -83,8 +83,22 @@ fn calibrate_cycles(
 
 #[test]
 fn egg_route101_cycle_calibration() {
+    route101_cycle_calibration(Gen3Lead::Egg, "egg_route101.json");
+}
+
+#[test]
+fn vanilla_route101_cycle_calibration() {
+    route101_cycle_calibration(Gen3Lead::Vanilla, "vanilla_route101.json");
+}
+
+#[test]
+fn synchronize_naive_route101_cycle_calibration() {
+    route101_cycle_calibration(Gen3Lead::Synchronize(crate::Nature::Naive), "synchronize_naive_route101.json");
+}
+
+fn route101_cycle_calibration(lead: Gen3Lead, data_file: &str) {
     let opts = Wild3GeneratorOptions {
-        lead: Gen3Lead::Egg,
+        lead,
         methods: vec![
             Gen3Method::Wild1,
             Gen3Method::Wild2,
@@ -118,8 +132,9 @@ fn egg_route101_cycle_calibration() {
         ..Wild3MapGameData::default()
     };
     let score = calibrate_cycles(opts, &map_data, &Path::new(env!("CARGO_MANIFEST_DIR"))
-        .join("src/generators/gen3/wild/cycle_calibration_data/egg_route101.json"));
-    println!("Egg Route 101 mean absolute cycle error: {score:.2}");
+        .join("src/generators/gen3/wild/cycle_calibration_data")
+        .join(data_file));
+    println!("{lead:?} Route 101 mean absolute cycle error: {score:.2}");
     assert!(score.is_finite());
 }
 

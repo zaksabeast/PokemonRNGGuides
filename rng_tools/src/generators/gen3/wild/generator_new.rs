@@ -206,7 +206,8 @@ fn SweetScentWildEncounter(
 ) -> Option<Wild3GeneratorResults> {
     cycle_counter.on_moment_reached(Moment::SweetScentWildEncounter);
 
-    cycle_counter.add_cycle(744);
+    // Route 119 occurs later in the linear wild-header lookup than Route 101.
+    cycle_counter.add_cycle(if map_data.map_id == "MAP_ROUTE119" { 3625 } else { 744 });
 
     if let Some(roamer) = TryStartRoamerEncounter(rng, opts, cycle_counter) {
         return Some(CreateRoamerMonInstance(opts, map_data, roamer));
@@ -438,6 +439,7 @@ fn CreateMonWithGenderNatureLetter(
     mut cycle_counter: CycleFrameCounter,
 ) -> Wild3GeneratorResults {
     cycle_counter.on_moment_reached(Moment::CreateMonWithGenderNatureLetter);
+    cycle_counter.add_cycle(64);
     generate_personality(rng, gen_data, cycle_counter)
 }
 
@@ -534,7 +536,8 @@ fn generate_personality(
         }
 
         // between CreateMonWithNature_pidhigh and CreateMonWithNature_pidlow (retry)
-        let retry_pid_cycle = 140;
+        let retry_pid_cycle = if required_gender.is_some() { 144 } else { 140 };
+        let gender_check_cycles = if required_gender.is_some() && good_nature { 92 } else { 0 };
 
         if methods_contains_wild5 {
             // Multiple iterations will result in the same Method5 Pokémon.
@@ -571,7 +574,7 @@ fn generate_personality(
             CycleFrameCounter::DetailedBreakdown { current_cycle, .. } => current_cycle.frame,
             _ => 0,
         };
-        cycle_counter.add_cycle(retry_pid_cycle + calc_modulo_cycle_unsigned(pid, 25));
+        cycle_counter.add_cycle(retry_pid_cycle + gender_check_cycles + calc_modulo_cycle_unsigned(pid, 25));
         if matches!(opts.cycle_opts, Wild3GeneratorCycleOpts::CycleAtMomentWithEmuLog { .. })
             && let CycleFrameCounter::DetailedBreakdown { current_cycle, .. } = &cycle_counter
         {
@@ -586,7 +589,8 @@ fn generate_personality(
         };
     }
 
-    cycle_counter.add_cycle(calc_modulo_cycle_unsigned(pid, 25) + 154);
+    cycle_counter.add_cycle(calc_modulo_cycle_unsigned(pid, 25)
+        + if required_gender.is_some() { 246 } else { 154 });
     CreateMon(rng, gen_data, cycle_counter, pid, results)
 }
 
@@ -1148,8 +1152,13 @@ fn get_wild_method5_retry_count(
     initial_pid: u32,
 ) -> (usize, usize, Option<(u32, Ivs)>) {
     let mut unshifted_pid_low = rand_next_u16(&mut rng, "vblank_wild5", 1) as u32;
-    let mut cycle_increment = calc_modulo_cycle_unsigned(initial_pid, 25)
-        + 140;
+    let retry_cycles = |pid| {
+        calc_modulo_cycle_unsigned(pid, 25)
+            + if gen_data.required_gender.is_some() {
+                144 + if Nature::from_pid(pid) == gen_data.required_nature { 92 } else { 0 }
+            } else { 140 }
+    };
+    let mut cycle_increment = retry_cycles(initial_pid);
     let mut unshifted_pid_accepted = false;
 
     // Limitation: Only 1 vblank is supported. In theory, multiple vblanks could occur.
@@ -1174,7 +1183,8 @@ fn get_wild_method5_retry_count(
                         == gender
                 });
             if unshifted_pid_accepted {
-                cycle_increment += calc_modulo_cycle_unsigned(unshifted_pid, 25) + 154;
+                cycle_increment += calc_modulo_cycle_unsigned(unshifted_pid, 25)
+                    + if gen_data.required_gender.is_some() { 246 } else { 154 };
             }
         }
         unshifted_pid_low = pid_high;
@@ -1182,8 +1192,7 @@ fn get_wild_method5_retry_count(
         let unshifted_retry_cycles = if unshifted_pid_accepted {
             0
         } else {
-            calc_modulo_cycle_unsigned(unshifted_pid, 25)
-                + 140
+            retry_cycles(unshifted_pid)
         };
         if Nature::from_pid(pid) != gen_data.required_nature {
             retry_count += 1;

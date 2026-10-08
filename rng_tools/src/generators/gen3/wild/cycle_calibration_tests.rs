@@ -144,24 +144,52 @@ fn cute_charm_female_route101_cycle_calibration() {
     route101_cycle_calibration(Gen3Lead::CuteCharm(crate::Gender::Female), "cute_charm_female_route101.json");
 }
 
-fn route101_cycle_calibration(lead: Gen3Lead, data_file: &str) {
-    let opts = Wild3GeneratorOptions {
-        lead,
-        methods: vec![
-            Gen3Method::Wild1,
-            Gen3Method::Wild2,
-            Gen3Method::Wild3,
-            Gen3Method::Wild4,
-            Gen3Method::Wild5,
-        ],
-        using_white_flute: false,
-        cycle_opts: Wild3GeneratorCycleOpts::CycleAtMomentWithEmuLog {
-            lead_cycle_spd: 0,
-            initial_cycle_at_sweet_scent: 0,
-            vblank_cycles: vec![],
-        },
-        ..Wild3GeneratorOptions::default()
+#[test]
+fn cute_charm_female_route119_cycle_calibration() {
+    route119_cycle_calibration(
+        Gen3Lead::CuteCharm(crate::Gender::Female),
+        "cute_charm_female_route119.json",
+    );
+}
+
+#[test]
+fn synchronize_gentle_route119_cycle_calibration() {
+    route119_cycle_calibration(
+        Gen3Lead::Synchronize(crate::Nature::Gentle),
+        "synchronize_gentle_route119.json",
+    );
+}
+
+fn route119_cycle_calibration(lead: Gen3Lead, data_file: &str) {
+    let land_slots = [
+        (Species::Zigzagoon, 25),
+        (Species::Linoone, 25),
+        (Species::Zigzagoon, 27),
+        (Species::Oddish, 25),
+        (Species::Linoone, 27),
+        (Species::Oddish, 26),
+        (Species::Oddish, 27),
+        (Species::Oddish, 24),
+        (Species::Tropius, 25),
+        (Species::Tropius, 26),
+        (Species::Tropius, 27),
+        (Species::Kecleon, 25),
+    ];
+    let map_data = Wild3MapGameData {
+        map_id: "MAP_ROUTE119".into(),
+        slots_by_action: vec![land_slots.into_iter().map(|(species, level)| {
+            Wild3EncounterGameData {
+                min_level: level,
+                max_level: level,
+                species_data: SpeciesData { species },
+            }
+        }).collect()],
+        ..Wild3MapGameData::default()
     };
+    map_cycle_calibration(lead, data_file, &map_data);
+}
+
+fn route101_cycle_calibration(lead: Gen3Lead, data_file: &str) {
     let land_slots = [
         (Species::Wurmple, 2),
         (Species::Poochyena, 2),
@@ -190,9 +218,30 @@ fn route101_cycle_calibration(lead: Gen3Lead, data_file: &str) {
         ],
         ..Wild3MapGameData::default()
     };
+    map_cycle_calibration(lead, data_file, &map_data);
+}
+
+fn map_cycle_calibration(lead: Gen3Lead, data_file: &str, map_data: &Wild3MapGameData) {
+    let opts = Wild3GeneratorOptions {
+        lead,
+        methods: vec![
+            Gen3Method::Wild1,
+            Gen3Method::Wild2,
+            Gen3Method::Wild3,
+            Gen3Method::Wild4,
+            Gen3Method::Wild5,
+        ],
+        using_white_flute: false,
+        cycle_opts: Wild3GeneratorCycleOpts::CycleAtMomentWithEmuLog {
+            lead_cycle_spd: 0,
+            initial_cycle_at_sweet_scent: 0,
+            vblank_cycles: vec![],
+        },
+        ..Wild3GeneratorOptions::default()
+    };
     let score = calibrate_cycles(
         opts,
-        &map_data,
+        map_data,
         &Path::new(env!("CARGO_MANIFEST_DIR"))
             .join("src/generators/gen3/wild/cycle_calibration_data/sweet_scent")
             .join(data_file),

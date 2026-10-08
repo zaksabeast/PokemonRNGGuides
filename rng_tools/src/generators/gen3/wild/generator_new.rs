@@ -25,8 +25,7 @@ use crate::{
 General idea:
  - Mimick as much as possible the function call structure of the real game, to have accurate cycle counting.
 
- Egg and Vanilla lead timings are calibrated against the emulator logs in cycle_calibration_data.
- Other leads retain their existing timings until corresponding logs are available.
+ Shared timing costs apply to all leads; distinct lead branches keep their own costs.
 
 
 */
@@ -195,9 +194,7 @@ fn TrySweetScentEncounter(
     cycle_counter: &mut CycleFrameCounter,
 ) -> Option<Wild3GeneratorResults> {
     cycle_counter.on_moment_reached(Moment::TrySweetScentEncounter);
-    if matches!(opts.lead, Gen3Lead::Egg | Gen3Lead::Vanilla) {
-        cycle_counter.add_cycle(2001);
-    }
+    cycle_counter.add_cycle(2001);
     SweetScentWildEncounter(rng, opts, map_data, cycle_counter)
 }
 
@@ -209,9 +206,7 @@ fn SweetScentWildEncounter(
 ) -> Option<Wild3GeneratorResults> {
     cycle_counter.on_moment_reached(Moment::SweetScentWildEncounter);
 
-    if matches!(opts.lead, Gen3Lead::Egg | Gen3Lead::Vanilla) {
-        cycle_counter.add_cycle(744);
-    }
+    cycle_counter.add_cycle(744);
 
     if let Some(roamer) = TryStartRoamerEncounter(rng, opts, cycle_counter) {
         return Some(CreateRoamerMonInstance(opts, map_data, roamer));
@@ -307,8 +302,8 @@ fn PickWildMonNature(
     cycle_counter.on_moment_reached(Moment::PickWildMonNature);
     if opts.lead == Gen3Lead::Egg {
         cycle_counter.add_cycle(438);
-    } else if opts.lead == Gen3Lead::Vanilla {
-        cycle_counter.add(39, 24);
+    } else {
+        cycle_counter.add(if matches!(opts.lead, Gen3Lead::Synchronize(_)) { 6177 } else { 6183 }, 16);
     }
     if map_data.is_safari
         && let Some((nature, used_safari_pokeblock)) =
@@ -320,7 +315,8 @@ fn PickWildMonNature(
     if let Gen3Lead::Synchronize(lead_nature) = opts.lead {
         cycle_counter.on_moment_reached(Moment::PickWildMonNature_RandomTestSynchro);
         if (rand_next_u16(rng, "PickWildMonNature", 2) & 1) == 0 {
-            cycle_counter.add(389, 17);
+            // The nature lookup performs another modulo operation on the lead PID.
+            cycle_counter.add(351, 1);
             return (lead_nature, None);
         }
         cycle_counter.add_cycle(96);
@@ -344,8 +340,11 @@ fn CreateWildMon(
         Gen3Lead::Egg => {
             cycle_counter.add_cycle(8335);
         }
-        Gen3Lead::Vanilla => {
-            cycle_counter.add(7918, 24);
+        Gen3Lead::Vanilla | Gen3Lead::Synchronize(_) => {
+            cycle_counter.add(14062, 16);
+        }
+        Gen3Lead::CuteCharm(_) if encounter_gender_ratio.has_multiple_genders() => {
+            cycle_counter.add(14062 + 5763 + 66, 16);
         }
         _ => {
             let lead_pid_mod = if encounter_gender_ratio.has_multiple_genders() {
@@ -363,13 +362,7 @@ fn CreateWildMon(
 
             let nature_rand_val = rand_next_u16(rng, "pick_random_wild_mon_nature", 25); // PickWildMonNature at return Random() % NUM_NATURES;
             cycle.add_cycle(calc_modulo_cycle_unsigned(nature_rand_val as u32, 25));
-            cycle.add(
-                if matches!(opts.lead, Gen3Lead::Egg | Gen3Lead::Vanilla) { 137 } else { 179 },
-                match opts.lead {
-                    Gen3Lead::Egg | Gen3Lead::Vanilla => 0,
-                    _ => 16,
-                },
-            );
+            cycle.add_cycle(137);
 
             ((nature_rand_val % 25) as u8).into()
         };
@@ -385,14 +378,14 @@ fn CreateWildMon(
                 cycle_counter.add_cycle(calc_modulo_cycle_unsigned(cute_charm_rand_val as u32, 3));
 
                 if !cute_charm_rand_val.is_multiple_of(3) {
-                    cycle_counter.add(8786 + 44, 8);
+                    cycle_counter.add(3296, 8);
                     Some(if lead_gender == Gender::Female {
                         Gender::Male
                     } else {
                         Gender::Female
                     })
                 } else {
-                    cycle_counter.add_cycle(5863);
+                    cycle_counter.add_cycle(106);
                     None
                 }
             }
@@ -435,9 +428,7 @@ fn CreateMonWithNature(
     mut cycle_counter: CycleFrameCounter,
 ) -> Wild3GeneratorResults {
     cycle_counter.on_moment_reached(Moment::CreateMonWithNature);
-    if matches!(gen_data.opts.lead, Gen3Lead::Egg | Gen3Lead::Vanilla) {
-        cycle_counter.add_cycle(42);
-    }
+    cycle_counter.add_cycle(42);
     generate_personality(rng, gen_data, cycle_counter)
 }
 
@@ -543,7 +534,7 @@ fn generate_personality(
         }
 
         // between CreateMonWithNature_pidhigh and CreateMonWithNature_pidlow (retry)
-        let retry_pid_cycle = if good_nature || matches!(opts.lead, Gen3Lead::Egg | Gen3Lead::Vanilla) { 140 } else { 158 }; // 18 cycles to check gender
+        let retry_pid_cycle = 140;
 
         if methods_contains_wild5 {
             // Multiple iterations will result in the same Method5 Pokémon.
@@ -575,7 +566,17 @@ fn generate_personality(
             }
         }
 
+        // A recorded VBlank consumes one RNG advance before the next PID attempt.
+        let frame_before = match &cycle_counter {
+            CycleFrameCounter::DetailedBreakdown { current_cycle, .. } => current_cycle.frame,
+            _ => 0,
+        };
         cycle_counter.add_cycle(retry_pid_cycle + calc_modulo_cycle_unsigned(pid, 25));
+        if matches!(opts.cycle_opts, Wild3GeneratorCycleOpts::CycleAtMomentWithEmuLog { .. })
+            && let CycleFrameCounter::DetailedBreakdown { current_cycle, .. } = &cycle_counter
+        {
+            rng.jump(current_cycle.frame - frame_before);
+        }
     }
 
     if !passes_pid_filter_internal(&gen_data, pid) {
@@ -585,9 +586,7 @@ fn generate_personality(
         };
     }
 
-    if matches!(opts.lead, Gen3Lead::Egg | Gen3Lead::Vanilla) {
-        cycle_counter.add_cycle(calc_modulo_cycle_unsigned(pid, 25) + 154);
-    }
+    cycle_counter.add_cycle(calc_modulo_cycle_unsigned(pid, 25) + 154);
     CreateMon(rng, gen_data, cycle_counter, pid, results)
 }
 
@@ -601,17 +600,9 @@ fn CreateMon(
     cycle_counter.on_moment_reached(Moment::CreateMon);
     let opts = gen_data.opts;
 
-    // between CreateMonWithNature_pidhigh and CreateBoxMon_ivs1
-    // The successful nature check has already been counted before CreateMon for Egg and Vanilla leads.
-    let nature_check_cycles = if matches!(opts.lead, Gen3Lead::Egg | Gen3Lead::Vanilla) {
-        0
-    } else {
-        calc_modulo_cycle_unsigned(pid, 25)
-    };
-    // Median setup overhead for calibrated leads; substructure initialization has variable cost.
-    let setup_cycles = if matches!(opts.lead, Gen3Lead::Egg | Gen3Lead::Vanilla) { 36900 + 1440 } else { 36900 };
-    let method2_range =
-        nature_check_cycles + 100 * calc_modulo_cycle_unsigned(pid, 24) + setup_cycles;
+    // The successful nature check is counted before CreateMon.
+    // Include the shared setup overhead; substructure initialization has variable cost.
+    let method2_range = 100 * calc_modulo_cycle_unsigned(pid, 24) + 38500;
 
     if opts.methods.contains(&Gen3Method::Wild2)
         && cycle_counter.can_generate_method(method2_range)
@@ -630,8 +621,7 @@ fn CreateMon(
     let iv1 = rand_next_u16(&mut rng, "iv1_wild1or4", 1);
 
     // between CreateBoxMon_ivs1 and CreateBoxMon_ivs2
-    let iv_setup_cycles = if matches!(opts.lead, Gen3Lead::Egg | Gen3Lead::Vanilla) { 11103 + 633 } else { 11103 };
-    let method4_range = 36 * calc_modulo_cycle_unsigned(pid, 24) + iv_setup_cycles; // between CreateBoxMon_ivs1 and CreateBoxMon_ivs2
+    let method4_range = 36 * calc_modulo_cycle_unsigned(pid, 24) + 11800;
 
     if opts.methods.contains(&Gen3Method::Wild4)
         && cycle_counter.can_generate_method(method4_range)
@@ -676,7 +666,7 @@ fn TryStartRoamerEncounter(
     cycle_counter: &mut CycleFrameCounter,
 ) -> Option<Wild3EncounterIndex> {
     cycle_counter.on_moment_reached(Moment::TryStartRoamerEncounter);
-    if matches!(opts.lead, Gen3Lead::Egg | Gen3Lead::Vanilla) && opts.roamer_state == Wild3RoamerState::Inactive {
+    if opts.roamer_state == Wild3RoamerState::Inactive {
         cycle_counter.add_cycle(133);
     }
     match opts.roamer_state {
@@ -695,7 +685,7 @@ fn DoMassOutbreakEncounterTest(
     cycle_counter: &mut CycleFrameCounter,
 ) -> bool {
     cycle_counter.on_moment_reached(Moment::DoMassOutbreakEncounterTest);
-    if matches!(opts.lead, Gen3Lead::Egg | Gen3Lead::Vanilla) && opts.mass_outbreak_state == Wild3MassOutbreakState::Inactive {
+    if opts.mass_outbreak_state == Wild3MassOutbreakState::Inactive {
         cycle_counter.add_cycle(84);
     }
     !matches!(
@@ -726,7 +716,7 @@ fn TryGenerateWildMon(
     cycle_counter: &mut CycleFrameCounter,
 ) -> Option<(Wild3EncounterIndex, u8)> {
     cycle_counter.on_moment_reached(Moment::TryGenerateWildMon);
-    if matches!(opts.lead, Gen3Lead::Egg | Gen3Lead::Vanilla) && opts.action == Wild3Action::SweetScentLand {
+    if opts.action == Wild3Action::SweetScentLand {
         cycle_counter.add_cycle(67);
     }
     let slots = map_data.slots_by_action.get(opts.action as usize)?;
@@ -779,8 +769,9 @@ fn TryGetAbilityInfluencedWildMonIndex(
     cycle_counter.on_moment_reached(Moment::TryGetAbilityInfluencedWildMonIndex);
     if lead == Gen3Lead::Egg {
         cycle_counter.add_cycle(if steel { 296 } else { 279 });
-    } else if lead == Gen3Lead::Vanilla {
-        cycle_counter.add_mod(24);
+    } else {
+        cycle_counter.add_cycle(if steel { 6041 } else { 6024 });
+        cycle_counter.add_mod(16);
     }
     if lead != ability || rng.rand::<u16>() % 2 != 0 {
         return None;
@@ -819,10 +810,7 @@ fn choose_index(
     action: Wild3Action,
     cycle_counter: &mut CycleFrameCounter,
 ) -> usize {
-    match lead {
-        Gen3Lead::Egg | Gen3Lead::Vanilla => cycle_counter.add_cycle(12),
-        _ => cycle_counter.add(12059, 32),
-    }
+    cycle_counter.add_cycle(12);
     let moment = if action == Wild3Action::SweetScentLand {
         Moment::ChooseWildMonIndex_Land_Random
     } else {
@@ -833,13 +821,11 @@ fn choose_index(
     cycle_counter.add_cycle(calc_modulo_cycle_unsigned(value, 100));
     let slot =
         EncounterSlot::from_rand((value % 100) as u8, EncounterSlot::gen3_thresholds(action));
-    let selection_cycles = if matches!(lead, Gen3Lead::Egg | Gen3Lead::Vanilla) && action == Wild3Action::SweetScentLand {
+    let selection_cycles = if action == Wild3Action::SweetScentLand {
         // Each unsuccessful land-slot threshold check adds 18 cycles; the last slot is a fallback.
         if slot == EncounterSlot::Slot11 { 325 } else { 153 + 18 * slot as usize }
-    } else if matches!(lead, Gen3Lead::Egg | Gen3Lead::Vanilla) {
-        234
     } else {
-        378
+        234
     };
     cycle_counter.add_cycle(selection_cycles);
     slot as usize
@@ -870,17 +856,15 @@ fn ChooseWildMonLevel(
     cycle_counter: &mut CycleFrameCounter,
 ) -> u8 {
     cycle_counter.on_moment_reached(Moment::ChooseWildMonLevel);
-    if matches!(lead, Gen3Lead::Egg | Gen3Lead::Vanilla) {
-        cycle_counter.add_cycle(63);
-    }
+    cycle_counter.add_cycle(63);
     cycle_counter.on_moment_reached(Moment::ChooseWildMonLevel_RandomLvl);
     let range = encounter.max_level - encounter.min_level + 1;
     let value = rng.rand::<u16>();
     cycle_counter.add_cycle(calc_modulo_cycle_signed(value as i32, range as i32));
     if lead == Gen3Lead::Egg {
         cycle_counter.add_cycle(426);
-    } else if lead == Gen3Lead::Vanilla {
-        cycle_counter.add(35, 24);
+    } else {
+        cycle_counter.add(6179, 16);
     }
     let mut increment = (value % range as u16) as u8;
     if lead == Gen3Lead::HustleVitalSpiritPressure {
@@ -1165,11 +1149,7 @@ fn get_wild_method5_retry_count(
 ) -> (usize, usize, Option<(u32, Ivs)>) {
     let mut unshifted_pid_low = rand_next_u16(&mut rng, "vblank_wild5", 1) as u32;
     let mut cycle_increment = calc_modulo_cycle_unsigned(initial_pid, 25)
-        + if Nature::from_pid(initial_pid) == gen_data.required_nature || matches!(gen_data.opts.lead, Gen3Lead::Egg | Gen3Lead::Vanilla) {
-            140
-        } else {
-            158
-        };
+        + 140;
     let mut unshifted_pid_accepted = false;
 
     // Limitation: Only 1 vblank is supported. In theory, multiple vblanks could occur.
@@ -1193,7 +1173,7 @@ fn get_wild_method5_retry_count(
                         .gender_from_pid(unshifted_pid)
                         == gender
                 });
-            if unshifted_pid_accepted && matches!(gen_data.opts.lead, Gen3Lead::Egg | Gen3Lead::Vanilla) {
+            if unshifted_pid_accepted {
                 cycle_increment += calc_modulo_cycle_unsigned(unshifted_pid, 25) + 154;
             }
         }
@@ -1203,7 +1183,7 @@ fn get_wild_method5_retry_count(
             0
         } else {
             calc_modulo_cycle_unsigned(unshifted_pid, 25)
-                + if unshifted_good_nature || matches!(gen_data.opts.lead, Gen3Lead::Egg | Gen3Lead::Vanilla) { 140 } else { 158 }
+                + 140
         };
         if Nature::from_pid(pid) != gen_data.required_nature {
             retry_count += 1;

@@ -3,7 +3,7 @@ use crate::{
     gen3::{
         CycleRange, Gen3Lead, Gen3Method, INFINITE_CYCLE, Wild3EncounterIndex,
         Wild3GeneratorCycleOpts, Wild3GeneratorMonResult, Wild3GeneratorOptions, Wild3MapGameData,
-        generate_wild3, generate_wild3_old,
+        generate_wild3,
     },
     rng::lcrng::Pokerng,
 };
@@ -32,7 +32,7 @@ fn test_generate_wild3_cycle_method_3() {
             pid: 1459093362,
             ivs: Ivs::new(13, 14, 2, 20, 14, 15),
             method: Gen3Method::Wild3,
-            cycle_range: Some(CycleRange::new(144256, 81, 80)),
+            cycle_range: Some(CycleRange::new(146743, 81, 80)),
             ..Default::default()
         },
         Wild3GeneratorMonResult {
@@ -40,7 +40,7 @@ fn test_generate_wild3_cycle_method_3() {
             pid: 3087365287,
             ivs: Ivs::new(21, 3, 3, 11, 15, 19),
             method: Gen3Method::Wild3,
-            cycle_range: Some(CycleRange::new(158414, 81, 80)),
+            cycle_range: Some(CycleRange::new(160649, 81, 80)),
             ..Default::default()
         },
     ];
@@ -94,7 +94,7 @@ fn test_generate_wild3_cycle_method_5() {
             pid: 1946911046,
             ivs: Ivs::new(4, 29, 8, 25, 7, 14),
             method: Gen3Method::Wild5,
-            cycle_range: Some(CycleRange::new(92181, 120, 19852)),
+            cycle_range: Some(CycleRange::new(121958, 80, 19852)),
             ..Default::default()
         },
         Wild3GeneratorMonResult {
@@ -102,7 +102,7 @@ fn test_generate_wild3_cycle_method_5() {
             pid: 26625321,
             ivs: Ivs::new(21, 2, 31, 1, 18, 19),
             method: Gen3Method::Wild5,
-            cycle_range: Some(CycleRange::new(112033, 120, 6888)),
+            cycle_range: Some(CycleRange::new(141810, 80, 6888)),
             ..Default::default()
         },
         Wild3GeneratorMonResult {
@@ -110,7 +110,7 @@ fn test_generate_wild3_cycle_method_5() {
             pid: 2210948146,
             ivs: Ivs::new(13, 0, 19, 1, 12, 6),
             method: Gen3Method::Wild5,
-            cycle_range: Some(CycleRange::new(119001, 120, 2988)),
+            cycle_range: Some(CycleRange::new(148778, 80, 2988)),
             ..Default::default()
         },
         Wild3GeneratorMonResult {
@@ -118,7 +118,7 @@ fn test_generate_wild3_cycle_method_5() {
             pid: 2335347696,
             ivs: Ivs::new(13, 12, 19, 0, 1, 29),
             method: Gen3Method::Wild5,
-            cycle_range: Some(CycleRange::new(121989, 120, 6877)),
+            cycle_range: Some(CycleRange::new(151766, 80, 6877)),
             ..Default::default()
         },
     ];
@@ -143,13 +143,6 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
         &Wild3MapGameData::default(),
     )
     .mon_results;
-    let results_old = generate_wild3_old(
-        Pokerng::with_advances(0, 3001),
-        &options,
-        &Wild3MapGameData::default(),
-    )
-    .mon_results;
-    assert_eq!(results_old, result);
 
     let expected_result = vec![
         Wild3GeneratorMonResult {
@@ -157,7 +150,7 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
             pid: 3864471792,
             ivs: Ivs::new(0, 9, 4, 5, 4, 3),
             method: Gen3Method::Wild2,
-            cycle_range: Some(CycleRange::new(54709, 80, 112996)),
+            cycle_range: Some(CycleRange::new(59690, 80, 113800)),
             ..Default::default()
         },
         Wild3GeneratorMonResult {
@@ -165,7 +158,7 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
             pid: 3864471792,
             ivs: Ivs::new(26, 8, 17, 5, 4, 3),
             method: Gen3Method::Wild4,
-            cycle_range: Some(CycleRange::new(167705, 80, 38211)),
+            cycle_range: Some(CycleRange::new(173490, 80, 38908)),
             ..Default::default()
         },
         Wild3GeneratorMonResult {
@@ -173,7 +166,7 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
             pid: 3864471792,
             ivs: Ivs::new(26, 8, 17, 9, 4, 0),
             method: Gen3Method::Wild1,
-            cycle_range: Some(CycleRange::new(205916, 80, INFINITE_CYCLE)),
+            cycle_range: Some(CycleRange::new(212398, 80, INFINITE_CYCLE)),
             ..Default::default()
         },
     ];

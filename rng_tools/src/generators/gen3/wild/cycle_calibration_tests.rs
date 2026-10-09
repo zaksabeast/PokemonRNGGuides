@@ -208,6 +208,40 @@ fn egg_meteor_falls_stevens_room_cycle_calibration() {
     );
 }
 
+#[test]
+fn static_route110_cycle_calibration() {
+    let land_slots = [
+        (Species::Poochyena, 12),
+        (Species::Electrike, 12),
+        (Species::Gulpin, 12),
+        (Species::Electrike, 13),
+        (Species::Minun, 13),
+        (Species::Oddish, 13),
+        (Species::Minun, 13),
+        (Species::Gulpin, 13),
+        (Species::Wingull, 12),
+        (Species::Wingull, 12),
+        (Species::Plusle, 12),
+        (Species::Plusle, 13),
+    ];
+    let map_data = Wild3MapGameData {
+        map_id: "MAP_ROUTE110".into(),
+        map_internal_idx: 5,
+        slots_by_action: vec![
+            land_slots
+                .into_iter()
+                .map(|(species, level)| Wild3EncounterGameData {
+                    min_level: level,
+                    max_level: level,
+                    species_data: SpeciesData { species },
+                })
+                .collect(),
+        ],
+        ..Wild3MapGameData::default()
+    };
+    map_cycle_calibration(Gen3Lead::Static, "static_route110.json", &map_data);
+}
+
 fn route119_cycle_calibration(lead: Gen3Lead, data_file: &str) {
     let land_slots = [
         (Species::Zigzagoon, 25),
@@ -306,6 +340,18 @@ fn egg_route102_water_cycle_calibration() {
 
 #[test]
 fn egg_route102_old_rod_cycle_calibration() {
+    route102_old_rod_cycle_calibration(Gen3Lead::Egg, "egg_route102.json");
+}
+
+#[test]
+fn pressure_route102_old_rod_cycle_calibration() {
+    route102_old_rod_cycle_calibration(
+        Gen3Lead::HustleVitalSpiritPressure,
+        "pressure_route102.json",
+    );
+}
+
+fn route102_old_rod_cycle_calibration(lead: Gen3Lead, data_file: &str) {
     let fishing_slots = [
         (Species::Magikarp, 5, 10),
         (Species::Goldeen, 5, 10),
@@ -328,9 +374,9 @@ fn egg_route102_old_rod_cycle_calibration() {
         ..Wild3MapGameData::default()
     };
     map_action_cycle_calibration(
-        Gen3Lead::Egg,
+        lead,
         Wild3Action::OldRod,
-        "egg_route102.json",
+        data_file,
         &map_data,
     );
 }

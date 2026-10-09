@@ -311,7 +311,12 @@ fn PickWildMonNature(
     if opts.lead == Gen3Lead::Egg {
         cycle_counter.add_cycle(438);
     } else {
-        cycle_counter.add(if matches!(opts.lead, Gen3Lead::Synchronize(_)) { 6177 } else { 6183 }, 16);
+        let ability_cycles = match opts.lead {
+            Gen3Lead::Synchronize(_) => 6177,
+            Gen3Lead::HustleVitalSpiritPressure | Gen3Lead::Static => 6095,
+            _ => 6183,
+        };
+        cycle_counter.add(ability_cycles, 16);
     }
     if map_data.is_safari
         && let Some((nature, used_safari_pokeblock)) =
@@ -350,6 +355,9 @@ fn CreateWildMon(
         }
         Gen3Lead::Vanilla | Gen3Lead::Synchronize(_) => {
             cycle_counter.add(14062, 16);
+        }
+        Gen3Lead::HustleVitalSpiritPressure | Gen3Lead::Static if encounter_gender_ratio.has_multiple_genders() => {
+            cycle_counter.add(13974, 16);
         }
         Gen3Lead::CuteCharm(_) if encounter_gender_ratio.has_multiple_genders() => {
             cycle_counter.add(14062 + 5763 + 66, 16);
@@ -783,12 +791,24 @@ fn TryGetAbilityInfluencedWildMonIndex(
     if lead == Gen3Lead::Egg {
         cycle_counter.add_cycle(if steel { 296 } else { 279 });
     } else {
-        cycle_counter.add_cycle(if steel { 6041 } else { 6024 });
+        let ability_cycles = if lead == Gen3Lead::Static {
+            if steel { 5953 } else { 5936 }
+        } else if steel {
+            6041
+        } else {
+            6024
+        };
+        cycle_counter.add_cycle(ability_cycles);
         cycle_counter.add_mod(16);
     }
-    if lead != ability || rng.rand::<u16>() % 2 != 0 {
+    if lead != ability {
         return None;
     }
+    if rng.rand::<u16>() % 2 != 0 {
+        cycle_counter.add_cycle(72);
+        return None;
+    }
+    cycle_counter.add_cycle(68);
     TryGetRandomWildMonIndexByType(rng, slots, steel, cycle_counter)
 }
 
@@ -814,7 +834,11 @@ fn TryGetRandomWildMonIndexByType(
     if matching.is_empty() || matching.len() == slots.len() {
         return None;
     }
-    Some(matching[rng.rand::<u16>() as usize % matching.len()])
+    let value = rng.rand::<u16>();
+    // Calibrated scan and return overhead for the twelve-slot Route 110 land table.
+    cycle_counter.add_cycle(1402);
+    cycle_counter.add_cycle(calc_modulo_cycle_unsigned(value as u32, matching.len() as u32));
+    Some(matching[value as usize % matching.len()])
 }
 
 fn choose_index(
@@ -880,15 +904,23 @@ fn ChooseWildMonLevel(
     cycle_counter.add_cycle(calc_modulo_cycle_signed(value as i32, range as i32));
     if lead == Gen3Lead::Egg {
         cycle_counter.add_cycle(426);
+    } else if lead == Gen3Lead::HustleVitalSpiritPressure {
+        cycle_counter.add(6118, 16);
+    } else if lead == Gen3Lead::Static {
+        cycle_counter.add(6091, 16);
     } else {
         cycle_counter.add(6179, 16);
     }
     let mut increment = (value % range as u16) as u8;
     if lead == Gen3Lead::HustleVitalSpiritPressure {
         if rng.rand::<u16>() % 2 == 0 {
+            cycle_counter.add_cycle(6);
             return encounter.max_level;
         }
-        increment = increment.saturating_sub(1);
+        if increment != 0 {
+            cycle_counter.add_cycle(18);
+            increment -= 1;
+        }
     }
     encounter.min_level + increment
 }

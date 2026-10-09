@@ -1186,8 +1186,12 @@ fn calculate_safari_pokeblock_nature_and_cycles(
         }
     };
     let nature_checks = all_natures_by_priority.iter().position(|candidate| *candidate == nature).unwrap() + 1;
-    // Calibrated shuffle overhead and scoring cost for the dry/sour Pokeblock fixture.
-    let cycles = 34114 + 6 * swap_count + 677 * nature_checks;
+    // PokeblockGetGain performs extra work for each nonzero flavor.
+    let nonzero_flavors = pokeblock.map_or(0, |flavors| {
+        flavors.iter().filter(|&&value| value != 0).count()
+    });
+    let scoring_cycles = 631 + 23 * nonzero_flavors;
+    let cycles = 34114 + 6 * swap_count + scoring_cycles * nature_checks;
     (nature, pokeblock, cycles)
 }
 

@@ -160,6 +160,44 @@ fn synchronize_gentle_route119_cycle_calibration() {
     );
 }
 
+#[test]
+fn egg_meteor_falls_stevens_room_cycle_calibration() {
+    let land_slots = [
+        (Species::Golbat, 33),
+        (Species::Golbat, 35),
+        (Species::Golbat, 33),
+        (Species::Solrock, 35),
+        (Species::Solrock, 33),
+        (Species::Solrock, 37),
+        (Species::Golbat, 35),
+        (Species::Solrock, 39),
+        (Species::Golbat, 38),
+        (Species::Golbat, 40),
+        (Species::Golbat, 38),
+        (Species::Golbat, 40),
+    ];
+    let map_data = Wild3MapGameData {
+        map_id: "MAP_METEOR_FALLS_STEVENS_CAVE".into(),
+        map_internal_idx: 123,
+        slots_by_action: vec![
+            land_slots
+                .into_iter()
+                .map(|(species, level)| Wild3EncounterGameData {
+                    min_level: level,
+                    max_level: level,
+                    species_data: SpeciesData { species },
+                })
+                .collect(),
+        ],
+        ..Wild3MapGameData::default()
+    };
+    map_cycle_calibration(
+        Gen3Lead::Egg,
+        "egg_meteor_falls_stevens_cave.json",
+        &map_data,
+    );
+}
+
 fn route119_cycle_calibration(lead: Gen3Lead, data_file: &str) {
     let land_slots = [
         (Species::Zigzagoon, 25),
@@ -177,6 +215,7 @@ fn route119_cycle_calibration(lead: Gen3Lead, data_file: &str) {
     ];
     let map_data = Wild3MapGameData {
         map_id: "MAP_ROUTE119".into(),
+        map_internal_idx: 33,
         slots_by_action: vec![land_slots.into_iter().map(|(species, level)| {
             Wild3EncounterGameData {
                 min_level: level,
@@ -206,6 +245,7 @@ fn route101_cycle_calibration(lead: Gen3Lead, data_file: &str) {
     ];
     let map_data = Wild3MapGameData {
         map_id: "MAP_ROUTE101".into(),
+        map_internal_idx: 0,
         slots_by_action: vec![
             land_slots
                 .into_iter()

@@ -206,8 +206,8 @@ fn SweetScentWildEncounter(
 ) -> Option<Wild3GeneratorResults> {
     cycle_counter.on_moment_reached(Moment::SweetScentWildEncounter);
 
-    // Route 119 occurs later in the linear wild-header lookup than Route 101.
-    cycle_counter.add_cycle(if map_data.map_id == "MAP_ROUTE119" { 3625 } else { 744 });
+    // Linear wild-header lookup cost calibrated at indices 0 (744) and 33 (3625).
+    cycle_counter.add_cycle(744 + 2881 * map_data.map_internal_idx / 33);
 
     if let Some(roamer) = TryStartRoamerEncounter(rng, opts, cycle_counter) {
         return Some(CreateRoamerMonInstance(opts, map_data, roamer));

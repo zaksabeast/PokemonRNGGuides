@@ -148,9 +148,11 @@ fn RockSmashWildEncounter(
     cycle_counter: &mut CycleFrameCounter,
 ) -> Option<Wild3GeneratorResults> {
     cycle_counter.on_moment_reached(Moment::RockSmashWildEncounter);
+    cycle_counter.add_cycle(259 + 2881 * map_data.map_internal_idx / 33);
     if !WildEncounterCheck(rng, map_data.rock_smash_rate, opts, cycle_counter) {
         return None;
     }
+    cycle_counter.add_cycle(131);
     let (encounter_idx, level) = TryGenerateWildMon(rng, opts, map_data, 0, cycle_counter)?;
     let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, level)?;
     Some(CreateWildMon(
@@ -171,6 +173,8 @@ fn WildEncounterCheck(
     cycle_counter: &mut CycleFrameCounter,
 ) -> bool {
     cycle_counter.on_moment_reached(Moment::WildEncounterCheck);
+    // Rock Smash ignores encounter-rate abilities, but still checks the held item.
+    cycle_counter.add(3298, 8);
     let mut rate = encounter_rate * 16;
     if opts.using_white_flute {
         rate += rate / 2;
@@ -184,7 +188,9 @@ fn EncounterOddsCheck(
     cycle_counter: &mut CycleFrameCounter,
 ) -> bool {
     cycle_counter.on_moment_reached(Moment::EncounterOddsCheck);
-    rng.rand::<u16>() % 2880 < encounter_rate
+    let value = rng.rand::<u16>();
+    cycle_counter.add_cycle(calc_modulo_cycle_unsigned(value as u32, 2880) + 43);
+    value % 2880 < encounter_rate
 }
 
 fn TrySweetScentEncounter(
@@ -314,6 +320,7 @@ fn PickWildMonNature(
         let ability_cycles = match opts.lead {
             Gen3Lead::Synchronize(_) => 6177,
             Gen3Lead::HustleVitalSpiritPressure | Gen3Lead::Static => 6095,
+            Gen3Lead::MagnetPull => 6151,
             _ => 6183,
         };
         cycle_counter.add(ability_cycles, 16);
@@ -349,28 +356,21 @@ fn CreateWildMon(
     cycle_counter.on_moment_reached(Moment::CreateWildMon);
     let encounter_gender_ratio = encounter.species_data.gender_ratio();
 
-    match opts.lead {
-        Gen3Lead::Egg => {
-            cycle_counter.add_cycle(8335);
+    let check_cute_charm = encounter_gender_ratio.has_multiple_genders();
+    if !check_cute_charm {
+        cycle_counter.add_cycle(8092);
+    } else {
+        match opts.lead {
+            Gen3Lead::Egg => cycle_counter.add_cycle(8335),
+            Gen3Lead::Vanilla | Gen3Lead::Synchronize(_) => cycle_counter.add(14062, 16),
+            Gen3Lead::MagnetPull => cycle_counter.add(14030, 16),
+            Gen3Lead::HustleVitalSpiritPressure | Gen3Lead::Static => {
+                cycle_counter.add(13974, 16);
+            }
+            Gen3Lead::CuteCharm(_) => cycle_counter.add(14062 + 5763 + 66, 16),
+            _ => cycle_counter.add(25182, 32),
         }
-        Gen3Lead::Vanilla | Gen3Lead::Synchronize(_) => {
-            cycle_counter.add(14062, 16);
-        }
-        Gen3Lead::HustleVitalSpiritPressure | Gen3Lead::Static if encounter_gender_ratio.has_multiple_genders() => {
-            cycle_counter.add(13974, 16);
-        }
-        Gen3Lead::CuteCharm(_) if encounter_gender_ratio.has_multiple_genders() => {
-            cycle_counter.add(14062 + 5763 + 66, 16);
-        }
-        _ => {
-            let lead_pid_mod = if encounter_gender_ratio.has_multiple_genders() {
-                32
-            } else {
-                20
-            };
-            cycle_counter.add(25182, lead_pid_mod);
-        }
-    };
+    }
 
     let pick_random_wild_mon_nature =
         |cycle: &mut CycleFrameCounter, rng: &mut Pokerng| -> Nature {
@@ -384,7 +384,7 @@ fn CreateWildMon(
         };
 
     let required_gender = {
-        match (opts.lead, encounter_gender_ratio.has_multiple_genders()) {
+        match (opts.lead, check_cute_charm) {
             (Gen3Lead::CuteCharm(lead_gender), true) => {
                 cycle_counter.on_moment_reached(Moment::CreateWildMon_RandomTestCuteCharm);
 
@@ -472,8 +472,7 @@ fn exclude_method3_from_pending_method5(
         if method3_start < range_end {
             let tail_start = (method3_start + method3_range).min(range_end);
             let mut tail = results[index].clone();
-            results[index].cycle_range.as_mut().unwrap().len =
-                method3_start - range.start.cycle;
+            results[index].cycle_range.as_mut().unwrap().len = method3_start - range.start.cycle;
             if tail_start < range_end {
                 let tail_range = tail.cycle_range.as_mut().unwrap();
                 tail_range.start.cycle = tail_start;
@@ -552,7 +551,11 @@ fn generate_personality(
 
         // between CreateMonWithNature_pidhigh and CreateMonWithNature_pidlow (retry)
         let retry_pid_cycle = if required_gender.is_some() { 144 } else { 140 };
-        let gender_check_cycles = if required_gender.is_some() && good_nature { 92 } else { 0 };
+        let gender_check_cycles = if required_gender.is_some() && good_nature {
+            92
+        } else {
+            0
+        };
 
         if methods_contains_wild5 {
             // Multiple iterations will result in the same Method5 Pokémon.
@@ -589,9 +592,12 @@ fn generate_personality(
             CycleFrameCounter::DetailedBreakdown { current_cycle, .. } => current_cycle.frame,
             _ => 0,
         };
-        cycle_counter.add_cycle(retry_pid_cycle + gender_check_cycles + calc_modulo_cycle_unsigned(pid, 25));
-        if matches!(opts.cycle_opts, Wild3GeneratorCycleOpts::CycleAtMomentWithEmuLog { .. })
-            && let CycleFrameCounter::DetailedBreakdown { current_cycle, .. } = &cycle_counter
+        cycle_counter
+            .add_cycle(retry_pid_cycle + gender_check_cycles + calc_modulo_cycle_unsigned(pid, 25));
+        if matches!(
+            opts.cycle_opts,
+            Wild3GeneratorCycleOpts::CycleAtMomentWithEmuLog { .. }
+        ) && let CycleFrameCounter::DetailedBreakdown { current_cycle, .. } = &cycle_counter
         {
             rng.jump(current_cycle.frame - frame_before);
         }
@@ -604,8 +610,9 @@ fn generate_personality(
         };
     }
 
-    cycle_counter.add_cycle(calc_modulo_cycle_unsigned(pid, 25)
-        + if required_gender.is_some() { 246 } else { 154 });
+    cycle_counter.add_cycle(
+        calc_modulo_cycle_unsigned(pid, 25) + if required_gender.is_some() { 246 } else { 154 },
+    );
     CreateMon(rng, gen_data, cycle_counter, pid, results)
 }
 
@@ -739,6 +746,8 @@ fn TryGenerateWildMon(
         cycle_counter.add_cycle(67);
     } else if opts.action == Wild3Action::SweetScentWater {
         cycle_counter.add_cycle(59);
+    } else if opts.action == Wild3Action::RockSmash {
+        cycle_counter.add_cycle(56);
     }
     let slots = map_data.slots_by_action.get(opts.action as usize)?;
     let index = if opts.action == Wild3Action::SweetScentLand {
@@ -776,6 +785,14 @@ fn TryGenerateWildMon(
     };
     let encounter = slots.get(index)?;
     let level = ChooseWildMonLevel(rng, encounter, opts.lead, cycle_counter);
+    if opts.action == Wild3Action::RockSmash {
+        // Repel and Keen Eye/Intimidate checks run after level selection.
+        if opts.lead == Gen3Lead::Egg {
+            cycle_counter.add_cycle(435);
+        } else {
+            cycle_counter.add(6180, 16);
+        }
+    }
     Some((Wild3EncounterIndex::Slot((index as u8).into()), level))
 }
 
@@ -793,6 +810,8 @@ fn TryGetAbilityInfluencedWildMonIndex(
     } else {
         let ability_cycles = if lead == Gen3Lead::Static {
             if steel { 5953 } else { 5936 }
+        } else if lead == Gen3Lead::MagnetPull {
+            if steel { 6009 } else { 5992 }
         } else if steel {
             6041
         } else {
@@ -835,9 +854,21 @@ fn TryGetRandomWildMonIndexByType(
         return None;
     }
     let value = rng.rand::<u16>();
-    // Calibrated scan and return overhead for the twelve-slot Route 110 land table.
-    cycle_counter.add_cycle(1402);
-    cycle_counter.add_cycle(calc_modulo_cycle_unsigned(value as u32, matching.len() as u32));
+    // Primary-type matches skip the second comparison in the twelve-slot land scan.
+    let wanted_type = if steel {
+        crate::PokemonType::Steel
+    } else {
+        crate::PokemonType::Electric
+    };
+    let primary_matches = slots
+        .iter()
+        .filter(|slot| slot.species_data.species.personal().types[0] == wanted_type)
+        .count();
+    cycle_counter.add_cycle(1444 - 7 * primary_matches);
+    cycle_counter.add_cycle(calc_modulo_cycle_unsigned(
+        value as u32,
+        matching.len() as u32,
+    ));
     Some(matching[value as usize % matching.len()])
 }
 
@@ -864,9 +895,13 @@ fn choose_index(
         EncounterSlot::from_rand((value % 100) as u8, EncounterSlot::gen3_thresholds(action));
     let selection_cycles = if action == Wild3Action::SweetScentLand {
         // Each unsuccessful land-slot threshold check adds 18 cycles; the last slot is a fallback.
-        if slot == EncounterSlot::Slot11 { 325 } else { 153 + 18 * slot as usize }
+        if slot == EncounterSlot::Slot11 {
+            325
+        } else {
+            153 + 18 * slot as usize
+        }
     } else {
-        234
+        if slot == EncounterSlot::Slot4 { 211 } else { 147 + 18 * slot as usize }
     };
     cycle_counter.add_cycle(selection_cycles);
     slot as usize
@@ -908,6 +943,8 @@ fn ChooseWildMonLevel(
         cycle_counter.add(6118, 16);
     } else if lead == Gen3Lead::Static {
         cycle_counter.add(6091, 16);
+    } else if lead == Gen3Lead::MagnetPull {
+        cycle_counter.add(6147, 16);
     } else {
         cycle_counter.add(6179, 16);
     }
@@ -1200,8 +1237,14 @@ fn get_wild_method5_retry_count(
     let retry_cycles = |pid| {
         calc_modulo_cycle_unsigned(pid, 25)
             + if gen_data.required_gender.is_some() {
-                144 + if Nature::from_pid(pid) == gen_data.required_nature { 92 } else { 0 }
-            } else { 140 }
+                144 + if Nature::from_pid(pid) == gen_data.required_nature {
+                    92
+                } else {
+                    0
+                }
+            } else {
+                140
+            }
     };
     let mut cycle_increment = retry_cycles(initial_pid);
     let mut unshifted_pid_accepted = false;
@@ -1229,7 +1272,11 @@ fn get_wild_method5_retry_count(
                 });
             if unshifted_pid_accepted {
                 cycle_increment += calc_modulo_cycle_unsigned(unshifted_pid, 25)
-                    + if gen_data.required_gender.is_some() { 246 } else { 154 };
+                    + if gen_data.required_gender.is_some() {
+                        246
+                    } else {
+                        154
+                    };
             }
         }
         unshifted_pid_low = pid_high;

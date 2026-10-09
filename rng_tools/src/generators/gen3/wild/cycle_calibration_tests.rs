@@ -81,6 +81,8 @@ fn calibrate_cycles(
         let initial = record.cycle_at_moments.first().expect("No logged moments");
         let initial_moment = if opts.action.is_fishing() {
             Moment::FishingWildEncounter
+        } else if opts.action == Wild3Action::RockSmash {
+            Moment::RockSmashWildEncounter
         } else {
             Moment::TrySweetScentEncounter
         };
@@ -242,6 +244,44 @@ fn static_route110_cycle_calibration() {
     map_cycle_calibration(Gen3Lead::Static, "static_route110.json", &map_data);
 }
 
+#[test]
+fn magnet_pull_new_mauville_entrance_cycle_calibration() {
+    let land_slots = [
+        (Species::Voltorb, 24),
+        (Species::Magnemite, 24),
+        (Species::Voltorb, 25),
+        (Species::Magnemite, 25),
+        (Species::Voltorb, 23),
+        (Species::Magnemite, 23),
+        (Species::Voltorb, 26),
+        (Species::Magnemite, 26),
+        (Species::Voltorb, 22),
+        (Species::Magnemite, 22),
+        (Species::Voltorb, 22),
+        (Species::Magnemite, 22),
+    ];
+    let map_data = Wild3MapGameData {
+        map_id: "MAP_NEW_MAUVILLE_ENTRANCE".into(),
+        map_internal_idx: 71,
+        slots_by_action: vec![
+            land_slots
+                .into_iter()
+                .map(|(species, level)| Wild3EncounterGameData {
+                    min_level: level,
+                    max_level: level,
+                    species_data: SpeciesData { species },
+                })
+                .collect(),
+        ],
+        ..Wild3MapGameData::default()
+    };
+    map_cycle_calibration(
+        Gen3Lead::MagnetPull,
+        "magnet_pull_new_mauville_entrance.json",
+        &map_data,
+    );
+}
+
 fn route119_cycle_calibration(lead: Gen3Lead, data_file: &str) {
     let land_slots = [
         (Species::Zigzagoon, 25),
@@ -381,6 +421,70 @@ fn route102_old_rod_cycle_calibration(lead: Gen3Lead, data_file: &str) {
     );
 }
 
+#[test]
+fn magnet_pull_route111_rock_smash_cycle_calibration() {
+    route111_rock_smash_cycle_calibration(Gen3Lead::MagnetPull, "magnet_pull_route111.json");
+}
+
+#[test]
+fn vanilla_route111_rock_smash_cycle_calibration() {
+    route111_rock_smash_cycle_calibration(Gen3Lead::Vanilla, "vanilla_route111.json");
+}
+
+fn route111_rock_smash_cycle_calibration(lead: Gen3Lead, data_file: &str) {
+    let rock_smash_slots = [(10, 15), (5, 10), (15, 20), (15, 20), (15, 20)];
+    let mut slots_by_action = vec![vec![]; Wild3Action::RockSmash as usize + 1];
+    slots_by_action[Wild3Action::RockSmash as usize] = rock_smash_slots
+        .into_iter()
+        .map(|(min_level, max_level)| Wild3EncounterGameData {
+            min_level,
+            max_level,
+            species_data: SpeciesData { species: Species::Geodude },
+        })
+        .collect();
+    let map_data = Wild3MapGameData {
+        map_id: "MAP_ROUTE111".into(),
+        map_internal_idx: 6,
+        slots_by_action,
+        rock_smash_rate: 20,
+        ..Wild3MapGameData::default()
+    };
+    map_action_cycle_calibration(
+        lead,
+        Wild3Action::RockSmash,
+        data_file,
+        &map_data,
+    );
+}
+
+#[test]
+fn vanilla_safari_north_east_rock_smash_cycle_calibration() {
+    let rock_smash_slots = [(25, 30), (20, 25), (30, 35), (30, 35), (35, 40)];
+    let mut slots_by_action = vec![vec![]; Wild3Action::RockSmash as usize + 1];
+    slots_by_action[Wild3Action::RockSmash as usize] = rock_smash_slots
+        .into_iter()
+        .map(|(min_level, max_level)| Wild3EncounterGameData {
+            min_level,
+            max_level,
+            species_data: SpeciesData { species: Species::Shuckle },
+        })
+        .collect();
+    let map_data = Wild3MapGameData {
+        map_id: "MAP_SAFARI_ZONE_NORTHEAST".into(),
+        map_internal_idx: 98,
+        slots_by_action,
+        rock_smash_rate: 25,
+        is_safari: true,
+        ..Wild3MapGameData::default()
+    };
+    map_action_cycle_calibration(
+        Gen3Lead::Vanilla,
+        Wild3Action::RockSmash,
+        "vanilla_safari_north_east.json",
+        &map_data,
+    );
+}
+
 fn map_cycle_calibration(lead: Gen3Lead, data_file: &str, map_data: &Wild3MapGameData) {
     map_action_cycle_calibration(lead, Wild3Action::SweetScentLand, data_file, map_data);
 }
@@ -395,6 +499,7 @@ fn map_action_cycle_calibration(
         Wild3Action::SweetScentLand => "sweet_scent_land",
         Wild3Action::SweetScentWater => "sweet_scent_water",
         Wild3Action::OldRod => "old_fishing",
+        Wild3Action::RockSmash => "rock_smash",
         _ => panic!("Unsupported calibration action: {action:?}"),
     };
     let opts = Wild3GeneratorOptions {

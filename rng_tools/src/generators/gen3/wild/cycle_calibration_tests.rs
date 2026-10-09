@@ -19,16 +19,30 @@ struct CalibrationRecord {
     cycle_at_moments: Vec<CycleFrameMoment>,
 }
 
-// Compare consecutive increments; absolute emulator frame numbers cancel out.
-fn cycle_score(generated: &[CycleFrameMoment], logged: &[CycleFrameMoment]) -> (u64, usize) {
+// Compare CPU-work increments, excluding recorded VBlank time from each timeline.
+fn cycle_score(
+    generated: &[CycleFrameMoment],
+    logged: &[CycleFrameMoment],
+    vblank_durations: &[usize],
+) -> (u64, usize) {
     let mut transitions = std::collections::BTreeMap::<(u8, u8), [Vec<u64>; 2]>::new();
     for (source, moments) in [generated, logged].into_iter().enumerate() {
+        let initial_frame = moments.first().map_or(0, |entry| entry.frame);
         for pair in moments.windows(2) {
             let time = |entry: CycleFrameMoment| {
                 entry.frame as u64 * VBLANK_FREQ as u64 + entry.cycle as u64
             };
             let key = (pair[0].moment as u8, pair[1].moment as u8);
-            transitions.entry(key).or_default()[source].push(time(pair[1]) - time(pair[0]));
+            let vblank_cycles = (pair[0].frame - initial_frame..pair[1].frame - initial_frame)
+                .map(|frame| {
+                    vblank_durations.get(frame).copied()
+                        .unwrap_or_else(|| get_min_mid_max_vblank_cycle_duration().1) as u64
+                })
+                .sum::<u64>();
+            let cpu_cycles = (time(pair[1]) - time(pair[0]))
+                .checked_sub(vblank_cycles)
+                .expect("VBlank duration exceeds the recorded transition interval");
+            transitions.entry(key).or_default()[source].push(cpu_cycles);
         }
     }
     let mut error = 0;
@@ -97,7 +111,7 @@ fn calibrate_cycles(
         opts.cycle_opts = Wild3GeneratorCycleOpts::CycleAtMomentWithEmuLog {
             lead_cycle_spd,
             initial_cycle_at_sweet_scent: initial.cycle,
-            vblank_cycles: record.vblank_durations,
+            vblank_cycles: record.vblank_durations.clone(),
         };
         let generated = generate_wild3(Pokerng::with_jump(0, record.advance), &opts, map_data);
         let mut generated_moments = generated.cycle_counter.get_cycle_at_moments();
@@ -114,6 +128,7 @@ fn calibrate_cycles(
         let (error, increments) = cycle_score(
             &generated_moments,
             &record.cycle_at_moments,
+            &record.vblank_durations,
         );
         println!(
             "line {} advance {}: {:.2} cycles",
@@ -617,9 +632,41 @@ fn cycle_score_accounts_for_frames_and_missing_transitions() {
         CycleFrameMoment::new(Moment::CreateMon, 0, 280800),
         CycleFrameMoment::new(Moment::CreateBoxMon_RandomIvs1, 1, 110),
     ];
-    assert_eq!(cycle_score(&logged, &logged), (0, 1));
-    assert_eq!(cycle_score(&generated, &logged), (10, 1));
-    assert_eq!(cycle_score(&[], &logged), (VBLANK_FREQ as u64, 1));
+    assert_eq!(cycle_score(&logged, &logged, &[50]), (0, 1));
+    assert_eq!(cycle_score(&generated, &logged, &[50]), (10, 1));
+    assert_eq!(cycle_score(&[], &logged, &[50]), (VBLANK_FREQ as u64, 1));
+}
+
+#[test]
+fn cycle_score_excludes_vblank_when_it_moves_between_transitions() {
+    let generated = [
+        CycleFrameMoment::new(Moment::CreateMon, 0, VBLANK_FREQ - 100),
+        CycleFrameMoment::new(Moment::CreateBoxMon_RandomIvs1, 0, VBLANK_FREQ - 20),
+        CycleFrameMoment::new(Moment::CreateBoxMon_RandomIvs2, 1, 50040),
+    ];
+    let logged = [
+        CycleFrameMoment::new(Moment::CreateMon, 10, VBLANK_FREQ - 100),
+        CycleFrameMoment::new(Moment::CreateBoxMon_RandomIvs1, 11, 50010),
+        CycleFrameMoment::new(Moment::CreateBoxMon_RandomIvs2, 11, 50070),
+    ];
+    // The work intervals are [80, 60] and [110, 60], despite different VBlank placement.
+    assert_eq!(cycle_score(&generated, &logged, &[50000]), (30, 2));
+}
+
+#[test]
+fn cycle_score_subtracts_each_crossed_vblank_duration() {
+    let generated = [
+        CycleFrameMoment::new(Moment::CreateMon, 0, 0),
+        CycleFrameMoment::new(Moment::CreateBoxMon_RandomIvs1, 0, 200000),
+    ];
+    let logged = [
+        CycleFrameMoment::new(Moment::CreateMon, 10, 200000),
+        CycleFrameMoment::new(Moment::CreateBoxMon_RandomIvs1, 12, 100000),
+    ];
+    assert_eq!(
+        cycle_score(&generated, &logged, &[50000, 60000]),
+        (2 * VBLANK_FREQ as u64 - 410000, 1),
+    );
 }
 
 #[test]
@@ -636,9 +683,9 @@ fn cycle_score_weights_early_and_late_errors_equally() {
     let logged = make([0, 100, 200, 300]);
     let early = make([0, 1100, 1200, 1300]);
     let late = make([0, 100, 200, 1300]);
-    assert_eq!(cycle_score(&early, &logged), (1000, 3));
-    assert_eq!(cycle_score(&late, &logged), (1000, 3));
-    assert_eq!(cycle_score(&make([1000, 1100, 1200, 1300]), &logged), (0, 3));
+    assert_eq!(cycle_score(&early, &logged, &[]), (1000, 3));
+    assert_eq!(cycle_score(&late, &logged, &[]), (1000, 3));
+    assert_eq!(cycle_score(&make([1000, 1100, 1200, 1300]), &logged, &[]), (0, 3));
 }
 
 #[test]

@@ -485,6 +485,69 @@ fn vanilla_safari_north_east_rock_smash_cycle_calibration() {
     );
 }
 
+#[test]
+fn vanilla_safari_middle_south_dry_sour_pokeblock_cycle_calibration() {
+    safari_middle_south_pokeblock_cycle_calibration(
+        Gen3Lead::Vanilla,
+        "vanilla_safari_middle_south_dry_sour_pokeblock.json",
+        [0, 50, 0, 0, 11],
+    );
+}
+
+#[test]
+fn synchronize_brave_safari_middle_south_spicy_pokeblock_cycle_calibration() {
+    safari_middle_south_pokeblock_cycle_calibration(
+        Gen3Lead::Synchronize(crate::Nature::Brave),
+        "synchronize_brave_safari_middle_south_spicy_pokeblock.json",
+        [1, 0, 0, 0, 0],
+    );
+}
+
+fn safari_middle_south_pokeblock_cycle_calibration(
+    lead: Gen3Lead,
+    data_file: &str,
+    flavors: [u8; 5],
+) {
+    let land_slots = [
+        (Species::Oddish, 25),
+        (Species::Oddish, 27),
+        (Species::Girafarig, 25),
+        (Species::Girafarig, 27),
+        (Species::Natu, 25),
+        (Species::Doduo, 25),
+        (Species::Gloom, 25),
+        (Species::Wobbuffet, 27),
+        (Species::Pikachu, 25),
+        (Species::Wobbuffet, 27),
+        (Species::Pikachu, 27),
+        (Species::Wobbuffet, 29),
+    ];
+    let map_data = Wild3MapGameData {
+        map_id: "MAP_SAFARI_ZONE_SOUTH".into(),
+        map_internal_idx: 20,
+        slots_by_action: vec![
+            land_slots
+                .into_iter()
+                .map(|(species, level)| Wild3EncounterGameData {
+                    min_level: level,
+                    max_level: level,
+                    species_data: SpeciesData { species },
+                })
+                .collect(),
+        ],
+        is_safari: true,
+        actions_with_safari_pokeblock: vec![Wild3Action::SweetScentLand],
+        ..Wild3MapGameData::default()
+    };
+    map_pokeblock_cycle_calibration(
+        lead,
+        Wild3Action::SweetScentLand,
+        data_file,
+        &map_data,
+        Some(Wild3SafariPokeblockGenOpt::Specific(flavors)),
+    );
+}
+
 fn map_cycle_calibration(lead: Gen3Lead, data_file: &str, map_data: &Wild3MapGameData) {
     map_action_cycle_calibration(lead, Wild3Action::SweetScentLand, data_file, map_data);
 }
@@ -494,6 +557,16 @@ fn map_action_cycle_calibration(
     action: Wild3Action,
     data_file: &str,
     map_data: &Wild3MapGameData,
+) {
+    map_pokeblock_cycle_calibration(lead, action, data_file, map_data, None);
+}
+
+fn map_pokeblock_cycle_calibration(
+    lead: Gen3Lead,
+    action: Wild3Action,
+    data_file: &str,
+    map_data: &Wild3MapGameData,
+    safari_pokeblock: Option<Wild3SafariPokeblockGenOpt>,
 ) {
     let data_dir = match action {
         Wild3Action::SweetScentLand => "sweet_scent_land",
@@ -505,6 +578,7 @@ fn map_action_cycle_calibration(
     let opts = Wild3GeneratorOptions {
         lead,
         action,
+        safari_pokeblock,
         methods: vec![
             Gen3Method::Wild1,
             Gen3Method::Wild2,

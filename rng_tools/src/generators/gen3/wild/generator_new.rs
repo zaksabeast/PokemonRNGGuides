@@ -314,6 +314,12 @@ fn PickWildMonNature(
     pick_random: impl FnOnce(&mut CycleFrameCounter, &mut Pokerng) -> Nature,
 ) -> (Nature, Option<[u8; 5]>) {
     cycle_counter.on_moment_reached(Moment::PickWildMonNature);
+    if map_data.is_safari
+        && let Some((nature, used_safari_pokeblock)) =
+            pick_wild_mon_nature_safari(rng, &opts.safari_pokeblock, cycle_counter)
+    {
+        return (nature, used_safari_pokeblock);
+    }
     if opts.lead == Gen3Lead::Egg {
         cycle_counter.add_cycle(438);
     } else {
@@ -324,13 +330,6 @@ fn PickWildMonNature(
             _ => 6183,
         };
         cycle_counter.add(ability_cycles, 16);
-    }
-    if map_data.is_safari
-        && let Some((nature, used_safari_pokeblock)) =
-            pick_wild_mon_nature_safari(rng, &opts.safari_pokeblock)
-    {
-        cycle_counter.add_cycle(33728);
-        return (nature, used_safari_pokeblock);
     }
     if let Gen3Lead::Synchronize(lead_nature) = opts.lead {
         cycle_counter.on_moment_reached(Moment::PickWildMonNature_RandomTestSynchro);
@@ -1059,20 +1058,35 @@ fn handle_feebas_cycle_counter(
 fn pick_wild_mon_nature_safari(
     rng: &mut Pokerng,
     pokeblock_gen_opt: &Option<Wild3SafariPokeblockGenOpt>,
+    cycle_counter: &mut CycleFrameCounter,
 ) -> Option<(Nature, Option<[u8; 5]>)> {
-    if rand_next_u16(rng, "test_safari_zone_pokeblock", 100) % 100 >= 80 {
+    let roll = rand_next_u16(rng, "test_safari_zone_pokeblock", 100);
+    cycle_counter.add_cycle(64 + calc_modulo_cycle_unsigned(roll as u32, 100));
+    if roll % 100 >= 80 {
         return None;
     }
 
     pokeblock_gen_opt
         .as_ref()
-        .map(|pokeblock_gen_opt| calculate_nature_from_safari_pokeblock(rng, pokeblock_gen_opt))
+        .map(|pokeblock_gen_opt| {
+            let (nature, pokeblock, cycles) = calculate_safari_pokeblock_nature_and_cycles(rng, pokeblock_gen_opt);
+            cycle_counter.add_cycle(cycles);
+            (nature, pokeblock)
+        })
 }
 
 pub fn calculate_nature_from_safari_pokeblock(
     rng: &mut Pokerng,
     pokeblock_gen_opt: &Wild3SafariPokeblockGenOpt,
 ) -> (Nature, Option<[u8; 5]>) {
+    let (nature, pokeblock, _) = calculate_safari_pokeblock_nature_and_cycles(rng, pokeblock_gen_opt);
+    (nature, pokeblock)
+}
+
+fn calculate_safari_pokeblock_nature_and_cycles(
+    rng: &mut Pokerng,
+    pokeblock_gen_opt: &Wild3SafariPokeblockGenOpt,
+) -> (Nature, Option<[u8; 5]>, usize) {
     let mut all_natures_by_priority: [Nature; NATURE_COUNT] = [
         Nature::Hardy,
         Nature::Lonely,
@@ -1100,10 +1114,12 @@ pub fn calculate_nature_from_safari_pokeblock(
         Nature::Careful,
         Nature::Quirky,
     ];
+    let mut swap_count = 0;
     for i in 0..(NATURE_COUNT - 1) {
         for j in (i + 1)..NATURE_COUNT {
             if rand_next_u16(rng, "test_safari_zone_pokeblock", 2) & 1 == 1 {
                 all_natures_by_priority.swap(i, j);
+                swap_count += 1;
             }
         }
     }
@@ -1141,9 +1157,10 @@ pub fn calculate_nature_from_safari_pokeblock(
             .unwrap_or(natures_by_priority[0])
     };
 
-    match pokeblock_gen_opt {
+    let (nature, pokeblock) = match pokeblock_gen_opt {
         Wild3SafariPokeblockGenOpt::Specific(flavors) => {
-            (get_nature_from_flavors(flavors), Some(*flavors))
+            let nature = get_nature_from_flavors(flavors);
+            (nature, Some(*flavors))
         }
         Wild3SafariPokeblockGenOpt::ForSearching {
             wanted_nature,
@@ -1167,7 +1184,11 @@ pub fn calculate_nature_from_safari_pokeblock(
                 (natures_by_priority[0], None) // will be filtered out later
             }
         }
-    }
+    };
+    let nature_checks = all_natures_by_priority.iter().position(|candidate| *candidate == nature).unwrap() + 1;
+    // Calibrated shuffle overhead and scoring cost for the dry/sour Pokeblock fixture.
+    let cycles = 34114 + 6 * swap_count + 677 * nature_checks;
+    (nature, pokeblock, cycles)
 }
 
 fn simulate_wild_method2(

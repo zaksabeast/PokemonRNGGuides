@@ -283,7 +283,7 @@ fn map_cycle_calibration(lead: Gen3Lead, data_file: &str, map_data: &Wild3MapGam
         opts,
         map_data,
         &Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("src/generators/gen3/wild/cycle_calibration_data/sweet_scent")
+            .join("src/generators/gen3/wild/cycle_calibration_data/sweet_scent_land")
             .join(data_file),
     );
     println!("{data_file} ({lead:?}) mean absolute cycle increment error: {score:.2}");

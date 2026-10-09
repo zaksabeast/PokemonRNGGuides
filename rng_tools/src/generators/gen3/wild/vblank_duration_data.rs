@@ -52,3 +52,22 @@ let counts: BTreeMap<u32, usize> = BTreeMap::from([
     (69_000, 1),
 ]);
 */
+
+/*
+Meteor Falls Steven's Cave
+VBlank durations rounded down to 1,000-cycle buckets.
+let counts: BTreeMap<u32, usize> = BTreeMap::from([
+    (43_000, 1),
+    (44_000, 5),
+    (45_000, 1),
+    (47_000, 1),
+    (51_000, 3),
+    (52_000, 5),
+    (53_000, 7),
+    (54_000, 15),
+    (55_000, 18),
+    (56_000, 3),
+    (57_000, 2),
+    (62_000, 2),
+]);
+*/

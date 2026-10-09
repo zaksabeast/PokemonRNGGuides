@@ -208,9 +208,16 @@ fn SweetScentWildEncounter(
 
     // Linear wild-header lookup cost calibrated at indices 0 (744) and 33 (3625).
     cycle_counter.add_cycle(744 + 2881 * map_data.map_internal_idx / 33);
+    if opts.action == Wild3Action::SweetScentWater {
+        cycle_counter.add_cycle(443);
+    }
 
     if let Some(roamer) = TryStartRoamerEncounter(rng, opts, cycle_counter) {
         return Some(CreateRoamerMonInstance(opts, map_data, roamer));
+    }
+
+    if opts.action == Wild3Action::SweetScentWater {
+        cycle_counter.add_cycle(12);
     }
 
     if opts.action == Wild3Action::SweetScentLand
@@ -722,6 +729,8 @@ fn TryGenerateWildMon(
     cycle_counter.on_moment_reached(Moment::TryGenerateWildMon);
     if opts.action == Wild3Action::SweetScentLand {
         cycle_counter.add_cycle(67);
+    } else if opts.action == Wild3Action::SweetScentWater {
+        cycle_counter.add_cycle(59);
     }
     let slots = map_data.slots_by_action.get(opts.action as usize)?;
     let index = if opts.action == Wild3Action::SweetScentLand {
@@ -815,10 +824,14 @@ fn choose_index(
     cycle_counter: &mut CycleFrameCounter,
 ) -> usize {
     cycle_counter.add_cycle(12);
-    let moment = if action == Wild3Action::SweetScentLand {
-        Moment::ChooseWildMonIndex_Land_Random
-    } else {
-        Moment::ChooseWildMonIndex_WaterRock_Random
+    let moment = match action {
+        Wild3Action::SweetScentLand => Moment::ChooseWildMonIndex_Land_Random,
+        Wild3Action::SweetScentWater | Wild3Action::RockSmash => {
+            Moment::ChooseWildMonIndex_WaterRock_Random
+        }
+        Wild3Action::OldRod | Wild3Action::GoodRod | Wild3Action::SuperRod => {
+            Moment::ChooseWildMonIndex_Fishing_Random
+        }
     };
     cycle_counter.on_moment_reached(moment);
     let value = rng.rand::<u16>() as u32;

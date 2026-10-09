@@ -79,7 +79,12 @@ fn calibrate_cycles(
             continue;
         }
         let initial = record.cycle_at_moments.first().expect("No logged moments");
-        assert_eq!(initial.moment, Moment::TrySweetScentEncounter);
+        let initial_moment = if opts.action.is_fishing() {
+            Moment::FishingWildEncounter
+        } else {
+            Moment::TrySweetScentEncounter
+        };
+        assert_eq!(initial.moment, initial_moment);
         let lead_cycle_spd = if opts.lead == Gen3Lead::Egg {
             0
         } else {
@@ -94,6 +99,11 @@ fn calibrate_cycles(
         };
         let generated = generate_wild3(Pokerng::with_jump(0, record.advance), &opts, map_data);
         let mut generated_moments = generated.cycle_counter.get_cycle_at_moments();
+        // Fishing recordings start after the zero-cost encounter wrapper.
+        if opts.action.is_fishing() {
+            assert_eq!(generated_moments[0].moment, Moment::Fishing_StartEncounter);
+            generated_moments.remove(0);
+        }
         // The emulator logger omits PID halves inside the gender-constrained routine.
         if record.cycle_at_moments.iter().any(|entry| entry.moment == Moment::CreateMonWithGenderNatureLetter) {
             generated_moments.retain(|entry| !matches!(entry.moment,
@@ -261,9 +271,89 @@ fn route101_cycle_calibration(lead: Gen3Lead, data_file: &str) {
     map_cycle_calibration(lead, data_file, &map_data);
 }
 
+#[test]
+fn egg_route102_water_cycle_calibration() {
+    let water_slots = [
+        (Species::Marill, 20, 30),
+        (Species::Marill, 10, 20),
+        (Species::Marill, 30, 35),
+        (Species::Marill, 5, 10),
+        (Species::Goldeen, 20, 30),
+    ];
+    let map_data = Wild3MapGameData {
+        map_id: "MAP_ROUTE102".into(),
+        map_internal_idx: 1,
+        slots_by_action: vec![
+            vec![],
+            water_slots
+                .into_iter()
+                .map(|(species, min_level, max_level)| Wild3EncounterGameData {
+                    min_level,
+                    max_level,
+                    species_data: SpeciesData { species },
+                })
+                .collect(),
+        ],
+        ..Wild3MapGameData::default()
+    };
+    map_action_cycle_calibration(
+        Gen3Lead::Egg,
+        Wild3Action::SweetScentWater,
+        "egg_route102.json",
+        &map_data,
+    );
+}
+
+#[test]
+fn egg_route102_old_rod_cycle_calibration() {
+    let fishing_slots = [
+        (Species::Magikarp, 5, 10),
+        (Species::Goldeen, 5, 10),
+    ];
+    let map_data = Wild3MapGameData {
+        map_id: "MAP_ROUTE102".into(),
+        map_internal_idx: 1,
+        slots_by_action: vec![
+            vec![],
+            vec![],
+            fishing_slots
+                .into_iter()
+                .map(|(species, min_level, max_level)| Wild3EncounterGameData {
+                    min_level,
+                    max_level,
+                    species_data: SpeciesData { species },
+                })
+                .collect(),
+        ],
+        ..Wild3MapGameData::default()
+    };
+    map_action_cycle_calibration(
+        Gen3Lead::Egg,
+        Wild3Action::OldRod,
+        "egg_route102.json",
+        &map_data,
+    );
+}
+
 fn map_cycle_calibration(lead: Gen3Lead, data_file: &str, map_data: &Wild3MapGameData) {
+    map_action_cycle_calibration(lead, Wild3Action::SweetScentLand, data_file, map_data);
+}
+
+fn map_action_cycle_calibration(
+    lead: Gen3Lead,
+    action: Wild3Action,
+    data_file: &str,
+    map_data: &Wild3MapGameData,
+) {
+    let data_dir = match action {
+        Wild3Action::SweetScentLand => "sweet_scent_land",
+        Wild3Action::SweetScentWater => "sweet_scent_water",
+        Wild3Action::OldRod => "old_fishing",
+        _ => panic!("Unsupported calibration action: {action:?}"),
+    };
     let opts = Wild3GeneratorOptions {
         lead,
+        action,
         methods: vec![
             Gen3Method::Wild1,
             Gen3Method::Wild2,
@@ -283,7 +373,8 @@ fn map_cycle_calibration(lead: Gen3Lead, data_file: &str, map_data: &Wild3MapGam
         opts,
         map_data,
         &Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("src/generators/gen3/wild/cycle_calibration_data/sweet_scent_land")
+            .join("src/generators/gen3/wild/cycle_calibration_data")
+            .join(data_dir)
             .join(data_file),
     );
     println!("{data_file} ({lead:?}) mean absolute cycle increment error: {score:.2}");

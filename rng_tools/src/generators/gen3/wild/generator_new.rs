@@ -625,9 +625,7 @@ fn CreateMon(
     cycle_counter.on_moment_reached(Moment::CreateMon);
     let opts = gen_data.opts;
 
-    // The successful nature check is counted before CreateMon.
-    // Include the shared setup overhead; substructure initialization has variable cost.
-    let method2_range = 100 * calc_modulo_cycle_unsigned(pid, 24) + 38500;
+    let method2_range = create_mon_to_random_ivs_cycle_count(pid);
 
     if opts.methods.contains(&Gen3Method::Wild2)
         && cycle_counter.can_generate_method(method2_range)
@@ -1336,6 +1334,21 @@ fn get_wild_method5_retry_count(
     );
 
     (retry_count, cycle_increment, Some((pid, ivs)))
+}
+
+// Before the first IV roll, eight encrypted setters contribute 96 GetSubstruct
+// calls and the initial checksum contributes four. The successful nature check
+// is already counted before CreateMon. Permutation costs use median residuals
+// from unique PID/species samples with (pid / 24) % 5 != 0; the rest were held out.
+fn create_mon_to_random_ivs_cycle_count(pid: u32) -> usize {
+    const FIXED_CYCLES: usize = 37807;
+    const PERMUTATION_CYCLES: [usize; 24] = [
+        1245, 965, 1257, 1296, 960, 1187, 1092, 1482, 1449, 1505, 1483, 1047,
+        487, 532, 350, 549, 350, 577, 0, 768, 611, 350, 798, 50,
+    ];
+    100 * calc_modulo_cycle_unsigned(pid, 24)
+        + FIXED_CYCLES
+        + PERMUTATION_CYCLES[(pid % 24) as usize]
 }
 
 // Three IV setters each perform twelve GetSubstruct calls. The table models

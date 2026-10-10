@@ -15,9 +15,13 @@ pub fn generate_wild3_for_test(
     map: &Wild3MapGameData,
 ) -> Wild3GeneratorResults {
     let new = generate_wild3_new(rng, opts, map);
-    if !matches!(opts.cycle_opts, Wild3GeneratorCycleOpts::Searching {
-        generate_even_if_impossible: false, ..
-    }) {
+    if !matches!(
+        opts.cycle_opts,
+        Wild3GeneratorCycleOpts::Searching {
+            generate_even_if_impossible: false,
+            ..
+        }
+    ) {
         let old = generate_wild3_old(rng, opts, map);
         assert_mon_results_eq_unordered(&new.mon_results, &old.mon_results, "Wild 3 generation");
     }
@@ -179,8 +183,7 @@ fn all_actions_and_leads_match_existing_generation() {
         };
         let old = generate_wild3_old(Pokerng::new(seed), &opts, &map);
         let new = generate_wild3_new(Pokerng::new(seed), &opts, &map);
-        let context =
-            format!("{action:?} {lead:?} {seed} {consider_cycles}");
+        let context = format!("{action:?} {lead:?} {seed} {consider_cycles}");
         assert_mon_results_eq_unordered(&new.mon_results, &old.mon_results, &context);
     }
 }

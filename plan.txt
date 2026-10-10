@@ -1,8 +1,5 @@
 plan:
 
-analyze better
-- RandomIvs1 → RandomIvs2
-
 analyze cycle at start
 
 analyze vblank

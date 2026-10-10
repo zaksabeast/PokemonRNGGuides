@@ -1,7 +1,5 @@
 plan:
 
-ask analysis for each test, where is the largest error.
-
 analyze better
 - RandomIvs1 → RandomIvs2
 

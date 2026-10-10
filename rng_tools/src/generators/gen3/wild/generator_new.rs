@@ -645,8 +645,7 @@ fn CreateMon(
     cycle_counter.on_moment_reached(Moment::CreateBoxMon_RandomIvs1);
     let iv1 = rand_next_u16(&mut rng, "iv1_wild1or4", 1);
 
-    // between CreateBoxMon_ivs1 and CreateBoxMon_ivs2
-    let method4_range = 36 * calc_modulo_cycle_unsigned(pid, 24) + 11800;
+    let method4_range = random_ivs_cycle_count(pid);
 
     if opts.methods.contains(&Gen3Method::Wild4)
         && cycle_counter.can_generate_method(method4_range)
@@ -1337,6 +1336,20 @@ fn get_wild_method5_retry_count(
     );
 
     (retry_count, cycle_increment, Some((pid, ivs)))
+}
+
+// Three IV setters each perform twelve GetSubstruct calls. The table models
+// the remaining permutation-dependent work, calibrated from median residuals
+// on unique PID samples where (pid / 24) % 5 != 0; the rest were held out.
+fn random_ivs_cycle_count(pid: u32) -> usize {
+    const FIXED_CYCLES: usize = 11602;
+    const PERMUTATION_CYCLES: [usize; 24] = [
+        293, 239, 311, 311, 355, 451, 431, 383, 488, 561, 383, 342,
+        68, 59, 59, 203, 200, 59, 0, 131, 224, 124, 131, 92,
+    ];
+    36 * calc_modulo_cycle_unsigned(pid, 24)
+        + FIXED_CYCLES
+        + PERMUTATION_CYCLES[(pid % 24) as usize]
 }
 
 fn passes_pid_filter_internal(gen_data: &GenTmpData, pid: u32) -> bool {

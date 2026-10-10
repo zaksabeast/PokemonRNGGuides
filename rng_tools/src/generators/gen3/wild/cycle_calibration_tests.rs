@@ -19,6 +19,25 @@ struct CalibrationRecord {
     cycle_at_moments: Vec<CycleFrameMoment>,
 }
 
+// Keep the same PID endpoints per frame as the compact calibration recordings.
+fn important_moments(moments: &[CycleFrameMoment]) -> Vec<CycleFrameMoment> {
+    let mut bounds = std::collections::BTreeMap::new();
+    for (idx, entry) in moments.iter().enumerate() {
+        if matches!(entry.moment,
+            Moment::CreateMonWithNature_RandomPidLow | Moment::CreateMonWithNature_RandomPidHigh)
+        {
+            let key = (entry.frame, entry.moment as u8);
+            bounds.entry(key).or_insert((idx, idx)).1 = idx;
+        }
+    }
+    moments.iter().enumerate().filter_map(|(idx, entry)| {
+        match bounds.get(&(entry.frame, entry.moment as u8)) {
+            Some(&(first, last)) if idx != first && idx != last => None,
+            _ => Some(*entry),
+        }
+    }).collect()
+}
+
 // Compare CPU-work increments, excluding recorded VBlank time from each timeline.
 fn cycle_score(
     generated: &[CycleFrameMoment],
@@ -27,6 +46,7 @@ fn cycle_score(
 ) -> (u64, usize) {
     let mut transitions = std::collections::BTreeMap::<(u8, u8), [Vec<u64>; 2]>::new();
     for (source, moments) in [generated, logged].into_iter().enumerate() {
+        let moments = important_moments(moments);
         let initial_frame = moments.first().map_or(0, |entry| entry.frame);
         for pair in moments.windows(2) {
             let time = |entry: CycleFrameMoment| {
@@ -57,7 +77,10 @@ fn cycle_score(
             count += 1;
         }
     }
-    (error, count)
+    // Compressed PID spans still represent all of the generated RNG transitions.
+    // Preserve their weight so removing intermediate log entries does not raise
+    // the mean error solely by shrinking the denominator.
+    (error, count.max(generated.len().saturating_sub(1)))
 }
 
 fn has_pid_frame_change(moments: &[CycleFrameMoment]) -> bool {
@@ -782,4 +805,21 @@ fn pid_frame_change_filter_checks_both_directions() {
         CycleFrameMoment::new(Moment::CreateBoxMon_RandomIvs2, 11, 54000),
     ]));
     assert!(!has_pid_frame_change(&[]));
+}
+#[test]
+fn cycle_score_preserves_compressed_pid_transition_weight() {
+    let low = Moment::CreateMonWithNature_RandomPidLow;
+    let high = Moment::CreateMonWithNature_RandomPidHigh;
+    let generated = [
+        CycleFrameMoment::new(low, 0, 100),
+        CycleFrameMoment::new(high, 0, 180),
+        CycleFrameMoment::new(low, 0, 1100),
+        CycleFrameMoment::new(high, 0, 1180),
+        CycleFrameMoment::new(low, 0, 2100),
+        CycleFrameMoment::new(high, 0, 2180),
+    ];
+    let mut logged = important_moments(&generated);
+    logged[2].cycle += 30;
+    logged[3].cycle += 30;
+    assert_eq!(cycle_score(&generated, &logged, &[]), (30, 5));
 }

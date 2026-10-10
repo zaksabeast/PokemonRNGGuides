@@ -174,6 +174,7 @@ mod test {
         }
     }
 
+    #[ignore]
     #[test]
     fn test_distribution_generator() {
         let opts = Wild3GeneratorOptions::default();

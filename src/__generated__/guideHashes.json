@@ -756,7 +756,7 @@
     "lastUpdated": null
   },
   "/misc-3ds-ips-luma-citra/": {
-    "hash": "eef2b9229c1529c7eadafef0b33f72b960532f2dae30a44fae08df1ce6bc5d40",
+    "hash": "b93d7edb44ef09efbac20eb037aa12ac58a3f3d672263c21bfce0ccfab335bee",
     "lastUpdated": null
   },
   "/misc-3ds-island-scan-sm/": {
@@ -794,6 +794,10 @@
   "/ntr-helper-usage/": {
     "hash": "4735c7bd654fa4969f7d90ca1d349688c0dcb799314da395f4930a6eb8916746",
     "lastUpdated": null
+  },
+  "/offline-bank-transporter-mod/": {
+    "hash": "c70c0c0387c968e6f660b4075cc7d0d93b49b5a660a074cfc11f581c727ecf41",
+    "lastUpdated": "2026-10-11"
   },
   "/omega-ruby-and-alpha-sapphire/": {
     "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
@@ -1104,11 +1108,11 @@
     "lastUpdated": "2026-10-03"
   },
   "/transporter-patches/": {
-    "hash": "cb48e3c061d18eca465130f69ed363fae4d3bb518c1c6bd717060df833b881bc",
-    "lastUpdated": null
+    "hash": "c70c0c0387c968e6f660b4075cc7d0d93b49b5a660a074cfc11f581c727ecf41",
+    "lastUpdated": "2026-10-11"
   },
   "/transporter-rng-offline/": {
-    "hash": "c9722faef3b816d8b224fb9486fdf6b43f4c21a2cba91dd1b20bee662d1a1f71",
+    "hash": "bf4e5b4e6696b4aef59869a17373389604c39ed14578e41a1a7546fc3f36bfea",
     "lastUpdated": null
   },
   "/transporter-rng/": {

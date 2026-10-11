@@ -153,9 +153,10 @@ const gameMenu = [
     label: "3DS",
     icon: <CategoryIcon name={consoleIcons["3DS"]} />,
     items: [
+      { label: "Dream Radar", href: "/dream-radar/" },
       {
-        label: "Transporter and Dream Radar",
-        href: "/transporter-dream-radar/",
+        label: "Bank and Transporter",
+        href: "/bank-transporter/",
       },
       { label: "X and Y", href: "/x-and-y/" },
       {
@@ -169,11 +170,12 @@ const gameMenu = [
       },
     ],
     categories: [
+      "Dream Radar",
+      "Bank and Transporter",
       "X and Y",
       "Omega Ruby and Alpha Sapphire",
       "Sun and Moon",
       "Ultra Sun and Ultra Moon",
-      "Transporter and Dream Radar",
     ],
   }),
   createMenu({

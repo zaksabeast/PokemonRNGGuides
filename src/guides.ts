@@ -17,7 +17,8 @@ export type InternalGuide = Guide & { meta: InternalGuideMeta };
 export const categoryOwners: Record<Category, Route> = {
   Home: "/",
   "Gold, Silver, Crystal": "/crystal/",
-  "Transporter and Dream Radar": "/transporter-dream-radar/",
+  "Dream Radar": "/dream-radar/",
+  "Bank and Transporter": "/bank-transporter/",
   "Ruby and Sapphire": "/ruby-and-sapphire/",
   Gamecube: "/gamecube/",
   "FireRed and LeafGreen": "/fire-red-and-leaf-green/",
@@ -108,7 +109,10 @@ export const getGuide = (slug: GuideSlug) => {
 export type Category = tst.L.UnionOf<typeof categories>;
 
 const routeToCategory = {
-  "/transporter-dream-radar/": ["Transporter and Dream Radar"],
+  // transporter-dream-radar is deprecated, but we still need to support it for legacy links
+  "/transporter-dream-radar/": ["Bank and Transporter", "Dream Radar"],
+  "/bank-transporter/": ["Bank and Transporter"],
+  "/dream-radar/": ["Dream Radar"],
   "/legends-arceus/": ["Legends Arceus"],
   "/crystal/": ["Gold, Silver, Crystal"],
   "/ruby-and-sapphire/": ["Ruby and Sapphire", "GBA Technical Documentation"],

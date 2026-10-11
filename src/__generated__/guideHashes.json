@@ -19,6 +19,10 @@
     "hash": "798ac0b1417b3ef7d3a9803fc0d479fb99b8cd29e54083e8a40fc6d28f7027e3",
     "lastUpdated": null
   },
+  "/bank-transporter/": {
+    "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
+    "lastUpdated": null
+  },
   "/bdsp-advance-rng/": {
     "hash": "ad1981be0f5e961ab83b3858a7b6dee676d39df9b77fcb0ce2713868f96981d1",
     "lastUpdated": "2026-04-28"
@@ -36,15 +40,15 @@
     "lastUpdated": null
   },
   "/black-2-and-white-2/": {
-    "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",
+    "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
     "lastUpdated": "2026-10-03"
   },
   "/black-and-white/": {
-    "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",
+    "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
     "lastUpdated": "2026-10-03"
   },
   "/brilliant-diamond-and-shining-pearl/": {
-    "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",
+    "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
     "lastUpdated": "2026-10-03"
   },
   "/bw-calibration/": {
@@ -120,7 +124,7 @@
     "lastUpdated": "2026-03-29"
   },
   "/crystal/": {
-    "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",
+    "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
     "lastUpdated": "2026-10-03"
   },
   "/de-e-tips-rng/": {
@@ -208,7 +212,7 @@
     "lastUpdated": "2026-03-20"
   },
   "/diamond-pearl-and-platinum/": {
-    "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",
+    "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
     "lastUpdated": "2026-10-03"
   },
   "/dppt-3ds-rng/": {
@@ -252,11 +256,15 @@
     "lastUpdated": null
   },
   "/dream-radar-cart-patches/": {
-    "hash": "e1c30e6d0880819afddc7495a7e90287bf97bb97d4f77b23104985943fa9ae6e",
+    "hash": "d1ebca2cdac49eeb2030f50dca78c76879c8d438ae38510f3b20338ebc6ddd2d",
     "lastUpdated": "2026-03-18"
   },
   "/dream-radar-patches/": {
-    "hash": "5ac5349d4f61e7b8c39da64b4432494a85461ea35a9ce66de7a16f25e5efc858",
+    "hash": "1c6b9779ce606a977458e0f723db34cfb0d2bd377e897f73cc0d93685ae0c594",
+    "lastUpdated": null
+  },
+  "/dream-radar/": {
+    "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
     "lastUpdated": null
   },
   "/e-tips-rng/": {
@@ -332,7 +340,7 @@
     "lastUpdated": "2026-10-03"
   },
   "/emerald/": {
-    "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",
+    "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
     "lastUpdated": "2026-10-03"
   },
   "/emu-bw-egg/": {
@@ -340,7 +348,7 @@
     "lastUpdated": "2026-03-24"
   },
   "/emulator-b2w2-dream-radar/": {
-    "hash": "174126c16f6f9ba79718cf80f1619eac35ea3e491159087a87c3576fa0eb23fe",
+    "hash": "f9a1bba1368f30b06dff3d11be81a8aef6edca2aa8cf902a6ebf4cbb743924b8",
     "lastUpdated": null
   },
   "/emulator-b2w2-runasdate-inital-seed/": {
@@ -532,7 +540,7 @@
     "lastUpdated": "2026-07-15"
   },
   "/fire-red-and-leaf-green/": {
-    "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",
+    "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
     "lastUpdated": "2026-10-03"
   },
   "/fr-bdsp-advance-rng/": {
@@ -564,7 +572,7 @@
     "lastUpdated": null
   },
   "/gamecube/": {
-    "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",
+    "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
     "lastUpdated": "2026-10-03"
   },
   "/gba-methods-lead-impact/": {
@@ -612,7 +620,7 @@
     "lastUpdated": "2026-03-27"
   },
   "/heart-gold-and-soul-silver/": {
-    "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",
+    "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
     "lastUpdated": "2026-10-03"
   },
   "/help-translate/": {
@@ -732,7 +740,7 @@
     "lastUpdated": "2026-04-13"
   },
   "/legends-arceus/": {
-    "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",
+    "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
     "lastUpdated": "2026-10-03"
   },
   "/meteor-jirachi/": {
@@ -760,7 +768,7 @@
     "lastUpdated": "2026-03-25"
   },
   "/misc-3ds-transporter-nature-tables/": {
-    "hash": "3b163d3015aa86c409d8e00cb08892f874ce136775ae2e4aaca911931709eefd",
+    "hash": "5fce2d59bf4e9bbb15590306fc10bfae1f1754963b5756d5690ee6baa096731a",
     "lastUpdated": null
   },
   "/misc-dolphin-connect-vba/": {
@@ -788,7 +796,7 @@
     "lastUpdated": null
   },
   "/omega-ruby-and-alpha-sapphire/": {
-    "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",
+    "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
     "lastUpdated": "2026-10-03"
   },
   "/oras-mirage-spots/": {
@@ -1068,7 +1076,7 @@
     "lastUpdated": null
   },
   "/ruby-and-sapphire/": {
-    "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",
+    "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
     "lastUpdated": "2026-10-03"
   },
   "/sinnoh-map/": {
@@ -1080,11 +1088,11 @@
     "lastUpdated": "2026-03-25"
   },
   "/sun-and-moon/": {
-    "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",
+    "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
     "lastUpdated": "2026-10-03"
   },
   "/sword-and-shield/": {
-    "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",
+    "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
     "lastUpdated": "2026-10-03"
   },
   "/sysbot-lpa-mmo/": {
@@ -1092,23 +1100,23 @@
     "lastUpdated": null
   },
   "/transporter-dream-radar/": {
-    "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",
+    "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
     "lastUpdated": "2026-10-03"
   },
   "/transporter-patches/": {
-    "hash": "30bc4ec4aabf30813ab36d4bc89bd1b8f546930b711810dd246b441a078d05d6",
+    "hash": "cb48e3c061d18eca465130f69ed363fae4d3bb518c1c6bd717060df833b881bc",
     "lastUpdated": null
   },
   "/transporter-rng-offline/": {
-    "hash": "9f8f04b577ce13fbe070bba14d79c21164034273b9e12a68ea34465461297dc4",
+    "hash": "c9722faef3b816d8b224fb9486fdf6b43f4c21a2cba91dd1b20bee662d1a1f71",
     "lastUpdated": null
   },
   "/transporter-rng/": {
-    "hash": "8349057e40e034247c50dad754b847cbad8fb21cfa14392293fb427ae9749d9c",
+    "hash": "e1782232f896f9b357554c3114ac5cfbe73277e7fe50045a401c0f659f002ebe",
     "lastUpdated": null
   },
   "/ultra-sun-and-ultra-moon/": {
-    "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",
+    "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
     "lastUpdated": "2026-10-03"
   },
   "/what-is-rng/": {
@@ -1120,7 +1128,7 @@
     "lastUpdated": null
   },
   "/x-and-y/": {
-    "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",
+    "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
     "lastUpdated": "2026-10-03"
   },
   "/xdcolo-tidsid-generator/": {

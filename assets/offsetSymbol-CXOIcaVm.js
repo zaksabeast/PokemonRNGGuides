@@ -1,0 +1,1 @@
+var e=e=>e>0?`+`:e<0?`-`:``,t=t=>`${e(t)}${Math.abs(t)}`;export{t};

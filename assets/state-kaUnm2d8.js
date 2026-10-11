@@ -1,0 +1,1 @@
+import{r as e,t}from"./react-BSa0qahs.js";var n=[`Turtwig`,`Chimchar`,`Piplup`],r=[`Chikorita`,`Cyndaquil`,`Totodile`],i=[...n,...r],a=e({species:`Chikorita`}),o=()=>t(a);export{o as i,n,r,i as t};

@@ -1,0 +1,1 @@
+import{r as e}from"./react-BSa0qahs.js";var t=e({id:null});export{t};

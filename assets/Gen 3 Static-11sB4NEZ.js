@@ -1,0 +1,111 @@
+var e=`---
+- title: "Starter, Legend, and Fossil RNG"
+  description: "Starter, legend, and fossil encounters in Emerald"
+  slug: "emerald-static"
+  category: "Emerald"
+  section: "pokemon_rng"
+  variant: "retail"
+- title: "Starter, Legend, and Fossil RNG"
+  description: "Starter, legend, and fossil encounters in Ruby and Sapphire"
+  slug: "rs-static"
+  category: "Ruby and Sapphire"
+  section: "pokemon_rng"
+  variant: "retail"
+  isRoughDraft: true
+- title: "Starter, Legend, and Fossil RNG"
+  description: "Starter, legend, and fossil encounters in FireRed and LeafGreen"
+  slug: "frlg-static"
+  category: "FireRed and LeafGreen"
+  section: "pokemon_rng"
+  variant: "retail"
+  isRoughDraft: true
+---
+
+<ShowIf slug="/rs-static">
+  <Static3TargetSetupSearcher game="rs" />
+</ShowIf>
+
+<ShowIf slug="/frlg-static">
+  <Static3TargetSetupSearcher game="frlg" />
+</ShowIf>
+
+<ShowIf slug="/emerald-static">
+
+## General Overview
+
+This guide is about RNG manipulating static encounters (starter, legendary, fossil, and roamer Pokémon). Manipulating static encounters only requires 1 frame-perfect input. Calibrating is fast and reliable.
+Many static Pokémon can be captured with the Pokéball of your choice.
+
+There are some canveats however:
+
+- Not all Pokémon stats and natures combinations are possible. Most notably, a Pokémon with 6 perfects IVs generated from a static encounter can have only 4 possible natures (Calm, Docile, Modest, Timid) and it can only be shiny for 6 specific PSV (TID/SID combo).
+  - The shininess restriction can be bypassed with ACE by temporarily changing your TID/SID.
+  - [RNG-manipulated Egg Pokémon](/retail-emerald-egg) don't have nature and shininess restrictions.
+
+## Steps Overview
+
+- **Step 1:** Determine the RNG advance to obtain the target Pokémon.
+- **Step 2:** Optional: Create a Battle Video (possibly combined with Painting Reseeding) to speedup RNG manipulation attempts.
+- **Step 3:** Catch Pokémon and calibrate until obtaining the target Pokémon.
+
+If you already know your target advance and setup, you can skip to Step 2 directly. If you have already created a Battle Video, skip to Step 3.
+
+  <Stepper titles={["Find Best Setup", "Create Battle Video & More", "Catch and Calibrate"]}>
+
+  <Step step={0}>
+
+### Find Best Setup
+
+Determine the best setup (map, advance, lead) to obtain the target Pokémon.
+
+1. Fill the criterias of the Target Pokémon (ex: shiny, IVs, nature).
+1. Specify the considered setups (ex: painting reseeding).
+
+   - TID/SID are only relevant if aiming for a shiny Pokémon. How to [find your SID](/gen3-sid/).
+
+1. Press "Generate" to create a list of Pokémon respecting the criterias.
+1. Select the Target Pokémon with the lowest advances.
+
+<Static3TargetSetupSearcher_WithSetTargetSetup />
+
+  </Step>
+
+  <Step step={1}>
+
+<EmeraldStaticAceChangeSid_WithTargetSetup />
+
+### Create Battle Video
+
+Battle Video is a RNG technique to save and restore the RNG state. Using that technique, players only need to wait the full delay of their RNG manipulation once. Afterwards, each retry is very quick.
+
+After winning or losing a battle at the Battle Frontier, players can record their battle. The RNG state at the start of the battle is saved into the battle record. Players can watch their battle anywhere by opening their trainer card and selecting "Battle Record". By doing so, the current RNG state is reseeded with the RNG state at the start of the recorded battle.
+
+Creating a Battle Video is optional if Painting Reseeding is not used.
+
+Battle Video requires entering the Hall of Fame. This technique can't be used for the starter Pokémon when starting a new game. By using ACE, it is possible to respawn all static Pokémon and use RNG manipulation to catch them again.
+
+<EmeraldStaticPaintingReseeding_WithTargetSetup />
+
+  </Step>
+
+  <Step step={2}>
+
+### Catch and Calibrate
+
+<Static3Calib_WithTargetSetupAndBattleVideo />
+
+  </Step>
+
+  </ Stepper>
+
+## Coming soon
+
+- Add species-specific information (ex: on what screen to wait, tips).
+- Add ACE code to respawn Pokémon or access event Pokémon.
+
+</ShowIf>
+
+## Credits
+
+- RainingChain: Web tool and searcher.
+`;export{e as default};

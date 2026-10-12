@@ -4,8 +4,7 @@ use wasm_bindgen::prelude::*;
 
 use super::{CycleRange, VBLANK_FREQ, Wild3Action};
 use crate::gen3::{
-    COMMON_LEAD_RANGE, CycleAndModRange, FASTEST_MODULO_CYCLE_24, INFINITE_CYCLE,
-    SLOWEST_MODULO_CYCLE_24,
+    COMMON_LEAD_RANGE, CycleAndModRange, FASTEST_MODULO_CYCLE_24, SLOWEST_MODULO_CYCLE_24,
 };
 
 /*
@@ -19,20 +18,25 @@ pre_sweet_scent_cycle_range: The range of cycles before the Sweet Scent function
                               It is VBLANK_FREQ - post_sweet_scent_cycle_range.
 */
 
+/*
+TODO:
+- Improve calculate_method_probability by using real distribution, and consider the active map/audio.
+*/
+
 const MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE: usize = 55000;
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3SearcherCycleData {
     pub lead_pid_cycle_count: usize,
-    pub pre_sweet_scent_cycle_range: CycleRange<i32>,
+    pub pre_sweet_scent_cycle_range: CycleRange<usize>,
     pub method_probability: f64,
 }
 
 impl Wild3SearcherCycleData {
     pub fn new(
         lead_pid_cycle_count: usize,
-        pre_sweet_scent_cycle_start: i32,
+        pre_sweet_scent_cycle_start: usize,
         pre_sweet_scent_cycle_len: usize,
         method_probability: f64,
     ) -> Self {
@@ -220,20 +224,17 @@ pub fn calculate_ideal_lead_pid_cycle_count(post_sweet_scent_range: &CycleAndMod
 
 fn calculate_pre_sweet_scent_cycle_range(
     post_sweet_scent_range: &CycleRange<usize>,
-) -> CycleRange<i32> {
-    let pre_sweet_scent_end = VBLANK_FREQ as i32 - post_sweet_scent_range.start as i32;
-
-    if post_sweet_scent_range.len >= INFINITE_CYCLE {
-        let start = -1_000_000;
-        CycleRange::<i32> {
-            start,
-            len: (pre_sweet_scent_end - start) as usize,
-        }
-    } else {
-        let pre_sweet_scent_start = pre_sweet_scent_end - post_sweet_scent_range.len as i32;
-
-        CycleRange::from_start_len(pre_sweet_scent_start, post_sweet_scent_range.len)
+) -> CycleRange<usize> {
+    if post_sweet_scent_range.start >= VBLANK_FREQ {
+        // Impossible to hit the method. There can't be more than VBLANK_FREQ cycles between the start of the Sweet
+        // Scent function and the vblank.
+        return CycleRange::from_start_end(0, 0);
     }
+
+    let pre_sweet_scent_end = VBLANK_FREQ - post_sweet_scent_range.start;
+    let pre_sweet_scent_start = pre_sweet_scent_end.saturating_sub(post_sweet_scent_range.len);
+
+    CycleRange::from_start_end(pre_sweet_scent_start, pre_sweet_scent_end)
 }
 
 pub fn get_min_mid_max_pre_sweet_scent_cycle(action: Wild3Action) -> (usize, usize, usize) {
@@ -253,7 +254,7 @@ pub fn get_min_mid_max_vblank_cycle_duration() -> (usize, usize, usize) {
 
 #[wasm_bindgen]
 pub fn calculate_method_probability(
-    pre_sweet_scent_range: &CycleRange<i32>,
+    pre_sweet_scent_range: &CycleRange<usize>,
     action: Wild3Action,
 ) -> f64 {
     if pre_sweet_scent_range.len == 0 {
@@ -266,14 +267,8 @@ pub fn calculate_method_probability(
     let pre_sweet_scent_cycle_range = max_pre_sweet_scent_cycle - min_pre_sweet_scent_cycle;
 
     // Constant probability in the range (over-simplification of the real probability)
-    let overlap_start = std::cmp::max(
-        pre_sweet_scent_range.start as i64,
-        min_pre_sweet_scent_cycle as i64,
-    );
-    let overlap_end = std::cmp::min(
-        pre_sweet_scent_range.start as i64 + pre_sweet_scent_range.len as i64,
-        max_pre_sweet_scent_cycle as i64,
-    );
+    let overlap_start = std::cmp::max(pre_sweet_scent_range.start, min_pre_sweet_scent_cycle);
+    let overlap_end = std::cmp::min(pre_sweet_scent_range.end(), max_pre_sweet_scent_cycle);
 
     if overlap_end <= overlap_start {
         return 0.0; // No overlap

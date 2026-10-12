@@ -1,12 +1,11 @@
 import {
+  CycleAtMoment,
   Gen3Method,
   rngTools,
   Species,
   Wild3GeneratorOptions,
-  Wild3GeneratorCycleOpts,
   Wild3MethodDistributionResult,
   Wild3SearcherResultMon,
-  CycleFrameMoment,
 } from "~/rngTools";
 import { getPossibleValuesForMap } from "./dataUtils";
 import { TargetSetup } from "./wild3TargetSetupInput";
@@ -29,7 +28,7 @@ export type UiResult = FlattenIvs<
     species: Species;
     uid: number;
     method_probability: Wild3MethodDistributionResult["method_probability"];
-    pre_sweet_scent_cycle_range: Wild3MethodDistributionResult["pre_sweet_scent_cycle_range"];
+    pre_sweet_scent_cycle_ranges: Wild3MethodDistributionResult["pre_sweet_scent_cycle_ranges"];
   }
 >;
 
@@ -41,7 +40,7 @@ const convertSearcherResultToUIResult = (
     ...res.searcher_res,
     ...res.searcher_res.ivs,
     method_probability: res.method_probability,
-    pre_sweet_scent_cycle_range: res.pre_sweet_scent_cycle_range,
+    pre_sweet_scent_cycle_ranges: res.pre_sweet_scent_cycle_ranges,
     species: res.searcher_res.species,
     uid: nextUid++,
   };
@@ -51,23 +50,22 @@ const convertSearcherResultsToUIResults = (
   results: Wild3MethodDistributionResult[],
 ) => {
   return sortBy(results.map(convertSearcherResultToUIResult), [
-    (el) => el.pre_sweet_scent_cycle_range.start,
-    (el) => el.pre_sweet_scent_cycle_range.len,
+    (el) => el.pre_sweet_scent_cycle_ranges[0]?.start ?? -1,
+    (el) => el.pre_sweet_scent_cycle_ranges[0]?.len ?? 0,
   ]);
 };
 
 export type Wild3Distributions = {
   uiResults: UiResult[];
-  cycle_at_moments: CycleFrameMoment[];
+  cycle_at_moments: CycleAtMoment[];
   advanceAtSweetScent: number;
   hasError: boolean;
   idealLeadCycleSpd: number | null;
-  cycle_opts: Wild3GeneratorCycleOpts;
 };
 
 export const setupToDistributions = async (
   targetSetup: TargetSetup,
-  cycle_opts: Wild3GeneratorCycleOpts,
+  lead_cycle_speed: number,
 ): Promise<Wild3Distributions> => {
   const { canUsePokeblock } = getPossibleValuesForMap(
     targetSetup.map,
@@ -86,12 +84,15 @@ export const setupToDistributions = async (
       getGen3PkmFilterInitialValues(),
       null,
     ),
+    consider_cycles: true,
+    consider_rng_manipulated_lead_pid: true,
+    generate_even_if_impossible: true,
     using_white_flute: targetSetup.requiresWhiteFlute,
     roamer_state: targetSetup.roamerState,
     mass_outbreak_state: targetSetup.massOutbreakState,
     feebas_state: targetSetup.feebasState,
     feebas_cycles: targetSetup.feebasCycles,
-    cycle_opts,
+    lead_cycle_speed,
     safari_pokeblock:
       canUsePokeblock && targetSetup.safariPokeblock !== null
         ? {
@@ -110,21 +111,8 @@ export const setupToDistributions = async (
       advanceAtSweetScent: 0,
       hasError: true,
       idealLeadCycleSpd: null,
-      cycle_opts,
     };
   }
-
-  const timingOpts =
-    typeof cycle_opts === "object" && "CycleAtMomentWithEmuLog" in cycle_opts
-      ? cycle_opts.CycleAtMomentWithEmuLog
-      : null;
-  const leadCycleSpd = timingOpts?.lead_cycle_spd ?? (
-    typeof cycle_opts === "object" && "CycleAtMomentNoEmuLog" in cycle_opts
-      ? cycle_opts.CycleAtMomentNoEmuLog.lead_cycle_spd
-      : typeof cycle_opts === "object" && "LikelihoodForLead" in cycle_opts
-        ? cycle_opts.LikelihoodForLead.lead_cycle_spd
-        : AVERAGE_LEAD_CYCLE_SPEED
-  );
 
   const { results, cycle_at_moments } =
     await rngTools.generate_gen3_wild_distribution(
@@ -132,9 +120,6 @@ export const setupToDistributions = async (
       targetSetup.targetPaintingAdvs.after,
       opts,
       map_data,
-      leadCycleSpd,
-      timingOpts?.initial_cycle_at_sweet_scent,
-      timingOpts === null ? undefined : new Uint32Array(timingOpts.vblank_cycles),
     );
 
   const resultForTargetMethod = results.find(
@@ -153,6 +138,5 @@ export const setupToDistributions = async (
       2 ** 32,
     hasError: false,
     idealLeadCycleSpd,
-    cycle_opts,
   };
 };

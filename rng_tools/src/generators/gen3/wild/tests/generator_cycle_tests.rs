@@ -2,8 +2,8 @@ use crate::{
     EncounterSlot, Ivs, Nature, PkmFilter,
     gen3::{
         CycleRange, Gen3Lead, Gen3Method, INFINITE_CYCLE, Wild3EncounterIndex,
-        Wild3GeneratorCycleOpts, Wild3GeneratorMonResult, Wild3GeneratorOptions, Wild3MapGameData,
-        generate_wild3,
+        Wild3GeneratorMonResult, Wild3GeneratorOptions, Wild3MapGameData, generate_wild3,
+        generate_wild3_old,
     },
     rng::lcrng::Pokerng,
 };
@@ -13,10 +13,8 @@ fn test_generate_wild3_cycle_method_3() {
     let options = Wild3GeneratorOptions {
         methods: vec![Gen3Method::Wild3],
         lead: Gen3Lead::Synchronize(Nature::Serious),
-        cycle_opts: Wild3GeneratorCycleOpts::Searching {
-            generate_even_if_impossible: false,
-            consider_rng_manipulated_lead_pid: true,
-        },
+        consider_cycles: true,
+        consider_rng_manipulated_lead_pid: true,
         ..Default::default()
     };
 
@@ -32,7 +30,7 @@ fn test_generate_wild3_cycle_method_3() {
             pid: 1459093362,
             ivs: Ivs::new(13, 14, 2, 20, 14, 15),
             method: Gen3Method::Wild3,
-            cycle_range: Some(CycleRange::new(146743, 81, 80)),
+            cycle_range: Some(CycleRange::new(144256, 81, 80)),
             ..Default::default()
         },
         Wild3GeneratorMonResult {
@@ -40,11 +38,46 @@ fn test_generate_wild3_cycle_method_3() {
             pid: 3087365287,
             ivs: Ivs::new(21, 3, 3, 11, 15, 19),
             method: Gen3Method::Wild3,
-            cycle_range: Some(CycleRange::new(160649, 81, 80)),
+            cycle_range: Some(CycleRange::new(158414, 81, 80)),
             ..Default::default()
         },
     ];
     assert_eq!(result, expected_result);
+}
+
+#[test]
+fn test_generate_wild3_cycle_method_3_specified_lead_speed() {
+    let mut options = Wild3GeneratorOptions {
+        methods: vec![Gen3Method::Wild3],
+        lead: Gen3Lead::Synchronize(Nature::Serious),
+        consider_cycles: true,
+        consider_rng_manipulated_lead_pid: true,
+        ..Default::default()
+    };
+    let map = Wild3MapGameData::default();
+    let rng = Pokerng::with_advances(0, 3012);
+
+    let unrestricted = generate_wild3(rng, &options, &map).mon_results;
+    assert_eq!(unrestricted.len(), 2);
+
+    options.lead_cycle_speed = Some(100);
+    assert!(generate_wild3(rng, &options, &map).mon_results.is_empty());
+
+    options.lead_cycle_speed = Some(800);
+    assert_eq!(
+        generate_wild3(rng, &options, &map).mon_results,
+        unrestricted
+    );
+
+    options.lead_cycle_speed = Some(100);
+    options.generate_even_if_impossible = true;
+    let including_impossible = generate_wild3(rng, &options, &map).mon_results;
+    assert!(including_impossible.len() > unrestricted.len());
+    options.lead_cycle_speed = None;
+    assert_eq!(
+        generate_wild3(rng, &options, &map).mon_results,
+        including_impossible
+    );
 }
 
 #[test]
@@ -55,10 +88,8 @@ fn test_generate_wild3_cycle_method_3_no_rng_lead_pid() {
         methods: vec![Gen3Method::Wild3],
         lead: Gen3Lead::Synchronize(Nature::Serious),
         filter: PkmFilter::new_allow_all(),
-        cycle_opts: Wild3GeneratorCycleOpts::Searching {
-            generate_even_if_impossible: false,
-            consider_rng_manipulated_lead_pid: false,
-        },
+        consider_cycles: true,
+        consider_rng_manipulated_lead_pid: false,
         ..Default::default()
     };
 
@@ -75,10 +106,8 @@ fn test_generate_wild3_cycle_method_3_no_rng_lead_pid() {
 fn test_generate_wild3_cycle_method_5() {
     let options = Wild3GeneratorOptions {
         methods: vec![Gen3Method::Wild5],
-        cycle_opts: Wild3GeneratorCycleOpts::Searching {
-            generate_even_if_impossible: false,
-            consider_rng_manipulated_lead_pid: true,
-        },
+        consider_cycles: true,
+        consider_rng_manipulated_lead_pid: true,
         ..Default::default()
     };
 
@@ -94,7 +123,7 @@ fn test_generate_wild3_cycle_method_5() {
             pid: 1946911046,
             ivs: Ivs::new(4, 29, 8, 25, 7, 14),
             method: Gen3Method::Wild5,
-            cycle_range: Some(CycleRange::new(121958, 80, 19852)),
+            cycle_range: Some(CycleRange::new(119019, 80, 20212)),
             ..Default::default()
         },
         Wild3GeneratorMonResult {
@@ -102,7 +131,7 @@ fn test_generate_wild3_cycle_method_5() {
             pid: 26625321,
             ivs: Ivs::new(21, 2, 31, 1, 18, 19),
             method: Gen3Method::Wild5,
-            cycle_range: Some(CycleRange::new(141810, 80, 6888)),
+            cycle_range: Some(CycleRange::new(139231, 80, 7094)),
             ..Default::default()
         },
         Wild3GeneratorMonResult {
@@ -110,7 +139,7 @@ fn test_generate_wild3_cycle_method_5() {
             pid: 2210948146,
             ivs: Ivs::new(13, 0, 19, 1, 12, 6),
             method: Gen3Method::Wild5,
-            cycle_range: Some(CycleRange::new(148778, 80, 2988)),
+            cycle_range: Some(CycleRange::new(146325, 80, 3042)),
             ..Default::default()
         },
         Wild3GeneratorMonResult {
@@ -118,7 +147,7 @@ fn test_generate_wild3_cycle_method_5() {
             pid: 2335347696,
             ivs: Ivs::new(13, 12, 19, 0, 1, 29),
             method: Gen3Method::Wild5,
-            cycle_range: Some(CycleRange::new(151766, 80, 6877)),
+            cycle_range: Some(CycleRange::new(149367, 80, 6009)),
             ..Default::default()
         },
     ];
@@ -130,10 +159,8 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
     let options = Wild3GeneratorOptions {
         methods: vec![Gen3Method::Wild1, Gen3Method::Wild2, Gen3Method::Wild4],
         lead: Gen3Lead::Synchronize(Nature::Hardy),
-        cycle_opts: Wild3GeneratorCycleOpts::Searching {
-            generate_even_if_impossible: false,
-            consider_rng_manipulated_lead_pid: true,
-        },
+        consider_cycles: true,
+        consider_rng_manipulated_lead_pid: true,
         ..Default::default()
     };
 
@@ -143,6 +170,13 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
         &Wild3MapGameData::default(),
     )
     .mon_results;
+    let results_old = generate_wild3_old(
+        Pokerng::with_advances(0, 3001),
+        &options,
+        &Wild3MapGameData::default(),
+    )
+    .mon_results;
+    assert_eq!(results_old, result);
 
     let expected_result = vec![
         Wild3GeneratorMonResult {
@@ -150,7 +184,7 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
             pid: 3864471792,
             ivs: Ivs::new(0, 9, 4, 5, 4, 3),
             method: Gen3Method::Wild2,
-            cycle_range: Some(CycleRange::new(59690, 80, 113800)),
+            cycle_range: Some(CycleRange::new(54709, 80, 112996)),
             ..Default::default()
         },
         Wild3GeneratorMonResult {
@@ -158,7 +192,7 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
             pid: 3864471792,
             ivs: Ivs::new(26, 8, 17, 5, 4, 3),
             method: Gen3Method::Wild4,
-            cycle_range: Some(CycleRange::new(173490, 80, 38908)),
+            cycle_range: Some(CycleRange::new(167705, 80, 38211)),
             ..Default::default()
         },
         Wild3GeneratorMonResult {
@@ -166,7 +200,7 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
             pid: 3864471792,
             ivs: Ivs::new(26, 8, 17, 9, 4, 0),
             method: Gen3Method::Wild1,
-            cycle_range: Some(CycleRange::new(212398, 80, INFINITE_CYCLE)),
+            cycle_range: Some(CycleRange::new(205916, 80, INFINITE_CYCLE)),
             ..Default::default()
         },
     ];

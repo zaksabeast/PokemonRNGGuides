@@ -43,8 +43,9 @@ pub enum Moment {
     PickWildMonNature_RandomTestSynchro,
     CreateWildMon_RandomTestCuteCharm,
     PickWildMonNature_RandomPickNature,
-    CreateMonWithNature_RandomPidLow,
-    CreateMonWithNature_RandomPidHigh,
+    CreateMonWithNature_RandomPidLowFirst,
+    CreateMonWithNature_RandomPidLowLast,
+    CreateMonWithNature_RandomPidHighLast,
     CreateBoxMon_RandomIvs1,
     CreateBoxMon_RandomIvs2,
 }
@@ -71,21 +72,17 @@ impl<T> CycleRange<T> {
     pub fn from_start_len(start: T, len: usize) -> CycleRange<T> {
         CycleRange { start, len }
     }
-
-    pub fn from_start_end(start: T, end: T) -> CycleRange<T>
-    where
-        T: Copy + std::ops::Sub<Output = T> + TryInto<usize>,
-    {
-        CycleRange {
-            start,
-            len: (end - start).try_into().ok().expect("Invalid cycle range length"),
-        }
-    }
 }
 
 impl CycleRange<usize> {
     pub fn end(&self) -> usize {
         self.start + self.len
+    }
+    pub fn from_start_end(start: usize, end: usize) -> CycleRange<usize> {
+        CycleRange {
+            start,
+            len: end - start,
+        }
     }
     pub fn set_end(&mut self, end: usize) {
         self.len = end - self.start;
@@ -135,6 +132,15 @@ pub struct CycleAndModAtMoment {
     pub cycle: usize,
     pub lead_pid_mod: usize,
     pub moment: Moment,
+}
+
+impl CycleAndModAtMoment {
+    pub fn apply_lead_pid_speed(&self, lead_pid_speed: usize) -> CycleAtMoment {
+        CycleAtMoment {
+            cycle: self.cycle + lead_pid_speed * self.lead_pid_mod,
+            moment: self.moment,
+        }
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]

@@ -95,13 +95,12 @@ export const createWild3SearcherOptions = async (
     map_setups: [map_setup],
     feebas_cycles: [targetSetup.feebasCycles],
     methods: gen3Methods,
-    cycle_opts: {
-      Calibrate: {
-        lead_cycle_speed: leadCycleSpeed,
-      },
-    },
+    consider_cycles: true,
+    consider_rng_manipulated_lead_pid: false,
+    generate_even_if_impossible: values.generate_even_if_impossible,
     using_white_flute: targetSetup.requiresWhiteFlute,
     painting_opts: null,
+    lead_cycle_speed: leadCycleSpeed,
     considered_safari_pokeblocks:
       targetSetup.safariPokeblock == null
         ? "None"

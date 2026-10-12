@@ -1,14 +1,15 @@
 import React from "react";
+import { ResultColumn, Icon } from "~/components";
 import {
-  FormikNumberInput,
-  ResultColumn,
-  Icon,
-  FormikSelect,
-  RngToolForm,
-  RngToolSubmit,
-  Field,
-} from "~/components";
+  FieldRow,
+  FormNumberField,
+  FormRadioField,
+  FormSection,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
 import { rngTools, type Gen2Spread, type DivParams } from "~/rngTools";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { Translations } from "~/translations";
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";
@@ -62,67 +63,68 @@ const initialValues: FormState = {
   filter: "Shiny",
 };
 
-const getFields = (t: Translations): Field[] => {
-  return [
-    {
-      label: t["ADiv Index"],
-      input: (
-        <FormikNumberInput<FormState> name="adivIndex" numType="decimal" />
-      ),
-    },
-    {
-      label: t["SDiv Index"],
-      input: (
-        <FormikNumberInput<FormState> name="sdivIndex" numType="decimal" />
-      ),
-    },
-    {
-      label: t["Div"],
-      input: <FormikNumberInput<FormState> name="div" numType="hex" />,
-    },
-    {
-      label: t["State"],
-      input: <FormikNumberInput<FormState> name="state" numType="hex" />,
-    },
-    {
-      label: t["Start Advance"],
-      input: (
-        <FormikNumberInput<FormState> name="startAdvance" numType="decimal" />
-      ),
-    },
-    {
-      label: t["Advance Count"],
-      input: (
-        <FormikNumberInput<FormState>
-          name="advanceCount"
-          disabled
-          numType="decimal"
-        />
-      ),
-    },
-    {
-      label: t["Filter"],
-      input: (
-        <FormikSelect<FormState, "filter">
+const Fields = () => {
+  const t = useActiveRouteTranslations();
+
+  return (
+    <>
+      <FormSection title={t["Your game"]}>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="adivIndex"
+            label={t["ADiv Index"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="sdivIndex"
+            label={t["SDiv Index"]}
+            numType="decimal"
+          />
+        </FieldRow>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="div"
+            label={t["Div"]}
+            numType="hex"
+          />
+          <FormNumberField<FormState>
+            name="state"
+            label={t["State"]}
+            numType="hex"
+          />
+        </FieldRow>
+      </FormSection>
+
+      <FormSection title={t["Search"]}>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="startAdvance"
+            label={t["Start Advance"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="advanceCount"
+            label={t["Advance Count"]}
+            numType="decimal"
+            disabled
+          />
+        </FieldRow>
+      </FormSection>
+
+      <FormSection title={t["Filters"]}>
+        <FormRadioField<FormState>
           name="filter"
+          label={t["Filter"]}
+          cellSize="word"
           options={[
-            {
-              label: t["Any"],
-              value: "Any",
-            },
-            {
-              label: t["Shiny"],
-              value: "Shiny",
-            },
-            {
-              label: t["Max DV"],
-              value: "MaxDv",
-            },
+            { label: t["Any"], value: "Any" },
+            { label: t["Shiny"], value: "Shiny" },
+            { label: t["Max DV"], value: "MaxDv" },
           ]}
         />
-      ),
-    },
-  ];
+      </FormSection>
+    </>
+  );
 };
 
 type Props = {
@@ -131,7 +133,7 @@ type Props = {
 
 export const Gen2PokemonRng = ({ type }: Props) => {
   const [results, setResults] = React.useState<Gen2Spread[]>([]);
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     const generator =
       type === "starter"
         ? rngTools.crystal_generate_starters
@@ -154,8 +156,7 @@ export const Gen2PokemonRng = ({ type }: Props) => {
   };
 
   return (
-    <RngToolForm<FormState, Gen2Spread>
-      getFields={getFields}
+    <ToolForm<FormState, Gen2Spread>
       getColumns={getColumns}
       results={results}
       initialValues={initialValues}
@@ -164,6 +165,8 @@ export const Gen2PokemonRng = ({ type }: Props) => {
       submitTrackerId={
         type === "starter" ? "generate_gen2_starter" : "generate_gen2_celebi"
       }
-    />
+    >
+      <Fields />
+    </ToolForm>
   );
 };

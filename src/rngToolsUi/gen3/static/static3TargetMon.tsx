@@ -1,17 +1,13 @@
-import type { ShinyFilter } from "~/rngTools";
+import { Typography, Link } from "~/components";
 import {
-  Field,
-  FormFieldTable,
-  FormikSelect,
-  FormikSwitch,
-  Flex,
-  Typography,
-  Link,
-} from "~/components";
-import { getGen3PkmFilterFields } from "~/components/gen3PkmFilter";
-import { getPkmFilterFields } from "~/components/pkmFilter";
+  FormSection,
+  FormSelectField,
+  FormSummary,
+  FormSwitchField,
+  Gen3PkmFilter,
+  PkmFilter,
+} from "~/components/form";
 import { useWatch } from "~/hooks/form";
-import { Species } from "~/rngTools";
 import { toOptions } from "~/utils/options";
 import { z } from "zod";
 
@@ -28,13 +24,21 @@ const targetMonSchema = targetSetupSearcherSchema.extend({
   roaming: z.boolean(),
 });
 
-const getTargetMonFields = (
-  game: Static3Game,
-  selectedSpecies: Species,
-  selectedRoaming: boolean,
-  filter_shiny: ShinyFilter,
-): Field[] => {
+export const Static3TargetMon = ({ game }: { game: Static3Game }) => {
+  const watched = useWatch({
+    names: {
+      species: true,
+      roaming: true,
+      filter_shiny: true,
+    },
+    validationSchema: targetMonSchema,
+  });
+
   const possibleSpecies = getPossibleStatic3Species(game);
+  const selectedSpecies = watched.species ?? possibleSpecies[0];
+  const selectedRoaming = watched.roaming ?? false;
+  const filterShiny = watched.filter_shiny ?? "Any";
+
   const hasMultiplePossibleRoaming = hasMultiplePossibleRoamingValuesForSpecies(
     game,
     selectedSpecies,
@@ -51,72 +55,35 @@ const getTargetMonFields = (
     selectedSpecies === "Treecko" ||
     selectedSpecies === "Torchic";
 
-  return [
-    {
-      label: "Species",
-      input: (
-        <FormikSelect<FormState, "species">
-          name="species"
-          options={toOptions(possibleSpecies)}
+  return (
+    <FormSection title="Target Pokémon">
+      <FormSelectField<FormState>
+        name="species"
+        label="Species"
+        options={toOptions(possibleSpecies)}
+      />
+      {hasMultiplePossibleRoaming && (
+        <FormSwitchField<FormState> name="roaming" label="Roaming" />
+      )}
+      {selectedEncounter != null && (
+        <FormSummary
+          rows={[
+            { label: "Map", value: selectedEncounter.location },
+            { label: "Level", value: selectedEncounter.lvl },
+          ]}
         />
-      ),
-    },
-    {
-      label: "Roaming",
-      input: <FormikSwitch<FormState> name="roaming" />,
-      show: hasMultiplePossibleRoaming,
-    },
-    {
-      label: "Map",
-      input: selectedEncounter?.location,
-      show: selectedEncounter != null,
-    },
-    {
-      label: "Level",
-      input: selectedEncounter?.lvl,
-      show: selectedEncounter != null,
-    },
-    {
-      label: "",
-      input: (
-        <>
+      )}
+      {game === "emerald" && isStarter && filterShiny !== "Any" && (
+        <Typography.Text>
           Note: Use <Link href="/emerald-shiny-starter/">Shiny Starter</Link>{" "}
           webtool if you don't know your SID.
-        </>
-      ),
-      show: game === "emerald" && isStarter && filter_shiny !== "Any",
-    },
-    ...getPkmFilterFields({
-      species: selectedSpecies,
-      displayHiddenAbility: false,
-    }),
-    ...getGen3PkmFilterFields(),
-  ];
-};
-
-export const Static3TargetMon = ({ game }: { game: Static3Game }) => {
-  const { species, roaming, filter_shiny } = useWatch({
-    names: {
-      species: true,
-      roaming: true,
-      filter_shiny: true,
-    },
-    validationSchema: targetMonSchema,
-  });
-
-  return (
-    <Flex vertical gap={8}>
-      <Typography.Title level={5} p={0} m={0}>
-        Target Pokémon
-      </Typography.Title>
-      <FormFieldTable
-        fields={getTargetMonFields(
-          game,
-          species ?? getPossibleStatic3Species(game)[0],
-          roaming ?? false,
-          filter_shiny ?? "Any",
-        )}
+        </Typography.Text>
+      )}
+      <PkmFilter<FormState>
+        species={selectedSpecies}
+        displayHiddenAbility={false}
       />
-    </Flex>
+      <Gen3PkmFilter<FormState> />
+    </FormSection>
   );
 };

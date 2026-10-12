@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { useAtom } from "jotai";
 import { z } from "zod";
+import { Flex } from "~/components";
 import {
-  FormikNumberInput,
-  RngToolForm,
-  Field,
-  FormFieldTable,
-  RngToolSubmit,
-  Flex,
-  NumberInput,
-  Select,
-  Switch,
-} from "~/components";
+  FormCard,
+  FormNumberField,
+  FormSection,
+  FormSummary,
+  NumberField,
+  SelectField,
+  SwitchField,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
 import { EmbeddedRunTimer } from "~/rngToolsUi/timer/embeddedRunTimer";
 import { rngTools, Gen3TidSidShinyResult } from "~/rngTools";
 import {
@@ -108,19 +109,27 @@ export const GenerateTidSidRating = ({
     ? RECOMMEND_REDO_MSG(pct)
     : RECOMMEND_KEEP_MSG;
 
-  const fields = [
-    {
-      label: `Estimated time to determine SID for TID ${result.tid}:`,
-      tooltip:
-        "This estimation is based on how many advances in average you'll need to wait to get a shiny starter.",
-      input: estimatedTime,
-    },
-    {
-      label: "Recommendation:",
-      input: recommendation,
-    },
-  ];
-  return <FormFieldTable fields={fields} />;
+  return (
+    <FormCard>
+      <FormSummary
+        rows={[
+          {
+            label: `Estimated time to determine SID for TID ${result.tid}`,
+            tooltip: {
+              title: "Estimated time",
+              description:
+                "This estimation is based on how many advances in average you'll need to wait to get a shiny starter.",
+            },
+            value: estimatedTime,
+          },
+          {
+            label: "Recommendation",
+            value: recommendation,
+          },
+        ]}
+      />
+    </FormCard>
+  );
 };
 
 type FieldsProps = {
@@ -160,49 +169,52 @@ const TimerFields = ({
     return [5000, milliseconds];
   })();
 
-  const fields: Field[] = [
-    {
-      label: "Using dead battery?",
-      input: <Switch value={hasDeadBattery} onChange={setHasDeadBattery} />,
-    },
-    {
-      label: "Console",
-      input: (
-        <Select<Gen3Console>
-          name="console"
-          value={consoleType}
-          options={gen3ConsoleOptions}
-          onSelect={setConsoleType}
-        />
-      ),
-    },
-    {
-      label: "Offset",
-      tooltip:
-        "Number of advances between pressing the last input and the TID/SID generation.",
-      input: `${OFFSET}`,
-    },
-    {
-      label: "Human input delay (advance)",
-      tooltip:
-        "Number of RNG advances caused by human reaction time between the timer ending and pressing the input.",
-      input: (
-        <NumberInput
-          numType="decimal"
-          value={advFromOffset}
-          onChange={(value) => {
-            if (value == null || (value >= -999 && value <= 999)) {
-              setAdvFromOffset(value);
-            }
-          }}
-        />
-      ),
-    },
-  ];
-
   return (
     <Flex vertical gap={10}>
-      <FormFieldTable fields={fields} />
+      <FormCard>
+        <FormSection>
+          <SwitchField
+            label="Using dead battery?"
+            value={hasDeadBattery}
+            onChange={setHasDeadBattery}
+          />
+          <SelectField<Gen3Console>
+            name="console"
+            label="Console"
+            value={consoleType}
+            options={gen3ConsoleOptions}
+            onChange={setConsoleType}
+          />
+          <FormSummary
+            rows={[
+              {
+                label: "Offset",
+                tooltip: {
+                  title: "Offset",
+                  description:
+                    "Number of advances between pressing the last input and the TID/SID generation.",
+                },
+                value: `${OFFSET}`,
+              },
+            ]}
+          />
+          <NumberField
+            label="Human input delay (advance)"
+            tooltip={{
+              title: "Human input delay",
+              description:
+                "Number of RNG advances caused by human reaction time between the timer ending and pressing the input.",
+            }}
+            numType="decimal"
+            value={advFromOffset}
+            onChange={(value) => {
+              if (value == null || (value >= -999 && value <= 999)) {
+                setAdvFromOffset(value);
+              }
+            }}
+          />
+        </FormSection>
+      </FormCard>
       <EmbeddedRunTimer
         milliseconds={milliseconds}
         labels={["Confirm your name.", "Close Professor Birch's message."]}
@@ -227,7 +239,7 @@ export const GenerateEmeraldTidSid = () => {
     setTidSidResults([]);
   };
 
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     const idealAdvance =
       await rngTools.get_emerald_ideal_tidsid_advance_with_offset(
         hasDeadBattery,
@@ -250,13 +262,6 @@ export const GenerateEmeraldTidSid = () => {
     );
   };
 
-  const fields = [
-    {
-      label: "Obtained TID",
-      input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-    },
-  ];
-
   return (
     <Flex vertical gap={40}>
       <Flex vertical>
@@ -270,15 +275,22 @@ export const GenerateEmeraldTidSid = () => {
       </Flex>
       <Flex vertical>
         <h2>Result</h2>
-        <RngToolForm<FormState, ShinyStarterTidSidResult>
+        <ToolForm<FormState, ShinyStarterTidSidResult>
           formContainerId="generate-tid-sid-for-shiny-starter"
           validationSchema={Validator}
           initialValues={initialValues}
           submitButtonLabel="Evaluate obtained TID"
           submitTrackerId="generate_tid_sid_for_shiny_starter"
           onSubmit={onSubmit}
-          fields={fields}
-        ></RngToolForm>
+        >
+          <FormSection>
+            <FormNumberField<FormState>
+              name="tid"
+              label="Obtained TID"
+              numType="decimal"
+            />
+          </FormSection>
+        </ToolForm>
       </Flex>
       {result != null && <GenerateTidSidRating result={result} />}
     </Flex>

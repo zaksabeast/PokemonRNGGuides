@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { Button, Flex, Icon, NumberInput, Typography } from "~/components";
+import { Button, Flex, Icon, Typography } from "~/components";
+import { FormSection, NumberField, PrimaryButton } from "~/components/form";
 import { Timer } from "~/components/timer";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import {
@@ -121,17 +122,17 @@ const SingleHitFields = ({
   const [value, setValue] = React.useState<number | null>(null);
 
   return (
-    <Flex gap={8} align="center">
-      <NumberInput
+    <FormSection>
+      <NumberField
         name="timerHit"
+        label={hit.label}
+        helperText={hit.caption}
         numType={hit.numType}
         value={value}
         onChange={setValue}
-        fullFlex
       />
-      <Button
+      <PrimaryButton
         trackerId={hit.trackerId}
-        type="primary"
         disabled={value == null}
         onClick={() => {
           if (value == null) {
@@ -142,8 +143,8 @@ const SingleHitFields = ({
         }}
       >
         Calibrate
-      </Button>
-    </Flex>
+      </PrimaryButton>
+    </FormSection>
   );
 };
 
@@ -169,30 +170,25 @@ const MultiHitFields = <FieldId extends string>({
   };
 
   return (
-    <>
+    <FormSection title={hit.label} description={hit.caption}>
       {hit.fields.map((field) => (
-        <Flex key={field.id} gap={8} align="center">
-          <Typography.Text fontSize={12} color="TextSecondary" flex={1}>
-            {field.label}
-          </Typography.Text>
-          <NumberInput
-            name={`timerHit-${field.id}`}
-            numType={field.numType}
-            value={values[field.id] ?? null}
-            onChange={(value) => setValues({ ...values, [field.id]: value })}
-            fullFlex
-          />
-        </Flex>
+        <NumberField
+          key={field.id}
+          name={`timerHit-${field.id}`}
+          label={field.label}
+          numType={field.numType}
+          value={values[field.id] ?? null}
+          onChange={(value) => setValues({ ...values, [field.id]: value })}
+        />
       ))}
-      <Button
+      <PrimaryButton
         trackerId={hit.trackerId}
-        type="primary"
         disabled={!isComplete(values)}
         onClick={calibrate}
       >
         Calibrate
-      </Button>
-    </>
+      </PrimaryButton>
+    </FormSection>
   );
 };
 
@@ -201,17 +197,7 @@ type HitBoxProps<FieldId extends string> = {
 };
 
 const HitBox = <FieldId extends string>({ hit }: HitBoxProps<FieldId>) => (
-  <HitBlock vertical gap={8}>
-    <Flex vertical>
-      <Typography.Text fontSize={13} strong>
-        {hit.label}
-      </Typography.Text>
-      {hit.caption != null && (
-        <Typography.Text fontSize={11} color="TextTertiary">
-          {hit.caption}
-        </Typography.Text>
-      )}
-    </Flex>
+  <HitBlock vertical>
     {hit.type === "multi" ? (
       <MultiHitFields<FieldId> hit={hit} />
     ) : (

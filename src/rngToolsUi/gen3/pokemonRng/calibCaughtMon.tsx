@@ -1,23 +1,9 @@
 import { z } from "zod";
-import {
-  Flex,
-  FormikNumberInput,
-  FormikRadio,
-  Icon,
-  ResultColumn,
-} from "~/components";
+import { Icon, ResultColumn } from "~/components";
 import { Button } from "~/components/button";
-import { FormikSelect } from "~/components/select";
 import { nature } from "~/types/nature";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
-import { getNatureInputProps } from "~/components/pkmFilter";
-import {
-  createAllStats0,
-  gender,
-  species,
-  StatFieldsSchema,
-  getGenderFilterOptions,
-} from "~/types";
+import { createAllStats0, gender, species, StatFieldsSchema } from "~/types";
 import {
   Gen3StaticMethod,
   Gen3Method,
@@ -35,9 +21,6 @@ import { Gen3IvRating, getGen3IvRating } from "../ivRater";
 import { ability12 } from "~/types/ability";
 import { match, P } from "ts-pattern";
 import { pokerng_with_jump } from "~/utils/lcrng";
-import { MinMaxStats } from "~/types/stat";
-import { FormikAbilityFilter } from "~/components/abilityFilter";
-import { getStatFields } from "~/rngToolsUi/shared/statFields";
 import { targetAdvanceAfterPaintingTitle } from "./labels";
 
 export const validator = z
@@ -228,71 +211,6 @@ export const ivInfoColumns = (
     ],
   },
 ];
-
-export const getCommonFieldInputs = (
-  selectedSpecies: Species,
-  minMaxStats: MinMaxStats,
-  rareCandy: number,
-  setRareCandyCount: (count: number) => void,
-) => {
-  return [
-    {
-      label: "Gender",
-      input: (
-        <FormikRadio
-          name="gender"
-          options={getGenderFilterOptions(selectedSpecies, false)}
-        />
-      ),
-    },
-    {
-      label: "Ability",
-      input: (
-        <FormikAbilityFilter<FormState>
-          name="ability"
-          species={selectedSpecies}
-          permitAny={false}
-          displayHiddenAbility={false}
-          mergeFirstSecondIfSameAbility
-        />
-      ),
-    },
-    {
-      label: "Nature",
-      input: (
-        <FormikSelect<FormState, "nature">
-          name="nature"
-          {...getNatureInputProps()}
-        />
-      ),
-    },
-    ...getStatFields<FormState>(minMaxStats),
-    {
-      label: "Rare Candy",
-      input: (
-        <Flex dir="row">
-          <Button
-            trackerId="calib_set_rare_candy_to_1"
-            onClick={() => {
-              setRareCandyCount(1);
-            }}
-          >
-            {" =1 "}
-          </Button>
-          <FormikNumberInput<FormState> name="rareCandy" numType="decimal" />
-          <Button
-            trackerId="calib_add_rare_candy"
-            onClick={() => {
-              setRareCandyCount(Math.min(rareCandy + 1, 99));
-            }}
-          >
-            {" +1 "}
-          </Button>
-        </Flex>
-      ),
-    },
-  ];
-};
 
 export const getAdvDiffTxt = (
   result: CaughtMonResult,

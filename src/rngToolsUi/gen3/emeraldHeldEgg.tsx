@@ -1,21 +1,24 @@
 import { ShinyIcon } from "~/components/shiny";
 import { shinyFilterSchema, shinyFilterOptions } from "~/rngTools/shiny";
 import React from "react";
+import { ResultColumn } from "~/components";
 import {
-  FormikNumberInput,
-  ResultColumn,
-  FormikSelect,
-  Field,
-  RngToolForm,
-  RngToolSubmit,
-} from "~/components";
+  FieldRow,
+  FormNumberField,
+  FormSection,
+  FormSelectField,
+  GenderFilterField,
+  NatureFilterField,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
 import { rngTools, Gen3HeldEgg } from "~/rngTools";
 import { getGen3SpeciesOptions, species } from "~/types/species";
 import { nature } from "~/types/nature";
-import { gender, genderOptions } from "~/types/gender";
+import { gender } from "~/types/gender";
 import { z } from "zod";
 import { Translations } from "~/translations";
-import { NatureFilterInput } from "~/components/natureFilterInput";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 const getColumns = (t: Translations): ResultColumn<Gen3HeldEgg>[] => {
   return [
@@ -72,23 +75,32 @@ const initialValues: FormState = {
   filter_gender: null,
 };
 
-const getFields = (t: Translations): Field[] => {
-  return [
-    {
-      label: t["Egg species"],
-      input: (
-        <FormikSelect<FormState, "egg_species">
+const Fields = () => {
+  const t = useActiveRouteTranslations();
+
+  return (
+    <>
+      <FormSection title={t["Your game"]}>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="tid"
+            label={t["TID"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="sid"
+            label={t["SID"]}
+            numType="decimal"
+          />
+        </FieldRow>
+        <FormSelectField<FormState>
           name="egg_species"
+          label={t["Egg species"]}
           options={getGen3SpeciesOptions().byName}
         />
-      ),
-    },
-
-    {
-      label: t["Compatability"],
-      input: (
-        <FormikSelect<FormState, "compatability">
+        <FormSelectField<FormState>
           name="compatability"
+          label={t["Compatability"]}
           options={[
             {
               label: t["The two seem to get along"],
@@ -104,76 +116,61 @@ const getFields = (t: Translations): Field[] => {
             },
           ]}
         />
-      ),
-    },
-    {
-      label: t["Calibration"],
-      input: (
-        <FormikNumberInput<FormState> name="calibration" numType="decimal" />
-      ),
-    },
-    {
-      label: t["TID"],
-      input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-    },
-    {
-      label: t["SID"],
-      input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
-    },
-    {
-      label: t["Initial advances"],
-      input: (
-        <FormikNumberInput<FormState>
-          name="initial_advances"
-          numType="decimal"
-        />
-      ),
-    },
-    {
-      label: t["Max advances"],
-      input: (
-        <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
-      ),
-    },
-    {
-      label: t["Delay"],
-      input: <FormikNumberInput<FormState> name="delay" numType="decimal" />,
-    },
-    {
-      label: t["Min redraw"],
-      input: (
-        <FormikNumberInput<FormState> name="min_redraw" numType="decimal" />
-      ),
-    },
-    {
-      label: t["Max redraw"],
-      input: (
-        <FormikNumberInput<FormState> name="max_redraw" numType="decimal" />
-      ),
-    },
-    {
-      label: t["Filter shiny"],
-      input: (
-        <FormikSelect<FormState, "filter_shiny">
+      </FormSection>
+
+      <FormSection title={t["Search"]}>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="initial_advances"
+            label={t["Initial advances"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="max_advances"
+            label={t["Max advances"]}
+            numType="decimal"
+          />
+        </FieldRow>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="min_redraw"
+            label={t["Min redraw"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="max_redraw"
+            label={t["Max redraw"]}
+            numType="decimal"
+          />
+        </FieldRow>
+      </FormSection>
+
+      <FormSection title={t["Filters"]}>
+        <NatureFilterField<FormState> name="filter_nature" />
+        <GenderFilterField<FormState> name="filter_gender" />
+        <FormSelectField<FormState>
           name="filter_shiny"
+          label={t["Shiny"]}
           options={shinyFilterOptions}
         />
-      ),
-    },
-    {
-      label: t["Filter nature"],
-      input: <NatureFilterInput />,
-    },
-    {
-      label: t["Filter gender"],
-      input: (
-        <FormikSelect<FormState, "filter_gender">
-          name="filter_gender"
-          options={genderOptions}
-        />
-      ),
-    },
-  ];
+      </FormSection>
+
+      <FormSection title={t["Advanced"]}>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="calibration"
+            label={t["Calibration"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="delay"
+            label={t["Delay"]}
+            numType="decimal"
+          />
+        </FieldRow>
+      </FormSection>
+    </>
+  );
 };
 
 type Props = {
@@ -183,7 +180,7 @@ type Props = {
 export const EmeraldHeldEgg = ({ lua = false }: Props) => {
   const [results, setResults] = React.useState<Gen3HeldEgg[]>([]);
 
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     const results = await rngTools.emerald_egg_held_states({
       ...opts,
       has_lightning_rod: false,
@@ -204,8 +201,7 @@ export const EmeraldHeldEgg = ({ lua = false }: Props) => {
   };
 
   return (
-    <RngToolForm<FormState, Gen3HeldEgg>
-      getFields={getFields}
+    <ToolForm<FormState, Gen3HeldEgg>
       getColumns={getColumns}
       results={results}
       initialValues={initialValues}
@@ -213,6 +209,8 @@ export const EmeraldHeldEgg = ({ lua = false }: Props) => {
       onSubmit={onSubmit}
       formContainerId="emerald_held_egg_form"
       submitTrackerId="generate_emerald_held_egg"
-    />
+    >
+      <Fields />
+    </ToolForm>
   );
 };

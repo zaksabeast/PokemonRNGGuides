@@ -11,9 +11,27 @@ type Tokens = Record<
   colorInfoTonalBorder: string;
   colorStateLayerHover: string;
   colorStateLayerPressed: string;
+  colorOnPrimary: string;
+};
+
+type TypeStyle = {
+  fontSize: number;
+  /** Unitless, relative to fontSize */
+  lineHeight: number;
+  fontWeight: 400 | 500;
+  letterSpacing: number;
 };
 
 declare module "@emotion/react" {
+  export type TypeRole =
+    | "titleMedium"
+    | "titleSmall"
+    | "bodyLarge"
+    | "bodyMedium"
+    | "bodySmall"
+    | "labelLarge"
+    | "labelMedium";
+
   export type ScreenSize = "mobile" | "smallTablet" | "tablet" | "desktop";
 
   export type PageSize = "mobile" | "medium" | "wide";
@@ -21,7 +39,31 @@ declare module "@emotion/react" {
   // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   export interface Theme extends CustomTheme {
     token: Tokens;
+    typography: Record<TypeRole, TypeStyle>;
+    shape: {
+      medium: number;
+      large: number;
+      largeIncreased: number;
+      extraLarge: number;
+      /** Pills and circles */
+      full: number;
+    };
+    size: {
+      field: number;
+      button: number;
+      listItem: number;
+      touchTarget: number;
+      /** Smaller sizes used within `mediaQueries.dense` */
+      dense: {
+        field: number;
+        button: number;
+        listItem: number;
+        touchTarget: number;
+      };
+    };
     mediaQueries: {
+      /** Screens large enough for denser, mouse-sized controls */
+      dense: string;
       up: (size: ScreenSize) => string;
       down: (size: ScreenSize) => string;
     };

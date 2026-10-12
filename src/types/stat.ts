@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { Translation } from "~/translations";
 
 export type Stat = "hp" | "atk" | "def" | "spa" | "spd" | "spe";
 
@@ -10,6 +11,15 @@ export const stats = [
   "spd",
   "spe",
 ] as const satisfies Stat[];
+
+export const statLabels = {
+  hp: "HP",
+  atk: "Atk",
+  def: "Def",
+  spa: "SpA",
+  spd: "SpD",
+  spe: "Spe",
+} as const satisfies Record<Stat, Translation>;
 
 export type MinMax = {
   min: number;

@@ -2,17 +2,16 @@ import React from "react";
 import { z } from "zod";
 import { uniqueId } from "lodash-es";
 import { rngTools, type SeedTime4, type VoltorbFlipCard } from "~/rngTools";
+import { ResultColumn, Button } from "~/components";
 import {
-  RngToolForm,
-  FormikNumberInput,
-  MinMaxContainer,
-  FormFieldTable,
-  type Field,
-  type RngToolSubmit,
-  ResultColumn,
-  Button,
-} from "~/components";
-import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
+  FieldRow,
+  FormDateField,
+  FormNumberField,
+  FormSection,
+  FormTimeField,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import {
   rngDate,
@@ -54,40 +53,34 @@ const Fields = () => {
   const t = useActiveRouteTranslations();
   const [cards, setCards] = useAtom(cardsAtom);
 
-  const fields: Field[] = [
-    {
-      label: t["Date"],
-      input: <FormikDatePicker<FormState> name="date" />,
-    },
-    {
-      label: t["Time"],
-      input: <FormikTimePicker<FormState> name="time" />,
-    },
-    {
-      label: t["Delay"],
-      input: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState> name="minDelay" numType="decimal" />
-          }
-          max={
-            <FormikNumberInput<FormState> name="maxDelay" numType="decimal" />
-          }
-        />
-      ),
-    },
-    {
-      label: t["Board"],
-      direction: "column",
-      input: (
+  return (
+    <>
+      <FormSection>
+        <FieldRow>
+          <FormDateField<FormState> name="date" label={t["Date"]} />
+          <FormTimeField<FormState> name="time" label={t["Time"]} />
+        </FieldRow>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="minDelay"
+            label={t["Min Delay"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="maxDelay"
+            label={t["Max Delay"]}
+            numType="decimal"
+          />
+        </FieldRow>
+      </FormSection>
+
+      <FormSection title={t["Board"]}>
         <BoardSizeContainer>
           <EditableBoard cards={cards} setCards={setCards} />
         </BoardSizeContainer>
-      ),
-    },
-  ];
-
-  return <FormFieldTable fields={fields} />;
+      </FormSection>
+    </>
+  );
 };
 
 type SelectButtonProps = {
@@ -137,7 +130,7 @@ export const FindVoltorbFlipSeed = () => {
   const [results, setResults] = React.useState<Result[]>([]);
   const [cards] = useAtom(cardsAtom);
 
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     const res = await rngTools.find_voltorb_flip_seed({
       datetime: addRngTime(opts.date, {
         ...opts.time,
@@ -155,7 +148,7 @@ export const FindVoltorbFlipSeed = () => {
   };
 
   return (
-    <RngToolForm<FormState, Result>
+    <ToolForm<FormState, Result>
       getColumns={getColumns}
       results={results}
       initialValues={initialValues}
@@ -166,6 +159,6 @@ export const FindVoltorbFlipSeed = () => {
       disableGenerate={cards.some((card) => card == null)}
     >
       <Fields />
-    </RngToolForm>
+    </ToolForm>
   );
 };

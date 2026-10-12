@@ -13,6 +13,7 @@ import { Menu, ColorPicker } from "antd";
 import { settings } from "~/settings";
 import { tempThemeColorAtom } from "~/theme/tempThemeColor";
 import { useAtom } from "jotai";
+import { FormPreview } from "./formPreview";
 
 export const ExperimentsPageComponent = () => {
   const [tempThemeColor, setTempThemeColor] = useAtom(tempThemeColorAtom);
@@ -121,6 +122,11 @@ export const ExperimentsPageComponent = () => {
       <Flex vertical gap={16}>
         <Typography.Title level={4}>Sample Components</Typography.Title>
         <FormFieldTable fields={sampleComponents} />
+      </Flex>
+
+      <Flex vertical gap={16}>
+        <Typography.Title level={4}>New Form Components</Typography.Title>
+        <FormPreview />
       </Flex>
     </Flex>
   );

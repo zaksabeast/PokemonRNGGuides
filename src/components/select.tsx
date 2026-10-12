@@ -28,6 +28,13 @@ const SelectContainer = styled(Flex)(({ theme }) => ({
   },
 }));
 
+const Popup = styled.div({
+  // Hopefully helps prevent funky scroll behavior on mobile
+  ".rc-virtual-list-holder": {
+    overscrollBehavior: "contain",
+  },
+});
+
 const SelectAllContainer = styled(Flex)({
   flexFlow: "row wrap",
 });
@@ -50,6 +57,7 @@ export const Select = <ValueType,>({
   options,
   errorMessage,
   status,
+  popupRender,
   ...props
 }: SelectProps<ValueType>) => {
   const size = useSize();
@@ -80,6 +88,11 @@ export const Select = <ValueType,>({
         onSelect={onSelect}
         onChange={onChange}
         options={options}
+        // The virtual list emulates touch scrolling, which fights the page's native scrolling on mobile
+        virtual={false}
+        popupRender={(menu) => (
+          <Popup>{popupRender != null ? popupRender(menu) : menu}</Popup>
+        )}
         {...props}
         status={errorMessage != null ? "error" : status}
       />

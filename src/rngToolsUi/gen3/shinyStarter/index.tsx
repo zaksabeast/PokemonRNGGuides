@@ -4,15 +4,19 @@ import {
   Alert,
   Button,
   Flex,
-  Field,
-  NumberInput,
   ResultColumn,
   ResultTable,
   Typography,
 } from "~/components";
+import {
+  FormCard,
+  FormSection,
+  FormSummary,
+  NumberField,
+  type SummaryRow,
+} from "~/components/form";
 import { EmbeddedRunTimer } from "~/rngToolsUi/timer/embeddedRunTimer";
 import { CaughtMon } from "./caughtMon";
-import { FormFieldTable } from "~/components/formFieldTable";
 import { TargetPokemon } from "./targetPokemon";
 import { defaultMinMaxStats, MinMaxStats } from "~/types/stat";
 import { gen3ConsoleFpsMap } from "~/types/console";
@@ -174,36 +178,27 @@ export const ShinyEmeraldStarter = ({ game }: Props) => {
     Math.round((advFromTimer * 1000) / gen3ConsoleFpsMap[consoleType]),
   ];
 
-  const fields: Field[] = [
-    { label: "TID", input: <>{selectedTarget?.tid ?? 0}</> },
-    { label: "SID", input: <>{selectedTarget?.sid ?? 0}</> },
-    {
-      label: "Target advance",
-      input: <>{targetAdvance}</>,
-    },
+  const summaryRows: SummaryRow[] = [
+    { label: "TID", value: selectedTarget?.tid ?? 0 },
+    { label: "SID", value: selectedTarget?.sid ?? 0 },
+    { label: "Target advance", value: targetAdvance },
     {
       label: "Calibration",
-      tooltip: "Number of RNG advances not caused by frames. (Ex: NPC moving)",
-      input: `${CALIB}`,
+      tooltip: {
+        title: "Calibration",
+        description:
+          "Number of RNG advances not caused by frames. (Ex: NPC moving)",
+      },
+      value: `${CALIB}`,
     },
     {
       label: "Offset",
-      tooltip:
-        "Number of RNG advances between the last player input and when the start of the Pokémon generation.",
-      input: `${OFFSET}`,
-    },
-    {
-      label: "Human input delay (advance)",
-      tooltip:
-        "Number of RNG advances caused by human reaction time between the timer ending and pressing the input.",
-      input: (
-        <NumberInput
-          name="offset"
-          numType="decimal"
-          onChange={setHumanInputDelay}
-          value={humanInputDelay}
-        />
-      ),
+      tooltip: {
+        title: "Offset",
+        description:
+          "Number of RNG advances between the last player input and when the start of the Pokémon generation.",
+      },
+      value: `${OFFSET}`,
     },
   ];
 
@@ -224,7 +219,23 @@ export const ShinyEmeraldStarter = ({ game }: Props) => {
       )}
       {selectedTarget != null && targetAdvance !== 0 && (
         <>
-          <FormFieldTable fields={fields} />
+          <FormCard>
+            <FormSection>
+              <FormSummary rows={summaryRows} />
+              <NumberField
+                name="offset"
+                label="Human input delay (advance)"
+                tooltip={{
+                  title: "Human input delay",
+                  description:
+                    "Number of RNG advances caused by human reaction time between the timer ending and pressing the input.",
+                }}
+                numType="decimal"
+                onChange={setHumanInputDelay}
+                value={humanInputDelay}
+              />
+            </FormSection>
+          </FormCard>
           <EmbeddedRunTimer
             milliseconds={milliseconds}
             labels={[

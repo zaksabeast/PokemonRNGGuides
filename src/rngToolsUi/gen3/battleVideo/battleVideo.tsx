@@ -1,26 +1,24 @@
 import { Tooltip } from "antd";
 import React from "react";
 import z from "zod";
+import { Typography, ResultColumn, Button, Flex } from "~/components";
 import {
-  Typography,
-  RngToolForm,
-  RngToolSubmit,
-  ResultColumn,
-  FormikSwitch,
-  FormikNumberInput,
-  FormFieldTable,
-  FormikSelect,
-  Field,
-  Button,
-  Flex,
-} from "~/components";
+  FormNumberField,
+  FormSection,
+  FormSelectField,
+  FormSummary,
+  FormSwitchField,
+  SwitchGroup,
+  TargetAdvanceField,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
 import { EmbeddedRunTimer } from "~/rngToolsUi/timer/embeddedRunTimer";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import InstructionsNoBattleNoExisting from "./instructions_no_battle_no_existing.mdx";
 import InstructionsWithBattleNoExisting from "./instructions_with_battle_no_existing.mdx";
 import InstructionsNoBattleWithExisting from "./instructions_no_battle_with_existing.mdx";
 import InstructionsWithBattleWithExisting from "./instructions_with_battle_with_existing.mdx";
-import { FormikEmeraldTargetAdvance } from "~/components/emeraldTargetAdvance";
 import { useWatch_UNSAFE } from "~/hooks/form";
 import { match } from "ts-pattern";
 import {
@@ -132,98 +130,87 @@ const MyFields = ({
   >({
     name: "useRecommendedBuffer",
   });
-  const isUpdatingExisting = useWatch_UNSAFE<FormState, "isUpdatingExisting">({
-    name: "isUpdatingExisting",
-  });
   const targetAdvance = useWatch_UNSAFE<FormState, "targetAdvance">({
     name: "targetAdvance",
   });
 
   const existingBattleVideoAdv = fixedData?.existingBattleVideoAdv ?? 0;
 
-  const fields: Field[] = [
-    {
-      label: fixedData?.isAfterPainting
-        ? "Existing Battle Video advances after painting"
-        : "Existing Battle Video advances",
-      input: "~" + formatLargeInteger(existingBattleVideoAdv),
-      show: fixedData?.isUpdatingExisting === true,
-    },
-    {
-      label: "Target",
-      input: <FormikEmeraldTargetAdvance<FormState> name="targetAdvance" />,
-      show: fixedData == null,
-    },
-    targetAdvanceLabel(
-      targetAdvance,
-      fixedData?.isAfterPainting === false,
-      existingBattleVideoAdv,
-    ),
-    {
-      label: "Target advance after painting",
-      input: advanceAfterTxt(targetAdvance, existingBattleVideoAdv),
-      show: fixedData?.isAfterPainting === true,
-    },
-    {
-      label: "Is updating existing Battle Video?",
-      input: <FormikSwitch<FormState> name="isUpdatingExisting" />,
-      show: fixedData == null,
-    },
-    {
-      label: "Existing Battle Video",
-      input: (
-        <FormikEmeraldTargetAdvance<FormState> name="existingBattleVideoAdv" />
-      ),
-      indent: 1,
-      show: isUpdatingExisting && fixedData == null,
-    },
-    {
-      label: "Console",
-      input: (
-        <FormikSelect<FormState, "console">
+  return (
+    <FormSection>
+      <FormSummary
+        rows={[
+          {
+            label: fixedData?.isAfterPainting
+              ? "Existing Battle Video advances after painting"
+              : "Existing Battle Video advances",
+            value: "~" + formatLargeInteger(existingBattleVideoAdv),
+            show: fixedData?.isUpdatingExisting === true,
+          },
+          targetAdvanceLabel(
+            targetAdvance,
+            fixedData?.isAfterPainting === false,
+            existingBattleVideoAdv,
+          ),
+          {
+            label: "Target advance after painting",
+            value: advanceAfterTxt(targetAdvance, existingBattleVideoAdv),
+            show: fixedData?.isAfterPainting === true,
+          },
+        ]}
+      />
+      {fixedData == null && (
+        <TargetAdvanceField<FormState> name="targetAdvance" label="Target" />
+      )}
+      {fixedData?.consoleType == null && (
+        <FormSelectField<FormState>
           name="console"
+          label="Console"
           options={gen3ConsoleOptions}
         />
-      ),
-      show: fixedData?.consoleType == null,
-    },
-    {
-      label: "Use recommended buffer to perform action?",
-      input: <FormikSwitch<FormState> name="useRecommendedBuffer" />,
-    },
-    {
-      label: "Leave sufficient buffer for fishing?",
-      input: <FormikSwitch<FormState> name="forFishing" />,
-      indent: 1,
-      show: useRecommendedBuffer && fixedData?.action == null,
-    },
-    {
-      label: "Buffer (advance)",
-      input: (
-        <FormikNumberInput<FormState>
-          name="specifiedBuffer"
-          numType="decimal"
+      )}
+      <SwitchGroup>
+        {fixedData == null && (
+          <FormSwitchField<FormState>
+            name="isUpdatingExisting"
+            label="Is updating existing Battle Video?"
+          >
+            <TargetAdvanceField<FormState>
+              name="existingBattleVideoAdv"
+              label="Existing Battle Video"
+            />
+          </FormSwitchField>
+        )}
+        <FormSwitchField<FormState>
+          name="useRecommendedBuffer"
+          label="Use recommended buffer to perform action?"
+        >
+          {fixedData?.action == null ? (
+            <FormSwitchField<FormState>
+              name="forFishing"
+              label="Leave sufficient buffer for fishing?"
+            />
+          ) : undefined}
+        </FormSwitchField>
+        <FormSwitchField<FormState>
+          name="considerWaitingInBattle"
+          label="Consider waiting in battle?"
         />
-      ),
-      indent: 1,
-      show: !useRecommendedBuffer,
-    },
-    {
-      label: "Consider waiting in battle?",
-      input: <FormikSwitch<FormState> name="considerWaitingInBattle" />,
-    },
-    {
-      label: "Display advanced breakdown?",
-      input: (
-        <FormikSwitch<FormState>
+        <FormSwitchField<FormState>
           name="displayAdvancedBreakdown"
+          label="Display advanced breakdown?"
           onChange={setDisplayAdvancedBreakdown}
         />
-      ),
-    },
-  ];
-
-  return <FormFieldTable fields={fields} />;
+      </SwitchGroup>
+      {!useRecommendedBuffer && (
+        <FormNumberField<FormState>
+          name="specifiedBuffer"
+          label="Buffer (advance)"
+          numType="decimal"
+        />
+      )}
+    </FormSection>
+  );
 };
 
 const columns: ResultColumn<BreakdownInfo>[] = [
@@ -587,7 +574,7 @@ export const BattleVideo = ({
     consoleType: Gen3Console | null;
   } | null>(null);
 
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     const {
       submitError,
       milliseconds,
@@ -615,19 +602,19 @@ export const BattleVideo = ({
 
   return (
     <>
-      <RngToolForm<FormState, BreakdownInfo>
+      <ToolForm<FormState, BreakdownInfo>
         initialValues={initialValues}
         validationSchema={Validator}
         onSubmit={onSubmit}
         submitTrackerId="battle_video_calc_timer"
-        submitButtonLabel="Generate Battle Video timers and instructions"
+        submitButtonLabel="Generate Battle Video Timers"
         {...displayedProps}
       >
         <MyFields
           setDisplayAdvancedBreakdown={setDisplayAdvancedBreakdown}
           fixedData={fixedData}
         />
-      </RngToolForm>
+      </ToolForm>
 
       {submitError !== "" && (
         <Typography.Text type="danger">{submitError}</Typography.Text>
@@ -690,7 +677,7 @@ export const BattleVideo = ({
       )}
 
       {setBattleVideoAdv != null && (
-        <Flex gap={10} mt={20}>
+        <Flex wrap gap={10} mt={20}>
           <div>Step outcome: </div>
           {(battleVideoInfo != null || initialValues.isUpdatingExisting) && (
             <Button

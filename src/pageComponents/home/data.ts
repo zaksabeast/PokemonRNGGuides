@@ -58,6 +58,8 @@ export const platforms: Platform[] = [
     console: "3DS",
     label: "3DS",
     games: [
+      { name: "Dream Radar", slug: "/dream-radar/" },
+      { name: "Bank & Transporter", slug: "/bank-transporter/" },
       { name: "X & Y", slug: "/x-and-y/" },
       {
         name: "Omega Ruby & Alpha Sapphire",
@@ -65,7 +67,6 @@ export const platforms: Platform[] = [
       },
       { name: "Sun & Moon", slug: "/sun-and-moon/" },
       { name: "Ultra Sun & Ultra Moon", slug: "/ultra-sun-and-ultra-moon/" },
-      { name: "Transporter & Dream Radar", slug: "/transporter-dream-radar/" },
     ],
   },
   {

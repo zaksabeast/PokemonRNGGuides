@@ -1,52 +1,18 @@
-import type { ShinyFilter } from "~/rngTools";
 import {
   gen3StaticMethods,
   getEmeraldStaticCalibData,
   Static3Game,
 } from "./constants.tsx";
-import { Field, FormFieldTable, FormikSelect, Typography } from "~/components";
+import { FormMultiSelectField, FormSection } from "~/components/form";
 import { useWatch } from "~/hooks/form";
 import { toOptions } from "~/utils/options";
 import { FormState } from "./static3TargetSetupSearcher";
 import {
-  getPaintingSetupFilterFields,
-  getTidSidSetupFilterFields,
-} from "../pokemonRng/targetSetupSearcher";
+  PaintingSetupFilterFields,
+  TidSidSetupFilterFields,
+} from "../pokemonRng/targetSetupSearcherFields";
 import { static3TargetSetupSearcherSchema } from "./static3TargetSetupSearcher.schema.ts";
 import { Species } from "~/rngTools/index.ts";
-
-const getSetupFields = (obj: {
-  game: Static3Game;
-  usingPaintingReseeding: boolean;
-  filter_shiny: ShinyFilter;
-  usingAceForSid: boolean;
-  letSearcherFindPaintingSeed: boolean;
-  showAdvancedPaintingSettings: boolean;
-  usingDeadBattery: boolean;
-  requireAceForPaintingReseeding: boolean;
-  initial_advances: number;
-  recommendedMinAdvances: number | null;
-}): Field[] => {
-  const { game } = obj;
-
-  return [
-    ...getTidSidSetupFilterFields(obj),
-    {
-      label: "Methods",
-      input: (
-        <FormikSelect<FormState, "methods">
-          name="methods"
-          options={toOptions(gen3StaticMethods)}
-          mode="multiple"
-          selectAllNoneButtons
-        />
-      ),
-      show: game === "rs",
-    },
-
-    ...getPaintingSetupFilterFields(obj),
-  ];
-};
 
 const getSetupFieldsOpts = (
   game: Static3Game,
@@ -79,7 +45,6 @@ export const Static3SetupFilter = ({ game }: { game: Static3Game }) => {
     filter_shiny,
     usingAceForSid,
     letSearcherFindPaintingSeed,
-    showAdvancedPaintingSettings,
     usingDeadBattery,
     species,
     roaming,
@@ -90,7 +55,6 @@ export const Static3SetupFilter = ({ game }: { game: Static3Game }) => {
       filter_shiny: true,
       usingAceForSid: true,
       letSearcherFindPaintingSeed: true,
-      showAdvancedPaintingSettings: true,
       usingDeadBattery: true,
       species: true,
       roaming: true,
@@ -100,23 +64,27 @@ export const Static3SetupFilter = ({ game }: { game: Static3Game }) => {
   });
 
   return (
-    <>
-      <Typography.Title level={4} p={0} m={0}>
-        Setup
-      </Typography.Title>
-      <FormFieldTable
-        fields={getSetupFields({
-          game,
-          usingPaintingReseeding: usingPaintingReseeding ?? false,
-          filter_shiny: filter_shiny ?? "Any",
-          usingAceForSid: usingAceForSid ?? false,
-          letSearcherFindPaintingSeed: letSearcherFindPaintingSeed ?? false,
-          showAdvancedPaintingSettings: showAdvancedPaintingSettings ?? false,
-          usingDeadBattery: usingDeadBattery ?? false,
-          initial_advances: initial_advances ?? 0,
-          ...getSetupFieldsOpts(game, species, roaming),
-        })}
+    <FormSection title="Setup">
+      <TidSidSetupFilterFields
+        game={game}
+        filter_shiny={filter_shiny ?? "Any"}
+        usingAceForSid={usingAceForSid ?? false}
       />
-    </>
+      {game === "rs" && (
+        <FormMultiSelectField<FormState>
+          name="methods"
+          label="Methods"
+          options={toOptions(gen3StaticMethods)}
+        />
+      )}
+      <PaintingSetupFilterFields
+        game={game}
+        usingPaintingReseeding={usingPaintingReseeding ?? false}
+        letSearcherFindPaintingSeed={letSearcherFindPaintingSeed ?? false}
+        usingDeadBattery={usingDeadBattery ?? false}
+        initial_advances={initial_advances ?? 0}
+        {...getSetupFieldsOpts(game, species, roaming)}
+      />
+    </FormSection>
   );
 };

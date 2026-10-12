@@ -1,18 +1,16 @@
 import React from "react";
+import { Flex, ResultColumn, Typography, Icon, Tag } from "~/components";
 import {
-  Flex,
-  ResultColumn,
-  Field,
-  RngToolForm,
-  FormikSelect,
-  RngToolSubmit,
-  Typography,
-  FormikNumberInput,
-  Icon,
-  Tag,
-  FormikRadio,
-  FormFieldTable,
-} from "~/components";
+  FieldRow,
+  FormNumberField,
+  FormRadioField,
+  FormSection,
+  FormSelectField,
+  NatureField,
+  PkmFilter,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
 import { CalibrateTimerButton } from "~/components/calibrateTimerButton";
 import {
   HeldEggState,
@@ -24,11 +22,7 @@ import {
 import { pokeNavTrainers } from "../constants";
 import { rngTools, Gen3HeldEgg, PokeNavTrainer, Species } from "~/rngTools";
 import { sortBy, uniqueId } from "lodash-es";
-import {
-  getNatureInputProps,
-  getPkmFilterFields,
-  getPkmFilterInitialValues,
-} from "~/components/pkmFilter";
+import { getPkmFilterInitialValues } from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import { useHydrate } from "~/hooks/useHydrate";
 import { Skeleton } from "antd";
@@ -156,79 +150,61 @@ const Fields = ({ t, translatedTrainers, eggSpecies }: FieldProps) => {
 
   const hasEgg = hasEggString === "true";
 
-  const filterFields = getPkmFilterFields<FormState>({
-    species: eggSpecies,
-    displayHiddenAbility: false,
-    displayHiddenPower: false,
-    displayIvs: false,
-    displayShiny: false,
-    displayNature: false,
-  });
-
-  const fields: Field[] = [
-    {
-      label: t["PokeNav Call"],
-      input: (
-        <FormikSelect<FormState, "pokeNavCall">
+  return (
+    <>
+      <FormSection title={t["Your game"]}>
+        <FormSelectField<FormState>
           name="pokeNavCall"
+          label={t["PokeNav Call"]}
           options={trainerOptions}
         />
-      ),
-    },
-    {
-      label: t["Has Egg"],
-      input: (
-        <FormikRadio<FormState>
+        <FormRadioField<FormState>
           name="hasEgg"
+          label={t["Has Egg"]}
+          cellSize="word"
           options={[
             { label: t["Yes"], value: "true" },
             { label: t["No"], value: "false" },
           ]}
         />
-      ),
-    },
-    ...filterFields.map((field) => ({
-      ...field,
-      show: hasEgg,
-      label:
-        field.id === "ability" ? t["Hatched Ability"] : t["Hatched Gender"],
-    })),
-    {
-      label: t["Hatched Nature"],
-      show: hasEgg,
-      input: (
-        <FormikSelect<FormState, "nature">
-          name="nature"
-          {...getNatureInputProps(t)}
-          placeholder={t["None"]}
-        />
-      ),
-    },
-    {
-      label: t["Advance Range ±"],
-      input: (
-        <FormikNumberInput<FormState> name="advanceRange" numType="decimal" />
-      ),
-    },
-    {
-      label: t["Pokedex Range ±"],
-      input: (
-        <FormikNumberInput<FormState> name="redrawRange" numType="decimal" />
-      ),
-    },
-    {
-      label: t["Calibration Override"],
-      input: (
-        <FormikNumberInput<FormState>
-          name="calibration"
-          numType="decimal"
-          placeholder={t["Do not touch unless you know what you're doing"]}
-        />
-      ),
-    },
-  ];
+      </FormSection>
 
-  return <FormFieldTable fields={fields} />;
+      {hasEgg && (
+        <FormSection title={t["Hatched Egg"]}>
+          <NatureField<FormState> name="nature" />
+          <PkmFilter<FormState>
+            species={eggSpecies}
+            displayHiddenAbility={false}
+            displayHiddenPower={false}
+            displayIvs={false}
+            displayShiny={false}
+            displayNature={false}
+          />
+        </FormSection>
+      )}
+
+      <FormSection title={t["Advanced"]}>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="advanceRange"
+            label={t["Advance Range ±"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="redrawRange"
+            label={t["Pokedex Range ±"]}
+            numType="decimal"
+          />
+        </FieldRow>
+        <FormNumberField<FormState>
+          name="calibration"
+          label={t["Calibration Override"]}
+          numType="decimal"
+          helperText={t["Do not touch unless you know what you're doing"]}
+        />
+      </FormSection>
+    </>
+  );
 };
 
 const calcNoEggs = async ({
@@ -283,7 +259,7 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
     setCalibration(initialCalibrationState);
   }, [setCalibration]);
 
-  const onSubmit: RngToolSubmit<FormState> = async (filters) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (filters) => {
     const target = state.target;
 
     if (target == null) {
@@ -375,7 +351,7 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
           : previousOffsets.join(", ")}
       </Typography.Text>
 
-      <RngToolForm<FormState, Result>
+      <ToolForm<FormState, Result>
         columns={columns}
         results={results ?? []}
         initialValues={initialValues}
@@ -383,7 +359,7 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
         disableGenerate={state.target == null}
         onSubmit={onSubmit}
         submitTrackerId="filter_retail_emerald_held_egg"
-        submitButtonLabel="Find advances matching eggs"
+        submitButtonLabel="Find matching eggs"
         rowKey="id"
       >
         <Fields
@@ -391,7 +367,7 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
           translatedTrainers={translatedTrainers}
           eggSpecies={state.eggSettings.egg_species}
         />
-      </RngToolForm>
+      </ToolForm>
     </Flex>
   );
 };

@@ -1,9 +1,9 @@
 import React from "react";
-import { Typography, Flex, FormFieldTable, Field } from "~/components";
+import { Typography } from "~/components";
+import { FormCard, FormSection, NumberField } from "~/components/form";
 import { rngTools } from "~/rngTools";
 import { match, P } from "ts-pattern";
 import { formatProbability } from "~/utils/formatProbability";
-import { NumberInput } from "~/components/numberInput";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 const formatPct = (val: number) => {
@@ -60,47 +60,39 @@ export const Gen3PidSpeedCalculator = () => {
     });
 
   const [value, setValue] = React.useState<number>(0);
-  const fields: Field[] = [
-    {
-      label: t["Lead PID"],
-      input: (
-        <NumberInput
-          numType="hex"
-          value={value}
-          onChange={async (pid) => {
-            let newPid = pid;
-            if (newPid == null || newPid < 0) {
-              newPid = 0;
-            } else if (newPid > 0xffffffff) {
-              newPid = 0xffffffff;
-            }
-            setValue(newPid);
 
-            const pidSpeed = await rngTools.calculate_pid_speed(newPid);
-            const ranking =
-              await rngTools.calculate_pid_speed_ranking(pidSpeed);
-            setSpeed(pidSpeed);
-            setRanking(ranking);
-          }}
-        />
-      ),
-    },
-  ];
+  const onPidChange = async (pid: number | null) => {
+    let newPid = pid;
+    if (newPid == null || newPid < 0) {
+      newPid = 0;
+    } else if (newPid > 0xffffffff) {
+      newPid = 0xffffffff;
+    }
+    setValue(newPid);
+
+    const pidSpeed = await rngTools.calculate_pid_speed(newPid);
+    const ranking = await rngTools.calculate_pid_speed_ranking(pidSpeed);
+    setSpeed(pidSpeed);
+    setRanking(ranking);
+  };
 
   return (
-    <Flex vertical gap={16}>
-      <Typography.Title level={5} mv={0}>
-        {t["Lead PID Speed Calculator"]}
-      </Typography.Title>
-      <FormFieldTable fields={fields} />
-
-      {speed !== null && (
-        <Typography.Text strong>
-          {t["Speed: {speed} cycles ({cycles})"]
-            .replace("{speed}", speed.toString())
-            .replace("{cycles}", qualitativeSpeed.toString())}
-        </Typography.Text>
-      )}
-    </Flex>
+    <FormCard>
+      <FormSection title={t["Lead PID Speed Calculator"]}>
+        <NumberField
+          label={t["Lead PID"]}
+          numType="hex"
+          value={value}
+          onChange={onPidChange}
+        />
+        {speed !== null && (
+          <Typography.Text strong>
+            {t["Speed: {speed} cycles ({cycles})"]
+              .replace("{speed}", speed.toString())
+              .replace("{cycles}", qualitativeSpeed.toString())}
+          </Typography.Text>
+        )}
+      </FormSection>
+    </FormCard>
   );
 };

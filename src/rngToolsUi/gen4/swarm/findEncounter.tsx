@@ -1,14 +1,14 @@
 import React from "react";
 import { z } from "zod";
+import { Button, ResultColumn } from "~/components";
 import {
-  Button,
-  Field,
-  FormikNumberInput,
-  MinMaxContainer,
-  NumberInput,
-  ResultColumn,
-  RngToolForm,
-} from "~/components";
+  FieldRow,
+  FormNumberField,
+  FormSection,
+  NumberField,
+  ToolForm,
+} from "~/components/form";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { useSwarmState } from "./state";
 import { useAtom } from "jotai";
 import { gen4StateAtom } from "../shared/state";
@@ -92,8 +92,10 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
 ];
 
 export const SwarmFindEncounter = () => {
-  const [swarmState] = useSwarmState();
+  const t = useActiveRouteTranslations();
   const [state] = useAtom(gen4StateAtom);
+  const [targetRoutes] = useSwarmState();
+  const targetRoute = targetRoutes[state.config.game];
 
   const defaultMinAdvance =
     state.config.game === "Diamond" ||
@@ -110,44 +112,10 @@ export const SwarmFindEncounter = () => {
 
   const mons = gameMons[state.config.game];
   const targetSpecies = (mons as Partial<Record<SwarmRoute, string>>)[
-    swarmState.targetRoute
+    targetRoute
   ];
 
   const seed = state.target.seedTime?.seed;
-
-  const getFields = (t: Translations): Field[] => [
-    {
-      label: t["Seed"],
-      input: (
-        <NumberInput
-          disabled
-          name="seed"
-          numType="hex"
-          errorMessage={seed == null ? "Find your seed first" : undefined}
-          value={seed ?? null}
-        />
-      ),
-    },
-    {
-      label: t["Advances"],
-      input: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState>
-              name="minAdvances"
-              numType="decimal"
-            />
-          }
-          max={
-            <FormikNumberInput<FormState>
-              name="maxAdvances"
-              numType="decimal"
-            />
-          }
-        />
-      ),
-    },
-  ];
 
   const onSubmit = async (opts: FormState) => {
     if (seed == null || targetSpecies == null) {
@@ -176,16 +144,38 @@ export const SwarmFindEncounter = () => {
   };
 
   return (
-    <RngToolForm<FormState, Result>
+    <ToolForm<FormState, Result>
       key={state.gameState.coinFlips.length}
       initialValues={getInitialValues(defaultMinAdvance)}
       disableGenerate={seed == null}
       submitTrackerId="swarm_find_encounter"
       validationSchema={Validator}
-      getFields={getFields}
       getColumns={getColumns}
       onSubmit={onSubmit}
       results={results}
-    />
+    >
+      <FormSection>
+        <NumberField
+          name="seed"
+          label={t["Seed"]}
+          numType="hex"
+          disabled
+          value={seed ?? null}
+          errorMessage={seed == null ? "Find your seed first" : undefined}
+        />
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="minAdvances"
+            label={t["Min Advance"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="maxAdvances"
+            label={t["Max Advance"]}
+            numType="decimal"
+          />
+        </FieldRow>
+      </FormSection>
+    </ToolForm>
   );
 };

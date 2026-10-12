@@ -1,17 +1,19 @@
 import React from "react";
 import { z } from "zod";
-import { RngToolForm, Field, Flex, ResultColumn, Icon } from "~/components";
-import { FormikRadio } from "~/components/radio";
-import { FormikSelect } from "~/components/select";
-import { RngToolSubmit } from "~/components/rngToolForm";
-import { Typography } from "~/components/typography";
+import { Flex, ResultColumn, Icon } from "~/components";
+import {
+  FormRadioField,
+  FormSection,
+  NatureField,
+  StatRadioFields,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
 import { nature } from "~/types/nature";
 import { CaughtMonResult, generateCaughtMonResults } from "./calc";
 import { Button } from "~/components/button";
 import type { Game, TargetStarter } from "./index";
 import { toOptions } from "~/utils/options";
-import { getNatureInputProps } from "~/components/pkmFilter";
-import { getStatFields } from "~/rngToolsUi/shared/statFields";
 import { StatFieldsSchema } from "~/types";
 
 const Validator = z
@@ -53,7 +55,7 @@ export const CaughtMon = ({
 }: Props) => {
   const [results, setResults] = React.useState<CaughtMonResult[]>([]);
 
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     setResults(
       await generateCaughtMonResults(game, targetAdvance, targetStarter, opts),
     );
@@ -119,45 +121,32 @@ export const CaughtMon = ({
   ];
 
   const { minMaxStats } = targetStarter;
-  const fields: Field[] = [
-    {
-      label: "Gender",
-      input: (
-        <FormikRadio<FormState>
-          name="gender"
-          options={toOptions(["Male", "Female"] as const)}
-        />
-      ),
-    },
-    {
-      label: "Nature",
-      input: (
-        <FormikSelect<FormState, "nature">
-          name="nature"
-          {...getNatureInputProps()}
-        />
-      ),
-    },
-    ...getStatFields<FormState>(minMaxStats),
-  ];
 
   return (
-    <Flex vertical gap={8}>
-      <Typography.Title level={5} p={0} m={0}>
-        Caught Pokémon
-      </Typography.Title>
-      <RngToolForm<FormState, CaughtMonResult>
-        formContainerId="generate-gen3-caught-starter"
-        fields={fields}
-        columns={columns}
-        results={results}
-        initialValues={initialValues}
-        validationSchema={Validator}
-        onSubmit={onSubmit}
-        submitTrackerId="generate_gen3_caught_starter"
-        submitButtonLabel="Find advances matching caught starter Pokémon"
-        rowKey="advance"
-      />
-    </Flex>
+    <ToolForm<FormState, CaughtMonResult>
+      formContainerId="generate-gen3-caught-starter"
+      columns={columns}
+      results={results}
+      initialValues={initialValues}
+      validationSchema={Validator}
+      onSubmit={onSubmit}
+      submitTrackerId="generate_gen3_caught_starter"
+      submitButtonLabel="Find starter Pokémon"
+      rowKey="advance"
+    >
+      <FormSection title="Caught Pokémon">
+        <FormRadioField<FormState>
+          name="gender"
+          label="Gender"
+          cellSize="word"
+          options={toOptions(["Male", "Female"] as const)}
+        />
+        <NatureField<FormState> name="nature" />
+      </FormSection>
+
+      <FormSection title="Stats">
+        <StatRadioFields<FormState> minMaxStats={minMaxStats} />
+      </FormSection>
+    </ToolForm>
   );
 };

@@ -1,13 +1,16 @@
 import React from "react";
+import { ResultColumn } from "~/components";
 import {
-  FormikNumberInput,
-  ResultColumn,
-  FormikSelect,
-  IvInput,
-  Field,
-  RngToolForm,
-  RngToolSubmit,
-} from "~/components";
+  FieldRow,
+  FormNumberField,
+  FormRadioField,
+  FormSection,
+  IvFields,
+  IvRangeFields,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { rngTools, Egg3PickupState } from "~/rngTools";
 import { maxIvs, minIvs } from "~/types/ivs";
 import {
@@ -53,67 +56,68 @@ const initialValues: FormState = {
   filter_max_ivs: maxIvs,
 };
 
-const getFields = (t: Translations): Field[] => {
-  return [
-    {
-      label: t["Seed"],
-      input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
-    },
-    {
-      label: t["Initial advances"],
-      input: (
-        <FormikNumberInput<FormState>
-          name="initial_advances"
-          numType="decimal"
+const Fields = () => {
+  const t = useActiveRouteTranslations();
+
+  return (
+    <>
+      <FormSection title={t["Your game"]}>
+        <FormNumberField<FormState>
+          name="seed"
+          label={t["Seed"]}
+          numType="hex"
         />
-      ),
-    },
-    {
-      label: t["Max advances"],
-      input: (
-        <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
-      ),
-    },
-    {
-      label: t["Delay"],
-      input: <FormikNumberInput<FormState> name="delay" numType="decimal" />,
-    },
-    {
-      label: t["Parent 1 IVs"],
-      input: <IvInput<FormState> name="parent1_ivs" />,
-    },
-    {
-      label: t["Parent 2 IVs"],
-      input: <IvInput<FormState> name="parent2_ivs" />,
-    },
-    {
-      label: t["Method"],
-      input: (
-        <FormikSelect<FormState, "method">
+        <FormRadioField<FormState>
           name="method"
+          label={t["Method"]}
+          cellSize="word"
           options={[
             { label: t["Normal"], value: "EmeraldBred" },
             { label: t["Split"], value: "EmeraldBredSplit" },
             { label: t["Alternate"], value: "EmeraldBredAlternate" },
           ]}
         />
-      ),
-    },
-    {
-      label: t["Egg min IVs"],
-      input: <IvInput<FormState> name="filter_min_ivs" />,
-    },
-    {
-      label: t["Egg max IVs"],
-      input: <IvInput<FormState> name="filter_max_ivs" />,
-    },
-  ];
+      </FormSection>
+
+      <FormSection title={t["Parents"]}>
+        <IvFields<FormState> name="parent1_ivs" title={t["Parent 1 IVs"]} />
+        <IvFields<FormState> name="parent2_ivs" title={t["Parent 2 IVs"]} />
+      </FormSection>
+
+      <FormSection title={t["Search"]}>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="initial_advances"
+            label={t["Initial advances"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="max_advances"
+            label={t["Max advances"]}
+            numType="decimal"
+          />
+        </FieldRow>
+        <FormNumberField<FormState>
+          name="delay"
+          label={t["Delay"]}
+          numType="decimal"
+        />
+      </FormSection>
+
+      <FormSection title={t["Filters"]}>
+        <IvRangeFields<FormState>
+          minName="filter_min_ivs"
+          maxName="filter_max_ivs"
+        />
+      </FormSection>
+    </>
+  );
 };
 
 export const EmeraldPickupEgg = () => {
   const [results, setResults] = React.useState<Result[]>([]);
 
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     const results = await rngTools.emerald_egg_pickup_states({
       ...opts,
       parent_ivs: [opts.parent1_ivs, opts.parent2_ivs],
@@ -125,8 +129,7 @@ export const EmeraldPickupEgg = () => {
   };
 
   return (
-    <RngToolForm<FormState, Result>
-      getFields={getFields}
+    <ToolForm<FormState, Result>
       getColumns={getColumns}
       results={results}
       initialValues={initialValues}
@@ -134,6 +137,8 @@ export const EmeraldPickupEgg = () => {
       onSubmit={onSubmit}
       formContainerId="emerald_pickup_egg_form"
       submitTrackerId="generate_emerald_pickup_egg"
-    />
+    >
+      <Fields />
+    </ToolForm>
   );
 };

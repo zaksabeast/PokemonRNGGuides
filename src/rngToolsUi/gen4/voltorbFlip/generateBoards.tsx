@@ -1,16 +1,14 @@
 import React from "react";
 import { z } from "zod";
 import { uniqueId } from "lodash-es";
+import { Typography, Flex } from "~/components";
 import {
-  Typography,
-  NumberInput,
-  FormikNumberInput,
-  type Field,
-  FormFieldTable,
-  RngToolForm,
-  type RngToolSubmit,
-  Flex,
-} from "~/components";
+  FormNumberField,
+  FormSection,
+  NumberField,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
 import {
   rngTools,
   type VoltorbFlipBoard as TVoltorbFlipBoard,
@@ -41,30 +39,23 @@ type FieldsProps = {
 const Fields = ({ initialSeed }: FieldsProps) => {
   const t = useActiveRouteTranslations();
 
-  const fields: Field[] = [
-    {
-      label: t["Seed"],
-      input: (
-        <NumberInput
-          disabled
-          name="seed"
-          numType="hex"
-          errorMessage={
-            initialSeed == null ? "Find your seed first" : undefined
-          }
-          value={initialSeed ?? null}
-        />
-      ),
-    },
-    {
-      label: t["Board Count"],
-      input: (
-        <FormikNumberInput<FormState> name="boardCount" numType="decimal" />
-      ),
-    },
-  ];
-
-  return <FormFieldTable fields={fields} />;
+  return (
+    <FormSection>
+      <NumberField
+        name="seed"
+        label={t["Seed"]}
+        numType="hex"
+        disabled
+        value={initialSeed ?? null}
+        errorMessage={initialSeed == null ? "Find your seed first" : undefined}
+      />
+      <FormNumberField<FormState>
+        name="boardCount"
+        label={t["Board Count"]}
+        numType="decimal"
+      />
+    </FormSection>
+  );
 };
 
 const levelProgression: VoltorbFlipLevel[] = [
@@ -103,7 +94,7 @@ export const GenerateVoltorbFlipBoards = () => {
 
   const initialSeed = state.target.seedTime?.seed;
 
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     const boardLevels = new Array(opts.boardCount + seedBoardSkip)
       .fill(null)
       // The level stays on 8 once the player reaches it
@@ -120,7 +111,7 @@ export const GenerateVoltorbFlipBoards = () => {
 
   return (
     <>
-      <RngToolForm<FormState, Result>
+      <ToolForm<FormState, Result>
         initialValues={initialValues}
         validationSchema={Validator}
         onSubmit={onSubmit}
@@ -129,7 +120,7 @@ export const GenerateVoltorbFlipBoards = () => {
         disableGenerate={initialSeed == null}
       >
         <Fields initialSeed={initialSeed} />
-      </RngToolForm>
+      </ToolForm>
 
       <Flex vertical gap={32}>
         {results.slice(seedBoardSkip).map((result, i) => (

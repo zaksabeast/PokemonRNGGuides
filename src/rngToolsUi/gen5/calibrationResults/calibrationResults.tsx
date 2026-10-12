@@ -1,13 +1,12 @@
 import React from "react";
+import { Flex, Typography, ResultColumn, ResultTable } from "~/components";
 import {
-  Button,
-  Flex,
-  Typography,
-  ResultColumn,
-  ResultTable,
-} from "~/components";
+  FormCard,
+  FormSection,
+  PrimaryButton,
+  TextAreaField,
+} from "~/components/form";
 import { CopyToClipboardButton } from "~/components/copyToClipboardButton";
-import { TextArea } from "~/components/textArea";
 
 type CalibrationRow = {
   index: number;
@@ -91,16 +90,22 @@ export const Gen5CalibrationResults = () => {
 
   return (
     <Flex vertical gap={8}>
-      <TextArea
-        value={input}
-        onChange={(event) => setInput(event.target.value)}
-        placeholder="0 70 10e0 6 0"
-      />
-      <Flex gap={8} wrap="wrap">
-        <Button trackerId="add_calibration_row" onClick={addRows}>
-          Add Tests
-        </Button>
-      </Flex>
+      <FormCard>
+        <FormSection>
+          <TextAreaField
+            label="Tests"
+            helperText="One test per line: Seconds VCount Timer0 GxStat VFrame"
+            value={input}
+            onChange={setInput}
+            placeholder="0 70 10e0 6 0"
+          />
+        </FormSection>
+        <Flex>
+          <PrimaryButton trackerId="add_calibration_row" onClick={addRows}>
+            Add Tests
+          </PrimaryButton>
+        </Flex>
+      </FormCard>
 
       <Typography.Title level={4}>Timer0 Counts</Typography.Title>
       <ResultTable<Timer0CountRow>

@@ -1,15 +1,15 @@
 import React from "react";
 import { z } from "zod";
+import { Button, ResultColumn } from "~/components";
 import {
-  Button,
-  Field,
-  FormikNumberInput,
-  FormikSelect,
-  MinMaxContainer,
-  NumberInput,
-  ResultColumn,
-  RngToolForm,
-} from "~/components";
+  FieldRow,
+  FormNumberField,
+  FormSection,
+  FormSelectField,
+  NumberField,
+  ToolForm,
+} from "~/components/form";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { toOptions } from "~/utils/options";
 import { gen4StateAtom } from "../shared/state";
 import { honeyTreeAtom } from "./state";
@@ -93,6 +93,7 @@ type SpeciesSelectProps = {
 };
 
 const SpeciesSelect = ({ isMunchlaxTree }: SpeciesSelectProps) => {
+  const t = useActiveRouteTranslations();
   const [state] = useAtom(honeyTreeAtom);
 
   const species = sortBy(getSpecies(state.game, isMunchlaxTree));
@@ -101,14 +102,16 @@ const SpeciesSelect = ({ isMunchlaxTree }: SpeciesSelectProps) => {
     spec === "Burmy_Plant" ? "Burmy" : spec;
 
   return (
-    <FormikSelect<FormState, "species">
+    <FormSelectField<FormState>
       name="species"
+      label={t["Species"]}
       options={toOptions(optionLabels, formatSpecies)}
     />
   );
 };
 
 export const HoneyTreeFindEncounter = () => {
+  const t = useActiveRouteTranslations();
   const [{ target }] = useAtom(gen4StateAtom);
   const [state] = useAtom(honeyTreeAtom);
   const [results, setResults] = React.useState<Result[]>([]);
@@ -120,46 +123,6 @@ export const HoneyTreeFindEncounter = () => {
 
   const isMunchlaxTree =
     state.munchlaxLocations?.includes(state.targetLocation) ?? false;
-
-  const getFields = (t: Translations): Field[] => [
-    {
-      label: t["Seed"],
-      input: (
-        <NumberInput
-          disabled
-          name="seed"
-          numType="hex"
-          errorMessage={
-            initialSeed == null ? "Find your seed first" : undefined
-          }
-          value={initialSeed ?? null}
-        />
-      ),
-    },
-    {
-      label: t["Species"],
-      input: <SpeciesSelect isMunchlaxTree={isMunchlaxTree} />,
-    },
-    {
-      label: t["Advances"],
-      input: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState>
-              name="minAdvances"
-              numType="decimal"
-            />
-          }
-          max={
-            <FormikNumberInput<FormState>
-              name="maxAdvances"
-              numType="decimal"
-            />
-          }
-        />
-      ),
-    },
-  ];
 
   const onSubmit = async (opts: FormState) => {
     if (initialSeed == null) {
@@ -191,15 +154,40 @@ export const HoneyTreeFindEncounter = () => {
   };
 
   return (
-    <RngToolForm<FormState, Result>
+    <ToolForm<FormState, Result>
       initialValues={initialValues}
       disableGenerate={initialSeed == null}
       submitTrackerId="honey_tree_find_encounter"
       validationSchema={Validator}
-      getFields={getFields}
       getColumns={getColumns}
       onSubmit={onSubmit}
       results={results}
-    />
+    >
+      <FormSection>
+        <NumberField
+          name="seed"
+          label={t["Seed"]}
+          numType="hex"
+          disabled
+          value={initialSeed ?? null}
+          errorMessage={
+            initialSeed == null ? "Find your seed first" : undefined
+          }
+        />
+        <SpeciesSelect isMunchlaxTree={isMunchlaxTree} />
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="minAdvances"
+            label={t["Min Advance"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="maxAdvances"
+            label={t["Max Advance"]}
+            numType="decimal"
+          />
+        </FieldRow>
+      </FormSection>
+    </ToolForm>
   );
 };

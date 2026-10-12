@@ -5,7 +5,7 @@ import {
   Static3SearcherResult,
   Wild3PaintingAdvsAndDur,
 } from "~/rngTools";
-import { Flex, RngToolForm, RngToolSubmit } from "~/components";
+import { ToolForm, type ToolFormSubmit } from "~/components/form";
 import React from "react";
 import { z } from "zod";
 
@@ -99,7 +99,7 @@ export const Static3TargetSetupSearcher = ({
     tidForAceSid?.shiny ?? null,
   );
 
-  const onSubmit: RngToolSubmit<FormState> = async (values) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (values) => {
     const pidPathResults = await searchStatic3Target(game, values);
 
     if (values.filter_shiny !== "Any" && values.usingAceForSid) {
@@ -125,7 +125,7 @@ export const Static3TargetSetupSearcher = ({
         };
 
   return (
-    <RngToolForm<FormState, PidPathResult>
+    <ToolForm<FormState, PidPathResult>
       columns={pidPathColumns}
       results={pidPathResults}
       validationSchema={static3TargetSetupSearcherSchema}
@@ -135,10 +135,8 @@ export const Static3TargetSetupSearcher = ({
       rowKey="uid"
       onClickResultRow={onClickResultRow}
     >
-      <Flex vertical gap={15}>
-        <Static3TargetMon game={game} />
-        <Static3SetupFilter game={game} />
-      </Flex>
-    </RngToolForm>
+      <Static3TargetMon game={game} />
+      <Static3SetupFilter game={game} />
+    </ToolForm>
   );
 };

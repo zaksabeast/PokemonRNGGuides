@@ -1,18 +1,18 @@
 import React from "react";
 import { message } from "antd";
+import { ResultColumn, Button } from "~/components";
 import {
-  FormikNumberInput,
-  ResultColumn,
-  RngToolForm,
-  RngToolSubmit,
-  Field,
-  Button,
-  FormikSelect,
-  FormikSwitch,
-  FormFieldTable,
-  FormikIdFilter,
-  MinMaxContainer,
-} from "~/components";
+  FieldRow,
+  FormNumberField,
+  FormRadioField,
+  FormSection,
+  FormSelectField,
+  FormSwitchField,
+  getNatureOptions,
+  IdFilterField,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
 import {
   rngTools,
@@ -30,14 +30,12 @@ import { useCurrentStep } from "~/components/stepper/state";
 import { useFormContext, useWatch } from "~/hooks/form";
 import { nature } from "~/types/nature";
 import { getGen4SpeciesOptions, species } from "~/types/species";
-import { getNatureInputProps } from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import {
   getCuteCharmTsvProps,
   getCuteCharmTsvs,
   maxShinyOddsCuteCharmTsvs,
 } from "./tsvs";
-import { FormikRadio } from "~/components/radio";
 import { denormalizeIdFilterOrDefault, IdFilterSchema } from "~/types/id";
 import { match, P } from "ts-pattern";
 import { chunkRange } from "~/utils/chunkRange";
@@ -214,111 +212,6 @@ const initialValues: FormState = {
   },
 };
 
-const getFields = ({
-  t,
-  idType,
-  maxShinyOdds,
-  reset,
-}: {
-  t: Translations;
-  idType: IdType;
-  maxShinyOdds: boolean;
-  reset: () => void;
-}): Field[] => {
-  const baseFields = [
-    {
-      label: t["Year"],
-      input: <FormikNumberInput<FormState> name="year" numType="decimal" />,
-    },
-    {
-      label: t["Delay"],
-      input: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
-          }
-          max={
-            <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
-          }
-        />
-      ),
-    },
-    {
-      label: t["ID Type"],
-      input: (
-        <FormikRadio<FormState> name="id_type" options={toOptions(idTypes)} />
-      ),
-    },
-  ];
-
-  if (idType === "Any TID") {
-    return [
-      ...baseFields,
-      {
-        label: t["Filter"],
-        input: <FormikIdFilter<FormState> name="id_filter" />,
-      },
-    ];
-  }
-
-  return [
-    ...baseFields,
-    {
-      label: t["Max Shiny Odds"],
-      input: (
-        <FormikSwitch<FormState>
-          name="max_shiny_odds"
-          onChange={(checked: boolean) => {
-            if (checked) {
-              reset();
-            }
-          }}
-        />
-      ),
-    },
-    {
-      label: t["Target Gender"],
-      input: (
-        <FormikSelect<FormState, "target_gender">
-          name="target_gender"
-          options={toOptions(CuteCharmGenders)}
-          disabled={maxShinyOdds}
-        />
-      ),
-    },
-    {
-      label: t["Target Nature"],
-      input: (
-        <FormikSelect<FormState, "target_nature">
-          name="target_nature"
-          {...getNatureInputProps(t)}
-          disabled={maxShinyOdds}
-        />
-      ),
-    },
-    {
-      label: t["Target Species"],
-      input: (
-        <FormikSelect<FormState, "target_species">
-          name="target_species"
-          options={getGen4SpeciesOptions().byNameOptional}
-          disabled={maxShinyOdds}
-        />
-      ),
-    },
-    {
-      label: t["Optional TID"],
-      input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-    },
-    {
-      label: t["Force Second"],
-      input: (
-        <FormikNumberInput<FormState> name="force_second" numType="decimal" />
-      ),
-    },
-  ];
-};
-
 const Id4SearcherFields = () => {
   const t = useActiveRouteTranslations();
   const { reset } = useFormContext<FormState>();
@@ -326,13 +219,93 @@ const Id4SearcherFields = () => {
     validationSchema: Validator,
     names: { max_shiny_odds: true, id_type: true },
   });
-  const fields = getFields({
-    t,
-    idType: id_type ?? initialValues.id_type,
-    maxShinyOdds: max_shiny_odds ?? initialValues.max_shiny_odds,
-    reset,
-  });
-  return <FormFieldTable fields={fields} />;
+  const idType = id_type ?? initialValues.id_type;
+  const maxShinyOdds = max_shiny_odds ?? initialValues.max_shiny_odds;
+
+  return (
+    <>
+      <FormSection title={t["Search"]}>
+        <FormNumberField<FormState>
+          name="year"
+          label={t["Year"]}
+          numType="decimal"
+        />
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="min_delay"
+            label={t["Min Delay"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="max_delay"
+            label={t["Max Delay"]}
+            numType="decimal"
+          />
+        </FieldRow>
+        <FormRadioField<FormState>
+          name="id_type"
+          label={t["ID Type"]}
+          cellSize="word"
+          options={toOptions(idTypes)}
+        />
+      </FormSection>
+
+      {idType === "Any TID" ? (
+        <FormSection title={t["Filters"]}>
+          <IdFilterField<FormState> name="id_filter" />
+        </FormSection>
+      ) : (
+        <>
+          <FormSection title={t["Filters"]}>
+            <FormSwitchField<FormState>
+              name="max_shiny_odds"
+              label={t["Max Shiny Odds"]}
+              onChange={(checked) => {
+                if (checked) {
+                  reset();
+                }
+              }}
+            />
+            <FormRadioField<FormState>
+              name="target_gender"
+              label={t["Target Gender"]}
+              cellSize="word"
+              options={toOptions(CuteCharmGenders, (gender) => t[gender])}
+              disabled={maxShinyOdds}
+            />
+            <FormSelectField<FormState>
+              name="target_nature"
+              label={t["Target Nature"]}
+              options={[
+                { value: "None", label: t["None"] },
+                ...getNatureOptions(t),
+              ]}
+              disabled={maxShinyOdds}
+            />
+            <FormSelectField<FormState>
+              name="target_species"
+              label={t["Target Species"]}
+              options={getGen4SpeciesOptions().byNameOptional}
+              disabled={maxShinyOdds}
+            />
+            <FormNumberField<FormState>
+              name="tid"
+              label={t["Optional TID"]}
+              numType="decimal"
+            />
+          </FormSection>
+
+          <FormSection title={t["Advanced"]}>
+            <FormNumberField<FormState>
+              name="force_second"
+              label={t["Force Second"]}
+              numType="decimal"
+            />
+          </FormSection>
+        </>
+      )}
+    </>
+  );
 };
 
 const mapResult = (res: Id4): Result => ({
@@ -355,7 +328,7 @@ export const Id4Searcher = () => {
 
   const [idType, setIdType] = React.useState<IdType>(defaultIdType);
 
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     try {
       const interestedTsvs = opts.max_shiny_odds
         ? maxShinyOddsCuteCharmTsvs
@@ -406,7 +379,7 @@ export const Id4Searcher = () => {
   const columns = getColumns({ t, idType });
 
   return (
-    <RngToolForm<FormState, Result>
+    <ToolForm<FormState, Result>
       columns={columns}
       results={results}
       initialValues={initialValues}
@@ -420,6 +393,6 @@ export const Id4Searcher = () => {
     >
       {contextHolder}
       <Id4SearcherFields />
-    </RngToolForm>
+    </ToolForm>
   );
 };

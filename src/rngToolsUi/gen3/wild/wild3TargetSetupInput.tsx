@@ -7,14 +7,14 @@ import {
   Gen3Lead,
 } from "~/rngTools";
 import {
-  Field,
-  FormikSelect,
-  RngToolForm,
-  RngToolSubmit,
-  FormFieldTable,
-  FormikSwitch,
-  FormikWild3Pokeblock,
-} from "~/components";
+  FormSection,
+  FormSelectField,
+  FormSwitchField,
+  PokeblockField,
+  SwitchGroup,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
 import { toOptions } from "~/utils/options";
 import { useFormContext, useWatch_UNSAFE } from "~/hooks/form";
 import React from "react";
@@ -37,9 +37,9 @@ import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { getPossibleValuesForMap } from "./dataUtils";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import { Pokeblock, pokeblockSchema } from "~/types/pokeblock";
-import { getPaintingReseedingFields } from "../pokemonRng/targetSetupInput";
+import { PaintingReseedingFields } from "../pokemonRng/targetSetupInput";
 import { lcrng_distance } from "~/utils/lcrng";
-import { FormikFeebasTilesSelector } from "./feebasMap";
+import { FeebasTilesField } from "./feebasMap";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -142,18 +142,19 @@ const convertFormStateValuesToTargetSetup = (
   };
 };
 
-const getFields = ({
-  mapId,
-  action,
-  usingPaintingReseeding,
-  equivalentInitialAdvs,
-}: {
+type FieldsProps = {
   mapId: string;
   action: Wild3Action;
   usingPaintingReseeding: boolean;
   equivalentInitialAdvs: number;
-  setFieldValue: ReturnType<typeof useFormContext<FormState>>["setFieldValue"];
-}): Field[] => {
+};
+
+const Fields = ({
+  mapId,
+  action,
+  usingPaintingReseeding,
+  equivalentInitialAdvs,
+}: FieldsProps) => {
   const {
     actions,
     feebas_states,
@@ -162,108 +163,87 @@ const getFields = ({
     canUsePokeblock,
   } = getPossibleValuesForMap(mapId, action);
 
-  const fields: Field[] = [
-    {
-      label: "Map",
-      input: (
-        <FormikSelect<FormState, "map">
-          name="map"
-          options={toOptions(emeraldWildGameData.maps, formatMapName)}
-        />
-      ),
-    },
-  ];
+  const mapField = (
+    <FormSelectField<FormState>
+      name="map"
+      label="Map"
+      options={toOptions(emeraldWildGameData.maps, formatMapName)}
+    />
+  );
 
   if (actions.length === 0) {
-    return fields;
+    return <FormSection>{mapField}</FormSection>;
   }
 
-  fields.push(
-    {
-      label: "Player action",
-      input: (
-        <FormikSelect<FormState, "action">
-          name="action"
-          options={toOptions(actions, formatActionName)}
-        />
-      ),
-    },
-    {
-      label: "Using White Flute?",
-      input: <FormikSwitch<FormState> name="requiresWhiteFlute" />,
-      show: action === "RockSmash",
-    },
-    {
-      label: "Using Pokéblock?",
-      input: <FormikWild3Pokeblock<FormState> name="safariPokeblock" />,
-      show: canUsePokeblock,
-    },
-    {
-      label: "Lead",
-      input: (
-        <FormikSelect<FormState, "leadIdx">
-          name="leadIdx"
-          // Limitation: value must be a primitive, so we use the index instead of Gen3Lead.
-          options={leadsLabels}
-        />
-      ),
-    },
-    ...getPaintingReseedingFields({
-      usingPaintingReseeding,
-      equivalentInitialAdvs,
-    }),
-    {
-      label: "Target method",
-      input: (
-        <FormikSelect<FormState, "targetMethod">
-          name="targetMethod"
-          options={toOptions(supportedGen3Methods)}
-        />
-      ),
-    },
-    {
-      label: "Feebas state",
-      input: (
-        <FormikSelect<FormState, "feebasState">
-          name="feebasState"
-          options={toOptions(feebas_states, formatFeebasStateName)}
-        />
-      ),
-      show: feebas_states.length > 1,
-    },
-    {
-      label: "Feebas fishing spot",
-      input: (
-        <FormikFeebasTilesSelector<FormState>
-          name="feebasCycles"
-          canOnlySelectOne
-        />
-      ),
-      show: feebas_states.length > 1,
-    },
-
-    {
-      label: "Roamer state",
-      input: (
-        <FormikSelect<FormState, "roamerState">
+  return (
+    <FormSection>
+      {mapField}
+      <FormSelectField<FormState>
+        name="action"
+        label="Player action"
+        options={toOptions(actions, formatActionName)}
+      />
+      {(action === "RockSmash" || canUsePokeblock) && (
+        <SwitchGroup>
+          {action === "RockSmash" && (
+            <FormSwitchField<FormState>
+              name="requiresWhiteFlute"
+              label="Using White Flute?"
+            />
+          )}
+          {canUsePokeblock && (
+            <PokeblockField<FormState>
+              name="safariPokeblock"
+              label="Using Pokéblock?"
+            />
+          )}
+        </SwitchGroup>
+      )}
+      <FormSelectField<FormState>
+        name="leadIdx"
+        label="Lead"
+        // Limitation: value must be a primitive, so we use the index instead of Gen3Lead.
+        options={leadsLabels}
+      />
+      <PaintingReseedingFields
+        usingPaintingReseeding={usingPaintingReseeding}
+        equivalentInitialAdvs={equivalentInitialAdvs}
+      />
+      <FormSelectField<FormState>
+        name="targetMethod"
+        label="Target method"
+        options={toOptions(supportedGen3Methods)}
+      />
+      {feebas_states.length > 1 && (
+        <>
+          <FormSelectField<FormState>
+            name="feebasState"
+            label="Feebas state"
+            options={toOptions(feebas_states, formatFeebasStateName)}
+          />
+          <FeebasTilesField<FormState>
+            name="feebasCycles"
+            label="Feebas fishing spot"
+            canOnlySelectOne
+          />
+        </>
+      )}
+      {roamer_states.length > 1 && (
+        <FormSelectField<FormState>
           name="roamerState"
+          label="Roamer state"
           options={toOptions(roamer_states, formatRoamerStateName)}
         />
-      ),
-      show: roamer_states.length > 1,
-    },
-    {
-      label: "Mass outbreak state",
-      input: (
-        <FormikSelect<FormState, "massOutbreakState">
+      )}
+      {mass_outbreak_states.length > 1 && (
+        <FormSelectField<FormState>
           name="massOutbreakState"
+          label="Mass outbreak state"
           options={toOptions(mass_outbreak_states, formatMassOutbreakStateName)}
         />
-      ),
-      show: mass_outbreak_states.length > 1,
-    },
+      )}
+    </FormSection>
   );
-  return fields;
 };
 
 export const Wild3TargetSetupInputFields = ({
@@ -309,14 +289,6 @@ export const Wild3TargetSetupInputFields = ({
   const equivalentInitialAdvs =
     (lcrng_distance(0, targetFrameBeforePainting) + targetAdvance) % 2 ** 32;
 
-  const fields = getFields({
-    mapId: map,
-    action,
-    usingPaintingReseeding,
-    equivalentInitialAdvs,
-    setFieldValue,
-  });
-
   React.useEffect(() => {
     setTargetSetup(null);
   }, [
@@ -335,11 +307,18 @@ export const Wild3TargetSetupInputFields = ({
     feebasCycles,
   ]);
 
-  return <FormFieldTable fields={fields} />;
+  return (
+    <Fields
+      mapId={map}
+      action={action}
+      usingPaintingReseeding={usingPaintingReseeding}
+      equivalentInitialAdvs={equivalentInitialAdvs}
+    />
+  );
 };
 
 export const Wild3TargetSetupInput = ({ setTargetSetup }: Props) => {
-  const onSubmit: RngToolSubmit<FormState> = async (values) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (values) => {
     const targetSetup = convertFormStateValuesToTargetSetup(values);
     const { content } = await calculateTargetSetupResult(targetSetup, null);
     setTargetSetup(content == null ? null : targetSetup);
@@ -348,7 +327,7 @@ export const Wild3TargetSetupInput = ({ setTargetSetup }: Props) => {
   const initialValues = getInitialValues();
 
   return (
-    <RngToolForm<FormState, never>
+    <ToolForm<FormState, never>
       validationSchema={Validator}
       initialValues={initialValues}
       onSubmit={onSubmit}
@@ -357,6 +336,6 @@ export const Wild3TargetSetupInput = ({ setTargetSetup }: Props) => {
       submitButtonLabel="Calculate Target"
     >
       <Wild3TargetSetupInputFields setTargetSetup={setTargetSetup} />
-    </RngToolForm>
+    </ToolForm>
   );
 };

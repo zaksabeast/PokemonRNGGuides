@@ -2,16 +2,15 @@ import { ShinyIcon } from "~/components/shiny";
 import React from "react";
 import { atom, useAtom } from "jotai";
 import { uniqueId, map, sortBy } from "lodash-es";
+import { ResultColumn, Button } from "~/components";
 import {
-  FormikNumberInput,
-  FormikSelect,
-  ResultColumn,
-  RngToolForm,
-  Button,
-  Field,
-  FormFieldTable,
-  MinMaxContainer,
-} from "~/components";
+  FieldRow,
+  FormNumberField,
+  FormSection,
+  FormSelectField,
+  PkmFilter,
+  ToolForm,
+} from "~/components/form";
 import {
   multiWorkerRngTools,
   Static4State,
@@ -19,7 +18,6 @@ import {
 } from "~/rngTools";
 import { z } from "zod";
 import {
-  getPkmFilterFields,
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
   pkmFilterSchema,
@@ -193,6 +191,7 @@ const columns: ResultColumn<Result>[] = [
 type OffsetFieldProps = { game: Gen4GameVersion; encounter: Encounter | null };
 
 const OffsetField = ({ game, encounter }: OffsetFieldProps) => {
+  const t = useActiveRouteTranslations();
   const [, , { setValue }] = useField<FormState["offset"]>("offset");
 
   React.useEffect(() => {
@@ -200,7 +199,13 @@ const OffsetField = ({ game, encounter }: OffsetFieldProps) => {
     setValue(offset);
   }, [setValue, game, encounter]);
 
-  return <FormikNumberInput<FormState> name="offset" numType="decimal" />;
+  return (
+    <FormNumberField<FormState>
+      name="offset"
+      label={t["Offset"]}
+      numType="decimal"
+    />
+  );
 };
 
 type FieldsProps = {
@@ -217,91 +222,87 @@ const Fields = ({ game, encountersByGame }: FieldsProps) => {
   const encounters = encountersByGame[game];
   const encounter = encounter_id == null ? null : encounters[encounter_id];
 
-  const fields: Field[] = [
-    {
-      label: t["TID / SID"],
-      input: (
-        <MinMaxContainer
-          min={<FormikNumberInput<FormState> name="tid" numType="decimal" />}
-          max={<FormikNumberInput<FormState> name="sid" numType="decimal" />}
-          delimeter="/"
-        />
-      ),
-    },
-    {
-      label: t["Year"],
-      input: <FormikNumberInput<FormState> name="year" numType="decimal" />,
-    },
-    {
-      label: t["Delay"],
-      input: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
-          }
-          max={
-            <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
-          }
-        />
-      ),
-    },
-    {
-      label: t["Advance"],
-      input: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState>
-              name="min_advance"
-              numType="decimal"
-            />
-          }
-          max={
-            <FormikNumberInput<FormState>
-              name="max_advance"
-              numType="decimal"
-            />
-          }
-        />
-      ),
-    },
-    {
-      label: t["Offset"],
-      input: <OffsetField game={game} encounter={encounter} />,
-    },
-    {
-      label: t["Species"],
-      input: (
-        <FormikSelect<FormState, "encounter_id">
+  const encounterOptions = sortBy(
+    map(encounters, (enc, id) => ({
+      label: enc.label ?? formatSpeciesLabel(enc.species),
+      value: id,
+    })),
+    (enc) => enc.label,
+  );
+
+  return (
+    <>
+      <FormSection title={t["Your game"]}>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="tid"
+            label={t["TID"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="sid"
+            label={t["SID"]}
+            numType="decimal"
+          />
+        </FieldRow>
+        <FormSelectField<FormState>
           name="encounter_id"
-          options={sortBy(
-            map(encounters, (enc, id) => ({
-              label: enc.label ?? formatSpeciesLabel(enc.species),
-              value: id,
-            })),
-            (enc) => enc.label,
-          )}
+          label={t["Species"]}
+          options={encounterOptions}
         />
-      ),
-    },
-    {
-      label: t["Lead"],
-      input: (
-        <FormikSelect<FormState, "lead">
+        <FormSelectField<FormState>
           name="lead"
+          label={t["Lead"]}
           options={getLeadOptions(encounter)}
         />
-      ),
-    },
-    ...getPkmFilterFields({ species: encounter?.species }, t),
-    {
-      label: t["Force Second"],
-      input: (
-        <FormikNumberInput<FormState> name="force_second" numType="decimal" />
-      ),
-    },
-  ];
+      </FormSection>
 
-  return <FormFieldTable fields={fields} />;
+      <FormSection title={t["Search"]}>
+        <FormNumberField<FormState>
+          name="year"
+          label={t["Year"]}
+          numType="decimal"
+        />
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="min_delay"
+            label={t["Min Delay"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="max_delay"
+            label={t["Max Delay"]}
+            numType="decimal"
+          />
+        </FieldRow>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="min_advance"
+            label={t["Min Advance"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="max_advance"
+            label={t["Max Advance"]}
+            numType="decimal"
+          />
+        </FieldRow>
+      </FormSection>
+
+      <FormSection title={t["Filters"]}>
+        <PkmFilter<FormState> species={encounter?.species} />
+      </FormSection>
+
+      <FormSection title={t["Advanced"]}>
+        <OffsetField game={game} encounter={encounter} />
+        <FormNumberField<FormState>
+          name="force_second"
+          label={t["Force Second"]}
+          numType="decimal"
+        />
+      </FormSection>
+    </>
+  );
 };
 
 const mapResult = (res: Static4State): Result => {
@@ -380,7 +381,7 @@ export const Static4Searcher = ({ honey = false }: Static4SearcherProps) => {
   };
 
   return (
-    <RngToolForm<FormState, Result>
+    <ToolForm<FormState, Result>
       columns={columns}
       results={results}
       initialValues={initialValues}
@@ -394,6 +395,6 @@ export const Static4Searcher = ({ honey = false }: Static4SearcherProps) => {
       progressPercent={progressPercent}
     >
       <Fields game={game} encountersByGame={encountersByGame} />
-    </RngToolForm>
+    </ToolForm>
   );
 };

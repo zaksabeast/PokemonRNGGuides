@@ -1,14 +1,13 @@
 import { ShinyIcon } from "~/components/shiny";
+import { Button, ResultColumn } from "~/components";
 import {
-  Button,
-  Field,
-  FormFieldTable,
-  FormikNumberInput,
-  FormikSelect,
-  MinMaxContainer,
-  ResultColumn,
-  RngToolForm,
-} from "~/components";
+  FieldRow,
+  FormNumberField,
+  FormSection,
+  FormSelectField,
+  PkmFilter,
+  ToolForm,
+} from "~/components/form";
 import {
   multiWorkerRngTools,
   Static4State,
@@ -17,7 +16,6 @@ import {
 } from "~/rngTools";
 import { z } from "zod";
 import {
-  getPkmFilterFields,
   getPkmFilterInitialValues,
   pkmFilterSchema,
   pkmFilterFieldsToRustInput,
@@ -187,73 +185,81 @@ const Fields = ({ game, t }: FieldsProps) => {
     .with("HeartGold", "SoulSilver", () => hgssStarters)
     .exhaustive();
 
-  const fields: Field[] = [
-    {
-      label: t["TID / SID"],
-      input: (
-        <MinMaxContainer
-          min={<FormikNumberInput<FormState> name="tid" numType="decimal" />}
-          max={<FormikNumberInput<FormState> name="sid" numType="decimal" />}
-          delimeter="/"
-        />
-      ),
-    },
-    {
-      label: t["Year"],
-      input: <FormikNumberInput<FormState> name="year" numType="decimal" />,
-    },
-    {
-      label: t["Month"],
-      input: (
-        <FormikSelect<FormState, "month">
-          name="month"
-          options={toOptions(MONTHS, (month) => t[month])}
-        />
-      ),
-    },
-    {
-      label: t["Delay"],
-      input: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
-          }
-          max={
-            <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
-          }
-        />
-      ),
-    },
-    {
-      // Only Platinum has a variable advance
-      show: game === "Platinum",
-      label: t["Target Advance"],
-      input: (
-        <FormikNumberInput<FormState>
-          name="platinum_target_advance"
-          numType="decimal"
-        />
-      ),
-    },
-    {
-      label: t["Species"],
-      input: (
-        <FormikSelect<FormState, "species">
+  const monthOptions = MONTHS.map((month) => ({
+    label: t[month],
+    value: month,
+    muted: month === "Any",
+  }));
+
+  return (
+    <>
+      <FormSection title={t["Your game"]}>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="tid"
+            label={t["TID"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="sid"
+            label={t["SID"]}
+            numType="decimal"
+          />
+        </FieldRow>
+        <FormSelectField<FormState>
           name="species"
+          label={t["Species"]}
           options={toOptions(starters)}
         />
-      ),
-    },
-    ...getPkmFilterFields({ species: watched.species ?? undefined }, t),
-    {
-      label: t["Force Second"],
-      input: (
-        <FormikNumberInput<FormState> name="force_second" numType="decimal" />
-      ),
-    },
-  ];
+      </FormSection>
 
-  return <FormFieldTable fields={fields} />;
+      <FormSection title={t["Search"]}>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="year"
+            label={t["Year"]}
+            numType="decimal"
+          />
+          <FormSelectField<FormState>
+            name="month"
+            label={t["Month"]}
+            options={monthOptions}
+          />
+        </FieldRow>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="min_delay"
+            label={t["Min Delay"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="max_delay"
+            label={t["Max Delay"]}
+            numType="decimal"
+          />
+        </FieldRow>
+        {game === "Platinum" && (
+          <FormNumberField<FormState>
+            name="platinum_target_advance"
+            label={t["Target Advance"]}
+            numType="decimal"
+          />
+        )}
+      </FormSection>
+
+      <FormSection title={t["Filters"]}>
+        <PkmFilter<FormState> species={watched.species ?? undefined} />
+      </FormSection>
+
+      <FormSection title={t["Advanced"]}>
+        <FormNumberField<FormState>
+          name="force_second"
+          label={t["Force Second"]}
+          numType="decimal"
+        />
+      </FormSection>
+    </>
+  );
 };
 
 const mapResult = (
@@ -323,7 +329,7 @@ export const PickStarter4 = () => {
     .exhaustive();
 
   return (
-    <RngToolForm<FormState, Result>
+    <ToolForm<FormState, Result>
       getColumns={getColumns}
       results={results}
       initialValues={initialValues}
@@ -340,6 +346,6 @@ export const PickStarter4 = () => {
       progressPercent={progressPercent}
     >
       <Fields game={game} t={t} />
-    </RngToolForm>
+    </ToolForm>
   );
 };

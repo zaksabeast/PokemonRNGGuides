@@ -1,11 +1,6 @@
 import React from "react";
-import {
-  Alert,
-  Flex,
-  PixelImage,
-  type ResultColumn,
-  RngToolForm,
-} from "~/components";
+import { Alert, Flex, PixelImage, type ResultColumn } from "~/components";
+import { ToolForm } from "~/components/form";
 import { useAtom } from "jotai";
 import { gen4StateAtom } from "../state";
 import { rngTools, type CoinFlip, type CoinFlipAdvanceState } from "~/rngTools";
@@ -126,19 +121,7 @@ export const DpptCoinFlipAdvanceFilter = () => {
   );
 
   return (
-    <RngToolForm<LooseAdvanceFilterFormState, Result>
-      additionalButtons={
-        hasResults &&
-        state.gameState.coinFlips.length > 0 &&
-        hasMatch === false ? (
-          <Alert
-            showIcon
-            type="error"
-            title="No matches found"
-            description="A coin flip may be incorrect, or the advance range may be too small. Try increasing the advance range."
-          />
-        ) : null
-      }
+    <ToolForm<LooseAdvanceFilterFormState, Result>
       pagination={{
         current: pageSettings.currentPage,
         pageSize: pageSettings.pageSize,
@@ -160,19 +143,31 @@ export const DpptCoinFlipAdvanceFilter = () => {
       )}
       submitTrackerId="coin_flip_advance_filter_generate"
       filters={
-        <CoinFlipFilterButtons
-          hasResults={hasResults}
-          maxCoinFlips={results.length}
-          coinFlipFilter={state.gameState.coinFlips}
-          onCoinFlipFilterChange={(coinFlips) => {
-            setState({ gameState: { coinFlips } });
-          }}
-          headsTrackerId="coin_flip_advance_filter_heads"
-          tailsTrackerId="coin_flip_advance_filter_tails"
-        />
+        <>
+          <CoinFlipFilterButtons
+            hasResults={hasResults}
+            maxCoinFlips={results.length}
+            coinFlipFilter={state.gameState.coinFlips}
+            onCoinFlipFilterChange={(coinFlips) => {
+              setState({ gameState: { coinFlips } });
+            }}
+            headsTrackerId="coin_flip_advance_filter_heads"
+            tailsTrackerId="coin_flip_advance_filter_tails"
+          />
+          {hasResults &&
+            state.gameState.coinFlips.length > 0 &&
+            hasMatch === false && (
+              <Alert
+                showIcon
+                type="error"
+                title="No matches found"
+                description="A coin flip may be incorrect, or the advance range may be too small. Try increasing the advance range."
+              />
+            )}
+        </>
       }
     >
       <AdvanceFilterFields mode={mode} targetAdvance={resolvedTargetAdvance} />
-    </RngToolForm>
+    </ToolForm>
   );
 };

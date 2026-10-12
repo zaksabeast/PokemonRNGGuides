@@ -1,14 +1,13 @@
 import React from "react";
 import { Skeleton } from "antd";
-import { Button, Flex } from "~/components";
+import { FormBody, PrimaryButton } from "~/components/form";
 import { useHydrate } from "~/hooks/useHydrate";
 import { useTimerSequence } from "~/hooks/useTimerSequence";
 import { useAtom } from "~/state/localStorage";
 import { multiTimerStateAtom } from "~/state/multiTimerState";
 import { hydrationLock } from "~/utils/hydration";
-import { PRIMARY_BUTTON_HEIGHT } from "./constants";
 import { RunView } from "./runView";
-import { BeepsRow } from "./setupParts";
+import { BeepsField } from "./setupParts";
 
 type Mode = "setup" | "run";
 
@@ -39,17 +38,15 @@ const InnerEmbeddedRunTimer = ({
 
   if (mode === "setup") {
     return (
-      <Flex vertical gap={16}>
-        <BeepsRow value={maxBeepCount} onChange={setMaxBeepCount} />
-        <Button
+      <FormBody>
+        <BeepsField value={maxBeepCount} onChange={setMaxBeepCount} />
+        <PrimaryButton
           trackerId="set_embedded_run_timer"
-          type="primary"
-          height={PRIMARY_BUTTON_HEIGHT}
           onClick={() => setMode("run")}
         >
           Set Timer
-        </Button>
-      </Flex>
+        </PrimaryButton>
+      </FormBody>
     );
   }
 

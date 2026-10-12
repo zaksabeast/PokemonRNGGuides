@@ -1,14 +1,13 @@
 import {
-  Flex,
-  FormFieldTable,
-  NumberInput,
-  Select,
-  Switch,
-} from "~/components";
+  FormCard,
+  FormSection,
+  NumberField,
+  SelectField,
+  SwitchField,
+} from "~/components/form";
 import { Gen3Console, gen3ConsoleOptions } from "~/types/console";
 import { BattleVideoInfo } from "../battleVideo/battleVideo";
 import { useState } from "react";
-import { Typography } from "antd";
 
 export type Props = {
   targetPaintingAdvs: { before: number; after: number };
@@ -45,58 +44,50 @@ export const BattleVideoInfoInput = ({
     });
   };
 
-  return (
-    <FormFieldTable
-      fields={[
-        {
-          label: "Using Battle Video?",
-          input: (
-            <Switch
-              onChange={(val) => {
-                setUsingBattleVideoWithoutPainting(val);
-                onChange(existingBattleVideoAdv, consoleType);
-              }}
-            />
-          ),
-          show: !usingPaintingReseeding,
-        },
-        {
-          label: "Battle Video advance",
-          input: (
-            <Flex vertical>
-              <NumberInput
-                numType="decimal"
-                value={existingBattleVideoAdv}
-                onChange={(val) => {
-                  setExistingBattleVideoAdv(val ?? 0);
-                  onChange(val ?? 0, consoleType);
-                }}
-              />
-              {usingPaintingReseeding && existingBattleVideoAdv === 0 && (
-                <Typography.Text type="danger">
-                  Using Painting Reseeding requires using a Battle Video with
-                  advance above 0.
-                </Typography.Text>
-              )}
-            </Flex>
-          ),
-          show: usingPaintingReseeding || usingBattleVideoWithoutPainting,
-          indent: usingPaintingReseeding ? 0 : 1,
-        },
-        {
-          label: "Console",
-          input: (
-            <Select<Gen3Console>
-              value={consoleType}
-              options={gen3ConsoleOptions}
-              onSelect={(val) => {
-                setConsoleType(val);
-                onChange(existingBattleVideoAdv, val);
-              }}
-            />
-          ),
-        },
-      ]}
+  const battleVideoAdvanceField = (
+    <NumberField
+      label="Battle Video advance"
+      numType="decimal"
+      value={existingBattleVideoAdv}
+      onChange={(val) => {
+        setExistingBattleVideoAdv(val ?? 0);
+        onChange(val ?? 0, consoleType);
+      }}
+      errorMessage={
+        usingPaintingReseeding && existingBattleVideoAdv === 0
+          ? "Using Painting Reseeding requires using a Battle Video with advance above 0."
+          : undefined
+      }
     />
+  );
+
+  return (
+    <FormCard>
+      <FormSection>
+        {usingPaintingReseeding ? (
+          battleVideoAdvanceField
+        ) : (
+          <SwitchField
+            label="Using Battle Video?"
+            value={usingBattleVideoWithoutPainting}
+            onChange={(val) => {
+              setUsingBattleVideoWithoutPainting(val);
+              onChange(existingBattleVideoAdv, consoleType);
+            }}
+          >
+            {battleVideoAdvanceField}
+          </SwitchField>
+        )}
+        <SelectField<Gen3Console>
+          label="Console"
+          value={consoleType}
+          options={gen3ConsoleOptions}
+          onChange={(val) => {
+            setConsoleType(val);
+            onChange(existingBattleVideoAdv, val);
+          }}
+        />
+      </FormSection>
+    </FormCard>
   );
 };

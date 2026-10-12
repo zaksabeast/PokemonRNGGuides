@@ -20,24 +20,18 @@ import {
 } from "~/types";
 import { Translations } from "~/translations";
 import { message } from "antd";
+import { Button, Icon, ResultColumn, Typography } from "~/components";
 import {
-  Button,
-  Field,
-  FormFieldTable,
-  FormikNumberInput,
-  FormikRadio,
-  FormikSelect,
-  Icon,
-  ResultColumn,
-  RngToolForm,
-  Typography,
-} from "~/components";
+  FormNumberField,
+  FormRadioField,
+  FormSection,
+  FormSelectField,
+  NatureField,
+  StatRadioFields,
+  ToolForm,
+} from "~/components/form";
 import { formatOffset } from "~/utils/offsetSymbol";
-import { getStatFields } from "~/rngToolsUi/shared/statFields";
-import {
-  getNatureInputProps,
-  pkmFilterNatureFieldToRustInput,
-} from "~/components/pkmFilter";
+import { pkmFilterNatureFieldToRustInput } from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { Static4Target, useStatic4State } from "./state";
@@ -186,64 +180,56 @@ const Fields = ({ t, target }: FieldProps) => {
   const minLevel = target?.encounterMinLevel ?? 1;
   const maxLevel = target?.encounterMaxLevel ?? 1;
 
-  const fields: Field[] = [
-    {
-      label: t["Gender"],
-      show: !isFixedGender,
-      input: (
-        <FormikRadio<FormState> name="gender" options={toOptions(maleFemale)} />
-      ),
-    },
-    {
-      label: t["Nature"],
-      input: (
-        <FormikSelect<FormState, "nature">
-          name="nature"
-          {...getNatureInputProps(t)}
-        />
-      ),
-    },
-    {
-      label: t["Characteristic"],
-      input: (
-        <FormikSelect<FormState, "filter_characteristic">
+  return (
+    <>
+      <FormSection title={t["Your Pokémon"]}>
+        {!isFixedGender && (
+          <FormRadioField<FormState>
+            name="gender"
+            label={t["Gender"]}
+            cellSize="word"
+            options={toOptions(maleFemale, (gender) => t[gender])}
+          />
+        )}
+        <NatureField<FormState> name="nature" />
+        <FormSelectField<FormState>
           name="filter_characteristic"
+          label={t["Characteristic"]}
           options={Characteristic4Options}
         />
-      ),
-    },
-    {
-      label: t["Level"],
-      show: minLevel !== maxLevel,
-      input: (
-        <FormikRadio<FormState>
-          name="filter_level"
-          options={toOptions(range(minLevel, maxLevel + 1))}
-        />
-      ),
-    },
-    ...getStatFields<FormState>(minMaxStats, t),
-    {
-      label: t["Delay Range ±"],
-      input: (
-        <FormikNumberInput<FormState> name="delayRange" numType="decimal" />
-      ),
-    },
-    {
-      label: t["Seconds Range ±"],
-      input: (
-        <FormikNumberInput<FormState> name="secondsRange" numType="decimal" />
-      ),
-    },
-    {
-      label: t["Advance Range ±"],
-      input: (
-        <FormikNumberInput<FormState> name="advanceRange" numType="decimal" />
-      ),
-    },
-  ];
+        {minLevel !== maxLevel && (
+          <FormRadioField<FormState>
+            name="filter_level"
+            label={t["Level"]}
+            cellSize="number"
+            options={toOptions(range(minLevel, maxLevel + 1))}
+          />
+        )}
+      </FormSection>
 
-  return <FormFieldTable fields={fields} />;
+      <FormSection title={t["Stats"]}>
+        <StatRadioFields<FormState> minMaxStats={minMaxStats} />
+      </FormSection>
+
+      <FormSection title={t["Advanced"]}>
+        <FormNumberField<FormState>
+          name="delayRange"
+          label={t["Delay Range ±"]}
+          numType="decimal"
+        />
+        <FormNumberField<FormState>
+          name="secondsRange"
+          label={t["Seconds Range ±"]}
+          numType="decimal"
+        />
+        <FormNumberField<FormState>
+          name="advanceRange"
+          label={t["Advance Range ±"]}
+          numType="decimal"
+        />
+      </FormSection>
+    </>
+  );
 };
 
 const sortBy = [
@@ -415,7 +401,7 @@ export const Static4Calibrator = () => {
   };
 
   return (
-    <RngToolForm<FormState, Result>
+    <ToolForm<FormState, Result>
       allowCancel
       getColumns={getColumns}
       results={results}
@@ -430,6 +416,6 @@ export const Static4Calibrator = () => {
       progressPercent={progressPercent}
     >
       <Fields t={t} target={static4State.target} />
-    </RngToolForm>
+    </ToolForm>
   );
 };

@@ -4,18 +4,15 @@ import {
   multiWorkerRngTools,
 } from "~/rngTools";
 import { z } from "zod";
+import { ResultColumn, Button, Alert } from "~/components";
 import {
-  FormFieldTable,
-  type Field,
-  RngToolForm,
-  FormikNumberInput,
-  RngToolSubmit,
-  ResultColumn,
-  Button,
-  MinMaxContainer,
-  FormikSelect,
-  Alert,
-} from "~/components";
+  FieldRow,
+  FormNumberField,
+  FormSection,
+  FormSelectField,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
 import { uniqueId } from "lodash-es";
@@ -69,52 +66,17 @@ const Fields = () => {
   const [state] = useAtom(gen4StateAtom);
   const isDp = state.config.game === "Diamond" || state.config.game === "Pearl";
 
-  const fields: Field[] = [
-    {
-      label: t["TID"],
-      input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-    },
-    {
-      label: t["Year"],
-      input: <FormikNumberInput<FormState> name="year" numType="decimal" />,
-    },
-    {
-      label: t["Delay"],
-      input: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
-          }
-          max={
-            <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
-          }
+  return (
+    <>
+      <FormSection title={t["Your game"]}>
+        <FormNumberField<FormState>
+          name="tid"
+          label={t["TID"]}
+          numType="decimal"
         />
-      ),
-    },
-    {
-      label: t["Advance"],
-      input: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<FormState>
-              name="min_mt_advance"
-              numType="decimal"
-            />
-          }
-          max={
-            <FormikNumberInput<FormState>
-              name="max_mt_advance"
-              numType="decimal"
-            />
-          }
-        />
-      ),
-    },
-    {
-      label: t["Prize"],
-      input: (
-        <FormikSelect<FormState, "prize_filter">
+        <FormSelectField<FormState>
           name="prize_filter"
+          label={t["Prize"]}
           options={[
             { value: null, label: t["Any"] },
             { value: "MasterBall", label: t["Master Ball"] },
@@ -126,11 +88,41 @@ const Fields = () => {
               : { value: "UltraBall", label: t["Ultra Ball"] },
           ]}
         />
-      ),
-    },
-  ];
+      </FormSection>
 
-  return <FormFieldTable fields={fields} />;
+      <FormSection title={t["Search"]}>
+        <FormNumberField<FormState>
+          name="year"
+          label={t["Year"]}
+          numType="decimal"
+        />
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="min_delay"
+            label={t["Min Delay"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="max_delay"
+            label={t["Max Delay"]}
+            numType="decimal"
+          />
+        </FieldRow>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="min_mt_advance"
+            label={t["Min Advance"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="max_mt_advance"
+            label={t["Max Advance"]}
+            numType="decimal"
+          />
+        </FieldRow>
+      </FormSection>
+    </>
+  );
 };
 
 const mapResult = (result: SearchLottery4Res): Result => ({
@@ -203,7 +195,7 @@ export const Lottery4Searcher = () => {
     },
   ];
 
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     const chunked = chunkRange([opts.min_delay, opts.max_delay], 100);
     const chunksOpts = chunked.map(
       ([min_delay, max_delay]): RustOption<SearchLottery4Opts> => ({
@@ -219,7 +211,7 @@ export const Lottery4Searcher = () => {
   };
 
   return (
-    <RngToolForm<FormState, Result>
+    <ToolForm<FormState, Result>
       initialValues={initialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
@@ -238,6 +230,6 @@ export const Lottery4Searcher = () => {
           type="error"
         />
       )}
-    </RngToolForm>
+    </ToolForm>
   );
 };

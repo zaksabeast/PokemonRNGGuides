@@ -1,14 +1,16 @@
 import React from "react";
+import { Flex, ResultColumn, Typography } from "~/components";
 import {
-  Field,
-  Flex,
-  FormikNumberInput,
-  ResultColumn,
-  RngToolForm,
-  Select,
-  Typography,
-} from "~/components";
-import { EvInput, Evs, EvsSchema } from "~/components/evInput";
+  FormNumberField,
+  FormSection,
+  getNatureOptions,
+  SelectField,
+  StatGrid,
+  StatRadioFields,
+  ToolForm,
+} from "~/components/form";
+import { Evs, EvsSchema } from "~/components/evInput";
+import { useWatch } from "~/hooks/form";
 import { CalibrateTimerButton } from "~/components/calibrateTimerButton";
 import { PickupEggState, useHeldEggState, usePickupEggState } from "./state";
 import {
@@ -23,7 +25,6 @@ import {
 } from "~/rngTools";
 import { maxIvs, minIvs } from "~/types/ivs";
 import { getNullableIvColumns } from "~/rngToolsUi/shared/ivColumns";
-import { getStatFields } from "~/rngToolsUi/shared/statFields";
 import {
   defaultMinMaxStats,
   MinMaxStats,
@@ -33,13 +34,12 @@ import { getStatRange } from "~/types/statRange";
 import { z } from "zod";
 import { defaultHiddenPowerFilter } from "~/components/hiddenPowerInput";
 import pmap from "p-map";
-import { sortBy, startCase, mapValues } from "lodash-es";
+import { isEqual, sortBy, startCase, mapValues } from "lodash-es";
 import { ivMethods } from "./constants";
 import { Gen3EmbeddedTimer } from "~/rngToolsUi/gen3/shared/timer";
 import { match, P } from "ts-pattern";
 import { Nullable } from "~/types/utils";
 import { getGen3SpeciesOptions } from "~/types/species";
-import { getNatureInputProps } from "~/components/pkmFilter";
 import { atom, useAtom } from "jotai";
 import { formatOffset } from "~/utils/offsetSymbol";
 import { Translations } from "~/translations";
@@ -62,11 +62,13 @@ const currentlyHeldEggAtom = atom<HeldEgg>({
 const useCurrentlyHeldEgg = () => useAtom(currentlyHeldEggAtom);
 
 const HeldEggSpeciesSelect = () => {
+  const t = useActiveRouteTranslations();
   const [heldEgg, setHeldEgg] = useCurrentlyHeldEgg();
 
   return (
-    <Select<Species>
+    <SelectField<Species>
       name="species"
+      label={t["Species"]}
       options={getGen3SpeciesOptions().byName}
       value={heldEgg.species}
       onChange={(value) => setHeldEgg((prev) => ({ ...prev, species: value }))}
@@ -79,13 +81,34 @@ const HeldEggNatureSelect = () => {
   const [heldEgg, setHeldEgg] = useCurrentlyHeldEgg();
 
   return (
-    <Select<Nature>
+    <SelectField<Nature>
       name="nature"
-      {...getNatureInputProps(t)}
+      label={t["Nature"]}
+      options={getNatureOptions(t)}
       value={heldEgg.nature}
       onChange={(value) => setHeldEgg((prev) => ({ ...prev, nature: value }))}
     />
   );
+};
+
+type EvFieldsProps = {
+  onChange: (evs: Evs) => void;
+};
+
+const EvFields = ({ onChange }: EvFieldsProps) => {
+  const t = useActiveRouteTranslations();
+  const { evs } = useWatch({
+    validationSchema: z.object({ evs: EvsSchema }),
+    names: { evs: true },
+  });
+
+  React.useEffect(() => {
+    if (evs != null) {
+      onChange(evs);
+    }
+  }, [evs, onChange]);
+
+  return <StatGrid<FormState, Evs> name="evs" title={t["EVs"]} maxLength={3} />;
 };
 
 const hasKnownIv = (iv: InheritedIv): boolean => {
@@ -290,34 +313,9 @@ export const CalibratePickupEgg = () => {
 
   const updateLevelFilter = (level: number | null) =>
     setFilters((prev) => ({ ...prev, level }));
+  // Keeps the same filters when the EVs didn't change, so reporting them can't loop
   const updateEvFilters = (evs: Evs) =>
-    setFilters((prev) => ({ ...prev, evs }));
-
-  const fields: Field[] = [
-    {
-      label: t["Species"],
-      input: <HeldEggSpeciesSelect />,
-    },
-    {
-      label: t["Nature"],
-      input: <HeldEggNatureSelect />,
-    },
-    {
-      label: t["Level"],
-      input: (
-        <FormikNumberInput
-          name="level"
-          numType="decimal"
-          onChange={updateLevelFilter}
-        />
-      ),
-    },
-    {
-      label: t["EVs"],
-      input: <EvInput<FormState> name="evs" onChange={updateEvFilters} />,
-    },
-    ...getStatFields<FormState>(minMaxStats, t),
-  ];
+    setFilters((prev) => (isEqual(prev.evs, evs) ? prev : { ...prev, evs }));
 
   const dataSource = potentialEggs.filter((result) => {
     return (
@@ -375,17 +373,32 @@ export const CalibratePickupEgg = () => {
         </Typography.Title>
       </Flex>
 
-      <RngToolForm<FormState, Result>
-        fields={fields}
+      <ToolForm<FormState, Result>
         getColumns={getColumns}
         validationSchema={Validator}
         results={dataSource}
         initialValues={initialValues}
         onSubmit={onSubmit}
         submitTrackerId="generate_retail_emerald_pickup_egg"
-        submitButtonLabel="Find advances matching hatched egg"
+        submitButtonLabel="Find hatched egg"
         rowKey="key"
-      />
+      >
+        <FormSection title={t["Hatched Egg"]}>
+          <HeldEggSpeciesSelect />
+          <HeldEggNatureSelect />
+          <FormNumberField<FormState>
+            name="level"
+            label={t["Level"]}
+            numType="decimal"
+            onChange={updateLevelFilter}
+          />
+          <EvFields onChange={updateEvFilters} />
+        </FormSection>
+
+        <FormSection title={t["Stats"]}>
+          <StatRadioFields<FormState> minMaxStats={minMaxStats} />
+        </FormSection>
+      </ToolForm>
     </Flex>
   );
 };

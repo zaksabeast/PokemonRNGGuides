@@ -1,21 +1,18 @@
 import { Skeleton } from "antd";
-import { Button, Switch, Flex, Typography, List, ListItem } from "~/components";
+import { Flex } from "~/components";
+import {
+  FormCard,
+  OutlinedButton,
+  PrimaryButton,
+  SwitchField,
+  SwitchGroup,
+} from "~/components/form";
 import { useRegisteredTrainers, RegisteredPokeNavTrainers } from "./state";
 import { pokeNavTrainers } from "./constants";
-import styled from "@emotion/styled";
 import { useHydrate } from "~/hooks/useHydrate";
 import { hydrationLock } from "~/utils/hydration";
 import { usePokeNavTranslations } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
-
-const Label = styled.label({
-  display: "flex",
-  flex: 1,
-  gap: 32,
-  justifyContent: "space-between",
-  cursor: "pointer",
-  userSelect: "none",
-});
 
 type UpdateStateProps = {
   prev: RegisteredPokeNavTrainers;
@@ -61,45 +58,39 @@ export const PokeNavInput = () => {
     return <Skeleton />;
   }
 
-  const fields = pokeNavTrainers.map((trainer) => (
-    <ListItem key={trainer}>
-      <Label>
-        <Typography.Text strong>
-          {translatedTrainers.withTitle[trainer]}
-        </Typography.Text>
-        <Switch
-          id={`${trainer}-switch`}
-          checked={client.registeredTrainers.includes(trainer)}
-          onChange={(checked) =>
-            setRegisteredTrainers(
-              hydrationLock(
-                updateTrainerState({ prev: client, checked, trainer }),
-              ),
-            )
-          }
-        />
-      </Label>
-    </ListItem>
-  ));
-
   return (
-    <Flex vertical align="center" gap={24}>
-      <Flex gap={8} justify="space-between">
-        <Button
+    <FormCard>
+      <Flex gap={12} wrap="wrap">
+        <PrimaryButton
           trackerId="select_all_pokenav_trainers"
-          type="primary"
           onClick={handleSelectAll}
         >
           Select All
-        </Button>
-        <Button
+        </PrimaryButton>
+        <OutlinedButton
           trackerId="deselect_all_pokenav_trainers"
           onClick={handleDeselectAll}
         >
           Deselect All
-        </Button>
+        </OutlinedButton>
       </Flex>
-      <List>{fields}</List>
-    </Flex>
+      <SwitchGroup>
+        {pokeNavTrainers.map((trainer) => (
+          <SwitchField
+            key={trainer}
+            name={`${trainer}-switch`}
+            label={translatedTrainers.withTitle[trainer]}
+            value={client.registeredTrainers.includes(trainer)}
+            onChange={(checked) =>
+              setRegisteredTrainers(
+                hydrationLock(
+                  updateTrainerState({ prev: client, checked, trainer }),
+                ),
+              )
+            }
+          />
+        ))}
+      </SwitchGroup>
+    </FormCard>
   );
 };

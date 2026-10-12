@@ -1,12 +1,10 @@
-import { Field } from "~/components/formFieldTable";
-import { RngToolForm, RngToolSubmit } from "~/components/rngToolForm";
-import { Translations } from "~/translations";
+import { ToolForm, type ToolFormSubmit } from "~/components/form";
 import {
   BoxNameResult,
   convertAceResultToBoxNames,
   getBoxNameColumns,
 } from "./aceBoxNameFormatter";
-import { GenericForm, OneOf } from "~/types";
+import { GenericForm } from "~/types";
 import { DefaultValues } from "react-hook-form";
 import { Flex, Typography } from "~/components";
 import React from "react";
@@ -18,10 +16,8 @@ export type Props<FormState extends GenericForm> = {
   values?: FormState;
   validationSchema?: z.ZodType<FormState>;
   onSubmit: (values: FormState) => Promise<AceResult | null | undefined>;
-} & OneOf<{
-  getFields: (t: Translations) => Field[];
   children: React.ReactNode;
-}>;
+};
 
 export const AceForm = <FormState extends GenericForm>(
   props: Props<FormState>,
@@ -29,7 +25,7 @@ export const AceForm = <FormState extends GenericForm>(
   const [results, setResults] = React.useState<BoxNameResult[]>([]);
   const [hasError, setHasError] = React.useState(false);
 
-  const onSubmit: RngToolSubmit<FormState> = async (values) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (values) => {
     setHasError(false);
     setResults([]);
 
@@ -45,7 +41,7 @@ export const AceForm = <FormState extends GenericForm>(
   };
   return (
     <Flex vertical>
-      <RngToolForm<FormState, BoxNameResult>
+      <ToolForm<FormState, BoxNameResult>
         {...props}
         getColumns={getBoxNameColumns}
         submitTrackerId="emerald_ace_generate"

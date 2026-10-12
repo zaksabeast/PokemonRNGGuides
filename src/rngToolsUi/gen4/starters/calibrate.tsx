@@ -1,12 +1,13 @@
 import React from "react";
+import { Icon, ResultColumn } from "~/components";
 import {
-  Field,
-  FormFieldTable,
-  FormikSelect,
-  Icon,
-  ResultColumn,
-  RngToolForm,
-} from "~/components";
+  FormRadioField,
+  FormSection,
+  FormSelectField,
+  NatureField,
+  StatRadioFields,
+  ToolForm,
+} from "~/components/form";
 import { MinMaxStats, defaultMinMaxStats } from "~/types/stat";
 import { CalibrateTimerButton } from "../shared/calibrateTimerButton";
 import {
@@ -16,17 +17,12 @@ import {
   StatsValue,
 } from "~/rngTools";
 import { z } from "zod";
-import {
-  getNatureInputProps,
-  pkmFilterNatureFieldToRustInput,
-} from "~/components/pkmFilter";
+import { pkmFilterNatureFieldToRustInput } from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import { useStarterState } from "./state";
 import { useAtom } from "jotai";
 import { gen4StateAtom } from "../shared/state";
 import { maleFemale, nature, StatFieldsSchema } from "~/types";
-import { getStatFields } from "~/rngToolsUi/shared/statFields";
-import { FormikRadio } from "~/components/radio";
 import { formatOffset } from "~/utils/offsetSymbol";
 import { sortBy } from "lodash-es";
 import pMap from "p-map";
@@ -147,41 +143,34 @@ const Fields = ({ t }: FieldsProps) => {
     run();
   }, [starter.species]);
 
-  const fields: Field[] = [
-    {
-      label: t["Gender"],
-      input: (
-        <FormikRadio<FormState> name="gender" options={toOptions(maleFemale)} />
-      ),
-    },
-    {
-      label: t["Nature"],
-      input: (
-        <FormikSelect<FormState, "nature">
-          name="nature"
-          {...getNatureInputProps(t)}
+  return (
+    <>
+      <FormSection title={t["Your Pokémon"]}>
+        <FormRadioField<FormState>
+          name="gender"
+          label={t["Gender"]}
+          cellSize="word"
+          options={toOptions(maleFemale, (gender) => t[gender])}
         />
-      ),
-    },
-    {
-      label: t["Characteristic"],
-      input: (
-        <FormikSelect<FormState, "filter_characteristic">
+        <NatureField<FormState> name="nature" />
+        <FormSelectField<FormState>
           name="filter_characteristic"
+          label={t["Characteristic"]}
           options={Characteristic4Options}
         />
-      ),
-    },
-    {
-      label: t["Level"],
-      input: (
-        <FormikRadio<FormState> name="level" options={toOptions([5, 6])} />
-      ),
-    },
-    ...getStatFields<FormState>(minMaxStats, t),
-  ];
+        <FormRadioField<FormState>
+          name="level"
+          label={t["Level"]}
+          cellSize="number"
+          options={toOptions([5, 6])}
+        />
+      </FormSection>
 
-  return <FormFieldTable fields={fields} />;
+      <FormSection title={t["Stats"]}>
+        <StatRadioFields<FormState> minMaxStats={minMaxStats} />
+      </FormSection>
+    </>
+  );
 };
 
 export const CalibrateStarter4 = () => {
@@ -284,7 +273,7 @@ export const CalibrateStarter4 = () => {
   };
 
   return (
-    <RngToolForm<FormState, Result>
+    <ToolForm<FormState, Result>
       getColumns={getColumns}
       results={results}
       initialValues={initialValues}
@@ -294,6 +283,6 @@ export const CalibrateStarter4 = () => {
       submitTrackerId="calibrate_gen4_starter"
     >
       <Fields t={t} />
-    </RngToolForm>
+    </ToolForm>
   );
 };

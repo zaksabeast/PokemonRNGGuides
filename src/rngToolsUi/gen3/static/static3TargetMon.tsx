@@ -1,3 +1,4 @@
+import type { ShinyFilter } from "~/rngTools";
 import {
   Field,
   FormFieldTable,
@@ -31,7 +32,7 @@ const getTargetMonFields = (
   game: Static3Game,
   selectedSpecies: Species,
   selectedRoaming: boolean,
-  filter_shiny: boolean,
+  filter_shiny: ShinyFilter,
 ): Field[] => {
   const possibleSpecies = getPossibleStatic3Species(game);
   const hasMultiplePossibleRoaming = hasMultiplePossibleRoamingValuesForSpecies(
@@ -83,7 +84,7 @@ const getTargetMonFields = (
           webtool if you don't know your SID.
         </>
       ),
-      show: game === "emerald" && isStarter && filter_shiny,
+      show: game === "emerald" && isStarter && filter_shiny !== "Any",
     },
     ...getPkmFilterFields({
       species: selectedSpecies,
@@ -113,7 +114,7 @@ export const Static3TargetMon = ({ game }: { game: Static3Game }) => {
           game,
           species ?? getPossibleStatic3Species(game)[0],
           roaming ?? false,
-          filter_shiny ?? false,
+          filter_shiny ?? "Any",
         )}
       />
     </Flex>

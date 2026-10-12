@@ -154,7 +154,7 @@ mod tests {
             parent_ivs: [PartialIvs::new_all31(), PartialIvs::new_all31()],
             is_dppt: true,
             filter: PkmFilter {
-                shiny: true,
+                shiny: crate::ShinyFilter::AnyShiny,
                 nature: None,
                 gender: None,
                 ability: None,
@@ -189,7 +189,7 @@ mod tests {
             parent_ivs: [PartialIvs::new_all31(), PartialIvs::new_all31()],
             is_dppt: true,
             filter: PkmFilter {
-                shiny: false,
+                shiny: crate::ShinyFilter::Any,
                 nature: None,
                 gender: None,
                 ability: None,

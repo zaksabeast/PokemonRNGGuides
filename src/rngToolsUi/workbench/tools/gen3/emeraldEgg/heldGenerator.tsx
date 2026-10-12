@@ -1,3 +1,4 @@
+import { ShinyIcon } from "~/components/shiny";
 import { uniqueId, sortBy } from "lodash-es";
 import {
   FormikSwitch,
@@ -292,7 +293,7 @@ export const EmeraldEggHeldGenerator = () => {
     {
       title: "Shiny",
       dataIndex: "shiny",
-      render: (shiny) => (shiny ? "Yes" : "No"),
+      render: (shiny) => <ShinyIcon shiny={shiny} />,
     },
     {
       title: "Match call",

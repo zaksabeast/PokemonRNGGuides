@@ -150,7 +150,7 @@ mod test {
             // slot
             let level: u8 = parts[5].parse().unwrap();
             let pid = u32::from_str_radix(parts[6], 16).unwrap();
-            let shiny = parts[7] != "No";
+            let shiny = match parts[7] { "No" => crate::ShinyType::NotShiny, "Square" => crate::ShinyType::SquareShiny, _ => crate::ShinyType::StarShiny };
             let nature = Nature::from_str(parts[8]);
             let ability = AbilityType::from_pokefinder_str(parts[9]);
             let ivs = Ivs::from_pokefinder_strs(&parts[10..][..6]);
@@ -194,7 +194,7 @@ mod test {
 
             let parts = &parts[advance_pid_offset..];
             let pid = u32::from_str_radix(parts[0], 16).unwrap();
-            let shiny = parts[1] != "No";
+            let shiny = match parts[1] { "No" => crate::ShinyType::NotShiny, "Square" => crate::ShinyType::SquareShiny, _ => crate::ShinyType::StarShiny };
             let nature = Nature::from_str(parts[2]);
             let ability = AbilityType::from_pokefinder_str(parts[3]);
             let ivs = Ivs::from_pokefinder_strs(&parts[4..][..6]);
@@ -236,7 +236,7 @@ mod test {
             let advance: usize = parts[0].parse().unwrap();
             let level: u8 = parts[5].parse().unwrap();
             let pid = u32::from_str_radix(parts[6], 16).unwrap();
-            let shiny = parts[7] != "No";
+            let shiny = match parts[7] { "No" => crate::ShinyType::NotShiny, "Square" => crate::ShinyType::SquareShiny, _ => crate::ShinyType::StarShiny };
             let nature = Nature::from_str(parts[8]);
             let ability = AbilityType::from_pokefinder_str(parts[9]);
             let ivs = Ivs::from_pokefinder_strs(&parts[10..][..6]);

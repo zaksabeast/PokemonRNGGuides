@@ -1,3 +1,4 @@
+import { ShinyIcon } from "~/components/shiny";
 import React from "react";
 import { atom, useAtom } from "jotai";
 import { uniqueId, map, sortBy } from "lodash-es";
@@ -158,7 +159,7 @@ const columns: ResultColumn<Result>[] = [
   {
     title: "Shiny",
     dataIndex: "shiny",
-    render: (shiny: boolean) => (shiny ? "Yes" : "No"),
+    render: (shiny) => <ShinyIcon shiny={shiny} />,
   },
   { title: "Nature", dataIndex: "nature" },
   { title: "Ability", dataIndex: "ability" },

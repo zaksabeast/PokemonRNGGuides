@@ -52,7 +52,7 @@ mod tests {
             ability: AbilityType::First,
             gender: Gender::Genderless,
             nature: Nature::Hardy,
-            shiny: false,
+            shiny: crate::ShinyType::NotShiny,
             characteristic: Characteristic::default(),
             lead: LeadAbility::None,
             level: 1,

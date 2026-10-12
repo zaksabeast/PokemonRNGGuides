@@ -14,7 +14,7 @@ use crate::{
         get_min_mid_max_pre_sweet_scent_cycle, get_min_mid_max_vblank_cycle_duration,
         passes_pid_filter, wild::lcrng_distance,
     },
-    gen3_tsv, is_max_size,
+    is_max_size,
     rng::{Rng, lcrng::Pokerng},
 };
 
@@ -32,7 +32,7 @@ struct GenTmpData<'a> {
     required_gender: Option<Gender>,
     required_nature: Nature,
     used_safari_pokeblock: Option<[u8; 5]>,
-    tsv: u16,
+    trainer_xor: u16,
 }
 
 fn rand_next_u16(rng: &mut Pokerng, _reason: &str, _modulo: u16) -> u16 {
@@ -602,7 +602,7 @@ fn generate_wild3_from_encounter(
         required_gender,
         required_nature,
         used_safari_pokeblock,
-        tsv: gen3_tsv(opts.tid, opts.sid),
+        trainer_xor: opts.tid ^ opts.sid,
     };
 
     let methods_contains_wild3 = opts.methods.contains(&Gen3Method::Wild3);
@@ -859,7 +859,7 @@ fn passes_pid_filter_internal(gen_data: &GenTmpData, pid: u32) -> bool {
         &gen_data.opts.gen3_filter,
         Some(gen_data.encounter_gender_ratio),
         pid,
-        gen_data.tsv,
+        gen_data.trainer_xor,
     )
 }
 

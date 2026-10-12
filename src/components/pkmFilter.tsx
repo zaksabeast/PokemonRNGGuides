@@ -1,3 +1,5 @@
+import { shinyFilterSchema, shinyFilterOptions } from "~/rngTools/shiny";
+import { FormikSelect } from "~/components/select";
 import * as tst from "ts-toolbelt";
 import type {
   AbilityType,
@@ -7,9 +9,9 @@ import type {
   Nature,
   PkmFilter,
   Species,
+  ShinyFilter,
 } from "~/rngTools";
 import { Field } from "~/components/formFieldTable";
-import { FormikSwitch } from "~/components/switch";
 import { nature } from "~/types/nature";
 import { IvInput, IvsSchema } from "~/components/ivInput";
 import { ability12H } from "~/types/ability";
@@ -171,7 +173,7 @@ export const getNatureInputProps = (translations?: Translations) => {
 };
 
 export type PkmFilterFields = {
-  filter_shiny: boolean;
+  filter_shiny: ShinyFilter;
   filter_nature: Nature[];
   filter_gender: Gender | null;
   filter_min_ivs: Ivs;
@@ -181,7 +183,7 @@ export type PkmFilterFields = {
 };
 
 export const pkmFilterSchema = z.object({
-  filter_shiny: z.boolean(),
+  filter_shiny: shinyFilterSchema,
   filter_nature: z.array(z.enum(nature)),
   filter_ability: z.enum(ability12H).nullable(),
   filter_gender: z.enum(gender).nullable(),
@@ -228,7 +230,7 @@ export type PkmFilterProps = {
 };
 
 export const getPkmFilterInitialValues = (): PkmFilterFields => ({
-  filter_shiny: false,
+  filter_shiny: "Any",
   filter_min_ivs: minIvs,
   filter_max_ivs: maxIvs,
   filter_nature: [],
@@ -256,7 +258,12 @@ const _getPkmFilterFields = (
     optOut(props?.displayShiny, {
       id: "shiny" as const,
       label: t?.["Shiny"] ?? "Shiny",
-      input: <FormikSwitch<PkmFilterFields> name="filter_shiny" />,
+      input: (
+        <FormikSelect<PkmFilterFields, "filter_shiny">
+          name="filter_shiny"
+          options={shinyFilterOptions}
+        />
+      ),
     }),
     optOut(props?.displayNature, {
       id: "nature" as const,

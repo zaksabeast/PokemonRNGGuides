@@ -1,3 +1,4 @@
+import { ShinyIcon } from "~/components/shiny";
 import * as tst from "ts-toolbelt";
 import { uniqueId } from "lodash-es";
 import {
@@ -288,7 +289,7 @@ export const Egg4Search = () => {
     {
       title: t["Shiny"],
       dataIndex: "shiny",
-      render: (shiny) => (shiny === true ? "Yes" : "No"),
+      render: (shiny) => <ShinyIcon shiny={shiny} />,
     },
     { title: t["Gender"], dataIndex: "gender" },
     {

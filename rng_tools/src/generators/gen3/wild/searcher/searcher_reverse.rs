@@ -21,7 +21,6 @@ use crate::{
             },
         },
     },
-    gen3_tsv,
     rng::lcrng::Pokerng,
 };
 
@@ -227,7 +226,7 @@ fn new_find_pid_paths_options(opts: &Wild3SearcherOptions) -> FindPidPathsOption
         gen3_filter: opts.gen3_filter.clone(),
         encounter_gender_ratio,
         method_bitset,
-        tsv: gen3_tsv(opts.tid, opts.sid),
+        trainer_xor: opts.tid ^ opts.sid,
         initial_seed: opts.initial_seed,
         initial_advances: opts.initial_advances,
         max_result_count: opts.max_result_count,

@@ -111,7 +111,7 @@ mod tests {
             // slot
             let level: u8 = parts[4].parse().unwrap();
             let pid = u32::from_str_radix(parts[5], 16).unwrap();
-            let shiny = parts[6] != "No";
+            let shiny = match parts[6] { "No" => crate::ShinyType::NotShiny, "Square" => crate::ShinyType::SquareShiny, _ => crate::ShinyType::StarShiny };
             let nature = Nature::from_str(parts[7]);
             let ability = AbilityType::from_pokefinder_str(parts[8]);
             let ivs = Ivs::from_pokefinder_strs(&parts[9..][..6]);
@@ -154,7 +154,7 @@ mod tests {
             let seed = u32::from_str_radix(parts[0], 16).unwrap();
             let advance: usize = parts[1].parse().unwrap();
             let pid = u32::from_str_radix(parts[2], 16).unwrap();
-            let shiny = parts[3] != "No";
+            let shiny = match parts[3] { "No" => crate::ShinyType::NotShiny, "Square" => crate::ShinyType::SquareShiny, _ => crate::ShinyType::StarShiny };
             let nature = Nature::from_str(parts[4]);
             let ability = AbilityType::from_pokefinder_str(parts[5]);
             let ivs = Ivs::from_pokefinder_strs(&parts[6..][..6]);
@@ -321,7 +321,7 @@ mod tests {
                         ability: AbilityType::First,
                         gender: Gender::Female,
                         nature: Nature::Hardy,
-                        shiny: false,
+                        shiny: crate::ShinyType::NotShiny,
                         characteristic: Characteristic::LovesToEat,
                         lead: LeadAbility::None,
                         level: 1
@@ -374,7 +374,7 @@ mod tests {
                         ability: AbilityType::First,
                         gender: Gender::Female,
                         nature: Nature::Hardy,
-                        shiny: false,
+                        shiny: crate::ShinyType::NotShiny,
                         characteristic: Characteristic::LovesToEat,
                         lead: LeadAbility::None,
                         level: 1

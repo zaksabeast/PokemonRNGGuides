@@ -1,3 +1,4 @@
+import type { ShinyFilter } from "~/rngTools";
 import {
   gen3StaticMethods,
   getEmeraldStaticCalibData,
@@ -17,7 +18,7 @@ import { Species } from "~/rngTools/index.ts";
 const getSetupFields = (obj: {
   game: Static3Game;
   usingPaintingReseeding: boolean;
-  filter_shiny: boolean;
+  filter_shiny: ShinyFilter;
   usingAceForSid: boolean;
   letSearcherFindPaintingSeed: boolean;
   showAdvancedPaintingSettings: boolean;
@@ -107,7 +108,7 @@ export const Static3SetupFilter = ({ game }: { game: Static3Game }) => {
         fields={getSetupFields({
           game,
           usingPaintingReseeding: usingPaintingReseeding ?? false,
-          filter_shiny: filter_shiny ?? false,
+          filter_shiny: filter_shiny ?? "Any",
           usingAceForSid: usingAceForSid ?? false,
           letSearcherFindPaintingSeed: letSearcherFindPaintingSeed ?? false,
           showAdvancedPaintingSettings: showAdvancedPaintingSettings ?? false,

@@ -1,3 +1,4 @@
+import { ShinyIcon } from "~/components/shiny";
 import React from "react";
 import {
   Flex,
@@ -55,7 +56,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
     title: t["Shiny"],
     dataIndex: "shiny",
-    render: (shiny) => (shiny ? "Yes" : "No"),
+    render: (shiny) => <ShinyIcon shiny={shiny} />,
   },
   ...ivColumns,
 ];

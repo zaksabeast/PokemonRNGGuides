@@ -1,3 +1,4 @@
+import { type AceSidConfig, getSidResultingInShiny } from "~/rngTools/shiny";
 import {
   Gen3StaticMethod,
   Species,
@@ -18,7 +19,6 @@ import { Static3SetupFilter } from "./static3SetupFilter";
 import {
   getTargetSetupSearcherInitialValues,
   getTargetResultColumns,
-  getSidResultingInShiny,
 } from "../pokemonRng/targetSetupSearcher";
 import { static3TargetSetupSearcherSchema } from "./static3TargetSetupSearcher.schema.ts";
 
@@ -62,7 +62,7 @@ type Props = {
 const convertToTargetSetup = (
   game: Static3Game,
   pidPath: PidPathResult,
-  tidForAceSid: number | null,
+  tidForAceSid: AceSidConfig | null,
 ): TargetSetup => {
   const aceSid =
     tidForAceSid == null
@@ -90,20 +90,23 @@ export const Static3TargetSetupSearcher = ({
     [],
   );
 
-  const [tidForAceSid, setTidForAceSid] = React.useState<number | null>(null);
+  const [tidForAceSid, setTidForAceSid] = React.useState<AceSidConfig | null>(null);
   const initialValues = getInitialValues(game);
 
   const pidPathColumns = getTargetResultColumns(
     game,
     false,
-    tidForAceSid !== null,
+    tidForAceSid?.shiny ?? null,
   );
 
   const onSubmit: RngToolSubmit<FormState> = async (values) => {
     const pidPathResults = await searchStatic3Target(game, values);
 
-    if (values.filter_shiny && values.usingAceForSid) {
-      setTidForAceSid(values.tid);
+    if (values.filter_shiny !== "Any" && values.usingAceForSid) {
+      setTidForAceSid({
+        tid: values.tid,
+        shiny: values.filter_shiny === "StarShiny" ? "StarShiny" : "SquareShiny",
+      });
     } else {
       setTidForAceSid(null);
     }

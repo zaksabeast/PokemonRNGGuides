@@ -1,3 +1,5 @@
+import { ShinyIcon } from "~/components/shiny";
+import type { ShinyType } from "~/rngTools";
 import { uniqueId } from "lodash-es";
 import {
   ResultColumn,
@@ -82,7 +84,7 @@ type Result = {
   seed: number;
   advance: number;
   pid: number;
-  shiny: boolean;
+  shiny: ShinyType;
   nature: Nature;
   ability: string;
   hp: number;
@@ -218,7 +220,7 @@ const columns: ResultColumn<Result>[] = [
   {
     title: "Shiny",
     dataIndex: "shiny",
-    render: (value) => (value ? "Yes" : "No"),
+    render: (shiny) => <ShinyIcon shiny={shiny} />,
   },
   { title: "Nature", dataIndex: "nature" },
   { title: "Ability", dataIndex: "ability" },

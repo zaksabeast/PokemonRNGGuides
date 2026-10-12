@@ -1,3 +1,4 @@
+import type { ShinyFilter } from "~/rngTools";
 import { Gen3Method, Species } from "~/rngTools";
 import {
   Field,
@@ -39,7 +40,7 @@ const supportedGen3Methods = [
 
 const getSetupFields = (obj: {
   species: Species;
-  filter_shiny: boolean;
+  filter_shiny: ShinyFilter;
   recommendedSetups: boolean;
   usingPaintingReseeding: boolean;
   letSearcherFindPaintingSeed: boolean;

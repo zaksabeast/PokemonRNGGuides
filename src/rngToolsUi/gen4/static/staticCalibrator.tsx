@@ -379,7 +379,7 @@ export const Static4Calibrator = () => {
         encounter_max_level: staticTarget.encounterMaxLevel,
         filter_level: opts.filter_level,
         filter: {
-          shiny: false,
+          shiny: "Any",
           ability: null,
           nature: pkmFilterNatureFieldToRustInput([opts.nature]),
           gender: staticTarget.isFixedGender

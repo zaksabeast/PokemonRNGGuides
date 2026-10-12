@@ -53,7 +53,7 @@ pub fn determine_best_pid_path_strategy(opts: &FindPidPathsOptions) -> PidPathSt
     let pid_possibility_count = pid_restrict * 4294967296.0f64;
 
     if pid_possibility_count < iv_possibility_count {
-        if opts.filter.shiny {
+        if opts.filter.shiny != crate::ShinyFilter::Any {
             // ReversePidShiny only supports shiny. Shiny has ~500K possibilities.
             return PidPathStrategy::ReversePidShiny;
         }
@@ -200,7 +200,7 @@ pub fn find_pid_paths_reverse_pid_cycle_speed_mid<const METHODS: u8>(
 pub fn find_pid_paths_reverse_pid_shiny<const METHODS: u8>(
     opts: &FindPidPathsOptions,
 ) -> impl Iterator<Item = PidPath> {
-    let full_tsv: u32 = (opts.tsv as u32) << 3;
+    let full_tsv: u32 = ((opts.trainer_xor >> 3) as u32) << 3;
 
     let wanted_pids = (0..0x80000u32).map(move |partial| partial ^ ((partial ^ full_tsv) << 16));
 

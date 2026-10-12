@@ -1,10 +1,11 @@
+import { ShinyIcon } from "~/components/shiny";
+import { shinyFilterSchema, shinyFilterOptions } from "~/rngTools/shiny";
 import React from "react";
 import {
   FormikNumberInput,
   ResultColumn,
   FormikSelect,
   Field,
-  FormikSwitch,
   RngToolForm,
   RngToolSubmit,
 } from "~/components";
@@ -30,7 +31,7 @@ const getColumns = (t: Translations): ResultColumn<Gen3HeldEgg>[] => {
     {
       title: t["Shiny"],
       dataIndex: "shiny",
-      render: (shiny) => (shiny ? "Yes" : "No"),
+      render: (shiny) => <ShinyIcon shiny={shiny} />,
     },
     { title: t["Nature"], dataIndex: "nature" },
     { title: t["Ability"], dataIndex: "ability" },
@@ -48,7 +49,7 @@ const Validator = z.object({
   tid: z.number().int().min(0).max(65535),
   sid: z.number().int().min(0).max(65535),
   egg_species: z.enum(species),
-  filter_shiny: z.boolean(),
+  filter_shiny: shinyFilterSchema,
   filter_nature: z.array(z.enum(nature)),
   filter_gender: z.enum(gender).nullable(),
 });
@@ -66,7 +67,7 @@ const initialValues: FormState = {
   tid: 0,
   sid: 0,
   egg_species: "Bulbasaur",
-  filter_shiny: false,
+  filter_shiny: "Any",
   filter_nature: [],
   filter_gender: null,
 };
@@ -152,7 +153,12 @@ const getFields = (t: Translations): Field[] => {
     },
     {
       label: t["Filter shiny"],
-      input: <FormikSwitch<FormState> name="filter_shiny" />,
+      input: (
+        <FormikSelect<FormState, "filter_shiny">
+          name="filter_shiny"
+          options={shinyFilterOptions}
+        />
+      ),
     },
     {
       label: t["Filter nature"],

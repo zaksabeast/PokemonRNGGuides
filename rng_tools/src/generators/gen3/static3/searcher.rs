@@ -1,3 +1,4 @@
+use crate::ShinyType;
 use crate::gen3::searcher_reverse::{METHOD_1, METHOD_4};
 use crate::gen3::{
     FindPidPathsOptions, Gen3Method, Gen3PkmFilter, PidPath, PidPathStrategy,
@@ -9,7 +10,7 @@ use crate::gen3::{
 use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
 use crate::{
-    AbilityType, Gender, HiddenPower, Ivs, Nature, PkmFilter, Species, gen3_shiny, gen3_tsv,
+    AbilityType, Gender, HiddenPower, Ivs, Nature, PkmFilter, Species, gen3_shiny,
 };
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
@@ -31,7 +32,7 @@ pub struct Static3SearcherResult {
     pub ability: AbilityType,
     pub gender: Gender,
     pub nature: Nature,
-    pub shiny: bool,
+    pub shiny: ShinyType,
 
     // derived from ivs
     pub hidden_power: HiddenPower,
@@ -189,7 +190,7 @@ fn new_find_pid_paths_options(opts: &Static3SearcherOptions) -> FindPidPathsOpti
         gen3_filter: opts.gen3_filter.clone(),
         encounter_gender_ratio: opts.species.gender_ratio(),
         method_bitset,
-        tsv: gen3_tsv(opts.tid, opts.sid),
+        trainer_xor: opts.tid ^ opts.sid,
         initial_seed: opts.initial_seed,
         initial_advances: opts.initial_advances,
         max_result_count: opts.max_result_count,
@@ -377,5 +378,38 @@ mod test {
                 (0x66ce79b5, roamer_atk6_ivs),
             ],
         );
+    }
+}
+
+#[cfg(test)]
+mod shiny_tests {
+    use super::*;
+    use crate::{ShinyFilter, rng::Rng};
+
+    #[test]
+    fn reverse_and_naive_search_agree_on_subtypes() {
+        let mut rng = Pokerng::new(0);
+        let pid = u32::from(rng.rand::<u16>()) | (u32::from(rng.rand::<u16>()) << 16);
+        for xor in [0, 1] {
+            let mut opts = Static3SearcherOptions {
+                initial_seed: 0, tid: 11568,
+                sid: 11568 ^ (pid >> 16) as u16 ^ pid as u16 ^ xor,
+                initial_advances: 0, max_advances: 10, max_result_count: 100,
+                filter: PkmFilter::default(), gen3_filter: Gen3PkmFilter::default(),
+                painting_opts: None, species: Species::Bulbasaur, bugged_roamer: false,
+                methods: vec![Gen3StaticMethod::Static1],
+            };
+            for filter in [ShinyFilter::AnyShiny, ShinyFilter::SquareShiny, ShinyFilter::StarShiny] {
+                opts.filter.shiny = filter;
+                let naive = search_static3_naive(&opts);
+                let reverse = search_static3_reverse(&opts);
+                assert!(reverse.iter().all(|result| filter.allows(result.shiny)));
+                let reverse_in_range: Vec<_> = reverse.into_iter()
+                    .filter(|result| result.advance <= opts.max_advances)
+                    .collect();
+                assert_eq!(naive, reverse_in_range);
+                assert_eq!(!naive.is_empty(), filter.allows(gen3_shiny(pid, opts.tid, opts.sid)));
+            }
+        }
     }
 }

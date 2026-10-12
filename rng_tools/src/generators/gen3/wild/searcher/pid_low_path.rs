@@ -77,7 +77,7 @@ pub fn find_pid_low_paths_from_pid_low_seed<const METHODS: u8>(
             &opts.gen3_filter,
             Some(opts.encounter_gender_ratio),
             pid_high_wild124,
-            opts.tsv,
+            opts.trainer_xor,
         )
     } else {
         false
@@ -93,7 +93,7 @@ pub fn find_pid_low_paths_from_pid_low_seed<const METHODS: u8>(
             &opts.gen3_filter,
             Some(opts.encounter_gender_ratio),
             pid_high_wild3,
-            opts.tsv,
+            opts.trainer_xor,
         )
     } else {
         false

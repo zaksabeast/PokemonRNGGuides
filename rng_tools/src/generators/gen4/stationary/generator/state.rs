@@ -1,3 +1,4 @@
+use crate::ShinyType;
 use crate::{AbilityType, Characteristic, Gender, Ivs, Nature, PkmState, Species, gen3_shiny};
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
@@ -7,7 +8,7 @@ use wasm_bindgen::prelude::*;
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Gen4StaticPokemon {
     pub pid: u32,
-    pub shiny: bool,
+    pub shiny: ShinyType,
     pub level: u8,
     pub ability: AbilityType,
     pub gender: Gender,
@@ -50,7 +51,7 @@ impl PkmState for Gen4StaticPokemon {
         self.nature
     }
 
-    fn shiny(&self) -> bool {
+    fn shiny(&self) -> ShinyType {
         self.shiny
     }
 

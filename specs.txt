@@ -1,0 +1,36 @@
+Specs:
+
+Context: A pokemon can be non-shiny, square shiny or star shiny.
+
+Current code state: The code only supports generating a non-shiny or a shiny pokemon. It doesn't support specifying a square or star shiny. Right now, the shiny filter is a bool.
+
+Goal: Add multiple possible values to the shiny filter: Any, Any shiny, Square shiny, Star shiny.
+
+Implementation:
+Step 1: Adapt the backend so that shiny result is a enum (NotShiny, SquareShiny, StarShiny) instead of a bool. Change the filter to be Any, Any shiny, Square shiny, Star shiny. At this point, the UI only send Any or Any shiny.
+
+Step 2: Adapt the UI to display the resulting shininess of generated pokemon. Keep the filter unchanged.
+
+Step 3: Adapt the filter in the UI to be able to select any of the 4 options Any, Any shiny, Square shiny, Star shiny.
+
+Questions:
+Scope: Should this cover every tool and generation, including workbench tools, or only those using the shared PkmFilter? How should Gen 2 tools behave?
+
+Classification: What exact rule defines square versus star for each supported generation? Should earlier-generation results show a classification based on PID/TID/SID, even when that game doesn’t display different shiny animations?
+
+Filter choices: Is omitting a “Non-shiny only” option intentional? I read “Any” as accepting all three result types.
+
+SID changes: When the Gen 3 ACE workflow chooses a new SID, should it choose one that satisfies the requested square/star type?
+
+Result display: Should results show text such as “Not shiny,” “Square shiny,” and “Star shiny,” or use icons?
+
+Delivery: Do you want three separately reviewable implementation phases, or one complete change following that order?
+
+Answers:
+
+1. Ignore Gen2 tools. None of them use PkmFilter.
+2. Yes, all Gen3+ must use the new shiny filter. This is because a Gen3 pokemon can be transferred to Gen8 games. So catching a square shiny in gen3 is useful when transferred to gen8.
+3. Omitting non-shiny only is intentional. It's not a use case to want specifcally a non-shiny.
+4. Yes.
+5. Use icons, with tooltip text.
+6. Try all 3 steps together.

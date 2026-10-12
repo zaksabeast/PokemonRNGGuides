@@ -1,6 +1,10 @@
 import type { Game, Starter, TargetStarter } from "./index";
 import type { FormState } from "./caughtMon";
-import { rngTools, type Gen3StaticMethod } from "~/rngTools";
+import {
+  rngTools,
+  type Gen3StaticMethod,
+  type Static3SearcherOptions,
+} from "~/rngTools";
 import {
   gen3PkmFilterFieldsToRustInput,
   getGen3PkmFilterInitialValues,
@@ -120,7 +124,7 @@ export const generateCaughtMonResults = async (
   }
 
   const maxAdvances = 6000;
-  const opts = {
+  const opts: Static3SearcherOptions = {
     initial_seed: game === "emerald" ? 0 : 0x5a0,
     tid: 0, // doesn't matter
     sid: 0, // doesn't matter
@@ -131,7 +135,7 @@ export const generateCaughtMonResults = async (
       nature: pkmFilterNatureFieldToRustInput([caughtMonValues.nature]),
       gender: caughtMonValues.gender,
       ability: null,
-      shiny: false,
+      shiny: "Any",
       ...minMaxIvs,
       hidden_power: defaultHiddenPowerFilter,
     },

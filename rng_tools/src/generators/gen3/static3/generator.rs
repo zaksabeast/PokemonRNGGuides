@@ -1,7 +1,7 @@
 use crate::gen3::{Gen3PkmFilter, passes_iv1_filter, passes_iv2_filter, passes_pid_filter};
 use crate::rng::Rng;
 use crate::rng::lcrng::Pokerng;
-use crate::{GenderRatio, Ivs, PkmFilter, gen3_tsv};
+use crate::{GenderRatio, Ivs, PkmFilter};
 use arrayvec::ArrayVec;
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
@@ -58,7 +58,7 @@ pub(super) fn generate_gen3_static(
         &opts.gen3_filter,
         Some(opts.encounter_gender_ratio),
         pid,
-        gen3_tsv(opts.tid, opts.sid),
+        opts.tid ^ opts.sid,
     ) {
         return None;
     }

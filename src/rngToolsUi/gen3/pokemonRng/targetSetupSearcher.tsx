@@ -1,8 +1,9 @@
+import { ShinyIcon } from "~/components/shiny";
+import type { ShinyType, ShinyFilter } from "~/rngTools";
 import {
   Field,
   FormikNumberInput,
   FormikSwitch,
-  TooltipWithIcon,
   Link,
   ResultColumn,
   Flex,
@@ -238,20 +239,13 @@ export const getPaintingSetupFilterFields = ({
   ];
 };
 
-export const getSidResultingInShiny = (pid: number, tid: number) => {
-  const pidh = pid >>> 16;
-  const pidl = pid & 0xffff;
-  const psv = (pidh ^ pidl) >>> 3;
-  return (tid ^ ((psv << 3) | (tid & 0x7))) & 0xffff;
-};
-
 export const getTidSidSetupFilterFields = ({
   game,
   filter_shiny,
   usingAceForSid,
 }: {
   game: Static3Game;
-  filter_shiny: boolean;
+  filter_shiny: ShinyFilter;
   usingAceForSid: boolean;
 }) => {
   return [
@@ -259,29 +253,17 @@ export const getTidSidSetupFilterFields = ({
       label: "Using ACE to change SID?",
       tooltip:
         "Whether to use Arbitrary Code Execution glitch to change your SID so the target Pokémon is shiny.",
-      show: filter_shiny && game === "emerald",
+      show: filter_shiny !== "Any" && game === "emerald",
       input: <FormikSwitch<FormState> name="usingAceForSid" />,
     },
     {
       label: "TID",
-      input: filter_shiny ? (
-        <FormikNumberInput<FormState> name="tid" numType="decimal" />
-      ) : (
-        <TooltipWithIcon title="The only impact of TID/SID is shininess and the target Pokemon is not shiny.">
-          N/A
-        </TooltipWithIcon>
-      ),
+      input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
     },
     {
       label: "SID",
-      show: !usingAceForSid,
-      input: filter_shiny ? (
-        <FormikNumberInput<FormState> name="sid" numType="decimal" />
-      ) : (
-        <TooltipWithIcon title="The only impact of TID/SID is shininess and the target Pokemon is not shiny.">
-          N/A
-        </TooltipWithIcon>
-      ),
+      show: filter_shiny === "Any" || !usingAceForSid,
+      input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
     },
   ];
 };
@@ -289,7 +271,7 @@ export const getTidSidSetupFilterFields = ({
 export const getTargetResultColumns = (
   game: Static3Game,
   isApproxAdv: boolean,
-  usingAceForSid: boolean,
+  aceShiny: ShinyType | null,
 ): ResultColumn<PidPathResult>[] => {
   return [
     {
@@ -328,7 +310,7 @@ export const getTargetResultColumns = (
     {
       title: "Shiny",
       dataIndex: "shiny",
-      render: (shiny: boolean) => (shiny || usingAceForSid ? "Yes" : "No"),
+      render: (shiny) => <ShinyIcon shiny={aceShiny ?? shiny} />,
     },
     {
       title: "IV",

@@ -1,3 +1,4 @@
+import { type AceSidConfig, getSidResultingInShiny } from "~/rngTools/shiny";
 import { Wild3SearcherCycleData, Gen3Method } from "~/rngTools";
 import { ResultColumn, ResultTable, Icon, Link, Flex } from "~/components";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
@@ -20,7 +21,6 @@ import { GBA_FPS } from "~/utils/consts";
 import { TargetSetup } from "./wild3TargetSetupInput";
 import { Wild3PokeblockDescription } from "~/components/wild3Pokeblock";
 import { targetAdvanceAfterPaintingTitle } from "../pokemonRng/labels";
-import { getSidResultingInShiny } from "../pokemonRng/targetSetupSearcher";
 import { FeebasTileVisualizerButton } from "./feebasMap";
 
 const getMethodLikelihoodColumValue = (
@@ -380,13 +380,13 @@ const getResultSetupInfoColumns = ({
 type Props = {
   selectedPidPathResult: PidPathResult;
   rngManipulatedLeadPid: boolean;
-  tidForAceSid: number | null;
+  tidForAceSid: AceSidConfig | null;
   setTargetSetup: (targetSetup: TargetSetup | null) => void;
 };
 
 const setupInfoToTargetSetup = (
   setupInfo: ResultSetupInfo,
-  tidForAceSid: number | null,
+  tidForAceSid: AceSidConfig | null,
 ): TargetSetup => {
   const aceSid =
     tidForAceSid == null

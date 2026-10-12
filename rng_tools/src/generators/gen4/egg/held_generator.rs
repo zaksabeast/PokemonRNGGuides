@@ -1,3 +1,4 @@
+use crate::ShinyType;
 #[cfg(test)]
 use crate::gen4::parse_pokefinder::PokefinderEgg4;
 use crate::{
@@ -37,7 +38,7 @@ pub struct Egg4HeldResult {
     pub advance: usize,
     pub pid: u32,
     pub gender: Gender,
-    pub shiny: bool,
+    pub shiny: ShinyType,
     pub nature: Nature,
     pub ability: AbilityType,
 }
@@ -49,7 +50,7 @@ fn generate_egg4_held(opts: &Egg4HeldOpts, advance: usize, rand: u32) -> Option<
     if opts.is_masuda {
         let mut rng = Arng::new(rand);
         for _ in 0..4 {
-            if shiny {
+            if shiny.is_shiny() {
                 break;
             }
 
@@ -58,7 +59,7 @@ fn generate_egg4_held(opts: &Egg4HeldOpts, advance: usize, rand: u32) -> Option<
         }
     }
 
-    if opts.filter.shiny && !shiny {
+    if !opts.filter.shiny.allows(shiny) {
         return None;
     }
 
@@ -169,7 +170,7 @@ impl PartialEq<PokefinderEgg4> for Egg4HeldResult {
             return false;
         }
 
-        if self.shiny != other.shiny {
+        if self.shiny.is_shiny() != other.shiny {
             return false;
         }
 
@@ -195,6 +196,29 @@ mod tests {
         ($file:expr) => {
             parse_pokefinder_egg4_generator_lines(include_str!($file))
         };
+    }
+
+    #[test]
+    fn shiny_subtype_filters_do_not_change_masuda_rerolls() {
+        let pid = 0x12345678;
+        for is_masuda in [false, true] {
+            for xor in [0, 1, 7, 8] {
+                let mut opts = Egg4HeldOpts {
+                    seed: 0, tid: 12345,
+                    sid: 12345 ^ (pid >> 16) as u16 ^ pid as u16 ^ xor,
+                    species: Species::Bulbasaur, offset: 0,
+                    min_advances: 0, max_advances: 1, is_masuda,
+                    filter: PkmFilter::default(),
+                };
+                let unfiltered = generate_egg4_held(&opts, 0, pid).unwrap();
+                for filter in [crate::ShinyFilter::AnyShiny, crate::ShinyFilter::SquareShiny, crate::ShinyFilter::StarShiny] {
+                    opts.filter.shiny = filter;
+                    let filtered = generate_egg4_held(&opts, 0, pid);
+                    assert_eq!(filtered.is_some(), filter.allows(unfiltered.shiny));
+                    if let Some(result) = filtered { assert_eq!(result.pid, unfiltered.pid); }
+                }
+            }
+        }
     }
 
     #[test]
@@ -335,7 +359,7 @@ mod tests {
             max_advances: 10000,
             is_masuda: false,
             filter: PkmFilter {
-                shiny: true,
+                shiny: crate::ShinyFilter::AnyShiny,
                 ..Default::default()
             },
         };

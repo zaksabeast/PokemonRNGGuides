@@ -83,7 +83,7 @@ fn test_generate_wild3_shiny() {
         sid: 47362,
         methods: vec![Gen3Method::Wild1],
         filter: PkmFilter {
-            shiny: true,
+            shiny: crate::ShinyFilter::AnyShiny,
             nature: PkmFilter::new_nature_filter(&[Nature::Naive]),
             gender: Some(Gender::Male),
             ability: Some(AbilityType::Second),

@@ -1,3 +1,4 @@
+import { ShinyIcon } from "~/components/shiny";
 import React from "react";
 import {
   FormikNumberInput,
@@ -46,7 +47,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
     title: t["Shiny"],
     dataIndex: "shiny",
-    render: (shiny) => (shiny ? "Yes" : "No"),
+    render: (shiny) => <ShinyIcon shiny={shiny} />,
   },
   ...getIvColumns(t),
   {
@@ -154,7 +155,7 @@ export const Transporter = () => {
           min_ivs: opts.filter_min_ivs,
           max_ivs: opts.filter_max_ivs,
         },
-        shiny: false,
+        shiny: "Any",
       },
     });
 

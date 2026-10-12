@@ -1,3 +1,4 @@
+use crate::ShinyType;
 use std::collections::HashMap;
 
 use itertools::{Itertools, iproduct};
@@ -165,7 +166,7 @@ pub struct Wild3SearcherResultMon {
     pub ability: AbilityType,
     pub gender: Gender,
     pub nature: Nature,
-    pub shiny: bool,
+    pub shiny: ShinyType,
 
     // derived from ivs
     pub hidden_power: HiddenPower,

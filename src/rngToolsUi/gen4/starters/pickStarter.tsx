@@ -1,3 +1,4 @@
+import { ShinyIcon } from "~/components/shiny";
 import {
   Button,
   Field,
@@ -145,7 +146,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
     title: t["Shiny"],
     dataIndex: "shiny",
-    render: (shiny: boolean) => (shiny ? "Yes" : "No"),
+    render: (shiny) => <ShinyIcon shiny={shiny} />,
   },
   { title: t["Nature"], dataIndex: "nature" },
   { title: t["Ability"], dataIndex: "ability" },

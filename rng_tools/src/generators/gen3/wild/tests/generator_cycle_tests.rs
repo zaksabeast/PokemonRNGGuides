@@ -150,7 +150,7 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
             pid: 3864471792,
             ivs: Ivs::new(0, 9, 4, 5, 4, 3),
             method: Gen3Method::Wild2,
-            cycle_range: Some(CycleRange::new(59690, 80, 113800)),
+            cycle_range: Some(CycleRange::new(59690, 80, 114352)),
             ..Default::default()
         },
         Wild3GeneratorMonResult {
@@ -158,7 +158,7 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
             pid: 3864471792,
             ivs: Ivs::new(26, 8, 17, 5, 4, 3),
             method: Gen3Method::Wild4,
-            cycle_range: Some(CycleRange::new(173490, 80, 38908)),
+            cycle_range: Some(CycleRange::new(174042, 80, 39003)),
             ..Default::default()
         },
         Wild3GeneratorMonResult {
@@ -166,7 +166,7 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
             pid: 3864471792,
             ivs: Ivs::new(26, 8, 17, 9, 4, 0),
             method: Gen3Method::Wild1,
-            cycle_range: Some(CycleRange::new(212398, 80, INFINITE_CYCLE)),
+            cycle_range: Some(CycleRange::new(213045, 80, INFINITE_CYCLE)),
             ..Default::default()
         },
     ];

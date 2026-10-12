@@ -273,12 +273,8 @@ export const Wild3CycleAtMoments = ({ targetSetup, leadCycleSpeed }: Props) => {
               CycleAtMomentWithEmuLog: {
                 lead_cycle_spd: leadCycleSpeed ?? 0,
                 initial_cycle_at_sweet_scent:
-                  json.cycleAtMoments.find(
-                    (cam) => cam.moment === "SweetScentWildEncounter",
-                  )?.cycle ?? 0,
-                vblank_cycles: json.cycleAtMoments
-                  .filter((cam) => cam.moment === "VblankIntr_End")
-                  .map((cam) => cam.cycle),
+                  json.cycleAtMoments[0]?.cycle ?? 0,
+                vblank_cycles: json.vblankDurations,
               },
             };
 

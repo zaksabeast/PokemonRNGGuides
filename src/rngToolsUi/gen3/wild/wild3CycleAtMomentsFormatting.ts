@@ -4,10 +4,13 @@
  * mutate their parameters.
  */
 
-import { Gen3Method } from "~/rngTools";
+import {
+  CycleFrameMoment,
+  Gen3Method,
+  Wild3GeneratorCycleOpts,
+} from "~/rngTools";
 import { z } from "zod";
 import { gen3Methods } from "~/types";
-import { Wild3Distributions } from "./wild3SetupToDistribution";
 import { match } from "ts-pattern";
 
 export const VBLANK_FREQ = 280_896;
@@ -83,7 +86,10 @@ const createEmptyCamData = (): UiResultCycleAtMoment["dataFromJson"] => {
 // uiResult has no cycles at this point
 export const fillDataFromTool = (
   uiResult: UiResult,
-  distFromTool: Wild3Distributions,
+  distFromTool: {
+    cycle_opts: Wild3GeneratorCycleOpts;
+    cycle_at_moments: CycleFrameMoment[];
+  },
 ) => {
   const cycleOpts = match(distFromTool.cycle_opts)
     .with(
@@ -91,10 +97,6 @@ export const fillDataFromTool = (
       ({ CycleAtMomentWithEmuLog }) => CycleAtMomentWithEmuLog,
     )
     .otherwise(() => null);
-
-  if (cycleOpts == null) {
-    return; // error
-  }
 
   uiResult.uiCycleAtMoments = distFromTool.cycle_at_moments.map((cam, i) => {
     const sameMomentCount = distFromTool.cycle_at_moments
@@ -105,7 +107,7 @@ export const fillDataFromTool = (
 
     let vblankCycle = 0;
     for (let i = 0; i < cam.frame; i++) {
-      vblankCycle += cycleOpts.vblank_cycles[i] ?? MOST_PROBABLE_VBLANK_CYCLE;
+      vblankCycle += cycleOpts?.vblank_cycles[i] ?? MOST_PROBABLE_VBLANK_CYCLE;
     }
 
     return {
@@ -224,20 +226,32 @@ export const calculateDataDiff = (uiResult: UiResult) => {
   });
 };
 
-//NO_PROD adapt for feebas
+// Limitation: It doesn't work for feebas encounters.
 export const getMethodAccordingToTool = (
   uiResult: UiResult,
 ): Gen3Method | null => {
+  const moments = uiResult.uiCycleAtMoments.filter(
+    (cam) => cam.dataFromTool.hasValue,
+  );
+  if (moments.length === 0) {
+    return null;
+  }
+  const lastPidLow = moments.findLastIndex(
+    (cam) => cam.moment === "CreateMonWithNature_RandomPidLow",
+  );
+  const lastPidHigh = moments.findLastIndex(
+    (cam) => cam.moment === "CreateMonWithNature_RandomPidHigh",
+  );
   let method: Gen3Method = "Wild5";
-  for (const cam of uiResult.uiCycleAtMoments) {
+  for (const [index, cam] of moments.entries()) {
     if (cam.dataFromTool.frame !== uiResult.frameAtSweetScent) {
       // first VBlank
       return method;
     }
-    if (cam.moment === "CreateMonWithNature_RandomPidLowLast") {
+    if (index === lastPidLow) {
       method = "Wild3";
     }
-    if (cam.moment === "CreateMonWithNature_RandomPidHighLast") {
+    if (index === lastPidHigh || cam.moment === "CreateMon") {
       method = "Wild2";
     }
     if (cam.moment === "CreateBoxMon_RandomIvs1") {

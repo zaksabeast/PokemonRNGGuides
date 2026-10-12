@@ -1,14 +1,8 @@
 import styled from "@emotion/styled";
 import React from "react";
-import { Button, Flex, Select, Typography } from "~/components";
-import { type GameConsole } from "~/rngTools";
-import {
-  BeepsRow,
-  FieldLabel,
-  FieldRow,
-  GroupLabel,
-  GroupRule,
-} from "../setupParts";
+import { Button, Typography } from "~/components";
+import { FormSection } from "~/components/form";
+import { BeepsField, ConsoleField } from "../setupParts";
 import { SetupTimerCard } from "./setupTimerCard";
 import {
   initialTimerValues,
@@ -69,11 +63,10 @@ export const SetupMode = ({
     setExpandedId(null);
   };
 
+  // The parent lays out these sections with its own actions
   return (
-    <Flex vertical gap={16}>
-      <Flex vertical gap={10}>
-        <GroupLabel>This RNG</GroupLabel>
-
+    <>
+      <FormSection title="This RNG">
         {draft.timers.length === 0 && (
           <Typography.Text fontSize={13} color="TextTertiary">
             No timers yet. Add one to get started.
@@ -107,36 +100,17 @@ export const SetupMode = ({
         <AddButton trackerId="add_custom_timer" onClick={addTimer}>
           + Add timer
         </AddButton>
-      </Flex>
+      </FormSection>
 
-      <Flex vertical gap={10}>
-        <GroupLabel>
-          Rarely changes
-          <GroupRule />
-        </GroupLabel>
-
-        <FieldRow>
-          <FieldLabel>Console</FieldLabel>
-          <Select<GameConsole>
-            name="console"
-            value={draft.console}
-            onChange={(gameConsole) =>
-              setDraft({ ...draft, console: gameConsole })
-            }
-            fullFlex
-            options={[
-              { label: "GBA", value: "Gba" },
-              { label: "NDS - Slot 2", value: "NdsSlot2" },
-              { label: "NDS - Slot 1", value: "NdsSlot1" },
-              { label: "DSI", value: "Dsi" },
-              { label: "3DS", value: "ThreeDs" },
-              { label: "Switch - FR/LG", value: "SwitchFrLg" },
-            ]}
-          />
-        </FieldRow>
-
-        <BeepsRow value={maxBeepCount} onChange={setMaxBeepCount} />
-      </Flex>
-    </Flex>
+      <FormSection title="Rarely changes">
+        <ConsoleField
+          value={draft.console}
+          onChange={(gameConsole) =>
+            setDraft({ ...draft, console: gameConsole })
+          }
+        />
+        <BeepsField value={maxBeepCount} onChange={setMaxBeepCount} />
+      </FormSection>
+    </>
   );
 };

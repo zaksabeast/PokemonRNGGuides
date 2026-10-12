@@ -1,76 +1,84 @@
-import styled from "@emotion/styled";
-import { Flex, Select } from "~/components";
+import { RadioField, SelectField, type SelectOption } from "~/components/form";
 import { type GameConsole } from "~/rngTools";
 
-export const GroupLabel = styled(Flex)(({ theme }) => ({
-  alignItems: "center",
-  gap: 8,
-  fontSize: 11,
-  lineHeight: 1,
-  letterSpacing: "0.12em",
-  textTransform: "uppercase",
-  color: theme.token.colorTextTertiary,
-}));
+export type TimerMode = "setup" | "run";
 
-export const GroupRule = styled.div(({ theme }) => ({
-  flex: 1,
-  height: 1,
-  backgroundColor: theme.token.colorFillQuaternary,
-}));
+type TimerModeFieldProps = {
+  value: TimerMode;
+  onChange: (mode: TimerMode) => void;
+  isRunning: boolean;
+};
 
-export const FieldRow = styled(Flex)({
-  alignItems: "center",
-  gap: 12,
-});
+export const TimerModeField = ({
+  value,
+  onChange,
+  isRunning,
+}: TimerModeFieldProps) => (
+  <RadioField<TimerMode>
+    ariaLabel="Timer mode"
+    cellSize="word"
+    value={value}
+    onChange={onChange}
+    options={[
+      { label: "Setup", value: "setup", disabled: isRunning },
+      { label: "Run", value: "run" },
+    ]}
+  />
+);
 
-export const FieldLabel = styled.div({
-  flex: "none",
-  width: 118,
-  fontSize: 13,
-  fontWeight: 600,
-  lineHeight: 1.4,
-});
+const beepOptions: SelectOption<number>[] = new Array(11)
+  .fill(0)
+  .map((_, index) => ({
+    label: (index + 1).toString(),
+    value: index,
+  }));
 
-type BeepsRowProps = {
+type BeepsFieldProps = {
   value: number;
   onChange: (maxBeepCount: number) => void;
 };
 
-export const BeepsRow = ({ value, onChange }: BeepsRowProps) => (
-  <FieldRow>
-    <FieldLabel>Beeps</FieldLabel>
-    <Select<number>
-      name="countdownBeeps"
-      value={value}
-      onChange={onChange}
-      fullFlex
-      options={new Array(11).fill(0).map((_, index) => ({
-        label: (index + 1).toString(),
-        value: index,
-      }))}
-    />
-  </FieldRow>
+export const BeepsField = ({ value, onChange }: BeepsFieldProps) => (
+  <SelectField<number>
+    name="countdownBeeps"
+    label="Beeps"
+    value={value}
+    onChange={onChange}
+    options={beepOptions}
+  />
 );
 
-type DsConsoleRowProps = {
+const consoleOptions: SelectOption<GameConsole>[] = [
+  { label: "GBA", value: "Gba" },
+  { label: "NDS - Slot 2", value: "NdsSlot2" },
+  { label: "NDS - Slot 1", value: "NdsSlot1" },
+  { label: "DSI", value: "Dsi" },
+  { label: "3DS", value: "ThreeDs" },
+  { label: "Switch - FR/LG", value: "SwitchFrLg" },
+];
+
+const dsConsoleOptions: SelectOption<GameConsole>[] = [
+  { label: "NDS - Slot 1", value: "NdsSlot1" },
+  { label: "DSI", value: "Dsi" },
+  { label: "3DS", value: "ThreeDs" },
+];
+
+type ConsoleFieldProps = {
   value: GameConsole;
   onChange: (console: GameConsole) => void;
+  dsOnly?: boolean;
 };
 
-/** The consoles supported by gen 4 and gen 5, which both run on a DS. */
-export const DsConsoleRow = ({ value, onChange }: DsConsoleRowProps) => (
-  <FieldRow>
-    <FieldLabel>Console</FieldLabel>
-    <Select<GameConsole>
-      name="console"
-      value={value}
-      onChange={onChange}
-      fullFlex
-      options={[
-        { label: "NDS - Slot 1", value: "NdsSlot1" },
-        { label: "DSI", value: "Dsi" },
-        { label: "3DS", value: "ThreeDs" },
-      ]}
-    />
-  </FieldRow>
+export const ConsoleField = ({
+  value,
+  onChange,
+  dsOnly,
+}: ConsoleFieldProps) => (
+  <SelectField<GameConsole>
+    name="console"
+    label="Console"
+    value={value}
+    onChange={onChange}
+    options={dsOnly === true ? dsConsoleOptions : consoleOptions}
+  />
 );

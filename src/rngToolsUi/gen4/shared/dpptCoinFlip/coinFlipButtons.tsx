@@ -1,15 +1,19 @@
-import React from "react";
-import { Button, Input, Flex, PixelImage } from "~/components";
+import { PixelImage } from "~/components";
+import { FormSection, OutlinedButton, TextField } from "~/components/form";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import styled from "@emotion/styled";
 import { sanitizeFlips } from "./utils";
 import { getErrorMessage } from "../advanceFilter/utils";
 
-const CoinButton = styled(Button)({
-  paddingTop: 12,
-  paddingBottom: 12,
-  paddingLeft: 40,
-  paddingRight: 40,
-  height: "unset",
+const CoinButtons = styled.div({
+  display: "grid",
+  gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+  gap: 8,
+});
+
+const CoinFace = styled.span({
+  display: "flex",
+  paddingBlock: 8,
 });
 
 type Props = {
@@ -29,6 +33,8 @@ export const CoinFlipFilterButtons = ({
   headsTrackerId,
   tailsTrackerId,
 }: Props) => {
+  const t = useActiveRouteTranslations();
+
   const handleAddHeads = () => {
     onCoinFlipFilterChange(sanitizeFlips(`${coinFlipFilter}, H`));
   };
@@ -37,28 +43,22 @@ export const CoinFlipFilterButtons = ({
     onCoinFlipFilterChange(sanitizeFlips(`${coinFlipFilter}, T`));
   };
 
-  const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) =>
-    onCoinFlipFilterChange(event.target.value);
-
   return (
-    <Flex vertical gap={8}>
-      <Flex gap={8}>
-        <CoinButton
-          flex={1}
-          trackerId={headsTrackerId}
-          onClick={handleAddHeads}
-        >
-          <PixelImage name="DpptHeads" />
-        </CoinButton>
-        <CoinButton
-          flex={1}
-          trackerId={tailsTrackerId}
-          onClick={handleAddTails}
-        >
-          <PixelImage name="DpptTails" />
-        </CoinButton>
-      </Flex>
-      <Input
+    <FormSection>
+      <CoinButtons>
+        <OutlinedButton trackerId={headsTrackerId} onClick={handleAddHeads}>
+          <CoinFace>
+            <PixelImage name="DpptHeads" />
+          </CoinFace>
+        </OutlinedButton>
+        <OutlinedButton trackerId={tailsTrackerId} onClick={handleAddTails}>
+          <CoinFace>
+            <PixelImage name="DpptTails" />
+          </CoinFace>
+        </OutlinedButton>
+      </CoinButtons>
+      <TextField
+        label={t["Coin Flips"]}
         placeholder="HTH"
         errorMessage={getErrorMessage({
           filter: coinFlipFilter,
@@ -67,8 +67,8 @@ export const CoinFlipFilterButtons = ({
           unitName: "coin flips",
         })}
         value={coinFlipFilter}
-        onChange={onInputChange}
+        onChange={onCoinFlipFilterChange}
       />
-    </Flex>
+    </FormSection>
   );
 };

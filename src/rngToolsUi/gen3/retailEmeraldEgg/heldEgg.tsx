@@ -1,22 +1,21 @@
 import React from "react";
+import { ResultColumn, Button } from "~/components";
 import {
-  FormikNumberInput,
-  ResultColumn,
-  FormikSelect,
-  Field,
-  FormikSwitch,
-  RngToolForm,
-  RngToolSubmit,
-  Button,
-  Switch,
-  Flex,
-  FormFieldTable,
-} from "~/components";
+  FieldRow,
+  FormNumberField,
+  FormSection,
+  FormSelectField,
+  FormSwitchField,
+  PkmFilter,
+  SwitchField,
+  SwitchGroup,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
 import { useCurrentStep } from "~/components/stepper/state";
 import { rngTools, Gen3HeldEgg, PokeNavTrainer } from "~/rngTools";
 import { getGen3SpeciesOptions, species } from "~/types/species";
 import {
-  getPkmFilterFields,
   getPkmFilterInitialValues,
   pkmFilterSchema,
 } from "~/components/pkmFilter";
@@ -28,25 +27,37 @@ import { approximateGen3FrameTime } from "~/utils/approximateGen3FrameTime";
 import { Translations, usePokeNavTranslations } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { PokeNavTrainerTranslations } from "~/translations/en/pokeNav";
-import { useWatch } from "~/hooks/form";
+import { useField, useWatch } from "~/hooks/form";
 import { compatability, getCompatabilityOptions } from "./constants";
 
+const DEFAULT_CALIBRATION = 19;
+
 const Calibration = () => {
-  const [disabled, setDisabled] = React.useState(true);
+  const t = useActiveRouteTranslations();
+  const [enabled, setEnabled] = React.useState(false);
+  const [, , { setValue }] = useField<number | null>("calibration");
+
   return (
-    <Flex gap={8} justify="space-between" align="center">
-      <Switch
-        id="enable-calibration"
-        onClick={() => setDisabled((prev) => !prev)}
+    <SwitchField
+      name="enable-calibration"
+      label={t["Calibration Override"]}
+      supportingText={t["Do not change. Only for advanced users."]}
+      value={enabled}
+      onChange={(nextEnabled) => {
+        setEnabled(nextEnabled);
+        // A hidden override shouldn't keep applying
+        if (!nextEnabled) {
+          setValue(DEFAULT_CALIBRATION);
+        }
+      }}
+    >
+      <FormNumberField<FormState>
+        name="calibration"
+        label={t["Calibration"]}
+        numType="decimal"
+        helperText={t["Do not change. Only for advanced users."]}
       />
-      <div style={{ width: "100%" }}>
-        <FormikNumberInput<FormState>
-          name="calibration"
-          numType="decimal"
-          disabled={disabled}
-        />
-      </div>
-    </Flex>
+    </SwitchField>
   );
 };
 
@@ -145,7 +156,7 @@ export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   max_advances: 10000,
-  calibration: 19,
+  calibration: DEFAULT_CALIBRATION,
   has_roamer: false,
   has_lightning_rod: true,
   compatability: "GetAlong",
@@ -165,63 +176,64 @@ const Fields = ({ t }: FieldsProps) => {
     names: { egg_species: true },
   });
 
-  const fields: Field[] = [
-    {
-      label: t["Has lightning rod"],
-      input: <FormikSwitch<FormState> name="has_lightning_rod" />,
-    },
-    {
-      label: t["Roamer is active"],
-      input: <FormikSwitch<FormState> name="has_roamer" />,
-    },
-    {
-      label: t["Egg species"],
-      input: (
-        <FormikSelect<FormState, "egg_species">
+  return (
+    <>
+      <FormSection title={t["Your game"]}>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="tid"
+            label={t["TID"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="sid"
+            label={t["SID"]}
+            numType="decimal"
+          />
+        </FieldRow>
+        <FormSelectField<FormState>
           name="egg_species"
+          label={t["Egg species"]}
           options={getGen3SpeciesOptions().byName}
         />
-      ),
-    },
-    {
-      label: t["Compatability"],
-      input: (
-        <FormikSelect<FormState, "compatability">
+        <FormSelectField<FormState>
           name="compatability"
+          label={t["Compatability"]}
           options={getCompatabilityOptions(t)}
         />
-      ),
-    },
-    {
-      label: t["TID"],
-      input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-    },
-    {
-      label: t["SID"],
-      input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
-    },
-    {
-      label: t["Max advances"],
-      input: (
-        <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
-      ),
-    },
-    {
-      label: t["Calibration"],
-      tooltip: t["Do not change. Only for advanced users."],
-      input: <Calibration />,
-    },
-    ...getPkmFilterFields(
-      {
-        displayIvs: false,
-        displayHiddenPower: false,
-        species: egg_species ?? undefined,
-      },
-      t,
-    ),
-  ];
+        <SwitchGroup>
+          <FormSwitchField<FormState>
+            name="has_lightning_rod"
+            label={t["Has lightning rod"]}
+          />
+          <FormSwitchField<FormState>
+            name="has_roamer"
+            label={t["Roamer is active"]}
+          />
+        </SwitchGroup>
+      </FormSection>
 
-  return <FormFieldTable fields={fields} />;
+      <FormSection title={t["Search"]}>
+        <FormNumberField<FormState>
+          name="max_advances"
+          label={t["Max advances"]}
+          numType="decimal"
+        />
+      </FormSection>
+
+      <FormSection title={t["Filters"]}>
+        <PkmFilter<FormState>
+          displayIvs={false}
+          displayHiddenPower={false}
+          species={egg_species ?? undefined}
+        />
+      </FormSection>
+
+      <FormSection title={t["Advanced"]}>
+        <Calibration />
+      </FormSection>
+    </>
+  );
 };
 
 type InnerProps = {
@@ -234,7 +246,7 @@ const InnerRetailEmeraldHeldEgg = ({ registeredTrainers }: InnerProps) => {
   const [, setState] = useHeldEggState();
   const [results, setResults] = React.useState<Result[]>([]);
 
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     const results = await rngTools.emerald_egg_held_states({
       ...opts,
       delay: 0,
@@ -270,7 +282,7 @@ const InnerRetailEmeraldHeldEgg = ({ registeredTrainers }: InnerProps) => {
   });
 
   return (
-    <RngToolForm<FormState, Result>
+    <ToolForm<FormState, Result>
       columns={columns}
       results={results}
       initialValues={initialValues}
@@ -281,7 +293,7 @@ const InnerRetailEmeraldHeldEgg = ({ registeredTrainers }: InnerProps) => {
       rowKey="key"
     >
       <Fields t={t} />
-    </RngToolForm>
+    </ToolForm>
   );
 };
 

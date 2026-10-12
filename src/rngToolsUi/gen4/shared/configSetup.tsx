@@ -1,81 +1,67 @@
-import {
-  Field,
-  FormFieldTable,
-  Select,
-  RadioGroup,
-  Flex,
-  Link,
-} from "~/components";
-import { gen4StateAtom } from "./state";
-import { Gen4ConsoleSchema } from "../gen4types";
-import { DpPt, Gen4GameVersions, Gen4GameVersion } from "~/types/games";
 import { useAtom } from "jotai";
-import { toOptions } from "~/utils/options";
+import { match } from "ts-pattern";
+import { Link } from "~/components";
+import {
+  FormCard,
+  FormSection,
+  RadioField,
+  SelectField,
+} from "~/components/form";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { DpPt, Gen4GameVersions, Gen4GameVersion } from "~/types/games";
+import { toOptions } from "~/utils/options";
+import { Gen4Console } from "../gen4types";
+import { gen4StateAtom } from "./state";
 
-type Gen4ConfigSetupProps = {
+type Props = {
   onlyDppt?: boolean;
 };
 
-export const Gen4ConfigSetup = ({ onlyDppt }: Gen4ConfigSetupProps) => {
+export const Gen4ConfigSetup = ({ onlyDppt }: Props) => {
   const t = useActiveRouteTranslations();
   const [state, updateState] = useAtom(gen4StateAtom);
   const gameOptions = onlyDppt ? DpPt : Gen4GameVersions;
 
-  const fields: Field[] = [
-    {
-      label: t["Game"],
-      input: (
-        <Select<Gen4GameVersion>
-          options={toOptions(gameOptions, (game) => t[game])}
-          value={state.config.game}
-          onChange={(game) => updateState({ config: { game } })}
-        />
-      ),
-    },
-    {
-      label: t["Console"],
-      input: (
-        <Flex vertical gap={8}>
-          <RadioGroup
-            name="gen4ConsoleRadio"
-            optionType="button"
-            value={state.config.console}
-            onChange={({ target }) => {
-              const value = Gen4ConsoleSchema.safeParse(target.value);
-              if (!value.success) {
-                // Shouldn't happen
-                return;
-              }
-              updateState({ config: { console: value.data } });
-            }}
-            options={[
-              { label: t["NDS/DSi"], value: "NdsDsi" as const },
-              {
-                label: t["3DS (Normal Settings)"],
-                value: "3dsNormalSettings" as const,
-              },
-              {
-                label: t["3DS (Alt Settings)"],
-                value: "3dsAltSettings" as const,
-              },
-            ]}
-          />
-
-          {state.config.console === "3dsNormalSettings" && (
-            <Link href="/3ds-helper/">
-              {t["Learn how to use the 3DS Helper here"]}
-            </Link>
-          )}
-          {state.config.console === "3dsAltSettings" && (
-            <Link href="/3ds-alt-settings/">
-              {t["Download the 3DS Alt Settings app here"]}
-            </Link>
-          )}
-        </Flex>
-      ),
-    },
+  const consoleOptions: { label: string; value: Gen4Console }[] = [
+    { label: t["NDS/DSi"], value: "NdsDsi" },
+    { label: t["3DS (Normal Settings)"], value: "3dsNormalSettings" },
+    { label: t["3DS (Alt Settings)"], value: "3dsAltSettings" },
   ];
 
-  return <FormFieldTable fields={fields} />;
+  const consoleHelp = match(state.config.console)
+    .with("3dsNormalSettings", () => (
+      <Link href="/3ds-helper/">
+        {t["Learn how to use the 3DS Helper here"]}
+      </Link>
+    ))
+    .with("3dsAltSettings", () => (
+      <Link href="/3ds-alt-settings/">
+        {t["Download the 3DS Alt Settings app here"]}
+      </Link>
+    ))
+    .with("NdsDsi", () => undefined)
+    .exhaustive();
+
+  return (
+    <FormCard>
+      <FormSection>
+        <SelectField<Gen4GameVersion>
+          label={t["Game"]}
+          value={state.config.game}
+          options={toOptions(gameOptions, (game) => t[game])}
+          onChange={(game) => updateState({ config: { game } })}
+        />
+        <RadioField<Gen4Console>
+          label={t["Console"]}
+          cellSize="word"
+          value={state.config.console}
+          options={consoleOptions}
+          onChange={(gameConsole) =>
+            updateState({ config: { console: gameConsole } })
+          }
+          helperText={consoleHelp}
+        />
+      </FormSection>
+    </FormCard>
+  );
 };

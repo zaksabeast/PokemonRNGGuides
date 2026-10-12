@@ -1,12 +1,12 @@
+import { ResultColumn } from "~/components";
 import {
-  Field,
-  RngToolForm,
-  ResultColumn,
-  RngToolSubmit,
-  FormikNumberInput,
-  FormFieldTable,
-} from "~/components";
-import { FormikRadio } from "~/components/radio";
+  FormNumberField,
+  FormRadioField,
+  FormSection,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { rngTools, MirageIslandResult } from "~/rngTools";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import React from "react";
@@ -90,41 +90,35 @@ type Props = {
 };
 
 const Fields = () => {
+  const t = useActiveRouteTranslations();
   const battery = useWatch_UNSAFE<FormState, "battery">({
     name: "battery",
   });
 
-  const fields: Field[] = [
-    {
-      label: "Battery",
-      input: (
-        <FormikRadio<FormState>
-          name="battery"
-          options={toOptions(["Live", "Dead"] as const)}
-        />
-      ),
-    },
-  ];
-  if (battery === "Live") {
-    fields.push({
-      label: "Rocket Launched",
-      input: (
-        <FormikNumberInput<FormState>
+  return (
+    <FormSection title={t["Your game"]}>
+      <FormRadioField<FormState>
+        name="battery"
+        label="Battery"
+        cellSize="word"
+        options={toOptions(["Live", "Dead"] as const)}
+      />
+      {battery === "Live" && (
+        <FormNumberField<FormState>
           name="rocketLaunchedCount"
+          label="Rocket Launched"
           numType="decimal"
         />
-      ),
-    });
-  }
-
-  return <FormFieldTable fields={fields} />;
+      )}
+    </FormSection>
+  );
 };
 
 export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
   const [results, setResults] = React.useState<MirageIslandResult[]>([]);
   const [resultsBattery, setResultsBattery] = React.useState<Battery>("Live");
 
-  const onSubmit: RngToolSubmit<FormState> = async (values) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (values) => {
     const { battery } = values;
     const res = await generateResults(game, values);
     setResults(res);
@@ -134,7 +128,7 @@ export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
   const columns = getColumns(game, resultsBattery);
 
   return (
-    <RngToolForm<FormState, MirageIslandResult>
+    <ToolForm<FormState, MirageIslandResult>
       columns={columns}
       results={results}
       initialValues={initialValues}
@@ -144,6 +138,6 @@ export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
       submitTrackerId="mirage_island"
     >
       <Fields />
-    </RngToolForm>
+    </ToolForm>
   );
 };

@@ -1,12 +1,6 @@
 import styled from "@emotion/styled";
-import {
-  Button,
-  Flex,
-  Icon,
-  NumberInput,
-  Select,
-  Typography,
-} from "~/components";
+import { Button, Flex, Icon, Typography } from "~/components";
+import { NumberField, RadioField } from "~/components/form";
 import { formatSeconds } from "../format";
 import { getNumType, getTimerLabel, type SingleTimerSettings } from "./state";
 import { styledPropGuard } from "~/utils/styled";
@@ -55,19 +49,6 @@ const Chevron = styled(
   transition: "transform 150ms",
   transform: $expanded ? "rotate(90deg)" : "none",
 }));
-
-const FieldRow = styled(Flex)({
-  alignItems: "center",
-  gap: 12,
-});
-
-const FieldLabel = styled.div({
-  flex: "none",
-  width: 106,
-  fontSize: 13,
-  fontWeight: 600,
-  lineHeight: 1.4,
-});
 
 const Body = styled(Flex)(({ theme }) => ({
   padding: "0 12px 12px",
@@ -122,44 +103,36 @@ export const SetupTimerCard = ({
       </HeaderRow>
 
       {expanded && (
-        <Body vertical gap={10}>
-          <FieldRow>
-            <FieldLabel>Target Type</FieldLabel>
-            <Select<SingleTimerSettings["target_type"]>
-              name={`target_type_${timer.timer_id}`}
-              value={timer.target_type}
-              onChange={(target_type) => onChange({ ...timer, target_type })}
-              fullFlex
-              options={[
-                { label: "Milliseconds", value: "ms" },
-                { label: "Advances", value: "advances" },
-                { label: "Seed Hex", value: "seed_hex" },
-              ]}
-            />
-          </FieldRow>
-          <FieldRow>
-            <FieldLabel>Target</FieldLabel>
-            <NumberInput
-              name={`target_${timer.timer_id}`}
-              numType={numType}
-              value={timer.target}
-              onChange={(target) => onChange({ ...timer, target: target ?? 0 })}
-              fullFlex
-            />
-          </FieldRow>
-          <FieldRow>
-            <FieldLabel>Calibration</FieldLabel>
-            <NumberInput
-              name={`calibration_${timer.timer_id}`}
-              numType="float"
-              value={timer.calibration}
-              onChange={(calibration) =>
-                onChange({ ...timer, calibration: calibration ?? 0 })
-              }
-              fullFlex
-            />
-          </FieldRow>
-          <Flex gap={8} mt={2}>
+        <Body vertical gap={16}>
+          <RadioField<SingleTimerSettings["target_type"]>
+            name={`target_type_${timer.timer_id}`}
+            label="Target Type"
+            cellSize="word"
+            value={timer.target_type}
+            onChange={(target_type) => onChange({ ...timer, target_type })}
+            options={[
+              { label: "Milliseconds", value: "ms" },
+              { label: "Advances", value: "advances" },
+              { label: "Seed Hex", value: "seed_hex" },
+            ]}
+          />
+          <NumberField
+            name={`target_${timer.timer_id}`}
+            label="Target"
+            numType={numType}
+            value={timer.target}
+            onChange={(target) => onChange({ ...timer, target: target ?? 0 })}
+          />
+          <NumberField
+            name={`calibration_${timer.timer_id}`}
+            label="Calibration"
+            numType="float"
+            value={timer.calibration}
+            onChange={(calibration) =>
+              onChange({ ...timer, calibration: calibration ?? 0 })
+            }
+          />
+          <Flex gap={8}>
             <Button
               trackerId="duplicate_custom_timer"
               onClick={onDuplicate}

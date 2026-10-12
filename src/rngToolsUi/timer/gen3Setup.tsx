@@ -1,14 +1,12 @@
 import React from "react";
-import { Button, Flex, NumberInput, Select } from "~/components";
-import { type Gen3TimerSettings } from "~/rngTools";
-import { PRIMARY_BUTTON_HEIGHT } from "./constants";
 import {
-  BeepsRow,
-  FieldLabel,
-  FieldRow,
-  GroupLabel,
-  GroupRule,
-} from "./setupParts";
+  FormCard,
+  FormSection,
+  NumberField,
+  PrimaryButton,
+} from "~/components/form";
+import { type Gen3TimerSettings } from "~/rngTools";
+import { BeepsField, ConsoleField } from "./setupParts";
 
 type Props = {
   settings: Gen3TimerSettings;
@@ -29,87 +27,45 @@ export const Gen3Setup = ({
     setDraft({ ...draft, ...updates });
 
   return (
-    <Flex vertical gap={16}>
-      <Flex vertical gap={10}>
-        <GroupLabel>Target</GroupLabel>
+    <FormCard>
+      <FormSection title="Target">
+        <NumberField
+          name="preTimer"
+          label="Pre-Timer (ms)"
+          numType="float"
+          value={draft.preTimer}
+          onChange={(preTimer) => update({ preTimer: preTimer ?? 0 })}
+        />
+        <NumberField
+          name="targetFrame"
+          label="Target Frame"
+          numType="float"
+          value={draft.targetFrame}
+          onChange={(targetFrame) => update({ targetFrame: targetFrame ?? 0 })}
+        />
+      </FormSection>
 
-        <FieldRow>
-          <FieldLabel>Pre-Timer (ms)</FieldLabel>
-          <NumberInput
-            name="preTimer"
-            numType="float"
-            value={draft.preTimer}
-            onChange={(preTimer) => update({ preTimer: preTimer ?? 0 })}
-            fullFlex
-          />
-        </FieldRow>
+      <FormSection title="Calibration">
+        <NumberField
+          name="calibration"
+          label="Calibration"
+          numType="float"
+          value={draft.calibration}
+          onChange={(calibration) => update({ calibration: calibration ?? 0 })}
+        />
+      </FormSection>
 
-        <FieldRow>
-          <FieldLabel>Target Frame</FieldLabel>
-          <NumberInput
-            name="targetFrame"
-            numType="float"
-            value={draft.targetFrame}
-            onChange={(targetFrame) =>
-              update({ targetFrame: targetFrame ?? 0 })
-            }
-            fullFlex
-          />
-        </FieldRow>
-      </Flex>
+      <FormSection title="Rarely changes">
+        <ConsoleField
+          value={draft.console}
+          onChange={(console) => update({ console })}
+        />
+        <BeepsField value={maxBeepCount} onChange={setMaxBeepCount} />
+      </FormSection>
 
-      <Flex vertical gap={10}>
-        <GroupLabel>Calibration</GroupLabel>
-
-        <FieldRow>
-          <FieldLabel>Calibration</FieldLabel>
-          <NumberInput
-            name="calibration"
-            numType="float"
-            value={draft.calibration}
-            onChange={(calibration) =>
-              update({ calibration: calibration ?? 0 })
-            }
-            fullFlex
-          />
-        </FieldRow>
-      </Flex>
-
-      <Flex vertical gap={10}>
-        <GroupLabel>
-          Rarely changes
-          <GroupRule />
-        </GroupLabel>
-
-        <FieldRow>
-          <FieldLabel>Console</FieldLabel>
-          <Select<Gen3TimerSettings["console"]>
-            name="console"
-            value={draft.console}
-            onChange={(console) => update({ console })}
-            fullFlex
-            options={[
-              { label: "GBA", value: "Gba" },
-              { label: "NDS - Slot 2", value: "NdsSlot2" },
-              { label: "NDS - Slot 1", value: "NdsSlot1" },
-              { label: "DSI", value: "Dsi" },
-              { label: "3DS", value: "ThreeDs" },
-              { label: "Switch - FR/LG", value: "SwitchFrLg" },
-            ]}
-          />
-        </FieldRow>
-
-        <BeepsRow value={maxBeepCount} onChange={setMaxBeepCount} />
-      </Flex>
-
-      <Button
-        trackerId="set_gen3_timer"
-        type="primary"
-        height={PRIMARY_BUTTON_HEIGHT}
-        onClick={() => onSet(draft)}
-      >
+      <PrimaryButton trackerId="set_gen3_timer" onClick={() => onSet(draft)}>
         Set Timer
-      </Button>
-    </Flex>
+      </PrimaryButton>
+    </FormCard>
   );
 };

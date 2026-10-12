@@ -6,7 +6,7 @@ import {
 } from "antd";
 import { useField } from "~/hooks/form";
 import * as tst from "ts-toolbelt";
-import { GenericForm } from "~/types/form";
+import { FormControlledProps, GenericForm } from "~/types/form";
 import { Typography } from "./typography";
 import { Flex } from "./flex";
 import { withCss } from "./withCss";
@@ -16,6 +16,7 @@ import { Translation } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import React from "react";
 import isEqual from "lodash-es/isEqual";
+import styled from "@emotion/styled";
 
 type RadioOptions<OptionValues extends string | number> =
   CheckboxOptionType<OptionValues>[];
@@ -42,7 +43,24 @@ type RadioGroupProps<OptionValues extends string | number> = tst.O.Overwrite<
   }
 >;
 
-const _RadioGroup = withCss(AntdRadio.Group);
+const _RadioGroup = styled(withCss(AntdRadio.Group))(({ theme }) => ({
+  "&& .ant-radio-button-wrapper:not(.ant-radio-button-wrapper-disabled):hover":
+    {
+      color: theme.token.colorText,
+      backgroundColor: theme.token.colorStateLayerHover,
+    },
+  "&& .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)":
+    {
+      "&, &:hover, &:active, &:first-of-type": {
+        color: theme.token.colorPrimaryActive,
+        backgroundColor: theme.token.colorPrimaryBg,
+        borderColor: theme.token.colorBorder,
+      },
+      "&::before, &:hover::before, &:active::before": {
+        backgroundColor: theme.token.colorBorder,
+      },
+    },
+}));
 
 export const RadioGroup = <OptionValues extends string | number>(
   props: RadioGroupProps<OptionValues>,
@@ -51,38 +69,59 @@ export const RadioGroup = <OptionValues extends string | number>(
   return <_RadioGroup {...props} />;
 };
 
+type FormikRadioBaseProps = Omit<
+  AntdRadioGroupProps,
+  FormControlledProps | "options"
+>;
+
+type FormikRadioFieldKey<FormState extends GenericForm> = Paths<
+  FormState,
+  string | number | null
+>;
+
+type FormikRadioOptions<OptionValues extends string | number> =
+  | RadioOptions<OptionValues>
+  | Readonly<RadioOptions<OptionValues>>;
+
+// A union with one member per field, so options are checked against the named field.
 type FormikRadioProps<
   FormState extends GenericForm,
-  FieldKey extends Paths<FormState, string | number | null> = Paths<
-    FormState,
-    string | number | null
-  >,
-> = tst.O.Overwrite<
-  tst.O.Omit<tst.O.Required<AntdRadioGroupProps, "name">, "onChange">,
+  FieldKey extends FormikRadioFieldKey<FormState>,
+> = {
+  [Key in FieldKey]: tst.O.Merge<
+    FormikRadioBaseProps,
+    {
+      name: Key;
+      options: Path<FormState, Key> extends string | number | null
+        ? FormikRadioOptions<Exclude<Path<FormState, Key>, null>>
+        : never;
+    }
+  >;
+}[FieldKey];
+
+type InternalFormikRadioProps = tst.O.Merge<
+  FormikRadioBaseProps,
   {
-    name: FieldKey;
-    options: RadioOptions<
-      Path<FormState, FieldKey> extends string | number | null
-        ? tst.U.Exclude<Path<FormState, FieldKey>, null>
-        : never
-    >;
+    name: string;
+    options: FormikRadioOptions<string | number>;
   }
 >;
 
-export const FormikRadio = <FormState extends GenericForm>({
+const InternalFormikRadio = ({
   name,
   options,
   ...props
-}: FormikRadioProps<FormState>) => {
-  type FieldKey = typeof name;
-  const [{ value, onChange, onBlur }, { error }, { setValue }] =
-    useField<Path<FormState, FieldKey>>(name);
+}: InternalFormikRadioProps) => {
+  const [{ value, onChange, onBlur }, { error }, { setValue }] = useField<
+    string | number | null
+  >(name);
 
   React.useEffect(() => {
-    if (options != null && options.length > 0) {
-      if (options.find((opt) => isEqual(opt.value, value)) == null) {
-        setValue(options[0].value);
-      }
+    if (
+      options.length > 0 &&
+      options.find((opt) => isEqual(opt.value, value)) == null
+    ) {
+      setValue(options[0].value);
     }
   }, [options, setValue, value]);
 
@@ -90,12 +129,12 @@ export const FormikRadio = <FormState extends GenericForm>({
     <Flex vertical>
       <RadioGroup
         optionType="button"
-        name={String(name)}
+        {...props}
+        name={name}
+        value={value}
         onBlur={onBlur}
         onChange={onChange}
-        value={value}
         options={options}
-        {...props}
       />
       {error != null && (
         <Typography.Text type="danger">{error}</Typography.Text>
@@ -103,6 +142,18 @@ export const FormikRadio = <FormState extends GenericForm>({
     </Flex>
   );
 };
+
+type FormikRadioComponent = <
+  FormState extends GenericForm,
+  FieldKey extends
+    FormikRadioFieldKey<FormState> = FormikRadioFieldKey<FormState>,
+>(
+  props: FormikRadioProps<FormState, FieldKey>,
+) => React.JSX.Element;
+
+// The public props tie options to the field's type, which TS can't follow
+// internally, so the implementation works with loosely typed values.
+export const FormikRadio = InternalFormikRadio as FormikRadioComponent;
 
 type AtomRadioProps<
   State,
@@ -122,20 +173,16 @@ export const AtomRadio = <
   options,
   getValue,
   nextState,
-  ...props
 }: AtomRadioProps<State, Option>) => {
   const t = useActiveRouteTranslations();
   const [state, setState] = useAtom(atom);
 
   return (
-    <RadioGroup
+    <RadioGroup<Option["value"]>
       optionType="button"
       value={getValue(state)}
       options={options.map((opt) => ({ ...opt, label: t[opt.label] }))}
-      onChange={(event) =>
-        setState(nextState(state, event.target.value as Option["value"]))
-      }
-      {...props}
+      onChange={(event) => setState(nextState(state, event.target.value))}
     />
   );
 };

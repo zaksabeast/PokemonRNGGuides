@@ -29,6 +29,15 @@ export const App = ({ updateSw }: Props) => {
     document.documentElement.lang = currentLanguage;
   }, [currentLanguage]);
 
+  // The page keeps its scroll position across routes, so we need to reset it.
+  // Only do this for when wouter navigates (the pushState event)
+  // so back/forward keep the browser's restored position.
+  React.useEffect(() => {
+    const scrollToTop = () => window.scrollTo(0, 0);
+    window.addEventListener("pushState", scrollToTop);
+    return () => window.removeEventListener("pushState", scrollToTop);
+  }, []);
+
   return (
     <StrictMode>
       <SizeContext.Provider value="medium">
@@ -37,7 +46,7 @@ export const App = ({ updateSw }: Props) => {
             <PageLanguageContext.Provider value={currentLanguage}>
               <MDXProvider components={markdownComponents}>
                 <NeedsUpdateNotification updateSw={updateSw} />
-                <Flex height="100vh" vertical backgroundColor="BgBase">
+                <Flex minHeight="100dvh" vertical backgroundColor="BgBase">
                   <Router />
                 </Flex>
               </MDXProvider>

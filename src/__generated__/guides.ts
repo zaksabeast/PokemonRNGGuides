@@ -21,8 +21,8 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
-      layout: "titled",
-      lastUpdated: null,
+      layout: "wide",
+      lastUpdated: "2026-09-26",
       type: "baseGuide",
       canonical: "/",
       file: "guides/Home.mdx",
@@ -153,7 +153,8 @@ export const guides = {
     meta: {
       id: "/azahar-setup/",
       categories: [
-        "Transporter and Dream Radar",
+        "Dream Radar",
+        "Bank and Transporter",
         "X and Y",
         "Omega Ruby and Alpha Sapphire",
         "Sun and Moon",
@@ -180,7 +181,7 @@ export const guides = {
       file: "guides/Tools and Emulators/Azahar Setup.mdx",
       translations: null,
       guideGroupId:
-        "en:/azahar-setup/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+        "en:/azahar-setup/:Bank and Transporter|Dream Radar|Omega Ruby and Alpha Sapphire|Sun and Moon|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -191,6 +192,40 @@ export const guides = {
       const file = await import(
         "~/../guides/Tools and Emulators/Azahar Setup.mdx?raw"
       );
+      return file.default;
+    }),
+  },
+  "/bank-transporter/": {
+    meta: {
+      id: "/bank-transporter/",
+      categories: ["Game Hub"],
+      section: "challenge",
+      guideVariants: null,
+      guideKey: "false-Pokemon Bank and Transporter",
+      isNew: false,
+      title: "Pokemon Bank and Transporter",
+      navDrawerTitle: "Pokemon Bank and Transporter",
+      description: "Pokemon Bank and Transporter Resources",
+      slug: "/bank-transporter/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "titled",
+      canonical: "/bank-transporter/",
+      lastUpdated: null,
+      type: "baseGuide",
+      file: "guides/Hubs.mdx",
+      translations: null,
+      guideGroupId: "en:false-Pokemon Bank and Transporter:Game Hub",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Hubs.mdx?raw");
       return file.default;
     }),
   },
@@ -393,7 +428,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: "/black-2-and-white-2/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-10-03",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -427,7 +462,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: "/black-and-white/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-10-03",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -461,7 +496,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: "/brilliant-diamond-and-shining-pearl/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-10-03",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -1035,7 +1070,8 @@ export const guides = {
     meta: {
       id: "/citrarng-setup/",
       categories: [
-        "Transporter and Dream Radar",
+        "Dream Radar",
+        "Bank and Transporter",
         "X and Y",
         "Omega Ruby and Alpha Sapphire",
         "Sun and Moon",
@@ -1063,7 +1099,7 @@ export const guides = {
       file: "guides/Tools and Emulators/CitraRNG Setup.mdx",
       translations: null,
       guideGroupId:
-        "en:false-Azahar Setup:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+        "en:false-Azahar Setup:Bank and Transporter|Dream Radar|Omega Ruby and Alpha Sapphire|Sun and Moon|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -1225,7 +1261,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: "/crystal/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-10-03",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -1881,7 +1917,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-09-20",
+      lastUpdated: "2026-10-03",
       type: "baseGuide",
       canonical: "/emerald-wild/",
       file: "guides/Gen 3/Emerald/Gen 3 Wild.mdx",
@@ -2086,7 +2122,8 @@ export const guides = {
         "HeartGold and SoulSilver",
         "Black and White",
         "Black 2 and White 2",
-        "Transporter and Dream Radar",
+        "Dream Radar",
+        "Bank and Transporter",
         "X and Y",
         "Omega Ruby and Alpha Sapphire",
         "Sun and Moon",
@@ -2120,7 +2157,7 @@ export const guides = {
         zh: "/zh-delete-pokemon-save/",
       },
       guideGroupId:
-        "en:false-Delete Save Files:Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+        "en:false-Delete Save Files:Bank and Transporter|Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Dream Radar|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -2199,7 +2236,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: "/diamond-pearl-and-platinum/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-10-03",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -2640,7 +2677,7 @@ export const guides = {
   "/dream-radar-cart-patches/": {
     meta: {
       id: "/dream-radar-cart-patches/",
-      categories: ["Transporter and Dream Radar"],
+      categories: ["Dream Radar"],
       section: "patch",
       guideVariants: null,
       guideKey: "false-Gen 4 Cart Patches",
@@ -2662,7 +2699,7 @@ export const guides = {
       canonical: "/dream-radar-cart-patches/",
       file: "guides/Transporter/Gen 4 Cart Patches.mdx",
       translations: null,
-      guideGroupId: "en:false-Gen 4 Cart Patches:Transporter and Dream Radar",
+      guideGroupId: "en:false-Gen 4 Cart Patches:Dream Radar",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -2679,7 +2716,7 @@ export const guides = {
   "/dream-radar-patches/": {
     meta: {
       id: "/dream-radar-patches/",
-      categories: ["Transporter and Dream Radar"],
+      categories: ["Dream Radar"],
       section: "patch",
       guideVariants: null,
       guideKey: "false-Dream Radar No-Cart Patch",
@@ -2701,8 +2738,7 @@ export const guides = {
       canonical: "/dream-radar-patches/",
       file: "guides/Tools and Emulators/Dream Radar Patches.mdx",
       translations: null,
-      guideGroupId:
-        "en:false-Dream Radar No-Cart Patch:Transporter and Dream Radar",
+      guideGroupId: "en:false-Dream Radar No-Cart Patch:Dream Radar",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -2713,6 +2749,40 @@ export const guides = {
       const file = await import(
         "~/../guides/Tools and Emulators/Dream Radar Patches.mdx?raw"
       );
+      return file.default;
+    }),
+  },
+  "/dream-radar/": {
+    meta: {
+      id: "/dream-radar/",
+      categories: ["Game Hub"],
+      section: "challenge",
+      guideVariants: null,
+      guideKey: "false-Pokemon Dream Radar",
+      isNew: false,
+      title: "Pokemon Dream Radar",
+      navDrawerTitle: "Pokemon Dream Radar",
+      description: "Pokemon Dream Radar Resources",
+      slug: "/dream-radar/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "titled",
+      canonical: "/dream-radar/",
+      lastUpdated: null,
+      type: "baseGuide",
+      file: "guides/Hubs.mdx",
+      translations: null,
+      guideGroupId: "en:false-Pokemon Dream Radar:Game Hub",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Hubs.mdx?raw");
       return file.default;
     }),
   },
@@ -3459,7 +3529,7 @@ export const guides = {
       addedOn: "2026-05-05",
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-09-20",
+      lastUpdated: "2026-10-03",
       type: "baseGuide",
       canonical: "/emerald-wild/",
       file: "guides/Gen 3/Emerald/Gen 3 Wild.mdx",
@@ -3497,7 +3567,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: "/emerald/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-10-03",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -3552,7 +3622,7 @@ export const guides = {
   "/emulator-b2w2-dream-radar/": {
     meta: {
       id: "/emulator-b2w2-dream-radar/",
-      categories: ["Black 2 and White 2", "Transporter and Dream Radar"],
+      categories: ["Black 2 and White 2", "Dream Radar"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "false-Dream Radar RNG",
@@ -3577,8 +3647,7 @@ export const guides = {
         en: "/emulator-b2w2-dream-radar/",
         zh: "/zh-emulator-b2w2-dream-radar/",
       },
-      guideGroupId:
-        "en:false-Dream Radar RNG:Black 2 and White 2|Transporter and Dream Radar",
+      guideGroupId: "en:false-Dream Radar RNG:Black 2 and White 2|Dream Radar",
       guideVariantLinks: {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-b2w2-dream-radar/" },
@@ -5202,7 +5271,8 @@ export const guides = {
         "HeartGold and SoulSilver",
         "Black and White",
         "Black 2 and White 2",
-        "Transporter and Dream Radar",
+        "Dream Radar",
+        "Bank and Transporter",
         "X and Y",
         "Omega Ruby and Alpha Sapphire",
         "Sun and Moon",
@@ -5236,7 +5306,7 @@ export const guides = {
         zh: "/zh-delete-pokemon-save/",
       },
       guideGroupId:
-        "es:false-Delete Save Files:Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+        "es:false-Delete Save Files:Bank and Transporter|Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Dream Radar|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -5568,7 +5638,8 @@ export const guides = {
     meta: {
       id: "/install-pokereader/",
       categories: [
-        "Transporter and Dream Radar",
+        "Dream Radar",
+        "Bank and Transporter",
         "X and Y",
         "Omega Ruby and Alpha Sapphire",
         "Sun and Moon",
@@ -5601,7 +5672,7 @@ export const guides = {
         zh: "/zh-install-pokereader/",
       },
       guideGroupId:
-        "es:false-PokeReader 3DS:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+        "es:false-PokeReader 3DS:Bank and Transporter|Dream Radar|Omega Ruby and Alpha Sapphire|Sun and Moon|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -5672,7 +5743,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: "/fire-red-and-leaf-green/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-10-03",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -6018,7 +6089,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: "/gamecube/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-10-03",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -6502,7 +6573,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: "/heart-gold-and-soul-silver/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-10-03",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -6809,7 +6880,8 @@ export const guides = {
     meta: {
       id: "/install-pokereader-emu/",
       categories: [
-        "Transporter and Dream Radar",
+        "Dream Radar",
+        "Bank and Transporter",
         "X and Y",
         "Omega Ruby and Alpha Sapphire",
         "Sun and Moon",
@@ -6837,7 +6909,7 @@ export const guides = {
       file: "guides/Tools and Emulators/Emu PokeReader.mdx",
       translations: null,
       guideGroupId:
-        "en:false-PokeReader Azahar:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+        "en:false-PokeReader Azahar:Bank and Transporter|Dream Radar|Omega Ruby and Alpha Sapphire|Sun and Moon|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -6855,7 +6927,8 @@ export const guides = {
     meta: {
       id: "/install-pokereader/",
       categories: [
-        "Transporter and Dream Radar",
+        "Dream Radar",
+        "Bank and Transporter",
         "X and Y",
         "Omega Ruby and Alpha Sapphire",
         "Sun and Moon",
@@ -6888,7 +6961,7 @@ export const guides = {
         zh: "/zh-install-pokereader/",
       },
       guideGroupId:
-        "en:false-PokeReader 3DS:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+        "en:false-PokeReader 3DS:Bank and Transporter|Dream Radar|Omega Ruby and Alpha Sapphire|Sun and Moon|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -7492,7 +7565,8 @@ export const guides = {
     meta: {
       id: "/install-pokereader/",
       categories: [
-        "Transporter and Dream Radar",
+        "Dream Radar",
+        "Bank and Transporter",
         "X and Y",
         "Omega Ruby and Alpha Sapphire",
         "Sun and Moon",
@@ -7525,7 +7599,7 @@ export const guides = {
         zh: "/zh-install-pokereader/",
       },
       guideGroupId:
-        "it:false-PokeReader 3DS:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+        "it:false-PokeReader 3DS:Bank and Transporter|Dream Radar|Omega Ruby and Alpha Sapphire|Sun and Moon|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -7546,7 +7620,8 @@ export const guides = {
     meta: {
       id: "/pokereader/",
       categories: [
-        "Transporter and Dream Radar",
+        "Dream Radar",
+        "Bank and Transporter",
         "X and Y",
         "Omega Ruby and Alpha Sapphire",
         "Sun and Moon",
@@ -7574,7 +7649,7 @@ export const guides = {
       file: "guides/Translations/it/Tools And Emulators/PokeReader.mdx",
       translations: { it: "/it-pokereader/", en: "/pokereader/" },
       guideGroupId:
-        "it:false-What is PokeReader:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+        "it:false-What is PokeReader:Bank and Transporter|Dream Radar|Omega Ruby and Alpha Sapphire|Sun and Moon|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -7654,7 +7729,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-09-20",
+      lastUpdated: "2026-10-03",
       type: "baseGuide",
       canonical: "/emerald-wild/",
       file: "guides/Gen 3/Emerald/Gen 3 Wild.mdx",
@@ -7825,7 +7900,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: "/legends-arceus/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-10-03",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -7928,7 +8003,8 @@ export const guides = {
     meta: {
       id: "/misc-3ds-installing-pcalc/",
       categories: [
-        "Transporter and Dream Radar",
+        "Dream Radar",
+        "Bank and Transporter",
         "X and Y",
         "Omega Ruby and Alpha Sapphire",
         "Sun and Moon",
@@ -7956,7 +8032,7 @@ export const guides = {
       file: "guides/Tools and Emulators/How to Install PCalc.mdx",
       translations: null,
       guideGroupId:
-        "en:/misc-3ds-installing-pcalc/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+        "en:/misc-3ds-installing-pcalc/:Bank and Transporter|Dream Radar|Omega Ruby and Alpha Sapphire|Sun and Moon|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -7974,7 +8050,8 @@ export const guides = {
     meta: {
       id: "/misc-3ds-ips-luma-citra/",
       categories: [
-        "Transporter and Dream Radar",
+        "Dream Radar",
+        "Bank and Transporter",
         "X and Y",
         "Omega Ruby and Alpha Sapphire",
         "Sun and Moon",
@@ -8003,7 +8080,7 @@ export const guides = {
       file: "guides/Tools and Emulators/Using IPS Patches with Luma and Citra.mdx",
       translations: null,
       guideGroupId:
-        "en:false-Using IPS Patches:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+        "en:false-Using IPS Patches:Bank and Transporter|Dream Radar|Omega Ruby and Alpha Sapphire|Sun and Moon|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: ["video_guide", "web_tool"],
     },
@@ -8108,7 +8185,7 @@ export const guides = {
   "/misc-3ds-transporter-nature-tables/": {
     meta: {
       id: "/misc-3ds-transporter-nature-tables/",
-      categories: ["Transporter and Dream Radar"],
+      categories: ["Bank and Transporter"],
       section: "supporting_info",
       guideVariants: null,
       guideKey: "false-Nature Conversion Table",
@@ -8130,8 +8207,7 @@ export const guides = {
       canonical: "/misc-3ds-transporter-nature-tables/",
       file: "guides/Transporter/Nature Table.mdx",
       translations: null,
-      guideGroupId:
-        "en:false-Nature Conversion Table:Transporter and Dream Radar",
+      guideGroupId: "en:false-Nature Conversion Table:Bank and Transporter",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -8274,7 +8350,8 @@ export const guides = {
         "HeartGold and SoulSilver",
         "Black and White",
         "Black 2 and White 2",
-        "Transporter and Dream Radar",
+        "Dream Radar",
+        "Bank and Transporter",
         "X and Y",
         "Omega Ruby and Alpha Sapphire",
         "Sun and Moon",
@@ -8302,7 +8379,7 @@ export const guides = {
       file: "guides/Tools and Emulators/Timer.mdx",
       translations: null,
       guideGroupId:
-        "en:false-Mystic Timer:Black 2 and White 2|Black and White|Diamond, Pearl, and Platinum|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+        "en:false-Mystic Timer:Bank and Transporter|Black 2 and White 2|Black and White|Diamond, Pearl, and Platinum|Dream Radar|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: ["web_tool"],
     },
@@ -8360,7 +8437,8 @@ export const guides = {
     meta: {
       id: "/ntr-helper-usage/",
       categories: [
-        "Transporter and Dream Radar",
+        "Dream Radar",
+        "Bank and Transporter",
         "X and Y",
         "Omega Ruby and Alpha Sapphire",
         "Sun and Moon",
@@ -8387,7 +8465,7 @@ export const guides = {
       file: "guides/Tools and Emulators/NTR Helper Usage.mdx",
       translations: null,
       guideGroupId:
-        "en:/ntr-helper-usage/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+        "en:/ntr-helper-usage/:Bank and Transporter|Dream Radar|Omega Ruby and Alpha Sapphire|Sun and Moon|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -8397,6 +8475,46 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Tools and Emulators/NTR Helper Usage.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/offline-bank-transporter-mod/": {
+    meta: {
+      id: "/offline-bank-transporter-mod/",
+      categories: ["Bank and Transporter"],
+      section: "patch",
+      guideVariants: null,
+      guideKey: "false-Bank & Transporter Offline Mod",
+      isNew: true,
+      title: "Pokemon Bank & Transporter Offline & SD Redirect Patches",
+      navDrawerTitle: "Bank & Transporter Offline Mod",
+      description:
+        "Keep Pokémon Bank and Transporter working offline, even after Bank shuts down, with the Offline Bank Mod.",
+      slug: "/offline-bank-transporter-mod/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: "2026-10-11",
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-10-11",
+      type: "baseGuide",
+      canonical: "/offline-bank-transporter-mod/",
+      file: "guides/Tools and Emulators/Transporter Patches.mdx",
+      translations: null,
+      guideGroupId:
+        "en:false-Bank & Transporter Offline Mod:Bank and Transporter",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Tools and Emulators/Transporter Patches.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Tools and Emulators/Transporter Patches.mdx?raw"
       );
       return file.default;
     }),
@@ -8421,7 +8539,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: "/omega-ruby-and-alpha-sapphire/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-10-03",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -8651,7 +8769,8 @@ export const guides = {
         "HeartGold and SoulSilver",
         "Black and White",
         "Black 2 and White 2",
-        "Transporter and Dream Radar",
+        "Dream Radar",
+        "Bank and Transporter",
         "X and Y",
         "Omega Ruby and Alpha Sapphire",
         "Sun and Moon",
@@ -8682,7 +8801,7 @@ export const guides = {
       file: "guides/Tools and Emulators/PokeFinder.mdx",
       translations: null,
       guideGroupId:
-        "en:/pokefinder/:Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+        "en:/pokefinder/:Bank and Transporter|Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Dream Radar|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -8700,7 +8819,8 @@ export const guides = {
     meta: {
       id: "/pokereader/",
       categories: [
-        "Transporter and Dream Radar",
+        "Dream Radar",
+        "Bank and Transporter",
         "X and Y",
         "Omega Ruby and Alpha Sapphire",
         "Sun and Moon",
@@ -8728,7 +8848,7 @@ export const guides = {
       file: "guides/Tools and Emulators/PokeReader.mdx",
       translations: { it: "/it-pokereader/", en: "/pokereader/" },
       guideGroupId:
-        "en:false-What is PokeReader:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+        "en:false-What is PokeReader:Bank and Transporter|Dream Radar|Omega Ruby and Alpha Sapphire|Sun and Moon|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -9158,7 +9278,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-09-20",
+      lastUpdated: "2026-10-03",
       type: "baseGuide",
       canonical: "/emerald-wild/",
       file: "guides/Gen 3/Emerald/Gen 3 Wild.mdx",
@@ -9291,6 +9411,45 @@ export const guides = {
     Guide: React.lazy(() => import("~/../guides/Gen 4/Voltorb Flip.mdx")),
     getRawFile: memoize(async () => {
       const file = await import("~/../guides/Gen 4/Voltorb Flip.mdx?raw");
+      return file.default;
+    }),
+  },
+  "/retail-or-emulator/": {
+    meta: {
+      id: "/retail-or-emulator/",
+      categories: ["Home"],
+      section: "getting_started",
+      guideVariants: null,
+      guideKey: "false-Pick Retail or Emulator",
+      isNew: false,
+      title: "Pick Retail or Emulator",
+      navDrawerTitle: "Pick Retail or Emulator",
+      description:
+        "Compare RNG manipulation on retail hardware and on emulators to pick the right setup.",
+      slug: "/retail-or-emulator/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-10-03",
+      type: "baseGuide",
+      canonical: "/retail-or-emulator/",
+      file: "guides/Getting Started/Retail or Emulator.mdx",
+      translations: null,
+      guideGroupId: "en:false-Pick Retail or Emulator:Home",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Getting Started/Retail or Emulator.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Getting Started/Retail or Emulator.mdx?raw"
+      );
       return file.default;
     }),
   },
@@ -11346,7 +11505,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: "/ruby-and-sapphire/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-10-03",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -11457,7 +11616,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: "/sun-and-moon/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-10-03",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -11491,7 +11650,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: "/sword-and-shield/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-10-03",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -11546,25 +11705,25 @@ export const guides = {
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
-      guideKey: "false-Pokemon Transporter and Dream Radar",
+      guideKey: "/transporter-dream-radar/",
       isNew: false,
-      title: "Pokemon Transporter and Dream Radar",
-      navDrawerTitle: "Pokemon Transporter and Dream Radar",
-      description: "Pokemon Transporter and Dream Radar Resources",
+      title: "Pokemon Bank and Transporter",
+      navDrawerTitle: "Pokemon Bank and Transporter",
+      description: "Pokemon Bank and Transporter Resources",
       slug: "/transporter-dream-radar/",
       isRoughDraft: false,
       orderPriority: 20,
       difficulty: null,
-      hideFromNavDrawer: false,
+      hideFromNavDrawer: true,
       addedOn: null,
       translation: null,
       layout: "titled",
-      canonical: "/transporter-dream-radar/",
-      lastUpdated: "2026-03-08",
+      canonical: "/bank-transporter/",
+      lastUpdated: "2026-10-03",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
-      guideGroupId: "en:false-Pokemon Transporter and Dream Radar:Game Hub",
+      guideGroupId: "en:/transporter-dream-radar/:Game Hub",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -11577,29 +11736,29 @@ export const guides = {
   "/transporter-patches/": {
     meta: {
       id: "/transporter-patches/",
-      categories: ["Transporter and Dream Radar"],
+      categories: ["Bank and Transporter"],
       section: "patch",
       guideVariants: null,
-      guideKey: "false-Transporter Patches",
+      guideKey: "/transporter-patches/",
       isNew: false,
-      title: "Pokemon Transporter Offline & Save Patches",
-      navDrawerTitle: "Transporter Patches",
+      title: "Pokemon Bank & Transporter Offline & SD Redirect Patches",
+      navDrawerTitle: "Bank & Transporter Offline Mod",
       description:
-        "Learn how to patch Pokémon Transporter to work offline and load emulator or TWiLightMenu saves from the SD card.",
+        "Keep Pokémon Bank and Transporter working offline, even after Bank shuts down, with the Offline Bank Mod.",
       slug: "/transporter-patches/",
       isRoughDraft: false,
       orderPriority: 20,
       difficulty: null,
-      hideFromNavDrawer: false,
+      hideFromNavDrawer: true,
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: null,
+      lastUpdated: "2026-10-11",
       type: "baseGuide",
-      canonical: "/transporter-patches/",
+      canonical: "/offline-bank-transporter-mod/",
       file: "guides/Tools and Emulators/Transporter Patches.mdx",
       translations: null,
-      guideGroupId: "en:false-Transporter Patches:Transporter and Dream Radar",
+      guideGroupId: "en:/transporter-patches/:Bank and Transporter",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -11616,7 +11775,7 @@ export const guides = {
   "/transporter-rng-offline/": {
     meta: {
       id: "/transporter-rng-offline/",
-      categories: ["Transporter and Dream Radar"],
+      categories: ["Bank and Transporter"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "false-Offline Patch RNG",
@@ -11638,7 +11797,7 @@ export const guides = {
       canonical: "/transporter-rng-offline/",
       file: "guides/Transporter/Transporter with Offline Patch.mdx",
       translations: null,
-      guideGroupId: "en:false-Offline Patch RNG:Transporter and Dream Radar",
+      guideGroupId: "en:false-Offline Patch RNG:Bank and Transporter",
       guideVariantLinks: {
         retail: null,
         cfwEmu: { type: "slug", slug: "/transporter-rng-offline/" },
@@ -11659,7 +11818,7 @@ export const guides = {
   "/transporter-rng/": {
     meta: {
       id: "/transporter-rng/",
-      categories: ["Transporter and Dream Radar"],
+      categories: ["Bank and Transporter"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "false-Transporter RNG",
@@ -11681,7 +11840,7 @@ export const guides = {
       canonical: "/transporter-rng/",
       file: "guides/Transporter/Transporter.mdx",
       translations: null,
-      guideGroupId: "en:false-Transporter RNG:Transporter and Dream Radar",
+      guideGroupId: "en:false-Transporter RNG:Bank and Transporter",
       guideVariantLinks: {
         retail: null,
         cfwEmu: { type: "slug", slug: "/transporter-rng/" },
@@ -11714,7 +11873,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: "/ultra-sun-and-ultra-moon/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-10-03",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -11725,6 +11884,45 @@ export const guides = {
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
     getRawFile: memoize(async () => {
       const file = await import("~/../guides/Hubs.mdx?raw");
+      return file.default;
+    }),
+  },
+  "/what-is-rng/": {
+    meta: {
+      id: "/what-is-rng/",
+      categories: ["Home"],
+      section: "getting_started",
+      guideVariants: null,
+      guideKey: "false-What is RNG?",
+      isNew: false,
+      title: "What is RNG?",
+      navDrawerTitle: "What is RNG?",
+      description:
+        "An introduction to RNG manipulation in Pokémon games for beginners.",
+      slug: "/what-is-rng/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-10-03",
+      type: "baseGuide",
+      canonical: "/what-is-rng/",
+      file: "guides/Getting Started/What Is RNG.mdx",
+      translations: null,
+      guideGroupId: "en:false-What is RNG?:Home",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Getting Started/What Is RNG.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Getting Started/What Is RNG.mdx?raw"
+      );
       return file.default;
     }),
   },
@@ -11794,7 +11992,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: "/x-and-y/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-10-03",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -11923,6 +12121,45 @@ export const guides = {
     Guide: React.lazy(() => import("~/../guides/Gen 6/PokeRadar.mdx")),
     getRawFile: memoize(async () => {
       const file = await import("~/../guides/Gen 6/PokeRadar.mdx?raw");
+      return file.default;
+    }),
+  },
+  "/your-first-rng/": {
+    meta: {
+      id: "/your-first-rng/",
+      categories: ["Home"],
+      section: "getting_started",
+      guideVariants: null,
+      guideKey: "false-Your First RNG",
+      isNew: false,
+      title: "Your First RNG",
+      navDrawerTitle: "Your First RNG",
+      description:
+        "Learn how to manipulate RNG in Pokémon games to get your first shiny.",
+      slug: "/your-first-rng/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-10-04",
+      type: "baseGuide",
+      canonical: "/your-first-rng/",
+      file: "guides/Getting Started/Your First Shiny.mdx",
+      translations: null,
+      guideGroupId: "en:false-Your First RNG:Home",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Getting Started/Your First Shiny.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Getting Started/Your First Shiny.mdx?raw"
+      );
       return file.default;
     }),
   },
@@ -12237,7 +12474,8 @@ export const guides = {
         "HeartGold and SoulSilver",
         "Black and White",
         "Black 2 and White 2",
-        "Transporter and Dream Radar",
+        "Dream Radar",
+        "Bank and Transporter",
         "X and Y",
         "Omega Ruby and Alpha Sapphire",
         "Sun and Moon",
@@ -12271,7 +12509,7 @@ export const guides = {
         zh: "/zh-delete-pokemon-save/",
       },
       guideGroupId:
-        "zh:false-Delete Save Files:Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+        "zh:false-Delete Save Files:Bank and Transporter|Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Dream Radar|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -12977,7 +13215,7 @@ export const guides = {
   "/zh-emulator-b2w2-dream-radar/": {
     meta: {
       id: "/emulator-b2w2-dream-radar/",
-      categories: ["Black 2 and White 2", "Transporter and Dream Radar"],
+      categories: ["Black 2 and White 2", "Dream Radar"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "false-Dream Radar RNG",
@@ -13001,8 +13239,7 @@ export const guides = {
         en: "/emulator-b2w2-dream-radar/",
         zh: "/zh-emulator-b2w2-dream-radar/",
       },
-      guideGroupId:
-        "zh:false-Dream Radar RNG:Black 2 and White 2|Transporter and Dream Radar",
+      guideGroupId: "zh:false-Dream Radar RNG:Black 2 and White 2|Dream Radar",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -14692,7 +14929,8 @@ export const guides = {
     meta: {
       id: "/install-pokereader/",
       categories: [
-        "Transporter and Dream Radar",
+        "Dream Radar",
+        "Bank and Transporter",
         "X and Y",
         "Omega Ruby and Alpha Sapphire",
         "Sun and Moon",
@@ -14724,7 +14962,7 @@ export const guides = {
         zh: "/zh-install-pokereader/",
       },
       guideGroupId:
-        "zh:false-PokeReader 3DS:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+        "zh:false-PokeReader 3DS:Bank and Transporter|Dream Radar|Omega Ruby and Alpha Sapphire|Sun and Moon|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -15314,7 +15552,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-09-20",
+      lastUpdated: "2026-10-03",
       type: "baseGuide",
       canonical: "/emerald-wild/",
       file: "guides/Gen 3/Emerald/Gen 3 Wild.mdx",
@@ -17183,6 +17421,7 @@ export const guideSlugs = [
   "/3ds-helper/",
   "/about/",
   "/azahar-setup/",
+  "/bank-transporter/",
   "/bdsp-advance-rng/",
   "/bdsp-chatot/",
   "/bdsp-emulator-setup/",
@@ -17243,6 +17482,7 @@ export const guideSlugs = [
   "/dppt-wild/",
   "/dream-radar-cart-patches/",
   "/dream-radar-patches/",
+  "/dream-radar/",
   "/e-tips-rng/",
   "/emerald-advancing-rng-techniques/",
   "/emerald-battle-video/",
@@ -17375,6 +17615,7 @@ export const guideSlugs = [
   "/mystic-timer/",
   "/no-dolphin-patch/",
   "/ntr-helper-usage/",
+  "/offline-bank-transporter-mod/",
   "/omega-ruby-and-alpha-sapphire/",
   "/oras-mirage-spots/",
   "/oras-remove-time-penalty/",
@@ -17397,6 +17638,7 @@ export const guideSlugs = [
   "/retail-hgss-starter/",
   "/retail-hgss-swarm/",
   "/retail-hgss-voltorb-flip/",
+  "/retail-or-emulator/",
   "/retail-oras-egg-mmsc/",
   "/retail-oras-egg-no-mmsc/",
   "/retail-oras-tid/",
@@ -17455,11 +17697,13 @@ export const guideSlugs = [
   "/transporter-rng-offline/",
   "/transporter-rng/",
   "/ultra-sun-and-ultra-moon/",
+  "/what-is-rng/",
   "/wishing-star-jirachi/",
   "/x-and-y/",
   "/xdcolo-tidsid-generator/",
   "/xy-friend-safari-patch/",
   "/xy-pokeradar/",
+  "/your-first-rng/",
   "/zh-3ds-alt-settings/",
   "/zh-3ds-helper/",
   "/zh-bdsp-advance-rng/",
@@ -17587,7 +17831,8 @@ export const guideSlugs = [
 export const categories = [
   "Home",
   "Gold, Silver, Crystal",
-  "Transporter and Dream Radar",
+  "Dream Radar",
+  "Bank and Transporter",
   "Ruby and Sapphire",
   "Gamecube",
   "FireRed and LeafGreen",

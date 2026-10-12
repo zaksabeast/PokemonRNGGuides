@@ -9,6 +9,8 @@ import { tempThemeColorAtom, useThemeMode } from "./tempThemeColor";
 // This controls things like a radiating glow animation when clicking buttons
 const DISABLED_WAVE = { disabled: true };
 
+const TAG_CONFIG = { variant: "outlined" } as const;
+
 const TOOLTIP_CONFIG = {
   styles: {
     container: {
@@ -18,6 +20,26 @@ const TOOLTIP_CONFIG = {
         "calc(var(--ant-padding-sm) / 2 + 4px) calc(var(--ant-padding-xs) + 4px)",
       boxShadow:
         "0 2px 6px 0 rgb(0 0 0 / 0.16), 0 6px 20px 2px rgb(0 0 0 / 0.14)",
+    },
+  },
+};
+
+const SELECT_CONFIG = {
+  styles: {
+    popup: {
+      root: {
+        // The popup is the same color as cards, so shadows alone don't separate it in dark mode
+        border: "1px solid var(--ant-color-border-secondary)",
+      },
+    },
+  },
+};
+
+// Pickers render their background on the panel container rather than the popup root
+const PICKER_CONFIG = {
+  styles: {
+    popup: {
+      container: SELECT_CONFIG.styles.popup.root,
     },
   },
 };
@@ -40,6 +62,10 @@ export const ThemeProvider = ({ children }: Props) => {
         theme={theme}
         wave={DISABLED_WAVE}
         tooltip={TOOLTIP_CONFIG}
+        tag={TAG_CONFIG}
+        select={SELECT_CONFIG}
+        datePicker={PICKER_CONFIG}
+        timePicker={PICKER_CONFIG}
       >
         {children}
       </ConfigProvider>

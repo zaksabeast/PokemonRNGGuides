@@ -2,14 +2,15 @@ import React from "react";
 import { gen4StateAtom } from "../state";
 import { useAtom } from "jotai";
 import { rngTools, DpptSeedTime4 } from "~/rngTools";
+import { type ResultColumn, Icon } from "~/components";
 import {
-  RngToolForm,
-  FormikNumberInput,
-  type RngToolSubmit,
-  type ResultColumn,
-  Icon,
-  Field,
-} from "~/components";
+  FieldRow,
+  FormNumberField,
+  FormSection,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { uniqueId, sortBy } from "lodash-es";
 import { CalibrateTimerButton } from "../calibrateTimerButton";
 import { z } from "zod";
@@ -103,22 +104,8 @@ const columns: ResultColumn<ResultRow>[] = [
   },
 ];
 
-const fields: Field[] = [
-  {
-    label: "Delay Offset",
-    input: (
-      <FormikNumberInput<FormState> name="delayOffset" numType="decimal" />
-    ),
-  },
-  {
-    label: "Second Offset",
-    input: (
-      <FormikNumberInput<FormState> name="secondOffset" numType="decimal" />
-    ),
-  },
-];
-
 export const DpptCoinFlipSeedCalibrator = () => {
+  const t = useActiveRouteTranslations();
   const [state, setState] = useAtom(gen4StateAtom);
   const [allResults, setAllResults] = React.useState<ResultRow[]>([]);
 
@@ -126,7 +113,7 @@ export const DpptCoinFlipSeedCalibrator = () => {
     matchesCoinFlipFilter(result.coinFlips, state.gameState.coinFlips),
   );
 
-  const onSubmit: RngToolSubmit<FormState> = async (formState) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (formState) => {
     const seedTime = state.target.seedTime;
     if (seedTime == null) {
       return;
@@ -164,8 +151,7 @@ export const DpptCoinFlipSeedCalibrator = () => {
   };
 
   return (
-    <RngToolForm<FormState, ResultRow>
-      fields={fields}
+    <ToolForm<FormState, ResultRow>
       columns={columns}
       results={filteredResults}
       initialValues={initialValues}
@@ -186,6 +172,21 @@ export const DpptCoinFlipSeedCalibrator = () => {
       onSubmit={onSubmit}
       rowKey="id"
       submitTrackerId="gen4_generate_calibration_seeds"
-    />
+    >
+      <FormSection>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="delayOffset"
+            label={t["Delay Offset"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="secondOffset"
+            label={t["Second Offset"]}
+            numType="decimal"
+          />
+        </FieldRow>
+      </FormSection>
+    </ToolForm>
   );
 };

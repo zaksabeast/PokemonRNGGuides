@@ -1,12 +1,11 @@
 import React from "react";
 import {
-  Field,
-  FormikSelect,
-  FormikSwitch,
-  RngToolForm,
-  RngToolSubmit,
-} from "~/components";
-import { FormFieldTable } from "~/components/formFieldTable";
+  FormSection,
+  FormSelectField,
+  FormSwitchField,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
 import { useWatch } from "~/hooks/form";
 import { TargetSetup } from "./static3TargetSetupSearcher";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
@@ -15,7 +14,7 @@ import {
   hasMultiplePossibleRoamingValuesForSpecies,
   getPossibleStatic3Species,
 } from "./constants.tsx";
-import { getPaintingReseedingFields } from "../pokemonRng/targetSetupInput";
+import { PaintingReseedingFields } from "../pokemonRng/targetSetupInput";
 import { species } from "~/types/species";
 import { lcrng_distance } from "~/utils/lcrng";
 import { toOptions } from "~/utils/options";
@@ -77,6 +76,7 @@ const Static3TargetSetupInputFields = ({
   });
   const roaming = watchedValues.roaming ?? false;
   const selectedSpecies = watchedValues.species ?? "Mudkip";
+  // The target method has no field while only Emerald is supported.
   const targetMethod = watchedValues.targetMethod ?? "Static1";
   const usingPaintingReseeding = watchedValues.usingPaintingReseeding ?? false;
   const targetFrameBeforePainting =
@@ -102,38 +102,22 @@ const Static3TargetSetupInputFields = ({
     setTargetSetup,
   ]);
 
-  const fields: Field[] = [
-    {
-      label: "Species",
-      input: (
-        <FormikSelect<FormState, "species">
-          name="species"
-          options={toOptions(getPossibleStatic3Species("emerald"))}
-        />
-      ),
-    },
-    {
-      label: "Roaming",
-      input: <FormikSwitch<FormState> name="roaming" />,
-      show: hasMultiplePossibleRoaming,
-    },
-    ...getPaintingReseedingFields({
-      usingPaintingReseeding,
-      equivalentInitialAdvs,
-    }),
-    {
-      label: "Target method",
-      input: (
-        <FormikSelect<FormState, "targetMethod">
-          name="targetMethod"
-          options={toOptions(gen3StaticMethods)}
-        />
-      ),
-      show: false, // GAME === "rs", // To show when rs will be supported.
-    },
-  ];
-
-  return <FormFieldTable fields={fields} />;
+  return (
+    <FormSection>
+      <FormSelectField<FormState>
+        name="species"
+        label="Species"
+        options={toOptions(getPossibleStatic3Species("emerald"))}
+      />
+      {hasMultiplePossibleRoaming && (
+        <FormSwitchField<FormState> name="roaming" label="Roaming" />
+      )}
+      <PaintingReseedingFields
+        usingPaintingReseeding={usingPaintingReseeding}
+        equivalentInitialAdvs={equivalentInitialAdvs}
+      />
+    </FormSection>
+  );
 };
 
 export const Static3TargetSetupInput = ({
@@ -141,14 +125,14 @@ export const Static3TargetSetupInput = ({
 }: {
   setTargetSetup: (targetSetup: TargetSetup | null) => void;
 }) => {
-  const onSubmit: RngToolSubmit<FormState> = async (values) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (values) => {
     const targetSetup = convertFormStateValuesToTargetSetup(values);
     const { content } = await calculateTargetSetupResult(targetSetup);
     setTargetSetup(content == null ? null : targetSetup);
   };
 
   return (
-    <RngToolForm<FormState, never>
+    <ToolForm<FormState, never>
       validationSchema={schema}
       initialValues={getInitialValues()}
       onSubmit={onSubmit}
@@ -157,6 +141,6 @@ export const Static3TargetSetupInput = ({
       submitButtonLabel="Calculate Target"
     >
       <Static3TargetSetupInputFields setTargetSetup={setTargetSetup} />
-    </RngToolForm>
+    </ToolForm>
   );
 };

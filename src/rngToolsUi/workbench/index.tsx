@@ -14,7 +14,7 @@ import { seedToTime4Tabs } from "./tools/gen4/seedToTime/tabs";
 
 const FullHeight = styled(Flex)(({ theme }) => ({
   // Header + Menu
-  height: `calc(100vh - ${theme.token.layoutHeaderHeight} - ${theme.token.layoutHeaderHeight})`,
+  height: `calc(100dvh - ${theme.token.layoutHeaderHeight} - ${theme.token.layoutHeaderHeight})`,
 }));
 
 const FullHeightTabs = styled(Tabs)({

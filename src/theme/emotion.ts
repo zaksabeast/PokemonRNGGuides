@@ -13,6 +13,10 @@ const screenSizeMap = {
   desktop: 1200,
 };
 
+const PAGE_CONTAINER = "page";
+const PAGE_MOBILE_MAX_WIDTH = 840;
+const PAGE_WIDE_MIN_WIDTH = 1040;
+
 export const emotionTheme: Theme = {
   token: {
     layoutHeaderHeight: "var(--ant-layout-header-height)",
@@ -117,18 +121,99 @@ export const emotionTheme: Theme = {
     colorInfoActive: "var(--ant-color-info-active)",
     colorInfoTextHover: "var(--ant-color-info-text-hover)",
 
-    colorGuideTagNew: "#AF52DE",
-    colorGuideTagNewBg: "rgba(175, 82, 222, 0.1)",
-    colorGuideTagWebTool: "#7E5BEF",
-    colorGuideTagWebToolBg: "rgba(126, 91, 239, 0.08)",
-    colorGuideTagVideoGuide: "#007AFF",
-    colorGuideTagVideoGuideBg: "rgba(0, 122, 255, 0.1)",
-    colorGuideTagRoughDraft: "#FF3B30",
-    colorGuideTagRoughDraftBg: "rgba(255, 59, 48, 0.1)",
-    colorGuideTagTranslated: "#00B894",
-    colorGuideTagTranslatedBg: "rgba(0, 184, 148, 0.1)",
+    // Info tinted over the surface, for elements that should read apart from the primary color
+    colorInfoTonal:
+      "color-mix(in srgb, var(--ant-color-info), var(--ant-color-text))",
+    colorInfoTonalBg: "rgb(from var(--ant-color-info) r g b / 0.14)",
+    colorInfoTonalBorder: "rgb(from var(--ant-color-info) r g b / 0.5)",
+
+    colorStateLayerHover: "rgb(from var(--ant-color-text) r g b / 0.08)",
+    colorStateLayerPressed: "rgb(from var(--ant-color-text) r g b / 0.12)",
+
+    colorOnPrimary: "var(--ant-color-on-primary)",
+  },
+  typography: {
+    titleMedium: {
+      fontSize: 16,
+      lineHeight: 24 / 16,
+      fontWeight: 500,
+      letterSpacing: 0.15,
+    },
+    titleSmall: {
+      fontSize: 14,
+      lineHeight: 20 / 14,
+      fontWeight: 500,
+      letterSpacing: 0.1,
+    },
+    bodyLarge: {
+      fontSize: 16,
+      lineHeight: 24 / 16,
+      fontWeight: 400,
+      letterSpacing: 0,
+    },
+    bodyMedium: {
+      fontSize: 14,
+      lineHeight: 20 / 14,
+      fontWeight: 400,
+      letterSpacing: 0.25,
+    },
+    bodySmall: {
+      fontSize: 12,
+      lineHeight: 16 / 12,
+      fontWeight: 400,
+      letterSpacing: 0.4,
+    },
+    labelLarge: {
+      fontSize: 14,
+      lineHeight: 20 / 14,
+      fontWeight: 500,
+      letterSpacing: 0.1,
+    },
+    labelMedium: {
+      fontSize: 12,
+      lineHeight: 16 / 12,
+      fontWeight: 500,
+      letterSpacing: 0.4,
+    },
+  },
+  shape: {
+    medium: 12,
+    large: 16,
+    largeIncreased: 20,
+    extraLarge: 28,
+    full: 9999,
+  },
+  size: {
+    field: 48,
+    button: 56,
+    listItem: 56,
+    touchTarget: 44,
+    dense: {
+      field: 40,
+      button: 48,
+      listItem: 48,
+      touchTarget: 36,
+    },
+  },
+  pageContainer: {
+    containerType: "inline-size",
+    containerName: PAGE_CONTAINER,
+  },
+  containerQueries: {
+    mobile: `@container ${PAGE_CONTAINER} (max-width: ${PAGE_MOBILE_MAX_WIDTH - 1}px)`,
+    medium: `@container ${PAGE_CONTAINER} (min-width: ${PAGE_MOBILE_MAX_WIDTH}px) and (max-width: ${PAGE_WIDE_MIN_WIDTH - 1}px)`,
+    wide: `@container ${PAGE_CONTAINER} (min-width: ${PAGE_WIDE_MIN_WIDTH}px)`,
+  },
+  interactive: {
+    cursor: "pointer",
+    transition: "background-color 150ms ease, border-color 150ms ease",
+    ":focus-visible": {
+      outline: "2px solid var(--ant-color-primary)",
+      outlineOffset: 2,
+    },
   },
   mediaQueries: {
+    dense: `@media (min-width: ${screenSizeMap.tablet}px)`,
     up: (size: ScreenSize) => {
       return match(size)
         .with("mobile", () => `@media (min-width: ${screenSizeMap.mobile}px)`)

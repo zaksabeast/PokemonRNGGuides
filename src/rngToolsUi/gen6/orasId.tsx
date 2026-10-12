@@ -1,16 +1,19 @@
 import React from "react";
+import { ResultColumn } from "~/components";
 import {
-  FormikNumberInput,
-  ResultColumn,
-  RngToolForm,
-  RngToolSubmit,
-  Field,
-  FormikIdFilter,
-  FormikSwitch,
-} from "~/components";
+  FieldRow,
+  FormDateField,
+  FormNumberField,
+  FormSection,
+  FormSwitchField,
+  FormTimeField,
+  IdFilterField,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
 import { rngTools, Gen6Id } from "~/rngTools";
 import { denormalizeIdFilter, IdFilterSchema } from "~/types/id";
-import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import {
   addRngTime,
   formatRngDateTime,
@@ -89,45 +92,57 @@ const initialValues: FormState = {
   },
 };
 
-const getFields = (t: Translations): Field[] => [
-  {
-    label: t["TinyMT u32 Seed"],
-    input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
-  },
-  {
-    label: t["Boot Date"],
-    input: <FormikDatePicker<FormState> name="date" />,
-  },
-  {
-    label: t["Boot Time"],
-    input: <FormikTimePicker<FormState> name="time" showSecond />,
-  },
-  {
-    label: t["Initial Advances"],
-    input: (
-      <FormikNumberInput<FormState> name="initial_advances" numType="decimal" />
-    ),
-  },
-  {
-    label: t["Max Advances"],
-    input: (
-      <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
-    ),
-  },
-  {
-    label: t["Only Current Seed"],
-    input: <FormikSwitch<FormState> name="only_current_seed" />,
-  },
-  {
-    label: t["Filter"],
-    input: <FormikIdFilter<FormState> name="filter" optional />,
-  },
-];
+const Fields = () => {
+  const t = useActiveRouteTranslations();
+
+  return (
+    <>
+      <FormSection title={t["Your game"]}>
+        <FormNumberField<FormState>
+          name="seed"
+          label={t["TinyMT u32 Seed"]}
+          numType="hex"
+        />
+        <FieldRow>
+          <FormDateField<FormState> name="date" label={t["Boot Date"]} />
+          <FormTimeField<FormState>
+            name="time"
+            label={t["Boot Time"]}
+            showSecond
+          />
+        </FieldRow>
+      </FormSection>
+
+      <FormSection title={t["Search"]}>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="initial_advances"
+            label={t["Initial Advances"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="max_advances"
+            label={t["Max Advances"]}
+            numType="decimal"
+          />
+        </FieldRow>
+        <FormSwitchField<FormState>
+          name="only_current_seed"
+          label={t["Only Current Seed"]}
+        />
+      </FormSection>
+
+      <FormSection title={t["Filters"]}>
+        <IdFilterField<FormState> name="filter" optional />
+      </FormSection>
+    </>
+  );
+};
 
 export const OrasId = () => {
   const [results, setResults] = React.useState<Gen6Id[]>([]);
 
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     const results = await rngTools.generate_oras_id({
       start_seed: opts.seed,
       only_start_seed: opts.only_current_seed,
@@ -141,14 +156,15 @@ export const OrasId = () => {
   };
 
   return (
-    <RngToolForm<FormState, Gen6Id>
-      getFields={getFields}
+    <ToolForm<FormState, Gen6Id>
       getColumns={getColumns}
       results={results}
       validationSchema={Validator}
       initialValues={initialValues}
       onSubmit={onSubmit}
       submitTrackerId="generate_oras_id"
-    />
+    >
+      <Fields />
+    </ToolForm>
   );
 };

@@ -1,23 +1,22 @@
+import { Flex, ResultColumn, Button, Icon } from "~/components";
 import {
-  Flex,
-  Field,
-  RngToolForm,
-  FormikSwitch,
-  ResultColumn,
-  RngToolSubmit,
-  FormikSelect,
-  Button,
-  Icon,
-  FormFieldTable,
-  FormikNumberInput,
-} from "~/components";
+  FormNumberField,
+  FormRadioField,
+  FormSection,
+  FormSelectField,
+  FormSummary,
+  FormSwitchField,
+  SwitchGroup,
+  ToolForm,
+  type SelectOption,
+  type ToolFormSubmit,
+} from "~/components/form";
 import { EmbeddedRunTimer } from "~/rngToolsUi/timer/embeddedRunTimer";
 import {
   rngTools,
   Pokerus3GeneratorResult,
   Pokerus3SearcherForCalibOptions,
 } from "~/rngTools";
-import { FormikRadio } from "~/components/radio";
 import React from "react";
 import { z } from "zod";
 import { toOptions } from "~/utils/options";
@@ -55,6 +54,34 @@ const Validator = z.object({
 });
 
 export type FormState = z.infer<typeof Validator>;
+
+const pickupItemOptions: SelectOption<z.infer<typeof pickupItemSchema>>[] = [
+  { label: "None", value: "None" },
+  ...toOptions(pickupItems_rs),
+];
+
+const pickupItemFields = [
+  {
+    name: "filter_pickup_items_0",
+    label: "Pickup item obtained on 1st Pokémon",
+  },
+  {
+    name: "filter_pickup_items_1",
+    label: "Pickup item obtained on 2nd Pokémon",
+  },
+  {
+    name: "filter_pickup_items_2",
+    label: "Pickup item obtained on 3rd Pokémon",
+  },
+  {
+    name: "filter_pickup_items_3",
+    label: "Pickup item obtained on 4th Pokémon",
+  },
+  {
+    name: "filter_pickup_items_4",
+    label: "Pickup item obtained on 5th Pokémon",
+  },
+] as const;
 
 const initialValues: FormState = {
   entered_hall_of_fame: false,
@@ -237,126 +264,68 @@ export const Fields = () => {
     });
   }, [setFieldValue, enteredHallOfFame, hadMassOutbreak, pickupPokemonCount]);
 
-  const fields = React.useMemo((): Field[] => {
-    const fields: Field[] = [
-      {
-        label: "Entered Hall of Fame",
-        input: <FormikSwitch<FormState> name="entered_hall_of_fame" />,
-      },
-    ];
-
-    if (enteredHallOfFame) {
-      fields.push({
-        label: "Had Mass Outbreak",
-        input: <FormikSwitch<FormState> name="had_mass_outbreak" />,
-      });
-    }
-
-    fields.push(
-      {
-        label: "Number of Pickup Pokémon",
-        input: (
-          <FormikRadio<FormState>
-            name="pickup_pokemon_count"
-            options={toOptions(range(0, 5 + 1)).toReversed()}
+  return (
+    <FormSection>
+      <SwitchGroup>
+        <FormSwitchField<FormState>
+          name="entered_hall_of_fame"
+          label="Entered Hall of Fame"
+        />
+        {enteredHallOfFame && (
+          <FormSwitchField<FormState>
+            name="had_mass_outbreak"
+            label="Had Mass Outbreak"
           />
-        ),
-      },
-      {
-        label: "Target Advance",
-        input:
-          targetAdv > POKERUS_TARGETS[0]
-            ? `${targetAdv} ${"(Not recommended)"}`
-            : `${targetAdv}`,
-      },
-      {
-        label: "",
-        direction: "column",
-        input: (
-          <EmbeddedRunTimer
-            milliseconds={timerMilliseconds}
-            startTrackerId="pokerus_timer_start"
-            stopTrackerId="pokerus_timer_stop"
-          />
-        ),
-      },
-      {
-        label: "Calibration (ms)",
-        input: (
-          <FormikNumberInput<FormState> name="calibration" numType="decimal" />
-        ),
-      },
-      {
-        label: "Filter?",
-        input: <FormikSwitch<FormState> name="filter_active" />,
-      },
-    );
-
-    if (!filterActive) {
-      fields.push({
-        label: "Initial Advance",
-        input: (
-          <FormikNumberInput<FormState>
-            name="initial_advance_before_pickup"
-            numType="decimal"
-          />
-        ),
-      });
-    }
-
-    if (filterActive) {
-      const itemOptions = [
-        { label: "None", value: "None" },
-        ...toOptions(pickupItems_rs),
-      ];
-
-      const info = [
-        [
-          "Filter: Pickup item obtained on 1st Pokémon",
-          "filter_pickup_items_0",
-        ],
-        [
-          "Filter: Pickup item obtained on 2nd Pokémon",
-          "filter_pickup_items_1",
-        ],
-        [
-          "Filter: Pickup item obtained on 3rd Pokémon",
-          "filter_pickup_items_2",
-        ],
-        [
-          "Filter: Pickup item obtained on 4th Pokémon",
-          "filter_pickup_items_3",
-        ],
-        [
-          "Filter: Pickup item obtained on 5th Pokémon",
-          "filter_pickup_items_4",
-        ],
-      ] as const;
-
-      const count = Math.min(info.length, pickupPokemonCount);
-      for (let i = 0; i < count; i++) {
-        const [label, name] = info[i];
-        fields.push({
-          label,
-          input: (
-            <FormikSelect<FormState, typeof name>
+        )}
+      </SwitchGroup>
+      <FormRadioField<FormState>
+        name="pickup_pokemon_count"
+        label="Number of Pickup Pokémon"
+        cellSize="number"
+        options={toOptions(range(0, 5 + 1)).toReversed()}
+      />
+      <FormSummary
+        rows={[
+          {
+            label: "Target Advance",
+            value:
+              targetAdv > POKERUS_TARGETS[0]
+                ? `${targetAdv} ${"(Not recommended)"}`
+                : `${targetAdv}`,
+          },
+        ]}
+      />
+      <EmbeddedRunTimer
+        milliseconds={timerMilliseconds}
+        startTrackerId="pokerus_timer_start"
+        stopTrackerId="pokerus_timer_stop"
+      />
+      <FormNumberField<FormState>
+        name="calibration"
+        label="Calibration (ms)"
+        numType="decimal"
+      />
+      <FormSwitchField<FormState> name="filter_active" label="Filter?">
+        {pickupItemFields
+          .slice(0, pickupPokemonCount)
+          .map(({ name, label }) => (
+            <FormSelectField<FormState>
+              key={name}
               name={name}
-              options={itemOptions}
+              label={label}
+              options={pickupItemOptions}
             />
-          ),
-        });
-      }
-    }
-    return fields;
-  }, [
-    enteredHallOfFame,
-    filterActive,
-    pickupPokemonCount,
-    timerMilliseconds,
-    targetAdv,
-  ]);
-
-  return <FormFieldTable fields={fields} />;
+          ))}
+      </FormSwitchField>
+      {!filterActive && (
+        <FormNumberField<FormState>
+          name="initial_advance_before_pickup"
+          label="Initial Advance"
+          numType="decimal"
+        />
+      )}
+    </FormSection>
+  );
 };
 
 const formatAdvDiff = (hit: number, target: number) => {
@@ -373,7 +342,7 @@ const formatAdvDiff = (hit: number, target: number) => {
 export const Gen3PokerusRs = () => {
   const [results, setResults] = React.useState<Column[]>([]);
 
-  const onSubmit: RngToolSubmit<FormState> = async (values) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (values) => {
     setResults(await generateResults(values));
   };
 
@@ -439,7 +408,7 @@ export const Gen3PokerusRs = () => {
 
   return (
     <Flex vertical>
-      <RngToolForm<FormState, Column>
+      <ToolForm<FormState, Column>
         columns={columns}
         results={results}
         initialValues={initialValues}
@@ -449,7 +418,7 @@ export const Gen3PokerusRs = () => {
         submitTrackerId="Pokerus3"
       >
         <Fields />
-      </RngToolForm>
+      </ToolForm>
     </Flex>
   );
 };

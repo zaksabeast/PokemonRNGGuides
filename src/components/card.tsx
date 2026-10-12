@@ -4,7 +4,7 @@ import { withCss } from "./withCss";
 import styled from "@emotion/styled";
 import { Route } from "~/routes/defs";
 import { Link } from "./link";
-import { track } from "~/analytics";
+import { trackCardClick } from "~/analytics";
 import * as tst from "ts-toolbelt";
 import { OneOf } from "~/types";
 import { styledPropGuard } from "~/utils/styled";
@@ -55,7 +55,7 @@ const LinkCard = ({ fullBody, actionProps, ...props }: LinkCardProps) => {
     }
 
     actionProps.onClick?.(event);
-    track("Card Clicked", { id: actionProps.id });
+    trackCardClick({ id: actionProps.id });
   };
 
   if (actionProps?.externalHref != null) {

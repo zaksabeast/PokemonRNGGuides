@@ -1,17 +1,18 @@
+import { Alert, Flex, ResultColumn } from "~/components";
 import {
-  Alert,
-  Field,
-  Flex,
-  FormFieldTable,
-  FormikNumberInput,
-  FormikRadio,
-  FormikSwitch,
-  RadioGroup,
-  ResultColumn,
-  RngToolForm,
-  RngToolSubmit,
-} from "~/components";
-import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
+  FormCard,
+  FormNumberField,
+  FormRadioField,
+  FormSection,
+  FormSummary,
+  FormSwitchField,
+  FrameBeforePaintingField,
+  RadioField,
+  SwitchGroup,
+  ToolForm,
+  type RadioOption,
+  type ToolFormSubmit,
+} from "~/components/form";
 import { useFormContext, useWatch } from "~/hooks/form";
 import { Pokerus3ResultInfo, rngTools } from "~/rngTools";
 import { GBA_FPS } from "~/utils/consts";
@@ -32,6 +33,12 @@ import {
 import { selectedSetupAtom, battleVideoInfoAtom } from "./pokerus_emerald_vars";
 
 type EncounterType = "Stationary" | "Wild";
+
+const encounterTypeOptions: RadioOption<EncounterType>[] = [
+  { label: "Stationary", value: "Stationary" },
+  { label: "Wild", value: "Wild" },
+];
+
 export type YesNoUnknown = "Yes" | "No" | "Unknown";
 
 export type SetupOptions = {
@@ -75,64 +82,64 @@ const SetupFieldsForSearcher = () => {
 
   const unknownBooleanOptions = toOptions(["Yes", "No", "Unknown"] as const);
 
-  const fields: Field[] = [
-    {
-      label: "Encounter type",
-      input: (
-        <RadioGroup<EncounterType>
-          optionType="button"
-          value={encounterType}
-          options={[
-            { label: "Stationary", value: "Stationary" },
-            { label: "Wild", value: "Wild" },
-          ]}
-          onChange={(event) => {
-            const value = event.target.value;
-            setFieldValue("encounter_type", value);
-            if (value === "Wild") {
-              setFieldValue("max_pickup_pokemon_count", 5);
-            }
-          }}
-        />
-      ),
-    },
-    {
-      ...usingPaintingReseedingLabel(),
-      input: (
-        <FormikSwitch<SetupOptions>
+  return (
+    <FormSection>
+      <RadioField<EncounterType>
+        name="encounter_type"
+        label="Encounter type"
+        cellSize="word"
+        value={encounterType ?? "Stationary"}
+        options={encounterTypeOptions}
+        onChange={(value) => {
+          setFieldValue("encounter_type", value);
+          if (value === "Wild") {
+            setFieldValue("max_pickup_pokemon_count", 5);
+          }
+        }}
+      />
+      <FormRadioField<SetupOptions>
+        name="max_pickup_pokemon_count"
+        label="Max Pickup Pokémon count"
+        cellSize="number"
+        options={toOptions(encounterType === "Wild" ? [5] : [5, 6])}
+      />
+      <SwitchGroup>
+        <FormSwitchField<SetupOptions>
           name="consider_painting_reseeding"
+          {...usingPaintingReseedingLabel()}
           onChange={(value) => {
             if (value) {
               setFieldValue("entered_hall_of_fame", true);
             }
           }}
         />
-      ),
-    },
-    {
-      label: "Max Pickup Pokémon count",
-      input: (
-        <FormikRadio<SetupOptions>
-          name="max_pickup_pokemon_count"
-          options={toOptions(encounterType === "Wild" ? [5] : [5, 6])}
+        {!considerPainting && (
+          <FormSwitchField<SetupOptions>
+            name="entered_hall_of_fame"
+            label="Has entered hall of fame?"
+          />
+        )}
+        <FormSwitchField<SetupOptions>
+          name="permit_level_up"
+          label="Permit level up?"
         />
-      ),
-    },
-    {
-      label: "Has entered hall of fame?",
-      input: considerPainting ? (
-        "Yes"
-      ) : (
-        <FormikSwitch<SetupOptions> name="entered_hall_of_fame" />
-      ),
-    },
-    {
-      show: enteredHallOfFame === true,
-      label: "Can trigger mass outbreak?",
-      input: (
-        <Flex vertical gap={8}>
-          <FormikRadio<SetupOptions>
+      </SwitchGroup>
+      {considerPainting && (
+        <FormSummary
+          rows={[{ label: "Has entered hall of fame?", value: "Yes" }]}
+        />
+      )}
+      {enteredHallOfFame === true && (
+        <>
+          <FormRadioField<SetupOptions>
             name="can_have_new_mass_outbreak"
+            label="Can trigger mass outbreak?"
+            tooltip={{
+              title: "Can trigger mass outbreak?",
+              description:
+                "You can only trigger a mass outbreak if you haven't triggered one already. Each battle after entering the Hall of Fame has 1/200 chance to trigger a mass outbreak. On dead battery, it's not possible to know if a mass outbreak has already been triggered or not. You have 95% chance to trigger a mass outbreak after 598 battles.",
+            }}
+            cellSize="word"
             options={unknownBooleanOptions}
           />
           {canHaveNewMassOutbreak === "Unknown" && (
@@ -141,18 +148,15 @@ const SetupFieldsForSearcher = () => {
               message="Only setups that result in Pokérus with and without being able to trigger mass outbreak will be considered."
             />
           )}
-        </Flex>
-      ),
-      tooltip:
-        "You can only trigger a mass outbreak if you haven't triggered one already. Each battle after entering the Hall of Fame has 1/200 chance to trigger a mass outbreak. On dead battery, it's not possible to know if a mass outbreak has already been triggered or not. You have 95% chance to trigger a mass outbreak after 598 battles.",
-    },
-    {
-      show: enteredHallOfFame === true,
-      label: "Has empty Pokénews TV slot?",
-      input: (
-        <Flex vertical gap={8}>
-          <FormikRadio<SetupOptions>
+          <FormRadioField<SetupOptions>
             name="has_empty_pokenews_slot"
+            label="Has empty Pokénews TV slot?"
+            tooltip={{
+              title: "Has empty Pokénews TV slot?",
+              description:
+                "There are 16 Pokénews TV slots. Each battle has 1% chance to fill a TV slot for 4 days on a live battery, and indefinitely on a dead battery. You have 95% chance to have at least 1 empty slot after 1007 or less battles, 5% chance after 2306 battles.",
+            }}
+            cellSize="word"
             options={unknownBooleanOptions}
           />
           {hasEmptyPokenewsSlot === "Unknown" && (
@@ -161,18 +165,10 @@ const SetupFieldsForSearcher = () => {
               message="Only setups that result in Pokérus with and without an empty Pokénews TV slot will be considered."
             />
           )}
-        </Flex>
-      ),
-      tooltip:
-        "There are 16 Pokénews TV slots. Each battle has 1% chance to fill a TV slot for 4 days on a live battery, and indefinitely on a dead battery. You have 95% chance to have at least 1 empty slot after 1007 or less battles, 5% chance after 2306 battles.",
-    },
-    {
-      label: "Permit level up?",
-      input: <FormikSwitch<SetupOptions> name="permit_level_up" />,
-    },
-  ];
-
-  return <FormFieldTable fields={fields} />;
+        </>
+      )}
+    </FormSection>
+  );
 };
 
 const setupValidator = z.object({
@@ -221,7 +217,7 @@ export const EnterSpecificSetup = ({
     setOptimalSetup(null);
   };
 
-  const onSubmit: RngToolSubmit<SpecificSetupOptions> = async (values) => {
+  const onSubmit: ToolFormSubmit<SpecificSetupOptions> = async (values) => {
     const [result] = await rngTools.gen3_pokerus_search_for_calib({
       initial_advance_before_pickup:
         lcrng_distance(0, values.frame_before_painting) +
@@ -274,89 +270,10 @@ export const EnterSpecificSetup = ({
     });
   };
 
-  const fields: Field[] = [
-    {
-      label: "Encounter type",
-      input: (
-        <div onChange={onInputChange}>
-          <FormikRadio<SpecificSetupOptions>
-            name="encounter_type"
-            options={toOptions(["Stationary", "Wild"] as const)}
-          />
-        </div>
-      ),
-    },
-    {
-      label: "Pickup Pokémon count",
-      input: (
-        <FormikNumberInput<SpecificSetupOptions>
-          name="pickup_pokemon_count"
-          numType="decimal"
-          onChange={onInputChange}
-        />
-      ),
-    },
-    {
-      label: "Has entered hall of fame?",
-      input: (
-        <FormikSwitch<SpecificSetupOptions>
-          name="entered_hall_of_fame"
-          onChange={onInputChange}
-        />
-      ),
-    },
-    {
-      label: "Can trigger a new mass outbreak?",
-      input: (
-        <FormikSwitch<SpecificSetupOptions>
-          name="can_have_new_mass_outbreak"
-          onChange={onInputChange}
-        />
-      ),
-    },
-    {
-      label: "Has empty TV slot?",
-      input: (
-        <FormikSwitch<SpecificSetupOptions>
-          name="has_empty_pokenews_slot"
-          onChange={onInputChange}
-        />
-      ),
-    },
-    {
-      label: "Level up?",
-      input: (
-        <FormikSwitch<SpecificSetupOptions>
-          name="level_up"
-          onChange={onInputChange}
-        />
-      ),
-    },
-    {
-      label: "Frame before painting",
-      input: (
-        <FormikEmeraldFrameBeforePaintingInput<SpecificSetupOptions>
-          name="frame_before_painting"
-          onChange={onInputChange}
-        />
-      ),
-    },
-    {
-      label: "Target advance after painting",
-      input: (
-        <FormikNumberInput<SpecificSetupOptions>
-          name="adv_after_painting"
-          numType="decimal"
-          onChange={onInputChange}
-        />
-      ),
-    },
-  ];
-
   return (
     <Flex vertical>
       <h3>Enter a Specific Setup</h3>
-      <RngToolForm<SpecificSetupOptions, never>
+      <ToolForm<SpecificSetupOptions, never>
         validationSchema={specificSetupValidator}
         initialValues={{
           encounter_type: "Stationary",
@@ -372,8 +289,56 @@ export const EnterSpecificSetup = ({
         submitTrackerId="pokerus_emerald_specific_setup"
         submitButtonLabel="Use setup"
       >
-        <FormFieldTable fields={fields} />
-      </RngToolForm>
+        <FormSection>
+          <div onChange={onInputChange}>
+            <FormRadioField<SpecificSetupOptions>
+              name="encounter_type"
+              label="Encounter type"
+              cellSize="word"
+              options={encounterTypeOptions}
+            />
+          </div>
+          <FormNumberField<SpecificSetupOptions>
+            name="pickup_pokemon_count"
+            label="Pickup Pokémon count"
+            numType="decimal"
+            onChange={onInputChange}
+          />
+          <SwitchGroup>
+            <FormSwitchField<SpecificSetupOptions>
+              name="entered_hall_of_fame"
+              label="Has entered hall of fame?"
+              onChange={onInputChange}
+            />
+            <FormSwitchField<SpecificSetupOptions>
+              name="can_have_new_mass_outbreak"
+              label="Can trigger a new mass outbreak?"
+              onChange={onInputChange}
+            />
+            <FormSwitchField<SpecificSetupOptions>
+              name="has_empty_pokenews_slot"
+              label="Has empty TV slot?"
+              onChange={onInputChange}
+            />
+            <FormSwitchField<SpecificSetupOptions>
+              name="level_up"
+              label="Level up?"
+              onChange={onInputChange}
+            />
+          </SwitchGroup>
+          <FrameBeforePaintingField<SpecificSetupOptions>
+            name="frame_before_painting"
+            label="Frame before painting"
+            onChange={onInputChange}
+          />
+          <FormNumberField<SpecificSetupOptions>
+            name="adv_after_painting"
+            label="Target advance after painting"
+            numType="decimal"
+            onChange={onInputChange}
+          />
+        </FormSection>
+      </ToolForm>
       {givesPokerus === true ? (
         <Alert
           type="success"
@@ -400,15 +365,18 @@ export const SetupSelection = ({
 
   return (
     <Flex vertical gap={16}>
-      <RadioGroup<SetupSelectionMode>
-        options={[
-          { label: "Search Best Setup", value: "search" },
-          { label: "Select Specific Setup", value: "specific" },
-        ]}
-        value={mode}
-        onChange={(event) => setMode(event.target.value)}
-        optionType="button"
-      />
+      <FormCard>
+        <RadioField<SetupSelectionMode>
+          label="Setup selection"
+          cellSize="word"
+          options={[
+            { label: "Search Best Setup", value: "search" },
+            { label: "Select Specific Setup", value: "specific" },
+          ]}
+          value={mode}
+          onChange={setMode}
+        />
+      </FormCard>
       {mode === "search" ? (
         <SelectSetupOptions setOptimalSetup={setOptimalSetup} />
       ) : (
@@ -439,7 +407,7 @@ const SelectSetupOptions = ({
 }) => {
   const [results, setResults] = React.useState<Pokerus3Setup[]>([]);
 
-  const onSubmit: RngToolSubmit<SetupOptions> = async (values) => {
+  const onSubmit: ToolFormSubmit<SetupOptions> = async (values) => {
     const setups = await findOptimalSetups({
       ...values,
       entered_hall_of_fame: values.entered_hall_of_fame,
@@ -533,7 +501,7 @@ const SelectSetupOptions = ({
   return (
     <Flex vertical>
       <h3>Select Setup Options</h3>
-      <RngToolForm<SetupOptions, Pokerus3Setup>
+      <ToolForm<SetupOptions, Pokerus3Setup>
         validationSchema={setupValidator}
         initialValues={{
           consider_painting_reseeding: false,
@@ -557,7 +525,7 @@ const SelectSetupOptions = ({
         rowKey="uid"
       >
         <SetupFieldsForSearcher />
-      </RngToolForm>
+      </ToolForm>
     </Flex>
   );
 };

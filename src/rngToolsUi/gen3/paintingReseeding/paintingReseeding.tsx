@@ -6,14 +6,14 @@ import {
   gen3ConsoleFpsMap,
   gen3ConsoleOptions,
 } from "~/types/console";
+import { Button, Flex } from "~/components";
 import {
-  Button,
-  Field,
-  Flex,
-  FormFieldTable,
-  NumberInput,
-  Select,
-} from "~/components";
+  FormCard,
+  FormSection,
+  FormSummary,
+  NumberField,
+  SelectField,
+} from "~/components/form";
 
 import Instructions_0_createBattleVideo from "./instructions_0_createBattleVideo.mdx";
 import Instructions_1_validateFrame from "./instructions_1_validateFrame.mdx";
@@ -83,48 +83,50 @@ export const PaintingReseedingTimers = ({
   ];
   const labelsValidateFrame = ["Close the Battle Video", "Trigger Sweet Scent"];
 
-  const fields: Field[] = [
-    targetFrameBeforePaintingLabel(frame_before_painting),
-    {
-      label: "Battle Video created at",
-      input: `~${formatLargeInteger(existingBattleVideoAdv)} advances after painting.`,
-    },
-    {
-      label: "Console",
-      input:
-        consoleTypeProp == null ? (
-          <Select<Gen3Console>
-            name="console"
-            value={consoleType}
-            options={gen3ConsoleOptions}
-            onSelect={(val) => {
-              setConsoleType(val);
-              setConsoleTypeProp(val);
-            }}
-          />
-        ) : (
-          (gen3ConsoleOptions.find((opt) => opt.value === consoleTypeProp)
-            ?.label ?? "")
-        ),
-    },
-    {
-      label: "Calibration + Offset (advance)",
-      input: (
-        <NumberInput
-          value={calibration}
-          numType="decimal"
-          onChange={(val) => setCalibration(val ?? 0)}
-        />
-      ),
-    },
-  ];
-
   return (
     <>
       <h2>Step 2: Interact with the painting and create the Battle Video</h2>
       <Instructions_0_createBattleVideo />
 
-      <FormFieldTable fields={fields} />
+      <FormCard>
+        <FormSection>
+          <FormSummary
+            rows={[
+              targetFrameBeforePaintingLabel(frame_before_painting),
+              {
+                label: "Battle Video created at",
+                value: `~${formatLargeInteger(existingBattleVideoAdv)} advances after painting.`,
+              },
+              {
+                label: "Console",
+                value:
+                  gen3ConsoleOptions.find(
+                    (opt) => opt.value === consoleTypeProp,
+                  )?.label ?? "",
+                show: consoleTypeProp != null,
+              },
+            ]}
+          />
+          {consoleTypeProp == null && (
+            <SelectField<Gen3Console>
+              name="console"
+              label="Console"
+              value={consoleType}
+              options={gen3ConsoleOptions}
+              onChange={(val) => {
+                setConsoleType(val);
+                setConsoleTypeProp(val);
+              }}
+            />
+          )}
+          <NumberField
+            label="Calibration + Offset (advance)"
+            value={calibration}
+            numType="decimal"
+            onChange={(val) => setCalibration(val ?? 0)}
+          />
+        </FormSection>
+      </FormCard>
       <EmbeddedRunTimer
         milliseconds={millisecondsCreateVideo}
         labels={labelsCreateVideo}
@@ -219,11 +221,10 @@ export const EmeraldPaintingReseeding = ({
     }
 
     return (
-      <Flex vertical>
-        <h3>Info from the previous step</h3>
-        <Flex ml={20} vertical>
-          <FormFieldTable
-            fields={[
+      <FormCard>
+        <FormSection title="Info from the previous step">
+          <FormSummary
+            rows={[
               targetFrameBeforePaintingLabel(targetPaintingAdvsProp.before),
               targetAdvanceAfterPaintingLabel(targetPaintingAdvsProp),
               targetAdvanceLabel(
@@ -243,8 +244,8 @@ export const EmeraldPaintingReseeding = ({
               Clear All
             </Button>
           )}
-        </Flex>
-      </Flex>
+        </FormSection>
+      </FormCard>
     );
   };
 
@@ -349,7 +350,7 @@ export const EmeraldPaintingReseeding = ({
                 );
               }}
             >
-              Skip validating that the frame before painting was hit
+              Skip validating the frame before painting was hit
             </Button>
           </Flex>
         )}

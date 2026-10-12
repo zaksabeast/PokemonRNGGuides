@@ -1,9 +1,4 @@
-import {
-  FormFieldTable,
-  FormikNumberInput,
-  MinMaxContainer,
-  type Field,
-} from "~/components";
+import { FieldRow, FormNumberField, FormSection } from "~/components/form";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { useWatch } from "~/hooks/form";
 import {
@@ -22,76 +17,54 @@ export const AdvanceFilterFields = ({
   targetAdvance,
 }: AdvanceFilterFieldsProps) => {
   const t = useActiveRouteTranslations();
+  const embedded = mode === "embedded";
 
   const { seed } = useWatch({
     validationSchema: advanceFilterValidator,
     names: { seed: true },
   });
 
-  const fields: Field[] = [
-    {
-      label: t["Seed"],
-      input: (
-        <FormikNumberInput<AdvanceFilterFormState>
-          name="seed"
-          numType="hex"
-          disabled={mode === "embedded"}
-          errorMessage={
-            seed == null && mode === "embedded"
-              ? "Find your seed first"
-              : undefined
-          }
-        />
-      ),
-    },
-    {
-      key: "embeddedTargetAdvance",
-      label: t["Target Advance"],
-      show: mode === "embedded",
-      input: (
-        <FormikNumberInput<AdvanceFilterFormState>
+  return (
+    <FormSection>
+      <FormNumberField<AdvanceFilterFormState>
+        name="seed"
+        label={t["Seed"]}
+        numType="hex"
+        disabled={embedded}
+        errorMessage={
+          seed == null && embedded ? "Find your seed first" : undefined
+        }
+      />
+      {embedded && (
+        <FormNumberField<AdvanceFilterFormState>
           name="targetAdvance"
+          label={t["Target Advance"]}
           numType="decimal"
-          disabled={mode === "embedded"}
+          disabled
           errorMessage={
-            targetAdvance == null && mode === "embedded"
-              ? "Find your target first"
-              : undefined
+            targetAdvance == null ? "Find your target first" : undefined
           }
         />
-      ),
-    },
-    {
-      label: t["Advances"],
-      input: (
-        <MinMaxContainer
-          min={
-            <FormikNumberInput<AdvanceFilterFormState>
-              name="minAdvance"
-              numType="decimal"
-            />
-          }
-          max={
-            <FormikNumberInput<AdvanceFilterFormState>
-              name="maxAdvance"
-              numType="decimal"
-            />
-          }
-        />
-      ),
-    },
-    {
-      key: "standaloneAdvance",
-      label: t["Target Advance"],
-      show: mode === "standalone",
-      input: (
-        <FormikNumberInput<AdvanceFilterFormState>
-          name="targetAdvance"
+      )}
+      <FieldRow>
+        <FormNumberField<AdvanceFilterFormState>
+          name="minAdvance"
+          label={t["Min Advance"]}
           numType="decimal"
         />
-      ),
-    },
-  ];
-
-  return <FormFieldTable fields={fields} />;
+        <FormNumberField<AdvanceFilterFormState>
+          name="maxAdvance"
+          label={t["Max Advance"]}
+          numType="decimal"
+        />
+      </FieldRow>
+      {!embedded && (
+        <FormNumberField<AdvanceFilterFormState>
+          name="targetAdvance"
+          label={t["Target Advance"]}
+          numType="decimal"
+        />
+      )}
+    </FormSection>
+  );
 };

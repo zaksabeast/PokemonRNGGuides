@@ -159,12 +159,19 @@ export const getTheme = ({
       0 2px 4px 0 rgb(from ${shadowColor} r g b / 0.02)`,
   };
 
+  // antd emits unknown tokens as CSS variables too, e.g. --ant-color-on-primary
+  const customTokens = {
+    // Text and icons that sit on colorPrimary
+    colorOnPrimary: isLightMode ? "#FFFFFF" : "#003546",
+  };
+
   return {
     cssVar:
       tempThemeColor == null ? { key: "_,:root,css-var-_R_397_" } : undefined,
     token: {
       ...tokens,
       ...shadows,
+      ...customTokens,
     },
     components: {
       Alert: {
@@ -183,6 +190,7 @@ export const getTheme = ({
         defaultActiveBg: tokens.colorBgElevated,
         colorBgContainerDisabled: tokens.colorFillTertiary,
         borderColorDisabled: tokens.colorFillTertiary,
+        primaryColor: customTokens.colorOnPrimary,
         primaryShadow: "none",
         defaultShadow: "none",
       },
@@ -216,20 +224,10 @@ export const getTheme = ({
         itemBorderRadius: 28,
         borderRadiusLG: 28,
       },
-      Radio: isLightMode
-        ? {
-            buttonCheckedBg: tokens.colorPrimaryBg,
-            colorPrimary: tokens.colorPrimaryActive,
-          }
-        : {},
       Splitter: {
         splitBarDraggableSize: 100,
         splitBarSize: 4,
         splitTriggerSize: 10,
-      },
-      Tag: {
-        defaultBg: tokens.colorPrimaryBg,
-        defaultColor: isLightMode ? "#04475F" : tokens.colorLinkHover,
       },
     },
   };

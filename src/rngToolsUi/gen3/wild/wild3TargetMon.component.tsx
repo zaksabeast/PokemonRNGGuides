@@ -1,17 +1,13 @@
-import { Species } from "~/rngTools";
 import {
-  Field,
-  FormikSelect,
-  FormFieldTable,
-  Flex,
-  Typography,
-} from "~/components";
+  FormSection,
+  FormSelectField,
+  Gen3PkmFilter,
+  PkmFilter,
+} from "~/components/form";
 import { toOptions } from "~/utils/options";
 import { useFormContext, useWatch_UNSAFE } from "~/hooks/form";
-import { getPkmFilterFields } from "~/components/pkmFilter";
 import React from "react";
 import { gen3SpeciesHasVariableSize } from "~/types";
-import { getGen3PkmFilterFields } from "~/components/gen3PkmFilter";
 
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { getPossibleValuesForSpecies } from "./wild3TargetMon";
@@ -19,35 +15,11 @@ import { FormState } from "./wild3TargetSetupSearcher";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
-const getTargetMonFields = (species: Species): Field[] => {
-  const targetMonFields: Field[] = [
-    {
-      label: "Species",
-      input: (
-        <FormikSelect<FormState, "species">
-          name="species"
-          options={toOptions(emeraldWildGameData.species)}
-        />
-      ),
-    },
-    ...getPkmFilterFields({
-      species,
-      displayHiddenAbility: false,
-    }),
-    ...getGen3PkmFilterFields({
-      max_size: gen3SpeciesHasVariableSize(species),
-    }),
-  ];
-  return targetMonFields;
-};
-
 export const Wild3TargetMon = () => {
   const { setFieldValue } = useFormContext<FormState>();
   const species = useWatch_UNSAFE<FormState, "species">({
     name: "species",
   });
-
-  const fields = getTargetMonFields(species);
 
   // when user changes species, select all the possible setup values
   React.useEffect(() => {
@@ -61,11 +33,16 @@ export const Wild3TargetMon = () => {
   }, [species, setFieldValue]);
 
   return (
-    <Flex vertical gap={8}>
-      <Typography.Title level={5} p={0} m={0}>
-        Target Pokémon
-      </Typography.Title>
-      <FormFieldTable fields={fields} />
-    </Flex>
+    <FormSection title="Target Pokémon">
+      <FormSelectField<FormState>
+        name="species"
+        label="Species"
+        options={toOptions(emeraldWildGameData.species)}
+      />
+      <PkmFilter<FormState> species={species} displayHiddenAbility={false} />
+      <Gen3PkmFilter<FormState>
+        displayMaxSize={gen3SpeciesHasVariableSize(species)}
+      />
+    </FormSection>
   );
 };

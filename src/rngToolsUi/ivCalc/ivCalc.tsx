@@ -1,4 +1,5 @@
-import { Button, Flex, ResultTable, RngToolForm } from "~/components";
+import { Flex, ResultTable } from "~/components";
+import { OutlinedButton, ToolForm } from "~/components/form";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { Typography } from "antd";
 import { Fields } from "./components";
@@ -13,18 +14,19 @@ export const IvCalc = () => {
 
   return (
     <>
-      <RngToolForm<FormState, IvRangeColumn>
+      <ToolForm<FormState, IvRangeColumn>
         allowReset
         resetTrackerId="iv_calc_reset"
         submitTrackerId="iv_calc_submit"
         submitButtonLabel="Add Data"
+        submitButtonIcon="AddCircleOutline"
         initialValues={initialValues}
         onReset={() => setResult(initialResult)}
         validationSchema={Validator}
         onSubmit={onSubmit}
         columns={ivRangeColumns(t)}
         additionalButtons={
-          <Button
+          <OutlinedButton
             trackerId="iv_calc_remove_last_row"
             disabled={!result.hasSubmitted}
             onClick={() =>
@@ -35,12 +37,12 @@ export const IvCalc = () => {
             }
           >
             Remove Last Row
-          </Button>
+          </OutlinedButton>
         }
         results={ivRangeData}
       >
         <Fields hasSubmitted={result.hasSubmitted} />
-      </RngToolForm>
+      </ToolForm>
 
       <Flex vertical>
         <Typography.Title level={4}>Applied Stats</Typography.Title>

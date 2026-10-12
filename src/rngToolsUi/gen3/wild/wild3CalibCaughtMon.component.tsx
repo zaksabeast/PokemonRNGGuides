@@ -1,14 +1,13 @@
 import React from "react";
 import {
-  RngToolForm,
-  Field,
-  Flex,
-  FormFieldTable,
-  FormikRadio,
-  FormikSwitch,
-} from "~/components";
-import { RngToolSubmit } from "~/components/rngToolForm";
-import { Typography } from "~/components/typography";
+  FormRadioField,
+  FormSection,
+  FormSelectField,
+  FormSwitchField,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
+import { defaultMinMaxStats, MinMaxStats } from "~/types/stat";
 import { toOptions } from "~/utils/options";
 import { Gen3Method, Nature, rngTools, Species } from "~/rngTools";
 import type { TargetSetup } from "./wild3TargetSetupInput";
@@ -20,12 +19,12 @@ import {
   createWild3SearcherOptions,
   getPossibleEncountersForMap,
 } from "./wild3CalibCaughtMon";
+import { CaughtMonFields } from "../pokemonRng/caughtMonFields";
 import {
   CaughtMonResult,
   createColumns,
   createUiResultBase,
   FormState,
-  getCommonFieldInputs,
   initialValues,
   updateResultsForRareCandy,
   validator,
@@ -60,7 +59,8 @@ export const Fields = ({
     name: "rareCandy",
   });
 
-  const [fields, setFields] = React.useState<Field[]>([]);
+  const [minMaxStats, setMinMaxStats] =
+    React.useState<MinMaxStats>(defaultMinMaxStats);
 
   React.useEffect(() => {
     onRareCandyChange(selectedSpecies, selectedLvl, selectedNature, rareCandy);
@@ -72,78 +72,75 @@ export const Fields = ({
     selectedSpecies,
   ]);
 
+  const encounters = getPossibleEncountersForMap(targetSetup);
+  const speciesList = uniq(
+    encounters.map((enc) => enc.species_data.species),
+  ).toSorted();
+  const selectedSpeciesInfos = encounters.filter(
+    (enc) => enc.species_data.species === selectedSpecies,
+  );
+  const isSpeciesInMap = selectedSpeciesInfos.length > 0;
+
   React.useEffect(() => {
-    const encounters = getPossibleEncountersForMap(targetSetup);
-    const speciesList = uniq(
-      encounters.map((enc) => enc.species_data.species),
-    ).toSorted();
-    const selectedSpeciesInfos = encounters.filter(
-      (enc) => enc.species_data.species === selectedSpecies,
-    );
-
-    const speciesField: Field = {
-      label: "Species",
-      input: (
-        <FormikRadio<FormState>
-          name="wildSpecies"
-          options={toOptions(speciesList)}
-        />
-      ),
-    };
-
-    if (selectedSpeciesInfos.length === 0) {
-      setFields([speciesField]);
+    if (!isSpeciesInMap) {
       return;
     }
-
-    const lvls = new Set<number>();
-    selectedSpeciesInfos.forEach((info) => {
-      for (let lvl = info.min_level; lvl <= info.max_level; lvl++) {
-        lvls.add(lvl);
-      }
-    });
-    const sortedLvls = Array.from(lvls).sort((lvl1, lvl2) => lvl1 - lvl2);
 
     getStatRange({
       species: selectedSpecies,
       levelRange: [selectedLvl, selectedLvl],
       nature: selectedNature,
-    }).then((minMaxStats) => {
-      setFields([
-        speciesField,
-        {
-          label: "Level",
-          input: (
-            <FormikRadio<FormState>
-              name="wildLvl"
-              options={toOptions(sortedLvls)}
-            />
-          ),
-        },
-        ...getCommonFieldInputs(
-          selectedSpecies,
-          minMaxStats,
-          rareCandy,
-          (count) => {
-            setFieldValue("rareCandy", count);
-          },
-        ),
-        {
-          label: "Display results with 0% likelihood",
-          input: <FormikSwitch<FormState> name="generate_even_if_impossible" />,
-        },
-      ]);
-    });
-  }, [
-    targetSetup,
-    selectedSpecies,
-    selectedLvl,
-    selectedNature,
-    setFieldValue,
-    rareCandy,
-  ]);
+    }).then(setMinMaxStats);
+  }, [isSpeciesInMap, selectedSpecies, selectedLvl, selectedNature]);
 
-  return <FormFieldTable fields={fields} />;
+  // A select, since a map can have more species than fit a radio's single row
+  const speciesField = (
+    <FormSelectField<FormState>
+      name="wildSpecies"
+      label="Species"
+      options={toOptions(speciesList)}
+    />
+  );
+
+  if (!isSpeciesInMap) {
+    return <FormSection title="Caught Pokémon">{speciesField}</FormSection>;
+  }
+
+  const lvls = new Set<number>();
+  selectedSpeciesInfos.forEach((info) => {
+    for (let lvl = info.min_level; lvl <= info.max_level; lvl++) {
+      lvls.add(lvl);
+    }
+  });
+  const sortedLvls = Array.from(lvls).sort((lvl1, lvl2) => lvl1 - lvl2);
+
+  return (
+    <>
+      <CaughtMonFields
+        species={selectedSpecies}
+        minMaxStats={minMaxStats}
+        rareCandy={rareCandy}
+        setRareCandyCount={(count) => {
+          setFieldValue("rareCandy", count);
+        }}
+      >
+        {speciesField}
+        <FormRadioField<FormState>
+          name="wildLvl"
+          label="Level"
+          cellSize="number"
+          options={toOptions(sortedLvls)}
+        />
+      </CaughtMonFields>
+
+      <FormSection title="Advanced">
+        <FormSwitchField<FormState>
+          name="generate_even_if_impossible"
+          label="Display results with 0% likelihood"
+        />
+      </FormSection>
+    </>
+  );
 };
 
 const searchCaughtMon = async (
@@ -228,7 +225,7 @@ export const Wild3CalibCaughtMon = ({
   const { targetMethod, targetPaintingAdvs } = targetSetup;
   const usingPaintingReseeding = targetSetup.targetPaintingAdvs.before > 0;
 
-  const onSubmit: RngToolSubmit<FormState> = async (values) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (values) => {
     setResults(await searchCaughtMon(values, targetSetup, leadCycleSpeed));
   };
 
@@ -273,28 +270,18 @@ export const Wild3CalibCaughtMon = ({
   };
 
   return (
-    <Flex vertical gap={8}>
-      <Typography.Title level={5} p={0} m={0}>
-        Caught Pokémon
-      </Typography.Title>
-      <RngToolForm<FormState, CaughtMonResult>
-        formContainerId="generate-wild3-caught"
-        columns={columns}
-        results={results}
-        initialValues={initialValues}
-        validationSchema={validator}
-        onSubmit={onSubmit}
-        submitTrackerId="generate_wild3_caught"
-        submitButtonLabel="Find advances matching caught Pokémon"
-        rowKey="uid"
-      >
-        <Flex vertical ml={20}>
-          <Fields
-            targetSetup={targetSetup}
-            onRareCandyChange={onRareCandyChange}
-          />
-        </Flex>
-      </RngToolForm>
-    </Flex>
+    <ToolForm<FormState, CaughtMonResult>
+      formContainerId="generate-wild3-caught"
+      columns={columns}
+      results={results}
+      initialValues={initialValues}
+      validationSchema={validator}
+      onSubmit={onSubmit}
+      submitTrackerId="generate_wild3_caught"
+      submitButtonLabel="Find caught Pokémon"
+      rowKey="uid"
+    >
+      <Fields targetSetup={targetSetup} onRareCandyChange={onRareCandyChange} />
+    </ToolForm>
   );
 };

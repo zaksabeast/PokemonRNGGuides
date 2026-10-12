@@ -1,7 +1,7 @@
 import React from "react";
-import { Flex, Field, Button } from "~/components";
+import { Flex, Button } from "~/components";
+import { FormCard, FormSection, FormSummary } from "~/components/form";
 import { EmbeddedRunTimer } from "~/rngToolsUi/timer/embeddedRunTimer";
-import { FormFieldTable } from "~/components/formFieldTable";
 import { TargetSetup } from "./static3TargetSetupSearcher";
 import { Static3CalibCaughtMon } from "./static3CalibCaughtMon";
 import { Gen3Console, gen3ConsoleFpsMap } from "~/types/console";
@@ -12,10 +12,8 @@ import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import { Gen3StaticMethod } from "~/rngTools";
 import Instructions_calib_with_battle_video from "./instructions_calib_with_battle_video.mdx";
 import Instructions_calib_without_battle_video from "./instructions_calib_without_battle_video.mdx";
-import {
-  buildGen3CalibFields,
-  buildGen3CalibPreviousStepFields,
-} from "../pokemonRng/calib";
+import { Gen3CalibFields } from "../pokemonRng/calib";
+import { getGen3CalibPreviousStepRows } from "../pokemonRng/labels";
 import { Static3TargetSetupInput } from "./static3TargetSetupInput";
 import Instructions_calib_skip_setup from "./instructions_calib_skip_setup.mdx";
 import { getEmeraldStaticCalibData } from "./constants.tsx";
@@ -94,16 +92,11 @@ export const Static3Calib = ({
       {displayInstructions && <Instructions_calib_skip_setup />}
       <Static3TargetSetupInput setTargetSetup={setLocalTargetSetup} />
       {targetSetupResult != null && targetSetup != null && (
-        <Flex vertical gap={20} mt={20}>
-          <FormFieldTable
-            fields={[
-              {
-                label: "Target Pokémon",
-                input: targetSetupResult,
-              },
-            ]}
+        <FormCard>
+          <FormSummary
+            rows={[{ label: "Target Pokémon", value: targetSetupResult }]}
           />
-        </Flex>
+        </FormCard>
       )}
     </Flex>
   );
@@ -153,16 +146,6 @@ export const Static3Calib = ({
     );
   };
 
-  const calibFields: Field[] = buildGen3CalibFields({
-    battleVideoInfoProp,
-    consoleTypeFromInput,
-    setConsoleTypeFromInput,
-    calibration: calib,
-    offset,
-    humanInputDelay,
-    setHumanInputDelay,
-  });
-
   const canDoCalib =
     battleVideoInfo != null || targetSetup?.targetPaintingAdvs.before === 0;
 
@@ -171,23 +154,19 @@ export const Static3Calib = ({
       return null;
     }
 
-    const fields: Field[] = [
-      ...buildGen3CalibPreviousStepFields({
-        targetSetup: targetSetupProp,
-        battleVideoInfo: battleVideoInfoProp,
-        initialAdv,
-      }),
-      {
-        label: "Target Pokémon",
-        input: targetSetupResult,
-      },
-    ];
-
     return (
-      <Flex vertical>
-        <h3>Info from previous steps</h3>
-        <Flex ml={20} vertical>
-          <FormFieldTable fields={fields} />
+      <FormCard>
+        <FormSection title="Info from previous steps">
+          <FormSummary
+            rows={[
+              ...getGen3CalibPreviousStepRows({
+                targetSetup: targetSetupProp,
+                battleVideoInfo: battleVideoInfoProp,
+                initialAdv,
+              }),
+              { label: "Target Pokémon", value: targetSetupResult },
+            ]}
+          />
           {clearAll != null && (
             <Button
               trackerId="static3Calib_clearAll"
@@ -199,8 +178,8 @@ export const Static3Calib = ({
               Clear All
             </Button>
           )}
-        </Flex>
-      </Flex>
+        </FormSection>
+      </FormCard>
     );
   };
 
@@ -231,7 +210,15 @@ export const Static3Calib = ({
 
           {displayInstructions && instructions}
 
-          <FormFieldTable fields={calibFields} />
+          <Gen3CalibFields
+            battleVideoInfoProp={battleVideoInfoProp}
+            consoleTypeFromInput={consoleTypeFromInput}
+            setConsoleTypeFromInput={setConsoleTypeFromInput}
+            calibration={calib}
+            offset={offset}
+            humanInputDelay={humanInputDelay}
+            setHumanInputDelay={setHumanInputDelay}
+          />
           <EmbeddedRunTimer
             milliseconds={milliseconds}
             labels={labels}

@@ -39,13 +39,11 @@ export const GuideLayout = ({ guideMeta, children }: Props) => {
   const topRef = React.useRef<HTMLDivElement>(null);
   return (
     <MainLayout>
-      <div ref={topRef} />
-      <NavBreadcrumbs route={guideMeta.slug} />
-
-      <Flex mb={20} vertical gap={14}>
-        <Typography.Title level={1} mt={0} mb={0}>
-          {guideMeta.navDrawerTitle}
-        </Typography.Title>
+      <Flex ref={topRef} mb={20} vertical gap={14}>
+        <Flex vertical gap={12}>
+          <NavBreadcrumbs route={guideMeta.slug} />
+          <Typography.H1>{guideMeta.navDrawerTitle}</Typography.H1>
+        </Flex>
 
         {guideMeta.lastUpdated != null && (
           <Typography.Text type="secondary">{`Last updated: ${guideMeta.lastUpdated} UTC`}</Typography.Text>

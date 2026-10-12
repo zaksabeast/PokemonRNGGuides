@@ -1,28 +1,38 @@
 import React from "react";
-import { Input, Typography, Flex } from "~/components";
+import {
+  FormCard,
+  FormSection,
+  FormSummary,
+  TextField,
+} from "~/components/form";
 
 export const PaintingSeedToEmuTimer = () => {
-  const [seed, setSeed] = React.useState<number | null>(null);
+  const [seedText, setSeedText] = React.useState("");
+
+  const desiredSeed = parseInt(seedText, 16);
+  const targetSeed = desiredSeed - 30;
+  const isValid = targetSeed > 0 && targetSeed <= 0xffff && !isNaN(targetSeed);
+  const seed = isValid ? targetSeed : null;
 
   return (
-    <Flex vertical gap={16}>
-      <Typography.Text strong>Target Seed:</Typography.Text>
-      <Input
-        type="text"
-        name="Seed"
-        placeholder="abcd"
-        onChange={(event) => {
-          const desiredSeed = parseInt(event.target.value, 16);
-          const targetSeed = desiredSeed - 30;
-          const isValid =
-            targetSeed > 0 && targetSeed <= 0xffff && !isNaN(targetSeed);
-          const safeSeed = isValid ? targetSeed : null;
-          setSeed(safeSeed);
-        }}
-      />
-      <Typography.Text strong>
-        Target Painting Timer: {seed?.toString(16).toUpperCase() ?? "None"}
-      </Typography.Text>
-    </Flex>
+    <FormCard>
+      <FormSection>
+        <TextField
+          name="Seed"
+          label="Target Seed"
+          placeholder="abcd"
+          value={seedText}
+          onChange={setSeedText}
+        />
+        <FormSummary
+          rows={[
+            {
+              label: "Target Painting Timer",
+              value: seed?.toString(16).toUpperCase() ?? "None",
+            },
+          ]}
+        />
+      </FormSection>
+    </FormCard>
   );
 };

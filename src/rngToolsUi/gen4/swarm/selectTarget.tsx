@@ -1,5 +1,5 @@
-import { Select, AtomSelect, Field, FormFieldTable } from "~/components";
-import { swarmAtom } from "./state";
+import { FormCard, FormSection, SelectField } from "~/components/form";
+import { isGameRoute, useSwarmState } from "./state";
 import { gameRoutes, gameMons, SwarmRoute } from "./constants";
 import { Gen4GameVersion, Gen4GameVersions } from "~/types/games";
 import type { Species } from "~/rngTools";
@@ -24,31 +24,33 @@ const formatRouteLabel = (
 export const SelectSwarm4Target = () => {
   const t = useActiveRouteTranslations();
   const [state, setState] = useAtom(gen4StateAtom);
+  const [targetRoutes, setTargetRoutes] = useSwarmState();
+  const game = state.config.game;
 
-  const fields: Field[] = [
-    {
-      label: "Game",
-      input: (
-        <Select<Gen4GameVersion>
+  const setTargetRoute = (route: SwarmRoute) => {
+    if (isGameRoute(game, route)) {
+      setTargetRoutes((prev) => ({ ...prev, [game]: route }));
+    }
+  };
+
+  return (
+    <FormCard>
+      <FormSection>
+        <SelectField<Gen4GameVersion>
+          label={t["Game"]}
+          value={game}
           options={toOptions(Gen4GameVersions, (game) => t[game])}
-          value={state.config.game}
           onChange={(game) => setState({ config: { game } })}
         />
-      ),
-    },
-    {
-      label: "Target Pokémon",
-      input: (
-        <AtomSelect
-          atom={swarmAtom}
-          getValue={(atom) => atom.targetRoute}
-          nextState={(state, targetRoute) => ({ ...state, targetRoute })}
-          options={gameRoutes[state.config.game]}
-          format={(route) => formatRouteLabel(t, route, state.config.game)}
+        <SelectField<SwarmRoute>
+          label={t["Target Pokémon"]}
+          value={targetRoutes[game]}
+          options={toOptions(gameRoutes[game], (route) =>
+            formatRouteLabel(t, route, game),
+          )}
+          onChange={setTargetRoute}
         />
-      ),
-    },
-  ];
-
-  return <FormFieldTable fields={fields} />;
+      </FormSection>
+    </FormCard>
+  );
 };

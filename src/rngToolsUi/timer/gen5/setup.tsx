@@ -1,15 +1,12 @@
 import React from "react";
-import { Button, Flex, NumberInput } from "~/components";
-import { type GameConsole } from "~/rngTools";
-import { PRIMARY_BUTTON_HEIGHT } from "../constants";
 import {
-  BeepsRow,
-  DsConsoleRow,
-  FieldLabel,
-  FieldRow,
-  GroupLabel,
-  GroupRule,
-} from "../setupParts";
+  FormCard,
+  FormSection,
+  NumberField,
+  PrimaryButton,
+} from "~/components/form";
+import { type GameConsole } from "~/rngTools";
+import { BeepsField, ConsoleField } from "../setupParts";
 
 type NumericKey<Settings> = {
   [Key in keyof Settings]: Settings[Key] extends number ? Key : never;
@@ -43,58 +40,42 @@ export const Gen5Setup = <Settings extends { console: GameConsole }>({
   const [draft, setDraft] = React.useState(settings);
 
   const renderField = ({ key, label }: SetupField<Settings>) => (
-    <FieldRow key={key}>
-      <FieldLabel>{label}</FieldLabel>
-      <NumberInput
-        name={key}
-        numType="float"
-        // The key is constrained to numeric settings
-        value={Number(draft[key])}
-        onChange={(value) => {
-          if (value == null) {
-            return;
-          }
-          setDraft({ ...draft, [key]: value });
-        }}
-        fullFlex
-      />
-    </FieldRow>
+    <NumberField
+      key={key}
+      name={key}
+      label={label}
+      numType="float"
+      // The key is constrained to numeric settings
+      value={Number(draft[key])}
+      onChange={(value) => {
+        if (value == null) {
+          return;
+        }
+        setDraft({ ...draft, [key]: value });
+      }}
+    />
   );
 
   return (
-    <Flex vertical gap={16}>
-      <Flex vertical gap={10}>
-        <GroupLabel>Target</GroupLabel>
-        {targetFields.map(renderField)}
-      </Flex>
+    <FormCard>
+      <FormSection title="Target">{targetFields.map(renderField)}</FormSection>
 
-      <Flex vertical gap={10}>
-        <GroupLabel>Calibration</GroupLabel>
+      <FormSection title="Calibration">
         {calibrationFields.map(renderField)}
-      </Flex>
+      </FormSection>
 
-      <Flex vertical gap={10}>
-        <GroupLabel>
-          Rarely changes
-          <GroupRule />
-        </GroupLabel>
-
-        <DsConsoleRow
+      <FormSection title="Rarely changes">
+        <ConsoleField
+          dsOnly
           value={draft.console}
           onChange={(console) => setDraft({ ...draft, console })}
         />
+        <BeepsField value={maxBeepCount} onChange={setMaxBeepCount} />
+      </FormSection>
 
-        <BeepsRow value={maxBeepCount} onChange={setMaxBeepCount} />
-      </Flex>
-
-      <Button
-        trackerId={setTrackerId}
-        type="primary"
-        height={PRIMARY_BUTTON_HEIGHT}
-        onClick={() => onSet(draft)}
-      >
+      <PrimaryButton trackerId={setTrackerId} onClick={() => onSet(draft)}>
         Set Timer
-      </Button>
-    </Flex>
+      </PrimaryButton>
+    </FormCard>
   );
 };

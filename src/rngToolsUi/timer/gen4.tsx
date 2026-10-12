@@ -1,6 +1,6 @@
 import React from "react";
 import { Skeleton } from "antd";
-import { Flex, RadioGroup } from "~/components";
+import { Flex } from "~/components";
 import { MetronomeButton } from "~/components/metronome";
 import { ZodSerializedDecimal, ZodSerializedOptional } from "~/utils/number";
 import { ZodConsole } from "~/rngTools";
@@ -18,6 +18,7 @@ import { useTimerSequence } from "~/hooks/useTimerSequence";
 import { hydrationLock, HydrationLock } from "~/utils/hydration";
 import { Gen4Setup } from "./gen4Setup";
 import { RunView } from "./runView";
+import { TimerModeField, type TimerMode } from "./setupParts";
 
 const timerStateAtom = createGen4TimerAtom();
 
@@ -49,8 +50,6 @@ const timerSettingsAtom = atomWithPersistence(
   defaultValues,
 );
 
-type Mode = "setup" | "run";
-
 type InnerProps = {
   initialSettings: FormState;
   onUpdate: (opts: HydrationLock<FormState>) => void;
@@ -66,7 +65,7 @@ const InnerGen4Timer = ({
 }: InnerProps) => {
   const hasInited = React.useRef(false);
   const [timer, updateTimer] = useAtom(timerStateAtom);
-  const [mode, setMode] = React.useState<Mode>("run");
+  const [mode, setMode] = React.useState<TimerMode>("run");
   const metronome = useMetronome({ enableAudio: true });
   const sequence = useTimerSequence({ milliseconds: timer.ms, maxBeepCount });
 
@@ -95,15 +94,10 @@ const InnerGen4Timer = ({
 
   return (
     <Flex vertical gap={16}>
-      <RadioGroup<Mode>
-        name="timerMode"
-        optionType="button"
+      <TimerModeField
         value={mode}
-        onChange={({ target }) => setMode(target.value)}
-        options={[
-          { label: "Setup", value: "setup", disabled: sequence.isRunning },
-          { label: "Run", value: "run" },
-        ]}
+        onChange={setMode}
+        isRunning={sequence.isRunning}
       />
 
       {mode === "run" && (

@@ -1,6 +1,6 @@
 import React from "react";
 import { Skeleton } from "antd";
-import { Flex, RadioGroup } from "~/components";
+import { Flex } from "~/components";
 import { ZodSerializedDecimal, ZodSerializedOptional } from "~/utils/number";
 import { ZodConsole, minutesBefore, updateGen3Timer } from "~/rngTools";
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
@@ -12,6 +12,7 @@ import { useTimerSequence } from "~/hooks/useTimerSequence";
 import { getGen3PhaseLabels } from "~/rngToolsUi/timer/atoms";
 import { Gen3Setup } from "./gen3Setup";
 import { RunView } from "./runView";
+import { TimerModeField, type TimerMode } from "./setupParts";
 
 const TimerStateSchema = z.object({
   milliseconds: z.array(z.number()),
@@ -74,8 +75,6 @@ const timerSettingsAtom = atomWithPersistence(
   initialValues,
 );
 
-type Mode = "setup" | "run";
-
 type InnerProps = {
   timer: TimerState;
   setTimer: (timer: HydrationLock<TimerState>) => void;
@@ -93,7 +92,7 @@ const InnerGen3Timer = ({
   maxBeepCount,
   setMaxBeepCount,
 }: InnerProps) => {
-  const [mode, setMode] = React.useState<Mode>("run");
+  const [mode, setMode] = React.useState<TimerMode>("run");
   const sequence = useTimerSequence({
     milliseconds: timer.milliseconds,
     maxBeepCount,
@@ -119,15 +118,10 @@ const InnerGen3Timer = ({
 
   return (
     <Flex vertical gap={16}>
-      <RadioGroup<Mode>
-        name="timerMode"
-        optionType="button"
+      <TimerModeField
         value={mode}
-        onChange={({ target }) => setMode(target.value)}
-        options={[
-          { label: "Setup", value: "setup", disabled: sequence.isRunning },
-          { label: "Run", value: "run" },
-        ]}
+        onChange={setMode}
+        isRunning={sequence.isRunning}
       />
 
       {mode === "run" && (

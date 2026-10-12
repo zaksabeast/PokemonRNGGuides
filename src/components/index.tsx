@@ -47,6 +47,8 @@ export { ContentLock } from "./contentLock";
 export { Grid } from "./grid";
 export { Link } from "./link";
 export { NavBreadcrumbs } from "./navBreadcrumbs";
+export { DesktopOnly, MobileOnly, Section } from "./pageLayout";
+export { ListSurface, ListRow } from "./listSurface";
 export { Stepper, Step } from "./stepper/stepper";
 export { CalibrateTimerButton } from "./calibrateTimerButton";
 export { BadgeRibbon } from "./badgeRibbon";

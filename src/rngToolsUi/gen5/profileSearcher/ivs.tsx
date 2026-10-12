@@ -1,9 +1,9 @@
-import { Field } from "~/components";
 import { z } from "zod";
+import { FormSection, IvRangeFields } from "~/components/form";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { initialProfile5Values, Profile5Validator } from "./shared/validator";
-import { profile5Fields } from "./shared/fields";
 import { Profile5Searcher, ValidatorMapper } from "./shared/form";
-import { IvInput, IvsSchema } from "~/components/ivInput";
+import { IvsSchema } from "~/components/ivInput";
 import { maxIvs, minIvs } from "~/types/ivs";
 
 const Validator = z
@@ -21,18 +21,6 @@ const initialValues: FormState = {
   max_ivs: maxIvs,
 };
 
-const fields: Field[] = [
-  ...profile5Fields,
-  {
-    label: "Min IVs",
-    input: <IvInput<FormState> name="min_ivs" />,
-  },
-  {
-    label: "Max IVs",
-    input: <IvInput<FormState> name="max_ivs" />,
-  },
-];
-
 const mapValidator: ValidatorMapper<FormState> = (opts) => ({
   Ivs: {
     min_ivs: opts.min_ivs,
@@ -41,14 +29,19 @@ const mapValidator: ValidatorMapper<FormState> = (opts) => ({
 });
 
 export const Profile5SearcherIvs = () => {
+  const t = useActiveRouteTranslations();
+
   return (
     <Profile5Searcher<FormState>
-      fields={fields}
       initialValues={initialValues}
       validationSchema={Validator}
       cancelTrackerId="profile5-searcher-seed-cancel"
       submitTrackerId="profile5-searcher-seed"
       mapValidator={mapValidator}
-    />
+    >
+      <FormSection title={t["Calibration"]}>
+        <IvRangeFields<FormState> minName="min_ivs" maxName="max_ivs" />
+      </FormSection>
+    </Profile5Searcher>
   );
 };

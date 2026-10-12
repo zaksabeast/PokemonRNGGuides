@@ -157,11 +157,11 @@ fn generate_state(rng: &mut MT, advance: usize, opts: &GenerateOpts) -> Stationa
 
     let mut pid = 0;
     let mut shiny = ShinyType::NotShiny;
-    let trainer_xor = (opts.tsv << 4) | u16::from(opts.trv & 0xf);
+    let tid_xor_sid = (opts.tsv << 4) | u16::from(opts.trv & 0xf);
 
     for _ in 0..pid_reroll_count {
         pid = rng.rand();
-        shiny = ShinyType::from_xor((pid >> 16) as u16 ^ pid as u16 ^ trainer_xor, 16);
+        shiny = ShinyType::from_pid_tid_xor_sid_gen6_plus(pid, tid_xor_sid);
         if shiny.is_shiny() {
             if opts.is_shiny_locked {
                 pid ^= 0x10000000;
@@ -170,7 +170,7 @@ fn generate_state(rng: &mut MT, advance: usize, opts: &GenerateOpts) -> Stationa
             break;
         } else if opts.is_forced_shiny && !opts.is_shiny_locked {
             let low = pid as u16;
-            pid = (u32::from(low ^ trainer_xor) << 16) | u32::from(low);
+            pid = (u32::from(low ^ tid_xor_sid) << 16) | u32::from(low);
             shiny = ShinyType::SquareShiny;
             break;
         }
@@ -373,10 +373,10 @@ mod test {
                 ability: None,
                 nature: None,
                 ivs: None,
-                shiny: crate::ShinyFilter::AnyShiny,
+                shiny: ShinyFilter::AnyShiny,
             };
             let state = Stationary6State {
-                shiny: crate::ShinyType::StarShiny,
+                shiny: ShinyType::StarShiny,
                 ..Default::default()
             };
             assert!(filter.apply_filters(&state));
@@ -389,10 +389,10 @@ mod test {
                 ability: None,
                 nature: None,
                 ivs: None,
-                shiny: crate::ShinyFilter::AnyShiny,
+                shiny: ShinyFilter::AnyShiny,
             };
             let state = Stationary6State {
-                shiny: crate::ShinyType::NotShiny,
+                shiny: ShinyType::NotShiny,
                 ..Default::default()
             };
             assert!(!filter.apply_filters(&state));
@@ -405,7 +405,7 @@ mod test {
                 ability: None,
                 nature: Some(Nature::Hardy),
                 ivs: None,
-                shiny: crate::ShinyFilter::Any,
+                shiny: ShinyFilter::Any,
             };
             let state = Stationary6State {
                 nature: Nature::Hardy,
@@ -421,7 +421,7 @@ mod test {
                 ability: None,
                 nature: Some(Nature::Hardy),
                 ivs: None,
-                shiny: crate::ShinyFilter::Any,
+                shiny: ShinyFilter::Any,
             };
             let state = Stationary6State {
                 nature: Nature::Adamant,
@@ -437,7 +437,7 @@ mod test {
                 ability: Some(AbilityType::Hidden),
                 nature: None,
                 ivs: None,
-                shiny: crate::ShinyFilter::Any,
+                shiny: ShinyFilter::Any,
             };
             let state = Stationary6State {
                 ability: AbilityType::Hidden,
@@ -453,7 +453,7 @@ mod test {
                 ability: Some(AbilityType::Hidden),
                 nature: None,
                 ivs: None,
-                shiny: crate::ShinyFilter::Any,
+                shiny: ShinyFilter::Any,
             };
             let state = Stationary6State {
                 ability: AbilityType::First,
@@ -469,7 +469,7 @@ mod test {
                 ability: None,
                 nature: None,
                 ivs: None,
-                shiny: crate::ShinyFilter::Any,
+                shiny: ShinyFilter::Any,
             };
             let state = Stationary6State {
                 gender: Gender::Male,
@@ -485,7 +485,7 @@ mod test {
                 ability: None,
                 nature: None,
                 ivs: None,
-                shiny: crate::ShinyFilter::Any,
+                shiny: ShinyFilter::Any,
             };
             let state = Stationary6State {
                 gender: Gender::Female,
@@ -518,7 +518,7 @@ mod test {
                         spe: 31,
                     },
                 }),
-                shiny: crate::ShinyFilter::Any,
+                shiny: ShinyFilter::Any,
             };
             let state = Stationary6State {
                 ivs: Ivs {
@@ -558,7 +558,7 @@ mod test {
                         spe: 31,
                     },
                 }),
-                shiny: crate::ShinyFilter::Any,
+                shiny: ShinyFilter::Any,
             };
             let state = Stationary6State {
                 ivs: Ivs {
@@ -616,7 +616,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::First,
                     rng_state: 0xAABBCCDD,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 1,
@@ -633,7 +633,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::First,
                     rng_state: 0x8AD42AFC,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 2,
@@ -650,7 +650,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::First,
                     rng_state: 0xA5A8E438,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 3,
@@ -667,7 +667,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::First,
                     rng_state: 0x735B14E5,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
             ];
             assert_list_eq!(result, expected);
@@ -710,7 +710,7 @@ mod test {
                     gender: Gender::Male,
                     ability: AbilityType::First,
                     rng_state: 0x035941F8,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 5,
@@ -727,7 +727,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::First,
                     rng_state: 0x844CBEDD,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 6,
@@ -744,7 +744,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::Second,
                     rng_state: 0x9085A501,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 7,
@@ -761,7 +761,7 @@ mod test {
                     gender: Gender::Male,
                     ability: AbilityType::First,
                     rng_state: 0x511DB536,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
             ];
             assert_list_eq!(result, expected);
@@ -804,7 +804,7 @@ mod test {
                     gender: Gender::Male,
                     ability: AbilityType::First,
                     rng_state: 0xAABBCCDD,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 1,
@@ -821,7 +821,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::Second,
                     rng_state: 0x8AD42AFC,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 2,
@@ -838,7 +838,7 @@ mod test {
                     gender: Gender::Male,
                     ability: AbilityType::Second,
                     rng_state: 0xA5A8E438,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 3,
@@ -855,7 +855,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::First,
                     rng_state: 0x735B14E5,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
             ];
             assert_list_eq!(result, expected);
@@ -898,7 +898,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::First,
                     rng_state: 0xAABBCCDD,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 1,
@@ -915,7 +915,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::First,
                     rng_state: 0x8AD42AFC,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 2,
@@ -932,7 +932,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::Second,
                     rng_state: 0xA5A8E438,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 3,
@@ -949,7 +949,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::Second,
                     rng_state: 0x735B14E5,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
             ];
 
@@ -993,7 +993,7 @@ mod test {
                     gender: Gender::Male,
                     ability: AbilityType::First,
                     rng_state: 0xAABBCCDD,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 1,
@@ -1010,7 +1010,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::First,
                     rng_state: 0x8AD42AFC,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 2,
@@ -1027,7 +1027,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::First,
                     rng_state: 0xA5A8E438,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 3,
@@ -1044,7 +1044,7 @@ mod test {
                     gender: Gender::Male,
                     ability: AbilityType::First,
                     rng_state: 0x735B14E5,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
             ];
 
@@ -1088,7 +1088,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::Hidden,
                     rng_state: 0xAABBCCDD,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 1,
@@ -1105,7 +1105,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::Hidden,
                     rng_state: 0x8AD42AFC,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 2,
@@ -1122,7 +1122,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::Hidden,
                     rng_state: 0xA5A8E438,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 3,
@@ -1139,7 +1139,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::Hidden,
                     rng_state: 0x735B14E5,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
             ];
             assert_list_eq!(result, expected);
@@ -1168,7 +1168,7 @@ mod test {
                     gender: None,
                     nature: None,
                     ivs: None,
-                    shiny: crate::ShinyFilter::AnyShiny,
+                    shiny: ShinyFilter::AnyShiny,
                 },
             };
             let result = generate_stationary6(opts);
@@ -1195,7 +1195,7 @@ mod test {
                 gender: None,
                 species: Species::Pikachu,
                 filter: Stationary6Filter {
-                    shiny: crate::ShinyFilter::AnyShiny,
+                    shiny: ShinyFilter::AnyShiny,
                     ..Default::default()
                 },
             };
@@ -1216,7 +1216,7 @@ mod test {
                     gender: Gender::Male,
                     ability: AbilityType::Second,
                     rng_state: 0xD74B9F2A,
-                    shiny: crate::ShinyType::StarShiny,
+                    shiny: ShinyType::StarShiny,
                 },
                 Stationary6State {
                     advance: 3713,
@@ -1233,7 +1233,7 @@ mod test {
                     gender: Gender::Male,
                     ability: AbilityType::Second,
                     rng_state: 0x7457F4A3,
-                    shiny: crate::ShinyType::SquareShiny,
+                    shiny: ShinyType::SquareShiny,
                 },
                 Stationary6State {
                     advance: 3714,
@@ -1250,7 +1250,7 @@ mod test {
                     gender: Gender::Male,
                     ability: AbilityType::Second,
                     rng_state: 0x5CFE7DE1,
-                    shiny: crate::ShinyType::SquareShiny,
+                    shiny: ShinyType::SquareShiny,
                 },
                 Stationary6State {
                     advance: 3715,
@@ -1267,7 +1267,7 @@ mod test {
                     gender: Gender::Male,
                     ability: AbilityType::Second,
                     rng_state: 0x2D4B1238,
-                    shiny: crate::ShinyType::SquareShiny,
+                    shiny: ShinyType::SquareShiny,
                 },
             ];
             assert_list_eq!(result, expected);
@@ -1307,7 +1307,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0xAABBCCDD,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 1,
@@ -1324,7 +1324,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0x8AD42AFC,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 2,
@@ -1341,7 +1341,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0xA5A8E438,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 3,
@@ -1358,7 +1358,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0x735B14E5,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
             ];
             assert_list_eq!(result, expected);
@@ -1393,7 +1393,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0xAABBCCDD,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 1,
@@ -1410,7 +1410,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0x8AD42AFC,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 2,
@@ -1427,7 +1427,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0xA5A8E438,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 3,
@@ -1444,7 +1444,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0x735B14E5,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
             ];
             assert_list_eq!(result, expected);
@@ -1479,7 +1479,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::First,
                     rng_state: 0xAABBCCDD,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 1,
@@ -1496,7 +1496,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::First,
                     rng_state: 0x8AD42AFC,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 2,
@@ -1513,7 +1513,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::First,
                     rng_state: 0xA5A8E438,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 3,
@@ -1530,7 +1530,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::First,
                     rng_state: 0x735B14E5,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
             ];
             assert_list_eq!(result, expected);
@@ -1570,7 +1570,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0xAABBCCDD,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 1,
@@ -1587,7 +1587,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0x8AD42AFC,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 2,
@@ -1604,7 +1604,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0xA5A8E438,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 3,
@@ -1621,7 +1621,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0x735B14E5,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
             ];
             assert_list_eq!(result, expected);
@@ -1661,7 +1661,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0xAABBCCDD,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 1,
@@ -1678,7 +1678,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0x8AD42AFC,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 2,
@@ -1695,7 +1695,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0xA5A8E438,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 3,
@@ -1712,7 +1712,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0x735B14E5,
-                    shiny: crate::ShinyType::NotShiny,
+                    shiny: ShinyType::NotShiny,
                 },
             ];
             assert_list_eq!(result, expected);

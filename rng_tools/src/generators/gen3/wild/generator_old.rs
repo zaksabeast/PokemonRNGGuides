@@ -1,3 +1,4 @@
+use crate::TsvTrv;
 use super::generator_main::{
     INFINITE_CYCLE, VBLANK_FREQ, Wild3GeneratorMonResult, Wild3GeneratorOptions,
     Wild3GeneratorResults,
@@ -32,7 +33,7 @@ struct GenTmpData<'a> {
     required_gender: Option<Gender>,
     required_nature: Nature,
     used_safari_pokeblock: Option<[u8; 5]>,
-    trainer_xor: u16,
+    tsv_trv: TsvTrv,
 }
 
 fn rand_next_u16(rng: &mut Pokerng, _reason: &str, _modulo: u16) -> u16 {
@@ -602,7 +603,7 @@ fn generate_wild3_from_encounter(
         required_gender,
         required_nature,
         used_safari_pokeblock,
-        trainer_xor: opts.tid ^ opts.sid,
+        tsv_trv: TsvTrv::from_tid_sid(opts.tid, opts.sid),
     };
 
     let methods_contains_wild3 = opts.methods.contains(&Gen3Method::Wild3);
@@ -859,7 +860,7 @@ fn passes_pid_filter_internal(gen_data: &GenTmpData, pid: u32) -> bool {
         &gen_data.opts.gen3_filter,
         Some(gen_data.encounter_gender_ratio),
         pid,
-        gen_data.trainer_xor,
+        gen_data.tsv_trv,
     )
 }
 

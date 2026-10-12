@@ -1,4 +1,4 @@
-use crate::{gen3_psv, gen3_tsv, gen6_psv, gen6_tsv};
+use crate::{TsvTrv, gen3_psv, gen3_tsv, gen6_psv};
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
@@ -40,16 +40,17 @@ impl IdFilter {
     }
 
     pub fn filter_gen6(&self, tid: u16, sid: u16) -> bool {
+        let tsv = TsvTrv::from_tid_sid(tid, sid).tsv_gen6_more();
         match self {
             IdFilter::Tid(self_tid) => tid == *self_tid,
             IdFilter::Sid(self_sid) => sid == *self_sid,
-            IdFilter::Tsv(self_tsv) => gen6_tsv(tid, sid) == *self_tsv,
-            IdFilter::Tsvs(self_tsvs) => self_tsvs.contains(&gen6_tsv(tid, sid)),
-            IdFilter::Pid(self_pid) => gen6_tsv(tid, sid) == gen6_psv(*self_pid),
+            IdFilter::Tsv(self_tsv) => tsv == *self_tsv,
+            IdFilter::Tsvs(self_tsvs) => self_tsvs.contains(&tsv),
+            IdFilter::Pid(self_pid) => tsv == gen6_psv(*self_pid),
             IdFilter::TidPid {
                 tid: self_tid,
                 pid: self_pid,
-            } => tid == *self_tid && gen6_tsv(tid, sid) == gen6_psv(*self_pid),
+            } => tid == *self_tid && tsv == gen6_psv(*self_pid),
             IdFilter::TidSid {
                 tid: self_tid,
                 sid: self_sid,
@@ -57,7 +58,7 @@ impl IdFilter {
             IdFilter::TidTsvs {
                 tid: self_tid,
                 tsvs: self_tsvs,
-            } => tid == *self_tid && self_tsvs.contains(&gen6_tsv(tid, sid)),
+            } => tid == *self_tid && self_tsvs.contains(&tsv),
         }
     }
 }

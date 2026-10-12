@@ -1,3 +1,6 @@
+use crate::ShinyType;
+use crate::ShinyFilter;
+use crate::TsvTrv;
 use super::*;
 use crate::{EncounterSlot, PokemonType};
 
@@ -14,7 +17,7 @@ fn test_search_perf_find_pid_paths_by_step() {
 
     let opts = FindPidPathsOptions {
         filter: PkmFilter {
-            shiny: crate::ShinyFilter::AnyShiny,
+            shiny: ShinyFilter::AnyShiny,
             min_ivs: Ivs::new(0, 0, 0, 0, 0, 0),
             max_ivs: Ivs::new(0, 15, 15, 15, 0, 0),
             ..Default::default()
@@ -66,7 +69,7 @@ fn test_search_reverse_perf_vanilla() {
         max_advances: 1,
         leads: vec![Gen3Lead::Vanilla],
         filter: PkmFilter {
-            shiny: crate::ShinyFilter::AnyShiny,
+            shiny: ShinyFilter::AnyShiny,
             min_ivs: Ivs::new(0, 0, 0, 0, 0, 0),
             max_ivs: Ivs::new(0, 15, 15, 15, 0, 0),
             ..Default::default()
@@ -89,7 +92,7 @@ fn test_search_reverse_perf_vanilla() {
             pid: 2013624326,
             advance: 193925907,
             seed: Pokerng::with_jump(options.initial_seed, 193925907).seed(),
-            shiny: crate::ShinyType::StarShiny,
+            shiny: ShinyType::StarShiny,
             nature: Nature::Lonely,
             ability: AbilityType::First,
             ivs: Ivs::new(0, 0, 2, 15, 0, 0),
@@ -105,7 +108,7 @@ fn test_search_reverse_perf_vanilla() {
             pid: 2013624326,
             advance: 193925889,
             seed: Pokerng::with_jump(options.initial_seed, 193925889).seed(),
-            shiny: crate::ShinyType::StarShiny,
+            shiny: ShinyType::StarShiny,
             nature: Nature::Lonely,
             ability: AbilityType::First,
             ivs: Ivs::new(0, 0, 2, 15, 0, 0),
@@ -129,13 +132,13 @@ fn test_search_perf_find_pid_paths_reverse_iv() {
 
     let opts = FindPidPathsOptions {
         filter: PkmFilter {
-            shiny: crate::ShinyFilter::AnyShiny,
+            shiny: ShinyFilter::AnyShiny,
             min_ivs: Ivs::new(0, 0, 0, 0, 0, 0),
             max_ivs: Ivs::new(20, 20, 20, 20, 20, 20), // ~85M
             ..Default::default()
         },
         method_bitset: METHOD_1,
-        trainer_xor: 1234 << 3,
+        tsv_trv: TsvTrv::from_tid_sid(1234 << 3, 0),
         ..Default::default()
     };
 
@@ -150,13 +153,13 @@ fn test_search_perf_find_pid_paths_reverse_pid_shiny() {
 
     let opts = FindPidPathsOptions {
         filter: PkmFilter {
-            shiny: crate::ShinyFilter::AnyShiny,
+            shiny: ShinyFilter::AnyShiny,
             min_ivs: Ivs::new(0, 0, 0, 0, 0, 0),
             max_ivs: Ivs::new(15, 15, 15, 15, 15, 15), // ~16M
             ..Default::default()
         },
         method_bitset: METHOD_1,
-        trainer_xor: 1234 << 3,
+        tsv_trv: TsvTrv::from_tid_sid(1234 << 3, 0),
         ..Default::default()
     };
 
@@ -176,7 +179,7 @@ fn test_search_perf_find_pid_paths_shiny_feebas() {
         max_advances: 10_000_000,
         max_result_count: 2000,
         filter: PkmFilter {
-            shiny: crate::ShinyFilter::AnyShiny,
+            shiny: ShinyFilter::AnyShiny,
             nature: PkmFilter::new_nature_filter(&[Nature::Bold]),
             gender: Some(Gender::Female),
             min_ivs: Ivs::new(25, 0, 25, 25, 25, 25),

@@ -1,3 +1,4 @@
+use crate::ShinyType;
 use crate::{
     AbilityType, EncounterSlot, Gender, HiddenPower, Ivs, Nature, PkmFilter, PokemonType, Species,
     assert_list_eq,
@@ -60,7 +61,7 @@ fn test_search_wild3_cycle_methods_1_2_4() {
             ability: AbilityType::Second,
             gender: Gender::Male,
             nature: Nature::Naive,
-            shiny: crate::ShinyType::NotShiny,
+            shiny: ShinyType::NotShiny,
             advance: 65,
             seed: Pokerng::with_jump(options.initial_seed, 65).seed(),
             lead: Gen3Lead::Vanilla,
@@ -96,7 +97,7 @@ fn test_search_wild3_cycle_methods_1_2_4() {
             ability: AbilityType::Second,
             gender: Gender::Male,
             nature: Nature::Naive,
-            shiny: crate::ShinyType::NotShiny,
+            shiny: ShinyType::NotShiny,
             advance: 65,
             seed: Pokerng::with_jump(options.initial_seed, 65).seed(),
             lead: Gen3Lead::Vanilla,
@@ -122,7 +123,7 @@ fn test_search_wild3_cycle_methods_1_2_4() {
             ability: AbilityType::Second,
             gender: Gender::Male,
             nature: Nature::Naive,
-            shiny: crate::ShinyType::NotShiny,
+            shiny: ShinyType::NotShiny,
             advance: 65,
             seed: Pokerng::with_jump(options.initial_seed, 65).seed(),
             lead: Gen3Lead::Vanilla,

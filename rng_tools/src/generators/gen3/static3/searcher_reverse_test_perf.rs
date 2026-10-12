@@ -1,3 +1,4 @@
+use crate::ShinyFilter;
 use super::*;
 
 #[test]
@@ -14,7 +15,7 @@ fn test_search_reverse_perf_shiny_only() {
         max_advances: u32::MAX as usize,
         max_result_count: 20,
         filter: PkmFilter {
-            shiny: crate::ShinyFilter::AnyShiny,
+            shiny: ShinyFilter::AnyShiny,
             ..Default::default()
         },
         gen3_filter: Gen3PkmFilter::default(),

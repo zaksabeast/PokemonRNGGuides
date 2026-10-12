@@ -1,4 +1,6 @@
 #[cfg(test)]
+use crate::ShinyFilter;
+#[cfg(test)]
 use crate::gen4::parse_pokefinder::PokefinderEgg4;
 use crate::{
     PartialIvs, PkmFilter, Species,
@@ -154,7 +156,7 @@ mod tests {
             parent_ivs: [PartialIvs::new_all31(), PartialIvs::new_all31()],
             is_dppt: true,
             filter: PkmFilter {
-                shiny: crate::ShinyFilter::AnyShiny,
+                shiny: ShinyFilter::AnyShiny,
                 nature: None,
                 gender: None,
                 ability: None,
@@ -189,7 +191,7 @@ mod tests {
             parent_ivs: [PartialIvs::new_all31(), PartialIvs::new_all31()],
             is_dppt: true,
             filter: PkmFilter {
-                shiny: crate::ShinyFilter::Any,
+                shiny: ShinyFilter::Any,
                 nature: None,
                 gender: None,
                 ability: None,

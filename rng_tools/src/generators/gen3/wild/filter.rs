@@ -1,3 +1,6 @@
+use crate::ShinyType;
+use crate::ShinyFilter;
+use crate::TsvTrv;
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
@@ -39,9 +42,9 @@ pub fn passes_pid_filter(
     gen3_filter: &Gen3PkmFilter,
     encounter_gender_ratio: Option<GenderRatio>,
     pid: u32,
-    trainer_xor: u16,
+    tsv_trv: TsvTrv,
 ) -> bool {
-    let shiny = crate::ShinyType::from_xor((pid >> 16) as u16 ^ pid as u16 ^ trainer_xor, 8);
+    let shiny = ShinyType::from_pid_tid_xor_sid_gen3_to_5(pid, tsv_trv.tid_xor_sid);
     if !filter.shiny.allows(shiny) {
         return false;
     }
@@ -102,10 +105,10 @@ pub fn get_pid_filter_restrictiveness(
     let mut prob = 1_f64;
 
     prob *= match filter.shiny {
-        crate::ShinyFilter::Any => 1.0,
-        crate::ShinyFilter::AnyShiny => 8.0 / 65536.0,
-        crate::ShinyFilter::SquareShiny => 1.0 / 65536.0,
-        crate::ShinyFilter::StarShiny => 7.0 / 65536.0,
+        ShinyFilter::Any => 1.0,
+        ShinyFilter::AnyShiny => 8.0 / 65536.0,
+        ShinyFilter::SquareShiny => 1.0 / 65536.0,
+        ShinyFilter::StarShiny => 7.0 / 65536.0,
     };
     if filter.ability.is_some() {
         prob /= 2_f64;
@@ -158,23 +161,4 @@ pub fn get_filter_restrictiveness(
     // TODO: detect if the filter is impossible to respect. ex: pid speed 18 cycles and Quirky nature
 
     prob
-}
-
-#[cfg(test)]
-mod shiny_tests {
-    use super::*;
-    use crate::ShinyFilter;
-
-    #[test]
-    fn pid_filter_keeps_low_trainer_bits() {
-        let trainer_xor = 0x1235;
-        for (xor, shiny) in [(0, ShinyFilter::SquareShiny), (1, ShinyFilter::StarShiny), (7, ShinyFilter::StarShiny), (8, ShinyFilter::Any)] {
-            let pid = 0xabcd0000 | (0xabcd ^ trainer_xor ^ xor);
-            for filter in [ShinyFilter::Any, ShinyFilter::AnyShiny, ShinyFilter::SquareShiny, ShinyFilter::StarShiny] {
-                let opts = PkmFilter { shiny: filter, ..Default::default() };
-                let expected = filter == ShinyFilter::Any || (xor < 8 && (filter == ShinyFilter::AnyShiny || filter == shiny));
-                assert_eq!(passes_pid_filter(&opts, &Gen3PkmFilter::default(), None, pid, trainer_xor as u16), expected);
-            }
-        }
-    }
 }

@@ -1,3 +1,5 @@
+#[cfg(test)]
+use crate::ShinyType;
 use super::simulate::pokeradar4_simulate_advance;
 use super::types::{BattleResult, PokeRadar4AdvanceOpts, ShakeType};
 use crate::gen4::stationary::BaseStatic4State;
@@ -52,7 +54,7 @@ mod tests {
             ability: AbilityType::First,
             gender: Gender::Genderless,
             nature: Nature::Hardy,
-            shiny: crate::ShinyType::NotShiny,
+            shiny: ShinyType::NotShiny,
             characteristic: Characteristic::default(),
             lead: LeadAbility::None,
             level: 1,

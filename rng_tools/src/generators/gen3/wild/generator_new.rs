@@ -1,4 +1,5 @@
 #![allow(non_snake_case)] // To have the same function names as pokeemerald decompil project.
+use crate::TsvTrv;
 use wasm_bindgen::prelude::*;
 
 use super::generator_main::{
@@ -403,7 +404,7 @@ fn CreateWildMon(
         required_gender,
         required_nature,
         used_safari_pokeblock,
-        trainer_xor: opts.tid ^ opts.sid,
+        tsv_trv: TsvTrv::from_tid_sid(opts.tid, opts.sid),
     };
 
     if required_gender.is_some() {
@@ -800,7 +801,7 @@ struct GenTmpData<'a> {
     required_gender: Option<Gender>,
     required_nature: Nature,
     used_safari_pokeblock: Option<[u8; 5]>,
-    trainer_xor: u16,
+    tsv_trv: TsvTrv,
 }
 
 fn rand_next_u16(rng: &mut Pokerng, _reason: &str, _modulo: u16) -> u16 {
@@ -1139,7 +1140,7 @@ fn passes_pid_filter_internal(gen_data: &GenTmpData, pid: u32) -> bool {
         &gen_data.opts.gen3_filter,
         Some(gen_data.encounter_gender_ratio),
         pid,
-        gen_data.trainer_xor,
+        gen_data.tsv_trv,
     )
 }
 

@@ -1,3 +1,4 @@
+use crate::ShinyFilter;
 use crate::{
     AbilityType, EncounterSlot, Gender, Ivs, Nature, PkmFilter, Species,
     gen3::{
@@ -83,7 +84,7 @@ fn test_generate_wild3_shiny() {
         sid: 47362,
         methods: vec![Gen3Method::Wild1],
         filter: PkmFilter {
-            shiny: crate::ShinyFilter::AnyShiny,
+            shiny: ShinyFilter::AnyShiny,
             nature: PkmFilter::new_nature_filter(&[Nature::Naive]),
             gender: Some(Gender::Male),
             ability: Some(AbilityType::Second),

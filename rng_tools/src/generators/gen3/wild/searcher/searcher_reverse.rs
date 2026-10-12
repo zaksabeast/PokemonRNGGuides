@@ -1,3 +1,4 @@
+use crate::TsvTrv;
 use std::hint::black_box;
 
 use arrayvec::ArrayVec;
@@ -226,7 +227,7 @@ fn new_find_pid_paths_options(opts: &Wild3SearcherOptions) -> FindPidPathsOption
         gen3_filter: opts.gen3_filter.clone(),
         encounter_gender_ratio,
         method_bitset,
-        trainer_xor: opts.tid ^ opts.sid,
+        tsv_trv: TsvTrv::from_tid_sid(opts.tid, opts.sid),
         initial_seed: opts.initial_seed,
         initial_advances: opts.initial_advances,
         max_result_count: opts.max_result_count,

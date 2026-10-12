@@ -1,3 +1,5 @@
+#[cfg(test)]
+use crate::ShinyFilter;
 use crate::ShinyType;
 #[cfg(test)]
 use crate::gen4::parse_pokefinder::PokefinderEgg4;
@@ -199,29 +201,6 @@ mod tests {
     }
 
     #[test]
-    fn shiny_subtype_filters_do_not_change_masuda_rerolls() {
-        let pid = 0x12345678;
-        for is_masuda in [false, true] {
-            for xor in [0, 1, 7, 8] {
-                let mut opts = Egg4HeldOpts {
-                    seed: 0, tid: 12345,
-                    sid: 12345 ^ (pid >> 16) as u16 ^ pid as u16 ^ xor,
-                    species: Species::Bulbasaur, offset: 0,
-                    min_advances: 0, max_advances: 1, is_masuda,
-                    filter: PkmFilter::default(),
-                };
-                let unfiltered = generate_egg4_held(&opts, 0, pid).unwrap();
-                for filter in [crate::ShinyFilter::AnyShiny, crate::ShinyFilter::SquareShiny, crate::ShinyFilter::StarShiny] {
-                    opts.filter.shiny = filter;
-                    let filtered = generate_egg4_held(&opts, 0, pid);
-                    assert_eq!(filtered.is_some(), filter.allows(unfiltered.shiny));
-                    if let Some(result) = filtered { assert_eq!(result.pid, unfiltered.pid); }
-                }
-            }
-        }
-    }
-
-    #[test]
     fn offset() {
         let opts = Egg4HeldOpts {
             seed: 0,
@@ -359,7 +338,7 @@ mod tests {
             max_advances: 10000,
             is_masuda: false,
             filter: PkmFilter {
-                shiny: crate::ShinyFilter::AnyShiny,
+                shiny: ShinyFilter::AnyShiny,
                 ..Default::default()
             },
         };

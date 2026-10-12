@@ -1,3 +1,4 @@
+use crate::TsvTrv;
 use arrayvec::ArrayVec;
 use itertools::Itertools;
 
@@ -39,7 +40,7 @@ pub struct FindPidPathsOptions {
     pub gen3_filter: Gen3PkmFilter,
     pub encounter_gender_ratio: GenderRatio,
     pub method_bitset: u8,
-    pub trainer_xor: u16,
+    pub tsv_trv: TsvTrv,
     pub initial_seed: u32,
     pub max_result_count: usize,
     pub initial_advances: usize,
@@ -54,7 +55,7 @@ impl Default for FindPidPathsOptions {
             gen3_filter: Default::default(),
             encounter_gender_ratio: Default::default(),
             method_bitset: METHODS_1234,
-            trainer_xor: Default::default(),
+            tsv_trv: Default::default(),
             initial_seed: Default::default(),
             max_result_count: 1,
             initial_advances: Default::default(),
@@ -279,7 +280,7 @@ pub fn passes_pid_filter_internal(opts: &FindPidPathsOptions, pid: u32) -> bool 
         &opts.gen3_filter,
         Some(opts.encounter_gender_ratio),
         pid,
-        opts.trainer_xor,
+        opts.tsv_trv,
     )
 }
 

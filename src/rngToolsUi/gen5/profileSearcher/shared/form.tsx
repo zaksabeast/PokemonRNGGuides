@@ -1,5 +1,6 @@
+import React from "react";
 import { z } from "zod";
-import { Field, RngToolForm } from "~/components";
+import { ToolForm, type ToolFormSubmit } from "~/components/form";
 import { uniqueId } from "lodash-es";
 import {
   multiWorkerRngTools,
@@ -12,6 +13,7 @@ import { RustOption } from "~/types";
 import { addRngTime } from "~/utils/time";
 import { Profile5ValidatorFormState } from "./validator";
 import { profile5Columns } from "./columns";
+import { Profile5Fields } from "./fields";
 import { Profile5SearcherState, useProfile5State } from "../state";
 import { DefaultValues } from "react-hook-form";
 
@@ -76,16 +78,17 @@ const chunkFormState = <FormState extends Profile5ValidatorFormState>({
 };
 
 type Profile5SearcherProps<FormState extends Profile5ValidatorFormState> = {
-  fields: Field[];
   initialValues: DefaultValues<FormState>;
   validationSchema: z.ZodType<FormState>;
   cancelTrackerId: string;
   submitTrackerId: string;
   mapValidator: ValidatorMapper<FormState>;
+  children: React.ReactNode;
 };
 
 export const Profile5Searcher = <FormState extends Profile5ValidatorFormState>({
   mapValidator,
+  children,
   ...props
 }: Profile5SearcherProps<FormState>) => {
   const [state] = useProfile5State();
@@ -96,13 +99,13 @@ export const Profile5Searcher = <FormState extends Profile5ValidatorFormState>({
     cancel,
   } = useBatchedTool(multiWorkerRngTools.search_profile5, { map: mapResult });
 
-  const onSubmit = async (opts: FormState) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     const searchOpts = chunkFormState({ opts, state, mapValidator });
     return await searchProfile5(searchOpts);
   };
 
   return (
-    <RngToolForm<FormState, Result>
+    <ToolForm<FormState, Result>
       rowKey="id"
       onSubmit={onSubmit}
       onCancel={cancel}
@@ -111,6 +114,9 @@ export const Profile5Searcher = <FormState extends Profile5ValidatorFormState>({
       columns={profile5Columns}
       progressPercent={progressPercent}
       {...props}
-    />
+    >
+      <Profile5Fields />
+      {children}
+    </ToolForm>
   );
 };

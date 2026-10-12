@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import { Layout } from "antd";
-import { Typography } from "./typography";
 import { Button } from "./button";
 import { Icon } from "./icons";
 import { Flex } from "./flex";
@@ -32,6 +31,7 @@ const BaseContributeButton = (props: BaseContributeButtonProps) => {
       trackerId="contribute_url"
       link={CONTRIBUTE_LINK}
       icon={<Icon name="Edit" size={20} />}
+      aria-label="Contribute to the project"
     />
   );
 };
@@ -63,6 +63,16 @@ const ShowIfTheme = styled(
 
 const CONTRIBUTE_LINK = { type: "slug", slug: "/contributing/" } as const;
 
+const HeaderTitle = styled.span(({ theme }) => ({
+  color: theme.token.colorText,
+  fontSize: 22,
+  fontWeight: 500,
+  lineHeight: "28px",
+  [theme.mediaQueries.down("mobile")]: {
+    fontSize: 20,
+  },
+}));
+
 const StyledHeader = styled(Layout.Header)({
   zIndex: 100,
   position: "fixed",
@@ -90,9 +100,7 @@ export const Header = () => {
         <Flex align="center">
           <Link href="/" display="flex">
             <Button trackerId="home" type="text">
-              <Typography.Title level={4} mv={0} mr={0}>
-                Pokemon RNG
-              </Typography.Title>
+              <HeaderTitle>Pokemon RNG</HeaderTitle>
             </Button>
           </Link>
         </Flex>
@@ -105,6 +113,7 @@ export const Header = () => {
               trackerId="switch_to_dark_mode"
               onClick={() => setTheme("dark")}
               icon={<Icon name="DarkMode" size={20} />}
+              aria-label="Switch to dark mode"
             />
           </ShowIfTheme>
           <ShowIfTheme $themeMode="dark">
@@ -113,6 +122,7 @@ export const Header = () => {
               trackerId="switch_to_light_mode"
               onClick={() => setTheme("light")}
               icon={<Icon name="LightMode" size={20} />}
+              aria-label="Switch to light mode"
             />
           </ShowIfTheme>
           <Button
@@ -120,6 +130,7 @@ export const Header = () => {
             href={settings.discordUrl}
             icon={<Icon name="Discord" size={20} />}
             type="primary"
+            aria-label="Join our Discord server"
           />
         </Flex>
       </Flex>

@@ -1,13 +1,13 @@
-import React from "react";
-import { Field, NumberInput, Select } from "~/components";
-import { Gen3Console, gen3ConsoleOptions } from "~/types/console";
-import { formatLargeInteger } from "~/utils/formatLargeInteger";
-import { BattleVideoInfo } from "../battleVideo/battleVideo";
 import {
-  targetAdvanceAfterPaintingLabel,
-  targetAdvanceLabel,
-  targetFrameBeforePaintingLabel,
-} from "./labels";
+  FormCard,
+  FormSection,
+  FormSummary,
+  NumberField,
+  SelectField,
+  type SummaryRow,
+} from "~/components/form";
+import { Gen3Console, gen3ConsoleOptions } from "~/types/console";
+import { BattleVideoInfo } from "../battleVideo/battleVideo";
 
 export type CalibOffset = {
   offset: number; // between pressing A and reaching RNG manip start function.
@@ -15,25 +15,7 @@ export type CalibOffset = {
   calibBattleVideo: number; // non-vblank advances between watching battle video and triggering RNG manip start function.
 };
 
-type TargetPaintingAdvs = {
-  before: number;
-  after: number;
-};
-
-type CalibTargetSetup = {
-  targetMethod: React.ReactNode;
-  targetPaintingAdvs: TargetPaintingAdvs;
-};
-
-export const buildGen3CalibFields = ({
-  battleVideoInfoProp,
-  consoleTypeFromInput,
-  setConsoleTypeFromInput,
-  calibration,
-  offset,
-  humanInputDelay,
-  setHumanInputDelay,
-}: {
+type Gen3CalibFieldsProps = {
   battleVideoInfoProp: BattleVideoInfo | null | undefined;
   consoleTypeFromInput: Gen3Console;
   setConsoleTypeFromInput: (consoleType: Gen3Console) => void;
@@ -41,86 +23,84 @@ export const buildGen3CalibFields = ({
   offset: number;
   humanInputDelay: number | null;
   setHumanInputDelay: (delay: number | null) => void;
-}): Field[] => {
+  extraRows?: SummaryRow[];
+};
+
+export const Gen3CalibFields = ({
+  battleVideoInfoProp,
+  consoleTypeFromInput,
+  setConsoleTypeFromInput,
+  calibration,
+  offset,
+  humanInputDelay,
+  setHumanInputDelay,
+  extraRows = [],
+}: Gen3CalibFieldsProps) => {
   const consoleProp = battleVideoInfoProp?.consoleType;
 
-  return [
-    // consoleType has 3 possible sources:
-    //  - battleVideoInfoProp.consoleType
-    //  - battleVideoInfoInput (if battleVideoInfoProp == null)
-    //  - here if (battleVideoInfoProp != null but battleVideoInfoProp.consoleType is null)
+  // consoleType has 3 possible sources:
+  //  - battleVideoInfoProp.consoleType
+  //  - battleVideoInfoInput (if battleVideoInfoProp == null)
+  //  - here if (battleVideoInfoProp != null but battleVideoInfoProp.consoleType is null)
 
-    // Don't show Console field if battleVideoInfoProp == null because it's already shown in battleVideoInfoInput
-    {
-      label: "Console",
-      show: battleVideoInfoProp != null,
-      input:
-        battleVideoInfoProp != null &&
-        battleVideoInfoProp.consoleType == null ? (
-          <Select<Gen3Console>
+  // Don't show Console field if battleVideoInfoProp == null because it's already shown in battleVideoInfoInput
+  const canPickConsole =
+    battleVideoInfoProp != null && battleVideoInfoProp.consoleType == null;
+
+  return (
+    <FormCard>
+      <FormSection title="Timer calibration">
+        {canPickConsole && (
+          <SelectField<Gen3Console>
             name="console"
+            label="Console"
             value={consoleTypeFromInput}
             options={gen3ConsoleOptions}
-            onSelect={(val) => {
-              setConsoleTypeFromInput(val);
-            }}
+            onChange={setConsoleTypeFromInput}
           />
-        ) : (
-          (gen3ConsoleOptions.find((opt) => opt.value === consoleProp)?.label ??
-          "")
-        ),
-    },
-    {
-      label: "Calibration",
-      input: `~${calibration} advances`,
-      tooltip: "Number of RNG advances not caused by frames. (Ex: NPC moving)",
-    },
-    {
-      label: "Offset",
-      input: `~${offset} advances`,
-      tooltip:
-        "Number of RNG advances between the last player input and when the Pokémon generation occurs.",
-    },
-    {
-      label: "Human input delay (advance)",
-      tooltip:
-        "Number of RNG advances caused by human reaction time between the timer ending and pressing the input.",
-      input: (
-        <NumberInput
+        )}
+        <FormSummary
+          rows={[
+            {
+              label: "Console",
+              value:
+                gen3ConsoleOptions.find((opt) => opt.value === consoleProp)
+                  ?.label ?? "",
+              show: battleVideoInfoProp != null && !canPickConsole,
+            },
+            {
+              label: "Calibration",
+              value: `~${calibration} advances`,
+              tooltip: {
+                title: "Calibration",
+                description:
+                  "Number of RNG advances not caused by frames. (Ex: NPC moving)",
+              },
+            },
+            {
+              label: "Offset",
+              value: `~${offset} advances`,
+              tooltip: {
+                title: "Offset",
+                description:
+                  "Number of RNG advances between the last player input and when the Pokémon generation occurs.",
+              },
+            },
+            ...extraRows,
+          ]}
+        />
+        <NumberField
+          label="Human input delay (advance)"
+          tooltip={{
+            title: "Human input delay",
+            description:
+              "Number of RNG advances caused by human reaction time between the timer ending and pressing the input.",
+          }}
           numType="decimal"
           onChange={setHumanInputDelay}
           value={humanInputDelay}
         />
-      ),
-    },
-  ];
-};
-
-export const buildGen3CalibPreviousStepFields = ({
-  targetSetup,
-  battleVideoInfo,
-  initialAdv,
-}: {
-  targetSetup: CalibTargetSetup;
-  battleVideoInfo: BattleVideoInfo;
-  initialAdv: number;
-}): Field[] => {
-  return [
-    {
-      label: "Target method",
-      input: targetSetup.targetMethod,
-    },
-    targetFrameBeforePaintingLabel(battleVideoInfo.targetPaintingAdvs.before),
-    {
-      label: "Battle Video advance",
-      input: formatLargeInteger(battleVideoInfo.battleVideoAdvAfterPainting),
-      show: battleVideoInfo.battleVideoAdvAfterPainting > 0,
-    },
-    targetAdvanceLabel(
-      targetSetup.targetPaintingAdvs.after,
-      targetSetup.targetPaintingAdvs.before === 0,
-      initialAdv,
-    ),
-    targetAdvanceAfterPaintingLabel(targetSetup.targetPaintingAdvs, initialAdv),
-  ];
+      </FormSection>
+    </FormCard>
+  );
 };

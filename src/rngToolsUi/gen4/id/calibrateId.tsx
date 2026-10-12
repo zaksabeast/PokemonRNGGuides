@@ -1,12 +1,12 @@
 import React from "react";
+import { ResultColumn, Icon } from "~/components";
 import {
-  FormikNumberInput,
-  ResultColumn,
-  RngToolForm,
-  RngToolSubmit,
-  Field,
-  Icon,
-} from "~/components";
+  FormNumberField,
+  FormSection,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { CalibrateTimerButton } from "../shared/calibrateTimerButton";
 import { rngTools, Id4 } from "~/rngTools";
 import { denormalizeIdFilterOrDefault } from "~/types/id";
@@ -84,19 +84,11 @@ const initialValues: FormState = {
 };
 
 export const CalibrateId4 = () => {
+  const t = useActiveRouteTranslations();
   const [{ config, target }] = useAtom(gen4StateAtom);
   const [results, setResults] = React.useState<Result[]>([]);
 
-  const getFields = (t: Translations): Field[] => {
-    return [
-      {
-        label: t["Obtained TID"],
-        input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-      },
-    ];
-  };
-
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     if (target.seedTime == null) {
       return;
     }
@@ -141,14 +133,21 @@ export const CalibrateId4 = () => {
   };
 
   return (
-    <RngToolForm<FormState, Result>
-      getFields={getFields}
+    <ToolForm<FormState, Result>
       getColumns={getColumns}
       results={results}
       initialValues={initialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
       submitTrackerId="generate_dppt_id"
-    />
+    >
+      <FormSection>
+        <FormNumberField<FormState>
+          name="tid"
+          label={t["Obtained TID"]}
+          numType="decimal"
+        />
+      </FormSection>
+    </ToolForm>
   );
 };

@@ -1,4 +1,5 @@
-import { Flex, Select, Typography } from "~/components";
+import { Flex } from "~/components";
+import { SelectField } from "~/components/form";
 import { Skeleton } from "antd";
 import { match } from "ts-pattern";
 import { Gen5StandardTimer } from "./standard";
@@ -44,33 +45,30 @@ export const Gen5Timer = () => {
 
   return (
     <Flex vertical gap={32}>
-      <Flex gap={16} align="center">
-        <Typography.Text strong>Mode</Typography.Text>
-        <Select<Gen5TimerMode>
-          fullFlex
-          value={client.mode}
-          name="gen5-timer-mode"
-          onChange={(mode) => setMode(hydrationLock({ mode }))}
-          options={[
-            {
-              label: "Standard",
-              value: "standard",
-            },
-            {
-              label: "C-Gear",
-              value: "cgear",
-            },
-            {
-              label: "Entralink",
-              value: "entralink",
-            },
-            {
-              label: "Entralink+",
-              value: "entralink_plus",
-            },
-          ]}
-        />
-      </Flex>
+      <SelectField<Gen5TimerMode>
+        name="gen5-timer-mode"
+        label="Mode"
+        value={client.mode}
+        onChange={(mode) => setMode(hydrationLock({ mode }))}
+        options={[
+          {
+            label: "Standard",
+            value: "standard",
+          },
+          {
+            label: "C-Gear",
+            value: "cgear",
+          },
+          {
+            label: "Entralink",
+            value: "entralink",
+          },
+          {
+            label: "Entralink+",
+            value: "entralink_plus",
+          },
+        ]}
+      />
 
       {timer}
     </Flex>

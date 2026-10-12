@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign -- the renderer intentionally mutates the context */
 import type { TimerRenderer } from "~/hooks/useCanvasTimer";
+import { formatTimerReadout } from "./format";
 
 export const ARC_WIDTH = 280;
 export const ARC_HEIGHT = 200;
@@ -68,10 +69,7 @@ export const arcTimerRenderer: TimerRenderer = ({
     ctx.stroke();
   }
 
-  const flooredRemaining = Math.floor(remaining);
-  const seconds = Math.floor(flooredRemaining / 1000);
-  const milliseconds = flooredRemaining % 1000;
-  const text = `${seconds.toString().padStart(2, "0")}:${milliseconds.toString().padStart(3, "0")}`;
+  const text = formatTimerReadout(remaining);
 
   ctx.font = NUMERALS_FONT;
   ctx.textAlign = "center";

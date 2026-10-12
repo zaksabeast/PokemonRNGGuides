@@ -2,13 +2,12 @@ import React from "react";
 import * as tst from "ts-toolbelt";
 import { z } from "zod";
 import {
-  Field,
-  FormFieldTable,
-  FormikNumberInput,
-  FormikSelect,
-  RngToolForm,
-} from "~/components";
-import { Translations } from "~/translations";
+  FieldRow,
+  FormNumberField,
+  FormSection,
+  FormSelectField,
+  ToolForm,
+} from "~/components/form";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { useWatch } from "~/hooks/form";
 import { honeyTreeAtom, INITIAL_GAME } from "./state";
@@ -32,23 +31,6 @@ const initialValues: LooseFormState = {
   tid: null,
   sid: null,
 };
-
-const getFields = (t: Translations): Field[] => [
-  {
-    label: t["Game"],
-    input: (
-      <FormikSelect<FormState, "game"> name="game" options={toOptions(DpPt)} />
-    ),
-  },
-  {
-    label: t["TID"],
-    input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-  },
-  {
-    label: t["SID"],
-    input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
-  },
-];
 
 const Fields = () => {
   const t = useActiveRouteTranslations();
@@ -83,15 +65,35 @@ const Fields = () => {
     submitForm();
   }, [tid, sid, game, setState, setHoneyTreeState]);
 
-  return <FormFieldTable fields={getFields(t)} />;
+  return (
+    <FormSection title={t["Your game"]}>
+      <FormSelectField<FormState>
+        name="game"
+        label={t["Game"]}
+        options={toOptions(DpPt, (game) => t[game])}
+      />
+      <FieldRow>
+        <FormNumberField<FormState>
+          name="tid"
+          label={t["TID"]}
+          numType="decimal"
+        />
+        <FormNumberField<FormState>
+          name="sid"
+          label={t["SID"]}
+          numType="decimal"
+        />
+      </FieldRow>
+    </FormSection>
+  );
 };
 
 export const HoneyTreeTidSid = () => {
   return (
-    <RngToolForm<LooseFormState, Record<string, unknown>>
+    <ToolForm<LooseFormState, Record<string, unknown>>
       initialValues={initialValues}
     >
       <Fields />
-    </RngToolForm>
+    </ToolForm>
   );
 };

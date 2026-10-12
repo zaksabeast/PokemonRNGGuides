@@ -1,5 +1,10 @@
 import { rngTools } from "~/rngTools";
-import { FormFieldTable, NumberInput, RadioGroup } from "~/components";
+import {
+  FormSummary,
+  NumberField,
+  SelectField,
+  type InfoTooltipContent,
+} from "~/components/form";
 import { match } from "ts-pattern";
 import React from "react";
 import clamp from "lodash-es/clamp";
@@ -43,10 +48,14 @@ const calculateLeadCycleSpeed = async (
 };
 
 export const Wild3LeadCycleSpeedInput = ({
+  label,
+  tooltip,
   idealLeadCycleSpeed,
   leadCycleSpeed,
   setLeadCycleSpeed,
 }: {
+  label: React.ReactNode;
+  tooltip?: InfoTooltipContent;
   idealLeadCycleSpeed: number | null;
   leadCycleSpeed: number;
   setLeadCycleSpeed?: (leadCycleSpeed: number) => void;
@@ -80,49 +89,15 @@ export const Wild3LeadCycleSpeedInput = ({
     setLeadCycleSpeed,
   ]);
 
-  const fields = [
-    {
-      label: "Lead PID:",
-      input: (
-        <NumberInput
-          name="leadPID"
-          onChange={(val) => {
-            const val2 = val == null ? null : clamp(val, 0, 0xffffffff);
-            setLeadPID(val2);
-          }}
-          numType="hex"
-          value={leadPID}
-        />
-      ),
-      show: leadSpeedType === "From PID",
-    },
-    {
-      label: "Cycle count for operation (PID modulo 25):",
-      input:
-        leadSpeedType === "Custom" ? (
-          <NumberInput
-            name="leadCycleSpeedCustom"
-            onChange={(val) => {
-              const val2 = val == null ? null : clamp(val, 0, 900);
-              setLeadCycleSpeedCustom(val2);
-            }}
-            numType="decimal"
-            value={leadCycleSpeedCustom}
-          />
-        ) : (
-          `${computedLeadCycleSpeed} cycles`
-        ),
-    },
-  ];
+  const cycleCountLabel = "Cycle count for operation (PID modulo 25)";
 
   return (
     <>
-      <RadioGroup
-        optionType="button"
+      <SelectField<LeadSpeedType>
         name="leadSpeedType"
-        onChange={(evt) => {
-          setLeadSpeedType(evt.target.value);
-        }}
+        label={label}
+        tooltip={tooltip}
+        onChange={setLeadSpeedType}
         value={leadSpeedType}
         options={toOptions(
           idealLeadCycleSpeed != null
@@ -130,9 +105,39 @@ export const Wild3LeadCycleSpeedInput = ({
             : leadSpeedTypes.filter((el) => el !== "Ideal"),
         )}
       />
-      <br />
-      <br />
-      <FormFieldTable fields={fields} />
+      {leadSpeedType === "From PID" && (
+        <NumberField
+          name="leadPID"
+          label="Lead PID"
+          onChange={(val) => {
+            const val2 = val == null ? null : clamp(val, 0, 0xffffffff);
+            setLeadPID(val2);
+          }}
+          numType="hex"
+          value={leadPID}
+        />
+      )}
+      {leadSpeedType === "Custom" ? (
+        <NumberField
+          name="leadCycleSpeedCustom"
+          label={cycleCountLabel}
+          onChange={(val) => {
+            const val2 = val == null ? null : clamp(val, 0, 900);
+            setLeadCycleSpeedCustom(val2);
+          }}
+          numType="decimal"
+          value={leadCycleSpeedCustom}
+        />
+      ) : (
+        <FormSummary
+          rows={[
+            {
+              label: cycleCountLabel,
+              value: `${computedLeadCycleSpeed} cycles`,
+            },
+          ]}
+        />
+      )}
     </>
   );
 };

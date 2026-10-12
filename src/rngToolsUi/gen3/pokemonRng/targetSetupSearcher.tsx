@@ -1,28 +1,7 @@
-import {
-  Field,
-  FormikNumberInput,
-  FormikSwitch,
-  TooltipWithIcon,
-  Link,
-  ResultColumn,
-  Flex,
-  Alert,
-} from "~/components";
-import {
-  advanceFromSeed0Txt,
-  minAdvsAfterPaintingLabel,
-  minFramesBeforePaintingLabel,
-  usingPaintingReseedingLabel,
-} from "../pokemonRng/labels";
-import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
-import {
-  FormState as WildFormState,
-  PidPathResult as Wild3PidPathResult,
-} from "../wild/wild3TargetSetupSearcher";
-import {
-  FormState as StaticFormState,
-  PidPathResult as Static3PidPathResult,
-} from "../static/static3TargetSetupSearcher";
+import { Link, ResultColumn, Flex } from "~/components";
+import { advanceFromSeed0Txt } from "../pokemonRng/labels";
+import { PidPathResult as Wild3PidPathResult } from "../wild/wild3TargetSetupSearcher";
+import { PidPathResult as Static3PidPathResult } from "../static/static3TargetSetupSearcher";
 import z from "zod";
 import { species } from "~/types/species";
 import {
@@ -40,12 +19,10 @@ import { GBA_FPS } from "~/utils/consts";
 import { formatDuration } from "~/utils/formatDuration";
 import { formatHex } from "~/utils/formatHex";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
-import { match } from "ts-pattern";
 import { AbilityName } from "~/components/abilityName";
 
 // This file contains the code shared by Static3 and Wild3 targetSetupSearcher webtools.
 
-type FormState = WildFormState | StaticFormState;
 type PidPathResult = Wild3PidPathResult | Static3PidPathResult;
 
 export const targetSetupSearcherSchema = z
@@ -88,202 +65,11 @@ export const getTargetSetupSearcherInitialValues = (game: Static3Game) => {
   };
 };
 
-export const getPaintingSetupFilterFields = ({
-  game,
-  usingPaintingReseeding,
-  letSearcherFindPaintingSeed,
-  showAdvancedPaintingSettings,
-  usingDeadBattery,
-  requireAceForPaintingReseeding,
-  recommendedMinAdvances,
-  initial_advances,
-}: {
-  game: Static3Game;
-  usingPaintingReseeding: boolean;
-  letSearcherFindPaintingSeed: boolean;
-  showAdvancedPaintingSettings: boolean;
-  usingDeadBattery: boolean;
-  requireAceForPaintingReseeding: boolean;
-  recommendedMinAdvances: number | null;
-  initial_advances: number;
-}): Field[] => {
-  return [
-    {
-      ...usingPaintingReseedingLabel(),
-      input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
-      show: game === "emerald",
-    },
-    {
-      label: "",
-      key: "requireAceForPaintingReseeding",
-      input: (
-        <Alert
-          showIcon
-          type="warning"
-          title="To use Painting Reseeding for this Pokémon, you must beat the game to access the Battle Frontier, then use Arbitrary code execution (ACE) to respawn this encounter."
-        />
-      ),
-      show:
-        game === "emerald" &&
-        usingPaintingReseeding &&
-        requireAceForPaintingReseeding,
-      indent: 1,
-    },
-
-    {
-      label: "Let searcher find painting seed?",
-      input: <FormikSwitch<FormState> name="letSearcherFindPaintingSeed" />,
-      show: usingPaintingReseeding,
-      indent: 1,
-    },
-    {
-      label: "Dead Battery?",
-      input: <FormikSwitch<FormState> name="usingDeadBattery" />,
-      show: game === "rs" && !usingPaintingReseeding,
-    },
-    {
-      label: "Initial seed",
-      input: <FormikNumberInput<FormState> name="initial_seed" numType="hex" />,
-      show: match(game)
-        .with("emerald", () => false)
-        .with("rs", () => !usingPaintingReseeding && !usingDeadBattery)
-        .with("frlg", () => true)
-        .exhaustive(),
-    },
-    {
-      label: "Frame before painting (Painting seed)",
-      input: (
-        <FormikEmeraldFrameBeforePaintingInput<FormState> name="initial_seed" />
-      ),
-      show: usingPaintingReseeding && !letSearcherFindPaintingSeed,
-      indent: 1,
-    },
-    {
-      label: "Show advanced painting settings?",
-      input: <FormikSwitch<FormState> name="showAdvancedPaintingSettings" />,
-      show: usingPaintingReseeding,
-      indent: 1,
-    },
-    {
-      ...minFramesBeforePaintingLabel(),
-      input: (
-        <FormikNumberInput<FormState>
-          name="min_frame_before_painting"
-          numType="decimal"
-        />
-      ),
-      show:
-        usingPaintingReseeding &&
-        letSearcherFindPaintingSeed &&
-        showAdvancedPaintingSettings,
-      indent: 2,
-    },
-    {
-      ...minAdvsAfterPaintingLabel(),
-      input: (
-        <FormikNumberInput<FormState>
-          name="min_adv_after_painting"
-          numType="decimal"
-        />
-      ),
-      show: usingPaintingReseeding && showAdvancedPaintingSettings,
-      indent: 2,
-    },
-    {
-      label: "Min advances",
-      tooltip:
-        "To ensure there is enough time between booting the game and triggering the encounter.",
-      input: (
-        <FormikNumberInput<FormState>
-          name="initial_advances"
-          numType="decimal"
-        />
-      ),
-      show: !usingPaintingReseeding,
-    },
-    {
-      label: "",
-      key: "recommendedMinAdvances",
-      input: (
-        <Alert
-          showIcon
-          type="warning"
-          title={`At least ${recommendedMinAdvances} advances is recommended to have enough time to trigger this encounter.`}
-        />
-      ),
-      show:
-        !usingPaintingReseeding &&
-        recommendedMinAdvances != null &&
-        initial_advances < recommendedMinAdvances,
-    },
-
-    {
-      label: usingPaintingReseeding
-        ? "Max advances after painting"
-        : "Max advances",
-      input: (
-        <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
-      ),
-      show: usingPaintingReseeding && !letSearcherFindPaintingSeed,
-    },
-    {
-      label: "Max result count",
-      input: (
-        <FormikNumberInput<FormState>
-          name="max_result_count"
-          numType="decimal"
-        />
-      ),
-    },
-  ];
-};
-
 export const getSidResultingInShiny = (pid: number, tid: number) => {
   const pidh = pid >>> 16;
   const pidl = pid & 0xffff;
   const psv = (pidh ^ pidl) >>> 3;
   return (tid ^ ((psv << 3) | (tid & 0x7))) & 0xffff;
-};
-
-export const getTidSidSetupFilterFields = ({
-  game,
-  filter_shiny,
-  usingAceForSid,
-}: {
-  game: Static3Game;
-  filter_shiny: boolean;
-  usingAceForSid: boolean;
-}) => {
-  return [
-    {
-      label: "Using ACE to change SID?",
-      tooltip:
-        "Whether to use Arbitrary Code Execution glitch to change your SID so the target Pokémon is shiny.",
-      show: filter_shiny && game === "emerald",
-      input: <FormikSwitch<FormState> name="usingAceForSid" />,
-    },
-    {
-      label: "TID",
-      input: filter_shiny ? (
-        <FormikNumberInput<FormState> name="tid" numType="decimal" />
-      ) : (
-        <TooltipWithIcon title="The only impact of TID/SID is shininess and the target Pokemon is not shiny.">
-          N/A
-        </TooltipWithIcon>
-      ),
-    },
-    {
-      label: "SID",
-      show: !usingAceForSid,
-      input: filter_shiny ? (
-        <FormikNumberInput<FormState> name="sid" numType="decimal" />
-      ) : (
-        <TooltipWithIcon title="The only impact of TID/SID is shininess and the target Pokemon is not shiny.">
-          N/A
-        </TooltipWithIcon>
-      ),
-    },
-  ];
 };
 
 export const getTargetResultColumns = (

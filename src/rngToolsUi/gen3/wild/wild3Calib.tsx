@@ -1,7 +1,12 @@
 import React from "react";
-import { Flex, Field, Button } from "~/components";
+import { Flex, Button } from "~/components";
+import {
+  FormCard,
+  FormSection,
+  FormSummary,
+  type SummaryRow,
+} from "~/components/form";
 import { EmbeddedRunTimer } from "~/rngToolsUi/timer/embeddedRunTimer";
-import { FormFieldTable } from "~/components/formFieldTable";
 import { TargetSetup } from "./wild3TargetSetupInput";
 import { Wild3CalibCaughtMon } from "./wild3CalibCaughtMon.component";
 import { Gen3Console, gen3ConsoleFpsMap } from "~/types/console";
@@ -32,11 +37,8 @@ import {
 } from "./wild3LeadCycleSpeedInput";
 import { match } from "ts-pattern";
 import { Wild3TargetSetupAndLeadInput } from "./wild3TargetSetupAndLeadInput";
-import {
-  buildGen3CalibFields,
-  buildGen3CalibPreviousStepFields,
-  CalibOffset,
-} from "../pokemonRng/calib";
+import { Gen3CalibFields, CalibOffset } from "../pokemonRng/calib";
+import { getGen3CalibPreviousStepRows } from "../pokemonRng/labels";
 
 const FISHING_CALIB_OFFSET: CalibOffset = {
   offset: 4,
@@ -213,23 +215,6 @@ export const Wild3Calib = ({
     );
   };
 
-  const calibFields: Field[] = [
-    ...buildGen3CalibFields({
-      battleVideoInfoProp,
-      consoleTypeFromInput,
-      setConsoleTypeFromInput,
-      calibration,
-      offset,
-      humanInputDelay,
-      setHumanInputDelay,
-    }),
-    {
-      label: "Lead cycle speed (from calibration)",
-      input: leadCycleSpeedToText(overwriteLeadCycleSpeed ?? 0),
-      show: overwriteLeadCycleSpeed !== null,
-    },
-  ];
-
   const canDoCalib =
     battleVideoInfo != null || targetSetup?.targetPaintingAdvs.before === 0;
 
@@ -238,23 +223,23 @@ export const Wild3Calib = ({
       return null;
     }
 
-    const fields: Field[] = [
+    const rows: SummaryRow[] = [
       {
         label: "Map",
-        input: formatMapName(targetSetupProp.map),
+        value: formatMapName(targetSetupProp.map),
       },
       {
         label: "Player action",
-        input: formatActionName(targetSetupProp.action),
+        value: formatActionName(targetSetupProp.action),
       },
       {
         label: "Requires White Flute?",
-        input: targetSetupProp.requiresWhiteFlute ? "Yes" : "No",
+        value: targetSetupProp.requiresWhiteFlute ? "Yes" : "No",
         show: targetSetupProp.action === "RockSmash",
       },
       {
         label: "Pokéblock",
-        input:
+        value:
           targetSetupProp.safariPokeblock !== null ? (
             <Wild3PokeblockDescription
               pokeblock={targetSetupProp.safariPokeblock}
@@ -264,26 +249,26 @@ export const Wild3Calib = ({
       },
       {
         label: "Lead",
-        input: formatLeadName(targetSetupProp.lead),
+        value: formatLeadName(targetSetupProp.lead),
       },
-      ...buildGen3CalibPreviousStepFields({
+      ...getGen3CalibPreviousStepRows({
         targetSetup: targetSetupProp,
         battleVideoInfo: battleVideoInfoProp,
         initialAdv,
       }),
       {
         label: "Lead Cycle Speed",
-        input: leadCycleSpeedToText(leadCycleSpeedProp),
+        value: leadCycleSpeedToText(leadCycleSpeedProp),
         show:
           targetSetupProp.lead !== "Egg" && overwriteLeadCycleSpeed === null,
       },
       {
         label: "Target Pokémon",
-        input: targetSetupResult,
+        value: targetSetupResult,
       },
       {
         label: "Fishing spot",
-        input: (
+        value: (
           <FeebasTileVisualizer
             selectedTileCycle={targetSetupProp.feebasCycles}
           />
@@ -296,10 +281,9 @@ export const Wild3Calib = ({
     ];
 
     return (
-      <Flex vertical>
-        <h3>Info from previous steps</h3>
-        <Flex ml={20} vertical>
-          <FormFieldTable fields={fields} />
+      <FormCard>
+        <FormSection title="Info from previous steps">
+          <FormSummary rows={rows} />
           {clearAll != null && (
             <Button
               trackerId="wild3Calib_clearAll"
@@ -311,8 +295,8 @@ export const Wild3Calib = ({
               Clear All
             </Button>
           )}
-        </Flex>
-      </Flex>
+        </FormSection>
+      </FormCard>
     );
   };
 
@@ -340,7 +324,22 @@ export const Wild3Calib = ({
             ) : (
               <Instructions_calib_without_battle_video />
             ))}
-          <FormFieldTable fields={calibFields} />
+          <Gen3CalibFields
+            battleVideoInfoProp={battleVideoInfoProp}
+            consoleTypeFromInput={consoleTypeFromInput}
+            setConsoleTypeFromInput={setConsoleTypeFromInput}
+            calibration={calibration}
+            offset={offset}
+            humanInputDelay={humanInputDelay}
+            setHumanInputDelay={setHumanInputDelay}
+            extraRows={[
+              {
+                label: "Lead cycle speed (from calibration)",
+                value: leadCycleSpeedToText(overwriteLeadCycleSpeed ?? 0),
+                show: overwriteLeadCycleSpeed !== null,
+              },
+            ]}
+          />
           <EmbeddedRunTimer
             milliseconds={milliseconds}
             labels={labels}

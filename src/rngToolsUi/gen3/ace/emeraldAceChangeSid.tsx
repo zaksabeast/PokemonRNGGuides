@@ -1,4 +1,5 @@
-import { Field, Flex, FormikSelect } from "~/components";
+import { Flex } from "~/components";
+import { FormSection, FormSelectField } from "~/components/form";
 import { Typography } from "antd";
 import Instructions from "./instructions_ace_change_sid.mdx";
 import z from "zod";
@@ -28,20 +29,6 @@ export const EmeraldAceChangeSid = ({ sid }: Props) => {
 
   const initialValues = getInitialValues();
 
-  const getFields = (): Field[] => {
-    return [
-      {
-        label: "Game Language",
-        input: (
-          <FormikSelect<FormState, "lang">
-            name="lang"
-            options={toOptions(emeraldLangs)}
-          />
-        ),
-      },
-    ];
-  };
-
   const onSubmit = (values: FormState) => {
     return rngTools.get_emerald_sid_box_names_result(sid, values.lang);
   };
@@ -54,11 +41,18 @@ export const EmeraldAceChangeSid = ({ sid }: Props) => {
 
       <AceForm<FormState>
         key={sid}
-        getFields={getFields}
         validationSchema={schema}
         initialValues={initialValues}
         onSubmit={onSubmit}
-      />
+      >
+        <FormSection>
+          <FormSelectField<FormState>
+            name="lang"
+            label="Game Language"
+            options={toOptions(emeraldLangs)}
+          />
+        </FormSection>
+      </AceForm>
     </Flex>
   );
 };

@@ -1,58 +1,35 @@
 import React from "react";
-import {
-  Typography,
-  Flex,
-  Header,
-  DesktopDrawer,
-  List,
-  ListItem,
-  Icon,
-  IconName,
-} from "~/components";
+import { Typography, Flex, Header, DesktopDrawer } from "~/components";
 import { useScreenViewed } from "~/hooks/useScreenViewed";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { settings } from "~/settings";
-import { match } from "ts-pattern";
-import { Color } from "@emotion/react";
 import { useMaxWidthEnabled } from "~/state/contentMaxWidth";
 import styled from "@emotion/styled";
 import { styledPropGuard } from "~/utils/styled";
 
-type SupporterType = (typeof settings)["hallOfFameSupporters"][number]["type"];
-
-type IconProps = { name: IconName; color: Color };
-
-const DISCORD_SUPPORTER_PROPS: IconProps = {
-  name: "Discord",
-  color: "Primary",
-};
-const PATREON_SUPPORTER_PROPS: IconProps = { name: "Patreon", color: "Error" };
-
-const getSupporterIconProps = (type: SupporterType): IconProps => {
-  return match(type)
-    .with("discord", () => DISCORD_SUPPORTER_PROPS)
-    .with("patreon", () => PATREON_SUPPORTER_PROPS)
-    .exhaustive();
-};
-
 type Props = {
   children: React.ReactNode;
   trackerName?: string;
+  fullWidth?: boolean;
 };
 
-export const SIDE_MARGIN = 24;
+export const SIDE_MARGIN = 18;
+
+const CONTENT_MAX_WIDTH = 800;
+const CONTENT_PADDING_X = 32;
 
 const ContentLayout = styled.div(({ theme }) => ({
+  ...theme.pageContainer,
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  height: `calc(100% - ${theme.token.layoutHeaderHeight})`,
+  // The document scrolls instead of this container so mobile browsers can hide their toolbars
+  minHeight: `calc(100dvh - ${theme.token.layoutHeaderHeight})`,
   width: "100%",
+  minWidth: 0,
+  overflowX: "auto",
   gap: 24,
   boxSizing: "border-box",
-  paddingLeft: SIDE_MARGIN,
-  paddingRight: SIDE_MARGIN,
-  overflowY: "scroll",
   marginTop: theme.token.layoutHeaderHeight,
 
   backgroundColor: theme.token.colorBgContainer,
@@ -72,7 +49,10 @@ const Main = styled.main(({ theme }) => ({
 const DesktopNavDrawerContainer = styled.div(({ theme }) => ({
   display: "none",
   flexDirection: "column",
-  height: `calc(100% - ${theme.token.layoutHeaderHeight})`,
+  position: "sticky",
+  top: theme.token.layoutHeaderHeight,
+  alignSelf: "flex-start",
+  height: `calc(100dvh - ${theme.token.layoutHeaderHeight})`,
   width: "100%",
   marginTop: theme.token.layoutHeaderHeight,
   maxWidth: 286,
@@ -83,7 +63,7 @@ const DesktopNavDrawerContainer = styled.div(({ theme }) => ({
 }));
 
 const BodyContainer = styled.div(({ theme }) => ({
-  height: "100%",
+  flex: 1,
   width: "100%",
   display: "flex",
   backgroundColor: theme.token.colorBgLayout,
@@ -92,35 +72,52 @@ const BodyContainer = styled.div(({ theme }) => ({
 const ContentContainer = styled(
   "div",
   styledPropGuard,
-)<{ $useMaxWidth: boolean }>(({ theme, $useMaxWidth }) => ({
-  height: "100%",
-  width: "100%",
-  maxWidth: $useMaxWidth ? 750 : "none",
-  display: "flex",
-  flexDirection: "column",
-  gap: 32,
-  paddingTop: 24,
-  [theme.mediaQueries.up("tablet")]: {
-    width: $useMaxWidth ? "90%" : "100%",
-  },
-  [theme.mediaQueries.up("desktop")]: {
-    width: $useMaxWidth ? "80%" : "100%",
-  },
-}));
+)<{ $useMaxWidth: boolean; $fullWidth: boolean }>(({
+  theme,
+  $useMaxWidth,
+  $fullWidth,
+}) => {
+  const useMaxWidth = $useMaxWidth && !$fullWidth;
+  return {
+    height: "100%",
+    width: "100%",
+    // Includes the padding so the content itself gets the full max width
+    maxWidth: useMaxWidth ? CONTENT_MAX_WIDTH + CONTENT_PADDING_X * 2 : "none",
+    display: "flex",
+    flexDirection: "column",
+    gap: 32,
+    boxSizing: "border-box",
+    padding: $fullWidth ? 0 : `28px ${CONTENT_PADDING_X}px 0`,
+    [theme.containerQueries.mobile]: {
+      padding: $fullWidth ? 0 : "8px 16px 0",
+    },
+  };
+});
 
 const BottomSpace = styled.div({
   paddingBottom: 32,
 });
 
-const Footer = styled.footer(({ theme }) => ({
+const Footer = styled(
+  "footer",
+  styledPropGuard,
+)<{ $fullWidth: boolean }>(({ theme, $fullWidth }) => ({
   width: "100%",
+  boxSizing: "border-box",
+  marginTop: 100,
   paddingTop: 24,
   paddingBottom: 36,
+  paddingLeft: $fullWidth ? SIDE_MARGIN : 0,
+  paddingRight: $fullWidth ? SIDE_MARGIN : 0,
   backgroundColor: "unset",
   borderTop: `1px solid ${theme.token.colorBorder}`,
 }));
 
-export const MainLayout = ({ children, trackerName }: Props) => {
+export const MainLayout = ({
+  children,
+  trackerName,
+  fullWidth = false,
+}: Props) => {
   const route = useActiveRoute();
   const [maxWidthEnabled, setMaxWidthEnabled] = useMaxWidthEnabled();
   useScreenViewed(trackerName ?? route);
@@ -140,24 +137,22 @@ export const MainLayout = ({ children, trackerName }: Props) => {
           </Flex>
         </DesktopNavDrawerContainer>
         <ContentLayout>
-          <ContentContainer $useMaxWidth={maxWidthEnabled}>
+          <ContentContainer
+            $useMaxWidth={maxWidthEnabled}
+            $fullWidth={fullWidth}
+          >
             <Main>{children}</Main>
             {settings.hallOfFameSupporters.length === 0 && <BottomSpace />}
             {settings.hallOfFameSupporters.length > 0 && (
-              <Footer>
-                <Typography.Text strong fontSize={20}>
-                  Special thanks to our Hall of Fame supporters!
+              <Footer $fullWidth={fullWidth}>
+                <Typography.Text color="TextSecondary">
+                  <Typography.Text strong>
+                    Special thanks to our Hall of Fame supporters:{" "}
+                  </Typography.Text>
+                  {settings.hallOfFameSupporters
+                    .map((supporter) => supporter.name)
+                    .join(", ")}
                 </Typography.Text>
-                <List ml={24} pv={12}>
-                  {settings.hallOfFameSupporters.map((supporter) => (
-                    <ListItem fontSize={18} key={supporter.name}>
-                      <Flex gap={8} align="center">
-                        <Icon {...getSupporterIconProps(supporter.type)} />
-                        {supporter.name}
-                      </Flex>
-                    </ListItem>
-                  ))}
-                </List>
               </Footer>
             )}
           </ContentContainer>

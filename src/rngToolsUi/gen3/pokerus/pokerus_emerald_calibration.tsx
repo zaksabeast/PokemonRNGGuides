@@ -1,18 +1,16 @@
+import { Button, Icon, ResultColumn } from "~/components";
 import {
-  Button,
-  Field,
-  Flex,
-  FormFieldTable,
-  FormikNumberInput,
-  FormikSelect,
-  Icon,
-  NumberInput,
-  ResultColumn,
-  RngToolForm,
-  RngToolSubmit,
-  Select,
-  Switch,
-} from "~/components";
+  FieldRow,
+  FormNumberField,
+  FormSection,
+  FormSelectField,
+  FormSummary,
+  NumberField,
+  SelectField,
+  SwitchField,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
 import { EmbeddedRunTimer } from "~/rngToolsUi/timer/embeddedRunTimer";
 import { useFormContext, useWatch } from "~/hooks/form";
 import { Species } from "~/rngTools";
@@ -79,6 +77,33 @@ const initialValues: CalibrationOptions = {
   minimum_advances: 0,
   maximum_advances: 2000,
 };
+
+const pickupItemFields = [
+  {
+    name: "filter_pickup_items_0",
+    label: "Pickup item on 1st Pokémon",
+  },
+  {
+    name: "filter_pickup_items_1",
+    label: "Pickup item on 2nd Pokémon (Lv. 1-9)",
+  },
+  {
+    name: "filter_pickup_items_2",
+    label: "Pickup item on 3rd Pokémon (Lv. 1-9)",
+  },
+  {
+    name: "filter_pickup_items_3",
+    label: "Pickup item on 4th Pokémon (Lv. 1-9)",
+  },
+  {
+    name: "filter_pickup_items_4",
+    label: "Pickup item on 5th Pokémon (Lv. 1-9)",
+  },
+  {
+    name: "filter_pickup_items_5",
+    label: "Pickup item on 6th Pokémon (Lv. 1-9)",
+  },
+] as const;
 
 const CalibrationInputs = ({
   setup,
@@ -157,193 +182,151 @@ const CalibrationInputs = ({
 
   const calibration = calibBattleStart + CALIB_DURING_BATTLE;
 
-  const fields: Field[] = [
-    {
-      label: "Stationary Pokémon",
-      input: (
-        <Select<Species>
+  const pickupSlots = pickupItemFields
+    .slice(0, setup.gen_opts.pickup_pokemon_count)
+    .map(({ name, label }, slot) => {
+      const levelIndex = isStatic && slot === 0 ? (leadPickupLvlIndex ?? 0) : 0;
+      return {
+        name,
+        label,
+        options: [
+          { label: "None", value: "None" },
+          ...toOptions(pickupItems_emerald[levelIndex]),
+        ],
+      };
+    });
+
+  return (
+    <FormSection title="Calibration">
+      {isStatic && (
+        <SelectField<Species>
+          label="Stationary Pokémon"
           value={staticSpecies}
           options={toOptions(getPossibleStatic3Species("emerald"))}
-          onSelect={setStaticSpecies}
+          onChange={setStaticSpecies}
         />
-      ),
-      show: isStatic,
-    },
-    {
-      label: "Offset to start battle",
-      tooltip:
-        "Number of frames between interacting with the stationary Pokémon and the start of the battle.",
-      input: `~${offsetFromInputToBattleStart} frames`,
-      show: isStatic,
-    },
-    {
-      label: "Console",
-      input: (
-        <Select<Gen3Console>
-          name="console"
-          value={consoleType}
-          options={gen3ConsoleOptions}
-          onSelect={setConsoleType}
-        />
-      ),
-    },
-    {
-      label: "Battle Video advance",
-      input: (
-        <NumberInput
-          numType="decimal"
-          onChange={setBattleVideoAdvance}
-          value={battleVideoAdvance}
-        />
-      ),
-    },
-    {
-      label: "Calibration",
-      input: `~${calibration} advances`,
-      tooltip:
-        "Number of RNG advances not caused by frames. (Pokémon generation and battle logic)",
-    },
-    {
-      label: "Offset",
-      input: `~${OFFSET_END_BATTLE_TO_PICKUP} advances`,
-      tooltip:
-        "Number of RNG advances between the last player input and when the Pokérus logic starts.",
-    },
-    {
-      label: "Human input delay (advance)",
-      tooltip:
-        "Number of RNG advances caused by human reaction time between the timer ending and pressing the input.",
-      input: (
-        <NumberInput
-          numType="decimal"
-          onChange={setHumanInputDelay}
-          value={humanInputDelay}
-        />
-      ),
-    },
-    {
-      label: "",
-      direction: "column",
-      input: (
-        <EmbeddedRunTimer
-          milliseconds={[
-            5000,
-            Math.round(
-              (waitFrameBeforeSweetScent / gen3ConsoleFpsMap[consoleType]) *
-                1000,
-            ),
-            Math.round(
-              (frameFromStartBattleLastInputToEndBattleLastInput /
-                gen3ConsoleFpsMap[consoleType]) *
-                1000,
-            ),
-          ]}
-          labels={[
-            hasBattleVideo
-              ? "Close the Battle Video"
-              : "Soft reset START+SELECT+A+B",
-            isStatic
-              ? "Interact with the Stationnary Pokémon"
-              : "Trigger Sweet Scent",
-            setup.gen_opts.level_up === true
-              ? `Press A on the menu showing new stats after level up`
-              : `Dismiss the final EXP message`,
-          ]}
-          startTrackerId="pokerus_emerald_timer_start"
-          stopTrackerId="pokerus_emerald_timer_stop"
-        />
-      ),
-    },
-    {
-      label: "1st Pickup Pokémon level",
-      input: (
-        <FormikSelect<CalibrationOptions, "leadPickupLvlIndex">
+      )}
+      <SelectField<Gen3Console>
+        name="console"
+        label="Console"
+        value={consoleType}
+        options={gen3ConsoleOptions}
+        onChange={setConsoleType}
+      />
+      <NumberField
+        label="Battle Video advance"
+        numType="decimal"
+        onChange={setBattleVideoAdvance}
+        value={battleVideoAdvance}
+      />
+      <NumberField
+        label="Human input delay (advance)"
+        tooltip={{
+          title: "Human input delay",
+          description:
+            "Number of RNG advances caused by human reaction time between the timer ending and pressing the input.",
+        }}
+        numType="decimal"
+        onChange={setHumanInputDelay}
+        value={humanInputDelay}
+      />
+      <FormSummary
+        rows={[
+          {
+            label: "Offset to start battle",
+            value: `~${offsetFromInputToBattleStart} frames`,
+            tooltip: {
+              title: "Offset to start battle",
+              description:
+                "Number of frames between interacting with the stationary Pokémon and the start of the battle.",
+            },
+            show: isStatic,
+          },
+          {
+            label: "Calibration",
+            value: `~${calibration} advances`,
+            tooltip: {
+              title: "Calibration",
+              description:
+                "Number of RNG advances not caused by frames. (Pokémon generation and battle logic)",
+            },
+          },
+          {
+            label: "Offset",
+            value: `~${OFFSET_END_BATTLE_TO_PICKUP} advances`,
+            tooltip: {
+              title: "Offset",
+              description:
+                "Number of RNG advances between the last player input and when the Pokérus logic starts.",
+            },
+          },
+        ]}
+      />
+      <EmbeddedRunTimer
+        milliseconds={[
+          5000,
+          Math.round(
+            (waitFrameBeforeSweetScent / gen3ConsoleFpsMap[consoleType]) * 1000,
+          ),
+          Math.round(
+            (frameFromStartBattleLastInputToEndBattleLastInput /
+              gen3ConsoleFpsMap[consoleType]) *
+              1000,
+          ),
+        ]}
+        labels={[
+          hasBattleVideo
+            ? "Close the Battle Video"
+            : "Soft reset START+SELECT+A+B",
+          isStatic
+            ? "Interact with the Stationnary Pokémon"
+            : "Trigger Sweet Scent",
+          setup.gen_opts.level_up === true
+            ? `Press A on the menu showing new stats after level up`
+            : `Dismiss the final EXP message`,
+        ]}
+        startTrackerId="pokerus_emerald_timer_start"
+        stopTrackerId="pokerus_emerald_timer_stop"
+      />
+      {isStatic && (
+        <FormSelectField<CalibrationOptions>
           name="leadPickupLvlIndex"
+          label="1st Pickup Pokémon level"
           options={Array.from({ length: 10 }, (_, index) => ({
             label: `${index * 10 + 1}-${index * 10 + 10}`,
             value: index,
           }))}
         />
-      ),
-      show: isStatic,
-    },
-    {
-      label: "Filters?",
-      input: <Switch value={filterActive} onChange={setFilterActive} />,
-    },
-  ];
-
-  if (filterActive) {
-    const info = [
-      {
-        name: "filter_pickup_items_0",
-        label: "Pickup item on 1st Pokémon",
-      },
-      {
-        name: "filter_pickup_items_1",
-        label: "Pickup item on 2nd Pokémon (Lv. 1-9)",
-      },
-      {
-        name: "filter_pickup_items_2",
-        label: "Pickup item on 3rd Pokémon (Lv. 1-9)",
-      },
-      {
-        name: "filter_pickup_items_3",
-        label: "Pickup item on 4th Pokémon (Lv. 1-9)",
-      },
-      {
-        name: "filter_pickup_items_4",
-        label: "Pickup item on 5th Pokémon (Lv. 1-9)",
-      },
-      {
-        name: "filter_pickup_items_5",
-        label: "Pickup item on 6th Pokémon (Lv. 1-9)",
-      },
-    ] as const;
-
-    for (let slot = 0; slot < setup.gen_opts.pickup_pokemon_count; slot++) {
-      const { name, label } = info[slot];
-      const levelIndex = isStatic && slot === 0 ? (leadPickupLvlIndex ?? 0) : 0;
-      const options = [
-        { label: "None", value: "None" },
-        ...toOptions(pickupItems_emerald[levelIndex]),
-      ];
-      fields.push({
-        label,
-        input: <FormikSelect name={name} options={options} />,
-        indent: 1,
-      });
-    }
-  } else {
-    fields.push(
-      {
-        label: "Minimum advances",
-        input: (
-          <FormikNumberInput<CalibrationOptions>
+      )}
+      <SwitchField
+        label="Filters?"
+        value={filterActive}
+        onChange={setFilterActive}
+      >
+        {pickupSlots.map(({ name, label, options }) => (
+          <FormSelectField<CalibrationOptions>
+            key={name}
+            name={name}
+            label={label}
+            options={options}
+          />
+        ))}
+      </SwitchField>
+      {!filterActive && (
+        <FieldRow>
+          <FormNumberField<CalibrationOptions>
             name="minimum_advances"
+            label="Minimum advances"
             numType="decimal"
           />
-        ),
-        indent: 1,
-      },
-      {
-        label: "Maximum advances",
-        input: (
-          <FormikNumberInput<CalibrationOptions>
+          <FormNumberField<CalibrationOptions>
             name="maximum_advances"
+            label="Maximum advances"
             numType="decimal"
           />
-        ),
-        indent: 1,
-      },
-    );
-  }
-
-  return (
-    <Flex vertical>
-      <h3>Calibration</h3>
-      <FormFieldTable fields={fields} />
-    </Flex>
+        </FieldRow>
+      )}
+    </FormSection>
   );
 };
 
@@ -361,7 +344,7 @@ export const Calibration = ({
     0,
   );
 
-  const onSubmit: RngToolSubmit<CalibrationOptions> = async (values) => {
+  const onSubmit: ToolFormSubmit<CalibrationOptions> = async (values) => {
     const res = await generateResults(values, setup, filterActive);
     setResults(res);
   };
@@ -441,7 +424,7 @@ export const Calibration = ({
   ];
 
   return (
-    <RngToolForm<CalibrationOptions, Pokerus3Column>
+    <ToolForm<CalibrationOptions, Pokerus3Column>
       columns={columns}
       results={results}
       initialValues={initialValues}
@@ -458,6 +441,6 @@ export const Calibration = ({
         humanInputDelay={humanInputDelay}
         setHumanInputDelay={setHumanInputDelay}
       />
-    </RngToolForm>
+    </ToolForm>
   );
 };

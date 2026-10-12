@@ -1,12 +1,14 @@
 import React from "react";
+import { ResultColumn } from "~/components";
 import {
-  FormikNumberInput,
-  ResultColumn,
-  RngToolForm,
-  RngToolSubmit,
-  Field,
-  FormikSelect,
-} from "~/components";
+  FieldRow,
+  FormNumberField,
+  FormSection,
+  FormSelectField,
+  PkmFilter,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
 import { rngTools, Stationary6State } from "~/rngTools";
 import {
   flattenIvs,
@@ -14,10 +16,10 @@ import {
   getIvColumns,
 } from "~/rngToolsUi/shared/ivColumns";
 import {
-  getPkmFilterFields,
   pkmFilterSchema,
   getPkmFilterInitialValues,
 } from "~/components/pkmFilter";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";
 import { toOptions } from "~/utils/options";
@@ -88,56 +90,67 @@ const initialValues: FormState = {
   ...getPkmFilterInitialValues(),
 };
 
-const getFields = (t: Translations): Field[] => [
-  {
-    label: t["Seed"],
-    input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
-  },
-  {
-    label: t["Initial Advance"],
-    input: (
-      <FormikNumberInput<FormState> name="initial_advances" numType="decimal" />
-    ),
-  },
-  {
-    label: t["Max Advances"],
-    input: (
-      <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
-    ),
-  },
-  {
-    label: t["Delay"],
-    input: <FormikNumberInput<FormState> name="delay" numType="decimal" />,
-  },
-  {
-    label: t["TSV"],
-    input: <FormikNumberInput<FormState> name="tsv" numType="decimal" />,
-  },
-  {
-    label: t["Transporter Gender"],
-    input: (
-      <FormikSelect<FormState, "transporter_genders">
-        name="transporter_genders"
-        options={transporterGenderOptions}
-      />
-    ),
-  },
-  ...getPkmFilterFields(
-    {
-      displayIvs: true,
-      displayAbility: false,
-      displayGender: false,
-      displayNature: false,
-      displayShiny: false,
-    },
-    t,
-  ),
-];
+const Fields = () => {
+  const t = useActiveRouteTranslations();
+
+  return (
+    <>
+      <FormSection title={t["Your game"]}>
+        <FormNumberField<FormState>
+          name="seed"
+          label={t["Seed"]}
+          numType="hex"
+        />
+        <FormNumberField<FormState>
+          name="tsv"
+          label={t["TSV"]}
+          numType="decimal"
+        />
+        <FormSelectField<FormState>
+          name="transporter_genders"
+          label={t["Transporter Gender"]}
+          options={transporterGenderOptions}
+        />
+      </FormSection>
+
+      <FormSection title={t["Search"]}>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="initial_advances"
+            label={t["Initial Advance"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="max_advances"
+            label={t["Max Advances"]}
+            numType="decimal"
+          />
+        </FieldRow>
+        <FormNumberField<FormState>
+          name="delay"
+          label={t["Delay"]}
+          numType="decimal"
+        />
+      </FormSection>
+
+      <FormSection title={t["Filters"]}>
+        <PkmFilter<FormState>
+          displayIvs
+          displayAbility={false}
+          displayGender={false}
+          displayNature={false}
+          displayShiny={false}
+          displayHiddenPower={false}
+        />
+      </FormSection>
+    </>
+  );
+};
 
 export const Transporter = () => {
   const [results, setResults] = React.useState<Result[]>([]);
 
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     const results = await rngTools.generate_transporter({
       seed: opts.seed,
       initial_advances: opts.initial_advances,
@@ -162,14 +175,15 @@ export const Transporter = () => {
   };
 
   return (
-    <RngToolForm<FormState, Result>
-      getFields={getFields}
+    <ToolForm<FormState, Result>
       getColumns={getColumns}
       results={results}
       validationSchema={Validator}
       initialValues={initialValues}
       onSubmit={onSubmit}
       submitTrackerId="generate_transporter"
-    />
+    >
+      <Fields />
+    </ToolForm>
   );
 };

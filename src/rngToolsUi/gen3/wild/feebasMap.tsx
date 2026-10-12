@@ -1,12 +1,15 @@
 import { useState } from "react";
 import {
   Button,
-  Flex,
   InteractableMap,
   MapGlow,
-  Typography,
   type MapFeature,
 } from "~/components";
+import {
+  FieldFrame,
+  useFieldIds,
+  type LabeledFieldProps,
+} from "~/components/form";
 import styled from "@emotion/styled";
 import { type FeebasTile, getFeebasTiles } from "./feebasMapData";
 import { useField } from "~/hooks/form";
@@ -79,26 +82,39 @@ const gridFeature: MapFeature = {
   ),
 };
 
-export const FormikFeebasTilesSelector = <FormState extends GenericForm>({
-  name,
-  canOnlySelectOne,
-}: {
+type FeebasTilesFieldProps<FormState extends GenericForm> = Pick<
+  LabeledFieldProps,
+  "label" | "tooltip"
+> & {
   name: GuaranteeFormNameType<FormState, number[]>;
   canOnlySelectOne?: boolean;
-}) => {
+};
+
+export const FeebasTilesField = <FormState extends GenericForm>({
+  name,
+  label,
+  tooltip,
+  canOnlySelectOne,
+}: FeebasTilesFieldProps<FormState>) => {
+  const ids = useFieldIds();
   const [{ value, onBlur }, { error }, { setValue }] = useField<number[]>(name);
 
   return (
-    <Flex vertical onBlur={onBlur}>
-      <FeebasTilesSelector
-        selectedTiles={value}
-        setSelectedTiles={setValue}
-        canOnlySelectOne={canOnlySelectOne}
-      />
-      {error != null && (
-        <Typography.Text type="danger">{error}</Typography.Text>
-      )}
-    </Flex>
+    <FieldFrame
+      ids={ids}
+      labelTarget="group"
+      label={label}
+      tooltip={tooltip}
+      errorMessage={error}
+    >
+      <div onBlur={onBlur}>
+        <FeebasTilesSelector
+          selectedTiles={value}
+          setSelectedTiles={setValue}
+          canOnlySelectOne={canOnlySelectOne}
+        />
+      </div>
+    </FieldFrame>
   );
 };
 

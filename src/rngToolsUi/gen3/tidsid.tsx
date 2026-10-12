@@ -3,17 +3,21 @@ import {
   rngTools,
   Gen3TidSidVersionOptions,
 } from "~/rngTools";
+import { ResultColumn } from "~/components";
 import {
-  Field,
-  FormikIdFilter,
-  FormikNumberInput,
-  FormikSelect,
-  ResultColumn,
-  RngToolForm,
-  RngToolSubmit,
-} from "~/components";
+  FieldRow,
+  FormDateField,
+  FormNumberField,
+  FormRadioField,
+  FormSection,
+  FormTimeField,
+  IdFilterField,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { toOptions } from "~/utils/options";
 import { match } from "ts-pattern";
-import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
 import React from "react";
 import {
   addRngTime,
@@ -65,76 +69,74 @@ const initialValues: FormState = {
   },
 };
 
-const getFields = (game: Game) => {
-  const dynamic = match(game)
-    .with("rs", (): Field[] => [
-      {
-        label: "Input Type",
-        input: (
-          <FormikSelect<FormState, "rs_input_type">
-            name="rs_input_type"
-            options={(["Dead Battery", "DateTime", "Seed"] as const).map(
-              (ty) => ({
-                label: ty,
-                value: ty,
-              }),
-            )}
-          />
-        ),
-      },
-      {
-        label: "Date",
-        input: <FormikDatePicker<FormState> name="date" />,
-      },
-      {
-        label: "Time",
-        input: <FormikTimePicker<FormState> name="time" />,
-      },
-      {
-        label: "Seed",
-        input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
-      },
-    ])
-    .with("frlge", (): Field[] => [
-      {
-        label: "TID",
-        input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-      },
-    ])
-    .with("xdcolo", (): Field[] => [
-      {
-        label: "Seed",
-        input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
-      },
-    ])
+const rsInputTypes = ["Dead Battery", "DateTime", "Seed"] as const;
+
+type FieldsProps = {
+  game: Game;
+};
+
+const Fields = ({ game }: FieldsProps) => {
+  const t = useActiveRouteTranslations();
+
+  const seedField = (
+    <FormNumberField<FormState> name="seed" label={t["Seed"]} numType="hex" />
+  );
+
+  const gameFields = match(game)
+    .with("rs", () => (
+      <>
+        <FormRadioField<FormState>
+          name="rs_input_type"
+          label="Input Type"
+          cellSize="word"
+          options={toOptions(rsInputTypes)}
+        />
+        <FieldRow>
+          <FormDateField<FormState> name="date" label={t["Date"]} />
+          <FormTimeField<FormState> name="time" label={t["Time"]} />
+        </FieldRow>
+        {seedField}
+      </>
+    ))
+    .with("frlge", () => (
+      <FormNumberField<FormState>
+        name="tid"
+        label={t["TID"]}
+        numType="decimal"
+      />
+    ))
+    .with("xdcolo", () => seedField)
     .exhaustive();
 
-  return [
-    {
-      label: "Initial Advances",
-      input: (
-        <FormikNumberInput<FormState>
-          name="initial_advances"
+  return (
+    <>
+      <FormSection title={t["Your game"]}>{gameFields}</FormSection>
+
+      <FormSection title={t["Search"]}>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="initial_advances"
+            label={t["Initial Advances"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="max_advances"
+            label={t["Max Advances"]}
+            numType="decimal"
+          />
+        </FieldRow>
+        <FormNumberField<FormState>
+          name="offset"
+          label={t["Offset"]}
           numType="decimal"
         />
-      ),
-    },
-    {
-      label: "Max Advances",
-      input: (
-        <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
-      ),
-    },
-    {
-      label: "Offset",
-      input: <FormikNumberInput<FormState> name="offset" numType="decimal" />,
-    },
-    ...dynamic,
-    {
-      label: "Filter",
-      input: <FormikIdFilter<FormState> name="filter" optional />,
-    },
-  ];
+      </FormSection>
+
+      <FormSection title={t["Filters"]}>
+        <IdFilterField<FormState> name="filter" optional />
+      </FormSection>
+    </>
+  );
 };
 
 type Props = {
@@ -144,7 +146,7 @@ type Props = {
 export const Gen3TidSidGenerator = ({ game = "rs" }: Props) => {
   const [results, setResults] = React.useState<Gen3TidSidResult[]>([]);
 
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     const versionOpts: Gen3TidSidVersionOptions = match(game)
       .with("rs", () => ({
         Rs: match(opts.rs_input_type)
@@ -182,17 +184,16 @@ export const Gen3TidSidGenerator = ({ game = "rs" }: Props) => {
     setResults(results);
   };
 
-  const fields = getFields(game);
-
   return (
-    <RngToolForm<FormState, Gen3TidSidResult>
-      fields={fields}
+    <ToolForm<FormState, Gen3TidSidResult>
       columns={columns}
       results={results}
       initialValues={initialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
       submitTrackerId="generate_gen3_tidsid"
-    />
+    >
+      <Fields game={game} />
+    </ToolForm>
   );
 };

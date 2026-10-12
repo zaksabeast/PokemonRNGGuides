@@ -1,5 +1,6 @@
 import React from "react";
-import { Alert, Field, Flex, FormFieldTable, Switch } from "~/components";
+import { Alert, Flex } from "~/components";
+import { FormCard, SwitchField, SwitchGroup } from "~/components/form";
 import { SinnohMap } from "./shared/sinnohMap";
 
 export const StandaloneSinnohMap = () => {
@@ -7,30 +8,6 @@ export const StandaloneSinnohMap = () => {
   const [showDpChatot, setShowDpChatot] = React.useState(false);
   const [showPtChatot, setShowPtChatot] = React.useState(false);
   const [showMarkerSubmission, setShowMarkerSubmission] = React.useState(false);
-
-  const fields: Field[] = [
-    {
-      label: "Honey Trees",
-      input: <Switch value={showHoneyTrees} onChange={setShowHoneyTrees} />,
-    },
-    {
-      label: "DP Chatot Locations",
-      input: <Switch value={showDpChatot} onChange={setShowDpChatot} />,
-    },
-    {
-      label: "PT Chatot Locations",
-      input: <Switch value={showPtChatot} onChange={setShowPtChatot} />,
-    },
-    {
-      label: "Draw mode",
-      input: (
-        <Switch
-          value={showMarkerSubmission}
-          onChange={setShowMarkerSubmission}
-        />
-      ),
-    },
-  ];
 
   return (
     <Flex vertical gap={16}>
@@ -57,7 +34,30 @@ export const StandaloneSinnohMap = () => {
         }
       />
 
-      <FormFieldTable fields={fields} />
+      <FormCard>
+        <SwitchGroup>
+          <SwitchField
+            label="Honey Trees"
+            value={showHoneyTrees}
+            onChange={setShowHoneyTrees}
+          />
+          <SwitchField
+            label="DP Chatot Locations"
+            value={showDpChatot}
+            onChange={setShowDpChatot}
+          />
+          <SwitchField
+            label="PT Chatot Locations"
+            value={showPtChatot}
+            onChange={setShowPtChatot}
+          />
+          <SwitchField
+            label="Draw mode"
+            value={showMarkerSubmission}
+            onChange={setShowMarkerSubmission}
+          />
+        </SwitchGroup>
+      </FormCard>
     </Flex>
   );
 };

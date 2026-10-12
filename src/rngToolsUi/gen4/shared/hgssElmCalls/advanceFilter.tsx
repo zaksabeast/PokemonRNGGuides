@@ -1,5 +1,6 @@
 import React from "react";
-import { Alert, Flex, type ResultColumn, RngToolForm } from "~/components";
+import { Alert, Flex, type ResultColumn } from "~/components";
+import { ToolForm } from "~/components/form";
 import { useAtom } from "jotai";
 import { gen4StateAtom } from "../state";
 import { rngTools, type ElmCall, type ElmCallAdvanceState } from "~/rngTools";
@@ -114,19 +115,7 @@ export const HgssCallAdvanceFilter = () => {
   );
 
   return (
-    <RngToolForm<LooseAdvanceFilterFormState, Result>
-      additionalButtons={
-        hasResults &&
-        state.gameState.elmCalls.length > 0 &&
-        hasMatch === false ? (
-          <Alert
-            showIcon
-            type="error"
-            title="No matches found"
-            description="An Elm Call may be incorrect, or the advance range may be too small. Try increasing the advance range."
-          />
-        ) : null
-      }
+    <ToolForm<LooseAdvanceFilterFormState, Result>
       pagination={{
         current: pageSettings.currentPage,
         pageSize: pageSettings.pageSize,
@@ -148,20 +137,32 @@ export const HgssCallAdvanceFilter = () => {
       )}
       submitTrackerId="elm_call_advance_filter_generate"
       filters={
-        <ElmCallFilterButtons
-          hasResults={hasResults}
-          maxElmCalls={results.length}
-          elmCallFilter={state.gameState.elmCalls}
-          onElmCallFilterChange={(elmCalls) => {
-            setState({ gameState: { elmCalls } });
-          }}
-          eTrackerId="elm_call_advance_filter_e"
-          kTrackerId="elm_call_advance_filter_k"
-          pTrackerId="elm_call_advance_filter_p"
-        />
+        <>
+          <ElmCallFilterButtons
+            hasResults={hasResults}
+            maxElmCalls={results.length}
+            elmCallFilter={state.gameState.elmCalls}
+            onElmCallFilterChange={(elmCalls) => {
+              setState({ gameState: { elmCalls } });
+            }}
+            eTrackerId="elm_call_advance_filter_e"
+            kTrackerId="elm_call_advance_filter_k"
+            pTrackerId="elm_call_advance_filter_p"
+          />
+          {hasResults &&
+            state.gameState.elmCalls.length > 0 &&
+            hasMatch === false && (
+              <Alert
+                showIcon
+                type="error"
+                title="No matches found"
+                description="An Elm Call may be incorrect, or the advance range may be too small. Try increasing the advance range."
+              />
+            )}
+        </>
       }
     >
       <AdvanceFilterFields mode={mode} targetAdvance={resolvedTargetAdvance} />
-    </RngToolForm>
+    </ToolForm>
   );
 };

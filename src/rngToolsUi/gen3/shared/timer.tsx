@@ -1,7 +1,7 @@
 import React from "react";
 import { Skeleton } from "antd";
 import { useAtom as useJotaiAtom } from "jotai";
-import { Card, Flex, RadioGroup } from "~/components";
+import { Card, Flex } from "~/components";
 import { useHydrate } from "~/hooks/useHydrate";
 import { useTimerSequence } from "~/hooks/useTimerSequence";
 import {
@@ -9,12 +9,11 @@ import {
   type Gen3TimerAtom,
 } from "~/rngToolsUi/timer/atoms";
 import { RunView } from "~/rngToolsUi/timer/runView";
+import { TimerModeField, type TimerMode } from "~/rngToolsUi/timer/setupParts";
 import { useAtom } from "~/state/localStorage";
 import { multiTimerStateAtom } from "~/state/multiTimerState";
 import { hydrationLock } from "~/utils/hydration";
 import { Gen3EmbeddedSetup } from "./embeddedSetup";
-
-type Mode = "setup" | "run";
 
 type TimerProps = {
   trackerId: string;
@@ -35,7 +34,7 @@ const InnerGen3EmbeddedTimer = ({
   setMaxBeepCount,
 }: InnerProps) => {
   const [timer, updateTimer] = useJotaiAtom(timerAtom);
-  const [mode, setMode] = React.useState<Mode>("run");
+  const [mode, setMode] = React.useState<TimerMode>("run");
   const sequence = useTimerSequence({ milliseconds: timer.ms, maxBeepCount });
 
   // The target comes from the guide's state, which lives outside the timer atom
@@ -47,15 +46,10 @@ const InnerGen3EmbeddedTimer = ({
 
   return (
     <Flex vertical gap={16}>
-      <RadioGroup<Mode>
-        name="timerMode"
-        optionType="button"
+      <TimerModeField
         value={mode}
-        onChange={({ target }) => setMode(target.value)}
-        options={[
-          { label: "Setup", value: "setup", disabled: sequence.isRunning },
-          { label: "Run", value: "run" },
-        ]}
+        onChange={setMode}
+        isRunning={sequence.isRunning}
       />
 
       {mode === "run" && (

@@ -1,15 +1,16 @@
 import React from "react";
 import {
-  Flex,
-  Typography,
-  Field,
-  FormFieldTable,
-  RadioGroup,
-} from "~/components";
+  FormCard,
+  FormSection,
+  FormSummary,
+  RadioField,
+} from "~/components/form";
 import { getTargetPokemonDesc } from "./calc";
 import type { Game, TargetStarter } from "./index";
 import { toOptions } from "~/utils/options";
 import { getStatRange } from "~/types/statRange";
+
+const starters = ["Mudkip", "Torchic", "Treecko"] as const;
 
 type Props = {
   game: Game;
@@ -44,31 +45,19 @@ export const TargetPokemon = ({
     };
   }, [game, species, setTargetStarter, targetAdvance]);
 
-  const fields: Field[] = [
-    {
-      label: "Starter",
-      input: (
-        <RadioGroup
-          name="targetStarter"
-          optionType="button"
-          value={species}
-          onChange={({ target }) => {
-            // RadioGroup is not able to infer the value type, so we have to cast it
-            setSpecies(target.value as TargetStarter["species"]);
-          }}
-          options={toOptions(["Mudkip", "Torchic", "Treecko"])}
-        />
-      ),
-    },
-    { label: "Info", input: targetPokemonDesc },
-  ];
-
   return (
-    <Flex id="target-pokemon-container" vertical gap={8} flex={1}>
-      <Typography.Title level={5} p={0} m={0}>
-        Target Pokemon
-      </Typography.Title>
-      <FormFieldTable fields={fields} />
-    </Flex>
+    <FormCard>
+      <FormSection title="Target Pokemon">
+        <RadioField<TargetStarter["species"]>
+          name="targetStarter"
+          label="Starter"
+          cellSize="word"
+          value={species}
+          onChange={setSpecies}
+          options={toOptions(starters)}
+        />
+        <FormSummary rows={[{ label: "Info", value: targetPokemonDesc }]} />
+      </FormSection>
+    </FormCard>
   );
 };

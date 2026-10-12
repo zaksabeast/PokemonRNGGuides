@@ -22,6 +22,16 @@ import {
   MdChevronRight,
   MdVideogameAsset,
   MdOutlineTablet,
+  MdOutlineTimer,
+  MdArrowDownward,
+  MdArrowForward,
+  MdOutlineBuild,
+  MdOutlinePlayCircle,
+  MdSwapHoriz,
+  MdArrowDropDown,
+  MdSearch,
+  MdOutlineCalendarToday,
+  MdOutlineSchedule,
 } from "react-icons/md";
 import { BiMessageAltError } from "react-icons/bi";
 import { TiWarningOutline } from "react-icons/ti";
@@ -106,6 +116,16 @@ const icons = {
   Gamepad: FaGamepad,
   Laptop: FaLaptop,
   LaptopMedical: FaLaptopMedical,
+  Timer: MdOutlineTimer,
+  ArrowDownward: MdArrowDownward,
+  ArrowForward: MdArrowForward,
+  Build: MdOutlineBuild,
+  PlayCircle: MdOutlinePlayCircle,
+  SwapHoriz: MdSwapHoriz,
+  ArrowDropDown: MdArrowDropDown,
+  Search: MdSearch,
+  Calendar: MdOutlineCalendarToday,
+  Schedule: MdOutlineSchedule,
 } as const;
 
 export type IconName = keyof typeof icons;

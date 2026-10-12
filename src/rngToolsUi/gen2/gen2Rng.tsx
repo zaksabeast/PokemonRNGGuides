@@ -1,12 +1,14 @@
 import React from "react";
+import { ResultColumn } from "~/components";
 import {
-  FormikNumberInput,
-  ResultColumn,
-  RngToolForm,
-  RngToolSubmit,
-  Field,
-} from "~/components";
+  FieldRow,
+  FormNumberField,
+  FormSection,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
 import { rngTools } from "~/rngTools";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { HexSchema } from "~/utils/number";
 import { z } from "zod";
 import { Translations } from "~/translations";
@@ -56,45 +58,61 @@ const initialValues: FormState = {
   advanceCount: 10000,
 };
 
-const getFields = (t: Translations): Field[] => [
-  {
-    label: t["ADiv Index"],
-    input: <FormikNumberInput<FormState> name="adivIndex" numType="decimal" />,
-  },
-  {
-    label: t["SDiv Index"],
-    input: <FormikNumberInput<FormState> name="sdivIndex" numType="decimal" />,
-  },
-  {
-    label: t["Div"],
-    input: <FormikNumberInput<FormState> name="div" numType="hex" />,
-  },
-  {
-    label: t["State"],
-    input: <FormikNumberInput<FormState> name="state" numType="hex" />,
-  },
-  {
-    label: t["Start Advance"],
-    input: (
-      <FormikNumberInput<FormState> name="startAdvance" numType="decimal" />
-    ),
-  },
-  {
-    label: t["Advance Count"],
-    input: (
-      <FormikNumberInput<FormState>
-        name="advanceCount"
-        disabled
-        numType="decimal"
-      />
-    ),
-  },
-];
+const Fields = () => {
+  const t = useActiveRouteTranslations();
+
+  return (
+    <>
+      <FormSection title={t["Your game"]}>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="adivIndex"
+            label={t["ADiv Index"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="sdivIndex"
+            label={t["SDiv Index"]}
+            numType="decimal"
+          />
+        </FieldRow>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="div"
+            label={t["Div"]}
+            numType="hex"
+          />
+          <FormNumberField<FormState>
+            name="state"
+            label={t["State"]}
+            numType="hex"
+          />
+        </FieldRow>
+      </FormSection>
+
+      <FormSection title={t["Search"]}>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="startAdvance"
+            label={t["Start Advance"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="advanceCount"
+            label={t["Advance Count"]}
+            numType="decimal"
+            disabled
+          />
+        </FieldRow>
+      </FormSection>
+    </>
+  );
+};
 
 export const Gen2Rng = () => {
   const [results, setResults] = React.useState<Result[]>([]);
 
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     const results = await rngTools.gen2_generate_rng_states(
       opts.div >>> 8,
       opts.div & 0xff,
@@ -114,14 +132,15 @@ export const Gen2Rng = () => {
   };
 
   return (
-    <RngToolForm<FormState, Result>
-      getFields={getFields}
+    <ToolForm<FormState, Result>
       getColumns={getColumns}
       results={results}
       initialValues={initialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
       submitTrackerId="generate_gen2_rng"
-    />
+    >
+      <Fields />
+    </ToolForm>
   );
 };

@@ -1,15 +1,18 @@
 import React from "react";
 import { uniqueId, sortBy } from "lodash-es";
+import { ResultColumn, Button } from "~/components";
 import {
-  ResultColumn,
-  FormikNumberInput,
-  IvInput,
-  Field,
-  RngToolForm,
-  RngToolSubmit,
-  Button,
-  FormikSelect,
-} from "~/components";
+  FieldRow,
+  FormMultiSelectField,
+  FormNumberField,
+  FormSection,
+  HiddenPowerField,
+  IvRangeFields,
+  NullableIvFields,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { rngTools, Egg3PickupState } from "~/rngTools";
 import { maxIvs, minIvs } from "~/types/ivs";
 import {
@@ -27,10 +30,6 @@ import {
   defaultHiddenPowerFilter,
   HiddenPowerSchema,
 } from "~/components/hiddenPowerInput";
-import {
-  HiddenPowerInput,
-  HiddenPowerSwitch,
-} from "~/components/hiddenPowerInput.component";
 import { HexSchema } from "~/utils/number";
 import { usePickupEggState } from "./state";
 import { useCurrentStep } from "~/components/stepper/state";
@@ -149,71 +148,66 @@ const initialValues: FormState = {
   filter_hidden_power: defaultHiddenPowerFilter,
 };
 
-const getFields = (t: Translations): Field[] => [
-  {
-    label: t["Seed"],
-    input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
-  },
-  {
-    label: t["Initial advances"],
-    input: (
-      <FormikNumberInput<FormState> name="initial_advances" numType="decimal" />
-    ),
-  },
-  {
-    label: t["Max advances"],
-    input: (
-      <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
-    ),
-  },
-  {
-    label: t["Pickup method"],
-    input: (
-      <FormikSelect<FormState, "methods">
-        name="methods"
-        mode="multiple"
-        options={getIvMethodOptions(t)}
-      />
-    ),
-  },
-  {
-    label: t["Parent 1 IVs"],
-    input: <IvInput<FormState, "nullable"> name="parent1_ivs" />,
-  },
-  {
-    label: t["Parent 2 IVs"],
-    input: <IvInput<FormState, "nullable"> name="parent2_ivs" />,
-  },
-  {
-    label: t["Egg min IVs"],
-    input: <IvInput<FormState> name="filter_min_ivs" />,
-  },
-  {
-    label: t["Egg max IVs"],
-    input: <IvInput<FormState> name="filter_max_ivs" />,
-  },
-  {
-    label: t["Hidden power"],
-    input: <HiddenPowerSwitch />,
-  },
-  {
-    label: "",
-    key: "retail_emerald_pickup_egg.hidden_power",
-    direction: "column",
-    showWhen: {
-      fieldName: "filter_hidden_power.active",
-      when: (active: unknown) => active === true,
-    },
-    input: <HiddenPowerInput<FormState> name="filter_hidden_power" />,
-    indent: 1,
-  },
-];
+const Fields = () => {
+  const t = useActiveRouteTranslations();
+
+  return (
+    <>
+      <FormSection title={t["Your game"]}>
+        <FormNumberField<FormState>
+          name="seed"
+          label={t["Seed"]}
+          numType="hex"
+        />
+      </FormSection>
+
+      <FormSection title={t["Parents"]}>
+        <NullableIvFields<FormState>
+          name="parent1_ivs"
+          title={t["Parent 1 IVs"]}
+        />
+        <NullableIvFields<FormState>
+          name="parent2_ivs"
+          title={t["Parent 2 IVs"]}
+        />
+      </FormSection>
+
+      <FormSection title={t["Search"]}>
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="initial_advances"
+            label={t["Initial advances"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="max_advances"
+            label={t["Max advances"]}
+            numType="decimal"
+          />
+        </FieldRow>
+        <FormMultiSelectField<FormState>
+          name="methods"
+          label={t["Pickup method"]}
+          options={getIvMethodOptions(t)}
+        />
+      </FormSection>
+
+      <FormSection title={t["Filters"]}>
+        <IvRangeFields<FormState>
+          minName="filter_min_ivs"
+          maxName="filter_max_ivs"
+        />
+        <HiddenPowerField<FormState> name="filter_hidden_power" />
+      </FormSection>
+    </>
+  );
+};
 
 export const RetailEmeraldPickupEgg = () => {
   const [results, setResults] = React.useState<Result[]>([]);
   const [, setPickupEggState] = usePickupEggState();
 
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     const parentIvs: [NullableIvs, NullableIvs] = [
       opts.parent1_ivs,
       opts.parent2_ivs,
@@ -237,8 +231,7 @@ export const RetailEmeraldPickupEgg = () => {
   };
 
   return (
-    <RngToolForm<FormState, Result>
-      getFields={getFields}
+    <ToolForm<FormState, Result>
       getColumns={getColumns}
       results={results}
       initialValues={initialValues}
@@ -247,6 +240,8 @@ export const RetailEmeraldPickupEgg = () => {
       formContainerId="retail_emerald_pickup_egg_form"
       submitTrackerId="generate_retail_emerald_pickup_egg"
       rowKey="key"
-    />
+    >
+      <Fields />
+    </ToolForm>
   );
 };

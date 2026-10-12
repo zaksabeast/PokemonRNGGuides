@@ -1,12 +1,13 @@
 import React from "react";
 import { match } from "ts-pattern";
 import {
-  Field,
-  FormFieldTable,
-  FormikNumberInput,
-  FormikRadio,
-  FormikSelect,
-} from "~/components";
+  FormNumberField,
+  FormRadioField,
+  FormSection,
+  FormSelectField,
+  getNatureOptions,
+  StatRadioFields,
+} from "~/components/form";
 import { useWatch, useField } from "~/hooks/form";
 import {
   defaultMinMaxStats,
@@ -16,9 +17,6 @@ import {
   MinMaxStats,
 } from "~/types";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
-import { Translations } from "~/translations";
-import { getNatureInputProps } from "~/components/pkmFilter";
-import { getStatFields } from "../shared/statFields";
 import { getStatRange } from "~/types/statRange";
 import {
   Characteristic4Options,
@@ -31,6 +29,7 @@ type SpeciesFieldProps = {
 };
 
 export const SpeciesField = ({ disabled }: SpeciesFieldProps) => {
+  const t = useActiveRouteTranslations();
   const [, , { setValue }] = useField<FormState["species"]>("species");
   const watched = useWatch({
     names: { gen: true },
@@ -54,8 +53,9 @@ export const SpeciesField = ({ disabled }: SpeciesFieldProps) => {
   }, [setValue, watched.gen]);
 
   return (
-    <FormikSelect<FormState, "species">
+    <FormSelectField<FormState>
       name="species"
+      label={t["Species"]}
       options={speciesOptions}
       disabled={disabled}
     />
@@ -63,14 +63,11 @@ export const SpeciesField = ({ disabled }: SpeciesFieldProps) => {
 };
 
 type CharacteristicFieldProps = {
-  t: Translations;
   disabled: boolean;
 };
 
-export const CharacteristicField = ({
-  t,
-  disabled,
-}: CharacteristicFieldProps) => {
+export const CharacteristicField = ({ disabled }: CharacteristicFieldProps) => {
+  const t = useActiveRouteTranslations();
   const [, , { setValue }] =
     useField<FormState["characteristic"]>("characteristic");
   const watched = useWatch({
@@ -91,8 +88,9 @@ export const CharacteristicField = ({
   }, [setValue, gen]);
 
   return (
-    <FormikSelect<FormState, "characteristic">
+    <FormSelectField<FormState>
       name="characteristic"
+      label={t["Characteristic"]}
       disabled={disabled || gen === "3"}
       options={[{ label: t["None"], value: "None" }, ...options]}
     />
@@ -137,12 +135,13 @@ export const Fields = ({ hasSubmitted }: FieldsProps) => {
     run();
   }, [watched.species, watched.nature, watched.level]);
 
-  const fields: Field[] = [
-    {
-      label: t["Generation"],
-      input: (
-        <FormikRadio<FormState>
+  return (
+    <>
+      <FormSection title={t["Your Pokémon"]}>
+        <FormRadioField<FormState>
           name="gen"
+          label={t["Generation"]}
+          cellSize="word"
           disabled={hasSubmitted}
           options={[
             { label: t["Gen 3"], value: "3" },
@@ -150,32 +149,24 @@ export const Fields = ({ hasSubmitted }: FieldsProps) => {
             { label: t["Gen 5"], value: "5" },
           ]}
         />
-      ),
-    },
-    {
-      label: t["Species"],
-      input: <SpeciesField disabled={hasSubmitted} />,
-    },
-    {
-      label: t["Nature"],
-      input: (
-        <FormikSelect<FormState, "nature">
-          disabled={hasSubmitted}
+        <SpeciesField disabled={hasSubmitted} />
+        <FormSelectField<FormState>
           name="nature"
-          {...getNatureInputProps(t)}
+          label={t["Nature"]}
+          options={getNatureOptions(t)}
+          disabled={hasSubmitted}
         />
-      ),
-    },
-    {
-      label: t["Characteristic"],
-      input: <CharacteristicField t={t} disabled={hasSubmitted} />,
-    },
-    {
-      label: t["Level"],
-      input: <FormikNumberInput<FormState> name="level" numType="decimal" />,
-    },
-    ...getStatFields<FormState>(minMaxStats),
-  ];
+        <CharacteristicField disabled={hasSubmitted} />
+        <FormNumberField<FormState>
+          name="level"
+          label={t["Level"]}
+          numType="decimal"
+        />
+      </FormSection>
 
-  return <FormFieldTable fields={fields} />;
+      <FormSection title={t["Stats"]}>
+        <StatRadioFields<FormState> minMaxStats={minMaxStats} />
+      </FormSection>
+    </>
+  );
 };

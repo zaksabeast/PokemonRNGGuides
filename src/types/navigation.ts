@@ -1,11 +1,15 @@
-import { Route } from "~/routes/defs";
+import { z } from "zod";
+import { RouteSchema } from "~/routes/defs";
 
-export type SlugOrExternalLink =
-  | {
-      type: "slug";
-      slug: Route;
-    }
-  | {
-      type: "externalLink";
-      externalLink: string;
-    };
+export const SlugOrExternalLinkSchema = z.union([
+  z.object({
+    type: z.literal("slug"),
+    slug: RouteSchema,
+  }),
+  z.object({
+    type: z.literal("externalLink"),
+    externalLink: z.string(),
+  }),
+]);
+
+export type SlugOrExternalLink = z.infer<typeof SlugOrExternalLinkSchema>;

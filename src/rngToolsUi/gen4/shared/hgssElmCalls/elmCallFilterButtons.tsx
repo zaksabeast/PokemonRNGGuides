@@ -1,10 +1,23 @@
 import React from "react";
-import { Button, Flex, Input, RadioGroup } from "~/components";
+import {
+  FormSection,
+  OutlinedButton,
+  RadioField,
+  TextField,
+  type RadioOption,
+} from "~/components/form";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { sanitizeElmCalls } from "./utils";
 import { getErrorMessage } from "../advanceFilter/utils";
+import { SequenceButtons } from "../advanceFilter/sequenceButtons";
 
 type Caller = "elm" | "irwin";
 type CallType = "E" | "K" | "P";
+
+const callerOptions: RadioOption<Caller>[] = [
+  { label: "Elm", value: "elm" },
+  { label: "Irwin", value: "irwin" },
+];
 
 const labels: Record<Caller, Record<CallType, string>> = {
   elm: {
@@ -44,40 +57,34 @@ export const ElmCallFilterButtons = ({
   kTrackerId,
   pTrackerId,
 }: Props) => {
+  const t = useActiveRouteTranslations();
   const [callType, setCallType] = React.useState<Caller>("elm");
   const addCall = (call: CallType) => {
     onElmCallFilterChange(sanitizeElmCalls(`${elmCallFilter}, ${call}`));
   };
 
-  const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) =>
-    onElmCallFilterChange(event.target.value);
-
   return (
-    <Flex vertical gap={8}>
-      <RadioGroup
-        optionType="button"
+    <FormSection>
+      <RadioField<Caller>
+        label={t["Caller"]}
+        cellSize="word"
         value={callType}
-        onChange={(event) => setCallType(event.target.value)}
-        options={[
-          { label: "Elm", value: "elm" },
-          { label: "Irwin", value: "irwin" },
-        ]}
+        onChange={setCallType}
+        options={callerOptions}
       />
-      <Flex gap={8}>
-        <Button flex={1} trackerId={eTrackerId} onClick={() => addCall("E")}>
+      <SequenceButtons>
+        <OutlinedButton trackerId={eTrackerId} onClick={() => addCall("E")}>
           {labels[callType]["E"]}
-        </Button>
-
-        <Button flex={1} trackerId={kTrackerId} onClick={() => addCall("K")}>
+        </OutlinedButton>
+        <OutlinedButton trackerId={kTrackerId} onClick={() => addCall("K")}>
           {labels[callType]["K"]}
-        </Button>
-
-        <Button flex={1} trackerId={pTrackerId} onClick={() => addCall("P")}>
+        </OutlinedButton>
+        <OutlinedButton trackerId={pTrackerId} onClick={() => addCall("P")}>
           {labels[callType]["P"]}
-        </Button>
-      </Flex>
-
-      <Input
+        </OutlinedButton>
+      </SequenceButtons>
+      <TextField
+        label={t["Elm Calls"]}
         placeholder="EKP"
         errorMessage={getErrorMessage({
           hasResults,
@@ -86,8 +93,8 @@ export const ElmCallFilterButtons = ({
           unitName: "elm calls",
         })}
         value={elmCallFilter}
-        onChange={onInputChange}
+        onChange={onElmCallFilterChange}
       />
-    </Flex>
+    </FormSection>
   );
 };

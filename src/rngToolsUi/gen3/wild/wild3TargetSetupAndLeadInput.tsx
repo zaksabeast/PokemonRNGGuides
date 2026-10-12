@@ -1,4 +1,5 @@
-import { Flex, FormFieldTable } from "~/components";
+import { Flex } from "~/components";
+import { FormCard, FormSummary } from "~/components/form";
 
 import Instructions_calib_skip_setup from "./instructions_calib_skip_setup.mdx";
 import { TargetSetup, Wild3TargetSetupInput } from "./wild3TargetSetupInput";
@@ -68,14 +69,11 @@ export const Wild3TargetSetupAndLeadInput = ({
       <Wild3TargetSetupInput setTargetSetup={setTargetSetupBoth} />
       {targetSetupResult != null && targetSetup != null && (
         <Flex vertical gap={20} mt={20}>
-          <FormFieldTable
-            fields={[
-              {
-                label: "Target Pokémon",
-                input: targetSetupResult,
-              },
-            ]}
-          />
+          <FormCard>
+            <FormSummary
+              rows={[{ label: "Target Pokémon", value: targetSetupResult }]}
+            />
+          </FormCard>
           <Wild3LeadCycleSpeedSelectorWithBtn
             targetSetup={targetSetup}
             permitEnablingDebugOptions={permitEnablingDebugOptions}

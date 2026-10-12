@@ -1,14 +1,14 @@
-import { Gen3Method, Species } from "~/rngTools";
+import { Gen3Method } from "~/rngTools";
+import { Link } from "~/components";
 import {
-  Field,
-  FormikSelect,
-  FormikSwitch,
-  FormFieldTable,
-  Flex,
-  Typography,
-  Link,
-  FormikRadio,
-} from "~/components";
+  FormMultiSelectField,
+  FormRadioField,
+  FormSection,
+  FormSummary,
+  FormSwitchField,
+  SwitchField,
+  SwitchGroup,
+} from "~/components/form";
 import { toOptions } from "~/utils/options";
 
 import {
@@ -19,15 +19,15 @@ import {
   formatFeebasStateName,
   leadsLabels,
 } from "./utils";
-import { useFormContext, useWatch_UNSAFE } from "~/hooks/form";
+import { useField, useWatch_UNSAFE } from "~/hooks/form";
 import { FormState } from "./wild3TargetSetupSearcher";
 import { getPossibleValuesForSpecies } from "./wild3TargetMon";
 import { wild3SafariPokeblockSearchOptLabels } from "~/types/pokeblock";
 import {
-  getPaintingSetupFilterFields as getPaintingSetupFilterFields,
-  getTidSidSetupFilterFields,
-} from "../pokemonRng/targetSetupSearcher";
-import { FormikFeebasTilesSelector } from "./feebasMap";
+  PaintingSetupFilterFields,
+  TidSidSetupFilterFields,
+} from "../pokemonRng/targetSetupSearcherFields";
+import { FeebasTilesField } from "./feebasMap";
 
 const supportedGen3Methods = [
   "Wild1",
@@ -37,206 +37,14 @@ const supportedGen3Methods = [
   // TODO: Support Wild5
 ] as const satisfies Gen3Method[];
 
-const getSetupFields = (obj: {
-  species: Species;
-  filter_shiny: boolean;
-  recommendedSetups: boolean;
-  usingPaintingReseeding: boolean;
-  letSearcherFindPaintingSeed: boolean;
-  showAdvancedPaintingSettings: boolean;
-  usingAceForSid: boolean;
-  feebasCycles: number[];
-  setFieldValue: ReturnType<typeof useFormContext<FormState>>["setFieldValue"];
-}): Field[] => {
-  const { species, recommendedSetups } = obj;
-
-  const possVals = getPossibleValuesForSpecies(species);
-  const showAdvancedSetups = !recommendedSetups;
-
-  const fields: Field[] = [
-    {
-      label: "Target species",
-      input: species,
-    },
-    ...getTidSidSetupFilterFields({ ...obj, game: "emerald" }),
-    {
-      label: "Recommended setups?",
-      input: <FormikSwitch<FormState> name="recommendedSetups" />,
-    },
-    {
-      label: "Actions",
-      input: (
-        <FormikSelect<FormState, "actions">
-          name="actions"
-          options={toOptions(possVals.actions, formatActionName)}
-          mode="multiple"
-          selectAllNoneButtons
-        />
-      ),
-      show: showAdvancedSetups,
-      indent: 1,
-    },
-    {
-      label: "Maps",
-      input: (
-        <FormikSelect<FormState, "maps">
-          name="maps"
-          options={toOptions(possVals.maps, formatMapName)}
-          mode="multiple"
-          selectAllNoneButtons
-        />
-      ),
-      show: showAdvancedSetups,
-      indent: 1,
-    },
-    {
-      label: "Leads",
-      input: (
-        <FormikSelect<FormState, "leadIdxs">
-          name="leadIdxs"
-          options={leadsLabels}
-          mode="multiple"
-          selectAllNoneButtons
-        />
-      ),
-      show: showAdvancedSetups,
-      indent: 1,
-    },
-    {
-      label: "Using White Flute",
-      tooltip:
-        "White Flute greatly increases the odds of encountering Pokémon when using Rock Smash. It can be obtained from the Glass Workshop in Route 113.",
-      input: <FormikSwitch<FormState> name="using_white_flute" />,
-      show: showAdvancedSetups && possVals.actions.includes("RockSmash"),
-      indent: 1,
-    },
-    {
-      label: "Considered Pokéblocks",
-      tooltip:
-        "Putting a Pokéblock in a Pokéblock feeder in the Safari Zone increases the likehood encountering Pokémon with a particular nature.",
-      input: (
-        <FormikRadio<FormState>
-          name="considered_safari_pokeblocks"
-          options={wild3SafariPokeblockSearchOptLabels}
-        />
-      ),
-      show: showAdvancedSetups && possVals.is_safari_pokeblock_usable,
-      indent: 1,
-    },
-    {
-      label: "Roamer states",
-      input: (
-        <FormikSelect<FormState, "roamerStates">
-          name="roamerStates"
-          options={toOptions(possVals.roamerStates, formatRoamerStateName)}
-          mode="multiple"
-        />
-      ),
-      show: showAdvancedSetups && possVals.roamerStates.length > 1,
-      indent: 1,
-    },
-    {
-      label: "Mass outbreak states",
-      input: (
-        <FormikSelect<FormState, "massOutbreakStates">
-          name="massOutbreakStates"
-          options={toOptions(
-            possVals.massOutbreakStates,
-            formatMassOutbreakStateName,
-          )}
-          mode="multiple"
-          selectAllNoneButtons
-        />
-      ),
-      show: showAdvancedSetups && possVals.massOutbreakStates.length > 1,
-      indent: 1,
-    },
-    {
-      label: "Feebas states",
-      input: (
-        <FormikSelect<FormState, "feebasStates">
-          name="feebasStates"
-          options={toOptions(possVals.feebasStates, formatFeebasStateName)}
-          mode="multiple"
-        />
-      ),
-      show: showAdvancedSetups && possVals.feebasStates.length > 1,
-      indent: 1,
-    },
-    {
-      label: "Feebas fishing spots",
-      tooltip:
-        "Select the tiles where you can fish Feebas. If possible, avoid red tiles because they cause unstable results.",
-      input: <FormikFeebasTilesSelector<FormState> name="feebasCycles" />,
-      show: species === "Feebas",
-    },
-    {
-      label: "Methods",
-      tooltip: (
-        <>
-          For advanced users. Learn more about{" "}
-          <Link newTab href="/gba-methods/">
-            methods
-          </Link>
-          .
-        </>
-      ),
-      input: (
-        <FormikSelect<FormState, "methods">
-          name="methods"
-          options={toOptions(supportedGen3Methods)}
-          mode="multiple"
-        />
-      ),
-      show: showAdvancedSetups,
-      indent: 1,
-    },
-    ...getPaintingSetupFilterFields({
-      ...obj,
-      game: "emerald",
-      usingDeadBattery: false,
-      requireAceForPaintingReseeding: false,
-      initial_advances: 0, // doesn't matter if recommendedMinAdvances is null
-      recommendedMinAdvances: null,
-    }),
-    {
-      label: "Display results with 0% likelihood",
-      input: <FormikSwitch<FormState> name="generate_even_if_impossible" />,
-    },
-    {
-      label: "RNG-manipulated lead PID",
-      tooltip: (
-        <>
-          For advanced users.
-          <br />
-          If inactive, likelihood is calculated assuming you're using a common
-          lead cycle speed.
-          <br />
-          If active, likelihood is calculated assuming you will catch a Pokémon
-          with the optimal lead cycle speed then use it to catch your target
-          Pokémon. Learn more about{" "}
-          <Link newTab href="/gba-methods-lead-impact/">
-            Methods & Leads
-          </Link>
-          .
-        </>
-      ),
-      input: <FormikSwitch<FormState> name="rngManipulatedLeadPid" />,
-    },
-  ];
-  return fields;
-};
-
 export const Wild3SetupFilter = () => {
-  const { setFieldValue } = useFormContext<FormState>();
+  const [{ value: recommendedSetups }, , { setValue: setRecommendedSetups }] =
+    useField<boolean>("recommendedSetups");
   const species = useWatch_UNSAFE<FormState, "species">({
     name: "species",
   });
   const filter_shiny = useWatch_UNSAFE<FormState, "filter_shiny">({
     name: "filter_shiny",
-  });
-  const recommendedSetups = useWatch_UNSAFE<FormState, "recommendedSetups">({
-    name: "recommendedSetups",
   });
   const usingAceForSid = useWatch_UNSAFE<FormState, "usingAceForSid">({
     name: "usingAceForSid",
@@ -253,34 +61,153 @@ export const Wild3SetupFilter = () => {
   >({
     name: "letSearcherFindPaintingSeed",
   });
-  const showAdvancedPaintingSettings = useWatch_UNSAFE<
-    FormState,
-    "showAdvancedPaintingSettings"
-  >({
-    name: "showAdvancedPaintingSettings",
-  });
-  const feebasCycles = useWatch_UNSAFE<FormState, "feebasCycles">({
-    name: "feebasCycles",
-  });
 
-  const fields: Field[] = getSetupFields({
-    species,
-    filter_shiny,
-    recommendedSetups,
-    usingPaintingReseeding,
-    letSearcherFindPaintingSeed,
-    showAdvancedPaintingSettings,
-    usingAceForSid,
-    feebasCycles,
-    setFieldValue,
-  });
+  const possVals = getPossibleValuesForSpecies(species);
 
   return (
-    <Flex vertical gap={8}>
-      <Typography.Title level={5} p={0} m={0}>
-        Considered Setups
-      </Typography.Title>
-      <FormFieldTable fields={fields} />
-    </Flex>
+    <FormSection title="Considered Setups">
+      <FormSummary rows={[{ label: "Target species", value: species }]} />
+      <TidSidSetupFilterFields
+        game="emerald"
+        filter_shiny={filter_shiny}
+        usingAceForSid={usingAceForSid}
+      />
+      <SwitchField
+        name="recommendedSetups"
+        label="Ignore Recommended Setups"
+        value={!recommendedSetups}
+        onChange={(ignore) => setRecommendedSetups(!ignore)}
+      >
+        <FormMultiSelectField<FormState>
+          name="actions"
+          label="Actions"
+          options={toOptions(possVals.actions, formatActionName)}
+        />
+        <FormMultiSelectField<FormState>
+          name="maps"
+          label="Maps"
+          options={toOptions(possVals.maps, formatMapName)}
+        />
+        <FormMultiSelectField<FormState>
+          name="leadIdxs"
+          label="Leads"
+          options={leadsLabels}
+        />
+        {possVals.actions.includes("RockSmash") && (
+          <FormSwitchField<FormState>
+            name="using_white_flute"
+            label="Using White Flute"
+            tooltip={{
+              title: "Using White Flute",
+              description:
+                "White Flute greatly increases the odds of encountering Pokémon when using Rock Smash. It can be obtained from the Glass Workshop in Route 113.",
+            }}
+          />
+        )}
+        {possVals.is_safari_pokeblock_usable && (
+          <FormRadioField<FormState>
+            name="considered_safari_pokeblocks"
+            label="Considered Pokéblocks"
+            tooltip={{
+              title: "Considered Pokéblocks",
+              description:
+                "Putting a Pokéblock in a Pokéblock feeder in the Safari Zone increases the likehood encountering Pokémon with a particular nature.",
+            }}
+            cellSize="word"
+            options={wild3SafariPokeblockSearchOptLabels}
+          />
+        )}
+        {possVals.roamerStates.length > 1 && (
+          <FormMultiSelectField<FormState>
+            name="roamerStates"
+            label="Roamer states"
+            options={toOptions(possVals.roamerStates, formatRoamerStateName)}
+          />
+        )}
+        {possVals.massOutbreakStates.length > 1 && (
+          <FormMultiSelectField<FormState>
+            name="massOutbreakStates"
+            label="Mass outbreak states"
+            options={toOptions(
+              possVals.massOutbreakStates,
+              formatMassOutbreakStateName,
+            )}
+          />
+        )}
+        {possVals.feebasStates.length > 1 && (
+          <FormMultiSelectField<FormState>
+            name="feebasStates"
+            label="Feebas states"
+            options={toOptions(possVals.feebasStates, formatFeebasStateName)}
+          />
+        )}
+        <FormMultiSelectField<FormState>
+          name="methods"
+          label="Methods"
+          tooltip={{
+            title: "Methods",
+            description: (
+              <>
+                For advanced users. Learn more about{" "}
+                <Link newTab href="/gba-methods/">
+                  methods
+                </Link>
+                .
+              </>
+            ),
+          }}
+          options={toOptions(supportedGen3Methods)}
+        />
+      </SwitchField>
+      {species === "Feebas" && (
+        <FeebasTilesField<FormState>
+          name="feebasCycles"
+          label="Feebas fishing spots"
+          tooltip={{
+            title: "Feebas fishing spots",
+            description:
+              "Select the tiles where you can fish Feebas. If possible, avoid red tiles because they cause unstable results.",
+          }}
+        />
+      )}
+      <PaintingSetupFilterFields
+        game="emerald"
+        usingPaintingReseeding={usingPaintingReseeding}
+        letSearcherFindPaintingSeed={letSearcherFindPaintingSeed}
+        usingDeadBattery={false}
+        requireAceForPaintingReseeding={false}
+        initial_advances={0} // doesn't matter if recommendedMinAdvances is null
+        recommendedMinAdvances={null}
+      />
+      <SwitchGroup>
+        <FormSwitchField<FormState>
+          name="generate_even_if_impossible"
+          label="Display results with 0% likelihood"
+        />
+        <FormSwitchField<FormState>
+          name="rngManipulatedLeadPid"
+          label="RNG-manipulated lead PID"
+          tooltip={{
+            title: "RNG-manipulated lead PID",
+            description: (
+              <>
+                For advanced users.
+                <br />
+                If inactive, likelihood is calculated assuming you're using a
+                common lead cycle speed.
+                <br />
+                If active, likelihood is calculated assuming you will catch a
+                Pokémon with the optimal lead cycle speed then use it to catch
+                your target Pokémon. Learn more about{" "}
+                <Link newTab href="/gba-methods-lead-impact/">
+                  Methods & Leads
+                </Link>
+                .
+              </>
+            ),
+          }}
+        />
+      </SwitchGroup>
+    </FormSection>
   );
 };

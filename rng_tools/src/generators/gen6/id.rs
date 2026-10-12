@@ -52,12 +52,12 @@ pub struct OrasIdOptions {
     pub filter_id: Option<IdFilter>,
 }
 
-fn generate_oras_id_for_seed(seed: u32, opts: &OrasIdOptions) -> Vec<Gen6Id> {
+fn generate_oras_id_for_seed(seed: u32, opts: &OrasIdOptions) -> impl Iterator<Item = Gen6Id> + '_ {
     StateIterator::new(TinyMT::new(seed))
         .enumerate()
         .skip(opts.initial_advances)
         .take(opts.max_advances)
-        .filter_map(|(advances, mut rng)| {
+        .filter_map(move |(advances, mut rng)| {
             let state = rng.get_state();
             let seconds = seed.wrapping_sub(opts.start_seed) / 1000;
             let delta = TimeDelta::seconds(seconds.into());
@@ -76,11 +76,12 @@ fn generate_oras_id_for_seed(seed: u32, opts: &OrasIdOptions) -> Vec<Gen6Id> {
                 false => None,
             }
         })
-        .collect()
 }
 
 #[wasm_bindgen]
 pub fn generate_oras_id(opts: OrasIdOptions) -> Vec<Gen6Id> {
+    const MAX_RESULTS: usize = 1000;
+
     let end_seed = match opts.only_start_seed {
         true => opts.start_seed,
         false => opts.start_seed.saturating_add(31622400),
@@ -88,6 +89,7 @@ pub fn generate_oras_id(opts: OrasIdOptions) -> Vec<Gen6Id> {
     (opts.start_seed..=end_seed)
         .step_by(1000)
         .flat_map(|seed| generate_oras_id_for_seed(seed, &opts))
+        .take(MAX_RESULTS)
         .collect()
 }
 
@@ -184,5 +186,20 @@ mod test {
         ];
 
         assert_list_eq!(results, expected);
+    }
+
+    #[test]
+    fn test_generate_gen6_id_limits_results() {
+        let opts = OrasIdOptions {
+            start_seed: 0,
+            start_datetime: RngDateTime::new(2000, 1, 1, 2, 16, 33).unwrap(),
+            only_start_seed: false,
+            initial_advances: 0,
+            max_advances: 20,
+            filter_id: None,
+        };
+        let results = generate_oras_id(opts);
+
+        assert_eq!(results.len(), 1000);
     }
 }

@@ -1,5 +1,10 @@
 import { z } from "zod";
-import { RngToolForm, Field, RngToolSubmit } from "~/components";
+import {
+  FormSection,
+  FormSummary,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
 import { Game } from "./index";
 import { findTargetAdvanceForShinyPokemon } from "./calc";
 
@@ -28,12 +33,7 @@ export const FindTargetAdvance = ({
   usingDeadBattery,
   initialTidSid = initialValues,
 }: Props) => {
-  const fields: Field[] = [
-    { label: "TID", input: <>{initialTidSid.tid}</> },
-    { label: "SID", input: <>{initialTidSid.sid}</> },
-  ];
-
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     const targetAdvance = await findTargetAdvanceForShinyPokemon(
       game,
       opts.tid,
@@ -46,14 +46,22 @@ export const FindTargetAdvance = ({
   };
 
   return (
-    <RngToolForm<FormState, never[]>
+    <ToolForm<FormState, never[]>
       formContainerId="find-target-advance"
-      fields={fields}
       initialValues={initialTidSid}
       validationSchema={Validator}
       submitTrackerId="findTarget"
       submitButtonLabel="Calculate Target advance"
       onSubmit={onSubmit}
-    />
+    >
+      <FormSection>
+        <FormSummary
+          rows={[
+            { label: "TID", value: initialTidSid.tid },
+            { label: "SID", value: initialTidSid.sid },
+          ]}
+        />
+      </FormSection>
+    </ToolForm>
   );
 };

@@ -1,75 +1,66 @@
 import {
-  Flex,
-  Field,
-  FormFieldTable,
-  AtomSelect,
-  AtomRadio,
-} from "~/components";
-import { profile5SearcherAtom } from "./state";
-import { Translations } from "~/translations";
+  FormCard,
+  FormSection,
+  RadioField,
+  SelectField,
+  type RadioOption,
+} from "~/components/form";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
-import { DS_TYPE, GEN5_GAMES, GEN5_LANGUAGE } from "../constants";
 import { toOptions } from "~/utils/options";
+import {
+  DS_TYPE,
+  DsType,
+  GEN5_GAMES,
+  GEN5_LANGUAGE,
+  Gen5Game,
+  Gen5Language,
+} from "../constants";
+import { Profile5SearcherState, useProfile5State } from "./state";
 
-const getFields = (t: Translations): Field[] => [
-  {
-    label: t["Game"],
-    input: (
-      <AtomSelect
-        atom={profile5SearcherAtom}
-        options={GEN5_GAMES}
-        getValue={(state) => state.game}
-        nextState={(prev, game) => ({ ...prev, game })}
-      />
-    ),
-  },
-  {
-    label: t["Language"],
-    input: (
-      <AtomSelect
-        atom={profile5SearcherAtom}
-        options={GEN5_LANGUAGE}
-        getValue={(state) => state.language}
-        nextState={(prev, language) => ({ ...prev, language })}
-      />
-    ),
-  },
-  {
-    label: t["DS Type"],
-    input: (
-      <AtomRadio
-        atom={profile5SearcherAtom}
-        options={toOptions(DS_TYPE)}
-        getValue={(state) => state.dsType}
-        nextState={(prev, dsType) => ({ ...prev, dsType })}
-      />
-    ),
-  },
-  {
-    label: "Calibration",
-    input: (
-      <AtomRadio
-        atom={profile5SearcherAtom}
-        options={
-          [
-            { label: "IV", value: "ivs" },
-            { label: "Needle", value: "needles" },
-            { label: "Seed", value: "seed" },
-          ] as const
-        }
-        getValue={(state) => state.calibrationType}
-        nextState={(prev, calibrationType) => ({ ...prev, calibrationType })}
-      />
-    ),
-  },
-];
+type CalibrationType = Profile5SearcherState["calibrationType"];
 
 export const Profile5Setup = () => {
   const t = useActiveRouteTranslations();
-  const fields = getFields(t);
+  const [state, setState] = useProfile5State();
+
+  const calibrationOptions: RadioOption<CalibrationType>[] = [
+    { label: t["IV"], value: "ivs" },
+    { label: t["Needle"], value: "needles" },
+    { label: t["Seed"], value: "seed" },
+  ];
+
   return (
-    <Flex vertical gap={8}>
-      <FormFieldTable fields={fields} />
-    </Flex>
+    <FormCard>
+      <FormSection>
+        <SelectField<Gen5Game>
+          label={t["Game"]}
+          value={state.game}
+          options={toOptions(GEN5_GAMES, (game) => t[game])}
+          onChange={(game) => setState((prev) => ({ ...prev, game }))}
+        />
+        <SelectField<Gen5Language>
+          label={t["Language"]}
+          value={state.language}
+          options={toOptions(GEN5_LANGUAGE, (language) => t[language])}
+          onChange={(language) => setState((prev) => ({ ...prev, language }))}
+        />
+        <RadioField<DsType>
+          label={t["DS Type"]}
+          cellSize="word"
+          value={state.dsType}
+          options={toOptions(DS_TYPE, (dsType) => t[dsType])}
+          onChange={(dsType) => setState((prev) => ({ ...prev, dsType }))}
+        />
+        <RadioField<CalibrationType>
+          label={t["Calibration"]}
+          cellSize="word"
+          value={state.calibrationType}
+          options={calibrationOptions}
+          onChange={(calibrationType) =>
+            setState((prev) => ({ ...prev, calibrationType }))
+          }
+        />
+      </FormSection>
+    </FormCard>
   );
 };

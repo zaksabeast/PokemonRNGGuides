@@ -59,12 +59,13 @@ const DateSchema = z.string().refine((value) => dayjs(value).isValid(), {
 const GuideSectionSchema = z.enum(sections);
 const GuideVariantSchema = z.enum(rngGuideVariants);
 
-const layouts = ["titled", "guide", "application"] as const;
+const layouts = ["titled", "guide", "application", "wide"] as const;
 
 const categories = [
   "Home",
   "Gold, Silver, Crystal",
-  "Transporter and Dream Radar",
+  "Dream Radar",
+  "Bank and Transporter",
   "Ruby and Sapphire",
   "Gamecube",
   "FireRed and LeafGreen",
@@ -92,7 +93,8 @@ const categories = [
 const emittedCategories = [
   "Home",
   "Gold, Silver, Crystal",
-  "Transporter and Dream Radar",
+  "Dream Radar",
+  "Bank and Transporter",
   "Ruby and Sapphire",
   "Gamecube",
   "FireRed and LeafGreen",
@@ -131,7 +133,8 @@ const categoryAliases: Partial<
     "Black 2 and White 2",
   ],
   "3DS Tools": [
-    "Transporter and Dream Radar",
+    "Dream Radar",
+    "Bank and Transporter",
     "X and Y",
     "Omega Ruby and Alpha Sapphire",
     "Sun and Moon",

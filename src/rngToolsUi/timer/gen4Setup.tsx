@@ -1,22 +1,13 @@
 import React from "react";
+import { Alert, Flex, Link, Typography } from "~/components";
 import {
-  Alert,
-  Button,
-  Flex,
-  Link,
-  NumberInput,
-  Typography,
-} from "~/components";
+  FormCard,
+  FormSection,
+  NumberField,
+  PrimaryButton,
+} from "~/components/form";
 import { type Gen4TimerSettings } from "~/rngTools";
-import { PRIMARY_BUTTON_HEIGHT } from "./constants";
-import {
-  BeepsRow,
-  DsConsoleRow,
-  FieldLabel,
-  FieldRow,
-  GroupLabel,
-  GroupRule,
-} from "./setupParts";
+import { BeepsField, ConsoleField } from "./setupParts";
 
 type Props = {
   settings: Gen4TimerSettings;
@@ -37,91 +28,62 @@ export const Gen4Setup = ({
     setDraft({ ...draft, ...updates });
 
   return (
-    <Flex vertical gap={16}>
-      <Flex vertical gap={10}>
-        <GroupLabel>Target</GroupLabel>
+    <FormCard>
+      <FormSection title="Target">
+        <NumberField
+          name="targetDelay"
+          label="Target Delay"
+          numType="float"
+          value={draft.targetDelay}
+          onChange={(targetDelay) => update({ targetDelay: targetDelay ?? 0 })}
+        />
+        <NumberField
+          name="targetSecond"
+          label="Target Seconds"
+          numType="float"
+          value={draft.targetSecond}
+          onChange={(targetSecond) =>
+            update({ targetSecond: targetSecond ?? 0 })
+          }
+        />
+        <NumberField
+          name="minTimeMs"
+          label="Min Time (ms)"
+          numType="float"
+          value={draft.minTimeMs}
+          onChange={(minTimeMs) => update({ minTimeMs: minTimeMs ?? 0 })}
+        />
+      </FormSection>
 
-        <FieldRow>
-          <FieldLabel>Target Delay</FieldLabel>
-          <NumberInput
-            name="targetDelay"
-            numType="float"
-            value={draft.targetDelay}
-            onChange={(targetDelay) =>
-              update({ targetDelay: targetDelay ?? 0 })
-            }
-            fullFlex
-          />
-        </FieldRow>
+      <FormSection title="Calibration">
+        <NumberField
+          name="calibratedDelay"
+          label="Calibrated Delay"
+          numType="float"
+          value={draft.calibratedDelay}
+          onChange={(calibratedDelay) =>
+            update({ calibratedDelay: calibratedDelay ?? 0 })
+          }
+        />
+        <NumberField
+          name="calibratedSecond"
+          label="Calibrated Seconds"
+          numType="float"
+          value={draft.calibratedSecond}
+          onChange={(calibratedSecond) =>
+            update({ calibratedSecond: calibratedSecond ?? 0 })
+          }
+        />
+      </FormSection>
 
-        <FieldRow>
-          <FieldLabel>Target Seconds</FieldLabel>
-          <NumberInput
-            name="targetSecond"
-            numType="float"
-            value={draft.targetSecond}
-            onChange={(targetSecond) =>
-              update({ targetSecond: targetSecond ?? 0 })
-            }
-            fullFlex
-          />
-        </FieldRow>
-
-        <FieldRow>
-          <FieldLabel>Min Time (ms)</FieldLabel>
-          <NumberInput
-            name="minTimeMs"
-            numType="float"
-            value={draft.minTimeMs}
-            onChange={(minTimeMs) => update({ minTimeMs: minTimeMs ?? 0 })}
-            fullFlex
-          />
-        </FieldRow>
-      </Flex>
-
-      <Flex vertical gap={10}>
-        <GroupLabel>Calibration</GroupLabel>
-
-        <FieldRow>
-          <FieldLabel>Calibrated Delay</FieldLabel>
-          <NumberInput
-            name="calibratedDelay"
-            numType="float"
-            value={draft.calibratedDelay}
-            onChange={(calibratedDelay) =>
-              update({ calibratedDelay: calibratedDelay ?? 0 })
-            }
-            fullFlex
-          />
-        </FieldRow>
-
-        <FieldRow>
-          <FieldLabel>Calibrated Seconds</FieldLabel>
-          <NumberInput
-            name="calibratedSecond"
-            numType="float"
-            value={draft.calibratedSecond}
-            onChange={(calibratedSecond) =>
-              update({ calibratedSecond: calibratedSecond ?? 0 })
-            }
-            fullFlex
-          />
-        </FieldRow>
-      </Flex>
-
-      <Flex vertical gap={10}>
-        <GroupLabel>
-          Rarely changes
-          <GroupRule />
-        </GroupLabel>
-
-        <DsConsoleRow
+      <FormSection title="Rarely changes">
+        <ConsoleField
+          dsOnly
           value={draft.console}
           onChange={(console) => update({ console })}
         />
-
-        <BeepsRow value={maxBeepCount} onChange={setMaxBeepCount} />
-      </Flex>
+        <BeepsField value={maxBeepCount} onChange={setMaxBeepCount} />
+      </FormSection>
 
       <Alert
         type="tip"
@@ -140,14 +102,9 @@ export const Gen4Setup = ({
         }
       />
 
-      <Button
-        trackerId="set_gen4_timer"
-        type="primary"
-        height={PRIMARY_BUTTON_HEIGHT}
-        onClick={() => onSet(draft)}
-      >
+      <PrimaryButton trackerId="set_gen4_timer" onClick={() => onSet(draft)}>
         Set Timer
-      </Button>
-    </Flex>
+      </PrimaryButton>
+    </FormCard>
   );
 };

@@ -33,6 +33,24 @@ const registeredTrainers = atomWithPersistence(
 
 export const useRegisteredTrainers = () => useAtom(registeredTrainers);
 
+export const PokeNavGameLanguageSchema = z.object({
+  gameLanguage: z.enum(["default", "ja"]),
+});
+
+export type PokeNavGameLanguage = z.infer<typeof PokeNavGameLanguageSchema>;
+
+const initialGameLanguage: PokeNavGameLanguage = {
+  gameLanguage: "default",
+};
+
+const pokeNavGameLanguage = atomWithPersistence(
+  "emerald_pokenav_game_language",
+  PokeNavGameLanguageSchema,
+  initialGameLanguage,
+);
+
+export const usePokeNavGameLanguage = () => useAtom(pokeNavGameLanguage);
+
 type HeldEggSettings = {
   compatability: Compatability;
   egg_species: Species;

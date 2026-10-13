@@ -4,14 +4,21 @@ import {
   FormCard,
   OutlinedButton,
   PrimaryButton,
+  RadioField,
   SwitchField,
   SwitchGroup,
 } from "~/components/form";
-import { useRegisteredTrainers, RegisteredPokeNavTrainers } from "./state";
+import {
+  useRegisteredTrainers,
+  usePokeNavGameLanguage,
+  RegisteredPokeNavTrainers,
+  PokeNavGameLanguage,
+} from "./state";
 import { pokeNavTrainers } from "./constants";
 import { useHydrate } from "~/hooks/useHydrate";
 import { hydrationLock } from "~/utils/hydration";
-import { usePokeNavTranslations } from "~/translations";
+import { languageByKey } from "~/types/language";
+import { usePokeNavTrainerTranslations } from "./trainerTranslations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 type UpdateStateProps = {
@@ -36,9 +43,11 @@ const updateTrainerState = ({
 
 export const PokeNavInput = () => {
   const t = useActiveRouteTranslations();
-  const translatedTrainers = usePokeNavTranslations(t.language);
+  const { translatedTrainers } = usePokeNavTrainerTranslations();
   const [lockedState, setRegisteredTrainers] = useRegisteredTrainers();
   const { hydrated, client } = useHydrate(lockedState);
+  const [lockedGameLanguage, setGameLanguage] = usePokeNavGameLanguage();
+  const { client: gameLanguageState } = useHydrate(lockedGameLanguage);
 
   const handleSelectAll = () =>
     setRegisteredTrainers(
@@ -60,6 +69,18 @@ export const PokeNavInput = () => {
 
   return (
     <FormCard>
+      <RadioField<PokeNavGameLanguage["gameLanguage"]>
+        label={t["Game Language"]}
+        cellSize="word"
+        value={gameLanguageState?.gameLanguage ?? "default"}
+        options={[
+          { label: languageByKey[t.language].label, value: "default" },
+          { label: "日本語", value: "ja" },
+        ]}
+        onChange={(gameLanguage) =>
+          setGameLanguage(hydrationLock({ gameLanguage }))
+        }
+      />
       <Flex gap={12} wrap="wrap">
         <PrimaryButton
           trackerId="select_all_pokenav_trainers"

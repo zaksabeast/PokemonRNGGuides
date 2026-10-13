@@ -19,68 +19,95 @@ struct CalibrationRecord {
     cycle_at_moments: Vec<CycleFrameMoment>,
 }
 
-// Keep the same PID endpoints per frame as the compact calibration recordings.
-fn important_moments(moments: &[CycleFrameMoment]) -> Vec<CycleFrameMoment> {
-    let mut bounds = std::collections::BTreeMap::new();
-    for (idx, entry) in moments.iter().enumerate() {
-        if matches!(entry.moment,
-            Moment::CreateMonWithNature_RandomPidLow | Moment::CreateMonWithNature_RandomPidHigh)
-        {
-            let key = (entry.frame, entry.moment as u8);
-            bounds.entry(key).or_insert((idx, idx)).1 = idx;
-        }
-    }
-    moments.iter().enumerate().filter_map(|(idx, entry)| {
-        match bounds.get(&(entry.frame, entry.moment as u8)) {
-            Some(&(first, last)) if idx != first && idx != last => None,
-            _ => Some(*entry),
-        }
-    }).collect()
+// Only keep the first and last CreateMonWithNature_RandomPidLow/High of each frame.
+fn filter_important_moments(moments: &[CycleFrameMoment]) -> Vec<CycleFrameMoment> {
+    moments
+        .iter()
+        .enumerate()
+        .filter(|(index, entry)| {
+            let is_pid = matches!(
+                entry.moment,
+                Moment::CreateMonWithNature_RandomPidLow
+                    | Moment::CreateMonWithNature_RandomPidHigh
+            );
+            let is_first_of_frame = moments[..*index]
+                .iter()
+                .any(|other| other.frame == entry.frame && other.moment == entry.moment);
+
+            let is_last_of_frame = moments[*index + 1..]
+                .iter()
+                .any(|other| other.frame == entry.frame && other.moment == entry.moment);
+
+            !is_pid || !is_first_of_frame || !is_last_of_frame
+        })
+        .map(|(_, entry)| *entry)
+        .collect()
 }
 
-// Compare CPU-work increments, excluding recorded VBlank time from each timeline.
-fn cycle_score(
+fn compute_cycle_score(
     generated: &[CycleFrameMoment],
     logged: &[CycleFrameMoment],
     vblank_durations: &[usize],
 ) -> (u64, usize) {
-    let mut transitions = std::collections::BTreeMap::<(u8, u8), [Vec<u64>; 2]>::new();
+    #[derive(Default)]
+    struct TransitionIncrements {
+        generated_increments: Vec<u64>,
+        logged_increments: Vec<u64>,
+    }
+
+    let mut transitions =
+        std::collections::BTreeMap::<(Moment, Moment), TransitionIncrements>::new();
     for (source, moments) in [generated, logged].into_iter().enumerate() {
-        let moments = important_moments(moments);
+        let moments = filter_important_moments(moments);
         let initial_frame = moments.first().map_or(0, |entry| entry.frame);
         for pair in moments.windows(2) {
             let time = |entry: CycleFrameMoment| {
                 entry.frame as u64 * VBLANK_FREQ as u64 + entry.cycle as u64
             };
-            let key = (pair[0].moment as u8, pair[1].moment as u8);
+            let key = (pair[0].moment, pair[1].moment);
             let vblank_cycles = (pair[0].frame - initial_frame..pair[1].frame - initial_frame)
                 .map(|frame| {
-                    vblank_durations.get(frame).copied()
-                        .unwrap_or_else(|| get_min_mid_max_vblank_cycle_duration().1) as u64
+                    vblank_durations
+                        .get(frame)
+                        .copied()
+                        .unwrap_or_else(|| get_min_mid_max_vblank_cycle_duration().1)
+                        as u64
                 })
                 .sum::<u64>();
-            let cpu_cycles = (time(pair[1]) - time(pair[0]))
+
+            // Substract vblanks because it causes a big difference if the moment at vblank is slightly different
+            // between generated and logged.
+            let cycle_incr = (time(pair[1]) - time(pair[0]))
                 .checked_sub(vblank_cycles)
                 .expect("VBlank duration exceeds the recorded transition interval");
-            transitions.entry(key).or_default()[source].push(cpu_cycles);
+            let transition = transitions.entry(key).or_default();
+            let increments = if source == 0 {
+                &mut transition.generated_increments
+            } else {
+                &mut transition.logged_increments
+            };
+            increments.push(cycle_incr);
         }
     }
+
+    const PENALTY_FOR_MISSING_MOMENT: u64 = 100_000;
     let mut error = 0;
     let mut count = 0;
-    for [actual, expected] in transitions.into_values() {
+    for TransitionIncrements {
+        generated_increments: actual,
+        logged_increments: expected,
+    } in transitions.into_values()
+    {
         // Match repeated transitions in occurrence order; retain a penalty for missing ones.
         for idx in 0..actual.len().max(expected.len()) {
             error += match (actual.get(idx), expected.get(idx)) {
                 (Some(actual), Some(expected)) => actual.abs_diff(*expected),
-                _ => VBLANK_FREQ as u64,
+                _ => PENALTY_FOR_MISSING_MOMENT,
             };
             count += 1;
         }
     }
-    // Compressed PID spans still represent all of the generated RNG transitions.
-    // Preserve their weight so removing intermediate log entries does not raise
-    // the mean error solely by shrinking the denominator.
-    (error, count.max(generated.len().saturating_sub(1)))
+    (error, count)
 }
 
 fn has_pid_frame_change(moments: &[CycleFrameMoment]) -> bool {
@@ -88,8 +115,13 @@ fn has_pid_frame_change(moments: &[CycleFrameMoment]) -> bool {
         pair[0].frame != pair[1].frame
             && matches!(
                 (pair[0].moment, pair[1].moment),
-                (Moment::CreateMonWithNature_RandomPidHigh, Moment::CreateMonWithNature_RandomPidLow)
-                    | (Moment::CreateMonWithNature_RandomPidLow, Moment::CreateMonWithNature_RandomPidHigh)
+                (
+                    Moment::CreateMonWithNature_RandomPidHigh,
+                    Moment::CreateMonWithNature_RandomPidLow
+                ) | (
+                    Moment::CreateMonWithNature_RandomPidLow,
+                    Moment::CreateMonWithNature_RandomPidHigh
+                )
             )
     })
 }
@@ -112,7 +144,11 @@ fn calibrate_cycles(
         });
         record.cycle_at_moments.dedup();
         if has_pid_frame_change(&record.cycle_at_moments) {
-            println!("Skipping line {} advance {}: frame changed during PID generation", line_idx + 1, record.advance);
+            println!(
+                "Skipping line {} advance {}: frame changed during PID generation",
+                line_idx + 1,
+                record.advance
+            );
             continue;
         }
         let initial = record.cycle_at_moments.first().expect("No logged moments");
@@ -144,11 +180,20 @@ fn calibrate_cycles(
             generated_moments.remove(0);
         }
         // The emulator logger omits PID halves inside the gender-constrained routine.
-        if record.cycle_at_moments.iter().any(|entry| entry.moment == Moment::CreateMonWithGenderNatureLetter) {
-            generated_moments.retain(|entry| !matches!(entry.moment,
-                Moment::CreateMonWithNature_RandomPidLow | Moment::CreateMonWithNature_RandomPidHigh));
+        if record
+            .cycle_at_moments
+            .iter()
+            .any(|entry| entry.moment == Moment::CreateMonWithGenderNatureLetter)
+        {
+            generated_moments.retain(|entry| {
+                !matches!(
+                    entry.moment,
+                    Moment::CreateMonWithNature_RandomPidLow
+                        | Moment::CreateMonWithNature_RandomPidHigh
+                )
+            });
         }
-        let (error, increments) = cycle_score(
+        let (error, increments) = compute_cycle_score(
             &generated_moments,
             &record.cycle_at_moments,
             &record.vblank_durations,
@@ -162,7 +207,10 @@ fn calibrate_cycles(
         total_error += error;
         total_increments += increments;
     }
-    assert!(total_increments > 0, "Calibration data contains no transitions");
+    assert!(
+        total_increments > 0,
+        "Calibration data contains no transitions"
+    );
     total_error as f64 / total_increments as f64
 }
 
@@ -191,7 +239,10 @@ fn synchronize_naive_route101_cycle_calibration() {
 
 #[test]
 fn cute_charm_female_route101_cycle_calibration() {
-    route101_cycle_calibration(Gen3Lead::CuteCharm(crate::Gender::Female), "cute_charm_female_route101.jsonl");
+    route101_cycle_calibration(
+        Gen3Lead::CuteCharm(crate::Gender::Female),
+        "cute_charm_female_route101.jsonl",
+    );
 }
 
 #[test]
@@ -338,13 +389,16 @@ fn route119_cycle_calibration(lead: Gen3Lead, data_file: &str) {
     let map_data = Wild3MapGameData {
         map_id: "MAP_ROUTE119".into(),
         map_internal_idx: 33,
-        slots_by_action: vec![land_slots.into_iter().map(|(species, level)| {
-            Wild3EncounterGameData {
-                min_level: level,
-                max_level: level,
-                species_data: SpeciesData { species },
-            }
-        }).collect()],
+        slots_by_action: vec![
+            land_slots
+                .into_iter()
+                .map(|(species, level)| Wild3EncounterGameData {
+                    min_level: level,
+                    max_level: level,
+                    species_data: SpeciesData { species },
+                })
+                .collect(),
+        ],
         ..Wild3MapGameData::default()
     };
     map_cycle_calibration(lead, data_file, &map_data);
@@ -430,10 +484,7 @@ fn pressure_route102_old_rod_cycle_calibration() {
 }
 
 fn route102_old_rod_cycle_calibration(lead: Gen3Lead, data_file: &str) {
-    let fishing_slots = [
-        (Species::Magikarp, 5, 10),
-        (Species::Goldeen, 5, 10),
-    ];
+    let fishing_slots = [(Species::Magikarp, 5, 10), (Species::Goldeen, 5, 10)];
     let map_data = Wild3MapGameData {
         map_id: "MAP_ROUTE102".into(),
         map_internal_idx: 1,
@@ -451,12 +502,7 @@ fn route102_old_rod_cycle_calibration(lead: Gen3Lead, data_file: &str) {
         ],
         ..Wild3MapGameData::default()
     };
-    map_action_cycle_calibration(
-        lead,
-        Wild3Action::OldRod,
-        data_file,
-        &map_data,
-    );
+    map_action_cycle_calibration(lead, Wild3Action::OldRod, data_file, &map_data);
 }
 
 #[test]
@@ -477,7 +523,9 @@ fn route111_rock_smash_cycle_calibration(lead: Gen3Lead, data_file: &str) {
         .map(|(min_level, max_level)| Wild3EncounterGameData {
             min_level,
             max_level,
-            species_data: SpeciesData { species: Species::Geodude },
+            species_data: SpeciesData {
+                species: Species::Geodude,
+            },
         })
         .collect();
     let map_data = Wild3MapGameData {
@@ -487,12 +535,7 @@ fn route111_rock_smash_cycle_calibration(lead: Gen3Lead, data_file: &str) {
         rock_smash_rate: 20,
         ..Wild3MapGameData::default()
     };
-    map_action_cycle_calibration(
-        lead,
-        Wild3Action::RockSmash,
-        data_file,
-        &map_data,
-    );
+    map_action_cycle_calibration(lead, Wild3Action::RockSmash, data_file, &map_data);
 }
 
 #[test]
@@ -504,7 +547,9 @@ fn vanilla_safari_north_east_rock_smash_cycle_calibration() {
         .map(|(min_level, max_level)| Wild3EncounterGameData {
             min_level,
             max_level,
-            species_data: SpeciesData { species: Species::Shuckle },
+            species_data: SpeciesData {
+                species: Species::Shuckle,
+            },
         })
         .collect();
     let map_data = Wild3MapGameData {
@@ -642,7 +687,10 @@ fn map_pokeblock_cycle_calibration(
     );
     println!("{data_file} ({lead:?}) mean absolute cycle increment error: {score:.2}");
     assert!(score.is_finite());
-    assert!(score < 100.0, "{data_file} cycle increment error regressed: {score:.2}");
+    assert!(
+        score < 100.0,
+        "{data_file} cycle increment error regressed: {score:.2}"
+    );
 }
 
 #[test]
@@ -655,9 +703,12 @@ fn cycle_score_accounts_for_frames_and_missing_transitions() {
         CycleFrameMoment::new(Moment::CreateMon, 0, 280800),
         CycleFrameMoment::new(Moment::CreateBoxMon_RandomIvs1, 1, 110),
     ];
-    assert_eq!(cycle_score(&logged, &logged, &[50]), (0, 1));
-    assert_eq!(cycle_score(&generated, &logged, &[50]), (10, 1));
-    assert_eq!(cycle_score(&[], &logged, &[50]), (VBLANK_FREQ as u64, 1));
+    assert_eq!(compute_cycle_score(&logged, &logged, &[50]), (0, 1));
+    assert_eq!(compute_cycle_score(&generated, &logged, &[50]), (10, 1));
+    assert_eq!(
+        compute_cycle_score(&[], &logged, &[50]),
+        (VBLANK_FREQ as u64, 1)
+    );
 }
 
 #[test]
@@ -673,7 +724,7 @@ fn cycle_score_excludes_vblank_when_it_moves_between_transitions() {
         CycleFrameMoment::new(Moment::CreateBoxMon_RandomIvs2, 11, 50070),
     ];
     // The work intervals are [80, 60] and [110, 60], despite different VBlank placement.
-    assert_eq!(cycle_score(&generated, &logged, &[50000]), (30, 2));
+    assert_eq!(compute_cycle_score(&generated, &logged, &[50000]), (30, 2));
 }
 
 #[test]
@@ -687,7 +738,7 @@ fn cycle_score_subtracts_each_crossed_vblank_duration() {
         CycleFrameMoment::new(Moment::CreateBoxMon_RandomIvs1, 12, 100000),
     ];
     assert_eq!(
-        cycle_score(&generated, &logged, &[50000, 60000]),
+        compute_cycle_score(&generated, &logged, &[50000, 60000]),
         (2 * VBLANK_FREQ as u64 - 410000, 1),
     );
 }
@@ -706,9 +757,12 @@ fn cycle_score_weights_early_and_late_errors_equally() {
     let logged = make([0, 100, 200, 300]);
     let early = make([0, 1100, 1200, 1300]);
     let late = make([0, 100, 200, 1300]);
-    assert_eq!(cycle_score(&early, &logged, &[]), (1000, 3));
-    assert_eq!(cycle_score(&late, &logged, &[]), (1000, 3));
-    assert_eq!(cycle_score(&make([1000, 1100, 1200, 1300]), &logged, &[]), (0, 3));
+    assert_eq!(compute_cycle_score(&early, &logged, &[]), (1000, 3));
+    assert_eq!(compute_cycle_score(&late, &logged, &[]), (1000, 3));
+    assert_eq!(
+        compute_cycle_score(&make([1000, 1100, 1200, 1300]), &logged, &[]),
+        (0, 3)
+    );
 }
 
 #[test]
@@ -761,7 +815,10 @@ fn shared_entry_cycles_apply_to_all_leads() {
 #[test]
 fn lead_pid_speed_changes_ability_check_cycles() {
     let map_data = Wild3MapGameData::default();
-    for lead in [Gen3Lead::Vanilla, Gen3Lead::Synchronize(crate::Nature::Naive)] {
+    for lead in [
+        Gen3Lead::Vanilla,
+        Gen3Lead::Synchronize(crate::Nature::Naive),
+    ] {
         let mut durations = Vec::new();
         for lead_cycle_spd in [18, 768] {
             let opts = Wild3GeneratorOptions {
@@ -776,12 +833,15 @@ fn lead_pid_speed_changes_ability_check_cycles() {
             };
             let generated = generate_wild3(Pokerng::with_jump(0, 44), &opts, &map_data);
             let moments = generated.cycle_counter.get_cycle_at_moments();
-            let checks: Vec<_> = moments.iter()
+            let checks: Vec<_> = moments
+                .iter()
                 .filter(|entry| entry.moment == Moment::TryGetAbilityInfluencedWildMonIndex)
                 .collect();
             assert_eq!(checks.len(), 2);
-            durations.push(checks[1].frame * VBLANK_FREQ + checks[1].cycle
-                - (checks[0].frame * VBLANK_FREQ + checks[0].cycle));
+            durations.push(
+                checks[1].frame * VBLANK_FREQ + checks[1].cycle
+                    - (checks[0].frame * VBLANK_FREQ + checks[0].cycle),
+            );
         }
         assert_eq!(durations[1] - durations[0], 16 * (768 - 18), "{lead:?}");
     }
@@ -818,8 +878,8 @@ fn cycle_score_preserves_compressed_pid_transition_weight() {
         CycleFrameMoment::new(low, 0, 2100),
         CycleFrameMoment::new(high, 0, 2180),
     ];
-    let mut logged = important_moments(&generated);
+    let mut logged = filter_important_moments(&generated);
     logged[2].cycle += 30;
     logged[3].cycle += 30;
-    assert_eq!(cycle_score(&generated, &logged, &[]), (30, 5));
+    assert_eq!(compute_cycle_score(&generated, &logged, &[]), (30, 5));
 }

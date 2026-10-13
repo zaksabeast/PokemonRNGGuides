@@ -8,7 +8,7 @@ use super::calc_modulo_cycle_unsigned;
 pub const BASE_LEAD_PID: u32 = 0;
 pub const BASE_LEAD_PID_MOD_24_CYCLES: usize = calc_modulo_cycle_unsigned(BASE_LEAD_PID, 24);
 
-#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, Eq, PartialOrd, PartialEq, Tsify, Serialize, Ord, Deserialize)]
 #[allow(non_camel_case_types)]
 #[repr(u8)]
 pub enum Moment {
@@ -78,7 +78,10 @@ impl<T> CycleRange<T> {
     {
         CycleRange {
             start,
-            len: (end - start).try_into().ok().expect("Invalid cycle range length"),
+            len: (end - start)
+                .try_into()
+                .ok()
+                .expect("Invalid cycle range length"),
         }
     }
 }

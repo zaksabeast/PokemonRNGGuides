@@ -1062,6 +1062,11 @@ fn pick_wild_mon_nature_safari(
         return None;
     }
 
+    if pokeblock_gen_opt.is_none() {
+        // Checking for an active feeder still costs cycles when no Pokeblock is present.
+        cycle_counter.add_cycle(626);
+    }
+
     pokeblock_gen_opt.as_ref().map(|pokeblock_gen_opt| {
         let (nature, pokeblock, cycles) =
             calculate_safari_pokeblock_nature_and_cycles(rng, pokeblock_gen_opt);

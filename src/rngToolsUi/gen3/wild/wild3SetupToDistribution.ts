@@ -118,13 +118,13 @@ export const setupToDistributions = async (
     typeof cycle_opts === "object" && "CycleAtMomentWithEmuLog" in cycle_opts
       ? cycle_opts.CycleAtMomentWithEmuLog
       : null;
-  const leadCycleSpd = timingOpts?.lead_cycle_spd ?? (
-    typeof cycle_opts === "object" && "CycleAtMomentNoEmuLog" in cycle_opts
+  const leadCycleSpd =
+    timingOpts?.lead_cycle_spd ??
+    (typeof cycle_opts === "object" && "CycleAtMomentNoEmuLog" in cycle_opts
       ? cycle_opts.CycleAtMomentNoEmuLog.lead_cycle_spd
       : typeof cycle_opts === "object" && "LikelihoodForLead" in cycle_opts
         ? cycle_opts.LikelihoodForLead.lead_cycle_spd
-        : AVERAGE_LEAD_CYCLE_SPEED
-  );
+        : AVERAGE_LEAD_CYCLE_SPEED);
 
   const { results, cycle_at_moments } =
     await rngTools.generate_gen3_wild_distribution(
@@ -134,7 +134,9 @@ export const setupToDistributions = async (
       map_data,
       leadCycleSpd,
       timingOpts?.initial_cycle_at_sweet_scent,
-      timingOpts === null ? undefined : new Uint32Array(timingOpts.vblank_cycles),
+      timingOpts === null
+        ? undefined
+        : new Uint32Array(timingOpts.vblank_cycles),
     );
 
   const resultForTargetMethod = results.find(

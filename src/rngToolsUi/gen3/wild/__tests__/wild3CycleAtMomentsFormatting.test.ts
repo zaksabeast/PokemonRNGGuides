@@ -27,14 +27,21 @@ const distributions = (
 describe("wild encounter cycle comparison", () => {
   test("keeps predicted rows when no emulator log is supplied", () => {
     const result = createResult();
-    fillDataFromTool(result, distributions([
-      { moment: "TrySweetScentEncounter", frame: 0, cycle: 55000 },
-      { moment: "CreateBoxMon_RandomIvs1", frame: 1, cycle: 100000 },
-    ], { CycleAtMomentNoEmuLog: { lead_cycle_spd: 700 } }));
+    fillDataFromTool(
+      result,
+      distributions(
+        [
+          { moment: "TrySweetScentEncounter", frame: 0, cycle: 55000 },
+          { moment: "CreateBoxMon_RandomIvs1", frame: 1, cycle: 100000 },
+        ],
+        { CycleAtMomentNoEmuLog: { lead_cycle_spd: 700 } },
+      ),
+    );
     expect(result.uiCycleAtMoments).toHaveLength(2);
     expect(result.uiCycleAtMoments[0].dataFromTool.cycle).toBe(55000);
-    expect(result.uiCycleAtMoments[1].dataFromTool.totalCycleWithoutVblank)
-      .toBe(280896 + 100000 - 60000);
+    expect(
+      result.uiCycleAtMoments[1].dataFromTool.totalCycleWithoutVblank,
+    ).toBe(280896 + 100000 - 60000);
   });
 
   test.each([
@@ -43,31 +50,37 @@ describe("wild encounter cycle comparison", () => {
     [3, "Wild3"],
     [4, "Wild2"],
     [6, "Wild4"],
-  ] as const)("detects the method when VBlank begins at index %i", (boundary, expected) => {
-    const result = createResult();
-    const names = [
-      "CreateMonWithNature_RandomPidLow",
-      "CreateMonWithNature_RandomPidHigh",
-      "CreateMonWithNature_RandomPidLow",
-      "CreateMonWithNature_RandomPidHigh",
-      "CreateMon",
-      "CreateBoxMon_RandomIvs1",
-      "CreateBoxMon_RandomIvs2",
-    ] as const;
-    const moments = names.map((moment, index) => ({
-      moment,
-      frame: boundary !== 0 && index >= boundary ? 1 : 0,
-      cycle: 100 + index * 100,
-    }));
-    fillDataFromTool(result, distributions(moments, {
-      CycleAtMomentWithEmuLog: {
-        lead_cycle_spd: 700,
-        initial_cycle_at_sweet_scent: 100,
-        vblank_cycles: [50000],
-      },
-    }));
-    expect(getMethodAccordingToTool(result)).toBe(expected);
-  });
+  ] as const)(
+    "detects the method when VBlank begins at index %i",
+    (boundary, expected) => {
+      const result = createResult();
+      const names = [
+        "CreateMonWithNature_RandomPidLow",
+        "CreateMonWithNature_RandomPidHigh",
+        "CreateMonWithNature_RandomPidLow",
+        "CreateMonWithNature_RandomPidHigh",
+        "CreateMon",
+        "CreateBoxMon_RandomIvs1",
+        "CreateBoxMon_RandomIvs2",
+      ] as const;
+      const moments = names.map((moment, index) => ({
+        moment,
+        frame: boundary !== 0 && index >= boundary ? 1 : 0,
+        cycle: 100 + index * 100,
+      }));
+      fillDataFromTool(
+        result,
+        distributions(moments, {
+          CycleAtMomentWithEmuLog: {
+            lead_cycle_spd: 700,
+            initial_cycle_at_sweet_scent: 100,
+            vblank_cycles: [50000],
+          },
+        }),
+      );
+      expect(getMethodAccordingToTool(result)).toBe(expected);
+    },
+  );
 
   test("does not invent a method for an empty timeline", () => {
     expect(getMethodAccordingToTool(createResult())).toBeNull();
@@ -75,17 +88,24 @@ describe("wild encounter cycle comparison", () => {
 
   test("subtracts recorded VBlank durations from predicted cycles", () => {
     const result = createResult();
-    fillDataFromTool(result, distributions([
-      { moment: "TrySweetScentEncounter", frame: 0, cycle: 61617 },
-      { moment: "CreateBoxMon_RandomIvs2", frame: 1, cycle: 68647 },
-    ], {
-      CycleAtMomentWithEmuLog: {
-        lead_cycle_spd: 0,
-        initial_cycle_at_sweet_scent: 61617,
-        vblank_cycles: [56895],
-      },
-    }));
-    expect(result.uiCycleAtMoments[1].dataFromTool.totalCycleWithoutVblank)
-      .toBe(280896 + 68647 - 56895);
+    fillDataFromTool(
+      result,
+      distributions(
+        [
+          { moment: "TrySweetScentEncounter", frame: 0, cycle: 61617 },
+          { moment: "CreateBoxMon_RandomIvs2", frame: 1, cycle: 68647 },
+        ],
+        {
+          CycleAtMomentWithEmuLog: {
+            lead_cycle_spd: 0,
+            initial_cycle_at_sweet_scent: 61617,
+            vblank_cycles: [56895],
+          },
+        },
+      ),
+    );
+    expect(
+      result.uiCycleAtMoments[1].dataFromTool.totalCycleWithoutVblank,
+    ).toBe(280896 + 68647 - 56895);
   });
 });

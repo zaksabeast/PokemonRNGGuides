@@ -168,37 +168,37 @@ fn calibrate_cycles(
 
 #[test]
 fn egg_route101_cycle_calibration() {
-    route101_cycle_calibration(Gen3Lead::Egg, "egg_route101.json");
+    route101_cycle_calibration(Gen3Lead::Egg, "egg_route101.jsonl");
 }
 
 #[test]
 fn vanilla_route101_cycle_calibration() {
-    route101_cycle_calibration(Gen3Lead::Vanilla, "vanilla_route101.json");
+    route101_cycle_calibration(Gen3Lead::Vanilla, "vanilla_route101.jsonl");
 }
 
 #[test]
 fn vanilla_route101_v2_cycle_calibration() {
-    route101_cycle_calibration(Gen3Lead::Vanilla, "vanilla_route101_v2.json");
+    route101_cycle_calibration(Gen3Lead::Vanilla, "vanilla_route101_v2.jsonl");
 }
 
 #[test]
 fn synchronize_naive_route101_cycle_calibration() {
     route101_cycle_calibration(
         Gen3Lead::Synchronize(crate::Nature::Naive),
-        "synchronize_naive_route101.json",
+        "synchronize_naive_route101.jsonl",
     );
 }
 
 #[test]
 fn cute_charm_female_route101_cycle_calibration() {
-    route101_cycle_calibration(Gen3Lead::CuteCharm(crate::Gender::Female), "cute_charm_female_route101.json");
+    route101_cycle_calibration(Gen3Lead::CuteCharm(crate::Gender::Female), "cute_charm_female_route101.jsonl");
 }
 
 #[test]
 fn cute_charm_female_route119_cycle_calibration() {
     route119_cycle_calibration(
         Gen3Lead::CuteCharm(crate::Gender::Female),
-        "cute_charm_female_route119.json",
+        "cute_charm_female_route119.jsonl",
     );
 }
 
@@ -206,7 +206,7 @@ fn cute_charm_female_route119_cycle_calibration() {
 fn synchronize_gentle_route119_cycle_calibration() {
     route119_cycle_calibration(
         Gen3Lead::Synchronize(crate::Nature::Gentle),
-        "synchronize_gentle_route119.json",
+        "synchronize_gentle_route119.jsonl",
     );
 }
 
@@ -243,7 +243,7 @@ fn egg_meteor_falls_stevens_room_cycle_calibration() {
     };
     map_cycle_calibration(
         Gen3Lead::Egg,
-        "egg_meteor_falls_stevens_cave.json",
+        "egg_meteor_falls_stevens_cave.jsonl",
         &map_data,
     );
 }
@@ -279,7 +279,7 @@ fn static_route110_cycle_calibration() {
         ],
         ..Wild3MapGameData::default()
     };
-    map_cycle_calibration(Gen3Lead::Static, "static_route110.json", &map_data);
+    map_cycle_calibration(Gen3Lead::Static, "static_route110.jsonl", &map_data);
 }
 
 #[test]
@@ -315,7 +315,7 @@ fn magnet_pull_new_mauville_entrance_cycle_calibration() {
     };
     map_cycle_calibration(
         Gen3Lead::MagnetPull,
-        "magnet_pull_new_mauville_entrance.json",
+        "magnet_pull_new_mauville_entrance.jsonl",
         &map_data,
     );
 }
@@ -411,21 +411,21 @@ fn egg_route102_water_cycle_calibration() {
     map_action_cycle_calibration(
         Gen3Lead::Egg,
         Wild3Action::SweetScentWater,
-        "egg_route102.json",
+        "egg_route102.jsonl",
         &map_data,
     );
 }
 
 #[test]
 fn egg_route102_old_rod_cycle_calibration() {
-    route102_old_rod_cycle_calibration(Gen3Lead::Egg, "egg_route102.json");
+    route102_old_rod_cycle_calibration(Gen3Lead::Egg, "egg_route102.jsonl");
 }
 
 #[test]
 fn pressure_route102_old_rod_cycle_calibration() {
     route102_old_rod_cycle_calibration(
         Gen3Lead::HustleVitalSpiritPressure,
-        "pressure_route102.json",
+        "pressure_route102.jsonl",
     );
 }
 
@@ -461,12 +461,12 @@ fn route102_old_rod_cycle_calibration(lead: Gen3Lead, data_file: &str) {
 
 #[test]
 fn magnet_pull_route111_rock_smash_cycle_calibration() {
-    route111_rock_smash_cycle_calibration(Gen3Lead::MagnetPull, "magnet_pull_route111.json");
+    route111_rock_smash_cycle_calibration(Gen3Lead::MagnetPull, "magnet_pull_route111.jsonl");
 }
 
 #[test]
 fn vanilla_route111_rock_smash_cycle_calibration() {
-    route111_rock_smash_cycle_calibration(Gen3Lead::Vanilla, "vanilla_route111.json");
+    route111_rock_smash_cycle_calibration(Gen3Lead::Vanilla, "vanilla_route111.jsonl");
 }
 
 fn route111_rock_smash_cycle_calibration(lead: Gen3Lead, data_file: &str) {
@@ -518,7 +518,7 @@ fn vanilla_safari_north_east_rock_smash_cycle_calibration() {
     map_action_cycle_calibration(
         Gen3Lead::Vanilla,
         Wild3Action::RockSmash,
-        "vanilla_safari_north_east.json",
+        "vanilla_safari_north_east.jsonl",
         &map_data,
     );
 }
@@ -527,7 +527,7 @@ fn vanilla_safari_north_east_rock_smash_cycle_calibration() {
 fn vanilla_safari_middle_south_dry_sour_pokeblock_cycle_calibration() {
     safari_middle_south_pokeblock_cycle_calibration(
         Gen3Lead::Vanilla,
-        "vanilla_safari_middle_south_dry_sour_pokeblock.json",
+        "vanilla_safari_middle_south_dry_sour_pokeblock.jsonl",
         [0, 50, 0, 0, 11],
     );
 }
@@ -536,7 +536,7 @@ fn vanilla_safari_middle_south_dry_sour_pokeblock_cycle_calibration() {
 fn synchronize_brave_safari_middle_south_spicy_pokeblock_cycle_calibration() {
     safari_middle_south_pokeblock_cycle_calibration(
         Gen3Lead::Synchronize(crate::Nature::Brave),
-        "synchronize_brave_safari_middle_south_spicy_pokeblock.json",
+        "synchronize_brave_safari_middle_south_spicy_pokeblock.jsonl",
         [1, 0, 0, 0, 0],
     );
 }

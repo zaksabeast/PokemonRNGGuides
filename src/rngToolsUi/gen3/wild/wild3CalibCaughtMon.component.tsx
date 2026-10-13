@@ -131,7 +131,6 @@ export const Fields = ({
           options={toOptions(sortedLvls)}
         />
       </CaughtMonFields>
-
     </>
   );
 };

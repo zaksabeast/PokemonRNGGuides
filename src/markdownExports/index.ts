@@ -42,7 +42,6 @@ import {
 import { Glossary } from "~/pageComponents/glossary";
 import { Gen7SosList } from "~/pageComponents/gen7Sos/sosList";
 import { ChallengePageComponent } from "~/pageComponents/challenge";
-import { ExperimentsPageComponent } from "~/pageComponents/experiments";
 import { HomePageComponent } from "~/pageComponents/home";
 import { GamePageComponent } from "~/pageComponents/gamePage";
 import { withTags } from "~/components/tagDetector/provider";
@@ -89,7 +88,6 @@ const nonTools = {
   ShowIf,
   Gen7SosList,
   ChallengePageComponent,
-  ExperimentsPageComponent,
   HomePageComponent,
   GamePageComponent,
   Stepper,
@@ -507,10 +505,6 @@ const tools = {
   GenerateVoltorbFlipBoards: lazyLoad(
     () => import("~/rngToolsUi/gen4/voltorbFlip/generateBoards"),
     (mod) => mod.GenerateVoltorbFlipBoards,
-  ),
-  RngWorkbench: lazyLoad(
-    () => import("~/rngToolsUi/workbench"),
-    (mod) => mod.RngWorkbench,
   ),
 };
 

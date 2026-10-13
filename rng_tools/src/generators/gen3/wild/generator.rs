@@ -897,7 +897,11 @@ fn choose_index(
             153 + 18 * slot as usize
         }
     } else {
-        if slot == EncounterSlot::Slot4 { 211 } else { 147 + 18 * slot as usize }
+        if slot == EncounterSlot::Slot4 {
+            211
+        } else {
+            147 + 18 * slot as usize
+        }
     };
     cycle_counter.add_cycle(selection_cycles);
     slot as usize
@@ -1063,20 +1067,20 @@ fn pick_wild_mon_nature_safari(
         return None;
     }
 
-    pokeblock_gen_opt
-        .as_ref()
-        .map(|pokeblock_gen_opt| {
-            let (nature, pokeblock, cycles) = calculate_safari_pokeblock_nature_and_cycles(rng, pokeblock_gen_opt);
-            cycle_counter.add_cycle(cycles);
-            (nature, pokeblock)
-        })
+    pokeblock_gen_opt.as_ref().map(|pokeblock_gen_opt| {
+        let (nature, pokeblock, cycles) =
+            calculate_safari_pokeblock_nature_and_cycles(rng, pokeblock_gen_opt);
+        cycle_counter.add_cycle(cycles);
+        (nature, pokeblock)
+    })
 }
 
 pub fn calculate_nature_from_safari_pokeblock(
     rng: &mut Pokerng,
     pokeblock_gen_opt: &Wild3SafariPokeblockGenOpt,
 ) -> (Nature, Option<[u8; 5]>) {
-    let (nature, pokeblock, _) = calculate_safari_pokeblock_nature_and_cycles(rng, pokeblock_gen_opt);
+    let (nature, pokeblock, _) =
+        calculate_safari_pokeblock_nature_and_cycles(rng, pokeblock_gen_opt);
     (nature, pokeblock)
 }
 
@@ -1182,7 +1186,11 @@ fn calculate_safari_pokeblock_nature_and_cycles(
             }
         }
     };
-    let nature_checks = all_natures_by_priority.iter().position(|candidate| *candidate == nature).unwrap() + 1;
+    let nature_checks = all_natures_by_priority
+        .iter()
+        .position(|candidate| *candidate == nature)
+        .unwrap()
+        + 1;
     // PokeblockGetGain performs extra work for each nonzero flavor.
     let nonzero_flavors = pokeblock.map_or(0, |flavors| {
         flavors.iter().filter(|&&value| value != 0).count()
@@ -1343,8 +1351,8 @@ fn get_wild_method5_retry_count(
 fn create_mon_to_random_ivs_cycle_count(pid: u32) -> usize {
     const FIXED_CYCLES: usize = 37807;
     const PERMUTATION_CYCLES: [usize; 24] = [
-        1245, 965, 1257, 1296, 960, 1187, 1092, 1482, 1449, 1505, 1483, 1047,
-        487, 532, 350, 549, 350, 577, 0, 768, 611, 350, 798, 50,
+        1245, 965, 1257, 1296, 960, 1187, 1092, 1482, 1449, 1505, 1483, 1047, 487, 532, 350, 549,
+        350, 577, 0, 768, 611, 350, 798, 50,
     ];
     100 * calc_modulo_cycle_unsigned(pid, 24)
         + FIXED_CYCLES
@@ -1357,8 +1365,8 @@ fn create_mon_to_random_ivs_cycle_count(pid: u32) -> usize {
 fn random_ivs_cycle_count(pid: u32) -> usize {
     const FIXED_CYCLES: usize = 11602;
     const PERMUTATION_CYCLES: [usize; 24] = [
-        293, 239, 311, 311, 355, 451, 431, 383, 488, 561, 383, 342,
-        68, 59, 59, 203, 200, 59, 0, 131, 224, 124, 131, 92,
+        293, 239, 311, 311, 355, 451, 431, 383, 488, 561, 383, 342, 68, 59, 59, 203, 200, 59, 0,
+        131, 224, 124, 131, 92,
     ];
     36 * calc_modulo_cycle_unsigned(pid, 24)
         + FIXED_CYCLES
@@ -1411,7 +1419,3 @@ fn create_if_passes_filter(
         used_safari_pokeblock: gen_data.used_safari_pokeblock,
     })
 }
-
-#[cfg(test)]
-#[path = "tests/generator_new_parity_tests.rs"]
-pub(super) mod tests;

@@ -9,7 +9,7 @@ use crate::{
     rng::lcrng::Pokerng,
 };
 
-use super::super::generator_new::tests::assert_mon_results_eq_unordered;
+use super::super::generator::tests::assert_mon_results_eq_unordered;
 
 #[test]
 fn test_generate_wild3_no_filter() {

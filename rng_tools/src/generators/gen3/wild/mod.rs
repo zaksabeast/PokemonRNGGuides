@@ -13,7 +13,6 @@ mod lcrng_distance;
 mod most_dense_pid_chunks_by_spd;
 mod searcher;
 mod types;
-mod vblank_duration_data;
 
 pub use calc_modulo_cycle_count::*;
 pub use cycle_counter::*;

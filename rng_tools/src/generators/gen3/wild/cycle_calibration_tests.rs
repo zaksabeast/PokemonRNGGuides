@@ -44,7 +44,7 @@ fn filter_important_moments(moments: &[CycleFrameMoment]) -> Vec<CycleFrameMomen
         .collect()
 }
 
-fn compute_cycle_score(
+fn calculate_cycle_score(
     generated: &[CycleFrameMoment],
     logged: &[CycleFrameMoment],
     vblank_durations: &[usize],
@@ -90,7 +90,7 @@ fn compute_cycle_score(
         }
     }
 
-    const PENALTY_FOR_MISSING_MOMENT: u64 = 100_000;
+    const PENALTY_FOR_MISSING_MOMENT: u64 = VBLANK_FREQ as u64;
     let mut error = 0;
     let mut count = 0;
     for TransitionIncrements {
@@ -126,7 +126,7 @@ fn has_pid_frame_change(moments: &[CycleFrameMoment]) -> bool {
     })
 }
 
-fn calibrate_cycles(
+fn generate_then_calculate_cycle_score(
     mut opts: Wild3GeneratorOptions,
     map_data: &Wild3MapGameData,
     data_input: &Path,
@@ -143,14 +143,16 @@ fn calibrate_cycles(
             panic!("Invalid calibration JSON on line {}: {err}", line_idx + 1)
         });
         record.cycle_at_moments.dedup();
-        if has_pid_frame_change(&record.cycle_at_moments) {
+
+        /*if has_pid_frame_change(&record.cycle_at_moments) {
             println!(
                 "Skipping line {} advance {}: frame changed during PID generation",
                 line_idx + 1,
                 record.advance
             );
             continue;
-        }
+        } NO_PROD
+        */
         let initial = record.cycle_at_moments.first().expect("No logged moments");
         let initial_moment = if opts.action.is_fishing() {
             Moment::FishingWildEncounter
@@ -193,7 +195,7 @@ fn calibrate_cycles(
                 )
             });
         }
-        let (error, increments) = compute_cycle_score(
+        let (error, increments) = calculate_cycle_score(
             &generated_moments,
             &record.cycle_at_moments,
             &record.vblank_durations,
@@ -462,11 +464,12 @@ fn egg_route102_water_cycle_calibration() {
         ],
         ..Wild3MapGameData::default()
     };
-    map_action_cycle_calibration(
+    map_pokeblock_cycle_calibration(
         Gen3Lead::Egg,
         Wild3Action::SweetScentWater,
         "egg_route102.jsonl",
         &map_data,
+        None,
     );
 }
 
@@ -502,7 +505,7 @@ fn route102_old_rod_cycle_calibration(lead: Gen3Lead, data_file: &str) {
         ],
         ..Wild3MapGameData::default()
     };
-    map_action_cycle_calibration(lead, Wild3Action::OldRod, data_file, &map_data);
+    map_pokeblock_cycle_calibration(lead, Wild3Action::OldRod, data_file, &map_data, None);
 }
 
 #[test]
@@ -535,7 +538,7 @@ fn route111_rock_smash_cycle_calibration(lead: Gen3Lead, data_file: &str) {
         rock_smash_rate: 20,
         ..Wild3MapGameData::default()
     };
-    map_action_cycle_calibration(lead, Wild3Action::RockSmash, data_file, &map_data);
+    map_pokeblock_cycle_calibration(lead, Wild3Action::RockSmash, data_file, &map_data, None);
 }
 
 #[test]
@@ -560,11 +563,12 @@ fn vanilla_safari_north_east_rock_smash_cycle_calibration() {
         is_safari: true,
         ..Wild3MapGameData::default()
     };
-    map_action_cycle_calibration(
+    map_pokeblock_cycle_calibration(
         Gen3Lead::Vanilla,
         Wild3Action::RockSmash,
         "vanilla_safari_north_east.jsonl",
         &map_data,
+        None,
     );
 }
 
@@ -632,16 +636,7 @@ fn safari_middle_south_pokeblock_cycle_calibration(
 }
 
 fn map_cycle_calibration(lead: Gen3Lead, data_file: &str, map_data: &Wild3MapGameData) {
-    map_action_cycle_calibration(lead, Wild3Action::SweetScentLand, data_file, map_data);
-}
-
-fn map_action_cycle_calibration(
-    lead: Gen3Lead,
-    action: Wild3Action,
-    data_file: &str,
-    map_data: &Wild3MapGameData,
-) {
-    map_pokeblock_cycle_calibration(lead, action, data_file, map_data, None);
+    map_pokeblock_cycle_calibration(lead, Wild3Action::SweetScentLand, data_file, map_data, None);
 }
 
 fn map_pokeblock_cycle_calibration(
@@ -677,7 +672,7 @@ fn map_pokeblock_cycle_calibration(
         },
         ..Wild3GeneratorOptions::default()
     };
-    let score = calibrate_cycles(
+    let score = generate_then_calculate_cycle_score(
         opts,
         map_data,
         &Path::new(env!("CARGO_MANIFEST_DIR"))
@@ -703,10 +698,10 @@ fn cycle_score_accounts_for_frames_and_missing_transitions() {
         CycleFrameMoment::new(Moment::CreateMon, 0, 280800),
         CycleFrameMoment::new(Moment::CreateBoxMon_RandomIvs1, 1, 110),
     ];
-    assert_eq!(compute_cycle_score(&logged, &logged, &[50]), (0, 1));
-    assert_eq!(compute_cycle_score(&generated, &logged, &[50]), (10, 1));
+    assert_eq!(calculate_cycle_score(&logged, &logged, &[50]), (0, 1));
+    assert_eq!(calculate_cycle_score(&generated, &logged, &[50]), (10, 1));
     assert_eq!(
-        compute_cycle_score(&[], &logged, &[50]),
+        calculate_cycle_score(&[], &logged, &[50]),
         (VBLANK_FREQ as u64, 1)
     );
 }
@@ -724,7 +719,10 @@ fn cycle_score_excludes_vblank_when_it_moves_between_transitions() {
         CycleFrameMoment::new(Moment::CreateBoxMon_RandomIvs2, 11, 50070),
     ];
     // The work intervals are [80, 60] and [110, 60], despite different VBlank placement.
-    assert_eq!(compute_cycle_score(&generated, &logged, &[50000]), (30, 2));
+    assert_eq!(
+        calculate_cycle_score(&generated, &logged, &[50000]),
+        (30, 2)
+    );
 }
 
 #[test]
@@ -738,7 +736,7 @@ fn cycle_score_subtracts_each_crossed_vblank_duration() {
         CycleFrameMoment::new(Moment::CreateBoxMon_RandomIvs1, 12, 100000),
     ];
     assert_eq!(
-        compute_cycle_score(&generated, &logged, &[50000, 60000]),
+        calculate_cycle_score(&generated, &logged, &[50000, 60000]),
         (2 * VBLANK_FREQ as u64 - 410000, 1),
     );
 }
@@ -757,10 +755,10 @@ fn cycle_score_weights_early_and_late_errors_equally() {
     let logged = make([0, 100, 200, 300]);
     let early = make([0, 1100, 1200, 1300]);
     let late = make([0, 100, 200, 1300]);
-    assert_eq!(compute_cycle_score(&early, &logged, &[]), (1000, 3));
-    assert_eq!(compute_cycle_score(&late, &logged, &[]), (1000, 3));
+    assert_eq!(calculate_cycle_score(&early, &logged, &[]), (1000, 3));
+    assert_eq!(calculate_cycle_score(&late, &logged, &[]), (1000, 3));
     assert_eq!(
-        compute_cycle_score(&make([1000, 1100, 1200, 1300]), &logged, &[]),
+        calculate_cycle_score(&make([1000, 1100, 1200, 1300]), &logged, &[]),
         (0, 3)
     );
 }
@@ -881,5 +879,5 @@ fn cycle_score_preserves_compressed_pid_transition_weight() {
     let mut logged = filter_important_moments(&generated);
     logged[2].cycle += 30;
     logged[3].cycle += 30;
-    assert_eq!(compute_cycle_score(&generated, &logged, &[]), (30, 5));
+    assert_eq!(calculate_cycle_score(&generated, &logged, &[]), (30, 5));
 }

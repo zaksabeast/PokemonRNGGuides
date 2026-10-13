@@ -122,7 +122,7 @@ fn GenerateFishingWildMon(
     cycle_counter: &mut CycleFrameCounter,
 ) -> Option<(Wild3EncounterIndex, u8)> {
     cycle_counter.on_moment_reached(Moment::GenerateFishingWildMon);
-    let index = ChooseWildMonIndex_Fishing(rng, opts.action, opts.lead, cycle_counter);
+    let index = ChooseWildMonIndex_Fishing(rng, opts.action, cycle_counter);
     let encounter = map_data
         .slots_by_action
         .get(opts.action as usize)?
@@ -134,11 +134,10 @@ fn GenerateFishingWildMon(
 fn ChooseWildMonIndex_Fishing(
     rng: &mut Pokerng,
     rod: Wild3Action,
-    lead: Gen3Lead,
     cycle_counter: &mut CycleFrameCounter,
 ) -> usize {
     cycle_counter.on_moment_reached(Moment::ChooseWildMonIndex_Fishing);
-    choose_index(rng, lead, rod, cycle_counter)
+    choose_index(rng, rod, cycle_counter)
 }
 
 fn RockSmashWildEncounter(
@@ -367,7 +366,6 @@ fn CreateWildMon(
                 cycle_counter.add(13974, 16);
             }
             Gen3Lead::CuteCharm(_) => cycle_counter.add(14062 + 5763 + 66, 16),
-            _ => cycle_counter.add(25182, 32),
         }
     }
 
@@ -765,7 +763,7 @@ fn TryGenerateWildMon(
                 cycle_counter,
             )
         })
-        .unwrap_or_else(|| ChooseWildMonIndex_Land(rng, opts.lead, cycle_counter))
+        .unwrap_or_else(|| ChooseWildMonIndex_Land(rng, cycle_counter))
     } else if opts.action == Wild3Action::SweetScentWater {
         TryGetAbilityInfluencedWildMonIndex(
             rng,
@@ -775,9 +773,9 @@ fn TryGenerateWildMon(
             opts.lead,
             cycle_counter,
         )
-        .unwrap_or_else(|| ChooseWildMonIndex_WaterRock(rng, opts.lead, cycle_counter))
+        .unwrap_or_else(|| ChooseWildMonIndex_WaterRock(rng, cycle_counter))
     } else {
-        ChooseWildMonIndex_WaterRock(rng, opts.lead, cycle_counter)
+        ChooseWildMonIndex_WaterRock(rng, cycle_counter)
     };
     let encounter = slots.get(index)?;
     let level = ChooseWildMonLevel(rng, encounter, opts.lead, cycle_counter);
@@ -870,7 +868,6 @@ fn TryGetRandomWildMonIndexByType(
 
 fn choose_index(
     rng: &mut Pokerng,
-    lead: Gen3Lead,
     action: Wild3Action,
     cycle_counter: &mut CycleFrameCounter,
 ) -> usize {
@@ -909,20 +906,18 @@ fn choose_index(
 
 fn ChooseWildMonIndex_Land(
     rng: &mut Pokerng,
-    lead: Gen3Lead,
     cycle_counter: &mut CycleFrameCounter,
 ) -> usize {
     cycle_counter.on_moment_reached(Moment::ChooseWildMonIndex_Land);
-    choose_index(rng, lead, Wild3Action::SweetScentLand, cycle_counter)
+    choose_index(rng, Wild3Action::SweetScentLand, cycle_counter)
 }
 
 fn ChooseWildMonIndex_WaterRock(
     rng: &mut Pokerng,
-    lead: Gen3Lead,
     cycle_counter: &mut CycleFrameCounter,
 ) -> usize {
     cycle_counter.on_moment_reached(Moment::ChooseWildMonIndex_WaterRock);
-    choose_index(rng, lead, Wild3Action::SweetScentWater, cycle_counter)
+    choose_index(rng, Wild3Action::SweetScentWater, cycle_counter)
 }
 
 fn ChooseWildMonLevel(

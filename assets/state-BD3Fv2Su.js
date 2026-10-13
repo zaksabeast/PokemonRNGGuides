@@ -1,0 +1,1 @@
+import{i as e}from"./react-DjUnWo2l.js";var t=e({id:null});export{t};

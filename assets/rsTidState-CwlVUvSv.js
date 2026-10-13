@@ -1,0 +1,1 @@
+import{i as e,t}from"./react-DjUnWo2l.js";var n=e({targetAdvance:0,desiredIds:{tid:0,sid:0}}),r=()=>t(n);export{r as t};

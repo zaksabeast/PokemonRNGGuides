@@ -1,0 +1,1 @@
+import{i as e,t}from"./react-DjUnWo2l.js";var n=[`Turtwig`,`Chimchar`,`Piplup`],r=[`Chikorita`,`Cyndaquil`,`Totodile`],i=[...n,...r],a=e({species:`Chikorita`}),o=()=>t(a);export{o as i,n,r,i as t};

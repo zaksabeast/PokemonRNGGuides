@@ -19,26 +19,21 @@ struct CalibrationRecord {
     cycle_at_moments: Vec<CycleFrameMoment>,
 }
 
-// Only keep the first and last CreateMonWithNature_RandomPidLow/High of each frame.
+// Only keep the first PID low and the last PID high across all frames.
 pub(super) fn filter_important_moments(moments: &[CycleFrameMoment]) -> Vec<CycleFrameMoment> {
+    let first_pid_low = moments
+        .iter()
+        .position(|entry| entry.moment == Moment::CreateMonWithNature_RandomPidLow);
+    let last_pid_high = moments
+        .iter()
+        .rposition(|entry| entry.moment == Moment::CreateMonWithNature_RandomPidHigh);
     moments
         .iter()
         .enumerate()
-        .filter(|(index, entry)| {
-            let is_pid = matches!(
-                entry.moment,
-                Moment::CreateMonWithNature_RandomPidLow
-                    | Moment::CreateMonWithNature_RandomPidHigh
-            );
-            let is_first_of_frame = moments[..*index]
-                .iter()
-                .any(|other| other.frame == entry.frame && other.moment == entry.moment);
-
-            let is_last_of_frame = moments[*index + 1..]
-                .iter()
-                .any(|other| other.frame == entry.frame && other.moment == entry.moment);
-
-            !is_pid || !is_first_of_frame || !is_last_of_frame
+        .filter(|(index, entry)| match entry.moment {
+            Moment::CreateMonWithNature_RandomPidLow => Some(*index) == first_pid_low,
+            Moment::CreateMonWithNature_RandomPidHigh => Some(*index) == last_pid_high,
+            _ => true,
         })
         .map(|(_, entry)| *entry)
         .collect()
@@ -144,15 +139,16 @@ fn generate_then_calculate_cycle_score(
         });
         record.cycle_at_moments.dedup();
 
-        /*if has_pid_frame_change(&record.cycle_at_moments) {
+        // Ignore Wild3 because it alters the number of events, which makes big differences with the generator.
+        if has_pid_frame_change(&record.cycle_at_moments) {
             println!(
                 "Skipping line {} advance {}: frame changed during PID generation",
                 line_idx + 1,
                 record.advance
             );
             continue;
-        } NO_PROD
-        */
+        }
+
         let initial = record.cycle_at_moments.first().expect("No logged moments");
         let initial_moment = if opts.action.is_fishing() {
             Moment::FishingWildEncounter
@@ -264,4 +260,3 @@ pub(super) fn map_pokeblock_cycle_calibration(
         "{data_file} cycle increment error regressed: {score:.2}"
     );
 }
-

@@ -477,6 +477,22 @@ fn safari_northeast_map_data() -> Wild3MapGameData {
 }
 
 #[test]
+fn wild3_cycle_calib_filter_important_moments_across_frames() {
+    let moments = [
+        CycleFrameMoment::new(Moment::CreateMonWithNature, 0, 10),
+        CycleFrameMoment::new(Moment::CreateMonWithNature_RandomPidLow, 0, 20),
+        CycleFrameMoment::new(Moment::CreateMonWithNature_RandomPidHigh, 0, 100),
+        CycleFrameMoment::new(Moment::CreateMonWithNature_RandomPidLow, 1, 20),
+        CycleFrameMoment::new(Moment::CreateMonWithNature_RandomPidHigh, 1, 100),
+        CycleFrameMoment::new(Moment::CreateMon, 1, 200),
+    ];
+    assert_eq!(
+        super::cycle_calibration::filter_important_moments(&moments),
+        vec![moments[0], moments[1], moments[4], moments[5]]
+    );
+}
+
+#[test]
 fn wild3_cycle_calib_calculate_cycle_score_with_missing_transitions() {
     let logged = [
         CycleFrameMoment::new(Moment::CreateMon, 10, 280800),

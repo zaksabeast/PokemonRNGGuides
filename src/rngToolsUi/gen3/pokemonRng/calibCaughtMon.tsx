@@ -64,7 +64,6 @@ export type CaughtMonResult = {
     adv_after_painting: number;
   };
   method: Gen3Method | Gen3StaticMethod;
-  // lower score is between
   score: number;
   probabilityHitMethodsAtAdvance: number;
   distanceFromTargetAfter: number;

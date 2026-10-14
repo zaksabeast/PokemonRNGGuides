@@ -188,11 +188,11 @@ export const fillDataFromJson = (
           totalCycleWithoutVblankIncrement: null,
         },
       });
-      lastTreatedCam += 1;
-      uiResultIdx = lastTreatedCam;
+      uiResultIdx = lastTreatedCam + 1;
     } else {
       uiResult.uiCycleAtMoments[uiResultIdx].dataFromJson = dataFromJson;
     }
+    lastTreatedCam = uiResultIdx;
   });
 
   uiResult.uiCycleAtMoments.forEach((cam, i) => {

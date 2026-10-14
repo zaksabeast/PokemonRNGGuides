@@ -3,7 +3,7 @@ use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 use crate::gen3::{
-    BASE_LEAD_PID_MOD_24_CYCLES, COMMON_LEAD_RANGE, CycleAndModRange, FASTEST_MODULO_CYCLE_24,
+    COMMON_LEAD_RANGE, CycleAndModRange, FASTEST_MODULO_CYCLE_24,
     Gen3Lead, INFINITE_CYCLE, Moment, SLOWEST_MODULO_CYCLE_24, VBLANK_FREQ,
     Wild3GeneratorCycleOpts, Wild3GeneratorOptions, get_min_mid_max_pre_sweet_scent_cycle,
     get_min_mid_max_vblank_cycle_duration,
@@ -318,11 +318,8 @@ impl CycleFrameCounter {
                 ..
             } => {
                 *lead_pid_mod_count += lead_pid_mod;
-                // CycleAndModRange includes the base modulo cost as well as the lead speed.
-                *earliest_slowest_cycle +=
-                    lead_pid_mod * (BASE_LEAD_PID_MOD_24_CYCLES + *max_lead_cycle_spd);
-                *latest_fastest_cycle +=
-                    lead_pid_mod * (BASE_LEAD_PID_MOD_24_CYCLES + *min_lead_cycle_spd);
+                *earliest_slowest_cycle += lead_pid_mod * *max_lead_cycle_spd;
+                *latest_fastest_cycle += lead_pid_mod * *min_lead_cycle_spd;
             }
             CycleFrameCounter::DetailedBreakdown { lead_cycle_spd, .. } => {
                 let cycle = lead_pid_mod * *lead_cycle_spd;
@@ -422,14 +419,12 @@ impl CycleFrameCounter {
             CycleFrameCounter::Inactive | CycleFrameCounter::DetailedBreakdown { .. } => 0,
             CycleFrameCounter::MinMaxRange {
                 base_cycle_count,
-                lead_pid_mod_count,
                 ..
             }
             | CycleFrameCounter::CheckValidAllLeadSpds {
                 base_cycle_count,
-                lead_pid_mod_count,
                 ..
-            } => *base_cycle_count + *lead_pid_mod_count * BASE_LEAD_PID_MOD_24_CYCLES,
+            } => *base_cycle_count,
         }
     }
     pub fn set_cycle_instability(&mut self, instability: f32) {

@@ -21,16 +21,7 @@ use crate::{
     rng::{Rng, lcrng::Pokerng},
 };
 
-/*
-General idea:
- - Mimick as much as possible the function call structure of the real game, to have accurate cycle counting.
-
- Shared timing costs apply to all leads; distinct lead branches keep their own costs.
-
-
-*/
-
-pub fn generate_wild3_new(
+pub fn generate_wild3_internal(
     mut rng: Pokerng,
     opts: &Wild3GeneratorOptions,
     map_data: &Wild3MapGameData,
@@ -457,14 +448,13 @@ fn CreateMonWithGenderNatureLetter(
     generate_personality(rng, gen_data, cycle_counter)
 }
 
-//NO_PROD redo fishing logs with new moments.
 fn exclude_method3_from_pending_method5(
     results: &mut Vec<Wild3GeneratorMonResult>,
     pending_method5_index: &mut Option<usize>,
     method3_start: usize,
     method3_range: usize,
 ) {
-    // Exclude the Method3 window from the pending Method5 cycle range, keeping
+    // Exclude the Wild3 window from the pending Wild5 cycle range, keeping
     // the portion before it and any remaining tail as separate results.
     if let Some(index) = pending_method5_index.take() {
         let range = results[index].cycle_range.unwrap();

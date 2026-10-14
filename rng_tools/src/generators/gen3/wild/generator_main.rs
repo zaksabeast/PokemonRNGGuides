@@ -7,7 +7,8 @@ use crate::{
     gen3::{
         CycleAndModCount, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method, Gen3PkmFilter,
         Wild3Action, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData,
-        Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt, generate_wild3_new,
+        Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
+        generate_wild3_internal,
     },
     rng::lcrng::Pokerng,
 };
@@ -134,5 +135,5 @@ pub fn generate_wild3(
     opts: &Wild3GeneratorOptions,
     map_data: &Wild3MapGameData,
 ) -> Wild3GeneratorResults {
-    generate_wild3_new(rng, opts, map_data)
+    generate_wild3_internal(rng, opts, map_data)
 }

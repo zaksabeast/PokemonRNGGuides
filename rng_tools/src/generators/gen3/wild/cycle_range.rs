@@ -3,11 +3,6 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-use super::calc_modulo_cycle_unsigned;
-
-pub const BASE_LEAD_PID: u32 = 0;
-pub const BASE_LEAD_PID_MOD_24_CYCLES: usize = calc_modulo_cycle_unsigned(BASE_LEAD_PID, 24);
-
 #[derive(Debug, Clone, Copy, Eq, PartialOrd, PartialEq, Tsify, Serialize, Ord, Deserialize)]
 #[allow(non_camel_case_types)]
 #[repr(u8)]
@@ -127,7 +122,6 @@ impl CycleAndModCount {
         self.cycle += cycle;
     }
     pub fn add_mod(&mut self, lead_pid_mod: usize) {
-        self.cycle += lead_pid_mod * BASE_LEAD_PID_MOD_24_CYCLES;
         self.lead_pid_mod += lead_pid_mod;
     }
 }

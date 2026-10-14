@@ -67,6 +67,7 @@ fn FishingWildEncounter(
     map_data: &Wild3MapGameData,
     cycle_counter: &mut CycleFrameCounter,
 ) -> Option<Wild3GeneratorResults> {
+    cycle_counter.add_cycle(1186);
     cycle_counter.on_moment_reached(Moment::FishingWildEncounter);
 
     if CheckFeebas(rng, opts, cycle_counter) {
@@ -212,6 +213,7 @@ fn SweetScentWildEncounter(
     cycle_counter.on_moment_reached(Moment::SweetScentWildEncounter);
 
     // Linear wild-header lookup cost calibrated at indices 0 (744) and 33 (3625).
+    // Limitation: The real cost is more complex and depends on sub map groups.
     cycle_counter.add_cycle(744 + 2881 * map_data.map_internal_idx / 33);
     if opts.action == Wild3Action::SweetScentWater {
         cycle_counter.add_cycle(443);
@@ -455,6 +457,7 @@ fn CreateMonWithGenderNatureLetter(
     generate_personality(rng, gen_data, cycle_counter)
 }
 
+//NO_PROD redo fishing logs with new moments.
 fn exclude_method3_from_pending_method5(
     results: &mut Vec<Wild3GeneratorMonResult>,
     pending_method5_index: &mut Option<usize>,
@@ -904,18 +907,12 @@ fn choose_index(
     slot as usize
 }
 
-fn ChooseWildMonIndex_Land(
-    rng: &mut Pokerng,
-    cycle_counter: &mut CycleFrameCounter,
-) -> usize {
+fn ChooseWildMonIndex_Land(rng: &mut Pokerng, cycle_counter: &mut CycleFrameCounter) -> usize {
     cycle_counter.on_moment_reached(Moment::ChooseWildMonIndex_Land);
     choose_index(rng, Wild3Action::SweetScentLand, cycle_counter)
 }
 
-fn ChooseWildMonIndex_WaterRock(
-    rng: &mut Pokerng,
-    cycle_counter: &mut CycleFrameCounter,
-) -> usize {
+fn ChooseWildMonIndex_WaterRock(rng: &mut Pokerng, cycle_counter: &mut CycleFrameCounter) -> usize {
     cycle_counter.on_moment_reached(Moment::ChooseWildMonIndex_WaterRock);
     choose_index(rng, Wild3Action::SweetScentWater, cycle_counter)
 }

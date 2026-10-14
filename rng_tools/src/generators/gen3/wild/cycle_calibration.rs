@@ -105,7 +105,7 @@ pub(super) fn calculate_cycle_score(
     (error, count)
 }
 
-pub(super) fn has_pid_frame_change(moments: &[CycleFrameMoment]) -> bool {
+pub(super) fn is_wild3(moments: &[CycleFrameMoment]) -> bool {
     moments.windows(2).any(|pair| {
         pair[0].frame != pair[1].frame
             && matches!(
@@ -140,7 +140,7 @@ fn generate_then_calculate_cycle_score(
         record.cycle_at_moments.dedup();
 
         // Ignore Wild3 because it alters the number of events, which makes big differences with the generator.
-        if has_pid_frame_change(&record.cycle_at_moments) {
+        if is_wild3(&record.cycle_at_moments) {
             println!(
                 "Skipping line {} advance {}: frame changed during PID generation",
                 line_idx + 1,
@@ -151,7 +151,7 @@ fn generate_then_calculate_cycle_score(
 
         let initial = record.cycle_at_moments.first().expect("No logged moments");
         let initial_moment = if opts.action.is_fishing() {
-            Moment::FishingWildEncounter
+            Moment::Fishing_StartEncounter
         } else if opts.action == Wild3Action::RockSmash {
             Moment::RockSmashWildEncounter
         } else {
@@ -172,11 +172,6 @@ fn generate_then_calculate_cycle_score(
         };
         let generated = generate_wild3(Pokerng::with_jump(0, record.advance), &opts, map_data);
         let mut generated_moments = generated.cycle_counter.get_cycle_at_moments();
-        // Fishing recordings start after the zero-cost encounter wrapper.
-        if opts.action.is_fishing() {
-            assert_eq!(generated_moments[0].moment, Moment::Fishing_StartEncounter);
-            generated_moments.remove(0);
-        }
         // The emulator logger omits PID halves inside the gender-constrained routine.
         if record
             .cycle_at_moments

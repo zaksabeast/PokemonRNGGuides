@@ -3,7 +3,7 @@ use crate::{
     assert_list_eq,
     gen3::{
         CycleRange, Gen3Lead, Gen3Method, Wild3EncounterIndex, Wild3SearcherCycleData,
-        Wild3SearcherCycleDataByLead, Wild3SearcherOptions, Wild3SearcherResultMon,
+        Wild3SearcherCycleDataByLead, Wild3SearcherCycleOpts, Wild3SearcherOptions, Wild3SearcherResultMon,
         search_wild3_naive,
     },
     rng::lcrng::Pokerng,
@@ -20,7 +20,7 @@ fn test_search_wild3_cycle_methods_1_2_4() {
         ],
         initial_advances: 65,
         max_result_count: 10,
-        cycle_opts: crate::gen3::Wild3SearcherCycleOpts::Calibrate {
+        cycle_opts: Wild3SearcherCycleOpts::Calibrate {
             lead_cycle_speed: Some(500),
         },
         leads: vec![Gen3Lead::Vanilla],

@@ -2,7 +2,7 @@ use super::{
     cycle_calibration::{calculate_cycle_score, map_pokeblock_cycle_calibration},
     *,
 };
-use crate::{Species};
+use crate::Species;
 
 #[test]
 fn wild3_cycle_calib_egg_route101() {

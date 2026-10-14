@@ -551,6 +551,10 @@
     "hash": "962c7539dab0c1c8d6f218afd5844ce79fd0596ef60cb2a7b19ef154e63f6f70",
     "lastUpdated": null
   },
+  "/freeze-time-usum-fossil/": {
+    "hash": "5c45f7e5b7363130f41f683fee02ef37032ee2fbde81ffa9eb7f7f6bd2dbc66c",
+    "lastUpdated": "2026-10-18"
+  },
   "/frlg-gen3-sid/": {
     "hash": "1a809daf8b19055ae22b43f4a354eaa12a8da30841ba473b68fcbf74ba167e70",
     "lastUpdated": "2026-03-27"

@@ -302,6 +302,22 @@ const tools = {
     () => import("~/rngToolsUi/gen7/starterPresses"),
     (mod) => mod.Gen7StarterTargetAdvance,
   ),
+  Gen7FossilSearch: lazyLoad(
+    () => import("~/rngToolsUi/gen7/fossilSearch"),
+    (mod) => mod.Gen7FossilSearch,
+  ),
+  Gen7FossilTimeline: lazyLoad(
+    () => import("~/rngToolsUi/gen7/fossilPresses"),
+    (mod) => mod.Gen7FossilTimeline,
+  ),
+  Gen7FossilPressDialogueA: lazyLoad(
+    () => import("~/rngToolsUi/gen7/fossilPresses"),
+    (mod) => mod.Gen7FossilPressDialogueA,
+  ),
+  Gen7FossilTargetAdvance: lazyLoad(
+    () => import("~/rngToolsUi/gen7/fossilPresses"),
+    (mod) => mod.Gen7FossilTargetAdvance,
+  ),
   ShinyEmeraldStarter: lazyLoad(
     () => import("~/rngToolsUi/gen3/shinyStarter"),
     (mod) => mod.ShinyEmeraldStarter,

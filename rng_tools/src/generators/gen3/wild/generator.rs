@@ -577,7 +577,7 @@ fn generate_personality(
             }
         }
 
-        // A recorded VBlank consumes one RNG advance before the next PID attempt.
+        // When tracking with CycleAtMomentWithEmuLog, we must simulate v-blank occuring in case of Wild5
         let frame_before = match &cycle_counter {
             CycleFrameCounter::DetailedBreakdown { current_cycle, .. } => current_cycle.frame,
             _ => 0,
@@ -616,7 +616,7 @@ fn CreateMon(
     cycle_counter.on_moment_reached(Moment::CreateMon);
     let opts = gen_data.opts;
 
-    let method2_range = create_mon_to_random_ivs_cycle_count(pid);
+    let method2_range = get_method2_range(pid);
 
     if opts.methods.contains(&Gen3Method::Wild2)
         && cycle_counter.can_generate_method(method2_range)
@@ -634,7 +634,7 @@ fn CreateMon(
     cycle_counter.on_moment_reached(Moment::CreateBoxMon_RandomIvs1);
     let iv1 = rand_next_u16(&mut rng, "iv1_wild1or4", 1);
 
-    let method4_range = random_ivs_cycle_count(pid);
+    let method4_range = get_method4_range(pid);
 
     if opts.methods.contains(&Gen3Method::Wild4)
         && cycle_counter.can_generate_method(method4_range)
@@ -841,7 +841,7 @@ fn TryGetRandomWildMonIndexByType(
         return None;
     }
     let value = rng.rand::<u16>();
-    // Primary-type matches skip the second comparison in the twelve-slot land scan.
+    // If types[0] matches the wanted type, types[1] is not checked, which saves cycles
     let wanted_type = if steel {
         crate::PokemonType::Steel
     } else {
@@ -919,16 +919,12 @@ fn ChooseWildMonLevel(
     let range = encounter.max_level - encounter.min_level + 1;
     let value = rng.rand::<u16>();
     cycle_counter.add_cycle(calc_modulo_cycle_signed(value as i32, range as i32));
-    if lead == Gen3Lead::Egg {
-        cycle_counter.add_cycle(426);
-    } else if lead == Gen3Lead::HustleVitalSpiritPressure {
-        cycle_counter.add(6118, 16);
-    } else if lead == Gen3Lead::Static {
-        cycle_counter.add(6091, 16);
-    } else if lead == Gen3Lead::MagnetPull {
-        cycle_counter.add(6147, 16);
-    } else {
-        cycle_counter.add(6179, 16);
+    match lead {
+        Gen3Lead::Egg => cycle_counter.add_cycle(426),
+        Gen3Lead::HustleVitalSpiritPressure => cycle_counter.add(6118, 16),
+        Gen3Lead::Static => cycle_counter.add(6091, 16),
+        Gen3Lead::MagnetPull => cycle_counter.add(6147, 16),
+        _ => cycle_counter.add(6179, 16),
     }
     let mut increment = (value % range as u16) as u8;
     if lead == Gen3Lead::HustleVitalSpiritPressure {
@@ -1335,7 +1331,7 @@ fn get_wild_method5_retry_count(
 // calls and the initial checksum contributes four. The successful nature check
 // is already counted before CreateMon. Permutation costs use median residuals
 // from unique PID/species samples with (pid / 24) % 5 != 0; the rest were held out.
-fn create_mon_to_random_ivs_cycle_count(pid: u32) -> usize {
+fn get_method2_range(pid: u32) -> usize {
     const FIXED_CYCLES: usize = 37807;
     const PERMUTATION_CYCLES: [usize; 24] = [
         1245, 965, 1257, 1296, 960, 1187, 1092, 1482, 1449, 1505, 1483, 1047, 487, 532, 350, 549,
@@ -1349,7 +1345,7 @@ fn create_mon_to_random_ivs_cycle_count(pid: u32) -> usize {
 // Three IV setters each perform twelve GetSubstruct calls. The table models
 // the remaining permutation-dependent work, calibrated from median residuals
 // on unique PID samples where (pid / 24) % 5 != 0; the rest were held out.
-fn random_ivs_cycle_count(pid: u32) -> usize {
+fn get_method4_range(pid: u32) -> usize {
     const FIXED_CYCLES: usize = 11602;
     const PERMUTATION_CYCLES: [usize; 24] = [
         293, 239, 311, 311, 355, 451, 431, 383, 488, 561, 383, 342, 68, 59, 59, 203, 200, 59, 0,

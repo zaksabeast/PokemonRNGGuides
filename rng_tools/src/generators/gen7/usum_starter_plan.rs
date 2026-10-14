@@ -1,20 +1,18 @@
 use super::starter_timeline::{
-    KUKUI_DIALOGUE_MODELS, MAX_ADVANCES_AFTER_YES, MIN_STEPS_FROM_YES_NO_TO_YES,
+    KUKUI_DIALOGUE_MODELS, MAX_ADVANCES_AFTER_YES, MIN_STEPS_FROM_YES_NO_TO_YES, STARTER_GIFT,
     STEPS_FROM_KUKUI_A_TO_YES_NO, after_yes_timeline, can_press_a_on_starter, kukui_timeline,
     skip_to_first_starter_a_press, yes_no_timeline,
 };
 use super::timeline_finder::safe_advances_for_models;
 use super::{
-    Gen7Advance, Gen7Press, ModelState, NEXT_ADVANCE_COUNT, NpcModel, STARTER_GIFT, Timeline,
-    delay_advances,
+    FIRST_PRESS_STEP, Gen7Advance, Gen7Press, LAST_NEXT_ADVANCE_STEP, MergeKey, ModelState,
+    Timeline, delay_advances,
 };
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-const LAST_NEXT_ADVANCE_STEP: u32 = NEXT_ADVANCE_COUNT as u32;
-const FIRST_KUKUI_A_STEP: u32 = LAST_NEXT_ADVANCE_STEP + 1;
 const KUKUI_A_STEPS_TO_TRY: u32 = 300;
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -64,18 +62,9 @@ pub struct Gen7UsumStarterPlan {
 fn plan(opts: &Gen7UsumStarterPlanOpts) -> Gen7UsumStarterPlan {
     let kukui = kukui_timeline(opts.seed, opts.safe_advance);
     Gen7UsumStarterPlan {
-        next_advances: next_advances(&kukui),
+        next_advances: kukui.next_advances(),
         presses: find_presses(kukui, opts),
     }
-}
-
-fn next_advances(kukui: &Timeline) -> Vec<usize> {
-    kukui
-        .clone()
-        .skip(1)
-        .take(NEXT_ADVANCE_COUNT)
-        .map(|step| step.advance)
-        .collect()
 }
 
 fn find_presses(
@@ -84,7 +73,7 @@ fn find_presses(
 ) -> Option<Gen7UsumStarterPresses> {
     let mut cache = StepsAfterYesCache::default();
 
-    kukui.skip_steps(FIRST_KUKUI_A_STEP);
+    kukui.skip_steps(FIRST_PRESS_STEP);
     for _ in 0..KUKUI_A_STEPS_TO_TRY {
         let presses = presses_after_kukui_a(&kukui, opts, &mut cache);
         if presses.is_some() {
@@ -159,11 +148,11 @@ fn is_target(a_press: &Timeline, opts: &Gen7UsumStarterPlanOpts) -> bool {
 
 /// Different A presses on Kukui's dialogue often reach the same Yes press.
 #[derive(Default)]
-struct StepsAfterYesCache(HashMap<(usize, NpcModel), Option<u32>>);
+struct StepsAfterYesCache(HashMap<MergeKey, Option<u32>>);
 
 impl StepsAfterYesCache {
     fn steps_after_yes(&mut self, yes: &Timeline, opts: &Gen7UsumStarterPlanOpts) -> Option<u32> {
-        let key = (yes.advance(), yes.npcs().clone());
+        let key = yes.merge_key();
         *self
             .0
             .entry(key)
@@ -317,7 +306,7 @@ mod test {
         let opts = opts_for(target);
         let mut kukui = kukui_timeline(SEED, SAFE_ADVANCE);
 
-        kukui.skip_steps(FIRST_KUKUI_A_STEP);
+        kukui.skip_steps(FIRST_PRESS_STEP);
         for _ in 0..KUKUI_A_STEPS_TO_TRY {
             let mut fresh_cache = StepsAfterYesCache::default();
             if let Some(presses) = presses_after_kukui_a(&kukui, &opts, &mut fresh_cache) {

@@ -1,5 +1,5 @@
 use super::{GiftSettings, Timeline, model_count_from_npcs};
-use crate::Nature;
+use crate::GenderRatio;
 use crate::rng::{GetRand, Rng};
 
 /// The last dialogue before "You received xxx!" ("This here is xxx! You'd
@@ -16,14 +16,13 @@ const MAX_STEPS_AFTER_DIALOGUE_A: u32 = 1800;
 pub(super) const MAX_ADVANCES_AFTER_DIALOGUE_A: usize =
     FOSSIL_DIALOGUE_MODELS * MAX_STEPS_AFTER_DIALOGUE_A as usize + 1;
 
-const STEPS_FROM_A_PRESS_TO_GENERATION: u32 = 15;
-
-pub(super) fn fossil_gift(sync_nature: Option<Nature>) -> GiftSettings {
-    GiftSettings {
-        steps_from_a_press_to_generation: STEPS_FROM_A_PRESS_TO_GENERATION,
-        sync_nature,
-    }
-}
+/// Without a Synchronize lead. `with_sync_nature` sets the lead's nature.
+pub(super) const FOSSIL_GIFT: GiftSettings = GiftSettings {
+    steps_from_a_press_to_generation: 15,
+    // Every USUM fossil is 87.5% male.
+    gender_ratio: GenderRatio::OneToSeven,
+    sync_nature: None,
+};
 
 pub(super) fn fossil_dialogue_timeline(seed: u32, safe_advance: usize) -> Timeline {
     Timeline::new(seed, FOSSIL_DIALOGUE_MODELS, safe_advance)
@@ -39,35 +38,26 @@ pub(super) fn after_dialogue_a_timeline<R: Rng + GetRand<u64>>(
     after_dialogue_a
 }
 
-/// The user steps until an advance first shows up and presses A there, so
-/// later steps that stay on the same advance can't be pressed on.
-pub(super) fn step_to_next_advance<R: Rng + GetRand<u64>>(timeline: &mut Timeline<R>) {
-    let advance = timeline.advance();
-    while timeline.advance() == advance {
-        timeline.step();
-    }
-}
-
 pub(super) fn skip_to_first_fossil_a_press<R: Rng + GetRand<u64>>(
     after_dialogue_a: &mut Timeline<R>,
 ) {
     let last_step_before = MIN_STEPS_AFTER_DIALOGUE_A - 1;
     let steps_left = last_step_before.saturating_sub(after_dialogue_a.steps_since_start());
     after_dialogue_a.skip_steps(steps_left);
-    step_to_next_advance(after_dialogue_a);
+    after_dialogue_a.step_to_next_advance();
 }
 
 pub(super) fn can_press_a_on_fossil<R: Rng + GetRand<u64>>(
     after_dialogue_a: &Timeline<R>,
     last_advance: usize,
 ) -> bool {
-    let is_in_time = after_dialogue_a.steps_since_start() <= MAX_STEPS_AFTER_DIALOGUE_A;
-    is_in_time && after_dialogue_a.advance() <= last_advance
+    after_dialogue_a.can_press_a(MAX_STEPS_AFTER_DIALOGUE_A, last_advance)
 }
 
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::Nature;
     use crate::gen7::test_utils::{BLINK, NO_BLINK};
     use crate::gen7::{NpcModel, generate_gift};
     use crate::test_utils::FakeRng;
@@ -102,7 +92,11 @@ mod test {
 
     #[test]
     fn steps_count_from_the_dialogue_a_press() {
-        let mut dialogue = Timeline::from_npcs(FakeRng::new(&[NO_BLINK; 40]), NpcModel::new(2), 0);
+        let mut dialogue = Timeline::from_npcs(
+            FakeRng::new(&[NO_BLINK; 40]),
+            NpcModel::new(FOSSIL_DIALOGUE_MODELS),
+            0,
+        );
         dialogue.skip_steps(10);
         assert_eq!(after_dialogue_a_timeline(dialogue).steps_since_start(), 3);
     }
@@ -121,23 +115,6 @@ mod test {
         assert_eq!(after_dialogue_a.advance(), after_press + 2);
         after_dialogue_a.skip_steps(4);
         assert_eq!(after_dialogue_a.advance(), after_press + 6);
-    }
-
-    #[test]
-    fn next_advance_skips_steps_that_use_no_advances() {
-        // Both models blink, so the next four steps stay on the same advance.
-        let mut rands = vec![BLINK, BLINK];
-        rands.extend([1, 1, NO_BLINK]);
-        let npcs = NpcModel::new(FOSSIL_DIALOGUE_MODELS);
-        let mut timeline = Timeline::from_npcs(FakeRng::new(&rands), npcs, 100);
-
-        step_to_next_advance(&mut timeline);
-        assert_eq!(timeline.current().advance, 102);
-        assert_eq!(timeline.current().steps_since_start, 1);
-
-        step_to_next_advance(&mut timeline);
-        assert_eq!(timeline.current().advance, 104);
-        assert_eq!(timeline.current().steps_since_start, 6);
     }
 
     #[test]
@@ -172,14 +149,14 @@ mod test {
     #[test]
     fn fossils_generate_fifteen_steps_after_the_a_press() {
         let rands = vec![NO_BLINK; DIALOGUE_A_ADVANCES + 15 * FOSSIL_DIALOGUE_MODELS + 11];
-        let fossil = generate_gift(after_dialogue_a(&rands), 0, &fossil_gift(None));
+        let fossil = generate_gift(after_dialogue_a(&rands), 0, &FOSSIL_GIFT);
         assert_eq!(fossil.delay_advances, 15 * FOSSIL_DIALOGUE_MODELS);
     }
 
     #[test]
     fn fossils_take_the_leads_synchronize_nature() {
         let rands = vec![NO_BLINK; DIALOGUE_A_ADVANCES + 15 * FOSSIL_DIALOGUE_MODELS + 10];
-        let settings = fossil_gift(Some(Nature::Jolly));
+        let settings = FOSSIL_GIFT.with_sync_nature(Some(Nature::Jolly));
         let fossil = generate_gift(after_dialogue_a(&rands), 0, &settings);
         assert_eq!(fossil.nature, Nature::Jolly);
     }

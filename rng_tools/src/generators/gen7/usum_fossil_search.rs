@@ -1,8 +1,8 @@
 use super::fossil_timeline::{
-    FOSSIL_DIALOGUE_MODELS, MAX_ADVANCES_AFTER_DIALOGUE_A, after_dialogue_a_timeline,
-    can_press_a_on_fossil, fossil_gift, skip_to_first_fossil_a_press, step_to_next_advance,
+    FOSSIL_DIALOGUE_MODELS, FOSSIL_GIFT, MAX_ADVANCES_AFTER_DIALOGUE_A, after_dialogue_a_timeline,
+    can_press_a_on_fossil, skip_to_first_fossil_a_press,
 };
-use super::{Gen7Gift, NpcModel, Timeline, generate_gift};
+use super::{Gen7Gift, MergeKey, NpcModel, Timeline, generate_gift};
 use crate::rng::{Rng, StateIterator, sfmt::Sfmt};
 use crate::{Nature, PkmFilter};
 use serde::{Deserialize, Serialize};
@@ -60,7 +60,7 @@ type UniqueFossils = BTreeMap<(usize, usize), Gen7Gift>;
 
 /// Same advance and NPC state means the same fossil, so timelines that have
 /// merged with an earlier one don't generate it again.
-type SeenAPresses = HashSet<(usize, NpcModel)>;
+type SeenAPresses = HashSet<MergeKey>;
 
 fn add_fossils_after_dialogue_a(
     mut after_dialogue_a: Timeline,
@@ -71,13 +71,15 @@ fn add_fossils_after_dialogue_a(
     skip_to_first_fossil_a_press(&mut after_dialogue_a);
 
     while can_press_a_on_fossil(&after_dialogue_a, opts.last_target_advance) {
-        let is_new_a_press = after_dialogue_a.advance() >= opts.first_target_advance
-            && seen_a_presses.insert((after_dialogue_a.advance(), after_dialogue_a.npcs().clone()));
-        if is_new_a_press && let Some(fossil) = matching_fossil(&after_dialogue_a, opts) {
+        // Checked before `seen_a_presses` so it only holds possible targets.
+        if after_dialogue_a.advance() >= opts.first_target_advance
+            && seen_a_presses.insert(after_dialogue_a.merge_key())
+            && let Some(fossil) = matching_fossil(&after_dialogue_a, opts)
+        {
             let key = (fossil.advance, fossil.delay_advances);
             unique_fossils.entry(key).or_insert(fossil);
         }
-        step_to_next_advance(&mut after_dialogue_a);
+        after_dialogue_a.step_to_next_advance();
     }
 }
 
@@ -85,7 +87,7 @@ fn matching_fossil(a_press: &Timeline, opts: &Gen7UsumFossilSearchOpts) -> Optio
     if a_press.advance() < opts.first_target_advance {
         return None;
     }
-    let settings = fossil_gift(opts.sync_nature);
+    let settings = FOSSIL_GIFT.with_sync_nature(opts.sync_nature);
     let fossil = generate_gift(a_press.clone(), opts.tsv, &settings);
     opts.filter.pass_filter(&fossil).then_some(fossil)
 }
@@ -134,7 +136,7 @@ mod test {
             skip_to_first_fossil_a_press(&mut after_dialogue_a);
             while can_press_a_on_fossil(&after_dialogue_a, opts.last_target_advance) {
                 fossils.extend(matching_fossil(&after_dialogue_a, opts));
-                step_to_next_advance(&mut after_dialogue_a);
+                after_dialogue_a.step_to_next_advance();
             }
         }
         fossils
@@ -180,7 +182,8 @@ mod test {
     fn targets_leave_time_for_the_final_screen() {
         let results = gen7_search_usum_fossils(opts(CURRENT_ADVANCE, 7400));
         let first_target = results.first().unwrap().advance;
-        // 450 steps of at least one advance each.
+        // 450 steps. Steps where both models are mid-blink or in a cooldown
+        // use no advances, but this seed averages over one advance a step.
         assert!(first_target >= CURRENT_ADVANCE + 450);
     }
 

@@ -1,9 +1,9 @@
 use super::starter_timeline::{
-    KUKUI_DIALOGUE_MODELS, MAX_ADVANCES_AFTER_YES, MIN_STEPS_FROM_YES_NO_TO_YES,
+    KUKUI_DIALOGUE_MODELS, MAX_ADVANCES_AFTER_YES, MIN_STEPS_FROM_YES_NO_TO_YES, STARTER_GIFT,
     STEPS_FROM_KUKUI_A_TO_YES_NO, after_yes_timeline, can_press_a_on_starter,
     skip_to_first_starter_a_press,
 };
-use super::{Gen7Gift, NpcModel, STARTER_GIFT, Timeline, generate_gift};
+use super::{Gen7Gift, NpcModel, Timeline, generate_gift};
 use crate::PkmFilter;
 use crate::rng::{Rng, StateIterator, sfmt::Sfmt};
 use serde::{Deserialize, Serialize};

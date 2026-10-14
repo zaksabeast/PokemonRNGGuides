@@ -6,9 +6,15 @@ use std::ops::RangeInclusive;
 use tsify::Tsify;
 
 pub(super) const NEXT_ADVANCE_COUNT: usize = 5;
+pub(super) const LAST_NEXT_ADVANCE_STEP: u32 = NEXT_ADVANCE_COUNT as u32;
+/// The first step the user can press A on after checking the next advances.
+pub(super) const FIRST_PRESS_STEP: u32 = LAST_NEXT_ADVANCE_STEP + 1;
 /// 10 seconds of steps (2/60 s each) after the last next advance, so the
 /// leap comes soon after the user checks the timeline.
 const MAX_LEAP_STEPS: usize = 300;
+
+/// A timeline's advance and NPC state. See `Timeline::merge_key`.
+pub(super) type MergeKey = (usize, NpcModel);
 
 #[derive(Clone)]
 pub struct Timeline<R = Sfmt> {
@@ -72,6 +78,20 @@ impl<R: Rng + GetRand<u64>> Timeline<R> {
         }
     }
 
+    /// The user steps until an advance first shows up and presses A there, so
+    /// later steps that stay on the same advance can't be pressed on.
+    pub(super) fn step_to_next_advance(&mut self) {
+        let advance = self.advance;
+        while self.advance == advance {
+            self.step();
+        }
+    }
+
+    /// A can be pressed up to `max_steps` into the scene and up to `last_advance`.
+    pub(super) fn can_press_a(&self, max_steps: u32, last_advance: usize) -> bool {
+        self.steps_since_start <= max_steps && self.advance <= last_advance
+    }
+
     pub(super) fn advance(&self) -> usize {
         self.advance
     }
@@ -95,6 +115,18 @@ impl<R: Rng + GetRand<u64>> Timeline<R> {
         }
     }
 
+    /// The advances the user steps through to check they're on the timeline.
+    pub(super) fn next_advances(&self) -> Vec<usize>
+    where
+        R: Clone,
+    {
+        self.clone()
+            .skip(1)
+            .take(NEXT_ADVANCE_COUNT)
+            .map(|step| step.advance)
+            .collect()
+    }
+
     /// Pressing A to advance dialogue uses one RNG advance while the NPCs
     /// are frozen, which moves the player onto a different timeline.
     /// Matches 3DSRNGTool's dialogue Timeline Leap.
@@ -106,9 +138,29 @@ impl<R: Rng + GetRand<u64>> Timeline<R> {
         self.step();
     }
 
-    /// Same advance and NPC state means the same future.
+    /// Whether the upcoming steps switch between frozen and unfrozen NPCs.
+    /// Freezes that have ended, or that last for the rest of the scene,
+    /// don't make the future depend on the step count.
+    fn has_step_dependent_freezes(&self) -> bool {
+        let next_step = self.steps_since_start + 1;
+        self.npc_frozen_steps.iter().any(|steps| {
+            let has_ended = *steps.end() < next_step;
+            let is_permanent = *steps.start() <= next_step && *steps.end() == u32::MAX;
+            !has_ended && !is_permanent
+        })
+    }
+
+    /// Same advance and NPC state means the same future, unless the scene
+    /// has NPC frozen steps, since those depend on the step count. Starting
+    /// the next scene from merged timelines still gives the same future.
     fn has_merged_with(&self, other: &Self) -> bool {
         self.advance == other.advance && self.npcs == other.npcs
+    }
+
+    /// Equal keys mean the timelines have merged, like `has_merged_with`.
+    pub(super) fn merge_key(&self) -> MergeKey {
+        debug_assert!(!self.has_step_dependent_freezes());
+        (self.advance, self.npcs.clone())
     }
 }
 
@@ -126,6 +178,15 @@ impl<R: Rng + GetRand<u64>> Iterator for Timeline<R> {
         self.step();
         Some(current)
     }
+}
+
+/// A button press at `advance`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Gen7Press {
+    pub advance: usize,
+    /// Counts from the previous press, or from the last next advance for the first press.
+    pub wait_steps: u32,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
@@ -148,27 +209,28 @@ pub struct Gen7TargetTimeline {
     pub leap: Option<Gen7TimelineLeap>,
 }
 
-/// States from branches that missed. Merged timelines visit the same
-/// advances, so only recording every so often still catches merges.
+/// States from timelines that missed the target, such as leap branches or
+/// walks after an A press. Merged timelines visit the same advances, so only
+/// recording every so often still catches merges.
 #[derive(Default)]
-struct MissedStates(HashSet<(usize, NpcModel)>);
+pub(super) struct MissedStates(HashSet<MergeKey>);
 
 impl MissedStates {
     const SAMPLE_EVERY: usize = 64;
 
     /// The key to record for `timeline`, or `None` if it isn't sampled.
-    fn sample(timeline: &Timeline) -> Option<(usize, NpcModel)> {
+    pub(super) fn sample<R: Rng + GetRand<u64>>(timeline: &Timeline<R>) -> Option<MergeKey> {
         timeline
             .advance
             .is_multiple_of(Self::SAMPLE_EVERY)
-            .then(|| (timeline.advance, timeline.npcs.clone()))
+            .then(|| timeline.merge_key())
     }
 
-    fn contains(&self, key: &(usize, NpcModel)) -> bool {
+    pub(super) fn contains(&self, key: &MergeKey) -> bool {
         self.0.contains(key)
     }
 
-    fn record(&mut self, keys: impl IntoIterator<Item = (usize, NpcModel)>) {
+    pub(super) fn record(&mut self, keys: impl IntoIterator<Item = MergeKey>) {
         self.0.extend(keys);
     }
 }
@@ -235,9 +297,7 @@ fn find_dialogue_leap(
 ) -> Option<Gen7TimelineLeap> {
     // The user steps through the next advances to check the timeline,
     // so the leap has to come after them.
-    for _ in 0..=NEXT_ADVANCE_COUNT {
-        timeline.step();
-    }
+    timeline.skip_steps(FIRST_PRESS_STEP);
 
     let mut missed = MissedStates::default();
     for _ in 0..MAX_LEAP_STEPS {
@@ -270,12 +330,7 @@ pub fn target_timeline(
 ) -> Gen7TargetTimeline {
     // Jumping to the safe advance is the slow part, so only do it once.
     let timeline = Timeline::new(seed, model_count, safe_advance);
-    let next_advances = timeline
-        .clone()
-        .skip(1)
-        .take(NEXT_ADVANCE_COUNT)
-        .map(|step| step.advance)
-        .collect();
+    let next_advances = timeline.next_advances();
 
     let steps_to_target = timeline
         .clone()
@@ -296,6 +351,8 @@ pub fn target_timeline(
 mod test {
     use super::*;
     use crate::gen7::model_count_from_npcs;
+    use crate::gen7::test_utils::{BLINK, NO_BLINK};
+    use crate::test_utils::FakeRng;
 
     const SEED: u32 = 0xdeadbeef;
 
@@ -537,5 +594,22 @@ mod test {
         let result = target_timeline(SEED, model_count, 1039, 1139);
         assert_eq!(result.steps_to_target, Some(20));
         assert_eq!(result.leap, None);
+    }
+
+    #[test]
+    fn next_advance_skips_steps_that_use_no_advances() {
+        // Both models blink, so the next four steps stay on the same advance.
+        let mut rands = vec![BLINK, BLINK];
+        rands.extend([1, 1, NO_BLINK]);
+        let npcs = NpcModel::new(model_count_from_npcs(1));
+        let mut timeline = Timeline::from_npcs(FakeRng::new(&rands), npcs, 100);
+
+        timeline.step_to_next_advance();
+        assert_eq!(timeline.current().advance, 102);
+        assert_eq!(timeline.current().steps_since_start, 1);
+
+        timeline.step_to_next_advance();
+        assert_eq!(timeline.current().advance, 104);
+        assert_eq!(timeline.current().steps_since_start, 6);
     }
 }

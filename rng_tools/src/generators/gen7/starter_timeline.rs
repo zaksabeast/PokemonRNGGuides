@@ -1,4 +1,5 @@
-use super::{Timeline, model_count_from_npcs};
+use super::{GiftSettings, Timeline, model_count_from_npcs};
+use crate::GenderRatio;
 use crate::rng::{GetRand, Rng};
 use std::ops::RangeInclusive;
 
@@ -30,6 +31,13 @@ const MAX_STEPS_AFTER_YES: u32 = 1500;
 pub(super) const MAX_ADVANCES_AFTER_YES: usize =
     KUKUI_DIALOGUE_MODELS * MAX_STEPS_AFTER_YES as usize;
 
+pub(super) const STARTER_GIFT: GiftSettings = GiftSettings {
+    steps_from_a_press_to_generation: 12,
+    gender_ratio: GenderRatio::OneToSeven,
+    // Starters can't be synchronized.
+    sync_nature: None,
+};
+
 pub(super) fn kukui_timeline(seed: u32, safe_advance: usize) -> Timeline {
     Timeline::new(seed, KUKUI_DIALOGUE_MODELS, safe_advance)
 }
@@ -53,15 +61,14 @@ pub(super) fn can_press_a_on_starter<R: Rng + GetRand<u64>>(
     after_yes: &Timeline<R>,
     last_advance: usize,
 ) -> bool {
-    let is_in_time = after_yes.steps_since_start() <= MAX_STEPS_AFTER_YES;
-    is_in_time && after_yes.advance() <= last_advance
+    after_yes.can_press_a(MAX_STEPS_AFTER_YES, last_advance)
 }
 
 #[cfg(test)]
 mod test {
     use super::*;
     use crate::gen7::test_utils::{NO_BLINK, step_to_advance};
-    use crate::gen7::{ModelState, NpcModel, STARTER_GIFT, TimelineStep, generate_gift};
+    use crate::gen7::{ModelState, NpcModel, TimelineStep, generate_gift};
     use crate::rng::{Rng, sfmt::Sfmt};
     use crate::test_utils::FakeRng;
     use crate::{Gender, Ivs, Nature};

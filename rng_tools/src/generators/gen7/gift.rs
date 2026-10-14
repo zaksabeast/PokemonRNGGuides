@@ -7,16 +7,20 @@ use tsify::Tsify;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(super) struct GiftSettings {
     pub steps_from_a_press_to_generation: u32,
+    pub gender_ratio: GenderRatio,
     /// The nature of a lead with Synchronize. Gifts always take it, without
     /// using an RNG advance for the nature.
     pub sync_nature: Option<Nature>,
 }
 
-pub(super) const STARTER_GIFT: GiftSettings = GiftSettings {
-    steps_from_a_press_to_generation: 12,
-    // Starters can't be synchronized.
-    sync_nature: None,
-};
+impl GiftSettings {
+    pub(super) const fn with_sync_nature(self, sync_nature: Option<Nature>) -> Self {
+        Self {
+            sync_nature,
+            ..self
+        }
+    }
+}
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -31,15 +35,6 @@ pub struct Gen7Gift {
     pub ability: AbilityType,
     pub nature: Nature,
     pub gender: Gender,
-}
-
-/// A button press at `advance`.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Gen7Press {
-    pub advance: usize,
-    /// Counts from the previous press, or from the last next advance for the first press.
-    pub wait_steps: u32,
 }
 
 impl PkmState for Gen7Gift {
@@ -82,7 +77,7 @@ pub(super) fn generate_gift<R: Rng + GetRand<u64> + GetMaxRand<u64>>(
         a_press_advance,
         delay_advances,
         tsv,
-        settings.sync_nature,
+        settings,
     )
 }
 
@@ -101,7 +96,7 @@ fn generate<R: Rng + GetRand<u64> + GetMaxRand<u64>>(
     a_press_advance: usize,
     delay_advances: usize,
     tsv: u16,
-    sync_nature: Option<Nature>,
+    settings: &GiftSettings,
 ) -> Gen7Gift {
     let rng = rng_at_generation;
     let ec = rng.rand::<u64>() as u32;
@@ -112,8 +107,12 @@ fn generate<R: Rng + GetRand<u64> + GetMaxRand<u64>>(
     let ivs = Ivs::new(iv(), iv(), iv(), iv(), iv(), iv());
 
     let ability = (rng.rand_max::<u64>(2) as u8).into();
-    let nature = sync_nature.unwrap_or_else(|| (rng.rand_max::<u64>(25) as u8).into());
-    let gender = GenderRatio::OneToSeven.gender(rng.rand_max::<u64>(252) as u8 + 1);
+    let nature = settings
+        .sync_nature
+        .unwrap_or_else(|| (rng.rand_max::<u64>(25) as u8).into());
+    let gender = settings
+        .gender_ratio
+        .gender(rng.rand_max::<u64>(252) as u8 + 1);
 
     Gen7Gift {
         advance: a_press_advance,
@@ -133,6 +132,7 @@ fn generate<R: Rng + GetRand<u64> + GetMaxRand<u64>>(
 mod test {
     use super::*;
     use crate::assert_list_eq;
+    use crate::gen7::starter_timeline::STARTER_GIFT;
     use crate::gen7::test_utils::{BLINK, NO_BLINK};
     use crate::gen7::{NpcModel, model_count_from_npcs};
     use crate::rng::{StateIterator, sfmt::Sfmt};

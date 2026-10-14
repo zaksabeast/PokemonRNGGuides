@@ -1,0 +1,422 @@
+use super::fossil_timeline::{
+    FOSSIL_DIALOGUE_MODELS, MAX_ADVANCES_AFTER_DIALOGUE_A, after_dialogue_a_timeline,
+    can_press_a_on_fossil, fossil_dialogue_timeline, fossil_gift, skip_to_first_fossil_a_press,
+    step_to_next_advance,
+};
+use super::timeline_finder::safe_advances_for_models;
+use super::{Gen7Advance, Gen7Press, NEXT_ADVANCE_COUNT, Timeline, delay_advances};
+use serde::{Deserialize, Serialize};
+use tsify::Tsify;
+use wasm_bindgen::prelude::*;
+
+const LAST_NEXT_ADVANCE_STEP: u32 = NEXT_ADVANCE_COUNT as u32;
+
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Gen7UsumFossilSafeAdvancesOpts {
+    pub seed: u32,
+    pub current_advance: usize,
+    pub from_advance: usize,
+    pub safe_advance_count: usize,
+}
+
+#[wasm_bindgen]
+pub fn gen7_usum_fossil_safe_advances(opts: Gen7UsumFossilSafeAdvancesOpts) -> Vec<Gen7Advance> {
+    safe_advances_for_models(
+        opts.seed,
+        FOSSIL_DIALOGUE_MODELS,
+        opts.current_advance,
+        opts.from_advance,
+        opts.safe_advance_count,
+    )
+}
+
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Gen7UsumFossilPlanOpts {
+    pub seed: u32,
+    pub safe_advance: usize,
+    pub target_advance: usize,
+    pub delay_advances: usize,
+    /// The A press on the dialogue from an earlier plan on this timeline.
+    /// The user may have stepped that far, so the new press can't be before it.
+    pub min_dialogue_a_advance: Option<usize>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Gen7UsumFossilPresses {
+    /// `wait_steps` counts from `min_dialogue_a_advance`, or from the last
+    /// next advance without one.
+    pub dialogue_a: Gen7Press,
+    pub target: Gen7Press,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Gen7UsumFossilPlan {
+    pub next_advances: Vec<usize>,
+    pub presses: Option<Gen7UsumFossilPresses>,
+}
+
+fn plan(opts: &Gen7UsumFossilPlanOpts) -> Gen7UsumFossilPlan {
+    let dialogue = fossil_dialogue_timeline(opts.seed, opts.safe_advance);
+    Gen7UsumFossilPlan {
+        next_advances: next_advances(&dialogue),
+        presses: find_presses(dialogue, opts),
+    }
+}
+
+fn next_advances(dialogue: &Timeline) -> Vec<usize> {
+    dialogue
+        .clone()
+        .skip(1)
+        .take(NEXT_ADVANCE_COUNT)
+        .map(|step| step.advance)
+        .collect()
+}
+
+/// Finds the earliest A press on the dialogue that reaches the target.
+fn find_presses(
+    mut dialogue: Timeline,
+    opts: &Gen7UsumFossilPlanOpts,
+) -> Option<Gen7UsumFossilPresses> {
+    // The user steps through the next advances to check the timeline, so
+    // the A press has to come after them.
+    dialogue.skip_steps(LAST_NEXT_ADVANCE_STEP);
+    let mut wait_from_step = dialogue.steps_since_start();
+    step_to_next_advance(&mut dialogue);
+
+    if let Some(min_dialogue_a_advance) = opts.min_dialogue_a_advance {
+        while dialogue.advance() < min_dialogue_a_advance {
+            step_to_next_advance(&mut dialogue);
+        }
+        wait_from_step = dialogue.steps_since_start();
+    }
+
+    while dialogue.advance() < opts.target_advance {
+        if let Some(steps_to_target) = steps_from_dialogue_a_to_target(&dialogue, opts) {
+            return Some(Gen7UsumFossilPresses {
+                dialogue_a: Gen7Press {
+                    advance: dialogue.advance(),
+                    wait_steps: dialogue.steps_since_start() - wait_from_step,
+                },
+                target: Gen7Press {
+                    advance: opts.target_advance,
+                    wait_steps: steps_to_target,
+                },
+            });
+        }
+        step_to_next_advance(&mut dialogue);
+    }
+
+    None
+}
+
+fn steps_from_dialogue_a_to_target(
+    dialogue_a: &Timeline,
+    opts: &Gen7UsumFossilPlanOpts,
+) -> Option<u32> {
+    let is_too_early = dialogue_a.advance() + MAX_ADVANCES_AFTER_DIALOGUE_A < opts.target_advance;
+    if is_too_early {
+        return None;
+    }
+
+    let mut after_dialogue_a = after_dialogue_a_timeline(dialogue_a.clone());
+    skip_to_first_fossil_a_press(&mut after_dialogue_a);
+
+    while can_press_a_on_fossil(&after_dialogue_a, opts.target_advance) {
+        if is_target(&after_dialogue_a, opts) {
+            return Some(after_dialogue_a.steps_since_start());
+        }
+        step_to_next_advance(&mut after_dialogue_a);
+    }
+
+    None
+}
+
+fn is_target(a_press: &Timeline, opts: &Gen7UsumFossilPlanOpts) -> bool {
+    // The delay doesn't depend on the lead's Synchronize nature.
+    a_press.advance() == opts.target_advance
+        && delay_advances(a_press, &fossil_gift(None)) == opts.delay_advances
+}
+
+/// Returns a list with one item so it can run in `multiWorkerRngTools`.
+#[wasm_bindgen]
+pub fn gen7_usum_fossil_plan(opts: Gen7UsumFossilPlanOpts) -> Vec<Gen7UsumFossilPlan> {
+    vec![plan(&opts)]
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use crate::gen7::test_utils::step_to_advance;
+    use crate::gen7::{
+        Gen7Gift, Gen7UsumFossilSearchOpts, MAX_SAFE_SCAN, gen7_search_usum_fossils, generate_gift,
+        next_safe_advances,
+    };
+    use crate::{Gender, Ivs, Nature, PkmFilter};
+
+    const SEED: u32 = 0x58507f4f;
+    const SAFE_ADVANCE: usize = 7937;
+    const SYNC_NATURE: Option<Nature> = Some(Nature::Adamant);
+
+    fn searched_targets(first_target_advance: usize) -> Vec<Gen7Gift> {
+        gen7_search_usum_fossils(Gen7UsumFossilSearchOpts {
+            seed: SEED,
+            tsv: 0,
+            sync_nature: SYNC_NATURE,
+            current_advance: SAFE_ADVANCE,
+            first_target_advance,
+            last_target_advance: first_target_advance + 200,
+            filter: PkmFilter::new_allow_all(),
+        })
+    }
+
+    fn opts_for(target: &Gen7Gift) -> Gen7UsumFossilPlanOpts {
+        Gen7UsumFossilPlanOpts {
+            seed: SEED,
+            safe_advance: SAFE_ADVANCE,
+            target_advance: target.advance,
+            delay_advances: target.delay_advances,
+            min_dialogue_a_advance: None,
+        }
+    }
+
+    fn presses_for(opts: &Gen7UsumFossilPlanOpts) -> Option<Gen7UsumFossilPresses> {
+        plan(opts).presses
+    }
+
+    /// Target and presses for the first few searched targets the timeline can reach.
+    fn reachable_targets(first_target_advance: usize) -> Vec<(Gen7Gift, Gen7UsumFossilPresses)> {
+        searched_targets(first_target_advance)
+            .into_iter()
+            .step_by(15)
+            .filter_map(|target| {
+                let presses = presses_for(&opts_for(&target))?;
+                Some((target, presses))
+            })
+            .collect()
+    }
+
+    /// Follows the presses the way the user does, one step at a time.
+    fn fossil_from_presses(presses: &Gen7UsumFossilPresses) -> Gen7Gift {
+        let mut dialogue = fossil_dialogue_timeline(SEED, SAFE_ADVANCE);
+        step_to_advance(&mut dialogue, presses.dialogue_a.advance);
+
+        let mut after_dialogue_a = after_dialogue_a_timeline(dialogue);
+        step_to_advance(&mut after_dialogue_a, presses.target.advance);
+        assert_eq!(
+            after_dialogue_a.current().steps_since_start,
+            presses.target.wait_steps
+        );
+        generate_gift(after_dialogue_a, 0, &fossil_gift(SYNC_NATURE))
+    }
+
+    #[test]
+    fn next_advances_follow_the_dialogue() {
+        let target = searched_targets(SAFE_ADVANCE + 3000).remove(0);
+        assert_eq!(
+            plan(&opts_for(&target)).next_advances,
+            vec![7939, 7941, 7943, 7945, 7947]
+        );
+    }
+
+    #[test]
+    fn presses_reach_searched_targets() {
+        let reachable = reachable_targets(SAFE_ADVANCE + 3000);
+        assert!(reachable.len() > 5);
+        for (target, presses) in reachable {
+            assert_eq!(fossil_from_presses(&presses), target);
+        }
+    }
+
+    #[test]
+    fn dialogue_a_comes_after_the_next_advances() {
+        // Close enough that the first A presses on the dialogue can reach it.
+        let (_, presses) = reachable_targets(SAFE_ADVANCE + 1900).remove(0);
+        assert!(presses.dialogue_a.advance > 7947);
+        assert!(presses.dialogue_a.wait_steps > 0);
+    }
+
+    #[test]
+    fn target_leaves_time_for_the_final_screen() {
+        for (_, presses) in reachable_targets(SAFE_ADVANCE + 3000) {
+            assert!(presses.target.wait_steps >= 450);
+            assert!(presses.target.wait_steps <= 1800);
+        }
+    }
+
+    #[test]
+    fn new_target_keeps_the_dialogue_a_at_or_after_the_previous_one() {
+        let reachable = reachable_targets(SAFE_ADVANCE + 3000);
+        let (_, previous) = reachable[0];
+        let mut retargeted = 0;
+
+        for (target, _) in &reachable[1..] {
+            let opts = Gen7UsumFossilPlanOpts {
+                min_dialogue_a_advance: Some(previous.dialogue_a.advance),
+                ..opts_for(target)
+            };
+            let Some(presses) = presses_for(&opts) else {
+                continue;
+            };
+            assert!(presses.dialogue_a.advance >= previous.dialogue_a.advance);
+            assert_eq!(&fossil_from_presses(&presses), target);
+            retargeted += 1;
+        }
+
+        assert!(retargeted > 0);
+    }
+
+    #[test]
+    fn same_target_again_needs_no_wait() {
+        let (target, previous) = reachable_targets(SAFE_ADVANCE + 3000).remove(0);
+        let presses = presses_for(&Gen7UsumFossilPlanOpts {
+            min_dialogue_a_advance: Some(previous.dialogue_a.advance),
+            ..opts_for(&target)
+        })
+        .unwrap();
+
+        assert_eq!(presses.dialogue_a.advance, previous.dialogue_a.advance);
+        assert_eq!(presses.dialogue_a.wait_steps, 0);
+        assert_eq!(presses.target, previous.target);
+    }
+
+    #[test]
+    fn target_only_reachable_by_an_earlier_dialogue_a_is_unreachable() {
+        let (target, previous) = reachable_targets(SAFE_ADVANCE + 3000).remove(0);
+        let last_working_dialogue_a = {
+            let mut last = previous.dialogue_a.advance;
+            while let Some(presses) = presses_for(&Gen7UsumFossilPlanOpts {
+                min_dialogue_a_advance: Some(last + 1),
+                ..opts_for(&target)
+            }) {
+                last = presses.dialogue_a.advance;
+            }
+            last
+        };
+
+        let presses = presses_for(&Gen7UsumFossilPlanOpts {
+            min_dialogue_a_advance: Some(last_working_dialogue_a + 1),
+            ..opts_for(&target)
+        });
+        assert_eq!(presses, None);
+    }
+
+    #[test]
+    fn target_before_the_safe_advance_is_unreachable() {
+        let presses = presses_for(&Gen7UsumFossilPlanOpts {
+            seed: SEED,
+            safe_advance: SAFE_ADVANCE,
+            target_advance: SAFE_ADVANCE - 1,
+            delay_advances: 30,
+            min_dialogue_a_advance: None,
+        });
+        assert_eq!(presses, None);
+    }
+
+    #[test]
+    fn wrong_delay_is_unreachable() {
+        let (target, _) = reachable_targets(SAFE_ADVANCE + 3000).remove(0);
+        let presses = presses_for(&Gen7UsumFossilPlanOpts {
+            delay_advances: 0,
+            ..opts_for(&target)
+        });
+        assert_eq!(presses, None);
+    }
+
+    const IN_GAME_SEED: u32 = 0x4787b584;
+    const IN_GAME_SAFE_ADVANCE: usize = 1325;
+    const IN_GAME_DIALOGUE_A_ADVANCE: usize = 8365;
+    const IN_GAME_TARGET_ADVANCE: usize = 11203;
+
+    /// A run in game with an ordinary lead, following the plan's presses.
+    fn in_game_fossil() -> Gen7Gift {
+        let mut dialogue = fossil_dialogue_timeline(IN_GAME_SEED, IN_GAME_SAFE_ADVANCE);
+        step_to_advance(&mut dialogue, IN_GAME_DIALOGUE_A_ADVANCE);
+        let mut after_dialogue_a = after_dialogue_a_timeline(dialogue);
+        step_to_advance(&mut after_dialogue_a, IN_GAME_TARGET_ADVANCE);
+        generate_gift(after_dialogue_a, 2936, &fossil_gift(None))
+    }
+
+    #[test]
+    fn matches_in_game_run_4787b584() {
+        let fossil = in_game_fossil();
+        assert_eq!(fossil.pid, 0x2a999d1d);
+        assert!(fossil.shiny);
+        assert_eq!(fossil.gender, Gender::Male);
+        assert_eq!(fossil.nature, Nature::Careful);
+        assert_eq!(fossil.ivs, Ivs::new(11, 24, 10, 8, 10, 12));
+    }
+
+    #[test]
+    fn plans_the_in_game_run_4787b584() {
+        let fossil = in_game_fossil();
+        let presses = presses_for(&Gen7UsumFossilPlanOpts {
+            seed: IN_GAME_SEED,
+            safe_advance: IN_GAME_SAFE_ADVANCE,
+            target_advance: fossil.advance,
+            delay_advances: fossil.delay_advances,
+            min_dialogue_a_advance: None,
+        })
+        .unwrap();
+        assert_eq!(presses.dialogue_a.advance, IN_GAME_DIALOGUE_A_ADVANCE);
+        assert_eq!(presses.target.advance, IN_GAME_TARGET_ADVANCE);
+    }
+
+    /// A run in game with a Timid Synchronize lead, following the plan's presses.
+    fn in_game_synced_fossil(sync_nature: Option<Nature>) -> Gen7Gift {
+        let mut dialogue = fossil_dialogue_timeline(0xf6ac919d, 6199);
+        step_to_advance(&mut dialogue, 6868);
+        let mut after_dialogue_a = after_dialogue_a_timeline(dialogue);
+        step_to_advance(&mut after_dialogue_a, 9450);
+        generate_gift(after_dialogue_a, 2936, &fossil_gift(sync_nature))
+    }
+
+    #[test]
+    fn matches_in_game_synchronize_run_f6ac919d() {
+        let fossil = in_game_synced_fossil(Some(Nature::Timid));
+        assert_eq!(fossil.pid, 0x823e35bd);
+        assert!(fossil.shiny);
+        assert_eq!(fossil.gender, Gender::Female);
+        assert_eq!(fossil.nature, Nature::Timid);
+        assert_eq!(fossil.ivs, Ivs::new(3, 19, 28, 17, 7, 12));
+
+        // The gender comes from the rand an ordinary lead uses for the nature.
+        let ordinary = in_game_synced_fossil(None);
+        assert_eq!(ordinary.pid, fossil.pid);
+        assert_eq!(ordinary.gender, Gender::Male);
+    }
+
+    #[test]
+    fn plans_the_in_game_synchronize_run_f6ac919d() {
+        let fossil = in_game_synced_fossil(Some(Nature::Timid));
+        let presses = presses_for(&Gen7UsumFossilPlanOpts {
+            seed: 0xf6ac919d,
+            safe_advance: 6199,
+            target_advance: fossil.advance,
+            delay_advances: fossil.delay_advances,
+            min_dialogue_a_advance: None,
+        })
+        .unwrap();
+        assert_eq!(presses.dialogue_a.advance, 6868);
+        assert_eq!(presses.target.advance, 9450);
+    }
+
+    #[test]
+    fn safe_advances_use_the_dialogue() {
+        let opts = Gen7UsumFossilSafeAdvancesOpts {
+            seed: SEED,
+            current_advance: 7000,
+            from_advance: 7000,
+            safe_advance_count: 5,
+        };
+        let expected = next_safe_advances(SEED, 2, 7000, 7000, 5, MAX_SAFE_SCAN).unwrap();
+        let advances: Vec<usize> = gen7_usum_fossil_safe_advances(opts)
+            .into_iter()
+            .map(|safe_advance| safe_advance.advance)
+            .collect();
+        assert_eq!(advances, expected);
+    }
+}

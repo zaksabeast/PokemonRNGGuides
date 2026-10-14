@@ -3,7 +3,7 @@ use super::starter_timeline::{
     STEPS_FROM_KUKUI_A_TO_YES_NO, after_yes_timeline, can_press_a_on_starter,
     skip_to_first_starter_a_press,
 };
-use super::{Gen7Starter, NpcModel, Timeline, generate_starter};
+use super::{Gen7Gift, NpcModel, STARTER_GIFT, Timeline, generate_gift};
 use crate::PkmFilter;
 use crate::rng::{Rng, StateIterator, sfmt::Sfmt};
 use serde::{Deserialize, Serialize};
@@ -43,7 +43,7 @@ impl Gen7UsumStarterSearchOpts {
 /// The NPC states at Yes aren't known yet, so this assumes they're idle.
 /// `gen7_usum_starter_plan` checks if the user's timeline can reach a result.
 #[wasm_bindgen]
-pub fn gen7_search_usum_starters(opts: Gen7UsumStarterSearchOpts) -> Vec<Gen7Starter> {
+pub fn gen7_search_usum_starters(opts: Gen7UsumStarterSearchOpts) -> Vec<Gen7Gift> {
     let mut unique_starters = UniqueStarters::new();
     for after_yes in after_yes_timelines_with_idle_npcs(opts.seed, opts.yes_advances()) {
         add_starters_after_yes(after_yes, &opts, &mut unique_starters);
@@ -52,7 +52,7 @@ pub fn gen7_search_usum_starters(opts: Gen7UsumStarterSearchOpts) -> Vec<Gen7Sta
 }
 
 /// Different Yes presses often reach the same starter.
-type UniqueStarters = BTreeMap<(usize, usize), Gen7Starter>;
+type UniqueStarters = BTreeMap<(usize, usize), Gen7Gift>;
 
 fn add_starters_after_yes(
     mut after_yes: Timeline,
@@ -70,11 +70,11 @@ fn add_starters_after_yes(
     }
 }
 
-fn matching_starter(a_press: &Timeline, opts: &Gen7UsumStarterSearchOpts) -> Option<Gen7Starter> {
+fn matching_starter(a_press: &Timeline, opts: &Gen7UsumStarterSearchOpts) -> Option<Gen7Gift> {
     if a_press.advance() < opts.first_target_advance {
         return None;
     }
-    let starter = generate_starter(a_press.clone(), opts.tsv);
+    let starter = generate_gift(a_press.clone(), opts.tsv, &STARTER_GIFT);
     opts.filter.pass_filter(&starter).then_some(starter)
 }
 
@@ -114,7 +114,7 @@ mod test {
     }
 
     /// Every A press from each Yes advance, with duplicates.
-    fn every_starter(opts: &Gen7UsumStarterSearchOpts) -> Vec<Gen7Starter> {
+    fn every_starter(opts: &Gen7UsumStarterSearchOpts) -> Vec<Gen7Gift> {
         let mut starters = vec![];
         for mut after_yes in after_yes_timelines_with_idle_npcs(opts.seed, opts.yes_advances()) {
             skip_to_first_starter_a_press(&mut after_yes);
@@ -177,7 +177,7 @@ mod test {
             filter: filter.clone(),
             ..opts(6300, 6400)
         });
-        let expected: Vec<Gen7Starter> = all
+        let expected: Vec<Gen7Gift> = all
             .into_iter()
             .filter(|starter| filter.pass_filter(starter))
             .collect();

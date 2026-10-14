@@ -26,20 +26,37 @@ pub struct Gen7Advance {
     pub advance: usize,
 }
 
-#[wasm_bindgen]
-pub fn gen7_next_safe_advances(opts: Gen7SafeAdvancesOpts) -> Vec<Gen7Advance> {
+/// Safe advances for a scene with `model_count` models, for the wasm exports.
+pub(super) fn safe_advances_for_models(
+    seed: u32,
+    model_count: usize,
+    current_advance: usize,
+    from_advance: usize,
+    safe_advance_count: usize,
+) -> Vec<Gen7Advance> {
     next_safe_advances(
-        opts.seed,
-        model_count_from_npcs(opts.npc_count),
-        opts.current_advance,
-        opts.from_advance,
-        opts.safe_advance_count,
+        seed,
+        model_count,
+        current_advance,
+        from_advance,
+        safe_advance_count,
         MAX_SAFE_SCAN,
     )
     .unwrap_or_default()
     .into_iter()
     .map(|advance| Gen7Advance { advance })
     .collect()
+}
+
+#[wasm_bindgen]
+pub fn gen7_next_safe_advances(opts: Gen7SafeAdvancesOpts) -> Vec<Gen7Advance> {
+    safe_advances_for_models(
+        opts.seed,
+        model_count_from_npcs(opts.npc_count),
+        opts.current_advance,
+        opts.from_advance,
+        opts.safe_advance_count,
+    )
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]

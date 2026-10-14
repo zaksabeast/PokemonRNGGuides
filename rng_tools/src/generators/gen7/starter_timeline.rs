@@ -61,7 +61,7 @@ pub(super) fn can_press_a_on_starter<R: Rng + GetRand<u64>>(
 mod test {
     use super::*;
     use crate::gen7::test_utils::{NO_BLINK, step_to_advance};
-    use crate::gen7::{ModelState, NpcModel, TimelineStep, generate_starter};
+    use crate::gen7::{ModelState, NpcModel, STARTER_GIFT, TimelineStep, generate_gift};
     use crate::rng::{Rng, sfmt::Sfmt};
     use crate::test_utils::FakeRng;
     use crate::{Gender, Ivs, Nature};
@@ -141,7 +141,7 @@ mod test {
         assert_eq!(distinct_advances(&second_cut, expected.len()), expected);
 
         step_to_advance(&mut after_yes, 9843);
-        let starter = generate_starter(after_yes, 0);
+        let starter = generate_gift(after_yes, 0, &STARTER_GIFT);
         assert_eq!(starter.nature, Nature::Relaxed);
         assert_eq!(starter.gender, Gender::Male);
         assert_eq!(starter.ivs, Ivs::new(19, 28, 17, 30, 6, 30));

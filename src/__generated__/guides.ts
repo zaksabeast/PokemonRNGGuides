@@ -10048,7 +10048,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-stationary/",
-      lastUpdated: "2026-03-25",
+      lastUpdated: "2026-10-14",
       type: "baseGuide",
       file: "guides/Gen 7/Stationary RNG.mdx",
       translations: {
@@ -10508,6 +10508,44 @@ export const guides = {
       return file.default;
     }),
   },
+  "/retail-usum-fossil/": {
+    meta: {
+      id: "/retail-usum-fossil/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "true-Fossil RNG",
+      isNew: false,
+      title: "Ultra Sun and Ultra Moon Fossil RNG",
+      navDrawerTitle: "Fossil RNG",
+      description:
+        "Learn how to RNG fossil Pokemon in Ultra Sun and Ultra Moon for perfect IVs, natures, and shinies.",
+      slug: "/retail-usum-fossil/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-10-14",
+      type: "baseGuide",
+      canonical: "/retail-usum-fossil/",
+      file: "guides/Gen 7/Fossils.mdx",
+      translations: null,
+      guideGroupId: "en:true-Fossil RNG:Ultra Sun and Ultra Moon",
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-usum-fossil/" },
+      },
+      displayAttributes: ["web_tool", "rough_draft"],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 7/Fossils.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 7/Fossils.mdx?raw");
+      return file.default;
+    }),
+  },
   "/retail-usum-initial-seed-clocks/": {
     meta: {
       id: "/retail-usum-initial-seed-clocks/",
@@ -10776,7 +10814,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-03-25",
+      lastUpdated: "2026-10-14",
       type: "baseGuide",
       canonical: "/retail-usum-stationary/",
       file: "guides/Gen 7/Stationary RNG.mdx",
@@ -17701,6 +17739,7 @@ export const guideSlugs = [
   "/retail-usum-egg-no-mmsc/",
   "/retail-usum-egg-seed-no-cfw/",
   "/retail-usum-fidget/",
+  "/retail-usum-fossil/",
   "/retail-usum-initial-seed-clocks/",
   "/retail-usum-island-scan/",
   "/retail-usum-mystery-gift/",

@@ -98,7 +98,7 @@ impl<R: Rng + GetRand<u64>> Timeline<R> {
     /// Pressing A to advance dialogue uses one RNG advance while the NPCs
     /// are frozen, which moves the player onto a different timeline.
     /// Matches 3DSRNGTool's dialogue Timeline Leap.
-    fn leap_dialogue(&mut self) {
+    pub(super) fn leap_dialogue(&mut self) {
         self.step();
         self.step();
         self.rng.rand::<u64>();

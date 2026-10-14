@@ -1,11 +1,11 @@
 import { atom } from "jotai";
-import { Gen7Starter, Gen7UsumStarterPlan } from "~/rngTools";
+import { Gen7Gift, Gen7UsumStarterPlan } from "~/rngTools";
 
 export type Gen7StarterTarget = {
   seed: number;
   tsv: number;
   currentAdvance: number;
-  starter: Gen7Starter;
+  starter: Gen7Gift;
 };
 
 export type Gen7StarterPlan = {

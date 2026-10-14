@@ -1,6 +1,14 @@
 import React from "react";
-import { Button, Flex, Icon, SectionCard, Tag, Typography } from "~/components";
-import { Gen7Starter } from "~/rngTools";
+import {
+  Alert,
+  Button,
+  Flex,
+  Icon,
+  SectionCard,
+  Tag,
+  Typography,
+} from "~/components";
+import { Gen7Gift, Gen7Press } from "~/rngTools";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { formatMinutesAndSeconds } from "~/utils/formatDuration";
 import { SAFE_ADVANCE_COUNT } from "./useSafeAdvances";
@@ -45,23 +53,130 @@ export const PressTiming = ({
   </Flex>
 );
 
-const formatIvs = ({ ivs }: Gen7Starter) =>
+const formatIvs = ({ ivs }: Gen7Gift) =>
   [ivs.hp, ivs.atk, ivs.def, ivs.spa, ivs.spd, ivs.spe].join("/");
 
-export const StarterTags = ({ starter }: { starter: Gen7Starter | null }) => {
+type GiftTagsProps = {
+  gift: Gen7Gift | null;
+  // Shown when set. Null is the placeholder.
+  abilityName?: string | null;
+};
+
+export const GiftTags = ({ gift, abilityName }: GiftTagsProps) => {
   const t = useActiveRouteTranslations();
 
   return (
     <Flex gap={8} wrap>
-      <Tag>{starter == null ? PLACEHOLDER : starter.nature}</Tag>
-      <Tag>{starter == null ? PLACEHOLDER : starter.gender}</Tag>
-      <Tag>{starter == null ? PLACEHOLDER : formatIvs(starter)}</Tag>
+      <Tag>{gift == null ? PLACEHOLDER : gift.nature}</Tag>
+      <Tag>{gift == null ? PLACEHOLDER : gift.gender}</Tag>
+      {abilityName !== undefined && <Tag>{abilityName ?? PLACEHOLDER}</Tag>}
+      <Tag>{gift == null ? PLACEHOLDER : formatIvs(gift)}</Tag>
       <Tag>
-        {starter == null
+        {gift == null
           ? PLACEHOLDER
-          : `${t["Shiny"]}: ${starter.shiny ? t["Yes"] : t["No"]}`}
+          : `${t["Shiny"]}: ${gift.shiny ? t["Yes"] : t["No"]}`}
       </Tag>
     </Flex>
+  );
+};
+
+type PressCardProps = {
+  title: string;
+  label: string;
+  waitLabel: string;
+  // Null until a target is selected.
+  targetAdvance: number | null;
+  // Whether the target has a plan. A plan without a press can't reach it.
+  hasPlan: boolean;
+  press: Gen7Press | null;
+};
+
+export const PressCard = ({
+  title,
+  label,
+  waitLabel,
+  targetAdvance,
+  hasPlan,
+  press,
+}: PressCardProps) => {
+  const t = useActiveRouteTranslations();
+  const unreachable = hasPlan && press == null;
+
+  const borderColor = (() => {
+    if (!hasPlan) {
+      return undefined;
+    }
+    return unreachable ? "Warning" : "Primary";
+  })();
+
+  const content = (() => {
+    if (targetAdvance == null) {
+      return (
+        <Typography.Text color="TextSecondary">
+          {t["Select a target in the search above"]}
+        </Typography.Text>
+      );
+    }
+    if (unreachable) {
+      return (
+        <Alert
+          type="warning"
+          title={t[
+            "{target} can't be reached from this timeline. Pick another target."
+          ].replace("{target}", targetAdvance.toString())}
+        />
+      );
+    }
+    return (
+      <PressTiming
+        label={label}
+        labelColor="Primary"
+        advance={press?.advance ?? null}
+        waitLabel={waitLabel}
+        waitSteps={press?.wait_steps ?? null}
+      />
+    );
+  })();
+
+  return (
+    <SectionCard title={title} borderColor={borderColor}>
+      <Flex vertical justify="center" minHeight={PRESS_TIMING_MIN_HEIGHT}>
+        {content}
+      </Flex>
+    </SectionCard>
+  );
+};
+
+type TargetAdvanceCardProps = {
+  gift: Gen7Gift | null;
+  // Null until the plan reaches the target.
+  waitSteps: number | null;
+  abilityName?: string | null;
+};
+
+export const TargetAdvanceCard = ({
+  gift,
+  waitSteps,
+  abilityName,
+}: TargetAdvanceCardProps) => {
+  const t = useActiveRouteTranslations();
+
+  return (
+    <SectionCard
+      title={t["Target Advance"]}
+      borderColor={waitSteps == null ? undefined : "Success"}
+    >
+      <Flex vertical justify="center" minHeight={PRESS_TIMING_MIN_HEIGHT}>
+        <PressTiming
+          label={t["Press A at"]}
+          labelColor="Success"
+          advance={gift?.advance ?? null}
+          waitLabel={t["Time until A press"]}
+          waitSteps={waitSteps}
+        />
+      </Flex>
+      <GiftTags gift={gift} abilityName={abilityName} />
+    </SectionCard>
   );
 };
 

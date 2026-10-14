@@ -3,9 +3,10 @@ use super::starter_timeline::{
     STEPS_FROM_KUKUI_A_TO_YES_NO, after_yes_timeline, can_press_a_on_starter, kukui_timeline,
     skip_to_first_starter_a_press, yes_no_timeline,
 };
+use super::timeline_finder::safe_advances_for_models;
 use super::{
-    Gen7Advance, MAX_SAFE_SCAN, ModelState, NEXT_ADVANCE_COUNT, NpcModel, Timeline, delay_advances,
-    next_safe_advances,
+    Gen7Advance, Gen7Press, ModelState, NEXT_ADVANCE_COUNT, NpcModel, STARTER_GIFT, Timeline,
+    delay_advances,
 };
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -27,18 +28,13 @@ pub struct Gen7UsumStarterSafeAdvancesOpts {
 
 #[wasm_bindgen]
 pub fn gen7_usum_starter_safe_advances(opts: Gen7UsumStarterSafeAdvancesOpts) -> Vec<Gen7Advance> {
-    next_safe_advances(
+    safe_advances_for_models(
         opts.seed,
         KUKUI_DIALOGUE_MODELS,
         opts.current_advance,
         opts.from_advance,
         opts.safe_advance_count,
-        MAX_SAFE_SCAN,
     )
-    .unwrap_or_default()
-    .into_iter()
-    .map(|advance| Gen7Advance { advance })
-    .collect()
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -52,18 +48,10 @@ pub struct Gen7UsumStarterPlanOpts {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Gen7UsumStarterPress {
-    pub advance: usize,
-    /// Counts from the previous press, or from the last next advance for the first press.
-    pub wait_steps: u32,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Gen7UsumStarterPresses {
-    pub kukui_a: Gen7UsumStarterPress,
-    pub yes: Gen7UsumStarterPress,
-    pub target: Gen7UsumStarterPress,
+    pub kukui_a: Gen7Press,
+    pub yes: Gen7Press,
+    pub target: Gen7Press,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Tsify, Serialize, Deserialize)]
@@ -165,7 +153,8 @@ fn steps_from_yes_to_target(
 }
 
 fn is_target(a_press: &Timeline, opts: &Gen7UsumStarterPlanOpts) -> bool {
-    a_press.advance() == opts.target_advance && delay_advances(a_press) == opts.delay_advances
+    a_press.advance() == opts.target_advance
+        && delay_advances(a_press, &STARTER_GIFT) == opts.delay_advances
 }
 
 /// Different A presses on Kukui's dialogue often reach the same Yes press.
@@ -182,22 +171,22 @@ impl StepsAfterYesCache {
     }
 }
 
-fn kukui_a_press(kukui_a: &Timeline) -> Gen7UsumStarterPress {
-    Gen7UsumStarterPress {
+fn kukui_a_press(kukui_a: &Timeline) -> Gen7Press {
+    Gen7Press {
         advance: kukui_a.advance(),
         wait_steps: kukui_a.steps_since_start() - LAST_NEXT_ADVANCE_STEP,
     }
 }
 
-fn yes_press(yes: &Timeline) -> Gen7UsumStarterPress {
-    Gen7UsumStarterPress {
+fn yes_press(yes: &Timeline) -> Gen7Press {
+    Gen7Press {
         advance: yes.advance(),
         wait_steps: STEPS_FROM_KUKUI_A_TO_YES_NO + yes.steps_since_start(),
     }
 }
 
-fn target_press(opts: &Gen7UsumStarterPlanOpts, steps_after_yes: u32) -> Gen7UsumStarterPress {
-    Gen7UsumStarterPress {
+fn target_press(opts: &Gen7UsumStarterPlanOpts, steps_after_yes: u32) -> Gen7Press {
+    Gen7Press {
         advance: opts.target_advance,
         wait_steps: steps_after_yes,
     }
@@ -215,13 +204,14 @@ mod test {
     use crate::PkmFilter;
     use crate::gen7::test_utils::step_to_advance;
     use crate::gen7::{
-        Gen7Starter, Gen7UsumStarterSearchOpts, gen7_search_usum_starters, generate_starter,
+        Gen7Gift, Gen7UsumStarterSearchOpts, MAX_SAFE_SCAN, gen7_search_usum_starters,
+        generate_gift, next_safe_advances,
     };
 
     const SEED: u32 = 0x58507f4f;
     const SAFE_ADVANCE: usize = 7937;
 
-    fn starter_from_presses(presses: &Gen7UsumStarterPresses) -> Gen7Starter {
+    fn starter_from_presses(presses: &Gen7UsumStarterPresses) -> Gen7Gift {
         let mut kukui = kukui_timeline(SEED, SAFE_ADVANCE);
         step_to_advance(&mut kukui, presses.kukui_a.advance);
         assert_eq!(
@@ -242,20 +232,20 @@ mod test {
             after_yes.current().steps_since_start,
             presses.target.wait_steps
         );
-        generate_starter(after_yes, 0)
+        generate_gift(after_yes, 0, &STARTER_GIFT)
     }
 
-    fn in_game_target() -> Gen7Starter {
+    fn in_game_target() -> Gen7Gift {
         let mut kukui = kukui_timeline(SEED, SAFE_ADVANCE);
         step_to_advance(&mut kukui, 8379);
         let mut yes_no = yes_no_timeline(kukui);
         step_to_advance(&mut yes_no, 8780);
         let mut after_yes = after_yes_timeline(yes_no);
         step_to_advance(&mut after_yes, 9843);
-        generate_starter(after_yes, 0)
+        generate_gift(after_yes, 0, &STARTER_GIFT)
     }
 
-    fn opts_for(target: &Gen7Starter) -> Gen7UsumStarterPlanOpts {
+    fn opts_for(target: &Gen7Gift) -> Gen7UsumStarterPlanOpts {
         Gen7UsumStarterPlanOpts {
             seed: SEED,
             safe_advance: SAFE_ADVANCE,
@@ -264,7 +254,7 @@ mod test {
         }
     }
 
-    fn plan_for(target: &Gen7Starter) -> Gen7UsumStarterPlan {
+    fn plan_for(target: &Gen7Gift) -> Gen7UsumStarterPlan {
         plan(&opts_for(target))
     }
 
@@ -323,7 +313,7 @@ mod test {
         assert_eq!(plan.presses, None);
     }
 
-    fn uncached_kukui_a_and_yes_advances(target: &Gen7Starter) -> Option<(usize, usize)> {
+    fn uncached_kukui_a_and_yes_advances(target: &Gen7Gift) -> Option<(usize, usize)> {
         let opts = opts_for(target);
         let mut kukui = kukui_timeline(SEED, SAFE_ADVANCE);
 

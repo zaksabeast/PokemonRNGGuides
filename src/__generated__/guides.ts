@@ -10133,7 +10133,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-timeline/",
-      lastUpdated: "2026-03-25",
+      lastUpdated: "2026-10-13",
       type: "baseGuide",
       file: "guides/Gen 7/Timeline Guide.mdx",
       translations: {
@@ -10145,7 +10145,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-sm-timeline/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Timeline Guide.mdx")),
     getRawFile: memoize(async () => {
@@ -10718,6 +10718,44 @@ export const guides = {
       return file.default;
     }),
   },
+  "/retail-usum-starter/": {
+    meta: {
+      id: "/retail-usum-starter/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "true-Starter RNG",
+      isNew: false,
+      title: "Ultra Sun and Ultra Moon Starter RNG",
+      navDrawerTitle: "Starter RNG",
+      description:
+        "Learn how to RNG starters in Ultra Sun and Ultra Moon for perfect IVs, natures, and shinies.",
+      slug: "/retail-usum-starter/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-10-12",
+      type: "baseGuide",
+      canonical: "/retail-usum-starter/",
+      file: "guides/Gen 7/Starters.mdx",
+      translations: null,
+      guideGroupId: "en:true-Starter RNG:Ultra Sun and Ultra Moon",
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-usum-starter/" },
+      },
+      displayAttributes: ["web_tool", "rough_draft"],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 7/Starters.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 7/Starters.mdx?raw");
+      return file.default;
+    }),
+  },
   "/retail-usum-stationary/": {
     meta: {
       id: "/retail-usum-stationary/",
@@ -10824,7 +10862,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-03-25",
+      lastUpdated: "2026-10-13",
       type: "baseGuide",
       canonical: "/retail-usum-timeline/",
       file: "guides/Gen 7/Timeline Guide.mdx",
@@ -10837,7 +10875,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-usum-timeline/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Timeline Guide.mdx")),
     getRawFile: memoize(async () => {
@@ -17668,6 +17706,7 @@ export const guideSlugs = [
   "/retail-usum-mystery-gift/",
   "/retail-usum-no-cfw/",
   "/retail-usum-sos/",
+  "/retail-usum-starter/",
   "/retail-usum-stationary/",
   "/retail-usum-timeleap/",
   "/retail-usum-timeline/",

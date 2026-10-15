@@ -1,0 +1,121 @@
+---
+title: "Ultra Sun and Ultra Moon Starter RNG"
+navDrawerTitle: "Starter RNG"
+description: "Learn how to RNG starters in Ultra Sun and Ultra Moon for perfect IVs, natures, and shinies."
+slug: "retail-usum-starter"
+category: "Ultra Sun and Ultra Moon"
+section: "pokemon_rng"
+variant: "cfw-emu"
+isRoughDraft: true
+---
+
+## Tools
+
+- [A 3DS with PokeReader](/install-pokereader)
+
+<Stepper
+  titles={[
+    "Find a Target",
+    "Create a Timeline",
+    "Kukui's Dialogue",
+    "Choose Starter",
+    "Get the Starter",
+  ]}
+>
+
+<Step step={0}>
+
+## In-Game Preparations
+
+1. Save your game before you walk into the grass to start the cutscene.
+2. Go through the cutscene and dialogue until Kukui says "Go on and choose the one you'd like to keep as your partner, cousin!" Don't press `A` yet.
+3. Wait for the camera to stop moving, then pause the game with `Start + Select`. In PokeReader, the NPC count should be 1.
+
+## Find a Target
+
+1. Enter your seed and TSV from PokeReader into the tool below.
+2. Set "Current Advance" to the `Advances` value in PokeReader.
+3. Set your filters and click "Generate".
+4. If you can't find a starter you like, you can increase the "Max Advances". This will increase the time to get the starter.
+5. Click "Select" on the starter you want. The results are the same for Rowlet, Litten, and Popplio, so pick any species in-game.
+
+Shiny starters with high IVs are rare within a reasonable number of advances. You'll have better chances aiming for a max of 3 perfect IVs.
+
+<Gen7StarterSearch />
+
+</Step>
+
+<Step step={1}>
+
+## Create a Timeline
+
+1. Stay paused on Kukui's dialogue and click "Find Safe Advances" in the tool below.
+2. Press `Select` to step one video frame at a time until you land exactly on one of the listed safe advances, then click it.
+3. If you step past all of them, click "Show More".
+4. Keep stepping and compare your advances to the ones shown. If they match, you're on the right timeline.
+
+> [!NOTE]
+> If the advances don't match, check your seed is entered correctly, then start again from the "Find a Target" step. Also check that the NPC count is 1 during this step.
+
+<Gen7StarterKukuiTimeline />
+
+</Step>
+
+<Step step={2}>
+
+## Kukui's Dialogue
+
+1. Stay paused and press `Select` to step one video frame at a time until you reach the advance below.
+2. Press `A` on that advance to continue Kukui's dialogue.
+3. Afterwards, press `Start + Select` to pause the game again.
+
+> [!NOTE]
+> If the advance is a while away, you can press `Start` to unpause, then pause again with `Start + Select` a little before it.
+
+<Gen7StarterPressKukuiA />
+
+> [!TIP]
+> If the tool says your target can't be reached from this timeline, start over from the "Find a Target" step.
+
+</Step>
+
+<Step step={3}>
+
+## Choose Starter
+
+1. Unpause, select the starter you want, and continue until the game asks you to confirm your choice with "Yes" and "No" options.
+2. Pause with `Start + Select` a little before the advance given below, then press `Select` to step one video frame at a time until you reach it.
+3. Press `A` on that advance to choose "Yes".
+4. Afterwards, press `Start + Select` to pause the game again.
+
+<Gen7StarterPressYes />
+
+</Step>
+
+<Step step={4}>
+
+## Get the Starter
+
+1. Unpause and wait until the "You chose xxx!" dialogue shows up.
+2. Pause again with `Start + Select` when you're close to your target advance.
+3. Press `Select` to step one video frame at a time until you reach your target advance.
+4. Press `A` on your target advance.
+
+<Gen7StarterTargetAdvance />
+
+Congrats! You should now have the starter you wanted.
+
+## If You Did Not Get the Starter You Wanted
+
+1. Double-check that all info has been input correctly, especially the seed and TSV.
+2. Make sure you pressed `A` on Kukui's dialogue and "Yes" on the exact advances shown.
+3. Reload your save, which gives you a new seed, and start the guide again from the first step.
+4. If you're on an emulator, make sure you don't speed up the emulation during the last cutscene before the target advance.
+
+</Step>
+
+</Stepper>
+
+## Credits
+
+- wwwwwwzx for [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool), which some of this tool's logic is based on.

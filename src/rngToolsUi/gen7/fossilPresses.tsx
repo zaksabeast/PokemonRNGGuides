@@ -1,6 +1,7 @@
 import { useAtomValue, useSetAtom } from "jotai";
 import { Gen7UsumFossilPlan, multiWorkerRngTools } from "~/rngTools";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { type CancellablePromise } from "~/utils/cancellablePromise";
 import {
   Gen7FossilTimelineQuery,
   fetchGen7FossilPlan,
@@ -58,22 +59,46 @@ export const Gen7FossilTimeline = () => {
     setPlan(null);
   };
 
-  const onPlan = (
+  const onPlan = async (
     planQuery: Gen7FossilTimelineQuery,
     safeAdvance: number,
     plan: Gen7UsumFossilPlan,
+    waitFor: <T>(promise: CancellablePromise<T>) => Promise<T | null>,
   ) => {
-    storePlan({
-      timeline: {
-        query: planQuery,
-        safeAdvance,
-        nextAdvances: plan.next_advances,
-        minDialogueAAdvance: null,
-      },
+    const newTimeline = {
+      query: planQuery,
+      safeAdvance,
+      nextAdvances: plan.next_advances,
+      minDialogueAAdvance: null,
+    };
+    const unplannedTarget = storePlan({
+      timeline: newTimeline,
       isNewTimeline: true,
       target,
       presses: plan.presses ?? null,
     });
+    if (unplannedTarget == null) {
+      return;
+    }
+
+    // The target changed while planning, so plan the new one on this timeline.
+    const targetPlans = await waitFor(
+      fetchGen7FossilPlan(
+        planQuery.seed,
+        safeAdvance,
+        unplannedTarget.fossil,
+        null,
+      ),
+    );
+    const targetPlan = targetPlans?.[0];
+    if (targetPlan != null) {
+      storePlan({
+        timeline: newTimeline,
+        isNewTimeline: false,
+        target: unplannedTarget,
+        presses: targetPlan.presses ?? null,
+      });
+    }
   };
 
   return (

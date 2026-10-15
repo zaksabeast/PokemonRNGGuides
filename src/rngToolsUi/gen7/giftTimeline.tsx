@@ -22,7 +22,13 @@ type GiftTimelineProps<Query, Plan> = {
   // Returns a list with the plan as its only item.
   fetchPlan: (query: Query, safeAdvance: number) => CancellablePromise<Plan[]>;
   onClearPlan: () => void;
-  onPlan: (query: Query, safeAdvance: number, plan: Plan) => void;
+  // Follow-up requests go through `waitFor`, so they show as loading too.
+  onPlan: (
+    query: Query,
+    safeAdvance: number,
+    plan: Plan,
+    waitFor: <T>(promise: CancellablePromise<T>) => Promise<T | null>,
+  ) => void | Promise<void>;
 };
 
 export const GiftTimeline = <Query, Plan>({
@@ -62,7 +68,7 @@ export const GiftTimeline = <Query, Plan>({
     const plans = await waitFor(fetchPlan(query, safeAdvance));
     const plan = plans?.[0];
     if (plan != null) {
-      onPlan(query, safeAdvance, plan);
+      await onPlan(query, safeAdvance, plan, waitFor);
     }
   };
 

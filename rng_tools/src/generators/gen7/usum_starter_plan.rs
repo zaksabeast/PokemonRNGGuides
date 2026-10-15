@@ -5,8 +5,8 @@ use super::starter_timeline::{
 };
 use super::timeline_finder::safe_advances_for_models;
 use super::{
-    FIRST_PRESS_STEP, Gen7Advance, Gen7Press, LAST_NEXT_ADVANCE_STEP, MergeKey, ModelState,
-    Timeline, delay_advances,
+    FIRST_PRESS_STEP, Gen7Advance, Gen7Press, Gen7SceneSafeAdvancesOpts, LAST_NEXT_ADVANCE_STEP,
+    MergeKey, ModelState, Timeline, delay_advances,
 };
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -15,24 +15,9 @@ use wasm_bindgen::prelude::*;
 
 const KUKUI_A_STEPS_TO_TRY: u32 = 300;
 
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Gen7UsumStarterSafeAdvancesOpts {
-    pub seed: u32,
-    pub current_advance: usize,
-    pub from_advance: usize,
-    pub safe_advance_count: usize,
-}
-
 #[wasm_bindgen]
-pub fn gen7_usum_starter_safe_advances(opts: Gen7UsumStarterSafeAdvancesOpts) -> Vec<Gen7Advance> {
-    safe_advances_for_models(
-        opts.seed,
-        KUKUI_DIALOGUE_MODELS,
-        opts.current_advance,
-        opts.from_advance,
-        opts.safe_advance_count,
-    )
+pub fn gen7_usum_starter_safe_advances(opts: Gen7SceneSafeAdvancesOpts) -> Vec<Gen7Advance> {
+    safe_advances_for_models(&opts, KUKUI_DIALOGUE_MODELS)
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -349,7 +334,7 @@ mod test {
 
     #[test]
     fn safe_advances_use_kukuis_dialogue() {
-        let opts = Gen7UsumStarterSafeAdvancesOpts {
+        let opts = Gen7SceneSafeAdvancesOpts {
             seed: SEED,
             current_advance: 7000,
             from_advance: 7000,

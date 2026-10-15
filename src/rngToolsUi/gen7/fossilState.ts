@@ -51,8 +51,10 @@ export const fetchGen7FossilPlan = (
     seed,
     safe_advance: safeAdvance,
     // Without a target, the plan only gives the next advances.
-    target_advance: fossil?.advance ?? 0,
-    delay_advances: fossil?.delay_advances ?? 0,
+    target:
+      fossil == null
+        ? undefined
+        : { advance: fossil.advance, delay_advances: fossil.delay_advances },
     min_dialogue_a_advance: minDialogueAAdvance ?? undefined,
   });
 
@@ -64,10 +66,18 @@ type TimelinePlan = {
   presses: Gen7UsumFossilPresses | null;
 };
 
-/** Stores the plan for `target` on `timeline`, unless either has changed since. */
+/**
+ * Stores the plan for `target` on `timeline`, unless either has changed since.
+ * Returns the current target when the new timeline was stored without a plan
+ * for it, so the caller can plan it.
+ */
 export const setGen7FossilPlanAtom = atom(
   null,
-  (get, set, { timeline, isNewTimeline, target, presses }: TimelinePlan) => {
+  (
+    get,
+    set,
+    { timeline, isNewTimeline, target, presses }: TimelinePlan,
+  ): Gen7FossilTarget | null => {
     const currentTimeline = get(gen7FossilTimelineAtom);
     const isSameTimeline =
       currentTimeline == null
@@ -76,14 +86,16 @@ export const setGen7FossilPlanAtom = atom(
           currentTimeline.query === timeline.query &&
           currentTimeline.safeAdvance === timeline.safeAdvance;
     if (!isSameTimeline) {
-      return;
+      return null;
     }
-    if (get(gen7FossilTargetAtom) !== target) {
+    const currentTarget = get(gen7FossilTargetAtom);
+    if (currentTarget !== target) {
       // The presses are for another target, but a new timeline is still valid.
       if (isNewTimeline) {
         set(gen7FossilTimelineAtom, timeline);
+        return currentTarget;
       }
-      return;
+      return null;
     }
 
     const plannedTimeline = {
@@ -96,5 +108,6 @@ export const setGen7FossilPlanAtom = atom(
       gen7FossilPlanAtom,
       target == null ? null : { target, timeline: plannedTimeline, presses },
     );
+    return null;
   },
 );

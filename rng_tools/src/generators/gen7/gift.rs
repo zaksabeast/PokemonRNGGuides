@@ -1,7 +1,8 @@
 use super::Timeline;
 use crate::rng::{GetMaxRand, GetRand, Rng};
-use crate::{AbilityType, Gender, GenderRatio, Ivs, Nature, PkmState, gen6_psv};
+use crate::{AbilityType, Gender, GenderRatio, Ivs, Nature, PkmFilter, PkmState, gen6_psv};
 use serde::{Deserialize, Serialize};
+use std::collections::BTreeMap;
 use tsify::Tsify;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -128,6 +129,36 @@ fn generate<R: Rng + GetRand<u64> + GetMaxRand<u64>>(
     }
 }
 
+/// The gift from A pressed on `a_press`, if it passes `filter`.
+pub(super) fn matching_gift(
+    a_press: &Timeline,
+    tsv: u16,
+    filter: &PkmFilter,
+    settings: &GiftSettings,
+) -> Option<Gen7Gift> {
+    let gift = generate_gift(a_press.clone(), tsv, settings);
+    filter.pass_filter(&gift).then_some(gift)
+}
+
+/// Different presses earlier in the scene often reach the same gift.
+#[derive(Debug, Default)]
+pub(super) struct UniqueGifts(BTreeMap<(usize, usize), Gen7Gift>);
+
+impl UniqueGifts {
+    /// Keeps the first gift for each advance and delay.
+    pub(super) fn insert(&mut self, gift: Gen7Gift) {
+        let key = (gift.advance, gift.delay_advances);
+        self.0.entry(key).or_insert(gift);
+    }
+}
+
+impl From<UniqueGifts> for Vec<Gen7Gift> {
+    /// Sorted by advance, then delay.
+    fn from(gifts: UniqueGifts) -> Self {
+        gifts.0.into_values().collect()
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -219,10 +250,7 @@ mod test {
         let mut values = vec![0; 8];
         // Ability, then gender. A nature rand would come between them.
         values.extend([1, 29]);
-        let settings = GiftSettings {
-            sync_nature: Some(Nature::Adamant),
-            ..STARTER_GIFT
-        };
+        let settings = STARTER_GIFT.with_sync_nature(Some(Nature::Adamant));
         let npcs = NpcModel::new(model_count_from_npcs(1));
         let rands = rands_after_idle_delay(&values);
         let timeline = Timeline::from_npcs(FakeRng::new(&rands), npcs, 1000);

@@ -11,6 +11,16 @@ pub const MAX_SAFE_SCAN: usize = 100_000;
 pub struct Gen7SafeAdvancesOpts {
     pub seed: u32,
     pub npc_count: u8,
+    pub current_advance: usize,
+    pub from_advance: usize,
+    pub safe_advance_count: usize,
+}
+
+/// Safe advances for a scene whose wasm export knows its model count.
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Gen7SceneSafeAdvancesOpts {
+    pub seed: u32,
     /// The advance the user entered. Earlier blinks are checked relative to
     /// this, so every page of results agrees.
     pub current_advance: usize,
@@ -28,18 +38,15 @@ pub struct Gen7Advance {
 
 /// Safe advances for a scene with `model_count` models, for the wasm exports.
 pub(super) fn safe_advances_for_models(
-    seed: u32,
+    opts: &Gen7SceneSafeAdvancesOpts,
     model_count: usize,
-    current_advance: usize,
-    from_advance: usize,
-    safe_advance_count: usize,
 ) -> Vec<Gen7Advance> {
     next_safe_advances(
-        seed,
+        opts.seed,
         model_count,
-        current_advance,
-        from_advance,
-        safe_advance_count,
+        opts.current_advance,
+        opts.from_advance,
+        opts.safe_advance_count,
         MAX_SAFE_SCAN,
     )
     .unwrap_or_default()
@@ -50,13 +57,13 @@ pub(super) fn safe_advances_for_models(
 
 #[wasm_bindgen]
 pub fn gen7_next_safe_advances(opts: Gen7SafeAdvancesOpts) -> Vec<Gen7Advance> {
-    safe_advances_for_models(
-        opts.seed,
-        model_count_from_npcs(opts.npc_count),
-        opts.current_advance,
-        opts.from_advance,
-        opts.safe_advance_count,
-    )
+    let scene = Gen7SceneSafeAdvancesOpts {
+        seed: opts.seed,
+        current_advance: opts.current_advance,
+        from_advance: opts.from_advance,
+        safe_advance_count: opts.safe_advance_count,
+    };
+    safe_advances_for_models(&scene, model_count_from_npcs(opts.npc_count))
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]

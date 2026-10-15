@@ -3,11 +3,9 @@ use super::starter_timeline::{
     STEPS_FROM_KUKUI_A_TO_YES_NO, after_yes_timeline, can_press_a_on_starter,
     skip_to_first_starter_a_press,
 };
-use super::{Gen7Gift, NpcModel, Timeline, generate_gift};
+use super::{Gen7Gift, Timeline, UniqueGifts, matching_gift};
 use crate::PkmFilter;
-use crate::rng::{Rng, StateIterator, sfmt::Sfmt};
 use serde::{Deserialize, Serialize};
-use std::collections::BTreeMap;
 use std::ops::RangeInclusive;
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
@@ -44,54 +42,42 @@ impl Gen7UsumStarterSearchOpts {
 /// `gen7_usum_starter_plan` checks if the user's timeline can reach a result.
 #[wasm_bindgen]
 pub fn gen7_search_usum_starters(opts: Gen7UsumStarterSearchOpts) -> Vec<Gen7Gift> {
-    let mut unique_starters = UniqueStarters::new();
-    for after_yes in after_yes_timelines_with_idle_npcs(opts.seed, opts.yes_advances()) {
+    let mut unique_starters = UniqueGifts::default();
+    for after_yes in after_yes_timelines_with_idle_npcs(&opts) {
         add_starters_after_yes(after_yes, &opts, &mut unique_starters);
     }
-    unique_starters.into_values().collect()
+    unique_starters.into()
 }
-
-/// Different Yes presses often reach the same starter.
-type UniqueStarters = BTreeMap<(usize, usize), Gen7Gift>;
 
 fn add_starters_after_yes(
     mut after_yes: Timeline,
     opts: &Gen7UsumStarterSearchOpts,
-    unique_starters: &mut UniqueStarters,
+    unique_starters: &mut UniqueGifts,
 ) {
     skip_to_first_starter_a_press(&mut after_yes);
+    while after_yes.advance() < opts.first_target_advance
+        && can_press_a_on_starter(&after_yes, opts.last_target_advance)
+    {
+        after_yes.step();
+    }
 
     while can_press_a_on_starter(&after_yes, opts.last_target_advance) {
         if let Some(starter) = matching_starter(&after_yes, opts) {
-            let key = (starter.advance, starter.delay_advances);
-            unique_starters.entry(key).or_insert(starter);
+            unique_starters.insert(starter);
         }
         after_yes.step();
     }
 }
 
 fn matching_starter(a_press: &Timeline, opts: &Gen7UsumStarterSearchOpts) -> Option<Gen7Gift> {
-    if a_press.advance() < opts.first_target_advance {
-        return None;
-    }
-    let starter = generate_gift(a_press.clone(), opts.tsv, &STARTER_GIFT);
-    opts.filter.pass_filter(&starter).then_some(starter)
+    matching_gift(a_press, opts.tsv, &opts.filter, &STARTER_GIFT)
 }
 
 fn after_yes_timelines_with_idle_npcs(
-    seed: u32,
-    yes_advances: RangeInclusive<usize>,
+    opts: &Gen7UsumStarterSearchOpts,
 ) -> impl Iterator<Item = Timeline> {
-    let mut rng = Sfmt::new(seed);
-    rng.advance(*yes_advances.start());
-    yes_advances
-        .zip(StateIterator::new(rng))
-        .map(|(yes_advance, rng)| after_yes_timeline_with_idle_npcs(rng, yes_advance))
-}
-
-fn after_yes_timeline_with_idle_npcs(rng: Sfmt, yes_advance: usize) -> Timeline {
-    let idle_npcs = NpcModel::new(KUKUI_DIALOGUE_MODELS);
-    after_yes_timeline(Timeline::from_npcs(rng, idle_npcs, yes_advance))
+    Timeline::range_with_idle_npcs(opts.seed, KUKUI_DIALOGUE_MODELS, opts.yes_advances())
+        .map(after_yes_timeline)
 }
 
 #[cfg(test)]
@@ -116,10 +102,12 @@ mod test {
     /// Every A press from each Yes advance, with duplicates.
     fn every_starter(opts: &Gen7UsumStarterSearchOpts) -> Vec<Gen7Gift> {
         let mut starters = vec![];
-        for mut after_yes in after_yes_timelines_with_idle_npcs(opts.seed, opts.yes_advances()) {
+        for mut after_yes in after_yes_timelines_with_idle_npcs(opts) {
             skip_to_first_starter_a_press(&mut after_yes);
             while can_press_a_on_starter(&after_yes, opts.last_target_advance) {
-                starters.extend(matching_starter(&after_yes, opts));
+                if after_yes.advance() >= opts.first_target_advance {
+                    starters.extend(matching_starter(&after_yes, opts));
+                }
                 after_yes.step();
             }
         }

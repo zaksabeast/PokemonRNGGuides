@@ -2,6 +2,7 @@ import React from "react";
 import { z } from "zod";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import {
+  AbilityFilterField,
   FieldRow,
   FormNumberField,
   FormSection,
@@ -12,6 +13,7 @@ import {
   type ToolFormSubmit,
 } from "~/components/form";
 import {
+  Ability,
   Gen7UsumFossilSearchOpts,
   multiWorkerRngTools,
   rngTools,
@@ -53,6 +55,9 @@ import {
 } from "./giftResults";
 
 const MAX_RESULTS = 10_000;
+// Each chunk also walks the ~3,600 dialogue A advances before its first
+// target. Small chunks repeat that work, but spread the search across
+// workers and show progress.
 const TARGET_ADVANCES_PER_CHUNK = 3_000;
 const CREATE_TIMELINE_STEP = 1;
 const FOSSIL_DIALOGUE_STEP = 2;
@@ -70,6 +75,16 @@ const fossilSpecies = [
   "Tyrunt",
   "Amaura",
 ] as const;
+
+type FossilSpecies = (typeof fossilSpecies)[number];
+
+// Limitation: the species data ends at Gen 5, so Gen 6 fossils list their
+// ability slots here.
+const gen6FossilAbilities: Partial<Record<FossilSpecies, [Ability, Ability]>> =
+  {
+    Tyrunt: ["StrongJaw", "StrongJaw"],
+    Amaura: ["Refrigerate", "Refrigerate"],
+  };
 
 const Validator = z
   .object({
@@ -100,9 +115,11 @@ const initialValues: FormState = {
 };
 
 const getGiftAbilityNames = async (
-  species: FormState["species"],
+  species: FossilSpecies,
 ): Promise<GiftAbilityNames> => {
-  const [first, second] = await rngTools.get_species_abilities(species);
+  const [first, second] =
+    gen6FossilAbilities[species] ??
+    (await rngTools.get_species_abilities(species));
   return {
     First: first == null ? null : abilities[first],
     Second: second == null ? null : abilities[second],
@@ -163,9 +180,19 @@ const Fields = () => {
           />
           <NatureFilterField<FormState> name="filter_nature" />
         </FieldRow>
+        <AbilityFilterField<FormState>
+          name="filter_ability"
+          // Gen 6 fossils filter by ability slot, since their species data is missing.
+          species={
+            species == null || species in gen6FossilAbilities
+              ? undefined
+              : species
+          }
+        />
         <PkmFilter<FormState>
           species={species ?? undefined}
           displayNature={false}
+          displayAbility={false}
         />
       </FormSection>
     </>

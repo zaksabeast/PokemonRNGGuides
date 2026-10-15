@@ -1,15 +1,21 @@
 use super::fossil_timeline::{
-    FOSSIL_DIALOGUE_MODELS, FOSSIL_GIFT, MAX_ADVANCES_AFTER_DIALOGUE_A, after_dialogue_a_timeline,
-    can_press_a_on_fossil, skip_to_first_fossil_a_press,
+    FOSSIL_DIALOGUE_MODELS, FOSSIL_GIFT, MAX_ADVANCES_AFTER_DIALOGUE_A,
+    MIN_ADVANCES_AFTER_DIALOGUE_A, after_dialogue_a_timeline, can_press_a_on_fossil,
+    skip_to_first_fossil_a_press,
 };
-use super::{Gen7Gift, MergeKey, NpcModel, Timeline, generate_gift};
-use crate::rng::{Rng, StateIterator, sfmt::Sfmt};
+use super::{Gen7Gift, MergeKey, MissedStates, Timeline, UniqueGifts, matching_gift};
 use crate::{Nature, PkmFilter};
 use serde::{Deserialize, Serialize};
-use std::collections::{BTreeMap, HashSet};
+use std::collections::HashMap;
 use std::ops::RangeInclusive;
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
+
+/// Safe advances are at or after the current advance, and the models start
+/// idle there, so each uses an advance on the first next advance step. Blinks
+/// can skip the rest, but the A press on the dialogue still waits for a new
+/// advance after the next advances.
+const MIN_ADVANCES_TO_DIALOGUE_A: usize = FOSSIL_DIALOGUE_MODELS + 1;
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -29,8 +35,15 @@ impl Gen7UsumFossilSearchOpts {
         let first_useful_dialogue_a = self
             .first_target_advance
             .saturating_sub(MAX_ADVANCES_AFTER_DIALOGUE_A);
-        let first_dialogue_a = self.current_advance.max(first_useful_dialogue_a);
-        first_dialogue_a..=self.last_target_advance
+        let first_reachable_dialogue_a = self
+            .current_advance
+            .saturating_add(MIN_ADVANCES_TO_DIALOGUE_A);
+        let first_dialogue_a = first_reachable_dialogue_a.max(first_useful_dialogue_a);
+        // Later A presses on the dialogue can't reach a target in range.
+        let last_useful_dialogue_a = self
+            .last_target_advance
+            .saturating_sub(MIN_ADVANCES_AFTER_DIALOGUE_A);
+        first_dialogue_a..=last_useful_dialogue_a
     }
 }
 
@@ -39,12 +52,9 @@ impl Gen7UsumFossilSearchOpts {
 /// timeline can reach a result.
 #[wasm_bindgen]
 pub fn gen7_search_usum_fossils(opts: Gen7UsumFossilSearchOpts) -> Vec<Gen7Gift> {
-    let mut unique_fossils = UniqueFossils::new();
+    let mut unique_fossils = UniqueGifts::default();
     let mut seen_a_presses = SeenAPresses::new();
-    let dialogue_a_advances = opts.dialogue_a_advances();
-    for after_dialogue_a in
-        after_dialogue_a_timelines_with_idle_npcs(opts.seed, dialogue_a_advances)
-    {
+    for after_dialogue_a in after_dialogue_a_timelines_with_idle_npcs(&opts) {
         add_fossils_after_dialogue_a(
             after_dialogue_a,
             &opts,
@@ -52,58 +62,61 @@ pub fn gen7_search_usum_fossils(opts: Gen7UsumFossilSearchOpts) -> Vec<Gen7Gift>
             &mut unique_fossils,
         );
     }
-    unique_fossils.into_values().collect()
+    unique_fossils.into()
 }
 
-/// Different A presses on the dialogue often reach the same fossil.
-type UniqueFossils = BTreeMap<(usize, usize), Gen7Gift>;
-
-/// Same advance and NPC state means the same fossil, so timelines that have
-/// merged with an earlier one don't generate it again.
-type SeenAPresses = HashSet<MergeKey>;
+/// Sampled A presses and their steps since the dialogue A press. Same advance
+/// and NPC state means the same future, so a timeline that merges with one
+/// that had as much time left doesn't generate its fossils again.
+type SeenAPresses = HashMap<MergeKey, u32>;
 
 fn add_fossils_after_dialogue_a(
     mut after_dialogue_a: Timeline,
     opts: &Gen7UsumFossilSearchOpts,
     seen_a_presses: &mut SeenAPresses,
-    unique_fossils: &mut UniqueFossils,
+    unique_fossils: &mut UniqueGifts,
 ) {
     skip_to_first_fossil_a_press(&mut after_dialogue_a);
+    // Skipped before `seen_a_presses` so it only holds possible targets.
+    while after_dialogue_a.advance() < opts.first_target_advance
+        && can_press_a_on_fossil(&after_dialogue_a, opts.last_target_advance)
+    {
+        after_dialogue_a.step_to_next_advance();
+    }
 
     while can_press_a_on_fossil(&after_dialogue_a, opts.last_target_advance) {
-        // Checked before `seen_a_presses` so it only holds possible targets.
-        if after_dialogue_a.advance() >= opts.first_target_advance
-            && seen_a_presses.insert(after_dialogue_a.merge_key())
-            && let Some(fossil) = matching_fossil(&after_dialogue_a, opts)
-        {
-            let key = (fossil.advance, fossil.delay_advances);
-            unique_fossils.entry(key).or_insert(fossil);
+        if let Some(a_press) = MissedStates::sample(&after_dialogue_a) {
+            let steps = after_dialogue_a.steps_since_start();
+            // The earlier timeline already generated everything from here.
+            if seen_a_presses
+                .get(&a_press)
+                .is_some_and(|&seen_steps| seen_steps <= steps)
+            {
+                return;
+            }
+            seen_a_presses.insert(a_press, steps);
+        }
+        if let Some(fossil) = matching_fossil(&after_dialogue_a, opts) {
+            unique_fossils.insert(fossil);
         }
         after_dialogue_a.step_to_next_advance();
     }
 }
 
 fn matching_fossil(a_press: &Timeline, opts: &Gen7UsumFossilSearchOpts) -> Option<Gen7Gift> {
-    if a_press.advance() < opts.first_target_advance {
-        return None;
-    }
     let settings = FOSSIL_GIFT.with_sync_nature(opts.sync_nature);
-    let fossil = generate_gift(a_press.clone(), opts.tsv, &settings);
-    opts.filter.pass_filter(&fossil).then_some(fossil)
+    matching_gift(a_press, opts.tsv, &opts.filter, &settings)
 }
 
 fn after_dialogue_a_timelines_with_idle_npcs(
-    seed: u32,
-    dialogue_a_advances: RangeInclusive<usize>,
+    opts: &Gen7UsumFossilSearchOpts,
 ) -> impl Iterator<Item = Timeline> {
-    let mut rng = Sfmt::new(seed);
-    rng.advance(*dialogue_a_advances.start());
-    dialogue_a_advances
-        .zip(StateIterator::new(rng))
-        .map(|(dialogue_a_advance, rng)| {
-            let idle_npcs = NpcModel::new(FOSSIL_DIALOGUE_MODELS);
-            after_dialogue_a_timeline(Timeline::from_npcs(rng, idle_npcs, dialogue_a_advance))
-        })
+    Timeline::range_with_idle_npcs(
+        opts.seed,
+        FOSSIL_DIALOGUE_MODELS,
+        opts.dialogue_a_advances(),
+    )
+    .map(after_dialogue_a_timeline)
 }
 
 #[cfg(test)]
@@ -129,13 +142,12 @@ mod test {
     /// Every A press from each A press on the dialogue, with duplicates.
     fn every_fossil(opts: &Gen7UsumFossilSearchOpts) -> Vec<Gen7Gift> {
         let mut fossils = vec![];
-        let dialogue_a_advances = opts.dialogue_a_advances();
-        for mut after_dialogue_a in
-            after_dialogue_a_timelines_with_idle_npcs(opts.seed, dialogue_a_advances)
-        {
+        for mut after_dialogue_a in after_dialogue_a_timelines_with_idle_npcs(opts) {
             skip_to_first_fossil_a_press(&mut after_dialogue_a);
             while can_press_a_on_fossil(&after_dialogue_a, opts.last_target_advance) {
-                fossils.extend(matching_fossil(&after_dialogue_a, opts));
+                if after_dialogue_a.advance() >= opts.first_target_advance {
+                    fossils.extend(matching_fossil(&after_dialogue_a, opts));
+                }
                 after_dialogue_a.step_to_next_advance();
             }
         }
@@ -165,8 +177,11 @@ mod test {
     }
 
     #[test]
-    fn dialogue_a_advances_start_at_the_current_advance() {
-        assert_eq!(opts(5500, 6000).dialogue_a_advances(), 5000..=6000);
+    fn dialogue_a_advances_leave_time_for_the_next_advances() {
+        assert_eq!(
+            opts(5500, 6000).dialogue_a_advances(),
+            5000 + MIN_ADVANCES_TO_DIALOGUE_A..=6000 - MIN_ADVANCES_AFTER_DIALOGUE_A
+        );
     }
 
     #[test]
@@ -174,7 +189,7 @@ mod test {
         let first_dialogue_a = 10_000 - MAX_ADVANCES_AFTER_DIALOGUE_A;
         assert_eq!(
             opts(10_000, 11_000).dialogue_a_advances(),
-            first_dialogue_a..=11_000
+            first_dialogue_a..=11_000 - MIN_ADVANCES_AFTER_DIALOGUE_A
         );
     }
 

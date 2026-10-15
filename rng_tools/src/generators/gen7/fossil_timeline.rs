@@ -1,3 +1,4 @@
+use super::npc_model::{BLINK_STEPS, LONG_COOLDOWN_STEPS};
 use super::{GiftSettings, Timeline, model_count_from_npcs};
 use crate::GenderRatio;
 use crate::rng::{GetRand, Rng};
@@ -17,6 +18,12 @@ const MAX_STEPS_AFTER_DIALOGUE_A: u32 = 1800;
 /// The A press on the dialogue uses one advance on top of the models'.
 pub(super) const MAX_ADVANCES_AFTER_DIALOGUE_A: usize =
     FOSSIL_DIALOGUE_MODELS * MAX_STEPS_AFTER_DIALOGUE_A as usize + 1;
+/// Blinking and cooldowns skip advances, but each model still uses one at
+/// least every `LONG_COOLDOWN_STEPS` steps. The A press uses one more.
+pub(super) const MIN_ADVANCES_AFTER_DIALOGUE_A: usize =
+    FOSSIL_DIALOGUE_MODELS * (MIN_STEPS_AFTER_DIALOGUE_A / LONG_COOLDOWN_STEPS as u32) as usize + 1;
+// A blink is shorter than a long cooldown, so it never skips longer.
+const _: () = assert!(BLINK_STEPS <= LONG_COOLDOWN_STEPS);
 
 /// Without a Synchronize lead. `with_sync_nature` sets the lead's nature.
 pub(super) const FOSSIL_GIFT: GiftSettings = GiftSettings {
@@ -128,6 +135,14 @@ mod test {
             after_dialogue_a.steps_since_start(),
             MIN_STEPS_AFTER_DIALOGUE_A
         );
+    }
+
+    #[test]
+    fn first_a_press_is_after_the_min_advances_while_blinking() {
+        // Every model blinks as soon as it can, with long cooldowns.
+        let mut after_dialogue_a = after_dialogue_a(&[0; 2000]);
+        skip_to_first_fossil_a_press(&mut after_dialogue_a);
+        assert!(after_dialogue_a.advance() >= DIALOGUE_A_ADVANCE + MIN_ADVANCES_AFTER_DIALOGUE_A);
     }
 
     #[test]

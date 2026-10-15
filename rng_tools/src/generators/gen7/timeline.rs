@@ -1,5 +1,5 @@
 use super::NpcModel;
-use crate::rng::{GetRand, Rng, sfmt::Sfmt};
+use crate::rng::{GetRand, Rng, StateIterator, sfmt::Sfmt};
 use serde::{Deserialize, Serialize};
 use std::collections::HashSet;
 use std::ops::RangeInclusive;
@@ -30,6 +30,20 @@ impl Timeline {
         let mut rng = Sfmt::new(seed);
         rng.advance(safe_advance);
         Self::from_npcs(rng, NpcModel::new(model_count), safe_advance)
+    }
+
+    /// A timeline at each of `advances` with `model_count` idle models, for
+    /// searches that don't know the NPC states yet.
+    pub(super) fn range_with_idle_npcs(
+        seed: u32,
+        model_count: usize,
+        advances: RangeInclusive<usize>,
+    ) -> impl Iterator<Item = Self> {
+        let mut rng = Sfmt::new(seed);
+        rng.advance(*advances.start());
+        advances
+            .zip(StateIterator::new(rng))
+            .map(move |(advance, rng)| Self::from_npcs(rng, NpcModel::new(model_count), advance))
     }
 }
 
@@ -78,8 +92,8 @@ impl<R: Rng + GetRand<u64>> Timeline<R> {
         }
     }
 
-    /// The user steps until an advance first shows up and presses A there, so
-    /// later steps that stay on the same advance can't be pressed on.
+    /// Steps until the advance changes. For scenes where the user presses A
+    /// when an advance first shows up, not on later steps that stay on it.
     pub(super) fn step_to_next_advance(&mut self) {
         let advance = self.advance;
         while self.advance == advance {
@@ -150,10 +164,13 @@ impl<R: Rng + GetRand<u64>> Timeline<R> {
         })
     }
 
-    /// Same advance and NPC state means the same future, unless the scene
-    /// has NPC frozen steps, since those depend on the step count. Starting
-    /// the next scene from merged timelines still gives the same future.
+    /// Same advance and NPC state means the same future. Neither timeline
+    /// may have step-dependent NPC freezes, since those depend on the step
+    /// count. Starting the next scene from merged timelines still gives the
+    /// same future.
     fn has_merged_with(&self, other: &Self) -> bool {
+        debug_assert!(!self.has_step_dependent_freezes());
+        debug_assert!(!other.has_step_dependent_freezes());
         self.advance == other.advance && self.npcs == other.npcs
     }
 

@@ -182,9 +182,9 @@ mod test {
     fn targets_leave_time_for_the_final_screen() {
         let results = gen7_search_usum_fossils(opts(CURRENT_ADVANCE, 7400));
         let first_target = results.first().unwrap().advance;
-        // 450 steps. Steps where both models are mid-blink or in a cooldown
+        // 490 steps. Steps where both models are mid-blink or in a cooldown
         // use no advances, but this seed averages over one advance a step.
-        assert!(first_target >= CURRENT_ADVANCE + 450);
+        assert!(first_target >= CURRENT_ADVANCE + 490);
     }
 
     #[test]

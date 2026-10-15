@@ -304,7 +304,7 @@ mod test {
     #[test]
     fn target_leaves_time_for_the_final_screen() {
         for (_, presses) in reachable_targets(SAFE_ADVANCE + 3000) {
-            assert!(presses.target.wait_steps >= 450);
+            assert!(presses.target.wait_steps >= 490);
             assert!(presses.target.wait_steps <= 1800);
         }
     }
@@ -402,7 +402,7 @@ mod test {
         assert_eq!(presses, None);
     }
 
-    /// The save both in-game runs used.
+    /// The save every in-game run used.
     const IN_GAME_TSV: u16 = 2936;
     const IN_GAME_SEED: u32 = 0x4787b584;
     const IN_GAME_SAFE_ADVANCE: usize = 1325;
@@ -489,6 +489,72 @@ mod test {
         .unwrap();
         assert_eq!(presses.dialogue_a.advance, IN_GAME_SYNC_DIALOGUE_A_ADVANCE);
         assert_eq!(presses.target.advance, IN_GAME_SYNC_TARGET_ADVANCE);
+    }
+
+    const IN_GAME_BLINK_SEED: u32 = 0xb5ff4fde;
+    const IN_GAME_BLINK_SAFE_ADVANCE: usize = 1354;
+    const IN_GAME_BLINK_DIALOGUE_A_ADVANCE: usize = 1366;
+    const IN_GAME_BLINK_TARGET_ADVANCE: usize = 2853;
+
+    /// A run in game with a Timid Synchronize lead, following the plan's
+    /// presses. The player blinks on the steps before the target.
+    fn in_game_blink_after_dialogue_a() -> Timeline {
+        let mut dialogue = fossil_dialogue_timeline(IN_GAME_BLINK_SEED, IN_GAME_BLINK_SAFE_ADVANCE);
+        step_to_advance(&mut dialogue, IN_GAME_BLINK_DIALOGUE_A_ADVANCE);
+        after_dialogue_a_timeline(dialogue)
+    }
+
+    /// The advances on the steps after `advance`.
+    fn advances_after(timeline: &Timeline, advance: usize, count: usize) -> Vec<usize> {
+        let mut timeline = timeline.clone();
+        step_to_advance(&mut timeline, advance);
+        timeline
+            .skip(1)
+            .take(count)
+            .map(|step| step.advance)
+            .collect()
+    }
+
+    #[test]
+    fn matches_in_game_blink_run_b5ff4fde() {
+        let after_dialogue_a = in_game_blink_after_dialogue_a();
+        // The leap moves the timeline to odd advances.
+        assert_eq!(advances_after(&after_dialogue_a, 1373, 2), vec![1375, 1377]);
+        // A on "This here is xxx!" at 1451 kept the advances the same.
+        assert_eq!(
+            advances_after(&after_dialogue_a, 1451, 5),
+            vec![1453, 1455, 1457, 1459, 1461]
+        );
+        // The player is mid-blink, so only the NPC uses advances.
+        assert_eq!(advances_after(&after_dialogue_a, 2851, 2), vec![2852, 2853]);
+
+        let mut a_press = after_dialogue_a;
+        step_to_advance(&mut a_press, IN_GAME_BLINK_TARGET_ADVANCE);
+        let fossil = generate_gift(
+            a_press,
+            IN_GAME_TSV,
+            &FOSSIL_GIFT.with_sync_nature(Some(Nature::Timid)),
+        );
+        assert_eq!(fossil.pid, 0x61d193f7);
+        assert_eq!(fossil.gender, Gender::Male);
+        assert_eq!(fossil.nature, Nature::Timid);
+        assert_eq!(fossil.ivs, Ivs::new(22, 16, 0, 8, 20, 27));
+    }
+
+    #[test]
+    fn plans_the_in_game_blink_run_b5ff4fde() {
+        let mut a_press = in_game_blink_after_dialogue_a();
+        step_to_advance(&mut a_press, IN_GAME_BLINK_TARGET_ADVANCE);
+        let presses = presses_for(&Gen7UsumFossilPlanOpts {
+            seed: IN_GAME_BLINK_SEED,
+            safe_advance: IN_GAME_BLINK_SAFE_ADVANCE,
+            target_advance: IN_GAME_BLINK_TARGET_ADVANCE,
+            delay_advances: delay_advances(&a_press, &FOSSIL_GIFT),
+            min_dialogue_a_advance: None,
+        })
+        .unwrap();
+        assert_eq!(presses.dialogue_a.advance, IN_GAME_BLINK_DIALOGUE_A_ADVANCE);
+        assert_eq!(presses.target.advance, IN_GAME_BLINK_TARGET_ADVANCE);
     }
 
     #[test]

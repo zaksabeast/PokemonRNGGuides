@@ -2,15 +2,17 @@ use super::{GiftSettings, Timeline, model_count_from_npcs};
 use crate::GenderRatio;
 use crate::rng::{GetRand, Rng};
 
-/// The last dialogue before "You received xxx!" ("This here is xxx! You'd
-/// better take right good care of it!") has the player and 1 NPC.
+/// The dialogue "I turned that Fossil of yours right back into the Pokemon it
+/// used to be!" has the player and 1 NPC. A on the next dialogue ("This here
+/// is xxx!") uses no advance, so it can't leap and its timing doesn't matter.
 const FOSSIL_DIALOGUE_NPCS: u8 = 1;
 pub(super) const FOSSIL_DIALOGUE_MODELS: usize = model_count_from_npcs(FOSSIL_DIALOGUE_NPCS);
 
-/// "You received xxx!" takes A about 300 advances (150 steps) after the A
-/// press on the dialogue, plus 10 seconds (300 steps of 2/60 s) so the user
+/// "This here is xxx!" was pressed about 40 steps after the A press on the
+/// dialogue in game, and "You received xxx!" takes A about 300 advances
+/// (150 steps) after that, plus 10 seconds (300 steps of 2/60 s) so the user
 /// has time to step to the target.
-const MIN_STEPS_AFTER_DIALOGUE_A: u32 = 150 + 300;
+const MIN_STEPS_AFTER_DIALOGUE_A: u32 = 40 + 150 + 300;
 const MAX_STEPS_AFTER_DIALOGUE_A: u32 = 1800;
 /// The A press on the dialogue uses one advance on top of the models'.
 pub(super) const MAX_ADVANCES_AFTER_DIALOGUE_A: usize =
@@ -29,7 +31,8 @@ pub(super) fn fossil_dialogue_timeline(seed: u32, safe_advance: usize) -> Timeli
 }
 
 /// Starts from A pressed on `dialogue`'s current step. The NPC keeps
-/// running through "You received xxx!", and steps count from the press.
+/// running through "This here is xxx!" and "You received xxx!", and steps
+/// count from the press.
 pub(super) fn after_dialogue_a_timeline<R: Rng + GetRand<u64>>(
     dialogue: Timeline<R>,
 ) -> Timeline<R> {

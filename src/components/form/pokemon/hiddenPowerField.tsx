@@ -1,7 +1,7 @@
 import { type HiddenPowerFilter } from "~/rngTools";
 import { useField } from "~/hooks/form";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
-import { pokemonTypes } from "~/types/pokemonTypes";
+import { hiddenPowerTypes } from "~/types/pokemonTypes";
 import { GenericForm } from "~/types/form";
 import { Paths } from "~/types";
 import { toOptions } from "~/utils/options";
@@ -12,9 +12,7 @@ import { FormSwitchField } from "~/components/form/base/switchField";
 
 type HiddenPowerForm = Record<string, HiddenPowerFilter>;
 
-const hiddenPowerTypeOptions = toOptions(
-  pokemonTypes.filter((type) => type !== "Normal"),
-);
+const hiddenPowerTypeOptions = toOptions(hiddenPowerTypes);
 
 type HiddenPowerFieldProps<FormState extends GenericForm> = {
   name: Paths<FormState, HiddenPowerFilter>;

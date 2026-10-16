@@ -47,7 +47,7 @@ const SpeciesLabel = styled.span({
   },
 });
 
-export const getSpeciesOptions = <Value extends Species,>(
+export const getSpeciesOptions = <Value extends Species>(
   options: { value: Value; label: string }[],
 ) =>
   options.map(({ value, label }) => ({

@@ -200,10 +200,9 @@ export const calculateTargetSetupResult = async (
     content: (
       <Flex vertical>
         <div>
-          <PokemonName species={species} />, Lvl {res.lvl}, {gender}, {abilityStr},{" "}
-          {nature}, HP{" "}
-          {stats.hp}, ATK {stats.atk}, DEF {stats.def}, SPA {stats.spa}, SPD{" "}
-          {stats.spd}, SPE {stats.spe}
+          <PokemonName species={species} />, Lvl {res.lvl}, {gender},{" "}
+          {abilityStr}, {nature}, HP {stats.hp}, ATK {stats.atk}, DEF{" "}
+          {stats.def}, SPA {stats.spa}, SPD {stats.spd}, SPE {stats.spe}
         </div>
         <div>
           PID: {formatHex(res.pid)}, IVS: {ivs.hp}/{ivs.atk}/{ivs.def}/{ivs.spa}

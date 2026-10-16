@@ -1,6 +1,9 @@
 import styled from "@emotion/styled";
 import type { Species } from "~/rngTools";
-import { pokemonIconManifest, pokemonIconSheets } from "~/utils/pokemonIconManifest";
+import {
+  pokemonIconManifest,
+  pokemonIconSheets,
+} from "~/utils/pokemonIconManifest";
 
 export type PokemonIconProps = {
   species: Species;
@@ -16,7 +19,11 @@ const Sprite = styled.span({
 });
 
 // Decorative: callers displaying the icon alone must provide an accessible name.
-export const PokemonIcon = ({ species, size = 32, className }: PokemonIconProps) => {
+export const PokemonIcon = ({
+  species,
+  size = 32,
+  className,
+}: PokemonIconProps) => {
   const location = pokemonIconManifest[species];
   if (location == null) return null;
   const sheet = pokemonIconSheets[location.sheet];

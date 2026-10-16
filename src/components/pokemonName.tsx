@@ -18,7 +18,11 @@ const Container = styled.span({
   maxWidth: "100%",
 });
 
-const BasePokemonName = ({ species, iconSize, className }: PokemonNameProps) => (
+const BasePokemonName = ({
+  species,
+  iconSize,
+  className,
+}: PokemonNameProps) => (
   <Container className={className}>
     <PokemonIcon species={species} size={iconSize} />
     <span>{formatSpeciesLabel(species)}</span>

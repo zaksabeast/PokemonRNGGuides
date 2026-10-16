@@ -1,5 +1,3 @@
-#[cfg(test)]
-use crate::{ShinyFilter, gen4::parse_pokefinder::PokefinderEgg4};
 use crate::{
     PartialIvs, PkmFilter, Species,
     gen4::{
@@ -8,6 +6,8 @@ use crate::{
         seed_time::{SeedTime4, seedtime4_iter},
     },
 };
+#[cfg(test)]
+use crate::{ShinyFilter, gen4::parse_pokefinder::PokefinderEgg4};
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;

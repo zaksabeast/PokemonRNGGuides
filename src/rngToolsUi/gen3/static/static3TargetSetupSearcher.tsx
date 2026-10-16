@@ -1,4 +1,7 @@
-import { type AceSidConfig, getSidResultingInShiny } from "../pokemonRng/shared";
+import {
+  type AceSidConfig,
+  getSidResultingInShiny,
+} from "../pokemonRng/shared";
 import {
   Gen3StaticMethod,
   Species,
@@ -90,7 +93,9 @@ export const Static3TargetSetupSearcher = ({
     [],
   );
 
-  const [tidForAceSid, setTidForAceSid] = React.useState<AceSidConfig | null>(null);
+  const [tidForAceSid, setTidForAceSid] = React.useState<AceSidConfig | null>(
+    null,
+  );
   const initialValues = getInitialValues(game);
 
   const pidPathColumns = getTargetResultColumns(
@@ -105,7 +110,8 @@ export const Static3TargetSetupSearcher = ({
     if (values.filter_shiny !== "Any" && values.usingAceForSid) {
       setTidForAceSid({
         tid: values.tid,
-        shiny: values.filter_shiny === "StarShiny" ? "StarShiny" : "SquareShiny",
+        shiny:
+          values.filter_shiny === "StarShiny" ? "StarShiny" : "SquareShiny",
       });
     } else {
       setTidForAceSid(null);

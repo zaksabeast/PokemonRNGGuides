@@ -15,7 +15,10 @@ impl TsvTrv {
     }
 
     pub fn shiny_type_gen6_plus(self, pid: u32) -> ShinyType {
-        ShinyType::from_xor(PsvPrv::from_pid(pid).pid_high_xor_low ^ self.tid_xor_sid, 16)
+        ShinyType::from_xor(
+            PsvPrv::from_pid(pid).pid_high_xor_low ^ self.tid_xor_sid,
+            16,
+        )
     }
 
     pub fn tsv_gen3_to_5(self) -> u16 {

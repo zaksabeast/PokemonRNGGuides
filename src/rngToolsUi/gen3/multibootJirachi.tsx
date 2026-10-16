@@ -114,7 +114,8 @@ const Fields = ({ onUploadSave }: FieldsProps) => {
       <FormSection title={t["Filters"]}>
         <PkmFilter<FormState>
           generation={3}
-          displayAbility={false} displayGender={false}
+          displayAbility={false}
+          displayGender={false}
         />
       </FormSection>
     </>

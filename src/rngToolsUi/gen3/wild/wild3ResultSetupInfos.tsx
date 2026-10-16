@@ -1,4 +1,7 @@
-import { type AceSidConfig, getSidResultingInShiny } from "../pokemonRng/shared";
+import {
+  type AceSidConfig,
+  getSidResultingInShiny,
+} from "../pokemonRng/shared";
 import { Wild3SearcherCycleData, Gen3Method } from "~/rngTools";
 import { ResultColumn, ResultTable, Icon, Link, Flex } from "~/components";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";

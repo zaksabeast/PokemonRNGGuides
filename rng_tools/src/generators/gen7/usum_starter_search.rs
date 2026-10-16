@@ -4,8 +4,8 @@ use super::starter_timeline::{
     skip_to_first_starter_a_press,
 };
 use super::{Gen7Starter, NpcModel, Timeline, generate_starter};
-use crate::{PkmFilter, TsvTrv};
 use crate::rng::{Rng, StateIterator, sfmt::Sfmt};
+use crate::{PkmFilter, TsvTrv};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::ops::RangeInclusive;

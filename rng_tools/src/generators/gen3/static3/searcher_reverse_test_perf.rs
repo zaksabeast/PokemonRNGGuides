@@ -1,5 +1,5 @@
-use crate::ShinyFilter;
 use super::*;
+use crate::ShinyFilter;
 
 #[test]
 fn test_search_reverse_perf_shiny_only() {

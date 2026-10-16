@@ -1,9 +1,9 @@
-#[cfg(test)]
-use crate::{ShinyFilter, gen4::parse_pokefinder::PokefinderEgg4};
 use crate::{
     AbilityType, Gender, Nature, PkmFilter, ShinyType, Species, gen3_shiny,
     rng::{Rng, lcrng::Arng, mt::MT, mt_fast::MtFast},
 };
+#[cfg(test)]
+use crate::{ShinyFilter, gen4::parse_pokefinder::PokefinderEgg4};
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;

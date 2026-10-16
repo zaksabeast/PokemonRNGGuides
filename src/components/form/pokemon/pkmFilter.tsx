@@ -6,7 +6,10 @@ import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { GenericForm, type RequireFormFields } from "~/types/form";
 import { SwitchGroup } from "~/components/form/base/switchGroup";
 import { FormSelectField } from "~/components/form/base/selectField";
-import { shinyFilterOptions, shinyFilterOptionsGen3To6 } from "~/rngTools/shiny";
+import {
+  shinyFilterOptions,
+  shinyFilterOptionsGen3To6,
+} from "~/rngTools/shiny";
 import { AbilityFilterField } from "./abilityField";
 import { GenderFilterField } from "./genderField";
 import { HiddenPowerField } from "./hiddenPowerField";

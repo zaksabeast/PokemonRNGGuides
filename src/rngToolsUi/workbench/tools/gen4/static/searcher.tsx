@@ -196,7 +196,10 @@ const FilterFields = () => {
   const encounter = getEncounter(game, encounter_id);
   const species = encounter.species;
 
-  const filterFields = getPkmFilterIvFields<FormState>({ generation: 4, species });
+  const filterFields = getPkmFilterIvFields<FormState>({
+    generation: 4,
+    species,
+  });
 
   return (
     <Descriptions bordered title="Filters" items={filterFields} column={1} />

@@ -69,7 +69,8 @@ export const PkmFilterTest = () => (
   <>
     <PkmFilter<FilterForm>
       generation={8}
-      species="Pikachu" displayShiny={false}
+      species="Pikachu"
+      displayShiny={false}
     />
     {/* @ts-expect-error the form needs the pkm filter fields */}
     <PkmFilter<OtherForm> generation={8} />

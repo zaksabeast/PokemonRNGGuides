@@ -196,7 +196,11 @@ mod test {
 
         let rands = rands_after_idle_delay(&values);
         assert!(generate_with_idle_npc(&rands, tsv << 4).shiny.is_shiny());
-        assert!(!generate_with_idle_npc(&rands, (tsv + 1) << 4).shiny.is_shiny());
+        assert!(
+            !generate_with_idle_npc(&rands, (tsv + 1) << 4)
+                .shiny
+                .is_shiny()
+        );
     }
 
     #[test]
@@ -219,8 +223,20 @@ mod test {
         assert_eq!(square.shiny, ShinyType::SquareShiny);
         assert_eq!(star.shiny, ShinyType::StarShiny);
         assert_eq!(not_shiny.shiny, ShinyType::NotShiny);
-        assert_eq!(Gen7Starter { shiny: square.shiny, ..star }, square);
-        assert_eq!(Gen7Starter { shiny: square.shiny, ..not_shiny }, square);
+        assert_eq!(
+            Gen7Starter {
+                shiny: square.shiny,
+                ..star
+            },
+            square
+        );
+        assert_eq!(
+            Gen7Starter {
+                shiny: square.shiny,
+                ..not_shiny
+            },
+            square
+        );
     }
 
     #[test]

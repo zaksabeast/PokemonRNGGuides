@@ -1883,7 +1883,11 @@ mod test {
                     let advance: usize = parts[0].parse().unwrap();
                     let redraws: usize = parts[2].parse().unwrap();
                     let pid = u32::from_str_radix(parts[3], 16).unwrap();
-                    let shiny = match parts[4] { "No" => ShinyType::NotShiny, "Square" => ShinyType::SquareShiny, _ => ShinyType::StarShiny };
+                    let shiny = match parts[4] {
+                        "No" => ShinyType::NotShiny,
+                        "Square" => ShinyType::SquareShiny,
+                        _ => ShinyType::StarShiny,
+                    };
                     let nature = Nature::from_str(parts[5]);
                     let ability = AbilityType::from_pokefinder_str(parts[6]);
                     let gender = Gender::from_pokefinder_str(parts[15]);

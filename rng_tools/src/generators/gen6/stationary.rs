@@ -1,7 +1,9 @@
 use crate::pkm::gen6_psv;
 use crate::rng::StateIterator;
 use crate::rng::{Rng, mt::MT};
-use crate::{AbilityType, G5Idx, Gender, IvFilter, Ivs, Nature, ShinyFilter, ShinyType, Species, TsvTrv};
+use crate::{
+    AbilityType, G5Idx, Gender, IvFilter, Ivs, Nature, ShinyFilter, ShinyType, Species, TsvTrv,
+};
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
@@ -341,11 +343,21 @@ mod test {
         let pid = rng.rand::<u32>();
         let pid_xor = (pid >> 16) as u16 ^ pid as u16;
         let mut opts = Stationary6Opts {
-            seed: 0xaabbccdd, initial_advances: 0, max_advances: 0,
-            delay: 0, perfect_iv_count: 0, always_sync: true, synchro_stat: None,
-            shiny_charm: true, is_shiny_locked: false, is_forced_shiny: false,
-            tid: 12345, sid: 12345 ^ pid_xor,
-            ability: None, gender: None, species: Species::Pikachu,
+            seed: 0xaabbccdd,
+            initial_advances: 0,
+            max_advances: 0,
+            delay: 0,
+            perfect_iv_count: 0,
+            always_sync: true,
+            synchro_stat: None,
+            shiny_charm: true,
+            is_shiny_locked: false,
+            is_forced_shiny: false,
+            tid: 12345,
+            sid: 12345 ^ pid_xor,
+            ability: None,
+            gender: None,
+            species: Species::Pikachu,
             filter: Stationary6Filter::default(),
         };
         let square = generate_stationary6(opts.clone());

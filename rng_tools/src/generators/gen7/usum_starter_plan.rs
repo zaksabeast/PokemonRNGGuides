@@ -212,11 +212,11 @@ pub fn gen7_usum_starter_plan(opts: Gen7UsumStarterPlanOpts) -> Vec<Gen7UsumStar
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::{PkmFilter, TsvTrv};
     use crate::gen7::test_utils::step_to_advance;
     use crate::gen7::{
         Gen7Starter, Gen7UsumStarterSearchOpts, gen7_search_usum_starters, generate_starter,
     };
+    use crate::{PkmFilter, TsvTrv};
 
     const SEED: u32 = 0x58507f4f;
     const SAFE_ADVANCE: usize = 7937;

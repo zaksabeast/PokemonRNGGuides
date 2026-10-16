@@ -41,7 +41,8 @@ export const Wild3TargetMon = () => {
       />
       <PkmFilter<FormState>
         generation={3}
-        species={species} displayHiddenAbility={false}
+        species={species}
+        displayHiddenAbility={false}
       />
       <Gen3PkmFilter<FormState>
         displayMaxSize={gen3SpeciesHasVariableSize(species)}

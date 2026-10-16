@@ -196,7 +196,9 @@ export const Wild3TargetSetupSearcher = ({
   const [rngManipulatedLeadPid, setRngManipulatedLeadPid] =
     React.useState<boolean>(false);
 
-  const [tidForAceSid, setTidForAceSid] = React.useState<AceSidConfig | null>(null);
+  const [tidForAceSid, setTidForAceSid] = React.useState<AceSidConfig | null>(
+    null,
+  );
 
   const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
     null,
@@ -210,7 +212,8 @@ export const Wild3TargetSetupSearcher = ({
     if (values.filter_shiny !== "Any" && values.usingAceForSid) {
       setTidForAceSid({
         tid: values.tid,
-        shiny: values.filter_shiny === "StarShiny" ? "StarShiny" : "SquareShiny",
+        shiny:
+          values.filter_shiny === "StarShiny" ? "StarShiny" : "SquareShiny",
       });
     } else {
       setTidForAceSid(null);

@@ -1,4 +1,5 @@
 import React from "react";
+import { ShinyIcon } from "~/components/shiny";
 import { z } from "zod";
 import { uniqueId } from "lodash-es";
 import { useAtom } from "jotai";
@@ -13,6 +14,7 @@ import {
 } from "~/components/form";
 import {
   Gen7Starter,
+  type ShinyType,
   Gen7UsumStarterSearchOpts,
   multiWorkerRngTools,
 } from "~/rngTools";
@@ -42,7 +44,8 @@ const TARGET_ADVANCES_PER_CHUNK = 3_000;
 const Validator = z
   .object({
     seed: HexSchema(0xffffffff),
-    tsv: z.number().int().min(0).max(4095),
+    tid: z.number().int().min(0).max(65535),
+    sid: z.number().int().min(0).max(65535),
     current_advance: z.number().int().min(0),
     max_advances: z.number().int().min(0),
   })
@@ -52,7 +55,8 @@ type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   seed: 0,
-  tsv: 0,
+  tid: 0,
+  sid: 0,
   current_advance: 478,
   max_advances: 10000,
   ...getPkmFilterInitialValues(),
@@ -92,7 +96,7 @@ const getColumns = (
   {
     title: t["Shiny"],
     dataIndex: "shiny",
-    render: (shiny: boolean) => (shiny ? t["Yes"] : t["No"]),
+    render: (shiny: ShinyType) => <ShinyIcon shiny={shiny} />,
   },
   { title: t["Nature"], dataIndex: "nature" },
   { title: t["Gender"], dataIndex: "gender" },
@@ -125,8 +129,13 @@ const Fields = () => {
             numType="hex"
           />
           <FormNumberField<FormState>
-            name="tsv"
-            label={t["TSV"]}
+            name="tid"
+            label={t["TID"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="sid"
+            label={t["SID"]}
             numType="decimal"
           />
         </FieldRow>
@@ -150,7 +159,8 @@ const Fields = () => {
       <FormSection title={t["Filters"]}>
         <PkmFilter<FormState>
           generation={7}
-          species="Rowlet" displayAbility={false}
+          species="Rowlet"
+          displayAbility={false}
         />
       </FormSection>
     </>
@@ -182,7 +192,8 @@ export const Gen7StarterSearch = () => {
     }
     setTarget({
       seed: submitted.seed,
-      tsv: submitted.tsv,
+      tid: submitted.tid,
+      sid: submitted.sid,
       currentAdvance: submitted.current_advance,
       starter: result.starter,
     });
@@ -203,7 +214,8 @@ export const Gen7StarterSearch = () => {
           last_target_advance,
         ]): RustOption<Gen7UsumStarterSearchOpts> => ({
           seed: opts.seed,
-          tsv: opts.tsv,
+          tid: opts.tid,
+          sid: opts.sid,
           current_advance: opts.current_advance,
           first_target_advance,
           last_target_advance,

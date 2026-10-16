@@ -1,7 +1,7 @@
 use crate::pkm::gen6_psv;
 use crate::rng::StateIterator;
 use crate::rng::{Rng, mt::MT};
-use crate::{AbilityType, G5Idx, Gender, IvFilter, Ivs, Nature, ShinyFilter, ShinyType, Species};
+use crate::{AbilityType, G5Idx, Gender, IvFilter, Ivs, Nature, ShinyFilter, ShinyType, Species, TsvTrv};
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
@@ -82,8 +82,8 @@ struct GenerateOpts {
     shiny_charm: bool,
     is_shiny_locked: bool,
     is_forced_shiny: bool,
-    tsv: u16,
-    trv: u8,
+    tid: u16,
+    sid: u16,
     ability: Option<AbilityType>,
     gender: Option<Gender>,
     species: Species,
@@ -156,11 +156,11 @@ fn generate_state(rng: &mut MT, advance: usize, opts: &GenerateOpts) -> Stationa
 
     let mut pid = 0;
     let mut shiny = ShinyType::NotShiny;
-    let tid_xor_sid = (opts.tsv << 4) | u16::from(opts.trv & 0xf);
+    let tsv_trv = TsvTrv::from_tid_sid(opts.tid, opts.sid);
 
     for _ in 0..pid_reroll_count {
         pid = rng.rand();
-        shiny = ShinyType::from_pid_tid_xor_sid_gen6_plus(pid, tid_xor_sid);
+        shiny = tsv_trv.shiny_type_gen6_plus(pid);
         if shiny.is_shiny() {
             if opts.is_shiny_locked {
                 pid ^= 0x10000000;
@@ -169,7 +169,7 @@ fn generate_state(rng: &mut MT, advance: usize, opts: &GenerateOpts) -> Stationa
             break;
         } else if opts.is_forced_shiny && !opts.is_shiny_locked {
             let low = pid as u16;
-            pid = (u32::from(low ^ tid_xor_sid) << 16) | u32::from(low);
+            pid = (u32::from(low ^ tsv_trv.tid_xor_sid) << 16) | u32::from(low);
             shiny = ShinyType::SquareShiny;
             break;
         }
@@ -243,9 +243,8 @@ pub struct Stationary6Opts {
     pub shiny_charm: bool,
     pub is_shiny_locked: bool,
     pub is_forced_shiny: bool,
-    pub tsv: u16,
-    #[serde(default)]
-    pub trv: u8,
+    pub tid: u16,
+    pub sid: u16,
     pub ability: Option<AbilityType>,
     pub gender: Option<Gender>,
     pub species: Species,
@@ -265,8 +264,8 @@ pub fn generate_stationary6(opts: Stationary6Opts) -> Vec<Stationary6State> {
         shiny_charm: opts.shiny_charm,
         is_shiny_locked: opts.is_shiny_locked,
         is_forced_shiny: opts.is_forced_shiny,
-        tsv: opts.tsv,
-        trv: opts.trv,
+        tid: opts.tid,
+        sid: opts.sid,
         ability: opts.ability,
         gender: opts.gender,
         species: opts.species,
@@ -287,7 +286,8 @@ pub struct TransporterOpts {
     pub delay: usize,
     pub target: usize,                                   // Index of target pkm
     pub transporter_genders: Vec<TransporterGenderType>, // Gender list of Transporter pokemon
-    pub tsv: u16,
+    pub tid: u16,
+    pub sid: u16,
     pub filter: Stationary6Filter,
 }
 
@@ -320,8 +320,8 @@ pub fn generate_transporter(opts: TransporterOpts) -> Vec<Stationary6State> {
         shiny_charm: false,
         is_shiny_locked: true,
         is_forced_shiny: false,
-        tsv: opts.tsv,
-        trv: 0,
+        tid: opts.tid,
+        sid: opts.sid,
         ability: Some(ability),
         gender: None,
         species: Species::Mewtwo,
@@ -335,7 +335,7 @@ mod test {
     use super::*;
 
     #[test]
-    fn trainer_remainder_classifies_shiny_without_extra_rerolls() {
+    fn trainer_ids_classify_shiny_without_extra_rerolls() {
         let mut rng = MT::new(0xaabbccdd);
         rng.advance(2);
         let pid = rng.rand::<u32>();
@@ -344,13 +344,13 @@ mod test {
             seed: 0xaabbccdd, initial_advances: 0, max_advances: 0,
             delay: 0, perfect_iv_count: 0, always_sync: true, synchro_stat: None,
             shiny_charm: true, is_shiny_locked: false, is_forced_shiny: false,
-            tsv: pid_xor >> 4, trv: (pid_xor & 15) as u8,
+            tid: 12345, sid: 12345 ^ pid_xor,
             ability: None, gender: None, species: Species::Pikachu,
             filter: Stationary6Filter::default(),
         };
         let square = generate_stationary6(opts.clone());
         assert_eq!(square[0].shiny, ShinyType::SquareShiny);
-        opts.trv ^= 1;
+        opts.sid ^= 1;
         let star = generate_stationary6(opts.clone());
         assert_eq!(star[0].shiny, ShinyType::StarShiny);
         assert_eq!(star[0].ivs, square[0].ivs);
@@ -592,8 +592,8 @@ mod test {
                 shiny_charm: false,
                 is_shiny_locked: false,
                 is_forced_shiny: false,
-                tsv: 123,
-                trv: 0,
+                tid: 123 << 4,
+                sid: 0,
                 gender: None,
                 species: Species::Pikachu,
                 filter: Default::default(),
@@ -686,8 +686,8 @@ mod test {
                 shiny_charm: false,
                 is_shiny_locked: false,
                 is_forced_shiny: false,
-                tsv: 123,
-                trv: 0,
+                tid: 123 << 4,
+                sid: 0,
                 gender: None,
                 species: Species::Pikachu,
                 filter: Default::default(),
@@ -780,8 +780,8 @@ mod test {
                 shiny_charm: false,
                 is_shiny_locked: false,
                 is_forced_shiny: false,
-                tsv: 123,
-                trv: 0,
+                tid: 123 << 4,
+                sid: 0,
                 gender: None,
                 species: Species::Pikachu,
                 filter: Default::default(),
@@ -874,8 +874,8 @@ mod test {
                 shiny_charm: false,
                 is_shiny_locked: false,
                 is_forced_shiny: false,
-                tsv: 123,
-                trv: 0,
+                tid: 123 << 4,
+                sid: 0,
                 gender: None,
                 species: Species::Pikachu,
                 filter: Default::default(),
@@ -969,8 +969,8 @@ mod test {
                 shiny_charm: false,
                 is_shiny_locked: false,
                 is_forced_shiny: false,
-                tsv: 123,
-                trv: 0,
+                tid: 123 << 4,
+                sid: 0,
                 gender: None,
                 species: Species::Arcanine,
                 filter: Default::default(),
@@ -1064,8 +1064,8 @@ mod test {
                 shiny_charm: false,
                 is_shiny_locked: false,
                 is_forced_shiny: false,
-                tsv: 123,
-                trv: 0,
+                tid: 123 << 4,
+                sid: 0,
                 gender: None,
                 species: Species::Pikachu,
                 filter: Default::default(),
@@ -1158,8 +1158,8 @@ mod test {
                 shiny_charm: false,
                 is_shiny_locked: true,
                 is_forced_shiny: false,
-                tsv: 123,
-                trv: 0,
+                tid: 123 << 4,
+                sid: 0,
                 gender: None,
                 species: Species::Pikachu,
                 filter: Stationary6Filter {
@@ -1189,8 +1189,8 @@ mod test {
                 shiny_charm: true,
                 is_shiny_locked: false,
                 is_forced_shiny: false,
-                tsv: 123,
-                trv: 0,
+                tid: 123 << 4,
+                sid: 0,
                 gender: None,
                 species: Species::Pikachu,
                 filter: Stationary6Filter {
@@ -1286,7 +1286,8 @@ mod test {
                 delay: 0,
                 target: 1,
                 transporter_genders: vec![TransporterGenderType::RandomGender],
-                tsv: 123,
+                tid: 123 << 4,
+                sid: 0,
                 filter: Default::default(),
             };
             let result = generate_transporter(opts);
@@ -1372,7 +1373,8 @@ mod test {
                 delay: 0,
                 target: 4,
                 transporter_genders: vec![TransporterGenderType::RandomGender; 4],
-                tsv: 123,
+                tid: 123 << 4,
+                sid: 0,
                 filter: Default::default(),
             };
             let result = generate_transporter(opts);
@@ -1458,7 +1460,8 @@ mod test {
                 delay: 0,
                 target: 0,
                 transporter_genders: vec![TransporterGenderType::Mythical],
-                tsv: 123,
+                tid: 123 << 4,
+                sid: 0,
                 filter: Default::default(),
             };
             let result = generate_transporter(opts);
@@ -1549,7 +1552,8 @@ mod test {
                     TransporterGenderType::NoGender,
                     TransporterGenderType::RandomGender,
                 ],
-                tsv: 123,
+                tid: 123 << 4,
+                sid: 0,
                 filter: Default::default(),
             };
             let result = generate_transporter(opts);
@@ -1640,7 +1644,8 @@ mod test {
                     TransporterGenderType::Mythical,
                     TransporterGenderType::RandomGender,
                 ],
-                tsv: 123,
+                tid: 123 << 4,
+                sid: 0,
                 filter: Default::default(),
             };
             let result = generate_transporter(opts);

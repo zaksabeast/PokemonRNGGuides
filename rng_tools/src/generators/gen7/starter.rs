@@ -1,6 +1,6 @@
 use super::Timeline;
 use crate::rng::{GetMaxRand, GetRand, Rng};
-use crate::{AbilityType, Gender, GenderRatio, Ivs, Nature, PkmState, gen6_psv};
+use crate::{AbilityType, Gender, GenderRatio, Ivs, Nature, PkmState, ShinyType, TsvTrv, gen6_psv};
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 
@@ -14,7 +14,7 @@ pub struct Gen7Starter {
     pub ec: u32,
     pub pid: u32,
     pub psv: u16,
-    pub shiny: bool,
+    pub shiny: ShinyType,
     pub ivs: Ivs,
     pub ability: AbilityType,
     pub nature: Nature,
@@ -26,7 +26,7 @@ impl PkmState for Gen7Starter {
         self.pid
     }
 
-    fn shiny(&self) -> bool {
+    fn shiny(&self) -> ShinyType {
         self.shiny
     }
 
@@ -50,7 +50,7 @@ impl PkmState for Gen7Starter {
 /// Starts from A pressed on `timeline`'s current step.
 pub(super) fn generate_starter<R: Rng + GetRand<u64> + GetMaxRand<u64>>(
     mut timeline: Timeline<R>,
-    tsv: u16,
+    tsv_trv: TsvTrv,
 ) -> Gen7Starter {
     let a_press_advance = timeline.advance();
     timeline.skip_steps(STEPS_FROM_A_PRESS_TO_GENERATION);
@@ -59,7 +59,7 @@ pub(super) fn generate_starter<R: Rng + GetRand<u64> + GetMaxRand<u64>>(
         &mut timeline.into_rng(),
         a_press_advance,
         delay_advances,
-        tsv,
+        tsv_trv,
     )
 }
 
@@ -74,7 +74,7 @@ fn generate<R: Rng + GetRand<u64> + GetMaxRand<u64>>(
     rng_at_generation: &mut R,
     a_press_advance: usize,
     delay_advances: usize,
-    tsv: u16,
+    tsv_trv: TsvTrv,
 ) -> Gen7Starter {
     let rng = rng_at_generation;
     let ec = rng.rand::<u64>() as u32;
@@ -94,7 +94,7 @@ fn generate<R: Rng + GetRand<u64> + GetMaxRand<u64>>(
         ec,
         pid,
         psv,
-        shiny: psv == tsv,
+        shiny: tsv_trv.shiny_type_gen6_plus(pid),
         ivs,
         ability,
         nature,
@@ -121,10 +121,10 @@ mod test {
         values
     }
 
-    fn generate_with_idle_npc(rands: &[u64], tsv: u16) -> Gen7Starter {
+    fn generate_with_idle_npc(rands: &[u64], tid: u16) -> Gen7Starter {
         let npcs = NpcModel::new(model_count_from_npcs(1));
         let timeline = Timeline::from_npcs(FakeRng::new(rands), npcs, 1000);
-        generate_starter(timeline, tsv)
+        generate_starter(timeline, TsvTrv::from_tid_sid(tid, 0))
     }
 
     #[test]
@@ -151,7 +151,7 @@ mod test {
                 ec: 0x1234_5678,
                 pid: 0x8765_4321,
                 psv: gen6_psv(0x8765_4321),
-                shiny: false,
+                shiny: ShinyType::NotShiny,
                 ivs: Ivs::new(1, 2, 3, 4, 5, 31),
                 ability: AbilityType::Second,
                 nature: Nature::Modest,
@@ -189,14 +189,38 @@ mod test {
 
     #[test]
     fn shiny_when_psv_matches_tsv() {
-        let pid = 0x8765_4321;
-        let mut values = vec![0, pid];
+        let pid = 0x8765_4321u32;
+        let mut values = vec![0, u64::from(pid)];
         values.extend([0; 9]);
-        let tsv = gen6_psv(pid as u32);
+        let tsv = gen6_psv(pid);
 
         let rands = rands_after_idle_delay(&values);
-        assert!(generate_with_idle_npc(&rands, tsv).shiny);
-        assert!(!generate_with_idle_npc(&rands, tsv + 1).shiny);
+        assert!(generate_with_idle_npc(&rands, tsv << 4).shiny.is_shiny());
+        assert!(!generate_with_idle_npc(&rands, (tsv + 1) << 4).shiny.is_shiny());
+    }
+
+    #[test]
+    fn trainer_ids_classify_shinies_without_changing_generation() {
+        let pid = 0x8765_4321u32;
+        let tid = 12345;
+        let sid = tid ^ ((pid >> 16) ^ pid) as u16;
+        let mut values = vec![0, u64::from(pid)];
+        values.extend([0; 9]);
+        let rands = rands_after_idle_delay(&values);
+        let timeline = Timeline::from_npcs(
+            FakeRng::new(&rands),
+            NpcModel::new(model_count_from_npcs(1)),
+            1000,
+        );
+        let square = generate_starter(timeline.clone(), TsvTrv::from_tid_sid(tid, sid));
+        let star = generate_starter(timeline.clone(), TsvTrv::from_tid_sid(tid, sid ^ 1));
+        let not_shiny = generate_starter(timeline, TsvTrv::from_tid_sid(tid, sid ^ 16));
+
+        assert_eq!(square.shiny, ShinyType::SquareShiny);
+        assert_eq!(star.shiny, ShinyType::StarShiny);
+        assert_eq!(not_shiny.shiny, ShinyType::NotShiny);
+        assert_eq!(Gen7Starter { shiny: square.shiny, ..star }, square);
+        assert_eq!(Gen7Starter { shiny: square.shiny, ..not_shiny }, square);
     }
 
     #[test]
@@ -258,7 +282,7 @@ mod test {
             }
 
             let timeline = Timeline::from_npcs(rng, self.npcs_before_step.clone(), advance);
-            let starter = generate_starter(timeline, 0);
+            let starter = generate_starter(timeline, TsvTrv::default());
             self.advances_left_in_step -= 1;
             Some(starter)
         }
@@ -288,7 +312,7 @@ mod test {
                     ec: hex(1),
                     pid,
                     psv: gen6_psv(pid),
-                    shiny: gen6_psv(pid) == 0,
+                    shiny: TsvTrv::default().shiny_type_gen6_plus(pid),
                     ivs: Ivs::new(iv(4), iv(5), iv(6), iv(7), iv(8), iv(9)),
                     ability: match num(10) {
                         1 => AbilityType::First,
@@ -323,7 +347,7 @@ mod test {
         let timeline = Timeline::new(SCAN_SEED, model_count_from_npcs(1), 1000);
         assert_eq!(
             scan_starters(1000, 1000),
-            vec![generate_starter(timeline, 0)]
+            vec![generate_starter(timeline, TsvTrv::default())]
         );
     }
 }

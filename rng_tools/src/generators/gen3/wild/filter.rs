@@ -3,7 +3,7 @@ use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 use crate::{
-    AbilityType, GenderRatio, Nature, PkmFilter, ShinyFilter, ShinyType, Species, TsvTrv,
+    AbilityType, GenderRatio, Nature, PkmFilter, ShinyFilter, Species, TsvTrv,
     gen3::{calculate_pid_speed, get_probability_that_random_pid_has_speed_range},
 };
 
@@ -41,7 +41,7 @@ pub fn passes_pid_filter(
     pid: u32,
     tsv_trv: TsvTrv,
 ) -> bool {
-    let shiny = ShinyType::from_pid_tid_xor_sid_gen3_to_5(pid, tsv_trv.tid_xor_sid);
+    let shiny = tsv_trv.shiny_type_gen3_to_5(pid);
     if !filter.shiny.allows(shiny) {
         return false;
     }

@@ -212,7 +212,7 @@ pub fn gen7_usum_starter_plan(opts: Gen7UsumStarterPlanOpts) -> Vec<Gen7UsumStar
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::PkmFilter;
+    use crate::{PkmFilter, TsvTrv};
     use crate::gen7::test_utils::step_to_advance;
     use crate::gen7::{
         Gen7Starter, Gen7UsumStarterSearchOpts, gen7_search_usum_starters, generate_starter,
@@ -242,7 +242,7 @@ mod test {
             after_yes.current().steps_since_start,
             presses.target.wait_steps
         );
-        generate_starter(after_yes, 0)
+        generate_starter(after_yes, TsvTrv::default())
     }
 
     fn in_game_target() -> Gen7Starter {
@@ -252,7 +252,7 @@ mod test {
         step_to_advance(&mut yes_no, 8780);
         let mut after_yes = after_yes_timeline(yes_no);
         step_to_advance(&mut after_yes, 9843);
-        generate_starter(after_yes, 0)
+        generate_starter(after_yes, TsvTrv::default())
     }
 
     fn opts_for(target: &Gen7Starter) -> Gen7UsumStarterPlanOpts {
@@ -354,7 +354,8 @@ mod test {
         let first_target_advance = SAFE_ADVANCE + 2500;
         let targets = gen7_search_usum_starters(Gen7UsumStarterSearchOpts {
             seed: SEED,
-            tsv: 0,
+            tid: 0,
+            sid: 0,
             current_advance: SAFE_ADVANCE,
             first_target_advance,
             last_target_advance: first_target_advance + 200,

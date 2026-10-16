@@ -4,7 +4,7 @@ use super::starter_timeline::{
     skip_to_first_starter_a_press,
 };
 use super::{Gen7Starter, NpcModel, Timeline, generate_starter};
-use crate::PkmFilter;
+use crate::{PkmFilter, TsvTrv};
 use crate::rng::{Rng, StateIterator, sfmt::Sfmt};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -20,7 +20,8 @@ const MIN_ADVANCES_TO_YES: usize = KUKUI_DIALOGUE_MODELS * STEPS_FROM_KUKUI_A_TO
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Gen7UsumStarterSearchOpts {
     pub seed: u32,
-    pub tsv: u16,
+    pub tid: u16,
+    pub sid: u16,
     pub current_advance: usize,
     pub first_target_advance: usize,
     pub last_target_advance: usize,
@@ -74,7 +75,7 @@ fn matching_starter(a_press: &Timeline, opts: &Gen7UsumStarterSearchOpts) -> Opt
     if a_press.advance() < opts.first_target_advance {
         return None;
     }
-    let starter = generate_starter(a_press.clone(), opts.tsv);
+    let starter = generate_starter(a_press.clone(), TsvTrv::from_tid_sid(opts.tid, opts.sid));
     opts.filter.pass_filter(&starter).then_some(starter)
 }
 
@@ -97,7 +98,7 @@ fn after_yes_timeline_with_idle_npcs(rng: Sfmt, yes_advance: usize) -> Timeline 
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::{Gender, Ivs};
+    use crate::{Gender, Ivs, ShinyFilter, ShinyType};
 
     const SEED: u32 = 0x768ba16d;
     const FIRST_YES_ADVANCE: usize = 5000;
@@ -105,7 +106,8 @@ mod test {
     fn opts(first_target_advance: usize, last_target_advance: usize) -> Gen7UsumStarterSearchOpts {
         Gen7UsumStarterSearchOpts {
             seed: SEED,
-            tsv: 0,
+            tid: 0,
+            sid: 0,
             current_advance: FIRST_YES_ADVANCE - MIN_ADVANCES_TO_YES,
             first_target_advance,
             last_target_advance,
@@ -192,13 +194,48 @@ mod test {
     }
 
     #[test]
-    fn shiny_filter_uses_the_tsv() {
+    fn shiny_square_start_filter_uses_the_trainer_ids() {
+        let target = gen7_search_usum_starters(opts(6300, 6400)).remove(20);
+        let tid = 12345;
+        let sid = tid ^ ((target.pid >> 16) ^ target.pid) as u16;
+        for (trainer_sid, filter, expected_shiny, includes_target) in [
+            (sid, ShinyFilter::SquareShiny, ShinyType::SquareShiny, true),
+            (sid, ShinyFilter::StarShiny, ShinyType::StarShiny, false),
+            (sid ^ 1, ShinyFilter::StarShiny, ShinyType::StarShiny, true),
+            (
+                sid ^ 1,
+                ShinyFilter::SquareShiny,
+                ShinyType::SquareShiny,
+                false,
+            ),
+        ] {
+            let mut search_opts = opts(6300, 6400);
+            search_opts.tid = tid;
+            search_opts.sid = trainer_sid;
+            search_opts.filter.shiny = filter;
+            let results = gen7_search_usum_starters(search_opts);
+
+            assert!(
+                results
+                    .iter()
+                    .all(|starter| starter.shiny == expected_shiny)
+            );
+            assert_eq!(
+                results.iter().any(|starter| starter.pid == target.pid),
+                includes_target
+            );
+        }
+    }
+
+    #[test]
+    fn shiny_filter_uses_the_trainer_ids() {
         let target = gen7_search_usum_starters(opts(6300, 6400)).remove(20);
         let mut filter = PkmFilter::new_allow_all();
-        filter.shiny = true;
+        filter.shiny = ShinyFilter::AnyShiny;
 
         let results = gen7_search_usum_starters(Gen7UsumStarterSearchOpts {
-            tsv: target.psv,
+            tid: 12345,
+            sid: 12345 ^ (target.psv << 4),
             filter,
             ..opts(6300, 6400)
         });

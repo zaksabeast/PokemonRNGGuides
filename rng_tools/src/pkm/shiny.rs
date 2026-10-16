@@ -10,6 +10,14 @@ impl TsvTrv {
         }
     }
 
+    pub fn shiny_type_gen3_to_5(self, pid: u32) -> ShinyType {
+        ShinyType::from_xor(PsvPrv::from_pid(pid).pid_high_xor_low ^ self.tid_xor_sid, 8)
+    }
+
+    pub fn shiny_type_gen6_plus(self, pid: u32) -> ShinyType {
+        ShinyType::from_xor(PsvPrv::from_pid(pid).pid_high_xor_low ^ self.tid_xor_sid, 16)
+    }
+
     pub fn tsv_gen3_to_5(self) -> u16 {
         self.tid_xor_sid >> 3
     }
@@ -57,7 +65,7 @@ pub fn gen3_psv(pid: u32) -> u16 {
 }
 
 pub fn gen3_shiny(pid: u32, tid: u16, sid: u16) -> ShinyType {
-    ShinyType::from_pid_tid_xor_sid_gen3_to_5(pid, tid ^ sid)
+    TsvTrv::from_tid_sid(tid, sid).shiny_type_gen3_to_5(pid)
 }
 
 pub fn gen6_psv(pid: u32) -> u16 {
@@ -76,14 +84,6 @@ pub enum ShinyType {
 }
 
 impl ShinyType {
-    pub fn from_pid_tid_xor_sid_gen3_to_5(pid: u32, tid_xor_sid: u16) -> Self {
-        Self::from_xor(PsvPrv::from_pid(pid).pid_high_xor_low ^ tid_xor_sid, 8)
-    }
-
-    pub fn from_pid_tid_xor_sid_gen6_plus(pid: u32, tid_xor_sid: u16) -> Self {
-        Self::from_xor(PsvPrv::from_pid(pid).pid_high_xor_low ^ tid_xor_sid, 16)
-    }
-
     fn from_xor(xor: u16, threshold: u16) -> Self {
         match xor {
             0 => Self::SquareShiny,
@@ -139,11 +139,11 @@ mod tests {
             );
         }
         assert_eq!(
-            ShinyType::from_pid_tid_xor_sid_gen6_plus(15, 0),
+            TsvTrv::default().shiny_type_gen6_plus(15),
             ShinyType::StarShiny
         );
         assert_eq!(
-            ShinyType::from_pid_tid_xor_sid_gen6_plus(16, 0),
+            TsvTrv::default().shiny_type_gen6_plus(16),
             ShinyType::NotShiny
         );
     }

@@ -3,7 +3,8 @@ import { Gen7Starter, Gen7UsumStarterPlan } from "~/rngTools";
 
 export type Gen7StarterTarget = {
   seed: number;
-  tsv: number;
+  tid: number;
+  sid: number;
   currentAdvance: number;
   starter: Gen7Starter;
 };

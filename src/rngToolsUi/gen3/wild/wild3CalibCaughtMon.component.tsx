@@ -1,3 +1,4 @@
+import { getSpeciesOptions } from "~/components/pkmFilter";
 import React from "react";
 import {
   FormRadioField,
@@ -98,7 +99,7 @@ export const Fields = ({
     <FormSelectField<FormState>
       name="wildSpecies"
       label="Species"
-      options={toOptions(speciesList)}
+      options={getSpeciesOptions(toOptions(speciesList))}
     />
   );
 

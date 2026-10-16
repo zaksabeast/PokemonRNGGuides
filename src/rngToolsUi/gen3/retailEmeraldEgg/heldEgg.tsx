@@ -18,6 +18,7 @@ import { getGen3SpeciesOptions, species } from "~/types/species";
 import {
   getPkmFilterInitialValues,
   pkmFilterSchema,
+  getSpeciesOptions,
 } from "~/components/pkmFilter";
 import { z } from "zod";
 import { useHeldEggState, useRegisteredTrainers } from "./state";
@@ -194,7 +195,7 @@ const Fields = ({ t }: FieldsProps) => {
         <FormSelectField<FormState>
           name="egg_species"
           label={t["Egg species"]}
-          options={getGen3SpeciesOptions().byName}
+          options={getSpeciesOptions(getGen3SpeciesOptions().byName)}
         />
         <FormSelectField<FormState>
           name="compatability"

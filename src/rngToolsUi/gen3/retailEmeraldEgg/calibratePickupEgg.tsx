@@ -1,3 +1,4 @@
+import { getSpeciesOptions } from "~/components/pkmFilter";
 import React from "react";
 import { Flex, ResultColumn, Typography } from "~/components";
 import {
@@ -69,7 +70,7 @@ const HeldEggSpeciesSelect = () => {
     <SelectField<Species>
       name="species"
       label={t["Species"]}
-      options={getGen3SpeciesOptions().byName}
+      options={getSpeciesOptions(getGen3SpeciesOptions().byName)}
       value={heldEgg.species}
       onChange={(value) => setHeldEgg((prev) => ({ ...prev, species: value }))}
     />

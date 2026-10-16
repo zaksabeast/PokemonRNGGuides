@@ -1,4 +1,4 @@
-import { Flex } from "~/components";
+import { Flex, PokemonName } from "~/components";
 import { Gender, Ivs, rngTools, Species, StatsValue } from "~/rngTools";
 import { nature_from_pid } from "~/types";
 import { minIvs } from "~/types/ivs";
@@ -46,7 +46,8 @@ export const PokemonInfo = ({
   return (
     <Flex vertical>
       <div>
-        {species}, Lvl {lvl}, {gender}, {abilityStr}, {nature}, HP {stats.hp},
+        <PokemonName species={species} />, Lvl {lvl}, {gender}, {abilityStr},{" "}
+        {nature}, HP {stats.hp},
         ATK {stats.atk}, DEF {stats.def}, SPA {stats.spa}, SPD {stats.spd}, SPE{" "}
         {stats.spe}
       </div>

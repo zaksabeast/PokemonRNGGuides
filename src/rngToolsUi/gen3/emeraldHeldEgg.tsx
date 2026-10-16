@@ -1,3 +1,4 @@
+import { getSpeciesOptions } from "~/components/pkmFilter";
 import React from "react";
 import { ResultColumn } from "~/components";
 import {
@@ -95,7 +96,7 @@ const Fields = () => {
         <FormSelectField<FormState>
           name="egg_species"
           label={t["Egg species"]}
-          options={getGen3SpeciesOptions().byName}
+          options={getSpeciesOptions(getGen3SpeciesOptions().byName)}
         />
         <FormSelectField<FormState>
           name="compatability"

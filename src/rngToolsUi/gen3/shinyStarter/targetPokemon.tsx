@@ -1,3 +1,4 @@
+import { getSpeciesOptions } from "~/components/pkmFilter";
 import React from "react";
 import {
   FormCard,
@@ -54,7 +55,7 @@ export const TargetPokemon = ({
           cellSize="word"
           value={species}
           onChange={setSpecies}
-          options={toOptions(starters)}
+          options={getSpeciesOptions(toOptions(starters))}
         />
         <FormSummary rows={[{ label: "Info", value: targetPokemonDesc }]} />
       </FormSection>

@@ -1,3 +1,4 @@
+import { getSpeciesOptions } from "~/components/pkmFilter";
 import React from "react";
 import {
   FormSection,
@@ -107,7 +108,9 @@ const Static3TargetSetupInputFields = ({
       <FormSelectField<FormState>
         name="species"
         label="Species"
-        options={toOptions(getPossibleStatic3Species("emerald"))}
+        options={getSpeciesOptions(
+          toOptions(getPossibleStatic3Species("emerald")),
+        )}
       />
       {hasMultiplePossibleRoaming && (
         <FormSwitchField<FormState> name="roaming" label="Roaming" />

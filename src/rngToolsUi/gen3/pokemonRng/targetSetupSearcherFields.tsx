@@ -4,6 +4,7 @@ import {
   FieldRow,
   FormNumberField,
   FormSwitchField,
+  FormSummary,
   FrameBeforePaintingField,
 } from "~/components/form";
 import { match } from "ts-pattern";
@@ -136,6 +137,12 @@ export const PaintingSetupFilterFields = ({
   );
 };
 
+const tidSidNotApplicableTooltip = (title: string) => ({
+  title,
+  description:
+    "The only impact of TID/SID is shininess and the target Pokemon is not shiny.",
+});
+
 type TidSidSetupFilterFieldsProps = {
   game: Static3Game;
   filter_shiny: ShinyFilter;
@@ -147,13 +154,33 @@ export const TidSidSetupFilterFields = ({
   filter_shiny,
   usingAceForSid,
 }: TidSidSetupFilterFieldsProps) => {
+  if (filter_shiny === "Any") {
+    return (
+      <FormSummary
+        rows={[
+          {
+            label: "TID",
+            value: "N/A",
+            tooltip: tidSidNotApplicableTooltip("TID"),
+          },
+          {
+            label: "SID",
+            value: "N/A",
+            tooltip: tidSidNotApplicableTooltip("SID"),
+            show: !usingAceForSid,
+          },
+        ]}
+      />
+    );
+  }
+
   const tidField = (
     <FormNumberField<FormState> name="tid" label="TID" numType="decimal" />
   );
 
   return (
     <>
-      {game === "emerald" && filter_shiny !== "Any" && (
+      {game === "emerald" && (
         <FormSwitchField<FormState>
           name="usingAceForSid"
           label="Using ACE to change SID?"
@@ -164,7 +191,7 @@ export const TidSidSetupFilterFields = ({
           }}
         />
       )}
-      {usingAceForSid && filter_shiny !== "Any" ? (
+      {usingAceForSid ? (
         tidField
       ) : (
         <FieldRow>

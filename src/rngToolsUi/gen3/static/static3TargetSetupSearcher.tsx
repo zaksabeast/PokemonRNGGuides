@@ -1,4 +1,4 @@
-import { type AceSidConfig, getSidResultingInShiny } from "~/rngTools/shiny";
+import { type AceSidConfig, getSidResultingInShiny } from "../pokemonRng/shared";
 import {
   Gen3StaticMethod,
   Species,

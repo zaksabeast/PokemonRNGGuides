@@ -3,18 +3,23 @@ import type { ShinyFilter, ShinyType } from "~/rngTools";
 
 export const shinyFilterOptions: { value: ShinyFilter; label: string }[] = [
   { value: "Any", label: "Any" },
-  { value: "AnyShiny", label: "Any shiny" },
+  { value: "AnyShiny", label: "Shiny (Star or Square)" },
   { value: "SquareShiny", label: "Square shiny" },
   { value: "StarShiny", label: "Star shiny" },
 ];
 
-export const shinyFilterOptionsGen3To6 = shinyFilterOptions.map((option) => ({
-  ...option,
-  label:
-    option.value === "SquareShiny" || option.value === "StarShiny"
-      ? `${option.label} (If transferred to Gen 8+)`
-      : option.label,
-}));
+export const shinyFilterOptionsGen3To6: {
+  value: ShinyFilter;
+  label: string;
+}[] = [
+  { value: "Any", label: "Any" },
+  {
+    value: "AnyShiny",
+    label: "Shiny (Star or Square if transferred to Gen 8+)",
+  },
+  { value: "SquareShiny", label: "Square shiny (If transferred to Gen 8+)" },
+  { value: "StarShiny", label: "Star shiny (If transferred to Gen 8+)" },
+];
 
 export const shinyFilterSchema = z.union([
   z.enum(["Any", "AnyShiny", "SquareShiny", "StarShiny"]),
@@ -25,14 +30,4 @@ export const shinyLabels: Record<ShinyType, string> = {
   NotShiny: "Not shiny",
   SquareShiny: "Square shiny",
   StarShiny: "Star shiny",
-};
-
-export type AceSidConfig = {
-  tid: number;
-  shiny: "SquareShiny" | "StarShiny";
-};
-
-export const getSidResultingInShiny = (pid: number, config: AceSidConfig): number => {
-  const xor = config.shiny === "SquareShiny" ? 0 : 1;
-  return ((pid >>> 16) ^ (pid & 0xffff) ^ config.tid ^ xor) & 0xffff;
 };

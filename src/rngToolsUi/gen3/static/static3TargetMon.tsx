@@ -80,6 +80,7 @@ export const Static3TargetMon = ({ game }: { game: Static3Game }) => {
         </Typography.Text>
       )}
       <PkmFilter<FormState>
+        generation={3}
         species={selectedSpecies}
         displayHiddenAbility={false}
       />

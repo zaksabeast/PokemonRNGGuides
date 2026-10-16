@@ -1,8 +1,5 @@
-use crate::ShinyType;
-use crate::ShinyFilter;
-use crate::TsvTrv;
 use super::*;
-use crate::{EncounterSlot, PokemonType};
+use crate::{EncounterSlot, PokemonType, ShinyFilter, ShinyType, TsvTrv};
 
 mod utils;
 use utils::{pid_paths_to_string, strs_to_string};

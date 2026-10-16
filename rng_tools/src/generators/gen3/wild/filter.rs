@@ -1,12 +1,9 @@
-use crate::ShinyType;
-use crate::ShinyFilter;
-use crate::TsvTrv;
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 use crate::{
-    AbilityType, GenderRatio, Nature, PkmFilter, Species,
+    AbilityType, GenderRatio, Nature, PkmFilter, ShinyFilter, ShinyType, Species, TsvTrv,
     gen3::{calculate_pid_speed, get_probability_that_random_pid_has_speed_range},
 };
 

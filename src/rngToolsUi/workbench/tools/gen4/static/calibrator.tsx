@@ -215,7 +215,7 @@ const FilterFields = () => {
   const encounter = getEncounter(game, encounter_id);
   const species = encounter.species;
 
-  const baseFields = getPkmStatFilterFields<FormState>({ species });
+  const baseFields = getPkmStatFilterFields<FormState>({ generation: 4, species });
 
   const fields: Field[] = [
     {

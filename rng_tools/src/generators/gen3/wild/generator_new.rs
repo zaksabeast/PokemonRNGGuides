@@ -1,5 +1,4 @@
 #![allow(non_snake_case)] // To have the same function names as pokeemerald decompil project.
-use crate::TsvTrv;
 use wasm_bindgen::prelude::*;
 
 use super::generator_main::{
@@ -12,7 +11,7 @@ use crate::gen3::wild::cycle_counter::CycleFrameCounter;
 use crate::{
     EncounterSlot, Gender, GenderRatio, Ivs, NATURE_COUNT, Nature,
     PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE, PERTINENT_SOLO_POKEBLOCKS_BY_NATURE,
-    POKEBLOCK_NATURE_STAT_FACTORS,
+    POKEBLOCK_NATURE_STAT_FACTORS, TsvTrv,
     gen3::{
         CycleAndModRange, CycleRange, Gen3Lead, Gen3Method, Moment, Wild3Action,
         Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData,

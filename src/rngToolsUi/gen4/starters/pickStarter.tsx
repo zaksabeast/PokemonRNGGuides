@@ -248,7 +248,10 @@ const Fields = ({ game, t }: FieldsProps) => {
       </FormSection>
 
       <FormSection title={t["Filters"]}>
-        <PkmFilter<FormState> species={watched.species ?? undefined} />
+        <PkmFilter<FormState>
+          generation={4}
+          species={watched.species ?? undefined}
+        />
       </FormSection>
 
       <FormSection title={t["Advanced"]}>

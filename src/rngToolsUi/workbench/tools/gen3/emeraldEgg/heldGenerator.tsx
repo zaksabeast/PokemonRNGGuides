@@ -86,6 +86,7 @@ const FilterFields = () => {
     names: { egg_species: true },
   });
   const filterFields = getPkmFilterIvFields({
+    generation: 3,
     displayIvs: false,
     displayHiddenPower: false,
     species: egg_species ?? undefined,

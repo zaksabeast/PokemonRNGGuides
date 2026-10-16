@@ -1,5 +1,6 @@
-use crate::ShinyType;
-use crate::{AbilityType, Characteristic, Gender, Ivs, Nature, PkmState, Species, gen3_shiny};
+use crate::{
+    AbilityType, Characteristic, Gender, Ivs, Nature, PkmState, ShinyType, Species, gen3_shiny,
+};
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;

@@ -1,7 +1,5 @@
 #[cfg(test)]
-use crate::ShinyFilter;
-#[cfg(test)]
-use crate::gen4::parse_pokefinder::PokefinderEgg4;
+use crate::{ShinyFilter, gen4::parse_pokefinder::PokefinderEgg4};
 use crate::{
     PartialIvs, PkmFilter, Species,
     gen4::{

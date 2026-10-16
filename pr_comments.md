@@ -61,9 +61,9 @@ Diff side: RIGHT
 
 Rename trainer_xor by tsv_trv.
 Create a new struct TsvTrv {
-   tid_xor_sid:u16
+tid_xor_sid:u16
 }.
-Add tsv_gen3_to_5(), tsv_gen6_more() and trv() functions to it.
+Add tsv_gen3_to_5(), tsv_gen6_plus() and trv() functions to it.
 from_tid_sid(tid, sid)
 
 Create PsvPrv too. from_pid(pid).
@@ -151,7 +151,7 @@ Remove the test.
 
 ```diff
 @@ -159,3 +159,22 @@ pub fn get_filter_restrictiveness(
- 
+
      prob
  }
 +
@@ -177,7 +177,7 @@ Remove
 @@ -197,6 +198,29 @@ mod tests {
          };
      }
- 
+
 +    #[test]
 +    fn shiny_subtype_filters_do_not_change_masuda_rerolls() {
 ```
@@ -200,13 +200,13 @@ Remove all gen6_tsv. Use tid_xor_sid instead.
 @@ -8,8 +8,8 @@ pub fn gen3_psv(pid: u32) -> u16 {
      (pidh ^ pidl) >> 3
  }
- 
+
 -pub fn gen3_shiny(pid: u32, tid: u16, sid: u16) -> bool {
 -    gen3_psv(pid) == gen3_tsv(tid, sid)
 +pub fn gen3_shiny(pid: u32, tid: u16, sid: u16) -> ShinyType {
 +    ShinyType::from_xor(((pid >> 16) as u16) ^ (pid as u16) ^ tid ^ sid, 8)
  }
- 
+
  pub fn gen6_tsv(tid: u16, sid: u16) -> u16 {
 ```
 

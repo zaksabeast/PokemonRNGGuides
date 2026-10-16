@@ -1,10 +1,7 @@
 #[cfg(test)]
-use crate::ShinyFilter;
-use crate::ShinyType;
-#[cfg(test)]
-use crate::gen4::parse_pokefinder::PokefinderEgg4;
+use crate::{ShinyFilter, gen4::parse_pokefinder::PokefinderEgg4};
 use crate::{
-    AbilityType, Gender, Nature, PkmFilter, Species, gen3_shiny,
+    AbilityType, Gender, Nature, PkmFilter, ShinyType, Species, gen3_shiny,
     rng::{Rng, lcrng::Arng, mt::MT, mt_fast::MtFast},
 };
 use serde::{Deserialize, Serialize};

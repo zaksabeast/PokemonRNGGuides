@@ -172,7 +172,7 @@ const Fields = () => {
       </FormSection>
 
       <FormSection title={t["Filters"]}>
-        <PkmFilter<FormState> species={species ?? undefined} />
+        <PkmFilter<FormState> generation={4} species={species ?? undefined} />
       </FormSection>
     </>
   );

@@ -1,5 +1,5 @@
 import { ShinyIcon } from "~/components/shiny";
-import { shinyFilterSchema, shinyFilterOptions } from "~/rngTools/shiny";
+import { shinyFilterSchema, shinyFilterOptionsGen3To6 } from "~/rngTools/shiny";
 import React from "react";
 import { ResultColumn } from "~/components";
 import {
@@ -151,7 +151,7 @@ const Fields = () => {
         <FormSelectField<FormState>
           name="filter_shiny"
           label={t["Shiny"]}
-          options={shinyFilterOptions}
+          options={shinyFilterOptionsGen3To6}
         />
       </FormSection>
 

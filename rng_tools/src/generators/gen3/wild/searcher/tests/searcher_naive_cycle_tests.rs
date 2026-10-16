@@ -1,7 +1,6 @@
-use crate::ShinyType;
 use crate::{
-    AbilityType, EncounterSlot, Gender, HiddenPower, Ivs, Nature, PkmFilter, PokemonType, Species,
-    assert_list_eq,
+    AbilityType, EncounterSlot, Gender, HiddenPower, Ivs, Nature, PkmFilter, PokemonType,
+    ShinyType, Species, assert_list_eq,
     gen3::{
         CycleRange, Gen3Lead, Gen3Method, Wild3EncounterIndex, Wild3SearcherCycleData,
         Wild3SearcherCycleDataByLead, Wild3SearcherOptions, Wild3SearcherResultMon,

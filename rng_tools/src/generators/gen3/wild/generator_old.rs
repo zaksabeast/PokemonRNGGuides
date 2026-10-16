@@ -1,4 +1,3 @@
-use crate::TsvTrv;
 use super::generator_main::{
     INFINITE_CYCLE, VBLANK_FREQ, Wild3GeneratorMonResult, Wild3GeneratorOptions,
     Wild3GeneratorResults,
@@ -7,7 +6,7 @@ use super::{calc_modulo_cycle_signed, calc_modulo_cycle_unsigned, is_method_poss
 use crate::{
     EncounterSlot, Gender, GenderRatio, Ivs, NATURE_COUNT, Nature,
     PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE, PERTINENT_SOLO_POKEBLOCKS_BY_NATURE,
-    POKEBLOCK_NATURE_STAT_FACTORS,
+    POKEBLOCK_NATURE_STAT_FACTORS, TsvTrv,
     gen3::{
         CycleAndModRange, CycleCounter, CycleRange, Gen3Lead, Gen3Method, Moment, Wild3Action,
         Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData,

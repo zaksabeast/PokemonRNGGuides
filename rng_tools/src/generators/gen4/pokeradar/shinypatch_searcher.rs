@@ -1,5 +1,3 @@
-#[cfg(test)]
-use crate::ShinyType;
 use super::simulate::pokeradar4_simulate_advance;
 use super::types::{BattleResult, PokeRadar4AdvanceOpts, ShakeType};
 use crate::gen4::stationary::BaseStatic4State;
@@ -43,7 +41,7 @@ mod tests {
     use super::*;
     use crate::gen4::LeadAbility;
     use crate::gen4::stationary::BaseStatic4State;
-    use crate::{AbilityType, Characteristic, Gender, Ivs, Nature};
+    use crate::{AbilityType, Characteristic, Gender, Ivs, Nature, ShinyType};
 
     fn dummy_state(seed: u32, advance: usize) -> BaseStatic4State {
         BaseStatic4State {

@@ -1,4 +1,3 @@
-use crate::TsvTrv;
 use std::hint::black_box;
 
 use arrayvec::ArrayVec;
@@ -6,7 +5,7 @@ use itertools::Itertools;
 
 use super::*;
 use crate::{
-    GenderRatio, Species,
+    GenderRatio, Species, TsvTrv,
     gen3::{
         SpeciesData, Wild3InSafariMapStatus, create_pokeblock_gen_opt,
         find_pid_paths_reverse_pid_cycle_speed_low_high,

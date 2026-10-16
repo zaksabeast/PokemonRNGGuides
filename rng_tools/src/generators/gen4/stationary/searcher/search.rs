@@ -1,5 +1,3 @@
-#[cfg(test)]
-use crate::ShinyType;
 use super::base_state::{BaseStatic4State, Static4State};
 use super::method1::get_method1_states;
 use super::methodjk::{GateOnCheck1, get_methodjk_states, get_methodjk_sync_state};
@@ -95,7 +93,7 @@ mod tests {
     use super::*;
     use crate::gen4::LeadAbility;
     use crate::gen4::seed_time::calc_seed;
-    use crate::{AbilityType, Characteristic, Gender, Nature, PkmFilter, Species};
+    use crate::{AbilityType, Characteristic, Gender, Nature, PkmFilter, ShinyType, Species};
 
     fn parse_honey_states(lead: LeadAbility, str: &str) -> Vec<BaseStatic4State> {
         let mut results: Vec<BaseStatic4State> = Vec::new();

@@ -1,6 +1,5 @@
-use crate::ShinyType;
 use crate::{
-    AbilityType, Characteristic, Gender, Ivs, Nature, PkmState, Species, gen3_shiny,
+    AbilityType, Characteristic, Gender, Ivs, Nature, PkmState, ShinyType, Species, gen3_shiny,
     gen4::{LeadAbility, seed_time::SeedTime4},
 };
 use serde::{Deserialize, Serialize};

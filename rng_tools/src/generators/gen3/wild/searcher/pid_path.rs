@@ -1,9 +1,8 @@
-use crate::TsvTrv;
 use arrayvec::ArrayVec;
 use itertools::Itertools;
 
 use crate::{
-    GenderRatio, Ivs, Nature, PkmFilter,
+    GenderRatio, Ivs, Nature, PkmFilter, TsvTrv,
     gen3::{
         FASTEST_DIVIDENDS_MOD_24, FASTEST_DIVIDENDS_MOD_24_RANGE, Gen3Method, Gen3PidSpeedFilter,
         Gen3PkmFilter, SLOWEST_DIVIDENDS_MOD_24, SLOWEST_DIVIDENDS_MOD_24_RANGE,

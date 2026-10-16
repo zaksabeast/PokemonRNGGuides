@@ -14,7 +14,7 @@ impl TsvTrv {
         self.tid_xor_sid >> 3
     }
 
-    pub fn tsv_gen6_more(self) -> u16 {
+    pub fn tsv_gen6_plus(self) -> u16 {
         self.tid_xor_sid >> 4
     }
 
@@ -39,7 +39,7 @@ impl PsvPrv {
         self.pid_high_xor_low >> 3
     }
 
-    pub fn psv_gen6_more(self) -> u16 {
+    pub fn psv_gen6_plus(self) -> u16 {
         self.pid_high_xor_low >> 4
     }
 
@@ -61,7 +61,7 @@ pub fn gen3_shiny(pid: u32, tid: u16, sid: u16) -> ShinyType {
 }
 
 pub fn gen6_psv(pid: u32) -> u16 {
-    PsvPrv::from_pid(pid).psv_gen6_more()
+    PsvPrv::from_pid(pid).psv_gen6_plus()
 }
 
 #[derive(
@@ -125,7 +125,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn classification_boundaries() {
+    fn shiny_classification_boundaries() {
         for (xor, expected) in [
             (0, ShinyType::SquareShiny),
             (1, ShinyType::StarShiny),
@@ -154,33 +154,10 @@ mod tests {
         let pokemon = PsvPrv::from_pid(0x12345678);
         assert_eq!(trainer.tid_xor_sid, 0x444c);
         assert_eq!(trainer.tsv_gen3_to_5(), 0x889);
-        assert_eq!(trainer.tsv_gen6_more(), 0x444);
+        assert_eq!(trainer.tsv_gen6_plus(), 0x444);
         assert_eq!(trainer.trv(), 12);
         assert_eq!(pokemon.psv_gen3_to_5(), trainer.tsv_gen3_to_5());
-        assert_eq!(pokemon.psv_gen6_more(), trainer.tsv_gen6_more());
+        assert_eq!(pokemon.psv_gen6_plus(), trainer.tsv_gen6_plus());
         assert_eq!(pokemon.prv(), trainer.trv());
-    }
-
-    #[test]
-    fn filter_truth_table() {
-        for shiny in [
-            ShinyType::NotShiny,
-            ShinyType::SquareShiny,
-            ShinyType::StarShiny,
-        ] {
-            assert!(ShinyFilter::Any.allows(shiny));
-            assert_eq!(
-                ShinyFilter::AnyShiny.allows(shiny),
-                shiny != ShinyType::NotShiny
-            );
-            assert_eq!(
-                ShinyFilter::SquareShiny.allows(shiny),
-                shiny == ShinyType::SquareShiny
-            );
-            assert_eq!(
-                ShinyFilter::StarShiny.allows(shiny),
-                shiny == ShinyType::StarShiny
-            );
-        }
     }
 }

@@ -1,5 +1,3 @@
-#[cfg(test)]
-use crate::ShinyType;
 mod opts;
 mod pid_strategy;
 mod state;
@@ -129,7 +127,7 @@ pub fn generate_static4_radar_shiny_states(opts: &Gen4StaticOpts) -> Vec<Gen4Sta
 mod test {
     use super::*;
     use crate::{
-        AbilityType, Characteristic, Gender, Ivs, Nature, PkmFilter, Species, assert_list_eq,
+        AbilityType, Characteristic, Gender, Ivs, Nature, PkmFilter, ShinyType, Species, assert_list_eq,
     };
 
     const CHATOT: usize = 2;

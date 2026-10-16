@@ -148,7 +148,10 @@ const Fields = () => {
       </FormSection>
 
       <FormSection title={t["Filters"]}>
-        <PkmFilter<FormState> species="Rowlet" displayAbility={false} />
+        <PkmFilter<FormState>
+          generation={7}
+          species="Rowlet" displayAbility={false}
+        />
       </FormSection>
     </>
   );

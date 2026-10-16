@@ -290,7 +290,7 @@ const Fields = ({ game, encountersByGame }: FieldsProps) => {
       </FormSection>
 
       <FormSection title={t["Filters"]}>
-        <PkmFilter<FormState> species={encounter?.species} />
+        <PkmFilter<FormState> generation={4} species={encounter?.species} />
       </FormSection>
 
       <FormSection title={t["Advanced"]}>

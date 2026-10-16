@@ -8,6 +8,14 @@ export const shinyFilterOptions: { value: ShinyFilter; label: string }[] = [
   { value: "StarShiny", label: "Star shiny" },
 ];
 
+export const shinyFilterOptionsGen3To6 = shinyFilterOptions.map((option) => ({
+  ...option,
+  label:
+    option.value === "SquareShiny" || option.value === "StarShiny"
+      ? `${option.label} (If transferred to Gen 8+)`
+      : option.label,
+}));
+
 export const shinyFilterSchema = z.union([
   z.enum(["Any", "AnyShiny", "SquareShiny", "StarShiny"]),
   z.boolean().transform((value): ShinyFilter => (value ? "AnyShiny" : "Any")),

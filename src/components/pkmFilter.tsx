@@ -1,4 +1,8 @@
-import { shinyFilterSchema, shinyFilterOptions } from "~/rngTools/shiny";
+import {
+  shinyFilterSchema,
+  shinyFilterOptions,
+  shinyFilterOptionsGen3To6,
+} from "~/rngTools/shiny";
 import { FormikSelect } from "~/components/select";
 import * as tst from "ts-toolbelt";
 import type {
@@ -219,6 +223,7 @@ export const pkmFilterFieldsToRustInput = (
 };
 
 export type PkmFilterProps = {
+  generation: number;
   displayShiny?: boolean;
   displayNature?: boolean;
   displayAbility?: boolean;
@@ -251,7 +256,7 @@ type PkmFilterId =
 type PkmFilterField = tst.O.Merge<Field, { id: PkmFilterId }>;
 
 const _getPkmFilterFields = (
-  props: PkmFilterProps = {},
+  props: PkmFilterProps,
   t?: Translations,
 ): PkmFilterField[] =>
   [
@@ -261,7 +266,11 @@ const _getPkmFilterFields = (
       input: (
         <FormikSelect<PkmFilterFields, "filter_shiny">
           name="filter_shiny"
-          options={shinyFilterOptions}
+          options={
+            props.generation >= 3 && props.generation <= 6
+              ? shinyFilterOptionsGen3To6
+              : shinyFilterOptions
+          }
         />
       ),
     }),
@@ -322,7 +331,7 @@ const _getPkmFilterFields = (
   ].filter((field) => field !== null);
 
 export const getPkmFilterFields = <FormField,>(
-  props?: PkmFilterProps,
+  props: PkmFilterProps,
   t?: Translations,
 ): FormField extends PkmFilterFields ? PkmFilterField[] : never => {
   return _getPkmFilterFields(props, t) as FormField extends PkmFilterFields

@@ -173,6 +173,7 @@ const Fields = ({ t, translatedTrainers, eggSpecies }: FieldProps) => {
         <FormSection title={t["Hatched Egg"]}>
           <NatureField<FormState> name="nature" />
           <PkmFilter<FormState>
+            generation={3}
             species={eggSpecies}
             displayHiddenAbility={false}
             displayHiddenPower={false}

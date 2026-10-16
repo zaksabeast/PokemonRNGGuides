@@ -224,6 +224,7 @@ const Fields = ({ t }: FieldsProps) => {
 
       <FormSection title={t["Filters"]}>
         <PkmFilter<FormState>
+          generation={3}
           displayIvs={false}
           displayHiddenPower={false}
           species={egg_species ?? undefined}

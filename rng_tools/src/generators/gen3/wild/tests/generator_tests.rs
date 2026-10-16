@@ -1,6 +1,5 @@
-use crate::ShinyFilter;
 use crate::{
-    AbilityType, EncounterSlot, Gender, Ivs, Nature, PkmFilter, Species,
+    AbilityType, EncounterSlot, Gender, Ivs, Nature, PkmFilter, ShinyFilter, Species,
     gen3::{
         Gen3Lead, Gen3Method, Gen3PkmFilter, Wild3Action, Wild3EncounterGameData,
         Wild3EncounterIndex, Wild3FeebasState, Wild3GeneratorMonResult, Wild3GeneratorOptions,

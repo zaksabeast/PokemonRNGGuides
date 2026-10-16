@@ -136,6 +136,7 @@ const Fields = () => {
 
       <FormSection title={t["Filters"]}>
         <PkmFilter<FormState>
+          generation={6}
           displayIvs
           displayAbility={false}
           displayGender={false}

@@ -1,7 +1,7 @@
-use crate::ShinyFilter;
 use itertools::Itertools;
 
 use crate::{
+    ShinyFilter,
     gen3::{
         FASTEST_DIVIDENDS_MOD_24, MOST_DENSE_PID_CHUNKS_BY_SPD, get_iv_filter_restrictiveness,
         get_iv1_filter_restrictiveness, get_iv2_filter_restrictiveness,

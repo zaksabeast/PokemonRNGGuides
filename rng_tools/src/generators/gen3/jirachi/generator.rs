@@ -1,6 +1,5 @@
-use crate::ShinyType;
 use crate::{
-    AbilityType, Gender, Ivs, Nature, PkmState, gen3_shiny,
+    AbilityType, Gender, Ivs, Nature, PkmState, ShinyType, gen3_shiny,
     rng::{Rng, lcrng::Pokerng},
 };
 use serde::{Deserialize, Serialize};

@@ -1,5 +1,3 @@
-use crate::TsvTrv;
-use crate::ShinyType;
 use crate::gen3::searcher_reverse::{METHOD_1, METHOD_4};
 use crate::gen3::{
     FindPidPathsOptions, Gen3Method, Gen3PkmFilter, PidPath, PidPathStrategy,
@@ -11,7 +9,8 @@ use crate::gen3::{
 use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
 use crate::{
-    AbilityType, Gender, HiddenPower, Ivs, Nature, PkmFilter, Species, gen3_shiny,
+    AbilityType, Gender, HiddenPower, Ivs, Nature, PkmFilter, ShinyType, Species, TsvTrv,
+    gen3_shiny,
 };
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;

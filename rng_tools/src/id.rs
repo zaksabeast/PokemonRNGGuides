@@ -40,7 +40,7 @@ impl IdFilter {
     }
 
     pub fn filter_gen6(&self, tid: u16, sid: u16) -> bool {
-        let tsv = TsvTrv::from_tid_sid(tid, sid).tsv_gen6_more();
+        let tsv = TsvTrv::from_tid_sid(tid, sid).tsv_gen6_plus();
         match self {
             IdFilter::Tid(self_tid) => tid == *self_tid,
             IdFilter::Sid(self_sid) => sid == *self_sid,

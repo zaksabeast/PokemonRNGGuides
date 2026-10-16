@@ -1,8 +1,7 @@
-use crate::{ShinyType, ShinyFilter};
 use crate::Nature;
 use crate::rng::lcrng::Pokerng;
 use crate::rng::{Rng, StateIterator};
-use crate::{AbilityType, Gender, Species, gen3_shiny};
+use crate::{AbilityType, Gender, ShinyFilter, ShinyType, Species, gen3_shiny};
 use num_enum::FromPrimitive;
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;

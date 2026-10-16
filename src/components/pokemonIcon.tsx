@@ -25,7 +25,9 @@ export const PokemonIcon = ({
   className,
 }: PokemonIconProps) => {
   const location = pokemonIconManifest[species];
-  if (location == null) return null;
+  if (location == null) {
+    return null;
+  }
   const sheet = pokemonIconSheets[location.sheet];
   const scale = size / 64;
   return (

@@ -10738,7 +10738,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-10-12",
+      lastUpdated: "2026-10-16",
       type: "baseGuide",
       canonical: "/retail-usum-starter/",
       file: "guides/Gen 7/Starters.mdx",

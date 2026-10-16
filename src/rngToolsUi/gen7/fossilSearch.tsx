@@ -14,7 +14,7 @@ import {
 } from "~/components/form";
 import {
   Ability,
-  Gen7UsumFossilSearchOpts,
+  Gen7UsumGiftSearchOpts,
   multiWorkerRngTools,
   rngTools,
 } from "~/rngTools";
@@ -221,7 +221,7 @@ export const Gen7FossilSearch = () => {
     data: results,
     progressPercent,
     cancel,
-  } = useBatchedTool(multiWorkerRngTools.gen7_search_usum_fossils, {
+  } = useBatchedTool(multiWorkerRngTools.gen7_search_usum_gifts, {
     map: mapGiftResult,
     sortBy: [
       (result) => result.advance,
@@ -292,7 +292,8 @@ export const Gen7FossilSearch = () => {
         ([
           first_target_advance,
           last_target_advance,
-        ]): RustOption<Gen7UsumFossilSearchOpts> => ({
+        ]): RustOption<Gen7UsumGiftSearchOpts> => ({
+          method: "Fossil",
           seed: opts.seed,
           tsv: opts.tsv,
           sync_nature: getSyncNature(opts.lead_idx) ?? undefined,

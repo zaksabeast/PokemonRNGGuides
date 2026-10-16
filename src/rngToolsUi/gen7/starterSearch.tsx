@@ -9,7 +9,7 @@ import {
   ToolForm,
   type ToolFormSubmit,
 } from "~/components/form";
-import { Gen7UsumStarterSearchOpts, multiWorkerRngTools } from "~/rngTools";
+import { Gen7UsumGiftSearchOpts, multiWorkerRngTools } from "~/rngTools";
 import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
@@ -98,7 +98,7 @@ export const Gen7StarterSearch = () => {
     data: results,
     progressPercent,
     cancel,
-  } = useBatchedTool(multiWorkerRngTools.gen7_search_usum_starters, {
+  } = useBatchedTool(multiWorkerRngTools.gen7_search_usum_gifts, {
     map: mapGiftResult,
     sortBy: [
       (result) => result.advance,
@@ -132,9 +132,12 @@ export const Gen7StarterSearch = () => {
         ([
           first_target_advance,
           last_target_advance,
-        ]): RustOption<Gen7UsumStarterSearchOpts> => ({
+        ]): RustOption<Gen7UsumGiftSearchOpts> => ({
+          method: "Starter",
           seed: opts.seed,
           tsv: opts.tsv,
+          // Starters can't be synchronized.
+          sync_nature: null,
           current_advance: opts.current_advance,
           first_target_advance,
           last_target_advance,

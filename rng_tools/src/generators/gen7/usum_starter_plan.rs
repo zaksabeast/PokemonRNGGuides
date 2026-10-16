@@ -178,8 +178,8 @@ mod test {
     use crate::PkmFilter;
     use crate::gen7::test_utils::step_to_advance;
     use crate::gen7::{
-        Gen7Gift, Gen7UsumStarterSearchOpts, MAX_SAFE_SCAN, gen7_search_usum_starters,
-        generate_gift, next_safe_advances,
+        Gen7Gift, Gen7UsumGiftMethod, Gen7UsumGiftSearchOpts, MAX_SAFE_SCAN,
+        gen7_search_usum_gifts, generate_gift, next_safe_advances,
     };
 
     const SEED: u32 = 0x58507f4f;
@@ -316,9 +316,11 @@ mod test {
     #[test]
     fn presses_reach_searched_targets() {
         let first_target_advance = SAFE_ADVANCE + 2500;
-        let targets = gen7_search_usum_starters(Gen7UsumStarterSearchOpts {
+        let targets = gen7_search_usum_gifts(Gen7UsumGiftSearchOpts {
+            method: Gen7UsumGiftMethod::Starter,
             seed: SEED,
             tsv: 0,
+            sync_nature: None,
             current_advance: SAFE_ADVANCE,
             first_target_advance,
             last_target_advance: first_target_advance + 200,

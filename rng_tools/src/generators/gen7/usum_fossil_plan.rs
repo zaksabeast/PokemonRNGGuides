@@ -174,8 +174,8 @@ mod test {
     use super::*;
     use crate::gen7::test_utils::step_to_advance;
     use crate::gen7::{
-        Gen7Gift, Gen7UsumFossilSearchOpts, MAX_SAFE_SCAN, gen7_search_usum_fossils, generate_gift,
-        next_safe_advances,
+        Gen7Gift, Gen7UsumGiftMethod, Gen7UsumGiftSearchOpts, MAX_SAFE_SCAN,
+        gen7_search_usum_gifts, generate_gift, next_safe_advances,
     };
     use crate::{Gender, Ivs, Nature, PkmFilter};
 
@@ -184,7 +184,8 @@ mod test {
     const SYNC_NATURE: Option<Nature> = Some(Nature::Adamant);
 
     fn searched_targets(first_target_advance: usize) -> Vec<Gen7Gift> {
-        gen7_search_usum_fossils(Gen7UsumFossilSearchOpts {
+        gen7_search_usum_gifts(Gen7UsumGiftSearchOpts {
+            method: Gen7UsumGiftMethod::Fossil,
             seed: SEED,
             tsv: 0,
             sync_nature: SYNC_NATURE,

@@ -1,6 +1,7 @@
+use super::usum_gift_search::UsumGift;
 use super::{GiftSettings, Timeline, model_count_from_npcs};
-use crate::GenderRatio;
 use crate::rng::{GetRand, Rng};
+use crate::{GenderRatio, Nature};
 use std::ops::RangeInclusive;
 
 /// Kukui's dialogue before "choose this starter?" ("Go on and choose the one
@@ -37,6 +38,42 @@ pub(super) const STARTER_GIFT: GiftSettings = GiftSettings {
     // Starters can't be synchronized.
     sync_nature: None,
 };
+
+/// The starter scene starts when Yes is pressed.
+pub(super) struct UsumStarter;
+
+/// Kukui's dialogue, then the Yes/No screen.
+pub(super) const MIN_ADVANCES_TO_YES: usize = KUKUI_DIALOGUE_MODELS
+    * STEPS_FROM_KUKUI_A_TO_YES_NO as usize
+    + MIN_STEPS_FROM_YES_NO_TO_YES as usize;
+
+impl UsumGift for UsumStarter {
+    const MODELS: usize = KUKUI_DIALOGUE_MODELS;
+    const MIN_START_ADVANCE: usize = 478;
+    const MIN_ADVANCES_TO_START: usize = MIN_ADVANCES_TO_YES;
+    const MIN_ADVANCES_AFTER_START: usize = 0;
+    const MAX_ADVANCES_AFTER_START: usize = MAX_ADVANCES_AFTER_YES;
+
+    fn after_start_timeline(yes_no: Timeline) -> Timeline {
+        after_yes_timeline(yes_no)
+    }
+
+    fn skip_to_first_a_press(after_yes: &mut Timeline) {
+        skip_to_first_starter_a_press(after_yes);
+    }
+
+    fn can_press_a(after_yes: &Timeline, last_advance: usize) -> bool {
+        can_press_a_on_starter(after_yes, last_advance)
+    }
+
+    fn step_to_next_a_press(after_yes: &mut Timeline) {
+        after_yes.step();
+    }
+
+    fn settings(_sync_nature: Option<Nature>) -> GiftSettings {
+        STARTER_GIFT
+    }
+}
 
 pub(super) fn kukui_timeline(seed: u32, safe_advance: usize) -> Timeline {
     Timeline::new(seed, KUKUI_DIALOGUE_MODELS, safe_advance)

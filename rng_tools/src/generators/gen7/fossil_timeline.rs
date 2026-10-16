@@ -1,7 +1,8 @@
 use super::npc_model::{BLINK_STEPS, LONG_COOLDOWN_STEPS};
+use super::usum_gift_search::UsumGift;
 use super::{GiftSettings, Timeline, model_count_from_npcs};
-use crate::GenderRatio;
 use crate::rng::{GetRand, Rng};
+use crate::{GenderRatio, Nature};
 
 /// The dialogue "I turned that Fossil of yours right back into the Pokemon it
 /// used to be!" has the player and 1 NPC. A on the next dialogue ("This here
@@ -32,6 +33,43 @@ pub(super) const FOSSIL_GIFT: GiftSettings = GiftSettings {
     gender_ratio: GenderRatio::OneToSeven,
     sync_nature: None,
 };
+
+/// Safe advances are at or after the current advance, and the models start
+/// idle there, so each uses an advance on the first next advance step. Blinks
+/// can skip the rest, but the A press on the dialogue still waits for a new
+/// advance after the next advances.
+pub(super) const MIN_ADVANCES_TO_DIALOGUE_A: usize = FOSSIL_DIALOGUE_MODELS + 1;
+
+/// The fossil scene starts when A is pressed on the dialogue.
+pub(super) struct UsumFossil;
+
+impl UsumGift for UsumFossil {
+    const MODELS: usize = FOSSIL_DIALOGUE_MODELS;
+    const MIN_ADVANCES_TO_START: usize = MIN_ADVANCES_TO_DIALOGUE_A;
+    const MIN_ADVANCES_AFTER_START: usize = MIN_ADVANCES_AFTER_DIALOGUE_A;
+    const MAX_ADVANCES_AFTER_START: usize = MAX_ADVANCES_AFTER_DIALOGUE_A;
+
+    fn after_start_timeline(dialogue: Timeline) -> Timeline {
+        after_dialogue_a_timeline(dialogue)
+    }
+
+    fn skip_to_first_a_press(after_dialogue_a: &mut Timeline) {
+        skip_to_first_fossil_a_press(after_dialogue_a);
+    }
+
+    fn can_press_a(after_dialogue_a: &Timeline, last_advance: usize) -> bool {
+        can_press_a_on_fossil(after_dialogue_a, last_advance)
+    }
+
+    /// The user presses A when an advance first shows up.
+    fn step_to_next_a_press(after_dialogue_a: &mut Timeline) {
+        after_dialogue_a.step_to_next_advance();
+    }
+
+    fn settings(sync_nature: Option<Nature>) -> GiftSettings {
+        FOSSIL_GIFT.with_sync_nature(sync_nature)
+    }
+}
 
 pub(super) fn fossil_dialogue_timeline(seed: u32, safe_advance: usize) -> Timeline {
     Timeline::new(seed, FOSSIL_DIALOGUE_MODELS, safe_advance)
@@ -67,7 +105,6 @@ pub(super) fn can_press_a_on_fossil<R: Rng + GetRand<u64>>(
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::Nature;
     use crate::gen7::test_utils::{BLINK, NO_BLINK};
     use crate::gen7::{NpcModel, generate_gift};
     use crate::test_utils::FakeRng;

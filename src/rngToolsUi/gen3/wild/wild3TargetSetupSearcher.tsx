@@ -1,6 +1,9 @@
-import type { ShinyType } from "~/rngTools";
 import type { AceSidConfig } from "../pokemonRng/shared";
-import { Wild3PaintingAdvsAndDur, Wild3SearcherResultMon } from "~/rngTools";
+import {
+  type ShinyType,
+  Wild3PaintingAdvsAndDur,
+  Wild3SearcherResultMon,
+} from "~/rngTools";
 import { Flex, Icon, Link, ResultColumn, TooltipWithIcon } from "~/components";
 import { ToolForm, type ToolFormSubmit } from "~/components/form";
 import { formatProbability } from "~/utils/formatProbability";

@@ -1,5 +1,4 @@
 import { ShinyIcon } from "~/components/shiny";
-import type { ShinyType } from "~/rngTools";
 import { uniqueId } from "lodash-es";
 import {
   ResultColumn,
@@ -16,6 +15,7 @@ import {
 import { FormikProfileSelect } from "~/rngToolsUi/workbench/components/formikProfileSelect";
 import { useWatch } from "~/hooks/form";
 import {
+  type ShinyType,
   Nature,
   Characteristic,
   Gen4StaticOpts,

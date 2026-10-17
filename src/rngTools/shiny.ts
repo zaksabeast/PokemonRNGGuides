@@ -16,8 +16,8 @@ export const shinyFilterSchema = z.union([
   z.boolean().transform((value): ShinyFilter => (value ? "AnyShiny" : "Any")),
 ]);
 
-export const shinyLabels: Record<ShinyType, string> = {
+export const shinyLabels = {
   NotShiny: "Not shiny",
   SquareShiny: "Square shiny",
   StarShiny: "Star shiny",
-} as const;
+} as const satisfies Record<ShinyType, string>;

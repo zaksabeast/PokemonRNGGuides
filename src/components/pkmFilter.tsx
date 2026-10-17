@@ -3,7 +3,6 @@ import styled from "@emotion/styled";
 import type {
   AbilityType,
   Gender,
-  HiddenPowerFilter,
   Ivs,
   Nature,
   PkmFilter,
@@ -206,7 +205,7 @@ export type PkmFilterFields = {
   filter_min_ivs: Ivs;
   filter_max_ivs: Ivs;
   filter_ability: AbilityType | null;
-  filter_hidden_power: HiddenPowerFilter;
+  filter_hidden_power: z.infer<typeof HiddenPowerSchema>;
 };
 
 export const pkmFilterSchema = z.object({

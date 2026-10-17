@@ -20,7 +20,11 @@ pub struct IvPath {
 impl IvPath {
     pub fn ivs(&self) -> Ivs {
         let mut rng = Pokerng::new(self.seed);
-        Ivs::new_g3(rng.rand::<u16>(), rng.rand::<u16>())
+        let iv1 = rng.rand::<u16>();
+        if self.iv_arc == IvFromStartArc::WithVBlank {
+            rng.advance(1);
+        }
+        Ivs::new_g3(iv1, rng.rand::<u16>())
     }
 }
 

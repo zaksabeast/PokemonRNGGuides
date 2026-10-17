@@ -1,4 +1,4 @@
-import { pokemonTypes } from "../types/pokemonTypes";
+import { hiddenPowerTypeOptions } from "../types/pokemonTypes";
 import { HiddenPowerFilter } from "~/rngTools";
 import {
   FormikNumberInput,
@@ -6,11 +6,8 @@ import {
   FormFieldTable,
   FormikSwitch,
 } from "~/components";
-import { toOptions } from "~/utils/options";
 import { useField } from "~/hooks/form";
 import { Paths } from "~/types";
-
-const HIDDEN_POWER_TYPES = pokemonTypes.filter((type) => type !== "Normal");
 
 type HiddenPowerFields = {
   filter_hidden_power: HiddenPowerFilter;
@@ -30,7 +27,7 @@ export const HiddenPowerInput = <FormState extends HiddenPowerFields>(
       input: (
         <FormikSelect<HiddenPowerFields, "filter_hidden_power.pokemon_types">
           name="filter_hidden_power.pokemon_types"
-          options={toOptions(HIDDEN_POWER_TYPES)}
+          options={hiddenPowerTypeOptions}
           mode="multiple"
         />
       ),

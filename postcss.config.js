@@ -7,7 +7,13 @@ export default {
 
       // 👇 this is the important part
       safelist: {
-        standard: ["data-theme", /data-theme="dark"/, /\[data-theme="dark"\]/],
+        standard: [
+          "data-theme",
+          /data-theme="dark"/,
+          /\[data-theme="dark"\]/,
+          // lite-youtube-embed adds these classes at runtime
+          /^lyt-/,
+        ],
       },
     }),
   ],

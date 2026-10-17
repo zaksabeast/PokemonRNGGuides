@@ -144,6 +144,10 @@ export default defineConfig({
       },
     }),
   ],
+  css: {
+    // postcss.config.js purges against the prerendered dist HTML, so it only runs in minimize-css
+    postcss: {},
+  },
   build: {
     // Minimum browsers that support top-level await (required for WASM)
     target: ["chrome89", "edge89", "firefox89", "safari15"],

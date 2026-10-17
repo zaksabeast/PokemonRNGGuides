@@ -1,3 +1,10 @@
+/*
+Builds generation-based Pokemon icon tilesets and the species-to-icon manifest
+from the 64x64 PNGs in src/assets/pokemon/source and Rust species IDs.
+Run `bun run scripts/build-pokemon-icons.ts` after changing source icons or
+species IDs. Requires ImageMagick (magick) on PATH.
+*/
+
 import fs from "node:fs/promises";
 import { spawn } from "bun";
 import { toNativeAbsolute } from "./path";

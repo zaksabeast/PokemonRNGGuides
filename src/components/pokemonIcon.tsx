@@ -18,7 +18,6 @@ const Sprite = styled.span({
   backgroundRepeat: "no-repeat",
 });
 
-// Decorative: callers displaying the icon alone must provide an accessible name.
 export const PokemonIcon = ({
   species,
   size = 32,

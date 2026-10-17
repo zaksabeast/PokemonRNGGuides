@@ -8,7 +8,7 @@ import { SwitchGroup } from "~/components/form/base/switchGroup";
 import { FormSelectField } from "~/components/form/base/selectField";
 import {
   shinyFilterOptions,
-  shinyFilterOptionsGen3To6,
+  shinyFilterGen3To7Tooltip,
 } from "~/rngTools/shiny";
 import { AbilityFilterField } from "./abilityField";
 import { GenderFilterField } from "./genderField";
@@ -60,11 +60,15 @@ export const PkmFilter = <FormState extends GenericForm>({
         <FormSelectField<PkmFilterValues>
           name="filter_shiny"
           label={t["Shiny"]}
-          options={
-            generation >= 3 && generation <= 6
-              ? shinyFilterOptionsGen3To6
-              : shinyFilterOptions
+          tooltip={
+            generation >= 3 && generation <= 7
+              ? {
+                  title: t["Shiny"],
+                  description: shinyFilterGen3To7Tooltip,
+                }
+              : undefined
           }
+          options={shinyFilterOptions}
         />
       )}
       {displayHiddenPower && (

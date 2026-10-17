@@ -58,9 +58,7 @@ export const StarterTags = ({ starter }: { starter: Gen7Starter | null }) => {
       <Tag>{starter == null ? PLACEHOLDER : starter.gender}</Tag>
       <Tag>{starter == null ? PLACEHOLDER : formatIvs(starter)}</Tag>
       <Tag>
-        {starter == null
-          ? PLACEHOLDER
-          : `${t["Shiny"]}: ${shinyLabels[starter.shiny]}`}
+        {starter == null ? PLACEHOLDER : `${t[shinyLabels[starter.shiny]]}`}
       </Tag>
     </Flex>
   );

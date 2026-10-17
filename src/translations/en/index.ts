@@ -3,6 +3,9 @@ import { LanguageKey } from "~/types/language";
 export const translations = {
   language: "en",
   Shiny: "Shiny",
+  "Not shiny": "Not shiny",
+  "Square shiny": "Square shiny",
+  "Star shiny": "Star shiny",
   Nature: "Nature",
   Ability: "Ability",
   Gender: "Gender",

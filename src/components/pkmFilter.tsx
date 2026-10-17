@@ -1,7 +1,7 @@
 import {
   shinyFilterSchema,
   shinyFilterOptions,
-  shinyFilterOptionsGen3To6,
+  shinyFilterGen3To7Tooltip,
 } from "~/rngTools/shiny";
 import { FormikSelect } from "~/components/select";
 import * as tst from "ts-toolbelt";
@@ -262,14 +262,14 @@ const _getPkmFilterFields = (
     optOut(props?.displayShiny, {
       id: "shiny" as const,
       label: t?.["Shiny"] ?? "Shiny",
+      tooltip:
+        props.generation >= 3 && props.generation <= 7
+          ? shinyFilterGen3To7Tooltip
+          : undefined,
       input: (
         <FormikSelect<PkmFilterFields, "filter_shiny">
           name="filter_shiny"
-          options={
-            props.generation >= 3 && props.generation <= 6
-              ? shinyFilterOptionsGen3To6
-              : shinyFilterOptions
-          }
+          options={shinyFilterOptions}
         />
       ),
     }),

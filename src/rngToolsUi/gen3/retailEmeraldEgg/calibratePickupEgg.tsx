@@ -70,7 +70,9 @@ const HeldEggSpeciesSelect = () => {
     <SelectField<Species>
       name="species"
       label={t["Species"]}
-      options={getSpeciesOptions(getGen3SpeciesOptions().byName)}
+      options={getSpeciesOptions(
+        getGen3SpeciesOptions().byName.map(({ value }) => value),
+      )}
       value={heldEgg.species}
       onChange={(value) => setHeldEgg((prev) => ({ ...prev, species: value }))}
     />

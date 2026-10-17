@@ -5,7 +5,6 @@ import {
   Gen3PkmFilter,
   PkmFilter,
 } from "~/components/form";
-import { toOptions } from "~/utils/options";
 import { useFormContext, useWatch_UNSAFE } from "~/hooks/form";
 import React from "react";
 import { gen3SpeciesHasVariableSize } from "~/types";
@@ -38,7 +37,7 @@ export const Wild3TargetMon = () => {
       <FormSelectField<FormState>
         name="species"
         label="Species"
-        options={getSpeciesOptions(toOptions(emeraldWildGameData.species))}
+        options={getSpeciesOptions(emeraldWildGameData.species)}
       />
       <PkmFilter<FormState> species={species} displayHiddenAbility={false} />
       <Gen3PkmFilter<FormState>

@@ -203,9 +203,7 @@ const CalibrationInputs = ({
         <SelectField<Species>
           label="Stationary Pokémon"
           value={staticSpecies}
-          options={getSpeciesOptions(
-            toOptions(getPossibleStatic3Species("emerald")),
-          )}
+          options={getSpeciesOptions(getPossibleStatic3Species("emerald"))}
           onChange={setStaticSpecies}
         />
       )}

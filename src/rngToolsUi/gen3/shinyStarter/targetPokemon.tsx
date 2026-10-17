@@ -8,7 +8,6 @@ import {
 } from "~/components/form";
 import { getTargetPokemonDesc } from "./calc";
 import type { Game, TargetStarter } from "./index";
-import { toOptions } from "~/utils/options";
 import { getStatRange } from "~/types/statRange";
 
 const starters = ["Mudkip", "Torchic", "Treecko"] as const;
@@ -55,7 +54,7 @@ export const TargetPokemon = ({
           cellSize="word"
           value={species}
           onChange={setSpecies}
-          options={getSpeciesOptions(toOptions(starters))}
+          options={getSpeciesOptions([...starters])}
         />
         <FormSummary rows={[{ label: "Info", value: targetPokemonDesc }]} />
       </FormSection>

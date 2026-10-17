@@ -48,15 +48,15 @@ const SpeciesLabel = styled.span({
 });
 
 export const getSpeciesOptions = <Value extends Species>(
-  options: { value: Value; label: string }[],
+  species: Value[],
 ) =>
-  options.map(({ value, label }) => ({
+  species.map((value) => ({
     value,
-    searchText: label === value ? formatSpeciesLabel(value) : label,
+    searchText: formatSpeciesLabel(value),
     label: (
       <SpeciesLabel className="pokemon-species-label">
         <PokemonIcon species={value} size={24} />
-        {label === value ? formatSpeciesLabel(value) : label}
+        {formatSpeciesLabel(value)}
       </SpeciesLabel>
     ),
   }));

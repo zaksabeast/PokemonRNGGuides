@@ -9,7 +9,6 @@ import {
   PkmFilter,
 } from "~/components/form";
 import { useWatch } from "~/hooks/form";
-import { toOptions } from "~/utils/options";
 import { z } from "zod";
 
 import {
@@ -61,7 +60,7 @@ export const Static3TargetMon = ({ game }: { game: Static3Game }) => {
       <FormSelectField<FormState>
         name="species"
         label="Species"
-        options={getSpeciesOptions(toOptions(possibleSpecies))}
+        options={getSpeciesOptions(possibleSpecies)}
       />
       {hasMultiplePossibleRoaming && (
         <FormSwitchField<FormState> name="roaming" label="Roaming" />

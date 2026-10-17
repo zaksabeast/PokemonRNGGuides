@@ -195,7 +195,9 @@ const Fields = ({ t }: FieldsProps) => {
         <FormSelectField<FormState>
           name="egg_species"
           label={t["Egg species"]}
-          options={getSpeciesOptions(getGen3SpeciesOptions().byName)}
+          options={getSpeciesOptions(
+            getGen3SpeciesOptions().byName.map(({ value }) => value),
+          )}
         />
         <FormSelectField<FormState>
           name="compatability"

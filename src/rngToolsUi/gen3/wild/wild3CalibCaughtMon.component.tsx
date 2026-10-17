@@ -99,7 +99,7 @@ export const Fields = ({
     <FormSelectField<FormState>
       name="wildSpecies"
       label="Species"
-      options={getSpeciesOptions(toOptions(speciesList))}
+      options={getSpeciesOptions(speciesList)}
     />
   );
 

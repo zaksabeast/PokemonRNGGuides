@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Icon, ListRow, ListSurface, Typography } from "~/components";
+import { Icon, ListRow, ListSurface, PokemonIcon, Typography } from "~/components";
 import { consoleIcons } from "~/components/consoleIcons";
 import { trackCardClick } from "~/analytics";
 import { platforms } from "./data";
@@ -73,6 +73,7 @@ export const GameDirectory = () => {
                 href={game.slug}
                 onClick={() => trackCardClick({ id: `home-game-${game.name}` })}
               >
+                <PokemonIcon species={game.species} />
                 <GameName flex={1} fontSize={16}>
                   {game.name}
                 </GameName>

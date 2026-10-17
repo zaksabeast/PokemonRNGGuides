@@ -1,6 +1,6 @@
 use super::*;
 use crate::{
-    EncounterSlot, PokemonType, ShinyFilter, ShinyType,
+    EncounterSlot, HiddenPowerFilter, PokemonType, ShinyFilter, ShinyType,
     gen3::{
         FASTEST_DIVIDENDS_MOD_24_RANGE, Gen3PidSpeedFilter, Wild3SpecialEncounterGameData,
         apply_cycles_causing_vblanks_on_cycle_counter, calculate_pid_speed,
@@ -179,6 +179,7 @@ fn test_search_reverse_wild1_vanilla() {
         species: Species::Pikachu,
         ..Default::default()
     }];
+    assert!(does_search_wild3_reverse_support_options(&options));
     let result = search_wild3_reverse(&options);
     assert_eq!(result, expected_results);
 }
@@ -247,6 +248,7 @@ fn test_search_reverse_wild2_synchronize_success() {
             ..Default::default()
         },
     ];
+    assert!(does_search_wild3_reverse_support_options(&options));
     let result = search_wild3_reverse(&options);
     assert_eq!(result, expected_results);
 }
@@ -294,6 +296,7 @@ fn test_search_reverse_wild4_cute_charm_success() {
         species: Species::Pikachu,
         ..Default::default()
     }];
+    assert!(does_search_wild3_reverse_support_options(&options));
     let result = search_wild3_reverse(&options);
     assert_eq!(result, expected_results);
 }
@@ -354,6 +357,7 @@ fn test_search_reverse_wild3_mass_outbreak() {
         mass_outbreak_state: Wild3MassOutbreakState::Route102Seedot,
         ..Default::default()
     }];
+    assert!(does_search_wild3_reverse_support_options(&options));
     let result = search_wild3_reverse(&options);
     assert_eq!(result, expected_results);
 }
@@ -404,6 +408,7 @@ fn test_search_reverse_wild3_feebas_no_cyles() {
         action: Wild3Action::SuperRod,
         ..Default::default()
     }];
+    assert!(does_search_wild3_reverse_support_options(&options));
     let result = search_wild3_reverse(&options);
     assert_eq!(result, expected_results);
 }
@@ -466,6 +471,7 @@ fn test_search_reverse_wild3_feebas_many_cyles() {
             ..expected_mon
         },
     ];
+    assert!(does_search_wild3_reverse_support_options(&options));
     let result = search_wild3_reverse(&options);
     assert_eq!(result, expected_results);
 }
@@ -513,6 +519,7 @@ fn test_search_reverse_pid_spd() {
         species: Species::Shuckle,
         ..Default::default()
     }];
+    assert!(does_search_wild3_reverse_support_options(&options));
     let result = search_wild3_reverse(&options);
     assert_eq!(result, expected_results);
 }
@@ -556,11 +563,13 @@ fn test_search_reverse_wild3_rock_smash() {
         action: Wild3Action::RockSmash,
         ..Default::default()
     }];
+    assert!(does_search_wild3_reverse_support_options(&options));
     let result = search_wild3_reverse(&options);
     assert_eq!(result, expected_results);
 
     // test no encounter
     options.initial_advances = 2;
+    assert!(does_search_wild3_reverse_support_options(&options));
     let result = search_wild3_reverse(&options);
     assert!(result.is_empty());
 }
@@ -589,10 +598,12 @@ fn test_search_reverse_wild3_rock_smash_white_flute() {
     };
 
     options.map_setups[0].actions = vec![Wild3Action::RockSmash];
+    assert!(does_search_wild3_reverse_support_options(&options));
     let result = search_wild3_reverse(&options);
     assert!(!result.is_empty());
 
     options.using_white_flute = false;
+    assert!(does_search_wild3_reverse_support_options(&options));
     let result = search_wild3_reverse(&options);
     assert!(result.is_empty());
 }
@@ -673,6 +684,7 @@ fn test_search_reverse_wild3_safari_egg_gligar_has_result() {
     let result_naive = search_wild3_naive(&options);
     assert!(!result_naive.is_empty());
 
+    assert!(does_search_wild3_reverse_support_options(&options));
     let result = search_wild3_reverse(&options);
     assert!(!result.is_empty());
 }
@@ -709,6 +721,7 @@ fn test_search_reverse_wild3_safari_cute_charm_pokeblock_hoothoot_has_result() {
     let result = search_wild3_naive(&options);
     assert!(!result.is_empty());
 
+    assert!(does_search_wild3_reverse_support_options(&options));
     let result = search_wild3_reverse(&options);
     assert!(!result.is_empty());
 }
@@ -740,6 +753,7 @@ fn test_search_reverse_wild2_synchronize_multiple_natures() {
     slots[EncounterSlot::Slot1 as usize].species_data.species = Species::Pikachu;
     slots[EncounterSlot::Slot5 as usize].species_data.species = Species::Pikachu;
 
+    assert!(does_search_wild3_reverse_support_options(&options));
     let result = search_wild3_reverse(&options);
     assert!(result.iter().any(|mon| mon.nature == Nature::Lonely));
     assert!(result.iter().any(|mon| mon.nature == Nature::Quirky));
@@ -863,6 +877,47 @@ fn test_search_reverse_wild3_feebas_on_feebas_tile() {
     let results: Vec<Wild3SearcherResultMon> = search_wild3_naive(&options);
     assert!(!results.is_empty());
 
+    assert!(does_search_wild3_reverse_support_options(&options));
     let results = search_wild3_reverse(&options);
     assert!(!results.is_empty());
+}
+
+#[test]
+fn test_search_reverse_wild3_hidden_power_grass_70() {
+    let options = Wild3SearcherOptions {
+        methods: vec![Gen3Method::Wild4],
+        leads: vec![Gen3Lead::Vanilla],
+        max_result_count: 20,
+        max_advances: 100_000,
+        gen3_filter: Gen3PkmFilter {
+            species: Some(Species::Shuckle),
+            ..Default::default()
+        },
+        filter: PkmFilter {
+            min_ivs: Ivs::new(30, 30, 30, 30, 30, 30),
+            hidden_power: HiddenPowerFilter {
+                active: true,
+                pokemon_types: vec![PokemonType::Grass],
+                min_bp: 70,
+                max_bp: 70,
+            },
+            ..Default::default()
+        },
+        ..Default::default()
+    };
+
+    assert!(does_search_wild3_reverse_support_options(&options));
+    assert_eq!(
+        determine_best_pid_path_strategy(&new_find_pid_paths_options(&options)),
+        PidPathStrategy::ReverseIv
+    );
+    let results = search_wild3(&options);
+    assert!(!results.is_empty());
+    for result in results.iter().flat_map(|group| &group.vec) {
+        assert_eq!(
+            result.hidden_power,
+            HiddenPower::new(PokemonType::Grass, 70)
+        );
+        assert_eq!(HiddenPower::from_ivs(&result.ivs), result.hidden_power);
+    }
 }

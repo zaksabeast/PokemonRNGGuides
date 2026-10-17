@@ -354,8 +354,8 @@ mod test {
         let first_target_advance = SAFE_ADVANCE + 2500;
         let targets = gen7_search_usum_starters(Gen7UsumStarterSearchOpts {
             seed: SEED,
-            tid: 0,
-            sid: 0,
+            tsv: 0,
+            trv: 0,
             current_advance: SAFE_ADVANCE,
             first_target_advance,
             last_target_advance: first_target_advance + 200,

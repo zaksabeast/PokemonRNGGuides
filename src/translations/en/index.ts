@@ -108,6 +108,7 @@ export const translations = {
   "Initial Advance": "Initial Advance",
   "Max Advances": "Max Advances",
   TSV: "TSV",
+  TRV: "TRV",
   "Transporter Gender": "Transporter Gender",
   Date: "Date",
   Name: "Name",

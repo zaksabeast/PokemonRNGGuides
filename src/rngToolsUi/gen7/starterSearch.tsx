@@ -44,8 +44,8 @@ const TARGET_ADVANCES_PER_CHUNK = 3_000;
 const Validator = z
   .object({
     seed: HexSchema(0xffffffff),
-    tid: z.number().int().min(0).max(65535),
-    sid: z.number().int().min(0).max(65535),
+    tsv: z.number().int().min(0).max(4095),
+    trv: z.number().int().min(0).max(15),
     current_advance: z.number().int().min(0),
     max_advances: z.number().int().min(0),
   })
@@ -55,8 +55,8 @@ type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   seed: 0,
-  tid: 0,
-  sid: 0,
+  tsv: 0,
+  trv: 0,
   current_advance: 478,
   max_advances: 10000,
   ...getPkmFilterInitialValues(),
@@ -129,13 +129,13 @@ const Fields = () => {
             numType="hex"
           />
           <FormNumberField<FormState>
-            name="tid"
-            label={t["TID"]}
+            name="tsv"
+            label={t["TSV"]}
             numType="decimal"
           />
           <FormNumberField<FormState>
-            name="sid"
-            label={t["SID"]}
+            name="trv"
+            label={t["TRV"]}
             numType="decimal"
           />
         </FieldRow>
@@ -192,8 +192,8 @@ export const Gen7StarterSearch = () => {
     }
     setTarget({
       seed: submitted.seed,
-      tid: submitted.tid,
-      sid: submitted.sid,
+      tsv: submitted.tsv,
+      trv: submitted.trv,
       currentAdvance: submitted.current_advance,
       starter: result.starter,
     });
@@ -214,8 +214,8 @@ export const Gen7StarterSearch = () => {
           last_target_advance,
         ]): RustOption<Gen7UsumStarterSearchOpts> => ({
           seed: opts.seed,
-          tid: opts.tid,
-          sid: opts.sid,
+          tsv: opts.tsv,
+          trv: opts.trv,
           current_advance: opts.current_advance,
           first_target_advance,
           last_target_advance,

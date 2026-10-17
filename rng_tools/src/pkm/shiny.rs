@@ -10,6 +10,18 @@ impl TsvTrv {
         }
     }
 
+    pub fn from_tsv_trv_gen3_to_5(tsv: u16, trv: u8) -> Self {
+        Self {
+            tid_xor_sid: (tsv << 3) | u16::from(trv & 0x7),
+        }
+    }
+
+    pub fn from_tsv_trv_gen6_plus(tsv: u16, trv: u8) -> Self {
+        Self {
+            tid_xor_sid: (tsv << 4) | u16::from(trv & 0xf),
+        }
+    }
+
     pub fn shiny_type_gen3_to_5(self, pid: u32) -> ShinyType {
         ShinyType::from_xor(PsvPrv::from_pid(pid).pid_high_xor_low ^ self.tid_xor_sid, 8)
     }
@@ -126,6 +138,21 @@ impl ShinyFilter {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn trainer_shiny_values_round_trip() {
+        for tid_xor_sid in 0..=u16::MAX {
+            let trainer = TsvTrv::from_tid_sid(tid_xor_sid, 0);
+            assert_eq!(
+                TsvTrv::from_tsv_trv_gen3_to_5(trainer.tsv_gen3_to_5(), trainer.trv()),
+                trainer
+            );
+            assert_eq!(
+                TsvTrv::from_tsv_trv_gen6_plus(trainer.tsv_gen6_plus(), trainer.trv()),
+                trainer
+            );
+        }
+    }
 
     #[test]
     fn shiny_classification_boundaries() {

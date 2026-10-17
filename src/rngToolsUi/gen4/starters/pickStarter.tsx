@@ -1,3 +1,4 @@
+import { ShinyIcon } from "~/components/shiny";
 import { Button, ResultColumn } from "~/components";
 import {
   FieldRow,
@@ -143,7 +144,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
     title: t["Shiny"],
     dataIndex: "shiny",
-    render: (shiny: boolean) => (shiny ? "Yes" : "No"),
+    render: (shiny) => <ShinyIcon shiny={shiny} />,
   },
   { title: t["Nature"], dataIndex: "nature" },
   { title: t["Ability"], dataIndex: "ability" },
@@ -247,7 +248,10 @@ const Fields = ({ game, t }: FieldsProps) => {
       </FormSection>
 
       <FormSection title={t["Filters"]}>
-        <PkmFilter<FormState> species={watched.species ?? undefined} />
+        <PkmFilter<FormState>
+          generation={4}
+          species={watched.species ?? undefined}
+        />
       </FormSection>
 
       <FormSection title={t["Advanced"]}>

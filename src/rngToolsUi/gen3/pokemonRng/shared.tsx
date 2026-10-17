@@ -33,3 +33,16 @@ export const createBattleVideoInfoAtom = (atomName: string) => {
     },
   );
 };
+
+export type AceSidConfig = {
+  tid: number;
+  shiny: "SquareShiny" | "StarShiny";
+};
+
+export const getSidResultingInShiny = (
+  pid: number,
+  config: AceSidConfig,
+): number => {
+  const xor = config.shiny === "SquareShiny" ? 0 : 1;
+  return ((pid >>> 16) ^ (pid & 0xffff) ^ config.tid ^ xor) & 0xffff;
+};

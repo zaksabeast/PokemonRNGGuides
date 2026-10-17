@@ -1,3 +1,4 @@
+import { ShinyIcon } from "~/components/shiny";
 import * as tst from "ts-toolbelt";
 import { uniqueId } from "lodash-es";
 import { Button, ResultColumn } from "~/components";
@@ -171,7 +172,7 @@ const Fields = () => {
       </FormSection>
 
       <FormSection title={t["Filters"]}>
-        <PkmFilter<FormState> species={species ?? undefined} />
+        <PkmFilter<FormState> generation={4} species={species ?? undefined} />
       </FormSection>
     </>
   );
@@ -282,7 +283,7 @@ export const Egg4Search = () => {
     {
       title: t["Shiny"],
       dataIndex: "shiny",
-      render: (shiny) => (shiny === true ? "Yes" : "No"),
+      render: (shiny) => <ShinyIcon shiny={shiny} />,
     },
     { title: t["Gender"], dataIndex: "gender" },
     {

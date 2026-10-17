@@ -1,7 +1,9 @@
 use crate::pkm::gen6_psv;
 use crate::rng::StateIterator;
 use crate::rng::{Rng, mt::MT};
-use crate::{AbilityType, G5Idx, Gender, IvFilter, Ivs, Nature, Species};
+use crate::{
+    AbilityType, G5Idx, Gender, IvFilter, Ivs, Nature, ShinyFilter, ShinyType, Species, TsvTrv,
+};
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
@@ -21,7 +23,7 @@ pub struct Stationary6State {
     pub advance: usize,
     pub rng_state: u32,
     pub psv: u16,
-    pub shiny: bool,
+    pub shiny: ShinyType,
     pub ivs: Ivs,
     pub ability: AbilityType,
     pub nature: Nature,
@@ -35,7 +37,7 @@ pub struct Stationary6Filter {
     pub ability: Option<AbilityType>,
     pub nature: Option<Nature>,
     pub ivs: Option<IvFilter>,
-    pub shiny: bool,
+    pub shiny: ShinyFilter,
 }
 
 impl Stationary6Filter {
@@ -58,7 +60,7 @@ impl Stationary6Filter {
             return false;
         }
 
-        if self.shiny && !state.shiny {
+        if !self.shiny.allows(state.shiny) {
             return false;
         }
 
@@ -82,7 +84,8 @@ struct GenerateOpts {
     shiny_charm: bool,
     is_shiny_locked: bool,
     is_forced_shiny: bool,
-    tsv: u16,
+    tid: u16,
+    sid: u16,
     ability: Option<AbilityType>,
     gender: Option<Gender>,
     species: Species,
@@ -153,31 +156,28 @@ fn generate_state(rng: &mut MT, advance: usize, opts: &GenerateOpts) -> Stationa
         false => 1,
     };
 
-    let mut pid;
-    let mut psv = 0;
-    let mut shiny = false;
+    let mut pid = 0;
+    let mut shiny = ShinyType::NotShiny;
+    let tsv_trv = TsvTrv::from_tid_sid(opts.tid, opts.sid);
 
     for _ in 0..pid_reroll_count {
         pid = rng.rand();
-        psv = gen6_psv(pid);
-        if psv == opts.tsv {
+        shiny = tsv_trv.shiny_type_gen6_plus(pid);
+        if shiny.is_shiny() {
             if opts.is_shiny_locked {
                 pid ^= 0x10000000;
-                psv = gen6_psv(pid);
-            } else {
-                shiny = true;
+                shiny = ShinyType::NotShiny;
             }
             break;
-        } else if opts.is_forced_shiny {
-            shiny = true;
-            // let trv = (opts.tid ^ opts.sid) & 0xf;
-            // pid = ((opts.tsv << 4) + opts.trv) ^ ((pid & 0xffff) << 16) + (pid & 0xffff);
-            pid = (opts.tsv << 4) as u32 ^ ((pid & 0xffff) << 16) | (pid & 0xffff); // not accurate
-            psv = gen6_psv(pid);
+        } else if opts.is_forced_shiny && !opts.is_shiny_locked {
+            let low = pid as u16;
+            pid = (u32::from(low ^ tsv_trv.tid_xor_sid) << 16) | u32::from(low);
+            shiny = ShinyType::SquareShiny;
+            break;
         }
     }
 
-    result.psv = psv;
+    result.psv = gen6_psv(pid);
     result.shiny = shiny;
 
     // IVs
@@ -245,7 +245,8 @@ pub struct Stationary6Opts {
     pub shiny_charm: bool,
     pub is_shiny_locked: bool,
     pub is_forced_shiny: bool,
-    pub tsv: u16,
+    pub tid: u16,
+    pub sid: u16,
     pub ability: Option<AbilityType>,
     pub gender: Option<Gender>,
     pub species: Species,
@@ -265,7 +266,8 @@ pub fn generate_stationary6(opts: Stationary6Opts) -> Vec<Stationary6State> {
         shiny_charm: opts.shiny_charm,
         is_shiny_locked: opts.is_shiny_locked,
         is_forced_shiny: opts.is_forced_shiny,
-        tsv: opts.tsv,
+        tid: opts.tid,
+        sid: opts.sid,
         ability: opts.ability,
         gender: opts.gender,
         species: opts.species,
@@ -286,7 +288,8 @@ pub struct TransporterOpts {
     pub delay: usize,
     pub target: usize,                                   // Index of target pkm
     pub transporter_genders: Vec<TransporterGenderType>, // Gender list of Transporter pokemon
-    pub tsv: u16,
+    pub tid: u16,
+    pub sid: u16,
     pub filter: Stationary6Filter,
 }
 
@@ -319,7 +322,8 @@ pub fn generate_transporter(opts: TransporterOpts) -> Vec<Stationary6State> {
         shiny_charm: false,
         is_shiny_locked: true,
         is_forced_shiny: false,
-        tsv: opts.tsv,
+        tid: opts.tid,
+        sid: opts.sid,
         ability: Some(ability),
         gender: None,
         species: Species::Mewtwo,
@@ -332,6 +336,44 @@ pub fn generate_transporter(opts: TransporterOpts) -> Vec<Stationary6State> {
 mod test {
     use super::*;
 
+    #[test]
+    fn trainer_ids_classify_shiny_without_extra_rerolls() {
+        let mut rng = MT::new(0xaabbccdd);
+        rng.advance(2);
+        let pid = rng.rand::<u32>();
+        let pid_xor = (pid >> 16) as u16 ^ pid as u16;
+        let mut opts = Stationary6Opts {
+            seed: 0xaabbccdd,
+            initial_advances: 0,
+            max_advances: 0,
+            delay: 0,
+            perfect_iv_count: 0,
+            always_sync: true,
+            synchro_stat: None,
+            shiny_charm: true,
+            is_shiny_locked: false,
+            is_forced_shiny: false,
+            tid: 12345,
+            sid: 12345 ^ pid_xor,
+            ability: None,
+            gender: None,
+            species: Species::Pikachu,
+            filter: Stationary6Filter::default(),
+        };
+        let square = generate_stationary6(opts.clone());
+        assert_eq!(square[0].shiny, ShinyType::SquareShiny);
+        opts.sid ^= 1;
+        let star = generate_stationary6(opts.clone());
+        assert_eq!(star[0].shiny, ShinyType::StarShiny);
+        assert_eq!(star[0].ivs, square[0].ivs);
+        opts.filter.shiny = ShinyFilter::SquareShiny;
+        assert!(generate_stationary6(opts.clone()).is_empty());
+        opts.filter.shiny = ShinyFilter::StarShiny;
+        assert_eq!(generate_stationary6(opts.clone()), star);
+        opts.is_shiny_locked = true;
+        assert!(generate_stationary6(opts).is_empty());
+    }
+
     mod filter {
         use super::*;
 
@@ -342,10 +384,10 @@ mod test {
                 ability: None,
                 nature: None,
                 ivs: None,
-                shiny: true,
+                shiny: ShinyFilter::AnyShiny,
             };
             let state = Stationary6State {
-                shiny: true,
+                shiny: ShinyType::StarShiny,
                 ..Default::default()
             };
             assert!(filter.apply_filters(&state));
@@ -358,10 +400,10 @@ mod test {
                 ability: None,
                 nature: None,
                 ivs: None,
-                shiny: true,
+                shiny: ShinyFilter::AnyShiny,
             };
             let state = Stationary6State {
-                shiny: false,
+                shiny: ShinyType::NotShiny,
                 ..Default::default()
             };
             assert!(!filter.apply_filters(&state));
@@ -374,7 +416,7 @@ mod test {
                 ability: None,
                 nature: Some(Nature::Hardy),
                 ivs: None,
-                shiny: false,
+                shiny: ShinyFilter::Any,
             };
             let state = Stationary6State {
                 nature: Nature::Hardy,
@@ -390,7 +432,7 @@ mod test {
                 ability: None,
                 nature: Some(Nature::Hardy),
                 ivs: None,
-                shiny: false,
+                shiny: ShinyFilter::Any,
             };
             let state = Stationary6State {
                 nature: Nature::Adamant,
@@ -406,7 +448,7 @@ mod test {
                 ability: Some(AbilityType::Hidden),
                 nature: None,
                 ivs: None,
-                shiny: false,
+                shiny: ShinyFilter::Any,
             };
             let state = Stationary6State {
                 ability: AbilityType::Hidden,
@@ -422,7 +464,7 @@ mod test {
                 ability: Some(AbilityType::Hidden),
                 nature: None,
                 ivs: None,
-                shiny: false,
+                shiny: ShinyFilter::Any,
             };
             let state = Stationary6State {
                 ability: AbilityType::First,
@@ -438,7 +480,7 @@ mod test {
                 ability: None,
                 nature: None,
                 ivs: None,
-                shiny: false,
+                shiny: ShinyFilter::Any,
             };
             let state = Stationary6State {
                 gender: Gender::Male,
@@ -454,7 +496,7 @@ mod test {
                 ability: None,
                 nature: None,
                 ivs: None,
-                shiny: false,
+                shiny: ShinyFilter::Any,
             };
             let state = Stationary6State {
                 gender: Gender::Female,
@@ -487,7 +529,7 @@ mod test {
                         spe: 31,
                     },
                 }),
-                shiny: false,
+                shiny: ShinyFilter::Any,
             };
             let state = Stationary6State {
                 ivs: Ivs {
@@ -527,7 +569,7 @@ mod test {
                         spe: 31,
                     },
                 }),
-                shiny: false,
+                shiny: ShinyFilter::Any,
             };
             let state = Stationary6State {
                 ivs: Ivs {
@@ -562,7 +604,8 @@ mod test {
                 shiny_charm: false,
                 is_shiny_locked: false,
                 is_forced_shiny: false,
-                tsv: 123,
+                tid: 123 << 4,
+                sid: 0,
                 gender: None,
                 species: Species::Pikachu,
                 filter: Default::default(),
@@ -584,7 +627,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::First,
                     rng_state: 0xAABBCCDD,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 1,
@@ -601,7 +644,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::First,
                     rng_state: 0x8AD42AFC,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 2,
@@ -618,7 +661,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::First,
                     rng_state: 0xA5A8E438,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 3,
@@ -635,7 +678,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::First,
                     rng_state: 0x735B14E5,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
             ];
             assert_list_eq!(result, expected);
@@ -655,7 +698,8 @@ mod test {
                 shiny_charm: false,
                 is_shiny_locked: false,
                 is_forced_shiny: false,
-                tsv: 123,
+                tid: 123 << 4,
+                sid: 0,
                 gender: None,
                 species: Species::Pikachu,
                 filter: Default::default(),
@@ -677,7 +721,7 @@ mod test {
                     gender: Gender::Male,
                     ability: AbilityType::First,
                     rng_state: 0x035941F8,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 5,
@@ -694,7 +738,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::First,
                     rng_state: 0x844CBEDD,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 6,
@@ -711,7 +755,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::Second,
                     rng_state: 0x9085A501,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 7,
@@ -728,7 +772,7 @@ mod test {
                     gender: Gender::Male,
                     ability: AbilityType::First,
                     rng_state: 0x511DB536,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
             ];
             assert_list_eq!(result, expected);
@@ -748,7 +792,8 @@ mod test {
                 shiny_charm: false,
                 is_shiny_locked: false,
                 is_forced_shiny: false,
-                tsv: 123,
+                tid: 123 << 4,
+                sid: 0,
                 gender: None,
                 species: Species::Pikachu,
                 filter: Default::default(),
@@ -770,7 +815,7 @@ mod test {
                     gender: Gender::Male,
                     ability: AbilityType::First,
                     rng_state: 0xAABBCCDD,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 1,
@@ -787,7 +832,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::Second,
                     rng_state: 0x8AD42AFC,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 2,
@@ -804,7 +849,7 @@ mod test {
                     gender: Gender::Male,
                     ability: AbilityType::Second,
                     rng_state: 0xA5A8E438,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 3,
@@ -821,7 +866,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::First,
                     rng_state: 0x735B14E5,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
             ];
             assert_list_eq!(result, expected);
@@ -841,7 +886,8 @@ mod test {
                 shiny_charm: false,
                 is_shiny_locked: false,
                 is_forced_shiny: false,
-                tsv: 123,
+                tid: 123 << 4,
+                sid: 0,
                 gender: None,
                 species: Species::Pikachu,
                 filter: Default::default(),
@@ -863,7 +909,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::First,
                     rng_state: 0xAABBCCDD,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 1,
@@ -880,7 +926,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::First,
                     rng_state: 0x8AD42AFC,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 2,
@@ -897,7 +943,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::Second,
                     rng_state: 0xA5A8E438,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 3,
@@ -914,7 +960,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::Second,
                     rng_state: 0x735B14E5,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
             ];
 
@@ -935,7 +981,8 @@ mod test {
                 shiny_charm: false,
                 is_shiny_locked: false,
                 is_forced_shiny: false,
-                tsv: 123,
+                tid: 123 << 4,
+                sid: 0,
                 gender: None,
                 species: Species::Arcanine,
                 filter: Default::default(),
@@ -957,7 +1004,7 @@ mod test {
                     gender: Gender::Male,
                     ability: AbilityType::First,
                     rng_state: 0xAABBCCDD,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 1,
@@ -974,7 +1021,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::First,
                     rng_state: 0x8AD42AFC,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 2,
@@ -991,7 +1038,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::First,
                     rng_state: 0xA5A8E438,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 3,
@@ -1008,7 +1055,7 @@ mod test {
                     gender: Gender::Male,
                     ability: AbilityType::First,
                     rng_state: 0x735B14E5,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
             ];
 
@@ -1029,7 +1076,8 @@ mod test {
                 shiny_charm: false,
                 is_shiny_locked: false,
                 is_forced_shiny: false,
-                tsv: 123,
+                tid: 123 << 4,
+                sid: 0,
                 gender: None,
                 species: Species::Pikachu,
                 filter: Default::default(),
@@ -1051,7 +1099,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::Hidden,
                     rng_state: 0xAABBCCDD,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 1,
@@ -1068,7 +1116,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::Hidden,
                     rng_state: 0x8AD42AFC,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 2,
@@ -1085,7 +1133,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::Hidden,
                     rng_state: 0xA5A8E438,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 3,
@@ -1102,7 +1150,7 @@ mod test {
                     gender: Gender::Female,
                     ability: AbilityType::Hidden,
                     rng_state: 0x735B14E5,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
             ];
             assert_list_eq!(result, expected);
@@ -1122,7 +1170,8 @@ mod test {
                 shiny_charm: false,
                 is_shiny_locked: true,
                 is_forced_shiny: false,
-                tsv: 123,
+                tid: 123 << 4,
+                sid: 0,
                 gender: None,
                 species: Species::Pikachu,
                 filter: Stationary6Filter {
@@ -1130,7 +1179,7 @@ mod test {
                     gender: None,
                     nature: None,
                     ivs: None,
-                    shiny: true,
+                    shiny: ShinyFilter::AnyShiny,
                 },
             };
             let result = generate_stationary6(opts);
@@ -1152,11 +1201,12 @@ mod test {
                 shiny_charm: true,
                 is_shiny_locked: false,
                 is_forced_shiny: false,
-                tsv: 123,
+                tid: 123 << 4,
+                sid: 0,
                 gender: None,
                 species: Species::Pikachu,
                 filter: Stationary6Filter {
-                    shiny: true,
+                    shiny: ShinyFilter::AnyShiny,
                     ..Default::default()
                 },
             };
@@ -1177,7 +1227,7 @@ mod test {
                     gender: Gender::Male,
                     ability: AbilityType::Second,
                     rng_state: 0xD74B9F2A,
-                    shiny: true,
+                    shiny: ShinyType::StarShiny,
                 },
                 Stationary6State {
                     advance: 3713,
@@ -1194,7 +1244,7 @@ mod test {
                     gender: Gender::Male,
                     ability: AbilityType::Second,
                     rng_state: 0x7457F4A3,
-                    shiny: true,
+                    shiny: ShinyType::SquareShiny,
                 },
                 Stationary6State {
                     advance: 3714,
@@ -1211,7 +1261,7 @@ mod test {
                     gender: Gender::Male,
                     ability: AbilityType::Second,
                     rng_state: 0x5CFE7DE1,
-                    shiny: true,
+                    shiny: ShinyType::SquareShiny,
                 },
                 Stationary6State {
                     advance: 3715,
@@ -1228,7 +1278,7 @@ mod test {
                     gender: Gender::Male,
                     ability: AbilityType::Second,
                     rng_state: 0x2D4B1238,
-                    shiny: true,
+                    shiny: ShinyType::SquareShiny,
                 },
             ];
             assert_list_eq!(result, expected);
@@ -1248,7 +1298,8 @@ mod test {
                 delay: 0,
                 target: 1,
                 transporter_genders: vec![TransporterGenderType::RandomGender],
-                tsv: 123,
+                tid: 123 << 4,
+                sid: 0,
                 filter: Default::default(),
             };
             let result = generate_transporter(opts);
@@ -1268,7 +1319,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0xAABBCCDD,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 1,
@@ -1285,7 +1336,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0x8AD42AFC,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 2,
@@ -1302,7 +1353,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0xA5A8E438,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 3,
@@ -1319,7 +1370,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0x735B14E5,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
             ];
             assert_list_eq!(result, expected);
@@ -1334,7 +1385,8 @@ mod test {
                 delay: 0,
                 target: 4,
                 transporter_genders: vec![TransporterGenderType::RandomGender; 4],
-                tsv: 123,
+                tid: 123 << 4,
+                sid: 0,
                 filter: Default::default(),
             };
             let result = generate_transporter(opts);
@@ -1354,7 +1406,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0xAABBCCDD,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 1,
@@ -1371,7 +1423,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0x8AD42AFC,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 2,
@@ -1388,7 +1440,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0xA5A8E438,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 3,
@@ -1405,7 +1457,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0x735B14E5,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
             ];
             assert_list_eq!(result, expected);
@@ -1420,7 +1472,8 @@ mod test {
                 delay: 0,
                 target: 0,
                 transporter_genders: vec![TransporterGenderType::Mythical],
-                tsv: 123,
+                tid: 123 << 4,
+                sid: 0,
                 filter: Default::default(),
             };
             let result = generate_transporter(opts);
@@ -1440,7 +1493,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::First,
                     rng_state: 0xAABBCCDD,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 1,
@@ -1457,7 +1510,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::First,
                     rng_state: 0x8AD42AFC,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 2,
@@ -1474,7 +1527,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::First,
                     rng_state: 0xA5A8E438,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 3,
@@ -1491,7 +1544,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::First,
                     rng_state: 0x735B14E5,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
             ];
             assert_list_eq!(result, expected);
@@ -1511,7 +1564,8 @@ mod test {
                     TransporterGenderType::NoGender,
                     TransporterGenderType::RandomGender,
                 ],
-                tsv: 123,
+                tid: 123 << 4,
+                sid: 0,
                 filter: Default::default(),
             };
             let result = generate_transporter(opts);
@@ -1531,7 +1585,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0xAABBCCDD,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 1,
@@ -1548,7 +1602,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0x8AD42AFC,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 2,
@@ -1565,7 +1619,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0xA5A8E438,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 3,
@@ -1582,7 +1636,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0x735B14E5,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
             ];
             assert_list_eq!(result, expected);
@@ -1602,7 +1656,8 @@ mod test {
                     TransporterGenderType::Mythical,
                     TransporterGenderType::RandomGender,
                 ],
-                tsv: 123,
+                tid: 123 << 4,
+                sid: 0,
                 filter: Default::default(),
             };
             let result = generate_transporter(opts);
@@ -1622,7 +1677,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0xAABBCCDD,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 1,
@@ -1639,7 +1694,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0x8AD42AFC,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 2,
@@ -1656,7 +1711,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0xA5A8E438,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
                 Stationary6State {
                     advance: 3,
@@ -1673,7 +1728,7 @@ mod test {
                     gender: Gender::Genderless,
                     ability: AbilityType::Hidden,
                     rng_state: 0x735B14E5,
-                    shiny: false,
+                    shiny: ShinyType::NotShiny,
                 },
             ];
             assert_list_eq!(result, expected);

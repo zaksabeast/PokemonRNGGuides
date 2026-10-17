@@ -1,3 +1,5 @@
+import { ShinyIcon } from "~/components/shiny";
+import type { ShinyType } from "~/rngTools";
 import { uniqueId } from "lodash-es";
 import {
   ResultColumn,
@@ -113,7 +115,7 @@ type Result = {
   datetime: RngDateTime;
   delay: number;
   pid: number;
-  shiny: boolean;
+  shiny: ShinyType;
   nature: Nature;
   ability: string;
   hp: number;
@@ -213,7 +215,10 @@ const FilterFields = () => {
   const encounter = getEncounter(game, encounter_id);
   const species = encounter.species;
 
-  const baseFields = getPkmStatFilterFields<FormState>({ species });
+  const baseFields = getPkmStatFilterFields<FormState>({
+    generation: 4,
+    species,
+  });
 
   const fields: Field[] = [
     {
@@ -282,7 +287,7 @@ const columns: ResultColumn<Result>[] = [
   {
     title: "Shiny",
     dataIndex: "shiny",
-    render: (value) => (value ? "Yes" : "No"),
+    render: (shiny) => <ShinyIcon shiny={shiny} />,
   },
   { title: "Nature", dataIndex: "nature" },
   { title: "Ability", dataIndex: "ability" },

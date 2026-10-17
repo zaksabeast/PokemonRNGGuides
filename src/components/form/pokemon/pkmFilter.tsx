@@ -5,7 +5,11 @@ import {
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { GenericForm, type RequireFormFields } from "~/types/form";
 import { SwitchGroup } from "~/components/form/base/switchGroup";
-import { FormSwitchField } from "~/components/form/base/switchField";
+import { FormSelectField } from "~/components/form/base/selectField";
+import {
+  shinyFilterOptions,
+  shinyFilterOptionsGen3To6,
+} from "~/rngTools/shiny";
 import { AbilityFilterField } from "./abilityField";
 import { GenderFilterField } from "./genderField";
 import { HiddenPowerField } from "./hiddenPowerField";
@@ -16,6 +20,7 @@ type Props<FormState extends GenericForm> = PkmFilterProps &
   RequireFormFields<FormState, PkmFilterValues>;
 
 export const PkmFilter = <FormState extends GenericForm>({
+  generation,
   displayShiny = true,
   displayNature = true,
   displayAbility = true,
@@ -51,17 +56,20 @@ export const PkmFilter = <FormState extends GenericForm>({
           maxName="filter_max_ivs"
         />
       )}
-      {(displayShiny || displayHiddenPower) && (
+      {displayShiny && (
+        <FormSelectField<PkmFilterValues>
+          name="filter_shiny"
+          label={t["Shiny"]}
+          options={
+            generation >= 3 && generation <= 6
+              ? shinyFilterOptionsGen3To6
+              : shinyFilterOptions
+          }
+        />
+      )}
+      {displayHiddenPower && (
         <SwitchGroup>
-          {displayShiny && (
-            <FormSwitchField<PkmFilterValues>
-              name="filter_shiny"
-              label={t["Shiny"]}
-            />
-          )}
-          {displayHiddenPower && (
-            <HiddenPowerField<PkmFilterValues> name="filter_hidden_power" />
-          )}
+          <HiddenPowerField<PkmFilterValues> name="filter_hidden_power" />
         </SwitchGroup>
       )}
     </>

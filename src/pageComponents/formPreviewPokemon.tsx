@@ -79,7 +79,10 @@ export const PokemonFormPreview = () => {
         }}
       >
         <FormSection title="Filters">
-          <PkmFilter<PokemonPreviewFormState> species={species} />
+          <PkmFilter<PokemonPreviewFormState>
+            generation={8}
+            species={species}
+          />
         </FormSection>
         <FormSection title="Parent">
           <NullableIvFields<PokemonPreviewFormState>

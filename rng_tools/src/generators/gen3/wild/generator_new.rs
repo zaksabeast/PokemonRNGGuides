@@ -11,7 +11,7 @@ use crate::gen3::wild::cycle_counter::CycleFrameCounter;
 use crate::{
     EncounterSlot, Gender, GenderRatio, Ivs, NATURE_COUNT, Nature,
     PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE, PERTINENT_SOLO_POKEBLOCKS_BY_NATURE,
-    POKEBLOCK_NATURE_STAT_FACTORS,
+    POKEBLOCK_NATURE_STAT_FACTORS, TsvTrv,
     gen3::{
         CycleAndModRange, CycleRange, Gen3Lead, Gen3Method, Moment, Wild3Action,
         Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData,
@@ -19,7 +19,7 @@ use crate::{
         get_min_mid_max_pre_sweet_scent_cycle, get_min_mid_max_vblank_cycle_duration,
         passes_pid_filter,
     },
-    gen3_tsv, is_max_size,
+    is_max_size,
     rng::{Rng, lcrng::Pokerng},
 };
 
@@ -403,7 +403,7 @@ fn CreateWildMon(
         required_gender,
         required_nature,
         used_safari_pokeblock,
-        tsv: gen3_tsv(opts.tid, opts.sid),
+        tsv_trv: TsvTrv::from_tid_sid(opts.tid, opts.sid),
     };
 
     if required_gender.is_some() {
@@ -800,7 +800,7 @@ struct GenTmpData<'a> {
     required_gender: Option<Gender>,
     required_nature: Nature,
     used_safari_pokeblock: Option<[u8; 5]>,
-    tsv: u16,
+    tsv_trv: TsvTrv,
 }
 
 fn rand_next_u16(rng: &mut Pokerng, _reason: &str, _modulo: u16) -> u16 {
@@ -1139,7 +1139,7 @@ fn passes_pid_filter_internal(gen_data: &GenTmpData, pid: u32) -> bool {
         &gen_data.opts.gen3_filter,
         Some(gen_data.encounter_gender_ratio),
         pid,
-        gen_data.tsv,
+        gen_data.tsv_trv,
     )
 }
 

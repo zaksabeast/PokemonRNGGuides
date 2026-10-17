@@ -4,8 +4,8 @@ use super::starter_timeline::{
     skip_to_first_starter_a_press,
 };
 use super::{Gen7Starter, NpcModel, Timeline, generate_starter};
-use crate::PkmFilter;
 use crate::rng::{Rng, StateIterator, sfmt::Sfmt};
+use crate::{PkmFilter, TsvTrv};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::ops::RangeInclusive;
@@ -21,6 +21,7 @@ const MIN_ADVANCES_TO_YES: usize = KUKUI_DIALOGUE_MODELS * STEPS_FROM_KUKUI_A_TO
 pub struct Gen7UsumStarterSearchOpts {
     pub seed: u32,
     pub tsv: u16,
+    pub trv: u8,
     pub current_advance: usize,
     pub first_target_advance: usize,
     pub last_target_advance: usize,
@@ -74,7 +75,10 @@ fn matching_starter(a_press: &Timeline, opts: &Gen7UsumStarterSearchOpts) -> Opt
     if a_press.advance() < opts.first_target_advance {
         return None;
     }
-    let starter = generate_starter(a_press.clone(), opts.tsv);
+    let starter = generate_starter(
+        a_press.clone(),
+        TsvTrv::from_tsv_trv_gen6_plus(opts.tsv, opts.trv),
+    );
     opts.filter.pass_filter(&starter).then_some(starter)
 }
 
@@ -97,7 +101,7 @@ fn after_yes_timeline_with_idle_npcs(rng: Sfmt, yes_advance: usize) -> Timeline 
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::{Gender, Ivs};
+    use crate::{Gender, Ivs, ShinyFilter, ShinyType};
 
     const SEED: u32 = 0x768ba16d;
     const FIRST_YES_ADVANCE: usize = 5000;
@@ -106,6 +110,7 @@ mod test {
         Gen7UsumStarterSearchOpts {
             seed: SEED,
             tsv: 0,
+            trv: 0,
             current_advance: FIRST_YES_ADVANCE - MIN_ADVANCES_TO_YES,
             first_target_advance,
             last_target_advance,
@@ -192,13 +197,14 @@ mod test {
     }
 
     #[test]
-    fn shiny_filter_uses_the_tsv() {
+    fn shiny_filter_uses_tsv() {
         let target = gen7_search_usum_starters(opts(6300, 6400)).remove(20);
         let mut filter = PkmFilter::new_allow_all();
-        filter.shiny = true;
+        filter.shiny = ShinyFilter::AnyShiny;
 
         let results = gen7_search_usum_starters(Gen7UsumStarterSearchOpts {
             tsv: target.psv,
+            trv: 0,
             filter,
             ..opts(6300, 6400)
         });

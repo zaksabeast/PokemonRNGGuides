@@ -1,3 +1,4 @@
+import { ShinyIcon } from "~/components/shiny";
 import React from "react";
 import { ResultColumn, Button } from "~/components";
 import {
@@ -112,7 +113,7 @@ const getColumns = ({
   {
     title: t["Shiny"],
     dataIndex: "shiny",
-    render: (shiny) => (shiny ? "Yes" : "No"),
+    render: (shiny) => <ShinyIcon shiny={shiny} />,
   },
   {
     title: t["Pokedex"],
@@ -223,6 +224,7 @@ const Fields = ({ t }: FieldsProps) => {
 
       <FormSection title={t["Filters"]}>
         <PkmFilter<FormState>
+          generation={3}
           displayIvs={false}
           displayHiddenPower={false}
           species={egg_species ?? undefined}

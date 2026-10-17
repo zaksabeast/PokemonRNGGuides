@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
 import fs from "node:fs/promises";
-import express from "express";
+import http from "node:http";
 import { toNativeAbsolute } from "./path";
 import type * as _EntryServer from "../src/entry-server";
 
@@ -9,18 +9,18 @@ type EntryServer = typeof _EntryServer;
 
 const port = process.env.PORT || 5173;
 
-const app = express();
+const server = http.createServer();
 
 const { createServer } = await import("vite");
 const vite = await createServer({
-  server: { middlewareMode: true },
+  server: { middlewareMode: true, hmr: { server } },
   appType: "custom",
 });
-app.use(vite.middlewares);
 
-app.use("*all", async (req, res) => {
+// Runs for every request Vite's own middlewares don't handle
+vite.middlewares.use(async (req, res) => {
   try {
-    const url = req.originalUrl;
+    const url = req.url ?? "/";
     const render: EntryServer["render"] = (
       await vite.ssrLoadModule("src/entry-server.jsx")
     ).render;
@@ -42,15 +42,26 @@ app.use("*all", async (req, res) => {
       .replace(`<!--app-html-->`, rendered.html)
       .replace('<html lang="en">', `<html lang="${rendered.lang}">`);
 
-    res.status(200).set({ "Content-Type": "text/html" }).send(result);
+    res.statusCode = 200;
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.end(result);
   } catch (err) {
-    vite?.ssrFixStacktrace(err);
-    console.log(err.stack);
-    res.status(500).end(err.stack);
+    if (err instanceof Error) {
+      vite.ssrFixStacktrace(err);
+    }
+    const message = err instanceof Error ? err.stack : String(err);
+    console.log(message);
+    res.statusCode = 500;
+    res.end(message);
   }
 });
 
 // Start http server
-app.listen(port, () => {
+server.on("request", vite.middlewares);
+server.on("error", (err) => {
+  console.error(`Failed to start server on port ${port}: ${err.message}`);
+  process.exit(1);
+});
+server.listen(port, () => {
   console.log(`Server started at http://localhost:${port}`);
 });

@@ -206,14 +206,16 @@ export const searchWild3Target = async (values: FormState) => {
     map_setups,
     methods,
     feebas_cycles: values.feebasCycles.length === 0 ? [0] : values.feebasCycles,
-    consider_cycles: true,
-    consider_rng_manipulated_lead_pid: values.rngManipulatedLeadPid,
-    generate_even_if_impossible: values.generate_even_if_impossible,
+    cycle_opts: {
+      SearchNewTarget: {
+        consider_rng_manipulated_lead_pid: values.rngManipulatedLeadPid,
+        generate_even_if_impossible: values.generate_even_if_impossible,
+      },
+    },
     using_white_flute: values.recommendedSetups
       ? true
       : values.using_white_flute,
     painting_opts,
-    lead_cycle_speed: null,
     considered_safari_pokeblocks: values.considered_safari_pokeblocks,
   };
 

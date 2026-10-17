@@ -24,6 +24,7 @@ import {
   UiResult,
   Wild3Distributions,
 } from "./wild3SetupToDistribution";
+import { formatLargeInteger } from "~/utils/formatLargeInteger";
 
 /*
 Wild3LeadCycleSpeedSelector is used to set/calibrate leadCycleSpeed.
@@ -42,7 +43,7 @@ const getColumns = (targetSetup: TargetSetup): ResultColumn<UiResult>[] => {
     {
       title: "",
       key: "isWanted",
-      dataIndex: "pre_sweet_scent_cycle_ranges",
+      dataIndex: "pre_sweet_scent_cycle_range",
       render: (_, values) => {
         if (values.method !== targetSetup.targetMethod) {
           return null;
@@ -64,18 +65,10 @@ const getColumns = (targetSetup: TargetSetup): ResultColumn<UiResult>[] => {
       key: "Cycle at start",
       tooltip:
         "Processor cycle counter when reaching start of the Pokémon generation.",
-      dataIndex: "pre_sweet_scent_cycle_ranges",
-      render: (pre_sweet_scent_cycle_ranges) => {
-        if (pre_sweet_scent_cycle_ranges.length === 0) {
-          return "Less than 0";
-        }
-
-        const rangeTxts = pre_sweet_scent_cycle_ranges.map(
-          (range) => `${range.start} - ${range.start + range.len - 1}`,
-        );
-        return rangeTxts.map((rangeTxt) => {
-          return <div key={rangeTxt}>{rangeTxt}</div>;
-        });
+      dataIndex: "pre_sweet_scent_cycle_range",
+      render: (pre_sweet_scent_cycle_range) => {
+        const range = pre_sweet_scent_cycle_range;
+        return `${formatLargeInteger(range.start)} to ${formatLargeInteger(range.start + range.len - 1)}`;
       },
     },
     {
@@ -111,16 +104,19 @@ export const Wild3LeadCycleSpeedSelector = ({
   const [leadCycleSpeed, setLeadCycleSpeed] = React.useState<number | null>(
     leadCycleSpeedProp ?? null,
   );
+  const actualLeadCycleSpeed = targetSetup.lead === "Egg" ? 0 : leadCycleSpeed;
 
   React.useEffect(() => {
     setLeadCycleSpeed(leadCycleSpeedProp ?? null);
   }, [leadCycleSpeedProp]);
 
   React.useEffect(() => {
-    setupToDistributions(targetSetup, leadCycleSpeed ?? 0).then((val) => {
+    setupToDistributions(targetSetup, {
+      LikelihoodForLead: { lead_cycle_spd: actualLeadCycleSpeed ?? 0 },
+    }).then((val) => {
       setDistributions(val);
     });
-  }, [leadCycleSpeed, targetSetup]);
+  }, [actualLeadCycleSpeed, targetSetup]);
 
   return (
     <>
@@ -156,11 +152,10 @@ export const Wild3LeadCycleSpeedSelector = ({
           </Typography.Text>
         )}
 
-      {distributions != null && permitEnablingDebugOptions && (
+      {permitEnablingDebugOptions && (
         <Wild3CycleAtMoments
-          leadCycleSpeed={leadCycleSpeed}
-          cycleAtMomentsFromTool={distributions.cycle_at_moments}
-          advanceAtSweetScent={distributions.advanceAtSweetScent}
+          leadCycleSpeed={actualLeadCycleSpeed}
+          targetSetup={targetSetup}
         />
       )}
     </>

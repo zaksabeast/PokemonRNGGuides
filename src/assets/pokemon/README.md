@@ -4,8 +4,7 @@
   Pokedex numbers (`p1.png`), with suffixes for alternate artwork (`p201-b.png`).
 - `tilesets/` contains generated sheets grouped by generation, with 16 columns.
   All original pixels and transparent padding are preserved.
-- `src/utils/pokemonIconManifest.ts` maps supported `Species` values to sheet
-  coordinates, using the explicit IDs in `rng_tools/src/pkm/species.rs`.
+- `src/utils/pokemonIconManifest.ts` provides Emotion styles for supported `Species` values, using the explicit IDs in `rng_tools/src/pkm/species.rs`.
 
 Regenerate from the repository root with:
 

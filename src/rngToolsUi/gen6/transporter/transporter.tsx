@@ -49,7 +49,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
     title: t["Shiny"],
     dataIndex: "shiny",
-    render: (shiny) => <ShinyIcon shiny={shiny} />,
+    render: (shiny) => <ShinyIcon shiny={shiny} translations={t} />,
   },
   ...getIvColumns(t),
   {

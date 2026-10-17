@@ -96,7 +96,7 @@ const getColumns = (
   {
     title: t["Shiny"],
     dataIndex: "shiny",
-    render: (shiny: ShinyType) => <ShinyIcon shiny={shiny} />,
+    render: (shiny: ShinyType) => <ShinyIcon shiny={shiny} translations={t} />,
   },
   { title: t["Nature"], dataIndex: "nature" },
   { title: t["Gender"], dataIndex: "gender" },

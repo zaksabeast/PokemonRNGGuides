@@ -283,7 +283,7 @@ export const Egg4Search = () => {
     {
       title: t["Shiny"],
       dataIndex: "shiny",
-      render: (shiny) => <ShinyIcon shiny={shiny} />,
+      render: (shiny) => <ShinyIcon shiny={shiny} translations={t} />,
     },
     { title: t["Gender"], dataIndex: "gender" },
     {

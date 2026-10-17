@@ -144,7 +144,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
     title: t["Shiny"],
     dataIndex: "shiny",
-    render: (shiny) => <ShinyIcon shiny={shiny} />,
+    render: (shiny) => <ShinyIcon shiny={shiny} translations={t} />,
   },
   { title: t["Nature"], dataIndex: "nature" },
   { title: t["Ability"], dataIndex: "ability" },

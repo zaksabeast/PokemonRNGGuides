@@ -10,8 +10,9 @@ export const NavRoute: React.FC<RouteProps<never, Route>> = WRoute;
 const backwardsCompatibleRoutes: Record<string, Route | `${Route}?${string}`> =
   {
     "tools-and-emulators": "/",
-    transporter: "/transporter-dream-radar/",
+    "/transporter": "/bank-transporter/",
     "/guides/tools/en/install pcalc.md": "/install-pokereader/?from=pcalc",
+    "/downloads/pcalc/usum": "/install-pokereader/?from=pcalc",
   };
 
 const BackwardsCompatiblePage = ({ to }: { to: string }) => {

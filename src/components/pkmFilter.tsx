@@ -30,6 +30,7 @@ import { FormikRadio } from "./radio";
 import { NatureFilterInput } from "./natureFilterInput";
 import { Flex } from "./flex";
 import { Icon } from "./icons";
+
 const toNatureLabel = (nat: string, up: string, down: string) => {
   return (
     <Flex mr={8}>

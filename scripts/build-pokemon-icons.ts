@@ -80,7 +80,9 @@ for (let sheet = 0; sheet < ends.length; sheet++) {
     });
   });
   sheetRows.push(rows);
-  imports.push(`import gen${sheet + 1} from "~/assets/pokemon/tilesets/${filename}";`);
+  imports.push(
+    `import gen${sheet + 1} from "~/assets/pokemon/tilesets/${filename}";`,
+  );
 }
 // Species array indices include forms; use the explicit Rust IDs instead.
 const rust = await fs.readFile(

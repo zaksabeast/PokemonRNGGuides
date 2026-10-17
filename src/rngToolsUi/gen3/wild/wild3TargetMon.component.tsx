@@ -37,7 +37,9 @@ export const Wild3TargetMon = () => {
       <FormSelectField<FormState>
         name="species"
         label="Species"
-        options={getGen3SpeciesOptions().byFilteredName(emeraldWildGameData.species)}
+        options={getGen3SpeciesOptions().byFilteredName(
+          emeraldWildGameData.species,
+        )}
       />
       <PkmFilter<FormState> species={species} displayHiddenAbility={false} />
       <Gen3PkmFilter<FormState>

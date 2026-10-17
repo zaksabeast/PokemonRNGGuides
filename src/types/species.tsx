@@ -1149,12 +1149,15 @@ const createLazyOptions = (end: number) => {
       searchText: formatSpeciesLabel(value),
       label: <PokemonName species={value} iconSize={24} />,
     }));
-    const speciesOptionsByName = sortBy(speciesByDex, (option) => option.searchText);
+    const speciesOptionsByName = sortBy(
+      speciesByDex,
+      (option) => option.searchText,
+    );
 
     return {
       byDex: speciesByDex,
       byName: speciesOptionsByName,
-      byFilteredName: <Value extends Species,>(species: readonly Value[]) => {
+      byFilteredName: <Value extends Species>(species: readonly Value[]) => {
         const includedSpecies = new Set<Species>(species);
         return speciesOptionsByName.filter(
           (option): option is typeof option & { value: Value } =>

@@ -1,3 +1,4 @@
+mod egg;
 mod fossil_timeline;
 mod gift;
 mod npc_model;
@@ -11,6 +12,7 @@ mod usum_fossil_plan;
 mod usum_gift_search;
 mod usum_starter_plan;
 
+pub use egg::*;
 pub use gift::*;
 pub use npc_model::*;
 pub use safe_advances::*;

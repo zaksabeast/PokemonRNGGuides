@@ -9,6 +9,9 @@ import {
   Typography,
 } from "~/components";
 import { Gen7Gift, Gen7Press } from "~/rngTools";
+
+// Eggs share the tags with gifts.
+type TaggedPokemon = Pick<Gen7Gift, "nature" | "gender" | "ivs" | "shiny">;
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { formatMinutesAndSeconds } from "~/utils/formatDuration";
 import { SAFE_ADVANCE_COUNT } from "./useSafeAdvances";
@@ -53,11 +56,11 @@ export const PressTiming = ({
   </Flex>
 );
 
-const formatIvs = ({ ivs }: Gen7Gift) =>
+const formatIvs = ({ ivs }: TaggedPokemon) =>
   [ivs.hp, ivs.atk, ivs.def, ivs.spa, ivs.spd, ivs.spe].join("/");
 
 type GiftTagsProps = {
-  gift: Gen7Gift | null;
+  gift: TaggedPokemon | null;
   // Shown when set. Null is the placeholder.
   abilityName?: string | null;
 };

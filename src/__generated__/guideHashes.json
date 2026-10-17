@@ -987,10 +987,6 @@
     "hash": "74b16fabb0082a12100d2c4efef2dc8ac40b446a6e262d7ff4886b7550c6c5e6",
     "lastUpdated": "2026-03-25"
   },
-  "/retail-usum-fossil/": {
-    "hash": "62668fc88c7c2dcdfb88fa2fd58ccf2471942f49e1c4e10fce6ffc57727e75b9",
-    "lastUpdated": "2026-10-15"
-  },
   "/retail-usum-initial-seed-clocks/": {
     "hash": "d6794759a265a93815cea80074b3d9e1e7a00401772c0b068c36fc54f04b4efb",
     "lastUpdated": "2026-03-25"
@@ -1130,6 +1126,14 @@
   "/ultra-sun-and-ultra-moon/": {
     "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
     "lastUpdated": "2026-10-03"
+  },
+  "/usum-egg/": {
+    "hash": "6f87e5d68e81112a3c19ad0d583708e9b43de59d27690aeac20dace4267c6482",
+    "lastUpdated": "2026-10-16"
+  },
+  "/usum-fossil/": {
+    "hash": "56903c3ac38c00cf620e31eb81e5e2f04e7311a7dd6448b3bfe7228773bf9e39",
+    "lastUpdated": "2026-10-16"
   },
   "/what-is-rng/": {
     "hash": "e721739544b52aaea364ee9aa945b1d2f1710568011ea887fe06cca99995de44",

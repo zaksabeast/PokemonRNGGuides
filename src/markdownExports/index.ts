@@ -320,6 +320,18 @@ const tools = {
     () => import("~/rngToolsUi/gen7/fossilPresses"),
     (mod) => mod.Gen7FossilTargetAdvance,
   ),
+  Gen7EggSearch: lazyLoad(
+    () => import("~/rngToolsUi/gen7/eggSearch"),
+    (mod) => mod.Gen7EggSearch,
+  ),
+  Gen7EggPath: lazyLoad(
+    () => import("~/rngToolsUi/gen7/eggPresses"),
+    (mod) => mod.Gen7EggPath,
+  ),
+  Gen7EggTarget: lazyLoad(
+    () => import("~/rngToolsUi/gen7/eggPresses"),
+    (mod) => mod.Gen7EggTarget,
+  ),
   ShinyEmeraldStarter: lazyLoad(
     () => import("~/rngToolsUi/gen3/shinyStarter"),
     (mod) => mod.ShinyEmeraldStarter,

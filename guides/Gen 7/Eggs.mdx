@@ -1,0 +1,116 @@
+---
+title: "Ultra Sun and Ultra Moon Egg RNG"
+navDrawerTitle: "Egg RNG"
+description: "Learn how to RNG eggs in Ultra Sun and Ultra Moon for perfect IVs, natures, and shinies."
+slug: "usum-egg"
+category: "Ultra Sun and Ultra Moon"
+section: "pokemon_rng"
+variant: "cfw-emu"
+isRoughDraft: true
+---
+
+## Tools
+
+- Optional: [A 3DS with PokeReader](/install-pokereader) or [Azahar with PokeReader](/install-pokereader-emu)
+
+Without PokeReader, you can still use this guide if you know your egg seeds and TSV. See [Getting Your Egg Seeds and TSV](#getting-your-egg-seeds-and-tsv).
+
+## Masuda Method, Shiny Charm, or Neither?
+
+How you RNG an egg depends on whether you're using the Masuda Method (parents from games in different languages), the Shiny Charm, or both.
+
+- **With the Masuda Method and/or Shiny Charm**, your egg seeds decide everything about the egg, including whether it's shiny. You reach the egg you want by accepting and rejecting eggs, which is what this guide covers.
+- **Without either**, the egg seeds decide everything except whether it's shiny. That's decided when you accept the egg. This guide doesn't cover that yet, so use the [Egg RNG without Masuda Method or Shiny Charm guide](/retail-usum-egg-no-mmsc) for now.
+
+<Stepper
+  titles={["Find a Target", "Accept and Reject Eggs", "Get the Egg"]}
+>
+
+<Step step={0}>
+
+## In-Game Preparations
+
+1. Leave the parents you want to breed at the Nursery on Route 5.
+2. Walk around until the Nursery lady has an egg for you.
+3. Save your game in front of her before talking to her.
+
+## Getting Your Egg Seeds and TSV
+
+### With PokeReader
+
+1. Open PokeReader and find your TSV in the main RNG view.
+2. Go to the Daycare view to find your egg seeds, whether you have the Shiny Charm, and your parents' info.
+
+### Without PokeReader
+
+- To find your egg seeds without custom firmware, follow the [Find Egg Seeds guide](/retail-usum-egg-seed-no-cfw).
+- With homebrew or custom firmware, back up your save with a save manager like Checkpoint and open it in PKHeX to see your egg seeds and TSV.
+- Someone in the [Pokemon RNG Discord](https://www.discord.gg/d8JuAvg) might be able to help you find your TSV.
+
+> [!NOTE]
+> If you've used this tool before, click "Use as current egg seeds" after getting each egg so you don't need to find your egg seeds again.
+
+## Find a Target
+
+1. Enter your four egg seeds and your TSV.
+2. Turn on "Masuda Method" if the parents are from games in different languages, and turn on "Shiny Charm" if you have it.
+3. Choose the gender ratio of the Pokemon that will hatch. Pick "Nidoran or Volbeat/Illumise" if the egg could hatch into either Nidoran, or into Volbeat or Illumise.
+4. Turn on "Same Species" if both parents are the same species.
+5. Fill in each parent. Turn on "Ditto" for the parent that's a Ditto, if any. Genderless and male-only Pokemon count Ditto as the female parent.
+6. Set your filters and click "Generate".
+7. Click "Select" on the egg you want. Lower "Accepts + Rejects" means less work to reach it.
+
+> [!TIP]
+> Shiny eggs can take a while to reach. If you can't find one you like, increase the "Max Advances".
+
+<Gen7EggSearch />
+
+</Step>
+
+<Step step={1}>
+
+## Accept and Reject Eggs
+
+1. Follow the steps below from top to bottom. Wait for a new egg each time before accepting or rejecting it.
+2. Click "Done" on each step once you've finished it, so you don't lose your place.
+3. If you have PokeReader, check that your egg seeds match the ones shown before each step.
+4. Save your game every so often so you don't lose your progress.
+
+> [!WARNING]
+> Accepting or rejecting eggs in a different order than shown changes your egg seeds and you won't get your target. Don't accept your target egg in this step.
+
+<Gen7EggPath />
+
+> [!TIP]
+> If your egg seeds stop matching, save, enter your current egg seeds in the "Find a Target" step, and pick a new target.
+
+</Step>
+
+<Step step={2}>
+
+## Get the Egg
+
+1. Wait for the next egg. If you have PokeReader, check your egg seeds match the ones below.
+2. Accept the egg. This is your target.
+3. To RNG another egg, click "Use as current egg seeds". The tool goes back to "Find a Target" with your new egg seeds already filled in.
+
+<Gen7EggTarget />
+
+Congrats! You should now have the egg you wanted.
+
+## If You Did Not Get the Egg You Wanted
+
+1. Double-check that your egg seeds were entered in the right order and that your TSV is correct.
+2. Check the parents' IVs, held items, ability slots, and Ditto settings.
+3. Check the "Masuda Method" setting. The parents need to be from games in different languages.
+4. Check the "Shiny Charm" setting matches whether you have it.
+5. Make sure you accepted and rejected the eggs in the exact order shown.
+
+</Step>
+
+</Stepper>
+
+## Credits
+
+- wwwwwwzx for [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool), which this tool's logic is based on.
+- Chinese translation of the original egg guides: xuanyelin, Hakuhiro.

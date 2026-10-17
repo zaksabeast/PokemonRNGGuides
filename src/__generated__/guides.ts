@@ -10508,44 +10508,6 @@ export const guides = {
       return file.default;
     }),
   },
-  "/retail-usum-fossil/": {
-    meta: {
-      id: "/retail-usum-fossil/",
-      categories: ["Ultra Sun and Ultra Moon"],
-      section: "pokemon_rng",
-      guideVariants: ["cfw-emu"],
-      guideKey: "true-Fossil RNG",
-      isNew: false,
-      title: "Ultra Sun and Ultra Moon Fossil RNG",
-      navDrawerTitle: "Fossil RNG",
-      description:
-        "Learn how to RNG fossil Pokemon in Ultra Sun and Ultra Moon for perfect IVs, natures, and shinies.",
-      slug: "/retail-usum-fossil/",
-      isRoughDraft: true,
-      orderPriority: 20,
-      difficulty: null,
-      hideFromNavDrawer: false,
-      addedOn: null,
-      translation: null,
-      layout: "guide",
-      lastUpdated: "2026-10-15",
-      type: "baseGuide",
-      canonical: "/retail-usum-fossil/",
-      file: "guides/Gen 7/Fossils.mdx",
-      translations: null,
-      guideGroupId: "en:true-Fossil RNG:Ultra Sun and Ultra Moon",
-      guideVariantLinks: {
-        retail: null,
-        cfwEmu: { type: "slug", slug: "/retail-usum-fossil/" },
-      },
-      displayAttributes: ["web_tool", "rough_draft"],
-    },
-    Guide: React.lazy(() => import("~/../guides/Gen 7/Fossils.mdx")),
-    getRawFile: memoize(async () => {
-      const file = await import("~/../guides/Gen 7/Fossils.mdx?raw");
-      return file.default;
-    }),
-  },
   "/retail-usum-initial-seed-clocks/": {
     meta: {
       id: "/retail-usum-initial-seed-clocks/",
@@ -11960,6 +11922,82 @@ export const guides = {
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
     getRawFile: memoize(async () => {
       const file = await import("~/../guides/Hubs.mdx?raw");
+      return file.default;
+    }),
+  },
+  "/usum-egg/": {
+    meta: {
+      id: "/usum-egg/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "true-Egg RNG",
+      isNew: false,
+      title: "Ultra Sun and Ultra Moon Egg RNG",
+      navDrawerTitle: "Egg RNG",
+      description:
+        "Learn how to RNG eggs in Ultra Sun and Ultra Moon for perfect IVs, natures, and shinies.",
+      slug: "/usum-egg/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-10-16",
+      type: "baseGuide",
+      canonical: "/usum-egg/",
+      file: "guides/Gen 7/Eggs.mdx",
+      translations: null,
+      guideGroupId: "en:true-Egg RNG:Ultra Sun and Ultra Moon",
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/usum-egg/" },
+      },
+      displayAttributes: ["web_tool", "rough_draft"],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 7/Eggs.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 7/Eggs.mdx?raw");
+      return file.default;
+    }),
+  },
+  "/usum-fossil/": {
+    meta: {
+      id: "/usum-fossil/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "true-Fossil RNG",
+      isNew: false,
+      title: "Ultra Sun and Ultra Moon Fossil RNG",
+      navDrawerTitle: "Fossil RNG",
+      description:
+        "Learn how to RNG fossil Pokemon in Ultra Sun and Ultra Moon for perfect IVs, natures, and shinies.",
+      slug: "/usum-fossil/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-10-16",
+      type: "baseGuide",
+      canonical: "/usum-fossil/",
+      file: "guides/Gen 7/Fossils.mdx",
+      translations: null,
+      guideGroupId: "en:true-Fossil RNG:Ultra Sun and Ultra Moon",
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/usum-fossil/" },
+      },
+      displayAttributes: ["web_tool", "rough_draft"],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 7/Fossils.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 7/Fossils.mdx?raw");
       return file.default;
     }),
   },
@@ -17739,7 +17777,6 @@ export const guideSlugs = [
   "/retail-usum-egg-no-mmsc/",
   "/retail-usum-egg-seed-no-cfw/",
   "/retail-usum-fidget/",
-  "/retail-usum-fossil/",
   "/retail-usum-initial-seed-clocks/",
   "/retail-usum-island-scan/",
   "/retail-usum-mystery-gift/",
@@ -17775,6 +17812,8 @@ export const guideSlugs = [
   "/transporter-rng-offline/",
   "/transporter-rng/",
   "/ultra-sun-and-ultra-moon/",
+  "/usum-egg/",
+  "/usum-fossil/",
   "/what-is-rng/",
   "/wishing-star-jirachi/",
   "/x-and-y/",

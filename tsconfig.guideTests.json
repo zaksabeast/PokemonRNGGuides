@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.test.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.guideTests.tsbuildinfo",
+    "target": "ES2022"
+  },
+  "include": ["guideTests", "src/**/*.d.ts"]
+}

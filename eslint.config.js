@@ -195,7 +195,14 @@ export default tseslint.config(
   },
   {
     ...baseConfig,
-    files: ["vite.config.ts"],
+    files: ["guideTests/**/*.{ts,tsx}"],
+    languageOptions: getTypeCheckedLanguageOptions(
+      "./tsconfig.guideTests.json",
+    ),
+  },
+  {
+    ...baseConfig,
+    files: ["vite.config.ts", "vitest.config.ts"],
     languageOptions: getTypeCheckedLanguageOptions("./tsconfig.node.json"),
   },
   {

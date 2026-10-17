@@ -302,6 +302,7 @@ export const RunView = <FieldId extends string = string>({
           return (
             <DigestRow
               key={row.id}
+              data-timer-phase
               $active={active}
               $selected={onSelectRow != null && index === selectedRowIndex}
               $selectable={onSelectRow != null}

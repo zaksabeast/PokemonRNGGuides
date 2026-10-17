@@ -72,8 +72,8 @@ const Validator = z
     initial_advances: z.number().int().min(0),
     max_advances: z.number().int().min(0),
     delay: z.number().int(),
-    tid: z.number().int().min(0).max(65535),
-    sid: z.number().int().min(0).max(65535),
+    tsv: z.number().int().min(0).max(4095),
+    trv: z.number().int().min(0).max(15),
     only_current_seed: z.boolean(),
     transporter_genders: z.enum(transporterGenders),
   })
@@ -86,8 +86,8 @@ const initialValues: FormState = {
   initial_advances: 20,
   max_advances: 50,
   delay: 100,
-  tid: 0,
-  sid: 0,
+  tsv: 0,
+  trv: 0,
   only_current_seed: false,
   transporter_genders: "NoGender",
   ...getPkmFilterInitialValues(),
@@ -105,13 +105,13 @@ const Fields = () => {
           numType="hex"
         />
         <FormNumberField<FormState>
-          name="tid"
-          label={t["TID"]}
+          name="tsv"
+          label={t["TSV"]}
           numType="decimal"
         />
         <FormNumberField<FormState>
-          name="sid"
-          label={t["SID"]}
+          name="trv"
+          label={t["TRV"]}
           numType="decimal"
         />
         <FormSelectField<FormState>
@@ -167,8 +167,8 @@ export const Transporter = () => {
       delay: opts.delay,
       target: 0,
       transporter_genders: [opts.transporter_genders],
-      tid: opts.tid,
-      sid: opts.sid,
+      tsv: opts.tsv,
+      trv: opts.trv,
       filter: {
         gender: null,
         ability: null,

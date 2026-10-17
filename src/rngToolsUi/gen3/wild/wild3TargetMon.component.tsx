@@ -1,4 +1,4 @@
-import { getSpeciesOptions } from "~/components/pkmFilter";
+import { getGen3SpeciesOptions } from "~/types/species";
 import {
   FormSection,
   FormSelectField,
@@ -37,7 +37,7 @@ export const Wild3TargetMon = () => {
       <FormSelectField<FormState>
         name="species"
         label="Species"
-        options={getSpeciesOptions(emeraldWildGameData.species)}
+        options={getGen3SpeciesOptions().byFilteredName(emeraldWildGameData.species)}
       />
       <PkmFilter<FormState> species={species} displayHiddenAbility={false} />
       <Gen3PkmFilter<FormState>

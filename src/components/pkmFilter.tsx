@@ -1,5 +1,4 @@
 import * as tst from "ts-toolbelt";
-import styled from "@emotion/styled";
 import type {
   AbilityType,
   Gender,
@@ -31,35 +30,6 @@ import { FormikRadio } from "./radio";
 import { NatureFilterInput } from "./natureFilterInput";
 import { Flex } from "./flex";
 import { Icon } from "./icons";
-import { PokemonIcon } from "./pokemonIcon";
-import { formatSpeciesLabel } from "~/types/species";
-
-const SpeciesLabel = styled.span({
-  display: "inline-block",
-  position: "relative",
-  paddingLeft: 28,
-  "& > [aria-hidden]": {
-    position: "absolute",
-    left: 0,
-    top: "50%",
-    transform: "translateY(-50%)",
-  },
-});
-
-export const getSpeciesOptions = <Value extends Species>(
-  species: Value[],
-) =>
-  species.map((value) => ({
-    value,
-    searchText: formatSpeciesLabel(value),
-    label: (
-      <SpeciesLabel className="pokemon-species-label">
-        <PokemonIcon species={value} size={24} />
-        {formatSpeciesLabel(value)}
-      </SpeciesLabel>
-    ),
-  }));
-
 const toNatureLabel = (nat: string, up: string, down: string) => {
   return (
     <Flex mr={8}>

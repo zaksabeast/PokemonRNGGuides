@@ -1,4 +1,3 @@
-import { getSpeciesOptions } from "~/components/pkmFilter";
 import React from "react";
 import {
   FormSection,
@@ -16,7 +15,7 @@ import {
   getPossibleStatic3Species,
 } from "./constants.tsx";
 import { PaintingReseedingFields } from "../pokemonRng/targetSetupInput";
-import { species } from "~/types/species";
+import { getGen3SpeciesOptions, species } from "~/types/species";
 import { lcrng_distance } from "~/utils/lcrng";
 import { z } from "zod";
 
@@ -107,7 +106,9 @@ const Static3TargetSetupInputFields = ({
       <FormSelectField<FormState>
         name="species"
         label="Species"
-        options={getSpeciesOptions(getPossibleStatic3Species("emerald"))}
+        options={getGen3SpeciesOptions().byFilteredName(
+          getPossibleStatic3Species(GAME),
+        )}
       />
       {hasMultiplePossibleRoaming && (
         <FormSwitchField<FormState> name="roaming" label="Roaming" />

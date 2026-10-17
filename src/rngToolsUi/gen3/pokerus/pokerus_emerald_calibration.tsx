@@ -1,4 +1,4 @@
-import { getSpeciesOptions } from "~/components/pkmFilter";
+import { getGen3SpeciesOptions } from "~/types/species";
 import { Button, Icon, ResultColumn } from "~/components";
 import {
   FieldRow,
@@ -203,7 +203,9 @@ const CalibrationInputs = ({
         <SelectField<Species>
           label="Stationary Pokémon"
           value={staticSpecies}
-          options={getSpeciesOptions(getPossibleStatic3Species("emerald"))}
+          options={getGen3SpeciesOptions().byFilteredName(
+            getPossibleStatic3Species("emerald"),
+          )}
           onChange={setStaticSpecies}
         />
       )}

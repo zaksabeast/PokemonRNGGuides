@@ -61,6 +61,9 @@ const Container = styled.div(({ theme }) => ({
     paddingInlineStart: 16,
     paddingInlineEnd: 8,
   },
+  "&&& .ant-select-single:has(.pokemon-species-label) .ant-select-input": {
+    paddingLeft: 28,
+  },
   "&&& .ant-select-placeholder": {
     color: theme.token.colorTextTertiary,
   },

@@ -1,3 +1,4 @@
+import { getGen3SpeciesOptions } from "~/types/species";
 import { Typography, Link } from "~/components";
 import {
   FormSection,
@@ -8,7 +9,6 @@ import {
   PkmFilter,
 } from "~/components/form";
 import { useWatch } from "~/hooks/form";
-import { toOptions } from "~/utils/options";
 import { z } from "zod";
 
 import {
@@ -60,7 +60,7 @@ export const Static3TargetMon = ({ game }: { game: Static3Game }) => {
       <FormSelectField<FormState>
         name="species"
         label="Species"
-        options={toOptions(possibleSpecies)}
+        options={getGen3SpeciesOptions().byFilteredName(possibleSpecies)}
       />
       {hasMultiplePossibleRoaming && (
         <FormSwitchField<FormState> name="roaming" label="Roaming" />

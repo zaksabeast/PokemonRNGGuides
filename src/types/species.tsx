@@ -1,5 +1,5 @@
 import { Species } from "~/rngTools";
-import { toOptions } from "~/utils/options";
+import { PokemonName } from "~/components/pokemonName";
 import { sortBy, memoize } from "lodash-es";
 
 export const species = [
@@ -1144,12 +1144,26 @@ export const formatSpeciesLabel = (species: Species) => {
 
 const createLazyOptions = (end: number) => {
   return memoize(() => {
-    const speciesByDex = toOptions(species.slice(1, end), formatSpeciesLabel);
-    const speciesOptionsByName = sortBy(speciesByDex, (option) => option.label);
+    const speciesByDex = species.slice(1, end).map((value) => ({
+      value,
+      searchText: formatSpeciesLabel(value),
+      label: <PokemonName species={value} iconSize={24} />,
+    }));
+    const speciesOptionsByName = sortBy(
+      speciesByDex,
+      (option) => option.searchText,
+    );
 
     return {
       byDex: speciesByDex,
       byName: speciesOptionsByName,
+      byFilteredName: <Value extends Species>(species: readonly Value[]) => {
+        const includedSpecies = new Set<Species>(species);
+        return speciesOptionsByName.filter(
+          (option): option is typeof option & { value: Value } =>
+            includedSpecies.has(option.value),
+        );
+      },
       byNameOptional: [
         { label: "None", value: "None" } as const,
         ...speciesOptionsByName,

@@ -15,9 +15,8 @@ import {
   getPossibleStatic3Species,
 } from "./constants.tsx";
 import { PaintingReseedingFields } from "../pokemonRng/targetSetupInput";
-import { species } from "~/types/species";
+import { getGen3SpeciesOptions, species } from "~/types/species";
 import { lcrng_distance } from "~/utils/lcrng";
-import { toOptions } from "~/utils/options";
 import { z } from "zod";
 
 const schema = z.object({
@@ -107,7 +106,9 @@ const Static3TargetSetupInputFields = ({
       <FormSelectField<FormState>
         name="species"
         label="Species"
-        options={toOptions(getPossibleStatic3Species("emerald"))}
+        options={getGen3SpeciesOptions().byFilteredName(
+          getPossibleStatic3Species(GAME),
+        )}
       />
       {hasMultiplePossibleRoaming && (
         <FormSwitchField<FormState> name="roaming" label="Roaming" />

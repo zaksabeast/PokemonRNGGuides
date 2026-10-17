@@ -1,3 +1,4 @@
+import { getGen3SpeciesOptions } from "~/types/species";
 import React from "react";
 import {
   FormCard,
@@ -7,7 +8,6 @@ import {
 } from "~/components/form";
 import { getTargetPokemonDesc } from "./calc";
 import type { Game, TargetStarter } from "./index";
-import { toOptions } from "~/utils/options";
 import { getStatRange } from "~/types/statRange";
 
 const starters = ["Mudkip", "Torchic", "Treecko"] as const;
@@ -54,7 +54,7 @@ export const TargetPokemon = ({
           cellSize="word"
           value={species}
           onChange={setSpecies}
-          options={toOptions(starters)}
+          options={getGen3SpeciesOptions().byFilteredName(starters)}
         />
         <FormSummary rows={[{ label: "Info", value: targetPokemonDesc }]} />
       </FormSection>

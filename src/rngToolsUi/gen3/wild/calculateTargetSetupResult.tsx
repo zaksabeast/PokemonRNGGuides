@@ -20,7 +20,7 @@ import { emeraldWildGameData } from "./wild3CalibCaughtMon";
 import { nature_from_pid } from "~/types";
 import { formatProbability } from "~/utils/formatProbability";
 import { formatHex } from "~/utils/formatHex";
-import { Flex } from "~/components";
+import { Flex, PokemonName } from "~/components";
 
 const getProbabilityInfo = async (
   res: Wild3GeneratorMonResult,
@@ -200,9 +200,9 @@ export const calculateTargetSetupResult = async (
     content: (
       <Flex vertical>
         <div>
-          {species}, Lvl {res.lvl}, {gender}, {abilityStr}, {nature}, HP{" "}
-          {stats.hp}, ATK {stats.atk}, DEF {stats.def}, SPA {stats.spa}, SPD{" "}
-          {stats.spd}, SPE {stats.spe}
+          <PokemonName species={species} />, Lvl {res.lvl}, {gender},{" "}
+          {abilityStr}, {nature}, HP {stats.hp}, ATK {stats.atk}, DEF{" "}
+          {stats.def}, SPA {stats.spa}, SPD {stats.spd}, SPE {stats.spe}
         </div>
         <div>
           PID: {formatHex(res.pid)}, IVS: {ivs.hp}/{ivs.atk}/{ivs.def}/{ivs.spa}

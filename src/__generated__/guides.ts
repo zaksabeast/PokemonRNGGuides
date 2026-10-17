@@ -1116,7 +1116,7 @@ export const guides = {
   "/connect-dolphin-to-gba/": {
     meta: {
       id: "/connect-dolphin-to-gba/",
-      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen"],
       section: "tool",
       guideVariants: null,
       guideKey: "false-Connect Dolphin to mGBA",
@@ -1133,7 +1133,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-03-22",
+      lastUpdated: "2026-10-17",
       type: "baseGuide",
       canonical: "/connect-dolphin-to-gba/",
       file: "guides/Tools and Emulators/Connect Dolphin To GBA.mdx",
@@ -1142,7 +1142,7 @@ export const guides = {
         zh: "/zh-connect-dolphin-to-gba/",
       },
       guideGroupId:
-        "en:false-Connect Dolphin to mGBA:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
+        "en:false-Connect Dolphin to mGBA:FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -2117,7 +2117,6 @@ export const guides = {
       categories: [
         "Ruby and Sapphire",
         "FireRed and LeafGreen",
-        "Emerald",
         "Diamond, Pearl, and Platinum",
         "HeartGold and SoulSilver",
         "Black and White",
@@ -2147,7 +2146,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-07-12",
+      lastUpdated: "2026-10-17",
       type: "baseGuide",
       canonical: "/delete-pokemon-save/",
       file: "guides/Tools and Emulators/Delete Save.mdx",
@@ -2157,7 +2156,7 @@ export const guides = {
         zh: "/zh-delete-pokemon-save/",
       },
       guideGroupId:
-        "en:false-Delete Save Files:Bank and Transporter|Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Dream Radar|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Ultra Sun and Ultra Moon|X and Y",
+        "en:false-Delete Save Files:Bank and Transporter|Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Dream Radar|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -5266,7 +5265,6 @@ export const guides = {
       categories: [
         "Ruby and Sapphire",
         "FireRed and LeafGreen",
-        "Emerald",
         "Diamond, Pearl, and Platinum",
         "HeartGold and SoulSilver",
         "Black and White",
@@ -5306,7 +5304,7 @@ export const guides = {
         zh: "/zh-delete-pokemon-save/",
       },
       guideGroupId:
-        "es:false-Delete Save Files:Bank and Transporter|Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Dream Radar|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Ultra Sun and Ultra Moon|X and Y",
+        "es:false-Delete Save Files:Bank and Transporter|Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Dream Radar|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -8396,7 +8394,7 @@ export const guides = {
   "/no-dolphin-patch/": {
     meta: {
       id: "/no-dolphin-patch/",
-      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen"],
       section: "patch",
       guideVariants: null,
       guideKey: "false-No Dolphin Patch",
@@ -8413,13 +8411,13 @@ export const guides = {
       addedOn: "2025-04-03",
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-04-28",
+      lastUpdated: "2026-10-17",
       type: "baseGuide",
       canonical: "/no-dolphin-patch/",
       file: "guides/Tools and Emulators/No Dolphin Patch.mdx",
       translations: { en: "/no-dolphin-patch/", zh: "/zh-no-dolphin-patch/" },
       guideGroupId:
-        "en:false-No Dolphin Patch:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
+        "en:false-No Dolphin Patch:FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: ["video_guide"],
     },
@@ -12413,7 +12411,7 @@ export const guides = {
   "/zh-connect-dolphin-to-gba/": {
     meta: {
       id: "/connect-dolphin-to-gba/",
-      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen"],
       section: "tool",
       guideVariants: null,
       guideKey: "false-Connect Dolphin to mGBA",
@@ -12438,7 +12436,7 @@ export const guides = {
         zh: "/zh-connect-dolphin-to-gba/",
       },
       guideGroupId:
-        "zh:false-Connect Dolphin to mGBA:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
+        "zh:false-Connect Dolphin to mGBA:FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -12507,7 +12505,6 @@ export const guides = {
       categories: [
         "Ruby and Sapphire",
         "FireRed and LeafGreen",
-        "Emerald",
         "Diamond, Pearl, and Platinum",
         "HeartGold and SoulSilver",
         "Black and White",
@@ -12547,7 +12544,7 @@ export const guides = {
         zh: "/zh-delete-pokemon-save/",
       },
       guideGroupId:
-        "zh:false-Delete Save Files:Bank and Transporter|Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Dream Radar|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Ultra Sun and Ultra Moon|X and Y",
+        "zh:false-Delete Save Files:Bank and Transporter|Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Dream Radar|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -15239,7 +15236,7 @@ export const guides = {
   "/zh-no-dolphin-patch/": {
     meta: {
       id: "/no-dolphin-patch/",
-      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen"],
       section: "patch",
       guideVariants: null,
       guideKey: "false-No Dolphin Patch",
@@ -15262,7 +15259,7 @@ export const guides = {
       file: "guides/Translations/zh/Tools and Emulators/No Dolphin Patch.mdx",
       translations: { en: "/no-dolphin-patch/", zh: "/zh-no-dolphin-patch/" },
       guideGroupId:
-        "zh:false-No Dolphin Patch:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
+        "zh:false-No Dolphin Patch:FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: ["video_guide"],
     },

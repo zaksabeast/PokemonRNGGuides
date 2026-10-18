@@ -111,7 +111,7 @@ export const buildSimplifiedSearchOptions = (
   sid: trainerIdSchema.parse(values.sid),
   initial_advances: 1000,
   max_advances: 10_000_000,
-  max_result_count: 20,
+  max_result_count: 100,
   filter: pkmFilterFieldsToRustInput({
     ...getPkmFilterInitialValues(),
     filter_shiny: true,

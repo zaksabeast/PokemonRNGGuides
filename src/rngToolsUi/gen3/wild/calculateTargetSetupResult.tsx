@@ -26,7 +26,6 @@ const getProbabilityInfo = async (
   res: Wild3GeneratorMonResult,
   action: Wild3Action,
   lead_cycle_speed: number | null,
-  showIdealLead: boolean,
 ) => {
   if (lead_cycle_speed == null || res.cycle_range == null) {
     return null;
@@ -56,7 +55,6 @@ const getProbabilityInfo = async (
         : `with lead cycle speed ${lead_cycle_speed}`;
 
   const showIdealInfo =
-    showIdealLead &&
     info.method_probability < 0.99 &&
     lead_cycle_speed !== ideal_lead_spd;
 
@@ -111,7 +109,7 @@ export const getAbilityDisplayStrFromAbType = async (
 export const calculateTargetSetupResult = async (
   targetSetup: TargetSetup,
   lead_cycle_speed: number | null,
-  showIdealLead = true,
+  showProbabilityInfo = true,
 ) => {
   const opts: Wild3GeneratorOptions = {
     tid: 0,
@@ -193,12 +191,9 @@ export const calculateTargetSetupResult = async (
   const gender = await rngTools.get_species_gender_from_pid(species, res.pid);
   const { ivs } = res;
 
-  const probabilityInfo = await getProbabilityInfo(
-    res,
-    targetSetup.action,
-    lead_cycle_speed,
-    showIdealLead,
-  );
+  const probabilityInfo = showProbabilityInfo
+    ? await getProbabilityInfo(res, targetSetup.action, lead_cycle_speed)
+    : null;
   const abilityStr = await getAbilityDisplayStr(species, res.pid);
 
   return {

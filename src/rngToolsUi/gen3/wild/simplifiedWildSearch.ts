@@ -34,21 +34,26 @@ export const getSimplifiedLeadSpeed = (lead: Gen3Lead): number =>
   lead === "Egg" ? 0 : AVERAGE_LEAD_CYCLE_SPEED;
 
 export const getSimplifiedMapSetups = (species: Species): Wild3MapSetups[] => {
-  if (species === "Feebas") return [];
+  if (species === "Feebas") {
+    // Exclude Feebas, because catching Feebas is complex.
+    return [];
+  }
   return (getWild3EmeraldGameData().mapSetupsBySpecies.get(species) ?? [])
-    .map((setup): Wild3MapSetups => ({
-      ...setup,
-      actions: setup.actions.filter(
-        (action) =>
-          !(setup.map_data.feebas != null && isFishingAction(action)) &&
-          setup.map_data.slots_by_action[wild3Actions.indexOf(action)]?.some(
-            (slot) => slot.species_data.species === species,
-          ),
-      ),
-      roamer_states: ["Inactive"],
-      mass_outbreak_states: ["Inactive"],
-      feebas_states: ["NotInMap"],
-    }))
+    .map(
+      (setup): Wild3MapSetups => ({
+        ...setup,
+        actions: setup.actions.filter(
+          (action) =>
+            !(setup.map_data.feebas != null && isFishingAction(action)) &&
+            setup.map_data.slots_by_action[wild3Actions.indexOf(action)]?.some(
+              (slot) => slot.species_data.species === species,
+            ),
+        ),
+        roamer_states: ["Inactive"],
+        mass_outbreak_states: ["Inactive"],
+        feebas_states: ["NotInMap"],
+      }),
+    )
     .filter((setup) => setup.actions.length > 0);
 };
 
@@ -61,9 +66,11 @@ const trainerIdSchema = z.number().int().min(0).max(0xffff);
 export const simplifiedSearchSchema = z
   .object({
     species: z.enum(simplifiedSpecies),
-    tid: trainerIdSchema.nullable()
+    tid: trainerIdSchema
+      .nullable()
       .refine((value) => value !== null, "TID is required."),
-    sid: trainerIdSchema.nullable()
+    sid: trainerIdSchema
+      .nullable()
       .refine((value) => value !== null, "SID is required."),
     recommendedSetups: z.boolean(),
     maps: z.array(z.string()),
@@ -116,7 +123,11 @@ export const buildSimplifiedSearchOptions = (
   leads: simplifiedLeads.filter(
     (lead) =>
       values.recommendedSetups ||
-      values.leadKeys.includes(typeof lead === "object" ? "Synchronize" : lead),
+      values.leadKeys.includes(
+        typeof lead === "object" && "Synchronize" in lead
+          ? "Synchronize"
+          : lead,
+      ),
   ),
   map_setups: getSimplifiedMapSetups(values.species)
     .filter(
@@ -151,20 +162,11 @@ type Candidate = SelectedWildSetup & { leadOrder: number };
 export const selectSimplifiedCandidate = (
   candidates: Candidate[],
 ): SelectedWildSetup | null => {
-  const ordered = orderBy(candidates, [
-    (candidate) => candidate.targetSetup.targetPaintingAdvs.after,
-    (candidate) => candidate.targetSetup.map,
-    (candidate) => candidate.targetSetup.action,
-    (candidate) => candidate.targetSetup.targetMethod,
-    "leadOrder",
-  ]);
-  const valid = ordered.filter(
-    (candidate) =>
-      Number.isFinite(candidate.probability) && candidate.probability > 0,
-  );
+  // Pick the first result with probability >= 0.5.
+  // If none, pick the result with highest priority.
   return (
-    valid.find((candidate) => candidate.probability > 0.5) ??
-    orderBy(valid, ["probability"], ["desc"])[0] ??
+    candidates.find((candidate) => candidate.probability > 0.5) ??
+    orderBy(candidates, ["probability"], ["desc"])[0] ??
     null
   );
 };
@@ -173,11 +175,17 @@ export const searchSimplifiedWild = async (
   values: FormState,
 ): Promise<SelectedWildSetup | null> => {
   const opts = buildSimplifiedSearchOptions(values);
-  if (opts.map_setups.length === 0 || opts.leads.length === 0) return null;
+  if (opts.map_setups.length === 0 || opts.leads.length === 0) {
+    return null;
+  }
   const groups = await rngTools.search_wild3(opts);
+  const results = groups.flatMap((group) => group.vec);
+
   const candidates: Candidate[] = [];
-  for (const res of groups.flatMap((group) => group.vec)) {
-    if (res.cycle_instability !== 0 || res.cycle_data_by_lead == null) continue;
+  for (const res of results) {
+    if (res.cycle_instability !== 0 || res.cycle_data_by_lead == null) {
+      continue;
+    }
     const leadCycleSpeed = getSimplifiedLeadSpeed(res.lead);
     const cycleData = await rngTools.calculate_cycle_data(
       res.cycle_data_by_lead.post_sweet_scent_range,

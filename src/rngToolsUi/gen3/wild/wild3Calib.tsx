@@ -13,7 +13,7 @@ import { Gen3Console, gen3ConsoleFpsMap } from "~/types/console";
 import {
   FEEBAS_MAP,
   formatActionName,
-  formatLeadName,
+  formatLeadLabel,
   formatMapName,
   isFishingAction,
 } from "./utils";
@@ -125,12 +125,14 @@ export const Wild3Calib = ({
       return setTargetSetupResult(null);
     }
 
-    calculateTargetSetupResult(targetSetup, finalLeadCycleSpeed, !simplified).then(
-      ({ content, hasEncounter }) => {
-        setTargetSetupResult(content);
-        setTargetSetupHasEncounter(hasEncounter);
-      },
-    );
+    calculateTargetSetupResult(
+      targetSetup,
+      finalLeadCycleSpeed,
+      !simplified,
+    ).then(({ content, hasEncounter }) => {
+      setTargetSetupResult(content);
+      setTargetSetupHasEncounter(hasEncounter);
+    });
   }, [finalLeadCycleSpeed, targetSetup, simplified]);
 
   const [battleVideoInfo, setBattleVideoInfo] =
@@ -264,7 +266,7 @@ export const Wild3Calib = ({
       },
       {
         label: "Lead",
-        value: formatLeadName(targetSetupProp.lead),
+        value: formatLeadLabel(targetSetupProp.lead),
       },
       ...getGen3CalibPreviousStepRows({
         targetSetup: targetSetupProp,
@@ -275,7 +277,9 @@ export const Wild3Calib = ({
         label: "Lead Cycle Speed",
         value: leadCycleSpeedToText(leadCycleSpeedProp),
         show:
-          targetSetupProp.lead !== "Egg" && overwriteLeadCycleSpeed === null,
+          !simplified &&
+          targetSetupProp.lead !== "Egg" &&
+          overwriteLeadCycleSpeed === null,
       },
       {
         label: "Target Pokémon",
@@ -351,7 +355,7 @@ export const Wild3Calib = ({
               {
                 label: "Lead cycle speed (from calibration)",
                 value: leadCycleSpeedToText(overwriteLeadCycleSpeed ?? 0),
-                show: overwriteLeadCycleSpeed !== null,
+                show: !simplified && overwriteLeadCycleSpeed !== null,
               },
             ]}
           />

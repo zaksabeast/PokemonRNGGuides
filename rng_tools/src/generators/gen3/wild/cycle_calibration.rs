@@ -9,6 +9,8 @@ use serde::Deserialize;
 use super::*;
 use crate::rng::lcrng::Pokerng;
 
+const CYCLE_ERROR_BUFFER: f64 = 50.0;
+
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct CalibrationRecord {
@@ -216,6 +218,7 @@ pub(super) fn map_pokeblock_cycle_calibration(
     data_file: &str,
     map_data: &Wild3MapGameData,
     safari_pokeblock: Option<Wild3SafariPokeblockGenOpt>,
+    baseline_cycle_error: f64,
 ) {
     let data_dir = match action {
         Wild3Action::SweetScentLand => "sweet_scent_land",
@@ -254,8 +257,9 @@ pub(super) fn map_pokeblock_cycle_calibration(
     );
     println!("{data_file} ({lead:?}) mean absolute cycle increment error: {score:.2}");
     assert!(score.is_finite());
+    let max_cycle_error = baseline_cycle_error + CYCLE_ERROR_BUFFER;
     assert!(
-        score < 100.0,
-        "{data_file} cycle increment error regressed: {score:.2}"
+        score <= max_cycle_error,
+        "{data_file} cycle increment error regressed: {score:.2} exceeds {max_cycle_error:.2} (baseline {baseline_cycle_error:.2} + buffer {CYCLE_ERROR_BUFFER:.2})"
     );
 }

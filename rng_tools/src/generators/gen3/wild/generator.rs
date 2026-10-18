@@ -77,6 +77,7 @@ fn FishingWildEncounter(
         ));
     }
 
+    GetCurrentMapWildMonHeaderId(map_data, cycle_counter);
     let (encounter_idx, level) = GenerateFishingWildMon(rng, opts, map_data, cycle_counter)?;
 
     let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, level)?;
@@ -98,7 +99,7 @@ fn CheckFeebas(
 ) -> bool {
     cycle_counter.on_moment_reached(Moment::CheckFeebas);
     if opts.feebas_state == Wild3FeebasState::NotInMap {
-        cycle_counter.add_cycle(359);
+        cycle_counter.add_cycle(47);
         return false;
     }
     if rng.rand::<u16>() % 100 > 49 {
@@ -140,12 +141,7 @@ fn RockSmashWildEncounter(
     cycle_counter: &mut CycleFrameCounter,
 ) -> Option<Wild3GeneratorResults> {
     cycle_counter.on_moment_reached(Moment::RockSmashWildEncounter);
-    // Use the measured header-lookup cost where the linear estimate overcounts.
-    let lookup_cycles = match map_data.map_id.as_str() {
-        "MAP_VICTORY_ROAD_B1F" => 6605,
-        _ => 259 + 2881 * map_data.map_internal_idx / 33,
-    };
-    cycle_counter.add_cycle(lookup_cycles);
+    GetCurrentMapWildMonHeaderId(map_data, cycle_counter);
     if !WildEncounterCheck(rng, map_data.rock_smash_rate, opts, cycle_counter) {
         return None;
     }
@@ -209,9 +205,8 @@ fn SweetScentWildEncounter(
 ) -> Option<Wild3GeneratorResults> {
     cycle_counter.on_moment_reached(Moment::SweetScentWildEncounter);
 
-    // Linear wild-header lookup cost calibrated at indices 0 (744) and 33 (3625).
-    // Limitation: The real cost is more complex and depends on sub map groups.
-    cycle_counter.add_cycle(744 + 2881 * map_data.map_internal_idx / 33);
+    cycle_counter.add_cycle(526);
+    GetCurrentMapWildMonHeaderId(map_data, cycle_counter);
     if opts.action == Wild3Action::SweetScentWater {
         cycle_counter.add_cycle(443);
     }
@@ -251,6 +246,59 @@ fn SweetScentWildEncounter(
         level,
         encounter,
     ))
+}
+
+fn GetCurrentMapWildMonHeaderId(
+    map_data: &Wild3MapGameData,
+    cycle_counter: &mut CycleFrameCounter,
+) -> usize {
+    const HEADER_LOOKUPS: [(usize, usize); 124] = calculate_map_header_lookups();
+
+    let header_id = map_data.map_internal_idx;
+    let Some(&(matched_header_id, cycles)) = HEADER_LOOKUPS.get(header_id) else {
+        // Error
+        return header_id;
+    };
+    cycle_counter.add_cycle(cycles);
+    matched_header_id
+}
+
+const fn calculate_map_header_lookups() -> [(usize, usize); 124] {
+    // Map groups in Emerald's gWildMonHeaders order, matching
+    // EMERALD_MAPS_BY_INTERNAL_IDX in wild3GameData.ts.
+    const MAP_GROUPS: [u8; 124] = [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 24, 24, 24, 24, 24, 24, 26, 0, 24, 24, 24, 24,
+        24, 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 24, 24, 24, 24, 24, 24, 24, 24, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 26, 26, 26, 24,
+        24, 24, 24, 24, 24, 24, 24, 24, 0, 0, 0, 0, 0, 0, 0, 0, 24, 24, 0, 24, 24, 26, 26, 24, 24,
+        24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
+    ];
+
+    let mut lookups = [(0, 0); MAP_GROUPS.len()];
+    let mut header_id = 0;
+    while header_id < MAP_GROUPS.len() {
+        // Altering Cave's nine tables share a map ID.
+        let scan_end = if header_id >= 114 && header_id <= 122 {
+            114
+        } else {
+            header_id
+        };
+        let mut cycles = 218;
+        let mut index = 0;
+        while index < scan_end {
+            // src/wild_encounter.c short-circuits the map-number comparison when
+            // the map group differs. Costs are calibrated from emulator intervals.
+            cycles += if MAP_GROUPS[index] == MAP_GROUPS[header_id] {
+                94
+            } else {
+                77
+            };
+            index += 1;
+        }
+        lookups[header_id] = (scan_end, cycles);
+        header_id += 1;
+    }
+    lookups
 }
 
 fn CreateRoamerMonInstance(
@@ -1412,4 +1460,38 @@ fn create_if_passes_filter(
         cycle_range,
         used_safari_pokeblock: gen_data.used_safari_pokeblock,
     })
+}
+
+#[cfg(test)]
+mod header_lookup_tests {
+    use super::*;
+
+    #[test]
+    fn calibrated_map_header_lookup_cycles() {
+        // Independent lookup intervals from the calibration fixtures. The
+        // Sweet Scent intervals include another 526 cycles at the call site.
+        for (header_id, expected) in [
+            (0, 218),
+            (6, 782),
+            (20, 1758),
+            (33, 3099),
+            (75, 6605),
+            (98, 7849),
+        ] {
+            let opts = Wild3GeneratorOptions {
+                cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead { lead_cycle_spd: 0 },
+                ..Wild3GeneratorOptions::default()
+            };
+            let mut counter = CycleFrameCounter::new(&opts);
+            let map_data = Wild3MapGameData {
+                map_internal_idx: header_id,
+                ..Wild3MapGameData::default()
+            };
+            assert_eq!(
+                GetCurrentMapWildMonHeaderId(&map_data, &mut counter),
+                header_id
+            );
+            assert_eq!(counter.get_current_post_sweet_scent_cycle_count(), expected);
+        }
+    }
 }

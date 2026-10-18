@@ -12,6 +12,7 @@ fn wild3_cycle_calib_egg_route101() {
         "egg_route101.jsonl",
         &route101_map_data(),
         None,
+        17.46,
     );
 }
 
@@ -23,6 +24,7 @@ fn wild3_cycle_calib_vanilla_route101() {
         "vanilla_route101.jsonl",
         &route101_map_data(),
         None,
+        14.32,
     );
 }
 
@@ -34,6 +36,7 @@ fn wild3_cycle_calib_vanilla_route101_v2() {
         "vanilla_route101_v2.jsonl",
         &route101_map_data(),
         None,
+        38.35,
     );
 }
 
@@ -45,6 +48,7 @@ fn wild3_cycle_calib_synchronize_naive_route101() {
         "synchronize_naive_route101.jsonl",
         &route101_map_data(),
         None,
+        15.08,
     );
 }
 
@@ -56,6 +60,7 @@ fn wild3_cycle_calib_cute_charm_female_route101() {
         "cute_charm_female_route101.jsonl",
         &route101_map_data(),
         None,
+        37.16,
     );
 }
 
@@ -67,6 +72,7 @@ fn wild3_cycle_calib_cute_charm_female_route119() {
         "cute_charm_female_route119.jsonl",
         &route119_map_data(),
         None,
+        40.21,
     );
 }
 
@@ -78,6 +84,7 @@ fn wild3_cycle_calib_cute_charm_male_desert_underpass() {
         "male_cute_charm_desert_underpass.jsonl",
         &desert_underpass_map_data(),
         None,
+        31.78,
     );
 }
 
@@ -89,6 +96,7 @@ fn wild3_cycle_calib_synchronize_gentle_route119() {
         "synchronize_gentle_route119.jsonl",
         &route119_map_data(),
         None,
+        32.68,
     );
 }
 
@@ -100,6 +108,7 @@ fn wild3_cycle_calib_egg_meteor_falls_stevens_room() {
         "egg_meteor_falls_stevens_cave.jsonl",
         &meteor_falls_stevens_cave_map_data(),
         None,
+        25.83,
     );
 }
 
@@ -111,6 +120,7 @@ fn wild3_cycle_calib_static_route110() {
         "static_route110.jsonl",
         &route110_map_data(),
         None,
+        13.11,
     );
 }
 
@@ -122,6 +132,7 @@ fn wild3_cycle_calib_magnet_pull_new_mauville_entrance() {
         "magnet_pull_new_mauville_entrance.jsonl",
         &new_mauville_entrance_map_data(),
         None,
+        24.26,
     );
 }
 
@@ -133,6 +144,7 @@ fn wild3_cycle_calib_egg_route102_water() {
         "egg_route102.jsonl",
         &route102_map_data(),
         None,
+        24.19,
     );
 }
 
@@ -144,6 +156,7 @@ fn wild3_cycle_calib_egg_route102_old_rod() {
         "egg_route102.jsonl",
         &route102_map_data(),
         None,
+        29.59,
     );
 }
 
@@ -155,6 +168,7 @@ fn wild3_cycle_calib_egg_route102_super_rod() {
         "egg_route102.jsonl",
         &route102_map_data(),
         None,
+        32.79,
     );
 }
 
@@ -166,6 +180,7 @@ fn wild3_cycle_calib_pressure_route102_old_rod() {
         "pressure_route102.jsonl",
         &route102_map_data(),
         None,
+        26.03,
     );
 }
 
@@ -177,6 +192,7 @@ fn wild3_cycle_calib_magnet_pull_route111_rock_smash() {
         "magnet_pull_route111.jsonl",
         &route111_map_data(),
         None,
+        15.57,
     );
 }
 
@@ -188,6 +204,7 @@ fn wild3_cycle_calib_vanilla_route111_rock_smash() {
         "vanilla_route111.jsonl",
         &route111_map_data(),
         None,
+        21.77,
     );
 }
 
@@ -199,6 +216,7 @@ fn wild3_cycle_calib_cute_charm_male_victory_road_b1f_rock_smash() {
         "male_cute_charm_victory_road_b1f.jsonl",
         &victory_road_b1f_map_data(),
         None,
+        83.07,
     );
 }
 
@@ -210,6 +228,7 @@ fn wild3_cycle_calib_vanilla_safari_north_east_rock_smash() {
         "vanilla_safari_north_east.jsonl",
         &safari_northeast_map_data(),
         None,
+        21.98,
     );
 }
 
@@ -221,6 +240,7 @@ fn wild3_cycle_calib_vanilla_safari_middle_south_dry_sour_pokeblock() {
         "vanilla_safari_middle_south_dry_sour_pokeblock.jsonl",
         &safari_south_map_data(),
         Some(Wild3SafariPokeblockGenOpt::Specific([0, 50, 0, 0, 11])),
+        20.61,
     );
 }
 
@@ -232,6 +252,7 @@ fn wild3_cycle_calib_cute_charm_male_safari_middle_south_white_pokeblock() {
         "male_cute_charm_safari_middle_south_pokeblock_white.jsonl",
         &safari_south_map_data(),
         Some(Wild3SafariPokeblockGenOpt::Specific([1, 1, 1, 1, 0])),
+        24.49,
     );
 }
 
@@ -243,6 +264,7 @@ fn wild3_cycle_calib_synchronize_brave_safari_middle_south_spicy_pokeblock() {
         "synchronize_brave_safari_middle_south_spicy_pokeblock.jsonl",
         &safari_south_map_data(),
         Some(Wild3SafariPokeblockGenOpt::Specific([1, 0, 0, 0, 0])),
+        34.50,
     );
 }
 

@@ -3,10 +3,9 @@ use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 use crate::gen3::{
-    COMMON_LEAD_RANGE, CycleAndModRange, FASTEST_MODULO_CYCLE_24,
-    Gen3Lead, INFINITE_CYCLE, Moment, SLOWEST_MODULO_CYCLE_24, VBLANK_FREQ,
-    Wild3GeneratorCycleOpts, Wild3GeneratorOptions, get_min_mid_max_pre_sweet_scent_cycle,
-    get_min_mid_max_vblank_cycle_duration,
+    COMMON_LEAD_RANGE, CycleAndModRange, FASTEST_MODULO_CYCLE_24, Gen3Lead, INFINITE_CYCLE, Moment,
+    SLOWEST_MODULO_CYCLE_24, VBLANK_FREQ, Wild3GeneratorCycleOpts, Wild3GeneratorOptions,
+    get_min_mid_max_pre_sweet_scent_cycle, get_min_mid_max_vblank_cycle_duration,
 };
 
 #[derive(Default, Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -418,12 +417,10 @@ impl CycleFrameCounter {
         match self {
             CycleFrameCounter::Inactive | CycleFrameCounter::DetailedBreakdown { .. } => 0,
             CycleFrameCounter::MinMaxRange {
-                base_cycle_count,
-                ..
+                base_cycle_count, ..
             }
             | CycleFrameCounter::CheckValidAllLeadSpds {
-                base_cycle_count,
-                ..
+                base_cycle_count, ..
             } => *base_cycle_count,
         }
     }

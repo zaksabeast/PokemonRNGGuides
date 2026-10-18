@@ -4,7 +4,8 @@ use crate::{
     gen3::{
         Gen3Lead, Gen3Method, Gen3PkmFilter, SpeciesData, Wild3Action, Wild3EncounterGameData,
         Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData, Wild3MapSetups,
-        Wild3SearcherCycleOpts, Wild3SearcherOptions, Wild3SearcherResultMon, calculate_pid_speed, search_wild3_naive,
+        Wild3SearcherCycleOpts, Wild3SearcherOptions, Wild3SearcherResultMon, calculate_pid_speed,
+        search_wild3_naive,
     },
     rng::lcrng::Pokerng,
 };

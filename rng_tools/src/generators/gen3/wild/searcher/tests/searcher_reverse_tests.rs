@@ -2,10 +2,10 @@ use super::*;
 use crate::{
     EncounterSlot, HiddenPowerFilter, PokemonType, ShinyFilter, ShinyType,
     gen3::{
-        FASTEST_DIVIDENDS_MOD_24_RANGE, Gen3PidSpeedFilter, Wild3SearcherCycleOpts, Wild3SpecialEncounterGameData,
-        apply_cycles_causing_vblanks_on_cycle_counter, calculate_pid_speed,
-        get_min_mid_max_pre_sweet_scent_cycle, get_min_mid_max_vblank_cycle_duration,
-        search_wild3_naive,
+        FASTEST_DIVIDENDS_MOD_24_RANGE, Gen3PidSpeedFilter, Wild3SearcherCycleOpts,
+        Wild3SpecialEncounterGameData, apply_cycles_causing_vblanks_on_cycle_counter,
+        calculate_pid_speed, get_min_mid_max_pre_sweet_scent_cycle,
+        get_min_mid_max_vblank_cycle_duration, search_wild3_naive,
     },
 };
 

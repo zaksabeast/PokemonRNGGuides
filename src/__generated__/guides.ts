@@ -1116,7 +1116,7 @@ export const guides = {
   "/connect-dolphin-to-gba/": {
     meta: {
       id: "/connect-dolphin-to-gba/",
-      categories: ["Ruby and Sapphire", "FireRed and LeafGreen"],
+      categories: ["Emerald", "Ruby and Sapphire", "FireRed and LeafGreen"],
       section: "tool",
       guideVariants: null,
       guideKey: "false-Connect Dolphin to mGBA",
@@ -1133,7 +1133,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-10-17",
+      lastUpdated: "2026-10-18",
       type: "baseGuide",
       canonical: "/connect-dolphin-to-gba/",
       file: "guides/Tools and Emulators/Connect Dolphin To GBA.mdx",
@@ -1142,7 +1142,7 @@ export const guides = {
         zh: "/zh-connect-dolphin-to-gba/",
       },
       guideGroupId:
-        "en:false-Connect Dolphin to mGBA:FireRed and LeafGreen|Ruby and Sapphire",
+        "en:false-Connect Dolphin to mGBA:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -1272,53 +1272,6 @@ export const guides = {
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
     getRawFile: memoize(async () => {
       const file = await import("~/../guides/Hubs.mdx?raw");
-      return file.default;
-    }),
-  },
-  "/de-e-tips-rng/": {
-    meta: {
-      id: "/e-tips-rng/",
-      categories: ["Emerald"],
-      section: "rng_technique",
-      guideVariants: ["retail", "cfw-emu"],
-      guideKey: "false-RNG Info",
-      isNew: false,
-      title: "Smaragd RNG Info",
-      navDrawerTitle: "RNG Info",
-      description:
-        "Erfahre, wie man den RNG vorantreibt und die Stabilität in Pokémon Smaragd verbessert, um konstante Ergebnisse zu erzielen",
-      slug: "/de-e-tips-rng/",
-      isRoughDraft: false,
-      orderPriority: 20,
-      difficulty: null,
-      hideFromNavDrawer: true,
-      addedOn: null,
-      translation: { enSlug: "/e-tips-rng/", language: "de" },
-      layout: "guide",
-      lastUpdated: "2026-05-27",
-      type: "translatedGuide",
-      canonical: "/de-e-tips-rng/",
-      file: "guides/Translations/de/Gen 3/Emerald/Basic Rules of RNG.mdx",
-      translations: {
-        de: "/de-e-tips-rng/",
-        en: "/e-tips-rng/",
-        it: "/it-e-tips-rng/",
-        zh: "/zh-e-tips-rng/",
-      },
-      guideGroupId: "de:false-RNG Info:Emerald",
-      guideVariantLinks: null,
-      displayAttributes: [],
-    },
-    Guide: React.lazy(
-      () =>
-        import(
-          "~/../guides/Translations/de/Gen 3/Emerald/Basic Rules of RNG.mdx"
-        ),
-    ),
-    getRawFile: memoize(async () => {
-      const file = await import(
-        "~/../guides/Translations/de/Gen 3/Emerald/Basic Rules of RNG.mdx?raw"
-      );
       return file.default;
     }),
   },
@@ -1477,7 +1430,7 @@ export const guides = {
       addedOn: "2025-04-08",
       translation: { enSlug: "/emerald-overview/", language: "de" },
       layout: "guide",
-      lastUpdated: "2026-08-22",
+      lastUpdated: "2026-10-18",
       type: "translatedGuide",
       canonical: "/de-emerald-overview/",
       file: "guides/Translations/de/Gen 3/Emerald/Emerald Overview.mdx",
@@ -1786,7 +1739,7 @@ export const guides = {
       addedOn: "2025-04-08",
       translation: { enSlug: "/gba-overview/", language: "de" },
       layout: "guide",
-      lastUpdated: "2026-03-22",
+      lastUpdated: "2026-10-18",
       type: "translatedGuide",
       canonical: "/de-gba-overview/",
       file: "guides/Translations/de/Gen 3/Emerald/GBA Overview.mdx",
@@ -2785,53 +2738,6 @@ export const guides = {
       return file.default;
     }),
   },
-  "/e-tips-rng/": {
-    meta: {
-      id: "/e-tips-rng/",
-      categories: ["Emerald"],
-      section: "rng_technique",
-      guideVariants: ["retail", "cfw-emu"],
-      guideKey: "false-RNG Info",
-      isNew: false,
-      title: "Emerald RNG Info",
-      navDrawerTitle: "RNG Info",
-      description:
-        "Learn how to advance the RNG and improve stability in Pokemon Emerald for consistent results.",
-      slug: "/e-tips-rng/",
-      isRoughDraft: false,
-      orderPriority: 20,
-      difficulty: null,
-      hideFromNavDrawer: false,
-      addedOn: null,
-      translation: null,
-      layout: "guide",
-      lastUpdated: "2026-05-27",
-      type: "baseGuide",
-      canonical: "/e-tips-rng/",
-      file: "guides/Gen 3/Emerald/Basic Rules of RNG.mdx",
-      translations: {
-        de: "/de-e-tips-rng/",
-        en: "/e-tips-rng/",
-        it: "/it-e-tips-rng/",
-        zh: "/zh-e-tips-rng/",
-      },
-      guideGroupId: "en:false-RNG Info:Emerald",
-      guideVariantLinks: {
-        retail: { type: "slug", slug: "/e-tips-rng/" },
-        cfwEmu: { type: "slug", slug: "/e-tips-rng/" },
-      },
-      displayAttributes: [],
-    },
-    Guide: React.lazy(
-      () => import("~/../guides/Gen 3/Emerald/Basic Rules of RNG.mdx"),
-    ),
-    getRawFile: memoize(async () => {
-      const file = await import(
-        "~/../guides/Gen 3/Emerald/Basic Rules of RNG.mdx?raw"
-      );
-      return file.default;
-    }),
-  },
   "/emerald-advancing-rng-techniques/": {
     meta: {
       id: "/emerald-advancing-rng-techniques/",
@@ -3027,7 +2933,7 @@ export const guides = {
       addedOn: "2025-04-08",
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-08-23",
+      lastUpdated: "2026-10-18",
       type: "baseGuide",
       canonical: "/emerald-overview/",
       file: "guides/Gen 3/Emerald/Emerald Overview.mdx",
@@ -6209,7 +6115,7 @@ export const guides = {
       addedOn: "2025-04-08",
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-03-10",
+      lastUpdated: "2026-10-18",
       type: "baseGuide",
       canonical: "/gba-overview/",
       file: "guides/Gen 3/Emerald/GBA Overview.mdx",
@@ -6973,53 +6879,6 @@ export const guides = {
       return file.default;
     }),
   },
-  "/it-e-tips-rng/": {
-    meta: {
-      id: "/e-tips-rng/",
-      categories: ["Emerald"],
-      section: "rng_technique",
-      guideVariants: ["retail", "cfw-emu"],
-      guideKey: "false-RNG Info",
-      isNew: false,
-      title: "Info sull'RNG di Smeraldo",
-      navDrawerTitle: "Info sull'RNG",
-      description:
-        "Impara come avanzare l'RNG migliora la stabilità su Pokemon Smeraldo per risultati consistenti.",
-      slug: "/it-e-tips-rng/",
-      isRoughDraft: false,
-      orderPriority: 20,
-      difficulty: null,
-      hideFromNavDrawer: true,
-      addedOn: null,
-      translation: { enSlug: "/e-tips-rng/", language: "it" },
-      layout: "guide",
-      lastUpdated: "2026-05-27",
-      type: "translatedGuide",
-      canonical: "/it-e-tips-rng/",
-      file: "guides/Translations/it/Gen 3/Emerald/Basic Rules of RNG.mdx",
-      translations: {
-        de: "/de-e-tips-rng/",
-        en: "/e-tips-rng/",
-        it: "/it-e-tips-rng/",
-        zh: "/zh-e-tips-rng/",
-      },
-      guideGroupId: "it:false-RNG Info:Emerald",
-      guideVariantLinks: null,
-      displayAttributes: [],
-    },
-    Guide: React.lazy(
-      () =>
-        import(
-          "~/../guides/Translations/it/Gen 3/Emerald/Basic Rules of RNG.mdx"
-        ),
-    ),
-    getRawFile: memoize(async () => {
-      const file = await import(
-        "~/../guides/Translations/it/Gen 3/Emerald/Basic Rules of RNG.mdx?raw"
-      );
-      return file.default;
-    }),
-  },
   "/it-emerald-overview/": {
     meta: {
       id: "/emerald-overview/",
@@ -7040,7 +6899,7 @@ export const guides = {
       addedOn: "2025-04-08",
       translation: { enSlug: "/emerald-overview/", language: "it" },
       layout: "guide",
-      lastUpdated: "2026-08-22",
+      lastUpdated: "2026-10-18",
       type: "translatedGuide",
       canonical: "/it-emerald-overview/",
       file: "guides/Translations/it/Gen 3/Emerald/Emerald Overview.mdx",
@@ -12411,7 +12270,7 @@ export const guides = {
   "/zh-connect-dolphin-to-gba/": {
     meta: {
       id: "/connect-dolphin-to-gba/",
-      categories: ["Ruby and Sapphire", "FireRed and LeafGreen"],
+      categories: ["Emerald", "Ruby and Sapphire", "FireRed and LeafGreen"],
       section: "tool",
       guideVariants: null,
       guideKey: "false-Connect Dolphin to mGBA",
@@ -12436,7 +12295,7 @@ export const guides = {
         zh: "/zh-connect-dolphin-to-gba/",
       },
       guideGroupId:
-        "zh:false-Connect Dolphin to mGBA:FireRed and LeafGreen|Ruby and Sapphire",
+        "zh:false-Connect Dolphin to mGBA:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -12940,52 +12799,6 @@ export const guides = {
       return file.default;
     }),
   },
-  "/zh-e-tips-rng/": {
-    meta: {
-      id: "/e-tips-rng/",
-      categories: ["Emerald"],
-      section: "rng_technique",
-      guideVariants: ["retail", "cfw-emu"],
-      guideKey: "false-RNG Info",
-      isNew: false,
-      title: "乱数介绍",
-      navDrawerTitle: "乱数介绍",
-      description: "如何推进乱数以及提高稳定性的技巧",
-      slug: "/zh-e-tips-rng/",
-      isRoughDraft: false,
-      orderPriority: 20,
-      difficulty: null,
-      hideFromNavDrawer: true,
-      addedOn: null,
-      translation: { enSlug: "/e-tips-rng/", language: "zh" },
-      layout: "guide",
-      lastUpdated: "2026-05-27",
-      type: "translatedGuide",
-      canonical: "/zh-e-tips-rng/",
-      file: "guides/Translations/zh/Gen 3/Emerald/Basic Rules of RNG.mdx",
-      translations: {
-        de: "/de-e-tips-rng/",
-        en: "/e-tips-rng/",
-        it: "/it-e-tips-rng/",
-        zh: "/zh-e-tips-rng/",
-      },
-      guideGroupId: "zh:false-RNG Info:Emerald",
-      guideVariantLinks: null,
-      displayAttributes: [],
-    },
-    Guide: React.lazy(
-      () =>
-        import(
-          "~/../guides/Translations/zh/Gen 3/Emerald/Basic Rules of RNG.mdx"
-        ),
-    ),
-    getRawFile: memoize(async () => {
-      const file = await import(
-        "~/../guides/Translations/zh/Gen 3/Emerald/Basic Rules of RNG.mdx?raw"
-      );
-      return file.default;
-    }),
-  },
   "/zh-emerald-mirage-island/": {
     meta: {
       id: "/emerald-mirage-island/",
@@ -13048,7 +12861,7 @@ export const guides = {
       addedOn: "2025-04-08",
       translation: { enSlug: "/emerald-overview/", language: "zh" },
       layout: "guide",
-      lastUpdated: "2026-05-02",
+      lastUpdated: "2026-10-18",
       type: "translatedGuide",
       canonical: "/zh-emerald-overview/",
       file: "guides/Translations/zh/Gen 3/Emerald/Emerald Overview.mdx",
@@ -14480,7 +14293,7 @@ export const guides = {
       addedOn: "2025-04-08",
       translation: { enSlug: "/gba-overview/", language: "zh" },
       layout: "guide",
-      lastUpdated: "2026-03-10",
+      lastUpdated: "2026-10-18",
       type: "translatedGuide",
       canonical: "/zh-gba-overview/",
       file: "guides/Translations/zh/Gen 3/Emerald/GBA Overview.mdx",
@@ -17483,7 +17296,6 @@ export const guideSlugs = [
   "/consistent-platinum-rng/",
   "/contributing/",
   "/crystal/",
-  "/de-e-tips-rng/",
   "/de-emerald-advancing-rng-techniques/",
   "/de-emerald-battle-video/",
   "/de-emerald-mirage-island/",
@@ -17518,7 +17330,6 @@ export const guideSlugs = [
   "/dream-radar-cart-patches/",
   "/dream-radar-patches/",
   "/dream-radar/",
-  "/e-tips-rng/",
   "/emerald-advancing-rng-techniques/",
   "/emerald-battle-video/",
   "/emerald-largest-lotad-seedot/",
@@ -17616,7 +17427,6 @@ export const guideSlugs = [
   "/install-capturesight/",
   "/install-pokereader-emu/",
   "/install-pokereader/",
-  "/it-e-tips-rng/",
   "/it-emerald-overview/",
   "/it-emerald-rng-with-ace/",
   "/it-emulator-b2w2-runasdate-inital-seed/",
@@ -17757,7 +17567,6 @@ export const guideSlugs = [
   "/zh-dppt-pokeradar-rng/",
   "/zh-dppt-tid-sid/",
   "/zh-dppt-wild/",
-  "/zh-e-tips-rng/",
   "/zh-emerald-mirage-island/",
   "/zh-emerald-overview/",
   "/zh-emerald-painting-rng/",

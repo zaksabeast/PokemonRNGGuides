@@ -43,7 +43,7 @@ export const searchStatic3Target = async (
 
   const bugged_roamer = game !== "emerald" && opts.roaming;
 
-  const filter_shiny = opts.filter_shiny && !opts.usingAceForSid;
+  const filter_shiny = opts.usingAceForSid ? "Any" : opts.filter_shiny;
   const searchOpts = {
     initial_seed,
     tid: opts.tid,

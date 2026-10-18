@@ -1,4 +1,5 @@
 use super::*;
+use crate::ShinyFilter;
 
 #[test]
 fn test_search_reverse_perf_shiny_only() {
@@ -14,7 +15,7 @@ fn test_search_reverse_perf_shiny_only() {
         max_advances: u32::MAX as usize,
         max_result_count: 20,
         filter: PkmFilter {
-            shiny: true,
+            shiny: ShinyFilter::AnyShiny,
             ..Default::default()
         },
         gen3_filter: Gen3PkmFilter::default(),
@@ -27,5 +28,5 @@ fn test_search_reverse_perf_shiny_only() {
     let results = search_static3_reverse(&opts);
 
     assert_eq!(results.len(), 20);
-    assert!(results.iter().all(|result| result.shiny));
+    assert!(results.iter().all(|result| result.shiny.is_shiny()));
 }

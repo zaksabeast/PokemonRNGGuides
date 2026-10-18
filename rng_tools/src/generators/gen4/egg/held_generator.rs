@@ -1,9 +1,9 @@
-#[cfg(test)]
-use crate::gen4::parse_pokefinder::PokefinderEgg4;
 use crate::{
-    AbilityType, Gender, Nature, PkmFilter, Species, gen3_shiny,
+    AbilityType, Gender, Nature, PkmFilter, ShinyType, Species, gen3_shiny,
     rng::{Rng, lcrng::Arng, mt::MT, mt_fast::MtFast},
 };
+#[cfg(test)]
+use crate::{ShinyFilter, gen4::parse_pokefinder::PokefinderEgg4};
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
@@ -37,7 +37,7 @@ pub struct Egg4HeldResult {
     pub advance: usize,
     pub pid: u32,
     pub gender: Gender,
-    pub shiny: bool,
+    pub shiny: ShinyType,
     pub nature: Nature,
     pub ability: AbilityType,
 }
@@ -49,7 +49,7 @@ fn generate_egg4_held(opts: &Egg4HeldOpts, advance: usize, rand: u32) -> Option<
     if opts.is_masuda {
         let mut rng = Arng::new(rand);
         for _ in 0..4 {
-            if shiny {
+            if shiny.is_shiny() {
                 break;
             }
 
@@ -58,7 +58,7 @@ fn generate_egg4_held(opts: &Egg4HeldOpts, advance: usize, rand: u32) -> Option<
         }
     }
 
-    if opts.filter.shiny && !shiny {
+    if !opts.filter.shiny.allows(shiny) {
         return None;
     }
 
@@ -169,7 +169,7 @@ impl PartialEq<PokefinderEgg4> for Egg4HeldResult {
             return false;
         }
 
-        if self.shiny != other.shiny {
+        if self.shiny.is_shiny() != other.shiny {
             return false;
         }
 
@@ -335,7 +335,7 @@ mod tests {
             max_advances: 10000,
             is_masuda: false,
             filter: PkmFilter {
-                shiny: true,
+                shiny: ShinyFilter::AnyShiny,
                 ..Default::default()
             },
         };

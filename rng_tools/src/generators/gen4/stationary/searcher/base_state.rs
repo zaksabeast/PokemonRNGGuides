@@ -1,5 +1,5 @@
 use crate::{
-    AbilityType, Characteristic, Gender, Ivs, Nature, PkmState, Species, gen3_shiny,
+    AbilityType, Characteristic, Gender, Ivs, Nature, PkmState, ShinyType, Species, gen3_shiny,
     gen4::{LeadAbility, seed_time::SeedTime4},
 };
 use serde::{Deserialize, Serialize};
@@ -16,7 +16,7 @@ pub struct BaseStatic4State {
     pub ability: AbilityType,
     pub gender: Gender,
     pub nature: Nature,
-    pub shiny: bool,
+    pub shiny: ShinyType,
     pub characteristic: Characteristic,
     pub lead: LeadAbility,
     pub level: u8,
@@ -77,7 +77,7 @@ impl PkmState for BaseStatic4State {
         self.nature
     }
 
-    fn shiny(&self) -> bool {
+    fn shiny(&self) -> ShinyType {
         self.shiny
     }
 

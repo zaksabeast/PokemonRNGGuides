@@ -1,7 +1,7 @@
 import React from "react";
 import { atom, useAtom } from "jotai";
 import { uniqueId, map, sortBy } from "lodash-es";
-import { ResultColumn, Button } from "~/components";
+import { ResultColumn, Button, ShinyIcon } from "~/components";
 import {
   FieldRow,
   FormNumberField,
@@ -156,7 +156,7 @@ const columns: ResultColumn<Result>[] = [
   {
     title: "Shiny",
     dataIndex: "shiny",
-    render: (shiny: boolean) => (shiny ? "Yes" : "No"),
+    render: (shiny) => <ShinyIcon shiny={shiny} />,
   },
   { title: "Nature", dataIndex: "nature" },
   { title: "Ability", dataIndex: "ability" },
@@ -289,7 +289,7 @@ const Fields = ({ game, encountersByGame }: FieldsProps) => {
       </FormSection>
 
       <FormSection title={t["Filters"]}>
-        <PkmFilter<FormState> species={encounter?.species} />
+        <PkmFilter<FormState> generation={4} species={encounter?.species} />
       </FormSection>
 
       <FormSection title={t["Advanced"]}>

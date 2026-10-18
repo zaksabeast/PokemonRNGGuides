@@ -1,11 +1,15 @@
+import {
+  shinyFilterSchema,
+  shinyFilterOptions,
+  shinyFilterGen3To7Tooltip,
+} from "~/rngTools/shiny";
 import React from "react";
-import { ResultColumn } from "~/components";
+import { ShinyIcon, ResultColumn } from "~/components";
 import {
   FieldRow,
   FormNumberField,
   FormSection,
   FormSelectField,
-  FormSwitchField,
   GenderFilterField,
   NatureFilterField,
   ToolForm,
@@ -33,7 +37,7 @@ const getColumns = (t: Translations): ResultColumn<Gen3HeldEgg>[] => {
     {
       title: t["Shiny"],
       dataIndex: "shiny",
-      render: (shiny) => (shiny ? "Yes" : "No"),
+      render: (shiny) => <ShinyIcon shiny={shiny} />,
     },
     { title: t["Nature"], dataIndex: "nature" },
     { title: t["Ability"], dataIndex: "ability" },
@@ -51,7 +55,7 @@ const Validator = z.object({
   tid: z.number().int().min(0).max(65535),
   sid: z.number().int().min(0).max(65535),
   egg_species: z.enum(species),
-  filter_shiny: z.boolean(),
+  filter_shiny: shinyFilterSchema,
   filter_nature: z.array(z.enum(nature)),
   filter_gender: z.enum(gender).nullable(),
 });
@@ -69,7 +73,7 @@ const initialValues: FormState = {
   tid: 0,
   sid: 0,
   egg_species: "Bulbasaur",
-  filter_shiny: false,
+  filter_shiny: "Any",
   filter_nature: [],
   filter_gender: null,
 };
@@ -147,7 +151,15 @@ const Fields = () => {
       <FormSection title={t["Filters"]}>
         <NatureFilterField<FormState> name="filter_nature" />
         <GenderFilterField<FormState> name="filter_gender" />
-        <FormSwitchField<FormState> name="filter_shiny" label={t["Shiny"]} />
+        <FormSelectField<FormState>
+          name="filter_shiny"
+          label={t["Shiny"]}
+          options={shinyFilterOptions}
+          tooltip={{
+            title: t["Shiny"],
+            description: shinyFilterGen3To7Tooltip,
+          }}
+        />
       </FormSection>
 
       <FormSection title={t["Advanced"]}>

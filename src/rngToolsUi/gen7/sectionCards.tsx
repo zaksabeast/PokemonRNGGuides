@@ -1,4 +1,5 @@
 import React from "react";
+import { shinyLabels } from "~/rngTools/shiny";
 import { Button, Flex, Icon, SectionCard, Tag, Typography } from "~/components";
 import { Gen7Starter } from "~/rngTools";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
@@ -56,11 +57,7 @@ export const StarterTags = ({ starter }: { starter: Gen7Starter | null }) => {
       <Tag>{starter == null ? PLACEHOLDER : starter.nature}</Tag>
       <Tag>{starter == null ? PLACEHOLDER : starter.gender}</Tag>
       <Tag>{starter == null ? PLACEHOLDER : formatIvs(starter)}</Tag>
-      <Tag>
-        {starter == null
-          ? PLACEHOLDER
-          : `${t["Shiny"]}: ${starter.shiny ? t["Yes"] : t["No"]}`}
-      </Tag>
+      <Tag>{starter == null ? PLACEHOLDER : t[shinyLabels[starter.shiny]]}</Tag>
     </Flex>
   );
 };

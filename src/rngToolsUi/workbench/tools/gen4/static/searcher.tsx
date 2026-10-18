@@ -1,3 +1,4 @@
+import { ShinyIcon } from "~/components/shiny";
 import { uniqueId } from "lodash-es";
 import {
   ResultColumn,
@@ -12,6 +13,7 @@ import { Descriptions } from "~/rngToolsUi/workbench/components/descriptions";
 import { FormikProfileSelect } from "~/rngToolsUi/workbench/components/formikProfileSelect";
 import { useWatch } from "~/hooks/form";
 import {
+  type ShinyType,
   Nature,
   Characteristic,
   SearchStatic4Opts,
@@ -82,7 +84,7 @@ type Result = {
   seed: number;
   advance: number;
   pid: number;
-  shiny: boolean;
+  shiny: ShinyType;
   nature: Nature;
   ability: string;
   hp: number;
@@ -194,7 +196,10 @@ const FilterFields = () => {
   const encounter = getEncounter(game, encounter_id);
   const species = encounter.species;
 
-  const filterFields = getPkmFilterIvFields<FormState>({ species });
+  const filterFields = getPkmFilterIvFields<FormState>({
+    generation: 4,
+    species,
+  });
 
   return (
     <Descriptions bordered title="Filters" items={filterFields} column={1} />
@@ -218,7 +223,7 @@ const columns: ResultColumn<Result>[] = [
   {
     title: "Shiny",
     dataIndex: "shiny",
-    render: (value) => (value ? "Yes" : "No"),
+    render: (shiny) => <ShinyIcon shiny={shiny} />,
   },
   { title: "Nature", dataIndex: "nature" },
   { title: "Ability", dataIndex: "ability" },

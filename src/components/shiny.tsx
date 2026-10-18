@@ -1,29 +1,27 @@
 import type { ShinyType } from "~/rngTools";
 import { shinyLabels } from "~/rngTools/shiny";
-import { Icon } from "~/components/icons";
+import { Icon, IconName } from "./icons";
 import { Tooltip } from "antd";
-import type { Translations } from "~/translations";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+
+const iconMap: Record<ShinyType, IconName> = {
+  SquareShiny: "Square",
+  StarShiny: "Star",
+  NotShiny: "Close",
+};
 
 type ShinyIconProps = {
   shiny: ShinyType;
-  translations?: Translations;
 };
 
-export const ShinyIcon = ({ shiny, translations }: ShinyIconProps) => {
-  const label = translations?.[shinyLabels[shiny]] ?? shinyLabels[shiny];
+export const ShinyIcon = ({ shiny }: ShinyIconProps) => {
+  const t = useActiveRouteTranslations();
+  const label = t[shinyLabels[shiny]];
 
   return (
     <Tooltip title={label}>
       <span role="img" aria-label={label}>
-        <Icon
-          name={
-            shiny === "SquareShiny"
-              ? "Square"
-              : shiny === "StarShiny"
-                ? "Star"
-                : "Close"
-          }
-        />
+        <Icon name={iconMap[shiny]} />
       </span>
     </Tooltip>
   );

@@ -10,7 +10,7 @@ use super::super::{
     Wild3RoamerState, generate_wild3,
 };
 use crate::{
-    AbilityType, Gender, HiddenPower, Ivs, Nature, PkmFilter, Species,
+    AbilityType, Gender, HiddenPower, Ivs, Nature, PkmFilter, ShinyType, Species,
     gen3::{
         Gen3Lead, Gen3Method, Gen3PkmFilter, SpeciesData, search_wild3_naive, search_wild3_reverse,
         searcher_painter::Wild3PaintingOpts,
@@ -165,7 +165,7 @@ pub struct Wild3SearcherResultMon {
     pub ability: AbilityType,
     pub gender: Gender,
     pub nature: Nature,
-    pub shiny: bool,
+    pub shiny: ShinyType,
 
     // derived from ivs
     pub hidden_power: HiddenPower,

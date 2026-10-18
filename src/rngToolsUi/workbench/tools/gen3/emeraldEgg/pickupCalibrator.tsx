@@ -98,6 +98,7 @@ const FilterFields = () => {
     names: { egg_species: true },
   });
   const fields = getPkmStatFilterFields({
+    generation: 3,
     displayHiddenPower: false,
     displayGender: false,
     displayAbility: false,

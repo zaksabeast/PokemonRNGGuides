@@ -1,3 +1,9 @@
+import {
+  shinyFilterSchema,
+  shinyFilterOptions,
+  shinyFilterGen3To7Tooltip,
+} from "~/rngTools/shiny";
+import { FormikSelect } from "~/components/select";
 import * as tst from "ts-toolbelt";
 import type {
   AbilityType,
@@ -6,9 +12,9 @@ import type {
   Nature,
   PkmFilter,
   Species,
+  ShinyFilter,
 } from "~/rngTools";
 import { Field } from "~/components/formFieldTable";
-import { FormikSwitch } from "~/components/switch";
 import { nature } from "~/types/nature";
 import { IvInput, IvsSchema } from "~/components/ivInput";
 import { ability12H } from "~/types/ability";
@@ -170,7 +176,7 @@ export const getNatureInputProps = (translations?: Translations) => {
 };
 
 export type PkmFilterFields = {
-  filter_shiny: boolean;
+  filter_shiny: ShinyFilter;
   filter_nature: Nature[];
   filter_gender: Gender | null;
   filter_min_ivs: Ivs;
@@ -180,7 +186,7 @@ export type PkmFilterFields = {
 };
 
 export const pkmFilterSchema = z.object({
-  filter_shiny: z.boolean(),
+  filter_shiny: shinyFilterSchema,
   filter_nature: z.array(z.enum(nature)),
   filter_ability: z.enum(ability12H).nullable(),
   filter_gender: z.enum(gender).nullable(),
@@ -216,6 +222,7 @@ export const pkmFilterFieldsToRustInput = (
 };
 
 export type PkmFilterProps = {
+  generation: number;
   displayShiny?: boolean;
   displayNature?: boolean;
   displayAbility?: boolean;
@@ -227,7 +234,7 @@ export type PkmFilterProps = {
 };
 
 export const getPkmFilterInitialValues = (): PkmFilterFields => ({
-  filter_shiny: false,
+  filter_shiny: "Any",
   filter_min_ivs: minIvs,
   filter_max_ivs: maxIvs,
   filter_nature: [],
@@ -248,14 +255,23 @@ type PkmFilterId =
 type PkmFilterField = tst.O.Merge<Field, { id: PkmFilterId }>;
 
 const _getPkmFilterFields = (
-  props: PkmFilterProps = {},
+  props: PkmFilterProps,
   t?: Translations,
 ): PkmFilterField[] =>
   [
     optOut(props?.displayShiny, {
       id: "shiny" as const,
       label: t?.["Shiny"] ?? "Shiny",
-      input: <FormikSwitch<PkmFilterFields> name="filter_shiny" />,
+      tooltip:
+        props.generation >= 3 && props.generation <= 7
+          ? shinyFilterGen3To7Tooltip
+          : undefined,
+      input: (
+        <FormikSelect<PkmFilterFields, "filter_shiny">
+          name="filter_shiny"
+          options={shinyFilterOptions}
+        />
+      ),
     }),
     optOut(props?.displayNature, {
       id: "nature" as const,
@@ -314,7 +330,7 @@ const _getPkmFilterFields = (
   ].filter((field) => field !== null);
 
 export const getPkmFilterFields = <FormField,>(
-  props?: PkmFilterProps,
+  props: PkmFilterProps,
   t?: Translations,
 ): FormField extends PkmFilterFields ? PkmFilterField[] : never => {
   return _getPkmFilterFields(props, t) as FormField extends PkmFilterFields

@@ -189,7 +189,7 @@ export const searchWild3Target = async (values: FormState) => {
   // if the naive searching approach is used (when searching common traits).
   const max_advances = painting_opts != null ? 10_000_000 : values.max_advances;
 
-  const filter_shiny = values.filter_shiny && !values.usingAceForSid;
+  const filter_shiny = values.usingAceForSid ? "Any" : values.filter_shiny;
   const opts: Wild3SearcherOptions = {
     initial_seed,
     tid: values.tid,

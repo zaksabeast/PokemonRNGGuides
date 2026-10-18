@@ -64,7 +64,7 @@ mod test {
     use crate::gen7::{ModelState, NpcModel, TimelineStep, generate_starter};
     use crate::rng::{Rng, sfmt::Sfmt};
     use crate::test_utils::FakeRng;
-    use crate::{Gender, Ivs, Nature};
+    use crate::{Gender, Ivs, Nature, TsvTrv};
 
     const IDLE: ModelState = ModelState::Idle;
 
@@ -141,7 +141,7 @@ mod test {
         assert_eq!(distinct_advances(&second_cut, expected.len()), expected);
 
         step_to_advance(&mut after_yes, 9843);
-        let starter = generate_starter(after_yes, 0);
+        let starter = generate_starter(after_yes, TsvTrv::default());
         assert_eq!(starter.nature, Nature::Relaxed);
         assert_eq!(starter.gender, Gender::Male);
         assert_eq!(starter.ivs, Ivs::new(19, 28, 17, 30, 6, 30));

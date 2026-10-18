@@ -41,7 +41,7 @@ mod tests {
     use super::*;
     use crate::gen4::LeadAbility;
     use crate::gen4::stationary::BaseStatic4State;
-    use crate::{AbilityType, Characteristic, Gender, Ivs, Nature};
+    use crate::{AbilityType, Characteristic, Gender, Ivs, Nature, ShinyType};
 
     fn dummy_state(seed: u32, advance: usize) -> BaseStatic4State {
         BaseStatic4State {
@@ -52,7 +52,7 @@ mod tests {
             ability: AbilityType::First,
             gender: Gender::Genderless,
             nature: Nature::Hardy,
-            shiny: false,
+            shiny: ShinyType::NotShiny,
             characteristic: Characteristic::default(),
             lead: LeadAbility::None,
             level: 1,

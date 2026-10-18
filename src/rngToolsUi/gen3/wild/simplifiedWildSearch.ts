@@ -114,7 +114,7 @@ export const buildSimplifiedSearchOptions = (
   max_result_count: 100,
   filter: pkmFilterFieldsToRustInput({
     ...getPkmFilterInitialValues(),
-    filter_shiny: true,
+    filter_shiny: "AnyShiny",
   }),
   gen3_filter: gen3PkmFilterFieldsToRustInput(
     getGen3PkmFilterInitialValues(),

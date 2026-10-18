@@ -1,0 +1,32 @@
+var e=`---
+- title: "Largest Lotad/Seedot"
+  description: "Catching the largest possible Lotad and Seedot to show to Sootopolis City brothers"
+  slug: "emerald-largest-lotad-seedot"
+  category: "Emerald"
+  section: "other_rng"
+  variant: "retail"
+  addedOn: "2026-08-23"
+---
+
+<Gist>
+  Catching the largest possible Lotad and Seedot to show to Sootopolis City
+  brothers.
+</Gist>
+
+## Sootopolis City Brothers
+
+In Sootopolis City, two brothers are looking for the largest Lotad and Seedot. The reward for showing a Pokémon that exceeds the previous record is an Elixir (and the satisfaction of beating the record).
+
+The size of a Pokémon depends on its PID and IVs. The largest size for Lotad and Seedot is 33.9in (86.2cm), which has approximately 1/32'000 chance to occur (much rarer than Shiny).
+
+## How To
+
+1. Open the [Wild RNG Guide](/emerald-wild).
+1. Enter the species Lotad or Seedot. Enable the "Max size" filter.
+1. Follow the rest of the instructions of the Wild RNG guide.
+1. Show the Lotad or Seedot to the Sootopolis City brothers.
+
+![Largest Seedot Setup](/images/Emerald/LargestSeedotSetup.png)
+
+![Largest Seedot](/images/Emerald/LargestSeedot.png)
+`;export{e as default};

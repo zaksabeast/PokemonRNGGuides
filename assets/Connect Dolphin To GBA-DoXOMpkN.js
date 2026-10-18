@@ -1,0 +1,37 @@
+var e=`---
+title: "使 Dolphin 与 mGBA 联动"
+description: "学习如何领取基拉祈，或将你的乱数宝可梦传输至 GBA 游戏。"
+slug: "zh-connect-dolphin-to-gba"
+translation:
+  enSlug: "connect-dolphin-to-gba"
+  language: "zh"
+---
+
+## 所需工具
+
+- [Dolphin](https://dolphin-emu.org/download/)
+- [开源的 GBA Bios](https://github.com/ez-me/gba-bios/releases/tag/1.0)
+- Gamecube 和 GBA 游戏 ROM
+
+## 步骤 1: 设置 Dolphin
+
+1. 打开 Dolphin 并点击 "设置" 按钮。
+2. 点击 "GameCube" 标签页。
+3. 将 GBA Bios 设置为你刚才下载的那个。
+4. 关闭设置窗口并点击 "控制器" 按钮。
+5. 将端口 2 设置为 "GBA (集成)" 然后关闭设置。
+
+## 步骤 2: 启动你的游戏
+
+1. 在 Dolphin 中启动你的 NGC 游戏。
+2. 右键单击弹出的 mGBA 窗口，选择 "载入 ROM"。
+3. 在弹出的窗口中选择你的 GBA ROM。
+4. 右键单击 mGBA 窗口，选择 "游戏存档" -> "导入游戏存档"。
+5. 如果 Dolphin 未识别到 GBA 已连接，右键单击 mGBA 窗口并选择 "重置游戏"。
+
+OK！现在你可以通过 Dolphin 和 mGBA，在 GBA 游戏与 NGC 游戏之间传输宝可梦。
+
+## 特别鸣谢
+
+- 中文翻译：白希洛/Hakuhiro
+`;export{e as default};

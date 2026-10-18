@@ -1,0 +1,1 @@
+var e=[`Ruby`,`Sapphire`,`Emerald`],t=[`FireRed`,`LeafGreen`];[...e,...t];var n=[`Diamond`,`Pearl`,`Platinum`],r=[...n,`HeartGold`,`SoulSilver`];export{r as n,n as t};

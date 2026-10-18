@@ -1,0 +1,1 @@
+import{r as e}from"./state-D3A7zHrL.js";var t=t=>{let{item:n}=t,[r]=e();if(n===`pokedex`){var i;return((i=r.target)==null?void 0:i.redraws)??`???`}return`???`};export{t as RetailEmeraldEggStateText};

@@ -171,7 +171,6 @@ fn generate_state(rng: &mut MT, advance: usize, opts: &GenerateOpts) -> Stationa
             let low = pid as u16;
             pid = (u32::from(low ^ tsv_trv.tid_xor_sid) << 16) | u32::from(low);
             shiny = ShinyType::SquareShiny;
-            break;
         }
     }
 
@@ -677,6 +676,48 @@ mod test {
                     shiny: ShinyType::NotShiny,
                 },
             ];
+            assert_list_eq!(result, expected);
+        }
+
+        #[test]
+        fn forced_shiny_uses_all_pid_rerolls() {
+            let opts = Stationary6Opts {
+                seed: 0xaabbccdd,
+                initial_advances: 0,
+                max_advances: 0,
+                delay: 0,
+                ability: None,
+                perfect_iv_count: 0,
+                always_sync: false,
+                synchro_stat: None,
+                shiny_charm: true,
+                is_shiny_locked: false,
+                is_forced_shiny: true,
+                tsv: 123,
+                trv: 0,
+                gender: None,
+                species: Species::Pikachu,
+                filter: Default::default(),
+            };
+            let result = generate_stationary6(opts);
+            // The third reroll draws advance 2's PID from base_generate, so the IVs onward match it.
+            let expected = [Stationary6State {
+                advance: 0,
+                ivs: Ivs {
+                    hp: 0,
+                    atk: 3,
+                    def: 1,
+                    spa: 5,
+                    spd: 0,
+                    spe: 9,
+                },
+                nature: Nature::Hardy,
+                psv: 123,
+                gender: Gender::Female,
+                ability: AbilityType::First,
+                rng_state: 0xAABBCCDD,
+                shiny: ShinyType::SquareShiny,
+            }];
             assert_list_eq!(result, expected);
         }
 

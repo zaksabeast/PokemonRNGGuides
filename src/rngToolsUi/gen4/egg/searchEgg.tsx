@@ -1,7 +1,6 @@
-import { ShinyIcon } from "~/components/shiny";
 import * as tst from "ts-toolbelt";
 import { uniqueId } from "lodash-es";
-import { Button, ResultColumn } from "~/components";
+import { Button, ResultColumn, ShinyIcon } from "~/components";
 import {
   FieldRow,
   FormNumberField,
@@ -283,7 +282,7 @@ export const Egg4Search = () => {
     {
       title: t["Shiny"],
       dataIndex: "shiny",
-      render: (shiny) => <ShinyIcon shiny={shiny} translations={t} />,
+      render: (shiny) => <ShinyIcon shiny={shiny} />,
     },
     { title: t["Gender"], dataIndex: "gender" },
     {

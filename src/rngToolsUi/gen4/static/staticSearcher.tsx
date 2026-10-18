@@ -1,8 +1,7 @@
-import { ShinyIcon } from "~/components/shiny";
 import React from "react";
 import { atom, useAtom } from "jotai";
 import { uniqueId, map, sortBy } from "lodash-es";
-import { ResultColumn, Button } from "~/components";
+import { ResultColumn, Button, ShinyIcon } from "~/components";
 import {
   FieldRow,
   FormNumberField,

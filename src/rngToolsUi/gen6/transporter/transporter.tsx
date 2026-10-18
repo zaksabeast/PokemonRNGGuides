@@ -1,6 +1,5 @@
-import { ShinyIcon } from "~/components/shiny";
 import React from "react";
-import { ResultColumn } from "~/components";
+import { ResultColumn, ShinyIcon } from "~/components";
 import {
   FieldRow,
   FormNumberField,
@@ -49,7 +48,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
     title: t["Shiny"],
     dataIndex: "shiny",
-    render: (shiny) => <ShinyIcon shiny={shiny} translations={t} />,
+    render: (shiny) => <ShinyIcon shiny={shiny} />,
   },
   ...getIvColumns(t),
   {

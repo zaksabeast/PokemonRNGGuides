@@ -1,11 +1,10 @@
-import { ShinyIcon } from "~/components/shiny";
 import {
   shinyFilterSchema,
   shinyFilterOptions,
   shinyFilterGen3To7Tooltip,
 } from "~/rngTools/shiny";
 import React from "react";
-import { ResultColumn } from "~/components";
+import { ShinyIcon, ResultColumn } from "~/components";
 import {
   FieldRow,
   FormNumberField,
@@ -38,7 +37,7 @@ const getColumns = (t: Translations): ResultColumn<Gen3HeldEgg>[] => {
     {
       title: t["Shiny"],
       dataIndex: "shiny",
-      render: (shiny) => <ShinyIcon shiny={shiny} translations={t} />,
+      render: (shiny) => <ShinyIcon shiny={shiny} />,
     },
     { title: t["Nature"], dataIndex: "nature" },
     { title: t["Ability"], dataIndex: "ability" },

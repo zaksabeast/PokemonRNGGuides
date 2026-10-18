@@ -1,9 +1,8 @@
 import React from "react";
-import { ShinyIcon } from "~/components/shiny";
 import { z } from "zod";
 import { uniqueId } from "lodash-es";
 import { useAtom } from "jotai";
-import { Button, ResultColumn } from "~/components";
+import { Button, ResultColumn, ShinyIcon } from "~/components";
 import {
   FieldRow,
   FormNumberField,
@@ -96,7 +95,7 @@ const getColumns = (
   {
     title: t["Shiny"],
     dataIndex: "shiny",
-    render: (shiny: ShinyType) => <ShinyIcon shiny={shiny} translations={t} />,
+    render: (shiny: ShinyType) => <ShinyIcon shiny={shiny} />,
   },
   { title: t["Nature"], dataIndex: "nature" },
   { title: t["Gender"], dataIndex: "gender" },

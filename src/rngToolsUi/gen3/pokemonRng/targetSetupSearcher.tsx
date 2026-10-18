@@ -1,6 +1,5 @@
-import { ShinyIcon } from "~/components/shiny";
 import type { ShinyType } from "~/rngTools";
-import { Link, ResultColumn, Flex } from "~/components";
+import { Link, ResultColumn, Flex, ShinyIcon } from "~/components";
 import { advanceFromSeed0Txt } from "../pokemonRng/labels";
 import { PidPathResult as Wild3PidPathResult } from "../wild/wild3TargetSetupSearcher";
 import { PidPathResult as Static3PidPathResult } from "../static/static3TargetSetupSearcher";

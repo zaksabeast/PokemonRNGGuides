@@ -23,6 +23,7 @@ import { FlattenIvs } from "~/rngToolsUi/shared/ivColumns";
 import { lcrng_distance } from "~/utils/lcrng";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 import sortBy from "lodash-es/sortBy";
+import { match, P } from "ts-pattern";
 
 export type UiResult = FlattenIvs<
   Wild3SearcherResultMon & {
@@ -114,17 +115,25 @@ export const setupToDistributions = async (
     };
   }
 
-  const timingOpts =
-    typeof cycle_opts === "object" && "CycleAtMomentWithEmuLog" in cycle_opts
-      ? cycle_opts.CycleAtMomentWithEmuLog
-      : null;
-  const leadCycleSpd =
-    timingOpts?.lead_cycle_spd ??
-    (typeof cycle_opts === "object" && "CycleAtMomentNoEmuLog" in cycle_opts
-      ? cycle_opts.CycleAtMomentNoEmuLog.lead_cycle_spd
-      : typeof cycle_opts === "object" && "LikelihoodForLead" in cycle_opts
-        ? cycle_opts.LikelihoodForLead.lead_cycle_spd
-        : AVERAGE_LEAD_CYCLE_SPEED);
+  const argsWithoutEmuLog = (leadCycleSpd: number) => ({
+    leadCycleSpd,
+    initialCycleAtSweetScent: undefined,
+    vblankCycles: undefined,
+  });
+
+  const distributionArgs = match(cycle_opts)
+    .with({ CycleAtMomentWithEmuLog: P.select() }, (emuLog) => ({
+      leadCycleSpd: emuLog.lead_cycle_spd,
+      initialCycleAtSweetScent: emuLog.initial_cycle_at_sweet_scent,
+      vblankCycles: new Uint32Array(emuLog.vblank_cycles),
+    }))
+    .with({ CycleAtMomentNoEmuLog: P.select() }, ({ lead_cycle_spd }) =>
+      argsWithoutEmuLog(lead_cycle_spd),
+    )
+    .with({ LikelihoodForLead: P.select() }, ({ lead_cycle_spd }) =>
+      argsWithoutEmuLog(lead_cycle_spd),
+    )
+    .otherwise(() => argsWithoutEmuLog(AVERAGE_LEAD_CYCLE_SPEED));
 
   const { results, cycle_at_moments } =
     await rngTools.generate_gen3_wild_distribution(
@@ -132,11 +141,9 @@ export const setupToDistributions = async (
       targetSetup.targetPaintingAdvs.after,
       opts,
       map_data,
-      leadCycleSpd,
-      timingOpts?.initial_cycle_at_sweet_scent,
-      timingOpts === null
-        ? undefined
-        : new Uint32Array(timingOpts.vblank_cycles),
+      distributionArgs.leadCycleSpd,
+      distributionArgs.initialCycleAtSweetScent,
+      distributionArgs.vblankCycles,
     );
 
   const resultForTargetMethod = results.find(

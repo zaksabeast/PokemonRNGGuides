@@ -97,7 +97,7 @@ export const Wild3Calib = ({
   clearAll,
   displayInstructions = true,
   simplified = false,
-  summaryTitle = "Info from previous steps",
+  summaryTitle = "Setup info from previous steps",
 }: Props) => {
   const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
     targetSetupProp ?? null,
@@ -272,6 +272,7 @@ export const Wild3Calib = ({
         targetSetup: targetSetupProp,
         battleVideoInfo: battleVideoInfoProp,
         initialAdv,
+        showTargetMethod: !simplified,
       }),
       {
         label: "Lead Cycle Speed",

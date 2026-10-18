@@ -8486,7 +8486,7 @@ export const guides = {
       section: "patch",
       guideVariants: null,
       guideKey: "false-Bank & Transporter Offline Mod",
-      isNew: true,
+      isNew: false,
       title: "Pokemon Bank & Transporter Offline & SD Redirect Patches",
       navDrawerTitle: "Bank & Transporter Offline Mod",
       description:

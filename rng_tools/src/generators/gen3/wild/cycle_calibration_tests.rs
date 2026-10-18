@@ -71,6 +71,17 @@ fn wild3_cycle_calib_cute_charm_female_route119() {
 }
 
 #[test]
+fn wild3_cycle_calib_cute_charm_male_desert_underpass() {
+    map_pokeblock_cycle_calibration(
+        Gen3Lead::CuteCharm(crate::Gender::Male),
+        Wild3Action::SweetScentLand,
+        "male_cute_charm_desert_underpass.jsonl",
+        &desert_underpass_map_data(),
+        None,
+    );
+}
+
+#[test]
 fn wild3_cycle_calib_synchronize_gentle_route119() {
     map_pokeblock_cycle_calibration(
         Gen3Lead::Synchronize(crate::Nature::Gentle),
@@ -137,6 +148,17 @@ fn wild3_cycle_calib_egg_route102_old_rod() {
 }
 
 #[test]
+fn wild3_cycle_calib_egg_route102_super_rod() {
+    map_pokeblock_cycle_calibration(
+        Gen3Lead::Egg,
+        Wild3Action::SuperRod,
+        "egg_route102.jsonl",
+        &route102_map_data(),
+        None,
+    );
+}
+
+#[test]
 fn wild3_cycle_calib_pressure_route102_old_rod() {
     map_pokeblock_cycle_calibration(
         Gen3Lead::HustleVitalSpiritPressure,
@@ -170,6 +192,17 @@ fn wild3_cycle_calib_vanilla_route111_rock_smash() {
 }
 
 #[test]
+fn wild3_cycle_calib_cute_charm_male_victory_road_b1f_rock_smash() {
+    map_pokeblock_cycle_calibration(
+        Gen3Lead::CuteCharm(crate::Gender::Male),
+        Wild3Action::RockSmash,
+        "male_cute_charm_victory_road_b1f.jsonl",
+        &victory_road_b1f_map_data(),
+        None,
+    );
+}
+
+#[test]
 fn wild3_cycle_calib_vanilla_safari_north_east_rock_smash() {
     map_pokeblock_cycle_calibration(
         Gen3Lead::Vanilla,
@@ -192,6 +225,17 @@ fn wild3_cycle_calib_vanilla_safari_middle_south_dry_sour_pokeblock() {
 }
 
 #[test]
+fn wild3_cycle_calib_cute_charm_male_safari_middle_south_white_pokeblock() {
+    map_pokeblock_cycle_calibration(
+        Gen3Lead::CuteCharm(crate::Gender::Male),
+        Wild3Action::SweetScentLand,
+        "male_cute_charm_safari_middle_south_pokeblock_white.jsonl",
+        &safari_south_map_data(),
+        Some(Wild3SafariPokeblockGenOpt::Specific([1, 1, 1, 1, 0])),
+    );
+}
+
+#[test]
 fn wild3_cycle_calib_synchronize_brave_safari_middle_south_spicy_pokeblock() {
     map_pokeblock_cycle_calibration(
         Gen3Lead::Synchronize(crate::Nature::Brave),
@@ -200,6 +244,38 @@ fn wild3_cycle_calib_synchronize_brave_safari_middle_south_spicy_pokeblock() {
         &safari_south_map_data(),
         Some(Wild3SafariPokeblockGenOpt::Specific([1, 0, 0, 0, 0])),
     );
+}
+
+fn desert_underpass_map_data() -> Wild3MapGameData {
+    let land_slots = [
+        (Species::Ditto, 38),
+        (Species::Whismur, 35),
+        (Species::Ditto, 40),
+        (Species::Loudred, 40),
+        (Species::Ditto, 41),
+        (Species::Whismur, 36),
+        (Species::Loudred, 38),
+        (Species::Ditto, 42),
+        (Species::Whismur, 38),
+        (Species::Ditto, 43),
+        (Species::Loudred, 44),
+        (Species::Ditto, 45),
+    ];
+    Wild3MapGameData {
+        map_id: "MAP_DESERT_UNDERPASS".into(),
+        map_internal_idx: 111,
+        slots_by_action: vec![
+            land_slots
+                .into_iter()
+                .map(|(species, level)| Wild3EncounterGameData {
+                    min_level: level,
+                    max_level: level,
+                    species_data: SpeciesData { species },
+                })
+                .collect(),
+        ],
+        ..Wild3MapGameData::default()
+    }
 }
 
 fn route101_map_data() -> Wild3MapGameData {
@@ -275,6 +351,7 @@ fn route102_map_data() -> Wild3MapGameData {
         (Species::Goldeen, 20, 30),
     ];
     let fishing_slots = [(Species::Magikarp, 5, 10), (Species::Goldeen, 5, 10)];
+    let super_rod_levels = [(25, 30), (30, 35), (20, 25), (35, 40), (40, 45)];
     Wild3MapGameData {
         map_id: "MAP_ROUTE102".into(),
         map_internal_idx: 1,
@@ -294,6 +371,17 @@ fn route102_map_data() -> Wild3MapGameData {
                     min_level,
                     max_level,
                     species_data: SpeciesData { species },
+                })
+                .collect(),
+            vec![],
+            super_rod_levels
+                .into_iter()
+                .map(|(min_level, max_level)| Wild3EncounterGameData {
+                    min_level,
+                    max_level,
+                    species_data: SpeciesData {
+                        species: Species::Corphish,
+                    },
                 })
                 .collect(),
         ],
@@ -317,6 +405,32 @@ fn route111_map_data() -> Wild3MapGameData {
     Wild3MapGameData {
         map_id: "MAP_ROUTE111".into(),
         map_internal_idx: 6,
+        slots_by_action,
+        rock_smash_rate: 20,
+        ..Wild3MapGameData::default()
+    }
+}
+
+fn victory_road_b1f_map_data() -> Wild3MapGameData {
+    let rock_smash_slots = [
+        (Species::Graveler, 30, 40),
+        (Species::Geodude, 30, 40),
+        (Species::Graveler, 35, 40),
+        (Species::Graveler, 35, 40),
+        (Species::Graveler, 35, 40),
+    ];
+    let mut slots_by_action = vec![vec![]; Wild3Action::RockSmash as usize + 1];
+    slots_by_action[Wild3Action::RockSmash as usize] = rock_smash_slots
+        .into_iter()
+        .map(|(species, min_level, max_level)| Wild3EncounterGameData {
+            min_level,
+            max_level,
+            species_data: SpeciesData { species },
+        })
+        .collect();
+    Wild3MapGameData {
+        map_id: "MAP_VICTORY_ROAD_B1F".into(),
+        map_internal_idx: 75,
         slots_by_action,
         rock_smash_rate: 20,
         ..Wild3MapGameData::default()
@@ -474,6 +588,27 @@ fn safari_northeast_map_data() -> Wild3MapGameData {
         is_safari: true,
         ..Wild3MapGameData::default()
     }
+}
+
+#[test]
+fn wild3_cycle_calib_gender_constrained_pid_frame_crossing() {
+    use super::cycle_calibration::is_wild3;
+
+    // The logger omits PID halves in this routine, so its full interval is
+    // the only available witness of a crossing during PID generation.
+    let start = CycleFrameMoment::new(Moment::CreateMonWithGenderNatureLetter, 10, 189828);
+    assert!(is_wild3(&[
+        start,
+        CycleFrameMoment::new(Moment::CreateMon, 11, 78555),
+    ]));
+    assert!(!is_wild3(&[
+        start,
+        CycleFrameMoment::new(Moment::CreateMon, 10, 200000),
+    ]));
+    assert!(!is_wild3(&[
+        CycleFrameMoment::new(Moment::CreateMon, 10, 200000),
+        CycleFrameMoment::new(Moment::CreateBoxMon_RandomIvs1, 11, 100000),
+    ]));
 }
 
 #[test]

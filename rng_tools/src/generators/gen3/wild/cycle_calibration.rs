@@ -116,6 +116,9 @@ pub(super) fn is_wild3(moments: &[CycleFrameMoment]) -> bool {
                 ) | (
                     Moment::CreateMonWithNature_RandomPidLow,
                     Moment::CreateMonWithNature_RandomPidHigh
+                ) | (
+                    Moment::CreateMonWithGenderNatureLetter,
+                    Moment::CreateMon
                 )
             )
     })
@@ -218,6 +221,7 @@ pub(super) fn map_pokeblock_cycle_calibration(
         Wild3Action::SweetScentLand => "sweet_scent_land",
         Wild3Action::SweetScentWater => "sweet_scent_water",
         Wild3Action::OldRod => "old_fishing",
+        Wild3Action::SuperRod => "super_fishing",
         Wild3Action::RockSmash => "rock_smash",
         _ => panic!("Unsupported calibration action: {action:?}"),
     };

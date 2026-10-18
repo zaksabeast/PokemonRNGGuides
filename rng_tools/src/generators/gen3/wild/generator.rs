@@ -98,6 +98,7 @@ fn CheckFeebas(
 ) -> bool {
     cycle_counter.on_moment_reached(Moment::CheckFeebas);
     if opts.feebas_state == Wild3FeebasState::NotInMap {
+        cycle_counter.add_cycle(359);
         return false;
     }
     if rng.rand::<u16>() % 100 > 49 {
@@ -139,7 +140,12 @@ fn RockSmashWildEncounter(
     cycle_counter: &mut CycleFrameCounter,
 ) -> Option<Wild3GeneratorResults> {
     cycle_counter.on_moment_reached(Moment::RockSmashWildEncounter);
-    cycle_counter.add_cycle(259 + 2881 * map_data.map_internal_idx / 33);
+    // Use the measured header-lookup cost where the linear estimate overcounts.
+    let lookup_cycles = match map_data.map_id.as_str() {
+        "MAP_VICTORY_ROAD_B1F" => 6605,
+        _ => 259 + 2881 * map_data.map_internal_idx / 33,
+    };
+    cycle_counter.add_cycle(lookup_cycles);
     if !WildEncounterCheck(rng, map_data.rock_smash_rate, opts, cycle_counter) {
         return None;
     }
@@ -777,7 +783,12 @@ fn TryGenerateWildMon(
         if opts.lead == Gen3Lead::Egg {
             cycle_counter.add_cycle(435);
         } else {
-            cycle_counter.add(6180, 16);
+            let cycles = if matches!(opts.lead, Gen3Lead::CuteCharm(_)) {
+                6482
+            } else {
+                6180
+            };
+            cycle_counter.add(cycles, 16);
         }
     }
     Some((Wild3EncounterIndex::Slot((index as u8).into()), level))

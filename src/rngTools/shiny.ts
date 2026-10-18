@@ -11,9 +11,11 @@ export const shinyFilterOptions: { value: ShinyFilter; label: string }[] = [
 export const shinyFilterGen3To7Tooltip =
   "Star and Square shiny describe how the Pokemon will appear when transferred to Gen 8 or later. Both appear as regular shiny Pokemon in Gen 3-7.";
 
-export const shinyFilterSchema = z.union([
-  z.enum(["Any", "AnyShiny", "SquareShiny", "StarShiny"]),
-  z.boolean().transform((value): ShinyFilter => (value ? "AnyShiny" : "Any")),
+export const shinyFilterSchema = z.enum([
+  "Any",
+  "AnyShiny",
+  "SquareShiny",
+  "StarShiny",
 ]);
 
 export const shinyLabels = {

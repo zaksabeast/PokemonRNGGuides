@@ -26,6 +26,7 @@ const getProbabilityInfo = async (
   res: Wild3GeneratorMonResult,
   action: Wild3Action,
   lead_cycle_speed: number | null,
+  showIdealLead: boolean,
 ) => {
   if (lead_cycle_speed == null || res.cycle_range == null) {
     return null;
@@ -55,7 +56,9 @@ const getProbabilityInfo = async (
         : `with lead cycle speed ${lead_cycle_speed}`;
 
   const showIdealInfo =
-    info.method_probability < 0.99 && lead_cycle_speed !== ideal_lead_spd;
+    showIdealLead &&
+    info.method_probability < 0.99 &&
+    lead_cycle_speed !== ideal_lead_spd;
 
   return (
     <Flex mt={10} vertical>
@@ -108,6 +111,7 @@ export const getAbilityDisplayStrFromAbType = async (
 export const calculateTargetSetupResult = async (
   targetSetup: TargetSetup,
   lead_cycle_speed: number | null,
+  showIdealLead = true,
 ) => {
   const opts: Wild3GeneratorOptions = {
     tid: 0,
@@ -193,6 +197,7 @@ export const calculateTargetSetupResult = async (
     res,
     targetSetup.action,
     lead_cycle_speed,
+    showIdealLead,
   );
   const abilityStr = await getAbilityDisplayStr(species, res.pid);
 

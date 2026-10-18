@@ -3509,6 +3509,47 @@ export const guides = {
       return file.default;
     }),
   },
+  "/emerald-wild-shiny/": {
+    meta: {
+      id: "/emerald-wild-shiny/",
+      categories: ["Emerald"],
+      section: "pokemon_rng",
+      guideVariants: ["retail"],
+      guideKey: "false-Wild RNG Shiny",
+      isNew: true,
+      title: "Pokemon Emerald Shiny Wild RNG",
+      navDrawerTitle: "Wild RNG Shiny",
+      description: "Catch a wild shiny Pokemon.",
+      slug: "/emerald-wild-shiny/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: "2026-10-17",
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-10-18",
+      type: "baseGuide",
+      canonical: "/emerald-wild-shiny/",
+      file: "guides/Gen 3/Emerald/Emerald Wild Simplified.mdx",
+      translations: null,
+      guideGroupId: "en:false-Wild RNG Shiny:Emerald",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/emerald-wild-shiny/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/Emerald Wild Simplified.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Emerald Wild Simplified.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/emerald-wild/": {
     meta: {
       id: "/emerald-wild/",
@@ -8486,7 +8527,7 @@ export const guides = {
       section: "patch",
       guideVariants: null,
       guideKey: "false-Bank & Transporter Offline Mod",
-      isNew: true,
+      isNew: false,
       title: "Pokemon Bank & Transporter Offline & SD Redirect Patches",
       navDrawerTitle: "Bank & Transporter Offline Mod",
       description:
@@ -17538,6 +17579,7 @@ export const guideSlugs = [
   "/emerald-static/",
   "/emerald-tidsid-generator/",
   "/emerald-wild-method-likelihood-calculator/",
+  "/emerald-wild-shiny/",
   "/emerald-wild/",
   "/emerald/",
   "/emu-bw-egg/",

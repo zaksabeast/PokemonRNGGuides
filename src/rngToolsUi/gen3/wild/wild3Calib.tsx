@@ -69,13 +69,26 @@ const CALIB_OFFSET_BY_ACTION = {
   },
 } as const satisfies Record<Wild3Action, CalibOffset>;
 
+const getEncounterTimerLabel = (action: Wild3Action | undefined): string => {
+  if (action != null && isFishingAction(action)) {
+    return "Press A to reel in the Pokemon";
+  }
+  if (action === "RockSmash") {
+    return "Press A to smash the rock";
+  }
+  return "Trigger Sweet Scent";
+};
+
 type Props = AllOrNone<{
   targetSetup: TargetSetup;
   battleVideoInfo: BattleVideoInfo;
   leadCycleSpeed: number;
   clearAll?: () => void;
   displayInstructions?: boolean;
-}>;
+}> & {
+  simplified?: boolean;
+  summaryTitle?: string;
+};
 
 export const Wild3Calib = ({
   targetSetup: targetSetupProp,
@@ -83,6 +96,8 @@ export const Wild3Calib = ({
   battleVideoInfo: battleVideoInfoProp,
   clearAll,
   displayInstructions = true,
+  simplified = false,
+  summaryTitle = "Info from previous steps",
 }: Props) => {
   const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
     targetSetupProp ?? null,
@@ -110,13 +125,13 @@ export const Wild3Calib = ({
       return setTargetSetupResult(null);
     }
 
-    calculateTargetSetupResult(targetSetup, finalLeadCycleSpeed).then(
+    calculateTargetSetupResult(targetSetup, finalLeadCycleSpeed, !simplified).then(
       ({ content, hasEncounter }) => {
         setTargetSetupResult(content);
         setTargetSetupHasEncounter(hasEncounter);
       },
     );
-  }, [finalLeadCycleSpeed, targetSetup]);
+  }, [finalLeadCycleSpeed, targetSetup, simplified]);
 
   const [battleVideoInfo, setBattleVideoInfo] =
     React.useState<BattleVideoInfo | null>(battleVideoInfoProp ?? null);
@@ -199,7 +214,7 @@ export const Wild3Calib = ({
   ];
   const labels = [
     initialAdv > 0 ? "Close the Battle Video" : "Soft reset START+SELECT+A+B",
-    "Trigger Sweet Scent",
+    getEncounterTimerLabel(targetSetup?.action),
   ];
 
   const battleVideoInfoInputForm = () => {
@@ -282,7 +297,7 @@ export const Wild3Calib = ({
 
     return (
       <FormCard>
-        <FormSection title="Info from previous steps">
+        <FormSection title={summaryTitle}>
           <FormSummary rows={rows} />
           {clearAll != null && (
             <Button
@@ -353,13 +368,23 @@ export const Wild3Calib = ({
           />
           {hasHitTargetAdv && targetSetup != null && (
             <>
-              <Instructions_calib_wrong_method />
-              <Wild3LeadCycleSpeedSelector
-                targetSetup={targetSetup}
-                permitEnablingDebugOptions
-                setLeadCycleSpeed={setOverwriteLeadCycleSpeed}
-                leadCycleSpeed={finalLeadCycleSpeed}
-              />
+              {simplified ? (
+                <p>
+                  You hit the target advance but a different method. Try again,
+                  or use Ignore Recommended Setups to search with an Egg lead
+                  for a more consistent setup.
+                </p>
+              ) : (
+                <>
+                  <Instructions_calib_wrong_method />
+                  <Wild3LeadCycleSpeedSelector
+                    targetSetup={targetSetup}
+                    permitEnablingDebugOptions
+                    setLeadCycleSpeed={setOverwriteLeadCycleSpeed}
+                    leadCycleSpeed={finalLeadCycleSpeed}
+                  />
+                </>
+              )}
             </>
           )}
         </>

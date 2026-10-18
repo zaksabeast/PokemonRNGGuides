@@ -9,7 +9,7 @@ export const shinyFilterOptions: { value: ShinyFilter; label: string }[] = [
 ];
 
 export const shinyFilterGen3To7Tooltip =
-  "Star and Square shiny describe how the Pokemon will appear when transferred to Gen 8 or later. Both appear as regular shiny Pokemon in Gen 3-7.";
+  "Star and Square shiny describe how the Pokemon will appear when transferred to Sword and Shield. Both appear as regular shiny Pokemon in Gen 3-7.";
 
 export const shinyFilterSchema = z.enum([
   "Any",

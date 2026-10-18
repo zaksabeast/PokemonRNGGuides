@@ -67,9 +67,13 @@ export const NatureFieldTest = () => (
 
 export const PkmFilterTest = () => (
   <>
-    <PkmFilter<FilterForm> species="Pikachu" displayShiny={false} />
+    <PkmFilter<FilterForm>
+      generation={8}
+      species="Pikachu"
+      displayShiny={false}
+    />
     {/* @ts-expect-error the form needs the pkm filter fields */}
-    <PkmFilter<OtherForm> />
+    <PkmFilter<OtherForm> generation={8} />
   </>
 );
 

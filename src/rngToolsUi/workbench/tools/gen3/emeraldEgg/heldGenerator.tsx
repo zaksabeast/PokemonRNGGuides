@@ -1,3 +1,4 @@
+import { ShinyIcon } from "~/components/shiny";
 import { uniqueId, sortBy } from "lodash-es";
 import {
   FormikSwitch,
@@ -85,6 +86,7 @@ const FilterFields = () => {
     names: { egg_species: true },
   });
   const filterFields = getPkmFilterIvFields({
+    generation: 3,
     displayIvs: false,
     displayHiddenPower: false,
     species: egg_species ?? undefined,
@@ -292,7 +294,7 @@ export const EmeraldEggHeldGenerator = () => {
     {
       title: "Shiny",
       dataIndex: "shiny",
-      render: (shiny) => (shiny ? "Yes" : "No"),
+      render: (shiny) => <ShinyIcon shiny={shiny} />,
     },
     {
       title: "Match call",

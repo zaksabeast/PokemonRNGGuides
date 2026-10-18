@@ -173,6 +173,7 @@ const Fields = ({ t, translatedTrainers, eggSpecies }: FieldProps) => {
         <FormSection title={t["Hatched Egg"]}>
           <NatureField<FormState> name="nature" />
           <PkmFilter<FormState>
+            generation={3}
             species={eggSpecies}
             displayHiddenAbility={false}
             displayHiddenPower={false}
@@ -291,7 +292,7 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
           max_advances: maxAdvances,
           filter_impossible_to_hit: false,
           filters: {
-            shiny: false,
+            shiny: "Any",
             nature: [filters.nature],
             ability: filters.filter_ability,
             gender: filters.filter_gender,

@@ -1,5 +1,5 @@
 use crate::{
-    AbilityType, EncounterSlot, Gender, Ivs, Nature, PkmFilter, Species,
+    AbilityType, EncounterSlot, Gender, Ivs, Nature, PkmFilter, ShinyFilter, Species,
     gen3::{
         Gen3Lead, Gen3Method, Gen3PkmFilter, Wild3Action, Wild3EncounterGameData,
         Wild3EncounterIndex, Wild3FeebasState, Wild3GeneratorCycleOpts, Wild3GeneratorMonResult,
@@ -83,7 +83,7 @@ fn test_generate_wild3_shiny() {
         sid: 47362,
         methods: vec![Gen3Method::Wild1],
         filter: PkmFilter {
-            shiny: true,
+            shiny: ShinyFilter::AnyShiny,
             nature: PkmFilter::new_nature_filter(&[Nature::Naive]),
             gender: Some(Gender::Male),
             ability: Some(AbilityType::Second),

@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, ResultColumn, FileUpload, Alert } from "~/components";
+import { Flex, ResultColumn, FileUpload, Alert, ShinyIcon } from "~/components";
 import {
   FieldFrame,
   FormNumberField,
@@ -55,7 +55,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
     title: t["Shiny"],
     dataIndex: "shiny",
-    render: (shiny) => (shiny ? "Yes" : "No"),
+    render: (shiny) => <ShinyIcon shiny={shiny} />,
   },
   ...ivColumns,
 ];
@@ -111,7 +111,11 @@ const Fields = ({ onUploadSave }: FieldsProps) => {
       </FormSection>
 
       <FormSection title={t["Filters"]}>
-        <PkmFilter<FormState> displayAbility={false} displayGender={false} />
+        <PkmFilter<FormState>
+          generation={3}
+          displayAbility={false}
+          displayGender={false}
+        />
       </FormSection>
     </>
   );

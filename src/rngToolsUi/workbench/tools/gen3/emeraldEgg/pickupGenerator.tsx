@@ -79,6 +79,7 @@ const initialValues: FormState = {
 
 const FilterFields = () => {
   const filterFields = getPkmFilterIvFields({
+    generation: 3,
     displayHiddenPower: false,
     displayGender: false,
     displayAbility: false,

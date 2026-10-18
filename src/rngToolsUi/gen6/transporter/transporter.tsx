@@ -1,5 +1,5 @@
 import React from "react";
-import { ResultColumn } from "~/components";
+import { ResultColumn, ShinyIcon } from "~/components";
 import {
   FieldRow,
   FormNumberField,
@@ -48,7 +48,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
     title: t["Shiny"],
     dataIndex: "shiny",
-    render: (shiny) => (shiny ? "Yes" : "No"),
+    render: (shiny) => <ShinyIcon shiny={shiny} />,
   },
   ...getIvColumns(t),
   {
@@ -71,7 +71,8 @@ const Validator = z
     initial_advances: z.number().int().min(0),
     max_advances: z.number().int().min(0),
     delay: z.number().int(),
-    tsv: z.number().int(),
+    tsv: z.number().int().min(0).max(4095),
+    trv: z.number().int().min(0).max(15),
     only_current_seed: z.boolean(),
     transporter_genders: z.enum(transporterGenders),
   })
@@ -85,6 +86,7 @@ const initialValues: FormState = {
   max_advances: 50,
   delay: 100,
   tsv: 0,
+  trv: 0,
   only_current_seed: false,
   transporter_genders: "NoGender",
   ...getPkmFilterInitialValues(),
@@ -104,6 +106,11 @@ const Fields = () => {
         <FormNumberField<FormState>
           name="tsv"
           label={t["TSV"]}
+          numType="decimal"
+        />
+        <FormNumberField<FormState>
+          name="trv"
+          label={t["TRV"]}
           numType="decimal"
         />
         <FormSelectField<FormState>
@@ -135,6 +142,7 @@ const Fields = () => {
 
       <FormSection title={t["Filters"]}>
         <PkmFilter<FormState>
+          generation={6}
           displayIvs
           displayAbility={false}
           displayGender={false}
@@ -159,6 +167,7 @@ export const Transporter = () => {
       target: 0,
       transporter_genders: [opts.transporter_genders],
       tsv: opts.tsv,
+      trv: opts.trv,
       filter: {
         gender: null,
         ability: null,
@@ -167,7 +176,7 @@ export const Transporter = () => {
           min_ivs: opts.filter_min_ivs,
           max_ivs: opts.filter_max_ivs,
         },
-        shiny: false,
+        shiny: "Any",
       },
     });
 

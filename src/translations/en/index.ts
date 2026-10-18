@@ -3,6 +3,9 @@ import { LanguageKey } from "~/types/language";
 export const translations = {
   language: "en",
   Shiny: "Shiny",
+  "Not shiny": "Not shiny",
+  "Square shiny": "Square shiny",
+  "Star shiny": "Star shiny",
   Nature: "Nature",
   Ability: "Ability",
   Gender: "Gender",
@@ -108,6 +111,7 @@ export const translations = {
   "Initial Advance": "Initial Advance",
   "Max Advances": "Max Advances",
   TSV: "TSV",
+  TRV: "TRV",
   "Transporter Gender": "Transporter Gender",
   Date: "Date",
   Name: "Name",
@@ -400,6 +404,33 @@ export const translations = {
   "Max power": "Max power",
   "Leave a stat blank if you don't know it.":
     "Leave a stat blank if you don't know it.",
+  "Initial Seed": "Initial Seed",
+  "NPC Count": "NPC Count",
+  "Current Advance": "Current Advance",
+  "Find Safe Advances": "Find Safe Advances",
+  "Step one frame at a time until you land on one of these":
+    "Step one frame at a time until you land on one of these",
+  "No safe advances found": "No safe advances found",
+  "Show More": "Show More",
+  "Keep stepping and compare": "Keep stepping and compare",
+  "Press A at": "Press A at",
+  "Timeline Leap": "Timeline Leap",
+  "Time after leap": "Time after leap",
+  "{target} can't be reached from this timeline. Pick another target in 3DSRNGTool.":
+    "{target} can't be reached from this timeline. Pick another target in 3DSRNGTool.",
+  EC: "EC",
+  "Time after Yes": "Time after Yes",
+  "Press Yes": "Press Yes",
+  "Press Yes at": "Press Yes at",
+  "Select a target in the search above": "Select a target in the search above",
+  "Press A on Kukui's Dialogue": "Press A on Kukui's Dialogue",
+  "Time until A press": "Time until A press",
+  "Time after comparing": "Time after comparing",
+  "{target} can't be reached from this timeline. Pick another target.":
+    "{target} can't be reached from this timeline. Pick another target.",
+  "Kukui's Dialogue": "Kukui's Dialogue",
+  "Choose Starter": "Choose Starter",
+  "Select Yes at": "Select Yes at",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

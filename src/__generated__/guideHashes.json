@@ -952,8 +952,8 @@
     "lastUpdated": "2026-03-25"
   },
   "/retail-sm-timeline/": {
-    "hash": "d47e0ae5ab62c9d1f30e6f93227a9017718d0af76addd78a9bb2ba4bbcea2b83",
-    "lastUpdated": "2026-03-25"
+    "hash": "1c89d56e429d7d70f7a2b63f0701b49355d289b9caf01d298f1cf0406a1f93e1",
+    "lastUpdated": "2026-10-13"
   },
   "/retail-sm-wild/": {
     "hash": "7900e23fefac3d767323a068a69eb084a3c035ef6984220b324d111c8b281fe4",
@@ -1007,6 +1007,10 @@
     "hash": "c6a5910058329a77d8b26084830bdb8f2efe2b3940fd3cc43f801743063061ef",
     "lastUpdated": "2026-03-25"
   },
+  "/retail-usum-starter/": {
+    "hash": "7ce1e7c7a240e78c615e9234eefc55277198210712934b66eb7d2c9df9792a39",
+    "lastUpdated": "2026-10-17"
+  },
   "/retail-usum-stationary/": {
     "hash": "2dfadf84e77da6ebe3e000772a329dbc1b1a521bc3135f2ef6d92d6f696d405d",
     "lastUpdated": "2026-03-25"
@@ -1016,8 +1020,8 @@
     "lastUpdated": "2026-03-25"
   },
   "/retail-usum-timeline/": {
-    "hash": "d47e0ae5ab62c9d1f30e6f93227a9017718d0af76addd78a9bb2ba4bbcea2b83",
-    "lastUpdated": "2026-03-25"
+    "hash": "1c89d56e429d7d70f7a2b63f0701b49355d289b9caf01d298f1cf0406a1f93e1",
+    "lastUpdated": "2026-10-13"
   },
   "/retail-usum-wild/": {
     "hash": "7900e23fefac3d767323a068a69eb084a3c035ef6984220b324d111c8b281fe4",

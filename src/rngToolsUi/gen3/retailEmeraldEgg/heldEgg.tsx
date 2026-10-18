@@ -1,5 +1,5 @@
 import React from "react";
-import { ResultColumn, Button } from "~/components";
+import { ResultColumn, Button, ShinyIcon } from "~/components";
 import {
   FieldRow,
   FormNumberField,
@@ -112,7 +112,7 @@ const getColumns = ({
   {
     title: t["Shiny"],
     dataIndex: "shiny",
-    render: (shiny) => (shiny ? "Yes" : "No"),
+    render: (shiny) => <ShinyIcon shiny={shiny} />,
   },
   {
     title: t["Pokedex"],
@@ -223,6 +223,7 @@ const Fields = ({ t }: FieldsProps) => {
 
       <FormSection title={t["Filters"]}>
         <PkmFilter<FormState>
+          generation={3}
           displayIvs={false}
           displayHiddenPower={false}
           species={egg_species ?? undefined}

@@ -1,5 +1,5 @@
 import * as tst from "ts-toolbelt";
-import { pokemonTypes } from "~/types/pokemonTypes";
+import { hiddenPowerTypeOptions } from "~/types/pokemonTypes";
 import {
   getPkmFilterFields as _getPkmFilterFields,
   pkmFilterSchema as _pkmFilterSchema,
@@ -190,7 +190,7 @@ export const getPkmStatFilterFields = <FormState extends GenericForm>(
       children: (
         <FormikSelect<PkmFilterFields, "filter_hidden_power.pokemon_types">
           name="filter_hidden_power.pokemon_types"
-          options={toOptions(pokemonTypes.filter((type) => type !== "Normal"))}
+          options={hiddenPowerTypeOptions}
           mode="multiple"
         />
       ),
@@ -225,7 +225,7 @@ export const getPkmFilterIvFields = <FormState extends GenericForm>(
       children: (
         <FormikSelect<PkmFilterFields, "filter_hidden_power.pokemon_types">
           name="filter_hidden_power.pokemon_types"
-          options={toOptions(pokemonTypes.filter((type) => type !== "Normal"))}
+          options={hiddenPowerTypeOptions}
           mode="multiple"
         />
       ),

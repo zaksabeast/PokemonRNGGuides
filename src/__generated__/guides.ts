@@ -3531,7 +3531,7 @@ export const guides = {
       lastUpdated: "2026-10-18",
       type: "baseGuide",
       canonical: "/emerald-wild-shiny/",
-      file: "guides/Gen 3/Emerald/Emerald Wild Simplified.mdx",
+      file: "guides/Gen 3/Emerald/Emerald Wild Shiny.mdx",
       translations: null,
       guideGroupId: "en:false-Wild RNG Easy Shiny:Emerald",
       guideVariantLinks: {
@@ -3541,11 +3541,11 @@ export const guides = {
       displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(
-      () => import("~/../guides/Gen 3/Emerald/Emerald Wild Simplified.mdx"),
+      () => import("~/../guides/Gen 3/Emerald/Emerald Wild Shiny.mdx"),
     ),
     getRawFile: memoize(async () => {
       const file = await import(
-        "~/../guides/Gen 3/Emerald/Emerald Wild Simplified.mdx?raw"
+        "~/../guides/Gen 3/Emerald/Emerald Wild Shiny.mdx?raw"
       );
       return file.default;
     }),

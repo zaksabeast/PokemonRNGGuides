@@ -101,7 +101,7 @@ fn after_yes_timeline_with_idle_npcs(rng: Sfmt, yes_advance: usize) -> Timeline 
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::{Gender, Ivs, ShinyFilter, ShinyType};
+    use crate::{Gender, Ivs, ShinyFilter};
 
     const SEED: u32 = 0x768ba16d;
     const FIRST_YES_ADVANCE: usize = 5000;

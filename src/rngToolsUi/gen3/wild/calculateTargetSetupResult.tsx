@@ -55,8 +55,7 @@ const getProbabilityInfo = async (
         : `with lead cycle speed ${lead_cycle_speed}`;
 
   const showIdealInfo =
-    info.method_probability < 0.99 &&
-    lead_cycle_speed !== ideal_lead_spd;
+    info.method_probability < 0.99 && lead_cycle_speed !== ideal_lead_spd;
 
   return (
     <Flex mt={10} vertical>

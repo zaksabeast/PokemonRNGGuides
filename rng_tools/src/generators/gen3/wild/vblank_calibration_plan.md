@@ -1,27 +1,34 @@
-# Emerald wild cycle calibration: likelihood follow-up
+# Emerald wild cycle calibration: implementation
 
-## Implemented foundation
+## Implemented
 
-- Separate precomputed audio summaries, keyed by song, and non-audio summaries, keyed by map_internal_idx. Route 101 is the explicit fallback for uncalibrated maps.
-- Initial calibration uses only route101_walk_sweet_scent.txt: 2,022 completed attempts. Audio min/median/max: 24,444 / 48,005 / 62,238; non-audio: 10,242 / 10,250 / 10,274.
-- Combined support is 34,686-72,512. Summed component extrema cover all observed joint values, but are empirical bounds rather than proven hardware limits. The representative value 58,255 is a sum of component medians, not the median of the sum.
-- This calibration applies only to land Sweet Scent on foot. Other actions retain existing estimates. Bike calibration needs an explicit movement/music context before it can be selected safely.
-- Generator initialization, search-result likelihood, and distribution calculations receive the internal map index. Cycle initialization and cycle-data APIs require Wild3MapGameData; calibration lookup reads map_internal_idx from it.
-- Likelihood remains uniform within the selected range for now. No raw log is included in the compiled program.
+- Audio and non-audio use the same adaptive monotone piecewise-linear CDF. Repeated x coordinates preserve jumps; no limit on the number of distinct non-audio values is assumed. Fitting error is at most 0.0025 (0.25 percentage points), with a 512-knot budget that fails explicitly if insufficient.
+- Audio is stored once per song/context. Route 101 audio is shared by Routes 101, 102, and 103; Routes 104 and 110 have their own songs. Each of the five maps has its own non-audio distribution. Selection uses Wild3MapGameData and an explicit action/movement/sound context.
+- Current measurements cover Emerald land Sweet Scent on foot, with unspecified sound mode. Generator/search options accept optional calibration_context; omitted values preserve the existing walking context. Explicit bike or sound-mode contexts are not silently matched to this data. Other actions keep their legacy estimates.
+- Observed min/max are separate from CDF knots. Current safety margins are zero: these are empirical bounds, not hardware guarantees. A justified margin can expand filtering without changing the fitted likelihood. Unmeasured land maps use a flagged Route 101 likelihood approximation and full-frame filtering; fallback support does not declare another map's timings impossible. Unsupported land contexts also use full-frame filtering and uniform fallback likelihood.
+- Likelihood uses convolution: F_total(x) = integral F_audio(x-y) dF_non_audio(y). Audio CDF primitives integrate non-audio linear segments analytically; jumps contribute explicitly. Combined CDFs are not assumed piecewise linear. Probabilities use half-open intervals [start, end), with left limits preserving discrete endpoints.
+- Combined medians are solved offline and stored, rather than summing component medians or running a solver per generated encounter. Ideal lead speed maximizes interval probability over legal integer speeds. Initialization, search results, likelihood/ideal-lead APIs, and the UI caller carry the same context.
+- get_wild3_calibration_info exposes source checksums, counts, skipped/repeated frames, loop coverage, fitting errors, support margins, and supported/fallback status. Runtime and Rust model tests do not need the raw captures.
 
-## Proposed compact distribution representation
+## Reproduction
 
-1. Keep hard support and probability shape separate. Store explicit observed min/max independently of fitted knots, so compression cannot silently shrink the valid support. Record sample count, distinct-frame count, sampled span, song loop duration, action, movement mode, sound mode, and source/version metadata. Flag fallbacks and incomplete-loop samples.
-2. Use a monotone piecewise-linear CDF for audio, keyed by actual playing song and encounter/movement context. Fit sorted, distinct endpoint frames with equal weight per frame; report duplicate or skipped frames. Use adaptive knots, starting with quantiles and adding knots at the largest empirical CDF error until an agreed tolerance (for example 0.5 percentage points) or storage budget is reached. Always retain endpoints. A CDF is preferable to an unnormalized piecewise density: range probability is directly F(end)-F(start), and monotonicity/normalization are easy to check.
-3. Keep non-audio separate per map and context. These recordings have at most ten values, so store the exact small discrete PMF (cycle offset plus count/weight) rather than approximate it with a continuous curve. Include the optional 18-cycle timing states; their rarity means a short sample can miss the maximum. Store both observed support and any deliberately justified safety margin.
-4. Approximate the sum by convolving the audio CDF with the non-audio PMF: F_total(x) = sum_s p_non_audio(s) * F_audio(x-s). Then calculate_method_probability integrates the requested interval using this combined CDF. Preserve the current interval boundary convention explicitly. Do not add component medians to claim an exact combined median; solve F_total(x)=0.5 instead.
-5. Independence is an approximation: residual alignment and stalls can depend on audio completion time. Before adopting convolution, compare it with the empirical joint total distribution and method probabilities. If error exceeds tolerance, retain a compact conditional non-audio PMF by audio timing phase, or a separate correction sketch, rather than assuming independence.
-6. Wire the distribution context through the public likelihood/ideal-lead APIs and callers. Preserve map-aware selection and use the combined model to choose the ideal lead timing. Decide how fallbacks are presented before enabling strict filtering for uncalibrated maps; Route 101 estimates cannot prove impossible timings on another map.
+Run from the repository root:
 
-## Collection and validation
+    bun run rng_tools/scripts/extract-vblank-calibration.ts
+    bun run rng_tools/scripts/extract-vblank-calibration.ts --check
+    bun test ./rng_tools/scripts/extract-vblank-calibration.test.ts
+    bun run test:rust
 
-- Audio: collect at least one full actual song loop; prefer two loops to check repeatability. A musical loop is not necessarily an exact CPU-cost period. Count actual frames, not attempts. Avoid treating a partial extra loop as an unbiased whole-loop average.
-- Non-audio: 256 elapsed frames gave a worst mean error of about 3.46 cycles across the six analyzed datasets. Use about 1,100 frames when observed extrema matter; this is empirical, not a universal guarantee. Cover representative positions, weather, tilesets, and encounter states separately.
-- Before deleting logs, independently extract and review the constants and sketches. Keep the extractor, summarized provenance, and checksums so recalibration is reproducible from future logs without requiring old raw data in tests or builds.
-- Validate on held-out full-loop samples: support coverage, CDF maximum error, quantiles, and range-probability error for real method intervals. Report dependence between repeated frames rather than using IID significance tests.
-- Test monotonic CDF knots, total mass, support endpoints, convolution shifts, empty/outside intervals, map/song sharing, fallback selection, and unchanged uncalibrated actions. Compare generator filtering and search likelihood against the same model.
+The extractor writes vblank_calibration_data.rs and vblank_calibration_validation.json next to this document. Check mode validates captures and compares both artifacts without writing. Keep the extractor, Rust constants, and JSON report after deleting raw .txt files. Regeneration needs recordings; builds and tests do not.
+
+Each completed encounter frame has unit total weight. Replayed attempts within a frame share that weight, preserving differing residual costs without over-weighting the frame. Incomplete attempts are ignored; malformed completed attempts are rejected. SHA-256 uses LF-normalized source text for stable cross-platform artifacts. Metadata records action/movement/sound assumptions and extractor version.
+
+## Validation and limits
+
+The report records component CDF errors, joint total CDF errors, quantiles, and tested interval-probability errors for widths 32, 256, 1,024, and 8,192 cycles. Routes 102/103 provide cross-map audio holdouts while retaining their own non-audio fits. Routes 101/104/110 provide in-sample joint validation. Extraction rejects joint CDF error above 2 percentage points, tested interval error above 2.5 points, or shared audio CDF error above 2 points. Future data exceeding these limits requires a conditional non-audio model or joint correction rather than silently assuming independence.
+
+Current errors are below 0.25 points for fitted components, 1.25 points for joint CDFs, and 0.68 points for tested interval probabilities. These checks do not prove independence or guaranteed extrema. Independent temporal full-loop validation has not been collected and is explicitly flagged false. Sparse coverage and skipped frames remain visible in provenance.
+
+Prefer two full audio loops to check repeatability. Choose non-audio duration through convergence across independent windows and representative positions, weather, tileset/sprite animation phases, actions, and movement states. Song duration need not cover non-audio periodicity. Earlier 256-frame mean and approximately 1,100-frame extrema results apply only to those recorded setups.
+
+Tests cover complex fitting, rare extrema, replay weighting, malformed captures, analytic convolution, jumps, half-open boundaries, normalization, integral consistency, shared songs, map-specific residuals, fallback filtering, unsupported contexts, missing-context deserialization, unchanged legacy actions, generator support, and globally optimal integer lead selection.

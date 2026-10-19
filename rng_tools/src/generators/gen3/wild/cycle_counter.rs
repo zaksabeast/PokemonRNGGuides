@@ -5,7 +5,7 @@ use wasm_bindgen::prelude::*;
 use crate::gen3::{
     COMMON_LEAD_RANGE, CycleAndModRange, FASTEST_MODULO_CYCLE_24, Gen3Lead, INFINITE_CYCLE, Moment,
     SLOWEST_MODULO_CYCLE_24, VBLANK_FREQ, Wild3GeneratorCycleOpts, Wild3GeneratorOptions, Wild3MapGameData,
-    get_min_mid_max_pre_sweet_scent_cycle_for_map, get_min_mid_max_vblank_cycle_duration,
+    get_min_mid_max_pre_sweet_scent_cycle_with_context, get_min_mid_max_vblank_cycle_duration,
 };
 
 #[derive(Default, Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -181,7 +181,7 @@ impl CycleFrameCounter {
                 consider_rng_manipulated_lead_pid,
             } => {
                 let min_mid_max_initial =
-                    get_min_mid_max_pre_sweet_scent_cycle_for_map(opts.action, map_data);
+                    get_min_mid_max_pre_sweet_scent_cycle_with_context(opts.action, map_data, opts.calibration_context);
                 if !*consider_rng_manipulated_lead_pid && !*generate_even_if_impossible {
                     let (min_lead_cycle_spd, max_lead_cycle_spd) =
                         MinMaxCycleFrame::min_max_lead_cycle_spd(
@@ -216,7 +216,7 @@ impl CycleFrameCounter {
             }
             Wild3GeneratorCycleOpts::LikelihoodForLead { lead_cycle_spd } => {
                 let min_mid_max_initial =
-                    get_min_mid_max_pre_sweet_scent_cycle_for_map(opts.action, map_data);
+                    get_min_mid_max_pre_sweet_scent_cycle_with_context(opts.action, map_data, opts.calibration_context);
                 CycleFrameCounter::MinMaxRange {
                     min_max_cycles: MinMaxCycleFrame::new(
                         (min_mid_max_initial.0, min_mid_max_initial.2),
@@ -232,9 +232,10 @@ impl CycleFrameCounter {
                 CycleFrameCounter::DetailedBreakdown {
                     lead_cycle_spd: *lead_cycle_spd,
                     current_cycle: CycleFrame {
-                        cycle: get_min_mid_max_pre_sweet_scent_cycle_for_map(
+                        cycle: get_min_mid_max_pre_sweet_scent_cycle_with_context(
                             opts.action,
                             map_data,
+                            opts.calibration_context,
                         )
                         .1,
                         frame: 0,

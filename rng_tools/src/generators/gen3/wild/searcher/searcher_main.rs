@@ -17,7 +17,7 @@ use crate::{
         searcher_painter::Wild3PaintingOpts,
         wild::{
             Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex, Wild3MapGameData,
-            Wild3SearcherCycleDataByLead, calculate_cycle_data_by_lead,
+            Wild3SearcherCycleDataByLead, Wild3CalibrationContext, calculate_cycle_data_by_lead,
         },
     },
     gen3_shiny,
@@ -153,6 +153,9 @@ pub struct Wild3SearcherOptions {
     pub map_setups: Vec<Wild3MapSetups>,
     pub methods: Vec<Gen3Method>,
     pub cycle_opts: Wild3SearcherCycleOpts,
+    #[serde(default)]
+    #[tsify(optional)]
+    pub calibration_context: Option<Wild3CalibrationContext>,
     pub painting_opts: Option<Wild3PaintingOpts>,
     pub using_white_flute: bool,
     pub considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt,
@@ -174,6 +177,7 @@ impl Default for Wild3SearcherOptions {
             map_setups: vec![Wild3MapSetups::default()],
             methods: vec![],
             cycle_opts: Wild3SearcherCycleOpts::default(),
+            calibration_context: None,
             painting_opts: None,
             using_white_flute: true,
             considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt::default(),
@@ -237,6 +241,7 @@ impl Wild3SearcherResultMon {
                 is_egg,
                 lead_cycle_spd,
                 map_data,
+                gen_opts.calibration_context,
             )
         });
 

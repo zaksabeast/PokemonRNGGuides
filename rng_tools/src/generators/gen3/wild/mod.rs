@@ -5,6 +5,7 @@ mod cycle_calibration;
 mod cycle_calibration_tests;
 mod cycle_counter;
 mod cycle_data_calculator;
+mod cycle_distribution;
 mod cycle_range;
 mod distribution_generator;
 mod filter;

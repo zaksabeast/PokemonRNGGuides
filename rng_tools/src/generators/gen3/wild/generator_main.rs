@@ -6,7 +6,7 @@ use crate::{
     Ivs, PkmFilter,
     gen3::{
         CycleAndModCount, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method, Gen3PkmFilter,
-        Wild3Action, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData,
+        Wild3Action, Wild3CalibrationContext, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData,
         Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
         generate_wild3_internal,
     },
@@ -61,6 +61,9 @@ pub struct Wild3GeneratorOptions {
     pub filter: PkmFilter,
     pub gen3_filter: Gen3PkmFilter,
     pub cycle_opts: Wild3GeneratorCycleOpts,
+    #[serde(default)]
+    #[tsify(optional)]
+    pub calibration_context: Option<Wild3CalibrationContext>,
     pub roamer_state: Wild3RoamerState,
     pub mass_outbreak_state: Wild3MassOutbreakState,
     pub feebas_state: Wild3FeebasState,
@@ -81,6 +84,7 @@ impl Default for Wild3GeneratorOptions {
             filter: PkmFilter::default(),
             gen3_filter: Gen3PkmFilter::default(),
             cycle_opts: Wild3GeneratorCycleOpts::default(),
+            calibration_context: None,
             roamer_state: Wild3RoamerState::default(),
             mass_outbreak_state: Wild3MassOutbreakState::default(),
             feebas_state: Wild3FeebasState::default(),

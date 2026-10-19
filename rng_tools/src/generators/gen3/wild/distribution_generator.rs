@@ -130,6 +130,7 @@ fn generate_dist_results(
                 opts.action,
                 lead_cycle_spd,
                 game_data,
+                opts.calibration_context,
             );
 
             Wild3MethodDistributionResult {

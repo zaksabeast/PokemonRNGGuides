@@ -4,8 +4,8 @@ use wasm_bindgen::prelude::*;
 
 use crate::gen3::{
     COMMON_LEAD_RANGE, CycleAndModRange, FASTEST_MODULO_CYCLE_24, Gen3Lead, INFINITE_CYCLE, Moment,
-    SLOWEST_MODULO_CYCLE_24, VBLANK_FREQ, Wild3GeneratorCycleOpts, Wild3GeneratorOptions,
-    get_min_mid_max_pre_sweet_scent_cycle, get_min_mid_max_vblank_cycle_duration,
+    SLOWEST_MODULO_CYCLE_24, VBLANK_FREQ, Wild3GeneratorCycleOpts, Wild3GeneratorOptions, Wild3MapGameData,
+    get_min_mid_max_pre_sweet_scent_cycle_for_map, get_min_mid_max_vblank_cycle_duration,
 };
 
 #[derive(Default, Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -173,14 +173,15 @@ pub enum CycleFrameCounter {
 }
 
 impl CycleFrameCounter {
-    pub fn new(opts: &Wild3GeneratorOptions) -> Self {
+    pub fn new(opts: &Wild3GeneratorOptions, map_data: &Wild3MapGameData) -> Self {
         match &opts.cycle_opts {
             Wild3GeneratorCycleOpts::Inactive => CycleFrameCounter::Inactive,
             Wild3GeneratorCycleOpts::Searching {
                 generate_even_if_impossible,
                 consider_rng_manipulated_lead_pid,
             } => {
-                let min_mid_max_initial = get_min_mid_max_pre_sweet_scent_cycle(opts.action);
+                let min_mid_max_initial =
+                    get_min_mid_max_pre_sweet_scent_cycle_for_map(opts.action, map_data);
                 if !*consider_rng_manipulated_lead_pid && !*generate_even_if_impossible {
                     let (min_lead_cycle_spd, max_lead_cycle_spd) =
                         MinMaxCycleFrame::min_max_lead_cycle_spd(
@@ -214,7 +215,8 @@ impl CycleFrameCounter {
                 }
             }
             Wild3GeneratorCycleOpts::LikelihoodForLead { lead_cycle_spd } => {
-                let min_mid_max_initial = get_min_mid_max_pre_sweet_scent_cycle(opts.action);
+                let min_mid_max_initial =
+                    get_min_mid_max_pre_sweet_scent_cycle_for_map(opts.action, map_data);
                 CycleFrameCounter::MinMaxRange {
                     min_max_cycles: MinMaxCycleFrame::new(
                         (min_mid_max_initial.0, min_mid_max_initial.2),
@@ -230,7 +232,11 @@ impl CycleFrameCounter {
                 CycleFrameCounter::DetailedBreakdown {
                     lead_cycle_spd: *lead_cycle_spd,
                     current_cycle: CycleFrame {
-                        cycle: get_min_mid_max_pre_sweet_scent_cycle(opts.action).1,
+                        cycle: get_min_mid_max_pre_sweet_scent_cycle_for_map(
+                            opts.action,
+                            map_data,
+                        )
+                        .1,
                         frame: 0,
                     },
                     vblank_cycles: vec![], // will use average vblank

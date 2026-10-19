@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-use super::{CycleRange, VBLANK_FREQ, Wild3Action};
+use super::{CycleRange, VBLANK_FREQ, Wild3Action, Wild3MapGameData};
 use crate::gen3::{
     COMMON_LEAD_RANGE, CycleAndModRange, FASTEST_MODULO_CYCLE_24, INFINITE_CYCLE,
     SLOWEST_MODULO_CYCLE_24,
@@ -64,7 +64,11 @@ pub fn calculate_cycle_data_by_lead(
     action: Wild3Action,
     egg_lead: bool,
     specified_lead_cycle_speed: Option<usize>,
+    map_data: &Wild3MapGameData,
 ) -> Wild3SearcherCycleDataByLead {
+    let calculate_cycle_data = |range: &CycleAndModRange, action, speed| {
+        calculate_cycle_data(range, action, speed, map_data)
+    };
     if egg_lead {
         // cycle_data is useful even with egg lead to know the likelihood of hitting the method.
         let cycle_data = calculate_cycle_data(post_sweet_scent_range, action, 0);
@@ -79,8 +83,14 @@ pub fn calculate_cycle_data_by_lead(
             common_upper_lead: cycle_data.clone(),
         }
     } else {
-        let ideal_lead_pid_cycle_count =
-            calculate_ideal_lead_pid_cycle_count(post_sweet_scent_range);
+        let ideal_lead_pid_cycle_count = calculate_ideal_lead_pid_cycle_count_at_cycle(
+            post_sweet_scent_range,
+            if action == Wild3Action::SweetScentLand {
+                get_min_mid_max_pre_sweet_scent_cycle_for_map(action, map_data).1
+            } else {
+                MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE
+            },
+        );
 
         Wild3SearcherCycleDataByLead {
             post_sweet_scent_range: *post_sweet_scent_range,
@@ -120,12 +130,17 @@ pub fn calculate_cycle_data(
     post_sweet_scent_mod_range: &CycleAndModRange,
     action: Wild3Action,
     lead_pid_cycle_count: usize,
+    map_data: &Wild3MapGameData,
 ) -> Wild3SearcherCycleData {
     let post_sweet_scent_range =
         post_sweet_scent_mod_range.apply_mod_cycle_count(lead_pid_cycle_count);
     let pre_sweet_scent_cycle_range =
         calculate_pre_sweet_scent_cycle_range(&post_sweet_scent_range);
-    let method_probability = calculate_method_probability(&pre_sweet_scent_cycle_range, action);
+    let method_probability = calculate_method_probability_for_map(
+        &pre_sweet_scent_cycle_range,
+        action,
+        map_data,
+    );
 
     Wild3SearcherCycleData {
         lead_pid_cycle_count,
@@ -190,6 +205,16 @@ pub fn is_method_possible_to_trigger(
 
 #[wasm_bindgen]
 pub fn calculate_ideal_lead_pid_cycle_count(post_sweet_scent_range: &CycleAndModRange) -> usize {
+    calculate_ideal_lead_pid_cycle_count_at_cycle(
+        post_sweet_scent_range,
+        MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE,
+    )
+}
+
+pub fn calculate_ideal_lead_pid_cycle_count_at_cycle(
+    post_sweet_scent_range: &CycleAndModRange,
+    representative_cycle: usize,
+) -> usize {
     let mod_count = post_sweet_scent_range.start.lead_pid_mod;
     if mod_count == 0 {
         // Should only occurs with egg lead
@@ -210,7 +235,7 @@ pub fn calculate_ideal_lead_pid_cycle_count(post_sweet_scent_range: &CycleAndMod
     let pre_sweet_scent_mid_cycle =
         VBLANK_FREQ as i64 - mid_cycle_from_sweet_scent_func_start as i64;
 
-    let total_diff = pre_sweet_scent_mid_cycle - MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE as i64;
+    let total_diff = pre_sweet_scent_mid_cycle - representative_cycle as i64;
     let ideal_diff_by_mod = total_diff / mod_count as i64;
     ideal_diff_by_mod.clamp(
         FASTEST_MODULO_CYCLE_24 as i64,
@@ -237,6 +262,18 @@ fn calculate_pre_sweet_scent_cycle_range(
 }
 
 pub fn get_min_mid_max_pre_sweet_scent_cycle(action: Wild3Action) -> (usize, usize, usize) {
+    get_min_mid_max_pre_sweet_scent_cycle_for_map(action, &Wild3MapGameData::default())
+}
+
+pub fn get_min_mid_max_pre_sweet_scent_cycle_for_map(
+    action: Wild3Action,
+    map_data: &Wild3MapGameData,
+) -> (usize, usize, usize) {
+    if let Some(summary) =
+        super::vblank_calibration::calibrated_pre_sweet_scent_cycles(action, map_data)
+    {
+        return summary;
+    }
     match action {
         Wild3Action::RockSmash => (30_000, 52_500, 75_000),
         _ => (
@@ -256,12 +293,20 @@ pub fn calculate_method_probability(
     pre_sweet_scent_range: &CycleRange<i32>,
     action: Wild3Action,
 ) -> f64 {
+    calculate_method_probability_for_map(pre_sweet_scent_range, action, &Wild3MapGameData::default())
+}
+
+pub fn calculate_method_probability_for_map(
+    pre_sweet_scent_range: &CycleRange<i32>,
+    action: Wild3Action,
+    map_data: &Wild3MapGameData,
+) -> f64 {
     if pre_sweet_scent_range.len == 0 {
         return 0.0;
     }
 
     let (min_pre_sweet_scent_cycle, _, max_pre_sweet_scent_cycle) =
-        get_min_mid_max_pre_sweet_scent_cycle(action);
+        get_min_mid_max_pre_sweet_scent_cycle_for_map(action, map_data);
 
     let pre_sweet_scent_cycle_range = max_pre_sweet_scent_cycle - min_pre_sweet_scent_cycle;
 

@@ -31,6 +31,7 @@ fn test_search_wild3_cycle_methods_1_2_4() {
         },
         ..Default::default()
     };
+    // Probabilities use the summed Route 101 component support [34_686, 72_512].
     let expected_results = [
         Wild3SearcherResultMon {
             pid: 2695989139,
@@ -39,11 +40,11 @@ fn test_search_wild3_cycle_methods_1_2_4() {
             encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot1),
             cycle_data_by_lead: Some(Wild3SearcherCycleDataByLead {
                 post_sweet_scent_range: CycleRange::new(75276, 80, 115175),
-                specified_lead: Some(Wild3SearcherCycleData::new(500, 50445, 115175, 0.8185)),
+                specified_lead: Some(Wild3SearcherCycleData::new(500, 50445, 115175, 22_067.0 / 37_826.0)),
                 slowest_lead: Wild3SearcherCycleData::new(900, 18445, 115175, 1.0),
                 fastest_lead: Wild3SearcherCycleData::new(18, 89005, 115175, 0.0),
                 ideal_lead: Wild3SearcherCycleData::new(900, 18445, 115175, 1.0),
-                common_lower_lead: Wild3SearcherCycleData::new(608, 41805, 115175, 1.0),
+                common_lower_lead: Wild3SearcherCycleData::new(608, 41805, 115175, 30_707.0 / 37_826.0),
                 common_upper_lead: Wild3SearcherCycleData::new(868, 21005, 115175, 1.0),
             }),
             ability: AbilityType::Second,
@@ -65,11 +66,11 @@ fn test_search_wild3_cycle_methods_1_2_4() {
             encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot1),
             cycle_data_by_lead: Some(Wild3SearcherCycleDataByLead {
                 post_sweet_scent_range: CycleRange::new(190451, 80, 39309),
-                specified_lead: Some(Wild3SearcherCycleData::new(500, 11136, 39309, 0.1815)),
+                specified_lead: Some(Wild3SearcherCycleData::new(500, 11136, 39309, 15_759.0 / 37_826.0)),
                 slowest_lead: Wild3SearcherCycleData::new(900, -20864, 39309, 0.0),
-                fastest_lead: Wild3SearcherCycleData::new(18, 49696, 39309, 0.8434666666666667),
-                ideal_lead: Wild3SearcherCycleData::new(197, 35376, 39309, 0.9895),
-                common_lower_lead: Wild3SearcherCycleData::new(608, 2496, 39309, 0.0),
+                fastest_lead: Wild3SearcherCycleData::new(18, 49696, 39309, 22_816.0 / 37_826.0),
+                ideal_lead: Wild3SearcherCycleData::new(156, 38656, 39309, 33_856.0 / 37_826.0),
+                common_lower_lead: Wild3SearcherCycleData::new(608, 2496, 39309, 7_119.0 / 37_826.0),
                 common_upper_lead: Wild3SearcherCycleData::new(868, -18304, 39309, 0.0),
             }),
             ability: AbilityType::Second,
@@ -97,9 +98,9 @@ fn test_search_wild3_cycle_methods_1_2_4() {
                     18,
                     -1000000,
                     1049696,
-                    0.15653333333333333,
+                    15_010.0 / 37_826.0,
                 ),
-                ideal_lead: Wild3SearcherCycleData::new(18, -1000000, 1049696, 0.15653333333333333),
+                ideal_lead: Wild3SearcherCycleData::new(18, -1000000, 1049696, 15_010.0 / 37_826.0),
                 common_lower_lead: Wild3SearcherCycleData::new(608, -1000000, 1002496, 0.0),
                 common_upper_lead: Wild3SearcherCycleData::new(868, -1000000, 981696, 0.0),
             }),

@@ -389,6 +389,7 @@ fn create_result(
                     advance,
                     encounter,
                     gen_results.cycle_counter.get_cycle_instability(),
+                    &map_setups.map_data,
                 ));
             }
         }

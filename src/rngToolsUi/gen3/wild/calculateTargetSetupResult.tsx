@@ -5,6 +5,7 @@ import {
   Wild3Action,
   Wild3GeneratorMonResult,
   Wild3GeneratorOptions,
+  Wild3MapGameData,
 } from "~/rngTools";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 import { TargetSetup } from "./wild3TargetSetupInput";
@@ -26,6 +27,7 @@ const getProbabilityInfo = async (
   res: Wild3GeneratorMonResult,
   action: Wild3Action,
   lead_cycle_speed: number | null,
+  map_data: Wild3MapGameData,
 ) => {
   if (lead_cycle_speed == null || res.cycle_range == null) {
     return null;
@@ -35,6 +37,7 @@ const getProbabilityInfo = async (
     res.cycle_range,
     action,
     lead_cycle_speed,
+    map_data,
   );
 
   const ideal_lead_spd = await rngTools.calculate_ideal_lead_pid_cycle_count(
@@ -45,6 +48,7 @@ const getProbabilityInfo = async (
     res.cycle_range,
     action,
     ideal_lead_spd,
+    map_data,
   );
 
   const leadDesc =
@@ -198,6 +202,7 @@ export const calculateTargetSetupResult = async (
     res,
     targetSetup.action,
     lead_cycle_speed,
+    map_data,
   );
   const abilityStr = await getAbilityDisplayStr(species, res.pid);
 

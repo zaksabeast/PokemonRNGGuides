@@ -15,6 +15,7 @@ mod lcrng_distance;
 mod most_dense_pid_chunks_by_spd;
 mod searcher;
 mod types;
+mod vblank_calibration;
 
 pub use calc_modulo_cycle_count::*;
 pub use cycle_counter::*;
@@ -28,3 +29,5 @@ pub use lcrng_distance::*;
 pub use most_dense_pid_chunks_by_spd::*;
 pub use searcher::*;
 pub use types::*;
+
+pub use vblank_calibration::*;

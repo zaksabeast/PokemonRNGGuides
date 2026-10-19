@@ -119,6 +119,7 @@ fn generate_dist_results(
                 advances,
                 encounter,
                 cycle_instability,
+                game_data,
             );
             let cycle_data = calculate_cycle_data(
                 &searcher_res
@@ -128,6 +129,7 @@ fn generate_dist_results(
                     .post_sweet_scent_range,
                 opts.action,
                 lead_cycle_spd,
+                game_data,
             );
 
             Wild3MethodDistributionResult {

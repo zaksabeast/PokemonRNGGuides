@@ -264,8 +264,8 @@ fn GetCurrentMapWildMonHeaderId(
 }
 
 const fn calculate_map_header_lookups() -> [(usize, usize); 124] {
-    // Map groups in Emerald's gWildMonHeaders order, matching
-    // EMERALD_MAPS_BY_INTERNAL_IDX in wild3GameData.ts.
+    // Map groups in Emerald's gWildMonHeaders order, matching the map
+    // encounter array in emerald_wild_encounters.ts used by wild3GameData.ts.
     const MAP_GROUPS: [u8; 124] = [
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 24, 24, 24, 24, 24, 24, 26, 0, 24, 24, 24, 24,
         24, 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 24, 24, 24, 24, 24, 24, 24, 24, 0, 0, 0, 0, 0, 0, 0,

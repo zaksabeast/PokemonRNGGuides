@@ -16,7 +16,7 @@ pub struct CycleCalibrationSummary {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum Wild3CalibrationSong { Route101, Route104, Route110, PetalburgWoods, Route113, SafariZone }
+pub enum Wild3CalibrationSong { Route101, Route104, Route110, PetalburgWoods, Route113, SafariZone, RgSeviiCave }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Tsify)]
 pub enum Wild3MovementMode { OnFoot, Bike }
@@ -96,9 +96,11 @@ pub const WILD3_MAP_CYCLE_CALIBRATIONS: &[Wild3MapCycleCalibration] = &[
         context: WALKING_LAND, non_audio: data::ROUTE113_NON_AUDIO.summary, distribution: &data::ROUTE113_NON_AUDIO, combined_median: data::ROUTE113_COMBINED_MEDIAN, joint_correction: data::ROUTE113_JOINT_CORRECTION },
     Wild3MapCycleCalibration { map_internal_idx: 20, song: Wild3CalibrationSong::SafariZone,
         context: WALKING_LAND, non_audio: data::SAFARI_ZONE_SOUTH_NON_AUDIO.summary, distribution: &data::SAFARI_ZONE_SOUTH_NON_AUDIO, combined_median: data::SAFARI_ZONE_SOUTH_COMBINED_MEDIAN, joint_correction: data::SAFARI_ZONE_SOUTH_JOINT_CORRECTION },
+    Wild3MapCycleCalibration { map_internal_idx: 114, song: Wild3CalibrationSong::RgSeviiCave,
+        context: WALKING_LAND, non_audio: data::ALTERING_CAVE_NON_AUDIO.summary, distribution: &data::ALTERING_CAVE_NON_AUDIO, combined_median: data::ALTERING_CAVE_COMBINED_MEDIAN, joint_correction: data::ALTERING_CAVE_JOINT_CORRECTION },
 ];
 
-// Default music assignments from Emerald map headers, using EMERALD_MAPS_BY_INTERNAL_IDX.
+// Default music assignments from Emerald map headers, using the encounter array order.
 // Only songs with a recorded calibration need entries. Runtime music overrides are not
 // represented by Wild3MapGameData (including Route 118's position-dependent music).
 fn default_calibration_song(map: &Wild3MapGameData) -> Option<Wild3CalibrationSong> {
@@ -109,6 +111,7 @@ fn default_calibration_song(map: &Wild3MapGameData) -> Option<Wild3CalibrationSo
         14 | 15 | 16 | 17 | 23 | 24 | 26 | 45 | 112 | 113 => Some(Wild3CalibrationSong::PetalburgWoods),
         8 => Some(Wild3CalibrationSong::Route113),
         20 | 72 | 73 | 74 | 97 | 98 => Some(Wild3CalibrationSong::SafariZone),
+        114..=122 => Some(Wild3CalibrationSong::RgSeviiCave),
         _ => None,
     }
 }
@@ -131,6 +134,7 @@ fn audio_distribution(song: Wild3CalibrationSong) -> &'static ComponentDistribut
         Wild3CalibrationSong::PetalburgWoods => &data::PETALBURG_WOODS_AUDIO,
         Wild3CalibrationSong::Route113 => &data::ROUTE113_AUDIO,
         Wild3CalibrationSong::SafariZone => &data::SAFARI_ZONE_AUDIO,
+        Wild3CalibrationSong::RgSeviiCave => &data::RG_SEVII_CAVE_AUDIO,
     }
 }
 
@@ -256,6 +260,19 @@ mod tests {
     }
 
     #[test]
+    fn altering_cave_uses_its_measured_song_and_bounds() {
+        let (model, fallback) = calibration_model(Wild3Action::SweetScentLand, &map(114), None).unwrap();
+        assert!(!fallback);
+        assert_eq!((model.min, model.max), (42_052, 70_087));
+        let info = get_wild3_calibration_info(Wild3Action::SweetScentLand, &map(114), None);
+        let audio = info.audio.unwrap();
+        assert_eq!(audio.source, "altering_cave_walk_sweet_scent.txt");
+        assert_eq!(audio.attempts, 5523);
+        assert!(audio.incomplete_loop);
+        assert_eq!(wild3_map_cycle_calibration(&map(114)).song, Wild3CalibrationSong::RgSeviiCave);
+    }
+
+    #[test]
     fn fallback_is_explicit_and_does_not_narrow_filtering() {
         let bounds = calibration_filter_bounds(Wild3Action::SweetScentLand, &map(999), None).unwrap();
         assert_eq!((bounds.0, bounds.2), (0, VBLANK_FREQ - 1));
@@ -295,7 +312,7 @@ mod tests {
     fn initial_bounds_and_likelihood_use_the_same_context() {
         use crate::gen3::{CycleFrameCounter, CycleRange, Wild3GeneratorCycleOpts,
             Wild3GeneratorOptions, calculate_method_probability_with_context};
-        for index in [0, 1, 2, 3, 5, 8, 14, 20] {
+        for index in [0, 1, 2, 3, 5, 8, 14, 20, 114] {
             let map = map(index);
             let (model, _) = calibration_model(Wild3Action::SweetScentLand, &map, None).unwrap();
             assert_eq!(model.median(), wild3_map_cycle_calibration(&map).combined_median);

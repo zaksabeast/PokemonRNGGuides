@@ -16,6 +16,7 @@ const sources = [
   { id: "PETALBURG_WOODS", file: "petalsbourg_wood_walk_sweet_scent.txt", map: 14, song: "PETALBURG_WOODS", loop: 2016 * 150 / 130 },
   { id: "ROUTE113", file: "route113_walk_sweet_scent.txt", map: 8, song: "ROUTE113", loop: 3456 * 150 / 128 },
   { id: "SAFARI_ZONE_SOUTH", file: "safari_center_bottom_walk_sweet_scent.txt", map: 20, song: "SAFARI_ZONE", loop: 1152 * 150 / 142 },
+  { id: "ALTERING_CAVE", file: "altering_cave_walk_sweet_scent.txt", map: 114, song: "RG_SEVII_CAVE", loop: 5525.619515 },
 ];
 
 type CaptureMetadata = Record<string, string | number | boolean> & {
@@ -164,7 +165,7 @@ function comparison(knots: Knot[], values: Weighted[]) {
 export async function extract(check = false) {
   const captures: Capture[] = [];
   for (const source of sources) {
-    const text = await readFile(new URL("vblank_calibration_data/" + source.file, root), "utf8");
+    const text = await readFile(new URL("vblank_calibration.local.data/" + source.file, root), "utf8");
     const rows = parseLog(text);
     const frames = [...new Set(rows.map(r => r.frame))].sort((a, b) => a - b);
     const span = frames.at(-1)! - frames[0] + 1;

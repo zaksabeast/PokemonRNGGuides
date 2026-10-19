@@ -387,6 +387,60 @@
       }
     },
     {
+      "component": "RG_SEVII_CAVE_AUDIO",
+      "source": "altering_cave_walk_sweet_scent.txt",
+      "sha256": "609e5815d6ce23bca1b05233b965eefa0519dc919a8ee9b103403e11c774f0aa",
+      "checksum_normalization": "LF",
+      "attempts": 5523,
+      "distinct_frames": 4689,
+      "frame_start": 10580,
+      "frame_end": 16102,
+      "duplicate_attempts": 834,
+      "missing_frames": 834,
+      "song_loop_frames": 5525.619515,
+      "incomplete_loop": true,
+      "game": "Emerald",
+      "action": "SweetScentLand",
+      "movement": "OnFoot",
+      "sound_mode": "Unspecified",
+      "safety_margin_cycles": 0,
+      "independent_full_loop_validation": false,
+      "knots": 97,
+      "max_cdf_error": 0.0024869461127278725,
+      "support": {
+        "min": 32311,
+        "median": 49813,
+        "max": 60314
+      }
+    },
+    {
+      "component": "ALTERING_CAVE_NON_AUDIO",
+      "source": "altering_cave_walk_sweet_scent.txt",
+      "sha256": "609e5815d6ce23bca1b05233b965eefa0519dc919a8ee9b103403e11c774f0aa",
+      "checksum_normalization": "LF",
+      "attempts": 5523,
+      "distinct_frames": 4689,
+      "frame_start": 10580,
+      "frame_end": 16102,
+      "duplicate_attempts": 834,
+      "missing_frames": 834,
+      "song_loop_frames": 5525.619515,
+      "incomplete_loop": true,
+      "game": "Emerald",
+      "action": "SweetScentLand",
+      "movement": "OnFoot",
+      "sound_mode": "Unspecified",
+      "safety_margin_cycles": 0,
+      "independent_full_loop_validation": false,
+      "knots": 20,
+      "max_cdf_error": 0,
+      "support": {
+        "min": 9741,
+        "median": 9749,
+        "max": 9773
+      }
+    },
+    {
       "component": "PETALBURG_WOODS_JOINT",
       "source": "petalsbourg_wood_walk_sweet_scent.txt",
       "sha256": "6699a7f3f2c02591da629270136e5a82b42e60200de15bd4e1a89132d265f773",
@@ -804,6 +858,55 @@
       "max_interval_probability_error": 0.007178487587419763,
       "independent_joint_cdf_error": 0.007926234522108222,
       "independent_interval_probability_error": 0.007178487587419763,
+      "model": "independent_convolution",
+      "validation_kind": "in_sample_joint"
+    },
+    {
+      "map": "ALTERING_CAVE",
+      "combined_median": 59557,
+      "quantiles": [
+        {
+          "p": 0.01,
+          "empirical_cycles": 50559,
+          "estimated_cycles": 50830
+        },
+        {
+          "p": 0.05,
+          "empirical_cycles": 55541,
+          "estimated_cycles": 55506
+        },
+        {
+          "p": 0.25,
+          "empirical_cycles": 58199,
+          "estimated_cycles": 58202
+        },
+        {
+          "p": 0.5,
+          "empirical_cycles": 59556,
+          "estimated_cycles": 59557
+        },
+        {
+          "p": 0.75,
+          "empirical_cycles": 60695,
+          "estimated_cycles": 60693
+        },
+        {
+          "p": 0.95,
+          "empirical_cycles": 62378,
+          "estimated_cycles": 62372
+        },
+        {
+          "p": 0.99,
+          "empirical_cycles": 65826,
+          "estimated_cycles": 65808
+        }
+      ],
+      "audio_source": "RG_SEVII_CAVE",
+      "audio_cdf_error": 0.0024869461127278725,
+      "joint_cdf_error": 0.007226625083098265,
+      "max_interval_probability_error": 0.006303117682362955,
+      "independent_joint_cdf_error": 0.007226625083098265,
+      "independent_interval_probability_error": 0.006303117682362955,
       "model": "independent_convolution",
       "validation_kind": "in_sample_joint"
     }

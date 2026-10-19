@@ -77,6 +77,18 @@ fn wild3_cycle_calib_cute_charm_female_route119() {
 }
 
 #[test]
+fn wild3_cycle_calib_cute_charm_female_victory_road_1f() {
+    map_pokeblock_cycle_calibration(
+        Gen3Lead::CuteCharm(crate::Gender::Female),
+        Wild3Action::SweetScentLand,
+        "cute_charm_female_victory_road_1f.jsonl",
+        &victory_road_1f_map_data(),
+        None,
+        52.50,
+    );
+}
+
+#[test]
 fn wild3_cycle_calib_cute_charm_male_desert_underpass() {
     map_pokeblock_cycle_calibration(
         Gen3Lead::CuteCharm(crate::Gender::Male),
@@ -429,6 +441,38 @@ fn route111_map_data() -> Wild3MapGameData {
         map_internal_idx: 6,
         slots_by_action,
         rock_smash_rate: 20,
+        ..Wild3MapGameData::default()
+    }
+}
+
+fn victory_road_1f_map_data() -> Wild3MapGameData {
+    let land_slots = [
+        (Species::Golbat, 40),
+        (Species::Hariyama, 40),
+        (Species::Lairon, 40),
+        (Species::Loudred, 40),
+        (Species::Zubat, 36),
+        (Species::Makuhita, 36),
+        (Species::Golbat, 38),
+        (Species::Hariyama, 38),
+        (Species::Aron, 36),
+        (Species::Whismur, 36),
+        (Species::Aron, 36),
+        (Species::Whismur, 36),
+    ];
+    Wild3MapGameData {
+        map_id: "MAP_VICTORY_ROAD_1F".into(),
+        map_internal_idx: 19,
+        slots_by_action: vec![
+            land_slots
+                .into_iter()
+                .map(|(species, level)| Wild3EncounterGameData {
+                    min_level: level,
+                    max_level: level,
+                    species_data: SpeciesData { species },
+                })
+                .collect(),
+        ],
         ..Wild3MapGameData::default()
     }
 }

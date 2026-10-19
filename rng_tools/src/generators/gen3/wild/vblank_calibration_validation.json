@@ -1,5 +1,5 @@
 {
-  "extractor_version": 2,
+  "extractor_version": 3,
   "cdf_tolerance": 0.0025,
   "validation_limits": {
     "joint_cdf_error": 0.02,
@@ -223,6 +223,195 @@
         "median": 10712,
         "max": 10736
       }
+    },
+    {
+      "component": "PETALBURG_WOODS_AUDIO",
+      "source": "petalsbourg_wood_walk_sweet_scent.txt",
+      "sha256": "6699a7f3f2c02591da629270136e5a82b42e60200de15bd4e1a89132d265f773",
+      "checksum_normalization": "LF",
+      "attempts": 2327,
+      "distinct_frames": 2089,
+      "frame_start": 9876,
+      "frame_end": 12202,
+      "duplicate_attempts": 238,
+      "missing_frames": 238,
+      "song_loop_frames": 2326.153846153846,
+      "incomplete_loop": false,
+      "game": "Emerald",
+      "action": "SweetScentLand",
+      "movement": "OnFoot",
+      "sound_mode": "Unspecified",
+      "safety_margin_cycles": 0,
+      "independent_full_loop_validation": false,
+      "knots": 154,
+      "max_cdf_error": 0.002457013605457581,
+      "support": {
+        "min": 24446,
+        "median": 48046,
+        "max": 61001
+      }
+    },
+    {
+      "component": "PETALBURG_WOODS_NON_AUDIO",
+      "source": "petalsbourg_wood_walk_sweet_scent.txt",
+      "sha256": "6699a7f3f2c02591da629270136e5a82b42e60200de15bd4e1a89132d265f773",
+      "checksum_normalization": "LF",
+      "attempts": 2327,
+      "distinct_frames": 2089,
+      "frame_start": 9876,
+      "frame_end": 12202,
+      "duplicate_attempts": 238,
+      "missing_frames": 238,
+      "song_loop_frames": 2326.153846153846,
+      "incomplete_loop": false,
+      "game": "Emerald",
+      "action": "SweetScentLand",
+      "movement": "OnFoot",
+      "sound_mode": "Unspecified",
+      "safety_margin_cycles": 0,
+      "independent_full_loop_validation": false,
+      "knots": 20,
+      "max_cdf_error": 0,
+      "support": {
+        "min": 9954,
+        "median": 9962,
+        "max": 9986
+      }
+    },
+    {
+      "component": "ROUTE113_AUDIO",
+      "source": "route113_walk_sweet_scent.txt",
+      "sha256": "7de8ff3128a065f09714102718dda4c6aee959e9642f41fe8634c03e6907b8d8",
+      "checksum_normalization": "LF",
+      "attempts": 4050,
+      "distinct_frames": 3673,
+      "frame_start": 6391,
+      "frame_end": 10440,
+      "duplicate_attempts": 377,
+      "missing_frames": 377,
+      "song_loop_frames": 4050,
+      "incomplete_loop": false,
+      "game": "Emerald",
+      "action": "SweetScentLand",
+      "movement": "OnFoot",
+      "sound_mode": "Unspecified",
+      "safety_margin_cycles": 0,
+      "independent_full_loop_validation": false,
+      "knots": 90,
+      "max_cdf_error": 0.0024946626538528416,
+      "support": {
+        "min": 25864,
+        "median": 45130,
+        "max": 59163
+      }
+    },
+    {
+      "component": "ROUTE113_NON_AUDIO",
+      "source": "route113_walk_sweet_scent.txt",
+      "sha256": "7de8ff3128a065f09714102718dda4c6aee959e9642f41fe8634c03e6907b8d8",
+      "checksum_normalization": "LF",
+      "attempts": 4050,
+      "distinct_frames": 3673,
+      "frame_start": 6391,
+      "frame_end": 10440,
+      "duplicate_attempts": 377,
+      "missing_frames": 377,
+      "song_loop_frames": 4050,
+      "incomplete_loop": false,
+      "game": "Emerald",
+      "action": "SweetScentLand",
+      "movement": "OnFoot",
+      "sound_mode": "Unspecified",
+      "safety_margin_cycles": 0,
+      "independent_full_loop_validation": false,
+      "knots": 20,
+      "max_cdf_error": 0,
+      "support": {
+        "min": 10274,
+        "median": 10286,
+        "max": 10306
+      }
+    },
+    {
+      "component": "SAFARI_ZONE_AUDIO",
+      "source": "safari_center_bottom_walk_sweet_scent.txt",
+      "sha256": "5b6c35574e43fa92e146f5ac7878685ef89b877a1836bbec44da55987bbed76e",
+      "checksum_normalization": "LF",
+      "attempts": 1217,
+      "distinct_frames": 1088,
+      "frame_start": 15224,
+      "frame_end": 16440,
+      "duplicate_attempts": 129,
+      "missing_frames": 129,
+      "song_loop_frames": 1216.9014084507041,
+      "incomplete_loop": false,
+      "game": "Emerald",
+      "action": "SweetScentLand",
+      "movement": "OnFoot",
+      "sound_mode": "Unspecified",
+      "safety_margin_cycles": 0,
+      "independent_full_loop_validation": false,
+      "knots": 208,
+      "max_cdf_error": 0.0024976023017903026,
+      "support": {
+        "min": 31996,
+        "median": 44490,
+        "max": 57894
+      }
+    },
+    {
+      "component": "SAFARI_ZONE_SOUTH_NON_AUDIO",
+      "source": "safari_center_bottom_walk_sweet_scent.txt",
+      "sha256": "5b6c35574e43fa92e146f5ac7878685ef89b877a1836bbec44da55987bbed76e",
+      "checksum_normalization": "LF",
+      "attempts": 1217,
+      "distinct_frames": 1088,
+      "frame_start": 15224,
+      "frame_end": 16440,
+      "duplicate_attempts": 129,
+      "missing_frames": 129,
+      "song_loop_frames": 1216.9014084507041,
+      "incomplete_loop": false,
+      "game": "Emerald",
+      "action": "SweetScentLand",
+      "movement": "OnFoot",
+      "sound_mode": "Unspecified",
+      "safety_margin_cycles": 0,
+      "independent_full_loop_validation": false,
+      "knots": 20,
+      "max_cdf_error": 0,
+      "support": {
+        "min": 10242,
+        "median": 10254,
+        "max": 10274
+      }
+    },
+    {
+      "component": "PETALBURG_WOODS_JOINT",
+      "source": "petalsbourg_wood_walk_sweet_scent.txt",
+      "sha256": "6699a7f3f2c02591da629270136e5a82b42e60200de15bd4e1a89132d265f773",
+      "checksum_normalization": "LF",
+      "attempts": 2327,
+      "distinct_frames": 2089,
+      "frame_start": 9876,
+      "frame_end": 12202,
+      "duplicate_attempts": 238,
+      "missing_frames": 238,
+      "song_loop_frames": 2326.153846153846,
+      "incomplete_loop": false,
+      "game": "Emerald",
+      "action": "SweetScentLand",
+      "movement": "OnFoot",
+      "sound_mode": "Unspecified",
+      "safety_margin_cycles": 0,
+      "independent_full_loop_validation": false,
+      "knots": 150,
+      "max_cdf_error": 0.0024861409224971043,
+      "support": {
+        "min": 34418,
+        "median": 58008,
+        "max": 70955
+      }
     }
   ],
   "validation": [
@@ -268,8 +457,11 @@
       ],
       "audio_source": "ROUTE101",
       "audio_cdf_error": 0.0024678300634582984,
-      "joint_cdf_error": 0.007716622443071142,
+      "joint_cdf_error": 0.0077166224169230024,
       "max_interval_probability_error": 0.004707840776034117,
+      "independent_joint_cdf_error": 0.0077166224169230024,
+      "independent_interval_probability_error": 0.004707840776034117,
+      "model": "independent_convolution",
       "validation_kind": "in_sample_joint"
     },
     {
@@ -314,8 +506,11 @@
       ],
       "audio_source": "ROUTE101",
       "audio_cdf_error": 0.00875756412937534,
-      "joint_cdf_error": 0.009733436458789935,
+      "joint_cdf_error": 0.009733436431785591,
       "max_interval_probability_error": 0.0067292806429816165,
+      "independent_joint_cdf_error": 0.009733436431785591,
+      "independent_interval_probability_error": 0.0067292806429816165,
+      "model": "independent_convolution",
       "validation_kind": "cross_map_audio_holdout"
     },
     {
@@ -360,8 +555,11 @@
       ],
       "audio_source": "ROUTE101",
       "audio_cdf_error": 0.008196721311474642,
-      "joint_cdf_error": 0.01240817768383562,
+      "joint_cdf_error": 0.01240817763976687,
       "max_interval_probability_error": 0.0060885781841814035,
+      "independent_joint_cdf_error": 0.01240817763976687,
+      "independent_interval_probability_error": 0.0060885781841814035,
+      "model": "independent_convolution",
       "validation_kind": "cross_map_audio_holdout"
     },
     {
@@ -408,6 +606,9 @@
       "audio_cdf_error": 0.0024641267206620965,
       "joint_cdf_error": 0.002736551175120394,
       "max_interval_probability_error": 0.003017565092991281,
+      "independent_joint_cdf_error": 0.002736551175120394,
+      "independent_interval_probability_error": 0.003017565092991281,
+      "model": "independent_convolution",
       "validation_kind": "in_sample_joint"
     },
     {
@@ -452,8 +653,158 @@
       ],
       "audio_source": "ROUTE110",
       "audio_cdf_error": 0.0024675496823793885,
-      "joint_cdf_error": 0.004625321671885035,
+      "joint_cdf_error": 0.0046253216627769045,
       "max_interval_probability_error": 0.00391084136516142,
+      "independent_joint_cdf_error": 0.0046253216627769045,
+      "independent_interval_probability_error": 0.00391084136516142,
+      "model": "independent_convolution",
+      "validation_kind": "in_sample_joint"
+    },
+    {
+      "map": "PETALBURG_WOODS",
+      "combined_median": 58004,
+      "quantiles": [
+        {
+          "p": 0.01,
+          "empirical_cycles": 35007,
+          "estimated_cycles": 34952
+        },
+        {
+          "p": 0.05,
+          "empirical_cycles": 35368,
+          "estimated_cycles": 35368
+        },
+        {
+          "p": 0.25,
+          "empirical_cycles": 49617,
+          "estimated_cycles": 49617
+        },
+        {
+          "p": 0.5,
+          "empirical_cycles": 58008,
+          "estimated_cycles": 58004
+        },
+        {
+          "p": 0.75,
+          "empirical_cycles": 60237,
+          "estimated_cycles": 60237
+        },
+        {
+          "p": 0.95,
+          "empirical_cycles": 63041,
+          "estimated_cycles": 63015
+        },
+        {
+          "p": 0.99,
+          "empirical_cycles": 67215,
+          "estimated_cycles": 67004
+        }
+      ],
+      "audio_source": "PETALBURG_WOODS",
+      "audio_cdf_error": 0.002457013605457581,
+      "joint_cdf_error": 0.0024861409224971043,
+      "max_interval_probability_error": 0.003541262311310106,
+      "independent_joint_cdf_error": 0.032211581731921984,
+      "independent_interval_probability_error": 0.004678515116219389,
+      "model": "joint_cdf_correction",
+      "validation_kind": "in_sample_joint"
+    },
+    {
+      "map": "ROUTE113",
+      "combined_median": 55417,
+      "quantiles": [
+        {
+          "p": 0.01,
+          "empirical_cycles": 42260,
+          "estimated_cycles": 42291
+        },
+        {
+          "p": 0.05,
+          "empirical_cycles": 47806,
+          "estimated_cycles": 47819
+        },
+        {
+          "p": 0.25,
+          "empirical_cycles": 51747,
+          "estimated_cycles": 51756
+        },
+        {
+          "p": 0.5,
+          "empirical_cycles": 55430,
+          "estimated_cycles": 55417
+        },
+        {
+          "p": 0.75,
+          "empirical_cycles": 57055,
+          "estimated_cycles": 57046
+        },
+        {
+          "p": 0.95,
+          "empirical_cycles": 63261,
+          "estimated_cycles": 63190
+        },
+        {
+          "p": 0.99,
+          "empirical_cycles": 66228,
+          "estimated_cycles": 66214
+        }
+      ],
+      "audio_source": "ROUTE113",
+      "audio_cdf_error": 0.002494662650218582,
+      "joint_cdf_error": 0.004679196862105384,
+      "max_interval_probability_error": 0.004147059987726354,
+      "independent_joint_cdf_error": 0.004679196862105384,
+      "independent_interval_probability_error": 0.004147059987726354,
+      "model": "independent_convolution",
+      "validation_kind": "in_sample_joint"
+    },
+    {
+      "map": "SAFARI_ZONE_SOUTH",
+      "combined_median": 54735,
+      "quantiles": [
+        {
+          "p": 0.01,
+          "empirical_cycles": 43783,
+          "estimated_cycles": 43796
+        },
+        {
+          "p": 0.05,
+          "empirical_cycles": 47711,
+          "estimated_cycles": 47775
+        },
+        {
+          "p": 0.25,
+          "empirical_cycles": 53071,
+          "estimated_cycles": 53078
+        },
+        {
+          "p": 0.5,
+          "empirical_cycles": 54753,
+          "estimated_cycles": 54735
+        },
+        {
+          "p": 0.75,
+          "empirical_cycles": 57363,
+          "estimated_cycles": 57379
+        },
+        {
+          "p": 0.95,
+          "empirical_cycles": 62935,
+          "estimated_cycles": 62987
+        },
+        {
+          "p": 0.99,
+          "empirical_cycles": 66699,
+          "estimated_cycles": 66749
+        }
+      ],
+      "audio_source": "SAFARI_ZONE",
+      "audio_cdf_error": 0.0024976023017903026,
+      "joint_cdf_error": 0.007926234522108222,
+      "max_interval_probability_error": 0.007178487587419763,
+      "independent_joint_cdf_error": 0.007926234522108222,
+      "independent_interval_probability_error": 0.007178487587419763,
+      "model": "independent_convolution",
       "validation_kind": "in_sample_joint"
     }
   ]

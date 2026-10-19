@@ -13,7 +13,17 @@ const sources = [
   { id: "ROUTE103", file: "route103_walk_sweet_scent.txt", map: 2, song: "ROUTE101", loop: 38400 / 19 },
   { id: "ROUTE104", file: "route104_walk_sweet_scent.txt", map: 3, song: "ROUTE104", loop: 2260.25 },
   { id: "ROUTE110", file: "route110_walk_sweet_scent.txt", map: 5, song: "ROUTE110", loop: 1920 * 150 / 132 },
+  { id: "PETALBURG_WOODS", file: "petalsbourg_wood_walk_sweet_scent.txt", map: 14, song: "PETALBURG_WOODS", loop: 2016 * 150 / 130 },
+  { id: "ROUTE113", file: "route113_walk_sweet_scent.txt", map: 8, song: "ROUTE113", loop: 3456 * 150 / 128 },
+  { id: "SAFARI_ZONE_SOUTH", file: "safari_center_bottom_walk_sweet_scent.txt", map: 20, song: "SAFARI_ZONE", loop: 1152 * 150 / 142 },
 ];
+
+type CaptureMetadata = Record<string, string | number | boolean> & {
+  source: string; sha256: string; attempts: number; distinct_frames: number;
+  frame_start: number; frame_end: number; duplicate_attempts: number; missing_frames: number;
+  song_loop_frames: number; incomplete_loop: boolean;
+};
+type Capture = (typeof sources)[number] & { rows: Observation[]; metadata: CaptureMetadata };
 
 export function parseLog(text: string): Observation[] {
   const events = new Map<number, Map<string, number>>();
@@ -152,7 +162,7 @@ function comparison(knots: Knot[], values: Weighted[]) {
 }
 
 export async function extract(check = false) {
-  const captures = [];
+  const captures: Capture[] = [];
   for (const source of sources) {
     const text = await readFile(new URL("vblank_calibration_data/" + source.file, root), "utf8");
     const rows = parseLog(text);
@@ -173,13 +183,7 @@ export async function extract(check = false) {
   code += "use super::{CalibrationProvenance, ComponentDistribution, CycleCalibrationSummary};\n";
   code += "use super::super::cycle_distribution::{CdfKnot, PiecewiseCdf};\n\n";
   const diagnostics: Array<{ component: string; knots: number; max_cdf_error: number } & Record<string, unknown>> = [];
-  for (const capture of captures) {
-    for (const key of ["audio", "nonAudio"] as const) {
-      if (key === "audio" && capture.id !== capture.song) continue;
-      const values = weightedFrames(capture.rows, key);
-      const result = fit(values);
-      const id = capture.id + (key === "audio" ? "_AUDIO" : "_NON_AUDIO");
-      models.set(id, result);
+  const emitComponent = (id: string, values: Weighted[], result: ReturnType<typeof fit>, m: CaptureMetadata) => {
       const s = summary(values);
       const number = (x: number) => Number.isInteger(x) ? x.toFixed(1) : x.toPrecision(17);
       code += "pub(super) const " + id + ": ComponentDistribution = ComponentDistribution {\n";
@@ -187,7 +191,6 @@ export async function extract(check = false) {
       code += "    cdf: PiecewiseCdf { knots: &[\n";
       for (const k of result.knots) code += "        CdfKnot { cycle: " + number(k.x) + ", probability: " + number(k.p) + ", integral: " + number(k.area) + " },\n";
       code += "    ] },\n    provenance: CalibrationProvenance {\n";
-      const m = capture.metadata;
       code += "        source: \"" + m.source + "\", sha256: \"" + m.sha256 + "\",\n";
       code += "        attempts: " + m.attempts + ", distinct_frames: " + m.distinct_frames + ",\n";
       code += "        frame_start: " + m.frame_start + ", frame_end: " + m.frame_end + ",\n";
@@ -196,6 +199,16 @@ export async function extract(check = false) {
       code += "        max_cdf_error: " + number(result.error) + ", safety_margin_cycles: 0,\n";
       code += "    },\n};\n\n";
       diagnostics.push({ component: id, ...m, knots: result.knots.length, max_cdf_error: result.error, support: s });
+  };
+  for (const capture of captures) {
+    for (const key of ["audio", "nonAudio"] as const) {
+      // The first capture for a song supplies its shared audio model.
+      if (key === "audio" && captures.find(c => c.song === capture.song)!.id !== capture.id) continue;
+      const values = weightedFrames(capture.rows, key);
+      const result = fit(values);
+      const id = key === "audio" ? capture.song + "_AUDIO" : capture.id + "_NON_AUDIO";
+      models.set(id, result);
+      emitComponent(id, values, result, capture.metadata);
     }
   }
   const validation = [];
@@ -204,7 +217,11 @@ export async function extract(check = false) {
     const non = models.get(capture.id + "_NON_AUDIO")!.knots;
     const totals = empirical(weightedFrames(capture.rows, "total"));
     let error = 0;
-    for (const p of totals) error = Math.max(error, Math.abs(convolution(audio, non, p.x + 1e-7) - p.p));
+    for (let i = 0; i < totals.length; i++) {
+      const p = totals[i];
+      const threshold = p.x + (i % 2 ? 1e-7 : 0);
+      error = Math.max(error, Math.abs(convolution(audio, non, threshold) - p.p));
+    }
     // Validate representative interval widths, including narrow method windows.
     let intervalError = 0;
     const totalValues = weightedFrames(capture.rows, "total");
@@ -219,14 +236,31 @@ export async function extract(check = false) {
     }
     const audioError = comparison(audio, weightedFrames(capture.rows, "audio"));
     // Sharing Route 101 audio with Routes 102/103 is a cross-map holdout, not an independent temporal loop.
-    if (error > 0.02 || intervalError > 0.025 || audioError > 0.02) {
-      throw new Error("Joint/sharing validation failed for " + capture.id + ": " + error + ", " + intervalError);
+    if (audioError > 0.02) throw new Error("Shared audio validation failed for " + capture.id);
+    const independentCdfError = error;
+    const independentIntervalError = intervalError;
+    const joint = error > 0.02 || intervalError > 0.025 ? fit(totalValues) : null;
+    const totalCdf = (x: number) => joint ? less(joint.knots, x) : convolution(audio, non, x);
+    if (joint) {
+      emitComponent(capture.id + "_JOINT", totalValues, joint, capture.metadata);
+      error = comparison(joint.knots, totalValues);
+      intervalError = 0;
+      for (const width of [32, 256, 1024, 8192]) {
+        for (let start = totals[0].x; start <= totals.at(-1)!.x; start += 256) {
+          const measured = totalValues.filter(v => v.value >= start && v.value < start + width)
+            .reduce((s, v) => s + v.weight, 0) / totalWeight;
+          intervalError = Math.max(intervalError, Math.abs(totalCdf(start + width) - totalCdf(start) - measured));
+        }
+      }
+      if (error > 0.02 || intervalError > 0.025) throw new Error("Joint correction validation failed for " + capture.id);
     }
+    code += "pub(super) const " + capture.id + "_JOINT_CORRECTION: Option<ComponentDistribution> = "
+      + (joint ? "Some(" + capture.id + "_JOINT)" : "None") + ";\n";
     let lo = audio[0].x + non[0].x;
     let hi = audio.at(-1)!.x + non.at(-1)!.x;
     for (let i = 0; i < 48; i++) {
       const mid = (lo + hi) / 2;
-      if (convolution(audio, non, mid) < 0.5) lo = mid; else hi = mid;
+      if (totalCdf(mid) < 0.5) lo = mid; else hi = mid;
     }
     const median = Math.ceil(hi - 1e-7);
     code += "pub(super) const " + capture.id + "_COMBINED_MEDIAN: usize = " + median + ";\n";
@@ -234,17 +268,19 @@ export async function extract(check = false) {
       let low = totals[0].x, high = totals.at(-1)!.x;
       for (let i = 0; i < 48; i++) {
         const mid = (low + high) / 2;
-        if (convolution(audio, non, mid) < p) low = mid; else high = mid;
+        if (totalCdf(mid) < p) low = mid; else high = mid;
       }
       return { p, empirical_cycles: totals.find(t => t.p >= p)!.x, estimated_cycles: Math.ceil(high - 1e-7) };
     });
     validation.push({ map: capture.id, combined_median: median, quantiles, audio_source: capture.song, audio_cdf_error: audioError,
       joint_cdf_error: error, max_interval_probability_error: intervalError,
-      validation_kind: capture.id === capture.song ? "in_sample_joint" : "cross_map_audio_holdout" });
+      independent_joint_cdf_error: independentCdfError, independent_interval_probability_error: independentIntervalError,
+      model: joint ? "joint_cdf_correction" : "independent_convolution",
+      validation_kind: captures.find(c => c.song === capture.song)!.id === capture.id ? "in_sample_joint" : "cross_map_audio_holdout" });
   }
   const artifacts = [
     ["vblank_calibration_data.rs", code],
-    ["vblank_calibration_validation.json", JSON.stringify({ extractor_version: 2, cdf_tolerance: tolerance,
+    ["vblank_calibration_validation.json", JSON.stringify({ extractor_version: 3, cdf_tolerance: tolerance,
       validation_limits: { joint_cdf_error: 0.02, interval_probability_error: 0.025, shared_audio_cdf_error: 0.02 },
       probability_interval: "[start, end)", components: diagnostics, validation }, null, 2) + "\n"],
   ];

@@ -16,7 +16,7 @@ pub struct CycleCalibrationSummary {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum Wild3CalibrationSong { Route101, Route104, Route110 }
+pub enum Wild3CalibrationSong { Route101, Route104, Route110, PetalburgWoods, Route113, SafariZone }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Tsify)]
 pub enum Wild3MovementMode { OnFoot, Bike }
@@ -69,6 +69,7 @@ pub struct Wild3MapCycleCalibration {
     pub non_audio: CycleCalibrationSummary,
     pub distribution: &'static ComponentDistribution,
     pub combined_median: usize,
+    pub joint_correction: Option<ComponentDistribution>,
 }
 
 const WALKING_LAND: Wild3CalibrationContext = Wild3CalibrationContext {
@@ -80,19 +81,45 @@ const WALKING_LAND: Wild3CalibrationContext = Wild3CalibrationContext {
 // Internal wild-header indices, not UI indices or map group/number pairs.
 pub const WILD3_MAP_CYCLE_CALIBRATIONS: &[Wild3MapCycleCalibration] = &[
     Wild3MapCycleCalibration { map_internal_idx: 0, song: Wild3CalibrationSong::Route101,
-        context: WALKING_LAND, non_audio: data::ROUTE101_NON_AUDIO.summary, distribution: &data::ROUTE101_NON_AUDIO, combined_median: data::ROUTE101_COMBINED_MEDIAN },
+        context: WALKING_LAND, non_audio: data::ROUTE101_NON_AUDIO.summary, distribution: &data::ROUTE101_NON_AUDIO, combined_median: data::ROUTE101_COMBINED_MEDIAN, joint_correction: data::ROUTE101_JOINT_CORRECTION },
     Wild3MapCycleCalibration { map_internal_idx: 1, song: Wild3CalibrationSong::Route101,
-        context: WALKING_LAND, non_audio: data::ROUTE102_NON_AUDIO.summary, distribution: &data::ROUTE102_NON_AUDIO, combined_median: data::ROUTE102_COMBINED_MEDIAN },
+        context: WALKING_LAND, non_audio: data::ROUTE102_NON_AUDIO.summary, distribution: &data::ROUTE102_NON_AUDIO, combined_median: data::ROUTE102_COMBINED_MEDIAN, joint_correction: data::ROUTE102_JOINT_CORRECTION },
     Wild3MapCycleCalibration { map_internal_idx: 2, song: Wild3CalibrationSong::Route101,
-        context: WALKING_LAND, non_audio: data::ROUTE103_NON_AUDIO.summary, distribution: &data::ROUTE103_NON_AUDIO, combined_median: data::ROUTE103_COMBINED_MEDIAN },
+        context: WALKING_LAND, non_audio: data::ROUTE103_NON_AUDIO.summary, distribution: &data::ROUTE103_NON_AUDIO, combined_median: data::ROUTE103_COMBINED_MEDIAN, joint_correction: data::ROUTE103_JOINT_CORRECTION },
     Wild3MapCycleCalibration { map_internal_idx: 3, song: Wild3CalibrationSong::Route104,
-        context: WALKING_LAND, non_audio: data::ROUTE104_NON_AUDIO.summary, distribution: &data::ROUTE104_NON_AUDIO, combined_median: data::ROUTE104_COMBINED_MEDIAN },
+        context: WALKING_LAND, non_audio: data::ROUTE104_NON_AUDIO.summary, distribution: &data::ROUTE104_NON_AUDIO, combined_median: data::ROUTE104_COMBINED_MEDIAN, joint_correction: data::ROUTE104_JOINT_CORRECTION },
     Wild3MapCycleCalibration { map_internal_idx: 5, song: Wild3CalibrationSong::Route110,
-        context: WALKING_LAND, non_audio: data::ROUTE110_NON_AUDIO.summary, distribution: &data::ROUTE110_NON_AUDIO, combined_median: data::ROUTE110_COMBINED_MEDIAN },
+        context: WALKING_LAND, non_audio: data::ROUTE110_NON_AUDIO.summary, distribution: &data::ROUTE110_NON_AUDIO, combined_median: data::ROUTE110_COMBINED_MEDIAN, joint_correction: data::ROUTE110_JOINT_CORRECTION },
+    Wild3MapCycleCalibration { map_internal_idx: 14, song: Wild3CalibrationSong::PetalburgWoods,
+        context: WALKING_LAND, non_audio: data::PETALBURG_WOODS_NON_AUDIO.summary, distribution: &data::PETALBURG_WOODS_NON_AUDIO, combined_median: data::PETALBURG_WOODS_COMBINED_MEDIAN, joint_correction: data::PETALBURG_WOODS_JOINT_CORRECTION },
+    Wild3MapCycleCalibration { map_internal_idx: 8, song: Wild3CalibrationSong::Route113,
+        context: WALKING_LAND, non_audio: data::ROUTE113_NON_AUDIO.summary, distribution: &data::ROUTE113_NON_AUDIO, combined_median: data::ROUTE113_COMBINED_MEDIAN, joint_correction: data::ROUTE113_JOINT_CORRECTION },
+    Wild3MapCycleCalibration { map_internal_idx: 20, song: Wild3CalibrationSong::SafariZone,
+        context: WALKING_LAND, non_audio: data::SAFARI_ZONE_SOUTH_NON_AUDIO.summary, distribution: &data::SAFARI_ZONE_SOUTH_NON_AUDIO, combined_median: data::SAFARI_ZONE_SOUTH_COMBINED_MEDIAN, joint_correction: data::SAFARI_ZONE_SOUTH_JOINT_CORRECTION },
 ];
 
+// Default music assignments from Emerald map headers, using EMERALD_MAPS_BY_INTERNAL_IDX.
+// Only songs with a recorded calibration need entries. Runtime music overrides are not
+// represented by Wild3MapGameData (including Route 118's position-dependent music).
+fn default_calibration_song(map: &Wild3MapGameData) -> Option<Wild3CalibrationSong> {
+    match map.map_internal_idx {
+        0 | 1 | 2 => Some(Wild3CalibrationSong::Route101),
+        3 | 4 | 10 | 27 | 28 | 29 | 30 | 31 => Some(Wild3CalibrationSong::Route104),
+        5 | 6 | 7 | 9 | 11 => Some(Wild3CalibrationSong::Route110),
+        14 | 15 | 16 | 17 | 23 | 24 | 26 | 45 | 112 | 113 => Some(Wild3CalibrationSong::PetalburgWoods),
+        8 => Some(Wild3CalibrationSong::Route113),
+        20 | 72 | 73 | 74 | 97 | 98 => Some(Wild3CalibrationSong::SafariZone),
+        _ => None,
+    }
+}
+
 pub fn wild3_map_cycle_calibration(map: &Wild3MapGameData) -> &'static Wild3MapCycleCalibration {
-    WILD3_MAP_CYCLE_CALIBRATIONS.iter().find(|c| c.map_internal_idx == map.map_internal_idx)
+    WILD3_MAP_CYCLE_CALIBRATIONS.iter()
+        .find(|c| c.map_internal_idx == map.map_internal_idx)
+        .or_else(|| {
+            let song = default_calibration_song(map)?;
+            WILD3_MAP_CYCLE_CALIBRATIONS.iter().find(|c| c.song == song)
+        })
         .unwrap_or(&WILD3_MAP_CYCLE_CALIBRATIONS[0])
 }
 
@@ -101,6 +128,9 @@ fn audio_distribution(song: Wild3CalibrationSong) -> &'static ComponentDistribut
         Wild3CalibrationSong::Route101 => &data::ROUTE101_AUDIO,
         Wild3CalibrationSong::Route104 => &data::ROUTE104_AUDIO,
         Wild3CalibrationSong::Route110 => &data::ROUTE110_AUDIO,
+        Wild3CalibrationSong::PetalburgWoods => &data::PETALBURG_WOODS_AUDIO,
+        Wild3CalibrationSong::Route113 => &data::ROUTE113_AUDIO,
+        Wild3CalibrationSong::SafariZone => &data::SAFARI_ZONE_AUDIO,
     }
 }
 
@@ -108,18 +138,49 @@ pub fn wild3_audio_cycle_calibration(song: Wild3CalibrationSong) -> CycleCalibra
     audio_distribution(song).summary
 }
 
+#[derive(Debug, Clone, Copy)]
+pub(super) struct CalibratedCycleDistribution {
+    pub min: usize,
+    pub max: usize,
+    independent: ConvolvedCdf,
+    joint: Option<PiecewiseCdf>,
+}
+
+impl CalibratedCycleDistribution {
+    pub fn probability(&self, start: f64, end: f64) -> f64 {
+        if end <= start { return 0.0; }
+        match self.joint {
+            Some(cdf) => (cdf.less_than(end) - cdf.less_than(start)).clamp(0.0, 1.0),
+            None => self.independent.probability(start, end),
+        }
+    }
+
+    #[cfg(test)]
+    fn median(&self) -> usize {
+        let Some(cdf) = self.joint else { return self.independent.median(); };
+        let mut lo = self.min as f64;
+        let mut hi = self.max as f64;
+        for _ in 0..48 {
+            let mid = (lo + hi) / 2.0;
+            if cdf.less_than(mid) < 0.5 { lo = mid; } else { hi = mid; }
+        }
+        (hi - 1e-7).ceil() as usize
+    }
+}
+
 pub(super) fn calibration_model(
     action: Wild3Action, map: &Wild3MapGameData, context: Option<Wild3CalibrationContext>,
-) -> Option<(ConvolvedCdf, bool)> {
+) -> Option<(CalibratedCycleDistribution, bool)> {
     let context = context.unwrap_or_else(|| Wild3CalibrationContext::walking(action));
     if action != Wild3Action::SweetScentLand || context != WALKING_LAND { return None; }
     let map_calibration = wild3_map_cycle_calibration(map);
     let audio = audio_distribution(map_calibration.song);
     let non_audio = map_calibration.distribution;
-    Some((ConvolvedCdf {
-        audio: audio.cdf, non_audio: non_audio.cdf,
-        min: audio.summary.min + non_audio.summary.min,
-        max: audio.summary.max + non_audio.summary.max,
+    let min = audio.summary.min + non_audio.summary.min;
+    let max = audio.summary.max + non_audio.summary.max;
+    Some((CalibratedCycleDistribution { min, max,
+        independent: ConvolvedCdf { audio: audio.cdf, non_audio: non_audio.cdf, min, max },
+        joint: map_calibration.joint_correction.map(|c| c.cdf),
     }, map_calibration.map_internal_idx != map.map_internal_idx))
 }
 
@@ -147,6 +208,7 @@ pub struct Wild3CalibrationInfo {
     pub independent_full_loop_validation: bool,
     pub audio: Option<CalibrationProvenance>,
     pub non_audio: Option<CalibrationProvenance>,
+    pub joint_correction: Option<CalibrationProvenance>,
 }
 
 #[wasm_bindgen]
@@ -161,6 +223,7 @@ pub fn get_wild3_calibration_info(
         empirical_bounds: model.is_some(), independent_full_loop_validation: false,
         audio: model.map(|_| audio_distribution(map_calibration.song).provenance),
         non_audio: model.map(|_| map_calibration.distribution.provenance),
+        joint_correction: model.and_then(|_| map_calibration.joint_correction.map(|c| c.provenance)),
     }
 }
 
@@ -174,7 +237,8 @@ mod tests {
     #[test]
     fn measured_maps_share_audio_but_keep_separate_non_audio_and_bounds() {
         let expected = [(0, 34_686, 72_512), (1, 34_686, 72_512), (2, 34_686, 72_512),
-            (3, 43_025, 76_319), (5, 41_571, 73_493)];
+            (3, 43_025, 76_319), (5, 41_571, 73_493),
+            (14, 34_400, 70_987), (8, 36_138, 69_469), (20, 42_238, 68_168)];
         for (index, min, max) in expected {
             let (model, fallback) = calibration_model(Wild3Action::SweetScentLand, &map(index), None).unwrap();
             assert!(!fallback);
@@ -207,7 +271,10 @@ mod tests {
     fn generated_cdfs_are_monotone_normalized_and_preserve_support() {
         for component in [&data::ROUTE101_AUDIO, &data::ROUTE104_AUDIO, &data::ROUTE110_AUDIO,
             &data::ROUTE101_NON_AUDIO, &data::ROUTE102_NON_AUDIO, &data::ROUTE103_NON_AUDIO,
-            &data::ROUTE104_NON_AUDIO, &data::ROUTE110_NON_AUDIO] {
+            &data::ROUTE104_NON_AUDIO, &data::ROUTE110_NON_AUDIO,
+            &data::PETALBURG_WOODS_AUDIO, &data::PETALBURG_WOODS_NON_AUDIO,
+            &data::ROUTE113_AUDIO, &data::ROUTE113_NON_AUDIO,
+            &data::SAFARI_ZONE_AUDIO, &data::SAFARI_ZONE_SOUTH_NON_AUDIO] {
             let knots = component.cdf.knots;
             assert_eq!(knots[0].probability, 0.0);
             assert_eq!(knots.last().unwrap().probability, 1.0);
@@ -228,7 +295,7 @@ mod tests {
     fn initial_bounds_and_likelihood_use_the_same_context() {
         use crate::gen3::{CycleFrameCounter, CycleRange, Wild3GeneratorCycleOpts,
             Wild3GeneratorOptions, calculate_method_probability_with_context};
-        for index in [0, 1, 2, 3, 5] {
+        for index in [0, 1, 2, 3, 5, 8, 14, 20] {
             let map = map(index);
             let (model, _) = calibration_model(Wild3Action::SweetScentLand, &map, None).unwrap();
             assert_eq!(model.median(), wild3_map_cycle_calibration(&map).combined_median);
@@ -285,5 +352,54 @@ mod tests {
         }
         assert_eq!(get_min_mid_max_pre_sweet_scent_cycle_for_map(Wild3Action::RockSmash, &map(3)),
             (30_000, 52_500, 75_000));
+    }
+
+    #[test]
+    fn petalburg_uses_the_measured_joint_correction() {
+        let map = map(14);
+        let calibration = wild3_map_cycle_calibration(&map);
+        let joint = calibration.joint_correction.expect("Petalburg needs a joint model");
+        let (model, fallback) = calibration_model(Wild3Action::SweetScentLand, &map, None).unwrap();
+        assert!(!fallback);
+        assert_eq!((joint.summary.min, joint.summary.max), (34_418, 70_955));
+        assert!(get_wild3_calibration_info(Wild3Action::SweetScentLand, &map, None).joint_correction.is_some());
+        let difference = joint.cdf.knots.iter().map(|k| {
+            let threshold = k.cycle + 1e-7;
+            let corrected = model.probability(0.0, threshold);
+            assert!((corrected - joint.cdf.less_than(threshold)).abs() < 1e-12);
+            (corrected - model.independent.less_than(threshold)).abs()
+        }).fold(0.0_f64, f64::max);
+        assert!(difference > 0.02);
+    }
+
+    #[test]
+    fn fallback_uses_the_first_calibrated_map_with_the_same_default_song() {
+        for (index, expected) in [(31, 3), (10, 3), (6, 5), (11, 5),
+            (15, 14), (112, 14), (72, 20), (98, 20)] {
+            let requested = map(index);
+            let selected = wild3_map_cycle_calibration(&requested);
+            assert_eq!(selected.map_internal_idx, expected);
+            assert_eq!(selected.distribution.provenance.sha256,
+                wild3_map_cycle_calibration(&map(expected)).distribution.provenance.sha256);
+            assert_eq!(Some(selected.song), default_calibration_song(&requested));
+            assert!(get_wild3_calibration_info(Wild3Action::SweetScentLand, &requested, None).fallback);
+            let bounds = calibration_filter_bounds(Wild3Action::SweetScentLand, &requested, None).unwrap();
+            assert_eq!((bounds.0, bounds.2), (0, VBLANK_FREQ - 1));
+        }
+    }
+
+    #[test]
+    fn exact_matches_win_and_unavailable_songs_use_route101() {
+        for calibrated in WILD3_MAP_CYCLE_CALIBRATIONS {
+            let requested = map(calibrated.map_internal_idx);
+            let selected = wild3_map_cycle_calibration(&requested);
+            assert_eq!(selected.map_internal_idx, calibrated.map_internal_idx);
+            assert_eq!(selected.distribution.provenance.sha256, calibrated.distribution.provenance.sha256);
+            assert_eq!(default_calibration_song(&requested), Some(calibrated.song));
+        }
+        // Victory Road and Route 119 have no recorded song model; 999 is unknown.
+        for index in [19, 33, 999] {
+            assert_eq!(wild3_map_cycle_calibration(&map(index)).map_internal_idx, 0);
+        }
     }
 }

@@ -118,10 +118,7 @@ pub(super) fn is_wild3(moments: &[CycleFrameMoment]) -> bool {
                 ) | (
                     Moment::CreateMonWithNature_RandomPidLow,
                     Moment::CreateMonWithNature_RandomPidHigh
-                ) | (
-                    Moment::CreateMonWithGenderNatureLetter,
-                    Moment::CreateMon
-                )
+                ) | (Moment::CreateMonWithGenderNatureLetter, Moment::CreateMon)
             )
     })
 }

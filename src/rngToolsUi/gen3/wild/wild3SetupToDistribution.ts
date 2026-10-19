@@ -31,26 +31,42 @@ export type UiResult = FlattenIvs<
     uid: number;
     method_probability: Wild3MethodDistributionResult["method_probability"];
     pre_sweet_scent_cycle_range: Wild3MethodDistributionResult["pre_sweet_scent_cycle_range"];
+    display_negative_cycle_as_0: boolean;
   }
 >;
 
 let nextUid = 0;
-const convertSearcherResultToUIResult = (
-  res: Wild3MethodDistributionResult,
-): UiResult => {
-  return {
-    ...res.searcher_res,
-    ...res.searcher_res.ivs,
-    method_probability: res.method_probability,
-    pre_sweet_scent_cycle_range: res.pre_sweet_scent_cycle_range,
-    species: res.searcher_res.species,
-    uid: nextUid++,
-  };
-};
 
 const convertSearcherResultsToUIResults = (
   results: Wild3MethodDistributionResult[],
 ) => {
+  // For the common case where there's only 1 result that is (negative -> positive),
+  // display it as (0 -> positive)
+  const display_negative_cycle_as_0 =
+    results.filter((res) => {
+      return res.pre_sweet_scent_cycle_range.start < 0;
+    }).length <= 1 &&
+    results.every((res) => {
+      return (
+        res.pre_sweet_scent_cycle_range.start +
+          res.pre_sweet_scent_cycle_range.len >=
+        0
+      );
+    });
+
+  const convertSearcherResultToUIResult = (
+    res: Wild3MethodDistributionResult,
+  ): UiResult => {
+    return {
+      ...res.searcher_res,
+      ...res.searcher_res.ivs,
+      method_probability: res.method_probability,
+      pre_sweet_scent_cycle_range: res.pre_sweet_scent_cycle_range,
+      species: res.searcher_res.species,
+      display_negative_cycle_as_0,
+      uid: nextUid++,
+    };
+  };
   return sortBy(results.map(convertSearcherResultToUIResult), [
     (el) => el.pre_sweet_scent_cycle_range.start,
     (el) => el.pre_sweet_scent_cycle_range.len,

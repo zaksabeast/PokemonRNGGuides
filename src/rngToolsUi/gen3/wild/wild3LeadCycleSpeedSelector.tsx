@@ -66,9 +66,15 @@ const getColumns = (targetSetup: TargetSetup): ResultColumn<UiResult>[] => {
       tooltip:
         "Processor cycle counter when reaching start of the Pokémon generation.",
       dataIndex: "pre_sweet_scent_cycle_range",
-      render: (pre_sweet_scent_cycle_range) => {
+      render: (
+        pre_sweet_scent_cycle_range,
+        { display_negative_cycle_as_0 },
+      ) => {
         const range = pre_sweet_scent_cycle_range;
-        return `${formatLargeInteger(range.start)} to ${formatLargeInteger(range.start + range.len - 1)}`;
+        const start = display_negative_cycle_as_0
+          ? Math.max(range.start, 0)
+          : range.start;
+        return `${formatLargeInteger(start)} to ${formatLargeInteger(range.start + range.len - 1)}`;
       },
     },
     {

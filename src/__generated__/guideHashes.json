@@ -536,8 +536,8 @@
     "lastUpdated": "2026-03-25"
   },
   "/experiments/": {
-    "hash": "c21f59621e23fa1dbccacf6fbd1330de68271912c1f58fd9866e926ea7c7866d",
-    "lastUpdated": "2026-07-15"
+    "hash": "2fd394516abc4107ca20397528fbdcbc82c5c87e168917f5caaa19afd9560f44",
+    "lastUpdated": "2026-10-13"
   },
   "/fire-red-and-leaf-green/": {
     "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
@@ -550,6 +550,10 @@
   "/fr-install-capturesight/": {
     "hash": "962c7539dab0c1c8d6f218afd5844ce79fd0596ef60cb2a7b19ef154e63f6f70",
     "lastUpdated": null
+  },
+  "/freeze-time-usum-fossil/": {
+    "hash": "5c45f7e5b7363130f41f683fee02ef37032ee2fbde81ffa9eb7f7f6bd2dbc66c",
+    "lastUpdated": "2026-10-18"
   },
   "/frlg-gen3-sid/": {
     "hash": "1a809daf8b19055ae22b43f4a354eaa12a8da30841ba473b68fcbf74ba167e70",

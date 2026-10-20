@@ -248,10 +248,7 @@ const FormContent = () => {
     {
       label: "Lead",
       input: (
-        <FormikSelect<FormState, "lead">
-          name="lead"
-          options={leadOptions}
-        />
+        <FormikSelect<FormState, "lead"> name="lead" options={leadOptions} />
       ),
     },
     {
@@ -340,10 +337,9 @@ const FormContent = () => {
 };
 
 export const PokeRadar4ShinySearcher: React.FC = () => {
-
   const setSelectedPatch = useSetAtom(selectedShinyPatchAtom);
   const [, setCurrentStep] = useCurrentStep();
-  
+
   // Tracks the search parameters used for the most recent search, since
   // those aren't part of each individual result row. Needed both for the
   // patch grid (chainCount/battleResult) and for the chain starter

@@ -1116,7 +1116,7 @@ export const guides = {
   "/connect-dolphin-to-gba/": {
     meta: {
       id: "/connect-dolphin-to-gba/",
-      categories: ["Emerald", "Ruby and Sapphire", "FireRed and LeafGreen"],
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "tool",
       guideVariants: null,
       guideKey: "false-Connect Dolphin to mGBA",
@@ -1133,7 +1133,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-10-18",
+      lastUpdated: "2026-10-20",
       type: "baseGuide",
       canonical: "/connect-dolphin-to-gba/",
       file: "guides/Tools and Emulators/Connect Dolphin To GBA.mdx",
@@ -2738,6 +2738,45 @@ export const guides = {
       return file.default;
     }),
   },
+  "/e-tips-rng/": {
+    meta: {
+      id: "/e-tips-rng/",
+      categories: ["Emerald"],
+      section: "technical_info",
+      guideVariants: null,
+      guideKey: "/e-tips-rng/",
+      isNew: false,
+      title: "RNG Advancing Techniques",
+      navDrawerTitle: "RNG Advancing Techniques",
+      description:
+        "Understanding the key concepts to speed up RNG manipulations with Painting Reseeding and Battle Video Reseeding.",
+      slug: "/e-tips-rng/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: "/emerald-advancing-rng-techniques/",
+      lastUpdated: "2026-10-20",
+      type: "baseGuide",
+      file: "guides/Gen 3/Emerald/Advancing RNG Techniques.mdx",
+      translations: null,
+      guideGroupId: "en:/e-tips-rng/:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/Advancing RNG Techniques.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Advancing RNG Techniques.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/emerald-advancing-rng-techniques/": {
     meta: {
       id: "/emerald-advancing-rng-techniques/",
@@ -2758,7 +2797,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-05-27",
+      lastUpdated: "2026-10-20",
       type: "baseGuide",
       canonical: "/emerald-advancing-rng-techniques/",
       file: "guides/Gen 3/Emerald/Advancing RNG Techniques.mdx",
@@ -12270,7 +12309,7 @@ export const guides = {
   "/zh-connect-dolphin-to-gba/": {
     meta: {
       id: "/connect-dolphin-to-gba/",
-      categories: ["Emerald", "Ruby and Sapphire", "FireRed and LeafGreen"],
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "tool",
       guideVariants: null,
       guideKey: "false-Connect Dolphin to mGBA",
@@ -17330,6 +17369,7 @@ export const guideSlugs = [
   "/dream-radar-cart-patches/",
   "/dream-radar-patches/",
   "/dream-radar/",
+  "/e-tips-rng/",
   "/emerald-advancing-rng-techniques/",
   "/emerald-battle-video/",
   "/emerald-largest-lotad-seedot/",

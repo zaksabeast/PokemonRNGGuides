@@ -112,8 +112,8 @@
     "lastUpdated": null
   },
   "/connect-dolphin-to-gba/": {
-    "hash": "109d289cfb9663c187482c7377dd73202cdca242e2a34ad39e2d6521d2d28290",
-    "lastUpdated": "2026-10-18"
+    "hash": "d7ca3b7baca1528026476d13eb57f234ae2691f494156fb3e26dea99ec8372af",
+    "lastUpdated": "2026-10-20"
   },
   "/consistent-platinum-rng/": {
     "hash": "aca24459a23cc5bc72e8f9224ceb76d40629734ab2d2d3b9bd7cad6cae2d7dc8",
@@ -263,9 +263,13 @@
     "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
     "lastUpdated": null
   },
+  "/e-tips-rng/": {
+    "hash": "bb7ccd9d9c18dfb2e2a45c5023970e4a1ca958e759d3c6c2b3a9350195c36287",
+    "lastUpdated": "2026-10-20"
+  },
   "/emerald-advancing-rng-techniques/": {
-    "hash": "739e8bc74768f3d9f2742383fe2f993df154afcb6e92ce0012e5a71566cd74df",
-    "lastUpdated": "2026-05-27"
+    "hash": "bb7ccd9d9c18dfb2e2a45c5023970e4a1ca958e759d3c6c2b3a9350195c36287",
+    "lastUpdated": "2026-10-20"
   },
   "/emerald-battle-video/": {
     "hash": "26ce4cd95ed98cd2da91213c13b0fa87357b0c23d70763674df7827d9682c6d9",

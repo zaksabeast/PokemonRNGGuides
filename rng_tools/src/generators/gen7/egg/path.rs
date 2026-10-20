@@ -10,12 +10,11 @@ pub enum Gen7EggAction {
     Reject,
 }
 
-/// Consecutive rejects are one step. Each accept is its own step.
+/// Accepting or rejecting one egg.
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Gen7EggPathStep {
     pub action: Gen7EggAction,
-    pub count: usize,
     pub advance_before: usize,
     pub seed_before: [u32; 4],
 }
@@ -89,27 +88,22 @@ impl ShortestPaths {
 
 /// `seeds[i]` is the egg seeds on advance `i`.
 pub(super) fn path_steps(advances: &[usize], seeds: &[[u32; 4]]) -> Vec<Gen7EggPathStep> {
-    let mut steps: Vec<Gen7EggPathStep> = vec![];
-    for pair in advances.windows(2) {
-        let (from, to) = (pair[0], pair[1]);
-        // Eggs use far more than 1 advance, so 1 is always a reject.
-        let action = if to - from == 1 {
-            Gen7EggAction::Reject
-        } else {
-            Gen7EggAction::Accept
-        };
+    advances
+        .windows(2)
+        .map(|pair| {
+            let (from, to) = (pair[0], pair[1]);
+            // Eggs use far more than 1 advance, so 1 is always a reject.
+            let action = if to - from == 1 {
+                Gen7EggAction::Reject
+            } else {
+                Gen7EggAction::Accept
+            };
 
-        match steps.last_mut() {
-            Some(step) if action == Gen7EggAction::Reject && step.action == action => {
-                step.count += 1;
-            }
-            _ => steps.push(Gen7EggPathStep {
+            Gen7EggPathStep {
                 action,
-                count: 1,
                 advance_before: from,
                 seed_before: seeds[from],
-            }),
-        }
-    }
-    steps
+            }
+        })
+        .collect()
 }

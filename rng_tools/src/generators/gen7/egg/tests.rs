@@ -287,14 +287,11 @@ fn paths_match_3dsrngtool() {
 fn advances_from_steps(path: &Gen7EggPath, eggs: &[Gen7Egg]) -> Vec<usize> {
     let mut advances = vec![0];
     for step in &path.steps {
-        let mut advance = step.advance_before;
-        for _ in 0..step.count {
-            advance += match step.action {
-                Gen7EggAction::Reject => 1,
-                Gen7EggAction::Accept => eggs[advance].accept_advances,
-            };
-            advances.push(advance);
-        }
+        let advance = step.advance_before;
+        advances.push(match step.action {
+            Gen7EggAction::Reject => advance + 1,
+            Gen7EggAction::Accept => advance + eggs[advance].accept_advances,
+        });
     }
     advances
 }
@@ -373,23 +370,25 @@ fn path_to_advance_0_is_empty() {
 }
 
 #[test]
-fn rejects_group_but_accepts_do_not() {
+fn each_egg_is_its_own_step() {
     let seeds: Vec<[u32; 4]> = (0..60).map(|advance| [advance; 4]).collect();
     let steps = path_steps(&[0, 1, 2, 3, 25, 50, 51], &seeds);
-    let summary: Vec<(Gen7EggAction, usize, usize)> = steps
+    let summary: Vec<(Gen7EggAction, usize)> = steps
         .iter()
-        .map(|step| (step.action, step.count, step.advance_before))
+        .map(|step| (step.action, step.advance_before))
         .collect();
     assert_eq!(
         summary,
         vec![
-            (Gen7EggAction::Reject, 3, 0),
-            (Gen7EggAction::Accept, 1, 3),
-            (Gen7EggAction::Accept, 1, 25),
-            (Gen7EggAction::Reject, 1, 50),
+            (Gen7EggAction::Reject, 0),
+            (Gen7EggAction::Reject, 1),
+            (Gen7EggAction::Reject, 2),
+            (Gen7EggAction::Accept, 3),
+            (Gen7EggAction::Accept, 25),
+            (Gen7EggAction::Reject, 50),
         ]
     );
-    assert_eq!(steps[1].seed_before, [3; 4]);
+    assert_eq!(steps[3].seed_before, [3; 4]);
 }
 
 #[test]

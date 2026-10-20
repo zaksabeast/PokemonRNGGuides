@@ -8486,7 +8486,7 @@ export const guides = {
       section: "patch",
       guideVariants: null,
       guideKey: "false-Bank & Transporter Offline Mod",
-      isNew: true,
+      isNew: false,
       title: "Pokemon Bank & Transporter Offline & SD Redirect Patches",
       navDrawerTitle: "Bank & Transporter Offline Mod",
       description:
@@ -11945,7 +11945,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-10-16",
+      lastUpdated: "2026-10-20",
       type: "baseGuide",
       canonical: "/usum-egg/",
       file: "guides/Gen 7/Eggs.mdx",

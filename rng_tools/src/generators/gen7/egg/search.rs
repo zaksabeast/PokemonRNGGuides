@@ -99,13 +99,7 @@ fn egg_path<Pid: EggPidStrategy>(opts: &Gen7EggSearchOpts, target_advance: usize
 
     let advances = ShortestPaths::new(&accept_advances).advances_to(target_advance);
     let steps = path_steps(&advances, &seeds);
-    let count = |action| {
-        steps
-            .iter()
-            .filter(|step| step.action == action)
-            .map(|step| step.count)
-            .sum()
-    };
+    let count = |action| steps.iter().filter(|step| step.action == action).count();
     let accepts = count(Gen7EggAction::Accept);
     let rejects = count(Gen7EggAction::Reject);
 

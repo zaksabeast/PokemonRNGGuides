@@ -1,11 +1,10 @@
 import React from "react";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { Button, Flex, SectionCard, Typography } from "~/components";
-import { type Gen7EggPath as EggPath, type Gen7EggPathStep } from "~/rngTools";
+import { Button, Divider, Flex, SectionCard, Typography } from "~/components";
+import { type Gen7EggPath as EggPath } from "~/rngTools";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { useCurrentStep } from "~/components/stepper/state";
 import { formatHex } from "~/utils/formatHex";
-import { Translations } from "~/translations";
 import { formatGen7EggAbility, withGen7EggSeed } from "./eggForm";
 import {
   gen7EggFormValuesAtom,
@@ -16,6 +15,10 @@ import { GiftTags, PRESS_TIMING_MIN_HEIGHT } from "./sectionCards";
 
 const PLACEHOLDER = "-";
 const FIND_TARGET_STEP = 0;
+const GET_EGG_STEP = 2;
+const CURRENT_EGG_MIN_HEIGHT = 120;
+// Smaller than the current egg's action, which matters more.
+const LEFT_COUNT_FONT_SIZE = 24;
 
 type EggSeed = EggPath["seed_after_target"];
 
@@ -44,101 +47,180 @@ const useTargetPath = () => {
 type CountProps = {
   label: string;
   count: number | null;
+  fontSize?: number;
 };
 
-const Count = ({ label, count }: CountProps) => (
+const Count = ({ label, count, fontSize = 36 }: CountProps) => (
   <Flex vertical>
     <Typography.Text color="TextSecondary">{label}</Typography.Text>
-    <Typography.Text fontSize={36} strong>
+    <Typography.Text fontSize={fontSize} strong>
       {count ?? PLACEHOLDER}
     </Typography.Text>
   </Flex>
 );
 
-const formatStep = (t: Translations, step: Gen7EggPathStep) => {
-  if (step.action === "Accept") {
-    return t["Accept 1 egg"];
-  }
-  return step.count === 1
-    ? t["Reject 1 egg"]
-    : t["Reject {count} eggs"].replace("{count}", step.count.toString());
+type Progress = {
+  // Eggs accepted or rejected so far.
+  done: number;
+  // The egg shown, which can be an earlier one.
+  viewing: number;
 };
 
-type PathStepsProps = {
+const NO_PROGRESS: Progress = { done: 0, viewing: 0 };
+
+type CurrentEggProps = {
   path: EggPath;
+  progress: Progress;
+  setProgress: (progress: Progress) => void;
 };
 
-const PathSteps = ({ path }: PathStepsProps) => {
+const CurrentEgg = ({ path, progress, setProgress }: CurrentEggProps) => {
   const t = useActiveRouteTranslations();
-  const [done, setDone] = React.useState<{
-    path: EggPath;
-    steps: Set<number>;
-  } | null>(null);
-  // A new path starts with nothing done.
-  const doneSteps = done?.path === path ? done.steps : new Set<number>();
+  const [, setCurrentStep] = useCurrentStep();
+  const { done, viewing } = progress;
+  const total = path.steps.length;
+  const step = path.steps[viewing];
+  const isPast = viewing < done;
 
-  const toggle = (index: number) => {
-    const steps = new Set(doneSteps);
-    if (!steps.delete(index)) {
-      steps.add(index);
-    }
-    setDone({ path, steps });
-  };
+  const previousButton = (
+    <Button
+      trackerId="gen7_egg_step_previous"
+      disabled={viewing === 0}
+      onClick={() => setProgress({ done, viewing: viewing - 1 })}
+    >
+      {t["Previous"]}
+    </Button>
+  );
 
-  if (path.steps.length === 0) {
+  // Every egg is done, or there were none to begin with.
+  if (step == null) {
     return (
-      <Typography.Text color="TextSecondary">
-        {
-          t[
-            "The next egg is your target, so there's nothing to accept or reject."
-          ]
-        }
-      </Typography.Text>
+      <Flex vertical gap={16}>
+        <Flex
+          vertical
+          gap={8}
+          justify="center"
+          minHeight={CURRENT_EGG_MIN_HEIGHT}
+        >
+          <Typography.Text fontSize={36} strong color="Success">
+            {t["All done"]}
+          </Typography.Text>
+          <Typography.Text color="TextSecondary">
+            {total === 0
+              ? t[
+                  "The next egg is your target, so there's nothing to accept or reject."
+                ]
+              : t["The next egg is your target. Don't accept it yet."]}
+          </Typography.Text>
+        </Flex>
+        <Flex gap={8} wrap>
+          {previousButton}
+          <Button
+            trackerId="gen7_egg_steps_continue"
+            type="primary"
+            onClick={() => setCurrentStep(GET_EGG_STEP)}
+          >
+            {t["Continue"]}
+          </Button>
+        </Flex>
+      </Flex>
     );
   }
 
+  const isAccept = step.action === "Accept";
+
   return (
-    <Flex vertical gap={12}>
-      {path.steps.map((step, index) => {
-        const isDone = doneSteps.has(index);
-        return (
-          <Flex
-            key={index}
-            gap={12}
-            align="center"
-            justify="space-between"
-            wrap
-          >
-            <Flex vertical>
-              <Typography.Text strong delete={isDone}>
-                {`${index + 1}. ${formatStep(t, step)}`}
-              </Typography.Text>
-              <Flex gap={8} wrap>
-                <Typography.Text color="TextSecondary">
-                  {t["Egg seeds before"]}
-                </Typography.Text>
-                <EggSeedText seed={step.seed_before} />
-              </Flex>
-            </Flex>
+    <Flex vertical gap={16}>
+      <Flex
+        vertical
+        gap={8}
+        justify="center"
+        minHeight={CURRENT_EGG_MIN_HEIGHT}
+      >
+        <Typography.Text color="TextSecondary">
+          {t["Egg {current} of {total}"]
+            .replace("{current}", (viewing + 1).toString())
+            .replace("{total}", total.toString())}
+          {isPast && ` (${t["already done"]})`}
+        </Typography.Text>
+        <Typography.Text
+          fontSize={36}
+          strong
+          color={isAccept ? "Success" : "Error"}
+        >
+          {isAccept ? t["Accept"] : t["Reject"]}
+        </Typography.Text>
+        <Flex gap={8} wrap>
+          <Typography.Text color="TextSecondary">
+            {t["Egg seeds before"]}
+          </Typography.Text>
+          <EggSeedText seed={step.seed_before} />
+        </Flex>
+      </Flex>
+      <Flex gap={8} wrap>
+        {previousButton}
+        {isPast ? (
+          <>
             <Button
-              trackerId="gen7_toggle_egg_step"
-              type={isDone ? "primary" : "default"}
-              onClick={() => toggle(index)}
+              trackerId="gen7_egg_step_next"
+              onClick={() => setProgress({ done, viewing: viewing + 1 })}
             >
-              {t["Done"]}
+              {t["Next"]}
             </Button>
-          </Flex>
-        );
-      })}
+            <Button
+              trackerId="gen7_egg_step_current"
+              type="primary"
+              onClick={() => setProgress({ done, viewing: done })}
+            >
+              {t["Back to current egg"]}
+            </Button>
+            <Button
+              trackerId="gen7_egg_step_undo"
+              type="link"
+              onClick={() => setProgress({ done: viewing, viewing })}
+            >
+              {t["Redo from this egg"]}
+            </Button>
+          </>
+        ) : (
+          <Button
+            trackerId="gen7_egg_step_done"
+            type="primary"
+            onClick={() => setProgress({ done: done + 1, viewing: done + 1 })}
+          >
+            {isAccept ? t["Accepted, next egg"] : t["Rejected, next egg"]}
+          </Button>
+        )}
+      </Flex>
     </Flex>
   );
+};
+
+/** Accepts and rejects in the eggs not done yet. */
+const countLeft = (path: EggPath, done: number) => {
+  const left = path.steps.slice(done);
+  return {
+    accepts: left.filter((step) => step.action === "Accept").length,
+    rejects: left.filter((step) => step.action === "Reject").length,
+  };
 };
 
 export const Gen7EggPath = () => {
   const t = useActiveRouteTranslations();
   const { target, path } = useTargetPath();
+  const [savedProgress, setSavedProgress] = React.useState<{
+    path: EggPath;
+    progress: Progress;
+  } | null>(null);
+  // A new path starts from its first egg.
+  const progress =
+    path != null && savedProgress?.path === path
+      ? savedProgress.progress
+      : NO_PROGRESS;
+  const left = path == null ? null : countLeft(path, progress.done);
+  const allDone = left != null && left.accepts === 0 && left.rejects === 0;
 
-  const steps = (() => {
+  const currentEgg = (() => {
     if (target == null) {
       return (
         <Typography.Text color="TextSecondary">
@@ -151,29 +233,42 @@ export const Gen7EggPath = () => {
         <Typography.Text color="TextSecondary">{PLACEHOLDER}</Typography.Text>
       );
     }
-    return <PathSteps path={path} />;
+    return (
+      <CurrentEgg
+        path={path}
+        progress={progress}
+        setProgress={(newProgress) =>
+          setSavedProgress({ path, progress: newProgress })
+        }
+      />
+    );
   })();
 
   return (
-    <Flex vertical gap={16}>
-      <SectionCard
-        title={t["Eggs to accept and reject"]}
-        borderColor={path == null ? undefined : "Primary"}
-      >
-        <Flex
-          gap={32}
-          wrap
-          minHeight={PRESS_TIMING_MIN_HEIGHT}
-          align="flex-end"
-        >
-          <Count label={t["Accepts"]} count={path?.accepts ?? null} />
-          <Count label={t["Rejects"]} count={path?.rejects ?? null} />
-        </Flex>
-      </SectionCard>
-      <SectionCard title={t["Follow these steps in order"]}>
-        {steps}
-      </SectionCard>
-    </Flex>
+    <SectionCard
+      title={t["Eggs to accept and reject"]}
+      borderColor={(() => {
+        if (left == null) {
+          return undefined;
+        }
+        return allDone ? "Success" : "Primary";
+      })()}
+    >
+      <Flex gap={32} wrap>
+        <Count
+          label={t["Accepts left"]}
+          count={left?.accepts ?? null}
+          fontSize={LEFT_COUNT_FONT_SIZE}
+        />
+        <Count
+          label={t["Rejects left"]}
+          count={left?.rejects ?? null}
+          fontSize={LEFT_COUNT_FONT_SIZE}
+        />
+      </Flex>
+      <Divider m={0} />
+      {currentEgg}
+    </SectionCard>
   );
 };
 

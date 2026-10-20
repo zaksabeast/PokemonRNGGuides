@@ -13,7 +13,7 @@ import {
   ToolForm,
   type ToolFormSubmit,
 } from "~/components/form";
-import { Button, ResultColumn } from "~/components";
+import { Button, Divider, ResultColumn } from "~/components";
 import {
   AbilityType,
   Gen7Egg,
@@ -58,9 +58,10 @@ type FormState = Gen7EggFormState;
 type ParentFieldsProps = {
   prefix: "male" | "female";
   title: string;
+  description: string;
 };
 
-const ParentFields = ({ prefix, title }: ParentFieldsProps) => {
+const ParentFields = ({ prefix, title, description }: ParentFieldsProps) => {
   const t = useActiveRouteTranslations();
   const items = useWatch({
     names: { male_item: true, female_item: true },
@@ -69,7 +70,7 @@ const ParentFields = ({ prefix, title }: ParentFieldsProps) => {
   const item = items[`${prefix}_item`];
 
   return (
-    <FormSection title={title}>
+    <FormSection title={title} description={description}>
       <SwitchGroup>
         <FormSwitchField<FormState>
           name={`${prefix}_ditto`}
@@ -206,10 +207,28 @@ const Fields = () => {
         </SwitchGroup>
       </FormSection>
 
-      <ParentFields prefix="male" title={t["Male Parent"]} />
-      <ParentFields prefix="female" title={t["Female Parent"]} />
+      <Divider m={0} />
+      <ParentFields
+        prefix="male"
+        title={t["Male Parent"]}
+        description={t["The male Pokemon at the Nursery, or Ditto."]}
+      />
+      <Divider m={0} />
+      <ParentFields
+        prefix="female"
+        title={t["Female Parent"]}
+        description={t["The female Pokemon at the Nursery, or Ditto."]}
+      />
+      <Divider m={0} />
 
-      <FormSection title={t["Filters"]}>
+      <FormSection
+        title={t["Filters"]}
+        description={
+          t[
+            "Only show eggs that match these. Leave them as they are to see every egg."
+          ]
+        }
+      >
         <PkmFilter<FormState> displayHiddenAbility />
       </FormSection>
     </>

@@ -162,7 +162,23 @@ pub fn is_method_possible_to_trigger(
     if !consider_rng_manipulated_lead_pid {
         return overlaps(COMMON_LEAD_RANGE.start) && overlaps(COMMON_LEAD_RANGE.end);
     }
-    (FASTEST_MODULO_CYCLE_24..=SLOWEST_MODULO_CYCLE_24).any(overlaps)
+
+    if range.len == 0 {
+        return false;
+    }
+
+    let mod_count = range.start.lead_pid_mod;
+    if mod_count == 0 || range.len >= INFINITE_CYCLE {
+        return overlaps(FASTEST_MODULO_CYCLE_24);
+    }
+
+    // The first speed whose interval starts at or below max is the only candidate needed:
+    // later speeds move its exclusive end farther below min.
+    let required_shift = (VBLANK_FREQ as i64 - range.start.cycle as i64
+        - range.len as i64 - max as i64).max(0) as usize;
+    let speed = required_shift.div_ceil(mod_count).max(FASTEST_MODULO_CYCLE_24);
+
+    speed <= SLOWEST_MODULO_CYCLE_24 && overlaps(speed)
 }
 
 #[wasm_bindgen]
@@ -280,4 +296,64 @@ pub fn calculate_method_probability_from_mod_range(
     let post = range.apply_mod_cycle_count(pid_cycle_count);
     let pre = calculate_pre_sweet_scent_cycle_range(&post);
     calculate_method_probability(&pre, action, map, context)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn possible(range: &CycleAndModRange) -> bool {
+        is_method_possible_to_trigger(range, Wild3Action::OldRod, false, true, None,
+            &Wild3MapGameData::default(), None)
+    }
+
+    #[test]
+    fn manipulated_lead_feasibility_preserves_integer_boundaries() {
+        // Old Rod uses inclusive bounds 45,000 through 75,000.
+        let cases = [
+            (75_019, 1, 1, true),
+            (45_018, 1, 1, false),
+            (45_019, 1, 1, true),
+            (255_001, 200, 1, true),
+            (255_201, 200, 1, false),
+            (63_001, 1_000, 1, true),
+            (63_000, 1_000, 1, false),
+            (75_001, 0, 1, true),
+            (45_000, 0, 1, false),
+            (60_000, 80, 0, false),
+            (63_001, 1_000, INFINITE_CYCLE, true),
+            (63_000, 1_000, INFINITE_CYCLE, false),
+        ];
+        for (end_at_zero_speed, modulo, len, expected) in cases {
+            let range = CycleRange::new(VBLANK_FREQ - end_at_zero_speed, modulo, len);
+
+            assert_eq!(possible(&range), expected, "{range:?}");
+        }
+    }
+
+    #[test]
+    fn direct_feasibility_matches_exhaustive_speed_search() {
+        let cases = [0, 3, 14, 999].into_iter()
+            .flat_map(|index| (0..=400_000).step_by(7_919).map(move |cycle| (index, cycle)))
+            .flat_map(|(index, cycle)| [0, 1, 18, 80, 261, 1_000, 40_000].into_iter()
+                .map(move |modulo| (index, cycle, modulo)))
+            .flat_map(|(index, cycle, modulo)|
+                [0, 1, 256, 39_309, INFINITE_CYCLE - 1, INFINITE_CYCLE, INFINITE_CYCLE + 1]
+                    .into_iter().map(move |len| (index, CycleRange::new(cycle, modulo, len))));
+
+        for (index, range) in cases {
+            let map = Wild3MapGameData { map_internal_idx: index, ..Default::default() };
+            let bounds = get_min_mid_max_pre_sweet_scent_cycle(Wild3Action::SweetScentLand, &map, None);
+            let expected = (FASTEST_MODULO_CYCLE_24..=SLOWEST_MODULO_CYCLE_24).any(|speed| {
+                let pre = calculate_pre_sweet_scent_cycle_range(&range.apply_mod_cycle_count(speed));
+
+                pre.len > 0 && pre.start as i64 <= bounds.max as i64
+                    && pre.start as i64 + pre.len as i64 > bounds.min as i64
+            });
+            let actual = is_method_possible_to_trigger(&range, Wild3Action::SweetScentLand,
+                false, true, None, &map, None);
+
+            assert_eq!(actual, expected, "map={index}, range={range:?}");
+        }
+    }
 }

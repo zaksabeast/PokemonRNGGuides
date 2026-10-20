@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-use super::{CycleRange, VBLANK_FREQ, Wild3Action, Wild3MapGameData, Wild3CalibrationContext};
+use super::{MinMidMax, CycleRange, VBLANK_FREQ, Wild3Action, Wild3MapGameData, Wild3CalibrationContext};
 use crate::gen3::{
     COMMON_LEAD_RANGE, CycleAndModRange, FASTEST_MODULO_CYCLE_24, INFINITE_CYCLE,
     SLOWEST_MODULO_CYCLE_24,
@@ -132,7 +132,7 @@ pub fn calculate_cycle_data(
         post_sweet_scent_mod_range.apply_mod_cycle_count(lead_pid_cycle_count);
     let pre_sweet_scent_cycle_range =
         calculate_pre_sweet_scent_cycle_range(&post_sweet_scent_range);
-    let method_probability = calculate_method_probability_with_context(
+    let method_probability = calculate_method_probability(
         &pre_sweet_scent_cycle_range,
         action,
         map_data,
@@ -151,7 +151,7 @@ pub fn is_method_possible_to_trigger(
     consider_rng_manipulated_lead_pid: bool, lead_cycle_speed: Option<usize>,
     map: &Wild3MapGameData, context: Option<Wild3CalibrationContext>,
 ) -> bool {
-    let (min, _, max) = get_min_mid_max_pre_sweet_scent_cycle_with_context(action, map, context);
+    let MinMidMax { min, max, .. } = get_min_mid_max_pre_sweet_scent_cycle(action, map, context);
     let overlaps = |speed| {
         let pre = calculate_pre_sweet_scent_cycle_range(&range.apply_mod_cycle_count(speed));
         pre.len > 0 && (pre.start as i64) <= max as i64
@@ -239,48 +239,26 @@ fn calculate_pre_sweet_scent_cycle_range(
     }
 }
 
-pub fn get_min_mid_max_pre_sweet_scent_cycle(action: Wild3Action) -> (usize, usize, usize) {
-    get_min_mid_max_pre_sweet_scent_cycle_for_map(action, &Wild3MapGameData::default())
-}
-
-pub fn get_min_mid_max_pre_sweet_scent_cycle_for_map(
-    action: Wild3Action, map_data: &Wild3MapGameData,
-) -> (usize, usize, usize) {
-    get_min_mid_max_pre_sweet_scent_cycle_with_context(action, map_data, None)
-}
-
-pub fn get_min_mid_max_pre_sweet_scent_cycle_with_context(
+pub fn get_min_mid_max_pre_sweet_scent_cycle(
     action: Wild3Action, map: &Wild3MapGameData, context: Option<Wild3CalibrationContext>,
-) -> (usize, usize, usize) {
+) -> MinMidMax {
     if let Some(bounds) = super::vblank_calibration::calibration_filter_bounds(action, map, context) {
         return bounds;
     }
+
     match action {
-        Wild3Action::SweetScentLand => (0, MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE, VBLANK_FREQ - 1),
-        Wild3Action::RockSmash => (30_000, 52_500, 75_000),
-        _ => (45_000, MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE, 75_000),
+        Wild3Action::SweetScentLand => MinMidMax::new(0, MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE, VBLANK_FREQ - 1),
+        Wild3Action::RockSmash => MinMidMax::new(30_000, 52_500, 75_000),
+        _ => MinMidMax::new(45_000, MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE, 75_000),
     }
 }
 
-pub fn get_min_mid_max_vblank_cycle_duration() -> (usize, usize, usize) {
-    (45_000, 55_000, 65000)
+pub fn get_min_mid_max_vblank_cycle_duration() -> MinMidMax {
+    MinMidMax::new(45_000, 55_000, 65_000)
 }
 
 #[wasm_bindgen]
 pub fn calculate_method_probability(
-    range: &CycleRange<i32>, action: Wild3Action, map: &Wild3MapGameData,
-    context: Option<Wild3CalibrationContext>,
-) -> f64 {
-    calculate_method_probability_with_context(range, action, map, context)
-}
-
-pub fn calculate_method_probability_for_map(
-    range: &CycleRange<i32>, action: Wild3Action, map: &Wild3MapGameData,
-) -> f64 {
-    calculate_method_probability_with_context(range, action, map, None)
-}
-
-pub fn calculate_method_probability_with_context(
     range: &CycleRange<i32>, action: Wild3Action, map: &Wild3MapGameData,
     context: Option<Wild3CalibrationContext>,
 ) -> f64 {
@@ -290,7 +268,7 @@ pub fn calculate_method_probability_with_context(
     if let Some((model, _)) = super::vblank_calibration::calibration_model(action, map, context) {
         return model.probability(start, end);
     }
-    let (min, _, max) = get_min_mid_max_pre_sweet_scent_cycle_with_context(action, map, context);
+    let MinMidMax { min, max, .. } = get_min_mid_max_pre_sweet_scent_cycle(action, map, context);
     let overlap = (end.min(max as f64) - start.max(min as f64)).max(0.0);
     overlap / (max - min) as f64
 }
@@ -301,5 +279,5 @@ pub fn calculate_method_probability_from_mod_range(
 ) -> f64 {
     let post = range.apply_mod_cycle_count(pid_cycle_count);
     let pre = calculate_pre_sweet_scent_cycle_range(&post);
-    calculate_method_probability_with_context(&pre, action, map, context)
+    calculate_method_probability(&pre, action, map, context)
 }

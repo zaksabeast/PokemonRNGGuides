@@ -2,18 +2,11 @@
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
-use super::{Wild3Action, Wild3MapGameData, VBLANK_FREQ};
+use super::{Wild3Action, Wild3MapGameData, MinMidMax, VBLANK_FREQ};
 use super::cycle_distribution::{ConvolvedCdf, PiecewiseCdf};
 
 #[path = "vblank_calibration_data.rs"]
 mod data;
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub struct CycleCalibrationSummary {
-    pub min: usize,
-    pub median: usize,
-    pub max: usize,
-}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Wild3CalibrationSong { Route101, Route104, Route110, PetalburgWoods, Route113, SafariZone, RgSeviiCave }
@@ -21,20 +14,18 @@ pub enum Wild3CalibrationSong { Route101, Route104, Route110, PetalburgWoods, Ro
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Tsify)]
 pub enum Wild3MovementMode { OnFoot, Bike }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Tsify)]
-pub enum Wild3SoundMode { Unspecified, Mono, Stereo }
-
+// Mono performs almost all stereo audio processing; it mainly changes hardware speaker routing.
+// See SetPokemonCryStereo in Emerald.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Tsify)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3CalibrationContext {
     pub action: Wild3Action,
     pub movement: Wild3MovementMode,
-    pub sound_mode: Wild3SoundMode,
 }
 
 impl Wild3CalibrationContext {
     pub fn walking(action: Wild3Action) -> Self {
-        Self { action, movement: Wild3MovementMode::OnFoot, sound_mode: Wild3SoundMode::Unspecified }
+        Self { action, movement: Wild3MovementMode::OnFoot }
     }
 }
 
@@ -56,7 +47,7 @@ pub struct CalibrationProvenance {
 
 #[derive(Debug, Clone, Copy)]
 pub struct ComponentDistribution {
-    pub summary: CycleCalibrationSummary,
+    pub summary: MinMidMax,
     pub cdf: PiecewiseCdf,
     pub provenance: CalibrationProvenance,
 }
@@ -66,7 +57,7 @@ pub struct Wild3MapCycleCalibration {
     pub map_internal_idx: usize,
     pub song: Wild3CalibrationSong,
     pub context: Wild3CalibrationContext,
-    pub non_audio: CycleCalibrationSummary,
+    pub non_audio: MinMidMax,
     pub distribution: &'static ComponentDistribution,
     pub combined_median: usize,
     pub joint_correction: Option<ComponentDistribution>,
@@ -75,7 +66,6 @@ pub struct Wild3MapCycleCalibration {
 const WALKING_LAND: Wild3CalibrationContext = Wild3CalibrationContext {
     action: Wild3Action::SweetScentLand,
     movement: Wild3MovementMode::OnFoot,
-    sound_mode: Wild3SoundMode::Unspecified,
 };
 
 // Internal wild-header indices, not UI indices or map group/number pairs.
@@ -138,7 +128,7 @@ fn audio_distribution(song: Wild3CalibrationSong) -> &'static ComponentDistribut
     }
 }
 
-pub fn wild3_audio_cycle_calibration(song: Wild3CalibrationSong) -> CycleCalibrationSummary {
+pub fn wild3_audio_cycle_calibration(song: Wild3CalibrationSong) -> MinMidMax {
     audio_distribution(song).summary
 }
 
@@ -191,15 +181,21 @@ pub(super) fn calibration_model(
 /// An unmeasured context must not be excluded by another map's empirical bounds.
 pub(super) fn calibration_filter_bounds(
     action: Wild3Action, map: &Wild3MapGameData, context: Option<Wild3CalibrationContext>,
-) -> Option<(usize, usize, usize)> {
+) -> Option<MinMidMax> {
     let (model, fallback) = calibration_model(action, map, context)?;
     let median = wild3_map_cycle_calibration(map).combined_median;
     let calibration = wild3_map_cycle_calibration(map);
     let margin = audio_distribution(calibration.song).provenance.safety_margin_cycles
         + calibration.distribution.provenance.safety_margin_cycles;
-    Some(if fallback { (0, median, VBLANK_FREQ - 1) }
-        else { (model.min.saturating_sub(margin), median,
-            model.max.saturating_add(margin).min(VBLANK_FREQ - 1)) })
+    Some(if fallback {
+        MinMidMax::new(0, median, VBLANK_FREQ - 1)
+    } else {
+        MinMidMax::new(
+            model.min.saturating_sub(margin),
+            median,
+            model.max.saturating_add(margin).min(VBLANK_FREQ - 1),
+        )
+    })
 }
 
 #[derive(Debug, Clone, Serialize, Tsify)]
@@ -267,15 +263,15 @@ mod tests {
         let info = get_wild3_calibration_info(Wild3Action::SweetScentLand, &map(114), None);
         let audio = info.audio.unwrap();
         assert_eq!(audio.source, "altering_cave_walk_sweet_scent.txt");
-        assert_eq!(audio.attempts, 5523);
-        assert!(audio.incomplete_loop);
+        assert_eq!(audio.attempts, 5526);
+        assert!(!audio.incomplete_loop);
         assert_eq!(wild3_map_cycle_calibration(&map(114)).song, Wild3CalibrationSong::RgSeviiCave);
     }
 
     #[test]
     fn fallback_is_explicit_and_does_not_narrow_filtering() {
         let bounds = calibration_filter_bounds(Wild3Action::SweetScentLand, &map(999), None).unwrap();
-        assert_eq!((bounds.0, bounds.2), (0, VBLANK_FREQ - 1));
+        assert_eq!((bounds.min, bounds.max), (0, VBLANK_FREQ - 1));
         assert!(get_wild3_calibration_info(Wild3Action::SweetScentLand, &map(999), None).fallback);
         let bike = Wild3CalibrationContext { movement: Wild3MovementMode::Bike, ..WALKING_LAND };
         assert!(calibration_model(Wild3Action::SweetScentLand, &map(0), Some(bike)).is_none());
@@ -311,7 +307,7 @@ mod tests {
     #[test]
     fn initial_bounds_and_likelihood_use_the_same_context() {
         use crate::gen3::{CycleFrameCounter, CycleRange, Wild3GeneratorCycleOpts,
-            Wild3GeneratorOptions, calculate_method_probability_with_context};
+            Wild3GeneratorOptions, calculate_method_probability};
         for index in [0, 1, 2, 3, 5, 8, 14, 20, 114] {
             let map = map(index);
             let (model, _) = calibration_model(Wild3Action::SweetScentLand, &map, None).unwrap();
@@ -327,7 +323,7 @@ mod tests {
                 }
                 _ => panic!("Expected calibrated range"),
             }
-            let p = |start, len| calculate_method_probability_with_context(
+            let p = |start, len| calculate_method_probability(
                 &CycleRange::from_start_len(start, len), Wild3Action::SweetScentLand, &map, None);
             assert_eq!(p(model.min as i32 - 10, 10), 0.0);
             assert_eq!(p(model.max as i32 + 1, 10), 0.0);
@@ -356,19 +352,19 @@ mod tests {
 
     #[test]
     fn missing_context_deserializes_and_unmeasured_actions_keep_legacy_estimates() {
-        use crate::gen3::{Wild3GeneratorOptions, get_min_mid_max_pre_sweet_scent_cycle_for_map,
-            calculate_method_probability_with_context, CycleRange};
+        use crate::gen3::{Wild3GeneratorOptions, get_min_mid_max_pre_sweet_scent_cycle,
+            calculate_method_probability, CycleRange};
         let mut json = serde_json::to_value(Wild3GeneratorOptions::default()).unwrap();
         json.as_object_mut().unwrap().remove("calibration_context");
         let options: Wild3GeneratorOptions = serde_json::from_value(json).unwrap();
         assert!(options.calibration_context.is_none());
         for action in [Wild3Action::OldRod, Wild3Action::GoodRod, Wild3Action::SuperRod, Wild3Action::SweetScentWater] {
-            assert_eq!(get_min_mid_max_pre_sweet_scent_cycle_for_map(action, &map(3)), (45_000, 55_000, 75_000));
-            assert_eq!(calculate_method_probability_with_context(&CycleRange::from_start_len(45_000, 15_000),
+            assert_eq!(get_min_mid_max_pre_sweet_scent_cycle(action, &map(3), None), MinMidMax::new(45_000, 55_000, 75_000));
+            assert_eq!(calculate_method_probability(&CycleRange::from_start_len(45_000, 15_000),
                 action, &map(3), None), 0.5);
         }
-        assert_eq!(get_min_mid_max_pre_sweet_scent_cycle_for_map(Wild3Action::RockSmash, &map(3)),
-            (30_000, 52_500, 75_000));
+        assert_eq!(get_min_mid_max_pre_sweet_scent_cycle(Wild3Action::RockSmash, &map(3), None),
+            MinMidMax::new(30_000, 52_500, 75_000));
     }
 
     #[test]
@@ -401,7 +397,7 @@ mod tests {
             assert_eq!(Some(selected.song), default_calibration_song(&requested));
             assert!(get_wild3_calibration_info(Wild3Action::SweetScentLand, &requested, None).fallback);
             let bounds = calibration_filter_bounds(Wild3Action::SweetScentLand, &requested, None).unwrap();
-            assert_eq!((bounds.0, bounds.2), (0, VBLANK_FREQ - 1));
+            assert_eq!((bounds.min, bounds.max), (0, VBLANK_FREQ - 1));
         }
     }
 

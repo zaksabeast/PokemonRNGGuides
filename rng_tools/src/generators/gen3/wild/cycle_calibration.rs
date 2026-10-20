@@ -67,7 +67,7 @@ pub(super) fn calculate_cycle_score(
                     vblank_durations
                         .get(frame)
                         .copied()
-                        .unwrap_or_else(|| get_min_mid_max_vblank_cycle_duration().1)
+                        .unwrap_or_else(|| get_min_mid_max_vblank_cycle_duration().mid)
                         as u64
                 })
                 .sum::<u64>();
@@ -118,10 +118,7 @@ pub(super) fn is_wild3(moments: &[CycleFrameMoment]) -> bool {
                 ) | (
                     Moment::CreateMonWithNature_RandomPidLow,
                     Moment::CreateMonWithNature_RandomPidHigh
-                ) | (
-                    Moment::CreateMonWithGenderNatureLetter,
-                    Moment::CreateMon
-                )
+                ) | (Moment::CreateMonWithGenderNatureLetter, Moment::CreateMon)
             )
     })
 }

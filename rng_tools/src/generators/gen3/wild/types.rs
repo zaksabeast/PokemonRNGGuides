@@ -4,6 +4,19 @@ use wasm_bindgen::prelude::wasm_bindgen;
 
 use crate::{Gender, Nature};
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct MinMidMax {
+    pub min: usize,
+    pub mid: usize,
+    pub max: usize,
+}
+
+impl MinMidMax {
+    pub const fn new(min: usize, mid: usize, max: usize) -> Self {
+        Self { min, mid, max }
+    }
+}
+
 #[derive(Clone, Copy, Default, Debug, Eq, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum Gen3Method {

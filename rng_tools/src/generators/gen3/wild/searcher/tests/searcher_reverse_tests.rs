@@ -791,9 +791,9 @@ fn test_search_reverse_wild3_vblank_group_feebas() {
     let mut groups: [Option<std::ops::RangeInclusive<usize>>; 4] = [None, None, None, None];
 
     for feebas_cycles in 0..=800_000 {
-        let (min_presweet, _, max_presweet) =
-            get_min_mid_max_pre_sweet_scent_cycle(Wild3Action::OldRod);
-        let (min_vblank_dur, _, max_vblank_dur) = get_min_mid_max_vblank_cycle_duration();
+        let crate::gen3::MinMidMax { min: min_presweet, max: max_presweet, .. } =
+            get_min_mid_max_pre_sweet_scent_cycle(Wild3Action::OldRod, &Wild3MapGameData::default(), None);
+        let crate::gen3::MinMidMax { min: min_vblank_dur, max: max_vblank_dur, .. } = get_min_mid_max_vblank_cycle_duration();
 
         let (_, min_vblank_count) = apply_cycles_causing_vblanks_on_cycle_counter(
             min_presweet,

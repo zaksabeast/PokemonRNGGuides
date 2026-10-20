@@ -1018,8 +1018,8 @@ fn rand_next_u16(rng: &mut Pokerng, _reason: &str, _modulo: u16) -> u16 {
 #[wasm_bindgen]
 // Only returns the mid case (which is the one used by the generator)
 pub fn get_feebas_vblank_from_feebas_cycle(feebas_cycles: usize) -> usize {
-    let (_, mid, _) = get_min_mid_max_pre_sweet_scent_cycle(Wild3Action::OldRod);
-    let (_, mid_vblank, _) = get_min_mid_max_vblank_cycle_duration();
+    let mid = get_min_mid_max_pre_sweet_scent_cycle(Wild3Action::OldRod, &Wild3MapGameData::default(), None).mid;
+    let mid_vblank = get_min_mid_max_vblank_cycle_duration().mid;
 
     let (_, mid_case_vblank) =
         apply_cycles_causing_vblanks_on_cycle_counter(mid, feebas_cycles, mid_vblank);
@@ -1054,8 +1054,8 @@ fn handle_feebas_cycle_counter(
 ) {
     cycle_counter.on_moment_reached(Moment::CheckFeebas);
 
-    let (min, mid, max) = get_min_mid_max_pre_sweet_scent_cycle(Wild3Action::OldRod);
-    let (min_vblank, mid_vblank, max_vblank) = get_min_mid_max_vblank_cycle_duration();
+    let super::MinMidMax { min, mid, max } = get_min_mid_max_pre_sweet_scent_cycle(Wild3Action::OldRod, &Wild3MapGameData::default(), None);
+    let super::MinMidMax { min: min_vblank, mid: mid_vblank, max: max_vblank } = get_min_mid_max_vblank_cycle_duration();
 
     let (_, min_case_vblank) =
         apply_cycles_causing_vblanks_on_cycle_counter(min, feebas_cycles, min_vblank);

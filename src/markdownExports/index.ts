@@ -473,18 +473,20 @@ const tools = {
     (mod) => mod.RngWorkbench,
   ),
   PokeRadar4ShinySearcher: lazyLoad(
-    () => import("~/rngToolsUi/gen4/pokeradar/index"),
+    () => import("~/rngToolsUi/gen4/pokeradar/searcher"),
     (mod) => mod.PokeRadar4ShinySearcher,
+  ),
+  PokeRadar4ChainStarter: lazyLoad(
+    () => import("~/rngToolsUi/gen4/pokeradar/chainStarter"),
+    (mod) => mod.PokeRadar4ChainStarter,
   ),
   PokeRadar4PatchGrid: lazyLoad(
     () => import("~/rngToolsUi/gen4/pokeradar/patchGrid"),
     (mod) => mod.PokeRadar4PatchGrid,
   ),
-  PokeRadar4: lazyLoad(
-    () => import("~/rngToolsUi/gen4/pokeradar/finalTool"),
-    (mod) => mod.PokeRadar4,
-  ),
 };
+
+//
 
 export const markdownComponents = {
   ...nonTools,

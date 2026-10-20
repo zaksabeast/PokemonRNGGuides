@@ -1,0 +1,1 @@
+import{Ki as e}from"./index.esm-D5yNV6EV.js";var t=0;function n(n){var r=++t;return e(n)+r}export{n as t};

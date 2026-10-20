@@ -1,25 +1,17 @@
 import { useAtomValue, useSetAtom } from "jotai";
-import { Alert, Button, Flex, SectionCard, Typography } from "~/components";
 import {
-  Gen7UsumStarterPress,
+  Gen7Press,
   Gen7UsumStarterPresses,
   multiWorkerRngTools,
 } from "~/rngTools";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
-import { useCancellablePromise } from "~/hooks/useCancellablePromise";
 import {
   Gen7StarterTarget,
   gen7StarterPlanAtom,
   gen7StarterTargetAtom,
 } from "./starterState";
-import {
-  NextAdvancesCard,
-  PRESS_TIMING_MIN_HEIGHT,
-  PressTiming,
-  SafeAdvancesCard,
-  StarterTags,
-} from "./sectionCards";
-import { useSafeAdvances } from "./useSafeAdvances";
+import { GiftTimeline } from "./giftTimeline";
+import { PressCard, TargetAdvanceCard } from "./sectionCards";
 
 const useCurrentTargetPlan = () => {
   const target = useAtomValue(gen7StarterTargetAtom);
@@ -42,143 +34,68 @@ const fetchKukuiSafeAdvances = (
     safe_advance_count: count,
   });
 
+const fetchPlan = (target: Gen7StarterTarget, safeAdvance: number) =>
+  multiWorkerRngTools.gen7_usum_starter_plan({
+    seed: target.seed,
+    safe_advance: safeAdvance,
+    target_advance: target.starter.advance,
+    delay_advances: target.starter.delay_advances,
+  });
+
 export const Gen7StarterKukuiTimeline = () => {
-  const t = useActiveRouteTranslations();
   const { target, plan } = useCurrentTargetPlan();
   const setPlan = useSetAtom(gen7StarterPlanAtom);
-  const { loading, waitFor } = useCancellablePromise();
-  const {
-    query: safeAdvancesTarget,
-    safeAdvances,
-    canShowMore,
-    findSafeAdvances,
-    showMore,
-  } = useSafeAdvances(fetchKukuiSafeAdvances, waitFor);
-
-  const onFindSafeAdvances = async () => {
-    if (target == null) {
-      return;
-    }
-    setPlan(null);
-    await findSafeAdvances(target, target.currentAdvance);
-  };
-
-  const onSelectSafeAdvance = async (safeAdvance: number) => {
-    if (target == null) {
-      return;
-    }
-    setPlan(null);
-    const results = await waitFor(
-      multiWorkerRngTools.gen7_usum_starter_plan({
-        seed: target.seed,
-        safe_advance: safeAdvance,
-        target_advance: target.starter.advance,
-        delay_advances: target.starter.delay_advances,
-      }),
-    );
-    const result = results?.[0];
-    if (result != null) {
-      setPlan({ target, safeAdvance, plan: result });
-    }
-  };
 
   return (
-    <Flex vertical gap={16}>
-      <SafeAdvancesCard
-        safeAdvances={safeAdvancesTarget === target ? safeAdvances : null}
-        selected={plan?.safeAdvance ?? null}
-        disabled={loading}
-        canShowMore={canShowMore}
-        onSelect={onSelectSafeAdvance}
-        onShowMore={showMore}
-        action={
-          // A row, so the button keeps its size in the card's column.
-          <Flex>
-            <Button
-              trackerId="gen7_find_usum_starter_safe_advances"
-              type="primary"
-              disabled={target == null || loading}
-              onClick={onFindSafeAdvances}
-            >
-              {t["Find Safe Advances"]}
-            </Button>
-          </Flex>
-        }
-      />
-      <NextAdvancesCard
-        safeAdvance={plan?.safeAdvance ?? null}
-        nextAdvances={plan?.plan.next_advances ?? null}
-      />
-    </Flex>
+    <GiftTimeline
+      query={target}
+      currentAdvance={target?.currentAdvance ?? null}
+      selectedSafeAdvance={plan?.safeAdvance ?? null}
+      nextAdvances={plan?.plan.next_advances ?? null}
+      findSafeAdvancesTrackerId="gen7_find_usum_starter_safe_advances"
+      fetchSafeAdvances={fetchKukuiSafeAdvances}
+      fetchPlan={fetchPlan}
+      onClearPlan={() => setPlan(null)}
+      onPlan={(planTarget, safeAdvance, newPlan) =>
+        setPlan({ target: planTarget, safeAdvance, plan: newPlan })
+      }
+    />
   );
 };
 
-type PressCardProps = {
+type StarterPressCardProps = {
   title: string;
   label: string;
-  waitLabel: string;
-  getPress: (presses: Gen7UsumStarterPresses) => Gen7UsumStarterPress;
+  getPress: (presses: Gen7UsumStarterPresses) => Gen7Press;
 };
 
-const PressCard = ({ title, label, waitLabel, getPress }: PressCardProps) => {
+const StarterPressCard = ({
+  title,
+  label,
+  getPress,
+}: StarterPressCardProps) => {
   const t = useActiveRouteTranslations();
   const { target, plan } = useCurrentTargetPlan();
   const presses = plan?.plan.presses ?? null;
-  const unreachable = plan != null && presses == null;
-
-  const borderColor = (() => {
-    if (plan == null) {
-      return undefined;
-    }
-    return unreachable ? "Warning" : "Primary";
-  })();
-
-  const content = (() => {
-    if (target == null) {
-      return (
-        <Typography.Text color="TextSecondary">
-          {t["Select a target in the search above"]}
-        </Typography.Text>
-      );
-    }
-    if (unreachable) {
-      return (
-        <Alert
-          type="warning"
-          title={t[
-            "{target} can't be reached from this timeline. Pick another target."
-          ].replace("{target}", target.starter.advance.toString())}
-        />
-      );
-    }
-    const press = presses == null ? null : getPress(presses);
-    return (
-      <PressTiming
-        label={label}
-        labelColor="Primary"
-        advance={press?.advance ?? null}
-        waitLabel={waitLabel}
-        waitSteps={press?.wait_steps ?? null}
-      />
-    );
-  })();
 
   return (
-    <SectionCard title={title} borderColor={borderColor}>
-      <Flex vertical justify="center" minHeight={PRESS_TIMING_MIN_HEIGHT}>
-        {content}
-      </Flex>
-    </SectionCard>
+    <PressCard
+      title={title}
+      label={label}
+      waitLabel={t["Time until A press"]}
+      targetAdvance={target?.starter.advance ?? null}
+      hasPlan={plan != null}
+      press={presses == null ? null : getPress(presses)}
+    />
   );
 };
 
 export const Gen7StarterPressKukuiA = () => {
   const t = useActiveRouteTranslations();
   return (
-    <PressCard
+    <StarterPressCard
       title={t["Kukui's Dialogue"]}
       label={t["Press A at"]}
-      waitLabel={t["Time until A press"]}
       getPress={(presses) => presses.kukui_a}
     />
   );
@@ -187,35 +104,21 @@ export const Gen7StarterPressKukuiA = () => {
 export const Gen7StarterPressYes = () => {
   const t = useActiveRouteTranslations();
   return (
-    <PressCard
+    <StarterPressCard
       title={t["Choose Starter"]}
       label={t["Select Yes at"]}
-      waitLabel={t["Time until A press"]}
       getPress={(presses) => presses.yes}
     />
   );
 };
 
 export const Gen7StarterTargetAdvance = () => {
-  const t = useActiveRouteTranslations();
   const { target, plan } = useCurrentTargetPlan();
-  const presses = plan?.plan.presses ?? null;
 
   return (
-    <SectionCard
-      title={t["Target Advance"]}
-      borderColor={presses == null ? undefined : "Success"}
-    >
-      <Flex vertical justify="center" minHeight={PRESS_TIMING_MIN_HEIGHT}>
-        <PressTiming
-          label={t["Press A at"]}
-          labelColor="Success"
-          advance={target?.starter.advance ?? null}
-          waitLabel={t["Time until A press"]}
-          waitSteps={presses?.target.wait_steps ?? null}
-        />
-      </Flex>
-      <StarterTags starter={target?.starter ?? null} />
-    </SectionCard>
+    <TargetAdvanceCard
+      gift={target?.starter ?? null}
+      waitSteps={plan?.plan.presses?.target.wait_steps ?? null}
+    />
   );
 };

@@ -3,7 +3,6 @@ import {
   FormRadioField,
   FormSection,
   FormSelectField,
-  FormSwitchField,
   ToolForm,
   type ToolFormSubmit,
 } from "~/components/form";
@@ -132,13 +131,6 @@ export const Fields = ({
           options={toOptions(sortedLvls)}
         />
       </CaughtMonFields>
-
-      <FormSection title="Advanced">
-        <FormSwitchField<FormState>
-          name="generate_even_if_impossible"
-          label="Display results with 0% likelihood"
-        />
-      </FormSection>
     </>
   );
 };

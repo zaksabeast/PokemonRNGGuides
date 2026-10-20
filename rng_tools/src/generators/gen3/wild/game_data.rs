@@ -111,6 +111,7 @@ impl Default for Wild3EncounterIndex {
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3MapGameData {
     pub map_id: String,
+    pub map_internal_idx: usize,
     pub slots_by_action: Vec<Vec<Wild3EncounterGameData>>,
     pub roamers: Vec<Wild3SpecialEncounterGameData<Wild3RoamerState>>,
     pub mass_outbreaks: Vec<Wild3SpecialEncounterGameData<Wild3MassOutbreakState>>,
@@ -183,6 +184,7 @@ impl Default for Wild3MapGameData {
                 })
                 .collect::<Vec<_>>(),
             map_id: String::default(),
+            map_internal_idx: 0,
             roamers: vec![],
             feebas: None,
             mass_outbreaks: vec![],

@@ -72,7 +72,7 @@ const Validator = z
     max_advances: z.number().int().min(0),
     delay: z.number().int(),
     tsv: z.number().int().min(0).max(4095),
-    trv: z.number().int().min(0).max(15),
+    trv: HexSchema(0xf),
     only_current_seed: z.boolean(),
     transporter_genders: z.enum(transporterGenders),
   })
@@ -103,16 +103,18 @@ const Fields = () => {
           label={t["Seed"]}
           numType="hex"
         />
-        <FormNumberField<FormState>
-          name="tsv"
-          label={t["TSV"]}
-          numType="decimal"
-        />
-        <FormNumberField<FormState>
-          name="trv"
-          label={t["TRV"]}
-          numType="decimal"
-        />
+        <FieldRow>
+          <FormNumberField<FormState>
+            name="tsv"
+            label={t["TSV"]}
+            numType="decimal"
+          />
+          <FormNumberField<FormState>
+            name="trv"
+            label={t["TRV"]}
+            numType="hex"
+          />
+        </FieldRow>
         <FormSelectField<FormState>
           name="transporter_genders"
           label={t["Transporter Gender"]}

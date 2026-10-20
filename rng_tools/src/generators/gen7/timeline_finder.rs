@@ -9,8 +9,14 @@ pub const MAX_SAFE_SCAN: usize = 100_000;
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Gen7SafeAdvancesOpts {
-    pub seed: u32,
     pub npc_count: u8,
+    pub scene: Gen7SceneSafeAdvancesOpts,
+}
+
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Gen7SceneSafeAdvancesOpts {
+    pub seed: u32,
     /// The advance the user entered. Earlier blinks are checked relative to
     /// this, so every page of results agrees.
     pub current_advance: usize,
@@ -26,11 +32,13 @@ pub struct Gen7Advance {
     pub advance: usize,
 }
 
-#[wasm_bindgen]
-pub fn gen7_next_safe_advances(opts: Gen7SafeAdvancesOpts) -> Vec<Gen7Advance> {
+pub(super) fn safe_advances_for_models(
+    opts: &Gen7SceneSafeAdvancesOpts,
+    model_count: usize,
+) -> Vec<Gen7Advance> {
     next_safe_advances(
         opts.seed,
-        model_count_from_npcs(opts.npc_count),
+        model_count,
         opts.current_advance,
         opts.from_advance,
         opts.safe_advance_count,
@@ -40,6 +48,11 @@ pub fn gen7_next_safe_advances(opts: Gen7SafeAdvancesOpts) -> Vec<Gen7Advance> {
     .into_iter()
     .map(|advance| Gen7Advance { advance })
     .collect()
+}
+
+#[wasm_bindgen]
+pub fn gen7_next_safe_advances(opts: Gen7SafeAdvancesOpts) -> Vec<Gen7Advance> {
+    safe_advances_for_models(&opts.scene, model_count_from_npcs(opts.npc_count))
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -71,11 +84,13 @@ mod test {
     #[test]
     fn safe_advances_use_the_npc_count() {
         let result = gen7_next_safe_advances(Gen7SafeAdvancesOpts {
-            seed: SEED,
             npc_count: 4,
-            current_advance: 1000,
-            from_advance: 1000,
-            safe_advance_count: 3,
+            scene: Gen7SceneSafeAdvancesOpts {
+                seed: SEED,
+                current_advance: 1000,
+                from_advance: 1000,
+                safe_advance_count: 3,
+            },
         });
         let advances: Vec<usize> = result.iter().map(|safe| safe.advance).collect();
         assert_eq!(advances, vec![1039, 1040, 1041]);
@@ -84,11 +99,13 @@ mod test {
     #[test]
     fn zero_npcs_has_no_safe_advances() {
         let result = gen7_next_safe_advances(Gen7SafeAdvancesOpts {
-            seed: SEED,
             npc_count: 0,
-            current_advance: 1000,
-            from_advance: 1000,
-            safe_advance_count: 3,
+            scene: Gen7SceneSafeAdvancesOpts {
+                seed: SEED,
+                current_advance: 1000,
+                from_advance: 1000,
+                safe_advance_count: 3,
+            },
         });
         assert_eq!(result, vec![]);
     }

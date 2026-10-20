@@ -1,6 +1,6 @@
 use super::generator::{EggSettings, Gen7Egg, Gen7EggGender, generate_egg};
 use super::parents::Gen7EggParents;
-use super::path::{Gen7EggAction, Gen7EggPath, ShortestPaths, path_steps};
+use super::path::{Gen7EggPath, ShortestPaths, path_steps};
 use super::pid::{EggPidStrategy, MasudaAndShinyCharm, MasudaMethod, ShinyCharm};
 use crate::PkmFilter;
 use crate::rng::tinymt::TinyMT;
@@ -99,9 +99,6 @@ fn egg_path<Pid: EggPidStrategy>(opts: &Gen7EggSearchOpts, target_advance: usize
 
     let advances = ShortestPaths::new(&accept_advances).advances_to(target_advance);
     let steps = path_steps(&advances, &seeds);
-    let count = |action| steps.iter().filter(|step| step.action == action).count();
-    let accepts = count(Gen7EggAction::Accept);
-    let rejects = count(Gen7EggAction::Reject);
 
     let target = eggs[target_advance].clone();
     let mut after_target = TinyMT::from_state(target.seed);
@@ -109,8 +106,6 @@ fn egg_path<Pid: EggPidStrategy>(opts: &Gen7EggSearchOpts, target_advance: usize
 
     Gen7EggPath {
         steps,
-        accepts,
-        rejects,
         seed_after_target: after_target.get_state(),
         target,
     }

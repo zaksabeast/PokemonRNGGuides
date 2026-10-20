@@ -306,7 +306,6 @@ fn egg_path_steps_follow_the_shortest_path() {
 
             assert_eq!(path.target, eggs[target], "{} {target}", fixture.name);
             assert_eq!(advances_from_steps(&path, &eggs), expected);
-            assert_eq!(path.accepts + path.rejects, expected.len() - 1);
             for step in &path.steps {
                 assert_eq!(step.seed_before, eggs[step.advance_before].seed);
             }
@@ -366,7 +365,6 @@ fn path_to_advance_0_is_empty() {
     let fixture = &fixtures()[0];
     let path = gen7_egg_path(fixture.opts(0), 0);
     assert!(path.steps.is_empty());
-    assert_eq!((path.accepts, path.rejects), (0, 0));
 }
 
 #[test]

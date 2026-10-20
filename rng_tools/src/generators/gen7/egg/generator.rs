@@ -8,15 +8,6 @@ use crate::{AbilityType, G5Idx, Gender, GenderRatio, Ivs, Nature, PkmState, gen6
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 
-const STATS: [G5Idx; 6] = [
-    G5Idx::Hp,
-    G5Idx::Atk,
-    G5Idx::Def,
-    G5Idx::Spa,
-    G5Idx::Spd,
-    G5Idx::Spe,
-];
-
 /// Rands after the ball for adopting the egg and clearing it from the Nursery.
 const RANDS_AFTER_BALL: usize = 2;
 
@@ -81,7 +72,7 @@ pub enum Gen7EggGender {
 }
 
 impl Gen7EggGender {
-    fn roll(&self, rng: &mut EggRng) -> Gender {
+    fn roll(self, rng: &mut EggRng) -> Gender {
         match self {
             Self::CoinFlip => match rng.rand_bit() {
                 0 => Gender::Male,
@@ -197,7 +188,7 @@ pub(super) fn generate_egg<Pid: EggPidStrategy>(
 
     // Inherited IVs still use their random IV rand.
     let mut ivs = Ivs::default();
-    for (stat, parent) in STATS.into_iter().zip(inherited_ivs) {
+    for (stat, parent) in G5Idx::ORDER.into_iter().zip(inherited_ivs) {
         let random_iv = (rng.rand() & 0x1f) as u8;
         ivs[stat] = match parent {
             Some(parent) => settings.parent_ivs(parent)[stat],
@@ -209,7 +200,13 @@ pub(super) fn generate_egg<Pid: EggPidStrategy>(
     let pid = Pid::roll(&mut rng, settings.tsv);
     let psv = gen6_psv(pid);
 
-    let ball = if rules.rolls_ball && rng.rand_mod(100) >= 50 || rules.female_is_ditto {
+    // Only same species parents use a rand for the ball.
+    let ball = if rules.rolls_ball {
+        match rng.rand_mod(100) {
+            0..50 => Gen7EggParentSlot::Female,
+            _ => Gen7EggParentSlot::Male,
+        }
+    } else if rules.female_is_ditto {
         Gen7EggParentSlot::Male
     } else {
         Gen7EggParentSlot::Female

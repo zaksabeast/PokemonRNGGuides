@@ -49,6 +49,8 @@ export const gen7EggGenders = [
 
 type Gen7EggGenderOption = (typeof gen7EggGenders)[number];
 
+const MAX_EGG_ADVANCES = 10_000;
+
 const formShape = z
   .object({
     seed_3: HexSchema(0xffffffff),
@@ -70,7 +72,8 @@ const formShape = z
     female_nature: z.enum(nature),
     female_ditto: z.boolean(),
     same_species: z.boolean(),
-    max_advances: z.number().int().min(0),
+    // The path search grows with the square of this, and runs on one worker.
+    max_advances: z.number().int().min(0).max(MAX_EGG_ADVANCES),
   })
   .extend(pkmFilterSchema.shape);
 

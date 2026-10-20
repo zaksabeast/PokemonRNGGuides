@@ -24,8 +24,6 @@ pub struct Gen7EggPathStep {
 pub struct Gen7EggPath {
     /// The steps before accepting the target.
     pub steps: Vec<Gen7EggPathStep>,
-    pub accepts: usize,
-    pub rejects: usize,
     pub target: Gen7Egg,
     pub seed_after_target: [u32; 4],
 }

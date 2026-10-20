@@ -11,9 +11,13 @@ import {
   gen7EggPathAtom,
   gen7EggTargetAtom,
 } from "./eggState";
-import { GiftTags, PRESS_TIMING_MIN_HEIGHT } from "./sectionCards";
+import {
+  Count,
+  GiftTags,
+  PLACEHOLDER,
+  PRESS_TIMING_MIN_HEIGHT,
+} from "./sectionCards";
 
-const PLACEHOLDER = "-";
 const FIND_TARGET_STEP = 0;
 const GET_EGG_STEP = 2;
 const CURRENT_EGG_MIN_HEIGHT = 120;
@@ -43,21 +47,6 @@ const useTargetPath = () => {
     path: targetPath?.target === target ? targetPath.path : null,
   };
 };
-
-type CountProps = {
-  label: string;
-  count: number | null;
-  fontSize?: number;
-};
-
-const Count = ({ label, count, fontSize = 36 }: CountProps) => (
-  <Flex vertical>
-    <Typography.Text color="TextSecondary">{label}</Typography.Text>
-    <Typography.Text fontSize={fontSize} strong>
-      {count ?? PLACEHOLDER}
-    </Typography.Text>
-  </Flex>
-);
 
 type Progress = {
   // Eggs accepted or rejected so far.

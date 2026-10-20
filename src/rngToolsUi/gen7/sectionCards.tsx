@@ -19,13 +19,36 @@ import { SAFE_ADVANCE_COUNT } from "./useSafeAdvances";
 const ADVANCE_TAG_MIN_WIDTH = 64;
 const ADVANCE_BUTTON_MIN_WIDTH = 80;
 export const PRESS_TIMING_MIN_HEIGHT = 78;
-const PLACEHOLDER = "-";
+export const PLACEHOLDER = "-";
 const NEXT_ADVANCE_PLACEHOLDER_COUNT = 5;
 const SECONDS_PER_STEP = 2 / 60;
 
+type TextColor = React.ComponentProps<typeof Typography.Text>["color"];
+
+type CountProps = {
+  label: string;
+  labelColor?: TextColor;
+  count: number | null;
+  fontSize?: number;
+};
+
+export const Count = ({
+  label,
+  labelColor = "TextSecondary",
+  count,
+  fontSize = 36,
+}: CountProps) => (
+  <Flex vertical>
+    <Typography.Text color={labelColor}>{label}</Typography.Text>
+    <Typography.Text fontSize={fontSize} strong>
+      {count ?? PLACEHOLDER}
+    </Typography.Text>
+  </Flex>
+);
+
 type PressTimingProps = {
   label: string;
-  labelColor: React.ComponentProps<typeof Typography.Text>["color"];
+  labelColor: TextColor;
   advance: number | null;
   waitLabel: string;
   waitSteps: number | null;
@@ -39,12 +62,7 @@ export const PressTiming = ({
   waitSteps,
 }: PressTimingProps) => (
   <Flex gap={32} wrap align="flex-end">
-    <Flex vertical>
-      <Typography.Text color={labelColor}>{label}</Typography.Text>
-      <Typography.Text fontSize={36} strong>
-        {advance ?? PLACEHOLDER}
-      </Typography.Text>
-    </Flex>
+    <Count label={label} labelColor={labelColor} count={advance} />
     <Flex vertical>
       <Typography.Text color="TextSecondary">{waitLabel}</Typography.Text>
       <Typography.Text fontSize={24}>

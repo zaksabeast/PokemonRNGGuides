@@ -1,34 +1,25 @@
 import React from "react";
 import { z } from "zod";
 import {
-  Button,
   Field,
-  Flex,
   FormikNumberInput,
   MinMaxContainer,
   NumberInput,
   ResultColumn,
   RngToolForm,
 } from "~/components";
-import { rngTools, LeadAbility } from "~/rngTools";
-import { formatSpeciesLabel, species } from "~/types/species";
+import { rngTools, Species } from "~/rngTools";
+import { formatSpeciesLabel } from "~/types/species";
 import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
 } from "~/components/pkmFilter";
 import { Translations } from "~/translations";
-import { useCurrentStep } from "~/components/stepper/state";
-
-type SpeciesName = (typeof species)[number];
+import { selectedShinyPatchAtom, type SelectedShinyPatch } from "./state";
+import { useAtomValue } from "jotai";
 
 type PokeRadar4ChainStarterProps = {
-  seed?: number;
-  tid?: number;
-  sid?: number;
-  lead?: LeadAbility;
-  species?: SpeciesName;
-  encounterSlot?: number;
-  level?: number;
+  target: SelectedShinyPatch | null;
   initialMinAdvance?: number;
   initialMaxAdvance?: number;
 };
@@ -36,7 +27,7 @@ type PokeRadar4ChainStarterProps = {
 type Result = {
   id: string;
   advance: number;
-  species: SpeciesName;
+  species: Species;
   encounterSlot: number;
 };
 
@@ -70,31 +61,24 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
 ];
 
 export const PokeRadar4ChainStarter: React.FC<PokeRadar4ChainStarterProps> = ({
-  seed,
-  tid,
-  sid,
-  lead,
-  species: targetSpecies,
-  encounterSlot,
-  level,
+  target: targetProp,
   initialMinAdvance = 0,
   initialMaxAdvance = 0,
 }) => {
+  const storeTarget = useAtomValue(selectedShinyPatchAtom);
+  const target = targetProp ?? storeTarget;
   const [results, setResults] = React.useState<Result[]>([]);
-  const [, setStep] = useCurrentStep();
+
+  const targetKey =
+    target == null
+      ? "none"
+      : `${target.seed}-${target.species}-${target.encounterSlot}-${target.advance}`;
 
   React.useEffect(() => {
     setResults([]);
-  }, [seed, targetSpecies, encounterSlot]);
+  }, [targetKey]);
 
-  const canGenerate =
-    seed != null &&
-    tid != null &&
-    sid != null &&
-    lead != null &&
-    targetSpecies != null &&
-    level != null &&
-    encounterSlot != null;
+  const canGenerate = target != null;
 
   const getFields = (t: Translations): Field[] => [
     {
@@ -105,11 +89,11 @@ export const PokeRadar4ChainStarter: React.FC<PokeRadar4ChainStarterProps> = ({
           name="seed"
           numType="hex"
           errorMessage={
-            seed == null
+            target == null
               ? "Select a result from the Searcher to generate advances here."
               : undefined
           }
-          value={seed}
+          value={target?.seed}
         />
       ),
     },
@@ -138,6 +122,16 @@ export const PokeRadar4ChainStarter: React.FC<PokeRadar4ChainStarterProps> = ({
     if (!canGenerate) {
       return;
     }
+
+    const {
+      seed,
+      tid,
+      sid,
+      lead,
+      species: targetSpecies,
+      encounterSlot,
+      level,
+    } = target;
 
     const pkmList = await rngTools.generate_static4_states({
       tid,
@@ -170,30 +164,19 @@ export const PokeRadar4ChainStarter: React.FC<PokeRadar4ChainStarterProps> = ({
     setResults(mappedResults);
   };
 
-  const handleDone = () => {
-    setStep(Number.MAX_SAFE_INTEGER);
-  };
+  const maxAdvance = target?.advance ?? initialMaxAdvance;
 
   return (
-    <Flex vertical gap={16}>
-      <RngToolForm<FormState, Result>
-        key={`${seed}-${targetSpecies}-${encounterSlot}`}
-        initialValues={getInitialValues(initialMinAdvance, initialMaxAdvance)}
-        disableGenerate={!canGenerate}
-        submitTrackerId="pokeradar4_chain_starter_generate"
-        validationSchema={Validator}
-        getFields={getFields}
-        getColumns={getColumns}
-        onSubmit={onSubmit}
-        results={results}
-      />
-      <Button
-        trackerId="pokeradar4_chain_starter_done"
-        onClick={handleDone}
-        fullWidth
-      >
-        Done!
-      </Button>
-    </Flex>
+    <RngToolForm<FormState, Result>
+      key={targetKey}
+      initialValues={getInitialValues(initialMinAdvance, maxAdvance)}
+      disableGenerate={!canGenerate}
+      submitTrackerId="pokeradar4_chain_starter_generate"
+      validationSchema={Validator}
+      getFields={getFields}
+      getColumns={getColumns}
+      onSubmit={onSubmit}
+      results={results}
+    />
   );
 };

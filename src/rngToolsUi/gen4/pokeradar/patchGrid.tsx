@@ -10,6 +10,8 @@ import {
 import { toOptions } from "~/utils/options";
 import { PokeRadarPatches } from "~/rngToolsUi/gen6/xyPokeRadar/patch";
 import { BATTLE_RESULTS, SHAKE_TYPES } from "./constants";
+import { useAtomValue } from "jotai";
+import { selectedShinyPatchAtom } from "./state";
 
 const BATTLE_RESULT_OPTIONS = toOptions(BATTLE_RESULTS);
 const SHAKE_TYPE_OPTIONS = toOptions(SHAKE_TYPES);
@@ -29,11 +31,16 @@ type PokeRadar4PatchGridProps = {
 };
 
 export const PokeRadar4PatchGrid: React.FC<PokeRadar4PatchGridProps> = ({
-  initialSeed = 0,
+  initialSeed: initialSeedProp,
   initialAdvance = 0,
   initialChainCount = 0,
-  initialBattleResult = "Catch",
+  initialBattleResult: initialBattleResultProp,
 }) => {
+  const selectedPatch = useAtomValue(selectedShinyPatchAtom);
+  const initialSeed = initialSeedProp ?? selectedPatch?.seed ?? 0;
+  const initialBattleResult =
+    initialBattleResultProp ?? selectedPatch?.battleResult ?? "Catch";
+
   const [seed, setSeed] = React.useState<number>(initialSeed);
   const [advance, setAdvance] = React.useState<number>(initialAdvance);
   const [chainCount, setChainCount] = React.useState<number>(initialChainCount);

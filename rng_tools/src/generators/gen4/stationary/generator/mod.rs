@@ -474,32 +474,6 @@ mod test {
                 pokefinder_static!(CHATOT, "test_data/methodj/cute_charm_genderless.txt");
             assert_list_eq!(results, expected);
         }
-
-        #[test]
-        fn debug_wild_slot_0() {
-            let opts = Gen4StaticOpts {
-                tid: 41691,
-                sid: 13550,
-                initial_advances: 0,
-                max_advances: 50,
-                offset: 0,
-                filter: PkmFilter::default(),
-                filter_level: None,
-                filter_characteristic: None,
-                method: Static4Method::DpptWild,
-                species: Species::Snover,
-                lead: LeadAbility::None,
-                seed: 0x790102dc,
-                encounter_min_level: 1,
-                encounter_max_level: 1,
-            };
-            let results = generate_static4_states(&opts);
-            for pkm in &results {
-                if pkm.encounter_slot == 0 {
-                    println!("advance={} slot={}", pkm.advance, pkm.encounter_slot);
-                }
-            }
-        }
     }
 
     mod methodk {

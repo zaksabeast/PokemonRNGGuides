@@ -26,6 +26,7 @@ import {
   Patch,
   BattleResult,
   LeadAbility,
+  Species,
 } from "~/rngTools";
 import { formatSpeciesLabel, species } from "~/types/species";
 import { useWatch } from "~/hooks/form";
@@ -41,11 +42,14 @@ import {
 import { formatHex } from "~/utils/formatHex";
 import { RustOption } from "~/types";
 import { toOptions } from "~/utils/options";
-import { leadAbilities } from "../gen4types";
+import { static4LeadSchema, leadOptions } from "../shared/leads";
 import { DpPt, Gen3GameVersions } from "~/types/games";
 import { getEncounters } from "~/rngToolsUi/gen4/encounters/wild";
 import { ivColumns } from "~/rngToolsUi/shared/ivColumns";
 import { BATTLE_RESULTS, TIMES, POKERADAR_ROUTES } from "./constants";
+import { useSetAtom } from "jotai";
+import { useCurrentStep } from "~/components/stepper/state";
+import { selectedShinyPatchAtom } from "./state";
 
 const LIMIT = 1000;
 
@@ -56,7 +60,7 @@ const Validator = z
     sid: z.number().int().min(0).max(0xffff),
     minDelay: z.number().int().min(0),
     maxDelay: z.number().int().min(0),
-    lead: z.enum(leadAbilities),
+    lead: static4LeadSchema,
     minAdvanceSpread: z.number().int().min(0),
     maxAdvanceSpread: z.number().int().min(0),
     minAdvancePatch: z.number().int().min(0),
@@ -109,6 +113,7 @@ type ResultRow = {
   delay: number;
   patches: Patch[];
   encounterSlot: number;
+  lead: LeadAbility;
 } & Ivs;
 
 const toResultRow = (result: RadarShinyPatchResult): ResultRow => {
@@ -127,25 +132,8 @@ const toResultRow = (result: RadarShinyPatchResult): ResultRow => {
     delay: result.state.seed_time.delay,
     patches: result.patches,
     encounterSlot: spread.encounter_slot,
+    lead: spread.lead,
   };
-};
-
-export type SelectedShinyPatch = {
-  seed: number;
-  advance: number;
-  spreadAdvance: number;
-  chainCount: number;
-  battleResult: BattleResult;
-  tid: number;
-  sid: number;
-  lead: LeadAbility;
-  species: (typeof species)[number];
-  level: number;
-  encounterSlot: number;
-};
-
-type PokeRadar4ShinySearcherProps = {
-  onSelectResult?: (selection: SelectedShinyPatch) => void;
 };
 
 const FormContent = () => {
@@ -262,7 +250,7 @@ const FormContent = () => {
       input: (
         <FormikSelect<FormState, "lead">
           name="lead"
-          options={toOptions(leadAbilities)}
+          options={leadOptions}
         />
       ),
     },
@@ -351,9 +339,11 @@ const FormContent = () => {
   );
 };
 
-export const PokeRadar4ShinySearcher: React.FC<
-  PokeRadar4ShinySearcherProps
-> = ({ onSelectResult }) => {
+export const PokeRadar4ShinySearcher: React.FC = () => {
+
+  const setSelectedPatch = useSetAtom(selectedShinyPatchAtom);
+  const [, setCurrentStep] = useCurrentStep();
+  
   // Tracks the search parameters used for the most recent search, since
   // those aren't part of each individual result row. Needed both for the
   // patch grid (chainCount/battleResult) and for the chain starter
@@ -363,15 +353,13 @@ export const PokeRadar4ShinySearcher: React.FC<
     battleResult: BattleResult;
     tid: number;
     sid: number;
-    lead: LeadAbility;
-    species: (typeof species)[number];
+    species: Species;
     level: number;
   }>({
     chainCount: initialValues.chainCount,
     battleResult: initialValues.battleResult,
     tid: initialValues.tid,
     sid: initialValues.sid,
-    lead: initialValues.lead,
     species: initialValues.species,
     level: initialValues.level,
   });
@@ -383,8 +371,8 @@ export const PokeRadar4ShinySearcher: React.FC<
       render: (_value, row: ResultRow) => (
         <Button
           trackerId="poke_radar4_shiny_select_patch"
-          onClick={() =>
-            onSelectResult?.({
+          onClick={() => {
+            setSelectedPatch({
               seed: row.seed,
               advance: row.patchAdvance,
               spreadAdvance: row.advance,
@@ -392,12 +380,13 @@ export const PokeRadar4ShinySearcher: React.FC<
               battleResult: searchMeta.battleResult,
               tid: searchMeta.tid,
               sid: searchMeta.sid,
-              lead: searchMeta.lead,
+              lead: row.lead,
               species: searchMeta.species,
               level: searchMeta.level,
               encounterSlot: row.encounterSlot,
-            })
-          }
+            });
+            setCurrentStep((prev) => prev + 1);
+          }}
         >
           Select
         </Button>
@@ -446,7 +435,6 @@ export const PokeRadar4ShinySearcher: React.FC<
       battleResult: opts.battleResult,
       tid: opts.tid,
       sid: opts.sid,
-      lead: opts.lead,
       species: opts.species,
       level: opts.level,
     });

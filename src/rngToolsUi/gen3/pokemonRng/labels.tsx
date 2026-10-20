@@ -132,15 +132,18 @@ export const getGen3CalibPreviousStepRows = ({
   targetSetup,
   battleVideoInfo,
   initialAdv,
+  showTargetMethod = true,
 }: {
   targetSetup: CalibTargetSetup;
   battleVideoInfo: BattleVideoInfo;
   initialAdv: number;
+  showTargetMethod?: boolean;
 }): SummaryRow[] => {
   return [
     {
       label: "Target method",
       value: targetSetup.targetMethod,
+      show: showTargetMethod,
     },
     targetFrameBeforePaintingLabel(battleVideoInfo.targetPaintingAdvs.before),
     {

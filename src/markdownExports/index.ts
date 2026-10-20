@@ -234,6 +234,10 @@ const tools = {
     () => import("~/rngToolsUi/gen3/wild/wild3"),
     (mod) => mod.Wild3Calib_WithTargetSetupAndBattleVideo,
   ),
+  SimplifiedEmeraldWild: lazyLoad(
+    () => import("~/rngToolsUi/gen3/wild/simplifiedEmeraldWild"),
+    (mod) => mod.SimplifiedEmeraldWild,
+  ),
   Static3Calib_WithTargetSetupAndBattleVideo: lazyLoad(
     () => import("~/rngToolsUi/gen3/static/static3"),
     (mod) => mod.Static3Calib_WithTargetSetupAndBattleVideo,

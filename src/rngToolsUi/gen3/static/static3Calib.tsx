@@ -156,7 +156,7 @@ export const Static3Calib = ({
 
     return (
       <FormCard>
-        <FormSection title="Info from previous steps">
+        <FormSection title="Setup info from previous steps">
           <FormSummary
             rows={[
               ...getGen3CalibPreviousStepRows({

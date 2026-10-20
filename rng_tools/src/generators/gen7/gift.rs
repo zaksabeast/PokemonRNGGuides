@@ -1,14 +1,31 @@
 use super::Timeline;
 use crate::rng::{GetMaxRand, GetRand, Rng};
-use crate::{AbilityType, Gender, GenderRatio, Ivs, Nature, PkmState, ShinyType, TsvTrv, gen6_psv};
+use crate::{
+    AbilityType, Gender, GenderRatio, Ivs, Nature, PkmFilter, PkmState, ShinyType, TsvTrv, gen6_psv,
+};
 use serde::{Deserialize, Serialize};
+use std::collections::BTreeMap;
 use tsify::Tsify;
 
-const STEPS_FROM_A_PRESS_TO_GENERATION: u32 = 12;
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(super) struct GiftSettings {
+    pub steps_from_a_press_to_generation: u32,
+    pub gender_ratio: GenderRatio,
+    pub sync_nature: Option<Nature>,
+}
+
+impl GiftSettings {
+    pub(super) const fn with_sync_nature(self, sync_nature: Option<Nature>) -> Self {
+        Self {
+            sync_nature,
+            ..self
+        }
+    }
+}
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Gen7Starter {
+pub struct Gen7Gift {
     pub advance: usize,
     pub delay_advances: usize,
     pub ec: u32,
@@ -21,7 +38,7 @@ pub struct Gen7Starter {
     pub gender: Gender,
 }
 
-impl PkmState for Gen7Starter {
+impl PkmState for Gen7Gift {
     fn pid(&self) -> u32 {
         self.pid
     }
@@ -48,25 +65,30 @@ impl PkmState for Gen7Starter {
 }
 
 /// Starts from A pressed on `timeline`'s current step.
-pub(super) fn generate_starter<R: Rng + GetRand<u64> + GetMaxRand<u64>>(
+pub(super) fn generate_gift<R: Rng + GetRand<u64> + GetMaxRand<u64>>(
     mut timeline: Timeline<R>,
     tsv_trv: TsvTrv,
-) -> Gen7Starter {
+    settings: &GiftSettings,
+) -> Gen7Gift {
     let a_press_advance = timeline.advance();
-    timeline.skip_steps(STEPS_FROM_A_PRESS_TO_GENERATION);
+    timeline.skip_steps(settings.steps_from_a_press_to_generation);
     let delay_advances = timeline.advance() - a_press_advance;
     generate(
         &mut timeline.into_rng(),
         a_press_advance,
         delay_advances,
         tsv_trv,
+        settings,
     )
 }
 
 /// Starts from A pressed on `timeline`'s current step.
-pub(super) fn delay_advances<R: Rng + GetRand<u64> + Clone>(timeline: &Timeline<R>) -> usize {
+pub(super) fn delay_advances<R: Rng + GetRand<u64> + Clone>(
+    timeline: &Timeline<R>,
+    settings: &GiftSettings,
+) -> usize {
     let mut generation = timeline.clone();
-    generation.skip_steps(STEPS_FROM_A_PRESS_TO_GENERATION);
+    generation.skip_steps(settings.steps_from_a_press_to_generation);
     generation.advance() - timeline.advance()
 }
 
@@ -75,7 +97,8 @@ fn generate<R: Rng + GetRand<u64> + GetMaxRand<u64>>(
     a_press_advance: usize,
     delay_advances: usize,
     tsv_trv: TsvTrv,
-) -> Gen7Starter {
+    settings: &GiftSettings,
+) -> Gen7Gift {
     let rng = rng_at_generation;
     let ec = rng.rand::<u64>() as u32;
     let pid = rng.rand::<u64>() as u32;
@@ -85,10 +108,14 @@ fn generate<R: Rng + GetRand<u64> + GetMaxRand<u64>>(
     let ivs = Ivs::new(iv(), iv(), iv(), iv(), iv(), iv());
 
     let ability = (rng.rand_max::<u64>(2) as u8).into();
-    let nature = (rng.rand_max::<u64>(25) as u8).into();
-    let gender = GenderRatio::OneToSeven.gender(rng.rand_max::<u64>(252) as u8 + 1);
+    let nature = settings
+        .sync_nature
+        .unwrap_or_else(|| (rng.rand_max::<u64>(25) as u8).into());
+    let gender = settings
+        .gender_ratio
+        .gender(rng.rand_max::<u64>(252) as u8 + 1);
 
-    Gen7Starter {
+    Gen7Gift {
         advance: a_press_advance,
         delay_advances,
         ec,
@@ -102,10 +129,39 @@ fn generate<R: Rng + GetRand<u64> + GetMaxRand<u64>>(
     }
 }
 
+pub(super) fn matching_gift(
+    a_press: &Timeline,
+    tsv_trv: TsvTrv,
+    filter: &PkmFilter,
+    settings: &GiftSettings,
+) -> Option<Gen7Gift> {
+    let gift = generate_gift(a_press.clone(), tsv_trv, settings);
+    filter.pass_filter(&gift).then_some(gift)
+}
+
+#[derive(Debug, Default)]
+pub(super) struct UniqueGifts(BTreeMap<(usize, usize), Gen7Gift>);
+
+impl Extend<Gen7Gift> for UniqueGifts {
+    fn extend<T: IntoIterator<Item = Gen7Gift>>(&mut self, gifts: T) {
+        for gift in gifts {
+            let key = (gift.advance, gift.delay_advances);
+            self.0.entry(key).or_insert(gift);
+        }
+    }
+}
+
+impl From<UniqueGifts> for Vec<Gen7Gift> {
+    fn from(gifts: UniqueGifts) -> Self {
+        gifts.0.into_values().collect()
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
     use crate::assert_list_eq;
+    use crate::gen7::starter_timeline::STARTER_GIFT;
     use crate::gen7::test_utils::{BLINK, NO_BLINK};
     use crate::gen7::{NpcModel, model_count_from_npcs};
     use crate::rng::{StateIterator, sfmt::Sfmt};
@@ -113,7 +169,7 @@ mod test {
     use std::iter::Zip;
     use std::ops::RangeFrom;
 
-    const IDLE_DELAY_ADVANCES: usize = STEPS_FROM_A_PRESS_TO_GENERATION as usize * 2;
+    const IDLE_DELAY_ADVANCES: usize = STARTER_GIFT.steps_from_a_press_to_generation as usize * 2;
 
     fn rands_after_idle_delay(generation: &[u64]) -> Vec<u64> {
         let mut values = vec![NO_BLINK; IDLE_DELAY_ADVANCES];
@@ -121,10 +177,10 @@ mod test {
         values
     }
 
-    fn generate_with_idle_npc(rands: &[u64], tid: u16) -> Gen7Starter {
+    fn generate_with_idle_npc(rands: &[u64], tid: u16) -> Gen7Gift {
         let npcs = NpcModel::new(model_count_from_npcs(1));
         let timeline = Timeline::from_npcs(FakeRng::new(rands), npcs, 1000);
-        generate_starter(timeline, TsvTrv::from_tid_sid(tid, 0))
+        generate_gift(timeline, TsvTrv::from_tid_sid(tid, 0), &STARTER_GIFT)
     }
 
     #[test]
@@ -145,7 +201,7 @@ mod test {
 
         assert_eq!(
             generate_with_idle_npc(&rands, 0),
-            Gen7Starter {
+            Gen7Gift {
                 advance: 1000,
                 delay_advances: IDLE_DELAY_ADVANCES,
                 ec: 0x1234_5678,
@@ -188,6 +244,38 @@ mod test {
     }
 
     #[test]
+    fn sync_nature_skips_the_nature_rand() {
+        let mut values = vec![0; 8];
+        values.extend([1, 29]);
+        let settings = STARTER_GIFT.with_sync_nature(Some(Nature::Adamant));
+        let npcs = NpcModel::new(model_count_from_npcs(1));
+        let rands = rands_after_idle_delay(&values);
+        let timeline = Timeline::from_npcs(FakeRng::new(&rands), npcs, 1000);
+
+        let gift = generate_gift(timeline, TsvTrv::default(), &settings);
+
+        assert_eq!(gift.nature, Nature::Adamant);
+        assert_eq!(gift.ability, AbilityType::Second);
+        assert_eq!(gift.gender, Gender::Female);
+    }
+
+    #[test]
+    fn delay_follows_the_settings() {
+        let settings = GiftSettings {
+            steps_from_a_press_to_generation: 15,
+            ..STARTER_GIFT
+        };
+        let npcs = NpcModel::new(model_count_from_npcs(1));
+        let timeline = Timeline::from_npcs(FakeRng::new(&[NO_BLINK; 60]), npcs, 1000);
+
+        assert_eq!(delay_advances(&timeline, &settings), 30);
+        assert_eq!(
+            generate_gift(timeline, TsvTrv::default(), &settings).delay_advances,
+            30
+        );
+    }
+
+    #[test]
     fn shiny_when_psv_matches_tsv() {
         let pid = 0x8765_4321u32;
         let mut values = vec![0, u64::from(pid)];
@@ -216,22 +304,30 @@ mod test {
             NpcModel::new(model_count_from_npcs(1)),
             1000,
         );
-        let square = generate_starter(timeline.clone(), TsvTrv::from_tid_sid(tid, sid));
-        let star = generate_starter(timeline.clone(), TsvTrv::from_tid_sid(tid, sid ^ 1));
-        let not_shiny = generate_starter(timeline, TsvTrv::from_tid_sid(tid, sid ^ 16));
+        let square = generate_gift(
+            timeline.clone(),
+            TsvTrv::from_tid_sid(tid, sid),
+            &STARTER_GIFT,
+        );
+        let star = generate_gift(
+            timeline.clone(),
+            TsvTrv::from_tid_sid(tid, sid ^ 1),
+            &STARTER_GIFT,
+        );
+        let not_shiny = generate_gift(timeline, TsvTrv::from_tid_sid(tid, sid ^ 16), &STARTER_GIFT);
 
         assert_eq!(square.shiny, ShinyType::SquareShiny);
         assert_eq!(star.shiny, ShinyType::StarShiny);
         assert_eq!(not_shiny.shiny, ShinyType::NotShiny);
         assert_eq!(
-            Gen7Starter {
+            Gen7Gift {
                 shiny: square.shiny,
                 ..star
             },
             square
         );
         assert_eq!(
-            Gen7Starter {
+            Gen7Gift {
                 shiny: square.shiny,
                 ..not_shiny
             },
@@ -284,7 +380,7 @@ mod test {
     }
 
     impl Iterator for StarterScanner {
-        type Item = Gen7Starter;
+        type Item = Gen7Gift;
 
         fn next(&mut self) -> Option<Self::Item> {
             let (advance, rng) = self.advance_rngs.next()?;
@@ -298,7 +394,7 @@ mod test {
             }
 
             let timeline = Timeline::from_npcs(rng, self.npcs_before_step.clone(), advance);
-            let starter = generate_starter(timeline, TsvTrv::default());
+            let starter = generate_gift(timeline, TsvTrv::default(), &STARTER_GIFT);
             self.advances_left_in_step -= 1;
             Some(starter)
         }
@@ -306,13 +402,13 @@ mod test {
 
     const SCAN_SEED: u32 = 0xdeadbeef;
 
-    fn scan_starters(first_advance: usize, last_advance: usize) -> Vec<Gen7Starter> {
+    fn scan_starters(first_advance: usize, last_advance: usize) -> Vec<Gen7Gift> {
         StarterScanner::new(SCAN_SEED, first_advance)
             .take(last_advance - first_advance + 1)
             .collect()
     }
 
-    fn parse_expected_rows(text: &str) -> Vec<Gen7Starter> {
+    fn parse_expected_rows(text: &str) -> Vec<Gen7Gift> {
         text.lines()
             .map(|line| {
                 let cols: Vec<&str> = line.split('\t').collect();
@@ -322,7 +418,7 @@ mod test {
                 let pid = hex(2);
                 assert_eq!(gen6_psv(pid) as u32, num(3), "PSV column");
 
-                Gen7Starter {
+                Gen7Gift {
                     advance: num(0) as usize,
                     delay_advances: num(13) as usize,
                     ec: hex(1),
@@ -363,7 +459,7 @@ mod test {
         let timeline = Timeline::new(SCAN_SEED, model_count_from_npcs(1), 1000);
         assert_eq!(
             scan_starters(1000, 1000),
-            vec![generate_starter(timeline, TsvTrv::default())]
+            vec![generate_gift(timeline, TsvTrv::default(), &STARTER_GIFT)]
         );
     }
 }

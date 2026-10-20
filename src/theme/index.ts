@@ -125,14 +125,11 @@ const darkModetokens: Partial<AliasToken> = {
 };
 
 type GetThemeProps = {
-  /** Temporary theme color for experimental purposes */
-  tempThemeColor?: string | null;
   /** Do not use at runtime. This is only when building dark mode styles. */
   UNSAFE_mode?: ThemeMode;
 };
 
 export const getTheme = ({
-  tempThemeColor,
   UNSAFE_mode: mode = "light",
 }: GetThemeProps = {}): ThemeConfig => {
   const isLightMode = mode === "light";
@@ -166,8 +163,7 @@ export const getTheme = ({
   };
 
   return {
-    cssVar:
-      tempThemeColor == null ? { key: "_,:root,css-var-_R_397_" } : undefined,
+    cssVar: { key: "_,:root,css-var-_R_397_" },
     token: {
       ...tokens,
       ...shadows,

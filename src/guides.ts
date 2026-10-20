@@ -335,7 +335,9 @@ export const getLatestGuideUpdates = (): GuideUpdate[] => {
     }
 
     const date = dates.sort().at(-1) ?? dates[0];
-    const isNew = meta.isNew;
+    const isFirstRelease =
+      meta.addedOn != null &&
+      (meta.lastUpdated == null || meta.lastUpdated <= meta.addedOn);
 
     return [
       {
@@ -344,7 +346,7 @@ export const getLatestGuideUpdates = (): GuideUpdate[] => {
         name: meta.navDrawerTitle,
         game:
           meta.categories.length === 1 ? meta.categories[0] : "Multiple games",
-        status: isNew ? ("New" as const) : ("Updated" as const),
+        status: isFirstRelease ? ("New" as const) : ("Updated" as const),
         variant: getVariantLabel(meta.guideVariants),
         date,
       },

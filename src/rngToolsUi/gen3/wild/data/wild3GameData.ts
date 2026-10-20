@@ -117,7 +117,7 @@ const generateWild3EmeraldMapsData = (): Wild3MapGameData[] => {
   const wild3MassOutbreakStatesSchema = z.enum(wild3MassOutbreakStates);
 
   return emerald_wild_encounters.wild_encounter_groups.flatMap((grp) => {
-    return grp.encounters.flatMap((map) => {
+    return grp.encounters.flatMap((map, map_internal_idx) => {
       if (!("map" in map)) {
         return [];
       }
@@ -173,6 +173,7 @@ const generateWild3EmeraldMapsData = (): Wild3MapGameData[] => {
       return [
         {
           map_id: map.map,
+          map_internal_idx,
           slots_by_action,
           roamers,
           mass_outbreaks,

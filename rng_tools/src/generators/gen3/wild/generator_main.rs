@@ -5,15 +5,49 @@ use wasm_bindgen::prelude::*;
 use crate::{
     Ivs, PkmFilter,
     gen3::{
-        CycleAndModCount, CycleAndModRange, CycleCounter, CycleRange, Gen3Lead, Gen3Method,
-        Gen3PkmFilter, Wild3Action, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData,
-        Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt, generate_wild3_new,
+        CycleAndModCount, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method, Gen3PkmFilter,
+        Wild3Action, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData,
+        Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
+        generate_wild3_internal,
     },
     rng::lcrng::Pokerng,
 };
 
 pub const INFINITE_CYCLE: usize = 10_000_000;
 pub const VBLANK_FREQ: usize = 280_896;
+
+#[derive(Debug, Clone, Default, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub enum Wild3GeneratorCycleOpts {
+    #[default]
+    Inactive,
+    Searching {
+        generate_even_if_impossible: bool,
+        consider_rng_manipulated_lead_pid: bool,
+    },
+    LikelihoodForLead {
+        lead_cycle_spd: usize,
+    },
+    CycleAtMomentNoEmuLog {
+        lead_cycle_spd: usize,
+    },
+    CycleAtMomentWithEmuLog {
+        lead_cycle_spd: usize,
+        initial_cycle_at_sweet_scent: usize,
+        vblank_cycles: Vec<usize>,
+    },
+}
+
+impl Wild3GeneratorCycleOpts {
+    pub fn lead_cycle_spd(&self) -> Option<usize> {
+        match self {
+            Self::LikelihoodForLead { lead_cycle_spd }
+            | Self::CycleAtMomentNoEmuLog { lead_cycle_spd }
+            | Self::CycleAtMomentWithEmuLog { lead_cycle_spd, .. } => Some(*lead_cycle_spd),
+            _ => None,
+        }
+    }
+}
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -26,10 +60,7 @@ pub struct Wild3GeneratorOptions {
     pub lead: Gen3Lead,
     pub filter: PkmFilter,
     pub gen3_filter: Gen3PkmFilter,
-    pub consider_cycles: bool,
-    pub consider_rng_manipulated_lead_pid: bool,
-    pub lead_cycle_speed: Option<usize>,
-    pub generate_even_if_impossible: bool,
+    pub cycle_opts: Wild3GeneratorCycleOpts,
     pub roamer_state: Wild3RoamerState,
     pub mass_outbreak_state: Wild3MassOutbreakState,
     pub feebas_state: Wild3FeebasState,
@@ -49,10 +80,7 @@ impl Default for Wild3GeneratorOptions {
             lead: Gen3Lead::default(),
             filter: PkmFilter::default(),
             gen3_filter: Gen3PkmFilter::default(),
-            consider_cycles: false,
-            consider_rng_manipulated_lead_pid: false,
-            lead_cycle_speed: None,
-            generate_even_if_impossible: false,
+            cycle_opts: Wild3GeneratorCycleOpts::default(),
             roamer_state: Wild3RoamerState::default(),
             mass_outbreak_state: Wild3MassOutbreakState::default(),
             feebas_state: Wild3FeebasState::default(),
@@ -75,35 +103,18 @@ pub struct Wild3GeneratorMonResult {
     pub used_safari_pokeblock: Option<[u8; 5]>,
 }
 
-impl Wild3GeneratorMonResult {
-    pub fn clone_with_cycle_end(&self, cycle_end: usize) -> Self {
-        if let Some(cycle_range) = self.cycle_range {
-            let new_cycle_range = CycleAndModRange {
-                start: cycle_range.start,
-                len: cycle_end - cycle_range.start.cycle,
-            };
-            Self {
-                cycle_range: Some(new_cycle_range),
-                ..self.clone()
-            }
-        } else {
-            self.clone()
-        }
-    }
-}
-
 #[derive(Clone, Debug, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3GeneratorResults {
     pub mon_results: Vec<Wild3GeneratorMonResult>,
-    pub cycle_counter: CycleCounter,
+    pub cycle_counter: CycleFrameCounter,
 }
 
 impl Wild3GeneratorResults {
     pub fn empty() -> Wild3GeneratorResults {
         Wild3GeneratorResults {
             mon_results: vec![],
-            cycle_counter: CycleCounter::default(),
+            cycle_counter: CycleFrameCounter::Inactive,
         }
     }
 }
@@ -124,5 +135,5 @@ pub fn generate_wild3(
     opts: &Wild3GeneratorOptions,
     map_data: &Wild3MapGameData,
 ) -> Wild3GeneratorResults {
-    generate_wild3_new(rng, opts, map_data)
+    generate_wild3_internal(rng, opts, map_data)
 }

@@ -16,7 +16,8 @@ import {
   type ToolFormSubmit,
 } from "~/components/form";
 import { rngTools, Gen3HeldEgg } from "~/rngTools";
-import { getGen3SpeciesOptions, species } from "~/types/species";
+import { species } from "~/types/species";
+import { getGen3SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
 import { nature } from "~/types/nature";
 import { gender } from "~/types/gender";
 import { z } from "zod";

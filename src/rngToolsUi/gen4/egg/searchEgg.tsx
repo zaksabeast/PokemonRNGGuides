@@ -13,7 +13,8 @@ import {
   type ToolFormSubmit,
 } from "~/components/form";
 import { useWatch } from "~/hooks/form";
-import { species, getGen4SpeciesOptions } from "~/types/species";
+import { species } from "~/types/species";
+import { getGen4SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
 import { IvsSchema, NullableIvsSchema } from "~/components/ivInput";
 import { maxIvs } from "~/types/ivs";
 import { useAtom } from "jotai";

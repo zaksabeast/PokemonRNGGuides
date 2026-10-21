@@ -1,3 +1,4 @@
+import { getGen3SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
 import React from "react";
 import {
   FormRadioField,
@@ -97,7 +98,7 @@ export const Fields = ({
     <FormSelectField<FormState>
       name="wildSpecies"
       label="Species"
-      options={toOptions(speciesList)}
+      options={getGen3SpeciesOptions().byFilteredName(speciesList)}
     />
   );
 

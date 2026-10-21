@@ -21,6 +21,7 @@ type SearchableLabel =
 
 export type SelectOption<Value extends OptionValue> = SearchableLabel & {
   value: Value;
+  icon?: React.ReactNode;
   /** Shown in the field instead of `label` once selected */
   selectedLabel?: React.ReactNode;
   /** Renders the selected value like a placeholder, e.g. "Any" when it means no filter */
@@ -78,6 +79,12 @@ const MutedLabel = styled.span(({ theme }) => ({
     color: "transparent",
   },
 }));
+
+const IconLabel = styled.span({
+  display: "inline-flex",
+  alignItems: "center",
+  gap: 4,
+});
 
 const Popup = styled.div({
   // Hopefully helps prevent funky scroll behavior on mobile
@@ -140,9 +147,10 @@ const getAntdSelectProps = (
   }: SelectFieldBaseProps & { options: readonly SelectOption<OptionValue>[] },
   ids: FieldIds,
 ) => {
-  const findOption = (value: unknown) => {
-    return options.find((option) => option.value === value);
-  };
+  const optionsByValue = new Map<unknown, SelectOption<OptionValue>>(
+    options.map((option) => [option.value, option]),
+  );
+  const findOption = (value: unknown) => optionsByValue.get(value);
 
   return {
     id: ids.inputId,
@@ -162,6 +170,23 @@ const getAntdSelectProps = (
     // The virtual list emulates touch scrolling, which fights the page's native scrolling on mobile
     virtual: false,
     popupRender: (menu: React.ReactElement) => <Popup>{menu}</Popup>,
+    optionRender: ({
+      label,
+      value,
+    }: {
+      label?: React.ReactNode;
+      value?: unknown;
+    }) => {
+      const icon = findOption(value)?.icon;
+      return icon == null ? (
+        label
+      ) : (
+        <IconLabel>
+          {icon}
+          {label}
+        </IconLabel>
+      );
+    },
     showSearch: {
       filterOption: (input: string, option?: { value: unknown }) => {
         const found = findOption(option?.value);
@@ -223,6 +248,9 @@ export const SelectField = <Value extends OptionValue>(
     <SelectFrame {...props} ids={ids}>
       <AntdSelect
         {...getAntdSelectProps(props, ids)}
+        prefix={
+          props.options.find((option) => option.value === props.value)?.icon
+        }
         value={props.value}
         onChange={(value) => props.onChange?.(value)}
       />

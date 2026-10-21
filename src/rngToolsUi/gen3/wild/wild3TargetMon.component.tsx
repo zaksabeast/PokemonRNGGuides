@@ -41,7 +41,11 @@ export const Wild3TargetMon = () => {
           emeraldWildGameData.species,
         )}
       />
-      <PkmFilter<FormState> species={species} displayHiddenAbility={false} />
+      <PkmFilter<FormState>
+        generation={3}
+        species={species}
+        displayHiddenAbility={false}
+      />
       <Gen3PkmFilter<FormState>
         displayMaxSize={gen3SpeciesHasVariableSize(species)}
       />

@@ -4,11 +4,18 @@
  * mutate their parameters.
  */
 
-import { CycleAtMoment, Gen3Method } from "~/rngTools";
+import {
+  CycleFrameMoment,
+  Gen3Method,
+  Wild3GeneratorCycleOpts,
+} from "~/rngTools";
 import { z } from "zod";
 import { gen3Methods } from "~/types";
+import { match } from "ts-pattern";
 
 export const VBLANK_FREQ = 280_896;
+
+// TODO: Revamp the logic to support Feebas.
 
 // TODO: Improve accuracy for RockSmash and Fishing by using a distinct distribution.
 export const MOST_PROBABLE_CYCLE_AT_SWEET_SCENT = 55_000;
@@ -17,32 +24,35 @@ export const MOST_PROBABLE_VBLANK_CYCLE = 60_000;
 export type UiResult = {
   methodFromJson: Gen3Method | null;
   methodFromTool: Gen3Method | null;
-  cycleAtSweetScent: number;
   frameAtSweetScent: number;
-  advanceAtSweetScent: number;
+  advanceAtSweetScentFromJson: number;
   uiCycleAtMoments: UiResultCycleAtMoment[];
   vblankDurations: number[];
   errorMsg: string;
 };
 
 export type UiResultCycleAtMoment = {
-  uid: number;
+  uid: string;
   moment: string;
   dataFromJson: {
+    hasValue: boolean;
     cycle: number;
     frame: number;
-    cycleFromSweetScent: number;
-    cycleFromSweetScentIncrement: number;
+    totalCycleWithoutVblank: number;
+    totalCycleWithoutVblankIncrement: number;
+    totalCycle: number;
   };
   dataFromTool: {
+    hasValue: boolean;
     cycle: number;
     frame: number;
-    cycleFromSweetScent: number;
-    cycleFromSweetScentIncrement: number;
+    totalCycleWithoutVblank: number;
+    totalCycleWithoutVblankIncrement: number;
+    totalCycle: number;
   };
   dataDiff: {
-    cycleFromSweetScent: number;
-    cycleFromSweetScentIncrement: number;
+    totalCycleWithoutVblank: number | null;
+    totalCycleWithoutVblankIncrement: number | null;
   };
 };
 
@@ -59,159 +69,191 @@ export const cycleAtMomentsFromJsonSchema = z.object({
   leadPID: z.string(),
   advance: z.number(),
   method: z.enum(gen3Methods),
+  vblankDurations: z.array(z.number()),
 });
 
 export type CycleAtMomentsJson = z.infer<typeof cycleAtMomentsFromJsonSchema>;
 
+const createEmptyCamData = (): UiResultCycleAtMoment["dataFromJson"] => {
+  return {
+    hasValue: false,
+    cycle: 0,
+    frame: 0,
+    totalCycle: 0,
+    totalCycleWithoutVblank: 0,
+    totalCycleWithoutVblankIncrement: 0,
+  };
+};
+
+// uiResult has no cycles at this point
 export const fillDataFromTool = (
   uiResult: UiResult,
-  cycleAtMomentsFromTool: CycleAtMoment[],
+  distFromTool: {
+    cycle_opts: Wild3GeneratorCycleOpts;
+    cycle_at_moments: CycleFrameMoment[];
+  },
 ) => {
-  if (uiResult.cycleAtSweetScent === 0) {
-    // No JSON was loaded.
-    uiResult.cycleAtSweetScent = MOST_PROBABLE_CYCLE_AT_SWEET_SCENT; // Most probable cycle at Sweet Scent
-  }
+  const cycleOpts = match(distFromTool.cycle_opts)
+    .with(
+      { CycleAtMomentWithEmuLog: {} },
+      ({ CycleAtMomentWithEmuLog }) => CycleAtMomentWithEmuLog,
+    )
+    .otherwise(() => null);
 
-  const { uiCycleAtMoments } = uiResult;
-  uiCycleAtMoments.forEach((uiCam, i) => {
-    const camFromTool = cycleAtMomentsFromTool.find(
-      (cam) => cam.moment === uiCam.moment,
-    );
-    if (camFromTool == null) {
-      if (i !== 0) {
-        uiCam.dataFromTool.cycleFromSweetScent =
-          uiCycleAtMoments[i - 1].dataFromTool.cycleFromSweetScent; // assume 0 increment.
-      }
-    } else {
-      uiCam.dataFromTool.cycleFromSweetScent = camFromTool.cycle;
-      if (i !== 0) {
-        uiCam.dataFromTool.cycleFromSweetScentIncrement =
-          uiCam.dataFromTool.cycleFromSweetScent -
-          uiCycleAtMoments[i - 1].dataFromTool.cycleFromSweetScent;
-      }
+  uiResult.uiCycleAtMoments = distFromTool.cycle_at_moments.map((cam, i) => {
+    const sameMomentCount = distFromTool.cycle_at_moments
+      .slice(0, i)
+      .filter((cam2) => cam.moment === cam2.moment).length;
+
+    const totalCycle = cam.cycle + cam.frame * VBLANK_FREQ;
+
+    let vblankCycle = 0;
+    for (let i = 0; i < cam.frame; i++) {
+      vblankCycle += cycleOpts?.vblank_cycles[i] ?? MOST_PROBABLE_VBLANK_CYCLE;
     }
 
-    const totalCycle =
-      uiCam.dataFromTool.cycleFromSweetScent + uiResult.cycleAtSweetScent;
-    let cycleAfterVblank = totalCycle;
-    let vblankCount = 0;
-    while (cycleAfterVblank > VBLANK_FREQ) {
-      const vblankDur =
-        uiResult.vblankDurations[vblankCount] ?? MOST_PROBABLE_VBLANK_CYCLE;
-      cycleAfterVblank = cycleAfterVblank - VBLANK_FREQ + vblankDur;
-      vblankCount++;
-    }
+    return {
+      uid: `${cam.moment}#${sameMomentCount}`,
+      moment: cam.moment,
+      dataFromJson: createEmptyCamData(),
+      dataFromTool: {
+        cycle: cam.cycle,
+        frame: cam.frame,
+        totalCycle,
+        totalCycleWithoutVblank: totalCycle - vblankCycle,
+        totalCycleWithoutVblankIncrement: 0, // init below
+        hasValue: true,
+      },
+      dataDiff: {
+        totalCycleWithoutVblank: null,
+        totalCycleWithoutVblankIncrement: null,
+      },
+    };
+  });
 
-    uiCam.dataFromTool.cycle = cycleAfterVblank;
-    uiCam.dataFromTool.frame = uiResult.frameAtSweetScent + vblankCount;
+  uiResult.uiCycleAtMoments.forEach((cam, i) => {
+    if (i !== 0) {
+      cam.dataFromTool.totalCycleWithoutVblankIncrement =
+        cam.dataFromTool.totalCycleWithoutVblank -
+        uiResult.uiCycleAtMoments[i - 1].dataFromTool.totalCycleWithoutVblank;
+    }
   });
 
   uiResult.methodFromTool = getMethodAccordingToTool(uiResult);
 };
 
+// uiResult already contains data from tool
 export const fillDataFromJson = (
   uiResult: UiResult,
   json: CycleAtMomentsJson,
 ) => {
-  /* 
-  Example:
-    json has [
-      {"moment":"SweetScentWildEncounter",        "cycle":54797, "frame":2026},
-      {"moment":"ChooseWildMonIndex_Land_Random", "cycle":94959, "frame":2026},
-      {"moment":"VblankIntr_End",                 "cycle":50235, "frame":2027},
-      {"moment":"CreateBoxMon_RandomIvs1",        "cycle":60589, "frame":2027},
-      {"moment":"CreateBoxMon_RandomIvs2",        "cycle":102544, "frame":2027},
-    ]
-    
-    uiResults.dataFromData will become: [
-     {"moment":"SweetScentWildEncounter",        "cycleFromSweetScent":54797}
-     {"moment":"ChooseWildMonIndex_Land_Random", "cycleFromSweetScent":94959}
-     {"moment":"CreateBoxMon_RandomIvs1",        "cycleFromSweetScent":60589 + (280896 - 50235)}
-     {"moment":"CreateBoxMon_RandomIvs2",        "cycleFromSweetScent":102544 + (280896 - 50235)}
-   ]
-  */
-
   uiResult.methodFromJson = json.method;
+  uiResult.advanceAtSweetScentFromJson = json.cycleAtMoments[0]?.adv ?? 0;
 
-  uiResult.vblankDurations = json.cycleAtMoments
-    .filter((cam) => {
-      return cam.moment === "VblankIntr_End";
-    })
-    .map((cam) => cam.cycle);
+  uiResult.vblankDurations = json.vblankDurations;
 
-  const { uiCycleAtMoments } = uiResult;
+  let lastTreatedCam = -1;
+  json.cycleAtMoments.forEach((cam, i) => {
+    const sameMomentCount = json.cycleAtMoments
+      .slice(0, i)
+      .filter((cam2) => cam.moment === cam2.moment).length;
+    const uid = `${cam.moment}#${sameMomentCount}`;
 
-  json.cycleAtMoments.forEach((cam) => {
-    if (cam.moment === "VblankIntr_End") {
-      return;
+    const totalCycle = cam.cycle + cam.frame * VBLANK_FREQ;
+
+    let vblankCycle = 0;
+    for (let i = 0; i < cam.frame; i++) {
+      vblankCycle += json.vblankDurations[i] ?? MOST_PROBABLE_VBLANK_CYCLE;
     }
+    const dataFromJson = {
+      cycle: cam.cycle,
+      frame: cam.frame,
+      totalCycle,
+      totalCycleWithoutVblank: totalCycle - vblankCycle,
+      totalCycleWithoutVblankIncrement: 0, // init below
+      hasValue: true,
+    };
 
-    const uiResultIdx = uiCycleAtMoments.findIndex(
-      (uiRes) => uiRes.moment === cam.moment,
+    let uiResultIdx = uiResult.uiCycleAtMoments.findIndex(
+      (uiRes) => uiRes.uid === uid,
     );
     if (uiResultIdx === -1) {
-      return;
+      uiResult.uiCycleAtMoments.splice(lastTreatedCam + 1, 0, {
+        uid,
+        moment: cam.moment,
+        dataFromJson,
+        dataFromTool: createEmptyCamData(),
+        dataDiff: {
+          totalCycleWithoutVblank: null,
+          totalCycleWithoutVblankIncrement: null,
+        },
+      });
+      uiResultIdx = lastTreatedCam + 1;
+    } else {
+      uiResult.uiCycleAtMoments[uiResultIdx].dataFromJson = dataFromJson;
     }
-
-    const previousVblanksIncr = json.cycleAtMoments
-      .filter((vblank) => {
-        return vblank.moment === "VblankIntr_End" && vblank.frame <= cam.frame;
-      })
-      .map((vblank) => {
-        return VBLANK_FREQ - vblank.cycle;
-      })
-      .reduce((prev, cur) => prev + cur, 0);
-
-    const { dataFromJson } = uiCycleAtMoments[uiResultIdx];
-    dataFromJson.cycle = cam.cycle;
-    dataFromJson.frame = cam.frame;
-    dataFromJson.cycleFromSweetScent =
-      uiResultIdx === 0
-        ? 0
-        : cam.cycle +
-          previousVblanksIncr -
-          uiCycleAtMoments[0].dataFromJson.cycle;
-
-    if (uiResultIdx !== 0) {
-      dataFromJson.cycleFromSweetScentIncrement =
-        dataFromJson.cycleFromSweetScent -
-        uiCycleAtMoments[uiResultIdx - 1].dataFromJson.cycleFromSweetScent;
-    }
+    lastTreatedCam = uiResultIdx;
   });
 
-  const firstCam = uiResult.uiCycleAtMoments[0];
-  if (firstCam != null) {
-    uiResult.cycleAtSweetScent = firstCam.dataFromJson.cycle;
-    uiResult.frameAtSweetScent = firstCam.dataFromJson.frame;
-    uiResult.advanceAtSweetScent = json.cycleAtMoments[0].adv;
-  }
+  uiResult.uiCycleAtMoments.forEach((cam, i) => {
+    if (i !== 0) {
+      const prev = uiResult.uiCycleAtMoments[i - 1].dataFromJson;
+      if (prev.hasValue) {
+        cam.dataFromJson.totalCycleWithoutVblankIncrement =
+          cam.dataFromJson.totalCycleWithoutVblank -
+          prev.totalCycleWithoutVblank;
+      }
+    }
+  });
 };
 
 export const calculateDataDiff = (uiResult: UiResult) => {
   uiResult.uiCycleAtMoments.forEach((uiCam) => {
-    uiCam.dataDiff.cycleFromSweetScent =
-      uiCam.dataFromTool.cycleFromSweetScent -
-      uiCam.dataFromJson.cycleFromSweetScent;
+    if (!uiCam.dataFromTool.hasValue || !uiCam.dataFromJson.hasValue) {
+      return;
+    }
 
-    uiCam.dataDiff.cycleFromSweetScentIncrement =
-      uiCam.dataFromTool.cycleFromSweetScentIncrement -
-      uiCam.dataFromJson.cycleFromSweetScentIncrement;
+    const totalCycleWithoutVblankIncrement =
+      uiCam.dataFromTool.totalCycleWithoutVblankIncrement -
+      uiCam.dataFromJson.totalCycleWithoutVblankIncrement;
+
+    const totalCycleWithoutVblank =
+      uiCam.dataFromTool.totalCycleWithoutVblank -
+      uiCam.dataFromJson.totalCycleWithoutVblank;
+
+    uiCam.dataDiff = {
+      totalCycleWithoutVblank,
+      totalCycleWithoutVblankIncrement,
+    };
   });
 };
 
+// Limitation: It doesn't work for feebas encounters.
 export const getMethodAccordingToTool = (
   uiResult: UiResult,
 ): Gen3Method | null => {
+  const moments = uiResult.uiCycleAtMoments.filter(
+    (cam) => cam.dataFromTool.hasValue,
+  );
+  if (moments.length === 0) {
+    return null;
+  }
+  const lastPidLow = moments.findLastIndex(
+    (cam) => cam.moment === "CreateMonWithNature_RandomPidLow",
+  );
+  const lastPidHigh = moments.findLastIndex(
+    (cam) => cam.moment === "CreateMonWithNature_RandomPidHigh",
+  );
   let method: Gen3Method = "Wild5";
-  for (const cam of uiResult.uiCycleAtMoments) {
+  for (const [index, cam] of moments.entries()) {
     if (cam.dataFromTool.frame !== uiResult.frameAtSweetScent) {
       // first VBlank
       return method;
     }
-    if (cam.moment === "CreateMonWithNature_RandomPidLowLast") {
+    if (index === lastPidLow) {
       method = "Wild3";
     }
-    if (cam.moment === "CreateMonWithNature_RandomPidHighLast") {
+    if (index === lastPidHigh || cam.moment === "CreateMon") {
       method = "Wild2";
     }
     if (cam.moment === "CreateBoxMon_RandomIvs1") {

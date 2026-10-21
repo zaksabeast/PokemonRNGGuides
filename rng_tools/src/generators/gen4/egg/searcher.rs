@@ -1,5 +1,3 @@
-#[cfg(test)]
-use crate::gen4::parse_pokefinder::PokefinderEgg4;
 use crate::{
     PartialIvs, PkmFilter, Species,
     gen4::{
@@ -8,6 +6,8 @@ use crate::{
         seed_time::{SeedTime4, seedtime4_iter},
     },
 };
+#[cfg(test)]
+use crate::{ShinyFilter, gen4::parse_pokefinder::PokefinderEgg4};
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
@@ -154,7 +154,7 @@ mod tests {
             parent_ivs: [PartialIvs::new_all31(), PartialIvs::new_all31()],
             is_dppt: true,
             filter: PkmFilter {
-                shiny: true,
+                shiny: ShinyFilter::AnyShiny,
                 nature: None,
                 gender: None,
                 ability: None,
@@ -189,7 +189,7 @@ mod tests {
             parent_ivs: [PartialIvs::new_all31(), PartialIvs::new_all31()],
             is_dppt: true,
             filter: PkmFilter {
-                shiny: false,
+                shiny: ShinyFilter::Any,
                 nature: None,
                 gender: None,
                 ability: None,

@@ -1,6 +1,7 @@
 use itertools::Itertools;
 
 use crate::{
+    ShinyFilter,
     gen3::{
         FASTEST_DIVIDENDS_MOD_24, MOST_DENSE_PID_CHUNKS_BY_SPD, get_iv_filter_restrictiveness,
         get_iv1_filter_restrictiveness, get_iv2_filter_restrictiveness,
@@ -53,7 +54,7 @@ pub fn determine_best_pid_path_strategy(opts: &FindPidPathsOptions) -> PidPathSt
     let pid_possibility_count = pid_restrict * 4294967296.0f64;
 
     if pid_possibility_count < iv_possibility_count {
-        if opts.filter.shiny {
+        if opts.filter.shiny != ShinyFilter::Any {
             // ReversePidShiny only supports shiny. Shiny has ~500K possibilities.
             return PidPathStrategy::ReversePidShiny;
         }
@@ -200,9 +201,17 @@ pub fn find_pid_paths_reverse_pid_cycle_speed_mid<const METHODS: u8>(
 pub fn find_pid_paths_reverse_pid_shiny<const METHODS: u8>(
     opts: &FindPidPathsOptions,
 ) -> impl Iterator<Item = PidPath> {
-    let full_tsv: u32 = (opts.tsv as u32) << 3;
-
-    let wanted_pids = (0..0x80000u32).map(move |partial| partial ^ ((partial ^ full_tsv) << 16));
+    let tid_xor_sid = u32::from(opts.tsv_trv.tid_xor_sid);
+    let shiny_xors = match opts.filter.shiny {
+        ShinyFilter::SquareShiny => 0..1,
+        ShinyFilter::StarShiny => 1..8,
+        ShinyFilter::Any | ShinyFilter::AnyShiny => 0..8,
+    };
+    let wanted_pids = (0..=0xffffu32).flat_map(move |low| {
+        shiny_xors
+            .clone()
+            .map(move |xor| low | ((low ^ tid_xor_sid ^ xor) << 16))
+    });
 
     find_pid_paths_reverse_pid::<METHODS>(opts, wanted_pids)
 }

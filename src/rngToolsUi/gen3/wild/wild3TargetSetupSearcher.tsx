@@ -1,4 +1,9 @@
-import { Wild3PaintingAdvsAndDur, Wild3SearcherResultMon } from "~/rngTools";
+import type { AceSidConfig } from "../pokemonRng/shared";
+import {
+  type ShinyType,
+  Wild3PaintingAdvsAndDur,
+  Wild3SearcherResultMon,
+} from "~/rngTools";
 import { Flex, Icon, Link, ResultColumn, TooltipWithIcon } from "~/components";
 import { ToolForm, type ToolFormSubmit } from "~/components/form";
 import { formatProbability } from "~/utils/formatProbability";
@@ -111,7 +116,7 @@ const getInitialValues = (): FormState => {
 };
 
 const getPidPathColumns = (
-  usingAceForSid: boolean,
+  aceShiny: ShinyType | null,
 ): ResultColumn<PidPathResult>[] => {
   return [
     {
@@ -172,7 +177,7 @@ const getPidPathColumns = (
         );
       },
     },
-    ...getTargetResultColumns("emerald", true, usingAceForSid),
+    ...getTargetResultColumns("emerald", true, aceShiny),
   ];
 };
 
@@ -194,7 +199,9 @@ export const Wild3TargetSetupSearcher = ({
   const [rngManipulatedLeadPid, setRngManipulatedLeadPid] =
     React.useState<boolean>(false);
 
-  const [tidForAceSid, setTidForAceSid] = React.useState<number | null>(null);
+  const [tidForAceSid, setTidForAceSid] = React.useState<AceSidConfig | null>(
+    null,
+  );
 
   const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
     null,
@@ -205,8 +212,12 @@ export const Wild3TargetSetupSearcher = ({
 
     setRngManipulatedLeadPid(values.rngManipulatedLeadPid);
 
-    if (values.filter_shiny && values.usingAceForSid) {
-      setTidForAceSid(values.tid);
+    if (values.filter_shiny !== "Any" && values.usingAceForSid) {
+      setTidForAceSid({
+        tid: values.tid,
+        shiny:
+          values.filter_shiny === "StarShiny" ? "StarShiny" : "SquareShiny",
+      });
     } else {
       setTidForAceSid(null);
     }
@@ -222,7 +233,7 @@ export const Wild3TargetSetupSearcher = ({
 
   const initialValues = getInitialValues();
 
-  const pidPathColumns = getPidPathColumns(tidForAceSid !== null);
+  const pidPathColumns = getPidPathColumns(tidForAceSid?.shiny ?? null);
 
   const [leadCycleSpeed, setLeadCycleSpeed] = React.useState<number | null>(0);
 

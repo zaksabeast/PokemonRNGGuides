@@ -5,7 +5,7 @@ use itertools::Itertools;
 
 use super::*;
 use crate::{
-    GenderRatio, Species,
+    GenderRatio, Species, TsvTrv,
     gen3::{
         SpeciesData, Wild3InSafariMapStatus, create_pokeblock_gen_opt,
         find_pid_paths_reverse_pid_cycle_speed_low_high,
@@ -21,7 +21,6 @@ use crate::{
             },
         },
     },
-    gen3_tsv,
     rng::lcrng::Pokerng,
 };
 
@@ -227,7 +226,7 @@ fn new_find_pid_paths_options(opts: &Wild3SearcherOptions) -> FindPidPathsOption
         gen3_filter: opts.gen3_filter.clone(),
         encounter_gender_ratio,
         method_bitset,
-        tsv: gen3_tsv(opts.tid, opts.sid),
+        tsv_trv: TsvTrv::from_tid_sid(opts.tid, opts.sid),
         initial_seed: opts.initial_seed,
         initial_advances: opts.initial_advances,
         max_result_count: opts.max_result_count,
@@ -353,15 +352,12 @@ fn create_result(
         action: path.action,
         methods: vec![path.pid_path.method()],
         filter: opts.filter.clone(),
-        consider_cycles: opts.consider_cycles,
-        consider_rng_manipulated_lead_pid: opts.consider_rng_manipulated_lead_pid,
-        generate_even_if_impossible: opts.generate_even_if_impossible,
         gen3_filter: opts.gen3_filter.clone(),
         roamer_state: Wild3RoamerState::Inactive,
         mass_outbreak_state,
         feebas_state,
         safari_pokeblock: safari_pokeblock.clone(),
-        lead_cycle_speed: opts.lead_cycle_speed,
+        cycle_opts: opts.cycle_opts.generator_cycle_opts(),
         using_white_flute: opts.using_white_flute,
 
         // overwritten below
@@ -392,7 +388,7 @@ fn create_result(
                     path.seed,
                     advance,
                     encounter,
-                    gen_results.cycle_counter.cycle_instability,
+                    gen_results.cycle_counter.get_cycle_instability(),
                 ));
             }
         }

@@ -9,7 +9,8 @@ use crate::gen3::{
 use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
 use crate::{
-    AbilityType, Gender, HiddenPower, Ivs, Nature, PkmFilter, Species, gen3_shiny, gen3_tsv,
+    AbilityType, Gender, HiddenPower, Ivs, Nature, PkmFilter, ShinyType, Species, TsvTrv,
+    gen3_shiny,
 };
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
@@ -31,7 +32,7 @@ pub struct Static3SearcherResult {
     pub ability: AbilityType,
     pub gender: Gender,
     pub nature: Nature,
-    pub shiny: bool,
+    pub shiny: ShinyType,
 
     // derived from ivs
     pub hidden_power: HiddenPower,
@@ -189,7 +190,7 @@ fn new_find_pid_paths_options(opts: &Static3SearcherOptions) -> FindPidPathsOpti
         gen3_filter: opts.gen3_filter.clone(),
         encounter_gender_ratio: opts.species.gender_ratio(),
         method_bitset,
-        tsv: gen3_tsv(opts.tid, opts.sid),
+        tsv_trv: TsvTrv::from_tid_sid(opts.tid, opts.sid),
         initial_seed: opts.initial_seed,
         initial_advances: opts.initial_advances,
         max_result_count: opts.max_result_count,

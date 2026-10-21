@@ -1,4 +1,5 @@
-import { Link, ResultColumn, Flex } from "~/components";
+import type { ShinyType } from "~/rngTools";
+import { Link, ResultColumn, Flex, ShinyIcon } from "~/components";
 import { advanceFromSeed0Txt } from "../pokemonRng/labels";
 import { PidPathResult as Wild3PidPathResult } from "../wild/wild3TargetSetupSearcher";
 import { PidPathResult as Static3PidPathResult } from "../static/static3TargetSetupSearcher";
@@ -65,17 +66,10 @@ export const getTargetSetupSearcherInitialValues = (game: Static3Game) => {
   };
 };
 
-export const getSidResultingInShiny = (pid: number, tid: number) => {
-  const pidh = pid >>> 16;
-  const pidl = pid & 0xffff;
-  const psv = (pidh ^ pidl) >>> 3;
-  return (tid ^ ((psv << 3) | (tid & 0x7))) & 0xffff;
-};
-
 export const getTargetResultColumns = (
   game: Static3Game,
   isApproxAdv: boolean,
-  usingAceForSid: boolean,
+  aceShiny: ShinyType | null,
 ): ResultColumn<PidPathResult>[] => {
   return [
     {
@@ -114,7 +108,7 @@ export const getTargetResultColumns = (
     {
       title: "Shiny",
       dataIndex: "shiny",
-      render: (shiny: boolean) => (shiny || usingAceForSid ? "Yes" : "No"),
+      render: (shiny) => <ShinyIcon shiny={aceShiny ?? shiny} />,
     },
     {
       title: "IV",

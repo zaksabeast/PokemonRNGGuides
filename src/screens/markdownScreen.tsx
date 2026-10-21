@@ -8,7 +8,6 @@ import { GuideLayout } from "~/layouts/guide";
 import { TitledLayout } from "~/layouts/titled";
 import styled from "@emotion/styled";
 import { useIsHydrated } from "~/hooks/useHydrate";
-import { ApplicationLayout } from "~/layouts/application";
 import { WideLayout } from "~/layouts/wide";
 import { SIDE_MARGIN } from "~/layouts/main";
 
@@ -59,9 +58,6 @@ export const MarkdownScreen = () => {
   );
 
   return match(meta.layout)
-    .with("application", () => (
-      <ApplicationLayout trackerName={meta.slug}>{content}</ApplicationLayout>
-    ))
     .with("guide", () => <GuideLayout guideMeta={meta}>{content}</GuideLayout>)
     .with("titled", () => (
       <TitledLayout guideMeta={meta}>{content}</TitledLayout>

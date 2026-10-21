@@ -1,3 +1,4 @@
+import { shinyLabels } from "~/rngTools/shiny";
 import { CopyToClipboardButton } from "~/components";
 import { PokeNavTrainer } from "~/rngTools";
 import { useHydrate } from "~/hooks/useHydrate";
@@ -51,7 +52,7 @@ const formatHeldEgg = ({
           `- Nature: ${target.nature}`,
           `- Gender: ${target.gender}`,
           `- Ability: ${target.ability}`,
-          `- Shiny: ${target.shiny ? "Yes" : "No"}`,
+          `- Shiny: ${shinyLabels[target.shiny]}`,
           `- Has roamer: ${target.has_roamer ? "Yes" : "No"}`,
           `- Match call: ${target.match_call}`,
         ]

@@ -3,9 +3,8 @@ use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 use crate::{
-    AbilityType, GenderRatio, Nature, PkmFilter, Species,
+    AbilityType, GenderRatio, Nature, PkmFilter, ShinyFilter, Species, TsvTrv,
     gen3::{calculate_pid_speed, get_probability_that_random_pid_has_speed_range},
-    gen3_psv,
 };
 
 #[derive(Debug, Clone, Default, PartialEq, Tsify, Serialize, Deserialize)]
@@ -40,13 +39,11 @@ pub fn passes_pid_filter(
     gen3_filter: &Gen3PkmFilter,
     encounter_gender_ratio: Option<GenderRatio>,
     pid: u32,
-    tsv: u16,
+    tsv_trv: TsvTrv,
 ) -> bool {
-    if filter.shiny {
-        let generated_shiny = gen3_psv(pid) == tsv;
-        if !generated_shiny {
-            return false;
-        }
+    let shiny = tsv_trv.shiny_type_gen3_to_5(pid);
+    if !filter.shiny.allows(shiny) {
+        return false;
     }
 
     if !filter.nature_filter_allows(Nature::from_pid(pid)) {
@@ -104,9 +101,12 @@ pub fn get_pid_filter_restrictiveness(
 ) -> f64 {
     let mut prob = 1_f64;
 
-    if filter.shiny {
-        prob /= 8192_f64;
-    }
+    prob *= match filter.shiny {
+        ShinyFilter::Any => 1.0,
+        ShinyFilter::AnyShiny => 8.0 / 65536.0,
+        ShinyFilter::SquareShiny => 1.0 / 65536.0,
+        ShinyFilter::StarShiny => 7.0 / 65536.0,
+    };
     if filter.ability.is_some() {
         prob /= 2_f64;
     }

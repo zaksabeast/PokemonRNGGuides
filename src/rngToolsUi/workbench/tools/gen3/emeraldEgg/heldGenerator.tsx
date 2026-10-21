@@ -20,7 +20,8 @@ import {
 } from "~/rngToolsUi/workbench/components/pkmFilter";
 import { useAtom } from "jotai";
 import { useWatch } from "~/hooks/form";
-import { getGen3SpeciesOptions, species } from "~/types/species";
+import { species } from "~/types/species";
+import { getGen3SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
 import {
   compatability,
   pokeNavTrainers,

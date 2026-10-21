@@ -9,13 +9,12 @@ import {
   StatRadioFields,
 } from "~/components/form";
 import { useWatch, useField } from "~/hooks/form";
+import { defaultMinMaxStats, MinMaxStats } from "~/types";
 import {
-  defaultMinMaxStats,
   getGen3SpeciesOptions,
   getGen4SpeciesOptions,
   getGen5SpeciesOptions,
-  MinMaxStats,
-} from "~/types";
+} from "~/components/form/pokemon/speciesOptions";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { getStatRange } from "~/types/statRange";
 import {

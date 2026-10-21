@@ -39,7 +39,8 @@ import { EvsSchema } from "~/components/evInput";
 import { StatFieldsSchema } from "~/types/stat";
 import { maxIvs } from "~/types/ivs";
 import { RustOption } from "~/types/utils";
-import { getGen3SpeciesOptions, species } from "~/types/species";
+import { species } from "~/types/species";
+import { getGen3SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
 import { getInheritedIvColumns } from "~/rngToolsUi/shared/ivColumns";
 
 const LIMIT = 1000;

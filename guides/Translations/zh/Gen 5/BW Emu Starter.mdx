@@ -1,0 +1,45 @@
+---
+title: "黑/白模拟器御三家乱数"
+navDrawerTitle: "御三家乱数"
+description: "学习在黑/白模拟器中获得异色及高个体御三家。"
+slug: "zh-bw-emu-starter"
+translation:
+  enSlug: "bw-emu-starter"
+  language: "zh"
+---
+
+## 所需工具
+
+- [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases)
+- [DeSmuME](/desmume-setup)
+- [Lua 脚本](https://github.com/Real96/PokeLua/blob/main/Gen%205/DeSmuMe/BW_RNG_DeSmuMe.lua)
+- [已设置好的游戏配置档案](/emulator-bw-find-ds-parameters)
+
+## 第一步：准备工作
+
+先在 PokeFinder 中搜索目标御三家。
+
+1. 在礼物盒前保存游戏。
+2. 打开 `PokeFinder → Gen 5 → Static → Searcher`。
+3. 选择对应御三家，设置异色、个体值、特性等筛选条件。
+4. 将“Initial Advances”设为至少 5。
+5. 按需设置“Max Advances”。不要过高，否则搜索或实际操作可能非常耗时。
+6. 最小和最大 IV Advances 均保持为 0。
+7. 生成结果，选择一个目标。
+
+## 第二步：进行御三家乱数
+
+命中种子，再推进到正确帧数领取宝可梦。
+
+1. 按照[初始种子指南](/emulator-bw-runasdate-initial-seed)命中目标初始种子。
+2. 可选：在距离目标还有一些推进数时创建即时存档。
+3. 反复保存游戏，推进到目标帧数。
+4. 关闭菜单，按下 `A` 打开礼物盒并选择御三家。
+5. 如果操作失误，读取即时存档，从第 3 步重试。如果没有即时存档，则从第 1 步重新开始。
+
+**恭喜你！已经获得目标宝可梦了！**
+
+## 特别鸣谢
+
+- Fiask：撰写指南。
+- 中文翻译：白希洛/Hakuhiro

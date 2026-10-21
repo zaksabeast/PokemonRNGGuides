@@ -1,0 +1,61 @@
+---
+title: "在 Azahar 中安装 PokeReader"
+description: "学习在 3DS 模拟器中安装 PokeReader，辅助乱数操作。"
+slug: "zh-install-pokereader-emu"
+translation:
+  enSlug: "install-pokereader-emu"
+  language: "zh"
+---
+
+PokeReader 是辅助模拟器乱数的插件。
+
+如果需要在 3DS 实机上安装 PokeReader，请参考[此处](/install-pokereader)。
+
+## 所需工具
+
+- [Azahar](https://github.com/azahar-emu/azahar/releases/latest)
+
+## 在 Azahar/Lime3DS/Citra 中安装 PokeReader
+
+1. 下载[最新版 PokeReader](https://github.com/zaksabeast/PokeReader/releases/latest)。
+2. 打开模拟器的首选项。
+3. 进入“System”设置。
+4. 勾选“Enable 3GX Plugin Loader”。
+5. 切换到“Storage”标签页。
+6. 点击“SDMC Directory”旁的“Open”。
+7. 如果没有 `/luma/plugins` 文件夹，请创建。
+8. 将 `default.3gx` 复制到 `/luma/plugins/`。
+9. 更新宝可梦游戏，PokeReader 需要最新版游戏。
+
+**原文说明：Azahar 发布后将补充更多操作说明。**
+
+## PokeReader 操作按键
+
+- `Start + 方向键上`：打开或关闭信息浮层。
+- `Start + Select`：暂停游戏。
+- 暂停时按下 `Select`：推进 1 帧。
+- 暂停时按下 `Start`：解除暂停。
+- 仅限水晶 VC：
+  - `L + R`：暂停游戏。
+  - 暂停时按下 `L`：推进 1 帧。
+  - 暂停时按下 `R`：解除暂停。
+
+## 疑难解答
+
+**PokeReader 没有加载，游戏还崩溃了！**
+
+请确认游戏已经更新到最新版。PokeReader 不支持旧版游戏。
+
+[此指南](/citrarng-setup)介绍了如何从已安装自制固件的 3DS 上导出游戏更新。
+
+## 接下来做什么？
+
+可以尝试以下乱数：
+
+- [水晶异色时拉比](/gen2-celebi)
+- [X/Y 朋友狩猎乱数](/pcalc-xy-friend-safari)
+- [岛屿扫描乱数](/retail-usum-island-scan)
+
+## 特别鸣谢
+
+- 中文翻译：白希洛/Hakuhiro

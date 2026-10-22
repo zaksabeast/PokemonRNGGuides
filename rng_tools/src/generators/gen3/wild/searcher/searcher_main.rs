@@ -17,7 +17,7 @@ use crate::{
         searcher_painter::Wild3PaintingOpts,
         wild::{
             Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex, Wild3MapGameData,
-            Wild3SearcherCycleDataByLead, Wild3CalibrationContext, calculate_cycle_data_by_lead,
+            Wild3SearcherCycleDataByLead, Wild3MovementMode, calculate_cycle_data_by_lead,
         },
     },
     gen3_shiny,
@@ -104,10 +104,12 @@ pub enum Wild3SearcherCycleOpts {
     #[default]
     Inactive,
     SearchNewTarget {
+        consider_bike: bool,
         consider_rng_manipulated_lead_pid: bool,
         generate_even_if_impossible: bool, // different than Inactive because it still generates likelihood
     },
     Calibrate {
+        movement: Wild3MovementMode,
         lead_cycle_speed: Option<usize>,
     },
 }
@@ -117,20 +119,26 @@ impl Wild3SearcherCycleOpts {
         match self {
             Self::Inactive => Wild3GeneratorCycleOpts::Inactive,
             Self::SearchNewTarget {
+                consider_bike,
                 consider_rng_manipulated_lead_pid,
                 generate_even_if_impossible,
             } => Wild3GeneratorCycleOpts::Searching {
+                consider_bike: *consider_bike,
                 generate_even_if_impossible: *generate_even_if_impossible,
                 consider_rng_manipulated_lead_pid: *consider_rng_manipulated_lead_pid,
             },
             Self::Calibrate {
+                movement,
                 lead_cycle_speed: Some(lead_cycle_spd),
             } => Wild3GeneratorCycleOpts::LikelihoodForLead {
                 lead_cycle_spd: *lead_cycle_spd,
+                consider_bike: *movement == Wild3MovementMode::Bike,
             },
             Self::Calibrate {
+                movement,
                 lead_cycle_speed: None,
             } => Wild3GeneratorCycleOpts::Searching {
+                consider_bike: *movement == Wild3MovementMode::Bike,
                 generate_even_if_impossible: true,
                 consider_rng_manipulated_lead_pid: true,
             },
@@ -153,9 +161,6 @@ pub struct Wild3SearcherOptions {
     pub map_setups: Vec<Wild3MapSetups>,
     pub methods: Vec<Gen3Method>,
     pub cycle_opts: Wild3SearcherCycleOpts,
-    #[serde(default)]
-    #[tsify(optional)]
-    pub calibration_context: Option<Wild3CalibrationContext>,
     pub painting_opts: Option<Wild3PaintingOpts>,
     pub using_white_flute: bool,
     pub considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt,
@@ -177,7 +182,6 @@ impl Default for Wild3SearcherOptions {
             map_setups: vec![Wild3MapSetups::default()],
             methods: vec![],
             cycle_opts: Wild3SearcherCycleOpts::default(),
-            calibration_context: None,
             painting_opts: None,
             using_white_flute: true,
             considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt::default(),
@@ -241,7 +245,7 @@ impl Wild3SearcherResultMon {
                 is_egg,
                 lead_cycle_spd,
                 map_data,
-                gen_opts.calibration_context,
+                gen_opts.cycle_opts.movement(),
             )
         });
 

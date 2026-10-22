@@ -2,7 +2,7 @@ use crate::{
     EncounterSlot, Ivs, Nature, PkmFilter,
     gen3::{
         CycleRange, Gen3Lead, Gen3Method, INFINITE_CYCLE, Wild3EncounterIndex,
-        Wild3GeneratorCycleOpts, Wild3GeneratorMonResult, Wild3GeneratorOptions, Wild3MapGameData,
+        Wild3GeneratorCycleOpts, Wild3MovementMode, Wild3GeneratorMonResult, Wild3GeneratorOptions, Wild3MapGameData,
         generate_wild3,
     },
     rng::lcrng::Pokerng,
@@ -14,6 +14,7 @@ fn test_generate_wild3_cycle_method_3() {
         methods: vec![Gen3Method::Wild3],
         lead: Gen3Lead::Synchronize(Nature::Serious),
         cycle_opts: Wild3GeneratorCycleOpts::Searching {
+            consider_bike: false,
             generate_even_if_impossible: false,
             consider_rng_manipulated_lead_pid: true,
         },
@@ -56,6 +57,7 @@ fn test_generate_wild3_cycle_method_3_no_rng_lead_pid() {
         lead: Gen3Lead::Synchronize(Nature::Serious),
         filter: PkmFilter::new_allow_all(),
         cycle_opts: Wild3GeneratorCycleOpts::Searching {
+            consider_bike: false,
             generate_even_if_impossible: false,
             consider_rng_manipulated_lead_pid: false,
         },
@@ -76,6 +78,7 @@ fn test_generate_wild3_cycle_method_5() {
     let options = Wild3GeneratorOptions {
         methods: vec![Gen3Method::Wild5],
         cycle_opts: Wild3GeneratorCycleOpts::Searching {
+            consider_bike: false,
             generate_even_if_impossible: false,
             consider_rng_manipulated_lead_pid: true,
         },
@@ -131,6 +134,7 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
         methods: vec![Gen3Method::Wild1, Gen3Method::Wild2, Gen3Method::Wild4],
         lead: Gen3Lead::Synchronize(Nature::Hardy),
         cycle_opts: Wild3GeneratorCycleOpts::Searching {
+            consider_bike: false,
             generate_even_if_impossible: false,
             consider_rng_manipulated_lead_pid: true,
         },

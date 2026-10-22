@@ -7,7 +7,7 @@ use super::Wild3GeneratorOptions;
 use crate::{
     gen3::{
         CycleFrameMoment, CycleRange, Gen3Method, Wild3GeneratorCycleOpts, Wild3MapGameData,
-        Wild3SearcherResultMon, calculate_cycle_data, generate_wild3,
+        Wild3MovementMode, Wild3SearcherResultMon, calculate_cycle_data, generate_wild3,
     },
     rng::lcrng::Pokerng,
 };
@@ -37,6 +37,7 @@ pub fn generate_gen3_wild_distribution(
     initial_cycle_at_sweet_scent: Option<usize>,
     vblank_cycles: Option<Vec<usize>>,
 ) -> Wild3MethodDistributionResults {
+    let movement = opts.cycle_opts.movement();
     let cycle_opts_for_cycle = match (initial_cycle_at_sweet_scent, vblank_cycles) {
         (Some(initial_cycle_at_sweet_scent), Some(vblank_cycles)) => {
             Wild3GeneratorCycleOpts::CycleAtMomentWithEmuLog {
@@ -45,7 +46,10 @@ pub fn generate_gen3_wild_distribution(
                 vblank_cycles,
             }
         }
-        _ => Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog { lead_cycle_spd },
+        _ => Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog {
+            lead_cycle_spd,
+            movement,
+        },
     };
 
     let methods = vec![
@@ -72,7 +76,10 @@ pub fn generate_gen3_wild_distribution(
         rng,
         advances,
         &Wild3GeneratorOptions {
-            cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead { lead_cycle_spd },
+            cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead {
+                lead_cycle_spd,
+                consider_bike: movement == Wild3MovementMode::Bike,
+            },
             methods,
             ..opts.clone()
         },
@@ -130,7 +137,7 @@ fn generate_dist_results(
                 opts.action,
                 lead_cycle_spd,
                 game_data,
-                opts.calibration_context,
+                opts.cycle_opts.movement(),
             );
 
             Wild3MethodDistributionResult {

@@ -674,6 +674,7 @@ fn test_search_reverse_wild3_safari_egg_gligar_has_result() {
         map_setups: create_safari_southeast_map_setups(),
         methods: vec![Gen3Method::Wild1],
         cycle_opts: Wild3SearcherCycleOpts::SearchNewTarget {
+            consider_bike: false,
             consider_rng_manipulated_lead_pid: true,
             generate_even_if_impossible: true,
         },
@@ -714,6 +715,7 @@ fn test_search_reverse_wild3_safari_cute_charm_pokeblock_hoothoot_has_result() {
         map_setups: create_safari_southeast_map_setups(),
         methods: vec![Gen3Method::Wild4],
         cycle_opts: Wild3SearcherCycleOpts::Calibrate {
+                movement: crate::gen3::Wild3MovementMode::OnFoot,
             lead_cycle_speed: Some(18),
         },
         considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt::Specific([0, 0, 1, 0, 0]),
@@ -792,7 +794,7 @@ fn test_search_reverse_wild3_vblank_group_feebas() {
 
     for feebas_cycles in 0..=800_000 {
         let crate::gen3::MinMidMax { min: min_presweet, max: max_presweet, .. } =
-            get_min_mid_max_pre_sweet_scent_cycle(Wild3Action::OldRod, &Wild3MapGameData::default(), None);
+            get_min_mid_max_pre_sweet_scent_cycle(Wild3Action::OldRod, &Wild3MapGameData::default(), crate::gen3::Wild3MovementMode::OnFoot);
         let crate::gen3::MinMidMax { min: min_vblank_dur, max: max_vblank_dur, .. } = get_min_mid_max_vblank_cycle_duration();
 
         let (_, min_vblank_count) = apply_cycles_causing_vblanks_on_cycle_counter(
@@ -871,6 +873,7 @@ fn test_search_reverse_wild3_feebas_on_feebas_tile() {
         feebas_cycles: vec![350_226],
         methods: vec![Gen3Method::Wild2],
         cycle_opts: Wild3SearcherCycleOpts::Calibrate {
+                movement: crate::gen3::Wild3MovementMode::OnFoot,
             lead_cycle_speed: Some(calculate_pid_speed(0x7933A9CB)),
         },
         using_white_flute: false,

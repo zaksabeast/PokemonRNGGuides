@@ -506,6 +506,7 @@ fn test_search_wild3_naive_magikarp_in_feebas_map() {
             feebas_cycles: vec![350_226],
             methods: vec![Gen3Method::Wild4],
             cycle_opts: Wild3SearcherCycleOpts::Calibrate {
+                movement: crate::gen3::Wild3MovementMode::OnFoot,
                 lead_cycle_speed: Some(calculate_pid_speed(0x7933A9CB)),
             },
             using_white_flute: false,

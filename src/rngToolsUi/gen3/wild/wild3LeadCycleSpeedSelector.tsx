@@ -112,7 +112,10 @@ export const Wild3LeadCycleSpeedSelector = ({
 
   React.useEffect(() => {
     setupToDistributions(targetSetup, {
-      LikelihoodForLead: { lead_cycle_spd: actualLeadCycleSpeed ?? 0 },
+      LikelihoodForLead: {
+        consider_bike: false,
+        lead_cycle_spd: actualLeadCycleSpeed ?? 0,
+      },
     }).then((val) => {
       setDistributions(val);
     });

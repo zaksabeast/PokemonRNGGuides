@@ -12,21 +12,10 @@ mod data;
 pub enum Wild3CalibrationSong { Route101, Route104, Route110, PetalburgWoods, Route113, SafariZone, RgSeviiCave }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Tsify)]
-pub enum Wild3MovementMode { OnFoot, Bike }
-
-// Mono performs almost all stereo audio processing; it mainly changes hardware speaker routing.
-// See SetPokemonCryStereo in Emerald.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Tsify)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Wild3CalibrationContext {
-    pub action: Wild3Action,
-    pub movement: Wild3MovementMode,
-}
-
-impl Wild3CalibrationContext {
-    pub fn walking(action: Wild3Action) -> Self {
-        Self { action, movement: Wild3MovementMode::OnFoot }
-    }
+pub enum Wild3MovementMode {
+    OnFoot,
+    Bike,
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Tsify)]
@@ -56,38 +45,34 @@ pub struct ComponentDistribution {
 pub struct Wild3MapCycleCalibration {
     pub map_internal_idx: usize,
     pub song: Wild3CalibrationSong,
-    pub context: Wild3CalibrationContext,
+    pub action: Wild3Action,
+    pub movement: Wild3MovementMode,
     pub non_audio: MinMidMax,
     pub distribution: &'static ComponentDistribution,
     pub combined_median: usize,
     pub joint_correction: Option<ComponentDistribution>,
 }
 
-const WALKING_LAND: Wild3CalibrationContext = Wild3CalibrationContext {
-    action: Wild3Action::SweetScentLand,
-    movement: Wild3MovementMode::OnFoot,
-};
-
 // Internal wild-header indices, not UI indices or map group/number pairs.
 pub const WILD3_MAP_CYCLE_CALIBRATIONS: &[Wild3MapCycleCalibration] = &[
     Wild3MapCycleCalibration { map_internal_idx: 0, song: Wild3CalibrationSong::Route101,
-        context: WALKING_LAND, non_audio: data::ROUTE101_NON_AUDIO.summary, distribution: &data::ROUTE101_NON_AUDIO, combined_median: data::ROUTE101_COMBINED_MEDIAN, joint_correction: data::ROUTE101_JOINT_CORRECTION },
+        action: Wild3Action::SweetScentLand, movement: Wild3MovementMode::OnFoot, non_audio: data::ROUTE101_NON_AUDIO.summary, distribution: &data::ROUTE101_NON_AUDIO, combined_median: data::ROUTE101_COMBINED_MEDIAN, joint_correction: data::ROUTE101_JOINT_CORRECTION },
     Wild3MapCycleCalibration { map_internal_idx: 1, song: Wild3CalibrationSong::Route101,
-        context: WALKING_LAND, non_audio: data::ROUTE102_NON_AUDIO.summary, distribution: &data::ROUTE102_NON_AUDIO, combined_median: data::ROUTE102_COMBINED_MEDIAN, joint_correction: data::ROUTE102_JOINT_CORRECTION },
+        action: Wild3Action::SweetScentLand, movement: Wild3MovementMode::OnFoot, non_audio: data::ROUTE102_NON_AUDIO.summary, distribution: &data::ROUTE102_NON_AUDIO, combined_median: data::ROUTE102_COMBINED_MEDIAN, joint_correction: data::ROUTE102_JOINT_CORRECTION },
     Wild3MapCycleCalibration { map_internal_idx: 2, song: Wild3CalibrationSong::Route101,
-        context: WALKING_LAND, non_audio: data::ROUTE103_NON_AUDIO.summary, distribution: &data::ROUTE103_NON_AUDIO, combined_median: data::ROUTE103_COMBINED_MEDIAN, joint_correction: data::ROUTE103_JOINT_CORRECTION },
+        action: Wild3Action::SweetScentLand, movement: Wild3MovementMode::OnFoot, non_audio: data::ROUTE103_NON_AUDIO.summary, distribution: &data::ROUTE103_NON_AUDIO, combined_median: data::ROUTE103_COMBINED_MEDIAN, joint_correction: data::ROUTE103_JOINT_CORRECTION },
     Wild3MapCycleCalibration { map_internal_idx: 3, song: Wild3CalibrationSong::Route104,
-        context: WALKING_LAND, non_audio: data::ROUTE104_NON_AUDIO.summary, distribution: &data::ROUTE104_NON_AUDIO, combined_median: data::ROUTE104_COMBINED_MEDIAN, joint_correction: data::ROUTE104_JOINT_CORRECTION },
+        action: Wild3Action::SweetScentLand, movement: Wild3MovementMode::OnFoot, non_audio: data::ROUTE104_NON_AUDIO.summary, distribution: &data::ROUTE104_NON_AUDIO, combined_median: data::ROUTE104_COMBINED_MEDIAN, joint_correction: data::ROUTE104_JOINT_CORRECTION },
     Wild3MapCycleCalibration { map_internal_idx: 5, song: Wild3CalibrationSong::Route110,
-        context: WALKING_LAND, non_audio: data::ROUTE110_NON_AUDIO.summary, distribution: &data::ROUTE110_NON_AUDIO, combined_median: data::ROUTE110_COMBINED_MEDIAN, joint_correction: data::ROUTE110_JOINT_CORRECTION },
+        action: Wild3Action::SweetScentLand, movement: Wild3MovementMode::OnFoot, non_audio: data::ROUTE110_NON_AUDIO.summary, distribution: &data::ROUTE110_NON_AUDIO, combined_median: data::ROUTE110_COMBINED_MEDIAN, joint_correction: data::ROUTE110_JOINT_CORRECTION },
     Wild3MapCycleCalibration { map_internal_idx: 14, song: Wild3CalibrationSong::PetalburgWoods,
-        context: WALKING_LAND, non_audio: data::PETALBURG_WOODS_NON_AUDIO.summary, distribution: &data::PETALBURG_WOODS_NON_AUDIO, combined_median: data::PETALBURG_WOODS_COMBINED_MEDIAN, joint_correction: data::PETALBURG_WOODS_JOINT_CORRECTION },
+        action: Wild3Action::SweetScentLand, movement: Wild3MovementMode::OnFoot, non_audio: data::PETALBURG_WOODS_NON_AUDIO.summary, distribution: &data::PETALBURG_WOODS_NON_AUDIO, combined_median: data::PETALBURG_WOODS_COMBINED_MEDIAN, joint_correction: data::PETALBURG_WOODS_JOINT_CORRECTION },
     Wild3MapCycleCalibration { map_internal_idx: 8, song: Wild3CalibrationSong::Route113,
-        context: WALKING_LAND, non_audio: data::ROUTE113_NON_AUDIO.summary, distribution: &data::ROUTE113_NON_AUDIO, combined_median: data::ROUTE113_COMBINED_MEDIAN, joint_correction: data::ROUTE113_JOINT_CORRECTION },
+        action: Wild3Action::SweetScentLand, movement: Wild3MovementMode::OnFoot, non_audio: data::ROUTE113_NON_AUDIO.summary, distribution: &data::ROUTE113_NON_AUDIO, combined_median: data::ROUTE113_COMBINED_MEDIAN, joint_correction: data::ROUTE113_JOINT_CORRECTION },
     Wild3MapCycleCalibration { map_internal_idx: 20, song: Wild3CalibrationSong::SafariZone,
-        context: WALKING_LAND, non_audio: data::SAFARI_ZONE_SOUTH_NON_AUDIO.summary, distribution: &data::SAFARI_ZONE_SOUTH_NON_AUDIO, combined_median: data::SAFARI_ZONE_SOUTH_COMBINED_MEDIAN, joint_correction: data::SAFARI_ZONE_SOUTH_JOINT_CORRECTION },
+        action: Wild3Action::SweetScentLand, movement: Wild3MovementMode::OnFoot, non_audio: data::SAFARI_ZONE_SOUTH_NON_AUDIO.summary, distribution: &data::SAFARI_ZONE_SOUTH_NON_AUDIO, combined_median: data::SAFARI_ZONE_SOUTH_COMBINED_MEDIAN, joint_correction: data::SAFARI_ZONE_SOUTH_JOINT_CORRECTION },
     Wild3MapCycleCalibration { map_internal_idx: 114, song: Wild3CalibrationSong::RgSeviiCave,
-        context: WALKING_LAND, non_audio: data::ALTERING_CAVE_NON_AUDIO.summary, distribution: &data::ALTERING_CAVE_NON_AUDIO, combined_median: data::ALTERING_CAVE_COMBINED_MEDIAN, joint_correction: data::ALTERING_CAVE_JOINT_CORRECTION },
+        action: Wild3Action::SweetScentLand, movement: Wild3MovementMode::OnFoot, non_audio: data::ALTERING_CAVE_NON_AUDIO.summary, distribution: &data::ALTERING_CAVE_NON_AUDIO, combined_median: data::ALTERING_CAVE_COMBINED_MEDIAN, joint_correction: data::ALTERING_CAVE_JOINT_CORRECTION },
 ];
 
 // Default music assignments from Emerald map headers, using the encounter array order.
@@ -163,26 +148,29 @@ impl CalibratedCycleDistribution {
 }
 
 pub(super) fn calibration_model(
-    action: Wild3Action, map: &Wild3MapGameData, context: Option<Wild3CalibrationContext>,
+    action: Wild3Action, map: &Wild3MapGameData, movement: Wild3MovementMode,
 ) -> Option<(CalibratedCycleDistribution, bool)> {
-    let context = context.unwrap_or_else(|| Wild3CalibrationContext::walking(action));
-    if action != Wild3Action::SweetScentLand || context != WALKING_LAND { return None; }
+    if action != Wild3Action::SweetScentLand || movement != Wild3MovementMode::OnFoot {
+        return None;
+    }
+
     let map_calibration = wild3_map_cycle_calibration(map);
     let audio = audio_distribution(map_calibration.song);
     let non_audio = map_calibration.distribution;
     let min = audio.summary.min + non_audio.summary.min;
     let max = audio.summary.max + non_audio.summary.max;
+
     Some((CalibratedCycleDistribution { min, max,
         independent: ConvolvedCdf { audio: audio.cdf, non_audio: non_audio.cdf, min, max },
         joint: map_calibration.joint_correction.map(|c| c.cdf),
     }, map_calibration.map_internal_idx != map.map_internal_idx))
 }
 
-/// An unmeasured context must not be excluded by another map's empirical bounds.
+/// Unmeasured movement must not be excluded by another map's empirical bounds.
 pub(super) fn calibration_filter_bounds(
-    action: Wild3Action, map: &Wild3MapGameData, context: Option<Wild3CalibrationContext>,
+    action: Wild3Action, map: &Wild3MapGameData, movement: Wild3MovementMode,
 ) -> Option<MinMidMax> {
-    let (model, fallback) = calibration_model(action, map, context)?;
+    let (model, fallback) = calibration_model(action, map, movement)?;
     let median = wild3_map_cycle_calibration(map).combined_median;
     let calibration = wild3_map_cycle_calibration(map);
     let margin = audio_distribution(calibration.song).provenance.safety_margin_cycles
@@ -201,7 +189,8 @@ pub(super) fn calibration_filter_bounds(
 #[derive(Debug, Clone, Serialize, Tsify)]
 #[tsify(into_wasm_abi)]
 pub struct Wild3CalibrationInfo {
-    pub context: Wild3CalibrationContext,
+    pub action: Wild3Action,
+    pub movement: Wild3MovementMode,
     pub fallback: bool,
     pub supported: bool,
     pub empirical_bounds: bool,
@@ -213,13 +202,12 @@ pub struct Wild3CalibrationInfo {
 
 #[wasm_bindgen]
 pub fn get_wild3_calibration_info(
-    action: Wild3Action, map: &Wild3MapGameData, context: Option<Wild3CalibrationContext>,
+    action: Wild3Action, map: &Wild3MapGameData, movement: Wild3MovementMode,
 ) -> Wild3CalibrationInfo {
-    let context = context.unwrap_or_else(|| Wild3CalibrationContext::walking(action));
-    let model = calibration_model(action, map, Some(context));
+    let model = calibration_model(action, map, movement);
     let map_calibration = wild3_map_cycle_calibration(map);
     Wild3CalibrationInfo {
-        context, supported: model.is_some(), fallback: model.is_none_or(|(_, fallback)| fallback),
+        action, movement, supported: model.is_some(), fallback: model.is_none_or(|(_, fallback)| fallback),
         empirical_bounds: model.is_some(), independent_full_loop_validation: false,
         audio: model.map(|_| audio_distribution(map_calibration.song).provenance),
         non_audio: model.map(|_| map_calibration.distribution.provenance),
@@ -235,17 +223,62 @@ mod tests {
     }
 
     #[test]
+    fn searching_and_likelihood_with_bike_keep_unmeasured_timings() {
+        use crate::gen3::{CycleFrame, CycleFrameCounter, MinMaxCycleFrame,
+            Wild3GeneratorCycleOpts, Wild3GeneratorOptions};
+
+        let cases = [(false, 34_686, 72_512), (true, 0, 280_895)]
+            .into_iter()
+            .flat_map(|(consider_bike, min, max)| {
+                [Wild3GeneratorCycleOpts::Searching {
+                    consider_bike,
+                    generate_even_if_impossible: true,
+                    consider_rng_manipulated_lead_pid: true,
+                }, Wild3GeneratorCycleOpts::LikelihoodForLead {
+                    consider_bike,
+                    lead_cycle_spd: 0,
+                }].map(|cycle_opts| (cycle_opts, min, max))
+            });
+
+        for (cycle_opts, min, max) in cases {
+            let opts = Wild3GeneratorOptions {
+                lead: crate::gen3::Gen3Lead::Egg,
+                cycle_opts,
+                ..Default::default()
+            };
+
+            let CycleFrameCounter::MinMaxRange {
+                min_max_cycles, cycle_instability, base_cycle_count,
+                lead_pid_mod_count, generate_even_if_impossible,
+            } = CycleFrameCounter::new(&opts, &map(0)) else {
+                panic!("Expected search range");
+            };
+
+            assert_eq!(
+                (min_max_cycles, cycle_instability, base_cycle_count,
+                    lead_pid_mod_count, generate_even_if_impossible),
+                (MinMaxCycleFrame {
+                    min_cycle: CycleFrame { cycle: min, frame: 0 },
+                    max_cycle: CycleFrame { cycle: max, frame: 0 },
+                    min_lead_cycle_spd: 0,
+                    max_lead_cycle_spd: 0,
+                }, 0.0, 0, 0, true),
+            );
+        }
+    }
+
+    #[test]
     fn measured_maps_share_audio_but_keep_separate_non_audio_and_bounds() {
         let expected = [(0, 34_686, 72_512), (1, 34_686, 72_512), (2, 34_686, 72_512),
             (3, 43_025, 76_319), (5, 41_571, 73_493),
             (14, 34_400, 70_987), (8, 36_138, 69_469), (20, 42_238, 68_168)];
         for (index, min, max) in expected {
-            let (model, fallback) = calibration_model(Wild3Action::SweetScentLand, &map(index), None).unwrap();
+            let (model, fallback) = calibration_model(Wild3Action::SweetScentLand, &map(index), Wild3MovementMode::OnFoot).unwrap();
             assert!(!fallback);
             assert_eq!((model.min, model.max), (min, max));
             assert_eq!(model.probability(min as f64, max as f64 + 1.0), 1.0);
             assert!(model.median() >= min && model.median() <= max);
-            let info = get_wild3_calibration_info(Wild3Action::SweetScentLand, &map(index), None);
+            let info = get_wild3_calibration_info(Wild3Action::SweetScentLand, &map(index), Wild3MovementMode::OnFoot);
             assert!(!info.fallback);
             assert!(!info.audio.unwrap().incomplete_loop);
         }
@@ -257,10 +290,10 @@ mod tests {
 
     #[test]
     fn altering_cave_uses_its_measured_song_and_bounds() {
-        let (model, fallback) = calibration_model(Wild3Action::SweetScentLand, &map(114), None).unwrap();
+        let (model, fallback) = calibration_model(Wild3Action::SweetScentLand, &map(114), Wild3MovementMode::OnFoot).unwrap();
         assert!(!fallback);
         assert_eq!((model.min, model.max), (42_052, 70_087));
-        let info = get_wild3_calibration_info(Wild3Action::SweetScentLand, &map(114), None);
+        let info = get_wild3_calibration_info(Wild3Action::SweetScentLand, &map(114), Wild3MovementMode::OnFoot);
         let audio = info.audio.unwrap();
         assert_eq!(audio.source, "altering_cave_walk_sweet_scent.txt");
         assert_eq!(audio.attempts, 5526);
@@ -270,13 +303,13 @@ mod tests {
 
     #[test]
     fn fallback_is_explicit_and_does_not_narrow_filtering() {
-        let bounds = calibration_filter_bounds(Wild3Action::SweetScentLand, &map(999), None).unwrap();
+        let bounds = calibration_filter_bounds(Wild3Action::SweetScentLand, &map(999), Wild3MovementMode::OnFoot).unwrap();
         assert_eq!((bounds.min, bounds.max), (0, VBLANK_FREQ - 1));
-        assert!(get_wild3_calibration_info(Wild3Action::SweetScentLand, &map(999), None).fallback);
-        let bike = Wild3CalibrationContext { movement: Wild3MovementMode::Bike, ..WALKING_LAND };
-        assert!(calibration_model(Wild3Action::SweetScentLand, &map(0), Some(bike)).is_none());
+        assert!(get_wild3_calibration_info(Wild3Action::SweetScentLand, &map(999), Wild3MovementMode::OnFoot).fallback);
+        let bike = Wild3MovementMode::Bike;
+        assert!(calibration_model(Wild3Action::SweetScentLand, &map(0), bike).is_none());
         for action in [Wild3Action::SweetScentWater, Wild3Action::OldRod, Wild3Action::RockSmash] {
-            assert!(calibration_model(action, &map(0), None).is_none());
+            assert!(calibration_model(action, &map(0), Wild3MovementMode::OnFoot).is_none());
         }
     }
 
@@ -305,15 +338,15 @@ mod tests {
     }
 
     #[test]
-    fn initial_bounds_and_likelihood_use_the_same_context() {
+    fn initial_bounds_and_likelihood_use_the_same_movement() {
         use crate::gen3::{CycleFrameCounter, CycleRange, Wild3GeneratorCycleOpts,
             Wild3GeneratorOptions, calculate_method_probability};
         for index in [0, 1, 2, 3, 5, 8, 14, 20, 114] {
             let map = map(index);
-            let (model, _) = calibration_model(Wild3Action::SweetScentLand, &map, None).unwrap();
+            let (model, _) = calibration_model(Wild3Action::SweetScentLand, &map, Wild3MovementMode::OnFoot).unwrap();
             assert_eq!(model.median(), wild3_map_cycle_calibration(&map).combined_median);
             let opts = Wild3GeneratorOptions {
-                cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead { lead_cycle_spd: 0 },
+                cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead { lead_cycle_spd: 0, consider_bike: false },
                 ..Default::default()
             };
             match CycleFrameCounter::new(&opts, &map) {
@@ -324,7 +357,7 @@ mod tests {
                 _ => panic!("Expected calibrated range"),
             }
             let p = |start, len| calculate_method_probability(
-                &CycleRange::from_start_len(start, len), Wild3Action::SweetScentLand, &map, None);
+                &CycleRange::from_start_len(start, len), Wild3Action::SweetScentLand, &map, Wild3MovementMode::OnFoot);
             assert_eq!(p(model.min as i32 - 10, 10), 0.0);
             assert_eq!(p(model.max as i32 + 1, 10), 0.0);
             assert_eq!(p(model.min as i32, model.max - model.min + 1), 1.0);
@@ -340,30 +373,26 @@ mod tests {
             for len in [256, 8_192, 39_309] {
                 let map = map(index);
                 let range: CycleAndModRange = CycleRange::new(190_451, 80, len);
-                let best = calculate_ideal_lead_pid_cycle_count(&range, Wild3Action::SweetScentLand, &map, None);
-                let score = calculate_cycle_data(&range, Wild3Action::SweetScentLand, best, &map, None).method_probability;
+                let best = calculate_ideal_lead_pid_cycle_count(&range, Wild3Action::SweetScentLand, &map, Wild3MovementMode::OnFoot);
+                let score = calculate_cycle_data(&range, Wild3Action::SweetScentLand, best, &map, Wild3MovementMode::OnFoot).method_probability;
                 for speed in FASTEST_MODULO_CYCLE_24..=SLOWEST_MODULO_CYCLE_24 {
                     assert!(score + 1e-12 >= calculate_cycle_data(&range, Wild3Action::SweetScentLand,
-                        speed, &map, None).method_probability);
+                        speed, &map, Wild3MovementMode::OnFoot).method_probability);
                 }
             }
         }
     }
 
     #[test]
-    fn missing_context_deserializes_and_unmeasured_actions_keep_legacy_estimates() {
-        use crate::gen3::{Wild3GeneratorOptions, get_min_mid_max_pre_sweet_scent_cycle,
+    fn unmeasured_actions_keep_legacy_estimates() {
+        use crate::gen3::{get_min_mid_max_pre_sweet_scent_cycle,
             calculate_method_probability, CycleRange};
-        let mut json = serde_json::to_value(Wild3GeneratorOptions::default()).unwrap();
-        json.as_object_mut().unwrap().remove("calibration_context");
-        let options: Wild3GeneratorOptions = serde_json::from_value(json).unwrap();
-        assert!(options.calibration_context.is_none());
         for action in [Wild3Action::OldRod, Wild3Action::GoodRod, Wild3Action::SuperRod, Wild3Action::SweetScentWater] {
-            assert_eq!(get_min_mid_max_pre_sweet_scent_cycle(action, &map(3), None), MinMidMax::new(45_000, 55_000, 75_000));
+            assert_eq!(get_min_mid_max_pre_sweet_scent_cycle(action, &map(3), Wild3MovementMode::OnFoot), MinMidMax::new(45_000, 55_000, 75_000));
             assert_eq!(calculate_method_probability(&CycleRange::from_start_len(45_000, 15_000),
-                action, &map(3), None), 0.5);
+                action, &map(3), Wild3MovementMode::OnFoot), 0.5);
         }
-        assert_eq!(get_min_mid_max_pre_sweet_scent_cycle(Wild3Action::RockSmash, &map(3), None),
+        assert_eq!(get_min_mid_max_pre_sweet_scent_cycle(Wild3Action::RockSmash, &map(3), Wild3MovementMode::OnFoot),
             MinMidMax::new(30_000, 52_500, 75_000));
     }
 
@@ -372,10 +401,10 @@ mod tests {
         let map = map(14);
         let calibration = wild3_map_cycle_calibration(&map);
         let joint = calibration.joint_correction.expect("Petalburg needs a joint model");
-        let (model, fallback) = calibration_model(Wild3Action::SweetScentLand, &map, None).unwrap();
+        let (model, fallback) = calibration_model(Wild3Action::SweetScentLand, &map, Wild3MovementMode::OnFoot).unwrap();
         assert!(!fallback);
         assert_eq!((joint.summary.min, joint.summary.max), (34_418, 70_955));
-        assert!(get_wild3_calibration_info(Wild3Action::SweetScentLand, &map, None).joint_correction.is_some());
+        assert!(get_wild3_calibration_info(Wild3Action::SweetScentLand, &map, Wild3MovementMode::OnFoot).joint_correction.is_some());
         let difference = joint.cdf.knots.iter().map(|k| {
             let threshold = k.cycle + 1e-7;
             let corrected = model.probability(0.0, threshold);
@@ -395,8 +424,8 @@ mod tests {
             assert_eq!(selected.distribution.provenance.sha256,
                 wild3_map_cycle_calibration(&map(expected)).distribution.provenance.sha256);
             assert_eq!(Some(selected.song), default_calibration_song(&requested));
-            assert!(get_wild3_calibration_info(Wild3Action::SweetScentLand, &requested, None).fallback);
-            let bounds = calibration_filter_bounds(Wild3Action::SweetScentLand, &requested, None).unwrap();
+            assert!(get_wild3_calibration_info(Wild3Action::SweetScentLand, &requested, Wild3MovementMode::OnFoot).fallback);
+            let bounds = calibration_filter_bounds(Wild3Action::SweetScentLand, &requested, Wild3MovementMode::OnFoot).unwrap();
             assert_eq!((bounds.min, bounds.max), (0, VBLANK_FREQ - 1));
         }
     }

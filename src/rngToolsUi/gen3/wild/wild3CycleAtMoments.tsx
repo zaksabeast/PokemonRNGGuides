@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { rngTools } from "~/rngTools";
+import { rngTools, Wild3GeneratorCycleOpts } from "~/rngTools";
 import { ResultColumn, ResultTable, Flex, Typography } from "~/components";
 import {
   FormCard,
@@ -266,9 +266,14 @@ export const Wild3CycleAtMoments = ({ targetSetup, leadCycleSpeed }: Props) => {
     let cancelled = false;
     const updateUiResult = async () => {
       const json = parseCycleAtMomentsJsonStr(compareCycleAtMomentsStr);
-      const cycle_opts =
+      const cycle_opts: Wild3GeneratorCycleOpts =
         json == null
-          ? { CycleAtMomentNoEmuLog: { lead_cycle_spd: leadCycleSpeed ?? 0 } }
+          ? {
+              CycleAtMomentNoEmuLog: {
+                movement: "OnFoot",
+                lead_cycle_spd: leadCycleSpeed ?? 0,
+              },
+            }
           : {
               CycleAtMomentWithEmuLog: {
                 lead_cycle_spd: leadCycleSpeed ?? 0,

@@ -97,6 +97,7 @@ export const createWild3SearcherOptions = async (
     methods: gen3Methods,
     cycle_opts: {
       Calibrate: {
+        movement: "OnFoot",
         lead_cycle_speed: leadCycleSpeed,
       },
     },

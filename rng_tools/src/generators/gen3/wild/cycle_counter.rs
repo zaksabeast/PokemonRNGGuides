@@ -179,11 +179,12 @@ impl CycleFrameCounter {
             Wild3GeneratorCycleOpts::Searching {
                 generate_even_if_impossible,
                 consider_rng_manipulated_lead_pid,
+                ..
             } => {
                 let min_mid_max_initial = get_min_mid_max_pre_sweet_scent_cycle(
                     opts.action,
                     map_data,
-                    opts.calibration_context,
+                    opts.cycle_opts.movement(),
                 );
                 if !*consider_rng_manipulated_lead_pid && !*generate_even_if_impossible {
                     let (min_lead_cycle_spd, max_lead_cycle_spd) =
@@ -217,11 +218,11 @@ impl CycleFrameCounter {
                     generate_even_if_impossible: *generate_even_if_impossible,
                 }
             }
-            Wild3GeneratorCycleOpts::LikelihoodForLead { lead_cycle_spd } => {
+            Wild3GeneratorCycleOpts::LikelihoodForLead { lead_cycle_spd, .. } => {
                 let min_mid_max_initial = get_min_mid_max_pre_sweet_scent_cycle(
                     opts.action,
                     map_data,
-                    opts.calibration_context,
+                    opts.cycle_opts.movement(),
                 );
                 CycleFrameCounter::MinMaxRange {
                     min_max_cycles: MinMaxCycleFrame::new(
@@ -234,14 +235,14 @@ impl CycleFrameCounter {
                     generate_even_if_impossible: true,
                 }
             }
-            Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog { lead_cycle_spd } => {
+            Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog { lead_cycle_spd, .. } => {
                 CycleFrameCounter::DetailedBreakdown {
                     lead_cycle_spd: *lead_cycle_spd,
                     current_cycle: CycleFrame {
                         cycle: get_min_mid_max_pre_sweet_scent_cycle(
                             opts.action,
                             map_data,
-                            opts.calibration_context,
+                            opts.cycle_opts.movement(),
                         )
                         .mid,
                         frame: 0,

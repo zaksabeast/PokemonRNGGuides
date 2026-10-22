@@ -21,6 +21,7 @@ fn test_search_wild3_cycle_methods_1_2_4() {
         initial_advances: 65,
         max_result_count: 10,
         cycle_opts: Wild3SearcherCycleOpts::Calibrate {
+                movement: crate::gen3::Wild3MovementMode::OnFoot,
             lead_cycle_speed: Some(500),
         },
         leads: vec![Gen3Lead::Vanilla],

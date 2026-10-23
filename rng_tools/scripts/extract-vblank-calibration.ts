@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { readFile, writeFile, rename } from "node:fs/promises";
+import { fakeAudioCode } from "./fake-vblank-audio";
 
 const root = new URL("../src/generators/gen3/wild/", import.meta.url);
 const tolerance = 0.0025;
@@ -188,6 +189,7 @@ export async function extract(check = false) {
       const s = summary(values);
       const number = (x: number) => Number.isInteger(x) ? x.toFixed(1) : x.toPrecision(17);
       code += "pub(super) const " + id + ": ComponentDistribution = ComponentDistribution {\n";
+      code += "    is_fake: false,\n";
       code += "    summary: MinMidMax::new(" + s.min + ", " + s.median + ", " + s.max + "),\n";
       code += "    cdf: PiecewiseCdf { knots: &[\n";
       for (const k of result.knots) code += "        CdfKnot { cycle: " + number(k.x) + ", probability: " + number(k.p) + ", integral: " + number(k.area) + " },\n";
@@ -279,6 +281,7 @@ export async function extract(check = false) {
       model: joint ? "joint_cdf_correction" : "independent_convolution",
       validation_kind: captures.find(c => c.song === capture.song)!.id === capture.id ? "in_sample_joint" : "cross_map_audio_holdout" });
   }
+  code += fakeAudioCode();
   const artifacts = [
     ["vblank_calibration_data.rs", code],
     ["vblank_calibration_validation.json", JSON.stringify({ extractor_version: 3, cdf_tolerance: tolerance,

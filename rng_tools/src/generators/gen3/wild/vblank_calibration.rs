@@ -36,6 +36,7 @@ pub struct CalibrationProvenance {
 
 #[derive(Debug, Clone, Copy)]
 pub struct ComponentDistribution {
+    pub is_fake: bool,
     pub summary: MinMidMax,
     pub cdf: PiecewiseCdf,
     pub provenance: CalibrationProvenance,
@@ -218,6 +219,78 @@ pub fn get_wild3_calibration_info(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn fake_audio_covers_requested_songs_and_weather_with_scaled_bounds() {
+        let actual = data::FAKE_AUDIO_CALIBRATIONS.iter()
+            .map(|(name, component)| (*name, component.summary, component.is_fake))
+            .collect::<Vec<_>>();
+        let expected = [
+            ("CYCLING_SUNNY_AUDIO", MinMidMax::new(16_296, 32_030, 41_492)),
+            ("CYCLING_FISHING_SUNNY_AUDIO", MinMidMax::new(20_370, 40_038, 51_865)),
+            ("CYCLING_FISHING_RAIN_AUDIO", MinMidMax::new(22_407, 44_041, 57_052)),
+            ("SURF_SUNNY_AUDIO", MinMidMax::new(36_666, 72_068, 93_357)),
+            ("SURF_FISHING_SUNNY_AUDIO", MinMidMax::new(32_999, 64_861, 84_021)),
+            ("ROUTE119_SUNNY_AUDIO", MinMidMax::new(24_444, 48_045, 62_238)),
+            ("ROUTE120_SUNNY_AUDIO", MinMidMax::new(24_444, 48_045, 62_238)),
+            ("ROUTE122_SUNNY_AUDIO", MinMidMax::new(24_444, 48_045, 62_238)),
+            ("ROUTE120_RAIN_AUDIO", MinMidMax::new(26_888, 52_850, 68_462)),
+            ("ABANDONED_SHIP_FISHING_SUNNY_AUDIO", MinMidMax::new(30_555, 60_056, 77_798)),
+            ("CAVE_OF_ORIGIN_FISHING_SUNNY_AUDIO", MinMidMax::new(30_555, 60_056, 77_798)),
+            ("DEWFORD_FISHING_SUNNY_AUDIO", MinMidMax::new(30_555, 60_056, 77_798)),
+            ("EVER_GRANDE_FISHING_SUNNY_AUDIO", MinMidMax::new(30_555, 60_056, 77_798)),
+            ("LILYCOVE_FISHING_SUNNY_AUDIO", MinMidMax::new(30_555, 60_056, 77_798)),
+            ("MT_CHIMNEY_FISHING_SUNNY_AUDIO", MinMidMax::new(30_555, 60_056, 77_798)),
+            ("MT_PYRE_FISHING_SUNNY_AUDIO", MinMidMax::new(30_555, 60_056, 77_798)),
+            ("PETALBURG_FISHING_SUNNY_AUDIO", MinMidMax::new(30_555, 60_056, 77_798)),
+            ("ROUTE101_FISHING_SUNNY_AUDIO", MinMidMax::new(30_555, 60_056, 77_798)),
+            ("ROUTE104_FISHING_SUNNY_AUDIO", MinMidMax::new(30_555, 60_056, 77_798)),
+            ("ROUTE110_FISHING_SUNNY_AUDIO", MinMidMax::new(30_555, 60_056, 77_798)),
+            ("ROUTE118_FISHING_SUNNY_AUDIO", MinMidMax::new(30_555, 60_056, 77_798)),
+            ("ROUTE119_FISHING_SUNNY_AUDIO", MinMidMax::new(30_555, 60_056, 77_798)),
+            ("ROUTE120_FISHING_SUNNY_AUDIO", MinMidMax::new(30_555, 60_056, 77_798)),
+            ("ROUTE122_FISHING_SUNNY_AUDIO", MinMidMax::new(30_555, 60_056, 77_798)),
+            ("RUSTBORO_FISHING_SUNNY_AUDIO", MinMidMax::new(30_555, 60_056, 77_798)),
+            ("SAFARI_ZONE_FISHING_SUNNY_AUDIO", MinMidMax::new(30_555, 60_056, 77_798)),
+            ("SLATEPORT_FISHING_SUNNY_AUDIO", MinMidMax::new(30_555, 60_056, 77_798)),
+            ("SOOTOPOLIS_FISHING_SUNNY_AUDIO", MinMidMax::new(30_555, 60_056, 77_798)),
+            ("VICTORY_ROAD_FISHING_SUNNY_AUDIO", MinMidMax::new(30_555, 60_056, 77_798)),
+            ("ROUTE119_RAIN_AUDIO", MinMidMax::new(26_888, 52_850, 68_462)),
+            ("ROUTE119_THUNDERSTORM_AUDIO", MinMidMax::new(29_333, 57_654, 74_686)),
+            ("SURF_RAIN_AUDIO", MinMidMax::new(40_333, 79_274, 102_693)),
+            ("SURF_THUNDERSTORM_AUDIO", MinMidMax::new(43_999, 86_481, 112_028)),
+            ("ROUTE122_RAIN_AUDIO", MinMidMax::new(26_888, 52_850, 68_462)),
+            ("ROUTE119_FISHING_RAIN_AUDIO", MinMidMax::new(33_611, 66_062, 85_577)),
+            ("ROUTE119_FISHING_THUNDERSTORM_AUDIO", MinMidMax::new(36_666, 72_068, 93_357)),
+            ("ROUTE122_FISHING_RAIN_AUDIO", MinMidMax::new(33_611, 66_062, 85_577)),
+        ].map(|(name, summary)| (name, summary, true));
+
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn fake_audio_cdfs_preserve_probability_and_integrals_after_rounding() {
+        for (_, component) in data::FAKE_AUDIO_CALIBRATIONS {
+            assert_eq!(component.provenance.attempts, 0);
+            assert_eq!(component.provenance.sha256, "");
+            assert!(component.provenance.incomplete_loop);
+            assert_eq!(component.cdf.less_than(component.summary.min as f64), 0.0);
+            assert_eq!(component.cdf.less_than(component.summary.max as f64 + 1.0), 1.0);
+            check_fake_audio_knots(component.cdf.knots);
+        }
+    }
+
+    fn check_fake_audio_knots(knots: &[super::super::cycle_distribution::CdfKnot]) {
+        for pair in knots.windows(2) {
+            assert!(pair[0].cycle <= pair[1].cycle);
+            assert!(pair[0].probability <= pair[1].probability);
+            let area = (pair[1].cycle - pair[0].cycle)
+                * (pair[0].probability + pair[1].probability) / 2.0;
+
+            assert!((pair[1].integral - pair[0].integral - area).abs() < 1e-8);
+        }
+    }
+
     fn map(index: usize) -> Wild3MapGameData {
         Wild3MapGameData { map_internal_idx: index, ..Default::default() }
     }

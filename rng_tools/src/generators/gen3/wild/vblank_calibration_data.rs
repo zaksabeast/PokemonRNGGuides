@@ -3,6 +3,7 @@ use super::{CalibrationProvenance, ComponentDistribution, MinMidMax};
 use super::super::cycle_distribution::{CdfKnot, PiecewiseCdf};
 
 pub(super) const ROUTE101_AUDIO: ComponentDistribution = ComponentDistribution {
+    is_fake: false,
     summary: MinMidMax::new(24444, 48045, 62238),
     cdf: PiecewiseCdf { knots: &[
         CdfKnot { cycle: 24444.0, probability: 0.0, integral: 0.0 },
@@ -146,6 +147,7 @@ pub(super) const ROUTE101_AUDIO: ComponentDistribution = ComponentDistribution {
 };
 
 pub(super) const ROUTE101_NON_AUDIO: ComponentDistribution = ComponentDistribution {
+    is_fake: false,
     summary: MinMidMax::new(10242, 10250, 10274),
     cdf: PiecewiseCdf { knots: &[
         CdfKnot { cycle: 10242.0, probability: 0.0, integral: 0.0 },
@@ -180,6 +182,7 @@ pub(super) const ROUTE101_NON_AUDIO: ComponentDistribution = ComponentDistributi
 };
 
 pub(super) const ROUTE102_NON_AUDIO: ComponentDistribution = ComponentDistribution {
+    is_fake: false,
     summary: MinMidMax::new(10242, 10250, 10274),
     cdf: PiecewiseCdf { knots: &[
         CdfKnot { cycle: 10242.0, probability: 0.0, integral: 0.0 },
@@ -214,6 +217,7 @@ pub(super) const ROUTE102_NON_AUDIO: ComponentDistribution = ComponentDistributi
 };
 
 pub(super) const ROUTE103_NON_AUDIO: ComponentDistribution = ComponentDistribution {
+    is_fake: false,
     summary: MinMidMax::new(10242, 10250, 10274),
     cdf: PiecewiseCdf { knots: &[
         CdfKnot { cycle: 10242.0, probability: 0.0, integral: 0.0 },
@@ -248,6 +252,7 @@ pub(super) const ROUTE103_NON_AUDIO: ComponentDistribution = ComponentDistributi
 };
 
 pub(super) const ROUTE104_AUDIO: ComponentDistribution = ComponentDistribution {
+    is_fake: false,
     summary: MinMidMax::new(32552, 49274, 65814),
     cdf: PiecewiseCdf { knots: &[
         CdfKnot { cycle: 32552.0, probability: 0.0, integral: 0.0 },
@@ -352,6 +357,7 @@ pub(super) const ROUTE104_AUDIO: ComponentDistribution = ComponentDistribution {
 };
 
 pub(super) const ROUTE104_NON_AUDIO: ComponentDistribution = ComponentDistribution {
+    is_fake: false,
     summary: MinMidMax::new(10473, 10481, 10505),
     cdf: PiecewiseCdf { knots: &[
         CdfKnot { cycle: 10473.0, probability: 0.0, integral: 0.0 },
@@ -386,6 +392,7 @@ pub(super) const ROUTE104_NON_AUDIO: ComponentDistribution = ComponentDistributi
 };
 
 pub(super) const ROUTE110_AUDIO: ComponentDistribution = ComponentDistribution {
+    is_fake: false,
     summary: MinMidMax::new(30867, 49388, 62757),
     cdf: PiecewiseCdf { knots: &[
         CdfKnot { cycle: 30867.0, probability: 0.0, integral: 0.0 },
@@ -532,6 +539,7 @@ pub(super) const ROUTE110_AUDIO: ComponentDistribution = ComponentDistribution {
 };
 
 pub(super) const ROUTE110_NON_AUDIO: ComponentDistribution = ComponentDistribution {
+    is_fake: false,
     summary: MinMidMax::new(10704, 10712, 10736),
     cdf: PiecewiseCdf { knots: &[
         CdfKnot { cycle: 10704.0, probability: 0.0, integral: 0.0 },
@@ -566,6 +574,7 @@ pub(super) const ROUTE110_NON_AUDIO: ComponentDistribution = ComponentDistributi
 };
 
 pub(super) const PETALBURG_WOODS_AUDIO: ComponentDistribution = ComponentDistribution {
+    is_fake: false,
     summary: MinMidMax::new(24446, 48046, 61001),
     cdf: PiecewiseCdf { knots: &[
         CdfKnot { cycle: 24446.0, probability: 0.0, integral: 0.0 },
@@ -734,6 +743,7 @@ pub(super) const PETALBURG_WOODS_AUDIO: ComponentDistribution = ComponentDistrib
 };
 
 pub(super) const PETALBURG_WOODS_NON_AUDIO: ComponentDistribution = ComponentDistribution {
+    is_fake: false,
     summary: MinMidMax::new(9954, 9962, 9986),
     cdf: PiecewiseCdf { knots: &[
         CdfKnot { cycle: 9954.0, probability: 0.0, integral: 0.0 },
@@ -768,6 +778,7 @@ pub(super) const PETALBURG_WOODS_NON_AUDIO: ComponentDistribution = ComponentDis
 };
 
 pub(super) const ROUTE113_AUDIO: ComponentDistribution = ComponentDistribution {
+    is_fake: false,
     summary: MinMidMax::new(25864, 45130, 59163),
     cdf: PiecewiseCdf { knots: &[
         CdfKnot { cycle: 25864.0, probability: 0.0, integral: 0.0 },
@@ -872,6 +883,7 @@ pub(super) const ROUTE113_AUDIO: ComponentDistribution = ComponentDistribution {
 };
 
 pub(super) const ROUTE113_NON_AUDIO: ComponentDistribution = ComponentDistribution {
+    is_fake: false,
     summary: MinMidMax::new(10274, 10286, 10306),
     cdf: PiecewiseCdf { knots: &[
         CdfKnot { cycle: 10274.0, probability: 0.0, integral: 0.0 },
@@ -906,6 +918,7 @@ pub(super) const ROUTE113_NON_AUDIO: ComponentDistribution = ComponentDistributi
 };
 
 pub(super) const SAFARI_ZONE_AUDIO: ComponentDistribution = ComponentDistribution {
+    is_fake: false,
     summary: MinMidMax::new(31996, 44490, 57894),
     cdf: PiecewiseCdf { knots: &[
         CdfKnot { cycle: 31996.0, probability: 0.0, integral: 0.0 },
@@ -1128,6 +1141,7 @@ pub(super) const SAFARI_ZONE_AUDIO: ComponentDistribution = ComponentDistributio
 };
 
 pub(super) const SAFARI_ZONE_SOUTH_NON_AUDIO: ComponentDistribution = ComponentDistribution {
+    is_fake: false,
     summary: MinMidMax::new(10242, 10254, 10274),
     cdf: PiecewiseCdf { knots: &[
         CdfKnot { cycle: 10242.0, probability: 0.0, integral: 0.0 },
@@ -1162,6 +1176,7 @@ pub(super) const SAFARI_ZONE_SOUTH_NON_AUDIO: ComponentDistribution = ComponentD
 };
 
 pub(super) const RG_SEVII_CAVE_AUDIO: ComponentDistribution = ComponentDistribution {
+    is_fake: false,
     summary: MinMidMax::new(32311, 49813, 60314),
     cdf: PiecewiseCdf { knots: &[
         CdfKnot { cycle: 32311.0, probability: 0.0, integral: 0.0 },
@@ -1273,6 +1288,7 @@ pub(super) const RG_SEVII_CAVE_AUDIO: ComponentDistribution = ComponentDistribut
 };
 
 pub(super) const ALTERING_CAVE_NON_AUDIO: ComponentDistribution = ComponentDistribution {
+    is_fake: false,
     summary: MinMidMax::new(9741, 9749, 9773),
     cdf: PiecewiseCdf { knots: &[
         CdfKnot { cycle: 9741.0, probability: 0.0, integral: 0.0 },
@@ -1317,6 +1333,7 @@ pub(super) const ROUTE104_COMBINED_MEDIAN: usize = 59751;
 pub(super) const ROUTE110_JOINT_CORRECTION: Option<ComponentDistribution> = None;
 pub(super) const ROUTE110_COMBINED_MEDIAN: usize = 60098;
 pub(super) const PETALBURG_WOODS_JOINT: ComponentDistribution = ComponentDistribution {
+    is_fake: false,
     summary: MinMidMax::new(34418, 58008, 70955),
     cdf: PiecewiseCdf { knots: &[
         CdfKnot { cycle: 34418.0, probability: 0.0, integral: 0.0 },
@@ -1488,3 +1505,320 @@ pub(super) const SAFARI_ZONE_SOUTH_JOINT_CORRECTION: Option<ComponentDistributio
 pub(super) const SAFARI_ZONE_SOUTH_COMBINED_MEDIAN: usize = 54735;
 pub(super) const ALTERING_CAVE_JOINT_CORRECTION: Option<ComponentDistribution> = None;
 pub(super) const ALTERING_CAVE_COMBINED_MEDIAN: usize = 59556;
+// Synthetic placeholders scale Route 101 audio, not measured captures.
+// MUS_ROUTE122 is the song used on Route 123.
+const fn scaled_audio_cycle(cycle: usize, numerator: usize, denominator: usize) -> usize {
+    (cycle * numerator + denominator / 2) / denominator
+}
+
+const fn scaled_audio_knots<const N: usize>(numerator: usize, denominator: usize) -> [CdfKnot; N] {
+    let mut knots = [CdfKnot { cycle: 0.0, probability: 0.0, integral: 0.0 }; N];
+    let mut index = 0;
+
+    while index < N {
+        let source = ROUTE101_AUDIO.cdf.knots[index];
+        let cycle = scaled_audio_cycle(source.cycle as usize, numerator, denominator) as f64;
+        let integral = if index == 0 {
+            0.0
+        } else {
+            let previous = knots[index - 1];
+
+            previous.integral + (cycle - previous.cycle) * (source.probability + previous.probability) / 2.0
+        };
+        knots[index] = CdfKnot { cycle, probability: source.probability, integral };
+        index += 1;
+    }
+
+    knots
+}
+
+const fn fake_audio_distribution(knots: &'static [CdfKnot], numerator: usize, denominator: usize) -> ComponentDistribution {
+    let source = ROUTE101_AUDIO.summary;
+
+    ComponentDistribution {
+        is_fake: true,
+        summary: MinMidMax::new(
+            scaled_audio_cycle(source.min, numerator, denominator),
+            scaled_audio_cycle(source.mid, numerator, denominator),
+            scaled_audio_cycle(source.max, numerator, denominator),
+        ),
+        cdf: PiecewiseCdf { knots },
+        provenance: CalibrationProvenance {
+            source: "synthetic: scaled ROUTE101_AUDIO; not measured",
+            sha256: "",
+            attempts: 0,
+            distinct_frames: 0,
+            frame_start: 0,
+            frame_end: 0,
+            duplicate_attempts: 0,
+            missing_frames: 0,
+            song_loop_frames: 0.0,
+            incomplete_loop: true,
+            max_cdf_error: 0.0,
+            safety_margin_cycles: 0,
+        },
+    }
+}
+
+#[cfg_attr(not(test), expect(dead_code, reason = "Synthetic datasets are staged for vblank setup support."))]
+pub(super) const FAKE_AUDIO_CALIBRATIONS: &[(&str, ComponentDistribution)] = &[
+    (
+        "CYCLING_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(2, 3),
+            2, 3,
+        ),
+    ),
+    (
+        "CYCLING_FISHING_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(5, 6),
+            5, 6,
+        ),
+    ),
+    (
+        "CYCLING_FISHING_RAIN_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(11, 12),
+            11, 12,
+        ),
+    ),
+    (
+        "SURF_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(3, 2),
+            3, 2,
+        ),
+    ),
+    (
+        "SURF_FISHING_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(27, 20),
+            27, 20,
+        ),
+    ),
+    (
+        "ROUTE119_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(1, 1),
+            1, 1,
+        ),
+    ),
+    (
+        "ROUTE120_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(1, 1),
+            1, 1,
+        ),
+    ),
+    (
+        "ROUTE122_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(1, 1),
+            1, 1,
+        ),
+    ),
+    (
+        "ROUTE120_RAIN_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(11, 10),
+            11, 10,
+        ),
+    ),
+    (
+        "ABANDONED_SHIP_FISHING_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(5, 4),
+            5, 4,
+        ),
+    ),
+    (
+        "CAVE_OF_ORIGIN_FISHING_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(5, 4),
+            5, 4,
+        ),
+    ),
+    (
+        "DEWFORD_FISHING_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(5, 4),
+            5, 4,
+        ),
+    ),
+    (
+        "EVER_GRANDE_FISHING_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(5, 4),
+            5, 4,
+        ),
+    ),
+    (
+        "LILYCOVE_FISHING_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(5, 4),
+            5, 4,
+        ),
+    ),
+    (
+        "MT_CHIMNEY_FISHING_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(5, 4),
+            5, 4,
+        ),
+    ),
+    (
+        "MT_PYRE_FISHING_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(5, 4),
+            5, 4,
+        ),
+    ),
+    (
+        "PETALBURG_FISHING_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(5, 4),
+            5, 4,
+        ),
+    ),
+    (
+        "ROUTE101_FISHING_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(5, 4),
+            5, 4,
+        ),
+    ),
+    (
+        "ROUTE104_FISHING_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(5, 4),
+            5, 4,
+        ),
+    ),
+    (
+        "ROUTE110_FISHING_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(5, 4),
+            5, 4,
+        ),
+    ),
+    (
+        "ROUTE118_FISHING_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(5, 4),
+            5, 4,
+        ),
+    ),
+    (
+        "ROUTE119_FISHING_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(5, 4),
+            5, 4,
+        ),
+    ),
+    (
+        "ROUTE120_FISHING_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(5, 4),
+            5, 4,
+        ),
+    ),
+    (
+        "ROUTE122_FISHING_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(5, 4),
+            5, 4,
+        ),
+    ),
+    (
+        "RUSTBORO_FISHING_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(5, 4),
+            5, 4,
+        ),
+    ),
+    (
+        "SAFARI_ZONE_FISHING_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(5, 4),
+            5, 4,
+        ),
+    ),
+    (
+        "SLATEPORT_FISHING_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(5, 4),
+            5, 4,
+        ),
+    ),
+    (
+        "SOOTOPOLIS_FISHING_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(5, 4),
+            5, 4,
+        ),
+    ),
+    (
+        "VICTORY_ROAD_FISHING_SUNNY_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(5, 4),
+            5, 4,
+        ),
+    ),
+    (
+        "ROUTE119_RAIN_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(11, 10),
+            11, 10,
+        ),
+    ),
+    (
+        "ROUTE119_THUNDERSTORM_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(6, 5),
+            6, 5,
+        ),
+    ),
+    (
+        "SURF_RAIN_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(33, 20),
+            33, 20,
+        ),
+    ),
+    (
+        "SURF_THUNDERSTORM_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(18, 10),
+            18, 10,
+        ),
+    ),
+    (
+        "ROUTE122_RAIN_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(11, 10),
+            11, 10,
+        ),
+    ),
+    (
+        "ROUTE119_FISHING_RAIN_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(55, 40),
+            55, 40,
+        ),
+    ),
+    (
+        "ROUTE119_FISHING_THUNDERSTORM_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(30, 20),
+            30, 20,
+        ),
+    ),
+    (
+        "ROUTE122_FISHING_RAIN_AUDIO",
+        fake_audio_distribution(
+            &scaled_audio_knots::<{ ROUTE101_AUDIO.cdf.knots.len() }>(55, 40),
+            55, 40,
+        ),
+    ),
+];

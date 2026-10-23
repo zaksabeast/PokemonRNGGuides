@@ -146,7 +146,6 @@ export const calculateTargetSetupResult = async (
       lead_cycle_speed == null
         ? {
             Searching: {
-              weather: "Sunny",
               consider_bike: false,
               generate_even_if_impossible: true,
               consider_rng_manipulated_lead_pid: true,
@@ -154,7 +153,6 @@ export const calculateTargetSetupResult = async (
           }
         : {
             LikelihoodForLead: {
-              weather: "Sunny",
               consider_bike: false,
               lead_cycle_spd: lead_cycle_speed,
             },

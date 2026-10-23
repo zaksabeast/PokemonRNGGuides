@@ -270,7 +270,6 @@ export const Wild3CycleAtMoments = ({ targetSetup, leadCycleSpeed }: Props) => {
         json == null
           ? {
               CycleAtMomentNoEmuLog: {
-                weather: "Sunny",
                 movement: "OnFoot",
                 lead_cycle_spd: leadCycleSpeed ?? 0,
               },

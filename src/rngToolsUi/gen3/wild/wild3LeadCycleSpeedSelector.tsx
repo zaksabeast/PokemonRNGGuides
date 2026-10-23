@@ -113,7 +113,6 @@ export const Wild3LeadCycleSpeedSelector = ({
   React.useEffect(() => {
     setupToDistributions(targetSetup, {
       LikelihoodForLead: {
-        weather: "Sunny",
         consider_bike: false,
         lead_cycle_spd: actualLeadCycleSpeed ?? 0,
       },

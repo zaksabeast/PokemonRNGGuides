@@ -38,7 +38,6 @@ pub fn generate_gen3_wild_distribution(
     vblank_cycles: Option<Vec<usize>>,
 ) -> Wild3MethodDistributionResults {
     let movement = opts.cycle_opts.movement();
-    let weather = opts.cycle_opts.weather();
     let cycle_opts_for_cycle = match (initial_cycle_at_sweet_scent, vblank_cycles) {
         (Some(initial_cycle_at_sweet_scent), Some(vblank_cycles)) => {
             Wild3GeneratorCycleOpts::CycleAtMomentWithEmuLog {
@@ -48,7 +47,6 @@ pub fn generate_gen3_wild_distribution(
             }
         }
         _ => Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog {
-            weather,
             lead_cycle_spd,
             movement,
         },
@@ -79,7 +77,6 @@ pub fn generate_gen3_wild_distribution(
         advances,
         &Wild3GeneratorOptions {
             cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead {
-            weather,
                 lead_cycle_spd,
                 consider_bike: movement == Wild3MovementMode::Bike,
             },

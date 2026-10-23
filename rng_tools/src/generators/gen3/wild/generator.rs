@@ -1477,7 +1477,6 @@ fn create_if_passes_filter(
 #[cfg(test)]
 mod header_lookup_tests {
     use super::*;
-    use crate::gen3::Wild3Weather;
 
     #[test]
     fn calibrated_map_header_lookup_cycles() {
@@ -1493,7 +1492,6 @@ mod header_lookup_tests {
         ] {
             let opts = Wild3GeneratorOptions {
                 cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead {
-                    weather: Wild3Weather::Sunny,
                     lead_cycle_spd: 0,
                     consider_bike: false,
                 },

@@ -17,7 +17,8 @@ use crate::{
         searcher_painter::Wild3PaintingOpts,
         wild::{
             Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex, Wild3MapGameData,
-            Wild3SearcherCycleDataByLead, Wild3MovementMode, Wild3Weather, calculate_cycle_data_by_lead,
+            Wild3MovementMode, Wild3SearcherCycleDataByLead, Wild3Weather,
+            calculate_cycle_data_by_lead,
         },
     },
     gen3_shiny,
@@ -123,31 +124,28 @@ impl Wild3SearcherCycleOpts {
         match self {
             Self::Inactive => Wild3GeneratorCycleOpts::Inactive,
             Self::SearchNewTarget {
-                weather,
                 consider_bike,
                 consider_rng_manipulated_lead_pid,
                 generate_even_if_impossible,
+                ..
             } => Wild3GeneratorCycleOpts::Searching {
-                weather: *weather,
                 consider_bike: *consider_bike,
                 generate_even_if_impossible: *generate_even_if_impossible,
                 consider_rng_manipulated_lead_pid: *consider_rng_manipulated_lead_pid,
             },
             Self::Calibrate {
-                weather,
                 movement,
                 lead_cycle_speed: Some(lead_cycle_spd),
+                ..
             } => Wild3GeneratorCycleOpts::LikelihoodForLead {
-                weather: *weather,
                 lead_cycle_spd: *lead_cycle_spd,
                 consider_bike: *movement == Wild3MovementMode::Bike,
             },
             Self::Calibrate {
-                weather,
                 movement,
                 lead_cycle_speed: None,
+                ..
             } => Wild3GeneratorCycleOpts::Searching {
-                weather: *weather,
                 consider_bike: *movement == Wild3MovementMode::Bike,
                 generate_even_if_impossible: true,
                 consider_rng_manipulated_lead_pid: true,

@@ -172,7 +172,7 @@ mod tests {
     }
 
     #[test]
-    fn searcher_options_preserve_weather_for_known_and_unknown_lead_speeds() {
+    fn searcher_options_convert_known_and_unknown_lead_speeds() {
         let known = Wild3SearcherCycleOpts::Calibrate {
             weather: Wild3Weather::Rain,
             movement: Wild3MovementMode::OnFoot,
@@ -187,7 +187,6 @@ mod tests {
         assert_eq!(
             known.generator_cycle_opts(),
             Wild3GeneratorCycleOpts::LikelihoodForLead {
-                weather: Wild3Weather::Rain,
                 consider_bike: false,
                 lead_cycle_spd: 500,
             }
@@ -195,7 +194,6 @@ mod tests {
         assert_eq!(
             unknown.generator_cycle_opts(),
             Wild3GeneratorCycleOpts::Searching {
-                weather: Wild3Weather::Thunderstorm,
                 consider_bike: true,
                 generate_even_if_impossible: true,
                 consider_rng_manipulated_lead_pid: true,

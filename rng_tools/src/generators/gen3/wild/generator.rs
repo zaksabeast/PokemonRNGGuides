@@ -61,7 +61,7 @@ fn FishingWildEncounter(
     cycle_counter.add_cycle(1186);
     cycle_counter.on_moment_reached(Moment::FishingWildEncounter);
 
-    if CheckFeebas(rng, opts, cycle_counter) {
+    if CheckFeebas(rng, opts, map_data, cycle_counter) {
         let encounter = map_data.feebas.as_ref()?;
         let level = ChooseWildMonLevel(rng, encounter, opts.lead, cycle_counter);
         let encounter_idx = Wild3EncounterIndex::Feebas;
@@ -95,6 +95,7 @@ fn FishingWildEncounter(
 fn CheckFeebas(
     rng: &mut Pokerng,
     opts: &Wild3GeneratorOptions,
+    map_data: &Wild3MapGameData,
     cycle_counter: &mut CycleFrameCounter,
 ) -> bool {
     cycle_counter.on_moment_reached(Moment::CheckFeebas);
@@ -105,7 +106,10 @@ fn CheckFeebas(
     if rng.rand::<u16>() % 100 > 49 {
         return false;
     }
-    handle_feebas_cycle_counter(rng, cycle_counter, opts.feebas_cycles);
+
+    let initial = get_min_mid_max_pre_sweet_scent_cycle(opts.action, map_data, opts.cycle_opts.movement());
+    handle_feebas_cycle_counter(rng, cycle_counter, opts.feebas_cycles, initial);
+
     opts.feebas_state == Wild3FeebasState::OnFeebasTile
 }
 
@@ -1017,12 +1021,11 @@ fn rand_next_u16(rng: &mut Pokerng, _reason: &str, _modulo: u16) -> u16 {
 
 #[wasm_bindgen]
 // Only returns the mid case (which is the one used by the generator)
-pub fn get_feebas_vblank_from_feebas_cycle(feebas_cycles: usize) -> usize {
-    let mid = get_min_mid_max_pre_sweet_scent_cycle(Wild3Action::OldRod, &Wild3MapGameData::default(), crate::gen3::Wild3MovementMode::OnFoot).mid;
+pub fn get_feebas_vblank_from_feebas_cycle(feebas_cycles: usize, initial_cycle: usize) -> usize {
     let mid_vblank = get_min_mid_max_vblank_cycle_duration().mid;
 
     let (_, mid_case_vblank) =
-        apply_cycles_causing_vblanks_on_cycle_counter(mid, feebas_cycles, mid_vblank);
+        apply_cycles_causing_vblanks_on_cycle_counter(initial_cycle, feebas_cycles, mid_vblank);
 
     mid_case_vblank
 }
@@ -1051,10 +1054,11 @@ fn handle_feebas_cycle_counter(
     rng: &mut Pokerng,
     cycle_counter: &mut CycleFrameCounter,
     feebas_cycles: usize,
+    initial: super::MinMidMax,
 ) {
     cycle_counter.on_moment_reached(Moment::CheckFeebas);
 
-    let super::MinMidMax { min, mid, max } = get_min_mid_max_pre_sweet_scent_cycle(Wild3Action::OldRod, &Wild3MapGameData::default(), crate::gen3::Wild3MovementMode::OnFoot);
+    let super::MinMidMax { min, mid, max } = initial;
     let super::MinMidMax { min: min_vblank, mid: mid_vblank, max: max_vblank } = get_min_mid_max_vblank_cycle_duration();
 
     let (_, min_case_vblank) =

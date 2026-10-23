@@ -11,6 +11,10 @@ use crate::{
 #[test]
 fn test_search_wild3_cycle_methods_1_2_4() {
     let options = Wild3SearcherOptions {
+        map_setups: vec![crate::gen3::Wild3MapSetups {
+            map_data: crate::gen3::Wild3MapGameData::test_default(),
+            ..Default::default()
+        }],
         methods: vec![
             Gen3Method::Wild1,
             Gen3Method::Wild2,
@@ -32,7 +36,6 @@ fn test_search_wild3_cycle_methods_1_2_4() {
         },
         ..Default::default()
     };
-    // Probabilities use the separately fitted and convolved Route 101 distributions.
     let expected_results = [
         Wild3SearcherResultMon {
             pid: 2695989139,
@@ -41,11 +44,11 @@ fn test_search_wild3_cycle_methods_1_2_4() {
             encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot1),
             cycle_data_by_lead: Some(Wild3SearcherCycleDataByLead {
                 post_sweet_scent_range: CycleRange::new(75276, 80, 115175),
-                specified_lead: Some(Wild3SearcherCycleData::new(500, 50445, 115175, 0.8813576437894829)),
+                specified_lead: Some(Wild3SearcherCycleData::new(500, 50445, 115175, 0.48887499999999995)),
                 slowest_lead: Wild3SearcherCycleData::new(900, 18445, 115175, 1.0),
                 fastest_lead: Wild3SearcherCycleData::new(18, 89005, 115175, 0.0),
                 ideal_lead: Wild3SearcherCycleData::new(900, 18445, 115175, 1.0),
-                common_lower_lead: Wild3SearcherCycleData::new(608, 41805, 115175, 0.978522506395616),
+                common_lower_lead: Wild3SearcherCycleData::new(608, 41805, 115175, 0.7048749999999999),
                 common_upper_lead: Wild3SearcherCycleData::new(868, 21005, 115175, 1.0),
             }),
             ability: AbilityType::Second,
@@ -67,11 +70,11 @@ fn test_search_wild3_cycle_methods_1_2_4() {
             encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot1),
             cycle_data_by_lead: Some(Wild3SearcherCycleDataByLead {
                 post_sweet_scent_range: CycleRange::new(190451, 80, 39309),
-                specified_lead: Some(Wild3SearcherCycleData::new(500, 11136, 39309, 0.11864235621051714)),
+                specified_lead: Some(Wild3SearcherCycleData::new(500, 11136, 39309, 0.511125)),
                 slowest_lead: Wild3SearcherCycleData::new(900, -20864, 39309, 0.0),
-                fastest_lead: Wild3SearcherCycleData::new(18, 49696, 39309, 0.9020457992820816),
-                ideal_lead: Wild3SearcherCycleData::new(206, 34656, 39309, 1.0),
-                common_lower_lead: Wild3SearcherCycleData::new(608, 2496, 39309, 0.021477493604384012),
+                fastest_lead: Wild3SearcherCycleData::new(18, 49696, 39309, 0.5076),
+                ideal_lead: Wild3SearcherCycleData::new(259, 30416, 39309, 0.9827250000000001),
+                common_lower_lead: Wild3SearcherCycleData::new(608, 2496, 39309, 0.295125),
                 common_upper_lead: Wild3SearcherCycleData::new(868, -18304, 39309, 0.0),
             }),
             ability: AbilityType::Second,
@@ -99,9 +102,9 @@ fn test_search_wild3_cycle_methods_1_2_4() {
                     18,
                     -1000000,
                     1049696,
-                    0.09795420071791844,
+                    0.4924,
                 ),
-                ideal_lead: Wild3SearcherCycleData::new(18, -1000000, 1049696, 0.09795420071791844),
+                ideal_lead: Wild3SearcherCycleData::new(18, -1000000, 1049696, 0.4924),
                 common_lower_lead: Wild3SearcherCycleData::new(608, -1000000, 1002496, 0.0),
                 common_upper_lead: Wild3SearcherCycleData::new(868, -1000000, 981696, 0.0),
             }),

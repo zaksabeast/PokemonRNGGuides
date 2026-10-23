@@ -164,7 +164,7 @@ pub struct EncounterIdxPathGenerator<'a> {
     actions: Vec<Wild3Action>,
     species_data: SpeciesData,
     using_white_flute: bool,
-    pub feebas_cycles_by_vblank: [Vec<usize>; MAX_FEEBAS_VBLANK],
+    pub feebas_cycles_by_vblank: [Vec<usize>; MAX_FEEBAS_VBLANK + 1],
 }
 
 struct Wild3MapSetupsForReverse<'a> {
@@ -224,6 +224,7 @@ impl<'a> EncounterIdxPathGenerator<'a> {
         species_data: SpeciesData,
         using_white_flute: bool,
         feebas_cycles: &[usize],
+        movement: crate::gen3::Wild3MovementMode,
     ) -> Self {
         let actions: Vec<Wild3Action> = map_setups
             .iter()
@@ -249,9 +250,24 @@ impl<'a> EncounterIdxPathGenerator<'a> {
             arcs.push(EncounterIdxToLvlArc::SlotStaticSuccess);
         }
 
-        let mut feebas_cycles_by_vblank: [Vec<usize>; MAX_FEEBAS_VBLANK] = Default::default();
+        // TODO: Why + 1?
+        let mut feebas_cycles_by_vblank: [Vec<usize>; MAX_FEEBAS_VBLANK + 1] = Default::default();
+        let initial_cycle = map_setups
+            .iter()
+            .find(|setup| setup.map_data.feebas.is_some())
+            .map(|setup| {
+                crate::gen3::get_min_mid_max_pre_sweet_scent_cycle(
+                    Wild3Action::OldRod,
+                    &setup.map_data,
+                    movement,
+                )
+                .mid
+            })
+            .unwrap_or(crate::gen3::VBLANK_FREQ / 2);
+
         for cycle in feebas_cycles {
-            feebas_cycles_by_vblank[get_feebas_vblank_from_feebas_cycle(*cycle)].push(*cycle)
+            feebas_cycles_by_vblank[get_feebas_vblank_from_feebas_cycle(*cycle, initial_cycle)]
+                .push(*cycle)
         }
 
         if permit_feebas_arcs(&species_data) {

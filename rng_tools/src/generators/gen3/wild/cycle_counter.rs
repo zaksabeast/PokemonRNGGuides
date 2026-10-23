@@ -181,6 +181,7 @@ impl CycleFrameCounter {
                 consider_rng_manipulated_lead_pid,
                 ..
             } => {
+                // TODO: Add Wild3MapGameData::get_min_mid_max_pre_sweet_scent_cycle. Remove standalone function get_min_mid_max_pre_sweet_scent_cycle
                 let min_mid_max_initial = get_min_mid_max_pre_sweet_scent_cycle(
                     opts.action,
                     map_data,

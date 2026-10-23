@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-use super::{MinMidMax, CycleRange, VBLANK_FREQ, Wild3Action, Wild3MapGameData, Wild3MovementMode};
+use super::{CycleRange, MinMidMax, VBLANK_FREQ, Wild3Action, Wild3MapGameData, Wild3MovementMode};
 use crate::gen3::{
     COMMON_LEAD_RANGE, CycleAndModRange, FASTEST_MODULO_CYCLE_24, INFINITE_CYCLE,
     SLOWEST_MODULO_CYCLE_24,
@@ -19,7 +19,8 @@ pre_sweet_scent_cycle_range: The range of cycles before the Sweet Scent function
                               It is VBLANK_FREQ - post_sweet_scent_cycle_range.
 */
 
-const MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE: usize = 55000;
+// TODO: Keep MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE
+const UNCALIBRATED_MID_CYCLE: usize = (VBLANK_FREQ - 1) / 2;
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -85,7 +86,11 @@ pub fn calculate_cycle_data_by_lead(
         }
     } else {
         let ideal_lead_pid_cycle_count = calculate_ideal_lead_pid_cycle_count(
-            post_sweet_scent_range, action, map_data, movement);
+            post_sweet_scent_range,
+            action,
+            map_data,
+            movement,
+        );
 
         Wild3SearcherCycleDataByLead {
             post_sweet_scent_range: *post_sweet_scent_range,
@@ -132,12 +137,8 @@ pub fn calculate_cycle_data(
         post_sweet_scent_mod_range.apply_mod_cycle_count(lead_pid_cycle_count);
     let pre_sweet_scent_cycle_range =
         calculate_pre_sweet_scent_cycle_range(&post_sweet_scent_range);
-    let method_probability = calculate_method_probability(
-        &pre_sweet_scent_cycle_range,
-        action,
-        map_data,
-        movement,
-    );
+    let method_probability =
+        calculate_method_probability(&pre_sweet_scent_cycle_range, action, map_data, movement);
 
     Wild3SearcherCycleData {
         lead_pid_cycle_count,
@@ -147,18 +148,27 @@ pub fn calculate_cycle_data(
 }
 
 pub fn is_method_possible_to_trigger(
-    range: &CycleAndModRange, action: Wild3Action, is_egg: bool,
-    consider_rng_manipulated_lead_pid: bool, lead_cycle_speed: Option<usize>,
-    map: &Wild3MapGameData, movement: Wild3MovementMode,
+    range: &CycleAndModRange,
+    action: Wild3Action,
+    is_egg: bool,
+    consider_rng_manipulated_lead_pid: bool,
+    lead_cycle_speed: Option<usize>,
+    map: &Wild3MapGameData,
+    movement: Wild3MovementMode,
 ) -> bool {
     let MinMidMax { min, max, .. } = get_min_mid_max_pre_sweet_scent_cycle(action, map, movement);
     let overlaps = |speed| {
         let pre = calculate_pre_sweet_scent_cycle_range(&range.apply_mod_cycle_count(speed));
-        pre.len > 0 && (pre.start as i64) <= max as i64
+        pre.len > 0
+            && (pre.start as i64) <= max as i64
             && pre.start as i64 + pre.len as i64 > min as i64
     };
-    if is_egg { return overlaps(0); }
-    if let Some(speed) = lead_cycle_speed { return overlaps(speed); }
+    if is_egg {
+        return overlaps(0);
+    }
+    if let Some(speed) = lead_cycle_speed {
+        return overlaps(speed);
+    }
     if !consider_rng_manipulated_lead_pid {
         return overlaps(COMMON_LEAD_RANGE.start) && overlaps(COMMON_LEAD_RANGE.end);
     }
@@ -174,33 +184,45 @@ pub fn is_method_possible_to_trigger(
 
     // The first speed whose interval starts at or below max is the only candidate needed:
     // later speeds move its exclusive end farther below min.
-    let required_shift = (VBLANK_FREQ as i64 - range.start.cycle as i64
-        - range.len as i64 - max as i64).max(0) as usize;
-    let speed = required_shift.div_ceil(mod_count).max(FASTEST_MODULO_CYCLE_24);
+    let required_shift =
+        (VBLANK_FREQ as i64 - range.start.cycle as i64 - range.len as i64 - max as i64).max(0)
+            as usize;
+    let speed = required_shift
+        .div_ceil(mod_count)
+        .max(FASTEST_MODULO_CYCLE_24);
 
     speed <= SLOWEST_MODULO_CYCLE_24 && overlaps(speed)
 }
 
 #[wasm_bindgen]
 pub fn calculate_ideal_lead_pid_cycle_count(
-    range: &CycleAndModRange, action: Wild3Action, map: &Wild3MapGameData,
+    range: &CycleAndModRange,
+    action: Wild3Action,
+    map: &Wild3MapGameData,
     movement: Wild3MovementMode,
 ) -> usize {
-    if range.start.lead_pid_mod == 0 { return 0; }
-    let Some((model, _)) = super::vblank_calibration::calibration_model(action, map, movement) else {
-        return calculate_ideal_lead_pid_cycle_count_at_cycle(range, MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE);
+    if range.start.lead_pid_mod == 0 {
+        return 0;
+    }
+    let Some(model) = super::vblank_calibration::calibration_model(action, map, movement) else {
+        return calculate_ideal_lead_pid_cycle_count_at_cycle(range, UNCALIBRATED_MID_CYCLE);
     };
     let probability = |speed| {
         let pre = calculate_pre_sweet_scent_cycle_range(&range.apply_mod_cycle_count(speed));
         model.probability(pre.start as f64, pre.start as f64 + pre.len as f64)
     };
-    let median = super::vblank_calibration::wild3_map_cycle_calibration(map).combined_median;
+    let median = model.median();
     let mut best = calculate_ideal_lead_pid_cycle_count_at_cycle(range, median);
     let mut best_probability = probability(best);
-    if best_probability >= 1.0 - 1e-12 { return best; }
+    if best_probability >= 1.0 - 1e-12 {
+        return best;
+    }
     for speed in FASTEST_MODULO_CYCLE_24..=SLOWEST_MODULO_CYCLE_24 {
         let score = probability(speed);
-        if score > best_probability + 1e-12 { best = speed; best_probability = score; }
+        if score > best_probability + 1e-12 {
+            best = speed;
+            best_probability = score;
+        }
     }
     best
 }
@@ -256,17 +278,18 @@ fn calculate_pre_sweet_scent_cycle_range(
 }
 
 pub fn get_min_mid_max_pre_sweet_scent_cycle(
-    action: Wild3Action, map: &Wild3MapGameData, movement: Wild3MovementMode,
+    action: Wild3Action,
+    map: &Wild3MapGameData,
+    movement: Wild3MovementMode,
 ) -> MinMidMax {
-    if let Some(bounds) = super::vblank_calibration::calibration_filter_bounds(action, map, movement) {
+    //TODO: In what case is bounds None?
+    if let Some(bounds) =
+        super::vblank_calibration::calibration_filter_bounds(action, map, movement)
+    {
         return bounds;
     }
 
-    match action {
-        Wild3Action::SweetScentLand => MinMidMax::new(0, MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE, VBLANK_FREQ - 1),
-        Wild3Action::RockSmash => MinMidMax::new(30_000, 52_500, 75_000),
-        _ => MinMidMax::new(45_000, MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE, 75_000),
-    }
+    MinMidMax::new(0, UNCALIBRATED_MID_CYCLE, VBLANK_FREQ - 1)
 }
 
 pub fn get_min_mid_max_vblank_cycle_duration() -> MinMidMax {
@@ -275,13 +298,17 @@ pub fn get_min_mid_max_vblank_cycle_duration() -> MinMidMax {
 
 #[wasm_bindgen]
 pub fn calculate_method_probability(
-    range: &CycleRange<i32>, action: Wild3Action, map: &Wild3MapGameData,
+    range: &CycleRange<i32>,
+    action: Wild3Action,
+    map: &Wild3MapGameData,
     movement: Wild3MovementMode,
 ) -> f64 {
-    if range.len == 0 { return 0.0; }
+    if range.len == 0 {
+        return 0.0;
+    }
     let start = range.start as f64;
     let end = start + range.len as f64;
-    if let Some((model, _)) = super::vblank_calibration::calibration_model(action, map, movement) {
+    if let Some(model) = super::vblank_calibration::calibration_model(action, map, movement) {
         return model.probability(start, end);
     }
     let MinMidMax { min, max, .. } = get_min_mid_max_pre_sweet_scent_cycle(action, map, movement);
@@ -290,8 +317,11 @@ pub fn calculate_method_probability(
 }
 
 pub fn calculate_method_probability_from_mod_range(
-    range: &CycleAndModRange, action: Wild3Action, pid_cycle_count: usize,
-    map: &Wild3MapGameData, movement: Wild3MovementMode,
+    range: &CycleAndModRange,
+    action: Wild3Action,
+    pid_cycle_count: usize,
+    map: &Wild3MapGameData,
+    movement: Wild3MovementMode,
 ) -> f64 {
     let post = range.apply_mod_cycle_count(pid_cycle_count);
     let pre = calculate_pre_sweet_scent_cycle_range(&post);
@@ -303,26 +333,33 @@ mod tests {
     use super::*;
 
     fn possible(range: &CycleAndModRange) -> bool {
-        is_method_possible_to_trigger(range, Wild3Action::OldRod, false, true, None,
-            &Wild3MapGameData::default(), Wild3MovementMode::OnFoot)
+        is_method_possible_to_trigger(
+            range,
+            Wild3Action::OldRod,
+            false,
+            true,
+            None,
+            &Wild3MapGameData::test_default(),
+            Wild3MovementMode::OnFoot,
+        )
     }
 
     #[test]
     fn manipulated_lead_feasibility_preserves_integer_boundaries() {
-        // Old Rod uses inclusive bounds 45,000 through 75,000.
+        // The supplied uniform fixture has bounds 30,000 through 70,000.
         let cases = [
-            (75_019, 1, 1, true),
-            (45_018, 1, 1, false),
-            (45_019, 1, 1, true),
-            (255_001, 200, 1, true),
-            (255_201, 200, 1, false),
-            (63_001, 1_000, 1, true),
-            (63_000, 1_000, 1, false),
-            (75_001, 0, 1, true),
-            (45_000, 0, 1, false),
+            (70_019, 1, 1, true),
+            (30_018, 1, 1, false),
+            (30_019, 1, 1, true),
+            (250_001, 200, 1, true),
+            (250_201, 200, 1, false),
+            (48_001, 1_000, 1, true),
+            (48_000, 1_000, 1, false),
+            (70_001, 0, 1, true),
+            (30_000, 0, 1, false),
             (60_000, 80, 0, false),
-            (63_001, 1_000, INFINITE_CYCLE, true),
-            (63_000, 1_000, INFINITE_CYCLE, false),
+            (48_001, 1_000, INFINITE_CYCLE, true),
+            (48_000, 1_000, INFINITE_CYCLE, false),
         ];
         for (end_at_zero_speed, modulo, len, expected) in cases {
             let range = CycleRange::new(VBLANK_FREQ - end_at_zero_speed, modulo, len);
@@ -333,25 +370,59 @@ mod tests {
 
     #[test]
     fn direct_feasibility_matches_exhaustive_speed_search() {
-        let cases = [0, 3, 14, 999].into_iter()
-            .flat_map(|index| (0..=400_000).step_by(7_919).map(move |cycle| (index, cycle)))
-            .flat_map(|(index, cycle)| [0, 1, 18, 80, 261, 1_000, 40_000].into_iter()
-                .map(move |modulo| (index, cycle, modulo)))
-            .flat_map(|(index, cycle, modulo)|
-                [0, 1, 256, 39_309, INFINITE_CYCLE - 1, INFINITE_CYCLE, INFINITE_CYCLE + 1]
-                    .into_iter().map(move |len| (index, CycleRange::new(cycle, modulo, len))));
+        let cases = [0, 3, 14, 999]
+            .into_iter()
+            .flat_map(|index| {
+                (0..=400_000)
+                    .step_by(7_919)
+                    .map(move |cycle| (index, cycle))
+            })
+            .flat_map(|(index, cycle)| {
+                [0, 1, 18, 80, 261, 1_000, 40_000]
+                    .into_iter()
+                    .map(move |modulo| (index, cycle, modulo))
+            })
+            .flat_map(|(index, cycle, modulo)| {
+                [
+                    0,
+                    1,
+                    256,
+                    39_309,
+                    INFINITE_CYCLE - 1,
+                    INFINITE_CYCLE,
+                    INFINITE_CYCLE + 1,
+                ]
+                .into_iter()
+                .map(move |len| (index, CycleRange::new(cycle, modulo, len)))
+            });
 
         for (index, range) in cases {
-            let map = Wild3MapGameData { map_internal_idx: index, ..Default::default() };
-            let bounds = get_min_mid_max_pre_sweet_scent_cycle(Wild3Action::SweetScentLand, &map, Wild3MovementMode::OnFoot);
+            let map = Wild3MapGameData {
+                map_internal_idx: index,
+                ..Default::default()
+            };
+            let bounds = get_min_mid_max_pre_sweet_scent_cycle(
+                Wild3Action::SweetScentLand,
+                &map,
+                Wild3MovementMode::OnFoot,
+            );
             let expected = (FASTEST_MODULO_CYCLE_24..=SLOWEST_MODULO_CYCLE_24).any(|speed| {
-                let pre = calculate_pre_sweet_scent_cycle_range(&range.apply_mod_cycle_count(speed));
+                let pre =
+                    calculate_pre_sweet_scent_cycle_range(&range.apply_mod_cycle_count(speed));
 
-                pre.len > 0 && pre.start as i64 <= bounds.max as i64
+                pre.len > 0
+                    && pre.start as i64 <= bounds.max as i64
                     && pre.start as i64 + pre.len as i64 > bounds.min as i64
             });
-            let actual = is_method_possible_to_trigger(&range, Wild3Action::SweetScentLand,
-                false, true, None, &map, Wild3MovementMode::OnFoot);
+            let actual = is_method_possible_to_trigger(
+                &range,
+                Wild3Action::SweetScentLand,
+                false,
+                true,
+                None,
+                &map,
+                Wild3MovementMode::OnFoot,
+            );
 
             assert_eq!(actual, expected, "map={index}, range={range:?}");
         }

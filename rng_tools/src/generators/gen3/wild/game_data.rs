@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-use super::Wild3Action;
+use super::{Wild3Action, Wild3MapCycleCalibration};
 use crate::{EncounterSlot, GenderRatio, Nature, PokemonType, Species};
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
@@ -119,6 +119,7 @@ pub struct Wild3MapGameData {
     pub rock_smash_rate: u32,
     pub is_safari: bool,
     pub actions_with_safari_pokeblock: Vec<Wild3Action>, // Not all actions have a pokeblock feeder nearby
+    pub vblank_distrs: Vec<Wild3MapCycleCalibration>,
 }
 
 #[derive(Debug, Default, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -138,6 +139,39 @@ pub fn get_encounter_for_wild3_map_game_data(
 }
 
 impl Wild3MapGameData {
+    // TODO: Rename to default
+    pub fn test_default() -> Self {
+        let actions = [
+            Wild3Action::SweetScentLand,
+            Wild3Action::SweetScentWater,
+            Wild3Action::OldRod,
+            Wild3Action::GoodRod,
+            Wild3Action::SuperRod,
+            Wild3Action::RockSmash,
+        ];
+        let vblank_distrs = actions
+            .into_iter()
+            .map(|action| {
+                let movement = if action == Wild3Action::SweetScentWater {
+                    super::Wild3MovementMode::Surf
+                } else {
+                    super::Wild3MovementMode::OnFoot
+                };
+
+                Wild3MapCycleCalibration {
+                    action,
+                    movement,
+                    ..super::test_vblank_calibration()
+                }
+            })
+            .collect();
+
+        Self {
+            vblank_distrs,
+            ..Self::default()
+        }
+    }
+
     pub fn get_encounter(
         &self,
         action: Wild3Action,
@@ -176,6 +210,7 @@ impl Wild3MapGameData {
 impl Default for Wild3MapGameData {
     fn default() -> Self {
         Self {
+            vblank_distrs: vec![],
             slots_by_action: (0..=Wild3Action::RockSmash as usize)
                 .map(|_i| {
                     (0..=EncounterSlot::Slot11 as usize)

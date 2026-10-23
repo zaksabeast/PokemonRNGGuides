@@ -24,7 +24,7 @@ fn test_generate_wild3_cycle_method_3() {
     let result = generate_wild3(
         Pokerng::with_advances(0, 3012),
         &options,
-        &Wild3MapGameData::default(),
+        &Wild3MapGameData::test_default(),
     )
     .mon_results;
     let expected_result = vec![
@@ -67,7 +67,7 @@ fn test_generate_wild3_cycle_method_3_no_rng_lead_pid() {
     let result = generate_wild3(
         Pokerng::with_advances(0, 3013),
         &options,
-        &Wild3MapGameData::default(),
+        &Wild3MapGameData::test_default(),
     )
     .mon_results;
     assert_eq!(result, vec![]);
@@ -88,7 +88,7 @@ fn test_generate_wild3_cycle_method_5() {
     let result = generate_wild3(
         Pokerng::with_advances(0, 4894),
         &options,
-        &Wild3MapGameData::default(),
+        &Wild3MapGameData::test_default(),
     )
     .mon_results;
     let expected_result = vec![
@@ -144,7 +144,7 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
     let result = generate_wild3(
         Pokerng::with_advances(0, 3001),
         &options,
-        &Wild3MapGameData::default(),
+        &Wild3MapGameData::test_default(),
     )
     .mon_results;
 

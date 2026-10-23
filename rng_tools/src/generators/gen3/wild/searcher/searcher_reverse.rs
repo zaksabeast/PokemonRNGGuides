@@ -132,6 +132,7 @@ fn extend_pid_paths_to_results(
         }),
         opts.using_white_flute,
         &opts.feebas_cycles,
+        opts.cycle_opts.generator_cycle_opts().movement(),
     );
 
     iter.filter_map(|pid_path| {

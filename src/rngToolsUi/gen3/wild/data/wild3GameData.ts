@@ -19,6 +19,7 @@ import {
 import { emerald_wild_encounters } from "./emerald_wild_encounters";
 import { emerald_wild_special_encounters } from "./emerald_wild_special_encounters";
 import z from "zod";
+import { getWild3VblankDistributions } from "./vblank_calibration";
 
 export type Wild3GameData = {
   maps_data: Wild3MapGameData[];
@@ -244,7 +245,7 @@ const generateWild3EmeraldMapsData = (): Wild3MapGameData[] => {
   const wild3MassOutbreakStatesSchema = z.enum(wild3MassOutbreakStates);
 
   return emerald_wild_encounters.wild_encounter_groups.flatMap((grp) => {
-    return grp.encounters.flatMap((map) => {
+    return grp.encounters.flatMap((map, map_internal_idx) => {
       if (!("map" in map)) {
         return [];
       }
@@ -300,7 +301,12 @@ const generateWild3EmeraldMapsData = (): Wild3MapGameData[] => {
       return [
         {
           map_id: map.map,
-          map_internal_idx: EMERALD_MAPS_BY_INTERNAL_IDX.indexOf(map.map),
+          map_internal_idx,
+          vblank_distrs: getWild3VblankDistributions({
+            map_id: map.map,
+            map_internal_idx,
+            slots_by_action,
+          }),
           slots_by_action,
           roamers,
           mass_outbreaks,

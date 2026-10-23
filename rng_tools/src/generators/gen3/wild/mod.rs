@@ -21,6 +21,7 @@ mod vblank_calibration;
 pub use calc_modulo_cycle_count::*;
 pub use cycle_counter::*;
 pub use cycle_data_calculator::*;
+pub use cycle_distribution::CdfKnot;
 pub use cycle_range::*;
 pub use filter::*;
 pub use game_data::*;

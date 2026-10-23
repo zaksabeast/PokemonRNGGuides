@@ -1,14 +1,16 @@
-# Emerald wild cycle calibration: implementation
+# Emerald wild cycle calibration
 
-## Implemented
+TypeScript owns the calibration components and composes the distributions attached to each `Wild3MapGameData.vblank_distrs` array. Rust receives only action, movement, weather, filtering bounds, and combined CDF knots.
 
-- Audio and non-audio use the same adaptive monotone piecewise-linear CDF. Repeated x coordinates preserve jumps; no limit on the number of distinct non-audio values is assumed. Fitting error is at most 0.0025 (0.25 percentage points), with a 512-knot budget that fails explicitly if insufficient.
-- Audio is stored once per song/context. Route 101 audio is shared by Routes 101, 102, and 103; Routes 104, 110, 113, Petalburg Woods, and Safari Zone have their own songs. Each of the eight measured maps has its own non-audio distribution; the Safari recording is registered only for SafariZone_South. Selection uses Wild3MapGameData and an explicit action/movement/sound context.
-- Current measurements cover Emerald land Sweet Scent on foot. Generator/search cycle options specify movement or whether to consider the bike. Bike movement is not silently matched to this data. Other actions keep their legacy estimates.
-- Observed min/max are separate from CDF knots. Current safety margins are zero: these are empirical bounds, not hardware guarantees. A justified margin can expand filtering without changing the fitted likelihood. Unmeasured land maps first borrow the first calibrated map sharing their default song; if none exists, they borrow Route 101. These likelihood approximations remain flagged as fallbacks and use full-frame filtering, so borrowed support does not declare another map's timings impossible. Default song lookup uses Emerald map headers and internal wild-header indices; runtime overrides are not available in Wild3MapGameData. Unsupported land contexts also use full-frame filtering and uniform fallback likelihood.
-- Likelihood uses convolution: F_total(x) = integral F_audio(x-y) dF_non_audio(y). Audio CDF primitives integrate non-audio linear segments analytically; jumps contribute explicitly. Combined CDFs are not assumed piecewise linear. Probabilities use half-open intervals [start, end), with left limits preserving discrete endpoints.
-- Combined medians are solved offline and stored, rather than summing component medians or running a solver per generated encounter. Ideal lead speed maximizes interval probability over legal integer speeds. Initialization, search results, likelihood/ideal-lead APIs, and the UI caller carry the same context.
-- get_wild3_calibration_info exposes source checksums, counts, skipped/repeated frames, loop coverage, fitting errors, support margins, and supported/fallback status. Runtime and Rust model tests do not need the raw captures.
+## Data and composition
+
+- `src/rngToolsUi/gen3/wild/data/vblank_calibration_data.ts` contains the measured components, joint corrections, fake audio components, and source-map assignments.
+- `fake_vblank_audio.ts` defines the synthetic recipes and scaling. Every synthetic component retains `is_fake: true` and identifies its source as synthetic.
+- `vblank_calibration_maps.ts` records map-header songs and cycling permissions. Route 118's position-dependent song is not resolved by the map-only input and uses conservative fallback calibration.
+- `vblank_calibration.ts` selects components and resolves fallback status before producing the minimal Rust input. Unmeasured setups retain full-frame filtering bounds. Provenance, fake flags, and fallback status remain available through its TypeScript `getWild3CalibrationInfo` function.
+- Independent components are convolved and sampled into a combined piecewise-linear CDF. Joint corrections are used directly for their measured setups. Duplicate cycle coordinates preserve discrete jumps. Likelihood intervals remain half-open: `[start, end)`.
+- Setup enumeration includes available encounter actions, on-foot/bike/surf movement, and the Route 119/120/123 weather variants. Existing cycle options use the first matching setup, with sunny entries ordered first; a caller can supply a selected subset of distributions.
+- Rust queries the supplied CDF for bounds, median, and likelihood. Missing input has broad uniform bounds, distinct from the explicit test-only uniform calibration spanning 30,000 to 70,000 cycles.
 
 ## Reproduction
 
@@ -16,19 +18,13 @@ Run from the repository root:
 
     bun run rng_tools/scripts/extract-vblank-calibration.ts
     bun run rng_tools/scripts/extract-vblank-calibration.ts --check
-    bun test ./rng_tools/scripts/extract-vblank-calibration.test.ts
+    bun test rng_tools/scripts/extract-vblank-calibration.test.ts src/rngToolsUi/gen3/wild/data/vblank_calibration.test.ts
     bun run test:rust
 
-The extractor writes vblank_calibration_data.rs and vblank_calibration_validation.json next to this document. Check mode validates captures and compares both artifacts without writing. Keep the extractor, Rust constants, and JSON report after deleting raw .txt files. Regeneration needs recordings; builds and tests do not.
+The extractor reads ignored captures from `rng_tools/src/generators/gen3/wild/vblank_calibration.local.data/` and generates `vblank_calibration_data.ts` and `vblank_calibration_validation.json` in the TypeScript data directory. Regeneration needs those captures; application builds and tests use the checked-in output.
 
-Each completed encounter frame has unit total weight. Replayed attempts within a frame share that weight, preserving differing residual costs without over-weighting the frame. Incomplete attempts are ignored; malformed completed attempts are rejected. SHA-256 uses LF-normalized source text for stable cross-platform artifacts. Metadata records action/movement/sound assumptions and extractor version.
+Each completed encounter frame has unit total weight. Replays share their frame's weight. Incomplete attempts are ignored and malformed completed attempts are rejected. Source checksums normalize line endings to LF.
 
-## Validation and limits
+## Validation limits
 
-The report records component CDF errors, joint total CDF errors, quantiles, and tested interval-probability errors for widths 32, 256, 1,024, and 8,192 cycles. Routes 102/103 provide cross-map audio holdouts while retaining their own non-audio fits. Routes 101/104/110 provide in-sample joint validation. Extraction rejects joint CDF error above 2 percentage points, tested interval error above 2.5 points, or shared audio CDF error above 2 points. When convolution exceeds the joint limits, the extractor retains an additional fitted joint CDF, validates it against the same limits, and uses it for likelihood and the combined median. Separate component data and their summed conservative bounds remain intact. Both independent and corrected errors are recorded. Petalburg Woods requires this correction: independent joint error is 3.22 percentage points, versus under 0.25 points after correction.
-
-Current errors are below 0.25 points for fitted components, 1.25 points for joint CDFs, and 0.72 points for tested interval probabilities. These checks do not prove independence or guaranteed extrema. Independent temporal full-loop validation has not been collected and is explicitly flagged false. Sparse coverage and skipped frames remain visible in provenance.
-
-Prefer two full audio loops to check repeatability. Choose non-audio duration through convergence across independent windows and representative positions, weather, tileset/sprite animation phases, actions, and movement states. Song duration need not cover non-audio periodicity. Earlier 256-frame mean and approximately 1,100-frame extrema results apply only to those recorded setups.
-
-Tests cover complex fitting, rare extrema, replay weighting, malformed captures, analytic convolution, jumps, half-open boundaries, normalization, integral consistency, shared songs, map-specific residuals, fallback filtering, unsupported contexts, missing-context deserialization, unchanged legacy actions, generator support, and globally optimal integer lead selection.
+The extraction report preserves the component fitting errors, source loop coverage, joint correction diagnostics, and interval-probability errors from the captures. These diagnostics describe the raw fits, not a guarantee on the sampled runtime convolution. Independent temporal full-loop validation has not been collected. Recorded bounds are empirical; safety margins are retained separately in the raw provenance and applied during TypeScript composition.

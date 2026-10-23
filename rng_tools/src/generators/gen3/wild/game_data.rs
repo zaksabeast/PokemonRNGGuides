@@ -2,7 +2,10 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-use super::{Wild3Action, Wild3MapCycleCalibration};
+use super::{MinMidMax, MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE, VBLANK_FREQ, Wild3Action, Wild3MapCycleCalibration, Wild3MovementMode, Wild3Weather};
+use super::vblank_calibration::calibration_model;
+#[cfg(test)]
+use super::test_vblank_calibration;
 use crate::{EncounterSlot, GenderRatio, Nature, PokemonType, Species};
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
@@ -139,37 +142,10 @@ pub fn get_encounter_for_wild3_map_game_data(
 }
 
 impl Wild3MapGameData {
-    // TODO: Rename to default
-    pub fn test_default() -> Self {
-        let actions = [
-            Wild3Action::SweetScentLand,
-            Wild3Action::SweetScentWater,
-            Wild3Action::OldRod,
-            Wild3Action::GoodRod,
-            Wild3Action::SuperRod,
-            Wild3Action::RockSmash,
-        ];
-        let vblank_distrs = actions
-            .into_iter()
-            .map(|action| {
-                let movement = if action == Wild3Action::SweetScentWater {
-                    super::Wild3MovementMode::Surf
-                } else {
-                    super::Wild3MovementMode::OnFoot
-                };
-
-                Wild3MapCycleCalibration {
-                    action,
-                    movement,
-                    ..super::test_vblank_calibration()
-                }
-            })
-            .collect();
-
-        Self {
-            vblank_distrs,
-            ..Self::default()
-        }
+    pub fn get_min_mid_max_pre_sweet_scent_cycle(&self, action: Wild3Action, movement: Wild3MovementMode, weather: Wild3Weather) -> MinMidMax {
+        calibration_model(action, self, movement, weather)
+            .map(Wild3MapCycleCalibration::to_min_mid_max)
+            .unwrap_or(MinMidMax::new(0, MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE, VBLANK_FREQ - 1))
     }
 
     pub fn get_encounter(
@@ -209,8 +185,36 @@ impl Wild3MapGameData {
 
 impl Default for Wild3MapGameData {
     fn default() -> Self {
+        #[cfg(test)]
+        let vblank_distrs = [
+            Wild3Action::SweetScentLand,
+            Wild3Action::SweetScentWater,
+            Wild3Action::OldRod,
+            Wild3Action::GoodRod,
+            Wild3Action::SuperRod,
+            Wild3Action::RockSmash,
+        ]
+        .into_iter()
+        .map(|action| {
+            let movement = if action == Wild3Action::SweetScentWater {
+                Wild3MovementMode::Surf
+            } else {
+                Wild3MovementMode::OnFoot
+            };
+
+            Wild3MapCycleCalibration {
+                action,
+                movement,
+                ..test_vblank_calibration()
+            }
+        })
+        .collect();
+
+        #[cfg(not(test))]
+        let vblank_distrs = vec![];
+
         Self {
-            vblank_distrs: vec![],
+            vblank_distrs,
             slots_by_action: (0..=Wild3Action::RockSmash as usize)
                 .map(|_i| {
                     (0..=EncounterSlot::Slot11 as usize)

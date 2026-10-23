@@ -1,3 +1,4 @@
+use crate::gen3::FEEBAS_VBLANK_GROUP_COUNT;
 use std::hint::black_box;
 
 use arrayvec::ArrayVec;
@@ -133,6 +134,7 @@ fn extend_pid_paths_to_results(
         opts.using_white_flute,
         &opts.feebas_cycles,
         opts.cycle_opts.generator_cycle_opts().movement(),
+        opts.cycle_opts.generator_cycle_opts().weather(),
     );
 
     iter.filter_map(|pid_path| {
@@ -401,11 +403,12 @@ fn create_result(
 
 // Generated with test: cargo test test_search_reverse_wild3_vblank_group_feebas
 // Hardcoded in feebasMapData.ts
-pub const FEEBAS_CYCLE_COUNT_BY_VBLANK: [std::ops::RangeInclusive<usize>; 4] = [
-    0..=235895,
-    205896..=471791,
-    421792..=707687,
-    637688..=800000,
+pub const FEEBAS_CYCLE_COUNT_BY_VBLANK: [std::ops::RangeInclusive<usize>; FEEBAS_VBLANK_GROUP_COUNT] = [
+    0..=250895,
+    210896..=486791,
+    426792..=722687,
+    642688..=800000,
+    std::ops::RangeInclusive::new(1, 0),
 ];
 
 pub fn get_feebas_possible_vblank_count(feebas_cycles: usize) -> Vec<usize> {

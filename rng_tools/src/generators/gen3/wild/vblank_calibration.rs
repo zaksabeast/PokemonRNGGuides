@@ -12,8 +12,10 @@ pub enum Wild3MovementMode {
     Surf,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Tsify)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Tsify, Default)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum Wild3Weather {
+    #[default]
     Sunny,
     Rain,
     Thunderstorm,
@@ -31,6 +33,10 @@ pub struct Wild3MapCycleCalibration {
 }
 
 impl Wild3MapCycleCalibration {
+    pub fn to_min_mid_max(&self) -> MinMidMax {
+        MinMidMax::new(self.min, self.median(), self.max)
+    }
+
     pub fn probability(&self, start: f64, end: f64) -> f64 {
         if end <= start {
             return 0.0;
@@ -61,30 +67,17 @@ impl Wild3MapCycleCalibration {
     }
 }
 
-// TODO: Add a param Weather. Every function that takes a movement should also take a weather.
 pub(super) fn calibration_model(
     action: Wild3Action,
     map: &Wild3MapGameData,
     movement: Wild3MovementMode,
+    weather: Wild3Weather,
 ) -> Option<&Wild3MapCycleCalibration> {
-    map.vblank_distrs
-        .iter()
-        .find(|calibration| calibration.action == action && calibration.movement == movement)
-}
-
-// Remove calibration_filter_bounds. Add Wild3MapCycleCalibration::to_min_mid_max(). Inline calibration_model(...).to_min_mid_max in callers.
-pub(super) fn calibration_filter_bounds(
-    action: Wild3Action,
-    map: &Wild3MapGameData,
-    movement: Wild3MovementMode,
-) -> Option<MinMidMax> {
-    let calibration = calibration_model(action, map, movement)?;
-
-    Some(MinMidMax::new(
-        calibration.min,
-        calibration.median(),
-        calibration.max,
-    ))
+    map.vblank_distrs.iter().find(|calibration| {
+        calibration.action == action
+            && calibration.movement == movement
+            && calibration.weather == weather
+    })
 }
 
 #[cfg(test)]
@@ -111,6 +104,104 @@ pub fn test_vblank_calibration() -> Wild3MapCycleCalibration {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::gen3::{
+        CycleRange, Wild3GeneratorCycleOpts, Wild3SearcherCycleOpts, calculate_method_probability,
+    };
+
+    #[test]
+    fn weather_selects_the_requested_bounds_and_probability() {
+        let sunny = test_vblank_calibration();
+        let mut rain = sunny.clone();
+        rain.weather = Wild3Weather::Rain;
+        rain.min = 40_000;
+        rain.max = 80_000;
+        rain.distribution
+            .iter_mut()
+            .for_each(|knot| knot.cycle += 10_000.0);
+        let map = Wild3MapGameData {
+            vblank_distrs: vec![sunny, rain],
+            ..Default::default()
+        };
+
+        assert_eq!(
+            map.get_min_mid_max_pre_sweet_scent_cycle(
+                Wild3Action::SweetScentLand,
+                Wild3MovementMode::OnFoot,
+                Wild3Weather::Sunny,
+            ),
+            MinMidMax::new(30_000, 50_000, 70_000)
+        );
+        assert_eq!(
+            map.get_min_mid_max_pre_sweet_scent_cycle(
+                Wild3Action::SweetScentLand,
+                Wild3MovementMode::OnFoot,
+                Wild3Weather::Rain,
+            ),
+            MinMidMax::new(40_000, 60_000, 80_000)
+        );
+        assert_eq!(
+            map.get_min_mid_max_pre_sweet_scent_cycle(
+                Wild3Action::SweetScentLand,
+                Wild3MovementMode::OnFoot,
+                Wild3Weather::Thunderstorm,
+            ),
+            MinMidMax::new(0, 55_000, 280_895)
+        );
+        let range = CycleRange::from_start_len(30_000, 10_000);
+
+        assert_eq!(
+            calculate_method_probability(
+                &range,
+                Wild3Action::SweetScentLand,
+                &map,
+                Wild3MovementMode::OnFoot,
+                Wild3Weather::Sunny
+            ),
+            0.25
+        );
+        assert_eq!(
+            calculate_method_probability(
+                &range,
+                Wild3Action::SweetScentLand,
+                &map,
+                Wild3MovementMode::OnFoot,
+                Wild3Weather::Rain
+            ),
+            0.0
+        );
+    }
+
+    #[test]
+    fn searcher_options_preserve_weather_for_known_and_unknown_lead_speeds() {
+        let known = Wild3SearcherCycleOpts::Calibrate {
+            weather: Wild3Weather::Rain,
+            movement: Wild3MovementMode::OnFoot,
+            lead_cycle_speed: Some(500),
+        };
+        let unknown = Wild3SearcherCycleOpts::Calibrate {
+            weather: Wild3Weather::Thunderstorm,
+            movement: Wild3MovementMode::Bike,
+            lead_cycle_speed: None,
+        };
+
+        assert_eq!(
+            known.generator_cycle_opts(),
+            Wild3GeneratorCycleOpts::LikelihoodForLead {
+                weather: Wild3Weather::Rain,
+                consider_bike: false,
+                lead_cycle_spd: 500,
+            }
+        );
+        assert_eq!(
+            unknown.generator_cycle_opts(),
+            Wild3GeneratorCycleOpts::Searching {
+                weather: Wild3Weather::Thunderstorm,
+                consider_bike: true,
+                generate_even_if_impossible: true,
+                consider_rng_manipulated_lead_pid: true,
+            }
+        );
+    }
 
     #[test]
     fn uniform_fixture_bounds_median_and_half_open_probabilities() {
@@ -145,10 +236,18 @@ mod tests {
 
     #[test]
     fn only_supplied_calibrations_are_selected() {
-        let map = Wild3MapGameData::default();
+        let map = Wild3MapGameData {
+            vblank_distrs: vec![],
+            ..Default::default()
+        };
 
         assert_eq!(
-            calibration_model(Wild3Action::SweetScentLand, &map, Wild3MovementMode::OnFoot),
+            calibration_model(
+                Wild3Action::SweetScentLand,
+                &map,
+                Wild3MovementMode::OnFoot,
+                Wild3Weather::Sunny
+            ),
             None
         );
 
@@ -158,15 +257,30 @@ mod tests {
         };
 
         assert_eq!(
-            calibration_model(Wild3Action::SweetScentLand, &map, Wild3MovementMode::OnFoot),
+            calibration_model(
+                Wild3Action::SweetScentLand,
+                &map,
+                Wild3MovementMode::OnFoot,
+                Wild3Weather::Sunny
+            ),
             Some(&test_vblank_calibration())
         );
         assert_eq!(
-            calibration_model(Wild3Action::SweetScentLand, &map, Wild3MovementMode::Bike),
+            calibration_model(
+                Wild3Action::SweetScentLand,
+                &map,
+                Wild3MovementMode::Bike,
+                Wild3Weather::Sunny
+            ),
             None
         );
         assert_eq!(
-            calibration_model(Wild3Action::OldRod, &map, Wild3MovementMode::OnFoot),
+            calibration_model(
+                Wild3Action::OldRod,
+                &map,
+                Wild3MovementMode::OnFoot,
+                Wild3Weather::Sunny
+            ),
             None
         );
     }

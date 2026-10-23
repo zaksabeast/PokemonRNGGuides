@@ -21,7 +21,7 @@ fn test_generate_wild3_no_filter() {
     let result = generate_wild3(
         Pokerng::with_advances(0, 9),
         &options,
-        &Wild3MapGameData::test_default(),
+        &Wild3MapGameData::default(),
     )
     .mon_results;
     let expected_result = vec![Wild3GeneratorMonResult {
@@ -52,7 +52,7 @@ fn test_generate_wild3_with_filter() {
         ..Default::default()
     };
 
-    let mut game_data = Wild3MapGameData::test_default();
+    let mut game_data = Wild3MapGameData::default();
     game_data.slots_by_action[Wild3Action::SweetScentLand as usize]
         [EncounterSlot::Slot0 as usize]
         .species_data
@@ -93,7 +93,7 @@ fn test_generate_wild3_shiny() {
     };
 
     let rng = Pokerng::new(0x14a22065);
-    let result = generate_wild3(rng, &options, &Wild3MapGameData::test_default()).mon_results;
+    let result = generate_wild3(rng, &options, &Wild3MapGameData::default()).mon_results;
     let expected_result = vec![Wild3GeneratorMonResult {
         encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot4),
         pid: 0x692A57E1,
@@ -115,7 +115,7 @@ fn test_generate_wild3_synch() {
     let result = generate_wild3(
         Pokerng::new(0x14a22065),
         &options,
-        &Wild3MapGameData::test_default(),
+        &Wild3MapGameData::default(),
     )
     .mon_results;
     let expected_result = vec![Wild3GeneratorMonResult {
@@ -139,7 +139,7 @@ fn test_generate_wild3_cute_charm_activated() {
     let result = generate_wild3(
         Pokerng::with_advances(0, 2),
         &options,
-        &Wild3MapGameData::test_default(),
+        &Wild3MapGameData::default(),
     )
     .mon_results;
     let expected_result = vec![Wild3GeneratorMonResult {
@@ -168,7 +168,7 @@ fn test_generate_wild3_all_methods() {
     let result = generate_wild3(
         Pokerng::with_advances(0, 2),
         &options,
-        &Wild3MapGameData::test_default(),
+        &Wild3MapGameData::default(),
     )
     .mon_results;
     let expected_result = vec![
@@ -229,7 +229,7 @@ fn test_generate_wild3_egg_lead() {
     let result = generate_wild3(
         Pokerng::with_advances(0, 1234),
         &options,
-        &Wild3MapGameData::test_default(),
+        &Wild3MapGameData::default(),
     )
     .mon_results;
     let expected_result = vec![Wild3GeneratorMonResult {
@@ -253,7 +253,7 @@ fn test_generate_wild3_fishing() {
     let result = generate_wild3(
         Pokerng::with_advances(0, 234),
         &options,
-        &Wild3MapGameData::test_default(),
+        &Wild3MapGameData::default(),
     )
     .mon_results;
     let expected_result = vec![Wild3GeneratorMonResult {
@@ -275,7 +275,7 @@ fn test_generate_wild3_feebas() {
         feebas_state: Wild3FeebasState::OnFeebasTile,
         ..Default::default()
     };
-    let mut game_data = Wild3MapGameData::test_default();
+    let mut game_data = Wild3MapGameData::default();
     game_data.feebas = Some(Wild3EncounterGameData::default());
 
     // if fishing on Feebas tile, gets feebas
@@ -331,7 +331,7 @@ fn test_generate_wild3_roamer() {
         roamer_state: Wild3RoamerState::ActiveInMapLatios,
         ..Default::default()
     };
-    let mut game_data = Wild3MapGameData::test_default();
+    let mut game_data = Wild3MapGameData::default();
     game_data.roamers.push(Wild3SpecialEncounterGameData {
         id: Wild3RoamerState::ActiveInMapLatios,
         ..Default::default()
@@ -375,7 +375,7 @@ fn test_generate_wild3_magnet_pull() {
         lead: Gen3Lead::MagnetPull,
         ..Default::default()
     };
-    let mut game_data = Wild3MapGameData::test_default();
+    let mut game_data = Wild3MapGameData::default();
 
     let result = generate_wild3(Pokerng::new(0), &options, &game_data).mon_results;
 
@@ -436,7 +436,7 @@ fn test_generate_wild3_static() {
         lead: Gen3Lead::Static,
         ..Default::default()
     };
-    let mut game_data = Wild3MapGameData::test_default();
+    let mut game_data = Wild3MapGameData::default();
 
     let result = generate_wild3(Pokerng::new(0), &options, &game_data).mon_results;
 
@@ -496,7 +496,7 @@ fn test_generate_wild3_hustle() {
         methods: vec![Gen3Method::Wild1],
         ..Default::default()
     };
-    let mut game_data = Wild3MapGameData::test_default();
+    let mut game_data = Wild3MapGameData::default();
 
     for slot in game_data.slots_by_action[Wild3Action::SweetScentLand as usize].iter_mut() {
         slot.min_level = 1;
@@ -546,7 +546,7 @@ fn test_generate_wild3_rock_smash() {
         ..Default::default()
     };
 
-    let game_data = Wild3MapGameData::test_default();
+    let game_data = Wild3MapGameData::default();
 
     let result = generate_wild3(Pokerng::with_advances(0, 2), &options, &game_data).mon_results;
     assert!(result.is_empty());
@@ -576,7 +576,7 @@ fn test_generate_wild3_rock_smash_white_flute() {
         ..Default::default()
     };
 
-    let game_data = Wild3MapGameData::test_default();
+    let game_data = Wild3MapGameData::default();
 
     let result = generate_wild3(Pokerng::new(20), &options, &game_data).mon_results;
     assert!(!result.is_empty());
@@ -595,7 +595,7 @@ fn test_generate_wild3_mass_outbreak() {
         mass_outbreak_state: Wild3MassOutbreakState::Route102Seedot,
         ..Default::default()
     };
-    let mut game_data = Wild3MapGameData::test_default();
+    let mut game_data = Wild3MapGameData::default();
     game_data
         .mass_outbreaks
         .push(Wild3SpecialEncounterGameData {
@@ -631,7 +631,7 @@ fn test_generate_wild3_mass_outbreak() {
 
 #[test]
 fn test_generate_wild3_safari_pokeblock_from_flavor() {
-    let mut game_data = Wild3MapGameData::test_default();
+    let mut game_data = Wild3MapGameData::default();
     game_data.is_safari = true;
     game_data.actions_with_safari_pokeblock = vec![Wild3Action::SweetScentLand];
 
@@ -661,7 +661,7 @@ fn test_generate_wild3_safari_pokeblock_from_flavor() {
 
 #[test]
 fn test_generate_wild3_safari_pokeblock_from_nature() {
-    let mut game_data = Wild3MapGameData::test_default();
+    let mut game_data = Wild3MapGameData::default();
     game_data.is_safari = true;
     game_data.actions_with_safari_pokeblock = vec![Wild3Action::SweetScentLand];
 

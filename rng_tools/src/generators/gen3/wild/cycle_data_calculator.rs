@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-use super::{CycleRange, MinMidMax, VBLANK_FREQ, Wild3Action, Wild3MapGameData, Wild3MovementMode};
+use super::{CycleRange, MinMidMax, VBLANK_FREQ, Wild3Action, Wild3MapGameData, Wild3MovementMode, Wild3Weather};
 use crate::gen3::{
     COMMON_LEAD_RANGE, CycleAndModRange, FASTEST_MODULO_CYCLE_24, INFINITE_CYCLE,
     SLOWEST_MODULO_CYCLE_24,
@@ -19,8 +19,7 @@ pre_sweet_scent_cycle_range: The range of cycles before the Sweet Scent function
                               It is VBLANK_FREQ - post_sweet_scent_cycle_range.
 */
 
-// TODO: Keep MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE
-const UNCALIBRATED_MID_CYCLE: usize = (VBLANK_FREQ - 1) / 2;
+pub const MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE: usize = 55_000;
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -67,9 +66,10 @@ pub fn calculate_cycle_data_by_lead(
     specified_lead_cycle_speed: Option<usize>,
     map_data: &Wild3MapGameData,
     movement: Wild3MovementMode,
+    weather: Wild3Weather,
 ) -> Wild3SearcherCycleDataByLead {
     let calculate_cycle_data = |range: &CycleAndModRange, action, speed| {
-        calculate_cycle_data(range, action, speed, map_data, movement)
+        calculate_cycle_data(range, action, speed, map_data, movement, weather)
     };
     if egg_lead {
         // cycle_data is useful even with egg lead to know the likelihood of hitting the method.
@@ -90,6 +90,7 @@ pub fn calculate_cycle_data_by_lead(
             action,
             map_data,
             movement,
+        weather,
         );
 
         Wild3SearcherCycleDataByLead {
@@ -132,13 +133,14 @@ pub fn calculate_cycle_data(
     lead_pid_cycle_count: usize,
     map_data: &Wild3MapGameData,
     movement: Wild3MovementMode,
+    weather: Wild3Weather,
 ) -> Wild3SearcherCycleData {
     let post_sweet_scent_range =
         post_sweet_scent_mod_range.apply_mod_cycle_count(lead_pid_cycle_count);
     let pre_sweet_scent_cycle_range =
         calculate_pre_sweet_scent_cycle_range(&post_sweet_scent_range);
     let method_probability =
-        calculate_method_probability(&pre_sweet_scent_cycle_range, action, map_data, movement);
+        calculate_method_probability(&pre_sweet_scent_cycle_range, action, map_data, movement, weather);
 
     Wild3SearcherCycleData {
         lead_pid_cycle_count,
@@ -155,8 +157,9 @@ pub fn is_method_possible_to_trigger(
     lead_cycle_speed: Option<usize>,
     map: &Wild3MapGameData,
     movement: Wild3MovementMode,
+    weather: Wild3Weather,
 ) -> bool {
-    let MinMidMax { min, max, .. } = get_min_mid_max_pre_sweet_scent_cycle(action, map, movement);
+    let MinMidMax { min, max, .. } = map.get_min_mid_max_pre_sweet_scent_cycle(action, movement, weather);
     let overlaps = |speed| {
         let pre = calculate_pre_sweet_scent_cycle_range(&range.apply_mod_cycle_count(speed));
         pre.len > 0
@@ -200,12 +203,13 @@ pub fn calculate_ideal_lead_pid_cycle_count(
     action: Wild3Action,
     map: &Wild3MapGameData,
     movement: Wild3MovementMode,
+    weather: Wild3Weather,
 ) -> usize {
     if range.start.lead_pid_mod == 0 {
         return 0;
     }
-    let Some(model) = super::vblank_calibration::calibration_model(action, map, movement) else {
-        return calculate_ideal_lead_pid_cycle_count_at_cycle(range, UNCALIBRATED_MID_CYCLE);
+    let Some(model) = super::vblank_calibration::calibration_model(action, map, movement, weather) else {
+        return calculate_ideal_lead_pid_cycle_count_at_cycle(range, MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE);
     };
     let probability = |speed| {
         let pre = calculate_pre_sweet_scent_cycle_range(&range.apply_mod_cycle_count(speed));
@@ -277,21 +281,6 @@ fn calculate_pre_sweet_scent_cycle_range(
     }
 }
 
-pub fn get_min_mid_max_pre_sweet_scent_cycle(
-    action: Wild3Action,
-    map: &Wild3MapGameData,
-    movement: Wild3MovementMode,
-) -> MinMidMax {
-    //TODO: In what case is bounds None?
-    if let Some(bounds) =
-        super::vblank_calibration::calibration_filter_bounds(action, map, movement)
-    {
-        return bounds;
-    }
-
-    MinMidMax::new(0, UNCALIBRATED_MID_CYCLE, VBLANK_FREQ - 1)
-}
-
 pub fn get_min_mid_max_vblank_cycle_duration() -> MinMidMax {
     MinMidMax::new(45_000, 55_000, 65_000)
 }
@@ -302,16 +291,17 @@ pub fn calculate_method_probability(
     action: Wild3Action,
     map: &Wild3MapGameData,
     movement: Wild3MovementMode,
+    weather: Wild3Weather,
 ) -> f64 {
     if range.len == 0 {
         return 0.0;
     }
     let start = range.start as f64;
     let end = start + range.len as f64;
-    if let Some(model) = super::vblank_calibration::calibration_model(action, map, movement) {
+    if let Some(model) = super::vblank_calibration::calibration_model(action, map, movement, weather) {
         return model.probability(start, end);
     }
-    let MinMidMax { min, max, .. } = get_min_mid_max_pre_sweet_scent_cycle(action, map, movement);
+    let MinMidMax { min, max, .. } = map.get_min_mid_max_pre_sweet_scent_cycle(action, movement, weather);
     let overlap = (end.min(max as f64) - start.max(min as f64)).max(0.0);
     overlap / (max - min) as f64
 }
@@ -322,10 +312,11 @@ pub fn calculate_method_probability_from_mod_range(
     pid_cycle_count: usize,
     map: &Wild3MapGameData,
     movement: Wild3MovementMode,
+    weather: Wild3Weather,
 ) -> f64 {
     let post = range.apply_mod_cycle_count(pid_cycle_count);
     let pre = calculate_pre_sweet_scent_cycle_range(&post);
-    calculate_method_probability(&pre, action, map, movement)
+    calculate_method_probability(&pre, action, map, movement, weather)
 }
 
 #[cfg(test)]
@@ -339,8 +330,9 @@ mod tests {
             false,
             true,
             None,
-            &Wild3MapGameData::test_default(),
+            &Wild3MapGameData::default(),
             Wild3MovementMode::OnFoot,
+            Wild3Weather::Sunny,
         )
     }
 
@@ -401,10 +393,10 @@ mod tests {
                 map_internal_idx: index,
                 ..Default::default()
             };
-            let bounds = get_min_mid_max_pre_sweet_scent_cycle(
+            let bounds = map.get_min_mid_max_pre_sweet_scent_cycle(
                 Wild3Action::SweetScentLand,
-                &map,
                 Wild3MovementMode::OnFoot,
+            Wild3Weather::Sunny,
             );
             let expected = (FASTEST_MODULO_CYCLE_24..=SLOWEST_MODULO_CYCLE_24).any(|speed| {
                 let pre =
@@ -422,6 +414,7 @@ mod tests {
                 None,
                 &map,
                 Wild3MovementMode::OnFoot,
+            Wild3Weather::Sunny,
             );
 
             assert_eq!(actual, expected, "map={index}, range={range:?}");

@@ -9,7 +9,7 @@ TypeScript owns the calibration components and composes the distributions attach
 - `vblank_calibration_maps.ts` records map-header songs and cycling permissions. Route 118's position-dependent song is not resolved by the map-only input and uses conservative fallback calibration.
 - `vblank_calibration.ts` selects components and resolves fallback status before producing the minimal Rust input. Unmeasured setups retain full-frame filtering bounds. Provenance, fake flags, and fallback status remain available through its TypeScript `getWild3CalibrationInfo` function.
 - Independent components are convolved and sampled into a combined piecewise-linear CDF. Joint corrections are used directly for their measured setups. Duplicate cycle coordinates preserve discrete jumps. Likelihood intervals remain half-open: `[start, end)`.
-- Setup enumeration includes available encounter actions, on-foot/bike/surf movement, and the Route 119/120/123 weather variants. Existing cycle options use the first matching setup, with sunny entries ordered first; a caller can supply a selected subset of distributions.
+- Setup enumeration includes available encounter actions, on-foot/bike/surf movement, and the Route 119/120/123 weather variants. Cycle options select the matching action, movement, and weather; current UI callers default to sunny weather.
 - Rust queries the supplied CDF for bounds, median, and likelihood. Missing input has broad uniform bounds, distinct from the explicit test-only uniform calibration spanning 30,000 to 70,000 cycles.
 
 ## Reproduction

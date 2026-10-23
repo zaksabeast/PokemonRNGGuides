@@ -7,7 +7,7 @@ use crate::{
     gen3::{
         CycleAndModCount, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method, Gen3PkmFilter,
         Wild3Action, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData,
-        Wild3MassOutbreakState, Wild3MovementMode, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
+        Wild3MassOutbreakState, Wild3MovementMode, Wild3Weather, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
         generate_wild3_internal,
     },
     rng::lcrng::Pokerng,
@@ -22,15 +22,21 @@ pub enum Wild3GeneratorCycleOpts {
     #[default]
     Inactive,
     Searching {
+        #[serde(default)]
+        weather: Wild3Weather,
         consider_bike: bool,
         generate_even_if_impossible: bool,
         consider_rng_manipulated_lead_pid: bool,
     },
     LikelihoodForLead {
+        #[serde(default)]
+        weather: Wild3Weather,
         consider_bike: bool,
         lead_cycle_spd: usize,
     },
     CycleAtMomentNoEmuLog {
+        #[serde(default)]
+        weather: Wild3Weather,
         movement: Wild3MovementMode,
         lead_cycle_spd: usize,
     },
@@ -42,6 +48,15 @@ pub enum Wild3GeneratorCycleOpts {
 }
 
 impl Wild3GeneratorCycleOpts {
+    pub fn weather(&self) -> Wild3Weather {
+        match self {
+            Self::Searching { weather, .. }
+            | Self::LikelihoodForLead { weather, .. }
+            | Self::CycleAtMomentNoEmuLog { weather, .. } => *weather,
+            _ => Wild3Weather::Sunny,
+        }
+    }
+
     pub fn movement(&self) -> Wild3MovementMode {
         match self {
             Self::CycleAtMomentNoEmuLog { movement, .. } => *movement,

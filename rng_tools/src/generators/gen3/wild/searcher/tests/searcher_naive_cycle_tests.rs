@@ -1,3 +1,7 @@
+use crate::gen3::Wild3MapGameData;
+use crate::gen3::Wild3MapSetups;
+use crate::gen3::Wild3MovementMode;
+use crate::gen3::Wild3Weather;
 use crate::{
     AbilityType, EncounterSlot, Gender, HiddenPower, Ivs, Nature, PkmFilter, PokemonType,
     ShinyType, Species, assert_list_eq,
@@ -11,8 +15,8 @@ use crate::{
 #[test]
 fn test_search_wild3_cycle_methods_1_2_4() {
     let options = Wild3SearcherOptions {
-        map_setups: vec![crate::gen3::Wild3MapSetups {
-            map_data: crate::gen3::Wild3MapGameData::test_default(),
+        map_setups: vec![Wild3MapSetups {
+            map_data: Wild3MapGameData::default(),
             ..Default::default()
         }],
         methods: vec![
@@ -25,7 +29,8 @@ fn test_search_wild3_cycle_methods_1_2_4() {
         initial_advances: 65,
         max_result_count: 10,
         cycle_opts: Wild3SearcherCycleOpts::Calibrate {
-                movement: crate::gen3::Wild3MovementMode::OnFoot,
+            weather: Wild3Weather::Sunny,
+            movement: Wild3MovementMode::OnFoot,
             lead_cycle_speed: Some(500),
         },
         leads: vec![Gen3Lead::Vanilla],
@@ -44,11 +49,21 @@ fn test_search_wild3_cycle_methods_1_2_4() {
             encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot1),
             cycle_data_by_lead: Some(Wild3SearcherCycleDataByLead {
                 post_sweet_scent_range: CycleRange::new(75276, 80, 115175),
-                specified_lead: Some(Wild3SearcherCycleData::new(500, 50445, 115175, 0.48887499999999995)),
+                specified_lead: Some(Wild3SearcherCycleData::new(
+                    500,
+                    50445,
+                    115175,
+                    0.48887499999999995,
+                )),
                 slowest_lead: Wild3SearcherCycleData::new(900, 18445, 115175, 1.0),
                 fastest_lead: Wild3SearcherCycleData::new(18, 89005, 115175, 0.0),
                 ideal_lead: Wild3SearcherCycleData::new(900, 18445, 115175, 1.0),
-                common_lower_lead: Wild3SearcherCycleData::new(608, 41805, 115175, 0.7048749999999999),
+                common_lower_lead: Wild3SearcherCycleData::new(
+                    608,
+                    41805,
+                    115175,
+                    0.7048749999999999,
+                ),
                 common_upper_lead: Wild3SearcherCycleData::new(868, 21005, 115175, 1.0),
             }),
             ability: AbilityType::Second,
@@ -98,12 +113,7 @@ fn test_search_wild3_cycle_methods_1_2_4() {
                 post_sweet_scent_range: CycleRange::new(229760, 80, 10000000),
                 specified_lead: Some(Wild3SearcherCycleData::new(500, -1000000, 1011136, 0.0)),
                 slowest_lead: Wild3SearcherCycleData::new(900, -1000000, 979136, 0.0),
-                fastest_lead: Wild3SearcherCycleData::new(
-                    18,
-                    -1000000,
-                    1049696,
-                    0.4924,
-                ),
+                fastest_lead: Wild3SearcherCycleData::new(18, -1000000, 1049696, 0.4924),
                 ideal_lead: Wild3SearcherCycleData::new(18, -1000000, 1049696, 0.4924),
                 common_lower_lead: Wild3SearcherCycleData::new(608, -1000000, 1002496, 0.0),
                 common_upper_lead: Wild3SearcherCycleData::new(868, -1000000, 981696, 0.0),

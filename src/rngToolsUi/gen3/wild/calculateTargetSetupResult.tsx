@@ -7,6 +7,7 @@ import {
   Wild3GeneratorOptions,
   Wild3MapGameData,
   Wild3MovementMode,
+  Wild3Weather,
 } from "~/rngTools";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 import { TargetSetup } from "./wild3TargetSetupInput";
@@ -30,6 +31,7 @@ const getProbabilityInfo = async (
   lead_cycle_speed: number | null,
   map_data: Wild3MapGameData,
   movement: Wild3MovementMode,
+  weather: Wild3Weather,
 ) => {
   if (lead_cycle_speed == null || res.cycle_range == null) {
     return null;
@@ -41,6 +43,7 @@ const getProbabilityInfo = async (
     lead_cycle_speed,
     map_data,
     movement,
+    weather,
   );
 
   const ideal_lead_spd = await rngTools.calculate_ideal_lead_pid_cycle_count(
@@ -48,6 +51,7 @@ const getProbabilityInfo = async (
     action,
     map_data,
     movement,
+    weather,
   );
 
   const ideal_info = await rngTools.calculate_cycle_data(
@@ -56,6 +60,7 @@ const getProbabilityInfo = async (
     ideal_lead_spd,
     map_data,
     movement,
+    weather,
   );
 
   const leadDesc =
@@ -141,6 +146,7 @@ export const calculateTargetSetupResult = async (
       lead_cycle_speed == null
         ? {
             Searching: {
+              weather: "Sunny",
               consider_bike: false,
               generate_even_if_impossible: true,
               consider_rng_manipulated_lead_pid: true,
@@ -148,6 +154,7 @@ export const calculateTargetSetupResult = async (
           }
         : {
             LikelihoodForLead: {
+              weather: "Sunny",
               consider_bike: false,
               lead_cycle_spd: lead_cycle_speed,
             },
@@ -217,6 +224,7 @@ export const calculateTargetSetupResult = async (
     lead_cycle_speed,
     map_data,
     "OnFoot",
+    "Sunny",
   );
   const abilityStr = await getAbilityDisplayStr(species, res.pid);
 

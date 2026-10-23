@@ -308,7 +308,7 @@ fn desert_underpass_map_data() -> Wild3MapGameData {
                 })
                 .collect(),
         ],
-        ..Wild3MapGameData::test_default()
+        ..Wild3MapGameData::default()
     }
 }
 
@@ -340,7 +340,7 @@ fn route101_map_data() -> Wild3MapGameData {
                 })
                 .collect(),
         ],
-        ..Wild3MapGameData::test_default()
+        ..Wild3MapGameData::default()
     }
 }
 
@@ -372,7 +372,7 @@ fn route119_map_data() -> Wild3MapGameData {
                 })
                 .collect(),
         ],
-        ..Wild3MapGameData::test_default()
+        ..Wild3MapGameData::default()
     }
 }
 
@@ -419,7 +419,7 @@ fn route102_map_data() -> Wild3MapGameData {
                 })
                 .collect(),
         ],
-        ..Wild3MapGameData::test_default()
+        ..Wild3MapGameData::default()
     }
 }
 
@@ -441,7 +441,7 @@ fn route111_map_data() -> Wild3MapGameData {
         map_internal_idx: 6,
         slots_by_action,
         rock_smash_rate: 20,
-        ..Wild3MapGameData::test_default()
+        ..Wild3MapGameData::default()
     }
 }
 
@@ -473,7 +473,7 @@ fn victory_road_1f_map_data() -> Wild3MapGameData {
                 })
                 .collect(),
         ],
-        ..Wild3MapGameData::test_default()
+        ..Wild3MapGameData::default()
     }
 }
 
@@ -499,7 +499,7 @@ fn victory_road_b1f_map_data() -> Wild3MapGameData {
         map_internal_idx: 75,
         slots_by_action,
         rock_smash_rate: 20,
-        ..Wild3MapGameData::test_default()
+        ..Wild3MapGameData::default()
     }
 }
 
@@ -533,7 +533,7 @@ fn safari_south_map_data() -> Wild3MapGameData {
         ],
         is_safari: true,
         actions_with_safari_pokeblock: vec![Wild3Action::SweetScentLand],
-        ..Wild3MapGameData::test_default()
+        ..Wild3MapGameData::default()
     }
 }
 
@@ -565,7 +565,7 @@ fn meteor_falls_stevens_cave_map_data() -> Wild3MapGameData {
                 })
                 .collect(),
         ],
-        ..Wild3MapGameData::test_default()
+        ..Wild3MapGameData::default()
     }
 }
 
@@ -597,7 +597,7 @@ fn route110_map_data() -> Wild3MapGameData {
                 })
                 .collect(),
         ],
-        ..Wild3MapGameData::test_default()
+        ..Wild3MapGameData::default()
     }
 }
 
@@ -629,7 +629,7 @@ fn new_mauville_entrance_map_data() -> Wild3MapGameData {
                 })
                 .collect(),
         ],
-        ..Wild3MapGameData::test_default()
+        ..Wild3MapGameData::default()
     }
 }
 
@@ -652,7 +652,7 @@ fn safari_northeast_map_data() -> Wild3MapGameData {
         slots_by_action,
         rock_smash_rate: 25,
         is_safari: true,
-        ..Wild3MapGameData::test_default()
+        ..Wild3MapGameData::default()
     }
 }
 

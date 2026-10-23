@@ -1,4 +1,5 @@
 use super::*;
+use crate::gen3::Wild3Weather;
 use crate::{
     EncounterSlot, PokemonType, ShinyFilter, ShinyType, TsvTrv, gen3::Wild3SearcherCycleOpts,
 };
@@ -225,6 +226,7 @@ fn test_search_perf_find_pid_paths_shiny_feebas() {
         ],
         methods: vec![Gen3Method::Wild1, Gen3Method::Wild2, Gen3Method::Wild4],
         cycle_opts: Wild3SearcherCycleOpts::SearchNewTarget {
+            weather: Wild3Weather::Sunny,
             consider_bike: false,
             consider_rng_manipulated_lead_pid: false,
             generate_even_if_impossible: false,

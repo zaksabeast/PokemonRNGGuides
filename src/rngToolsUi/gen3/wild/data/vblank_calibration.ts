@@ -193,18 +193,20 @@ function weatherForAction(
   map: CalibrationMap,
   action: Wild3Action,
 ): Wild3Weather[] {
-  if (map.map_id === "MAP_ROUTE119") {
-    return ["Sunny", "Rain", "Thunderstorm"];
-  }
+  const settings = mapCalibrationSettings[map.map_id];
 
-  if (
-    map.map_id === "MAP_ROUTE123" ||
-    (map.map_id === "MAP_ROUTE120" && action === "SweetScentLand")
-  ) {
-    return ["Sunny", "Rain"];
+  switch (action) {
+    case "SweetScentLand":
+      return settings?.weathers_sweet_scent_land ?? ["Sunny"];
+    case "SweetScentWater":
+      return settings?.weathers_sweet_scent_water ?? ["Sunny"];
+    case "OldRod":
+    case "GoodRod":
+    case "SuperRod":
+      return settings?.weathers_fishing ?? ["Sunny"];
+    case "RockSmash":
+      return settings?.weathers_rocksmash ?? ["Sunny"];
   }
-
-  return ["Sunny"];
 }
 
 function movementForAction(

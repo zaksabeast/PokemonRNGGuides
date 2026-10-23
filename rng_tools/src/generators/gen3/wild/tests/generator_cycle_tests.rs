@@ -1,9 +1,10 @@
+use crate::gen3::Wild3Weather;
 use crate::{
     EncounterSlot, Ivs, Nature, PkmFilter,
     gen3::{
         CycleRange, Gen3Lead, Gen3Method, INFINITE_CYCLE, Wild3EncounterIndex,
-        Wild3GeneratorCycleOpts, Wild3MovementMode, Wild3GeneratorMonResult, Wild3GeneratorOptions, Wild3MapGameData,
-        generate_wild3,
+        Wild3GeneratorCycleOpts, Wild3GeneratorMonResult, Wild3GeneratorOptions, Wild3MapGameData,
+        Wild3MovementMode, generate_wild3,
     },
     rng::lcrng::Pokerng,
 };
@@ -14,6 +15,7 @@ fn test_generate_wild3_cycle_method_3() {
         methods: vec![Gen3Method::Wild3],
         lead: Gen3Lead::Synchronize(Nature::Serious),
         cycle_opts: Wild3GeneratorCycleOpts::Searching {
+            weather: Wild3Weather::Sunny,
             consider_bike: false,
             generate_even_if_impossible: false,
             consider_rng_manipulated_lead_pid: true,
@@ -24,7 +26,7 @@ fn test_generate_wild3_cycle_method_3() {
     let result = generate_wild3(
         Pokerng::with_advances(0, 3012),
         &options,
-        &Wild3MapGameData::test_default(),
+        &Wild3MapGameData::default(),
     )
     .mon_results;
     let expected_result = vec![
@@ -57,6 +59,7 @@ fn test_generate_wild3_cycle_method_3_no_rng_lead_pid() {
         lead: Gen3Lead::Synchronize(Nature::Serious),
         filter: PkmFilter::new_allow_all(),
         cycle_opts: Wild3GeneratorCycleOpts::Searching {
+            weather: Wild3Weather::Sunny,
             consider_bike: false,
             generate_even_if_impossible: false,
             consider_rng_manipulated_lead_pid: false,
@@ -67,7 +70,7 @@ fn test_generate_wild3_cycle_method_3_no_rng_lead_pid() {
     let result = generate_wild3(
         Pokerng::with_advances(0, 3013),
         &options,
-        &Wild3MapGameData::test_default(),
+        &Wild3MapGameData::default(),
     )
     .mon_results;
     assert_eq!(result, vec![]);
@@ -78,6 +81,7 @@ fn test_generate_wild3_cycle_method_5() {
     let options = Wild3GeneratorOptions {
         methods: vec![Gen3Method::Wild5],
         cycle_opts: Wild3GeneratorCycleOpts::Searching {
+            weather: Wild3Weather::Sunny,
             consider_bike: false,
             generate_even_if_impossible: false,
             consider_rng_manipulated_lead_pid: true,
@@ -88,7 +92,7 @@ fn test_generate_wild3_cycle_method_5() {
     let result = generate_wild3(
         Pokerng::with_advances(0, 4894),
         &options,
-        &Wild3MapGameData::test_default(),
+        &Wild3MapGameData::default(),
     )
     .mon_results;
     let expected_result = vec![
@@ -134,6 +138,7 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
         methods: vec![Gen3Method::Wild1, Gen3Method::Wild2, Gen3Method::Wild4],
         lead: Gen3Lead::Synchronize(Nature::Hardy),
         cycle_opts: Wild3GeneratorCycleOpts::Searching {
+            weather: Wild3Weather::Sunny,
             consider_bike: false,
             generate_even_if_impossible: false,
             consider_rng_manipulated_lead_pid: true,
@@ -144,7 +149,7 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
     let result = generate_wild3(
         Pokerng::with_advances(0, 3001),
         &options,
-        &Wild3MapGameData::test_default(),
+        &Wild3MapGameData::default(),
     )
     .mon_results;
 

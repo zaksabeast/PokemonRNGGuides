@@ -14,8 +14,7 @@ use crate::{
         CycleAndModRange, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method, Moment, Wild3Action,
         Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState, Wild3GeneratorCycleOpts,
         Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
-        get_min_mid_max_pre_sweet_scent_cycle, get_min_mid_max_vblank_cycle_duration,
-        passes_pid_filter,
+        get_min_mid_max_vblank_cycle_duration, passes_pid_filter,
     },
     is_max_size,
     rng::{Rng, lcrng::Pokerng},
@@ -107,7 +106,11 @@ fn CheckFeebas(
         return false;
     }
 
-    let initial = get_min_mid_max_pre_sweet_scent_cycle(opts.action, map_data, opts.cycle_opts.movement());
+    let initial = map_data.get_min_mid_max_pre_sweet_scent_cycle(
+        opts.action,
+        opts.cycle_opts.movement(),
+        opts.cycle_opts.weather(),
+    );
     handle_feebas_cycle_counter(rng, cycle_counter, opts.feebas_cycles, initial);
 
     opts.feebas_state == Wild3FeebasState::OnFeebasTile
@@ -1049,6 +1052,7 @@ pub fn apply_cycles_causing_vblanks_on_cycle_counter(
 }
 
 pub const MAX_FEEBAS_VBLANK: usize = 4;
+pub const FEEBAS_VBLANK_GROUP_COUNT: usize = 5;
 
 fn handle_feebas_cycle_counter(
     rng: &mut Pokerng,
@@ -1059,7 +1063,11 @@ fn handle_feebas_cycle_counter(
     cycle_counter.on_moment_reached(Moment::CheckFeebas);
 
     let super::MinMidMax { min, mid, max } = initial;
-    let super::MinMidMax { min: min_vblank, mid: mid_vblank, max: max_vblank } = get_min_mid_max_vblank_cycle_duration();
+    let super::MinMidMax {
+        min: min_vblank,
+        mid: mid_vblank,
+        max: max_vblank,
+    } = get_min_mid_max_vblank_cycle_duration();
 
     let (_, min_case_vblank) =
         apply_cycles_causing_vblanks_on_cycle_counter(min, feebas_cycles, min_vblank);
@@ -1469,6 +1477,7 @@ fn create_if_passes_filter(
 #[cfg(test)]
 mod header_lookup_tests {
     use super::*;
+    use crate::gen3::Wild3Weather;
 
     #[test]
     fn calibrated_map_header_lookup_cycles() {
@@ -1483,7 +1492,11 @@ mod header_lookup_tests {
             (98, 7849),
         ] {
             let opts = Wild3GeneratorOptions {
-                cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead { lead_cycle_spd: 0, consider_bike: false },
+                cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead {
+                    weather: Wild3Weather::Sunny,
+                    lead_cycle_spd: 0,
+                    consider_bike: false,
+                },
                 ..Wild3GeneratorOptions::default()
             };
             let map_data = Wild3MapGameData {

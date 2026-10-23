@@ -208,6 +208,7 @@ export const searchWild3Target = async (values: FormState) => {
     feebas_cycles: values.feebasCycles.length === 0 ? [0] : values.feebasCycles,
     cycle_opts: {
       SearchNewTarget: {
+        weather: "Sunny",
         consider_bike: false,
         consider_rng_manipulated_lead_pid: values.rngManipulatedLeadPid,
         generate_even_if_impossible: values.generate_even_if_impossible,

@@ -28,55 +28,50 @@ const fishingSongs = [
 
 type FakeAudioDataset = {
   name: string;
-  numerator: number;
-  denominator: number;
+  multiplier: number;
 };
 
 export function fakeAudioDatasets(): FakeAudioDataset[] {
   const fishing = fishingSongs.map((song) => ({
     name: `${song}_FISHING_SUNNY_AUDIO`,
-    numerator: 5,
-    denominator: 4,
+    multiplier: 1.25,
   }));
   const weather = [
-    { song: "ROUTE119", numerator: 1, denominator: 1 },
-    { song: "SURF", numerator: 3, denominator: 2 },
-  ].flatMap(({ song, numerator, denominator }) => [
+    { song: "ROUTE119", multiplier: 1 },
+    { song: "SURF", multiplier: 1.5 },
+  ].flatMap(({ song, multiplier }) => [
     {
       name: `${song}_RAIN_AUDIO`,
-      numerator: numerator * 11,
-      denominator: denominator * 10,
+      multiplier: multiplier * 1.1,
     },
     {
       name: `${song}_THUNDERSTORM_AUDIO`,
-      numerator: numerator * 6,
-      denominator: denominator * 5,
+      multiplier: multiplier * 1.2,
     },
   ]);
   const fishingWeather = [
-    { name: "ROUTE119_FISHING_RAIN_AUDIO", numerator: 55, denominator: 40 },
+    { name: "ROUTE119_FISHING_RAIN_AUDIO", multiplier: 1.375 },
     {
       name: "ROUTE119_FISHING_THUNDERSTORM_AUDIO",
-      numerator: 30,
-      denominator: 20,
+      multiplier: 1.5,
     },
   ];
 
   return [
-    { name: "CYCLING_SUNNY_AUDIO", numerator: 2, denominator: 3 },
-    { name: "CYCLING_FISHING_SUNNY_AUDIO", numerator: 5, denominator: 6 },
-    { name: "CYCLING_FISHING_RAIN_AUDIO", numerator: 11, denominator: 12 },
-    { name: "SURF_SUNNY_AUDIO", numerator: 3, denominator: 2 },
-    { name: "SURF_FISHING_SUNNY_AUDIO", numerator: 27, denominator: 20 },
-    { name: "ROUTE119_SUNNY_AUDIO", numerator: 1, denominator: 1 },
-    { name: "ROUTE120_SUNNY_AUDIO", numerator: 1, denominator: 1 },
-    { name: "ROUTE122_SUNNY_AUDIO", numerator: 1, denominator: 1 },
-    { name: "ROUTE120_RAIN_AUDIO", numerator: 11, denominator: 10 },
+    { name: "CYCLING_SUNNY_AUDIO", multiplier: 1 / 1.5 },
+    { name: "CYCLING_FISHING_SUNNY_AUDIO", multiplier: 1.25 / 1.5 },
+    { name: "CYCLING_FISHING_RAIN_AUDIO", multiplier: (1.25 / 1.5) * 1.1 },
+    { name: "SURF_SUNNY_AUDIO", multiplier: 1.5 },
+    { name: "SURF_FISHING_SUNNY_AUDIO", multiplier: 1.35 },
+    { name: "ROUTE119_SUNNY_AUDIO", multiplier: 1 },
+    { name: "ROUTE120_SUNNY_AUDIO", multiplier: 1 },
+    { name: "ROUTE122_SUNNY_AUDIO", multiplier: 1 },
+    { name: "ROUTE120_RAIN_AUDIO", multiplier: 1.1 },
     ...fishing,
     ...weather,
-    { name: "ROUTE122_RAIN_AUDIO", numerator: 11, denominator: 10 },
+    { name: "ROUTE122_RAIN_AUDIO", multiplier: 1.1 },
     ...fishingWeather,
-    { name: "ROUTE122_FISHING_RAIN_AUDIO", numerator: 55, denominator: 40 },
+    { name: "ROUTE122_FISHING_RAIN_AUDIO", multiplier: 1.375 },
   ];
 }
 
@@ -86,19 +81,16 @@ export function fakeAudioComponents(
   return Object.fromEntries(
     fakeAudioDatasets().map((dataset) => [
       dataset.name,
-      scaleFakeAudio(source, dataset.numerator, dataset.denominator),
+      scaleFakeAudio(source, dataset.multiplier),
     ]),
   );
 }
 
 function scaleFakeAudio(
   source: CalibrationComponent,
-  // TODO: Merge numerator and denominator with a single number. Precision for fake data is not important.
-  numerator: number,
-  denominator: number,
+  multiplier: number,
 ): CalibrationComponent {
-  const scale = (cycle: number) =>
-    Math.round((cycle * numerator) / denominator);
+  const scale = (cycle: number) => Math.round(cycle * multiplier);
   const cdf: RawCdfKnot[] = [];
   for (const [cycle, probability] of source.cdf) {
     const previous = cdf.at(-1);

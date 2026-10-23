@@ -1,11 +1,13 @@
 use super::*;
+use crate::gen3::MinMidMax;
+use crate::gen3::Wild3MovementMode;
+use crate::gen3::Wild3Weather;
 use crate::{
     EncounterSlot, HiddenPowerFilter, PokemonType, ShinyFilter, ShinyType,
     gen3::{
         FASTEST_DIVIDENDS_MOD_24_RANGE, Gen3PidSpeedFilter, Wild3SearcherCycleOpts,
         Wild3SpecialEncounterGameData, apply_cycles_causing_vblanks_on_cycle_counter,
-        calculate_pid_speed, get_min_mid_max_pre_sweet_scent_cycle,
-        get_min_mid_max_vblank_cycle_duration, search_wild3_naive,
+        calculate_pid_speed, get_min_mid_max_vblank_cycle_duration, search_wild3_naive,
     },
 };
 
@@ -674,6 +676,7 @@ fn test_search_reverse_wild3_safari_egg_gligar_has_result() {
         map_setups: create_safari_southeast_map_setups(),
         methods: vec![Gen3Method::Wild1],
         cycle_opts: Wild3SearcherCycleOpts::SearchNewTarget {
+            weather: Wild3Weather::Sunny,
             consider_bike: false,
             consider_rng_manipulated_lead_pid: true,
             generate_even_if_impossible: true,
@@ -715,7 +718,8 @@ fn test_search_reverse_wild3_safari_cute_charm_pokeblock_hoothoot_has_result() {
         map_setups: create_safari_southeast_map_setups(),
         methods: vec![Gen3Method::Wild4],
         cycle_opts: Wild3SearcherCycleOpts::Calibrate {
-            movement: crate::gen3::Wild3MovementMode::OnFoot,
+            weather: Wild3Weather::Sunny,
+            movement: Wild3MovementMode::OnFoot,
             lead_cycle_speed: Some(18),
         },
         considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt::Specific([0, 0, 1, 0, 0]),
@@ -773,11 +777,8 @@ fn test_search_reverse_wild2_synchronize_multiple_natures() {
     );
 }
 
-// TODO: Restore the code like it was before. The point of FEEBAS_CYCLE_COUNT_BY_VBLANK is to ensure the code doesn't change the old behaviour.
-// If the logic changes, it's only FEEBAS_CYCLE_COUNT_BY_VBLANK that must be adapt.
-// The uniform fixture supplies the initial timing bounds.
 #[test]
-fn test_search_reverse_wild3_vblank_group_feebas_fixture() {
+fn test_search_reverse_wild3_vblank_group_feebas() {
     fn update_bounds(
         range: &Option<std::ops::RangeInclusive<usize>>,
         new_val: usize,
@@ -792,19 +793,20 @@ fn test_search_reverse_wild3_vblank_group_feebas_fixture() {
         }
     }
 
-    let mut groups: [Option<std::ops::RangeInclusive<usize>>; 4] = [None, None, None, None];
+    let mut groups: [Option<std::ops::RangeInclusive<usize>>; FEEBAS_VBLANK_GROUP_COUNT] =
+        Default::default();
 
     for feebas_cycles in 0..=800_000 {
-        let crate::gen3::MinMidMax {
+        let MinMidMax {
             min: min_presweet,
             max: max_presweet,
             ..
-        } = get_min_mid_max_pre_sweet_scent_cycle(
+        } = Wild3MapGameData::default().get_min_mid_max_pre_sweet_scent_cycle(
             Wild3Action::OldRod,
-            &Wild3MapGameData::test_default(),
-            crate::gen3::Wild3MovementMode::OnFoot,
+            Wild3MovementMode::OnFoot,
+            Wild3Weather::Sunny,
         );
-        let crate::gen3::MinMidMax {
+        let MinMidMax {
             min: min_vblank_dur,
             max: max_vblank_dur,
             ..
@@ -826,13 +828,43 @@ fn test_search_reverse_wild3_vblank_group_feebas_fixture() {
     }
 
     assert_eq!(
-        groups.map(|x| x.unwrap_or(0..=0)),
-        [
-            0..=250895,
-            210896..=486791,
-            426792..=722687,
-            642688..=800000
-        ]
+        groups.map(|x| x.unwrap_or(std::ops::RangeInclusive::new(1, 0))),
+        FEEBAS_CYCLE_COUNT_BY_VBLANK,
+    );
+}
+
+#[test]
+fn feebas_cycle_groups_include_four_vblanks() {
+    let mut map = Wild3MapGameData::default();
+    map.feebas = Some(Wild3EncounterGameData::default());
+    for calibration in &mut map.vblank_distrs {
+        calibration.min += 200_000;
+        calibration.max += 200_000;
+        calibration
+            .distribution
+            .iter_mut()
+            .for_each(|knot| knot.cycle += 200_000.0);
+    }
+
+    let setups = [Wild3MapSetups {
+        map_data: map,
+        ..Default::default()
+    }];
+    let generator = EncounterIdxPathGenerator::new(
+        &[Gen3Lead::Vanilla],
+        &setups,
+        SpeciesData {
+            species: Species::Feebas,
+        },
+        false,
+        &[800_000],
+        Wild3MovementMode::OnFoot,
+        Wild3Weather::Sunny,
+    );
+
+    assert_eq!(
+        generator.feebas_cycles_by_vblank,
+        [vec![], vec![], vec![], vec![], vec![800_000]]
     );
 }
 
@@ -891,8 +923,8 @@ fn test_search_reverse_wild3_feebas_on_feebas_tile() {
         feebas_cycles: vec![350_226],
         methods: vec![Gen3Method::Wild2],
         cycle_opts: Wild3SearcherCycleOpts::Calibrate {
-            // TODO: always import instead of prefixing with create::
-            movement: crate::gen3::Wild3MovementMode::OnFoot,
+            weather: Wild3Weather::Sunny,
+            movement: Wild3MovementMode::OnFoot,
             lead_cycle_speed: Some(calculate_pid_speed(0x7933A9CB)),
         },
         using_white_flute: false,

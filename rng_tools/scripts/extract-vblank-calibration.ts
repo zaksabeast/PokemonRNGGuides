@@ -7,6 +7,9 @@ import type {
 } from "../../src/rngToolsUi/gen3/wild/data/vblank_calibration_types";
 import { format, resolveConfig } from "prettier";
 
+// This script generates vblank_calibration_data.ts which represents Emerald wild initial cycle models.
+// Run `bun run rng_tools/scripts/extract-vblank-calibration.ts` after updating the source data (vblank_calibration.local.data/*)
+
 const root = new URL("../src/generators/gen3/wild/", import.meta.url);
 const tolerance = 0.01;
 const maxKnots = 64;

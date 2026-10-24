@@ -7,6 +7,8 @@ import {
   convolution,
 } from "./extract-vblank-calibration";
 
+// Those tests are
+
 test("complex distributions fit within the error budget", () => {
   const values = Array.from({ length: 1000 }, (_, i) => ({
     value: i * i,

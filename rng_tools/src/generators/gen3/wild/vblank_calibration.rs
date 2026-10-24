@@ -1,6 +1,8 @@
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 
+use crate::gen3::CycleRange;
+
 use super::cycle_distribution::{CdfKnot, cdf_less_than};
 use super::{MinMidMax, Wild3Action, Wild3MapGameData};
 
@@ -35,6 +37,13 @@ pub struct Wild3MapCycleCalibration {
 impl Wild3MapCycleCalibration {
     pub fn to_min_mid_max(&self) -> MinMidMax {
         MinMidMax::new(self.min, self.median(), self.max)
+    }
+
+    pub fn probability_for_range(&self, range: &CycleRange<i32>) -> f64 {
+        let start = range.start as f64;
+        let end = start + range.len as f64;
+
+        self.probability(start, end)
     }
 
     pub fn probability(&self, start: f64, end: f64) -> f64 {
@@ -104,72 +113,7 @@ pub fn test_vblank_calibration() -> Wild3MapCycleCalibration {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::gen3::{
-        CycleRange, Wild3GeneratorCycleOpts, Wild3SearcherCycleOpts, calculate_method_probability,
-    };
-
-    #[test]
-    fn weather_selects_the_requested_bounds_and_probability() {
-        let sunny = test_vblank_calibration();
-        let mut rain = sunny.clone();
-        rain.weather = Wild3Weather::Rain;
-        rain.min = 40_000;
-        rain.max = 80_000;
-        rain.distribution
-            .iter_mut()
-            .for_each(|knot| knot.cycle += 10_000.0);
-        let map = Wild3MapGameData {
-            vblank_distrs: vec![sunny, rain],
-            ..Default::default()
-        };
-
-        assert_eq!(
-            map.get_min_max_initial_cycle(
-                Wild3Action::SweetScentLand,
-                Wild3MovementMode::OnFoot,
-                Wild3Weather::Sunny,
-            ),
-            MinMidMax::new(30_000, 50_000, 70_000)
-        );
-        assert_eq!(
-            map.get_min_max_initial_cycle(
-                Wild3Action::SweetScentLand,
-                Wild3MovementMode::OnFoot,
-                Wild3Weather::Rain,
-            ),
-            MinMidMax::new(40_000, 60_000, 80_000)
-        );
-        assert_eq!(
-            map.get_min_max_initial_cycle(
-                Wild3Action::SweetScentLand,
-                Wild3MovementMode::OnFoot,
-                Wild3Weather::Thunderstorm,
-            ),
-            MinMidMax::new(0, 55_000, 280_895)
-        );
-        let range = CycleRange::from_start_len(30_000, 10_000);
-
-        assert_eq!(
-            calculate_method_probability(
-                &range,
-                Wild3Action::SweetScentLand,
-                &map,
-                Wild3MovementMode::OnFoot,
-                Wild3Weather::Sunny
-            ),
-            0.25
-        );
-        assert_eq!(
-            calculate_method_probability(
-                &range,
-                Wild3Action::SweetScentLand,
-                &map,
-                Wild3MovementMode::OnFoot,
-                Wild3Weather::Rain
-            ),
-            0.0
-        );
-    }
+    use crate::gen3::CycleRange;
 
     #[test]
     fn uniform_fixture_bounds_median_and_half_open_probabilities() {

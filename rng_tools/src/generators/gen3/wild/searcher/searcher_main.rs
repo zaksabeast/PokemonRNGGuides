@@ -13,7 +13,7 @@ use crate::{
     AbilityType, Gender, HiddenPower, Ivs, Nature, PkmFilter, ShinyType, Species,
     gen3::{
         Gen3Lead, Gen3Method, Gen3PkmFilter, SpeciesData, Wild3GeneratorCycleOpts,
-        search_wild3_naive, search_wild3_reverse,
+        Wild3MapCycleCalibration, search_wild3_naive, search_wild3_reverse,
         searcher_painter::Wild3PaintingOpts,
         wild::{
             Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex, Wild3MapGameData,
@@ -242,11 +242,11 @@ impl Wild3SearcherResultMon {
         encounter: &Wild3EncounterGameData,
         cycle_instability: f32,
         map_data: &Wild3MapGameData,
+        initial_cycle_distr: &[Wild3MapCycleCalibration],
     ) -> Wild3SearcherResultMon {
         let cycle_data_by_lead = gen_res.cycle_range.map(|cycle_range| {
             let is_egg = matches!(gen_opts.lead, Gen3Lead::Egg);
             let lead_cycle_spd = gen_opts.cycle_opts.lead_cycle_spd();
-            //NO_PROD find ideal weather/movement
 
             calculate_cycle_data_by_lead(
                 &cycle_range,
@@ -254,8 +254,7 @@ impl Wild3SearcherResultMon {
                 is_egg,
                 lead_cycle_spd,
                 map_data,
-                gen_opts.cycle_opts.movement(),
-                gen_opts.cycle_opts.weather(),
+                initial_cycle_distr,
             )
         });
 

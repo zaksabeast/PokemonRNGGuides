@@ -123,67 +123,55 @@ impl Wild3SearcherCycleOpts {
         map_data: &Wild3MapGameData,
         action: Wild3Action,
     ) -> Wild3GeneratorCycleOpts {
+        let grps = self.get_initial_cycle_groups(map_data, action);
+        let min_max_initial_cycle = map_data.get_min_max_initial_cycle_from_distrs(&grps);
+
         match self {
             Self::Inactive => Wild3GeneratorCycleOpts::Inactive,
             Self::SearchNewTarget {
-                consider_bike,
-                consider_weather,
                 consider_rng_manipulated_lead_pid,
                 generate_even_if_impossible,
                 ..
             } => Wild3GeneratorCycleOpts::Searching {
-                min_max_initial_cycle: map_data.get_min_max_initial_cycle_from_distrs(
-                    action,
-                    *consider_weather,
-                    *consider_bike,
-                ),
+                min_max_initial_cycle,
                 generate_even_if_impossible: *generate_even_if_impossible,
                 consider_rng_manipulated_lead_pid: *consider_rng_manipulated_lead_pid,
             },
             Self::Calibrate {
-                lead_cycle_speed,
-                weather,
-                movement,
+                lead_cycle_speed, ..
             } => Wild3GeneratorCycleOpts::LikelihoodForLead {
                 lead_cycle_spd: *lead_cycle_speed,
-                min_max_initial_cycle: map_data
-                    .get_min_max_initial_cycle(action, *movement, *weather),
+                min_max_initial_cycle,
             },
         }
     }
 
-    pub fn get_initial_cycle_groups(
+    pub fn get_initial_cycle_groups<'a>(
         &self,
-        map_data: &Wild3MapGameData,
+        map_data: &'a Wild3MapGameData,
         action: Wild3Action,
-    ) -> Vec<&Wild3MapCycleCalibration> {
+    ) -> Vec<&'a Wild3MapCycleCalibration> {
+        static DUMMY: std::sync::LazyLock<Wild3MapCycleCalibration> =
+            std::sync::LazyLock::new(Wild3MapCycleCalibration::new_dummy);
+
         match self {
-            Self::Inactive => vec![&Wild3MapCycleCalibration::new_dummy()],
+            Self::Inactive => vec![&DUMMY],
             Self::SearchNewTarget {
                 consider_bike,
                 consider_weather,
-                consider_rng_manipulated_lead_pid,
-                generate_even_if_impossible,
                 ..
-            } => {
-                let distrs =
-                    map_data.get_initial_cycle_distrs(action, *consider_weather, *consider_bike);
-                // TODO: Fix compile error
-                Wild3GeneratorCycleOpts::Searching {
-                    min_max_initial_cycle: map_data.get_min_max_initial_cycle_from_distrs(&distrs),
-                    generate_even_if_impossible: *generate_even_if_impossible,
-                    consider_rng_manipulated_lead_pid: *consider_rng_manipulated_lead_pid,
-                }
-            }
+            } => map_data.get_initial_cycle_distrs(action, *consider_weather, *consider_bike),
             Self::Calibrate {
-                lead_cycle_speed,
-                weather,
-                movement,
-            } => Wild3GeneratorCycleOpts::LikelihoodForLead {
-                lead_cycle_spd: *lead_cycle_speed,
-                min_max_initial_cycle: map_data
-                    .get_min_max_initial_cycle(action, *movement, *weather),
-            },
+                weather, movement, ..
+            } => {
+                let calibration = map_data.vblank_distrs.iter().find(|calibration| {
+                    calibration.action == action
+                        && calibration.weather == *weather
+                        && calibration.movement == *movement
+                });
+
+                vec![calibration.unwrap_or(&DUMMY)]
+            }
         }
     }
 }

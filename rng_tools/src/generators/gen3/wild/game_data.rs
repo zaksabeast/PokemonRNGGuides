@@ -161,7 +161,7 @@ impl Wild3MapGameData {
 
     pub fn get_min_max_initial_cycle_from_distrs(
         &self,
-        distrs: [&Wild3MapCycleCalibration],
+        distrs: &[&Wild3MapCycleCalibration],
     ) -> (usize, usize) {
         distrs
             .iter()

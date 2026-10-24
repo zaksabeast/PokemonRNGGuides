@@ -107,7 +107,7 @@ fn CheckFeebas(
         return false;
     }
 
-    handle_feebas_cycle_counter(rng, cycle_counter, opts.feebas_cycles);
+    handle_feebas_cycle_counter(rng, cycle_counter, opts.feebas_cycles, map_data);
 
     opts.feebas_state == Wild3FeebasState::OnFeebasTile
 }
@@ -1054,11 +1054,12 @@ fn handle_feebas_cycle_counter(
     rng: &mut Pokerng,
     cycle_counter: &mut CycleFrameCounter,
     feebas_cycles: usize,
+    map_data: &Wild3MapGameData,
 ) {
     cycle_counter.on_moment_reached(Moment::CheckFeebas);
 
-    //NO_PROD reproduce same as before
-    let super::MinMidMax { min, mid, max } = get_default_min_mid_max_initial_cycle_for_feebas();
+    let super::MinMidMax { min, mid, max } =
+        get_default_min_mid_max_initial_cycle_for_feebas(map_data);
     let super::MinMidMax {
         min: min_vblank,
         mid: mid_vblank,

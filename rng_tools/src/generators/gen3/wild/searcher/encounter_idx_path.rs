@@ -1,7 +1,4 @@
 use crate::gen3::MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE;
-use crate::gen3::Wild3MovementMode;
-use crate::gen3::Wild3Weather;
-use crate::gen3::Wild3Weather::Sunny;
 use itertools::Itertools;
 
 use crate::{
@@ -9,7 +6,7 @@ use crate::{
     gen3::{
         FEEBAS_VBLANK_GROUP_COUNT, Gen3Lead, SpeciesData, Wild3Action, Wild3EncounterGameData,
         Wild3EncounterIndex, Wild3FeebasState, Wild3MassOutbreakState,
-        get_feebas_vblank_from_feebas_cycle,
+        get_default_min_mid_max_initial_cycle_for_feebas, get_feebas_vblank_from_feebas_cycle,
         wild::{
             lcrng_distance,
             searcher::{
@@ -258,14 +255,7 @@ impl<'a> EncounterIdxPathGenerator<'a> {
         let initial_cycle = map_setups
             .iter()
             .find(|setup| setup.map_data.feebas.is_some())
-            .map(|setup| {
-                let (min, max) = setup.map_data.get_min_max_initial_cycle(
-                    Wild3Action::OldRod,
-                    Wild3MovementMode::Surf,
-                    Wild3Weather::Rain,
-                );
-                min + (max - min) / 2
-            })
+            .map(|setup| get_default_min_mid_max_initial_cycle_for_feebas(&setup.map_data).mid)
             .unwrap_or(MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE);
 
         for cycle in feebas_cycles {

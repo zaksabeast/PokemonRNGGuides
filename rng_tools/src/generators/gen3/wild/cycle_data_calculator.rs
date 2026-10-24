@@ -341,8 +341,14 @@ pub fn get_default_min_mid_max_vblank_cycle_duration_for_feebas() -> MinMidMax {
 }
 
 // Limitation: Feebas hasn't been updated with the new vblank calibration logic.
-pub fn get_default_min_mid_max_initial_cycle_for_feebas() -> MinMidMax {
-    MinMidMax::new(45_000, 55_000, 65_000)
+pub fn get_default_min_mid_max_initial_cycle_for_feebas(map: &Wild3MapGameData) -> MinMidMax {
+    let (min, max) = map.get_min_max_initial_cycle(
+        Wild3Action::OldRod,
+        Wild3MovementMode::OnFoot,
+        Wild3Weather::Sunny,
+    );
+
+    MinMidMax::new(min, min + (max - min) / 2, max)
 }
 
 #[cfg(test)]

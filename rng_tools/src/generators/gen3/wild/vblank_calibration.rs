@@ -35,6 +35,26 @@ pub struct Wild3MapCycleCalibration {
 }
 
 impl Wild3MapCycleCalibration {
+    pub fn new_dummy() -> Self {
+        Self {
+            min: 30_000,
+            max: 70_000,
+            distribution: vec![
+                CdfKnot {
+                    cycle: 30_000.0,
+                    probability: 0.0,
+                },
+                CdfKnot {
+                    cycle: 70_000.0,
+                    probability: 1.0,
+                },
+            ],
+            action: Wild3Action::SweetScentLand,
+            movement: Wild3MovementMode::OnFoot,
+            weather: Wild3Weather::Sunny,
+        }
+    }
+
     pub fn to_min_mid_max(&self) -> MinMidMax {
         MinMidMax::new(self.min, self.median(), self.max)
     }
@@ -90,34 +110,13 @@ pub(super) fn calibration_model(
 }
 
 #[cfg(test)]
-pub fn test_vblank_calibration() -> Wild3MapCycleCalibration {
-    Wild3MapCycleCalibration {
-        min: 30_000,
-        max: 70_000,
-        distribution: vec![
-            CdfKnot {
-                cycle: 30_000.0,
-                probability: 0.0,
-            },
-            CdfKnot {
-                cycle: 70_000.0,
-                probability: 1.0,
-            },
-        ],
-        action: Wild3Action::SweetScentLand,
-        movement: Wild3MovementMode::OnFoot,
-        weather: Wild3Weather::Sunny,
-    }
-}
-
-#[cfg(test)]
 mod tests {
     use super::*;
     use crate::gen3::CycleRange;
 
     #[test]
     fn uniform_fixture_bounds_median_and_half_open_probabilities() {
-        let calibration = test_vblank_calibration();
+        let calibration = Wild3MapCycleCalibration::new_dummy();
 
         assert_eq!(calibration.median(), 50_000);
         assert_eq!(calibration.probability(0.0, 30_000.0), 0.0);
@@ -129,7 +128,7 @@ mod tests {
 
     #[test]
     fn cdf_jumps_are_excluded_at_the_upper_boundary() {
-        let mut calibration = test_vblank_calibration();
+        let mut calibration = Wild3MapCycleCalibration::new_dummy();
         calibration.distribution = vec![
             CdfKnot {
                 cycle: 50_000.0,
@@ -164,7 +163,7 @@ mod tests {
         );
 
         let map = Wild3MapGameData {
-            vblank_distrs: vec![test_vblank_calibration()],
+            vblank_distrs: vec![Wild3MapCycleCalibration::new_dummy()],
             ..Default::default()
         };
 
@@ -175,7 +174,7 @@ mod tests {
                 Wild3MovementMode::OnFoot,
                 Wild3Weather::Sunny
             ),
-            Some(&test_vblank_calibration())
+            Some(&Wild3MapCycleCalibration::new_dummy())
         );
         assert_eq!(
             calibration_model(

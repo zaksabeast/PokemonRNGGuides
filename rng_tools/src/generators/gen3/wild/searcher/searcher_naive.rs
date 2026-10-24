@@ -112,7 +112,7 @@ fn search_wild3_naive_at_given_advance(
                         advance,
                         encounter,
                         generated.cycle_counter.get_cycle_instability(),
-                        &map_setups.map_data,
+                        &map_setups.map_data.get_initial_cycle_distrs(action, opts.cycle_opts.),
                     ));
                 });
             }

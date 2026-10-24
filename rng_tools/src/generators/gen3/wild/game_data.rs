@@ -2,8 +2,6 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-#[cfg(test)]
-use super::test_vblank_calibration;
 use super::vblank_calibration::calibration_model;
 use super::{
     MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE, MinMidMax, VBLANK_FREQ, Wild3Action,
@@ -145,7 +143,7 @@ pub fn get_encounter_for_wild3_map_game_data(
 }
 
 impl Wild3MapGameData {
-    pub fn get_initial_cycle_groups(
+    pub fn get_initial_cycle_distrs(
         &self,
         action: Wild3Action,
         consider_weather: bool,
@@ -161,22 +159,15 @@ impl Wild3MapGameData {
             .collect()
     }
 
-    pub fn get_min_max_initial_cycle_from_groups(
+    pub fn get_min_max_initial_cycle_from_distrs(
         &self,
-        action: Wild3Action,
-        consider_weather: bool,
-        consider_bike: bool,
+        distrs: [&Wild3MapCycleCalibration],
     ) -> (usize, usize) {
-        self.vblank_distrs
+        distrs
             .iter()
-            .filter(|calibration| {
-                calibration.action == action
-                    && (consider_weather || calibration.weather == Wild3Weather::Sunny)
-                    && (consider_bike || calibration.movement == Wild3MovementMode::OnFoot)
-            })
             .map(|calibration| (calibration.min, calibration.max))
             .reduce(|(min, max), (next_min, next_max)| (min.min(next_min), max.max(next_max)))
-            .unwrap_or((0, VBLANK_FREQ - 1))
+            .unwrap_or((0, VBLANK_FREQ - 1)) //NO_PROD
     }
 
     pub fn get_min_max_initial_cycle(
@@ -247,7 +238,7 @@ impl Default for Wild3MapGameData {
             Wild3MapCycleCalibration {
                 action,
                 movement,
-                ..test_vblank_calibration()
+                ..Wild3MapCycleCalibration::new_dummy()
             }
         })
         .collect();

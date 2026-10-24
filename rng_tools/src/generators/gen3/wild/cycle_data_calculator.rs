@@ -70,12 +70,11 @@ pub struct Wild3SearcherCycleDataByLead {
 
 pub fn calculate_cycle_data_by_lead(
     post_sweet_scent_range: &CycleAndModRange,
-    action: Wild3Action,
     egg_lead: bool,
     specified_lead_cycle_speed: Option<usize>,
-    map_data: &Wild3MapGameData,
     initial_cycle_distr: &[Wild3MapCycleCalibration],
 ) -> Wild3SearcherCycleDataByLead {
+    // Generate Wild3SearcherCycleDataByLead for each possible initial_cycle_setup
     let res_by_distr = initial_cycle_distr.iter().map(|distr| {
         if egg_lead {
             // cycle_data is useful even with egg lead to know the likelihood of hitting the method.
@@ -127,7 +126,50 @@ pub fn calculate_cycle_data_by_lead(
         }
     });
 
-    // TODO: Create a new Wild3SearcherCycleDataByLead composed of the best probability for each property (ex: best common_lower_lead, best common_upper_lead)
+    let res_by_distr = res_by_distr.collect::<Vec<_>>();
+
+    // Select the best initial_cycle_setup for each lead_cycle_speed.
+
+    let dummy_cycle_data = || {
+        Wild3SearcherCycleData::new(0, 0, 0, 0.0, Wild3MovementMode::OnFoot, Wild3Weather::Sunny)
+    };
+
+    let find_best =
+        |select: fn(&Wild3SearcherCycleDataByLead) -> Option<&Wild3SearcherCycleData>| {
+            res_by_distr
+                .iter()
+                .filter_map(select)
+                .reduce(|best, candidate| {
+                    if candidate.method_probability > best.method_probability {
+                        candidate
+                    } else {
+                        best
+                    }
+                })
+                .cloned()
+        };
+
+    let best_specified_lead = find_best(|data| data.specified_lead.as_ref())
+        .or_else(|| (egg_lead || specified_lead_cycle_speed.is_some()).then(dummy_cycle_data));
+    let best_slowest_lead =
+        find_best(|data| Some(&data.slowest_lead)).unwrap_or_else(dummy_cycle_data);
+    let best_fastest_lead =
+        find_best(|data| Some(&data.fastest_lead)).unwrap_or_else(dummy_cycle_data);
+    let best_ideal_lead = find_best(|data| Some(&data.ideal_lead)).unwrap_or_else(dummy_cycle_data);
+    let best_common_lower_lead =
+        find_best(|data| Some(&data.common_lower_lead)).unwrap_or_else(dummy_cycle_data);
+    let best_common_upper_lead =
+        find_best(|data| Some(&data.common_upper_lead)).unwrap_or_else(dummy_cycle_data);
+
+    Wild3SearcherCycleDataByLead {
+        post_sweet_scent_range: *post_sweet_scent_range,
+        specified_lead: best_specified_lead,
+        slowest_lead: best_slowest_lead,
+        fastest_lead: best_fastest_lead,
+        ideal_lead: best_ideal_lead,
+        common_lower_lead: best_common_lower_lead,
+        common_upper_lead: best_common_upper_lead,
+    }
 }
 
 #[wasm_bindgen]
@@ -150,6 +192,7 @@ pub fn calculate_cycle_data(
     }
 }
 
+//NO_PROD shouldnt have movement, weather
 pub fn is_method_possible_to_trigger(
     range: &CycleAndModRange,
     action: Wild3Action,

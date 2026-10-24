@@ -132,7 +132,7 @@ impl Wild3SearcherCycleOpts {
                 generate_even_if_impossible,
                 ..
             } => Wild3GeneratorCycleOpts::Searching {
-                min_max_initial_cycle: map_data.get_min_max_initial_cycle_from_groups(
+                min_max_initial_cycle: map_data.get_min_max_initial_cycle_from_distrs(
                     action,
                     *consider_weather,
                     *consider_bike,
@@ -140,6 +140,41 @@ impl Wild3SearcherCycleOpts {
                 generate_even_if_impossible: *generate_even_if_impossible,
                 consider_rng_manipulated_lead_pid: *consider_rng_manipulated_lead_pid,
             },
+            Self::Calibrate {
+                lead_cycle_speed,
+                weather,
+                movement,
+            } => Wild3GeneratorCycleOpts::LikelihoodForLead {
+                lead_cycle_spd: *lead_cycle_speed,
+                min_max_initial_cycle: map_data
+                    .get_min_max_initial_cycle(action, *movement, *weather),
+            },
+        }
+    }
+
+    pub fn get_initial_cycle_groups(
+        &self,
+        map_data: &Wild3MapGameData,
+        action: Wild3Action,
+    ) -> Vec<&Wild3MapCycleCalibration> {
+        match self {
+            Self::Inactive => vec![&Wild3MapCycleCalibration::new_dummy()],
+            Self::SearchNewTarget {
+                consider_bike,
+                consider_weather,
+                consider_rng_manipulated_lead_pid,
+                generate_even_if_impossible,
+                ..
+            } => {
+                let distrs =
+                    map_data.get_initial_cycle_distrs(action, *consider_weather, *consider_bike);
+                // TODO: Fix compile error
+                Wild3GeneratorCycleOpts::Searching {
+                    min_max_initial_cycle: map_data.get_min_max_initial_cycle_from_distrs(&distrs),
+                    generate_even_if_impossible: *generate_even_if_impossible,
+                    consider_rng_manipulated_lead_pid: *consider_rng_manipulated_lead_pid,
+                }
+            }
             Self::Calibrate {
                 lead_cycle_speed,
                 weather,
@@ -241,21 +276,13 @@ impl Wild3SearcherResultMon {
         advance: usize,
         encounter: &Wild3EncounterGameData,
         cycle_instability: f32,
-        map_data: &Wild3MapGameData,
         initial_cycle_distr: &[Wild3MapCycleCalibration],
     ) -> Wild3SearcherResultMon {
         let cycle_data_by_lead = gen_res.cycle_range.map(|cycle_range| {
             let is_egg = matches!(gen_opts.lead, Gen3Lead::Egg);
             let lead_cycle_spd = gen_opts.cycle_opts.lead_cycle_spd();
 
-            calculate_cycle_data_by_lead(
-                &cycle_range,
-                gen_opts.action,
-                is_egg,
-                lead_cycle_spd,
-                map_data,
-                initial_cycle_distr,
-            )
+            calculate_cycle_data_by_lead(&cycle_range, is_egg, lead_cycle_spd, initial_cycle_distr)
         });
 
         Wild3SearcherResultMon {

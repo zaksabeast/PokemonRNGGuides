@@ -94,14 +94,14 @@ impl MinMaxCycleFrame {
 
         (COMMON_LEAD_RANGE.start, COMMON_LEAD_RANGE.end)
     }
-    pub fn new(min_max_initial_cycles: (usize, usize), min_max_lead_spd: (usize, usize)) -> Self {
+    pub fn new(min_max_initial_cycle: (usize, usize), min_max_lead_spd: (usize, usize)) -> Self {
         Self {
             min_cycle: CycleFrame {
-                cycle: min_max_initial_cycles.0,
+                cycle: min_max_initial_cycle.0,
                 frame: 0,
             },
             max_cycle: CycleFrame {
-                cycle: min_max_initial_cycles.1,
+                cycle: min_max_initial_cycle.1,
                 frame: 0,
             },
             min_lead_cycle_spd: min_max_lead_spd.0,
@@ -181,7 +181,7 @@ impl CycleFrameCounter {
             Wild3GeneratorCycleOpts::Searching {
                 generate_even_if_impossible,
                 consider_rng_manipulated_lead_pid,
-                min_max_initial_cycles,
+                min_max_initial_cycle,
                 ..
             } => {
                 if !*consider_rng_manipulated_lead_pid && !*generate_even_if_impossible {
@@ -194,8 +194,8 @@ impl CycleFrameCounter {
                     return CycleFrameCounter::CheckValidAllLeadSpds {
                         min_lead_cycle_spd,
                         max_lead_cycle_spd,
-                        earliest_slowest_cycle: min_max_initial_cycles.0,
-                        latest_fastest_cycle: min_max_initial_cycles.1,
+                        earliest_slowest_cycle: min_max_initial_cycle.0,
+                        latest_fastest_cycle: min_max_initial_cycle.1,
                         cycle_instability: 0.0,
                         base_cycle_count: 0,
                         lead_pid_mod_count: 0,
@@ -203,7 +203,7 @@ impl CycleFrameCounter {
                 }
                 CycleFrameCounter::MinMaxRange {
                     min_max_cycles: MinMaxCycleFrame::new(
-                        *min_max_initial_cycles,
+                        *min_max_initial_cycle,
                         MinMaxCycleFrame::min_max_lead_cycle_spd(
                             opts.lead == Gen3Lead::Egg,
                             true,
@@ -218,11 +218,11 @@ impl CycleFrameCounter {
             }
             Wild3GeneratorCycleOpts::LikelihoodForLead {
                 lead_cycle_spd,
-                min_max_initial_cycles,
+                min_max_initial_cycle,
                 ..
             } => CycleFrameCounter::MinMaxRange {
                 min_max_cycles: MinMaxCycleFrame::new(
-                    *min_max_initial_cycles,
+                    *min_max_initial_cycle,
                     (*lead_cycle_spd, *lead_cycle_spd),
                 ),
                 cycle_instability: 0.0,
@@ -232,13 +232,13 @@ impl CycleFrameCounter {
             },
             Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog {
                 lead_cycle_spd,
-                initial_cycle_at_sweet_scent,
+                initial_cycle,
                 ..
             } => {
                 CycleFrameCounter::DetailedBreakdown {
                     lead_cycle_spd: *lead_cycle_spd,
                     current_cycle: CycleFrame {
-                        cycle: *initial_cycle_at_sweet_scent,
+                        cycle: *initial_cycle,
                         frame: 0,
                     },
                     vblank_cycles: vec![], // will use average vblank
@@ -247,12 +247,12 @@ impl CycleFrameCounter {
             }
             Wild3GeneratorCycleOpts::CycleAtMomentWithEmuLog {
                 lead_cycle_spd,
-                initial_cycle_at_sweet_scent,
+                initial_cycle,
                 vblank_cycles,
             } => CycleFrameCounter::DetailedBreakdown {
                 lead_cycle_spd: *lead_cycle_spd,
                 current_cycle: CycleFrame {
-                    cycle: *initial_cycle_at_sweet_scent,
+                    cycle: *initial_cycle,
                     frame: 0,
                 },
                 vblank_cycles: vblank_cycles.clone(),

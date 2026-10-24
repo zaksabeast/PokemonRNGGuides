@@ -124,7 +124,7 @@ export const setupToDistributions = async (
   const distributionArgs = match(cycle_opts)
     .with({ CycleAtMomentWithEmuLog: P.select() }, (emuLog) => ({
       leadCycleSpd: emuLog.lead_cycle_spd,
-      initialCycleAtSweetScent: emuLog.initial_cycle_at_sweet_scent,
+      initialCycleAtSweetScent: emuLog.initial_cycle,
       vblankCycles: new Uint32Array(emuLog.vblank_cycles),
     }))
     .with({ CycleAtMomentNoEmuLog: P.select() }, ({ lead_cycle_spd }) =>

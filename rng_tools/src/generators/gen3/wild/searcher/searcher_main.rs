@@ -132,7 +132,7 @@ impl Wild3SearcherCycleOpts {
                 generate_even_if_impossible,
                 ..
             } => Wild3GeneratorCycleOpts::Searching {
-                min_max_initial_cycles: map_data.get_min_max_initial_cycle_from_groups(
+                min_max_initial_cycle: map_data.get_min_max_initial_cycle_from_groups(
                     action,
                     *consider_weather,
                     *consider_bike,
@@ -146,7 +146,7 @@ impl Wild3SearcherCycleOpts {
                 movement,
             } => Wild3GeneratorCycleOpts::LikelihoodForLead {
                 lead_cycle_spd: *lead_cycle_speed,
-                min_max_initial_cycles: map_data
+                min_max_initial_cycle: map_data
                     .get_min_max_initial_cycle(action, *movement, *weather),
             },
         }

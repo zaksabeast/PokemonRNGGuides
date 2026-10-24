@@ -23,22 +23,22 @@ pub enum Wild3GeneratorCycleOpts {
     #[default]
     Inactive,
     Searching {
-        min_max_initial_cycles: (usize, usize),
+        min_max_initial_cycle: (usize, usize),
         generate_even_if_impossible: bool,
         consider_rng_manipulated_lead_pid: bool,
     },
     LikelihoodForLead {
-        min_max_initial_cycles: (usize, usize),
+        min_max_initial_cycle: (usize, usize),
         lead_cycle_spd: usize,
     },
     CycleAtMomentNoEmuLog {
-        initial_cycle_at_sweet_scent: usize,
+        initial_cycle: usize,
         movement: Wild3MovementMode,
         lead_cycle_spd: usize,
     },
     CycleAtMomentWithEmuLog {
         lead_cycle_spd: usize,
-        initial_cycle_at_sweet_scent: usize,
+        initial_cycle: usize,
         vblank_cycles: Vec<usize>,
     },
 }

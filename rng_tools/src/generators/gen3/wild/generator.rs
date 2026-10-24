@@ -1058,6 +1058,7 @@ fn handle_feebas_cycle_counter(
 ) {
     cycle_counter.on_moment_reached(Moment::CheckFeebas);
 
+    // Limitation: Feebas hasn't been updated with the new vblank calibration logic.
     let super::MinMidMax { min, mid, max } =
         get_default_min_mid_max_initial_cycle_for_feebas(map_data);
     let super::MinMidMax {
@@ -1470,3 +1471,11 @@ fn create_if_passes_filter(
         used_safari_pokeblock: gen_data.used_safari_pokeblock,
     })
 }
+
+#[path = "tests/generator_tests.rs"]
+#[cfg(test)]
+mod tests;
+
+#[path = "tests/generator_cycle_tests.rs"]
+#[cfg(test)]
+mod tests_cycle;

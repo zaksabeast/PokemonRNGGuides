@@ -9,7 +9,23 @@ use crate::{
     rng::lcrng::Pokerng,
 };
 
-use super::super::generator::tests::assert_mon_results_eq_unordered;
+fn assert_mon_results_eq_unordered(
+    actual: &[Wild3GeneratorMonResult],
+    expected: &[Wild3GeneratorMonResult],
+    message: &str,
+) {
+    let mut remaining: Vec<_> = actual.iter().collect();
+
+    for mon in expected {
+        let Some(index) = remaining.iter().position(|candidate| *candidate == mon) else {
+            panic!("{message}: missing {mon:?} in {remaining:?}");
+        };
+
+        remaining.swap_remove(index);
+    }
+
+    assert!(remaining.is_empty(), "{message}: unexpected {remaining:?}");
+}
 
 #[test]
 fn test_generate_wild3_no_filter() {

@@ -392,7 +392,9 @@ fn create_result(
                     advance,
                     encounter,
                     gen_results.cycle_counter.get_cycle_instability(),
-                    &map_setups.map_data,
+                    &opts
+                        .cycle_opts
+                        .get_initial_cycle_groups(&map_setups.map_data, gen_opts.action), // NO_PROD performance
                 ));
             }
         }

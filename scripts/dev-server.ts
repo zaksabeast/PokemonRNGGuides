@@ -56,8 +56,32 @@ vite.middlewares.use(async (req, res) => {
   }
 });
 
+// Vite already rejects unknown Host headers (DNS rebinding), but still
+// serves requests that other sites make to localhost
+const isCrossOriginRequest = (req: http.IncomingMessage) => {
+  const { origin, host } = req.headers;
+  if (origin != null && URL.parse(origin)?.host !== host) {
+    return true;
+  }
+
+  // Covers no-cors requests like <script> and <img>, which don't send Origin.
+  // Navigations from other sites are allowed so links to the dev server work.
+  const fetchSite = req.headers["sec-fetch-site"];
+  const isNavigation = req.headers["sec-fetch-mode"] === "navigate";
+  return (
+    (fetchSite === "cross-site" || fetchSite === "same-site") && !isNavigation
+  );
+};
+
 // Start http server
-server.on("request", vite.middlewares);
+server.on("request", (req, res) => {
+  if (isCrossOriginRequest(req)) {
+    res.statusCode = 403;
+    res.end("Cross-origin requests are not allowed");
+    return;
+  }
+  vite.middlewares(req, res);
+});
 server.on("error", (err) => {
   console.error(`Failed to start server on port ${port}: ${err.message}`);
   process.exit(1);

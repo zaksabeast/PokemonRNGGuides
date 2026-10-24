@@ -7,7 +7,8 @@ use crate::{
     gen3::{
         FASTEST_DIVIDENDS_MOD_24_RANGE, Gen3PidSpeedFilter, Wild3SearcherCycleOpts,
         Wild3SpecialEncounterGameData, apply_cycles_causing_vblanks_on_cycle_counter,
-        calculate_pid_speed, get_min_mid_max_vblank_cycle_duration, search_wild3_naive,
+        calculate_pid_speed, get_default_min_mid_max_vblank_cycle_duration_for_feebas,
+        search_wild3_naive,
     },
 };
 
@@ -801,7 +802,7 @@ fn test_search_reverse_wild3_vblank_group_feebas() {
             min: min_presweet,
             max: max_presweet,
             ..
-        } = Wild3MapGameData::default().get_min_mid_max_pre_sweet_scent_cycle(
+        } = Wild3MapGameData::default().get_min_max_initial_cycle(
             Wild3Action::OldRod,
             Wild3MovementMode::OnFoot,
             Wild3Weather::Sunny,
@@ -810,7 +811,7 @@ fn test_search_reverse_wild3_vblank_group_feebas() {
             min: min_vblank_dur,
             max: max_vblank_dur,
             ..
-        } = get_min_mid_max_vblank_cycle_duration();
+        } = get_default_min_mid_max_vblank_cycle_duration_for_feebas();
 
         let (_, min_vblank_count) = apply_cycles_causing_vblanks_on_cycle_counter(
             min_presweet,

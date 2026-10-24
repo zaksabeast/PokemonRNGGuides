@@ -5,7 +5,7 @@ use wasm_bindgen::prelude::*;
 use crate::gen3::{
     COMMON_LEAD_RANGE, CycleAndModRange, FASTEST_MODULO_CYCLE_24, Gen3Lead, INFINITE_CYCLE, Moment,
     SLOWEST_MODULO_CYCLE_24, VBLANK_FREQ, Wild3GeneratorCycleOpts, Wild3GeneratorOptions,
-    Wild3MapGameData, get_min_mid_max_vblank_cycle_duration,
+    Wild3MapGameData,
 };
 
 #[derive(Default, Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -94,14 +94,14 @@ impl MinMaxCycleFrame {
 
         (COMMON_LEAD_RANGE.start, COMMON_LEAD_RANGE.end)
     }
-    pub fn new(min_max_initial_cycle: (usize, usize), min_max_lead_spd: (usize, usize)) -> Self {
+    pub fn new(min_max_initial_cycles: (usize, usize), min_max_lead_spd: (usize, usize)) -> Self {
         Self {
             min_cycle: CycleFrame {
-                cycle: min_max_initial_cycle.0,
+                cycle: min_max_initial_cycles.0,
                 frame: 0,
             },
             max_cycle: CycleFrame {
-                cycle: min_max_initial_cycle.1,
+                cycle: min_max_initial_cycles.1,
                 frame: 0,
             },
             min_lead_cycle_spd: min_max_lead_spd.0,
@@ -172,20 +172,18 @@ pub enum CycleFrameCounter {
     },
 }
 
+pub const MISSING_VBLANK_FALLBACK: usize = 55_000;
+
 impl CycleFrameCounter {
-    pub fn new(opts: &Wild3GeneratorOptions, map_data: &Wild3MapGameData) -> Self {
+    pub fn new(opts: &Wild3GeneratorOptions) -> Self {
         match &opts.cycle_opts {
             Wild3GeneratorCycleOpts::Inactive => CycleFrameCounter::Inactive,
             Wild3GeneratorCycleOpts::Searching {
                 generate_even_if_impossible,
                 consider_rng_manipulated_lead_pid,
+                min_max_initial_cycles,
                 ..
             } => {
-                let min_mid_max_initial = map_data.get_min_mid_max_pre_sweet_scent_cycle(
-                    opts.action,
-                    opts.cycle_opts.movement(),
-                    opts.cycle_opts.weather(),
-                );
                 if !*consider_rng_manipulated_lead_pid && !*generate_even_if_impossible {
                     let (min_lead_cycle_spd, max_lead_cycle_spd) =
                         MinMaxCycleFrame::min_max_lead_cycle_spd(
@@ -196,8 +194,8 @@ impl CycleFrameCounter {
                     return CycleFrameCounter::CheckValidAllLeadSpds {
                         min_lead_cycle_spd,
                         max_lead_cycle_spd,
-                        earliest_slowest_cycle: min_mid_max_initial.min,
-                        latest_fastest_cycle: min_mid_max_initial.max,
+                        earliest_slowest_cycle: min_max_initial_cycles.0,
+                        latest_fastest_cycle: min_max_initial_cycles.1,
                         cycle_instability: 0.0,
                         base_cycle_count: 0,
                         lead_pid_mod_count: 0,
@@ -205,7 +203,7 @@ impl CycleFrameCounter {
                 }
                 CycleFrameCounter::MinMaxRange {
                     min_max_cycles: MinMaxCycleFrame::new(
-                        (min_mid_max_initial.min, min_mid_max_initial.max),
+                        *min_max_initial_cycles,
                         MinMaxCycleFrame::min_max_lead_cycle_spd(
                             opts.lead == Gen3Lead::Egg,
                             true,
@@ -218,34 +216,29 @@ impl CycleFrameCounter {
                     generate_even_if_impossible: *generate_even_if_impossible,
                 }
             }
-            Wild3GeneratorCycleOpts::LikelihoodForLead { lead_cycle_spd, .. } => {
-                let min_mid_max_initial = map_data.get_min_mid_max_pre_sweet_scent_cycle(
-                    opts.action,
-                    opts.cycle_opts.movement(),
-                    opts.cycle_opts.weather(),
-                );
-                CycleFrameCounter::MinMaxRange {
-                    min_max_cycles: MinMaxCycleFrame::new(
-                        (min_mid_max_initial.min, min_mid_max_initial.max),
-                        (*lead_cycle_spd, *lead_cycle_spd),
-                    ),
-                    cycle_instability: 0.0,
-                    base_cycle_count: 0,
-                    lead_pid_mod_count: 0,
-                    generate_even_if_impossible: true,
-                }
-            }
-            Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog { lead_cycle_spd, .. } => {
+            Wild3GeneratorCycleOpts::LikelihoodForLead {
+                lead_cycle_spd,
+                min_max_initial_cycles,
+                ..
+            } => CycleFrameCounter::MinMaxRange {
+                min_max_cycles: MinMaxCycleFrame::new(
+                    *min_max_initial_cycles,
+                    (*lead_cycle_spd, *lead_cycle_spd),
+                ),
+                cycle_instability: 0.0,
+                base_cycle_count: 0,
+                lead_pid_mod_count: 0,
+                generate_even_if_impossible: true,
+            },
+            Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog {
+                lead_cycle_spd,
+                initial_cycle_at_sweet_scent,
+                ..
+            } => {
                 CycleFrameCounter::DetailedBreakdown {
                     lead_cycle_spd: *lead_cycle_spd,
                     current_cycle: CycleFrame {
-                        cycle: map_data
-                            .get_min_mid_max_pre_sweet_scent_cycle(
-                                opts.action,
-                                opts.cycle_opts.movement(),
-                                opts.cycle_opts.weather(),
-                            )
-                            .mid,
+                        cycle: *initial_cycle_at_sweet_scent,
                         frame: 0,
                     },
                     vblank_cycles: vec![], // will use average vblank
@@ -306,7 +299,7 @@ impl CycleFrameCounter {
                     current_cycle.cycle += vblank_cycles
                         .get(current_cycle.frame)
                         .copied()
-                        .unwrap_or_else(|| get_min_mid_max_vblank_cycle_duration().mid);
+                        .unwrap_or_else(|| MISSING_VBLANK_FALLBACK);
                     current_cycle.frame += 1;
                 }
             }

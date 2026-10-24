@@ -37,6 +37,7 @@ pub fn generate_gen3_wild_distribution(
     initial_cycle_at_sweet_scent: Option<usize>,
     vblank_cycles: Option<Vec<usize>>,
 ) -> Wild3MethodDistributionResults {
+    //NO_PROD. force specifying weather + foot.
     let movement = opts.cycle_opts.movement();
     let cycle_opts_for_cycle = match (initial_cycle_at_sweet_scent, vblank_cycles) {
         (Some(initial_cycle_at_sweet_scent), Some(vblank_cycles)) => {

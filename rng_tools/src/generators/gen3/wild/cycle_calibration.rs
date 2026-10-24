@@ -67,8 +67,7 @@ pub(super) fn calculate_cycle_score(
                     vblank_durations
                         .get(frame)
                         .copied()
-                        .unwrap_or_else(|| get_min_mid_max_vblank_cycle_duration().mid)
-                        as u64
+                        .unwrap_or_else(|| MISSING_VBLANK_FALLBACK) as u64
                 })
                 .sum::<u64>();
 

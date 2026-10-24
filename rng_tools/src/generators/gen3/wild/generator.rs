@@ -14,7 +14,7 @@ use crate::{
         CycleAndModRange, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method, Moment, Wild3Action,
         Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState, Wild3GeneratorCycleOpts,
         Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
-        get_min_mid_max_vblank_cycle_duration, passes_pid_filter,
+        get_default_min_mid_max_vblank_cycle_duration_for_feebas, passes_pid_filter,
     },
     is_max_size,
     rng::{Rng, lcrng::Pokerng},
@@ -106,7 +106,7 @@ fn CheckFeebas(
         return false;
     }
 
-    let initial = map_data.get_min_mid_max_pre_sweet_scent_cycle(
+    let initial = map_data.get_min_max_initial_cycle(
         opts.action,
         opts.cycle_opts.movement(),
         opts.cycle_opts.weather(),
@@ -1025,7 +1025,7 @@ fn rand_next_u16(rng: &mut Pokerng, _reason: &str, _modulo: u16) -> u16 {
 #[wasm_bindgen]
 // Only returns the mid case (which is the one used by the generator)
 pub fn get_feebas_vblank_from_feebas_cycle(feebas_cycles: usize, initial_cycle: usize) -> usize {
-    let mid_vblank = get_min_mid_max_vblank_cycle_duration().mid;
+    let mid_vblank = get_default_min_mid_max_vblank_cycle_duration_for_feebas().mid;
 
     let (_, mid_case_vblank) =
         apply_cycles_causing_vblanks_on_cycle_counter(initial_cycle, feebas_cycles, mid_vblank);
@@ -1067,7 +1067,7 @@ fn handle_feebas_cycle_counter(
         min: min_vblank,
         mid: mid_vblank,
         max: max_vblank,
-    } = get_min_mid_max_vblank_cycle_duration();
+    } = get_default_min_mid_max_vblank_cycle_duration_for_feebas();
 
     let (_, min_case_vblank) =
         apply_cycles_causing_vblanks_on_cycle_counter(min, feebas_cycles, min_vblank);

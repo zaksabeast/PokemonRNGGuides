@@ -105,50 +105,49 @@ pub enum Wild3SearcherCycleOpts {
     #[default]
     Inactive,
     SearchNewTarget {
-        #[serde(default)]
-        weather: Wild3Weather,
+        consider_weather: bool,
         consider_bike: bool,
         consider_rng_manipulated_lead_pid: bool,
         generate_even_if_impossible: bool, // different than Inactive because it still generates likelihood
     },
     Calibrate {
-        #[serde(default)]
         weather: Wild3Weather,
         movement: Wild3MovementMode,
-        lead_cycle_speed: Option<usize>,
+        lead_cycle_speed: usize,
     },
 }
 
 impl Wild3SearcherCycleOpts {
-    pub fn generator_cycle_opts(&self) -> Wild3GeneratorCycleOpts {
+    pub fn generator_cycle_opts(
+        &self,
+        map_data: &Wild3MapGameData,
+        action: Wild3Action,
+    ) -> Wild3GeneratorCycleOpts {
         match self {
             Self::Inactive => Wild3GeneratorCycleOpts::Inactive,
             Self::SearchNewTarget {
                 consider_bike,
+                consider_weather,
                 consider_rng_manipulated_lead_pid,
                 generate_even_if_impossible,
                 ..
             } => Wild3GeneratorCycleOpts::Searching {
-                consider_bike: *consider_bike,
+                min_max_initial_cycles: map_data.get_min_max_initial_cycle_from_groups(
+                    action,
+                    *consider_weather,
+                    *consider_bike,
+                ),
                 generate_even_if_impossible: *generate_even_if_impossible,
                 consider_rng_manipulated_lead_pid: *consider_rng_manipulated_lead_pid,
             },
             Self::Calibrate {
+                lead_cycle_speed,
+                weather,
                 movement,
-                lead_cycle_speed: Some(lead_cycle_spd),
-                ..
             } => Wild3GeneratorCycleOpts::LikelihoodForLead {
-                lead_cycle_spd: *lead_cycle_spd,
-                consider_bike: *movement == Wild3MovementMode::Bike,
-            },
-            Self::Calibrate {
-                movement,
-                lead_cycle_speed: None,
-                ..
-            } => Wild3GeneratorCycleOpts::Searching {
-                consider_bike: *movement == Wild3MovementMode::Bike,
-                generate_even_if_impossible: true,
-                consider_rng_manipulated_lead_pid: true,
+                lead_cycle_spd: *lead_cycle_speed,
+                min_max_initial_cycles: map_data
+                    .get_min_max_initial_cycle(action, *movement, *weather),
             },
         }
     }
@@ -247,6 +246,8 @@ impl Wild3SearcherResultMon {
         let cycle_data_by_lead = gen_res.cycle_range.map(|cycle_range| {
             let is_egg = matches!(gen_opts.lead, Gen3Lead::Egg);
             let lead_cycle_spd = gen_opts.cycle_opts.lead_cycle_spd();
+            //NO_PROD find ideal weather/movement
+
             calculate_cycle_data_by_lead(
                 &cycle_range,
                 gen_opts.action,

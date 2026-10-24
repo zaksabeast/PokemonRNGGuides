@@ -2,10 +2,13 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-use super::{MinMidMax, MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE, VBLANK_FREQ, Wild3Action, Wild3MapCycleCalibration, Wild3MovementMode, Wild3Weather};
-use super::vblank_calibration::calibration_model;
 #[cfg(test)]
 use super::test_vblank_calibration;
+use super::vblank_calibration::calibration_model;
+use super::{
+    MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE, MinMidMax, VBLANK_FREQ, Wild3Action,
+    Wild3MapCycleCalibration, Wild3MovementMode, Wild3Weather,
+};
 use crate::{EncounterSlot, GenderRatio, Nature, PokemonType, Species};
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
@@ -142,10 +145,49 @@ pub fn get_encounter_for_wild3_map_game_data(
 }
 
 impl Wild3MapGameData {
-    pub fn get_min_mid_max_pre_sweet_scent_cycle(&self, action: Wild3Action, movement: Wild3MovementMode, weather: Wild3Weather) -> MinMidMax {
+    pub fn get_initial_cycle_groups(
+        &self,
+        action: Wild3Action,
+        consider_weather: bool,
+        consider_bike: bool,
+    ) -> Vec<&Wild3MapCycleCalibration> {
+        self.vblank_distrs
+            .iter()
+            .filter(|calibration| {
+                calibration.action == action
+                    && (consider_weather || calibration.weather == Wild3Weather::Sunny)
+                    && (consider_bike || calibration.movement == Wild3MovementMode::OnFoot)
+            })
+            .collect()
+    }
+
+    pub fn get_min_max_initial_cycle_from_groups(
+        &self,
+        action: Wild3Action,
+        consider_weather: bool,
+        consider_bike: bool,
+    ) -> (usize, usize) {
+        self.vblank_distrs
+            .iter()
+            .filter(|calibration| {
+                calibration.action == action
+                    && (consider_weather || calibration.weather == Wild3Weather::Sunny)
+                    && (consider_bike || calibration.movement == Wild3MovementMode::OnFoot)
+            })
+            .map(|calibration| (calibration.min, calibration.max))
+            .reduce(|(min, max), (next_min, next_max)| (min.min(next_min), max.max(next_max)))
+            .unwrap_or((0, VBLANK_FREQ - 1))
+    }
+
+    pub fn get_min_max_initial_cycle(
+        &self,
+        action: Wild3Action,
+        movement: Wild3MovementMode,
+        weather: Wild3Weather,
+    ) -> (usize, usize) {
         calibration_model(action, self, movement, weather)
-            .map(Wild3MapCycleCalibration::to_min_mid_max)
-            .unwrap_or(MinMidMax::new(0, MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE, VBLANK_FREQ - 1))
+            .map(|model| (model.min, model.max))
+            .unwrap_or((0, 0)) //NO_PROD
     }
 
     pub fn get_encounter(

@@ -133,8 +133,6 @@ fn extend_pid_paths_to_results(
         }),
         opts.using_white_flute,
         &opts.feebas_cycles,
-        opts.cycle_opts.generator_cycle_opts().movement(),
-        opts.cycle_opts.generator_cycle_opts().weather(),
     );
 
     iter.filter_map(|pid_path| {
@@ -360,7 +358,9 @@ fn create_result(
         mass_outbreak_state,
         feebas_state,
         safari_pokeblock: safari_pokeblock.clone(),
-        cycle_opts: opts.cycle_opts.generator_cycle_opts(),
+        cycle_opts: opts
+            .cycle_opts
+            .generator_cycle_opts(&map_setups.map_data, path.action),
         using_white_flute: opts.using_white_flute,
 
         // overwritten below
@@ -403,7 +403,8 @@ fn create_result(
 
 // Generated with test: cargo test test_search_reverse_wild3_vblank_group_feebas
 // Hardcoded in feebasMapData.ts
-pub const FEEBAS_CYCLE_COUNT_BY_VBLANK: [std::ops::RangeInclusive<usize>; FEEBAS_VBLANK_GROUP_COUNT] = [
+pub const FEEBAS_CYCLE_COUNT_BY_VBLANK: [std::ops::RangeInclusive<usize>;
+    FEEBAS_VBLANK_GROUP_COUNT] = [
     0..=250895,
     210896..=486791,
     426792..=722687,

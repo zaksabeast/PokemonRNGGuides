@@ -124,7 +124,7 @@ mod tests {
         };
 
         assert_eq!(
-            map.get_min_mid_max_pre_sweet_scent_cycle(
+            map.get_min_max_initial_cycle(
                 Wild3Action::SweetScentLand,
                 Wild3MovementMode::OnFoot,
                 Wild3Weather::Sunny,
@@ -132,7 +132,7 @@ mod tests {
             MinMidMax::new(30_000, 50_000, 70_000)
         );
         assert_eq!(
-            map.get_min_mid_max_pre_sweet_scent_cycle(
+            map.get_min_max_initial_cycle(
                 Wild3Action::SweetScentLand,
                 Wild3MovementMode::OnFoot,
                 Wild3Weather::Rain,
@@ -140,7 +140,7 @@ mod tests {
             MinMidMax::new(40_000, 60_000, 80_000)
         );
         assert_eq!(
-            map.get_min_mid_max_pre_sweet_scent_cycle(
+            map.get_min_max_initial_cycle(
                 Wild3Action::SweetScentLand,
                 Wild3MovementMode::OnFoot,
                 Wild3Weather::Thunderstorm,
@@ -168,36 +168,6 @@ mod tests {
                 Wild3Weather::Rain
             ),
             0.0
-        );
-    }
-
-    #[test]
-    fn searcher_options_convert_known_and_unknown_lead_speeds() {
-        let known = Wild3SearcherCycleOpts::Calibrate {
-            weather: Wild3Weather::Rain,
-            movement: Wild3MovementMode::OnFoot,
-            lead_cycle_speed: Some(500),
-        };
-        let unknown = Wild3SearcherCycleOpts::Calibrate {
-            weather: Wild3Weather::Thunderstorm,
-            movement: Wild3MovementMode::Bike,
-            lead_cycle_speed: None,
-        };
-
-        assert_eq!(
-            known.generator_cycle_opts(),
-            Wild3GeneratorCycleOpts::LikelihoodForLead {
-                consider_bike: false,
-                lead_cycle_spd: 500,
-            }
-        );
-        assert_eq!(
-            unknown.generator_cycle_opts(),
-            Wild3GeneratorCycleOpts::Searching {
-                consider_bike: true,
-                generate_even_if_impossible: true,
-                consider_rng_manipulated_lead_pid: true,
-            }
         );
     }
 

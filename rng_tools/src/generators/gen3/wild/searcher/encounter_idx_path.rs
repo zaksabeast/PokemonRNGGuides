@@ -1,12 +1,13 @@
 use crate::gen3::MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE;
-use crate::gen3::Wild3Weather;
 use crate::gen3::Wild3MovementMode;
+use crate::gen3::Wild3Weather;
+use crate::gen3::Wild3Weather::Sunny;
 use itertools::Itertools;
 
 use crate::{
     EncounterSlot, Gender, GenderRatio, Species,
     gen3::{
-        Gen3Lead, FEEBAS_VBLANK_GROUP_COUNT, SpeciesData, Wild3Action, Wild3EncounterGameData,
+        FEEBAS_VBLANK_GROUP_COUNT, Gen3Lead, SpeciesData, Wild3Action, Wild3EncounterGameData,
         Wild3EncounterIndex, Wild3FeebasState, Wild3MassOutbreakState,
         get_feebas_vblank_from_feebas_cycle,
         wild::{
@@ -227,8 +228,6 @@ impl<'a> EncounterIdxPathGenerator<'a> {
         species_data: SpeciesData,
         using_white_flute: bool,
         feebas_cycles: &[usize],
-        movement: Wild3MovementMode,
-        weather: Wild3Weather,
     ) -> Self {
         let actions: Vec<Wild3Action> = map_setups
             .iter()
@@ -254,13 +253,21 @@ impl<'a> EncounterIdxPathGenerator<'a> {
             arcs.push(EncounterIdxToLvlArc::SlotStaticSuccess);
         }
 
-        let mut feebas_cycles_by_vblank: [Vec<usize>; FEEBAS_VBLANK_GROUP_COUNT] = Default::default();
+        let mut feebas_cycles_by_vblank: [Vec<usize>; FEEBAS_VBLANK_GROUP_COUNT] =
+            Default::default();
         let initial_cycle = map_setups
             .iter()
             .find(|setup| setup.map_data.feebas.is_some())
             .map(|setup| {
-                setup.map_data.get_min_mid_max_pre_sweet_scent_cycle(Wild3Action::OldRod, movement, weather)
-                .mid
+                //NO_PROD
+                setup
+                    .map_data
+                    .get_min_max_initial_cycle(
+                        Wild3Action::OldRod,
+                        Wild3MovementMode::Surf,
+                        Wild3Weather::Rain,
+                    )
+                    .mid
             })
             .unwrap_or(MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE);
 

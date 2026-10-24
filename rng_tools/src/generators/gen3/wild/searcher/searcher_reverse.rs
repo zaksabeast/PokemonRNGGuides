@@ -370,6 +370,9 @@ fn create_result(
 
     let mut results = Vec::new();
     let advance = lcrng_distance(opts.initial_seed, path.seed) as usize;
+    let initial_cycle_groups: Vec<_> = opts
+        .cycle_opts
+        .get_initial_cycle_distrs(&map_setups.map_data, gen_opts.action);
 
     for lead in get_leads(path.lead(encounter_gender_ratio), opts) {
         gen_opts.lead = lead;
@@ -392,9 +395,7 @@ fn create_result(
                     advance,
                     encounter,
                     gen_results.cycle_counter.get_cycle_instability(),
-                    &opts
-                        .cycle_opts
-                        .get_initial_cycle_groups(&map_setups.map_data, gen_opts.action), // NO_PROD performance
+                    &initial_cycle_groups,
                 ));
             }
         }

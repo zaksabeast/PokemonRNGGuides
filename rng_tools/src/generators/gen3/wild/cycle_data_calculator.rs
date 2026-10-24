@@ -54,6 +54,21 @@ impl Wild3SearcherCycleData {
             weather,
         }
     }
+    pub fn new_for_test(
+        lead_pid_cycle_count: usize,
+        pre_sweet_scent_cycle_start: i32,
+        pre_sweet_scent_cycle_len: usize,
+        method_probability: f64,
+    ) -> Self {
+        Wild3SearcherCycleData::new(
+            lead_pid_cycle_count,
+            pre_sweet_scent_cycle_start,
+            pre_sweet_scent_cycle_len,
+            method_probability,
+            Wild3MovementMode::OnFoot,
+            Wild3Weather::Sunny,
+        )
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -72,7 +87,7 @@ pub fn calculate_cycle_data_by_lead(
     post_sweet_scent_range: &CycleAndModRange,
     egg_lead: bool,
     specified_lead_cycle_speed: Option<usize>,
-    initial_cycle_distr: &[Wild3MapCycleCalibration],
+    initial_cycle_distr: &[&Wild3MapCycleCalibration],
 ) -> Wild3SearcherCycleDataByLead {
     // Generate Wild3SearcherCycleDataByLead for each possible initial_cycle_setup
     let res_by_distr = initial_cycle_distr.iter().map(|distr| {
@@ -322,6 +337,11 @@ fn calculate_pre_sweet_scent_cycle_range(
 
 // Limitation: Feebas hasn't been updated with the new vblank calibration logic.
 pub fn get_default_min_mid_max_vblank_cycle_duration_for_feebas() -> MinMidMax {
+    MinMidMax::new(45_000, 55_000, 65_000)
+}
+
+// Limitation: Feebas hasn't been updated with the new vblank calibration logic.
+pub fn get_default_min_mid_max_initial_cycle_for_feebas() -> MinMidMax {
     MinMidMax::new(45_000, 55_000, 65_000)
 }
 

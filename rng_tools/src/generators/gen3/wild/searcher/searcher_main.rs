@@ -123,7 +123,7 @@ impl Wild3SearcherCycleOpts {
         map_data: &Wild3MapGameData,
         action: Wild3Action,
     ) -> Wild3GeneratorCycleOpts {
-        let grps = self.get_initial_cycle_groups(map_data, action);
+        let grps = self.get_initial_cycle_distrs(map_data, action);
         let min_max_initial_cycle = map_data.get_min_max_initial_cycle_from_distrs(&grps);
 
         match self {
@@ -146,7 +146,7 @@ impl Wild3SearcherCycleOpts {
         }
     }
 
-    pub fn get_initial_cycle_groups<'a>(
+    pub fn get_initial_cycle_distrs<'a>(
         &self,
         map_data: &'a Wild3MapGameData,
         action: Wild3Action,
@@ -264,7 +264,7 @@ impl Wild3SearcherResultMon {
         advance: usize,
         encounter: &Wild3EncounterGameData,
         cycle_instability: f32,
-        initial_cycle_distr: &[Wild3MapCycleCalibration],
+        initial_cycle_distr: &[&Wild3MapCycleCalibration],
     ) -> Wild3SearcherResultMon {
         let cycle_data_by_lead = gen_res.cycle_range.map(|cycle_range| {
             let is_egg = matches!(gen_opts.lead, Gen3Lead::Egg);

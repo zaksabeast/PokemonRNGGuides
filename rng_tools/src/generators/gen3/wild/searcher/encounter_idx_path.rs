@@ -259,15 +259,12 @@ impl<'a> EncounterIdxPathGenerator<'a> {
             .iter()
             .find(|setup| setup.map_data.feebas.is_some())
             .map(|setup| {
-                //NO_PROD
-                setup
-                    .map_data
-                    .get_min_max_initial_cycle(
-                        Wild3Action::OldRod,
-                        Wild3MovementMode::Surf,
-                        Wild3Weather::Rain,
-                    )
-                    .mid
+                let (min, max) = setup.map_data.get_min_max_initial_cycle(
+                    Wild3Action::OldRod,
+                    Wild3MovementMode::Surf,
+                    Wild3Weather::Rain,
+                );
+                min + (max - min) / 2
             })
             .unwrap_or(MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE);
 

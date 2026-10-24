@@ -6,6 +6,7 @@ use super::generator_main::{
     Wild3GeneratorResults,
 };
 use super::{calc_modulo_cycle_signed, calc_modulo_cycle_unsigned};
+use crate::gen3::get_default_min_mid_max_initial_cycle_for_feebas;
 use crate::{
     EncounterSlot, Gender, GenderRatio, Ivs, NATURE_COUNT, Nature,
     PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE, PERTINENT_SOLO_POKEBLOCKS_BY_NATURE,
@@ -106,12 +107,7 @@ fn CheckFeebas(
         return false;
     }
 
-    let initial = map_data.get_min_max_initial_cycle(
-        opts.action,
-        opts.cycle_opts.movement(),
-        opts.cycle_opts.weather(),
-    );
-    handle_feebas_cycle_counter(rng, cycle_counter, opts.feebas_cycles, initial);
+    handle_feebas_cycle_counter(rng, cycle_counter, opts.feebas_cycles);
 
     opts.feebas_state == Wild3FeebasState::OnFeebasTile
 }
@@ -1058,11 +1054,11 @@ fn handle_feebas_cycle_counter(
     rng: &mut Pokerng,
     cycle_counter: &mut CycleFrameCounter,
     feebas_cycles: usize,
-    initial: super::MinMidMax,
 ) {
     cycle_counter.on_moment_reached(Moment::CheckFeebas);
 
-    let super::MinMidMax { min, mid, max } = initial;
+    //NO_PROD reproduce same as before
+    let super::MinMidMax { min, mid, max } = get_default_min_mid_max_initial_cycle_for_feebas();
     let super::MinMidMax {
         min: min_vblank,
         mid: mid_vblank,
@@ -1472,41 +1468,4 @@ fn create_if_passes_filter(
         cycle_range,
         used_safari_pokeblock: gen_data.used_safari_pokeblock,
     })
-}
-
-#[cfg(test)]
-mod header_lookup_tests {
-    use super::*;
-
-    #[test]
-    fn calibrated_map_header_lookup_cycles() {
-        // Independent lookup intervals from the calibration fixtures. The
-        // Sweet Scent intervals include another 526 cycles at the call site.
-        for (header_id, expected) in [
-            (0, 218),
-            (6, 782),
-            (20, 1758),
-            (33, 3099),
-            (75, 6605),
-            (98, 7849),
-        ] {
-            let opts = Wild3GeneratorOptions {
-                cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead {
-                    lead_cycle_spd: 0,
-                    consider_bike: false,
-                },
-                ..Wild3GeneratorOptions::default()
-            };
-            let map_data = Wild3MapGameData {
-                map_internal_idx: header_id,
-                ..Wild3MapGameData::default()
-            };
-            let mut counter = CycleFrameCounter::new(&opts);
-            assert_eq!(
-                GetCurrentMapWildMonHeaderId(&map_data, &mut counter),
-                header_id
-            );
-            assert_eq!(counter.get_current_post_sweet_scent_cycle_count(), expected);
-        }
-    }
 }

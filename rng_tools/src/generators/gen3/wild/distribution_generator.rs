@@ -38,58 +38,63 @@ pub fn generate_gen3_wild_distribution(
     vblank_cycles: Option<Vec<usize>>,
 ) -> Wild3MethodDistributionResults {
     //NO_PROD. force specifying weather + foot.
-    let movement = opts.cycle_opts.movement();
-    let cycle_opts_for_cycle = match (initial_cycle, vblank_cycles) {
-        (Some(initial_cycle), Some(vblank_cycles)) => {
-            Wild3GeneratorCycleOpts::CycleAtMomentWithEmuLog {
-                lead_cycle_spd,
-                initial_cycle,
-                vblank_cycles,
+    /*
+        let movement = opts.cycle_opts.movement();
+        let cycle_opts_for_cycle = match (initial_cycle, vblank_cycles) {
+            (Some(initial_cycle), Some(vblank_cycles)) => {
+                Wild3GeneratorCycleOpts::CycleAtMomentWithEmuLog {
+                    lead_cycle_spd,
+                    initial_cycle,
+                    vblank_cycles,
+                }
             }
-        }
-        _ => Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog {
-            lead_cycle_spd,
-            movement,
-        },
-    };
-
-    let methods = vec![
-        Gen3Method::Wild1,
-        Gen3Method::Wild2,
-        Gen3Method::Wild3,
-        Gen3Method::Wild4,
-        Gen3Method::Wild5,
-    ];
-
-    let rng = Pokerng::with_jump(initial_seed, advances);
-
-    let cycle_at_moments = generate_cycle_at_moments(
-        rng,
-        &Wild3GeneratorOptions {
-            cycle_opts: cycle_opts_for_cycle,
-            methods: methods.clone(),
-            ..opts.clone()
-        },
-        game_data,
-    );
-
-    let results = generate_dist_results(
-        rng,
-        advances,
-        &Wild3GeneratorOptions {
-            cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead {
+            _ => Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog {
                 lead_cycle_spd,
-                consider_bike: movement == Wild3MovementMode::Bike,
+                movement,
             },
-            methods,
-            ..opts.clone()
-        },
-        game_data,
-    );
+        };
 
+        let methods = vec![
+            Gen3Method::Wild1,
+            Gen3Method::Wild2,
+            Gen3Method::Wild3,
+            Gen3Method::Wild4,
+            Gen3Method::Wild5,
+        ];
+
+        let rng = Pokerng::with_jump(initial_seed, advances);
+
+        let cycle_at_moments = generate_cycle_at_moments(
+            rng,
+            &Wild3GeneratorOptions {
+                cycle_opts: cycle_opts_for_cycle,
+                methods: methods.clone(),
+                ..opts.clone()
+            },
+            game_data,
+        );
+
+        let results = generate_dist_results(
+            rng,
+            advances,
+            &Wild3GeneratorOptions {
+                cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead {
+                    lead_cycle_spd,
+                    consider_bike: movement == Wild3MovementMode::Bike,
+                },
+                methods,
+                ..opts.clone()
+            },
+            game_data,
+        );
+        Wild3MethodDistributionResults {
+            results,
+            cycle_at_moments,
+        }
+    */
     Wild3MethodDistributionResults {
-        results,
-        cycle_at_moments,
+        results: vec![],
+        cycle_at_moments: vec![],
     }
 }
 
@@ -108,6 +113,7 @@ fn generate_dist_results(
     opts: &Wild3GeneratorOptions,
     game_data: &Wild3MapGameData,
 ) -> Vec<Wild3MethodDistributionResult> {
+    /* NO_PROD
     let generated = generate_wild3(rng, opts, game_data);
     let cycle_instability = generated.cycle_counter.get_cycle_instability();
     let lead_cycle_spd = opts.cycle_opts.lead_cycle_spd().unwrap();
@@ -148,7 +154,8 @@ fn generate_dist_results(
                 method_probability: cycle_data.method_probability,
             }
         })
-        .collect()
+        .collect()*/
+    vec![]
 }
 
 #[cfg(test)]

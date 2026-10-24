@@ -25,7 +25,7 @@ pub fn generate_wild3_internal(
     opts: &Wild3GeneratorOptions,
     map_data: &Wild3MapGameData,
 ) -> Wild3GeneratorResults {
-    let mut cycle_counter = CycleFrameCounter::new(opts, map_data);
+    let mut cycle_counter = CycleFrameCounter::new(opts);
 
     match opts.action {
         Wild3Action::SweetScentLand | Wild3Action::SweetScentWater => {
@@ -1501,7 +1501,7 @@ mod header_lookup_tests {
                 map_internal_idx: header_id,
                 ..Wild3MapGameData::default()
             };
-            let mut counter = CycleFrameCounter::new(&opts, &map_data);
+            let mut counter = CycleFrameCounter::new(&opts);
             assert_eq!(
                 GetCurrentMapWildMonHeaderId(&map_data, &mut counter),
                 header_id

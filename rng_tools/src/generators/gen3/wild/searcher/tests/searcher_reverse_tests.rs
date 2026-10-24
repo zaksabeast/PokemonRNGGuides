@@ -677,7 +677,7 @@ fn test_search_reverse_wild3_safari_egg_gligar_has_result() {
         map_setups: create_safari_southeast_map_setups(),
         methods: vec![Gen3Method::Wild1],
         cycle_opts: Wild3SearcherCycleOpts::SearchNewTarget {
-            weather: Wild3Weather::Sunny,
+            consider_weather: false,
             consider_bike: false,
             consider_rng_manipulated_lead_pid: true,
             generate_even_if_impossible: true,
@@ -721,7 +721,7 @@ fn test_search_reverse_wild3_safari_cute_charm_pokeblock_hoothoot_has_result() {
         cycle_opts: Wild3SearcherCycleOpts::Calibrate {
             weather: Wild3Weather::Sunny,
             movement: Wild3MovementMode::OnFoot,
-            lead_cycle_speed: Some(18),
+            lead_cycle_speed: 18,
         },
         considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt::Specific([0, 0, 1, 0, 0]),
         ..Default::default()
@@ -798,11 +798,7 @@ fn test_search_reverse_wild3_vblank_group_feebas() {
         Default::default();
 
     for feebas_cycles in 0..=800_000 {
-        let MinMidMax {
-            min: min_presweet,
-            max: max_presweet,
-            ..
-        } = Wild3MapGameData::default().get_min_max_initial_cycle(
+        let (min_presweet, max_presweet) = Wild3MapGameData::default().get_min_max_initial_cycle(
             Wild3Action::OldRod,
             Wild3MovementMode::OnFoot,
             Wild3Weather::Sunny,
@@ -859,8 +855,6 @@ fn feebas_cycle_groups_include_four_vblanks() {
         },
         false,
         &[800_000],
-        Wild3MovementMode::OnFoot,
-        Wild3Weather::Sunny,
     );
 
     assert_eq!(
@@ -926,7 +920,7 @@ fn test_search_reverse_wild3_feebas_on_feebas_tile() {
         cycle_opts: Wild3SearcherCycleOpts::Calibrate {
             weather: Wild3Weather::Sunny,
             movement: Wild3MovementMode::OnFoot,
-            lead_cycle_speed: Some(calculate_pid_speed(0x7933A9CB)),
+            lead_cycle_speed: calculate_pid_speed(0x7933A9CB),
         },
         using_white_flute: false,
         ..Default::default()

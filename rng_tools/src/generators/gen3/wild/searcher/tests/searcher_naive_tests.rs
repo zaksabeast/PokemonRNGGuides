@@ -510,7 +510,7 @@ fn test_search_wild3_naive_magikarp_in_feebas_map() {
             cycle_opts: Wild3SearcherCycleOpts::Calibrate {
                 weather: Wild3Weather::Sunny,
                 movement: Wild3MovementMode::OnFoot,
-                lead_cycle_speed: Some(calculate_pid_speed(0x7933A9CB)),
+                lead_cycle_speed: calculate_pid_speed(0x7933A9CB),
             },
             using_white_flute: false,
             ..Default::default()

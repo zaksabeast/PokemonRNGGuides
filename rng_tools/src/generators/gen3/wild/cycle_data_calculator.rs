@@ -167,7 +167,7 @@ pub fn is_method_possible_to_trigger(
     movement: Wild3MovementMode,
     weather: Wild3Weather,
 ) -> bool {
-    let MinMidMax { min, max, .. } = map.get_min_max_initial_cycle(action, movement, weather);
+    let (min, max) = map.get_min_max_initial_cycle(action, movement, weather);
     let overlaps = |speed| {
         let pre = calculate_pre_sweet_scent_cycle_range(&range.apply_mod_cycle_count(speed));
         pre.len > 0
@@ -316,7 +316,7 @@ pub fn calculate_method_probability(
     {
         return model.probability(start, end);
     }
-    let MinMidMax { min, max, .. } = map.get_min_max_initial_cycle(action, movement, weather);
+    let (min, max) = map.get_min_max_initial_cycle(action, movement, weather);
     let overlap = (end.min(max as f64) - start.max(min as f64)).max(0.0);
     overlap / (max - min) as f64
 }
@@ -408,7 +408,7 @@ mod tests {
                 map_internal_idx: index,
                 ..Default::default()
             };
-            let bounds = map.get_min_max_initial_cycle(
+            let (min, max) = map.get_min_max_initial_cycle(
                 Wild3Action::SweetScentLand,
                 Wild3MovementMode::OnFoot,
                 Wild3Weather::Sunny,
@@ -418,8 +418,8 @@ mod tests {
                     calculate_pre_sweet_scent_cycle_range(&range.apply_mod_cycle_count(speed));
 
                 pre.len > 0
-                    && pre.start as i64 <= bounds.max as i64
-                    && pre.start as i64 + pre.len as i64 > bounds.min as i64
+                    && pre.start as i64 <= max as i64
+                    && pre.start as i64 + pre.len as i64 > min as i64
             });
             let actual = is_method_possible_to_trigger(
                 &range,

@@ -31,7 +31,7 @@ fn test_search_wild3_cycle_methods_1_2_4() {
         cycle_opts: Wild3SearcherCycleOpts::Calibrate {
             weather: Wild3Weather::Sunny,
             movement: Wild3MovementMode::OnFoot,
-            lead_cycle_speed: Some(500),
+            lead_cycle_speed: 500,
         },
         leads: vec![Gen3Lead::Vanilla],
         filter: PkmFilter {

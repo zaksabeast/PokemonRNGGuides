@@ -21,7 +21,7 @@ Run from the repository root:
     bun test rng_tools/scripts/extract-vblank-calibration.test.ts src/rngToolsUi/gen3/wild/data/vblank_calibration.test.ts
     bun run test:rust
 
-The extractor reads ignored captures from `rng_tools/src/generators/gen3/wild/vblank_calibration.local.data/` and generates `vblank_calibration_data.ts` and `vblank_calibration_validation.json` in the TypeScript data directory. Regeneration needs those captures; application builds and tests use the checked-in output.
+The extractor reads ignored captures from `rng_tools/src/generators/gen3/wild/vblank_calibration.local.data/` and generates `vblank_calibration_data.ts` in the TypeScript data directory. Validation diagnostics are printed to the console. Regeneration needs those captures; application builds and tests use the checked-in output.
 
 Each completed encounter frame has unit total weight. Replays share their frame's weight. Incomplete attempts are ignored and malformed completed attempts are rejected. Source checksums normalize line endings to LF.
 

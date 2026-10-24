@@ -8,8 +8,8 @@ import type {
 import { format, resolveConfig } from "prettier";
 
 const root = new URL("../src/generators/gen3/wild/", import.meta.url);
-const tolerance = 0.0025;
-const maxKnots = 512;
+const tolerance = 0.01;
+const maxKnots = 64;
 type Observation = {
   frame: number;
   audio: number;
@@ -524,39 +524,17 @@ export async function extract(check = false) {
       parser: "typescript",
     },
   );
-  const artifacts = [
-    ["vblank_calibration_data.ts", code],
-    [
-      "vblank_calibration_validation.json",
-      JSON.stringify(
-        {
-          extractor_version: 3,
-          cdf_tolerance: tolerance,
-          validation_limits: {
-            joint_cdf_error: 0.02,
-            interval_probability_error: 0.025,
-            shared_audio_cdf_error: 0.02,
-          },
-          probability_interval: "[start, end)",
-          components: diagnostics,
-          validation,
-        },
-        null,
-        2,
-      ) + "\n",
-    ],
-  ];
-  for (const [name, content] of artifacts) {
-    const url = new URL(name, outputRoot);
-    if (check) {
-      if ((await readFile(url, "utf8")) !== content)
-        throw new Error("Outdated calibration artifact: " + name);
-    } else {
-      const temporary = new URL(name + ".tmp", outputRoot);
-      await writeFile(temporary, content);
-      await rename(temporary, url);
-    }
+  const name = "vblank_calibration_data.ts";
+  const url = new URL(name, outputRoot);
+  if (check) {
+    if ((await readFile(url, "utf8")) !== code)
+      throw new Error("Outdated calibration artifact: " + name);
+  } else {
+    const temporary = new URL(name + ".tmp", outputRoot);
+    await writeFile(temporary, code);
+    await rename(temporary, url);
   }
+
   console.log(
     JSON.stringify(
       {

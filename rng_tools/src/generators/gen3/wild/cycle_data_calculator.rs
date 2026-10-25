@@ -9,7 +9,7 @@ use super::{
 };
 use crate::gen3::{
     COMMON_LEAD_RANGE, CycleAndModRange, FASTEST_MODULO_CYCLE_24, INFINITE_CYCLE,
-    SLOWEST_MODULO_CYCLE_24, Wild3MapCycleCalibration,
+    SLOWEST_MODULO_CYCLE_24, Wild3InitialCycleDistribution,
 };
 
 /*
@@ -86,7 +86,7 @@ pub fn calculate_cycle_data_by_lead(
     post_sweet_scent_range: &CycleAndModRange,
     egg_lead: bool,
     specified_lead_cycle_speed: Option<usize>,
-    initial_cycle_distr: &[&Wild3MapCycleCalibration],
+    initial_cycle_distr: &[&Wild3InitialCycleDistribution],
 ) -> Wild3SearcherCycleDataByLead {
     // Step 1: Generate Wild3SearcherCycleDataByLead for each possible initial_cycle_setup
     let res_by_distr = initial_cycle_distr
@@ -197,7 +197,7 @@ pub fn calculate_cycle_data_by_lead(
 pub fn calculate_cycle_data_for_specific_lead_spd(
     post_sweet_scent_mod_range: &CycleAndModRange,
     lead_pid_cycle_count: usize,
-    distr: &Wild3MapCycleCalibration,
+    distr: &Wild3InitialCycleDistribution,
 ) -> Wild3SearcherCycleData {
     let post_sweet_scent_range =
         post_sweet_scent_mod_range.apply_mod_cycle_count(lead_pid_cycle_count);
@@ -218,7 +218,7 @@ const EPSILON: f64 = 1e-12;
 #[wasm_bindgen]
 pub fn calculate_ideal_lead_pid_cycle_count(
     range: &CycleAndModRange,
-    distr: &Wild3MapCycleCalibration,
+    distr: &Wild3InitialCycleDistribution,
 ) -> usize {
     if range.start.lead_pid_mod == 0 {
         return 0;

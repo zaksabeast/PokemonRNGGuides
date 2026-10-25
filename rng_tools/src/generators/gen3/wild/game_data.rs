@@ -3,7 +3,7 @@ use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 use super::{
-    VBLANK_FREQ, Wild3Action, Wild3MapCycleCalibration, Wild3MovementMode, Wild3Weather,
+    VBLANK_FREQ, Wild3Action, Wild3InitialCycleDistribution, Wild3MovementMode, Wild3Weather,
     vblank_calibration::get_initial_model,
 };
 use crate::{EncounterSlot, GenderRatio, Nature, PokemonType, Species};
@@ -122,7 +122,7 @@ pub struct Wild3MapGameData {
     pub rock_smash_rate: u32,
     pub is_safari: bool,
     pub actions_with_safari_pokeblock: Vec<Wild3Action>, // Not all actions have a pokeblock feeder nearby
-    pub vblank_distrs: Vec<Wild3MapCycleCalibration>,
+    pub vblank_distrs: Vec<Wild3InitialCycleDistribution>,
 }
 
 #[derive(Debug, Default, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -142,33 +142,6 @@ pub fn get_encounter_for_wild3_map_game_data(
 }
 
 impl Wild3MapGameData {
-    pub fn get_initial_cycle_distrs(
-        &self,
-        action: Wild3Action,
-        consider_weather: bool,
-        consider_bike: bool,
-    ) -> Vec<&Wild3MapCycleCalibration> {
-        self.vblank_distrs
-            .iter()
-            .filter(|calibration| {
-                calibration.action == action
-                    && (consider_weather || calibration.weather == Wild3Weather::Sunny)
-                    && (consider_bike || calibration.movement == Wild3MovementMode::OnFoot)
-            })
-            .collect()
-    }
-
-    pub fn get_min_max_initial_cycle_from_distrs(
-        &self,
-        distrs: &[&Wild3MapCycleCalibration],
-    ) -> (usize, usize) {
-        distrs
-            .iter()
-            .map(|calibration| (calibration.min, calibration.max))
-            .reduce(|(min, max), (next_min, next_max)| (min.min(next_min), max.max(next_max)))
-            .unwrap_or((0, VBLANK_FREQ - 1)) //NO_PROD
-    }
-
     pub fn get_min_max_initial_cycle(
         &self,
         action: Wild3Action,
@@ -238,7 +211,7 @@ impl Default for Wild3MapGameData {
             Wild3Action::RockSmash,
         ]
         .into_iter()
-        .map(Wild3MapCycleCalibration::new_default)
+        .map(Wild3InitialCycleDistribution::new_default)
         .cloned()
         .collect();
 

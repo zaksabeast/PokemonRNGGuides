@@ -49,7 +49,7 @@ pub enum Wild3Weather {
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Tsify)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Wild3MapCycleCalibration {
+pub struct Wild3InitialCycleDistribution {
     pub min: usize,
     pub max: usize,
     pub distribution: Vec<CdfKnot>,
@@ -58,10 +58,10 @@ pub struct Wild3MapCycleCalibration {
     pub weather: Wild3Weather,
 }
 
-impl Wild3MapCycleCalibration {
+impl Wild3InitialCycleDistribution {
     pub fn new_default(action: Wild3Action) -> &'static Self {
         static DEFAULTS_INITIAL_DISTRS_BY_ACTION: std::sync::LazyLock<
-            [Wild3MapCycleCalibration; 6],
+            [Wild3InitialCycleDistribution; 6],
         > = std::sync::LazyLock::new(|| {
             [
                 Wild3Action::SweetScentLand,
@@ -71,7 +71,7 @@ impl Wild3MapCycleCalibration {
                 Wild3Action::SuperRod,
                 Wild3Action::RockSmash,
             ]
-            .map(Wild3MapCycleCalibration::build_default)
+            .map(Wild3InitialCycleDistribution::build_default)
         });
 
         &DEFAULTS_INITIAL_DISTRS_BY_ACTION[action as usize]
@@ -155,7 +155,7 @@ pub(super) fn get_initial_model(
     map: &Wild3MapGameData,
     movement: Wild3MovementMode,
     weather: Wild3Weather,
-) -> Option<&Wild3MapCycleCalibration> {
+) -> Option<&Wild3InitialCycleDistribution> {
     map.vblank_distrs
         .iter()
         .find(|calibration| {
@@ -172,7 +172,7 @@ mod tests {
 
     #[test]
     fn uniform_fixture_bounds_median_and_half_open_probabilities() {
-        let calibration = Wild3MapCycleCalibration::new_default(Wild3Action::SweetScentLand);
+        let calibration = Wild3InitialCycleDistribution::new_default(Wild3Action::SweetScentLand);
 
         assert_eq!(calibration.median(), 60_000);
         assert_eq!(calibration.probability(0.0, 45_000.0), 0.0);
@@ -193,7 +193,7 @@ mod tests {
                 Wild3MovementMode::OnFoot,
                 Wild3Weather::Sunny,
             ),
-            Some(&Wild3MapCycleCalibration {
+            Some(&Wild3InitialCycleDistribution {
                 min: 30_000,
                 max: 75_000,
                 distribution: vec![
@@ -216,7 +216,7 @@ mod tests {
     #[test]
     fn cdf_jumps_are_excluded_at_the_upper_boundary() {
         let mut calibration =
-            Wild3MapCycleCalibration::new_default(Wild3Action::SweetScentLand).clone();
+            Wild3InitialCycleDistribution::new_default(Wild3Action::SweetScentLand).clone();
         calibration.distribution = vec![
             CdfKnot {
                 cycle: 50_000.0,
@@ -252,7 +252,7 @@ mod tests {
 
         let map = Wild3MapGameData {
             vblank_distrs: vec![
-                Wild3MapCycleCalibration::new_default(Wild3Action::SweetScentLand).clone(),
+                Wild3InitialCycleDistribution::new_default(Wild3Action::SweetScentLand).clone(),
             ],
             ..Default::default()
         };
@@ -264,7 +264,7 @@ mod tests {
                 Wild3MovementMode::OnFoot,
                 Wild3Weather::Sunny
             ),
-            Some(Wild3MapCycleCalibration::new_default(
+            Some(Wild3InitialCycleDistribution::new_default(
                 Wild3Action::SweetScentLand
             ))
         );

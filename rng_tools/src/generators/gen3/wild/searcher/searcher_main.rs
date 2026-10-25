@@ -13,7 +13,7 @@ use crate::{
     AbilityType, Gender, HiddenPower, Ivs, Nature, PkmFilter, ShinyType, Species,
     gen3::{
         Gen3Lead, Gen3Method, Gen3PkmFilter, SpeciesData, Wild3GeneratorCycleOpts,
-        Wild3MapCycleCalibration, search_wild3_naive, search_wild3_reverse,
+        Wild3InitialCycleDistribution, search_wild3_naive, search_wild3_reverse,
         searcher_painter::Wild3PaintingOpts,
         wild::{
             Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex, Wild3MapGameData,
@@ -118,13 +118,23 @@ pub enum Wild3SearcherCycleOpts {
 }
 
 impl Wild3SearcherCycleOpts {
+    fn get_min_max_initial_cycle_from_distrs(
+        distrs: &[&Wild3InitialCycleDistribution],
+    ) -> (usize, usize) {
+        distrs
+            .iter()
+            .map(|calibration| (calibration.min, calibration.max))
+            .reduce(|(min, max), (next_min, next_max)| (min.min(next_min), max.max(next_max)))
+            .unwrap()
+    }
+
     pub fn generator_cycle_opts(
         &self,
         map_data: &Wild3MapGameData,
         action: Wild3Action,
     ) -> Wild3GeneratorCycleOpts {
         let grps = self.get_initial_cycle_distrs(map_data, action);
-        let min_max_initial_cycle = map_data.get_min_max_initial_cycle_from_distrs(&grps);
+        let min_max_initial_cycle = Self::get_min_max_initial_cycle_from_distrs(&grps);
 
         match self {
             Self::Inactive => Wild3GeneratorCycleOpts::Inactive,
@@ -146,12 +156,13 @@ impl Wild3SearcherCycleOpts {
         }
     }
 
+    /** Always returns at least 1 value */
     pub fn get_initial_cycle_distrs<'a>(
         &self,
         map_data: &'a Wild3MapGameData,
         action: Wild3Action,
-    ) -> Vec<&'a Wild3MapCycleCalibration> {
-        let default = Wild3MapCycleCalibration::new_default(action);
+    ) -> Vec<&'a Wild3InitialCycleDistribution> {
+        let default = Wild3InitialCycleDistribution::new_default(action);
 
         match self {
             Self::Inactive => vec![default],
@@ -159,7 +170,23 @@ impl Wild3SearcherCycleOpts {
                 consider_bike,
                 consider_weather,
                 ..
-            } => map_data.get_initial_cycle_distrs(action, *consider_weather, *consider_bike),
+            } => {
+                let list = map_data
+                    .vblank_distrs
+                    .iter()
+                    .filter(|calibration| {
+                        calibration.action == action
+                            && (*consider_weather || calibration.weather == Wild3Weather::Sunny)
+                            && (*consider_bike || calibration.movement == Wild3MovementMode::OnFoot)
+                    })
+                    .collect_vec();
+
+                if !list.is_empty() {
+                    list
+                } else {
+                    vec![default]
+                }
+            }
             Self::Calibrate {
                 weather, movement, ..
             } => {
@@ -263,7 +290,7 @@ impl Wild3SearcherResultMon {
         advance: usize,
         encounter: &Wild3EncounterGameData,
         cycle_instability: f32,
-        initial_cycle_distr: &[&Wild3MapCycleCalibration],
+        initial_cycle_distr: &[&Wild3InitialCycleDistribution],
     ) -> Wild3SearcherResultMon {
         let cycle_data_by_lead = gen_res.cycle_range.map(|cycle_range| {
             let is_egg = matches!(gen_opts.lead, Gen3Lead::Egg);

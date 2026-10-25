@@ -1020,7 +1020,6 @@ fn rand_next_u16(rng: &mut Pokerng, _reason: &str, _modulo: u16) -> u16 {
     // rand_next_u16_with_debug_print(rng, _reason, _modulo) // Uncomment for debugging
 }
 
-#[wasm_bindgen]
 // Only returns the mid case (which is the one used by the generator)
 pub fn get_feebas_vblank_from_feebas_cycle(feebas_cycles: usize) -> usize {
     let initial_cycle = get_default_min_mid_max_initial_cycle_for_feebas().mid;

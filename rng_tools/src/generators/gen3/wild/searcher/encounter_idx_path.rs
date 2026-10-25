@@ -3,9 +3,9 @@ use itertools::Itertools;
 use crate::{
     EncounterSlot, Gender, GenderRatio, Species,
     gen3::{
-        Gen3Lead, MAX_FEEBAS_VBLANK, MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE, SpeciesData, Wild3Action,
-        Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState, Wild3MassOutbreakState,
-        get_default_min_mid_max_initial_cycle_for_feebas, get_feebas_vblank_from_feebas_cycle,
+        Gen3Lead, MAX_FEEBAS_VBLANK, SpeciesData, Wild3Action, Wild3EncounterGameData,
+        Wild3EncounterIndex, Wild3FeebasState, Wild3MassOutbreakState,
+        get_feebas_vblank_from_feebas_cycle,
         wild::{
             lcrng_distance,
             searcher::{

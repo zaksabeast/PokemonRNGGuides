@@ -1,3 +1,4 @@
+use itertools::Itertools;
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
@@ -21,8 +22,6 @@ pre_sweet_scent_cycle_range: The range of cycles before the Sweet Scent function
                               the vblank occurs at the right timing for the method to be triggered.
                               It is VBLANK_FREQ - post_sweet_scent_cycle_range.
 */
-
-pub const MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE: usize = 55_000;
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -89,61 +88,68 @@ pub fn calculate_cycle_data_by_lead(
     specified_lead_cycle_speed: Option<usize>,
     initial_cycle_distr: &[&Wild3MapCycleCalibration],
 ) -> Wild3SearcherCycleDataByLead {
-    // Generate Wild3SearcherCycleDataByLead for each possible initial_cycle_setup
-    let res_by_distr = initial_cycle_distr.iter().map(|distr| {
-        if egg_lead {
-            // cycle_data is useful even with egg lead to know the likelihood of hitting the method.
-            let cycle_data = calculate_cycle_data(post_sweet_scent_range, 0, distr);
+    // Step 1: Generate Wild3SearcherCycleDataByLead for each possible initial_cycle_setup
+    let res_by_distr = initial_cycle_distr
+        .iter()
+        .map(|distr| {
+            if egg_lead {
+                // cycle_data is useful even with egg lead to know the likelihood of hitting the method.
+                let cycle_data =
+                    calculate_cycle_data_for_specific_lead_spd(post_sweet_scent_range, 0, distr);
 
-            Wild3SearcherCycleDataByLead {
-                post_sweet_scent_range: *post_sweet_scent_range,
-                specified_lead: Some(cycle_data.clone()),
-                slowest_lead: cycle_data.clone(),
-                fastest_lead: cycle_data.clone(),
-                ideal_lead: cycle_data.clone(),
-                common_lower_lead: cycle_data.clone(),
-                common_upper_lead: cycle_data.clone(),
+                Wild3SearcherCycleDataByLead {
+                    post_sweet_scent_range: *post_sweet_scent_range,
+                    specified_lead: Some(cycle_data.clone()),
+                    slowest_lead: cycle_data.clone(),
+                    fastest_lead: cycle_data.clone(),
+                    ideal_lead: cycle_data.clone(),
+                    common_lower_lead: cycle_data.clone(),
+                    common_upper_lead: cycle_data.clone(),
+                }
+            } else {
+                let ideal_lead_pid_cycle_count =
+                    calculate_ideal_lead_pid_cycle_count(post_sweet_scent_range, distr);
+
+                Wild3SearcherCycleDataByLead {
+                    post_sweet_scent_range: *post_sweet_scent_range,
+                    specified_lead: specified_lead_cycle_speed.map(|spd| {
+                        calculate_cycle_data_for_specific_lead_spd(
+                            post_sweet_scent_range,
+                            spd,
+                            distr,
+                        )
+                    }),
+                    slowest_lead: calculate_cycle_data_for_specific_lead_spd(
+                        post_sweet_scent_range,
+                        SLOWEST_MODULO_CYCLE_24,
+                        distr,
+                    ),
+                    fastest_lead: calculate_cycle_data_for_specific_lead_spd(
+                        post_sweet_scent_range,
+                        FASTEST_MODULO_CYCLE_24,
+                        distr,
+                    ),
+                    ideal_lead: calculate_cycle_data_for_specific_lead_spd(
+                        post_sweet_scent_range,
+                        ideal_lead_pid_cycle_count,
+                        distr,
+                    ),
+                    common_lower_lead: calculate_cycle_data_for_specific_lead_spd(
+                        post_sweet_scent_range,
+                        COMMON_LEAD_RANGE.start,
+                        distr,
+                    ),
+                    common_upper_lead: calculate_cycle_data_for_specific_lead_spd(
+                        post_sweet_scent_range,
+                        COMMON_LEAD_RANGE.end,
+                        distr,
+                    ),
+                }
             }
-        } else {
-            let ideal_lead_pid_cycle_count =
-                calculate_ideal_lead_pid_cycle_count(post_sweet_scent_range, distr);
+        })
+        .collect_vec();
 
-            Wild3SearcherCycleDataByLead {
-                post_sweet_scent_range: *post_sweet_scent_range,
-                specified_lead: specified_lead_cycle_speed
-                    .map(|spd| calculate_cycle_data(post_sweet_scent_range, spd, distr)),
-                slowest_lead: calculate_cycle_data(
-                    post_sweet_scent_range,
-                    SLOWEST_MODULO_CYCLE_24,
-                    distr,
-                ),
-                fastest_lead: calculate_cycle_data(
-                    post_sweet_scent_range,
-                    FASTEST_MODULO_CYCLE_24,
-                    distr,
-                ),
-                ideal_lead: calculate_cycle_data(
-                    post_sweet_scent_range,
-                    ideal_lead_pid_cycle_count,
-                    distr,
-                ),
-                common_lower_lead: calculate_cycle_data(
-                    post_sweet_scent_range,
-                    COMMON_LEAD_RANGE.start,
-                    distr,
-                ),
-                common_upper_lead: calculate_cycle_data(
-                    post_sweet_scent_range,
-                    COMMON_LEAD_RANGE.end,
-                    distr,
-                ),
-            }
-        }
-    });
-
-    let res_by_distr = res_by_distr.collect::<Vec<_>>();
-
-    // Select the best initial_cycle_setup for each lead_cycle_speed.
+    // Step 2: Select the best initial_cycle_setup for each lead_cycle_speed.
 
     let dummy_cycle_data = || {
         Wild3SearcherCycleData::new(0, 0, 0, 0.0, Wild3MovementMode::OnFoot, Wild3Weather::Sunny)
@@ -188,7 +194,7 @@ pub fn calculate_cycle_data_by_lead(
 }
 
 #[wasm_bindgen]
-pub fn calculate_cycle_data(
+pub fn calculate_cycle_data_for_specific_lead_spd(
     post_sweet_scent_mod_range: &CycleAndModRange,
     lead_pid_cycle_count: usize,
     distr: &Wild3MapCycleCalibration,
@@ -207,54 +213,7 @@ pub fn calculate_cycle_data(
     }
 }
 
-//NO_PROD shouldnt have movement, weather
-pub fn is_method_possible_to_trigger(
-    range: &CycleAndModRange,
-    action: Wild3Action,
-    is_egg: bool,
-    consider_rng_manipulated_lead_pid: bool,
-    lead_cycle_speed: Option<usize>,
-    map: &Wild3MapGameData,
-    movement: Wild3MovementMode,
-    weather: Wild3Weather,
-) -> bool {
-    let (min, max) = map.get_min_max_initial_cycle(action, movement, weather);
-    let overlaps = |speed| {
-        let pre = calculate_pre_sweet_scent_cycle_range(&range.apply_mod_cycle_count(speed));
-        pre.len > 0
-            && (pre.start as i64) <= max as i64
-            && pre.start as i64 + pre.len as i64 > min as i64
-    };
-    if is_egg {
-        return overlaps(0);
-    }
-    if let Some(speed) = lead_cycle_speed {
-        return overlaps(speed);
-    }
-    if !consider_rng_manipulated_lead_pid {
-        return overlaps(COMMON_LEAD_RANGE.start) && overlaps(COMMON_LEAD_RANGE.end);
-    }
-
-    if range.len == 0 {
-        return false;
-    }
-
-    let mod_count = range.start.lead_pid_mod;
-    if mod_count == 0 || range.len >= INFINITE_CYCLE {
-        return overlaps(FASTEST_MODULO_CYCLE_24);
-    }
-
-    // The first speed whose interval starts at or below max is the only candidate needed:
-    // later speeds move its exclusive end farther below min.
-    let required_shift =
-        (VBLANK_FREQ as i64 - range.start.cycle as i64 - range.len as i64 - max as i64).max(0)
-            as usize;
-    let speed = required_shift
-        .div_ceil(mod_count)
-        .max(FASTEST_MODULO_CYCLE_24);
-
-    speed <= SLOWEST_MODULO_CYCLE_24 && overlaps(speed)
-}
+const EPSILON: f64 = 1e-12;
 
 #[wasm_bindgen]
 pub fn calculate_ideal_lead_pid_cycle_count(
@@ -266,55 +225,25 @@ pub fn calculate_ideal_lead_pid_cycle_count(
     }
 
     let probability = |speed| {
-        let pre = calculate_pre_sweet_scent_cycle_range(&range.apply_mod_cycle_count(speed));
-        distr.probability_for_range(&pre)
+        let initial_range =
+            calculate_pre_sweet_scent_cycle_range(&range.apply_mod_cycle_count(speed));
+        distr.probability_for_range(&initial_range)
     };
-    let median = distr.median();
-    let mut best = calculate_ideal_lead_pid_cycle_count_at_cycle(range, median);
-    let mut best_probability = probability(best);
-    if best_probability >= 1.0 - 1e-12 {
-        return best;
-    }
+
+    let mut best_spd = 0;
+    let mut best_probability = 0f64;
+
     for speed in FASTEST_MODULO_CYCLE_24..=SLOWEST_MODULO_CYCLE_24 {
         let score = probability(speed);
-        if score > best_probability + 1e-12 {
-            best = speed;
+        if score > best_probability {
+            best_spd = speed;
             best_probability = score;
+            if best_probability > 1f64 - EPSILON {
+                break;
+            }
         }
     }
-    best
-}
-
-pub fn calculate_ideal_lead_pid_cycle_count_at_cycle(
-    post_sweet_scent_range: &CycleAndModRange,
-    representative_cycle: usize,
-) -> usize {
-    let mod_count = post_sweet_scent_range.start.lead_pid_mod;
-    if mod_count == 0 {
-        // Should only occurs with egg lead
-        return 0;
-    }
-
-    /*
-    ex: cycle_range is (start=200k + 100 * modulo, len=10k).
-    mid_cycle_from_sweet_scent_func_start is 205k. (For best chances to trigger the method, there should be 205k cycles after the start of the SweetScent function and the vblank)
-    pre_sweet_scent_mid_cycle is 75k (280k - 205k). (For best chances to trigger the method, there should be 75k cycles before the start of the SweetScent function)
-
-    The most probable cycle count before SweetScent is 55k (constant).
-    To reach 75k, we need to add 20k cycles from lead PID modulo.
-    Lead PID modulo is called 100 times, so we want to ideally add 200 cycles per modulo.
-    */
-    let mid_cycle_from_sweet_scent_func_start =
-        post_sweet_scent_range.start.cycle + (post_sweet_scent_range.len / 2);
-    let pre_sweet_scent_mid_cycle =
-        VBLANK_FREQ as i64 - mid_cycle_from_sweet_scent_func_start as i64;
-
-    let total_diff = pre_sweet_scent_mid_cycle - representative_cycle as i64;
-    let ideal_diff_by_mod = total_diff / mod_count as i64;
-    ideal_diff_by_mod.clamp(
-        FASTEST_MODULO_CYCLE_24 as i64,
-        SLOWEST_MODULO_CYCLE_24 as i64,
-    ) as usize
+    best_spd
 }
 
 fn calculate_pre_sweet_scent_cycle_range(
@@ -343,107 +272,4 @@ pub fn get_default_min_mid_max_vblank_cycle_duration_for_feebas() -> MinMidMax {
 // Limitation: Feebas hasn't been updated with the new vblank calibration logic.
 pub fn get_default_min_mid_max_initial_cycle_for_feebas() -> MinMidMax {
     MinMidMax::new(45_000, 55_000, 75_000)
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    fn possible(range: &CycleAndModRange) -> bool {
-        is_method_possible_to_trigger(
-            range,
-            Wild3Action::OldRod,
-            false,
-            true,
-            None,
-            &Wild3MapGameData::default(),
-            Wild3MovementMode::OnFoot,
-            Wild3Weather::Sunny,
-        )
-    }
-
-    #[test]
-    fn manipulated_lead_feasibility_preserves_integer_boundaries() {
-        // The supplied uniform fixture has bounds 45,000 through 75,000.
-        let cases = [
-            (75_019, 1, 1, true),
-            (45_018, 1, 1, false),
-            (45_019, 1, 1, true),
-            (255_001, 200, 1, true),
-            (255_201, 200, 1, false),
-            (63_001, 1_000, 1, true),
-            (63_000, 1_000, 1, false),
-            (75_001, 0, 1, true),
-            (45_000, 0, 1, false),
-            (60_000, 80, 0, false),
-            (63_001, 1_000, INFINITE_CYCLE, true),
-            (63_000, 1_000, INFINITE_CYCLE, false),
-        ];
-        for (end_at_zero_speed, modulo, len, expected) in cases {
-            let range = CycleRange::new(VBLANK_FREQ - end_at_zero_speed, modulo, len);
-
-            assert_eq!(possible(&range), expected, "{range:?}");
-        }
-    }
-
-    #[test]
-    fn direct_feasibility_matches_exhaustive_speed_search() {
-        let cases = [0, 3, 14, 999]
-            .into_iter()
-            .flat_map(|index| {
-                (0..=400_000)
-                    .step_by(7_919)
-                    .map(move |cycle| (index, cycle))
-            })
-            .flat_map(|(index, cycle)| {
-                [0, 1, 18, 80, 261, 1_000, 40_000]
-                    .into_iter()
-                    .map(move |modulo| (index, cycle, modulo))
-            })
-            .flat_map(|(index, cycle, modulo)| {
-                [
-                    0,
-                    1,
-                    256,
-                    39_309,
-                    INFINITE_CYCLE - 1,
-                    INFINITE_CYCLE,
-                    INFINITE_CYCLE + 1,
-                ]
-                .into_iter()
-                .map(move |len| (index, CycleRange::new(cycle, modulo, len)))
-            });
-
-        for (index, range) in cases {
-            let map = Wild3MapGameData {
-                map_internal_idx: index,
-                ..Default::default()
-            };
-            let (min, max) = map.get_min_max_initial_cycle(
-                Wild3Action::SweetScentLand,
-                Wild3MovementMode::OnFoot,
-                Wild3Weather::Sunny,
-            );
-            let expected = (FASTEST_MODULO_CYCLE_24..=SLOWEST_MODULO_CYCLE_24).any(|speed| {
-                let pre =
-                    calculate_pre_sweet_scent_cycle_range(&range.apply_mod_cycle_count(speed));
-
-                pre.len > 0
-                    && pre.start as i64 <= max as i64
-                    && pre.start as i64 + pre.len as i64 > min as i64
-            });
-            let actual = is_method_possible_to_trigger(
-                &range,
-                Wild3Action::SweetScentLand,
-                false,
-                true,
-                None,
-                &map,
-                Wild3MovementMode::OnFoot,
-                Wild3Weather::Sunny,
-            );
-
-            assert_eq!(actual, expected, "map={index}, range={range:?}");
-        }
-    }
 }

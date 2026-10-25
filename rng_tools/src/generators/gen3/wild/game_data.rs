@@ -4,7 +4,7 @@ use wasm_bindgen::prelude::*;
 
 use super::{
     VBLANK_FREQ, Wild3Action, Wild3MapCycleCalibration, Wild3MovementMode, Wild3Weather,
-    vblank_calibration::calibration_model,
+    vblank_calibration::get_initial_model,
 };
 use crate::{EncounterSlot, GenderRatio, Nature, PokemonType, Species};
 
@@ -175,7 +175,18 @@ impl Wild3MapGameData {
         movement: Wild3MovementMode,
         weather: Wild3Weather,
     ) -> (usize, usize) {
-        calibration_model(action, self, movement, weather)
+        get_initial_model(action, self, movement, weather)
+            .map(|model| (model.min, model.max))
+            .unwrap_or((0, 0)) //NO_PROD
+    }
+
+    pub fn get_mid_initial_cycle(
+        &self,
+        action: Wild3Action,
+        movement: Wild3MovementMode,
+        weather: Wild3Weather,
+    ) -> (usize, usize) {
+        get_initial_model(action, self, movement, weather)
             .map(|model| (model.min, model.max))
             .unwrap_or((0, 0)) //NO_PROD
     }
@@ -228,6 +239,7 @@ impl Default for Wild3MapGameData {
         ]
         .into_iter()
         .map(Wild3MapCycleCalibration::new_default)
+        .cloned()
         .collect();
 
         #[cfg(not(test))]

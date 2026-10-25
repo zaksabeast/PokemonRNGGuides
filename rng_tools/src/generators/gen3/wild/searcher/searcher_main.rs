@@ -151,19 +151,7 @@ impl Wild3SearcherCycleOpts {
         map_data: &'a Wild3MapGameData,
         action: Wild3Action,
     ) -> Vec<&'a Wild3MapCycleCalibration> {
-        static DEFAULTS: std::sync::LazyLock<[Wild3MapCycleCalibration; 6]> =
-            std::sync::LazyLock::new(|| {
-                [
-                    Wild3Action::SweetScentLand,
-                    Wild3Action::SweetScentWater,
-                    Wild3Action::OldRod,
-                    Wild3Action::GoodRod,
-                    Wild3Action::SuperRod,
-                    Wild3Action::RockSmash,
-                ]
-                .map(Wild3MapCycleCalibration::new_default)
-            });
-        let default = &DEFAULTS[action as usize];
+        let default = Wild3MapCycleCalibration::new_default(action);
 
         match self {
             Self::Inactive => vec![default],

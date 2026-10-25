@@ -59,7 +59,25 @@ pub struct Wild3MapCycleCalibration {
 }
 
 impl Wild3MapCycleCalibration {
-    pub fn new_default(action: Wild3Action) -> Self {
+    pub fn new_default(action: Wild3Action) -> &'static Self {
+        static DEFAULTS_INITIAL_DISTRS_BY_ACTION: std::sync::LazyLock<
+            [Wild3MapCycleCalibration; 6],
+        > = std::sync::LazyLock::new(|| {
+            [
+                Wild3Action::SweetScentLand,
+                Wild3Action::SweetScentWater,
+                Wild3Action::OldRod,
+                Wild3Action::GoodRod,
+                Wild3Action::SuperRod,
+                Wild3Action::RockSmash,
+            ]
+            .map(Wild3MapCycleCalibration::build_default)
+        });
+
+        &DEFAULTS_INITIAL_DISTRS_BY_ACTION[action as usize]
+    }
+
+    fn build_default(action: Wild3Action) -> Self {
         let min = if action == Wild3Action::RockSmash {
             30_000
         } else {
@@ -132,17 +150,20 @@ impl Wild3MapCycleCalibration {
     }
 }
 
-pub(super) fn calibration_model(
+pub(super) fn get_initial_model(
     action: Wild3Action,
     map: &Wild3MapGameData,
     movement: Wild3MovementMode,
     weather: Wild3Weather,
 ) -> Option<&Wild3MapCycleCalibration> {
-    map.vblank_distrs.iter().find(|calibration| {
-        calibration.action == action
-            && calibration.movement == movement
-            && calibration.weather == weather
-    })
+    map.vblank_distrs
+        .iter()
+        .find(|calibration| {
+            calibration.action == action
+                && calibration.movement == movement
+                && calibration.weather == weather
+        })
+        .unwr
 }
 
 #[cfg(test)]
@@ -166,7 +187,7 @@ mod tests {
         let map = Wild3MapGameData::default();
 
         assert_eq!(
-            calibration_model(
+            get_initial_model(
                 Wild3Action::RockSmash,
                 &map,
                 Wild3MovementMode::OnFoot,
@@ -194,7 +215,8 @@ mod tests {
 
     #[test]
     fn cdf_jumps_are_excluded_at_the_upper_boundary() {
-        let mut calibration = Wild3MapCycleCalibration::new_default(Wild3Action::SweetScentLand);
+        let mut calibration =
+            Wild3MapCycleCalibration::new_default(Wild3Action::SweetScentLand).clone();
         calibration.distribution = vec![
             CdfKnot {
                 cycle: 50_000.0,
@@ -219,7 +241,7 @@ mod tests {
         };
 
         assert_eq!(
-            calibration_model(
+            get_initial_model(
                 Wild3Action::SweetScentLand,
                 &map,
                 Wild3MovementMode::OnFoot,
@@ -229,25 +251,25 @@ mod tests {
         );
 
         let map = Wild3MapGameData {
-            vblank_distrs: vec![Wild3MapCycleCalibration::new_default(
-                Wild3Action::SweetScentLand,
-            )],
+            vblank_distrs: vec![
+                Wild3MapCycleCalibration::new_default(Wild3Action::SweetScentLand).clone(),
+            ],
             ..Default::default()
         };
 
         assert_eq!(
-            calibration_model(
+            get_initial_model(
                 Wild3Action::SweetScentLand,
                 &map,
                 Wild3MovementMode::OnFoot,
                 Wild3Weather::Sunny
             ),
-            Some(&Wild3MapCycleCalibration::new_default(
+            Some(Wild3MapCycleCalibration::new_default(
                 Wild3Action::SweetScentLand
             ))
         );
         assert_eq!(
-            calibration_model(
+            get_initial_model(
                 Wild3Action::SweetScentLand,
                 &map,
                 Wild3MovementMode::Bike,
@@ -256,7 +278,7 @@ mod tests {
             None
         );
         assert_eq!(
-            calibration_model(
+            get_initial_model(
                 Wild3Action::OldRod,
                 &map,
                 Wild3MovementMode::OnFoot,

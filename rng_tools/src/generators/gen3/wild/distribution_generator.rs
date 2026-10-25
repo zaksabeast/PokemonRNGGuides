@@ -6,7 +6,8 @@ use wasm_bindgen::prelude::*;
 use super::Wild3GeneratorOptions;
 use crate::{
     gen3::{
-        CycleFrameMoment, CycleRange, Wild3MapGameData, Wild3SearcherResultMon, generate_wild3,
+        CycleFrameMoment, CycleRange, Wild3GeneratorCycleOpts, Wild3MapGameData, Wild3MovementMode,
+        Wild3SearcherResultMon, Wild3Weather, generate_wild3,
     },
     rng::lcrng::Pokerng,
 };
@@ -33,77 +34,66 @@ pub fn generate_gen3_wild_distribution(
     opts: &Wild3GeneratorOptions,
     game_data: &Wild3MapGameData,
     lead_cycle_spd: usize,
+    movement: Wild3MovementMode,
+    weather: Wild3Weather,
     initial_cycle: Option<usize>,
     vblank_cycles: Option<Vec<usize>>,
 ) -> Wild3MethodDistributionResults {
-    let _ = (
-        initial_seed,
-        advances,
-        opts,
-        game_data,
-        lead_cycle_spd,
-        initial_cycle,
-        vblank_cycles,
-    );
-
-    //NO_PROD. force specifying weather + foot.
-    /*
-        let movement = opts.cycle_opts.movement();
-        let cycle_opts_for_cycle = match (initial_cycle, vblank_cycles) {
-            (Some(initial_cycle), Some(vblank_cycles)) => {
-                Wild3GeneratorCycleOpts::CycleAtMomentWithEmuLog {
-                    lead_cycle_spd,
-                    initial_cycle,
-                    vblank_cycles,
-                }
+    let cycle_opts_for_cycle = match (initial_cycle, vblank_cycles) {
+        (Some(initial_cycle), Some(vblank_cycles)) => {
+            Wild3GeneratorCycleOpts::CycleAtMomentWithEmuLog {
+                lead_cycle_spd,
+                initial_cycle,
+                vblank_cycles,
             }
-            _ => Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog {
+        }
+        _ => {
+            let min_max_initial_cycle =
+                game_data.get_min_max_initial_cycle(opts.action, movement, weather);
+            Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog {
+                initial_cycle,
                 lead_cycle_spd,
                 movement,
-            },
-        };
-
-        let methods = vec![
-            Gen3Method::Wild1,
-            Gen3Method::Wild2,
-            Gen3Method::Wild3,
-            Gen3Method::Wild4,
-            Gen3Method::Wild5,
-        ];
-
-        let rng = Pokerng::with_jump(initial_seed, advances);
-
-        let cycle_at_moments = generate_cycle_at_moments(
-            rng,
-            &Wild3GeneratorOptions {
-                cycle_opts: cycle_opts_for_cycle,
-                methods: methods.clone(),
-                ..opts.clone()
-            },
-            game_data,
-        );
-
-        let results = generate_dist_results(
-            rng,
-            advances,
-            &Wild3GeneratorOptions {
-                cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead {
-                    lead_cycle_spd,
-                    consider_bike: movement == Wild3MovementMode::Bike,
-                },
-                methods,
-                ..opts.clone()
-            },
-            game_data,
-        );
-        Wild3MethodDistributionResults {
-            results,
-            cycle_at_moments,
+            }
         }
-    */
+    };
+
+    let methods = vec![
+        Gen3Method::Wild1,
+        Gen3Method::Wild2,
+        Gen3Method::Wild3,
+        Gen3Method::Wild4,
+        Gen3Method::Wild5,
+    ];
+
+    let rng = Pokerng::with_jump(initial_seed, advances);
+
+    let cycle_at_moments = generate_cycle_at_moments(
+        rng,
+        &Wild3GeneratorOptions {
+            cycle_opts: cycle_opts_for_cycle,
+            methods: methods.clone(),
+            ..opts.clone()
+        },
+        game_data,
+    );
+
+    let results = generate_dist_results(
+        rng,
+        advances,
+        &Wild3GeneratorOptions {
+            cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead {
+                lead_cycle_spd,
+                consider_bike: movement == Wild3MovementMode::Bike,
+            },
+            methods,
+            ..opts.clone()
+        },
+        game_data,
+    );
     Wild3MethodDistributionResults {
-        results: vec![],
-        cycle_at_moments: vec![],
+        results,
+        cycle_at_moments,
     }
 }
 

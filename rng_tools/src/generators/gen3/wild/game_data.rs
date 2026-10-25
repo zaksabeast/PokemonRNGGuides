@@ -2,6 +2,8 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
+#[cfg(test)]
+use super::ALL_WILD3_ACTIONS;
 use super::{
     VBLANK_FREQ, Wild3Action, Wild3InitialCycleDistribution, Wild3MovementMode, Wild3Weather,
 };
@@ -195,18 +197,11 @@ impl Wild3MapGameData {
 impl Default for Wild3MapGameData {
     fn default() -> Self {
         #[cfg(test)]
-        let vblank_distrs = [
-            Wild3Action::SweetScentLand,
-            Wild3Action::SweetScentWater,
-            Wild3Action::OldRod,
-            Wild3Action::GoodRod,
-            Wild3Action::SuperRod,
-            Wild3Action::RockSmash,
-        ]
-        .into_iter()
-        .map(Wild3InitialCycleDistribution::new_default)
-        .cloned()
-        .collect();
+        let vblank_distrs = ALL_WILD3_ACTIONS
+            .into_iter()
+            .map(Wild3InitialCycleDistribution::new_default)
+            .cloned()
+            .collect();
 
         #[cfg(not(test))]
         let vblank_distrs = vec![];

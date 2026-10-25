@@ -53,6 +53,15 @@ pub enum Wild3Action {
     RockSmash = 5, // Code assumes it's the last element.
 }
 
+pub const ALL_WILD3_ACTIONS: [Wild3Action; 6] = [
+    Wild3Action::SweetScentLand,
+    Wild3Action::SweetScentWater,
+    Wild3Action::OldRod,
+    Wild3Action::GoodRod,
+    Wild3Action::SuperRod,
+    Wild3Action::RockSmash,
+];
+
 impl Wild3Action {
     pub fn is_fishing(&self) -> bool {
         matches!(

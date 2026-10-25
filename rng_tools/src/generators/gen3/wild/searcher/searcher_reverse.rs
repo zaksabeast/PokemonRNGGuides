@@ -7,8 +7,8 @@ use super::*;
 use crate::{
     GenderRatio, Species, TsvTrv,
     gen3::{
-        MAX_FEEBAS_VBLANK, SpeciesData, Wild3InSafariMapStatus, create_pokeblock_gen_opt,
-        find_pid_paths_reverse_pid_cycle_speed_low_high,
+        ALL_WILD3_ACTIONS, MAX_FEEBAS_VBLANK, SpeciesData, Wild3InSafariMapStatus,
+        create_pokeblock_gen_opt, find_pid_paths_reverse_pid_cycle_speed_low_high,
         find_pid_paths_reverse_pid_cycle_speed_mid, find_pid_paths_reverse_pid_shiny,
         searcher_painter::Wild3PaintingAdvFinder,
         wild::{
@@ -133,6 +133,16 @@ fn extend_pid_paths_to_results(
         opts.using_white_flute,
         &opts.feebas_cycles,
     );
+    let initial_cycle_groups = opts
+        .map_setups
+        .iter()
+        .map(|setup| {
+            ALL_WILD3_ACTIONS.map(|action| {
+                opts.cycle_opts
+                    .get_initial_cycle_distrs(&setup.map_data, action)
+            })
+        })
+        .collect_vec();
 
     iter.filter_map(|pid_path| {
         // black_box is useful for debugging.
@@ -179,6 +189,8 @@ fn extend_pid_paths_to_results(
                     encounter_idx_path.map_setups_idx,
                     encounter_gender_ratio,
                     &encounter_idx_gen.feebas_cycles_by_vblank,
+                    &initial_cycle_groups[encounter_idx_path.map_setups_idx]
+                        [encounter_idx_path.action as usize],
                 )
             })
             .collect_vec();
@@ -322,6 +334,7 @@ fn create_result(
     map_idx: usize,
     encounter_gender_ratio: GenderRatio,
     feebas_cycles_by_vblank: &[Vec<usize>],
+    initial_cycle_groups: &[&Wild3InitialCycleDistribution],
 ) -> Vec<Wild3SearcherResultMon> {
     let mass_outbreak_state = match path.encounter_idx_to_lvl_arc {
         EncounterIdxToLvlArc::MassOutbreakSuccess(mass_outbreak_state) => mass_outbreak_state,
@@ -357,9 +370,7 @@ fn create_result(
         mass_outbreak_state,
         feebas_state,
         safari_pokeblock: safari_pokeblock.clone(),
-        cycle_opts: opts
-            .cycle_opts
-            .generator_cycle_opts(&map_setups.map_data, path.action),
+        cycle_opts: opts.cycle_opts.generator_cycle_opts(initial_cycle_groups),
         using_white_flute: opts.using_white_flute,
 
         // overwritten below
@@ -369,9 +380,6 @@ fn create_result(
 
     let mut results = Vec::new();
     let advance = lcrng_distance(opts.initial_seed, path.seed) as usize;
-    let initial_cycle_groups: Vec<_> = opts
-        .cycle_opts
-        .get_initial_cycle_distrs(&map_setups.map_data, gen_opts.action);
 
     for lead in get_leads(path.lead(encounter_gender_ratio), opts) {
         gen_opts.lead = lead;
@@ -394,7 +402,7 @@ fn create_result(
                     advance,
                     encounter,
                     gen_results.cycle_counter.get_cycle_instability(),
-                    &initial_cycle_groups,
+                    initial_cycle_groups,
                 ));
             }
         }

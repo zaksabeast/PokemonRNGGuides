@@ -96,9 +96,7 @@ fn search_wild3_naive_at_given_advance(
                     feebas_state: *feebas_state,
                     feebas_cycles: *feebas_cycles,
                     safari_pokeblock: safari_pokeblock.clone(),
-                    cycle_opts: opts
-                        .cycle_opts
-                        .generator_cycle_opts(&map_setups.map_data, *action),
+                    cycle_opts: opts.cycle_opts.generator_cycle_opts(&initial_cycle_distrs),
                     using_white_flute: opts.using_white_flute,
                 };
 

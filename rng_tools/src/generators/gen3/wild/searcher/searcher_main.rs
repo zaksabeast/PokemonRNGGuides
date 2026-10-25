@@ -130,11 +130,9 @@ impl Wild3SearcherCycleOpts {
 
     pub fn generator_cycle_opts(
         &self,
-        map_data: &Wild3MapGameData,
-        action: Wild3Action,
+        distrs: &[&Wild3InitialCycleDistribution],
     ) -> Wild3GeneratorCycleOpts {
-        let grps = self.get_initial_cycle_distrs(map_data, action);
-        let min_max_initial_cycle = Self::get_min_max_initial_cycle_from_distrs(&grps);
+        let min_max_initial_cycle = Self::get_min_max_initial_cycle_from_distrs(distrs);
 
         match self {
             Self::Inactive => Wild3GeneratorCycleOpts::Inactive,

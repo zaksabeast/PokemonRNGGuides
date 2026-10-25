@@ -1,12 +1,8 @@
-use itertools::Itertools;
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-use super::{
-    CycleRange, MinMidMax, VBLANK_FREQ, Wild3Action, Wild3MapGameData, Wild3MovementMode,
-    Wild3Weather,
-};
+use super::{CycleRange, MinMidMax, VBLANK_FREQ, Wild3MovementMode, Wild3Weather};
 use crate::gen3::{
     COMMON_LEAD_RANGE, CycleAndModRange, FASTEST_MODULO_CYCLE_24, INFINITE_CYCLE,
     SLOWEST_MODULO_CYCLE_24, Wild3InitialCycleDistribution,
@@ -82,114 +78,111 @@ pub struct Wild3SearcherCycleDataByLead {
     pub common_upper_lead: Wild3SearcherCycleData,
 }
 
+impl Wild3SearcherCycleDataByLead {
+    pub fn new_default(post_sweet_scent_range: CycleAndModRange) -> Self {
+        let dummy = Wild3SearcherCycleData::new(
+            0,
+            0,
+            0,
+            0.0,
+            Wild3MovementMode::OnFoot,
+            Wild3Weather::Sunny,
+        );
+
+        Self {
+            post_sweet_scent_range,
+            specified_lead: None,
+            slowest_lead: dummy.clone(),
+            fastest_lead: dummy.clone(),
+            ideal_lead: dummy.clone(),
+            common_lower_lead: dummy.clone(),
+            common_upper_lead: dummy,
+        }
+    }
+}
+
 pub fn calculate_cycle_data_by_lead(
     post_sweet_scent_range: &CycleAndModRange,
     egg_lead: bool,
     specified_lead_cycle_speed: Option<usize>,
     initial_cycle_distr: &[&Wild3InitialCycleDistribution],
 ) -> Wild3SearcherCycleDataByLead {
-    // Step 1: Generate Wild3SearcherCycleDataByLead for each possible initial_cycle_setup
-    let res_by_distr = initial_cycle_distr
-        .iter()
-        .map(|distr| {
-            if egg_lead {
-                // cycle_data is useful even with egg lead to know the likelihood of hitting the method.
-                let cycle_data =
-                    calculate_cycle_data_for_specific_lead_spd(post_sweet_scent_range, 0, distr);
+    let mut best: Option<Wild3SearcherCycleDataByLead> = None;
 
-                Wild3SearcherCycleDataByLead {
-                    post_sweet_scent_range: *post_sweet_scent_range,
-                    specified_lead: Some(cycle_data.clone()),
-                    slowest_lead: cycle_data.clone(),
-                    fastest_lead: cycle_data.clone(),
-                    ideal_lead: cycle_data.clone(),
-                    common_lower_lead: cycle_data.clone(),
-                    common_upper_lead: cycle_data.clone(),
-                }
-            } else {
-                let ideal_lead_pid_cycle_count =
-                    calculate_ideal_lead_pid_cycle_count(post_sweet_scent_range, distr);
+    for distr in initial_cycle_distr {
+        let candidate = cycle_data_by_lead_for_distribution(
+            post_sweet_scent_range,
+            egg_lead,
+            specified_lead_cycle_speed,
+            distr,
+        );
+        let Some(best) = best.as_mut() else {
+            best = Some(candidate);
 
-                Wild3SearcherCycleDataByLead {
-                    post_sweet_scent_range: *post_sweet_scent_range,
-                    specified_lead: specified_lead_cycle_speed.map(|spd| {
-                        calculate_cycle_data_for_specific_lead_spd(
-                            post_sweet_scent_range,
-                            spd,
-                            distr,
-                        )
-                    }),
-                    slowest_lead: calculate_cycle_data_for_specific_lead_spd(
-                        post_sweet_scent_range,
-                        SLOWEST_MODULO_CYCLE_24,
-                        distr,
-                    ),
-                    fastest_lead: calculate_cycle_data_for_specific_lead_spd(
-                        post_sweet_scent_range,
-                        FASTEST_MODULO_CYCLE_24,
-                        distr,
-                    ),
-                    ideal_lead: calculate_cycle_data_for_specific_lead_spd(
-                        post_sweet_scent_range,
-                        ideal_lead_pid_cycle_count,
-                        distr,
-                    ),
-                    common_lower_lead: calculate_cycle_data_for_specific_lead_spd(
-                        post_sweet_scent_range,
-                        COMMON_LEAD_RANGE.start,
-                        distr,
-                    ),
-                    common_upper_lead: calculate_cycle_data_for_specific_lead_spd(
-                        post_sweet_scent_range,
-                        COMMON_LEAD_RANGE.end,
-                        distr,
-                    ),
-                }
-            }
-        })
-        .collect_vec();
-
-    // Step 2: Select the best initial_cycle_setup for each lead_cycle_speed.
-
-    let dummy_cycle_data = || {
-        Wild3SearcherCycleData::new(0, 0, 0, 0.0, Wild3MovementMode::OnFoot, Wild3Weather::Sunny)
-    };
-
-    let find_best =
-        |select: fn(&Wild3SearcherCycleDataByLead) -> Option<&Wild3SearcherCycleData>| {
-            res_by_distr
-                .iter()
-                .filter_map(select)
-                .reduce(|best, candidate| {
-                    if candidate.method_probability > best.method_probability {
-                        candidate
-                    } else {
-                        best
-                    }
-                })
-                .cloned()
+            continue;
         };
 
-    let best_specified_lead = find_best(|data| data.specified_lead.as_ref())
-        .or_else(|| (egg_lead || specified_lead_cycle_speed.is_some()).then(dummy_cycle_data));
-    let best_slowest_lead =
-        find_best(|data| Some(&data.slowest_lead)).unwrap_or_else(dummy_cycle_data);
-    let best_fastest_lead =
-        find_best(|data| Some(&data.fastest_lead)).unwrap_or_else(dummy_cycle_data);
-    let best_ideal_lead = find_best(|data| Some(&data.ideal_lead)).unwrap_or_else(dummy_cycle_data);
-    let best_common_lower_lead =
-        find_best(|data| Some(&data.common_lower_lead)).unwrap_or_else(dummy_cycle_data);
-    let best_common_upper_lead =
-        find_best(|data| Some(&data.common_upper_lead)).unwrap_or_else(dummy_cycle_data);
+        if let (Some(best), Some(candidate)) = (&mut best.specified_lead, candidate.specified_lead)
+        {
+            retain_more_probable(best, candidate);
+        }
+
+        retain_more_probable(&mut best.slowest_lead, candidate.slowest_lead);
+        retain_more_probable(&mut best.fastest_lead, candidate.fastest_lead);
+        retain_more_probable(&mut best.ideal_lead, candidate.ideal_lead);
+        retain_more_probable(&mut best.common_lower_lead, candidate.common_lower_lead);
+        retain_more_probable(&mut best.common_upper_lead, candidate.common_upper_lead);
+    }
+
+    best.unwrap_or_else(|| Wild3SearcherCycleDataByLead::new_default(*post_sweet_scent_range))
+}
+
+fn retain_more_probable(best: &mut Wild3SearcherCycleData, candidate: Wild3SearcherCycleData) {
+    if candidate.method_probability > best.method_probability {
+        *best = candidate;
+    }
+}
+
+fn cycle_data_by_lead_for_distribution(
+    range: &CycleAndModRange,
+    egg_lead: bool,
+    specified_lead_cycle_speed: Option<usize>,
+    distr: &Wild3InitialCycleDistribution,
+) -> Wild3SearcherCycleDataByLead {
+    if egg_lead {
+        let data = calculate_cycle_data_for_specific_lead_spd(range, 0, distr);
+
+        return Wild3SearcherCycleDataByLead {
+            post_sweet_scent_range: *range,
+            specified_lead: Some(data.clone()),
+            slowest_lead: data.clone(),
+            fastest_lead: data.clone(),
+            ideal_lead: data.clone(),
+            common_lower_lead: data.clone(),
+            common_upper_lead: data,
+        };
+    }
+
+    let ideal_lead = calculate_ideal_lead_cycle_data(range, distr);
+    let data_for_speed = |speed| {
+        if speed == ideal_lead.lead_pid_cycle_count || range.start.lead_pid_mod == 0 {
+            Wild3SearcherCycleData {
+                lead_pid_cycle_count: speed,
+                ..ideal_lead.clone()
+            }
+        } else {
+            calculate_cycle_data_for_specific_lead_spd(range, speed, distr)
+        }
+    };
 
     Wild3SearcherCycleDataByLead {
-        post_sweet_scent_range: *post_sweet_scent_range,
-        specified_lead: best_specified_lead,
-        slowest_lead: best_slowest_lead,
-        fastest_lead: best_fastest_lead,
-        ideal_lead: best_ideal_lead,
-        common_lower_lead: best_common_lower_lead,
-        common_upper_lead: best_common_upper_lead,
+        post_sweet_scent_range: *range,
+        specified_lead: specified_lead_cycle_speed.map(data_for_speed),
+        slowest_lead: data_for_speed(SLOWEST_MODULO_CYCLE_24),
+        fastest_lead: data_for_speed(FASTEST_MODULO_CYCLE_24),
+        common_lower_lead: data_for_speed(COMMON_LEAD_RANGE.start),
+        common_upper_lead: data_for_speed(COMMON_LEAD_RANGE.end),
+        ideal_lead,
     }
 }
 
@@ -220,30 +213,60 @@ pub fn calculate_ideal_lead_pid_cycle_count(
     range: &CycleAndModRange,
     distr: &Wild3InitialCycleDistribution,
 ) -> usize {
+    calculate_ideal_lead_cycle_data(range, distr).lead_pid_cycle_count
+}
+
+fn calculate_ideal_lead_cycle_data(
+    range: &CycleAndModRange,
+    distr: &Wild3InitialCycleDistribution,
+) -> Wild3SearcherCycleData {
     if range.start.lead_pid_mod == 0 {
-        return 0;
+        return calculate_cycle_data_for_specific_lead_spd(range, 0, distr);
     }
 
-    let probability = |speed| {
-        let initial_range =
-            calculate_pre_sweet_scent_cycle_range(&range.apply_mod_cycle_count(speed));
-        distr.probability_for_range(&initial_range)
-    };
-
-    let mut best_spd = 0;
-    let mut best_probability = 0f64;
+    let first_range = calculate_pre_sweet_scent_cycle_range(
+        &range.apply_mod_cycle_count(FASTEST_MODULO_CYCLE_24),
+    );
+    let first_start = first_range.start as f64;
+    let mut start_cursor =
+        super::vblank_calibration::CdfCursor::new(&distr.distribution, first_start);
+    let mut end_cursor = super::vblank_calibration::CdfCursor::new(
+        &distr.distribution,
+        first_start + first_range.len as f64,
+    );
+    let mut best = None;
+    let mut best_probability = 0.0;
 
     for speed in FASTEST_MODULO_CYCLE_24..=SLOWEST_MODULO_CYCLE_24 {
-        let score = probability(speed);
-        if score > best_probability {
-            best_spd = speed;
-            best_probability = score;
-            if best_probability > 1f64 - EPSILON {
-                break;
-            }
+        let initial_range =
+            calculate_pre_sweet_scent_cycle_range(&range.apply_mod_cycle_count(speed));
+        let start = initial_range.start as f64;
+        let end = start + initial_range.len as f64;
+        let probability = if end <= start {
+            0.0
+        } else {
+            (end_cursor.less_than(end) - start_cursor.less_than(start)).clamp(0.0, 1.0)
+        };
+
+        if probability.is_nan() || probability <= best_probability {
+            continue;
+        }
+
+        best_probability = probability;
+        best = Some(Wild3SearcherCycleData {
+            lead_pid_cycle_count: speed,
+            pre_sweet_scent_cycle_range: initial_range,
+            method_probability: probability,
+            movement: distr.movement,
+            weather: distr.weather,
+        });
+
+        if best_probability > 1.0 - EPSILON {
+            break;
         }
     }
-    best_spd
+
+    best.unwrap_or_else(|| calculate_cycle_data_for_specific_lead_spd(range, 0, distr))
 }
 
 fn calculate_pre_sweet_scent_cycle_range(
@@ -272,4 +295,146 @@ pub fn get_default_min_mid_max_vblank_cycle_duration_for_feebas() -> MinMidMax {
 // Limitation: Feebas hasn't been updated with the new vblank calibration logic.
 pub fn get_default_min_mid_max_initial_cycle_for_feebas() -> MinMidMax {
     MinMidMax::new(45_000, 55_000, 75_000)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::gen3::{CdfKnot, Wild3Action};
+
+    fn distribution_with_64_knots() -> Wild3InitialCycleDistribution {
+        Wild3InitialCycleDistribution {
+            min: 0,
+            max: 63_000,
+            distribution: (0..64)
+                .map(|index| CdfKnot {
+                    cycle: f64::from(index * 1000),
+                    probability: if index < 32 { 0.0 } else { 1.0 },
+                })
+                .collect(),
+            action: Wild3Action::SweetScentLand,
+            movement: Wild3MovementMode::OnFoot,
+            weather: Wild3Weather::Sunny,
+        }
+    }
+
+    #[test]
+    fn ideal_lead_64_knots_preserves_first_maximum() {
+        let distr = distribution_with_64_knots();
+        let range = CycleAndModRange::new(216_896, 100, 500);
+
+        assert_eq!(
+            calculate_ideal_lead_cycle_data(&range, &distr),
+            Wild3SearcherCycleData::new_for_test(320, 31_500, 500, 0.5)
+        );
+    }
+
+    #[test]
+    fn ideal_lead_handles_constant_empty_and_infinite_ranges() {
+        let distr = distribution_with_64_knots();
+        let cases = [
+            (
+                CycleAndModRange::new(248_896, 0, 500),
+                Wild3SearcherCycleData::new_for_test(0, 31_500, 500, 0.5),
+            ),
+            (
+                CycleAndModRange::new(281_896, 100, 500),
+                Wild3SearcherCycleData::new_for_test(0, -1500, 500, 0.0),
+            ),
+            (
+                CycleAndModRange::new(216_896, 100, 0),
+                Wild3SearcherCycleData::new_for_test(0, 64_000, 0, 0.0),
+            ),
+            (
+                CycleAndModRange::new(216_896, 100, INFINITE_CYCLE),
+                Wild3SearcherCycleData::new_for_test(18, -1_000_000, 1_062_200, 1.0),
+            ),
+        ];
+
+        for (range, expected) in cases {
+            assert_eq!(calculate_ideal_lead_cycle_data(&range, &distr), expected);
+        }
+    }
+
+    #[test]
+    fn cycle_data_by_lead_keeps_first_distribution_on_ties() {
+        let first = distribution_with_64_knots();
+        let mut second = first.clone();
+        second.weather = Wild3Weather::Rain;
+        let range = CycleAndModRange::new(216_896, 100, 500);
+
+        assert_eq!(
+            calculate_cycle_data_by_lead(&range, false, Some(320), &[&first, &second]),
+            Wild3SearcherCycleDataByLead {
+                post_sweet_scent_range: range,
+                specified_lead: Some(Wild3SearcherCycleData::new_for_test(320, 31_500, 500, 0.5)),
+                slowest_lead: Wild3SearcherCycleData::new_for_test(900, -26_500, 500, 0.0),
+                fastest_lead: Wild3SearcherCycleData::new_for_test(18, 61_700, 500, 0.0),
+                ideal_lead: Wild3SearcherCycleData::new_for_test(320, 31_500, 500, 0.5),
+                common_lower_lead: Wild3SearcherCycleData::new_for_test(608, 2700, 500, 0.0),
+                common_upper_lead: Wild3SearcherCycleData::new_for_test(868, -23_300, 500, 0.0),
+            }
+        );
+    }
+
+    #[test]
+    fn cycle_data_by_lead_selects_better_egg_distribution() {
+        let first = distribution_with_64_knots();
+        let mut second = first.clone();
+        second.distribution[31].cycle = 31_500.0;
+        second.weather = Wild3Weather::Rain;
+        let range = CycleAndModRange::new(248_896, 0, 500);
+        let expected = Wild3SearcherCycleData::new(
+            0,
+            31_500,
+            500,
+            1.0,
+            Wild3MovementMode::OnFoot,
+            Wild3Weather::Rain,
+        );
+
+        assert_eq!(
+            calculate_cycle_data_by_lead(&range, true, None, &[&first, &second]),
+            Wild3SearcherCycleDataByLead {
+                post_sweet_scent_range: range,
+                specified_lead: Some(expected.clone()),
+                slowest_lead: expected.clone(),
+                fastest_lead: expected.clone(),
+                ideal_lead: expected.clone(),
+                common_lower_lead: expected.clone(),
+                common_upper_lead: expected,
+            }
+        );
+    }
+
+    #[test]
+    fn cycle_data_by_lead_handles_no_distributions() {
+        let range = CycleAndModRange::new(216_896, 100, 500);
+        let dummy = Wild3SearcherCycleData::new_for_test(0, 0, 0, 0.0);
+        let expected = Wild3SearcherCycleDataByLead {
+            post_sweet_scent_range: range,
+            specified_lead: None,
+            slowest_lead: dummy.clone(),
+            fastest_lead: dummy.clone(),
+            ideal_lead: dummy.clone(),
+            common_lower_lead: dummy.clone(),
+            common_upper_lead: dummy.clone(),
+        };
+
+        assert_eq!(Wild3SearcherCycleDataByLead::new_default(range), expected);
+
+        assert_eq!(
+            calculate_cycle_data_by_lead(&range, false, None, &[]),
+            expected
+        );
+
+        assert_eq!(
+            calculate_cycle_data_by_lead(&range, true, None, &[]),
+            expected
+        );
+        assert_eq!(
+            calculate_cycle_data_by_lead(&range, false, Some(320), &[]),
+            expected
+        );
+    }
 }

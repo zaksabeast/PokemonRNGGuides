@@ -342,7 +342,7 @@ pub fn get_default_min_mid_max_vblank_cycle_duration_for_feebas() -> MinMidMax {
 
 // Limitation: Feebas hasn't been updated with the new vblank calibration logic.
 pub fn get_default_min_mid_max_initial_cycle_for_feebas() -> MinMidMax {
-    MinMidMax::new(30_000, 55_000, 70_000)
+    MinMidMax::new(45_000, 55_000, 75_000)
 }
 
 #[cfg(test)]

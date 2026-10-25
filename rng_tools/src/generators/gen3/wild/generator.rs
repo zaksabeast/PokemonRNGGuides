@@ -1022,7 +1022,8 @@ fn rand_next_u16(rng: &mut Pokerng, _reason: &str, _modulo: u16) -> u16 {
 
 #[wasm_bindgen]
 // Only returns the mid case (which is the one used by the generator)
-pub fn get_feebas_vblank_from_feebas_cycle(feebas_cycles: usize, initial_cycle: usize) -> usize {
+pub fn get_feebas_vblank_from_feebas_cycle(feebas_cycles: usize) -> usize {
+    let initial_cycle = get_default_min_mid_max_initial_cycle_for_feebas().mid;
     let mid_vblank = get_default_min_mid_max_vblank_cycle_duration_for_feebas().mid;
 
     let (_, mid_case_vblank) =
@@ -1050,7 +1051,6 @@ pub fn apply_cycles_causing_vblanks_on_cycle_counter(
 }
 
 pub const MAX_FEEBAS_VBLANK: usize = 4;
-pub const FEEBAS_VBLANK_GROUP_COUNT: usize = 4;
 
 fn handle_feebas_cycle_counter(
     rng: &mut Pokerng,

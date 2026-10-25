@@ -3,10 +3,9 @@ use itertools::Itertools;
 use crate::{
     EncounterSlot, Gender, GenderRatio, Species,
     gen3::{
-        FEEBAS_VBLANK_GROUP_COUNT, Gen3Lead, MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE, SpeciesData,
-        Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState,
-        Wild3MassOutbreakState, get_default_min_mid_max_initial_cycle_for_feebas,
-        get_feebas_vblank_from_feebas_cycle,
+        Gen3Lead, MAX_FEEBAS_VBLANK, MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE, SpeciesData, Wild3Action,
+        Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState, Wild3MassOutbreakState,
+        get_default_min_mid_max_initial_cycle_for_feebas, get_feebas_vblank_from_feebas_cycle,
         wild::{
             lcrng_distance,
             searcher::{
@@ -165,7 +164,7 @@ pub struct EncounterIdxPathGenerator<'a> {
     actions: Vec<Wild3Action>,
     species_data: SpeciesData,
     using_white_flute: bool,
-    pub feebas_cycles_by_vblank: [Vec<usize>; FEEBAS_VBLANK_GROUP_COUNT],
+    pub feebas_cycles_by_vblank: [Vec<usize>; MAX_FEEBAS_VBLANK],
 }
 
 struct Wild3MapSetupsForReverse<'a> {
@@ -250,17 +249,10 @@ impl<'a> EncounterIdxPathGenerator<'a> {
             arcs.push(EncounterIdxToLvlArc::SlotStaticSuccess);
         }
 
-        let mut feebas_cycles_by_vblank: [Vec<usize>; FEEBAS_VBLANK_GROUP_COUNT] =
-            Default::default();
-        let initial_cycle = map_setups
-            .iter()
-            .find(|setup| setup.map_data.feebas.is_some())
-            .map(|setup| get_default_min_mid_max_initial_cycle_for_feebas(&setup.map_data).mid)
-            .unwrap_or(MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE);
+        let mut feebas_cycles_by_vblank: [Vec<usize>; MAX_FEEBAS_VBLANK] = Default::default();
 
         for cycle in feebas_cycles {
-            feebas_cycles_by_vblank[get_feebas_vblank_from_feebas_cycle(*cycle, initial_cycle)]
-                .push(*cycle)
+            feebas_cycles_by_vblank[get_feebas_vblank_from_feebas_cycle(*cycle)].push(*cycle)
         }
 
         if permit_feebas_arcs(&species_data) {

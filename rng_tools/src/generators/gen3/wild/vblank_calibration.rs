@@ -59,7 +59,7 @@ pub struct Wild3MapCycleCalibration {
 }
 
 impl Wild3MapCycleCalibration {
-    pub fn new_dummy(action: Wild3Action) -> Self {
+    pub fn new_default(action: Wild3Action) -> Self {
         let min = if action == Wild3Action::RockSmash {
             30_000
         } else {
@@ -151,7 +151,7 @@ mod tests {
 
     #[test]
     fn uniform_fixture_bounds_median_and_half_open_probabilities() {
-        let calibration = Wild3MapCycleCalibration::new_dummy(Wild3Action::SweetScentLand);
+        let calibration = Wild3MapCycleCalibration::new_default(Wild3Action::SweetScentLand);
 
         assert_eq!(calibration.median(), 60_000);
         assert_eq!(calibration.probability(0.0, 45_000.0), 0.0);
@@ -194,7 +194,7 @@ mod tests {
 
     #[test]
     fn cdf_jumps_are_excluded_at_the_upper_boundary() {
-        let mut calibration = Wild3MapCycleCalibration::new_dummy(Wild3Action::SweetScentLand);
+        let mut calibration = Wild3MapCycleCalibration::new_default(Wild3Action::SweetScentLand);
         calibration.distribution = vec![
             CdfKnot {
                 cycle: 50_000.0,
@@ -229,7 +229,7 @@ mod tests {
         );
 
         let map = Wild3MapGameData {
-            vblank_distrs: vec![Wild3MapCycleCalibration::new_dummy(
+            vblank_distrs: vec![Wild3MapCycleCalibration::new_default(
                 Wild3Action::SweetScentLand,
             )],
             ..Default::default()
@@ -242,7 +242,7 @@ mod tests {
                 Wild3MovementMode::OnFoot,
                 Wild3Weather::Sunny
             ),
-            Some(&Wild3MapCycleCalibration::new_dummy(
+            Some(&Wild3MapCycleCalibration::new_default(
                 Wild3Action::SweetScentLand
             ))
         );

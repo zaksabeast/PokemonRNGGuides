@@ -7,7 +7,7 @@ use super::*;
 use crate::{
     GenderRatio, Species, TsvTrv,
     gen3::{
-        FEEBAS_VBLANK_GROUP_COUNT, SpeciesData, Wild3InSafariMapStatus, create_pokeblock_gen_opt,
+        MAX_FEEBAS_VBLANK, SpeciesData, Wild3InSafariMapStatus, create_pokeblock_gen_opt,
         find_pid_paths_reverse_pid_cycle_speed_low_high,
         find_pid_paths_reverse_pid_cycle_speed_mid, find_pid_paths_reverse_pid_shiny,
         searcher_painter::Wild3PaintingAdvFinder,
@@ -405,8 +405,7 @@ fn create_result(
 
 // Generated with test: cargo test test_search_reverse_wild3_vblank_group_feebas
 // Hardcoded in feebasMapData.ts
-pub const FEEBAS_CYCLE_COUNT_BY_VBLANK: [std::ops::RangeInclusive<usize>;
-    FEEBAS_VBLANK_GROUP_COUNT] = [
+pub const FEEBAS_CYCLE_COUNT_BY_VBLANK: [std::ops::RangeInclusive<usize>; MAX_FEEBAS_VBLANK] = [
     0..=250895,
     210896..=486791,
     426792..=722687,

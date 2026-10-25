@@ -792,7 +792,7 @@ fn test_search_reverse_wild3_vblank_group_feebas() {
         }
     }
 
-    let mut groups: [Option<std::ops::RangeInclusive<usize>>; FEEBAS_VBLANK_GROUP_COUNT] =
+    let mut groups: [Option<std::ops::RangeInclusive<usize>>; MAX_FEEBAS_VBLANK] =
         Default::default();
 
     for feebas_cycles in 0..=800_000 {
@@ -824,7 +824,7 @@ fn test_search_reverse_wild3_vblank_group_feebas() {
     }
 
     assert_eq!(
-        groups.map(|x| x.unwrap_or(std::ops::RangeInclusive::new(1, 0))),
+        groups.map(|x| x.unwrap_or(0..=0)),
         FEEBAS_CYCLE_COUNT_BY_VBLANK,
     );
 }

@@ -227,7 +227,7 @@ impl Default for Wild3MapGameData {
             Wild3Action::RockSmash,
         ]
         .into_iter()
-        .map(Wild3MapCycleCalibration::new_dummy)
+        .map(Wild3MapCycleCalibration::new_default)
         .collect();
 
         #[cfg(not(test))]

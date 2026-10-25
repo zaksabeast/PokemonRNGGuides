@@ -161,7 +161,7 @@ impl Wild3SearcherCycleOpts {
                     Wild3Action::SuperRod,
                     Wild3Action::RockSmash,
                 ]
-                .map(Wild3MapCycleCalibration::new_dummy)
+                .map(Wild3MapCycleCalibration::new_default)
             });
         let default = &DEFAULTS[action as usize];
 

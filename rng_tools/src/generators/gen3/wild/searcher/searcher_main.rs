@@ -290,13 +290,13 @@ impl Wild3SearcherResultMon {
         advance: usize,
         encounter: &Wild3EncounterGameData,
         cycle_instability: f32,
-        initial_cycle_distr: &[&Wild3InitialCycleDistribution],
+        initial_cycle_distrs: &[&Wild3InitialCycleDistribution],
     ) -> Wild3SearcherResultMon {
         let cycle_data_by_lead = gen_res.cycle_range.map(|cycle_range| {
             let is_egg = matches!(gen_opts.lead, Gen3Lead::Egg);
             let lead_cycle_spd = gen_opts.cycle_opts.lead_cycle_spd();
 
-            calculate_cycle_data_by_lead(&cycle_range, is_egg, lead_cycle_spd, initial_cycle_distr)
+            calculate_cycle_data_by_lead(&cycle_range, is_egg, lead_cycle_spd, initial_cycle_distrs)
         });
 
         Wild3SearcherResultMon {

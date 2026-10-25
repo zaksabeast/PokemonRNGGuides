@@ -6,8 +6,9 @@ use wasm_bindgen::prelude::*;
 use super::Wild3GeneratorOptions;
 use crate::{
     gen3::{
-        CycleFrameMoment, CycleRange, Wild3GeneratorCycleOpts, Wild3MapGameData, Wild3MovementMode,
-        Wild3SearcherResultMon, Wild3Weather, generate_wild3,
+        CycleFrameMoment, CycleRange, Gen3Method, Wild3GeneratorCycleOpts,
+        Wild3InitialCycleDistribution, Wild3MapGameData, Wild3MovementMode, Wild3SearcherResultMon,
+        Wild3Weather, calculate_cycle_data_for_specific_lead_spd, generate_wild3,
     },
     rng::lcrng::Pokerng,
 };
@@ -39,6 +40,8 @@ pub fn generate_gen3_wild_distribution(
     initial_cycle: Option<usize>,
     vblank_cycles: Option<Vec<usize>>,
 ) -> Wild3MethodDistributionResults {
+    let initial_cycle_distr = game_data.get_initial_cycle_distr(opts.action, movement, weather);
+
     let cycle_opts_for_cycle = match (initial_cycle, vblank_cycles) {
         (Some(initial_cycle), Some(vblank_cycles)) => {
             Wild3GeneratorCycleOpts::CycleAtMomentWithEmuLog {
@@ -47,15 +50,11 @@ pub fn generate_gen3_wild_distribution(
                 vblank_cycles,
             }
         }
-        _ => {
-            let min_max_initial_cycle =
-                game_data.get_min_max_initial_cycle(opts.action, movement, weather);
-            Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog {
-                initial_cycle,
-                lead_cycle_spd,
-                movement,
-            }
-        }
+        _ => Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog {
+            initial_cycle: initial_cycle_distr.median(),
+            lead_cycle_spd,
+            movement,
+        },
     };
 
     let methods = vec![
@@ -83,13 +82,14 @@ pub fn generate_gen3_wild_distribution(
         advances,
         &Wild3GeneratorOptions {
             cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead {
+                min_max_initial_cycle: initial_cycle_distr.to_min_max(),
                 lead_cycle_spd,
-                consider_bike: movement == Wild3MovementMode::Bike,
             },
             methods,
             ..opts.clone()
         },
         game_data,
+        initial_cycle_distr,
     );
     Wild3MethodDistributionResults {
         results,
@@ -97,7 +97,6 @@ pub fn generate_gen3_wild_distribution(
     }
 }
 
-#[expect(dead_code, reason = "Distribution generation is temporarily disabled")]
 fn generate_cycle_at_moments(
     rng: Pokerng,
     opts: &Wild3GeneratorOptions,
@@ -107,14 +106,13 @@ fn generate_cycle_at_moments(
     generated.cycle_counter.get_cycle_at_moments()
 }
 
-#[expect(dead_code, reason = "Distribution generation is temporarily disabled")]
 fn generate_dist_results(
-    _rng: Pokerng,
-    _advances: usize,
-    _opts: &Wild3GeneratorOptions,
-    _game_data: &Wild3MapGameData,
+    rng: Pokerng,
+    advances: usize,
+    opts: &Wild3GeneratorOptions,
+    game_data: &Wild3MapGameData,
+    initial_cycle_distr: &Wild3InitialCycleDistribution,
 ) -> Vec<Wild3MethodDistributionResult> {
-    /* NO_PROD
     let generated = generate_wild3(rng, opts, game_data);
     let cycle_instability = generated.cycle_counter.get_cycle_instability();
     let lead_cycle_spd = opts.cycle_opts.lead_cycle_spd().unwrap();
@@ -134,19 +132,16 @@ fn generate_dist_results(
                 advances,
                 encounter,
                 cycle_instability,
-                game_data,
+                &vec![initial_cycle_distr],
             );
-            let cycle_data = calculate_cycle_data(
+            let cycle_data = calculate_cycle_data_for_specific_lead_spd(
                 &searcher_res
                     .cycle_data_by_lead
                     .as_ref()
                     .unwrap()
                     .post_sweet_scent_range,
-                opts.action,
                 lead_cycle_spd,
-                game_data,
-                opts.cycle_opts.movement(),
-                opts.cycle_opts.weather(),
+                initial_cycle_distr,
             );
 
             Wild3MethodDistributionResult {
@@ -155,8 +150,7 @@ fn generate_dist_results(
                 method_probability: cycle_data.method_probability,
             }
         })
-        .collect()*/
-    vec![]
+        .collect()
 }
 
 #[cfg(test)]
@@ -204,6 +198,8 @@ mod test {
             &opts,
             &Wild3MapGameData::default(),
             700,
+            Wild3MovementMode::OnFoot,
+            Wild3Weather::Sunny,
             None,
             None,
         );

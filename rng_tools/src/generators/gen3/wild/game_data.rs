@@ -4,7 +4,6 @@ use wasm_bindgen::prelude::*;
 
 use super::{
     VBLANK_FREQ, Wild3Action, Wild3InitialCycleDistribution, Wild3MovementMode, Wild3Weather,
-    vblank_calibration::get_initial_model,
 };
 use crate::{EncounterSlot, GenderRatio, Nature, PokemonType, Species};
 
@@ -142,26 +141,20 @@ pub fn get_encounter_for_wild3_map_game_data(
 }
 
 impl Wild3MapGameData {
-    pub fn get_min_max_initial_cycle(
+    pub fn get_initial_cycle_distr(
         &self,
         action: Wild3Action,
         movement: Wild3MovementMode,
         weather: Wild3Weather,
-    ) -> (usize, usize) {
-        get_initial_model(action, self, movement, weather)
-            .map(|model| (model.min, model.max))
-            .unwrap_or((0, 0)) //NO_PROD
-    }
-
-    pub fn get_mid_initial_cycle(
-        &self,
-        action: Wild3Action,
-        movement: Wild3MovementMode,
-        weather: Wild3Weather,
-    ) -> (usize, usize) {
-        get_initial_model(action, self, movement, weather)
-            .map(|model| (model.min, model.max))
-            .unwrap_or((0, 0)) //NO_PROD
+    ) -> &Wild3InitialCycleDistribution {
+        self.vblank_distrs
+            .iter()
+            .find(|calibration| {
+                calibration.action == action
+                    && calibration.movement == movement
+                    && calibration.weather == weather
+            })
+            .unwrap_or_else(|| Wild3InitialCycleDistribution::new_default(action))
     }
 
     pub fn get_encounter(

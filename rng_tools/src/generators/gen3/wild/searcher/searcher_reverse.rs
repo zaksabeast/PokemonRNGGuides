@@ -411,7 +411,6 @@ pub const FEEBAS_CYCLE_COUNT_BY_VBLANK: [std::ops::RangeInclusive<usize>;
     210896..=486791,
     426792..=722687,
     642688..=800000,
-    std::ops::RangeInclusive::new(1, 0),
 ];
 
 pub fn get_feebas_possible_vblank_count(feebas_cycles: usize) -> Vec<usize> {

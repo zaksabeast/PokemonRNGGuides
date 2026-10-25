@@ -59,22 +59,34 @@ pub struct Wild3MapCycleCalibration {
 }
 
 impl Wild3MapCycleCalibration {
-    pub fn new_dummy() -> Self {
+    pub fn new_dummy(action: Wild3Action) -> Self {
+        let min = if action == Wild3Action::RockSmash {
+            30_000
+        } else {
+            45_000
+        };
+        let max = 75_000;
+        let movement = if action == Wild3Action::SweetScentWater {
+            Wild3MovementMode::Surf
+        } else {
+            Wild3MovementMode::OnFoot
+        };
+
         Self {
-            min: 30_000,
-            max: 70_000,
+            min,
+            max,
             distribution: vec![
                 CdfKnot {
-                    cycle: 30_000.0,
+                    cycle: min as f64,
                     probability: 0.0,
                 },
                 CdfKnot {
-                    cycle: 70_000.0,
+                    cycle: max as f64,
                     probability: 1.0,
                 },
             ],
-            action: Wild3Action::SweetScentLand,
-            movement: Wild3MovementMode::OnFoot,
+            action,
+            movement,
             weather: Wild3Weather::Sunny,
         }
     }
@@ -139,19 +151,50 @@ mod tests {
 
     #[test]
     fn uniform_fixture_bounds_median_and_half_open_probabilities() {
-        let calibration = Wild3MapCycleCalibration::new_dummy();
+        let calibration = Wild3MapCycleCalibration::new_dummy(Wild3Action::SweetScentLand);
 
-        assert_eq!(calibration.median(), 50_000);
-        assert_eq!(calibration.probability(0.0, 30_000.0), 0.0);
-        assert_eq!(calibration.probability(30_000.0, 70_000.0), 1.0);
-        assert_eq!(calibration.probability(40_000.0, 50_000.0), 0.25);
-        assert_eq!(calibration.probability(70_000.0, 80_000.0), 0.0);
+        assert_eq!(calibration.median(), 60_000);
+        assert_eq!(calibration.probability(0.0, 45_000.0), 0.0);
+        assert_eq!(calibration.probability(45_000.0, 75_000.0), 1.0);
+        assert_eq!(calibration.probability(45_000.0, 52_500.0), 0.25);
+        assert_eq!(calibration.probability(75_000.0, 80_000.0), 0.0);
         assert_eq!(calibration.probability(50_000.0, 40_000.0), 0.0);
     }
 
     #[test]
+    fn rock_smash_default_uses_its_original_uniform_range() {
+        let map = Wild3MapGameData::default();
+
+        assert_eq!(
+            calibration_model(
+                Wild3Action::RockSmash,
+                &map,
+                Wild3MovementMode::OnFoot,
+                Wild3Weather::Sunny,
+            ),
+            Some(&Wild3MapCycleCalibration {
+                min: 30_000,
+                max: 75_000,
+                distribution: vec![
+                    CdfKnot {
+                        cycle: 30_000.0,
+                        probability: 0.0,
+                    },
+                    CdfKnot {
+                        cycle: 75_000.0,
+                        probability: 1.0,
+                    },
+                ],
+                action: Wild3Action::RockSmash,
+                movement: Wild3MovementMode::OnFoot,
+                weather: Wild3Weather::Sunny,
+            })
+        );
+    }
+
+    #[test]
     fn cdf_jumps_are_excluded_at_the_upper_boundary() {
-        let mut calibration = Wild3MapCycleCalibration::new_dummy();
+        let mut calibration = Wild3MapCycleCalibration::new_dummy(Wild3Action::SweetScentLand);
         calibration.distribution = vec![
             CdfKnot {
                 cycle: 50_000.0,
@@ -186,7 +229,9 @@ mod tests {
         );
 
         let map = Wild3MapGameData {
-            vblank_distrs: vec![Wild3MapCycleCalibration::new_dummy()],
+            vblank_distrs: vec![Wild3MapCycleCalibration::new_dummy(
+                Wild3Action::SweetScentLand,
+            )],
             ..Default::default()
         };
 
@@ -197,7 +242,9 @@ mod tests {
                 Wild3MovementMode::OnFoot,
                 Wild3Weather::Sunny
             ),
-            Some(&Wild3MapCycleCalibration::new_dummy())
+            Some(&Wild3MapCycleCalibration::new_dummy(
+                Wild3Action::SweetScentLand
+            ))
         );
         assert_eq!(
             calibration_model(

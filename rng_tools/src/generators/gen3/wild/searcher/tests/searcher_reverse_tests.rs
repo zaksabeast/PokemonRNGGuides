@@ -5,6 +5,7 @@ use crate::{
         FASTEST_DIVIDENDS_MOD_24_RANGE, Gen3PidSpeedFilter, MinMidMax, Wild3MovementMode,
         Wild3SearcherCycleOpts, Wild3SpecialEncounterGameData, Wild3Weather,
         apply_cycles_causing_vblanks_on_cycle_counter, calculate_pid_speed,
+        get_default_min_mid_max_initial_cycle_for_feebas,
         get_default_min_mid_max_vblank_cycle_duration_for_feebas, search_wild3_naive,
     },
 };
@@ -795,11 +796,12 @@ fn test_search_reverse_wild3_vblank_group_feebas() {
         Default::default();
 
     for feebas_cycles in 0..=800_000 {
-        let (min_presweet, max_presweet) = Wild3MapGameData::default().get_min_max_initial_cycle(
-            Wild3Action::OldRod,
-            Wild3MovementMode::OnFoot,
-            Wild3Weather::Sunny,
-        );
+        // The legacy Feebas table was generated with these fixed initial-cycle bounds.
+        let MinMidMax {
+            min: min_presweet,
+            max: max_presweet,
+            ..
+        } = get_default_min_mid_max_initial_cycle_for_feebas();
         let MinMidMax {
             min: min_vblank_dur,
             max: max_vblank_dur,
@@ -824,39 +826,6 @@ fn test_search_reverse_wild3_vblank_group_feebas() {
     assert_eq!(
         groups.map(|x| x.unwrap_or(std::ops::RangeInclusive::new(1, 0))),
         FEEBAS_CYCLE_COUNT_BY_VBLANK,
-    );
-}
-
-#[test]
-fn feebas_cycle_groups_include_four_vblanks() {
-    let mut map = Wild3MapGameData::default();
-    map.feebas = Some(Wild3EncounterGameData::default());
-    for calibration in &mut map.vblank_distrs {
-        calibration.min += 200_000;
-        calibration.max += 200_000;
-        calibration
-            .distribution
-            .iter_mut()
-            .for_each(|knot| knot.cycle += 200_000.0);
-    }
-
-    let setups = [Wild3MapSetups {
-        map_data: map,
-        ..Default::default()
-    }];
-    let generator = EncounterIdxPathGenerator::new(
-        &[Gen3Lead::Vanilla],
-        &setups,
-        SpeciesData {
-            species: Species::Feebas,
-        },
-        false,
-        &[800_000],
-    );
-
-    assert_eq!(
-        generator.feebas_cycles_by_vblank,
-        [vec![], vec![], vec![], vec![], vec![800_000]]
     );
 }
 

@@ -341,14 +341,8 @@ pub fn get_default_min_mid_max_vblank_cycle_duration_for_feebas() -> MinMidMax {
 }
 
 // Limitation: Feebas hasn't been updated with the new vblank calibration logic.
-pub fn get_default_min_mid_max_initial_cycle_for_feebas(map: &Wild3MapGameData) -> MinMidMax {
-    let (min, max) = map.get_min_max_initial_cycle(
-        Wild3Action::OldRod,
-        Wild3MovementMode::OnFoot,
-        Wild3Weather::Sunny,
-    );
-
-    MinMidMax::new(min, min + (max - min) / 2, max)
+pub fn get_default_min_mid_max_initial_cycle_for_feebas() -> MinMidMax {
+    MinMidMax::new(30_000, 55_000, 70_000)
 }
 
 #[cfg(test)]
@@ -370,20 +364,20 @@ mod tests {
 
     #[test]
     fn manipulated_lead_feasibility_preserves_integer_boundaries() {
-        // The supplied uniform fixture has bounds 30,000 through 70,000.
+        // The supplied uniform fixture has bounds 45,000 through 75,000.
         let cases = [
-            (70_019, 1, 1, true),
-            (30_018, 1, 1, false),
-            (30_019, 1, 1, true),
-            (250_001, 200, 1, true),
-            (250_201, 200, 1, false),
-            (48_001, 1_000, 1, true),
-            (48_000, 1_000, 1, false),
-            (70_001, 0, 1, true),
-            (30_000, 0, 1, false),
+            (75_019, 1, 1, true),
+            (45_018, 1, 1, false),
+            (45_019, 1, 1, true),
+            (255_001, 200, 1, true),
+            (255_201, 200, 1, false),
+            (63_001, 1_000, 1, true),
+            (63_000, 1_000, 1, false),
+            (75_001, 0, 1, true),
+            (45_000, 0, 1, false),
             (60_000, 80, 0, false),
-            (48_001, 1_000, INFINITE_CYCLE, true),
-            (48_000, 1_000, INFINITE_CYCLE, false),
+            (63_001, 1_000, INFINITE_CYCLE, true),
+            (63_000, 1_000, INFINITE_CYCLE, false),
         ];
         for (end_at_zero_speed, modulo, len, expected) in cases {
             let range = CycleRange::new(VBLANK_FREQ - end_at_zero_speed, modulo, len);

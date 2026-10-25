@@ -47,20 +47,12 @@ fn test_search_wild3_cycle_methods_1_2_4() {
             cycle_data_by_lead: Some(Wild3SearcherCycleDataByLead {
                 post_sweet_scent_range: CycleRange::new(75276, 80, 115175),
                 specified_lead: Some(Wild3SearcherCycleData::new_for_test(
-                    500,
-                    50445,
-                    115175,
-                    0.48887499999999995,
+                    500, 50445, 115175, 0.8185,
                 )),
                 slowest_lead: Wild3SearcherCycleData::new_for_test(900, 18445, 115175, 1.0),
                 fastest_lead: Wild3SearcherCycleData::new_for_test(18, 89005, 115175, 0.0),
                 ideal_lead: Wild3SearcherCycleData::new_for_test(900, 18445, 115175, 1.0),
-                common_lower_lead: Wild3SearcherCycleData::new_for_test(
-                    608,
-                    41805,
-                    115175,
-                    0.7048749999999999,
-                ),
+                common_lower_lead: Wild3SearcherCycleData::new_for_test(608, 41805, 115175, 1.0),
                 common_upper_lead: Wild3SearcherCycleData::new_for_test(868, 21005, 115175, 1.0),
             }),
             ability: AbilityType::Second,
@@ -83,17 +75,17 @@ fn test_search_wild3_cycle_methods_1_2_4() {
             cycle_data_by_lead: Some(Wild3SearcherCycleDataByLead {
                 post_sweet_scent_range: CycleRange::new(190451, 80, 39309),
                 specified_lead: Some(Wild3SearcherCycleData::new_for_test(
-                    500, 11136, 39309, 0.511125,
+                    500, 11136, 39309, 0.1815,
                 )),
                 slowest_lead: Wild3SearcherCycleData::new_for_test(900, -20864, 39309, 0.0),
-                fastest_lead: Wild3SearcherCycleData::new_for_test(18, 49696, 39309, 0.5076),
-                ideal_lead: Wild3SearcherCycleData::new_for_test(
-                    259,
-                    30416,
+                fastest_lead: Wild3SearcherCycleData::new_for_test(
+                    18,
+                    49696,
                     39309,
-                    0.9827250000000001,
+                    0.8434666666666667,
                 ),
-                common_lower_lead: Wild3SearcherCycleData::new_for_test(608, 2496, 39309, 0.295125),
+                ideal_lead: Wild3SearcherCycleData::new_for_test(134, 40416, 39309, 1.0),
+                common_lower_lead: Wild3SearcherCycleData::new_for_test(608, 2496, 39309, 0.0),
                 common_upper_lead: Wild3SearcherCycleData::new_for_test(868, -18304, 39309, 0.0),
             }),
             ability: AbilityType::Second,
@@ -119,8 +111,18 @@ fn test_search_wild3_cycle_methods_1_2_4() {
                     500, -1000000, 1011136, 0.0,
                 )),
                 slowest_lead: Wild3SearcherCycleData::new_for_test(900, -1000000, 979136, 0.0),
-                fastest_lead: Wild3SearcherCycleData::new_for_test(18, -1000000, 1049696, 0.4924),
-                ideal_lead: Wild3SearcherCycleData::new_for_test(18, -1000000, 1049696, 0.4924),
+                fastest_lead: Wild3SearcherCycleData::new_for_test(
+                    18,
+                    -1000000,
+                    1049696,
+                    0.15653333333333333,
+                ),
+                ideal_lead: Wild3SearcherCycleData::new_for_test(
+                    18,
+                    -1000000,
+                    1049696,
+                    0.15653333333333333,
+                ),
                 common_lower_lead: Wild3SearcherCycleData::new_for_test(
                     608, -1000000, 1002496, 0.0,
                 ),

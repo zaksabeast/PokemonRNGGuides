@@ -227,19 +227,7 @@ impl Default for Wild3MapGameData {
             Wild3Action::RockSmash,
         ]
         .into_iter()
-        .map(|action| {
-            let movement = if action == Wild3Action::SweetScentWater {
-                Wild3MovementMode::Surf
-            } else {
-                Wild3MovementMode::OnFoot
-            };
-
-            Wild3MapCycleCalibration {
-                action,
-                movement,
-                ..Wild3MapCycleCalibration::new_dummy()
-            }
-        })
+        .map(Wild3MapCycleCalibration::new_dummy)
         .collect();
 
         #[cfg(not(test))]

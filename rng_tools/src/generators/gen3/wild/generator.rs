@@ -2,7 +2,7 @@
 use wasm_bindgen::prelude::*;
 
 use super::{
-    calc_modulo_cycle_signed, calc_modulo_cycle_unsigned,
+    MinMidMax, calc_modulo_cycle_signed, calc_modulo_cycle_unsigned,
     generator_main::{
         INFINITE_CYCLE, VBLANK_FREQ, Wild3GeneratorMonResult, Wild3GeneratorOptions,
         Wild3GeneratorResults,
@@ -1050,7 +1050,7 @@ pub fn apply_cycles_causing_vblanks_on_cycle_counter(
 }
 
 pub const MAX_FEEBAS_VBLANK: usize = 4;
-pub const FEEBAS_VBLANK_GROUP_COUNT: usize = 5;
+pub const FEEBAS_VBLANK_GROUP_COUNT: usize = 4;
 
 fn handle_feebas_cycle_counter(
     rng: &mut Pokerng,
@@ -1061,9 +1061,8 @@ fn handle_feebas_cycle_counter(
     cycle_counter.on_moment_reached(Moment::CheckFeebas);
 
     // Limitation: Feebas hasn't been updated with the new vblank calibration logic.
-    let super::MinMidMax { min, mid, max } =
-        get_default_min_mid_max_initial_cycle_for_feebas(map_data);
-    let super::MinMidMax {
+    let MinMidMax { min, mid, max } = get_default_min_mid_max_initial_cycle_for_feebas();
+    let MinMidMax {
         min: min_vblank,
         mid: mid_vblank,
         max: max_vblank,

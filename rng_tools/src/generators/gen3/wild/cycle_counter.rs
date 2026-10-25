@@ -5,7 +5,6 @@ use wasm_bindgen::prelude::*;
 use crate::gen3::{
     COMMON_LEAD_RANGE, CycleAndModRange, FASTEST_MODULO_CYCLE_24, Gen3Lead, INFINITE_CYCLE, Moment,
     SLOWEST_MODULO_CYCLE_24, VBLANK_FREQ, Wild3GeneratorCycleOpts, Wild3GeneratorOptions,
-    Wild3MapGameData,
 };
 
 #[derive(Default, Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]

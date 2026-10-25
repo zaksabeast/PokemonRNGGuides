@@ -1,12 +1,13 @@
 #![allow(non_snake_case)] // To have the same function names as pokeemerald decompil project.
 use wasm_bindgen::prelude::*;
 
-use super::generator_main::{
-    INFINITE_CYCLE, VBLANK_FREQ, Wild3GeneratorMonResult, Wild3GeneratorOptions,
-    Wild3GeneratorResults,
+use super::{
+    calc_modulo_cycle_signed, calc_modulo_cycle_unsigned,
+    generator_main::{
+        INFINITE_CYCLE, VBLANK_FREQ, Wild3GeneratorMonResult, Wild3GeneratorOptions,
+        Wild3GeneratorResults,
+    },
 };
-use super::{calc_modulo_cycle_signed, calc_modulo_cycle_unsigned};
-use crate::gen3::get_default_min_mid_max_initial_cycle_for_feebas;
 use crate::{
     EncounterSlot, Gender, GenderRatio, Ivs, NATURE_COUNT, Nature,
     PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE, PERTINENT_SOLO_POKEBLOCKS_BY_NATURE,
@@ -15,6 +16,7 @@ use crate::{
         CycleAndModRange, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method, Moment, Wild3Action,
         Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState, Wild3GeneratorCycleOpts,
         Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
+        get_default_min_mid_max_initial_cycle_for_feebas,
         get_default_min_mid_max_vblank_cycle_duration_for_feebas, passes_pid_filter,
     },
     is_max_size,

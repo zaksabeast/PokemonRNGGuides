@@ -35,10 +35,10 @@ export type Wild3CalibrationInfo = {
   fallback: boolean;
 };
 
-export function cdfLessThan(
+export const cdfLessThan = (
   knots: readonly RawCdfKnot[],
   cycle: number,
-): number {
+): number => {
   let low = 0;
   let high = knots.length;
   while (low < high) {
@@ -67,9 +67,9 @@ export function cdfLessThan(
   return (
     left[1] + ((right[1] - left[1]) * (cycle - left[0])) / (right[0] - left[0])
   );
-}
+};
 
-function cdfIntegral(knots: readonly RawCdfKnot[], cycle: number): number {
+const cdfIntegral = (knots: readonly RawCdfKnot[], cycle: number): number => {
   const index = knots.findIndex((knot) => knot[0] > cycle);
   if (index === 0) {
     return 0;
@@ -88,13 +88,13 @@ function cdfIntegral(knots: readonly RawCdfKnot[], cycle: number): number {
     width * left[1] +
     (width * width * (right[1] - left[1])) / (right[0] - left[0]) / 2
   );
-}
+};
 
-function convolvedLessThan(
+const convolvedLessThan = (
   audio: CalibrationComponent,
   nonAudio: CalibrationComponent,
   cycle: number,
-): number {
+): number => {
   let probability = 0;
   for (let index = 1; index < nonAudio.cdf.length; index++) {
     const left = nonAudio.cdf[index - 1];
@@ -116,9 +116,9 @@ function convolvedLessThan(
   }
 
   return Math.max(0, Math.min(1, probability));
-}
+};
 
-function atomCycles(component: CalibrationComponent): number[] {
+const atomCycles = (component: CalibrationComponent): number[] => {
   return component.cdf.flatMap((knot, index, knots) => {
     const previous = knots[index - 1];
 
@@ -126,12 +126,12 @@ function atomCycles(component: CalibrationComponent): number[] {
       ? [knot[0]]
       : [];
   });
-}
+};
 
-export function combineCalibrationComponents(
+export const combineCalibrationComponents = (
   audio: CalibrationComponent,
   nonAudio: CalibrationComponent,
-): CdfKnot[] {
+): CdfKnot[] => {
   const min = audio.summary.min + nonAudio.summary.min;
   const max = audio.summary.max + nonAudio.summary.max;
   const jumps = atomCycles(audio).flatMap((audioCycle) =>
@@ -157,14 +157,14 @@ export function combineCalibrationComponents(
       { cycle, probability: convolvedLessThan(audio, nonAudio, cycle + 1e-7) },
     ];
   });
-}
+};
 
-function defaultSong(map: CalibrationMap): string {
+const defaultSong = (map: CalibrationMap): string => {
   // Route 118 plays Route 110 west of the river and Route 119 to the east.
   return mapCalibrationSettings[map.map_id]?.song ?? "ROUTE101";
-}
+};
 
-function audioComponentName(song: string, setup: Setup): string {
+const audioComponentName = (song: string, setup: Setup): string => {
   const weather = setup.weather.toUpperCase();
   const fishing =
     setup.action === "OldRod" ||
@@ -187,12 +187,12 @@ function audioComponentName(song: string, setup: Setup): string {
   }
 
   return `${song}_${weather}_AUDIO`;
-}
+};
 
-function weatherForAction(
+const weatherForAction = (
   map: CalibrationMap,
   action: Wild3Action,
-): Wild3Weather[] {
+): Wild3Weather[] => {
   const settings = mapCalibrationSettings[map.map_id];
 
   switch (action) {
@@ -207,12 +207,12 @@ function weatherForAction(
     case "RockSmash":
       return settings?.weathers_rocksmash ?? ["Sunny"];
   }
-}
+};
 
-function movementForAction(
+const movementForAction = (
   map: CalibrationMap,
   action: Wild3Action,
-): Wild3MovementMode[] {
+): Wild3MovementMode[] => {
   if (action === "SweetScentWater") {
     return ["Surf"];
   }
@@ -225,9 +225,9 @@ function movementForAction(
   }
 
   return land;
-}
+};
 
-function mapSetups(map: CalibrationMap): Setup[] {
+const mapSetups = (map: CalibrationMap): Setup[] => {
   const actions: Wild3Action[] = [
     "SweetScentLand",
     "SweetScentWater",
@@ -250,12 +250,12 @@ function mapSetups(map: CalibrationMap): Setup[] {
       })),
     );
   });
-}
+};
 
-function composeCalibration(
+const composeCalibration = (
   map: CalibrationMap,
   setup: Setup,
-): Wild3CalibrationInfo {
+): Wild3CalibrationInfo => {
   const song = defaultSong(map);
   const source =
     mapCalibrationSources.find(
@@ -288,22 +288,13 @@ function composeCalibration(
     combinedCdfs.set(key, distribution);
   }
 
-  const margin =
-    audio.provenance.safety_margin_cycles +
-    nonAudio.provenance.safety_margin_cycles;
-
   return {
     calibration: {
       ...setup,
-      min: fallback
-        ? 0
-        : Math.max(0, audio.summary.min + nonAudio.summary.min - margin),
+      min: fallback ? 0 : Math.max(0, audio.summary.min + nonAudio.summary.min),
       max: fallback
         ? VBLANK_FREQ - 1
-        : Math.min(
-            VBLANK_FREQ - 1,
-            audio.summary.max + nonAudio.summary.max + margin,
-          ),
+        : Math.min(VBLANK_FREQ - 1, audio.summary.max + nonAudio.summary.max),
       distribution,
     },
     audio,
@@ -311,16 +302,16 @@ function composeCalibration(
     joint_correction: joint,
     fallback,
   };
-}
+};
 
-export function getWild3CalibrationInfo(
+export const getWild3CalibrationInfo = (
   map: CalibrationMap,
-): Wild3CalibrationInfo[] {
+): Wild3CalibrationInfo[] => {
   return mapSetups(map).map((setup) => composeCalibration(map, setup));
-}
+};
 
-export function getWild3VblankDistributions(
+export const getWild3VblankDistributions = (
   map: CalibrationMap,
-): Wild3MapCycleCalibration[] {
+): Wild3MapCycleCalibration[] => {
   return getWild3CalibrationInfo(map).map((info) => info.calibration);
-}
+};

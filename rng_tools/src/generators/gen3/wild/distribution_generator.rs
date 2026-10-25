@@ -6,8 +6,7 @@ use wasm_bindgen::prelude::*;
 use super::Wild3GeneratorOptions;
 use crate::{
     gen3::{
-        CycleFrameMoment, CycleRange, Gen3Method, Wild3GeneratorCycleOpts, Wild3MapGameData,
-        Wild3MovementMode, Wild3SearcherResultMon, calculate_cycle_data, generate_wild3,
+        CycleFrameMoment, CycleRange, Wild3MapGameData, Wild3SearcherResultMon, generate_wild3,
     },
     rng::lcrng::Pokerng,
 };
@@ -37,6 +36,16 @@ pub fn generate_gen3_wild_distribution(
     initial_cycle: Option<usize>,
     vblank_cycles: Option<Vec<usize>>,
 ) -> Wild3MethodDistributionResults {
+    let _ = (
+        initial_seed,
+        advances,
+        opts,
+        game_data,
+        lead_cycle_spd,
+        initial_cycle,
+        vblank_cycles,
+    );
+
     //NO_PROD. force specifying weather + foot.
     /*
         let movement = opts.cycle_opts.movement();
@@ -98,6 +107,7 @@ pub fn generate_gen3_wild_distribution(
     }
 }
 
+#[expect(dead_code, reason = "Distribution generation is temporarily disabled")]
 fn generate_cycle_at_moments(
     rng: Pokerng,
     opts: &Wild3GeneratorOptions,
@@ -107,11 +117,12 @@ fn generate_cycle_at_moments(
     generated.cycle_counter.get_cycle_at_moments()
 }
 
+#[expect(dead_code, reason = "Distribution generation is temporarily disabled")]
 fn generate_dist_results(
-    rng: Pokerng,
-    advances: usize,
-    opts: &Wild3GeneratorOptions,
-    game_data: &Wild3MapGameData,
+    _rng: Pokerng,
+    _advances: usize,
+    _opts: &Wild3GeneratorOptions,
+    _game_data: &Wild3MapGameData,
 ) -> Vec<Wild3MethodDistributionResult> {
     /* NO_PROD
     let generated = generate_wild3(rng, opts, game_data);

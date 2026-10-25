@@ -18,7 +18,7 @@ const uniform: CalibrationComponent = {
     [0, 0, 0],
     [2, 1, 1],
   ],
-  provenance: { source: "test", safety_margin_cycles: 0 },
+  provenance: { source: "test" },
 };
 
 test("constructed game maps carry serializable combined distributions", () => {
@@ -208,8 +208,6 @@ test("fake audio retains scales and excluded thunderstorm variants stay absent",
   expect(components.ROUTE122_THUNDERSTORM_AUDIO).toBeUndefined();
   expect(components.ROUTE122_FISHING_THUNDERSTORM_AUDIO).toBeUndefined();
   expect(
-    Object.values(components).every(
-      (component) => component.is_fake && component.provenance.attempts === 0,
-    ),
+    Object.values(components).every((component) => component.is_fake),
   ).toBe(true);
 });

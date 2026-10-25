@@ -1,4 +1,3 @@
-import { createHash } from "node:crypto";
 import { readFile, writeFile, rename } from "node:fs/promises";
 import { fakeAudioComponents } from "../../src/rngToolsUi/gen3/wild/data/fake_vblank_audio";
 import type {
@@ -87,17 +86,9 @@ const sources = [
   },
 ];
 
-type CaptureMetadata = Record<string, string | number | boolean> & {
+type CaptureMetadata = {
   source: string;
-  sha256: string;
-  attempts: number;
-  distinct_frames: number;
-  frame_start: number;
-  frame_end: number;
-  duplicate_attempts: number;
-  missing_frames: number;
   song_loop_frames: number;
-  incomplete_loop: boolean;
 };
 type Capture = (typeof sources)[number] & {
   rows: Observation[];
@@ -319,30 +310,12 @@ export async function extract(check = false) {
       "utf8",
     );
     const rows = parseLog(text);
-    const frames = [...new Set(rows.map((r) => r.frame))].sort((a, b) => a - b);
-    const span = frames.at(-1)! - frames[0] + 1;
     captures.push({
       ...source,
       rows,
       metadata: {
         source: source.file,
-        sha256: createHash("sha256")
-          .update(text.replaceAll("\r\n", "\n"))
-          .digest("hex"),
-        checksum_normalization: "LF",
-        attempts: rows.length,
-        distinct_frames: frames.length,
-        frame_start: frames[0],
-        frame_end: frames.at(-1)!,
-        duplicate_attempts: rows.length - frames.length,
-        missing_frames: span - frames.length,
         song_loop_frames: source.loop,
-        incomplete_loop: span < Math.ceil(source.loop),
-        game: "Emerald",
-        action: "SweetScentLand",
-        movement: "OnFoot",
-        safety_margin_cycles: 0,
-        independent_full_loop_validation: false,
       },
     });
   }
@@ -369,7 +342,6 @@ export async function extract(check = false) {
       provenance: {
         ...m,
         max_cdf_error: result.error,
-        safety_margin_cycles: 0,
       },
     };
     diagnostics.push({

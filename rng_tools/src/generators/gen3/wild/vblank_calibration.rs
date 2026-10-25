@@ -5,9 +5,6 @@ use crate::gen3::CycleRange;
 
 use super::{MinMidMax, Wild3Action, Wild3MapGameData};
 
-use serde::{Deserialize, Serialize};
-use tsify::Tsify;
-
 #[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize, Tsify)]
 pub struct CdfKnot {
     pub cycle: f64,
@@ -139,7 +136,6 @@ pub(super) fn calibration_model(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::gen3::CycleRange;
 
     #[test]
     fn uniform_fixture_bounds_median_and_half_open_probabilities() {

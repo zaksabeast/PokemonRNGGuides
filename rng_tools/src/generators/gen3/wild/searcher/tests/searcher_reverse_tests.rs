@@ -1,14 +1,11 @@
 use super::*;
-use crate::gen3::MinMidMax;
-use crate::gen3::Wild3MovementMode;
-use crate::gen3::Wild3Weather;
 use crate::{
     EncounterSlot, HiddenPowerFilter, PokemonType, ShinyFilter, ShinyType,
     gen3::{
-        FASTEST_DIVIDENDS_MOD_24_RANGE, Gen3PidSpeedFilter, Wild3SearcherCycleOpts,
-        Wild3SpecialEncounterGameData, apply_cycles_causing_vblanks_on_cycle_counter,
-        calculate_pid_speed, get_default_min_mid_max_vblank_cycle_duration_for_feebas,
-        search_wild3_naive,
+        FASTEST_DIVIDENDS_MOD_24_RANGE, Gen3PidSpeedFilter, MinMidMax, Wild3MovementMode,
+        Wild3SearcherCycleOpts, Wild3SpecialEncounterGameData, Wild3Weather,
+        apply_cycles_causing_vblanks_on_cycle_counter, calculate_pid_speed,
+        get_default_min_mid_max_vblank_cycle_duration_for_feebas, search_wild3_naive,
     },
 };
 

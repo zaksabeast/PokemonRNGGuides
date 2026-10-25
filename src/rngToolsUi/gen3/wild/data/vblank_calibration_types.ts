@@ -10,7 +10,6 @@ export type CalibrationComponent = {
   cdf: RawCdfKnot[];
   provenance: {
     source: string;
-    safety_margin_cycles: number;
     [key: string]: string | number | boolean;
   };
 };

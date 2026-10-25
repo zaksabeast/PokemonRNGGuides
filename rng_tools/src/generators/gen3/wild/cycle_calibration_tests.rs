@@ -1,5 +1,5 @@
 use super::{
-    cycle_calibration::{calculate_cycle_score, map_pokeblock_cycle_calibration},
+    cycle_calibration::{calculate_cycle_score, is_wild3, map_pokeblock_cycle_calibration},
     *,
 };
 use crate::Species;
@@ -658,8 +658,6 @@ fn safari_northeast_map_data() -> Wild3MapGameData {
 
 #[test]
 fn wild3_cycle_calib_gender_constrained_pid_frame_crossing() {
-    use super::cycle_calibration::is_wild3;
-
     // The logger omits PID halves in this routine, so its full interval is
     // the only available witness of a crossing during PID generation.
     let start = CycleFrameMoment::new(Moment::CreateMonWithGenderNatureLetter, 10, 189828);

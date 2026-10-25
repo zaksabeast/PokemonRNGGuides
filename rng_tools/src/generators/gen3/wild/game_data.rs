@@ -2,10 +2,9 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-use super::vblank_calibration::calibration_model;
 use super::{
-    MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE, MinMidMax, VBLANK_FREQ, Wild3Action,
-    Wild3MapCycleCalibration, Wild3MovementMode, Wild3Weather,
+    VBLANK_FREQ, Wild3Action, Wild3MapCycleCalibration, Wild3MovementMode, Wild3Weather,
+    vblank_calibration::calibration_model,
 };
 use crate::{EncounterSlot, GenderRatio, Nature, PokemonType, Species};
 

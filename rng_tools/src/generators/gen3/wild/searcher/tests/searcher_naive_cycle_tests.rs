@@ -1,14 +1,11 @@
-use crate::gen3::Wild3MapGameData;
-use crate::gen3::Wild3MapSetups;
-use crate::gen3::Wild3MovementMode;
-use crate::gen3::Wild3Weather;
 use crate::{
     AbilityType, EncounterSlot, Gender, HiddenPower, Ivs, Nature, PkmFilter, PokemonType,
     ShinyType, Species, assert_list_eq,
     gen3::{
-        CycleRange, Gen3Lead, Gen3Method, Wild3EncounterIndex, Wild3SearcherCycleData,
-        Wild3SearcherCycleDataByLead, Wild3SearcherCycleOpts, Wild3SearcherOptions,
-        Wild3SearcherResultMon, search_wild3_naive,
+        CycleRange, Gen3Lead, Gen3Method, Wild3EncounterIndex, Wild3MapGameData, Wild3MapSetups,
+        Wild3MovementMode, Wild3SearcherCycleData, Wild3SearcherCycleDataByLead,
+        Wild3SearcherCycleOpts, Wild3SearcherOptions, Wild3SearcherResultMon, Wild3Weather,
+        search_wild3_naive,
     },
     rng::lcrng::Pokerng,
 };

@@ -1,4 +1,3 @@
-use crate::gen3::FEEBAS_VBLANK_GROUP_COUNT;
 use std::hint::black_box;
 
 use arrayvec::ArrayVec;
@@ -8,7 +7,7 @@ use super::*;
 use crate::{
     GenderRatio, Species, TsvTrv,
     gen3::{
-        SpeciesData, Wild3InSafariMapStatus, create_pokeblock_gen_opt,
+        FEEBAS_VBLANK_GROUP_COUNT, SpeciesData, Wild3InSafariMapStatus, create_pokeblock_gen_opt,
         find_pid_paths_reverse_pid_cycle_speed_low_high,
         find_pid_paths_reverse_pid_cycle_speed_mid, find_pid_paths_reverse_pid_shiny,
         searcher_painter::Wild3PaintingAdvFinder,

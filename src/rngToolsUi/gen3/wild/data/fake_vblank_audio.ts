@@ -113,9 +113,6 @@ function scaleFakeAudio(
     cdf,
     provenance: {
       source: "synthetic: scaled ROUTE101_AUDIO; not measured",
-      safety_margin_cycles: 0,
-      attempts: 0,
-      incomplete_loop: true,
     },
   };
 }

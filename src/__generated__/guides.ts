@@ -5423,7 +5423,7 @@ export const guides = {
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "technical_info",
       guideVariants: null,
-      guideKey: "false-Methods 1-4",
+      guideKey: "false-Methods 1-2-4",
       isNew: false,
       title: "Métodos 1-4 en Esmeralda",
       navDrawerTitle: "Métodos 1-4",
@@ -5447,7 +5447,7 @@ export const guides = {
         zh: "/zh-gba-methods/",
       },
       guideGroupId:
-        "es:false-Methods 1-4:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
+        "es:false-Methods 1-2-4:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -6141,6 +6141,46 @@ export const guides = {
       return file.default;
     }),
   },
+  "/gba-methods-3-5/": {
+    meta: {
+      id: "/gba-methods-3-5/",
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      section: "technical_info",
+      guideVariants: null,
+      guideKey: "false-Methods 3-5",
+      isNew: false,
+      title: "Methods 3-5 in Emerald",
+      navDrawerTitle: "Methods 3-5",
+      description:
+        "How PID rerolls and VBlanks cause Wild-3 and Wild-5 Pokémon generation.",
+      slug: "/gba-methods-3-5/",
+      isRoughDraft: false,
+      orderPriority: 3,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-08",
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-10-26",
+      type: "baseGuide",
+      canonical: "/gba-methods-3-5/",
+      file: "guides/Gen 3/Emerald/GBA Methods Part3.mdx",
+      translations: null,
+      guideGroupId:
+        "en:false-Methods 3-5:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/GBA Methods Part3.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/GBA Methods Part3.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/gba-methods-lead-impact/": {
     meta: {
       id: "/gba-methods-lead-impact/",
@@ -6191,10 +6231,10 @@ export const guides = {
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "technical_info",
       guideVariants: null,
-      guideKey: "false-Methods 1-4",
+      guideKey: "false-Methods 1-2-4",
       isNew: false,
-      title: "Methods 1-4 in Emerald",
-      navDrawerTitle: "Methods 1-4",
+      title: "Methods 1-2-4 in Emerald",
+      navDrawerTitle: "Methods 1-2-4",
       description:
         "What is a Method, the reason why Methods 1-4 exist, and how they impact Pokémon generation.",
       slug: "/gba-methods/",
@@ -6205,7 +6245,7 @@ export const guides = {
       addedOn: "2025-04-08",
       translation: null,
       layout: "guide",
-      lastUpdated: null,
+      lastUpdated: "2026-10-26",
       type: "baseGuide",
       canonical: "/gba-methods/",
       file: "guides/Gen 3/Emerald/GBA Methods.mdx",
@@ -6215,7 +6255,7 @@ export const guides = {
         zh: "/zh-gba-methods/",
       },
       guideGroupId:
-        "en:false-Methods 1-4:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
+        "en:false-Methods 1-2-4:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -14464,7 +14504,7 @@ export const guides = {
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "technical_info",
       guideVariants: null,
-      guideKey: "false-Methods 1-4",
+      guideKey: "false-Methods 1-2-4",
       isNew: false,
       title: "绿宝石中的方式 1-4",
       navDrawerTitle: "绿宝石中的方式 1-4",
@@ -14488,7 +14528,7 @@ export const guides = {
         zh: "/zh-gba-methods/",
       },
       guideGroupId:
-        "zh:false-Methods 1-4:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
+        "zh:false-Methods 1-2-4:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -17637,6 +17677,7 @@ export const guideSlugs = [
   "/frlg-tidsid-generator/",
   "/frlg-tips-rng/",
   "/gamecube/",
+  "/gba-methods-3-5/",
   "/gba-methods-lead-impact/",
   "/gba-methods/",
   "/gba-overview/",

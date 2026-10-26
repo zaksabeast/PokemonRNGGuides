@@ -39,6 +39,11 @@ import { match } from "ts-pattern";
 import { Wild3TargetSetupAndLeadInput } from "./wild3TargetSetupAndLeadInput";
 import { Gen3CalibFields, CalibOffset } from "../pokemonRng/calib";
 import { getGen3CalibPreviousStepRows } from "../pokemonRng/labels";
+import {
+  normalizeWild3AudioInfluences,
+  formatWild3Weather,
+  formatWild3Movement,
+} from "./wild3AudioInfluences";
 
 const FISHING_CALIB_OFFSET: CalibOffset = {
   offset: 4,
@@ -223,6 +228,12 @@ export const Wild3Calib = ({
       return null;
     }
 
+    const audioInfluences = normalizeWild3AudioInfluences(
+      targetSetupProp.map,
+      targetSetupProp.action,
+      targetSetupProp,
+    );
+
     const rows: SummaryRow[] = [
       {
         label: "Map",
@@ -231,6 +242,14 @@ export const Wild3Calib = ({
       {
         label: "Player action",
         value: formatActionName(targetSetupProp.action),
+      },
+      {
+        label: "Weather",
+        value: formatWild3Weather(audioInfluences.weather),
+      },
+      {
+        label: "Movement",
+        value: formatWild3Movement(audioInfluences.movement),
       },
       {
         label: "Requires White Flute?",

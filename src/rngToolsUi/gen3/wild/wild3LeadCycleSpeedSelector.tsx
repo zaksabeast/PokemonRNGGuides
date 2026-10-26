@@ -164,20 +164,22 @@ export const Wild3LeadCycleSpeedSelector = ({
     <>
       <FormCard>
         <FormSection>
-          <SelectField
-            label="Weather"
-            value={selectedSetup.weather}
-            options={toOptions(weathers, formatWild3Weather)}
-            disabled={weathers.length <= 1}
-            onChange={setWeather}
-          />
-          <SelectField
-            label="Movement"
-            value={selectedSetup.movement}
-            options={toOptions(movements, formatWild3Movement)}
-            disabled={movements.length <= 1}
-            onChange={setMovement}
-          />
+          {weathers.length > 1 && (
+            <SelectField
+              label="Weather"
+              value={selectedSetup.weather}
+              options={toOptions(weathers, formatWild3Weather)}
+              onChange={setWeather}
+            />
+          )}
+          {movements.length > 1 && (
+            <SelectField
+              label="Movement"
+              value={selectedSetup.movement}
+              options={toOptions(movements, formatWild3Movement)}
+              onChange={setMovement}
+            />
+          )}
           {targetSetup.lead === "Egg" ? (
             <Typography.Text>Egg lead can't be calibrated.</Typography.Text>
           ) : (

@@ -25,7 +25,7 @@ import { Wild3PokeblockDescription } from "~/components/wild3Pokeblock";
 import { targetAdvanceAfterPaintingTitle } from "../pokemonRng/labels";
 import { FeebasTileVisualizerButton } from "./feebasMap";
 
-import { Wild3Likelihood } from "./wild3Likelihood";
+import { formatProbability } from "~/utils/formatProbability";
 import {
   getCommonWild3CycleData,
   formatWild3Likelihood,
@@ -34,14 +34,8 @@ import {
 const getMethodLikelihoodColumValue = (
   cycleData: Wild3SearcherCycleData,
   method: Gen3Method,
-  showAudioInfluences: boolean,
 ) => {
-  const content = (
-    <Wild3Likelihood
-      data={[cycleData]}
-      showAudioInfluences={showAudioInfluences}
-    />
-  );
+  const content = formatProbability(cycleData.method_probability);
   const end =
     cycleData.pre_sweet_scent_cycle_range.start +
     cycleData.pre_sweet_scent_cycle_range.len;
@@ -226,12 +220,7 @@ const getResultSetupInfoColumns = ({
         return tooltipHelper({
           content: (
             <Flex align="center" gap={4}>
-              <Wild3Likelihood
-                data={data}
-                showAudioInfluences={values.showLikelihoodAudioInfluences}
-              >
-                {text}
-              </Wild3Likelihood>
+              {text}
               {isVeryReliableSetup && <Icon name="Star" />}
             </Flex>
           ),
@@ -302,7 +291,6 @@ const getResultSetupInfoColumns = ({
                 getMethodLikelihoodColumValue(
                   cycle_data_by_lead.ideal_lead,
                   values.method,
-                  values.showLikelihoodAudioInfluences,
                 ),
               );
             },
@@ -319,7 +307,6 @@ const getResultSetupInfoColumns = ({
                 getMethodLikelihoodColumValue(
                   cycle_data_by_lead.fastest_lead,
                   values.method,
-                  values.showLikelihoodAudioInfluences,
                 ),
               );
             },
@@ -342,7 +329,6 @@ const getResultSetupInfoColumns = ({
                 getMethodLikelihoodColumValue(
                   least_likely_common,
                   values.method,
-                  values.showLikelihoodAudioInfluences,
                 ),
               );
             },
@@ -359,7 +345,6 @@ const getResultSetupInfoColumns = ({
                 getMethodLikelihoodColumValue(
                   cycle_data_by_lead.slowest_lead,
                   values.method,
-                  values.showLikelihoodAudioInfluences,
                 ),
               );
             },

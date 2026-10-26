@@ -1,0 +1,138 @@
+---
+title: "Methods 3-5 in Emerald"
+navDrawerTitle: "Methods 3-5"
+description: "How PID rerolls and VBlanks cause Wild-3 and Wild-5 Pokémon generation."
+slug: "gba-methods-3-5"
+category:
+  - "Ruby and Sapphire"
+  - "FireRed and LeafGreen"
+  - "Emerald"
+section: "technical_info"
+orderPriority: 3
+addedOn: "2025-04-08"
+---
+
+<Gist>
+  Gist: How PID rerolls and VBlanks cause Wild-3 and Wild-5 Pokémon generation.
+</Gist>
+
+### Prerequisite
+
+Having read [Methods 1-4](/gba-methods) and [VBlanks](/gba-vblank).
+
+### How PID rerolls work in-game
+
+Before generating a wild Pokémon's PID, the game chooses the nature it wants. It then generates random PIDs until it finds one with that nature. Each rejected PID is discarded, and generating another is called a PID reroll.
+
+Here's a simplified example of the game logic:
+
+1. Choose the wanted nature.
+2. Generate the 1st half of a PID with one RNG call.
+3. Generate the 2nd half with another RNG call, then combine the halves.
+4. Check whether the PID has the wanted nature. If it doesn't, return to step 2.
+5. Keep the matching PID, create the Pokémon, then generate its IVs.
+
+The 1st half is the lower half of the PID, and the 2nd half is the upper half. For example, a 1st half of `1234` and a 2nd half of `ABCD` produce the PID `ABCD1234`.
+
+The game doesn't choose a new nature on each retry. The wanted nature stays the same throughout the loop. In Emerald, even without Synchronize, the game still chooses a nature first and rerolls PIDs to match it. 
+
+### Pokémon Wild Encounter (Without a VBlank)
+
+Suppose the game wants an Adamant Pokémon. The first two PIDs don't match, but the third does:
+
+| Step                       | RNG Advances Used | Result                    |
+| -------------------------- | ----------------- | ------------------------- |
+| Generate 1st PID           | 1, 2              | Wrong nature: discard PID |
+| Generate 2nd PID           | 3, 4              | Wrong nature: discard PID |
+| Generate 3rd PID           | 5, 6              | Adamant: keep PID         |
+| Generate Def, Atk, HP IVs  | 7                 | First group of IVs        |
+| Generate SpD, SpA, Spe IVs | 8                 | Second group of IVs       |
+
+This is Wild-1. Rejected PIDs consume RNG advances, but don't change the method by themselves.
+
+### VBlank during PID rerolls
+
+Each PID attempt takes CPU cycles to generate both halves and check the resulting nature. If the game needs many retries, a VBlank may occur while it is still searching for a valid PID.
+
+When this happens, PID generation pauses while the VBlank advances the RNG by 1. Generation then resumes where it stopped, but the next RNG call now returns a different value. This changes which RNG values are combined into PIDs.
+
+If the VBlank separates the halves of a PID that passes the game's checks, the result is Wild-3. If the game rejects that PID, or the VBlank occurs between attempts, it continues trying new pairs of RNG values. A later accepted PID can then produce Wild-5.
+
+### Wild-3: VBlank between the halves of the accepted PID
+
+Wild-3 occurs when a VBlank separates the two halves of the PID that the game keeps.
+
+| Step                                                  | RNG Advance Used                    |
+| ----------------------------------------------------- | ----------------------------------- |
+| Generate 1st half PID                                 | 1                                   |
+| <Text color="Green" strong>VBLANK: Advance RNG</Text> | <Text color="Green" strong>2</Text> |
+| Generate 2nd half PID                                 | <Text strong>3</Text>               |
+| Check PID                                             | PID has wanted nature (No RNG call) |
+| Generate Def, Atk, HP IVs                             | <Text strong>4</Text>               |
+| Generate SpD, SpA, Spe IVs                            | <Text strong>5</Text>               |
+
+The accepted PID uses advances 1 and 3, and the IVs use advances 4 and 5. Advance 2 is consumed by the VBlank.
+
+This produces a different PID from the uninterrupted pair of advances 1 and 2. The new PID must still match the wanted nature and any required gender. A VBlank doesn't bypass those checks.
+
+There are only 80 CPU cycles (~0.03% of a frame) between the two RNG calls for a PID, making Wild-3 rare. Even when the game generates many PIDs, the VBlank must land between the halves of the one it accepts.
+
+### Wild-5: VBlank before a later PID attempt
+
+Wild-5 occurs when a VBlank consumes an RNG advance during the reroll process, and the game later accepts a PID made from two consecutive advances.
+
+For example, suppose the first PID is rejected, then a VBlank occurs before the next attempt:
+
+| Step                                                  | RNG Advances Used                   | Result                    |
+| ----------------------------------------------------- | ----------------------------------- | ------------------------- |
+| Generate 1st PID                                      | 1, 2                                | Wrong nature: discard PID |
+| <Text color="Green" strong>VBLANK: Advance RNG</Text> | <Text color="Green" strong>3</Text> |                           |
+| Generate 2nd PID                                      | <Text strong>4, 5</Text>            | Wrong nature: discard PID |
+| Generate 3rd PID                                      | <Text strong>6, 7</Text>            | Wanted nature: keep PID   |
+| Generate Def, Atk, HP IVs                             | <Text strong>8</Text>               | First group of IVs        |
+| Generate SpD, SpA, Spe IVs                            | <Text strong>9</Text>               | Second group of IVs       |
+
+Without the VBlank, PID attempts would use pairs 1 and 2, then 3 and 4, then 5 and 6. With the VBlank consuming advance 3, the later pairs become 4 and 5, then 6 and 7.
+
+These new pairs produce different PIDs. The game might find a valid PID sooner or later than it would without the VBlank, so the IVs aren't necessarily shifted by just one advance.
+
+Unlike Wild-3, the accepted PID in this example uses consecutive advances: 6 and 7. Looking only at that final PID and its IVs gives the same consecutive-call pattern as Wild-1. Wild-5 describes the interruption earlier in the wild generation process that led to this result.
+
+It is impossible to distinguish a Wild-1 and Wild-5 Pokémon by checking only its PID and IVs.
+
+> [!IMPORTANT]
+> If a VBlank occurs between the halves of a PID, but that PID is rejected, generation continues with new pairs. The later accepted Pokémon can therefore be Wild-5. A VBlank between PID halves only produces Wild-3 when that PID passes the game's checks.
+
+For example, move the VBlank from advance 3 to advance 2, between the halves of the first PID. Suppose this new first PID also has the wrong nature:
+
+| Step                                                  | RNG Advances Used                   | Result                    |
+| ----------------------------------------------------- | ----------------------------------- | ------------------------- |
+| Generate 1st half of 1st PID                           | 1                                   |                           |
+| <Text color="Green" strong>VBLANK: Advance RNG</Text> | <Text color="Green" strong>2</Text> |                           |
+| Generate 2nd half of 1st PID                           | 3                                   | Wrong nature: discard PID |
+| Generate 2nd PID                                      | <Text strong>4, 5</Text>            | Wrong nature: discard PID |
+| Generate 3rd PID                                      | <Text strong>6, 7</Text>            | Wanted nature: keep PID   |
+| Generate Def, Atk, HP IVs                             | <Text strong>8</Text>               | First group of IVs        |
+| Generate SpD, SpA, Spe IVs                            | <Text strong>9</Text>               | Second group of IVs       |
+
+The first PID now uses advances 1 and 3 instead of 1 and 2. However, both examples consume advances 1, 2, and 3 before the second attempt. From that point onward, they use exactly the same RNG values: 4 and 5 for the second PID, 6 and 7 for the accepted PID, then 8 and 9 for the IVs. The resulting Pokémon is therefore identical.
+
+This only works because the first PID is rejected in both examples. If the PID made from advances 1 and 3 passed the checks, the game would keep it and produce Wild-3 instead.
+
+### Optimizing Wild-3 and Wild-5
+
+There are 25 natures, so each random PID has 1/25 chance of matching the wanted nature. The game therefore needs 25 PID rerolls on average to generate a valid PID.
+
+Synchronize changes how the wanted nature is chosen, but the generated PID still has to match that nature. The average remains 25 PID rerolls, whether Synchronize activates or not.
+
+In Emerald, Cute Charm can greatly increase the number of rerolls because the PID must match both the wanted nature and the required gender. To maximize retries, use a lead whose opposite gender is rare in the encountered species.
+
+For example, encountering Relicanth (1/8 chance of being female) with a male Cute Charm lead requires in average 200 PID rerolls.
+
+This longer search gives a VBlank much more time to interrupt the reroll process, greatly increasing the chance of Wild-5.
+
+However, more retries don't give the same improvement to Wild-3. A VBlank must land in the 80-cycle gap between PID halves, and **that particular PID must pass all checks.** With Cute Charm in the Relicanth example, there are about 200 PID rerolls, but an interrupted PID has only about a 1/200 chance of being valid. The extra opportunities are offset by the lower acceptance chance, so the overall chance of Wild-3 stays approximately the same.
+
+## Credits
+
+- RainingChain for the article.

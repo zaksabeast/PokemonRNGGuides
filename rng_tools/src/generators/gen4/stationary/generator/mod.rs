@@ -1,3 +1,4 @@
+pub(crate) mod encounter_strategy;
 mod opts;
 mod pid_strategy;
 mod state;
@@ -10,6 +11,7 @@ use crate::gen4::game_logic::{DpptLogic, GameSpecificLogic, HgssLogic};
 use crate::rng::Rng;
 use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
+use encounter_strategy::{EncounterStrategy, StaticEncounter, WildEncounter};
 use opts::Gen4StaticOpts;
 use pid_strategy::{Method1, NormalMethodJK, PidStrategy, ShinyMethodJK};
 use state::Gen4StaticPokemon;
@@ -19,10 +21,13 @@ pub fn generate_static4<
     Game: GameSpecificLogic,
     LevelCalc: LevelCalculator<Pokerng>,
     Pid: PidStrategy<Game>,
+    Encounter: EncounterStrategy,
 >(
     rng: &mut Pokerng,
     opts: &Gen4StaticOpts,
 ) -> Gen4StaticPokemon {
+    let encounter_slot = Encounter::generate_encounter_slot(rng, opts);
+
     let level = LevelCalc::calc_level(
         rng,
         opts.encounter_min_level,
@@ -36,20 +41,39 @@ pub fn generate_static4<
     let iv2 = rng.rand::<u16>();
     let ivs = Ivs::new_g3(iv1, iv2);
 
-    Gen4StaticPokemon::new(opts.tid, opts.sid, opts.species, level, pid, ivs)
+    Gen4StaticPokemon::new(
+        opts.tid,
+        opts.sid,
+        opts.species,
+        level,
+        pid,
+        ivs,
+        encounter_slot,
+    )
 }
 
 fn generate_static4_state(opts: &Gen4StaticOpts, rng: &mut Pokerng) -> Gen4StaticPokemon {
     match opts.method {
-        Static4Method::One => generate_static4::<DpptLogic, SetLevel, Method1>(rng, opts),
-        Static4Method::DpptJ => generate_static4::<DpptLogic, SetLevel, NormalMethodJK>(rng, opts),
-        Static4Method::HgssK => generate_static4::<HgssLogic, SetLevel, NormalMethodJK>(rng, opts),
-        Static4Method::Honey => {
-            generate_static4::<DpptLogic, HoneyLevel, NormalMethodJK>(rng, opts)
+        Static4Method::One => {
+            generate_static4::<DpptLogic, SetLevel, Method1, StaticEncounter>(rng, opts)
         }
-        Static4Method::Radar => generate_static4::<DpptLogic, SetLevel, NormalMethodJK>(rng, opts),
+        Static4Method::DpptJ => {
+            generate_static4::<DpptLogic, SetLevel, NormalMethodJK, StaticEncounter>(rng, opts)
+        }
+        Static4Method::HgssK => {
+            generate_static4::<HgssLogic, SetLevel, NormalMethodJK, StaticEncounter>(rng, opts)
+        }
+        Static4Method::Honey => {
+            generate_static4::<DpptLogic, HoneyLevel, NormalMethodJK, StaticEncounter>(rng, opts)
+        }
+        Static4Method::Radar => {
+            generate_static4::<DpptLogic, SetLevel, NormalMethodJK, StaticEncounter>(rng, opts)
+        }
         Static4Method::ShinyRadar => {
-            generate_static4::<DpptLogic, SetLevel, ShinyMethodJK>(rng, opts)
+            generate_static4::<DpptLogic, SetLevel, ShinyMethodJK, StaticEncounter>(rng, opts)
+        }
+        Static4Method::DpptWild => {
+            generate_static4::<DpptLogic, SetLevel, NormalMethodJK, WildEncounter>(rng, opts)
         }
     }
 }
@@ -133,6 +157,7 @@ mod test {
                 advance,
                 characteristic,
                 level,
+                encounter_slot: 0,
             });
         }
         results
@@ -177,6 +202,7 @@ mod test {
 
                 // The level is not included in the pokefinder output
                 level: 0,
+                encounter_slot: 0,
             });
         }
         results
@@ -217,6 +243,7 @@ mod test {
                 nature,
                 advance,
                 characteristic,
+                encounter_slot: 0,
             });
         }
         results

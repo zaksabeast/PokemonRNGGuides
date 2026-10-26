@@ -78,6 +78,7 @@ mod tests {
                 characteristic: Characteristic::default(),
                 lead: LeadAbility::None,
                 level: 1,
+                encounter_slot: 0,
             },
         }
     }

@@ -13,6 +13,7 @@ const source = toNativeAbsolute("../src/assets/pokemon/source");
 const output = toNativeAbsolute("../src/assets/pokemon/tilesets");
 const ends = [151, 251, 386, 493, 649, 721, 809];
 const columns = 16;
+const sourceSize = 64;
 const cellSize = 64;
 const files = (await fs.readdir(source)).sort((left, right) =>
   left.localeCompare(right, "en", { numeric: true }),
@@ -42,8 +43,8 @@ for (const entry of entries) {
   if (
     view.byteLength !== 24 ||
     view.getUint32(0) !== 0x89504e47 ||
-    view.getUint32(16) !== cellSize ||
-    view.getUint32(20) !== cellSize
+    view.getUint32(16) !== sourceSize ||
+    view.getUint32(20) !== sourceSize
   ) {
     throw new Error(`Source icon must be a 64x64 PNG: ${entry.file}`);
   }
@@ -68,9 +69,13 @@ for (let sheet = 0; sheet < ends.length; sheet++) {
       "-tile",
       `${columns}x${rows}`,
       "-geometry",
-      "64x64+0+0",
+      `${cellSize}x${cellSize}+0+0`,
+      "-quality",
+      "95",
       "-define",
-      "webp:lossless=true",
+      "webp:lossless=false",
+      "-define",
+      "webp:alpha-quality=100",
       "-define",
       "webp:method=6",
       toNativeAbsolute(`../src/assets/pokemon/tilesets/${filename}`),

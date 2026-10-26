@@ -25,6 +25,11 @@ import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 import sortBy from "lodash-es/sortBy";
 import { match, P } from "ts-pattern";
 
+import {
+  normalizeWild3AudioInfluences,
+  getWild3InitialCycleDistributionForSetup,
+} from "./wild3AudioInfluences";
+
 export type UiResult = FlattenIvs<
   Wild3SearcherResultMon & {
     species: Species;
@@ -104,7 +109,16 @@ export const setupToDistributions = async (
   const map_data = emeraldWildGameData.maps_data.find(
     (table) => table.map_id === targetSetup.map,
   );
-  if (map_data == null) {
+  const audioInfluences = normalizeWild3AudioInfluences(
+    targetSetup.map,
+    targetSetup.action,
+    targetSetup,
+  );
+  const distribution = getWild3InitialCycleDistributionForSetup({
+    ...targetSetup,
+    ...audioInfluences,
+  });
+  if (map_data == null || distribution == null) {
     return {
       uiResults: [],
       cycle_at_moments: [],
@@ -142,6 +156,8 @@ export const setupToDistributions = async (
       opts,
       map_data,
       distributionArgs.leadCycleSpd,
+      audioInfluences.movement,
+      audioInfluences.weather,
       distributionArgs.initialCycleAtSweetScent,
       distributionArgs.vblankCycles,
     );

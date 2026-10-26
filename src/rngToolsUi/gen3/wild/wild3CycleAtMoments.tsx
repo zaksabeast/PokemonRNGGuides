@@ -28,6 +28,10 @@ import {
 } from "./wild3CycleAtMomentsFormatting";
 import { match } from "ts-pattern";
 import { Tooltip } from "antd";
+import {
+  normalizeWild3AudioInfluences,
+  getWild3InitialCycleDistributionForSetup,
+} from "./wild3AudioInfluences";
 
 const uiCycleAtMomentColumns: ResultColumn<UiResultCycleAtMoment>[] = [
   {
@@ -266,11 +270,26 @@ export const Wild3CycleAtMoments = ({ targetSetup, leadCycleSpeed }: Props) => {
     let cancelled = false;
     const updateUiResult = async () => {
       const json = parseCycleAtMomentsJsonStr(compareCycleAtMomentsStr);
+      const audioInfluences = normalizeWild3AudioInfluences(
+        targetSetup.map,
+        targetSetup.action,
+        targetSetup,
+      );
+      const distribution = getWild3InitialCycleDistributionForSetup({
+        ...targetSetup,
+        ...audioInfluences,
+      });
+
+      if (distribution == null) {
+        setUiResult(createEmptyUiResult());
+        return;
+      }
+
       const cycle_opts: Wild3GeneratorCycleOpts =
         json == null
           ? {
-              CycleAtMomentNoEmuLog: {
-                movement: "OnFoot",
+              LikelihoodForLead: {
+                min_max_initial_cycle: [distribution.min, distribution.max],
                 lead_cycle_spd: leadCycleSpeed ?? 0,
               },
             }

@@ -175,7 +175,7 @@ impl Wild3SearcherCycleOpts {
                     .filter(|calibration| {
                         calibration.action == action
                             && (*consider_weather || calibration.weather == Wild3Weather::Sunny)
-                            && (*consider_bike || calibration.movement == Wild3MovementMode::OnFoot)
+                            && (*consider_bike || calibration.movement != Wild3MovementMode::Bike)
                     })
                     .collect_vec();
 
@@ -415,3 +415,43 @@ pub mod searcher_naive;
 
 #[path = "searcher_reverse.rs"]
 pub mod searcher_reverse;
+
+#[cfg(test)]
+mod cycle_options_tests {
+    use super::*;
+
+    #[test]
+    fn search_options_exclude_bike_without_excluding_surf() {
+        let foot = Wild3InitialCycleDistribution::new_default(Wild3Action::OldRod).clone();
+        let mut bike = foot.clone();
+        bike.movement = Wild3MovementMode::Bike;
+        let mut surf = foot.clone();
+        surf.movement = Wild3MovementMode::Surf;
+        let mut rain = surf.clone();
+        rain.weather = Wild3Weather::Rain;
+        let map = Wild3MapGameData {
+            vblank_distrs: vec![foot.clone(), bike.clone(), surf.clone(), rain.clone()],
+            ..Default::default()
+        };
+        let cases = [
+            (false, false, vec![&foot, &surf]),
+            (false, true, vec![&foot, &bike, &surf]),
+            (true, false, vec![&foot, &surf, &rain]),
+            (true, true, vec![&foot, &bike, &surf, &rain]),
+        ];
+
+        for (consider_weather, consider_bike, expected) in cases {
+            let options = Wild3SearcherCycleOpts::SearchNewTarget {
+                consider_weather,
+                consider_bike,
+                consider_rng_manipulated_lead_pid: false,
+                generate_even_if_impossible: false,
+            };
+
+            assert_eq!(
+                options.get_initial_cycle_distrs(&map, Wild3Action::OldRod),
+                expected
+            );
+        }
+    }
+}

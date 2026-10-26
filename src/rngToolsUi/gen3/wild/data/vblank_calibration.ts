@@ -1,7 +1,7 @@
 import type {
   CdfKnot,
   Wild3Action,
-  Wild3MapCycleCalibration,
+  Wild3InitialCycleDistribution,
   Wild3MapGameData,
   Wild3MovementMode,
   Wild3Weather,
@@ -11,6 +11,7 @@ import {
   mapCalibrationSources,
 } from "./vblank_calibration_data";
 import { mapCalibrationSettings } from "./vblank_calibration_maps";
+import { wild3Actions } from "../utils";
 import type {
   CalibrationComponent,
   RawCdfKnot,
@@ -25,10 +26,18 @@ type CalibrationMap = Pick<
   Wild3MapGameData,
   "map_id" | "map_internal_idx" | "slots_by_action"
 >;
-type Setup = Pick<Wild3MapCycleCalibration, "action" | "movement" | "weather">;
+type Setup = Pick<
+  Wild3InitialCycleDistribution,
+  "action" | "movement" | "weather"
+>;
+
+export type Wild3ActionCapabilities = {
+  possible_weather_by_action: Record<Wild3Action, Wild3Weather[]>;
+  possible_movement_by_action: Record<Wild3Action, Wild3MovementMode[]>;
+};
 
 export type Wild3CalibrationInfo = {
-  calibration: Wild3MapCycleCalibration;
+  calibration: Wild3InitialCycleDistribution;
   audio: CalibrationComponent;
   non_audio: CalibrationComponent;
   joint_correction: CalibrationComponent | null;
@@ -227,23 +236,46 @@ const movementForAction = (
   return land;
 };
 
-const mapSetups = (map: CalibrationMap): Setup[] => {
-  const actions: Wild3Action[] = [
-    "SweetScentLand",
-    "SweetScentWater",
-    "OldRod",
-    "GoodRod",
-    "SuperRod",
-    "RockSmash",
-  ];
+export const getWild3ActionCapabilities = (
+  map: CalibrationMap,
+): Wild3ActionCapabilities => {
+  const possible_weather_by_action: Record<Wild3Action, Wild3Weather[]> = {
+    SweetScentLand: [],
+    SweetScentWater: [],
+    OldRod: [],
+    GoodRod: [],
+    SuperRod: [],
+    RockSmash: [],
+  };
+  const possible_movement_by_action: Record<Wild3Action, Wild3MovementMode[]> =
+    {
+      SweetScentLand: [],
+      SweetScentWater: [],
+      OldRod: [],
+      GoodRod: [],
+      SuperRod: [],
+      RockSmash: [],
+    };
 
-  return actions.flatMap((action, index) => {
+  wild3Actions.forEach((action, index) => {
     if ((map.slots_by_action[index]?.length ?? 0) === 0) {
-      return [];
+      return;
     }
 
-    return movementForAction(map, action).flatMap((movement) =>
-      weatherForAction(map, action).map((weather) => ({
+    possible_weather_by_action[action] = weatherForAction(map, action);
+    possible_movement_by_action[action] = movementForAction(map, action);
+  });
+
+  return { possible_weather_by_action, possible_movement_by_action };
+};
+
+const mapSetups = (map: CalibrationMap): Setup[] => {
+  const { possible_weather_by_action, possible_movement_by_action } =
+    getWild3ActionCapabilities(map);
+
+  return wild3Actions.flatMap((action) => {
+    return possible_movement_by_action[action].flatMap((movement) =>
+      possible_weather_by_action[action].map((weather) => ({
         action,
         movement,
         weather,
@@ -312,6 +344,6 @@ export const getWild3CalibrationInfo = (
 
 export const getWild3VblankDistributions = (
   map: CalibrationMap,
-): Wild3MapCycleCalibration[] => {
+): Wild3InitialCycleDistribution[] => {
   return getWild3CalibrationInfo(map).map((info) => info.calibration);
 };

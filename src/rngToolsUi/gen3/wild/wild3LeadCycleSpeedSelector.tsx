@@ -5,7 +5,12 @@ import {
   ResultTable,
   Flex,
 } from "~/components";
-import { FormCard, FormSection, SwitchField } from "~/components/form";
+import {
+  FormCard,
+  FormSection,
+  SwitchField,
+  SelectField,
+} from "~/components/form";
 import { formatProbability } from "~/utils/formatProbability";
 import React from "react";
 
@@ -25,6 +30,15 @@ import {
   Wild3Distributions,
 } from "./wild3SetupToDistribution";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
+import {
+  getWild3AudioInfluenceOptions,
+  normalizeWild3AudioInfluences,
+  getWild3InitialCycleDistributionForSetup,
+  formatWild3Movement,
+  formatWild3Weather,
+} from "./wild3AudioInfluences";
+import { toOptions } from "~/utils/options";
+import type { Wild3Weather, Wild3MovementMode } from "~/rngTools";
 
 /*
 Wild3LeadCycleSpeedSelector is used to set/calibrate leadCycleSpeed.
@@ -33,6 +47,8 @@ It is like Wild3LeadCycleSpeedInput, but displays the impact of lead cycle speed
 
 export type Props = {
   targetSetup: TargetSetup;
+  setWeather: (weather: Wild3Weather) => void;
+  setMovement: (movement: Wild3MovementMode) => void;
   permitEnablingDebugOptions: boolean;
   setLeadCycleSpeed: (leadCycleSpeed: number) => void;
   leadCycleSpeed: number | null;
@@ -95,6 +111,8 @@ const getColumns = (targetSetup: TargetSetup): ResultColumn<UiResult>[] => {
 
 export const Wild3LeadCycleSpeedSelector = ({
   targetSetup,
+  setWeather,
+  setMovement,
   permitEnablingDebugOptions,
   setLeadCycleSpeed: setLeadCycleSpeedProp,
   leadCycleSpeed: leadCycleSpeedProp,
@@ -105,29 +123,64 @@ export const Wild3LeadCycleSpeedSelector = ({
     leadCycleSpeedProp ?? null,
   );
   const actualLeadCycleSpeed = targetSetup.lead === "Egg" ? 0 : leadCycleSpeed;
+  const selectedSetup = React.useMemo(() => {
+    const audioInfluences = normalizeWild3AudioInfluences(
+      targetSetup.map,
+      targetSetup.action,
+      targetSetup,
+    );
+
+    return { ...targetSetup, ...audioInfluences };
+  }, [targetSetup]);
+  const { weathers, movements } = getWild3AudioInfluenceOptions(
+    targetSetup.map,
+    targetSetup.action,
+  );
 
   React.useEffect(() => {
     setLeadCycleSpeed(leadCycleSpeedProp ?? null);
   }, [leadCycleSpeedProp]);
 
   React.useEffect(() => {
-    setupToDistributions(targetSetup, {
+    const distribution =
+      getWild3InitialCycleDistributionForSetup(selectedSetup);
+    if (distribution == null) {
+      setDistributions(null);
+
+      return;
+    }
+
+    setupToDistributions(selectedSetup, {
       LikelihoodForLead: {
-        consider_bike: false,
+        min_max_initial_cycle: [distribution.min, distribution.max],
         lead_cycle_spd: actualLeadCycleSpeed ?? 0,
       },
     }).then((val) => {
       setDistributions(val);
     });
-  }, [actualLeadCycleSpeed, targetSetup]);
+  }, [actualLeadCycleSpeed, selectedSetup]);
 
   return (
     <>
-      {targetSetup.lead === "Egg" ? (
-        <Typography.Text>Egg lead can't be calibrated.</Typography.Text>
-      ) : (
-        <FormCard>
-          <FormSection>
+      <FormCard>
+        <FormSection>
+          <SelectField
+            label="Weather"
+            value={selectedSetup.weather}
+            options={toOptions(weathers, formatWild3Weather)}
+            disabled={weathers.length <= 1}
+            onChange={setWeather}
+          />
+          <SelectField
+            label="Movement"
+            value={selectedSetup.movement}
+            options={toOptions(movements, formatWild3Movement)}
+            disabled={movements.length <= 1}
+            onChange={setMovement}
+          />
+          {targetSetup.lead === "Egg" ? (
+            <Typography.Text>Egg lead can't be calibrated.</Typography.Text>
+          ) : (
             <Wild3LeadCycleSpeedInput
               label="Lead Cycle Speed"
               {...leadCycleSpeedTooltip()}
@@ -137,9 +190,9 @@ export const Wild3LeadCycleSpeedSelector = ({
               leadCycleSpeed={leadCycleSpeed ?? AVERAGE_LEAD_CYCLE_SPEED}
               setLeadCycleSpeed={setLeadCycleSpeedProp}
             />
-          </FormSection>
-        </FormCard>
-      )}
+          )}
+        </FormSection>
+      </FormCard>
 
       <ResultTable<UiResult>
         columns={getColumns(targetSetup)}
@@ -158,7 +211,7 @@ export const Wild3LeadCycleSpeedSelector = ({
       {permitEnablingDebugOptions && (
         <Wild3CycleAtMoments
           leadCycleSpeed={actualLeadCycleSpeed}
-          targetSetup={targetSetup}
+          targetSetup={selectedSetup}
         />
       )}
     </>
@@ -167,6 +220,8 @@ export const Wild3LeadCycleSpeedSelector = ({
 
 export const Wild3LeadCycleSpeedSelectorWithBtn = ({
   targetSetup,
+  setWeather,
+  setMovement,
   permitEnablingDebugOptions,
   setLeadCycleSpeed,
   leadCycleSpeed,
@@ -191,6 +246,8 @@ export const Wild3LeadCycleSpeedSelectorWithBtn = ({
       {displayLeadCycleSpeed && (
         <Wild3LeadCycleSpeedSelector
           targetSetup={targetSetup}
+          setWeather={setWeather}
+          setMovement={setMovement}
           permitEnablingDebugOptions={permitEnablingDebugOptions}
           setLeadCycleSpeed={setLeadCycleSpeed}
           leadCycleSpeed={leadCycleSpeed}

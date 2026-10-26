@@ -78,6 +78,14 @@ export const Wild3SetupFilter = () => {
         value={!recommendedSetups}
         onChange={(ignore) => setRecommendedSetups(!ignore)}
       >
+        <FormSwitchField<FormState>
+          name="considerWeather"
+          label="Consider weather"
+        />
+        <FormSwitchField<FormState>
+          name="hasUnlockedBike"
+          label="Has unlocked bike"
+        />
         <FormMultiSelectField<FormState>
           name="actions"
           label="Actions"

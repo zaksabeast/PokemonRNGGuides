@@ -19,10 +19,16 @@ import {
 import { emerald_wild_encounters } from "./emerald_wild_encounters";
 import { emerald_wild_special_encounters } from "./emerald_wild_special_encounters";
 import z from "zod";
-import { getWild3VblankDistributions } from "./vblank_calibration";
+import {
+  getWild3VblankDistributions,
+  getWild3ActionCapabilities,
+  type Wild3ActionCapabilities,
+} from "./vblank_calibration";
+
+export type Wild3UiMapGameData = Wild3MapGameData & Wild3ActionCapabilities;
 
 export type Wild3GameData = {
-  maps_data: Wild3MapGameData[];
+  maps_data: Wild3UiMapGameData[];
   species: Species[];
   maps: string[];
   mapSetupsBySpecies: Map<Species, Wild3MapSetups[]>;
@@ -113,7 +119,7 @@ const EMERALD_ACTIONS_WITH_POKEBLOCK_FEEDER_BY_MAP = {
   ],
 } as Record<string, Wild3Action[]>;
 
-const generateWild3EmeraldMapsData = (): Wild3MapGameData[] => {
+const generateWild3EmeraldMapsData = (): Wild3UiMapGameData[] => {
   const wild3RoamerStatesSchema = z.enum(wild3RoamerStates);
   const wild3MassOutbreakStatesSchema = z.enum(wild3MassOutbreakStates);
 
@@ -175,6 +181,11 @@ const generateWild3EmeraldMapsData = (): Wild3MapGameData[] => {
         {
           map_id: map.map,
           map_internal_idx,
+          ...getWild3ActionCapabilities({
+            map_id: map.map,
+            map_internal_idx,
+            slots_by_action,
+          }),
           vblank_distrs: getWild3VblankDistributions({
             map_id: map.map,
             map_internal_idx,

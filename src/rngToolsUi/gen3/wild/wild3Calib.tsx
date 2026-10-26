@@ -356,6 +356,12 @@ export const Wild3Calib = ({
               <Instructions_calib_wrong_method />
               <Wild3LeadCycleSpeedSelector
                 targetSetup={targetSetup}
+                setWeather={(weather) =>
+                  setTargetSetup({ ...targetSetup, weather })
+                }
+                setMovement={(movement) =>
+                  setTargetSetup({ ...targetSetup, movement })
+                }
                 permitEnablingDebugOptions
                 setLeadCycleSpeed={setOverwriteLeadCycleSpeed}
                 leadCycleSpeed={finalLeadCycleSpeed}

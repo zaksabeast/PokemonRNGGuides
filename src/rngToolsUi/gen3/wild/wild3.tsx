@@ -20,6 +20,7 @@ import {
 import { gen3Methods } from "~/types";
 import { pokeblockSchema } from "~/types/pokeblock";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
+import { wild3Weathers, wild3Movements } from "./wild3AudioInfluences";
 import { EmeraldAceChangeSid } from "../ace/emeraldAceChangeSid";
 import { createBattleVideoInfoAtom } from "../pokemonRng/shared";
 
@@ -111,6 +112,8 @@ const targetSetupAtomSchema = z.object({
   targetSetup: z
     .object({
       map: z.string(),
+      weather: z.enum(wild3Weathers).optional().default("Sunny"),
+      movement: z.enum(wild3Movements).optional().default("OnFoot"),
       feebasState: z.enum(wild3FeebasStates),
       feebasCycles: z.number().int().min(0).max(0xffffffff).default(0),
       roamerState: z.enum(wild3RoamerStates),

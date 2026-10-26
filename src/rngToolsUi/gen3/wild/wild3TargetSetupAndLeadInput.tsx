@@ -76,6 +76,12 @@ export const Wild3TargetSetupAndLeadInput = ({
           </FormCard>
           <Wild3LeadCycleSpeedSelectorWithBtn
             targetSetup={targetSetup}
+            setWeather={(weather) =>
+              setTargetSetupBoth({ ...targetSetup, weather })
+            }
+            setMovement={(movement) =>
+              setTargetSetupBoth({ ...targetSetup, movement })
+            }
             permitEnablingDebugOptions={permitEnablingDebugOptions}
             setLeadCycleSpeed={setLeadCycleSpeedBoth}
             leadCycleSpeed={leadCycleSpeed}

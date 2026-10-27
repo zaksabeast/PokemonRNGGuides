@@ -195,15 +195,15 @@ export const Wild3LeadCycleSpeedSelector = ({
             />
           )}
         </FormSection>
+        {initialCycleSummary != null && (
+          <FormSection>
+            Possible initial cycle:{" "}
+            {formatLargeInteger(initialCycleSummary.min)} -{" "}
+            {formatLargeInteger(initialCycleSummary.max)} (Median:{" "}
+            {formatLargeInteger(initialCycleSummary.median)})
+          </FormSection>
+        )}
       </FormCard>
-
-      {initialCycleSummary != null && (
-        <Typography.Text>
-          Possible initial cycle: {formatLargeInteger(initialCycleSummary.min)}{" "}
-          - {formatLargeInteger(initialCycleSummary.max)} (Median:{" "}
-          {formatLargeInteger(initialCycleSummary.median)})
-        </Typography.Text>
-      )}
 
       <ResultTable<UiResult>
         columns={getColumns(targetSetup)}

@@ -1,4 +1,5 @@
 import { expect, test } from "bun:test";
+import { omit } from "lodash-es";
 import type {} from "~/emotion";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -164,9 +165,7 @@ test("distribution selection matches all three audio influence fields", () => {
     weather: "Rain",
     movement: "Surf",
   });
-  const { distribution: _cdf, ...settings } = distribution ?? {
-    distribution: [],
-  };
+  const settings = omit(distribution, "distribution");
 
   expect(settings).toEqual({
     action: "OldRod",

@@ -31,7 +31,7 @@ type FakeAudioDataset = {
   multiplier: number;
 };
 
-export function fakeAudioDatasets(): FakeAudioDataset[] {
+export const fakeAudioDatasets = (): FakeAudioDataset[] => {
   const fishing = fishingSongs.map((song) => ({
     name: `${song}_FISHING_SUNNY_AUDIO`,
     multiplier: 1.25,
@@ -73,23 +73,23 @@ export function fakeAudioDatasets(): FakeAudioDataset[] {
     ...fishingWeather,
     { name: "ROUTE122_FISHING_RAIN_AUDIO", multiplier: 1.375 },
   ];
-}
+};
 
-export function fakeAudioComponents(
+export const fakeAudioComponents = (
   source: CalibrationComponent,
-): Record<string, CalibrationComponent> {
+): Record<string, CalibrationComponent> => {
   return Object.fromEntries(
     fakeAudioDatasets().map((dataset) => [
       dataset.name,
       scaleFakeAudio(source, dataset.multiplier),
     ]),
   );
-}
+};
 
-function scaleFakeAudio(
+const scaleFakeAudio = (
   source: CalibrationComponent,
   multiplier: number,
-): CalibrationComponent {
+): CalibrationComponent => {
   const scale = (cycle: number) => Math.round(cycle * multiplier);
   const cdf: RawCdfKnot[] = [];
   for (const [cycle, probability] of source.cdf) {
@@ -115,4 +115,4 @@ function scaleFakeAudio(
       source: "synthetic: scaled ROUTE101_AUDIO; not measured",
     },
   };
-}
+};

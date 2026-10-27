@@ -1,4 +1,5 @@
 import { expect, test } from "bun:test";
+import { omit } from "lodash-es";
 import type { Wild3MapGameData } from "~/rngTools";
 import { calibrationComponents } from "./vblank_calibration_data";
 import {
@@ -25,7 +26,7 @@ test("constructed game maps carry serializable combined distributions", () => {
   const game = getWild3EmeraldGameData();
   const route101 = game.maps_data.find((map) => map.map_id === "MAP_ROUTE101");
   expect(
-    route101?.vblank_distrs.map(({ distribution, ...setup }) => setup),
+    route101?.vblank_distrs.map((setup) => omit(setup, "distribution")),
   ).toEqual([
     {
       action: "SweetScentLand",
@@ -47,10 +48,13 @@ test("constructed game maps carry serializable combined distributions", () => {
   );
 });
 
-function map(
+const map = (
   map_id: string,
   map_internal_idx: number,
-): Pick<Wild3MapGameData, "map_id" | "map_internal_idx" | "slots_by_action"> {
+): Pick<
+  Wild3MapGameData,
+  "map_id" | "map_internal_idx" | "slots_by_action"
+> => {
   return {
     map_id,
     map_internal_idx,
@@ -58,7 +62,7 @@ function map(
       { min_level: 1, max_level: 1, species_data: { species: "Bulbasaur" } },
     ]),
   };
-}
+};
 
 test("combined CDF handles continuous costs and retains discrete jumps", () => {
   const combined = combineCalibrationComponents(uniform, uniform).map(

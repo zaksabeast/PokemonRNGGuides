@@ -44,6 +44,33 @@ export type Wild3CalibrationInfo = {
   fallback: boolean;
 };
 
+export const getInitialCycleSummary = (
+  knots: readonly CdfKnot[],
+): { min: number; max: number; median: number; average: number } | null => {
+  const first = knots[0];
+  const last = knots.at(-1);
+  if (first == null || last == null) {
+    return null;
+  }
+
+  let average = 0;
+  let median = first.cycle;
+  for (let index = 1; index < knots.length; index++) {
+    const left = knots[index - 1];
+    const right = knots[index];
+    const mass = right.probability - left.probability;
+    average += (mass * (left.cycle + right.cycle)) / 2;
+
+    if (left.probability < 0.5 && right.probability >= 0.5) {
+      median =
+        left.cycle +
+        ((0.5 - left.probability) * (right.cycle - left.cycle)) / mass;
+    }
+  }
+
+  return { min: first.cycle, max: last.cycle, median, average };
+};
+
 export const cdfLessThan = (
   knots: readonly RawCdfKnot[],
   cycle: number,

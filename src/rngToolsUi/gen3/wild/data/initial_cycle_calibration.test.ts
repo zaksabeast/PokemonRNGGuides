@@ -7,6 +7,7 @@ import {
   combineCalibrationComponents,
   getWild3CalibrationInfo,
   getWild3VblankDistributions,
+  getInitialCycleSummary,
 } from "./initial_cycle_calibration";
 import { fakeAudioComponents } from "./fake_vblank_audio";
 import { getWild3EmeraldGameData } from "./wild3GameData";
@@ -21,6 +22,30 @@ const uniform: CalibrationComponent = {
   ],
   provenance: { source: "test" },
 };
+
+test("initial cycle summaries handle uniform distributions, jumps, and empty data", () => {
+  expect(
+    getInitialCycleSummary([
+      { cycle: 10, probability: 0 },
+      { cycle: 30, probability: 1 },
+    ]),
+  ).toEqual({ min: 10, max: 30, median: 20, average: 20 });
+  expect(
+    getInitialCycleSummary([
+      { cycle: 10, probability: 0 },
+      { cycle: 10, probability: 0.25 },
+      { cycle: 20, probability: 0.75 },
+      { cycle: 40, probability: 1 },
+    ]),
+  ).toEqual({ min: 10, max: 40, median: 15, average: 17.5 });
+  expect(
+    getInitialCycleSummary([
+      { cycle: 7, probability: 0 },
+      { cycle: 7, probability: 1 },
+    ]),
+  ).toEqual({ min: 7, max: 7, median: 7, average: 7 });
+  expect(getInitialCycleSummary([])).toBeNull();
+});
 
 test("constructed game maps carry serializable combined distributions", () => {
   const game = getWild3EmeraldGameData();

@@ -140,15 +140,15 @@ export const Wild3Calib = ({
 
   React.useEffect(() => {
     setOverwriteLeadCycleSpeed(null);
-  }, [targetSetupProp]);
-
-  React.useEffect(() => {
     setHasHitTargetAdv(false);
-  }, [targetSetup]);
+  }, [targetSetupProp]);
 
   const targetSetupInputForm = () => (
     <Wild3TargetSetupAndLeadInput
-      setTargetSetup={setTargetSetup}
+      setTargetSetup={(setup) => {
+        setTargetSetup(setup);
+        setHasHitTargetAdv(false);
+      }}
       setLeadCycleSpeed={setOverwriteLeadCycleSpeed}
       leadCycleSpeed={finalLeadCycleSpeed}
       displayInstructions={displayInstructions}
@@ -244,7 +244,7 @@ export const Wild3Calib = ({
         value: formatActionName(targetSetupProp.action),
       },
       {
-        label: "Weather",
+        label: "Weather audio",
         value: formatWild3Weather(audioInfluences.weather),
       },
       {

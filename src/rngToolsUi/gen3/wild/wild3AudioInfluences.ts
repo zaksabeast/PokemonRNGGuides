@@ -239,7 +239,7 @@ export const getWild3LikelihoodAudioInfluenceLabels = (
       entry.weather === "Rain" ? "Rainy" : formatWild3Weather(entry.weather);
     const playingSong = formatPlayingSong(entry.playing_song).toLowerCase();
 
-    return `Optimal setup: ${showWeather ? `${weather} weather, ` : ""}${playingSong} playing.`;
+    return `Optimal audio: ${showWeather ? `${weather} weather audio, ` : ""}${playingSong} playing.`;
   };
 
   if (

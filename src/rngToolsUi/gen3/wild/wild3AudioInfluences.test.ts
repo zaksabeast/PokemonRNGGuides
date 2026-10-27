@@ -284,8 +284,8 @@ test("selected setups carry the audio influences behind their displayed likeliho
 test("likelihood ranges identify independently optimized audio influences", () => {
   expect(formatWild3Likelihood([lower, upper])).toBe("25.0% - 75.0%");
   expect(getWild3LikelihoodAudioInfluenceLabels([lower, upper])).toEqual([
-    "25.0% (608 cycles): Optimal setup: Sunny weather, map song playing.",
-    "75.0% (868 cycles): Optimal setup: Rainy weather, bike song playing.",
+    "25.0% (608 cycles): Optimal audio: Sunny weather audio, map song playing.",
+    "75.0% (868 cycles): Optimal audio: Rainy weather audio, bike song playing.",
   ]);
   expect(getWild3LikelihoodAudioInfluenceLabels([lower, lower])).toEqual([
     "Optimal setup: Sunny weather, map song playing.",

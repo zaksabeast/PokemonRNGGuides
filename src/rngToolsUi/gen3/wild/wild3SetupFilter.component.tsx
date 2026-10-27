@@ -160,7 +160,7 @@ export const Wild3SetupFilter = () => {
         />
         <FormSwitchField<FormState>
           name="considerWeather"
-          label="Consider weather"
+          label="Consider all weathers"
         />
         <FormSwitchField<FormState>
           name="hasUnlockedBike"

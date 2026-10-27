@@ -319,7 +319,7 @@ export const Wild3CycleAtMoments = ({ targetSetup, leadCycleSpeed }: Props) => {
 
   const resultRows: SummaryRow[] = [
     {
-      label: "Cycle at start of Sweet Scent",
+      label: "Initial cycle",
       value: formatLargeInteger(
         uiResult.uiCycleAtMoments[0]?.dataFromTool.cycle ?? 0,
       ),

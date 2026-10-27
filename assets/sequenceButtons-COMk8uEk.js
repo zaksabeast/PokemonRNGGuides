@@ -1,0 +1,1 @@
+import{H as e}from"./index.esm-C7oIfss4.js";var t=e.div(({theme:e})=>({display:`grid`,gridAutoFlow:`column`,gridAutoColumns:`minmax(0, 1fr)`,gap:8,[e.mediaQueries.down(`mobile`)]:{gridAutoFlow:`row`}}));export{t};

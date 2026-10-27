@@ -23,6 +23,7 @@ const entries = files.map((file) => {
   if (match == null) {
     throw new Error(`Unexpected icon filename: ${file}`);
   }
+
   const dex = Number(match[1]);
   const sheet = ends.findIndex((end) => dex <= end);
   if (dex < 1 || sheet < 0) {
@@ -106,6 +107,7 @@ const rust = await fs.readFile(
   "utf8",
 );
 const mappings: string[] = [];
+
 for (const match of rust.matchAll(
   /^ {4}(\w+) = (?:spec_form\((\d+), (\d+)\)|(\d+)),/gm,
 )) {

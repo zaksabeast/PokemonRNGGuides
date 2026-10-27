@@ -197,14 +197,25 @@ export const formatWild3Likelihood = (
 
 export const getWild3LikelihoodAudioInfluenceLabels = (
   data: readonly Wild3SearcherCycleData[],
+  showWeather = true,
 ): string[] => {
   const first = data[0];
   if (first == null) {
     return [];
   }
 
-  const audioInfluenceLabel = (entry: Wild3SearcherCycleData) =>
-    `Weather: ${formatWild3Weather(entry.weather)}; Movement: ${formatWild3Movement(entry.movement)}`;
+  const audioInfluenceLabel = (entry: Wild3SearcherCycleData) => {
+    const weather =
+      entry.weather === "Rain" ? "Rainy" : formatWild3Weather(entry.weather);
+    const movement = {
+      OnFoot: "on foot",
+      Bike: "on bike",
+      Surf: "surfing",
+    }[entry.movement];
+
+    return `Optimal setup: ${showWeather ? `${weather} weather, ` : ""}${movement}.`;
+  };
+
   if (
     data.every(
       (entry) =>

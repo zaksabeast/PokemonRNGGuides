@@ -30,7 +30,6 @@ import { TargetSetup } from "./wild3TargetSetupInput";
 import { Pokeblock, wild3SafariPokeblockSearchOpt } from "~/types/pokeblock";
 import { Wild3LeadCycleSpeedSelectorWithBtn } from "./wild3LeadCycleSpeedSelector";
 import { type Wild3AudioInfluences } from "./wild3AudioInfluences";
-import { Wild3Likelihood } from "./wild3Likelihood";
 import {
   targetSetupSearcherSchema,
   getTargetSetupSearcherInitialValues,
@@ -163,14 +162,7 @@ const getPidPathColumns = (
 
         // results are sorted by primaryLikelihood
         const best = resultSetupInfos[0];
-        const text = (
-          <Wild3Likelihood
-            data={best?.primaryCycleData == null ? [] : [best.primaryCycleData]}
-            showAudioInfluences={best?.showLikelihoodAudioInfluences ?? false}
-          >
-            {formatProbability(best?.primaryLikelihood ?? 0)}
-          </Wild3Likelihood>
-        );
+        const text = formatProbability(best?.primaryLikelihood ?? 0);
         const isVeryReliableSetup = resultSetupInfos.some(
           (res) =>
             res.lead === "Egg" &&

@@ -3,7 +3,7 @@ import { omit } from "lodash-es";
 import type {} from "~/emotion";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { Wild3Likelihood } from "./wild3Likelihood";
+import { Wild3Map } from "./wild3Map";
 import type { Wild3SearcherCycleData } from "~/rngTools";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import {
@@ -233,16 +233,39 @@ test("selected setups carry the audio influences behind their displayed likeliho
 test("likelihood ranges identify independently optimized audio influences", () => {
   expect(formatWild3Likelihood([lower, upper])).toBe("25.0% - 75.0%");
   expect(getWild3LikelihoodAudioInfluenceLabels([lower, upper])).toEqual([
-    "25.0% (608 cycles): Weather: Sunny; Movement: On foot",
-    "75.0% (868 cycles): Weather: Rain; Movement: Bike",
+    "25.0% (608 cycles): Optimal setup: Sunny weather, on foot.",
+    "75.0% (868 cycles): Optimal setup: Rainy weather, on bike.",
   ]);
   expect(getWild3LikelihoodAudioInfluenceLabels([lower, lower])).toEqual([
-    "Weather: Sunny; Movement: On foot",
+    "Optimal setup: Sunny weather, on foot.",
   ]);
+  expect(
+    getWild3LikelihoodAudioInfluenceLabels([{ ...upper, weather: "Sunny" }]),
+  ).toEqual(["Optimal setup: Sunny weather, on bike."]);
+  expect(
+    getWild3LikelihoodAudioInfluenceLabels([
+      { ...upper, weather: "Thunderstorm", movement: "Surf" },
+    ]),
+  ).toEqual(["Optimal setup: Thunderstorm weather, surfing."]);
   expect(getWild3LikelihoodAudioInfluenceLabels([])).toEqual([]);
 });
 
-test("likelihood renders an information icon only for multiple eligible audio influences", () => {
+test("optimal setup labels omit weather when the map action allows only one", () => {
+  const data = [
+    { ...lower, movement: "Bike" },
+  ] satisfies Wild3SearcherCycleData[];
+  const land = getWild3AudioInfluenceOptions("MAP_ROUTE120", "SweetScentLand");
+  const fishing = getWild3AudioInfluenceOptions("MAP_ROUTE120", "OldRod");
+
+  expect(
+    getWild3LikelihoodAudioInfluenceLabels(data, land.weathers.length > 1),
+  ).toEqual(["Optimal setup: Sunny weather, on bike."]);
+  expect(
+    getWild3LikelihoodAudioInfluenceLabels(data, fishing.weathers.length > 1),
+  ).toEqual(["Optimal setup: on bike."]);
+});
+
+test("map renders an information icon only for multiple eligible audio influences", () => {
   const single = getWild3AudioInfluenceOptions(
     "MAP_ROUTE120",
     "SweetScentWater",
@@ -252,19 +275,25 @@ test("likelihood renders an information icon only for multiple eligible audio in
     "SweetScentWater",
   );
   const plain = renderToStaticMarkup(
-    React.createElement(Wild3Likelihood, {
+    React.createElement(Wild3Map, {
+      mapId: "MAP_ROUTE120",
+      action: "SweetScentWater",
       data: [lower],
       showAudioInfluences: single.showAudioInfluences,
+      children: "Mt. Pyre 1F",
     }),
   );
   const annotated = renderToStaticMarkup(
-    React.createElement(Wild3Likelihood, {
+    React.createElement(Wild3Map, {
+      mapId: "MAP_ROUTE119",
+      action: "SweetScentWater",
       data: [lower],
       showAudioInfluences: multiple.showAudioInfluences,
+      children: "Route 119",
     }),
   );
 
-  expect(plain).toBe("25.0%");
+  expect(plain).toBe("Mt. Pyre 1F");
   expect(annotated).toContain('aria-label="Optimal weather and movement"');
-  expect(annotated).toContain("25.0%");
+  expect(annotated).toContain("Route 119");
 });

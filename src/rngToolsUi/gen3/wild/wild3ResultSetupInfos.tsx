@@ -24,6 +24,7 @@ import { TargetSetup } from "./wild3TargetSetupInput";
 import { Wild3PokeblockDescription } from "~/components/wild3Pokeblock";
 import { targetAdvanceAfterPaintingTitle } from "../pokemonRng/labels";
 import { FeebasTileVisualizerButton } from "./feebasMap";
+import { Wild3Map } from "./wild3Map";
 
 import { formatProbability } from "~/utils/formatProbability";
 import {
@@ -120,7 +121,24 @@ const getResultSetupInfoColumns = ({
   }
 
   columns.push(
-    { title: "Map", dataIndex: "mapName" },
+    {
+      title: "Map",
+      dataIndex: "mapName",
+      render: (mapName, setupInfo) => (
+        <Wild3Map
+          mapId={setupInfo.mapId}
+          action={setupInfo.action}
+          data={
+            setupInfo.primaryCycleData == null
+              ? []
+              : [setupInfo.primaryCycleData]
+          }
+          showAudioInfluences={setupInfo.showLikelihoodAudioInfluences}
+        >
+          {mapName}
+        </Wild3Map>
+      ),
+    },
     { title: "Player action", dataIndex: "actionName" },
     {
       title: "Fishing spot",

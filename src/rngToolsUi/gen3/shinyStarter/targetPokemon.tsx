@@ -1,4 +1,4 @@
-import { getGen3SpeciesOptions } from "~/types/species";
+import { getGen3SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
 import React from "react";
 import {
   FormCard,

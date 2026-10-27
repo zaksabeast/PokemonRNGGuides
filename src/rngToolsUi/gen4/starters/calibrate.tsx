@@ -241,7 +241,7 @@ export const CalibrateStarter4 = () => {
         filter_level: 5,
         filter_characteristic: opts.filter_characteristic,
         filter: {
-          shiny: false,
+          shiny: "Any",
           ability: null,
           ...minMaxIvs,
           nature: pkmFilterNatureFieldToRustInput([opts.nature]),

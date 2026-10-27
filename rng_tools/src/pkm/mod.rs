@@ -35,7 +35,7 @@ use tsify::Tsify;
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct PkmFilter {
-    pub shiny: bool,
+    pub shiny: ShinyFilter,
     pub nature: Option<[bool; NATURE_COUNT]>,
     pub gender: Option<Gender>,
     pub min_ivs: Ivs,
@@ -53,7 +53,7 @@ impl Default for PkmFilter {
 impl PkmFilter {
     pub fn new_allow_all() -> Self {
         Self {
-            shiny: false,
+            shiny: ShinyFilter::Any,
             nature: None,
             gender: None,
             min_ivs: Ivs::new_all0(),
@@ -106,7 +106,7 @@ impl PkmFilter {
     }
 
     pub fn pass_filter_no_ivs(&self, state: &impl PkmState) -> bool {
-        if self.shiny && !state.shiny() {
+        if !self.shiny.allows(state.shiny()) {
             return false;
         }
 
@@ -140,7 +140,7 @@ impl PkmFilter {
 
 pub trait PkmState {
     fn pid(&self) -> u32;
-    fn shiny(&self) -> bool;
+    fn shiny(&self) -> ShinyType;
     fn nature(&self) -> Nature;
     fn ivs(&self) -> &Ivs;
     fn ability(&self) -> AbilityType;

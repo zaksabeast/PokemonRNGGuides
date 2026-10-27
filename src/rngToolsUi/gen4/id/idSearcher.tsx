@@ -29,7 +29,8 @@ import { gen4StateAtom } from "../shared/state";
 import { useCurrentStep } from "~/components/stepper/state";
 import { useFormContext, useWatch } from "~/hooks/form";
 import { nature } from "~/types/nature";
-import { getGen4SpeciesOptions, species } from "~/types/species";
+import { species } from "~/types/species";
+import { getGen4SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
 import { toOptions } from "~/utils/options";
 import {
   getCuteCharmTsvProps,

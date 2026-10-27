@@ -1,5 +1,5 @@
 import React from "react";
-import { ResultColumn, Button } from "~/components";
+import { ResultColumn, Button, ShinyIcon } from "~/components";
 import {
   FieldRow,
   FormNumberField,
@@ -14,7 +14,8 @@ import {
 } from "~/components/form";
 import { useCurrentStep } from "~/components/stepper/state";
 import { rngTools, Gen3HeldEgg, PokeNavTrainer } from "~/rngTools";
-import { getGen3SpeciesOptions, species } from "~/types/species";
+import { species } from "~/types/species";
+import { getGen3SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
 import {
   getPkmFilterInitialValues,
   pkmFilterSchema,
@@ -112,7 +113,7 @@ const getColumns = ({
   {
     title: t["Shiny"],
     dataIndex: "shiny",
-    render: (shiny) => (shiny ? "Yes" : "No"),
+    render: (shiny) => <ShinyIcon shiny={shiny} />,
   },
   {
     title: t["Pokedex"],
@@ -223,6 +224,7 @@ const Fields = ({ t }: FieldsProps) => {
 
       <FormSection title={t["Filters"]}>
         <PkmFilter<FormState>
+          generation={3}
           displayIvs={false}
           displayHiddenPower={false}
           species={egg_species ?? undefined}

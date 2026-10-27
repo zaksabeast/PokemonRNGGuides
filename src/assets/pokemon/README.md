@@ -2,9 +2,12 @@
 
 - `source/` contains the original, transparent 64x64 PNGs. Filenames use National
   Pokedex numbers (`p1.png`), with suffixes for alternate artwork (`p201-b.png`).
-- `tilesets/` contains generated sheets grouped by generation, with 16 columns.
-  All original pixels and transparent padding are preserved.
-- `src/utils/pokemonIconManifest.ts` provides Emotion styles for supported `Species` values, using the explicit IDs in `rng_tools/src/pkm/species.rs`.
+- `tilesets/` contains generated WebP sheets grouped by generation, with 16
+  columns. Each icon occupies a 64x64 cell and is encoded at quality 95/100 with
+  lossless transparency, retaining transparent padding.
+- `src/utils/pokemonIconManifest.ts` maps supported `Species` values to a sheet
+  and cell index, using the explicit IDs in `rng_tools/src/pkm/species.rs`.
+  `PokemonIcon` calculates the sprite positions when rendering.
 
 Regenerate from the repository root with:
 

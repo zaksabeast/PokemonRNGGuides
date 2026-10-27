@@ -1,11 +1,11 @@
 use super::*;
 use crate::{
-    EncounterSlot, HiddenPowerFilter, PokemonType,
+    EncounterSlot, HiddenPowerFilter, PokemonType, ShinyFilter, ShinyType,
     gen3::{
-        FASTEST_DIVIDENDS_MOD_24_RANGE, Gen3PidSpeedFilter, Wild3SpecialEncounterGameData,
-        apply_cycles_causing_vblanks_on_cycle_counter, calculate_pid_speed,
-        get_min_mid_max_pre_sweet_scent_cycle, get_min_mid_max_vblank_cycle_duration,
-        search_wild3_naive,
+        FASTEST_DIVIDENDS_MOD_24_RANGE, Gen3PidSpeedFilter, Wild3SearcherCycleOpts,
+        Wild3SpecialEncounterGameData, apply_cycles_causing_vblanks_on_cycle_counter,
+        calculate_pid_speed, get_min_mid_max_pre_sweet_scent_cycle,
+        get_min_mid_max_vblank_cycle_duration, search_wild3_naive,
     },
 };
 
@@ -16,7 +16,7 @@ use utils::{pid_paths_to_string, strs_to_string};
 fn test_search_find_pid_paths_by_step_filter() {
     let opts = FindPidPathsOptions {
         filter: PkmFilter {
-            shiny: true,
+            shiny: ShinyFilter::AnyShiny,
             min_ivs: Ivs::new(0, 0, 0, 0, 0, 0),
             max_ivs: Ivs::new(0, 15, 15, 15, 0, 0),
             ..Default::default()
@@ -168,7 +168,7 @@ fn test_search_reverse_wild1_vanilla() {
         pid: 0x02FA9E49,
         advance: 3737251199,
         seed: Pokerng::with_jump(options.initial_seed, 3737251199).seed(),
-        shiny: false,
+        shiny: ShinyType::NotShiny,
         nature: Nature::Adamant,
         ability: AbilityType::Second,
         ivs: Ivs::new(12, 29, 23, 10, 14, 13),
@@ -220,7 +220,7 @@ fn test_search_reverse_wild2_synchronize_success() {
             pid: 188109474,
             advance: 1160779594,
             seed: Pokerng::with_jump(options.initial_seed, 1160779594).seed(),
-            shiny: false,
+            shiny: ShinyType::NotShiny,
             nature: Nature::Quirky,
             ability: AbilityType::First,
             ivs: Ivs::new(7, 5, 5, 5, 5, 5),
@@ -236,7 +236,7 @@ fn test_search_reverse_wild2_synchronize_success() {
             pid: 188109474,
             advance: 1160779592,
             seed: Pokerng::with_jump(options.initial_seed, 1160779592).seed(),
-            shiny: false,
+            shiny: ShinyType::NotShiny,
             nature: Nature::Quirky,
             ability: AbilityType::First,
             ivs: Ivs::new(7, 5, 5, 5, 5, 5),
@@ -285,7 +285,7 @@ fn test_search_reverse_wild4_cute_charm_success() {
         pid: 1974370866,
         advance: 1805496635,
         seed: Pokerng::with_jump(options.initial_seed, 1805496635).seed(),
-        shiny: false,
+        shiny: ShinyType::NotShiny,
         nature: Nature::Mild,
         ability: AbilityType::First,
         ivs: Ivs::new(5, 5, 5, 5, 9, 5),
@@ -345,7 +345,7 @@ fn test_search_reverse_wild3_mass_outbreak() {
         pid: 2438806163,
         advance: 2001,
         seed: Pokerng::with_jump(options.initial_seed, 2001).seed(),
-        shiny: false,
+        shiny: ShinyType::NotShiny,
         nature: Nature::Jolly,
         ability: AbilityType::Second,
         ivs: Ivs::new(29, 22, 12, 6, 28, 10),
@@ -395,7 +395,7 @@ fn test_search_reverse_wild3_feebas_no_cyles() {
         pid: 1969203656,
         advance: 15522,
         seed: Pokerng::with_jump(options.initial_seed, 15522).seed(),
-        shiny: false,
+        shiny: ShinyType::NotShiny,
         nature: Nature::Docile,
         ability: AbilityType::First,
         ivs: Ivs::new(6, 27, 31, 31, 31, 31),
@@ -447,7 +447,7 @@ fn test_search_reverse_wild3_feebas_many_cyles() {
         pid: 1969203656,
         advance: 15522,
         seed: Pokerng::with_jump(options.initial_seed, 15522).seed(),
-        shiny: false,
+        shiny: ShinyType::NotShiny,
         nature: Nature::Docile,
         ability: AbilityType::First,
         ivs: Ivs::new(6, 27, 31, 31, 31, 31),
@@ -508,7 +508,7 @@ fn test_search_reverse_pid_spd() {
         pid: 121,
         advance: 820775165,
         seed: Pokerng::with_jump(options.initial_seed, 820775165).seed(),
-        shiny: false,
+        shiny: ShinyType::NotShiny,
         nature: Nature::Gentle,
         ability: AbilityType::Second,
         ivs: Ivs::new(23, 29, 20, 20, 31, 30),
@@ -540,7 +540,7 @@ fn test_search_reverse_wild3_rock_smash() {
             species: Some(Species::Shuckle),
             ..Default::default()
         },
-        generate_even_if_impossible: true,
+        cycle_opts: Wild3SearcherCycleOpts::Inactive,
         ..Default::default()
     };
 
@@ -551,7 +551,7 @@ fn test_search_reverse_wild3_rock_smash() {
         pid: 1621222420,
         advance: 0,
         seed: options.initial_seed,
-        shiny: false,
+        shiny: ShinyType::NotShiny,
         nature: Nature::Calm,
         ability: AbilityType::First,
         ivs: Ivs::new(11, 25, 10, 25, 3, 24),
@@ -592,7 +592,7 @@ fn test_search_reverse_wild3_rock_smash_white_flute() {
             species: Some(Species::Shuckle),
             ..Default::default()
         },
-        generate_even_if_impossible: true,
+        cycle_opts: Wild3SearcherCycleOpts::Inactive,
         using_white_flute: true,
         ..Default::default()
     };
@@ -673,9 +673,10 @@ fn test_search_reverse_wild3_safari_egg_gligar_has_result() {
         leads: vec![Gen3Lead::Egg],
         map_setups: create_safari_southeast_map_setups(),
         methods: vec![Gen3Method::Wild1],
-        consider_cycles: true,
-        consider_rng_manipulated_lead_pid: true,
-        generate_even_if_impossible: true,
+        cycle_opts: Wild3SearcherCycleOpts::SearchNewTarget {
+            consider_rng_manipulated_lead_pid: true,
+            generate_even_if_impossible: true,
+        },
         using_white_flute: true,
         considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt::None,
         ..Default::default()
@@ -712,8 +713,9 @@ fn test_search_reverse_wild3_safari_cute_charm_pokeblock_hoothoot_has_result() {
         leads: vec![Gen3Lead::CuteCharm(Gender::Female)],
         map_setups: create_safari_southeast_map_setups(),
         methods: vec![Gen3Method::Wild4],
-        consider_cycles: true,
-        lead_cycle_speed: Some(18),
+        cycle_opts: Wild3SearcherCycleOpts::Calibrate {
+            lead_cycle_speed: Some(18),
+        },
         considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt::Specific([0, 0, 1, 0, 0]),
         ..Default::default()
     };
@@ -868,9 +870,10 @@ fn test_search_reverse_wild3_feebas_on_feebas_tile() {
         }],
         feebas_cycles: vec![350_226],
         methods: vec![Gen3Method::Wild2],
-        consider_cycles: true,
+        cycle_opts: Wild3SearcherCycleOpts::Calibrate {
+            lead_cycle_speed: Some(calculate_pid_speed(0x7933A9CB)),
+        },
         using_white_flute: false,
-        lead_cycle_speed: Some(calculate_pid_speed(0x7933A9CB)),
         ..Default::default()
     };
 

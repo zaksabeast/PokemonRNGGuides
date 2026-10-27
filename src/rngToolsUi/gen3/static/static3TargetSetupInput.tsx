@@ -15,7 +15,8 @@ import {
   getPossibleStatic3Species,
 } from "./constants.tsx";
 import { PaintingReseedingFields } from "../pokemonRng/targetSetupInput";
-import { getGen3SpeciesOptions, species } from "~/types/species";
+import { species } from "~/types/species";
+import { getGen3SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
 import { lcrng_distance } from "~/utils/lcrng";
 import { z } from "zod";
 

@@ -3,12 +3,7 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-use super::calc_modulo_cycle_unsigned;
-
-pub const BASE_LEAD_PID: u32 = 0;
-pub const BASE_LEAD_PID_MOD_24_CYCLES: usize = calc_modulo_cycle_unsigned(BASE_LEAD_PID, 24);
-
-#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, Eq, PartialOrd, PartialEq, Tsify, Serialize, Ord, Deserialize)]
 #[allow(non_camel_case_types)]
 #[repr(u8)]
 pub enum Moment {
@@ -43,9 +38,8 @@ pub enum Moment {
     PickWildMonNature_RandomTestSynchro,
     CreateWildMon_RandomTestCuteCharm,
     PickWildMonNature_RandomPickNature,
-    CreateMonWithNature_RandomPidLowFirst,
-    CreateMonWithNature_RandomPidLowLast,
-    CreateMonWithNature_RandomPidHighLast,
+    CreateMonWithNature_RandomPidLow,
+    CreateMonWithNature_RandomPidHigh,
     CreateBoxMon_RandomIvs1,
     CreateBoxMon_RandomIvs2,
 }
@@ -72,17 +66,24 @@ impl<T> CycleRange<T> {
     pub fn from_start_len(start: T, len: usize) -> CycleRange<T> {
         CycleRange { start, len }
     }
+
+    pub fn from_start_end(start: T, end: T) -> CycleRange<T>
+    where
+        T: Copy + std::ops::Sub<Output = T> + TryInto<usize>,
+    {
+        CycleRange {
+            start,
+            len: (end - start)
+                .try_into()
+                .ok()
+                .expect("Invalid cycle range length"),
+        }
+    }
 }
 
 impl CycleRange<usize> {
     pub fn end(&self) -> usize {
         self.start + self.len
-    }
-    pub fn from_start_end(start: usize, end: usize) -> CycleRange<usize> {
-        CycleRange {
-            start,
-            len: end - start,
-        }
     }
     pub fn set_end(&mut self, end: usize) {
         self.len = end - self.start;
@@ -121,7 +122,6 @@ impl CycleAndModCount {
         self.cycle += cycle;
     }
     pub fn add_mod(&mut self, lead_pid_mod: usize) {
-        self.cycle += lead_pid_mod * BASE_LEAD_PID_MOD_24_CYCLES;
         self.lead_pid_mod += lead_pid_mod;
     }
 }
@@ -132,15 +132,6 @@ pub struct CycleAndModAtMoment {
     pub cycle: usize,
     pub lead_pid_mod: usize,
     pub moment: Moment,
-}
-
-impl CycleAndModAtMoment {
-    pub fn apply_lead_pid_speed(&self, lead_pid_speed: usize) -> CycleAtMoment {
-        CycleAtMoment {
-            cycle: self.cycle + lead_pid_speed * self.lead_pid_mod,
-            moment: self.moment,
-        }
-    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]

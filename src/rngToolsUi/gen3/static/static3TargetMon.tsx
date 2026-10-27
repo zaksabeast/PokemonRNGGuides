@@ -1,4 +1,4 @@
-import { getGen3SpeciesOptions } from "~/types/species";
+import { getGen3SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
 import { Typography, Link } from "~/components";
 import {
   FormSection,
@@ -37,7 +37,7 @@ export const Static3TargetMon = ({ game }: { game: Static3Game }) => {
   const possibleSpecies = getPossibleStatic3Species(game);
   const selectedSpecies = watched.species ?? possibleSpecies[0];
   const selectedRoaming = watched.roaming ?? false;
-  const filterShiny = watched.filter_shiny ?? false;
+  const filterShiny = watched.filter_shiny ?? "Any";
 
   const hasMultiplePossibleRoaming = hasMultiplePossibleRoamingValuesForSpecies(
     game,
@@ -73,13 +73,14 @@ export const Static3TargetMon = ({ game }: { game: Static3Game }) => {
           ]}
         />
       )}
-      {game === "emerald" && isStarter && filterShiny && (
+      {game === "emerald" && isStarter && filterShiny !== "Any" && (
         <Typography.Text>
           Note: Use <Link href="/emerald-shiny-starter/">Shiny Starter</Link>{" "}
           webtool if you don't know your SID.
         </Typography.Text>
       )}
       <PkmFilter<FormState>
+        generation={3}
         species={selectedSpecies}
         displayHiddenAbility={false}
       />

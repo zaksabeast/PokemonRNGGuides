@@ -1,9 +1,10 @@
+import type { ShinyFilter } from "~/rngTools";
 import { Alert } from "~/components";
 import {
   FieldRow,
   FormNumberField,
-  FormSummary,
   FormSwitchField,
+  FormSummary,
   FrameBeforePaintingField,
 } from "~/components/form";
 import { match } from "ts-pattern";
@@ -144,7 +145,7 @@ const tidSidNotApplicableTooltip = (title: string) => ({
 
 type TidSidSetupFilterFieldsProps = {
   game: Static3Game;
-  filter_shiny: boolean;
+  filter_shiny: ShinyFilter;
   usingAceForSid: boolean;
 };
 
@@ -153,7 +154,7 @@ export const TidSidSetupFilterFields = ({
   filter_shiny,
   usingAceForSid,
 }: TidSidSetupFilterFieldsProps) => {
-  if (!filter_shiny) {
+  if (filter_shiny === "Any") {
     return (
       <FormSummary
         rows={[

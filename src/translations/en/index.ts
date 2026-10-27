@@ -3,6 +3,9 @@ import { LanguageKey } from "~/types/language";
 export const translations = {
   language: "en",
   Shiny: "Shiny",
+  "Not shiny": "Not shiny",
+  "Square shiny": "Square shiny",
+  "Star shiny": "Star shiny",
   Nature: "Nature",
   Ability: "Ability",
   Gender: "Gender",
@@ -108,6 +111,7 @@ export const translations = {
   "Initial Advance": "Initial Advance",
   "Max Advances": "Max Advances",
   TSV: "TSV",
+  TRV: "TRV",
   "Transporter Gender": "Transporter Gender",
   Date: "Date",
   Name: "Name",
@@ -427,6 +431,11 @@ export const translations = {
   "Kukui's Dialogue": "Kukui's Dialogue",
   "Choose Starter": "Choose Starter",
   "Select Yes at": "Select Yes at",
+  Fossil: "Fossil",
+  "Fossil Dialogue": "Fossil Dialogue",
+  "Ordinary lead": "Ordinary lead",
+  Synchronize: "Synchronize",
+  "Synchronize Nature": "Synchronize Nature",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

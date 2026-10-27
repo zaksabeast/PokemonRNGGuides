@@ -67,7 +67,7 @@ export const Static3SetupFilter = ({ game }: { game: Static3Game }) => {
     <FormSection title="Setup">
       <TidSidSetupFilterFields
         game={game}
-        filter_shiny={filter_shiny ?? false}
+        filter_shiny={filter_shiny ?? "Any"}
         usingAceForSid={usingAceForSid ?? false}
       />
       {game === "rs" && (

@@ -39,7 +39,7 @@ import { ivMethods } from "./constants";
 import { Gen3EmbeddedTimer } from "~/rngToolsUi/gen3/shared/timer";
 import { match, P } from "ts-pattern";
 import { Nullable } from "~/types/utils";
-import { getGen3SpeciesOptions } from "~/types/species";
+import { getGen3SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
 import { atom, useAtom } from "jotai";
 import { formatOffset } from "~/utils/offsetSymbol";
 import { Translations } from "~/translations";

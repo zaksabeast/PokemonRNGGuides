@@ -1,4 +1,5 @@
 import React from "react";
+import { match } from "ts-pattern";
 import { z } from "zod";
 import {
   Alert,
@@ -12,7 +13,11 @@ import {
   RngToolSubmit,
   SectionCard,
 } from "~/components";
-import { multiWorkerRngTools, Gen7TargetTimeline } from "~/rngTools";
+import {
+  multiWorkerRngTools,
+  Gen7TargetTimeline,
+  Gen7TimelineLeap,
+} from "~/rngTools";
 import { HexSchema } from "~/utils/number";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { useCancellablePromise } from "~/hooks/useCancellablePromise";
@@ -23,6 +28,7 @@ import {
   PRESS_TIMING_MIN_HEIGHT,
 } from "./sectionCards";
 import { useSafeAdvances } from "./useSafeAdvances";
+import { Color } from "@emotion/react";
 
 // Advances are usize in wasm (32 bits). This leaves room to scan past the
 // target and keep pressing "Show More" without overflowing.
@@ -112,6 +118,41 @@ type ResultCardProps = {
   selection: Selection | null;
 };
 
+type LeapCardContentProps = {
+  target: number | null;
+  leap: Gen7TimelineLeap | null;
+  unreachable: boolean;
+};
+
+const LeapCardContent = ({
+  target,
+  leap,
+  unreachable,
+}: LeapCardContentProps) => {
+  const t = useActiveRouteTranslations();
+
+  if (unreachable && target != null) {
+    return (
+      <Alert
+        type="warning"
+        title={t[
+          "{target} can't be reached from this timeline. Pick another target in 3DSRNGTool."
+        ].replace("{target}", target.toString())}
+      />
+    );
+  }
+
+  return (
+    <PressTiming
+      label={t["Press A at"]}
+      labelColor="Primary"
+      advance={leap?.leap_advance ?? null}
+      waitLabel={t["Time"]}
+      waitSteps={leap?.steps_to_leap ?? null}
+    />
+  );
+};
+
 const LeapCard = ({ target, selection }: ResultCardProps) => {
   const t = useActiveRouteTranslations();
   const targetTimeline = selection?.targetTimeline ?? null;
@@ -120,39 +161,19 @@ const LeapCard = ({ target, selection }: ResultCardProps) => {
   // when it's on the timeline.
   const unreachable = targetTimeline != null && target != null && leap == null;
 
-  const borderColor = (() => {
-    if (unreachable) {
-      return "Warning";
-    }
-    return leap == null ? undefined : "Primary";
-  })();
-
-  const content = (() => {
-    if (unreachable) {
-      return (
-        <Alert
-          type="warning"
-          title={t[
-            "{target} can't be reached from this timeline. Pick another target in 3DSRNGTool."
-          ].replace("{target}", target.toString())}
-        />
-      );
-    }
-    return (
-      <PressTiming
-        label={t["Press A at"]}
-        labelColor="Primary"
-        advance={leap?.leap_advance ?? null}
-        waitLabel={t["Time"]}
-        waitSteps={leap?.steps_to_leap ?? null}
-      />
-    );
-  })();
+  const borderColor: Color | undefined = match({ unreachable, leap })
+    .with({ unreachable: true }, () => "Warning" as const)
+    .with({ leap: null }, () => undefined)
+    .otherwise(() => "Primary" as const);
 
   return (
     <SectionCard title={t["Timeline Leap"]} borderColor={borderColor}>
       <Flex vertical justify="center" minHeight={PRESS_TIMING_MIN_HEIGHT}>
-        {content}
+        <LeapCardContent
+          target={target}
+          leap={leap}
+          unreachable={unreachable}
+        />
       </Flex>
     </SectionCard>
   );
@@ -187,11 +208,13 @@ const fetchSafeAdvances = (
   count: number,
 ) =>
   multiWorkerRngTools.gen7_next_safe_advances({
-    seed: opts.seed,
     npc_count: opts.npc_count,
-    current_advance: opts.current_advance,
-    from_advance: fromAdvance,
-    safe_advance_count: count,
+    scene: {
+      seed: opts.seed,
+      current_advance: opts.current_advance,
+      from_advance: fromAdvance,
+      safe_advance_count: count,
+    },
   });
 
 export const Gen7TimelineFinder = () => {

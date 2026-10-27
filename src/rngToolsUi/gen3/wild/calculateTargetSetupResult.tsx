@@ -20,7 +20,7 @@ import { emeraldWildGameData } from "./wild3CalibCaughtMon";
 import { nature_from_pid } from "~/types";
 import { formatProbability } from "~/utils/formatProbability";
 import { formatHex } from "~/utils/formatHex";
-import { Flex } from "~/components";
+import { Flex, PokemonName } from "~/components";
 
 const getProbabilityInfo = async (
   res: Wild3GeneratorMonResult,
@@ -122,15 +122,20 @@ export const calculateTargetSetupResult = async (
       getGen3PkmFilterInitialValues(),
       null,
     ),
-    consider_cycles: true,
-    consider_rng_manipulated_lead_pid: true,
-    generate_even_if_impossible: true,
     using_white_flute: targetSetup.requiresWhiteFlute,
     roamer_state: targetSetup.roamerState,
     mass_outbreak_state: targetSetup.massOutbreakState,
     feebas_state: targetSetup.feebasState,
     feebas_cycles: targetSetup.feebasCycles,
-    lead_cycle_speed,
+    cycle_opts:
+      lead_cycle_speed == null
+        ? {
+            Searching: {
+              generate_even_if_impossible: true,
+              consider_rng_manipulated_lead_pid: true,
+            },
+          }
+        : { LikelihoodForLead: { lead_cycle_spd: lead_cycle_speed } },
     safari_pokeblock:
       targetSetup.safariPokeblock != null
         ? {
@@ -199,9 +204,9 @@ export const calculateTargetSetupResult = async (
     content: (
       <Flex vertical>
         <div>
-          {species}, Lvl {res.lvl}, {gender}, {abilityStr}, {nature}, HP{" "}
-          {stats.hp}, ATK {stats.atk}, DEF {stats.def}, SPA {stats.spa}, SPD{" "}
-          {stats.spd}, SPE {stats.spe}
+          <PokemonName species={species} />, Lvl {res.lvl}, {gender},{" "}
+          {abilityStr}, {nature}, HP {stats.hp}, ATK {stats.atk}, DEF{" "}
+          {stats.def}, SPA {stats.spa}, SPD {stats.spd}, SPE {stats.spe}
         </div>
         <div>
           PID: {formatHex(res.pid)}, IVS: {ivs.hp}/{ivs.atk}/{ivs.def}/{ivs.spa}

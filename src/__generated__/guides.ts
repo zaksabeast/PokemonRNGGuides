@@ -5748,15 +5748,15 @@ export const guides = {
       hideFromNavDrawer: true,
       addedOn: null,
       translation: null,
-      layout: "application",
-      lastUpdated: "2026-07-15",
+      layout: "titled",
+      lastUpdated: "2026-10-13",
       type: "baseGuide",
       canonical: "/experiments/",
       file: "guides/Experiments.mdx",
       translations: null,
       guideGroupId: "en:/experiments/:User Settings",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool"],
+      displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Experiments.mdx")),
     getRawFile: memoize(async () => {
@@ -5893,6 +5893,44 @@ export const guides = {
       const file = await import(
         "~/../guides/Translations/fr/Tools and Emulators/CaptureSight Install.mdx?raw"
       );
+      return file.default;
+    }),
+  },
+  "/freeze-time-usum-fossil/": {
+    meta: {
+      id: "/freeze-time-usum-fossil/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "true-Fossil RNG",
+      isNew: false,
+      title: "Ultra Sun and Ultra Moon Fossil RNG",
+      navDrawerTitle: "Fossil RNG",
+      description:
+        "Learn how to RNG fossil Pokemon in Ultra Sun and Ultra Moon for perfect IVs, natures, and shinies.",
+      slug: "/freeze-time-usum-fossil/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-10-18",
+      type: "baseGuide",
+      canonical: "/freeze-time-usum-fossil/",
+      file: "guides/Gen 7/Fossils.mdx",
+      translations: null,
+      guideGroupId: "en:true-Fossil RNG:Ultra Sun and Ultra Moon",
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/freeze-time-usum-fossil/" },
+      },
+      displayAttributes: ["web_tool", "rough_draft"],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 7/Fossils.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 7/Fossils.mdx?raw");
       return file.default;
     }),
   },
@@ -17634,6 +17672,7 @@ export const guideSlugs = [
   "/fire-red-and-leaf-green/",
   "/fr-bdsp-advance-rng/",
   "/fr-install-capturesight/",
+  "/freeze-time-usum-fossil/",
   "/frlg-gen3-sid/",
   "/frlg-seeding-bot/",
   "/frlg-static/",

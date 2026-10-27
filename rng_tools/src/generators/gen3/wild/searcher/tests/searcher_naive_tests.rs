@@ -4,7 +4,8 @@ use crate::{
     gen3::{
         Gen3Lead, Gen3Method, Gen3PkmFilter, SpeciesData, Wild3Action, Wild3EncounterGameData,
         Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData, Wild3MapSetups,
-        Wild3SearcherOptions, Wild3SearcherResultMon, calculate_pid_speed, search_wild3_naive,
+        Wild3SearcherCycleOpts, Wild3SearcherOptions, Wild3SearcherResultMon, calculate_pid_speed,
+        search_wild3_naive,
     },
     rng::lcrng::Pokerng,
 };
@@ -441,8 +442,7 @@ fn test_search_wild3_naive_debug() {
         initial_advances: 1005,
         max_advances: 0,
         max_result_count: 100,
-        consider_cycles: false,
-        consider_rng_manipulated_lead_pid:false,
+        cycle_opts: Wild3SearcherCycleOpts::Inactive,
         leads: vec![Gen3Lead::Vanilla],
         filter: PkmFilter::new_allow_all(),
     };
@@ -505,9 +505,10 @@ fn test_search_wild3_naive_magikarp_in_feebas_map() {
             }],
             feebas_cycles: vec![350_226],
             methods: vec![Gen3Method::Wild4],
-            consider_cycles: true,
+            cycle_opts: Wild3SearcherCycleOpts::Calibrate {
+                lead_cycle_speed: Some(calculate_pid_speed(0x7933A9CB)),
+            },
             using_white_flute: false,
-            lead_cycle_speed: Some(calculate_pid_speed(0x7933A9CB)),
             ..Default::default()
         };
 

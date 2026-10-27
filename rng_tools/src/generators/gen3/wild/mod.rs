@@ -1,13 +1,16 @@
 mod calc_modulo_cycle_count;
+#[cfg(test)]
+mod cycle_calibration;
+#[cfg(test)]
+mod cycle_calibration_tests;
 mod cycle_counter;
 mod cycle_data_calculator;
 mod cycle_range;
 mod distribution_generator;
 mod filter;
 mod game_data;
+mod generator;
 mod generator_main;
-mod generator_new;
-mod generator_old;
 mod lcrng_distance;
 mod most_dense_pid_chunks_by_spd;
 mod searcher;
@@ -19,9 +22,8 @@ pub use cycle_data_calculator::*;
 pub use cycle_range::*;
 pub use filter::*;
 pub use game_data::*;
+pub use generator::*;
 pub use generator_main::*;
-pub use generator_new::*;
-pub use generator_old::generate_wild3_old;
 pub use lcrng_distance::*;
 pub use most_dense_pid_chunks_by_spd::*;
 pub use searcher::*;

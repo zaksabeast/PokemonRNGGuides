@@ -2,10 +2,10 @@ use super::*;
 use crate::{
     EncounterSlot, HiddenPowerFilter, PokemonType, ShinyFilter, ShinyType,
     gen3::{
-        FASTEST_DIVIDENDS_MOD_24_RANGE, Gen3PidSpeedFilter, Wild3SpecialEncounterGameData,
-        apply_cycles_causing_vblanks_on_cycle_counter, calculate_pid_speed,
-        get_min_mid_max_pre_sweet_scent_cycle, get_min_mid_max_vblank_cycle_duration,
-        search_wild3_naive,
+        FASTEST_DIVIDENDS_MOD_24_RANGE, Gen3PidSpeedFilter, Wild3SearcherCycleOpts,
+        Wild3SpecialEncounterGameData, apply_cycles_causing_vblanks_on_cycle_counter,
+        calculate_pid_speed, get_min_mid_max_pre_sweet_scent_cycle,
+        get_min_mid_max_vblank_cycle_duration, search_wild3_naive,
     },
 };
 
@@ -540,7 +540,7 @@ fn test_search_reverse_wild3_rock_smash() {
             species: Some(Species::Shuckle),
             ..Default::default()
         },
-        generate_even_if_impossible: true,
+        cycle_opts: Wild3SearcherCycleOpts::Inactive,
         ..Default::default()
     };
 
@@ -592,7 +592,7 @@ fn test_search_reverse_wild3_rock_smash_white_flute() {
             species: Some(Species::Shuckle),
             ..Default::default()
         },
-        generate_even_if_impossible: true,
+        cycle_opts: Wild3SearcherCycleOpts::Inactive,
         using_white_flute: true,
         ..Default::default()
     };
@@ -673,9 +673,10 @@ fn test_search_reverse_wild3_safari_egg_gligar_has_result() {
         leads: vec![Gen3Lead::Egg],
         map_setups: create_safari_southeast_map_setups(),
         methods: vec![Gen3Method::Wild1],
-        consider_cycles: true,
-        consider_rng_manipulated_lead_pid: true,
-        generate_even_if_impossible: true,
+        cycle_opts: Wild3SearcherCycleOpts::SearchNewTarget {
+            consider_rng_manipulated_lead_pid: true,
+            generate_even_if_impossible: true,
+        },
         using_white_flute: true,
         considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt::None,
         ..Default::default()
@@ -712,8 +713,9 @@ fn test_search_reverse_wild3_safari_cute_charm_pokeblock_hoothoot_has_result() {
         leads: vec![Gen3Lead::CuteCharm(Gender::Female)],
         map_setups: create_safari_southeast_map_setups(),
         methods: vec![Gen3Method::Wild4],
-        consider_cycles: true,
-        lead_cycle_speed: Some(18),
+        cycle_opts: Wild3SearcherCycleOpts::Calibrate {
+            lead_cycle_speed: Some(18),
+        },
         considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt::Specific([0, 0, 1, 0, 0]),
         ..Default::default()
     };
@@ -868,9 +870,10 @@ fn test_search_reverse_wild3_feebas_on_feebas_tile() {
         }],
         feebas_cycles: vec![350_226],
         methods: vec![Gen3Method::Wild2],
-        consider_cycles: true,
+        cycle_opts: Wild3SearcherCycleOpts::Calibrate {
+            lead_cycle_speed: Some(calculate_pid_speed(0x7933A9CB)),
+        },
         using_white_flute: false,
-        lead_cycle_speed: Some(calculate_pid_speed(0x7933A9CB)),
         ..Default::default()
     };
 

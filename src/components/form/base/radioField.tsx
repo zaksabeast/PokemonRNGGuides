@@ -13,6 +13,7 @@ type OptionValue = string | number | null;
 export type RadioOption<Value extends OptionValue> = {
   label: React.ReactNode;
   value: Value;
+  icon?: React.ReactNode;
   disabled?: boolean;
 };
 
@@ -88,6 +89,7 @@ const Cell = styled(
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  gap: 4,
   minHeight: theme.size.touchTarget,
   [theme.mediaQueries.dense]: {
     minHeight: theme.size.dense.touchTarget,
@@ -211,6 +213,7 @@ export const RadioField = <Value extends OptionValue>({
                 disabled={disabled === true || option.disabled === true}
                 onChange={() => onChange?.(option.value)}
               />
+              {option.icon}
               <CellLabel>
                 <span>{option.label}</span>
                 <BoldSizer aria-hidden>{option.label}</BoldSizer>

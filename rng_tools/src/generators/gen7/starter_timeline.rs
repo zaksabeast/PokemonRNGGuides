@@ -1,5 +1,7 @@
-use super::{Timeline, model_count_from_npcs};
+use super::usum_gift_search::UsumGift;
+use super::{GiftSettings, Timeline, model_count_from_npcs};
 use crate::rng::{GetRand, Rng};
+use crate::{GenderRatio, Nature};
 use std::ops::RangeInclusive;
 
 /// Kukui's dialogue before "choose this starter?" ("Go on and choose the one
@@ -30,6 +32,47 @@ const MAX_STEPS_AFTER_YES: u32 = 1500;
 pub(super) const MAX_ADVANCES_AFTER_YES: usize =
     KUKUI_DIALOGUE_MODELS * MAX_STEPS_AFTER_YES as usize;
 
+pub(super) const STARTER_GIFT: GiftSettings = GiftSettings {
+    steps_from_a_press_to_generation: 12,
+    gender_ratio: GenderRatio::OneToSeven,
+    // Starters can't be synchronized.
+    sync_nature: None,
+};
+
+pub(super) struct UsumStarter;
+
+pub(super) const MIN_ADVANCES_TO_YES: usize = KUKUI_DIALOGUE_MODELS
+    * STEPS_FROM_KUKUI_A_TO_YES_NO as usize
+    + MIN_STEPS_FROM_YES_NO_TO_YES as usize;
+
+impl UsumGift for UsumStarter {
+    const MODELS: usize = KUKUI_DIALOGUE_MODELS;
+    const MIN_START_ADVANCE: usize = 478;
+    const MIN_ADVANCES_TO_START: usize = MIN_ADVANCES_TO_YES;
+    const MIN_ADVANCES_AFTER_START: usize = 0;
+    const MAX_ADVANCES_AFTER_START: usize = MAX_ADVANCES_AFTER_YES;
+
+    fn after_start_timeline(yes_no: Timeline) -> Timeline {
+        after_yes_timeline(yes_no)
+    }
+
+    fn skip_to_first_a_press(after_yes: &mut Timeline) {
+        skip_to_first_starter_a_press(after_yes);
+    }
+
+    fn can_press_a(after_yes: &Timeline, last_advance: usize) -> bool {
+        can_press_a_on_starter(after_yes, last_advance)
+    }
+
+    fn step_to_next_a_press(after_yes: &mut Timeline) {
+        after_yes.step();
+    }
+
+    fn settings(_sync_nature: Option<Nature>) -> GiftSettings {
+        STARTER_GIFT
+    }
+}
+
 pub(super) fn kukui_timeline(seed: u32, safe_advance: usize) -> Timeline {
     Timeline::new(seed, KUKUI_DIALOGUE_MODELS, safe_advance)
 }
@@ -53,15 +96,14 @@ pub(super) fn can_press_a_on_starter<R: Rng + GetRand<u64>>(
     after_yes: &Timeline<R>,
     last_advance: usize,
 ) -> bool {
-    let is_in_time = after_yes.steps_since_start() <= MAX_STEPS_AFTER_YES;
-    is_in_time && after_yes.advance() <= last_advance
+    after_yes.can_press_a(MAX_STEPS_AFTER_YES, last_advance)
 }
 
 #[cfg(test)]
 mod test {
     use super::*;
     use crate::gen7::test_utils::{NO_BLINK, step_to_advance};
-    use crate::gen7::{ModelState, NpcModel, TimelineStep, generate_starter};
+    use crate::gen7::{ModelState, NpcModel, TimelineStep, generate_gift};
     use crate::rng::{Rng, sfmt::Sfmt};
     use crate::test_utils::FakeRng;
     use crate::{Gender, Ivs, Nature, TsvTrv};
@@ -141,7 +183,7 @@ mod test {
         assert_eq!(distinct_advances(&second_cut, expected.len()), expected);
 
         step_to_advance(&mut after_yes, 9843);
-        let starter = generate_starter(after_yes, TsvTrv::default());
+        let starter = generate_gift(after_yes, TsvTrv::default(), &STARTER_GIFT);
         assert_eq!(starter.nature, Nature::Relaxed);
         assert_eq!(starter.gender, Gender::Male);
         assert_eq!(starter.ivs, Ivs::new(19, 28, 17, 30, 6, 30));

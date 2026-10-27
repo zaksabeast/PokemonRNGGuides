@@ -2,10 +2,11 @@ import React from "react";
 import { Card } from "./card";
 import { Flex } from "./flex";
 import { Typography } from "./typography";
+import { Color } from "@emotion/react";
 
 type SectionCardProps = {
   title: string;
-  borderColor?: React.ComponentProps<typeof Card>["borderColor"];
+  borderColor?: Color;
   children: React.ReactNode;
 };
 

@@ -431,6 +431,11 @@ export const translations = {
   "Kukui's Dialogue": "Kukui's Dialogue",
   "Choose Starter": "Choose Starter",
   "Select Yes at": "Select Yes at",
+  Fossil: "Fossil",
+  "Fossil Dialogue": "Fossil Dialogue",
+  "Ordinary lead": "Ordinary lead",
+  Synchronize: "Synchronize",
+  "Synchronize Nature": "Synchronize Nature",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

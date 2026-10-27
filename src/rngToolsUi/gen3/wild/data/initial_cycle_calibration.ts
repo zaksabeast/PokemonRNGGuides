@@ -3,7 +3,7 @@ import type {
   Wild3Action,
   Wild3InitialCycleDistribution,
   Wild3MapGameData,
-  Wild3MovementMode,
+  PlayingSong,
   Wild3Weather,
 } from "~/rngTools";
 import {
@@ -28,12 +28,12 @@ type CalibrationMap = Pick<
 >;
 type Setup = Pick<
   Wild3InitialCycleDistribution,
-  "action" | "movement" | "weather"
+  "action" | "playing_song" | "weather"
 >;
 
 export type Wild3ActionCapabilities = {
   possible_weather_by_action: Record<Wild3Action, Wild3Weather[]>;
-  possible_movement_by_action: Record<Wild3Action, Wild3MovementMode[]>;
+  possible_playing_song_by_action: Record<Wild3Action, PlayingSong[]>;
 };
 
 export type Wild3CalibrationInfo = {
@@ -179,11 +179,11 @@ const audioComponentName = (song: string, setup: Setup): string => {
     setup.action === "OldRod" ||
     setup.action === "GoodRod" ||
     setup.action === "SuperRod";
-  if (setup.movement === "Bike") {
+  if (setup.playing_song === "BikeSong") {
     return `CYCLING_${fishing ? "FISHING_" : ""}${weather}_AUDIO`;
   }
 
-  if (setup.movement === "Surf") {
+  if (setup.playing_song === "SurfSong") {
     return `SURF_${fishing ? "FISHING_" : ""}${weather}_AUDIO`;
   }
 
@@ -218,19 +218,19 @@ const weatherForAction = (
   }
 };
 
-const movementForAction = (
+const playingSongsForAction = (
   map: CalibrationMap,
   action: Wild3Action,
-): Wild3MovementMode[] => {
+): PlayingSong[] => {
   if (action === "SweetScentWater") {
-    return ["Surf"];
+    return ["SurfSong"];
   }
 
-  const land: Wild3MovementMode[] = mapCalibrationSettings[map.map_id]?.can_bike
-    ? ["OnFoot", "Bike"]
-    : ["OnFoot"];
+  const land: PlayingSong[] = mapCalibrationSettings[map.map_id]?.can_bike
+    ? ["MapSong", "BikeSong"]
+    : ["MapSong"];
   if (action === "OldRod" || action === "GoodRod" || action === "SuperRod") {
-    return [...land, "Surf"];
+    return [...land, "SurfSong"];
   }
 
   return land;
@@ -247,15 +247,14 @@ export const getWild3ActionCapabilities = (
     SuperRod: [],
     RockSmash: [],
   };
-  const possible_movement_by_action: Record<Wild3Action, Wild3MovementMode[]> =
-    {
-      SweetScentLand: [],
-      SweetScentWater: [],
-      OldRod: [],
-      GoodRod: [],
-      SuperRod: [],
-      RockSmash: [],
-    };
+  const possible_playing_song_by_action: Record<Wild3Action, PlayingSong[]> = {
+    SweetScentLand: [],
+    SweetScentWater: [],
+    OldRod: [],
+    GoodRod: [],
+    SuperRod: [],
+    RockSmash: [],
+  };
 
   wild3Actions.forEach((action, index) => {
     if ((map.slots_by_action[index]?.length ?? 0) === 0) {
@@ -263,21 +262,24 @@ export const getWild3ActionCapabilities = (
     }
 
     possible_weather_by_action[action] = weatherForAction(map, action);
-    possible_movement_by_action[action] = movementForAction(map, action);
+    possible_playing_song_by_action[action] = playingSongsForAction(
+      map,
+      action,
+    );
   });
 
-  return { possible_weather_by_action, possible_movement_by_action };
+  return { possible_weather_by_action, possible_playing_song_by_action };
 };
 
 const mapSetups = (map: CalibrationMap): Setup[] => {
-  const { possible_weather_by_action, possible_movement_by_action } =
+  const { possible_weather_by_action, possible_playing_song_by_action } =
     getWild3ActionCapabilities(map);
 
   return wild3Actions.flatMap((action) => {
-    return possible_movement_by_action[action].flatMap((movement) =>
+    return possible_playing_song_by_action[action].flatMap((playing_song) =>
       possible_weather_by_action[action].map((weather) => ({
         action,
-        movement,
+        playing_song,
         weather,
       })),
     );
@@ -302,7 +304,7 @@ const composeCalibration = (
   const exact =
     source.map_internal_idx === map.map_internal_idx &&
     setup.action === "SweetScentLand" &&
-    setup.movement === "OnFoot" &&
+    setup.playing_song === "MapSong" &&
     setup.weather === "Sunny" &&
     source.song === song;
   const joint =

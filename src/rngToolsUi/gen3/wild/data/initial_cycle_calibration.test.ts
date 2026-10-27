@@ -30,14 +30,14 @@ test("constructed game maps carry serializable combined distributions", () => {
   ).toEqual([
     {
       action: "SweetScentLand",
-      movement: "OnFoot",
+      playing_song: "MapSong",
       weather: "Sunny",
       min: 34_686,
       max: 72_512,
     },
     {
       action: "SweetScentLand",
-      movement: "Bike",
+      playing_song: "BikeSong",
       weather: "Sunny",
       min: 0,
       max: 280_895,
@@ -102,7 +102,7 @@ test("measured maps retain bounds and raw provenance without sending metadata to
   const { distribution, ...parameters } = info.calibration;
   expect(parameters).toEqual({
     action: "SweetScentLand",
-    movement: "OnFoot",
+    playing_song: "MapSong",
     weather: "Sunny",
     min: 34_686,
     max: 72_512,
@@ -127,7 +127,7 @@ test("measured maps retain bounds and raw provenance without sending metadata to
     "distribution",
     "max",
     "min",
-    "movement",
+    "playing_song",
     "weather",
   ]);
 });
@@ -150,21 +150,21 @@ test("fallback and synthetic setups retain conservative filtering bounds", () =>
   )[0];
   expect(fallback).toEqual({
     action: "SweetScentLand",
-    movement: "OnFoot",
+    playing_song: "MapSong",
     weather: "Sunny",
     min: 0,
     max: 280_895,
   });
   expect(distribution[0].probability).toBe(0);
   const info = getWild3CalibrationInfo(map("MAP_ROUTE101", 0)).find(
-    (info) => info.calibration.movement === "Bike",
+    (info) => info.calibration.playing_song === "BikeSong",
   );
   expect(info?.audio.is_fake).toBe(true);
   expect(info?.fallback).toBe(true);
   expect([info?.calibration.min, info?.calibration.max]).toEqual([0, 280_895]);
 });
 
-test("weather and movement variants respect the map and encounter action", () => {
+test("weather and playing song variants respect the map and encounter action", () => {
   const weather = (id: string, index: number, action: string) => [
     ...new Set(
       getWild3VblankDistributions(map(id, index))
@@ -186,8 +186,8 @@ test("weather and movement variants respect the map and encounter action", () =>
   expect(
     getWild3VblankDistributions(map("MAP_ROUTE119", 12))
       .filter((calibration) => calibration.action === "SweetScentWater")
-      .map((calibration) => calibration.movement),
-  ).toEqual(["Surf", "Surf", "Surf"]);
+      .map((calibration) => calibration.playing_song),
+  ).toEqual(["SurfSong", "SurfSong", "SurfSong"]);
   expect(
     getWild3VblankDistributions({
       ...map("MAP_ROUTE101", 0),

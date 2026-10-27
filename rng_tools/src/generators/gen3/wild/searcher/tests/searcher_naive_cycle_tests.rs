@@ -2,8 +2,8 @@ use crate::{
     AbilityType, EncounterSlot, Gender, HiddenPower, Ivs, Nature, PkmFilter, PokemonType,
     ShinyType, Species, assert_list_eq,
     gen3::{
-        CycleRange, Gen3Lead, Gen3Method, Wild3EncounterIndex, Wild3MapGameData, Wild3MapSetups,
-        Wild3MovementMode, Wild3SearcherCycleData, Wild3SearcherCycleDataByLead,
+        CycleRange, Gen3Lead, Gen3Method, PlayingSong, Wild3EncounterIndex, Wild3MapGameData,
+        Wild3MapSetups, Wild3SearcherCycleData, Wild3SearcherCycleDataByLead,
         Wild3SearcherCycleOpts, Wild3SearcherOptions, Wild3SearcherResultMon, Wild3Weather,
         search_wild3_naive,
     },
@@ -27,7 +27,7 @@ fn test_search_wild3_cycle_methods_1_2_4() {
         max_result_count: 10,
         cycle_opts: Wild3SearcherCycleOpts::Calibrate {
             weather: Wild3Weather::Sunny,
-            movement: Wild3MovementMode::OnFoot,
+            playing_song: PlayingSong::MapSong,
             lead_cycle_speed: 500,
         },
         leads: vec![Gen3Lead::Vanilla],

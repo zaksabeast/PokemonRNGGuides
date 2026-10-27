@@ -286,8 +286,8 @@ export const Wild3TargetSetupSearcher = ({
           setWeather={(weather) =>
             setTargetSetupBoth({ ...targetSetup, weather })
           }
-          setMovement={(movement) =>
-            setTargetSetupBoth({ ...targetSetup, movement })
+          setPlayingSong={(playing_song) =>
+            setTargetSetupBoth({ ...targetSetup, playing_song })
           }
           permitEnablingDebugOptions={false}
           setLeadCycleSpeed={setLeadCycleSpeedBoth}

@@ -64,10 +64,10 @@ impl<'a> CdfCursor<'a> {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Tsify)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
-pub enum Wild3MovementMode {
-    OnFoot,
-    Bike,
-    Surf,
+pub enum PlayingSong {
+    MapSong,
+    BikeSong,
+    SurfSong,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Tsify, Default)]
@@ -86,7 +86,7 @@ pub struct Wild3InitialCycleDistribution {
     pub max: usize,
     pub distribution: Vec<CdfKnot>,
     pub action: Wild3Action,
-    pub movement: Wild3MovementMode,
+    pub playing_song: PlayingSong,
     pub weather: Wild3Weather,
 }
 
@@ -108,10 +108,10 @@ impl Wild3InitialCycleDistribution {
             45_000
         };
         let max = 75_000;
-        let movement = if action == Wild3Action::SweetScentWater {
-            Wild3MovementMode::Surf
+        let playing_song = if action == Wild3Action::SweetScentWater {
+            PlayingSong::SurfSong
         } else {
-            Wild3MovementMode::OnFoot
+            PlayingSong::MapSong
         };
 
         Self {
@@ -128,7 +128,7 @@ impl Wild3InitialCycleDistribution {
                 },
             ],
             action,
-            movement,
+            playing_song,
             weather: Wild3Weather::Sunny,
         }
     }

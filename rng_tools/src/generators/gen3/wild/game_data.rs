@@ -4,9 +4,7 @@ use wasm_bindgen::prelude::*;
 
 #[cfg(test)]
 use super::ALL_WILD3_ACTIONS;
-use super::{
-    VBLANK_FREQ, Wild3Action, Wild3InitialCycleDistribution, Wild3MovementMode, Wild3Weather,
-};
+use super::{PlayingSong, VBLANK_FREQ, Wild3Action, Wild3InitialCycleDistribution, Wild3Weather};
 use crate::{EncounterSlot, GenderRatio, Nature, PokemonType, Species};
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
@@ -146,14 +144,14 @@ impl Wild3MapGameData {
     pub fn get_initial_cycle_distr(
         &self,
         action: Wild3Action,
-        movement: Wild3MovementMode,
+        playing_song: PlayingSong,
         weather: Wild3Weather,
     ) -> &Wild3InitialCycleDistribution {
         self.vblank_distrs
             .iter()
             .find(|calibration| {
                 calibration.action == action
-                    && calibration.movement == movement
+                    && calibration.playing_song == playing_song
                     && calibration.weather == weather
             })
             .unwrap_or_else(|| Wild3InitialCycleDistribution::new_default(action))

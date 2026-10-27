@@ -414,10 +414,10 @@ fn create_result(
 // Generated with test: cargo test test_search_reverse_wild3_vblank_group_feebas
 // Hardcoded in feebasMapData.ts
 pub const FEEBAS_CYCLE_COUNT_BY_VBLANK: [std::ops::RangeInclusive<usize>; MAX_FEEBAS_VBLANK] = [
-    0..=250895,
-    210896..=486791,
-    426792..=722687,
-    642688..=800000,
+    0..=235895,
+    205896..=471791,
+    421792..=707687,
+    637688..=800000,
 ];
 
 pub fn get_feebas_possible_vblank_count(feebas_cycles: usize) -> Vec<usize> {

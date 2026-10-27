@@ -2,7 +2,7 @@ import type {
   Wild3Action,
   Wild3MapGameData,
   Wild3InitialCycleDistribution,
-  Wild3MovementMode,
+  PlayingSong,
   Wild3SearcherCycleData,
   Wild3SearcherCycleDataByLead,
   Wild3SearcherCycleOpts,
@@ -10,22 +10,42 @@ import type {
 } from "~/rngTools";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { formatProbability } from "~/utils/formatProbability";
+import { z } from "zod";
 
 export const wild3Weathers = [
   "Sunny",
   "Rain",
   "Thunderstorm",
 ] as const satisfies readonly Wild3Weather[];
-export const wild3Movements = [
-  "OnFoot",
-  "Bike",
-  "Surf",
-] as const satisfies readonly Wild3MovementMode[];
+export const wild3PlayingSongs = [
+  "MapSong",
+  "BikeSong",
+  "SurfSong",
+] as const satisfies readonly PlayingSong[];
 
 export type Wild3AudioInfluences = {
   weather: Wild3Weather;
-  movement: Wild3MovementMode;
+  playing_song: PlayingSong;
 };
+
+export const wild3AudioInfluencesSchema = z
+  .object({
+    weather: z.enum(wild3Weathers).optional().default("Sunny"),
+    playing_song: z.enum(wild3PlayingSongs).optional(),
+    movement: z.enum(["OnFoot", "Bike", "Surf"]).optional(),
+  })
+  .transform(({ weather, playing_song, movement }): Wild3AudioInfluences => {
+    const legacyPlayingSongs = {
+      OnFoot: "MapSong",
+      Bike: "BikeSong",
+      Surf: "SurfSong",
+    } as const satisfies Record<string, PlayingSong>;
+
+    return {
+      weather,
+      playing_song: playing_song ?? legacyPlayingSongs[movement ?? "OnFoot"],
+    };
+  });
 
 export type Wild3SearchAudioInfluences = {
   considerWeather: boolean;
@@ -33,8 +53,10 @@ export type Wild3SearchAudioInfluences = {
 };
 
 export const formatWild3Weather = (weather: Wild3Weather): string => weather;
-export const formatWild3Movement = (movement: Wild3MovementMode): string =>
-  movement === "OnFoot" ? "On foot" : movement;
+export const formatPlayingSong = (playingSong: PlayingSong): string =>
+  ({ MapSong: "Map song", BikeSong: "Bike song", SurfSong: "Surf song" })[
+    playingSong
+  ];
 
 export const getWild3SearchAudioInfluences = (
   values: Wild3SearchAudioInfluences & { recommendedSetups: boolean },
@@ -71,7 +93,7 @@ export const getWild3AudioInfluenceOptions = (
   },
 ): {
   weathers: Wild3Weather[];
-  movements: Wild3MovementMode[];
+  playingSongs: PlayingSong[];
   showAudioInfluences: boolean;
 } => {
   const map = getWild3EmeraldGameData().maps_data.find(
@@ -81,14 +103,16 @@ export const getWild3AudioInfluenceOptions = (
   const weathers = (map?.possible_weather_by_action[action] ?? []).filter(
     (weather) => options.considerWeather || weather === "Sunny",
   );
-  const movements = (map?.possible_movement_by_action[action] ?? []).filter(
-    (movement) => options.hasUnlockedBike || movement !== "Bike",
+  const playingSongs = (
+    map?.possible_playing_song_by_action[action] ?? []
+  ).filter(
+    (playing_song) => options.hasUnlockedBike || playing_song !== "BikeSong",
   );
 
   return {
     weathers,
-    movements,
-    showAudioInfluences: weathers.length > 1 || movements.length > 1,
+    playingSongs,
+    showAudioInfluences: weathers.length > 1 || playingSongs.length > 1,
   };
 };
 
@@ -97,7 +121,10 @@ export const normalizeWild3AudioInfluences = (
   action: Wild3Action,
   preferred: Partial<Wild3AudioInfluences> = {},
 ): Wild3AudioInfluences => {
-  const { weathers, movements } = getWild3AudioInfluenceOptions(mapId, action);
+  const { weathers, playingSongs } = getWild3AudioInfluenceOptions(
+    mapId,
+    action,
+  );
 
   return {
     weather:
@@ -105,11 +132,13 @@ export const normalizeWild3AudioInfluences = (
       weathers.find((weather) => weather === "Sunny") ??
       weathers[0] ??
       "Sunny",
-    movement:
-      movements.find((movement) => movement === preferred.movement) ??
-      movements.find((movement) => movement === "OnFoot") ??
-      movements[0] ??
-      "OnFoot",
+    playing_song:
+      playingSongs.find(
+        (playing_song) => playing_song === preferred.playing_song,
+      ) ??
+      playingSongs.find((playing_song) => playing_song === "MapSong") ??
+      playingSongs[0] ??
+      "MapSong",
   };
 };
 
@@ -122,7 +151,7 @@ export const getWild3InitialCycleDistribution = (
     (distribution) =>
       distribution.action === action &&
       distribution.weather === audioInfluences.weather &&
-      distribution.movement === audioInfluences.movement,
+      distribution.playing_song === audioInfluences.playing_song,
   );
 
 export const getWild3InitialCycleDistributionForSetup = (
@@ -172,7 +201,8 @@ export const getWild3TargetAudioInfluences = (
   const lower = data?.common_lower_lead;
   const upper = data?.common_upper_lead;
   const hasSharedAudioInfluences =
-    lower?.weather === upper?.weather && lower?.movement === upper?.movement;
+    lower?.weather === upper?.weather &&
+    lower?.playing_song === upper?.playing_song;
   const preferred =
     rngManipulatedLeadPid || hasSharedAudioInfluences
       ? (getDisplayedWild3CycleData(data, rngManipulatedLeadPid) ?? {})
@@ -207,19 +237,16 @@ export const getWild3LikelihoodAudioInfluenceLabels = (
   const audioInfluenceLabel = (entry: Wild3SearcherCycleData) => {
     const weather =
       entry.weather === "Rain" ? "Rainy" : formatWild3Weather(entry.weather);
-    const movement = {
-      OnFoot: "on foot",
-      Bike: "on bike",
-      Surf: "surfing",
-    }[entry.movement];
+    const playingSong = formatPlayingSong(entry.playing_song).toLowerCase();
 
-    return `Optimal setup: ${showWeather ? `${weather} weather, ` : ""}${movement}.`;
+    return `Optimal setup: ${showWeather ? `${weather} weather, ` : ""}${playingSong} playing.`;
   };
 
   if (
     data.every(
       (entry) =>
-        entry.weather === first.weather && entry.movement === first.movement,
+        entry.weather === first.weather &&
+        entry.playing_song === first.playing_song,
     )
   ) {
     return [audioInfluenceLabel(first)];

@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-use super::{CycleRange, MinMidMax, VBLANK_FREQ, Wild3MovementMode, Wild3Weather};
+use super::{CycleRange, MinMidMax, PlayingSong, VBLANK_FREQ, Wild3Weather};
 use crate::gen3::{
     COMMON_LEAD_RANGE, CycleAndModRange, FASTEST_MODULO_CYCLE_24, INFINITE_CYCLE,
     SLOWEST_MODULO_CYCLE_24, Wild3InitialCycleDistribution,
@@ -25,7 +25,7 @@ pub struct Wild3SearcherCycleData {
     pub lead_pid_cycle_count: usize,
     pub pre_sweet_scent_cycle_range: CycleRange<i32>,
     pub method_probability: f64,
-    pub movement: Wild3MovementMode,
+    pub playing_song: PlayingSong,
     pub weather: Wild3Weather,
 }
 
@@ -35,7 +35,7 @@ impl Wild3SearcherCycleData {
         pre_sweet_scent_cycle_start: i32,
         pre_sweet_scent_cycle_len: usize,
         method_probability: f64,
-        movement: Wild3MovementMode,
+        playing_song: PlayingSong,
         weather: Wild3Weather,
     ) -> Self {
         Wild3SearcherCycleData {
@@ -45,7 +45,7 @@ impl Wild3SearcherCycleData {
                 pre_sweet_scent_cycle_len,
             ),
             method_probability,
-            movement,
+            playing_song,
             weather,
         }
     }
@@ -54,7 +54,7 @@ impl Wild3SearcherCycleData {
             lead_pid_cycle_count: 0,
             pre_sweet_scent_cycle_range: CycleRange::from_start_len(0, 0),
             method_probability: 0f64,
-            movement: Wild3MovementMode::OnFoot,
+            playing_song: PlayingSong::MapSong,
             weather: Wild3Weather::Sunny,
         }
     }
@@ -69,7 +69,7 @@ impl Wild3SearcherCycleData {
             pre_sweet_scent_cycle_start,
             pre_sweet_scent_cycle_len,
             method_probability,
-            Wild3MovementMode::OnFoot,
+            PlayingSong::MapSong,
             Wild3Weather::Sunny,
         )
     }
@@ -165,7 +165,7 @@ fn find_best_cycle_data_for_lead_spd(
             lead_pid_cycle_count: lead_spd,
             pre_sweet_scent_cycle_range: initial_range,
             method_probability: probability,
-            movement: distr.movement,
+            playing_song: distr.playing_song,
             weather: distr.weather,
         };
 
@@ -219,7 +219,7 @@ pub fn calculate_cycle_data_for_specific_lead_spd(
         lead_pid_cycle_count,
         pre_sweet_scent_cycle_range,
         method_probability: distr.probability_for_range(&pre_sweet_scent_cycle_range),
-        movement: distr.movement,
+        playing_song: distr.playing_song,
         weather: distr.weather,
     }
 }
@@ -273,7 +273,7 @@ fn calculate_ideal_lead_cycle_data(
             lead_pid_cycle_count: speed,
             pre_sweet_scent_cycle_range: initial_range,
             method_probability: probability,
-            movement: distr.movement,
+            playing_song: distr.playing_song,
             weather: distr.weather,
         });
 
@@ -329,7 +329,7 @@ mod tests {
                 })
                 .collect(),
             action: Wild3Action::SweetScentLand,
-            movement: Wild3MovementMode::OnFoot,
+            playing_song: PlayingSong::MapSong,
             weather: Wild3Weather::Sunny,
         }
     }
@@ -360,7 +360,7 @@ mod tests {
             31_500,
             500,
             1.0,
-            Wild3MovementMode::OnFoot,
+            PlayingSong::MapSong,
             Wild3Weather::Rain,
         );
 
@@ -401,7 +401,7 @@ mod tests {
                 },
             ],
             action: Wild3Action::SweetScentLand,
-            movement: Wild3MovementMode::OnFoot,
+            playing_song: PlayingSong::MapSong,
             weather: Wild3Weather::Sunny,
         };
         let range = CycleAndModRange::new(247_096, 100, 500);
@@ -472,7 +472,7 @@ mod tests {
             31_500,
             500,
             1.0,
-            Wild3MovementMode::OnFoot,
+            PlayingSong::MapSong,
             Wild3Weather::Rain,
         );
 

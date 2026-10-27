@@ -79,8 +79,8 @@ export const Wild3TargetSetupAndLeadInput = ({
             setWeather={(weather) =>
               setTargetSetupBoth({ ...targetSetup, weather })
             }
-            setMovement={(movement) =>
-              setTargetSetupBoth({ ...targetSetup, movement })
+            setPlayingSong={(playing_song) =>
+              setTargetSetupBoth({ ...targetSetup, playing_song })
             }
             permitEnablingDebugOptions={permitEnablingDebugOptions}
             setLeadCycleSpeed={setLeadCycleSpeedBoth}

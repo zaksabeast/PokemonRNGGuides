@@ -16,8 +16,8 @@ use crate::{
         Wild3InitialCycleDistribution, search_wild3_naive, search_wild3_reverse,
         searcher_painter::Wild3PaintingOpts,
         wild::{
-            Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex, Wild3MapGameData,
-            Wild3MovementMode, Wild3SearcherCycleDataByLead, Wild3Weather,
+            PlayingSong, Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex,
+            Wild3MapGameData, Wild3SearcherCycleDataByLead, Wild3Weather,
             calculate_cycle_data_by_lead,
         },
     },
@@ -112,7 +112,7 @@ pub enum Wild3SearcherCycleOpts {
     },
     Calibrate {
         weather: Wild3Weather,
-        movement: Wild3MovementMode,
+        playing_song: PlayingSong,
         lead_cycle_speed: usize,
     },
 }
@@ -175,7 +175,7 @@ impl Wild3SearcherCycleOpts {
                     .filter(|calibration| {
                         calibration.action == action
                             && (*consider_weather || calibration.weather == Wild3Weather::Sunny)
-                            && (*consider_bike || calibration.movement != Wild3MovementMode::Bike)
+                            && (*consider_bike || calibration.playing_song != PlayingSong::BikeSong)
                     })
                     .collect_vec();
 
@@ -186,12 +186,14 @@ impl Wild3SearcherCycleOpts {
                 }
             }
             Self::Calibrate {
-                weather, movement, ..
+                weather,
+                playing_song,
+                ..
             } => {
                 let calibration = map_data.vblank_distrs.iter().find(|calibration| {
                     calibration.action == action
                         && calibration.weather == *weather
-                        && calibration.movement == *movement
+                        && calibration.playing_song == *playing_song
                 });
 
                 vec![calibration.unwrap_or(default)]
@@ -424,9 +426,9 @@ mod cycle_options_tests {
     fn search_options_exclude_bike_without_excluding_surf() {
         let foot = Wild3InitialCycleDistribution::new_default(Wild3Action::OldRod).clone();
         let mut bike = foot.clone();
-        bike.movement = Wild3MovementMode::Bike;
+        bike.playing_song = PlayingSong::BikeSong;
         let mut surf = foot.clone();
-        surf.movement = Wild3MovementMode::Surf;
+        surf.playing_song = PlayingSong::SurfSong;
         let mut rain = surf.clone();
         rain.weather = Wild3Weather::Rain;
         let map = Wild3MapGameData {

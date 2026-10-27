@@ -38,7 +38,7 @@ const createTargetSetupAtVictoryRoad = (targetPaintingAdvs: {
   return {
     map: "MAP_VICTORY_ROAD_1F",
     weather: "Sunny",
-    movement: "OnFoot",
+    playing_song: "MapSong",
     feebasState: "NotInMap",
     roamerState: "Inactive",
     massOutbreakState: "Inactive",

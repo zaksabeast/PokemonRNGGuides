@@ -37,7 +37,7 @@ export const Wild3Map = ({
     <Flex align="center" gap={4}>
       {children}
       <Tooltip title={title}>
-        <span aria-label="Optimal weather and movement">
+        <span aria-label="Optimal weather audio and playing song">
           <Icon name="InfoOutline" />
         </span>
       </Tooltip>

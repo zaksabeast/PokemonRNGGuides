@@ -42,7 +42,7 @@ import { getGen3CalibPreviousStepRows } from "../pokemonRng/labels";
 import {
   normalizeWild3AudioInfluences,
   formatWild3Weather,
-  formatWild3Movement,
+  formatPlayingSong,
 } from "./wild3AudioInfluences";
 
 const FISHING_CALIB_OFFSET: CalibOffset = {
@@ -248,8 +248,8 @@ export const Wild3Calib = ({
         value: formatWild3Weather(audioInfluences.weather),
       },
       {
-        label: "Movement",
-        value: formatWild3Movement(audioInfluences.movement),
+        label: "Playing song",
+        value: formatPlayingSong(audioInfluences.playing_song),
       },
       {
         label: "Requires White Flute?",
@@ -378,8 +378,8 @@ export const Wild3Calib = ({
                 setWeather={(weather) =>
                   setTargetSetup({ ...targetSetup, weather })
                 }
-                setMovement={(movement) =>
-                  setTargetSetup({ ...targetSetup, movement })
+                setPlayingSong={(playing_song) =>
+                  setTargetSetup({ ...targetSetup, playing_song })
                 }
                 permitEnablingDebugOptions
                 setLeadCycleSpeed={setOverwriteLeadCycleSpeed}

@@ -2,7 +2,7 @@ use super::*;
 use crate::{
     EncounterSlot, HiddenPowerFilter, PokemonType, ShinyFilter, ShinyType,
     gen3::{
-        FASTEST_DIVIDENDS_MOD_24_RANGE, Gen3PidSpeedFilter, MinMidMax, Wild3MovementMode,
+        FASTEST_DIVIDENDS_MOD_24_RANGE, Gen3PidSpeedFilter, MinMidMax, PlayingSong,
         Wild3SearcherCycleOpts, Wild3SpecialEncounterGameData, Wild3Weather,
         apply_cycles_causing_vblanks_on_cycle_counter, calculate_pid_speed,
         get_default_min_mid_max_initial_cycle_for_feebas,
@@ -718,7 +718,7 @@ fn test_search_reverse_wild3_safari_cute_charm_pokeblock_hoothoot_has_result() {
         methods: vec![Gen3Method::Wild4],
         cycle_opts: Wild3SearcherCycleOpts::Calibrate {
             weather: Wild3Weather::Sunny,
-            movement: Wild3MovementMode::OnFoot,
+            playing_song: PlayingSong::MapSong,
             lead_cycle_speed: 18,
         },
         considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt::Specific([0, 0, 1, 0, 0]),
@@ -885,7 +885,7 @@ fn test_search_reverse_wild3_feebas_on_feebas_tile() {
         methods: vec![Gen3Method::Wild2],
         cycle_opts: Wild3SearcherCycleOpts::Calibrate {
             weather: Wild3Weather::Sunny,
-            movement: Wild3MovementMode::OnFoot,
+            playing_song: PlayingSong::MapSong,
             lead_cycle_speed: calculate_pid_speed(0x7933A9CB),
         },
         using_white_flute: false,

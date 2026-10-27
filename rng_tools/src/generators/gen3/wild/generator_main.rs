@@ -6,8 +6,8 @@ use crate::{
     Ivs, PkmFilter,
     gen3::{
         CycleAndModCount, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method, Gen3PkmFilter,
-        Wild3Action, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData,
-        Wild3MassOutbreakState, Wild3MovementMode, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
+        PlayingSong, Wild3Action, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData,
+        Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
         generate_wild3_internal,
     },
     rng::lcrng::Pokerng,
@@ -33,7 +33,7 @@ pub enum Wild3GeneratorCycleOpts {
     },
     CycleAtMomentNoEmuLog {
         initial_cycle: usize,
-        movement: Wild3MovementMode,
+        playing_song: PlayingSong,
         lead_cycle_spd: usize,
     },
     CycleAtMomentWithEmuLog {

@@ -2,10 +2,10 @@ use crate::{
     AbilityType, EncounterSlot, Gender, HiddenPower, HiddenPowerFilter, Ivs, Nature, PkmFilter,
     PokemonType, ShinyFilter, ShinyType, Species, assert_list_eq,
     gen3::{
-        Gen3Lead, Gen3Method, Gen3PkmFilter, SpeciesData, Wild3Action, Wild3EncounterGameData,
-        Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData, Wild3MapSetups, Wild3MovementMode,
-        Wild3SearcherCycleOpts, Wild3SearcherOptions, Wild3SearcherResultMon, Wild3Weather,
-        calculate_pid_speed, search_wild3_naive,
+        Gen3Lead, Gen3Method, Gen3PkmFilter, PlayingSong, SpeciesData, Wild3Action,
+        Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData,
+        Wild3MapSetups, Wild3SearcherCycleOpts, Wild3SearcherOptions, Wild3SearcherResultMon,
+        Wild3Weather, calculate_pid_speed, search_wild3_naive,
     },
     rng::lcrng::Pokerng,
 };
@@ -507,7 +507,7 @@ fn test_search_wild3_naive_magikarp_in_feebas_map() {
             methods: vec![Gen3Method::Wild4],
             cycle_opts: Wild3SearcherCycleOpts::Calibrate {
                 weather: Wild3Weather::Sunny,
-                movement: Wild3MovementMode::OnFoot,
+                playing_song: PlayingSong::MapSong,
                 lead_cycle_speed: calculate_pid_speed(0x7933A9CB),
             },
             using_white_flute: false,

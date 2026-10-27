@@ -156,7 +156,7 @@ export const setupToDistributions = async (
       opts,
       map_data,
       distributionArgs.leadCycleSpd,
-      audioInfluences.movement,
+      audioInfluences.playing_song,
       audioInfluences.weather,
       distributionArgs.initialCycleAtSweetScent,
       distributionArgs.vblankCycles,

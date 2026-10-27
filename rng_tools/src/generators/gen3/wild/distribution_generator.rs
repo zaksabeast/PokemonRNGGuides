@@ -6,9 +6,9 @@ use wasm_bindgen::prelude::*;
 use super::Wild3GeneratorOptions;
 use crate::{
     gen3::{
-        CycleFrameMoment, CycleRange, Gen3Method, Wild3GeneratorCycleOpts,
-        Wild3InitialCycleDistribution, Wild3MapGameData, Wild3MovementMode, Wild3SearcherResultMon,
-        Wild3Weather, calculate_cycle_data_for_specific_lead_spd, generate_wild3,
+        CycleFrameMoment, CycleRange, Gen3Method, PlayingSong, Wild3GeneratorCycleOpts,
+        Wild3InitialCycleDistribution, Wild3MapGameData, Wild3SearcherResultMon, Wild3Weather,
+        calculate_cycle_data_for_specific_lead_spd, generate_wild3,
     },
     rng::lcrng::Pokerng,
 };
@@ -35,12 +35,12 @@ pub fn generate_gen3_wild_distribution(
     opts: &Wild3GeneratorOptions,
     game_data: &Wild3MapGameData,
     lead_cycle_spd: usize,
-    movement: Wild3MovementMode,
+    playing_song: PlayingSong,
     weather: Wild3Weather,
     initial_cycle: Option<usize>,
     vblank_cycles: Option<Vec<usize>>,
 ) -> Wild3MethodDistributionResults {
-    let initial_cycle_distr = game_data.get_initial_cycle_distr(opts.action, movement, weather);
+    let initial_cycle_distr = game_data.get_initial_cycle_distr(opts.action, playing_song, weather);
 
     let cycle_opts_for_cycle = match (initial_cycle, vblank_cycles) {
         (Some(initial_cycle), Some(vblank_cycles)) => {
@@ -53,7 +53,7 @@ pub fn generate_gen3_wild_distribution(
         _ => Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog {
             initial_cycle: initial_cycle_distr.median(),
             lead_cycle_spd,
-            movement,
+            playing_song,
         },
     };
 
@@ -198,7 +198,7 @@ mod test {
             &opts,
             &Wild3MapGameData::default(),
             700,
-            Wild3MovementMode::OnFoot,
+            PlayingSong::MapSong,
             Wild3Weather::Sunny,
             None,
             None,

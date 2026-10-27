@@ -1,7 +1,7 @@
 import type {
   CalibrationComponent,
   RawCdfKnot,
-} from "./vblank_calibration_types";
+} from "./initial_cycle_calibration_types";
 
 const fishingSongs = [
   "ABANDONED_SHIP",

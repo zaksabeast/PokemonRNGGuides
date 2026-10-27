@@ -9,13 +9,13 @@ import type {
 import {
   calibrationComponents,
   mapCalibrationSources,
-} from "./vblank_calibration_data";
-import { mapCalibrationSettings } from "./vblank_calibration_maps";
+} from "./initial_cycle_calibration_data";
+import { mapCalibrationSettings } from "./initial_cycle_calibration_maps";
 import { wild3Actions } from "../utils";
 import type {
   CalibrationComponent,
   RawCdfKnot,
-} from "./vblank_calibration_types";
+} from "./initial_cycle_calibration_types";
 
 const VBLANK_FREQ = 280_896;
 const components: Partial<Record<string, CalibrationComponent>> =

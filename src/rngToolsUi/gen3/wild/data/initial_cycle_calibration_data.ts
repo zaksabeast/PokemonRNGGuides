@@ -2,7 +2,7 @@
 import type {
   CalibrationComponent,
   MapCalibrationSource,
-} from "./vblank_calibration_types";
+} from "./initial_cycle_calibration_types";
 export const calibrationComponents = {
   ROUTE101_AUDIO: {
     is_fake: false,

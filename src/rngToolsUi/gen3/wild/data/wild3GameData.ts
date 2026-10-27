@@ -23,7 +23,7 @@ import {
   getWild3VblankDistributions,
   getWild3ActionCapabilities,
   type Wild3ActionCapabilities,
-} from "./vblank_calibration";
+} from "./initial_cycle_calibration";
 
 export type Wild3UiMapGameData = Wild3MapGameData & Wild3ActionCapabilities;
 

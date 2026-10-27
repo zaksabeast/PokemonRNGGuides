@@ -1,16 +1,16 @@
 import { expect, test } from "bun:test";
 import { omit } from "lodash-es";
 import type { Wild3MapGameData } from "~/rngTools";
-import { calibrationComponents } from "./vblank_calibration_data";
+import { calibrationComponents } from "./initial_cycle_calibration_data";
 import {
   cdfLessThan,
   combineCalibrationComponents,
   getWild3CalibrationInfo,
   getWild3VblankDistributions,
-} from "./vblank_calibration";
+} from "./initial_cycle_calibration";
 import { fakeAudioComponents } from "./fake_vblank_audio";
 import { getWild3EmeraldGameData } from "./wild3GameData";
-import type { CalibrationComponent } from "./vblank_calibration_types";
+import type { CalibrationComponent } from "./initial_cycle_calibration_types";
 
 const uniform: CalibrationComponent = {
   is_fake: false,

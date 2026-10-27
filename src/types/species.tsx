@@ -1,6 +1,4 @@
 import { Species } from "~/rngTools";
-import { toOptions } from "~/utils/options";
-import { sortBy, memoize } from "lodash-es";
 
 export const species = [
   "None",
@@ -1141,32 +1139,6 @@ const labelOverrides: Partial<Record<Species, string>> = {
 export const formatSpeciesLabel = (species: Species) => {
   return labelOverrides[species] ?? species;
 };
-
-const createLazyOptions = (end: number) => {
-  return memoize(() => {
-    const speciesByDex = toOptions(species.slice(1, end), formatSpeciesLabel);
-    const speciesOptionsByName = sortBy(speciesByDex, (option) => option.label);
-
-    return {
-      byDex: speciesByDex,
-      byName: speciesOptionsByName,
-      byNameOptional: [
-        { label: "None", value: "None" } as const,
-        ...speciesOptionsByName,
-      ],
-    };
-  });
-};
-
-// Form variants are packed contiguously,
-// so these include species + forms
-const gen3End = 393;
-const gen4End = 529;
-const gen5End = 649;
-
-export const getGen3SpeciesOptions = createLazyOptions(gen3End);
-export const getGen4SpeciesOptions = createLazyOptions(gen4End);
-export const getGen5SpeciesOptions = createLazyOptions(gen5End);
 
 const GEN3_SPECIES_WITH_VARIABLE_SIZE: Set<Species> = new Set([
   "Lotad",

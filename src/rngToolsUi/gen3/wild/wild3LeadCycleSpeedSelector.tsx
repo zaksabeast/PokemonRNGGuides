@@ -4,6 +4,7 @@ import {
   Typography,
   ResultTable,
   Flex,
+  PokemonName,
 } from "~/components";
 import { FormCard, FormSection, SwitchField } from "~/components/form";
 import { formatProbability } from "~/utils/formatProbability";
@@ -85,7 +86,11 @@ const getColumns = (targetSetup: TargetSetup): ResultColumn<UiResult>[] => {
       },
     },
     { title: "Method", dataIndex: "method" },
-    { title: "Species", dataIndex: "species" },
+    {
+      title: "Species",
+      dataIndex: "species",
+      render: (species) => <PokemonName species={species} />,
+    },
     {
       title: "PID",
       dataIndex: "pid",

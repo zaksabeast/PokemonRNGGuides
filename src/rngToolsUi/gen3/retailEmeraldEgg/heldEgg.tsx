@@ -14,7 +14,8 @@ import {
 } from "~/components/form";
 import { useCurrentStep } from "~/components/stepper/state";
 import { rngTools, Gen3HeldEgg, PokeNavTrainer } from "~/rngTools";
-import { getGen3SpeciesOptions, species } from "~/types/species";
+import { species } from "~/types/species";
+import { getGen3SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
 import {
   getPkmFilterInitialValues,
   pkmFilterSchema,

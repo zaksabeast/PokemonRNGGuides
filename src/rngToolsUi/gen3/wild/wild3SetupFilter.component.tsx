@@ -1,5 +1,5 @@
 import { Gen3Method } from "~/rngTools";
-import { Link } from "~/components";
+import { Link, PokemonName } from "~/components";
 import {
   FormMultiSelectField,
   FormRadioField,
@@ -66,7 +66,11 @@ export const Wild3SetupFilter = () => {
 
   return (
     <FormSection title="Considered Setups">
-      <FormSummary rows={[{ label: "Target species", value: species }]} />
+      <FormSummary
+        rows={[
+          { label: "Target species", value: <PokemonName species={species} /> },
+        ]}
+      />
       <TidSidSetupFilterFields
         game="emerald"
         filter_shiny={filter_shiny}

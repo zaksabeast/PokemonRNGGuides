@@ -1,0 +1,1 @@
+import"./form-DbhQPbte.js";import"./id-C1HdJUe5.js";var e=[`Wild1`,`Wild2`,`Wild3`,`Wild4`,`Wild5`];export{e as t};

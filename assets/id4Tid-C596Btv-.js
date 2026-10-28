@@ -1,0 +1,1 @@
+import{t as e}from"./react-Cbu4iyzf.js";import{t}from"./state-jQBkw13R.js";var n=()=>{var n;let[r]=e(t);return((n=r.id)==null?void 0:n.tid)??`???`},r=()=>{var n;let[r]=e(t);return((n=r.id)==null?void 0:n.sid)??`???`};export{r as Id4Sid,n as Id4Tid};

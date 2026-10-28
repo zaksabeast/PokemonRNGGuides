@@ -6277,7 +6277,7 @@ export const guides = {
       addedOn: "2025-04-08",
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-10-26",
+      lastUpdated: null,
       type: "baseGuide",
       canonical: "/gba-methods/",
       file: "guides/Gen 3/Emerald/GBA Methods.mdx",

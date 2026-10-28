@@ -1,5 +1,11 @@
 import styled from "@emotion/styled";
-import { Icon, ListRow, ListSurface, PokemonIcon, Typography } from "~/components";
+import {
+  Icon,
+  ListRow,
+  ListSurface,
+  PokemonIcon,
+  Typography,
+} from "~/components";
 import { consoleIcons } from "~/components/consoleIcons";
 import { trackCardClick } from "~/analytics";
 import { platforms } from "./data";

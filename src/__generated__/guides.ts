@@ -3516,7 +3516,7 @@ export const guides = {
       section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "false-Wild RNG Easy Shiny",
-      isNew: true,
+      isNew: false,
       title: "Pokemon Emerald Shiny Wild RNG",
       navDrawerTitle: "Wild RNG Easy Shiny",
       description: "Catch a wild shiny Pokemon in Emerald.",

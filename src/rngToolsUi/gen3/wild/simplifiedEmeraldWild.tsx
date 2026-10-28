@@ -1,14 +1,15 @@
 import React from "react";
+import { Flex } from "~/components";
 import {
-  Card,
-  Flex,
-  FormFieldTable,
-  FormikNumberInput,
-  FormikSelect,
-  RngToolForm,
-  Switch,
-  type RngToolSubmit,
-} from "~/components";
+  FieldRow,
+  FormMultiSelectField,
+  FormNumberField,
+  FormSection,
+  FormSelectField,
+  SwitchField,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
 import { useField, useFormContext, useWatch_UNSAFE } from "~/hooks/form";
 import { toOptions } from "~/utils/options";
 import { formatActionName, formatLeadName, formatMapName } from "./utils";
@@ -43,74 +44,40 @@ const Fields = ({ onInputsChange }: { onInputsChange: () => void }) => {
   }, [values, onInputsChange]);
 
   return (
-    <FormFieldTable
-      fields={[
-        {
-          label: "Target Species",
-          input: (
-            <FormikSelect<FormState, "species">
-              name="species"
-              options={toOptions(simplifiedSpecies)}
-            />
-          ),
-        },
-        {
-          label: "TID",
-          input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-        },
-        {
-          label: "SID",
-          input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
-        },
-        {
-          label: "Ignore Recommended Setups",
-          input: (
-            <Switch
-              value={!recommendedSetups}
-              onChange={(ignore) => setRecommendedSetups(!ignore)}
-            />
-          ),
-        },
-        {
-          label: "Maps",
-          show: !recommendedSetups,
-          indent: 1,
-          input: (
-            <FormikSelect<FormState, "maps">
-              name="maps"
-              mode="multiple"
-              options={toOptions(choices.maps, formatMapName)}
-            />
-          ),
-        },
-        {
-          label: "Actions",
-          show: !recommendedSetups,
-          indent: 1,
-          input: (
-            <FormikSelect<FormState, "actions">
-              name="actions"
-              mode="multiple"
-              options={toOptions(choices.actions, formatActionName)}
-            />
-          ),
-        },
-        {
-          label: "Leads",
-          show: !recommendedSetups,
-          indent: 1,
-          input: (
-            <FormikSelect<FormState, "leadKeys">
-              name="leadKeys"
-              mode="multiple"
-              options={toOptions(simplifiedLeadKeys, (lead) =>
-                lead === "Synchronize" ? lead : formatLeadName(lead),
-              )}
-            />
-          ),
-        },
-      ]}
-    />
+    <FormSection>
+      <FormSelectField<FormState, "species">
+        name="species"
+        label="Target Species"
+        options={toOptions(simplifiedSpecies)}
+      />
+      <FieldRow>
+        <FormNumberField<FormState> name="tid" label="TID" numType="decimal" />
+        <FormNumberField<FormState> name="sid" label="SID" numType="decimal" />
+      </FieldRow>
+      <SwitchField
+        label="Ignore Recommended Setups"
+        value={!recommendedSetups}
+        onChange={(ignore) => setRecommendedSetups(!ignore)}
+      >
+        <FormMultiSelectField<FormState, "maps">
+          name="maps"
+          label="Maps"
+          options={toOptions(choices.maps, formatMapName)}
+        />
+        <FormMultiSelectField<FormState, "actions">
+          name="actions"
+          label="Actions"
+          options={toOptions(choices.actions, formatActionName)}
+        />
+        <FormMultiSelectField<FormState, "leadKeys">
+          name="leadKeys"
+          label="Leads"
+          options={toOptions(simplifiedLeadKeys, (lead) =>
+            lead === "Synchronize" ? lead : formatLeadName(lead),
+          )}
+        />
+      </SwitchField>
+    </FormSection>
   );
 };
 
@@ -123,7 +90,7 @@ export const SimplifiedEmeraldWild = () => {
     setSelected(null);
   }, []);
 
-  const onSubmit: RngToolSubmit<FormState> = async (submitted) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (submitted) => {
     clearSelection();
     const result = await searchSimplifiedWild(submitted);
     setSelected(result);
@@ -131,17 +98,15 @@ export const SimplifiedEmeraldWild = () => {
 
   return (
     <Flex vertical gap={32}>
-      <Card>
-        <RngToolForm<FormState, never>
-          initialValues={getSimplifiedInitialValues()}
-          validationSchema={simplifiedSearchSchema}
-          onSubmit={onSubmit}
-          submitTrackerId="simplified_emerald_wild_search"
-          submitButtonLabel="Find shiny setup"
-        >
-          <Fields onInputsChange={clearSelection} />
-        </RngToolForm>
-      </Card>
+      <ToolForm<FormState, never>
+        initialValues={getSimplifiedInitialValues()}
+        validationSchema={simplifiedSearchSchema}
+        onSubmit={onSubmit}
+        submitTrackerId="simplified_emerald_wild_search"
+        submitButtonLabel="Find shiny setup"
+      >
+        <Fields onInputsChange={clearSelection} />
+      </ToolForm>
 
       {selected != null && (
         <section>

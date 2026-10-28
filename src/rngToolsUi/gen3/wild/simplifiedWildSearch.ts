@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { orderBy, uniq } from "lodash-es";
+import { isSynchronizeLead } from "~/types/lead";
 import {
   rngTools,
   type Wild3MapSetups,
@@ -22,10 +23,7 @@ import type { TargetSetup } from "./wild3TargetSetupInput";
 import { doesRockSmashSetupRequireWhiteFlute } from "./searchWild3Target";
 
 export const simplifiedLeads = gen3Leads.filter(
-  (lead) =>
-    lead === "Vanilla" ||
-    lead === "Egg" ||
-    (typeof lead === "object" && "Synchronize" in lead),
+  (lead) => lead === "Vanilla" || lead === "Egg" || isSynchronizeLead(lead),
 );
 
 export const simplifiedLeadKeys = ["Vanilla", "Egg", "Synchronize"] as const;
@@ -123,11 +121,7 @@ export const buildSimplifiedSearchOptions = (
   leads: simplifiedLeads.filter(
     (lead) =>
       values.recommendedSetups ||
-      values.leadKeys.includes(
-        typeof lead === "object" && "Synchronize" in lead
-          ? "Synchronize"
-          : lead,
-      ),
+      values.leadKeys.includes(isSynchronizeLead(lead) ? "Synchronize" : lead),
   ),
   map_setups: getSimplifiedMapSetups(values.species)
     .filter(
@@ -142,10 +136,12 @@ export const buildSimplifiedSearchOptions = (
     }))
     .filter((setup) => setup.actions.length > 0),
   methods: ["Wild1", "Wild2", "Wild4"],
-  consider_cycles: true,
-  consider_rng_manipulated_lead_pid: false,
-  lead_cycle_speed: null,
-  generate_even_if_impossible: false,
+  cycle_opts: {
+    SearchNewTarget: {
+      consider_rng_manipulated_lead_pid: false,
+      generate_even_if_impossible: false,
+    },
+  },
   painting_opts: null,
   using_white_flute: true,
   considered_safari_pokeblocks: "None",

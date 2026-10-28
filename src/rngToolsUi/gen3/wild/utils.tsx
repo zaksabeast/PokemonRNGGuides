@@ -10,6 +10,7 @@ import { startCase } from "lodash-es";
 import { match, P } from "ts-pattern";
 import { gender, nature } from "~/types";
 import z from "zod";
+import { TooltipWithIcon } from "~/components/tooltipWithIcon";
 
 export const FEEBAS_MAP = "MAP_ROUTE119";
 
@@ -133,8 +134,51 @@ export const formatLeadName = (lead: Gen3Lead) => {
     .exhaustive();
 };
 
+const describeLead = (lead: Gen3Lead): string => {
+  return match(lead)
+    .with(
+      "Vanilla",
+      () =>
+        "A Pokemon in the first party slot that doesn't have the following abilities: Magnet Pull, Static, Hustle, Vital Spirit, Pressure, Cute Charm, Synchronize.",
+    )
+    .with("Egg", () => "An Egg in the first party slot.")
+    .with(
+      "MagnetPull",
+      () =>
+        "A Pokemon with the ability Magnet Pull in the first party slot, which attracts Steel-type wild Pokemon in Emerald.",
+    )
+    .with(
+      "Static",
+      () =>
+        "A Pokemon with the ability Static in the first party slot, which attracts Electric-type wild Pokemon in Emerald.",
+    )
+    .with(
+      "HustleVitalSpiritPressure",
+      () =>
+        "A Pokemon with the ability Hustle, Vital Spirit or Pressure in the first party slot, which favors higher-level wild Pokemon in Emerald.",
+    )
+    .with(
+      { CuteCharm: P.string },
+      ({ CuteCharm }) =>
+        `A ${CuteCharm.toLowerCase()} Pokemon with the ability Cute Charm in the first party slot, which favors wild Pokemon of the opposite gender in Emerald.`,
+    )
+    .with(
+      { Synchronize: P.string },
+      ({ Synchronize }) =>
+        `A Pokemon with the ability Synchronize and a ${Synchronize} nature in the first party slot, which favors wild Pokemon with the same nature in Emerald.`,
+    )
+    .exhaustive();
+};
+
+export const formatLeadLabel = (lead: Gen3Lead) => (
+  <TooltipWithIcon title={describeLead(lead)}>
+    {formatLeadName(lead)}
+  </TooltipWithIcon>
+);
+
 export const leadsLabels = gen3Leads.map((lead, i) => ({
-  label: formatLeadName(lead),
+  searchText: formatLeadName(lead),
+  label: formatLeadLabel(lead),
   value: i,
 }));
 

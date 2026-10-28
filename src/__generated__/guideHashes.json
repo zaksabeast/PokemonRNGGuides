@@ -113,7 +113,7 @@
   },
   "/connect-dolphin-to-gba/": {
     "hash": "d7ca3b7baca1528026476d13eb57f234ae2691f494156fb3e26dea99ec8372af",
-    "lastUpdated": "2026-10-20"
+    "lastUpdated": "2026-03-22"
   },
   "/consistent-platinum-rng/": {
     "hash": "aca24459a23cc5bc72e8f9224ceb76d40629734ab2d2d3b9bd7cad6cae2d7dc8",
@@ -127,8 +127,12 @@
     "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
     "lastUpdated": "2026-10-03"
   },
+  "/de-e-tips-rng/": {
+    "hash": "b388c9c2299194c711af38ca93e37e52a853fe0cdfff73961771e366e9e97101",
+    "lastUpdated": "2026-05-27"
+  },
   "/de-emerald-advancing-rng-techniques/": {
-    "hash": "e40bfd082352e6bf529e9873760838e13aad094e4fe91f93ee8c5ece86dbd0cd",
+    "hash": "b388c9c2299194c711af38ca93e37e52a853fe0cdfff73961771e366e9e97101",
     "lastUpdated": "2026-03-27"
   },
   "/de-emerald-battle-video/": {
@@ -141,7 +145,7 @@
   },
   "/de-emerald-overview/": {
     "hash": "e0682d5d64b99f198100f7c09aff3c95208cdeb95438cd1708b9c58517990719",
-    "lastUpdated": "2026-10-18"
+    "lastUpdated": "2026-08-22"
   },
   "/de-emerald-painting-rng/": {
     "hash": "e7c55423d893f63471aecf523c89ca733a69ad20b031145aaf8357f01718a577",
@@ -169,7 +173,7 @@
   },
   "/de-gba-overview/": {
     "hash": "9683d7d157658eb1c5ff4de6ccd2a0c622d09204e5e00da73b986e126212dde1",
-    "lastUpdated": "2026-10-18"
+    "lastUpdated": "2026-03-22"
   },
   "/de-gen3-sid/": {
     "hash": "35471371d80a156d0a37f527967d6a318c35347fab1df9095e0012f081b9ac21",
@@ -201,7 +205,7 @@
   },
   "/delete-pokemon-save/": {
     "hash": "1d40e22a6ce255171610b9ad8a8e7329f31a370b06ef3c41d1952500675545de",
-    "lastUpdated": "2026-10-17"
+    "lastUpdated": "2026-07-12"
   },
   "/desmume-setup/": {
     "hash": "c243243bf691922196ee6ba7b987fe545161964029a380b25e58f8f81ae42d32",
@@ -264,12 +268,12 @@
     "lastUpdated": null
   },
   "/e-tips-rng/": {
-    "hash": "efa1d17359e54b0520b9c8785ed634e39b229a8b15c5355ef31494b5fdbb455f",
-    "lastUpdated": "2026-10-21"
+    "hash": "4b9a34c5e8f7eda05f42d1403d3688d9e6c01d03c1c02db5e63438e7075b70a5",
+    "lastUpdated": "2026-05-27"
   },
   "/emerald-advancing-rng-techniques/": {
-    "hash": "efa1d17359e54b0520b9c8785ed634e39b229a8b15c5355ef31494b5fdbb455f",
-    "lastUpdated": "2026-10-21"
+    "hash": "4b9a34c5e8f7eda05f42d1403d3688d9e6c01d03c1c02db5e63438e7075b70a5",
+    "lastUpdated": "2026-05-27"
   },
   "/emerald-battle-video/": {
     "hash": "26ce4cd95ed98cd2da91213c13b0fa87357b0c23d70763674df7827d9682c6d9",
@@ -285,7 +289,7 @@
   },
   "/emerald-overview/": {
     "hash": "249486ade743129d49d3767700960150c18154d732e99dae3435b94d971d30ba",
-    "lastUpdated": "2026-10-18"
+    "lastUpdated": "2026-08-23"
   },
   "/emerald-painting-reseeding/": {
     "hash": "779c473d27c323df4c5970828589bfafbcb4fa47c2fa2feb5d4aa855f4cdc082",
@@ -584,8 +588,8 @@
     "lastUpdated": null
   },
   "/gba-overview/": {
-    "hash": "66e0bf2c75ceb713660160de6b6a11a20824382b3b2aa69728b08fd6ca732959",
-    "lastUpdated": "2026-10-18"
+    "hash": "2b71942a4a8339fb79664e685921b229f993973e304ff4568f007931682e0243",
+    "lastUpdated": "2026-03-10"
   },
   "/gba-pokerus-technical/": {
     "hash": "435ac72058e70a1d761c2f529d11552cd2323bfe5da58209ac7cb55281e912bb",
@@ -659,9 +663,13 @@
     "hash": "2b5642ba24e9e72037586b37bd788ed1b170c123e7facd4afad17bb1b2536ab5",
     "lastUpdated": null
   },
+  "/it-e-tips-rng/": {
+    "hash": "4b9a34c5e8f7eda05f42d1403d3688d9e6c01d03c1c02db5e63438e7075b70a5",
+    "lastUpdated": "2026-05-27"
+  },
   "/it-emerald-overview/": {
     "hash": "ad13bfe7ec38cf842df653bf9ecb3e2c8c0050e3968052b0c1f4836c7cd418eb",
-    "lastUpdated": "2026-10-18"
+    "lastUpdated": "2026-08-22"
   },
   "/it-emerald-rng-with-ace/": {
     "hash": "284f4496cdd3c32b4881def5f7fd148e531f4b79d36270d2ab33c5ae74b028f6",
@@ -785,7 +793,7 @@
   },
   "/no-dolphin-patch/": {
     "hash": "060a653168e504994b063208e1b9bdcd0bf28910d6f45b9da69fb1a2720738ed",
-    "lastUpdated": "2026-10-17"
+    "lastUpdated": "2026-04-28"
   },
   "/ntr-helper-usage/": {
     "hash": "4735c7bd654fa4969f7d90ca1d349688c0dcb799314da395f4930a6eb8916746",
@@ -1219,13 +1227,17 @@
     "hash": "0a30cdde454e802f44b6fcda1327f79d97c5f9b1a1a7bab030d0b69fe9d25ebd",
     "lastUpdated": "2026-03-20"
   },
+  "/zh-e-tips-rng/": {
+    "hash": "4b9a34c5e8f7eda05f42d1403d3688d9e6c01d03c1c02db5e63438e7075b70a5",
+    "lastUpdated": "2026-05-27"
+  },
   "/zh-emerald-mirage-island/": {
     "hash": "86d879d277aab2cddedac10355d6cf6dc61c385ceadd7751580878a082966fcb",
     "lastUpdated": null
   },
   "/zh-emerald-overview/": {
     "hash": "9b09625ed5959b3605c478ff5c4266b0173d78bf26a8892d2f9aebea5daa1d1a",
-    "lastUpdated": "2026-10-18"
+    "lastUpdated": "2026-05-02"
   },
   "/zh-emerald-painting-rng/": {
     "hash": "49e182d29f7531dab02743f43d62df2e79958bf6c5d118c9622260b401940b2b",
@@ -1357,7 +1369,7 @@
   },
   "/zh-gba-overview/": {
     "hash": "7facb0e4d94fa6e11dbe7f2cb12fed800d4387bcf4500f0464ed9ce75eb843ca",
-    "lastUpdated": "2026-10-18"
+    "lastUpdated": "2026-03-10"
   },
   "/zh-gba-pokerus-technical/": {
     "hash": "6687a3ec96b50138525f89e6c40e8a690f9bf978a23929cc18195d530b961fce",

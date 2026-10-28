@@ -1133,7 +1133,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-10-20",
+      lastUpdated: "2026-03-22",
       type: "baseGuide",
       canonical: "/connect-dolphin-to-gba/",
       file: "guides/Tools and Emulators/Connect Dolphin To GBA.mdx",
@@ -1272,6 +1272,48 @@ export const guides = {
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
     getRawFile: memoize(async () => {
       const file = await import("~/../guides/Hubs.mdx?raw");
+      return file.default;
+    }),
+  },
+  "/de-e-tips-rng/": {
+    meta: {
+      id: "/e-tips-rng/",
+      categories: ["Emerald"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "/e-tips-rng/",
+      isNew: false,
+      title: "Übersicht der RNG-Advancing-Techniken",
+      navDrawerTitle: "Übersicht der RNG-Advancing-Techniken",
+      description:
+        "Verständnis der wichtigsten Konzepte zur Beschleunigung von RNG-Manipulationen mit Painting Reseeding und Kampfaufzeichnungs-Reseeding.",
+      slug: "/de-e-tips-rng/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/e-tips-rng/", language: "de" },
+      layout: "guide",
+      canonical: "/de-emerald-advancing-rng-techniques/",
+      lastUpdated: "2026-05-27",
+      type: "translatedGuide",
+      file: "guides/Translations/de/Gen 3/Emerald/Advancing RNG Techniques.mdx",
+      translations: { de: "/de-e-tips-rng/", en: "/e-tips-rng/" },
+      guideGroupId: "de:/e-tips-rng/:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/de/Gen 3/Emerald/Advancing RNG Techniques.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/de/Gen 3/Emerald/Advancing RNG Techniques.mdx?raw"
+      );
       return file.default;
     }),
   },
@@ -1430,7 +1472,7 @@ export const guides = {
       addedOn: "2025-04-08",
       translation: { enSlug: "/emerald-overview/", language: "de" },
       layout: "guide",
-      lastUpdated: "2026-10-18",
+      lastUpdated: "2026-08-22",
       type: "translatedGuide",
       canonical: "/de-emerald-overview/",
       file: "guides/Translations/de/Gen 3/Emerald/Emerald Overview.mdx",
@@ -1739,7 +1781,7 @@ export const guides = {
       addedOn: "2025-04-08",
       translation: { enSlug: "/gba-overview/", language: "de" },
       layout: "guide",
-      lastUpdated: "2026-10-18",
+      lastUpdated: "2026-03-22",
       type: "translatedGuide",
       canonical: "/de-gba-overview/",
       file: "guides/Translations/de/Gen 3/Emerald/GBA Overview.mdx",
@@ -2099,7 +2141,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-10-17",
+      lastUpdated: "2026-07-12",
       type: "baseGuide",
       canonical: "/delete-pokemon-save/",
       file: "guides/Tools and Emulators/Delete Save.mdx",
@@ -2759,10 +2801,10 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/emerald-advancing-rng-techniques/",
-      lastUpdated: "2026-10-21",
+      lastUpdated: "2026-05-27",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Advancing RNG Techniques.mdx",
-      translations: null,
+      translations: { de: "/de-e-tips-rng/", en: "/e-tips-rng/" },
       guideGroupId: "en:/e-tips-rng/:Emerald",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/e-tips-rng/" },
@@ -2800,7 +2842,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-10-21",
+      lastUpdated: "2026-05-27",
       type: "baseGuide",
       canonical: "/emerald-advancing-rng-techniques/",
       file: "guides/Gen 3/Emerald/Advancing RNG Techniques.mdx",
@@ -2978,7 +3020,7 @@ export const guides = {
       addedOn: "2025-04-08",
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-10-18",
+      lastUpdated: "2026-08-23",
       type: "baseGuide",
       canonical: "/emerald-overview/",
       file: "guides/Gen 3/Emerald/Emerald Overview.mdx",
@@ -6198,7 +6240,7 @@ export const guides = {
       addedOn: "2025-04-08",
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-10-18",
+      lastUpdated: "2026-03-10",
       type: "baseGuide",
       canonical: "/gba-overview/",
       file: "guides/Gen 3/Emerald/GBA Overview.mdx",
@@ -6962,6 +7004,48 @@ export const guides = {
       return file.default;
     }),
   },
+  "/it-e-tips-rng/": {
+    meta: {
+      id: "/it-e-tips-rng/",
+      categories: ["Emerald"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "/it-e-tips-rng/",
+      isNew: false,
+      title: "RNG Advancing Techniques",
+      navDrawerTitle: "RNG Advancing Techniques",
+      description:
+        "Understanding the key concepts to speed up RNG manipulations with Painting Reseeding and Battle Video Reseeding.",
+      slug: "/it-e-tips-rng/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: "/emerald-advancing-rng-techniques/",
+      lastUpdated: "2026-05-27",
+      type: "baseGuide",
+      file: "guides/Gen 3/Emerald/Advancing RNG Techniques.mdx",
+      translations: null,
+      guideGroupId: "en:/it-e-tips-rng/:Emerald",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/it-e-tips-rng/" },
+        cfwEmu: null,
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/Advancing RNG Techniques.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Advancing RNG Techniques.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/it-emerald-overview/": {
     meta: {
       id: "/emerald-overview/",
@@ -6982,7 +7066,7 @@ export const guides = {
       addedOn: "2025-04-08",
       translation: { enSlug: "/emerald-overview/", language: "it" },
       layout: "guide",
-      lastUpdated: "2026-10-18",
+      lastUpdated: "2026-08-22",
       type: "translatedGuide",
       canonical: "/it-emerald-overview/",
       file: "guides/Translations/it/Gen 3/Emerald/Emerald Overview.mdx",
@@ -8353,7 +8437,7 @@ export const guides = {
       addedOn: "2025-04-03",
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-10-17",
+      lastUpdated: "2026-04-28",
       type: "baseGuide",
       canonical: "/no-dolphin-patch/",
       file: "guides/Tools and Emulators/No Dolphin Patch.mdx",
@@ -12882,6 +12966,48 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-e-tips-rng/": {
+    meta: {
+      id: "/zh-e-tips-rng/",
+      categories: ["Emerald"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "/zh-e-tips-rng/",
+      isNew: false,
+      title: "RNG Advancing Techniques",
+      navDrawerTitle: "RNG Advancing Techniques",
+      description:
+        "Understanding the key concepts to speed up RNG manipulations with Painting Reseeding and Battle Video Reseeding.",
+      slug: "/zh-e-tips-rng/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: "/emerald-advancing-rng-techniques/",
+      lastUpdated: "2026-05-27",
+      type: "baseGuide",
+      file: "guides/Gen 3/Emerald/Advancing RNG Techniques.mdx",
+      translations: null,
+      guideGroupId: "en:/zh-e-tips-rng/:Emerald",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/zh-e-tips-rng/" },
+        cfwEmu: null,
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/Advancing RNG Techniques.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Advancing RNG Techniques.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-emerald-mirage-island/": {
     meta: {
       id: "/emerald-mirage-island/",
@@ -12944,7 +13070,7 @@ export const guides = {
       addedOn: "2025-04-08",
       translation: { enSlug: "/emerald-overview/", language: "zh" },
       layout: "guide",
-      lastUpdated: "2026-10-18",
+      lastUpdated: "2026-05-02",
       type: "translatedGuide",
       canonical: "/zh-emerald-overview/",
       file: "guides/Translations/zh/Gen 3/Emerald/Emerald Overview.mdx",
@@ -14376,7 +14502,7 @@ export const guides = {
       addedOn: "2025-04-08",
       translation: { enSlug: "/gba-overview/", language: "zh" },
       layout: "guide",
-      lastUpdated: "2026-10-18",
+      lastUpdated: "2026-03-10",
       type: "translatedGuide",
       canonical: "/zh-gba-overview/",
       file: "guides/Translations/zh/Gen 3/Emerald/GBA Overview.mdx",
@@ -17379,6 +17505,7 @@ export const guideSlugs = [
   "/consistent-platinum-rng/",
   "/contributing/",
   "/crystal/",
+  "/de-e-tips-rng/",
   "/de-emerald-advancing-rng-techniques/",
   "/de-emerald-battle-video/",
   "/de-emerald-mirage-island/",
@@ -17512,6 +17639,7 @@ export const guideSlugs = [
   "/install-capturesight/",
   "/install-pokereader-emu/",
   "/install-pokereader/",
+  "/it-e-tips-rng/",
   "/it-emerald-overview/",
   "/it-emerald-rng-with-ace/",
   "/it-emulator-b2w2-runasdate-inital-seed/",
@@ -17652,6 +17780,7 @@ export const guideSlugs = [
   "/zh-dppt-pokeradar-rng/",
   "/zh-dppt-tid-sid/",
   "/zh-dppt-wild/",
+  "/zh-e-tips-rng/",
   "/zh-emerald-mirage-island/",
   "/zh-emerald-overview/",
   "/zh-emerald-painting-rng/",

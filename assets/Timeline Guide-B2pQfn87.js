@@ -1,0 +1,60 @@
+var e=`---
+- title: "Ultra Sun and Ultra Moon Timeline RNG"
+  navDrawerTitle: "Timeline RNG"
+  description: "Learn how to create a timeline in Ultra Sun and Ultra Moon."
+  slug: "retail-usum-timeline"
+  category: "Ultra Sun and Ultra Moon"
+  section: "rng_technique"
+  variant: "cfw-emu"
+- title: "Sun and Moon Timeline RNG"
+  navDrawerTitle: "Timeline RNG"
+  description: "Learn how to create a timeline in Sun and Moon."
+  slug: "retail-sm-timeline"
+  category: "Sun and Moon"
+  section: "rng_technique"
+  variant: "cfw-emu"
+  canonical: "retail-usum-timeline"
+---
+
+## Tools
+
+- [A 3DS with PokeReader](/install-pokereader)
+- [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
+
+## What is a Timeline?
+
+NPCs use RNG advances when they blink. Each video frame, every NPC on screen may use an advance, so the RNG doesn't move forward one advance at a time. Only some advances can be landed on. The advances you can land on are your timeline.
+
+To know which timeline you're on, you need to land on a safe advance. A safe advance is one where no NPC is blinking, so every future blink can be predicted.
+
+Only use a timeline if there are one or more NPCs in your area. If you have no NPCs, you don't need a timeline.
+
+## Step 1: Create a Timeline
+
+1. Follow the appropriate guide for finding a target advance (3DSRNGTool's "frames").
+   - You should be at the part of the guide that has you generate a timeline.
+2. Pause the game with \`Start + Select\`.
+3. In PokeReader, note your initial seed, current advance, and NPC count.
+4. Enter your values below and click "Find Safe Advances".
+5. Press \`Select\` to step one video frame at a time until you land exactly on one of the listed safe advances, then click it.
+6. Keep stepping and compare your advances to the ones shown.
+   - If they match, you're on the right timeline.
+   - If they don't match, check your initial seed and NPC count, then try again.
+
+<Gen7TimelineFinder />
+
+## Step 2: Press A on Your Target
+
+1. If the tool says your target isn't on this timeline, pick another target in 3DSRNGTool, then repeat starting from Step 1.3.
+2. Press \`Start\` to unpause. Use the tool's "Time" as a guide, and pause again with \`Start + Select\` when you're close to the Timeline Leap advance.
+3. Press \`Select\` to step one video frame at a time until you reach the Timeline Leap advance.
+4. Press \`A\` on the Timeline Leap advance.
+5. Use the tool's "Time after leap" as a guide, and pause again with \`Start + Select\` when you're close to your target.
+6. Press \`Select\` to step one video frame at a time until you reach your target advance.
+7. Press \`A\` on your target advance.
+
+## Credits
+
+- wwwwwwzx for [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool), which some of this tool's logic is based on.
+- Chinese translation: xuanyelin, Hakuhiro.
+`;export{e as default};

@@ -9,7 +9,7 @@ category:
   - "Emerald"
 section: "technical_info"
 orderPriority: 3
-addedOn: "2025-04-08"
+addedOn: "2026-10-28"
 ---
 
 <Gist>
@@ -34,7 +34,7 @@ Here's a simplified example of the game logic:
 
 The 1st half is the lower half of the PID, and the 2nd half is the upper half. For example, a 1st half of `1234` and a 2nd half of `ABCD` produce the PID `ABCD1234`.
 
-The game doesn't choose a new nature on each retry. The wanted nature stays the same throughout the loop. In Emerald, even without Synchronize, the game still chooses a nature first and rerolls PIDs to match it. 
+The game doesn't choose a new nature on each retry. The wanted nature stays the same throughout the loop. In Emerald, even without Synchronize, the game still chooses a nature first and rerolls PIDs to match it.
 
 ### Pokémon Wild Encounter (Without a VBlank)
 
@@ -107,9 +107,9 @@ For example, move the VBlank from advance 3 to advance 2, between the halves of 
 
 | Step                                                  | RNG Advances Used                   | Result                    |
 | ----------------------------------------------------- | ----------------------------------- | ------------------------- |
-| Generate 1st half of 1st PID                           | 1                                   |                           |
+| Generate 1st half of 1st PID                          | 1                                   |                           |
 | <Text color="Green" strong>VBLANK: Advance RNG</Text> | <Text color="Green" strong>2</Text> |                           |
-| Generate 2nd half of 1st PID                           | 3                                   | Wrong nature: discard PID |
+| Generate 2nd half of 1st PID                          | 3                                   | Wrong nature: discard PID |
 | Generate 2nd PID                                      | <Text strong>4, 5</Text>            | Wrong nature: discard PID |
 | Generate 3rd PID                                      | <Text strong>6, 7</Text>            | Wanted nature: keep PID   |
 | Generate Def, Atk, HP IVs                             | <Text strong>8</Text>               | First group of IVs        |
@@ -121,7 +121,7 @@ This only works because the first PID is rejected in both examples. If the PID m
 
 ### Optimizing Wild-3 and Wild-5
 
-There are 25 natures, so each random PID has 1/25 chance of matching the wanted nature. The game therefore needs 25 PID rerolls on average to generate a valid PID.
+There are 25 natures, so each random PID has a 1/25 chance of matching the wanted nature. The game therefore needs 25 PID rerolls on average to generate a valid PID.
 
 Synchronize changes how the wanted nature is chosen, but the generated PID still has to match that nature. The average remains 25 PID rerolls, whether Synchronize activates or not.
 

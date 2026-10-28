@@ -579,12 +579,16 @@
     "hash": "9ed0d376276dbb41f456b6bbb509ab54764a949aa69e4debd317ab854f2d29b3",
     "lastUpdated": "2026-10-03"
   },
+  "/gba-methods-3-5/": {
+    "hash": "ae7bafc3224220afce64f367a9c22a71e2519f98f693364b3a1bf62d22dc001f",
+    "lastUpdated": "2026-10-28"
+  },
   "/gba-methods-lead-impact/": {
     "hash": "2d115b3b8b569d0113b2f0238054280d2e0d93f536ced30eaa32f95ca9721696",
     "lastUpdated": "2026-03-18"
   },
   "/gba-methods/": {
-    "hash": "5a07c1be125bc87aefeaea4d9b97cbc4b5ddb1628dec449780000b8fa712871d",
+    "hash": "9649ed69fb91a0e2a2fa8af34d9b3a97e6574b6512ba9ea1c4ddac08b15f1f58",
     "lastUpdated": null
   },
   "/gba-overview/": {

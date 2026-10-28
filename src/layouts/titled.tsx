@@ -1,7 +1,15 @@
+import { keyBy } from "lodash-es";
 import { MainLayout } from "~/layouts/main";
 import { GuideMeta } from "~/guides";
 import { Flex, NavBreadcrumbs, PokemonIcon, Typography } from "~/components";
-import { platforms } from "~/games";
+import { platforms, type HomeGame } from "~/games";
+import { type Route } from "~/routes/defs";
+
+// Reversed so the first game listed for a shared slug wins
+const gameBySlug: Partial<Record<Route, HomeGame>> = keyBy(
+  platforms.flatMap((platform) => platform.games).toReversed(),
+  (game) => game.slug,
+);
 
 type Props = {
   guideMeta: GuideMeta;
@@ -9,9 +17,7 @@ type Props = {
 };
 
 export const TitledLayout = ({ guideMeta, children }: Props) => {
-  const game = platforms
-    .flatMap((platform) => platform.games)
-    .find((game) => game.slug === guideMeta.slug);
+  const game = gameBySlug[guideMeta.slug];
 
   return (
     <MainLayout>

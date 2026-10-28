@@ -6,6 +6,8 @@ export { Icon, type IconName } from "./icons";
 export { Typography } from "./typography";
 export { DesktopDrawer } from "./navDrawer";
 export { PixelImage } from "./pixelImage";
+export { PokemonIcon, type PokemonIconProps } from "./pokemonIcon";
+export { PokemonName, type PokemonNameProps } from "./pokemonName";
 export { Loading } from "./loading";
 export { Image, type ImageProps } from "./image";
 export { MetaTags } from "./metaTags";

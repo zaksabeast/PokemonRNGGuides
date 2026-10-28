@@ -23,5 +23,5 @@
       "rng_tools": ["./rng_tools/pkg"]
     }
   },
-  "include": ["src/**/*.test.ts"]
+  "include": ["src/**/*.test.ts", "src/vite-env.d.ts", "src/emotion.d.ts"]
 }

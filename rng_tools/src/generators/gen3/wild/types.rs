@@ -4,6 +4,19 @@ use wasm_bindgen::prelude::wasm_bindgen;
 
 use crate::{Gender, Nature};
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct MinMidMax {
+    pub min: usize,
+    pub mid: usize,
+    pub max: usize,
+}
+
+impl MinMidMax {
+    pub const fn new(min: usize, mid: usize, max: usize) -> Self {
+        Self { min, mid, max }
+    }
+}
+
 #[derive(Clone, Copy, Default, Debug, Eq, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum Gen3Method {
@@ -39,6 +52,15 @@ pub enum Wild3Action {
     SuperRod = 4,
     RockSmash = 5, // Code assumes it's the last element.
 }
+
+pub const ALL_WILD3_ACTIONS: [Wild3Action; 6] = [
+    Wild3Action::SweetScentLand,
+    Wild3Action::SweetScentWater,
+    Wild3Action::OldRod,
+    Wild3Action::GoodRod,
+    Wild3Action::SuperRod,
+    Wild3Action::RockSmash,
+];
 
 impl Wild3Action {
     pub fn is_fishing(&self) -> bool {

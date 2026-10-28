@@ -6,8 +6,9 @@ use wasm_bindgen::prelude::*;
 use super::Wild3GeneratorOptions;
 use crate::{
     gen3::{
-        CycleFrameMoment, CycleRange, Gen3Method, Wild3GeneratorCycleOpts, Wild3MapGameData,
-        Wild3SearcherResultMon, calculate_cycle_data, generate_wild3,
+        CycleFrameMoment, CycleRange, Gen3Method, PlayingSong, Wild3GeneratorCycleOpts,
+        Wild3InitialCycleDistribution, Wild3MapGameData, Wild3SearcherResultMon, Wild3Weather,
+        calculate_cycle_data_for_specific_lead_spd, generate_wild3,
     },
     rng::lcrng::Pokerng,
 };
@@ -34,18 +35,26 @@ pub fn generate_gen3_wild_distribution(
     opts: &Wild3GeneratorOptions,
     game_data: &Wild3MapGameData,
     lead_cycle_spd: usize,
-    initial_cycle_at_sweet_scent: Option<usize>,
+    playing_song: PlayingSong,
+    weather: Wild3Weather,
+    initial_cycle: Option<usize>,
     vblank_cycles: Option<Vec<usize>>,
 ) -> Wild3MethodDistributionResults {
-    let cycle_opts_for_cycle = match (initial_cycle_at_sweet_scent, vblank_cycles) {
-        (Some(initial_cycle_at_sweet_scent), Some(vblank_cycles)) => {
+    let initial_cycle_distr = game_data.get_initial_cycle_distr(opts.action, playing_song, weather);
+
+    let cycle_opts_for_cycle = match (initial_cycle, vblank_cycles) {
+        (Some(initial_cycle), Some(vblank_cycles)) => {
             Wild3GeneratorCycleOpts::CycleAtMomentWithEmuLog {
                 lead_cycle_spd,
-                initial_cycle_at_sweet_scent,
+                initial_cycle,
                 vblank_cycles,
             }
         }
-        _ => Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog { lead_cycle_spd },
+        _ => Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog {
+            initial_cycle: initial_cycle_distr.median(),
+            lead_cycle_spd,
+            playing_song,
+        },
     };
 
     let methods = vec![
@@ -72,13 +81,16 @@ pub fn generate_gen3_wild_distribution(
         rng,
         advances,
         &Wild3GeneratorOptions {
-            cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead { lead_cycle_spd },
+            cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead {
+                min_max_initial_cycle: initial_cycle_distr.to_min_max(),
+                lead_cycle_spd,
+            },
             methods,
             ..opts.clone()
         },
         game_data,
+        initial_cycle_distr,
     );
-
     Wild3MethodDistributionResults {
         results,
         cycle_at_moments,
@@ -99,6 +111,7 @@ fn generate_dist_results(
     advances: usize,
     opts: &Wild3GeneratorOptions,
     game_data: &Wild3MapGameData,
+    initial_cycle_distr: &Wild3InitialCycleDistribution,
 ) -> Vec<Wild3MethodDistributionResult> {
     let generated = generate_wild3(rng, opts, game_data);
     let cycle_instability = generated.cycle_counter.get_cycle_instability();
@@ -119,15 +132,16 @@ fn generate_dist_results(
                 advances,
                 encounter,
                 cycle_instability,
+                &vec![initial_cycle_distr],
             );
-            let cycle_data = calculate_cycle_data(
+            let cycle_data = calculate_cycle_data_for_specific_lead_spd(
                 &searcher_res
                     .cycle_data_by_lead
                     .as_ref()
                     .unwrap()
                     .post_sweet_scent_range,
-                opts.action,
                 lead_cycle_spd,
+                initial_cycle_distr,
             );
 
             Wild3MethodDistributionResult {
@@ -184,6 +198,8 @@ mod test {
             &opts,
             &Wild3MapGameData::default(),
             700,
+            PlayingSong::MapSong,
+            Wild3Weather::Sunny,
             None,
             None,
         );

@@ -450,13 +450,13 @@ fn extend_path_for_arc(
 
         if !arc.is_cute_charm_success() {
             if prev_nature == resulting_nature {
-                break; // All further seeds won't reach pid_path. 
+                break; // All further seeds won't reach pid_path.
             }
         } else {
             let prev_gender = encounter_gender_ratio.gender_from_pid(prev_pid);
 
             if prev_nature == resulting_nature && prev_gender == resulting_gender {
-                break; // All further seeds won't reach pid_path. 
+                break; // All further seeds won't reach pid_path.
             }
         }
 

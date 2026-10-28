@@ -1,11 +1,13 @@
 #![allow(non_snake_case)] // To have the same function names as pokeemerald decompil project.
 use wasm_bindgen::prelude::*;
 
-use super::generator_main::{
-    INFINITE_CYCLE, VBLANK_FREQ, Wild3GeneratorMonResult, Wild3GeneratorOptions,
-    Wild3GeneratorResults,
+use super::{
+    MinMidMax, calc_modulo_cycle_signed, calc_modulo_cycle_unsigned,
+    generator_main::{
+        INFINITE_CYCLE, VBLANK_FREQ, Wild3GeneratorMonResult, Wild3GeneratorOptions,
+        Wild3GeneratorResults,
+    },
 };
-use super::{calc_modulo_cycle_signed, calc_modulo_cycle_unsigned};
 use crate::{
     EncounterSlot, Gender, GenderRatio, Ivs, NATURE_COUNT, Nature,
     PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE, PERTINENT_SOLO_POKEBLOCKS_BY_NATURE,
@@ -14,8 +16,8 @@ use crate::{
         CycleAndModRange, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method, Moment, Wild3Action,
         Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState, Wild3GeneratorCycleOpts,
         Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
-        get_min_mid_max_pre_sweet_scent_cycle, get_min_mid_max_vblank_cycle_duration,
-        passes_pid_filter,
+        get_default_min_mid_max_initial_cycle_for_feebas,
+        get_default_min_mid_max_vblank_cycle_duration_for_feebas, passes_pid_filter,
     },
     is_max_size,
     rng::{Rng, lcrng::Pokerng},
@@ -61,7 +63,7 @@ fn FishingWildEncounter(
     cycle_counter.add_cycle(1186);
     cycle_counter.on_moment_reached(Moment::FishingWildEncounter);
 
-    if CheckFeebas(rng, opts, cycle_counter) {
+    if CheckFeebas(rng, opts, map_data, cycle_counter) {
         let encounter = map_data.feebas.as_ref()?;
         let level = ChooseWildMonLevel(rng, encounter, opts.lead, cycle_counter);
         let encounter_idx = Wild3EncounterIndex::Feebas;
@@ -95,6 +97,7 @@ fn FishingWildEncounter(
 fn CheckFeebas(
     rng: &mut Pokerng,
     opts: &Wild3GeneratorOptions,
+    map_data: &Wild3MapGameData,
     cycle_counter: &mut CycleFrameCounter,
 ) -> bool {
     cycle_counter.on_moment_reached(Moment::CheckFeebas);
@@ -105,7 +108,9 @@ fn CheckFeebas(
     if rng.rand::<u16>() % 100 > 49 {
         return false;
     }
-    handle_feebas_cycle_counter(rng, cycle_counter, opts.feebas_cycles);
+
+    handle_feebas_cycle_counter(rng, cycle_counter, opts.feebas_cycles, map_data);
+
     opts.feebas_state == Wild3FeebasState::OnFeebasTile
 }
 
@@ -264,8 +269,8 @@ fn GetCurrentMapWildMonHeaderId(
 }
 
 const fn calculate_map_header_lookups() -> [(usize, usize); 124] {
-    // Map groups in Emerald's gWildMonHeaders order, matching the map
-    // encounter array in emerald_wild_encounters.ts used by wild3GameData.ts.
+    // Map groups in Emerald's gWildMonHeaders order, matching
+    // EMERALD_MAPS_BY_INTERNAL_IDX in wild3GameData.ts.
     const MAP_GROUPS: [u8; 124] = [
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 24, 24, 24, 24, 24, 24, 26, 0, 24, 24, 24, 24,
         24, 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 24, 24, 24, 24, 24, 24, 24, 24, 0, 0, 0, 0, 0, 0, 0,
@@ -1015,14 +1020,13 @@ fn rand_next_u16(rng: &mut Pokerng, _reason: &str, _modulo: u16) -> u16 {
     // rand_next_u16_with_debug_print(rng, _reason, _modulo) // Uncomment for debugging
 }
 
-#[wasm_bindgen]
 // Only returns the mid case (which is the one used by the generator)
 pub fn get_feebas_vblank_from_feebas_cycle(feebas_cycles: usize) -> usize {
-    let (_, mid, _) = get_min_mid_max_pre_sweet_scent_cycle(Wild3Action::OldRod);
-    let (_, mid_vblank, _) = get_min_mid_max_vblank_cycle_duration();
+    let initial_cycle = get_default_min_mid_max_initial_cycle_for_feebas().mid;
+    let mid_vblank = get_default_min_mid_max_vblank_cycle_duration_for_feebas().mid;
 
     let (_, mid_case_vblank) =
-        apply_cycles_causing_vblanks_on_cycle_counter(mid, feebas_cycles, mid_vblank);
+        apply_cycles_causing_vblanks_on_cycle_counter(initial_cycle, feebas_cycles, mid_vblank);
 
     mid_case_vblank
 }
@@ -1051,11 +1055,17 @@ fn handle_feebas_cycle_counter(
     rng: &mut Pokerng,
     cycle_counter: &mut CycleFrameCounter,
     feebas_cycles: usize,
+    map_data: &Wild3MapGameData,
 ) {
     cycle_counter.on_moment_reached(Moment::CheckFeebas);
 
-    let (min, mid, max) = get_min_mid_max_pre_sweet_scent_cycle(Wild3Action::OldRod);
-    let (min_vblank, mid_vblank, max_vblank) = get_min_mid_max_vblank_cycle_duration();
+    // Limitation: Feebas hasn't been updated with the new vblank calibration logic.
+    let MinMidMax { min, mid, max } = get_default_min_mid_max_initial_cycle_for_feebas();
+    let MinMidMax {
+        min: min_vblank,
+        mid: mid_vblank,
+        max: max_vblank,
+    } = get_default_min_mid_max_vblank_cycle_duration_for_feebas();
 
     let (_, min_case_vblank) =
         apply_cycles_causing_vblanks_on_cycle_counter(min, feebas_cycles, min_vblank);
@@ -1462,36 +1472,10 @@ fn create_if_passes_filter(
     })
 }
 
+#[path = "tests/generator_tests.rs"]
 #[cfg(test)]
-mod header_lookup_tests {
-    use super::*;
+mod tests;
 
-    #[test]
-    fn calibrated_map_header_lookup_cycles() {
-        // Independent lookup intervals from the calibration fixtures. The
-        // Sweet Scent intervals include another 526 cycles at the call site.
-        for (header_id, expected) in [
-            (0, 218),
-            (6, 782),
-            (20, 1758),
-            (33, 3099),
-            (75, 6605),
-            (98, 7849),
-        ] {
-            let opts = Wild3GeneratorOptions {
-                cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead { lead_cycle_spd: 0 },
-                ..Wild3GeneratorOptions::default()
-            };
-            let mut counter = CycleFrameCounter::new(&opts);
-            let map_data = Wild3MapGameData {
-                map_internal_idx: header_id,
-                ..Wild3MapGameData::default()
-            };
-            assert_eq!(
-                GetCurrentMapWildMonHeaderId(&map_data, &mut counter),
-                header_id
-            );
-            assert_eq!(counter.get_current_post_sweet_scent_cycle_count(), expected);
-        }
-    }
-}
+#[path = "tests/generator_cycle_tests.rs"]
+#[cfg(test)]
+mod tests_cycle;

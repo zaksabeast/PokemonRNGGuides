@@ -25,48 +25,37 @@ import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 import sortBy from "lodash-es/sortBy";
 import { match, P } from "ts-pattern";
 
+import {
+  normalizeWild3AudioInfluences,
+  getWild3InitialCycleDistributionForSetup,
+} from "./wild3AudioInfluences";
+
 export type UiResult = FlattenIvs<
   Wild3SearcherResultMon & {
     species: Species;
     uid: number;
     method_probability: Wild3MethodDistributionResult["method_probability"];
     pre_sweet_scent_cycle_range: Wild3MethodDistributionResult["pre_sweet_scent_cycle_range"];
-    display_negative_cycle_as_0: boolean;
   }
 >;
 
 let nextUid = 0;
+const convertSearcherResultToUIResult = (
+  res: Wild3MethodDistributionResult,
+): UiResult => {
+  return {
+    ...res.searcher_res,
+    ...res.searcher_res.ivs,
+    method_probability: res.method_probability,
+    pre_sweet_scent_cycle_range: res.pre_sweet_scent_cycle_range,
+    species: res.searcher_res.species,
+    uid: nextUid++,
+  };
+};
 
 const convertSearcherResultsToUIResults = (
   results: Wild3MethodDistributionResult[],
 ) => {
-  // For the common case where there's only 1 result that is (negative -> positive),
-  // display it as (0 -> positive)
-  const display_negative_cycle_as_0 =
-    results.filter((res) => {
-      return res.pre_sweet_scent_cycle_range.start < 0;
-    }).length <= 1 &&
-    results.every((res) => {
-      return (
-        res.pre_sweet_scent_cycle_range.start +
-          res.pre_sweet_scent_cycle_range.len >=
-        0
-      );
-    });
-
-  const convertSearcherResultToUIResult = (
-    res: Wild3MethodDistributionResult,
-  ): UiResult => {
-    return {
-      ...res.searcher_res,
-      ...res.searcher_res.ivs,
-      method_probability: res.method_probability,
-      pre_sweet_scent_cycle_range: res.pre_sweet_scent_cycle_range,
-      species: res.searcher_res.species,
-      display_negative_cycle_as_0,
-      uid: nextUid++,
-    };
-  };
   return sortBy(results.map(convertSearcherResultToUIResult), [
     (el) => el.pre_sweet_scent_cycle_range.start,
     (el) => el.pre_sweet_scent_cycle_range.len,
@@ -120,7 +109,16 @@ export const setupToDistributions = async (
   const map_data = emeraldWildGameData.maps_data.find(
     (table) => table.map_id === targetSetup.map,
   );
-  if (map_data == null) {
+  const audioInfluences = normalizeWild3AudioInfluences(
+    targetSetup.map,
+    targetSetup.action,
+    targetSetup,
+  );
+  const distribution = getWild3InitialCycleDistributionForSetup({
+    ...targetSetup,
+    ...audioInfluences,
+  });
+  if (map_data == null || distribution == null) {
     return {
       uiResults: [],
       cycle_at_moments: [],
@@ -140,7 +138,7 @@ export const setupToDistributions = async (
   const distributionArgs = match(cycle_opts)
     .with({ CycleAtMomentWithEmuLog: P.select() }, (emuLog) => ({
       leadCycleSpd: emuLog.lead_cycle_spd,
-      initialCycleAtSweetScent: emuLog.initial_cycle_at_sweet_scent,
+      initialCycleAtSweetScent: emuLog.initial_cycle,
       vblankCycles: new Uint32Array(emuLog.vblank_cycles),
     }))
     .with({ CycleAtMomentNoEmuLog: P.select() }, ({ lead_cycle_spd }) =>
@@ -158,6 +156,8 @@ export const setupToDistributions = async (
       opts,
       map_data,
       distributionArgs.leadCycleSpd,
+      audioInfluences.playing_song,
+      audioInfluences.weather,
       distributionArgs.initialCycleAtSweetScent,
       distributionArgs.vblankCycles,
     );

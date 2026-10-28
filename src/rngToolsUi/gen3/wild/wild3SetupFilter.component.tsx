@@ -162,6 +162,14 @@ export const Wild3SetupFilter = () => {
           }}
           options={toOptions(supportedGen3Methods)}
         />
+        <FormSwitchField<FormState>
+          name="considerWeather"
+          label="Consider all weathers"
+        />
+        <FormSwitchField<FormState>
+          name="hasUnlockedBike"
+          label="Has unlocked bike"
+        />
       </SwitchField>
       {species === "Feebas" && (
         <FeebasTilesField<FormState>

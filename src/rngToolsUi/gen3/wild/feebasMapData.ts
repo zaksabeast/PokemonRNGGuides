@@ -22,10 +22,10 @@ export const getFeebasTiles = (): FeebasTile[] => {
 
   // Copy from searcher_reverse.rs
   const FEEBAS_CYCLE_COUNT_BY_VBLANK = [
-    { min: 0, max: 235895 },
-    { min: 205896, max: 471791 },
-    { min: 421792, max: 707687 },
-    { min: 637688, max: 800000 },
+    { min: 0, max: 250895 },
+    { min: 210896, max: 486791 },
+    { min: 426792, max: 722687 },
+    { min: 642688, max: 800000 },
   ];
 
   const getInstability = (cycleCounter: number) => {

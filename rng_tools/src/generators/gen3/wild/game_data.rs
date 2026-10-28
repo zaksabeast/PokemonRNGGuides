@@ -2,7 +2,9 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-use super::Wild3Action;
+#[cfg(test)]
+use super::ALL_WILD3_ACTIONS;
+use super::{PlayingSong, VBLANK_FREQ, Wild3Action, Wild3InitialCycleDistribution, Wild3Weather};
 use crate::{EncounterSlot, GenderRatio, Nature, PokemonType, Species};
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
@@ -119,6 +121,7 @@ pub struct Wild3MapGameData {
     pub rock_smash_rate: u32,
     pub is_safari: bool,
     pub actions_with_safari_pokeblock: Vec<Wild3Action>, // Not all actions have a pokeblock feeder nearby
+    pub vblank_distrs: Vec<Wild3InitialCycleDistribution>,
 }
 
 #[derive(Debug, Default, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -138,6 +141,22 @@ pub fn get_encounter_for_wild3_map_game_data(
 }
 
 impl Wild3MapGameData {
+    pub fn get_initial_cycle_distr(
+        &self,
+        action: Wild3Action,
+        playing_song: PlayingSong,
+        weather: Wild3Weather,
+    ) -> &Wild3InitialCycleDistribution {
+        self.vblank_distrs
+            .iter()
+            .find(|calibration| {
+                calibration.action == action
+                    && calibration.playing_song == playing_song
+                    && calibration.weather == weather
+            })
+            .unwrap_or_else(|| Wild3InitialCycleDistribution::new_default(action))
+    }
+
     pub fn get_encounter(
         &self,
         action: Wild3Action,
@@ -175,7 +194,18 @@ impl Wild3MapGameData {
 
 impl Default for Wild3MapGameData {
     fn default() -> Self {
+        #[cfg(test)]
+        let vblank_distrs = ALL_WILD3_ACTIONS
+            .into_iter()
+            .map(Wild3InitialCycleDistribution::new_default)
+            .cloned()
+            .collect();
+
+        #[cfg(not(test))]
+        let vblank_distrs = vec![];
+
         Self {
+            vblank_distrs,
             slots_by_action: (0..=Wild3Action::RockSmash as usize)
                 .map(|_i| {
                     (0..=EncounterSlot::Slot11 as usize)

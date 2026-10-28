@@ -13,11 +13,12 @@ use crate::{
     AbilityType, Gender, HiddenPower, Ivs, Nature, PkmFilter, ShinyType, Species,
     gen3::{
         Gen3Lead, Gen3Method, Gen3PkmFilter, SpeciesData, Wild3GeneratorCycleOpts,
-        search_wild3_naive, search_wild3_reverse,
+        Wild3InitialCycleDistribution, search_wild3_naive, search_wild3_reverse,
         searcher_painter::Wild3PaintingOpts,
         wild::{
-            Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex, Wild3MapGameData,
-            Wild3SearcherCycleDataByLead, calculate_cycle_data_by_lead,
+            PlayingSong, Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex,
+            Wild3MapGameData, Wild3SearcherCycleDataByLead, Wild3Weather,
+            calculate_cycle_data_by_lead,
         },
     },
     gen3_shiny,
@@ -104,36 +105,99 @@ pub enum Wild3SearcherCycleOpts {
     #[default]
     Inactive,
     SearchNewTarget {
+        consider_weather: bool,
+        consider_bike: bool,
         consider_rng_manipulated_lead_pid: bool,
         generate_even_if_impossible: bool, // different than Inactive because it still generates likelihood
     },
     Calibrate {
-        lead_cycle_speed: Option<usize>,
+        weather: Wild3Weather,
+        playing_song: PlayingSong,
+        lead_cycle_speed: usize,
     },
 }
 
 impl Wild3SearcherCycleOpts {
-    pub fn generator_cycle_opts(&self) -> Wild3GeneratorCycleOpts {
+    fn get_min_max_initial_cycle_from_distrs(
+        distrs: &[&Wild3InitialCycleDistribution],
+    ) -> (usize, usize) {
+        distrs
+            .iter()
+            .map(|calibration| (calibration.min, calibration.max))
+            .reduce(|(min, max), (next_min, next_max)| (min.min(next_min), max.max(next_max)))
+            .unwrap()
+    }
+
+    pub fn generator_cycle_opts(
+        &self,
+        distrs: &[&Wild3InitialCycleDistribution],
+    ) -> Wild3GeneratorCycleOpts {
+        let min_max_initial_cycle = Self::get_min_max_initial_cycle_from_distrs(distrs);
+
         match self {
             Self::Inactive => Wild3GeneratorCycleOpts::Inactive,
             Self::SearchNewTarget {
                 consider_rng_manipulated_lead_pid,
                 generate_even_if_impossible,
+                ..
             } => Wild3GeneratorCycleOpts::Searching {
+                min_max_initial_cycle,
                 generate_even_if_impossible: *generate_even_if_impossible,
                 consider_rng_manipulated_lead_pid: *consider_rng_manipulated_lead_pid,
             },
             Self::Calibrate {
-                lead_cycle_speed: Some(lead_cycle_spd),
+                lead_cycle_speed, ..
             } => Wild3GeneratorCycleOpts::LikelihoodForLead {
-                lead_cycle_spd: *lead_cycle_spd,
+                lead_cycle_spd: *lead_cycle_speed,
+                min_max_initial_cycle,
             },
+        }
+    }
+
+    /** Always returns at least 1 value */
+    pub fn get_initial_cycle_distrs<'a>(
+        &self,
+        map_data: &'a Wild3MapGameData,
+        action: Wild3Action,
+    ) -> Vec<&'a Wild3InitialCycleDistribution> {
+        let default = Wild3InitialCycleDistribution::new_default(action);
+
+        match self {
+            Self::Inactive => vec![default],
+            Self::SearchNewTarget {
+                consider_bike,
+                consider_weather,
+                ..
+            } => {
+                let list = map_data
+                    .vblank_distrs
+                    .iter()
+                    .filter(|calibration| {
+                        calibration.action == action
+                            && (*consider_weather || calibration.weather == Wild3Weather::Sunny)
+                            && (*consider_bike || calibration.playing_song != PlayingSong::BikeSong)
+                    })
+                    .collect_vec();
+
+                if !list.is_empty() {
+                    list
+                } else {
+                    vec![default]
+                }
+            }
             Self::Calibrate {
-                lead_cycle_speed: None,
-            } => Wild3GeneratorCycleOpts::Searching {
-                generate_even_if_impossible: true,
-                consider_rng_manipulated_lead_pid: true,
-            },
+                weather,
+                playing_song,
+                ..
+            } => {
+                let calibration = map_data.vblank_distrs.iter().find(|calibration| {
+                    calibration.action == action
+                        && calibration.weather == *weather
+                        && calibration.playing_song == *playing_song
+                });
+
+                vec![calibration.unwrap_or(default)]
+            }
         }
     }
 }
@@ -226,11 +290,13 @@ impl Wild3SearcherResultMon {
         advance: usize,
         encounter: &Wild3EncounterGameData,
         cycle_instability: f32,
+        initial_cycle_distrs: &[&Wild3InitialCycleDistribution],
     ) -> Wild3SearcherResultMon {
         let cycle_data_by_lead = gen_res.cycle_range.map(|cycle_range| {
             let is_egg = matches!(gen_opts.lead, Gen3Lead::Egg);
             let lead_cycle_spd = gen_opts.cycle_opts.lead_cycle_spd();
-            calculate_cycle_data_by_lead(&cycle_range, gen_opts.action, is_egg, lead_cycle_spd)
+
+            calculate_cycle_data_by_lead(&cycle_range, is_egg, lead_cycle_spd, initial_cycle_distrs)
         });
 
         Wild3SearcherResultMon {
@@ -351,3 +417,43 @@ pub mod searcher_naive;
 
 #[path = "searcher_reverse.rs"]
 pub mod searcher_reverse;
+
+#[cfg(test)]
+mod cycle_options_tests {
+    use super::*;
+
+    #[test]
+    fn search_options_exclude_bike_without_excluding_surf() {
+        let foot = Wild3InitialCycleDistribution::new_default(Wild3Action::OldRod).clone();
+        let mut bike = foot.clone();
+        bike.playing_song = PlayingSong::BikeSong;
+        let mut surf = foot.clone();
+        surf.playing_song = PlayingSong::SurfSong;
+        let mut rain = surf.clone();
+        rain.weather = Wild3Weather::Rain;
+        let map = Wild3MapGameData {
+            vblank_distrs: vec![foot.clone(), bike.clone(), surf.clone(), rain.clone()],
+            ..Default::default()
+        };
+        let cases = [
+            (false, false, vec![&foot, &surf]),
+            (false, true, vec![&foot, &bike, &surf]),
+            (true, false, vec![&foot, &surf, &rain]),
+            (true, true, vec![&foot, &bike, &surf, &rain]),
+        ];
+
+        for (consider_weather, consider_bike, expected) in cases {
+            let options = Wild3SearcherCycleOpts::SearchNewTarget {
+                consider_weather,
+                consider_bike,
+                consider_rng_manipulated_lead_pid: false,
+                generate_even_if_impossible: false,
+            };
+
+            assert_eq!(
+                options.get_initial_cycle_distrs(&map, Wild3Action::OldRod),
+                expected
+            );
+        }
+    }
+}

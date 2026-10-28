@@ -5,7 +5,6 @@ import {
 import { Wild3SearcherCycleData, Gen3Method } from "~/rngTools";
 import { ResultColumn, ResultTable, Icon, Link, Flex } from "~/components";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
-import { formatProbability } from "~/utils/formatProbability";
 import React from "react";
 import { match, P } from "ts-pattern";
 
@@ -25,6 +24,13 @@ import { TargetSetup } from "./wild3TargetSetupInput";
 import { Wild3PokeblockDescription } from "~/components/wild3Pokeblock";
 import { targetAdvanceAfterPaintingTitle } from "../pokemonRng/labels";
 import { FeebasTileVisualizerButton } from "./feebasMap";
+import { Wild3Map } from "./wild3Map";
+
+import { formatProbability } from "~/utils/formatProbability";
+import {
+  getCommonWild3CycleData,
+  formatWild3Likelihood,
+} from "./wild3AudioInfluences";
 
 const getMethodLikelihoodColumValue = (
   cycleData: Wild3SearcherCycleData,
@@ -115,7 +121,24 @@ const getResultSetupInfoColumns = ({
   }
 
   columns.push(
-    { title: "Map", dataIndex: "mapName" },
+    {
+      title: "Map",
+      dataIndex: "mapName",
+      render: (mapName, setupInfo) => (
+        <Wild3Map
+          mapId={setupInfo.mapId}
+          action={setupInfo.action}
+          data={
+            setupInfo.primaryCycleData == null
+              ? []
+              : [setupInfo.primaryCycleData]
+          }
+          showAudioInfluences={setupInfo.showLikelihoodAudioInfluences}
+        >
+          {mapName}
+        </Wild3Map>
+      ),
+    },
     { title: "Player action", dataIndex: "actionName" },
     {
       title: "Fishing spot",
@@ -202,41 +225,12 @@ const getResultSetupInfoColumns = ({
       key: "<>Method <br />Likelihood</>",
       dataIndex: "cycle_data_by_lead",
       render: (cycle_data_by_lead, values) => {
-        const text = (() => {
-          if (cycle_data_by_lead === undefined) {
-            return "";
-          }
-          const [least_likely, most_likely] =
-            cycle_data_by_lead.common_lower_lead.method_probability <
-            cycle_data_by_lead.common_upper_lead.method_probability
-              ? [
-                  cycle_data_by_lead.common_lower_lead,
-                  cycle_data_by_lead.common_upper_lead,
-                ]
-              : [
-                  cycle_data_by_lead.common_upper_lead,
-                  cycle_data_by_lead.common_lower_lead,
-                ];
+        if (cycle_data_by_lead == null) {
+          return "";
+        }
 
-          const leastFormat = formatProbability(
-            least_likely.method_probability,
-          );
-          const mostFormat = formatProbability(most_likely.method_probability);
-
-          if (leastFormat === mostFormat) {
-            return leastFormat;
-          }
-
-          if (
-            least_likely.method_probability === 0 ||
-            most_likely.method_probability - least_likely.method_probability >
-              0.1
-          ) {
-            return `${leastFormat} - ${mostFormat}`;
-          }
-
-          return leastFormat;
-        })();
+        const data = getCommonWild3CycleData(cycle_data_by_lead);
+        const text = formatWild3Likelihood(data);
         const isVeryReliableSetup =
           text === "100%" && values.lead === "Egg" && values.method === "Wild1";
         const title = `Method ${values.method}${isVeryReliableSetup ? " (Very reliable setup)" : ""}`;
@@ -266,7 +260,7 @@ const getResultSetupInfoColumns = ({
         title: "Ideal Lead Speed",
         dataIndex: "cycle_data_by_lead",
         render: (cycle_data_by_lead, values) => {
-          if (cycle_data_by_lead === undefined) {
+          if (cycle_data_by_lead == null) {
             return "";
           }
           if (values.lead === "Egg") {
@@ -308,7 +302,7 @@ const getResultSetupInfoColumns = ({
             title: "Ideal",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
-              if (cycle_data_by_lead === undefined) {
+              if (cycle_data_by_lead == null) {
                 return "";
               }
               return tooltipHelper(
@@ -324,7 +318,7 @@ const getResultSetupInfoColumns = ({
             tooltip: "Lead PID speed equal to 18 cycles",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
-              if (cycle_data_by_lead === undefined) {
+              if (cycle_data_by_lead == null) {
                 return "";
               }
               return tooltipHelper(
@@ -341,7 +335,7 @@ const getResultSetupInfoColumns = ({
               "Lead PID speed between 608 and 868 cycles (99.9% of all PIDs)",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
-              if (cycle_data_by_lead === undefined) {
+              if (cycle_data_by_lead == null) {
                 return "";
               }
               const least_likely_common =
@@ -362,7 +356,7 @@ const getResultSetupInfoColumns = ({
             tooltip: "Lead PID speed equal to 900 cycles",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
-              if (cycle_data_by_lead === undefined) {
+              if (cycle_data_by_lead == null) {
                 return "";
               }
               return tooltipHelper(
@@ -398,6 +392,7 @@ const setupInfoToTargetSetup = (
 
   return {
     map: setupInfo.mapId,
+    ...setupInfo.targetAudioInfluences,
     action: setupInfo.action,
     feebasState: setupInfo.feebas_state,
     feebasCycles: setupInfo.feebas_cycles,

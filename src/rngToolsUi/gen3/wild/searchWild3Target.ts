@@ -22,6 +22,15 @@ import {
   FastestAdvsCache,
 } from "../paintingReseeding/paintingCache.ts";
 
+import {
+  getWild3SearchAudioInfluences,
+  createWild3TargetCycleOptions,
+  getWild3AudioInfluenceOptions,
+  getDisplayedWild3CycleData,
+  getWild3TargetAudioInfluences,
+  type Wild3SearchAudioInfluences,
+} from "./wild3AudioInfluences";
+
 const emeraldWildGameData = getWild3EmeraldGameData();
 
 let nextUid = 0;
@@ -32,6 +41,7 @@ const convertResultsForPidPathToPidPathResult = async (
   rngManipulatedLeadPid: boolean,
   initial_seed: number,
   getAdvsFromCache: FastestAdvsCache,
+  searchAudioInfluences: Wild3SearchAudioInfluences,
 ): Promise<PidPathResult | null> => {
   let results = [...originalResults];
   // Limitation: The UI components only support that all results for the same PidPath
@@ -56,21 +66,21 @@ const convertResultsForPidPathToPidPathResult = async (
     results.map((res) => {
       const mapSetup = mapSetups[res.map_idx];
       const mapName = formatMapName(mapSetup.map_data.map_id);
-      const primaryLikelihood = (() => {
-        const { cycle_data_by_lead } = res;
-        if (cycle_data_by_lead == null) {
-          return 0;
-        }
-
-        if (rngManipulatedLeadPid) {
-          return cycle_data_by_lead.ideal_lead.method_probability;
-        }
-
-        return Math.min(
-          cycle_data_by_lead.common_lower_lead.method_probability,
-          cycle_data_by_lead.common_upper_lead.method_probability,
-        );
-      })();
+      const primaryCycleData = getDisplayedWild3CycleData(
+        res.cycle_data_by_lead,
+        rngManipulatedLeadPid,
+      );
+      const { showAudioInfluences } = getWild3AudioInfluenceOptions(
+        mapSetup.map_data.map_id,
+        res.action,
+        searchAudioInfluences,
+      );
+      const targetAudioInfluences = getWild3TargetAudioInfluences(
+        mapSetup.map_data.map_id,
+        res.action,
+        res.cycle_data_by_lead,
+        rngManipulatedLeadPid,
+      );
 
       return {
         ...res,
@@ -78,7 +88,10 @@ const convertResultsForPidPathToPidPathResult = async (
         mapId: mapSetup.map_data.map_id,
         mapName,
         actionName: formatActionName(res.action),
-        primaryLikelihood,
+        primaryLikelihood: primaryCycleData?.method_probability ?? 0,
+        primaryCycleData,
+        showLikelihoodAudioInfluences: showAudioInfluences,
+        targetAudioInfluences,
         initial_seed,
         requiresWhiteFlute:
           res.action === "RockSmash" &&
@@ -190,6 +203,7 @@ export const searchWild3Target = async (values: FormState) => {
   const max_advances = painting_opts != null ? 10_000_000 : values.max_advances;
 
   const filter_shiny = values.usingAceForSid ? "Any" : values.filter_shiny;
+  const searchAudioInfluences = getWild3SearchAudioInfluences(values);
   const opts: Wild3SearcherOptions = {
     initial_seed,
     tid: values.tid,
@@ -206,12 +220,7 @@ export const searchWild3Target = async (values: FormState) => {
     map_setups,
     methods,
     feebas_cycles: values.feebasCycles.length === 0 ? [0] : values.feebasCycles,
-    cycle_opts: {
-      SearchNewTarget: {
-        consider_rng_manipulated_lead_pid: values.rngManipulatedLeadPid,
-        generate_even_if_impossible: values.generate_even_if_impossible,
-      },
-    },
+    cycle_opts: createWild3TargetCycleOptions(values),
     using_white_flute: values.recommendedSetups
       ? true
       : values.using_white_flute,
@@ -237,6 +246,7 @@ export const searchWild3Target = async (values: FormState) => {
         values.rngManipulatedLeadPid,
         initial_seed,
         fastestAdvsCache,
+        searchAudioInfluences,
       ),
     ),
   );

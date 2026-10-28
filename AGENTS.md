@@ -10,7 +10,7 @@ All code must follow [CODE_STYLE.md](./CODE_STYLE.md). Read it before writing co
 
 ## Commands
 
-Bun is the package manager. Use `bun run <script>`, never npm/pnpm/yarn. Run the smallest command that validates the change. Don't run formatting or linting unless the task asks for it.
+Bun is the package manager. Use `bun run <script>`, never npm/pnpm/yarn. Run the smallest command that validates the change. Always format `.rs`, `.ts`, and `.tsx` files after editing them, scoped to the touched files. Don't run other formatting or linting unless the task asks for it.
 
 ### Fast Feedback
 

@@ -6,7 +6,7 @@ use crate::{
     Ivs, PkmFilter,
     gen3::{
         CycleAndModCount, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method, Gen3PkmFilter,
-        Wild3Action, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData,
+        PlayingSong, Wild3Action, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData,
         Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
         generate_wild3_internal,
     },
@@ -16,24 +16,29 @@ use crate::{
 pub const INFINITE_CYCLE: usize = 10_000_000;
 pub const VBLANK_FREQ: usize = 280_896;
 
+// The generator doesn't no evaluate relative likelihood. It only detects 0% VS >0%.
 #[derive(Debug, Clone, Default, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum Wild3GeneratorCycleOpts {
     #[default]
     Inactive,
     Searching {
+        min_max_initial_cycle: (usize, usize),
         generate_even_if_impossible: bool,
         consider_rng_manipulated_lead_pid: bool,
     },
     LikelihoodForLead {
+        min_max_initial_cycle: (usize, usize),
         lead_cycle_spd: usize,
     },
     CycleAtMomentNoEmuLog {
+        initial_cycle: usize,
+        playing_song: PlayingSong,
         lead_cycle_spd: usize,
     },
     CycleAtMomentWithEmuLog {
         lead_cycle_spd: usize,
-        initial_cycle_at_sweet_scent: usize,
+        initial_cycle: usize,
         vblank_cycles: Vec<usize>,
     },
 }
@@ -41,8 +46,8 @@ pub enum Wild3GeneratorCycleOpts {
 impl Wild3GeneratorCycleOpts {
     pub fn lead_cycle_spd(&self) -> Option<usize> {
         match self {
-            Self::LikelihoodForLead { lead_cycle_spd }
-            | Self::CycleAtMomentNoEmuLog { lead_cycle_spd }
+            Self::LikelihoodForLead { lead_cycle_spd, .. }
+            | Self::CycleAtMomentNoEmuLog { lead_cycle_spd, .. }
             | Self::CycleAtMomentWithEmuLog { lead_cycle_spd, .. } => Some(*lead_cycle_spd),
             _ => None,
         }

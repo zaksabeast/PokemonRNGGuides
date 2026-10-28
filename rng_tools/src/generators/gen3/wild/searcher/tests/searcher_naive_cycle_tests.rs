@@ -2,15 +2,20 @@ use crate::{
     AbilityType, EncounterSlot, Gender, HiddenPower, Ivs, Nature, PkmFilter, PokemonType,
     ShinyType, Species, assert_list_eq,
     gen3::{
-        CycleRange, Gen3Lead, Gen3Method, Wild3EncounterIndex, Wild3SearcherCycleData,
-        Wild3SearcherCycleDataByLead, Wild3SearcherCycleOpts, Wild3SearcherOptions,
-        Wild3SearcherResultMon, search_wild3_naive,
+        CycleRange, Gen3Lead, Gen3Method, PlayingSong, Wild3EncounterIndex, Wild3MapGameData,
+        Wild3MapSetups, Wild3SearcherCycleData, Wild3SearcherCycleDataByLead,
+        Wild3SearcherCycleOpts, Wild3SearcherOptions, Wild3SearcherResultMon, Wild3Weather,
+        search_wild3_naive,
     },
     rng::lcrng::Pokerng,
 };
 #[test]
 fn test_search_wild3_cycle_methods_1_2_4() {
     let options = Wild3SearcherOptions {
+        map_setups: vec![Wild3MapSetups {
+            map_data: Wild3MapGameData::default(),
+            ..Default::default()
+        }],
         methods: vec![
             Gen3Method::Wild1,
             Gen3Method::Wild2,
@@ -21,7 +26,9 @@ fn test_search_wild3_cycle_methods_1_2_4() {
         initial_advances: 65,
         max_result_count: 10,
         cycle_opts: Wild3SearcherCycleOpts::Calibrate {
-            lead_cycle_speed: Some(500),
+            weather: Wild3Weather::Sunny,
+            playing_song: PlayingSong::MapSong,
+            lead_cycle_speed: 500,
         },
         leads: vec![Gen3Lead::Vanilla],
         filter: PkmFilter {
@@ -39,12 +46,14 @@ fn test_search_wild3_cycle_methods_1_2_4() {
             encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot1),
             cycle_data_by_lead: Some(Wild3SearcherCycleDataByLead {
                 post_sweet_scent_range: CycleRange::new(75276, 80, 115175),
-                specified_lead: Some(Wild3SearcherCycleData::new(500, 50445, 115175, 0.8185)),
-                slowest_lead: Wild3SearcherCycleData::new(900, 18445, 115175, 1.0),
-                fastest_lead: Wild3SearcherCycleData::new(18, 89005, 115175, 0.0),
-                ideal_lead: Wild3SearcherCycleData::new(900, 18445, 115175, 1.0),
-                common_lower_lead: Wild3SearcherCycleData::new(608, 41805, 115175, 1.0),
-                common_upper_lead: Wild3SearcherCycleData::new(868, 21005, 115175, 1.0),
+                specified_lead: Some(Wild3SearcherCycleData::new_for_test(
+                    500, 50445, 115175, 0.8185,
+                )),
+                slowest_lead: Wild3SearcherCycleData::new_for_test(900, 18445, 115175, 1.0),
+                fastest_lead: Wild3SearcherCycleData::new_for_test(18, 89005, 115175, 0.0),
+                ideal_lead: Wild3SearcherCycleData::new_for_test(569, 44925, 115175, 1.0),
+                common_lower_lead: Wild3SearcherCycleData::new_for_test(608, 41805, 115175, 1.0),
+                common_upper_lead: Wild3SearcherCycleData::new_for_test(868, 21005, 115175, 1.0),
             }),
             ability: AbilityType::Second,
             gender: Gender::Male,
@@ -65,12 +74,19 @@ fn test_search_wild3_cycle_methods_1_2_4() {
             encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot1),
             cycle_data_by_lead: Some(Wild3SearcherCycleDataByLead {
                 post_sweet_scent_range: CycleRange::new(190451, 80, 39309),
-                specified_lead: Some(Wild3SearcherCycleData::new(500, 11136, 39309, 0.1815)),
-                slowest_lead: Wild3SearcherCycleData::new(900, -20864, 39309, 0.0),
-                fastest_lead: Wild3SearcherCycleData::new(18, 49696, 39309, 0.8434666666666667),
-                ideal_lead: Wild3SearcherCycleData::new(197, 35376, 39309, 0.9895),
-                common_lower_lead: Wild3SearcherCycleData::new(608, 2496, 39309, 0.0),
-                common_upper_lead: Wild3SearcherCycleData::new(868, -18304, 39309, 0.0),
+                specified_lead: Some(Wild3SearcherCycleData::new_for_test(
+                    500, 11136, 39309, 0.1815,
+                )),
+                slowest_lead: Wild3SearcherCycleData::new_for_test(900, -20864, 39309, 0.0),
+                fastest_lead: Wild3SearcherCycleData::new_for_test(
+                    18,
+                    49696,
+                    39309,
+                    0.8434666666666667,
+                ),
+                ideal_lead: Wild3SearcherCycleData::new_for_test(77, 44976, 39309, 1.0),
+                common_lower_lead: Wild3SearcherCycleData::new_for_test(608, 2496, 39309, 0.0),
+                common_upper_lead: Wild3SearcherCycleData::new_for_test(868, -18304, 39309, 0.0),
             }),
             ability: AbilityType::Second,
             gender: Gender::Male,
@@ -91,17 +107,26 @@ fn test_search_wild3_cycle_methods_1_2_4() {
             encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot1),
             cycle_data_by_lead: Some(Wild3SearcherCycleDataByLead {
                 post_sweet_scent_range: CycleRange::new(229760, 80, 10000000),
-                specified_lead: Some(Wild3SearcherCycleData::new(500, -1000000, 1011136, 0.0)),
-                slowest_lead: Wild3SearcherCycleData::new(900, -1000000, 979136, 0.0),
-                fastest_lead: Wild3SearcherCycleData::new(
+                specified_lead: Some(Wild3SearcherCycleData::new_for_test(
+                    500, -1000000, 1011136, 0.0,
+                )),
+                slowest_lead: Wild3SearcherCycleData::new_for_test(900, -1000000, 979136, 0.0),
+                fastest_lead: Wild3SearcherCycleData::new_for_test(
                     18,
                     -1000000,
                     1049696,
                     0.15653333333333333,
                 ),
-                ideal_lead: Wild3SearcherCycleData::new(18, -1000000, 1049696, 0.15653333333333333),
-                common_lower_lead: Wild3SearcherCycleData::new(608, -1000000, 1002496, 0.0),
-                common_upper_lead: Wild3SearcherCycleData::new(868, -1000000, 981696, 0.0),
+                ideal_lead: Wild3SearcherCycleData::new_for_test(
+                    18,
+                    -1000000,
+                    1049696,
+                    0.15653333333333333,
+                ),
+                common_lower_lead: Wild3SearcherCycleData::new_for_test(
+                    608, -1000000, 1002496, 0.0,
+                ),
+                common_upper_lead: Wild3SearcherCycleData::new_for_test(868, -1000000, 981696, 0.0),
             }),
             ability: AbilityType::Second,
             gender: Gender::Male,

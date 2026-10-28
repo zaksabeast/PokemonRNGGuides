@@ -77,6 +77,10 @@ fn search_wild3_naive_at_given_advance(
 
             let pokeblock_feebas_products = iproduct!(&pokeblock_states, &feebas_cycles);
 
+            let initial_cycle_distrs = opts
+                .cycle_opts
+                .get_initial_cycle_distrs(&map_setups.map_data, *action);
+
             for (safari_pokeblock, feebas_cycles) in pokeblock_feebas_products {
                 let gen_opts = Wild3GeneratorOptions {
                     tid: opts.tid,
@@ -92,7 +96,7 @@ fn search_wild3_naive_at_given_advance(
                     feebas_state: *feebas_state,
                     feebas_cycles: *feebas_cycles,
                     safari_pokeblock: safari_pokeblock.clone(),
-                    cycle_opts: opts.cycle_opts.generator_cycle_opts(),
+                    cycle_opts: opts.cycle_opts.generator_cycle_opts(&initial_cycle_distrs),
                     using_white_flute: opts.using_white_flute,
                 };
 
@@ -110,6 +114,7 @@ fn search_wild3_naive_at_given_advance(
                         advance,
                         encounter,
                         generated.cycle_counter.get_cycle_instability(),
+                        &initial_cycle_distrs,
                     ));
                 });
             }

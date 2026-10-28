@@ -14,6 +14,7 @@ fn test_generate_wild3_cycle_method_3() {
         methods: vec![Gen3Method::Wild3],
         lead: Gen3Lead::Synchronize(Nature::Serious),
         cycle_opts: Wild3GeneratorCycleOpts::Searching {
+            min_max_initial_cycle: (30_000, 70_000),
             generate_even_if_impossible: false,
             consider_rng_manipulated_lead_pid: true,
         },
@@ -32,7 +33,7 @@ fn test_generate_wild3_cycle_method_3() {
             pid: 1459093362,
             ivs: Ivs::new(13, 14, 2, 20, 14, 15),
             method: Gen3Method::Wild3,
-            cycle_range: Some(CycleRange::new(146743, 81, 80)),
+            cycle_range: Some(CycleRange::new(145285, 81, 80)),
             ..Default::default()
         },
         Wild3GeneratorMonResult {
@@ -40,7 +41,7 @@ fn test_generate_wild3_cycle_method_3() {
             pid: 3087365287,
             ivs: Ivs::new(21, 3, 3, 11, 15, 19),
             method: Gen3Method::Wild3,
-            cycle_range: Some(CycleRange::new(160649, 81, 80)),
+            cycle_range: Some(CycleRange::new(159191, 81, 80)),
             ..Default::default()
         },
     ];
@@ -56,6 +57,7 @@ fn test_generate_wild3_cycle_method_3_no_rng_lead_pid() {
         lead: Gen3Lead::Synchronize(Nature::Serious),
         filter: PkmFilter::new_allow_all(),
         cycle_opts: Wild3GeneratorCycleOpts::Searching {
+            min_max_initial_cycle: (30_000, 70_000),
             generate_even_if_impossible: false,
             consider_rng_manipulated_lead_pid: false,
         },
@@ -76,6 +78,7 @@ fn test_generate_wild3_cycle_method_5() {
     let options = Wild3GeneratorOptions {
         methods: vec![Gen3Method::Wild5],
         cycle_opts: Wild3GeneratorCycleOpts::Searching {
+            min_max_initial_cycle: (30_000, 70_000),
             generate_even_if_impossible: false,
             consider_rng_manipulated_lead_pid: true,
         },
@@ -94,7 +97,7 @@ fn test_generate_wild3_cycle_method_5() {
             pid: 1946911046,
             ivs: Ivs::new(4, 29, 8, 25, 7, 14),
             method: Gen3Method::Wild5,
-            cycle_range: Some(CycleRange::new(121958, 80, 19852)),
+            cycle_range: Some(CycleRange::new(120518, 80, 19852)),
             ..Default::default()
         },
         Wild3GeneratorMonResult {
@@ -102,7 +105,7 @@ fn test_generate_wild3_cycle_method_5() {
             pid: 26625321,
             ivs: Ivs::new(21, 2, 31, 1, 18, 19),
             method: Gen3Method::Wild5,
-            cycle_range: Some(CycleRange::new(141810, 80, 6888)),
+            cycle_range: Some(CycleRange::new(140370, 80, 6888)),
             ..Default::default()
         },
         Wild3GeneratorMonResult {
@@ -110,7 +113,7 @@ fn test_generate_wild3_cycle_method_5() {
             pid: 2210948146,
             ivs: Ivs::new(13, 0, 19, 1, 12, 6),
             method: Gen3Method::Wild5,
-            cycle_range: Some(CycleRange::new(148778, 80, 2988)),
+            cycle_range: Some(CycleRange::new(147338, 80, 2988)),
             ..Default::default()
         },
         Wild3GeneratorMonResult {
@@ -118,7 +121,7 @@ fn test_generate_wild3_cycle_method_5() {
             pid: 2335347696,
             ivs: Ivs::new(13, 12, 19, 0, 1, 29),
             method: Gen3Method::Wild5,
-            cycle_range: Some(CycleRange::new(151766, 80, 6877)),
+            cycle_range: Some(CycleRange::new(150326, 80, 6877)),
             ..Default::default()
         },
     ];
@@ -131,6 +134,7 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
         methods: vec![Gen3Method::Wild1, Gen3Method::Wild2, Gen3Method::Wild4],
         lead: Gen3Lead::Synchronize(Nature::Hardy),
         cycle_opts: Wild3GeneratorCycleOpts::Searching {
+            min_max_initial_cycle: (30_000, 70_000),
             generate_even_if_impossible: false,
             consider_rng_manipulated_lead_pid: true,
         },
@@ -150,7 +154,7 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
             pid: 3864471792,
             ivs: Ivs::new(0, 9, 4, 5, 4, 3),
             method: Gen3Method::Wild2,
-            cycle_range: Some(CycleRange::new(59690, 80, 114352)),
+            cycle_range: Some(CycleRange::new(58250, 80, 114352)),
             ..Default::default()
         },
         Wild3GeneratorMonResult {
@@ -158,7 +162,7 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
             pid: 3864471792,
             ivs: Ivs::new(26, 8, 17, 5, 4, 3),
             method: Gen3Method::Wild4,
-            cycle_range: Some(CycleRange::new(174042, 80, 39003)),
+            cycle_range: Some(CycleRange::new(172602, 80, 39003)),
             ..Default::default()
         },
         Wild3GeneratorMonResult {
@@ -166,7 +170,7 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
             pid: 3864471792,
             ivs: Ivs::new(26, 8, 17, 9, 4, 0),
             method: Gen3Method::Wild1,
-            cycle_range: Some(CycleRange::new(213045, 80, INFINITE_CYCLE)),
+            cycle_range: Some(CycleRange::new(211605, 80, INFINITE_CYCLE)),
             ..Default::default()
         },
     ];

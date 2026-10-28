@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { rngTools } from "~/rngTools";
+import { rngTools, Wild3GeneratorCycleOpts } from "~/rngTools";
 import { ResultColumn, ResultTable, Flex, Typography } from "~/components";
 import {
   FormCard,
@@ -28,6 +28,10 @@ import {
 } from "./wild3CycleAtMomentsFormatting";
 import { match } from "ts-pattern";
 import { Tooltip } from "antd";
+import {
+  normalizeWild3AudioInfluences,
+  getWild3InitialCycleDistributionForSetup,
+} from "./wild3AudioInfluences";
 
 const uiCycleAtMomentColumns: ResultColumn<UiResultCycleAtMoment>[] = [
   {
@@ -266,14 +270,33 @@ export const Wild3CycleAtMoments = ({ targetSetup, leadCycleSpeed }: Props) => {
     let cancelled = false;
     const updateUiResult = async () => {
       const json = parseCycleAtMomentsJsonStr(compareCycleAtMomentsStr);
-      const cycle_opts =
+      const audioInfluences = normalizeWild3AudioInfluences(
+        targetSetup.map,
+        targetSetup.action,
+        targetSetup,
+      );
+      const distribution = getWild3InitialCycleDistributionForSetup({
+        ...targetSetup,
+        ...audioInfluences,
+      });
+
+      if (distribution == null) {
+        setUiResult(createEmptyUiResult());
+        return;
+      }
+
+      const cycle_opts: Wild3GeneratorCycleOpts =
         json == null
-          ? { CycleAtMomentNoEmuLog: { lead_cycle_spd: leadCycleSpeed ?? 0 } }
+          ? {
+              LikelihoodForLead: {
+                min_max_initial_cycle: [distribution.min, distribution.max],
+                lead_cycle_spd: leadCycleSpeed ?? 0,
+              },
+            }
           : {
               CycleAtMomentWithEmuLog: {
                 lead_cycle_spd: leadCycleSpeed ?? 0,
-                initial_cycle_at_sweet_scent:
-                  json.cycleAtMoments[0]?.cycle ?? 0,
+                initial_cycle: json.cycleAtMoments[0]?.cycle ?? 0,
                 vblank_cycles: json.vblankDurations,
               },
             };
@@ -296,7 +319,7 @@ export const Wild3CycleAtMoments = ({ targetSetup, leadCycleSpeed }: Props) => {
 
   const resultRows: SummaryRow[] = [
     {
-      label: "Cycle at start of Sweet Scent",
+      label: "Initial cycle",
       value: formatLargeInteger(
         uiResult.uiCycleAtMoments[0]?.dataFromTool.cycle ?? 0,
       ),

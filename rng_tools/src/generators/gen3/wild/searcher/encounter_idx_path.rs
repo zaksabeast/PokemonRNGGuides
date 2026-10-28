@@ -250,6 +250,7 @@ impl<'a> EncounterIdxPathGenerator<'a> {
         }
 
         let mut feebas_cycles_by_vblank: [Vec<usize>; MAX_FEEBAS_VBLANK] = Default::default();
+
         for cycle in feebas_cycles {
             feebas_cycles_by_vblank[get_feebas_vblank_from_feebas_cycle(*cycle)].push(*cycle)
         }

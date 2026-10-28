@@ -1,7 +1,7 @@
 import { MainLayout } from "~/layouts/main";
 import { GuideMeta } from "~/guides";
 import { Flex, NavBreadcrumbs, PokemonIcon, Typography } from "~/components";
-import { platforms } from "~/pageComponents/home/data";
+import { platforms } from "~/games";
 
 type Props = {
   guideMeta: GuideMeta;

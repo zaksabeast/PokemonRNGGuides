@@ -8,7 +8,7 @@ import {
 } from "~/components";
 import { consoleIcons } from "~/components/consoleIcons";
 import { trackCardClick } from "~/analytics";
-import { platforms } from "./data";
+import { platforms } from "~/games";
 import { CHOOSE_YOUR_GAME_ID } from "./hero";
 
 const GameSection = styled.section(({ theme }) => ({

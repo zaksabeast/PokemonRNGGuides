@@ -182,7 +182,7 @@ test("fallback and synthetic setups retain conservative filtering bounds", () =>
   });
   expect(distribution[0].probability).toBe(0);
   const info = getWild3CalibrationInfo(map("MAP_ROUTE101", 0)).find(
-    (info) => info.calibration.playing_song === "BikeSong",
+    (info) => info.calibration.playing_song === "SurfSong",
   );
   expect(info?.audio.is_fake).toBe(true);
   expect(info?.fallback).toBe(true);
@@ -355,4 +355,288 @@ test("fishing non-audio does not replace land or water timing", () => {
       fallback: true,
     },
   ]);
+});
+
+test.each(["OldRod", "GoodRod", "SuperRod"] as const)(
+  "Route 117 %s uses its measured bike-fishing setup",
+  (action) => {
+    const info = getWild3CalibrationInfo(map("MAP_ROUTE117", 11)).filter(
+      ({ calibration }) =>
+        calibration.action === action &&
+        calibration.playing_song === "BikeSong",
+    );
+
+    expect(
+      info.map(
+        ({ calibration, audio, non_audio, fallback, joint_correction }) => ({
+          ...omit(calibration, "distribution"),
+          audio: audio.provenance.source,
+          non_audio: non_audio.provenance.source,
+          sampled_frames: non_audio.provenance.sampled_frames,
+          fallback,
+          joint_correction,
+        }),
+      ),
+    ).toEqual([
+      {
+        action,
+        playing_song: "BikeSong",
+        weather: "Sunny",
+        min: 52698,
+        max: 109342,
+        audio: "route117_sunny_bike_fishing.txt",
+        non_audio: "route117_sunny_bike_fishing.txt",
+        sampled_frames: 2922,
+        fallback: false,
+        joint_correction: null,
+      },
+    ]);
+  },
+);
+
+test("Route 117 bike-fishing timing does not replace other setups", () => {
+  const info = getWild3CalibrationInfo(map("MAP_ROUTE117", 11)).filter(
+    ({ calibration }) =>
+      calibration.action === "SweetScentLand" ||
+      (calibration.action === "SuperRod" &&
+        calibration.playing_song !== "BikeSong"),
+  );
+
+  expect(
+    info.map(({ calibration, non_audio, fallback }) => [
+      calibration.action,
+      calibration.playing_song,
+      non_audio.provenance.source,
+      fallback,
+      calibration.min,
+      calibration.max,
+    ]),
+  ).toEqual([
+    [
+      "SweetScentLand",
+      "MapSong",
+      "route110_walk_sweet_scent.txt",
+      true,
+      0,
+      280895,
+    ],
+    [
+      "SweetScentLand",
+      "BikeSong",
+      "route110_walk_sweet_scent.txt",
+      true,
+      0,
+      280895,
+    ],
+    ["SuperRod", "MapSong", "route110_walk_sweet_scent.txt", true, 0, 280895],
+    ["SuperRod", "SurfSong", "route110_walk_sweet_scent.txt", true, 0, 280895],
+  ]);
+});
+
+test("other maps share measured cycling audio with conservative non-audio bounds", () => {
+  const info = getWild3CalibrationInfo(map("MAP_ROUTE102", 1)).filter(
+    ({ calibration }) =>
+      calibration.action === "SuperRod" &&
+      calibration.playing_song === "BikeSong",
+  );
+
+  expect(
+    info.map(({ audio, non_audio, fallback, calibration }) => ({
+      audio: audio.provenance.source,
+      non_audio: non_audio.provenance.source,
+      fallback,
+      min: calibration.min,
+      max: calibration.max,
+    })),
+  ).toEqual([
+    {
+      audio: "route117_sunny_bike_fishing.txt",
+      non_audio: "route102_walk_sweet_scent.txt",
+      fallback: true,
+      min: 0,
+      max: 280895,
+    },
+  ]);
+});
+
+test("Desert Underpass uses measured timing only for bike land Sweet Scent", () => {
+  const info = getWild3CalibrationInfo(map("MAP_DESERT_UNDERPASS", 111)).filter(
+    ({ calibration }) => calibration.action === "SweetScentLand",
+  );
+
+  expect(
+    info.map(
+      ({ calibration, audio, non_audio, fallback, joint_correction }) => ({
+        ...omit(calibration, "distribution"),
+        audio: audio.provenance.source,
+        non_audio: non_audio.provenance.source,
+        sampled_frames: non_audio.provenance.sampled_frames,
+        fallback,
+        joint_correction,
+      }),
+    ),
+  ).toEqual([
+    {
+      action: "SweetScentLand",
+      playing_song: "MapSong",
+      weather: "Sunny",
+      min: 0,
+      max: 280895,
+      audio: "route101_walk_sweet_scent.txt",
+      non_audio: "route101_walk_sweet_scent.txt",
+      sampled_frames: undefined,
+      fallback: true,
+      joint_correction: null,
+    },
+    {
+      action: "SweetScentLand",
+      playing_song: "BikeSong",
+      weather: "Sunny",
+      min: 44904,
+      max: 72797,
+      audio: "desert_underpass_sunny_bike_sweet_scent.txt",
+      non_audio: "desert_underpass_sunny_bike_sweet_scent.txt",
+      sampled_frames: 2486,
+      fallback: false,
+      joint_correction: null,
+    },
+  ]);
+});
+
+test("Meteor Falls B1F 2R has measured bounds only for walking Sweet Scent", () => {
+  const measured = getWild3CalibrationInfo(
+    map("MAP_METEOR_FALLS_B1F_2R", 25),
+  ).filter(({ fallback }) => !fallback);
+
+  expect(
+    measured.map(({ calibration, audio, non_audio, joint_correction }) => ({
+      ...omit(calibration, "distribution"),
+      audio: audio.provenance.source,
+      non_audio: non_audio.provenance.source,
+      sampled_frames: non_audio.provenance.sampled_frames,
+      joint_correction,
+    })),
+  ).toEqual([
+    {
+      action: "SweetScentLand",
+      playing_song: "MapSong",
+      weather: "Sunny",
+      min: 41876,
+      max: 75907,
+      audio: "meteor_falls_b1f_2r_sunny_walk_sweet_scent.txt",
+      non_audio: "meteor_falls_b1f_2r_sunny_walk_sweet_scent.txt",
+      sampled_frames: 2377,
+      joint_correction: null,
+    },
+  ]);
+});
+
+test.each(["OldRod", "GoodRod", "SuperRod"] as const)(
+  "Route 123 %s keeps rainy bike timing separate from sunny timing",
+  (action) => {
+    const info = getWild3CalibrationInfo(map("MAP_ROUTE123", 37)).filter(
+      ({ calibration }) =>
+        calibration.action === action &&
+        calibration.playing_song === "BikeSong",
+    );
+
+    expect(
+      info.map(
+        ({ calibration, audio, non_audio, fallback, joint_correction }) => ({
+          ...omit(calibration, "distribution"),
+          audio: audio.provenance.source,
+          non_audio: non_audio.provenance.source,
+          sampled_frames: non_audio.provenance.sampled_frames,
+          fallback,
+          joint_correction,
+        }),
+      ),
+    ).toEqual([
+      {
+        action,
+        playing_song: "BikeSong",
+        weather: "Sunny",
+        min: 0,
+        max: 280895,
+        audio: "route117_sunny_bike_fishing.txt",
+        non_audio: "route101_walk_sweet_scent.txt",
+        sampled_frames: undefined,
+        fallback: true,
+        joint_correction: null,
+      },
+      {
+        action,
+        playing_song: "BikeSong",
+        weather: "Rain",
+        min: 60645,
+        max: 103223,
+        audio: "route123_rain_bike_fishing.txt",
+        non_audio: "route123_rain_bike_fishing.txt",
+        sampled_frames: 2922,
+        fallback: false,
+        joint_correction: null,
+      },
+    ]);
+  },
+);
+
+test("Route 116 uses shared Route 104 audio with its own measured land timing", () => {
+  const measured = getWild3CalibrationInfo(map("MAP_ROUTE116", 10)).filter(
+    ({ fallback }) => !fallback,
+  );
+
+  expect(
+    measured.map(({ calibration, audio, non_audio, joint_correction }) => ({
+      ...omit(calibration, "distribution"),
+      audio: audio.provenance.source,
+      non_audio: non_audio.provenance.source,
+      sampled_frames: non_audio.provenance.sampled_frames,
+      joint_correction,
+    })),
+  ).toEqual([
+    {
+      action: "SweetScentLand",
+      playing_song: "MapSong",
+      weather: "Sunny",
+      min: 43025,
+      max: 76319,
+      audio: "route104_walk_sweet_scent.txt",
+      non_audio: "route116_sunny_walk_sweet_scent.txt",
+      sampled_frames: 1934,
+      joint_correction: null,
+    },
+  ]);
+});
+
+test("Mt. Pyre Exterior has measured walking timing without marking the summit measured", () => {
+  const measured = getWild3CalibrationInfo(
+    map("MAP_MT_PYRE_EXTERIOR", 43),
+  ).filter(({ fallback }) => !fallback);
+
+  expect(
+    measured.map(({ calibration, audio, non_audio, joint_correction }) => ({
+      ...omit(calibration, "distribution"),
+      audio: audio.provenance.source,
+      non_audio: non_audio.provenance.source,
+      sampled_frames: non_audio.provenance.sampled_frames,
+      joint_correction,
+    })),
+  ).toEqual([
+    {
+      action: "SweetScentLand",
+      playing_song: "MapSong",
+      weather: "Sunny",
+      min: 34694,
+      max: 69999,
+      audio: "mt_pyre_exterior_sunny_walk_sweet_scent.txt",
+      non_audio: "mt_pyre_exterior_sunny_walk_sweet_scent.txt",
+      sampled_frames: 3338,
+      joint_correction: null,
+    },
+  ]);
+  expect(
+    getWild3CalibrationInfo(map("MAP_MT_PYRE_SUMMIT", 44)).filter(
+      ({ fallback }) => !fallback,
+    ),
+  ).toEqual([]);
 });

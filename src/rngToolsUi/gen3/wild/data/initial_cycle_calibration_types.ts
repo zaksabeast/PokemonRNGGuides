@@ -20,4 +20,6 @@ export type MapCalibrationSource = {
   non_audio: string;
   joint_correction: string | null;
   mode?: "fishing";
+  playing_song?: "BikeSong";
+  weather?: "Rain";
 };

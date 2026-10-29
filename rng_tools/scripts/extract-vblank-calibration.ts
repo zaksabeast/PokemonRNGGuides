@@ -29,6 +29,8 @@ type Source = {
   loop: number;
   mode?: CaptureMode;
   audio?: string;
+  playing_song?: "BikeSong";
+  weather?: "Rain";
 };
 
 const sources: Source[] = [
@@ -104,6 +106,61 @@ const sources: Source[] = [
     loop: 3354.689,
     mode: "fishing",
     audio: "LILYCOVE_FISHING_SUNNY_AUDIO",
+  },
+  {
+    id: "ROUTE117_BIKE_FISHING_SUNNY",
+    file: "route117_sunny_bike_fishing.txt",
+    map: 11,
+    song: "ROUTE110",
+    loop: (2688 * 150) / 138,
+    mode: "fishing",
+    audio: "CYCLING_FISHING_SUNNY_AUDIO",
+    playing_song: "BikeSong",
+  },
+  {
+    id: "DESERT_UNDERPASS_BIKE_SUNNY",
+    file: "desert_underpass_sunny_bike_sweet_scent.txt",
+    map: 111,
+    song: "MT_CHIMNEY",
+    loop: (2688 * 150) / 138,
+    mode: "sweet_scent",
+    audio: "CYCLING_SUNNY_AUDIO",
+    playing_song: "BikeSong",
+  },
+  {
+    id: "METEOR_FALLS_B1F_2R",
+    file: "meteor_falls_b1f_2r_sunny_walk_sweet_scent.txt",
+    map: 25,
+    song: "CAVE_OF_ORIGIN",
+    loop: (1728 * 150) / 100,
+    mode: "sweet_scent",
+  },
+  {
+    id: "ROUTE123_BIKE_FISHING_RAIN",
+    file: "route123_rain_bike_fishing.txt",
+    map: 37,
+    song: "ROUTE122",
+    loop: (2688 * 150) / 138,
+    mode: "fishing",
+    audio: "CYCLING_FISHING_RAIN_AUDIO",
+    playing_song: "BikeSong",
+    weather: "Rain",
+  },
+  {
+    id: "ROUTE116",
+    file: "route116_sunny_walk_sweet_scent.txt",
+    map: 10,
+    song: "ROUTE104",
+    loop: 2260.25,
+    mode: "sweet_scent",
+  },
+  {
+    id: "MT_PYRE_EXTERIOR",
+    file: "mt_pyre_exterior_sunny_walk_sweet_scent.txt",
+    map: 43,
+    song: "MT_PYRE_EXTERIOR",
+    loop: (2496 * 150) / 102,
+    mode: "sweet_scent",
   },
 ];
 
@@ -365,7 +422,7 @@ export async function extract(check = false) {
     );
     const observations = parseLog(text, source.mode);
     const rows =
-      source.mode === "fishing"
+      source.mode != null
         ? selectLoopFrames(observations, source.loop)
         : observations;
     captures.push({
@@ -374,7 +431,7 @@ export async function extract(check = false) {
       metadata: {
         source: source.file,
         song_loop_frames: source.loop,
-        ...(source.mode === "fishing" ? { sampled_frames: rows.length } : {}),
+        ...(source.mode != null ? { sampled_frames: rows.length } : {}),
       },
     });
   }
@@ -496,6 +553,10 @@ export async function extract(check = false) {
       non_audio: capture.id + "_NON_AUDIO",
       joint_correction: joint ? capture.id + "_JOINT" : null,
       ...(capture.mode === "fishing" ? { mode: capture.mode } : {}),
+      ...(capture.playing_song != null
+        ? { playing_song: capture.playing_song }
+        : {}),
+      ...(capture.weather != null ? { weather: capture.weather } : {}),
     });
     let lo = audio[0].x + non[0].x;
     let hi = audio.at(-1)!.x + non.at(-1)!.x;

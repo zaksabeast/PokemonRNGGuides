@@ -323,24 +323,34 @@ const composeCalibration = (
     setup.action === "OldRod" ||
     setup.action === "GoodRod" ||
     setup.action === "SuperRod";
-  const matchesMode = (source: MapCalibrationSource): boolean => {
-    return (source.mode === "fishing") === fishing;
+  const matchesSetup = (source: MapCalibrationSource): boolean => {
+    return (
+      (source.mode === "fishing") === fishing &&
+      (source.playing_song ?? "MapSong") === setup.playing_song &&
+      (source.weather ?? "Sunny") === setup.weather
+    );
   };
 
   const source =
     mapCalibrationSources.find(
       (source) =>
-        source.map_internal_idx === map.map_internal_idx && matchesMode(source),
+        source.map_internal_idx === map.map_internal_idx &&
+        matchesSetup(source),
     ) ??
     mapCalibrationSources.find(
-      (source) => source.song === song && matchesMode(source),
+      (source) => source.song === song && matchesSetup(source),
     ) ??
     mapCalibrationSources.find(
       (source) =>
-        source.map_internal_idx === map.map_internal_idx && source.mode == null,
+        source.map_internal_idx === map.map_internal_idx &&
+        source.mode == null &&
+        source.playing_song == null,
     ) ??
     mapCalibrationSources.find(
-      (source) => source.song === song && source.mode == null,
+      (source) =>
+        source.song === song &&
+        source.mode == null &&
+        source.playing_song == null,
     ) ??
     mapCalibrationSources[0];
   const audioName = audioComponentName(song, setup);
@@ -350,8 +360,8 @@ const composeCalibration = (
   const exact =
     source.map_internal_idx === map.map_internal_idx &&
     (source.mode === "fishing" ? fishing : setup.action === "SweetScentLand") &&
-    setup.playing_song === "MapSong" &&
-    setup.weather === "Sunny" &&
+    setup.playing_song === (source.playing_song ?? "MapSong") &&
+    setup.weather === (source.weather ?? "Sunny") &&
     source.song === song;
   const joint =
     exact && source.joint_correction != null

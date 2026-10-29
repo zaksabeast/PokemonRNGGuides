@@ -19,4 +19,5 @@ export type MapCalibrationSource = {
   song: string;
   non_audio: string;
   joint_correction: string | null;
+  mode?: "fishing";
 };

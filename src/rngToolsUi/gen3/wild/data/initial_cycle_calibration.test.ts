@@ -240,3 +240,119 @@ test("fake audio retains scales and excluded thunderstorm variants stay absent",
     Object.values(components).every((component) => component.is_fake),
   ).toBe(true);
 });
+
+test("Lilycove fishing uses measured audio and non-audio for map music", () => {
+  const fishing = getWild3CalibrationInfo(map("MAP_LILYCOVE_CITY", 84)).filter(
+    ({ calibration }) =>
+      ["OldRod", "GoodRod", "SuperRod"].includes(calibration.action) &&
+      calibration.playing_song === "MapSong",
+  );
+
+  expect(
+    fishing.map(
+      ({ calibration, audio, non_audio, fallback, joint_correction }) => ({
+        ...omit(calibration, "distribution"),
+        audio: { is_fake: audio.is_fake, summary: audio.summary },
+        non_audio: { is_fake: non_audio.is_fake, summary: non_audio.summary },
+        fallback,
+        joint_correction,
+      }),
+    ),
+  ).toEqual([
+    {
+      action: "OldRod",
+      playing_song: "MapSong",
+      weather: "Sunny",
+      min: 49354,
+      max: 93327,
+      audio: {
+        is_fake: false,
+        summary: { min: 23825, mid: 46302, max: 61463 },
+      },
+      non_audio: {
+        is_fake: false,
+        summary: { min: 25529, mid: 25562, max: 31864 },
+      },
+      fallback: false,
+      joint_correction: null,
+    },
+    {
+      action: "GoodRod",
+      playing_song: "MapSong",
+      weather: "Sunny",
+      min: 49354,
+      max: 93327,
+      audio: {
+        is_fake: false,
+        summary: { min: 23825, mid: 46302, max: 61463 },
+      },
+      non_audio: {
+        is_fake: false,
+        summary: { min: 25529, mid: 25562, max: 31864 },
+      },
+      fallback: false,
+      joint_correction: null,
+    },
+    {
+      action: "SuperRod",
+      playing_song: "MapSong",
+      weather: "Sunny",
+      min: 49354,
+      max: 93327,
+      audio: {
+        is_fake: false,
+        summary: { min: 23825, mid: 46302, max: 61463 },
+      },
+      non_audio: {
+        is_fake: false,
+        summary: { min: 25529, mid: 25562, max: 31864 },
+      },
+      fallback: false,
+      joint_correction: null,
+    },
+  ]);
+});
+
+test("fishing non-audio does not replace land or water timing", () => {
+  const info = getWild3CalibrationInfo(map("MAP_LILYCOVE_CITY", 84)).filter(
+    ({ calibration }) =>
+      calibration.action === "SweetScentLand" ||
+      calibration.action === "SweetScentWater",
+  );
+
+  expect(
+    info.map(({ calibration, non_audio, fallback }) => ({
+      ...omit(calibration, "distribution"),
+      non_audio: non_audio.provenance.source,
+      fallback,
+    })),
+  ).toEqual([
+    {
+      action: "SweetScentLand",
+      playing_song: "MapSong",
+      weather: "Sunny",
+      min: 0,
+      max: 280895,
+      non_audio: "route101_walk_sweet_scent.txt",
+      fallback: true,
+    },
+    {
+      action: "SweetScentLand",
+      playing_song: "BikeSong",
+      weather: "Sunny",
+      min: 0,
+      max: 280895,
+      non_audio: "route101_walk_sweet_scent.txt",
+      fallback: true,
+    },
+    {
+      action: "SweetScentWater",
+      playing_song: "SurfSong",
+      weather: "Sunny",
+      min: 0,
+      max: 280895,
+      non_audio: "route101_walk_sweet_scent.txt",
+      fallback: true,
+    },
+  ]);
+});

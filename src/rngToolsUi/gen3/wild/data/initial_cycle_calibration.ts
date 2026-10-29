@@ -14,6 +14,7 @@ import { mapCalibrationSettings } from "./initial_cycle_calibration_maps";
 import { wild3Actions } from "../utils";
 import type {
   CalibrationComponent,
+  MapCalibrationSource,
   RawCdfKnot,
 } from "./initial_cycle_calibration_types";
 
@@ -318,11 +319,29 @@ const composeCalibration = (
   setup: Setup,
 ): Wild3CalibrationInfo => {
   const song = defaultSong(map);
+  const fishing =
+    setup.action === "OldRod" ||
+    setup.action === "GoodRod" ||
+    setup.action === "SuperRod";
+  const matchesMode = (source: MapCalibrationSource): boolean => {
+    return (source.mode === "fishing") === fishing;
+  };
+
   const source =
     mapCalibrationSources.find(
-      (source) => source.map_internal_idx === map.map_internal_idx,
+      (source) =>
+        source.map_internal_idx === map.map_internal_idx && matchesMode(source),
     ) ??
-    mapCalibrationSources.find((source) => source.song === song) ??
+    mapCalibrationSources.find(
+      (source) => source.song === song && matchesMode(source),
+    ) ??
+    mapCalibrationSources.find(
+      (source) =>
+        source.map_internal_idx === map.map_internal_idx && source.mode == null,
+    ) ??
+    mapCalibrationSources.find(
+      (source) => source.song === song && source.mode == null,
+    ) ??
     mapCalibrationSources[0];
   const audioName = audioComponentName(song, setup);
   const audio = components[audioName] ?? calibrationComponents.ROUTE101_AUDIO;
@@ -330,7 +349,7 @@ const composeCalibration = (
     components[source.non_audio] ?? calibrationComponents.ROUTE101_NON_AUDIO;
   const exact =
     source.map_internal_idx === map.map_internal_idx &&
-    setup.action === "SweetScentLand" &&
+    (source.mode === "fishing" ? fishing : setup.action === "SweetScentLand") &&
     setup.playing_song === "MapSong" &&
     setup.weather === "Sunny" &&
     source.song === song;

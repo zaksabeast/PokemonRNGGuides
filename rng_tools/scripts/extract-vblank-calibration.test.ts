@@ -5,6 +5,7 @@ import {
   fit,
   less,
   convolution,
+  selectLoopFrames,
 } from "./extract-vblank-calibration";
 
 test("complex distributions fit within the error budget", () => {
@@ -68,4 +69,52 @@ test("malformed or absent completed captures fail", () => {
       "# attempt run=1 frame=1 target_offset=10 mode=sweet_scent endpoint=SweetScentWildEncounter",
     ),
   ).toThrow();
+});
+
+const fishingLog = [
+  "event,1,0,encounter_attempt,22,20522,20522,m4aSoundMain,0x082E0124,5764047167,20133,11683",
+  "event,1,0,encounter_attempt,22,20522,20522,TryReceiveLinkBattleData,0x08033648,5764085350,58316,38183",
+  "event,1,0,encounter_attempt,22,20522,20522,FishingWildEncounter,0x080B5734,5764090748,63714,1154",
+  "# attempt run=1 delay=0 frame=20522 target_offset=63714 encounter_offset=63714 sweet_scent_hits=0 mode=fishing endpoint=FishingWildEncounter",
+].join("\n");
+
+test("fishing captures split audio from the full encounter offset", () => {
+  expect(parseLog(fishingLog, "fishing")).toEqual([
+    { frame: 20522, audio: 38183, nonAudio: 25531, total: 63714 },
+  ]);
+  expect(() => parseLog(fishingLog)).toThrow();
+  expect(() =>
+    parseLog(fishingLog.replace("63714,1154", "63715,1154"), "fishing"),
+  ).toThrow("Invalid or incomplete capture");
+});
+
+test("one song loop keeps the first observation per frame and rounds up", () => {
+  expect(
+    selectLoopFrames(
+      [
+        { frame: 10, audio: 100, nonAudio: 10, total: 110 },
+        { frame: 10, audio: 100, nonAudio: 20, total: 120 },
+        { frame: 11, audio: 200, nonAudio: 10, total: 210 },
+        { frame: 12, audio: 300, nonAudio: 10, total: 310 },
+        { frame: 13, audio: 400, nonAudio: 10, total: 410 },
+      ],
+      2.1,
+    ),
+  ).toEqual([
+    { frame: 10, audio: 100, nonAudio: 10, total: 110 },
+    { frame: 11, audio: 200, nonAudio: 10, total: 210 },
+    { frame: 12, audio: 300, nonAudio: 10, total: 310 },
+  ]);
+});
+
+test("short captures retain their distinct frames", () => {
+  expect(
+    selectLoopFrames(
+      [
+        { frame: 10, audio: 100, nonAudio: 10, total: 110 },
+        { frame: 10, audio: 100, nonAudio: 20, total: 120 },
+      ],
+      3354.689,
+    ),
+  ).toEqual([{ frame: 10, audio: 100, nonAudio: 10, total: 110 }]);
 });

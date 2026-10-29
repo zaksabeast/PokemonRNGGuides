@@ -11,7 +11,7 @@ import { format, resolveConfig } from "prettier";
 
 const root = new URL("../src/generators/gen3/wild/", import.meta.url);
 const tolerance = 0.01;
-const maxKnots = 64;
+const maxKnots = 128;
 type Observation = {
   frame: number;
   audio: number;
@@ -20,7 +20,18 @@ type Observation = {
 };
 type Weighted = { value: number; weight: number };
 export type Knot = { x: number; p: number; area: number };
-const sources = [
+type CaptureMode = "sweet_scent" | "fishing";
+type Source = {
+  id: string;
+  file: string;
+  map: number;
+  song: string;
+  loop: number;
+  mode?: CaptureMode;
+  audio?: string;
+};
+
+const sources: Source[] = [
   {
     id: "ROUTE101",
     file: "route101_walk_sweet_scent.txt",
@@ -84,18 +95,36 @@ const sources = [
     song: "RG_SEVII_CAVE",
     loop: 5525.619515,
   },
+  {
+    id: "LILYCOVE_FISHING_SUNNY",
+    file: "lilycove_sunny_walk_fishing.txt",
+    map: 84,
+    song: "LILYCOVE",
+    // Loop markers and tempo changes in pokeemerald's mus_lilycove.mid.
+    loop: 3354.689,
+    mode: "fishing",
+    audio: "LILYCOVE_FISHING_SUNNY_AUDIO",
+  },
 ];
 
 type CaptureMetadata = {
   source: string;
   song_loop_frames: number;
+  sampled_frames?: number;
 };
-type Capture = (typeof sources)[number] & {
+type Capture = Source & {
   rows: Observation[];
   metadata: CaptureMetadata;
 };
 
-export function parseLog(text: string): Observation[] {
+export function parseLog(
+  text: string,
+  mode: CaptureMode = "sweet_scent",
+): Observation[] {
+  const endpoint =
+    mode === "fishing" ? "FishingWildEncounter" : "SweetScentWildEncounter";
+  const target =
+    mode === "fishing" ? "FishingWildEncounter" : "TrySweetScentEncounter";
   const events = new Map<number, Map<string, number>>();
   const observations: Observation[] = [];
   const runs = new Set<number>();
@@ -114,12 +143,10 @@ export function parseLog(text: string): Observation[] {
       const run = Number(fields.run);
       if (runs.has(run)) throw new Error("Repeated run: " + run);
       runs.add(run);
-      if (
-        fields.mode !== "sweet_scent" ||
-        fields.endpoint !== "SweetScentWildEncounter"
-      ) {
-        throw new Error("Expected completed land Sweet Scent capture");
+      if (fields.mode !== mode || fields.endpoint !== endpoint) {
+        throw new Error("Expected completed " + mode + " capture");
       }
+
       const event = events.get(run);
       const start = event?.get("m4aSoundMain");
       const end = event?.get("TryReceiveLinkBattleData");
@@ -128,7 +155,7 @@ export function parseLog(text: string): Observation[] {
       if (
         start == null ||
         end == null ||
-        event?.get("TrySweetScentEncounter") !== total ||
+        event?.get(target) !== total ||
         !Number.isSafeInteger(start) ||
         !Number.isSafeInteger(end) ||
         !Number.isSafeInteger(frame) ||
@@ -150,6 +177,33 @@ export function parseLog(text: string): Observation[] {
   if (!observations.length) throw new Error("No completed attempts");
   return observations;
 }
+
+export function selectLoopFrames(
+  rows: Observation[],
+  loopFrames: number,
+): Observation[] {
+  if (!Number.isFinite(loopFrames) || loopFrames <= 0) {
+    throw new Error("Expected positive finite song loop duration");
+  }
+
+  const selected = new Map<number, Observation>();
+  const limit = Math.ceil(loopFrames);
+  for (const row of rows) {
+    if (!selected.has(row.frame)) {
+      selected.set(row.frame, row);
+    }
+
+    if (selected.size === limit) {
+      break;
+    }
+  }
+
+  return [...selected.values()];
+}
+
+const audioId = (source: Source): string => {
+  return source.audio ?? source.song + "_AUDIO";
+};
 
 export function weightedFrames(
   rows: Observation[],
@@ -309,13 +363,18 @@ export async function extract(check = false) {
       new URL("vblank_calibration.local.data/" + source.file, root),
       "utf8",
     );
-    const rows = parseLog(text);
+    const observations = parseLog(text, source.mode);
+    const rows =
+      source.mode === "fishing"
+        ? selectLoopFrames(observations, source.loop)
+        : observations;
     captures.push({
       ...source,
       rows,
       metadata: {
         source: source.file,
         song_loop_frames: source.loop,
+        ...(source.mode === "fishing" ? { sampled_frames: rows.length } : {}),
       },
     });
   }
@@ -357,20 +416,19 @@ export async function extract(check = false) {
       // The first capture for a song supplies its shared audio model.
       if (
         key === "audio" &&
-        captures.find((c) => c.song === capture.song)!.id !== capture.id
+        captures.find((c) => audioId(c) === audioId(capture))!.id !== capture.id
       )
         continue;
       const values = weightedFrames(capture.rows, key);
       const result = fit(values);
-      const id =
-        key === "audio" ? capture.song + "_AUDIO" : capture.id + "_NON_AUDIO";
+      const id = key === "audio" ? audioId(capture) : capture.id + "_NON_AUDIO";
       models.set(id, result);
       emitComponent(id, values, result, capture.metadata);
     }
   }
   const validation = [];
   for (const capture of captures) {
-    const audio = models.get(capture.song + "_AUDIO")!.knots;
+    const audio = models.get(audioId(capture))!.knots;
     const non = models.get(capture.id + "_NON_AUDIO")!.knots;
     const totals = empirical(weightedFrames(capture.rows, "total"));
     let error = 0;
@@ -437,6 +495,7 @@ export async function extract(check = false) {
       song: capture.song,
       non_audio: capture.id + "_NON_AUDIO",
       joint_correction: joint ? capture.id + "_JOINT" : null,
+      ...(capture.mode === "fishing" ? { mode: capture.mode } : {}),
     });
     let lo = audio[0].x + non[0].x;
     let hi = audio.at(-1)!.x + non.at(-1)!.x;
@@ -464,7 +523,8 @@ export async function extract(check = false) {
       map: capture.id,
       combined_median: median,
       quantiles,
-      audio_source: capture.song,
+      audio_source: audioId(capture),
+      sampled_frames: capture.rows.length,
       audio_cdf_error: audioError,
       joint_cdf_error: error,
       max_interval_probability_error: intervalError,
@@ -472,13 +532,18 @@ export async function extract(check = false) {
       independent_interval_probability_error: independentIntervalError,
       model: joint ? "joint_cdf_correction" : "independent_convolution",
       validation_kind:
-        captures.find((c) => c.song === capture.song)!.id === capture.id
+        captures.find((c) => audioId(c) === audioId(capture))!.id === capture.id
           ? "in_sample_joint"
           : "cross_map_audio_holdout",
     });
   }
   const route101 = components.ROUTE101_AUDIO;
-  Object.assign(components, fakeAudioComponents(route101));
+  for (const [id, component] of Object.entries(fakeAudioComponents(route101))) {
+    if (components[id] == null) {
+      components[id] = component;
+    }
+  }
+
   const outputRoot = new URL(
     "../../src/rngToolsUi/gen3/wild/data/",
     import.meta.url,

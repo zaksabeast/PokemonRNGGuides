@@ -158,8 +158,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "~": path.resolve(__dirname, "src"),
-      rng_tools: path.resolve(__dirname, "rng_tools/pkg"),
+      "~": path.resolve(import.meta.dirname, "src"),
+      rng_tools: path.resolve(import.meta.dirname, "rng_tools/pkg"),
     },
   },
   optimizeDeps: {

@@ -1,6 +1,6 @@
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { useHydrate } from "~/hooks/useHydrate";
-import { LanguageKey, languageByKey } from "~/types/language";
+import { LanguageKey } from "~/types/language";
 import {
   pokeNavTrainers as enPokeNavTrainers,
   PokeNavTrainerTranslationPair,
@@ -12,11 +12,13 @@ import { pokeNavTrainers as esPokeNavTrainers } from "~/translations/es/pokeNav"
 import { pokeNavTrainers as jaPokeNavTrainers } from "~/translations/ja/pokeNav";
 import { usePokeNavGameLanguage } from "./state";
 import { EmeraldLang } from "~/rngTools";
-import { emeraldLangs } from "~/rngToolsUi/gen3/ace/emeraldLang";
+import {
+  emeraldLangs,
+  getEmeraldLangOptions,
+} from "~/rngToolsUi/gen3/shared/emeraldLang";
 
 type GameLanguageInfo = {
-  label: string;
-  // Used to sort trainer names the way the game language would
+  // Matches the guide language to a game language and sorts trainer names
   locale: LanguageKey | "ja";
   trainers: PokeNavTrainerTranslationPair;
 };
@@ -24,38 +26,15 @@ type GameLanguageInfo = {
 // Every game language is imported directly, since lazy loading them
 // would suspend the page when the game language is toggled.
 const gameLanguageInfo: Record<EmeraldLang, GameLanguageInfo> = {
-  English: {
-    label: languageByKey.en.label,
-    locale: "en",
-    trainers: enPokeNavTrainers,
-  },
-  French: {
-    label: languageByKey.fr.label,
-    locale: "fr",
-    trainers: frPokeNavTrainers,
-  },
-  Italian: {
-    label: languageByKey.it.label,
-    locale: "it",
-    trainers: itPokeNavTrainers,
-  },
-  Spanish: {
-    label: languageByKey.es.label,
-    locale: "es",
-    trainers: esPokeNavTrainers,
-  },
-  German: {
-    label: languageByKey.de.label,
-    locale: "de",
-    trainers: dePokeNavTrainers,
-  },
-  Japanese: { label: "日本語", locale: "ja", trainers: jaPokeNavTrainers },
+  English: { locale: "en", trainers: enPokeNavTrainers },
+  French: { locale: "fr", trainers: frPokeNavTrainers },
+  Italian: { locale: "it", trainers: itPokeNavTrainers },
+  Spanish: { locale: "es", trainers: esPokeNavTrainers },
+  German: { locale: "de", trainers: dePokeNavTrainers },
+  Japanese: { locale: "ja", trainers: jaPokeNavTrainers },
 };
 
-export const gameLanguageOptions = emeraldLangs.map((language) => ({
-  label: gameLanguageInfo[language].label,
-  value: language,
-}));
+export const gameLanguageOptions = getEmeraldLangOptions(emeraldLangs);
 
 // Guide languages Emerald wasn't released in (e.g. zh) fall back to English
 export const getGuideGameLanguage = (language: LanguageKey): EmeraldLang =>

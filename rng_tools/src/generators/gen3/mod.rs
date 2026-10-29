@@ -1,5 +1,6 @@
 mod ace;
 mod egg;
+mod emerald_lang;
 mod feebas_sid;
 mod generator_pokeblock;
 mod jirachi;
@@ -13,6 +14,7 @@ mod wild;
 
 pub use ace::*;
 pub use egg::*;
+pub use emerald_lang::*;
 pub use feebas_sid::*;
 pub use generator_pokeblock::*;
 pub use jirachi::*;

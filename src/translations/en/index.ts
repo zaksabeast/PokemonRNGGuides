@@ -138,6 +138,7 @@ export const translations = {
   "Upload!": "Upload!",
   "PokeNav Call": "PokeNav Call",
   "Game Language": "Game Language",
+  "Change SID to {sid}": "Change SID to {sid}",
   "Hatched Nature": "Hatched Nature",
   "Hatched Gender": "Hatched Gender",
   "Hatched Ability": "Hatched Ability",

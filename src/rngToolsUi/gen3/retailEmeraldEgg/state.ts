@@ -11,7 +11,7 @@ import { z } from "zod";
 import { NullableIvs } from "~/components/ivInput";
 import type { HeldEggCalibrationResult } from "./calibrateHeldEgg/result";
 import type { HeldEggCalibrationFilters } from "./calibrateHeldEgg/validator";
-import { pokeNavTrainers as trainers } from "./constants";
+import { pokeNavTrainers as trainers, pokeNavGameLanguages } from "./constants";
 
 export const RegisteredPokeNavTrainersSchema = z.object({
   registeredTrainers: z.enum(trainers).array(),
@@ -34,7 +34,8 @@ const registeredTrainers = atomWithPersistence(
 export const useRegisteredTrainers = () => useAtom(registeredTrainers);
 
 export const PokeNavGameLanguageSchema = z.object({
-  gameLanguage: z.enum(["default", "ja"]),
+  // "default" follows the guide language
+  gameLanguage: z.enum(["default", ...pokeNavGameLanguages]),
 });
 
 export type PokeNavGameLanguage = z.infer<typeof PokeNavGameLanguageSchema>;

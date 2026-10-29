@@ -107,3 +107,15 @@ const pokeNavTrainers = [
   "HikerSawyer",
   "YoungCoupleKiraDan",
 ] as const satisfies PokeNavTrainer[];
+
+// Languages Emerald was released in, for showing trainer names as the game does
+export const pokeNavGameLanguages = [
+  "en",
+  "fr",
+  "de",
+  "it",
+  "es",
+  "ja",
+] as const;
+
+export type PokeNavGameLanguageKey = (typeof pokeNavGameLanguages)[number];

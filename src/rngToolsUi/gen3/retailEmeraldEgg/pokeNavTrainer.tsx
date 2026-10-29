@@ -4,7 +4,7 @@ import {
   FormCard,
   OutlinedButton,
   PrimaryButton,
-  RadioField,
+  SelectField,
   SwitchField,
   SwitchGroup,
 } from "~/components/form";
@@ -12,9 +12,12 @@ import {
   useRegisteredTrainers,
   usePokeNavGameLanguage,
   RegisteredPokeNavTrainers,
-  PokeNavGameLanguage,
 } from "./state";
-import { pokeNavTrainers } from "./constants";
+import {
+  pokeNavTrainers,
+  pokeNavGameLanguages,
+  PokeNavGameLanguageKey,
+} from "./constants";
 import { useHydrate } from "~/hooks/useHydrate";
 import { hydrationLock } from "~/utils/hydration";
 import { languageByKey } from "~/types/language";
@@ -41,13 +44,18 @@ const updateTrainerState = ({
   };
 };
 
+const gameLanguageOptions = pokeNavGameLanguages.map((language) => ({
+  label: language === "ja" ? "日本語" : languageByKey[language].label,
+  value: language,
+}));
+
 export const PokeNavInput = () => {
   const t = useActiveRouteTranslations();
-  const { translatedTrainers } = usePokeNavTrainerTranslations();
+  const { translatedTrainers, language: gameLanguage } =
+    usePokeNavTrainerTranslations();
   const [lockedState, setRegisteredTrainers] = useRegisteredTrainers();
   const { hydrated, client } = useHydrate(lockedState);
-  const [lockedGameLanguage, setGameLanguage] = usePokeNavGameLanguage();
-  const { client: gameLanguageState } = useHydrate(lockedGameLanguage);
+  const [, setGameLanguage] = usePokeNavGameLanguage();
 
   const handleSelectAll = () =>
     setRegisteredTrainers(
@@ -69,14 +77,10 @@ export const PokeNavInput = () => {
 
   return (
     <FormCard>
-      <RadioField<PokeNavGameLanguage["gameLanguage"]>
+      <SelectField<PokeNavGameLanguageKey>
         label={t["Game Language"]}
-        cellSize="word"
-        value={gameLanguageState?.gameLanguage ?? "default"}
-        options={[
-          { label: languageByKey[t.language].label, value: "default" },
-          { label: "日本語", value: "ja" },
-        ]}
+        value={gameLanguage}
+        options={gameLanguageOptions}
         onChange={(gameLanguage) =>
           setGameLanguage(hydrationLock({ gameLanguage }))
         }

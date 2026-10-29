@@ -19,7 +19,7 @@ import {
   useHeldEggState,
   useRegisteredTrainers,
 } from "../state";
-import { pokeNavTrainers } from "../constants";
+import { pokeNavTrainers, PokeNavGameLanguageKey } from "../constants";
 import { rngTools, Gen3HeldEgg, PokeNavTrainer, Species } from "~/rngTools";
 import { sortBy, uniqueId } from "lodash-es";
 import { getPkmFilterInitialValues } from "~/components/pkmFilter";
@@ -31,10 +31,7 @@ import { formatOffset } from "~/utils/offsetSymbol";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { useWatch } from "~/hooks/form";
 import { Translations } from "~/translations";
-import {
-  PokeNavLanguage,
-  usePokeNavTrainerTranslations,
-} from "../trainerTranslations";
+import { usePokeNavTrainerTranslations } from "../trainerTranslations";
 import {
   PokeNavTrainerTranslationPair,
   PokeNavTrainerTranslations,
@@ -135,7 +132,7 @@ type FieldProps = {
   t: Translations;
   eggSpecies: Species;
   translatedTrainers: PokeNavTrainerTranslationPair;
-  trainerLanguage: PokeNavLanguage;
+  trainerLanguage: PokeNavGameLanguageKey;
 };
 
 const Fields = ({

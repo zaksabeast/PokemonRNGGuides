@@ -29,7 +29,7 @@ type Source = {
   loop: number;
   mode?: CaptureMode;
   audio?: string;
-  playing_song?: "BikeSong";
+  playing_song?: MapCalibrationSource["playing_song"];
   weather?: "Rain";
 };
 
@@ -161,6 +161,25 @@ const sources: Source[] = [
     song: "MT_PYRE_EXTERIOR",
     loop: (2496 * 150) / 102,
     mode: "sweet_scent",
+  },
+  {
+    id: "METEOR_FALLS_B1F_2R_FISHING_SUNNY",
+    file: "meteor_falls_b1f_2r_sunny_walk_fishing.txt",
+    map: 25,
+    song: "CAVE_OF_ORIGIN",
+    loop: (1728 * 150) / 100,
+    mode: "fishing",
+    audio: "CAVE_OF_ORIGIN_FISHING_SUNNY_AUDIO",
+  },
+  {
+    id: "SAFARI_ZONE_NORTHWEST_SURF_FISHING_SUNNY",
+    file: "safari_zone_nortwest_sunny_surf_fishing.txt",
+    map: 74,
+    song: "SAFARI_ZONE",
+    loop: (2304 * 150) / 82,
+    mode: "fishing",
+    audio: "SURF_FISHING_SUNNY_AUDIO",
+    playing_song: "SurfSong",
   },
 ];
 

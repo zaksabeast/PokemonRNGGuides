@@ -503,10 +503,13 @@ test("Desert Underpass uses measured timing only for bike land Sweet Scent", () 
   ]);
 });
 
-test("Meteor Falls B1F 2R has measured bounds only for walking Sweet Scent", () => {
+test("Meteor Falls B1F 2R retains its measured walking Sweet Scent timing", () => {
   const measured = getWild3CalibrationInfo(
     map("MAP_METEOR_FALLS_B1F_2R", 25),
-  ).filter(({ fallback }) => !fallback);
+  ).filter(
+    ({ calibration, fallback }) =>
+      calibration.action === "SweetScentLand" && !fallback,
+  );
 
   expect(
     measured.map(({ calibration, audio, non_audio, joint_correction }) => ({
@@ -640,3 +643,69 @@ test("Mt. Pyre Exterior has measured walking timing without marking the summit m
     ),
   ).toEqual([]);
 });
+
+test.each(["OldRod", "GoodRod", "SuperRod"] as const)(
+  "Meteor Falls B1F 2R %s uses measured fishing timing with map music",
+  (action) => {
+    const measured = getWild3CalibrationInfo(
+      map("MAP_METEOR_FALLS_B1F_2R", 25),
+    ).filter(
+      ({ calibration, fallback }) => calibration.action === action && !fallback,
+    );
+
+    expect(
+      measured.map(({ calibration, audio, non_audio, joint_correction }) => ({
+        ...omit(calibration, "distribution"),
+        audio: audio.provenance.source,
+        non_audio: non_audio.provenance.source,
+        sampled_frames: non_audio.provenance.sampled_frames,
+        joint_correction,
+      })),
+    ).toEqual([
+      {
+        action,
+        playing_song: "MapSong",
+        weather: "Sunny",
+        min: 42022,
+        max: 95795,
+        audio: "meteor_falls_b1f_2r_sunny_walk_fishing.txt",
+        non_audio: "meteor_falls_b1f_2r_sunny_walk_fishing.txt",
+        sampled_frames: 2592,
+        joint_correction: null,
+      },
+    ]);
+  },
+);
+
+test.each(["OldRod", "GoodRod", "SuperRod"] as const)(
+  "Safari Zone Northwest %s has measured bounds only while surfing",
+  (action) => {
+    const measured = getWild3CalibrationInfo(
+      map("MAP_SAFARI_ZONE_NORTHWEST", 74),
+    ).filter(
+      ({ calibration, fallback }) => calibration.action === action && !fallback,
+    );
+
+    expect(
+      measured.map(({ calibration, audio, non_audio, joint_correction }) => ({
+        ...omit(calibration, "distribution"),
+        audio: audio.provenance.source,
+        non_audio: non_audio.provenance.source,
+        sampled_frames: non_audio.provenance.sampled_frames,
+        joint_correction,
+      })),
+    ).toEqual([
+      {
+        action,
+        playing_song: "SurfSong",
+        weather: "Sunny",
+        min: 40241,
+        max: 97023,
+        audio: "safari_zone_nortwest_sunny_surf_fishing.txt",
+        non_audio: "safari_zone_nortwest_sunny_surf_fishing.txt",
+        sampled_frames: 4215,
+        joint_correction: null,
+      },
+    ]);
+  },
+);

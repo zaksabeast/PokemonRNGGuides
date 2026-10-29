@@ -1,3 +1,5 @@
+use crate::gen4::SearchStatic4Opts;
+use crate::gen4::stationary::Static4State;
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 
@@ -38,6 +40,25 @@ pub struct SimulateAdvanceResult {
 pub struct PokeRadar4AdvanceOpts {
     pub init_seed: u32,
     pub target_advance: usize,
+    pub chain_count: u16,
+    pub battle_result: BattleResult,
+    pub selected_shake: ShakeType,
+}
+
+#[derive(Clone, Debug, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct RadarShinyPatchResult {
+    pub state: Static4State,
+    pub patch_advance: usize,
+    pub patches: Vec<Patch>,
+}
+
+#[derive(Clone, Debug, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct SearchRadarShinyPatchOpts {
+    pub search: SearchStatic4Opts,
+    pub patch_min_advance: usize,
+    pub patch_max_advance: usize,
     pub chain_count: u16,
     pub battle_result: BattleResult,
     pub selected_shake: ShakeType,

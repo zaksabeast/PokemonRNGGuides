@@ -1,6 +1,7 @@
 use crate::gen4::LeadAbility;
 use crate::gen4::calc_level::LevelCalculator;
 use crate::gen4::game_logic::GameSpecificLogic;
+use crate::gen4::stationary::generator::encounter_strategy::EncounterStrategy;
 use crate::gen4::stationary::searcher::base_state::BaseStatic4State;
 use crate::rng::Rng;
 use crate::rng::lcrng::{Pokerng, PokerngR};
@@ -26,12 +27,11 @@ impl SyncGate for GateOnCheck1 {
     }
 }
 
-/// Iterator for MethodJ/K sync lead that generates states on-demand.
-/// This avoids collecting millions of intermediate states into memory.
 struct MethodJKSyncStateIterator<
     Game: GameSpecificLogic,
     LevelCalc: LevelCalculator<PokerngR>,
     Gate: SyncGate,
+    Encounter: EncounterStrategy,
 > {
     species: Species,
     min_level: u8,
@@ -55,11 +55,17 @@ struct MethodJKSyncStateIterator<
     _phantom_game: std::marker::PhantomData<Game>,
     _phantom_level: std::marker::PhantomData<LevelCalc>,
     _phantom_gate: std::marker::PhantomData<Gate>,
+    _phantom_encounter: std::marker::PhantomData<Encounter>,
 }
 
-impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>, Gate: SyncGate>
-    MethodJKSyncStateIterator<Game, LevelCalc, Gate>
+impl<
+    Game: GameSpecificLogic,
+    LevelCalc: LevelCalculator<PokerngR>,
+    Gate: SyncGate,
+    Encounter: EncounterStrategy,
+> MethodJKSyncStateIterator<Game, LevelCalc, Gate, Encounter>
 {
+    #[allow(clippy::too_many_arguments)]
     fn new(
         species: Species,
         min_level: u8,
@@ -105,16 +111,25 @@ impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>, Gate: SyncGa
             _phantom_game: std::marker::PhantomData,
             _phantom_level: std::marker::PhantomData,
             _phantom_gate: std::marker::PhantomData,
+            _phantom_encounter: std::marker::PhantomData,
         }
     }
 
     fn calc_level(&self, rng: &mut PokerngR) -> u8 {
         LevelCalc::calc_level(rng, self.min_level, self.max_level, false)
     }
+
+    fn encounter_slot(&self, rng: &mut PokerngR) -> u8 {
+        Encounter::generate_encounter_slot_reverse(rng)
+    }
 }
 
-impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>, Gate: SyncGate> Iterator
-    for MethodJKSyncStateIterator<Game, LevelCalc, Gate>
+impl<
+    Game: GameSpecificLogic,
+    LevelCalc: LevelCalculator<PokerngR>,
+    Gate: SyncGate,
+    Encounter: EncounterStrategy,
+> Iterator for MethodJKSyncStateIterator<Game, LevelCalc, Gate, Encounter>
 {
     type Item = BaseStatic4State;
 
@@ -129,11 +144,11 @@ impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>, Gate: SyncGa
                 && Game::sync_check(self.next_rng_2) == 1
                 && Game::max(self.next_rng, 25) == self.nature_rand;
 
-            // Yield check1 result if applicable and not yet returned
             if !self.returned_check1 && check1 {
                 self.returned_check1 = true;
                 let mut seed_rng = PokerngR::new(self.full_seed);
                 let level = self.calc_level(&mut seed_rng);
+                let encounter_slot = self.encounter_slot(&mut seed_rng);
                 let origin_seed = seed_rng.rand::<u32>();
                 return Some(BaseStatic4State::new(
                     origin_seed,
@@ -145,14 +160,15 @@ impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>, Gate: SyncGa
                     self.sid,
                     self.ivs,
                     LeadAbility::Synchronize(self.nature),
+                    encounter_slot,
                 ));
             }
 
-            // Yield check2 result if applicable and not yet returned
             if !self.returned_check2 && check2 {
                 self.returned_check2 = true;
                 let mut seed_rng = self.rng;
                 let level = self.calc_level(&mut seed_rng);
+                let encounter_slot = self.encounter_slot(&mut seed_rng);
                 let origin_seed = seed_rng.rand::<u32>();
                 return Some(BaseStatic4State::new(
                     origin_seed,
@@ -164,10 +180,10 @@ impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>, Gate: SyncGa
                     self.sid,
                     self.ivs,
                     LeadAbility::Synchronize(self.nature),
+                    encounter_slot,
                 ));
             }
 
-            // Advance to next iteration
             let hunt_nature = (((self.next_rng as u32) << 16 | self.next_rng_2 as u32) % 25) as u16;
 
             self.full_seed = self.rng.rand::<u32>();
@@ -186,10 +202,12 @@ impl<Game: GameSpecificLogic, LevelCalc: LevelCalculator<PokerngR>, Gate: SyncGa
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 pub fn get_methodjk_sync_state<
     Game: GameSpecificLogic,
     LevelCalc: LevelCalculator<PokerngR>,
     Gate: SyncGate,
+    Encounter: EncounterStrategy,
 >(
     species: Species,
     min_level: u8,
@@ -199,7 +217,7 @@ pub fn get_methodjk_sync_state<
     ivs: Ivs,
     seed: u32,
 ) -> impl Iterator<Item = BaseStatic4State> {
-    MethodJKSyncStateIterator::<Game, LevelCalc, Gate>::new(
+    MethodJKSyncStateIterator::<Game, LevelCalc, Gate, Encounter>::new(
         species, min_level, max_level, tid, sid, ivs, seed,
     )
 }

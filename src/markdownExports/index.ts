@@ -526,6 +526,18 @@ const tools = {
     () => import("~/rngToolsUi/gen4/voltorbFlip/generateBoards"),
     (mod) => mod.GenerateVoltorbFlipBoards,
   ),
+  PokeRadar4ShinySearcher: lazyLoad(
+    () => import("~/rngToolsUi/gen4/pokeradar/searcher"),
+    (mod) => mod.PokeRadar4ShinySearcher,
+  ),
+  PokeRadar4ChainStarter: lazyLoad(
+    () => import("~/rngToolsUi/gen4/pokeradar/chainStarter"),
+    (mod) => mod.PokeRadar4ChainStarter,
+  ),
+  PokeRadar4PatchGrid: lazyLoad(
+    () => import("~/rngToolsUi/gen4/pokeradar/patchGrid"),
+    (mod) => mod.PokeRadar4PatchGrid,
+  ),
 };
 
 export const markdownComponents = {

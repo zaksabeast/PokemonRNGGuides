@@ -7,9 +7,12 @@ use wasm_bindgen::prelude::*;
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum Static4Method {
     One,
+    DpptWild,
     DpptJ,
     HgssK,
     Honey,
+    Radar,
+    ShinyRadar,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]

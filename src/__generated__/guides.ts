@@ -2530,7 +2530,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-07-08",
+      lastUpdated: "2026-10-25",
       type: "baseGuide",
       canonical: "/dppt-pokeradar-rng/",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/PokeRadar.mdx",
@@ -2543,7 +2543,7 @@ export const guides = {
         retail: { type: "slug", slug: "/dppt-pokeradar-rng/" },
         cfwEmu: { type: "slug", slug: "/dppt-pokeradar-rng/" },
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: ["web_tool", "rough_draft"],
     },
     Guide: React.lazy(
       () =>

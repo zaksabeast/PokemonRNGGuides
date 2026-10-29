@@ -1,3 +1,4 @@
+pub(crate) mod encounter_strategy;
 mod opts;
 mod pid_strategy;
 mod state;
@@ -10,6 +11,7 @@ use crate::gen4::game_logic::{DpptLogic, GameSpecificLogic, HgssLogic};
 use crate::rng::Rng;
 use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
+use encounter_strategy::{EncounterStrategy, StaticEncounter, WildEncounter};
 use opts::Gen4StaticOpts;
 use pid_strategy::{Method1, NormalMethodJK, PidStrategy, ShinyMethodJK};
 use state::Gen4StaticPokemon;
@@ -19,10 +21,13 @@ pub fn generate_static4<
     Game: GameSpecificLogic,
     LevelCalc: LevelCalculator<Pokerng>,
     Pid: PidStrategy<Game>,
+    Encounter: EncounterStrategy,
 >(
     rng: &mut Pokerng,
     opts: &Gen4StaticOpts,
 ) -> Gen4StaticPokemon {
+    let encounter_slot = Encounter::generate_encounter_slot(rng);
+
     let level = LevelCalc::calc_level(
         rng,
         opts.encounter_min_level,
@@ -36,16 +41,39 @@ pub fn generate_static4<
     let iv2 = rng.rand::<u16>();
     let ivs = Ivs::new_g3(iv1, iv2);
 
-    Gen4StaticPokemon::new(opts.tid, opts.sid, opts.species, level, pid, ivs)
+    Gen4StaticPokemon::new(
+        opts.tid,
+        opts.sid,
+        opts.species,
+        level,
+        pid,
+        ivs,
+        encounter_slot,
+    )
 }
 
 fn generate_static4_state(opts: &Gen4StaticOpts, rng: &mut Pokerng) -> Gen4StaticPokemon {
     match opts.method {
-        Static4Method::One => generate_static4::<DpptLogic, SetLevel, Method1>(rng, opts),
-        Static4Method::DpptJ => generate_static4::<DpptLogic, SetLevel, NormalMethodJK>(rng, opts),
-        Static4Method::HgssK => generate_static4::<HgssLogic, SetLevel, NormalMethodJK>(rng, opts),
+        Static4Method::One => {
+            generate_static4::<DpptLogic, SetLevel, Method1, StaticEncounter>(rng, opts)
+        }
+        Static4Method::DpptJ => {
+            generate_static4::<DpptLogic, SetLevel, NormalMethodJK, StaticEncounter>(rng, opts)
+        }
+        Static4Method::HgssK => {
+            generate_static4::<HgssLogic, SetLevel, NormalMethodJK, StaticEncounter>(rng, opts)
+        }
         Static4Method::Honey => {
-            generate_static4::<DpptLogic, HoneyLevel, NormalMethodJK>(rng, opts)
+            generate_static4::<DpptLogic, HoneyLevel, NormalMethodJK, StaticEncounter>(rng, opts)
+        }
+        Static4Method::Radar => {
+            generate_static4::<DpptLogic, SetLevel, NormalMethodJK, StaticEncounter>(rng, opts)
+        }
+        Static4Method::ShinyRadar => {
+            generate_static4::<DpptLogic, SetLevel, ShinyMethodJK, StaticEncounter>(rng, opts)
+        }
+        Static4Method::DpptWild => {
+            generate_static4::<DpptLogic, SetLevel, NormalMethodJK, WildEncounter>(rng, opts)
         }
     }
 }
@@ -81,46 +109,6 @@ pub fn generate_static4_states(opts: &Gen4StaticOpts) -> Vec<Gen4StaticPokemon> 
             Some(pkm)
         })
         .collect::<Vec<Gen4StaticPokemon>>()
-}
-
-fn generate_static4_radar_generic<Pid: PidStrategy<DpptLogic>>(
-    opts: &Gen4StaticOpts,
-) -> Vec<Gen4StaticPokemon> {
-    let base_rng = Pokerng::new(opts.seed);
-    StateIterator::new(base_rng)
-        .skip(opts.offset)
-        .enumerate()
-        .skip(opts.initial_advances)
-        .take(opts.max_advances.wrapping_add(1))
-        .filter_map(|(adv, mut rng)| {
-            let mut pkm = generate_static4::<DpptLogic, SetLevel, Pid>(&mut rng, opts);
-            if let Some(filter_level) = opts.filter_level
-                && pkm.level != filter_level
-            {
-                return None;
-            }
-            if let Some(filter_characteristic) = opts.filter_characteristic
-                && pkm.characteristic != filter_characteristic
-            {
-                return None;
-            }
-            if !opts.filter.pass_filter(&pkm) {
-                return None;
-            }
-            pkm.advance = adv;
-            Some(pkm)
-        })
-        .collect()
-}
-
-#[wasm_bindgen]
-pub fn generate_static4_radar_states(opts: &Gen4StaticOpts) -> Vec<Gen4StaticPokemon> {
-    generate_static4_radar_generic::<NormalMethodJK>(opts)
-}
-
-#[wasm_bindgen]
-pub fn generate_static4_radar_shiny_states(opts: &Gen4StaticOpts) -> Vec<Gen4StaticPokemon> {
-    generate_static4_radar_generic::<ShinyMethodJK>(opts)
 }
 
 #[cfg(test)]
@@ -174,6 +162,7 @@ mod test {
                 advance,
                 characteristic,
                 level,
+                encounter_slot: 0,
             });
         }
         results
@@ -182,6 +171,58 @@ mod test {
     macro_rules! pokefinder_honey {
         ($file:expr) => {
             parse_honey_states(include_str!($file))
+        };
+    }
+
+    fn parse_wild_states(str: &str) -> Vec<Gen4StaticPokemon> {
+        let mut results: Vec<Gen4StaticPokemon> = Vec::new();
+        for raw_line in str.lines() {
+            let line = raw_line.trim();
+
+            if line.is_empty() {
+                continue;
+            }
+
+            let parts: Vec<&str> = line.split("\t").collect();
+            let advance: usize = parts[0].parse().unwrap();
+            // battle_advances
+            // chatot
+            // item
+            let encounter_slot: u8 = parts[4].split(':').next().unwrap().parse().unwrap();
+            let level: u8 = parts[5].parse().unwrap();
+            let pid = u32::from_str_radix(parts[6], 16).unwrap();
+            let shiny = match parts[7] {
+                "No" => ShinyType::NotShiny,
+                "Square" => ShinyType::SquareShiny,
+                _ => ShinyType::StarShiny,
+            };
+            let nature = Nature::from_str(parts[8]);
+            let ability = AbilityType::from_pokefinder_str(parts[9]);
+            let ivs = Ivs::from_pokefinder_strs(&parts[10..][..6]);
+            // hidden_power_type
+            // hiden_power_strength
+            let gender = Gender::from_pokefinder_str(parts[18]);
+            let characteristic = Characteristic::from_pokefinder_str(parts[19]);
+
+            results.push(Gen4StaticPokemon {
+                pid,
+                shiny,
+                ability,
+                gender,
+                ivs,
+                nature,
+                advance,
+                characteristic,
+                level,
+                encounter_slot,
+            });
+        }
+        results
+    }
+
+    macro_rules! pokefinder_wild {
+        ($file:expr) => {
+            parse_wild_states(include_str!($file))
         };
     }
 
@@ -222,6 +263,7 @@ mod test {
 
                 // The level is not included in the pokefinder output
                 level: 0,
+                encounter_slot: 0,
             });
         }
         results
@@ -266,6 +308,7 @@ mod test {
                 nature,
                 advance,
                 characteristic,
+                encounter_slot: 0,
             });
         }
         results
@@ -788,6 +831,64 @@ mod test {
         }
     }
 
+    mod method_dppt_wild {
+        use super::*;
+
+        // Diamond Route 201 grass slot 0 is a level 2 Starly
+        const STARLY_SLOT: u8 = 0;
+
+        fn generate_starly_slot_states(lead: LeadAbility) -> Vec<Gen4StaticPokemon> {
+            let opts = Gen4StaticOpts {
+                tid: 12345,
+                sid: 54321,
+                initial_advances: 0,
+                max_advances: 200,
+                offset: 0,
+                filter: PkmFilter::default(),
+                filter_level: None,
+                filter_characteristic: None,
+                method: Static4Method::DpptWild,
+                species: Species::Starly,
+                lead,
+                seed: 0,
+                encounter_min_level: 2,
+                encounter_max_level: 2,
+            };
+            generate_static4_states(&opts)
+                .into_iter()
+                .filter(|pkm| pkm.encounter_slot == STARLY_SLOT)
+                .collect()
+        }
+
+        #[test]
+        fn no_lead() {
+            let results = generate_starly_slot_states(LeadAbility::None);
+            let expected = pokefinder_wild!("test_data/method_dppt_wild/no_lead.txt");
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn sync_hardy() {
+            let results = generate_starly_slot_states(LeadAbility::Synchronize(Nature::Hardy));
+            let expected = pokefinder_wild!("test_data/method_dppt_wild/sync_hardy.txt");
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn cute_charm_male() {
+            let results = generate_starly_slot_states(LeadAbility::CutecharmM);
+            let expected = pokefinder_wild!("test_data/method_dppt_wild/cute_charm_male.txt");
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn cute_charm_female() {
+            let results = generate_starly_slot_states(LeadAbility::CutecharmF);
+            let expected = pokefinder_wild!("test_data/method_dppt_wild/cute_charm_female.txt");
+            assert_list_eq!(results, expected);
+        }
+    }
+
     mod method_shiny_radar {
         use super::*;
 
@@ -802,14 +903,14 @@ mod test {
                 filter: PkmFilter::new_allow_all(),
                 filter_level: None,
                 filter_characteristic: None,
-                method: Static4Method::DpptJ,
+                method: Static4Method::ShinyRadar,
                 species: Species::Snover,
                 lead: LeadAbility::None,
                 seed: 0xd6140374,
                 encounter_min_level: 33,
                 encounter_max_level: 33,
             };
-            let results = generate_static4_radar_shiny_states(&opts);
+            let results = generate_static4_states(&opts);
             let expected = pokefinder_radar!("test_data/method_shiny_pokeradar/no_lead.txt");
             assert_list_eq!(results, expected);
         }
@@ -825,14 +926,14 @@ mod test {
                 filter: PkmFilter::new_allow_all(),
                 filter_level: None,
                 filter_characteristic: None,
-                method: Static4Method::DpptJ,
+                method: Static4Method::ShinyRadar,
                 species: Species::Snover,
                 lead: LeadAbility::CutecharmM,
                 seed: 0xd6140374,
                 encounter_min_level: 33,
                 encounter_max_level: 33,
             };
-            let results = generate_static4_radar_shiny_states(&opts);
+            let results = generate_static4_states(&opts);
             let expected =
                 pokefinder_radar!("test_data/method_shiny_pokeradar/cute_charm_male.txt");
             assert_list_eq!(results, expected);
@@ -849,14 +950,14 @@ mod test {
                 filter: PkmFilter::new_allow_all(),
                 filter_level: None,
                 filter_characteristic: None,
-                method: Static4Method::DpptJ,
+                method: Static4Method::ShinyRadar,
                 species: Species::Snover,
                 lead: LeadAbility::CutecharmF,
                 seed: 0xd6140374,
                 encounter_min_level: 33,
                 encounter_max_level: 33,
             };
-            let results = generate_static4_radar_shiny_states(&opts);
+            let results = generate_static4_states(&opts);
             let expected =
                 pokefinder_radar!("test_data/method_shiny_pokeradar/cute_charm_female.txt");
             assert_list_eq!(results, expected);
@@ -873,14 +974,14 @@ mod test {
                 filter: PkmFilter::new_allow_all(),
                 filter_level: None,
                 filter_characteristic: None,
-                method: Static4Method::DpptJ,
+                method: Static4Method::ShinyRadar,
                 species: Species::Beldum,
                 lead: LeadAbility::CutecharmF,
                 seed: 0xd6140374,
                 encounter_min_level: 51,
                 encounter_max_level: 51,
             };
-            let results = generate_static4_radar_shiny_states(&opts);
+            let results = generate_static4_states(&opts);
             let expected =
                 pokefinder_radar!("test_data/method_shiny_pokeradar/cute_charm_genderless.txt");
             assert_list_eq!(results, expected);
@@ -897,14 +998,14 @@ mod test {
                 filter: PkmFilter::new_allow_all(),
                 filter_level: None,
                 filter_characteristic: None,
-                method: Static4Method::DpptJ,
+                method: Static4Method::ShinyRadar,
                 species: Species::Snover,
                 lead: LeadAbility::Synchronize(Nature::Jolly),
                 seed: 0xd6140374,
                 encounter_min_level: 33,
                 encounter_max_level: 33,
             };
-            let results = generate_static4_radar_shiny_states(&opts);
+            let results = generate_static4_states(&opts);
             let expected = pokefinder_radar!("test_data/method_shiny_pokeradar/sync_jolly.txt");
             assert_list_eq!(results, expected);
         }
@@ -924,14 +1025,14 @@ mod test {
                 filter: PkmFilter::new_allow_all(),
                 filter_level: None,
                 filter_characteristic: None,
-                method: Static4Method::DpptJ,
+                method: Static4Method::Radar,
                 species: Species::Snover,
                 lead: LeadAbility::None,
                 seed: 0xd6140374,
                 encounter_min_level: 33,
                 encounter_max_level: 33,
             };
-            let results = generate_static4_radar_states(&opts);
+            let results = generate_static4_states(&opts);
             let expected = pokefinder_radar!("test_data/method_pokeradar/no_lead.txt");
             assert_list_eq!(results, expected);
         }
@@ -947,14 +1048,14 @@ mod test {
                 filter: PkmFilter::new_allow_all(),
                 filter_level: None,
                 filter_characteristic: None,
-                method: Static4Method::DpptJ,
+                method: Static4Method::Radar,
                 species: Species::Snover,
                 lead: LeadAbility::CutecharmM,
                 seed: 0xd6140374,
                 encounter_min_level: 33,
                 encounter_max_level: 33,
             };
-            let results = generate_static4_radar_states(&opts);
+            let results = generate_static4_states(&opts);
             let expected = pokefinder_radar!("test_data/method_pokeradar/cute_charm_male.txt");
             assert_list_eq!(results, expected);
         }
@@ -970,14 +1071,14 @@ mod test {
                 filter: PkmFilter::new_allow_all(),
                 filter_level: None,
                 filter_characteristic: None,
-                method: Static4Method::DpptJ,
+                method: Static4Method::Radar,
                 species: Species::Snover,
                 lead: LeadAbility::CutecharmF,
                 seed: 0xd6140374,
                 encounter_min_level: 33,
                 encounter_max_level: 33,
             };
-            let results = generate_static4_radar_states(&opts);
+            let results = generate_static4_states(&opts);
             let expected = pokefinder_radar!("test_data/method_pokeradar/cute_charm_female.txt");
             assert_list_eq!(results, expected);
         }
@@ -993,14 +1094,14 @@ mod test {
                 filter: PkmFilter::new_allow_all(),
                 filter_level: None,
                 filter_characteristic: None,
-                method: Static4Method::DpptJ,
+                method: Static4Method::Radar,
                 species: Species::Beldum,
                 lead: LeadAbility::CutecharmF,
                 seed: 0xd6140374,
                 encounter_min_level: 52,
                 encounter_max_level: 52,
             };
-            let results = generate_static4_radar_states(&opts);
+            let results = generate_static4_states(&opts);
             let expected =
                 pokefinder_radar!("test_data/method_pokeradar/cute_charm_genderless.txt");
             assert_list_eq!(results, expected);
@@ -1017,14 +1118,14 @@ mod test {
                 filter: PkmFilter::new_allow_all(),
                 filter_level: None,
                 filter_characteristic: None,
-                method: Static4Method::DpptJ,
+                method: Static4Method::Radar,
                 species: Species::Snover,
                 lead: LeadAbility::Synchronize(Nature::Hardy),
                 seed: 0xd6140374,
                 encounter_min_level: 33,
                 encounter_max_level: 33,
             };
-            let results = generate_static4_radar_states(&opts);
+            let results = generate_static4_states(&opts);
             let expected = pokefinder_radar!("test_data/method_pokeradar/sync_hardy.txt");
             assert_list_eq!(results, expected);
         }

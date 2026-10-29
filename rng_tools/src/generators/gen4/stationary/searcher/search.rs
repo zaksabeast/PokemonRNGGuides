@@ -7,6 +7,7 @@ use super::seed_filter::SeedFilters;
 use crate::gen4::Static4Method;
 use crate::gen4::calc_level::{ReversedHoneyLevel, SetLevel};
 use crate::gen4::game_logic::{DpptLogic, HgssLogic};
+use crate::gen4::stationary::generator::encounter_strategy::{StaticEncounter, WildEncounter};
 use crate::generators::utils::recover_poke_rng_iv;
 use crate::{Ivs, Species, iv_iter};
 use wasm_bindgen::prelude::*;
@@ -45,10 +46,35 @@ macro_rules! search_seeds {
 pub fn search_static4(opts: &SearchStatic4Opts) -> Vec<Static4State> {
     match opts.method {
         Static4Method::One => search_seeds!(opts, get_method1_states),
-        Static4Method::DpptJ => search_seeds!(opts, get_methodjk_states::<DpptLogic, SetLevel>),
-        Static4Method::HgssK => search_seeds!(opts, get_methodjk_states::<HgssLogic, SetLevel>),
+        Static4Method::DpptJ => {
+            search_seeds!(opts, |lead, species, min, max, tid, sid, ivs, seed| {
+                get_methodjk_states::<DpptLogic, SetLevel, StaticEncounter>(
+                    lead, species, min, max, tid, sid, ivs, seed,
+                )
+            })
+        }
+        Static4Method::HgssK => {
+            search_seeds!(opts, |lead, species, min, max, tid, sid, ivs, seed| {
+                get_methodjk_states::<HgssLogic, SetLevel, StaticEncounter>(
+                    lead, species, min, max, tid, sid, ivs, seed,
+                )
+            })
+        }
         Static4Method::Honey => {
-            search_seeds!(opts, get_methodjk_states::<DpptLogic, ReversedHoneyLevel>)
+            search_seeds!(opts, |lead, species, min, max, tid, sid, ivs, seed| {
+                get_methodjk_states::<DpptLogic, ReversedHoneyLevel, StaticEncounter>(
+                    lead, species, min, max, tid, sid, ivs, seed,
+                )
+            })
+        }
+        Static4Method::Radar => search_seeds!(opts, get_radar_states),
+        Static4Method::ShinyRadar => search_seeds!(opts, get_radar_shiny_states),
+        Static4Method::DpptWild => {
+            search_seeds!(opts, |lead, species, min, max, tid, sid, ivs, seed| {
+                get_methodjk_states::<DpptLogic, SetLevel, WildEncounter>(
+                    lead, species, min, max, tid, sid, ivs, seed,
+                )
+            })
         }
     }
 }
@@ -66,26 +92,16 @@ fn get_radar_states(
     match lead {
         Static4LeadInput::Pressure => vec![],
         Static4LeadInput::Synchronize => {
-            get_methodjk_sync_state::<DpptLogic, SetLevel, GateOnCheck1>(
+            get_methodjk_sync_state::<DpptLogic, SetLevel, GateOnCheck1, StaticEncounter>(
                 species, max_level, max_level, tid, sid, ivs, seed,
             )
             .collect()
         }
-        _ => get_methodjk_states::<DpptLogic, SetLevel>(
+        _ => get_methodjk_states::<DpptLogic, SetLevel, StaticEncounter>(
             lead, species, max_level, max_level, tid, sid, ivs, seed,
         )
         .collect(),
     }
-}
-
-#[wasm_bindgen]
-pub fn search_static4_radar(opts: &SearchStatic4Opts) -> Vec<Static4State> {
-    search_seeds!(opts, get_radar_states)
-}
-
-#[wasm_bindgen]
-pub fn search_static4_radar_shiny(opts: &SearchStatic4Opts) -> Vec<Static4State> {
-    search_seeds!(opts, get_radar_shiny_states)
 }
 
 #[cfg(test)]
@@ -134,6 +150,7 @@ mod tests {
                 characteristic,
                 lead,
                 level,
+                encounter_slot: 0,
             });
         }
         results
@@ -142,6 +159,57 @@ mod tests {
     macro_rules! pokefinder_honey {
         ($lead:expr, $file:expr) => {
             parse_honey_states($lead, include_str!($file))
+        };
+    }
+
+    fn parse_wild_states(lead: LeadAbility, str: &str) -> Vec<BaseStatic4State> {
+        let mut results: Vec<BaseStatic4State> = Vec::new();
+        for raw_line in str.lines() {
+            let line = raw_line.trim();
+
+            if line.is_empty() {
+                continue;
+            }
+
+            let parts: Vec<&str> = line.split("\t").collect();
+            let seed = u32::from_str_radix(parts[0], 16).unwrap();
+            let advance: usize = parts[1].parse().unwrap();
+            // item
+            let encounter_slot: u8 = parts[3].split(':').next().unwrap().parse().unwrap();
+            let level: u8 = parts[4].parse().unwrap();
+            let pid = u32::from_str_radix(parts[5], 16).unwrap();
+            let shiny = match parts[6] {
+                "No" => ShinyType::NotShiny,
+                "Square" => ShinyType::SquareShiny,
+                _ => ShinyType::StarShiny,
+            };
+            let nature = Nature::from_str(parts[7]);
+            let ability = AbilityType::from_pokefinder_str(parts[8]);
+            let ivs = Ivs::from_pokefinder_strs(&parts[9..][..6]);
+            let gender = Gender::from_pokefinder_str(parts[17]);
+            let characteristic = Characteristic::from_pokefinder_str(parts[18]);
+
+            results.push(BaseStatic4State {
+                seed,
+                advance,
+                pid,
+                ivs,
+                ability,
+                gender,
+                nature,
+                shiny,
+                characteristic,
+                lead,
+                level,
+                encounter_slot,
+            });
+        }
+        results
+    }
+
+    macro_rules! pokefinder_wild {
+        ($lead:expr, $file:expr) => {
+            parse_wild_states($lead, include_str!($file))
         };
     }
 
@@ -183,6 +251,7 @@ mod tests {
 
                 // The level is not included in the static pokefinder output
                 level: 0,
+                encounter_slot: 0,
             });
         }
         results
@@ -304,6 +373,7 @@ mod tests {
                 54321,
                 ivs!(0 / 0 / 0 / 0 / 0 / 0),
                 LeadAbility::None,
+                0,
             );
 
             let results = SeedFilters {
@@ -332,7 +402,8 @@ mod tests {
                         shiny: ShinyType::NotShiny,
                         characteristic: Characteristic::LovesToEat,
                         lead: LeadAbility::None,
-                        level: 1
+                        level: 1,
+                        encounter_slot: 0
                     },
                     seed_time: SeedTime4 {
                         seed: 0x860c06ef,
@@ -357,6 +428,7 @@ mod tests {
                 54321,
                 ivs!(0 / 0 / 0 / 0 / 0 / 0),
                 LeadAbility::None,
+                0,
             );
 
             let results = SeedFilters {
@@ -385,7 +457,8 @@ mod tests {
                         shiny: ShinyType::NotShiny,
                         characteristic: Characteristic::LovesToEat,
                         lead: LeadAbility::None,
-                        level: 1
+                        level: 1,
+                        encounter_slot: 0
                     },
                     seed_time: SeedTime4 {
                         seed: 0x860c06ef,
@@ -881,6 +954,88 @@ mod tests {
         }
     }
 
+    mod method_dppt_wild {
+        use super::*;
+        use crate::{assert_list_eq, ivs};
+
+        // Diamond Route 201 grass slot 0 is a level 2 Starly
+        const STARLY_SLOT: u8 = 0;
+
+        fn search_starly_slot_states(lead: Static4LeadInput) -> Vec<Static4State> {
+            let opts = SearchStatic4Opts {
+                tid: 12345,
+                sid: 54321,
+                offset: 0,
+                species: Species::Starly,
+                method: Static4Method::DpptWild,
+                lead,
+                filter: PkmFilter {
+                    min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
+                    ..Default::default()
+                },
+                encounter_min_level: 2,
+                encounter_max_level: 2,
+                min_advance: 0,
+                max_advance: 30,
+                min_delay: 800,
+                max_delay: 900,
+                year: Some(2000),
+                month: None,
+                force_second: None,
+            };
+            search_static4(&opts)
+                .into_iter()
+                .filter(|result| result.state.encounter_slot == STARLY_SLOT)
+                .collect()
+        }
+
+        #[test]
+        fn no_lead() {
+            let results = search_starly_slot_states(Static4LeadInput::None);
+            let expected =
+                pokefinder_wild!(LeadAbility::None, "test_data/method_dppt_wild/no_lead.txt");
+
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn sync() {
+            let results = search_starly_slot_states(Static4LeadInput::Synchronize);
+            let expected =
+                pokefinder_wild!(LeadAbility::None, "test_data/method_dppt_wild/sync.txt")
+                    .into_iter()
+                    .map(|mut state| {
+                        state.lead = LeadAbility::Synchronize(state.nature);
+                        state
+                    })
+                    .collect::<Vec<_>>();
+
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn cutecharm_f() {
+            let results = search_starly_slot_states(Static4LeadInput::CutecharmF);
+            let expected = pokefinder_wild!(
+                LeadAbility::CutecharmF,
+                "test_data/method_dppt_wild/cutecharm_f.txt"
+            );
+
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn cutecharm_m() {
+            let results = search_starly_slot_states(Static4LeadInput::CutecharmM);
+            let expected = pokefinder_wild!(
+                LeadAbility::CutecharmM,
+                "test_data/method_dppt_wild/cutecharm_m.txt"
+            );
+
+            assert_list_eq!(results, expected);
+        }
+    }
+
     mod method_radar {
         use super::*;
         use crate::{assert_list_eq, ivs};
@@ -891,7 +1046,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                method: Static4Method::DpptJ,
+                method: Static4Method::Radar,
                 species: Species::Snover,
                 lead: Static4LeadInput::None,
                 filter: PkmFilter {
@@ -908,7 +1063,7 @@ mod tests {
                 max_advance: 30,
                 force_second: None,
             };
-            let results = search_static4_radar(&opts);
+            let results = search_static4(&opts);
             let expected =
                 pokefinder_honey!(LeadAbility::None, "test_data/method_pokeradar/no_lead.txt");
 
@@ -921,7 +1076,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                method: Static4Method::DpptJ,
+                method: Static4Method::Radar,
                 species: Species::Snover,
                 lead: Static4LeadInput::Synchronize,
                 filter: PkmFilter {
@@ -938,7 +1093,7 @@ mod tests {
                 max_advance: 5,
                 force_second: None,
             };
-            let results = search_static4_radar(&opts);
+            let results = search_static4(&opts);
             let expected =
                 pokefinder_honey!(LeadAbility::None, "test_data/method_pokeradar/sync.txt")
                     .into_iter()
@@ -957,7 +1112,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                method: Static4Method::DpptJ,
+                method: Static4Method::Radar,
                 species: Species::Snover,
                 lead: Static4LeadInput::CutecharmF,
                 filter: PkmFilter {
@@ -974,7 +1129,7 @@ mod tests {
                 max_advance: 30,
                 force_second: None,
             };
-            let results = search_static4_radar(&opts);
+            let results = search_static4(&opts);
             let expected = pokefinder_honey!(
                 LeadAbility::CutecharmF,
                 "test_data/method_pokeradar/cutecharm_f.txt"
@@ -989,7 +1144,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                method: Static4Method::DpptJ,
+                method: Static4Method::Radar,
                 species: Species::Snover,
                 lead: Static4LeadInput::CutecharmM,
                 filter: PkmFilter {
@@ -1006,7 +1161,7 @@ mod tests {
                 max_advance: 30,
                 force_second: None,
             };
-            let results = search_static4_radar(&opts);
+            let results = search_static4(&opts);
             let expected = pokefinder_honey!(
                 LeadAbility::CutecharmM,
                 "test_data/method_pokeradar/cutecharm_m.txt"
@@ -1026,7 +1181,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                method: Static4Method::DpptJ,
+                method: Static4Method::ShinyRadar,
                 species: Species::Snover,
                 lead: Static4LeadInput::None,
                 filter: PkmFilter {
@@ -1043,7 +1198,7 @@ mod tests {
                 max_advance: 30,
                 force_second: None,
             };
-            let results = search_static4_radar_shiny(&opts);
+            let results = search_static4(&opts);
             let expected = pokefinder_honey!(
                 LeadAbility::None,
                 "test_data/method_shiny_pokeradar/no_lead.txt"
@@ -1058,7 +1213,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                method: Static4Method::DpptJ,
+                method: Static4Method::ShinyRadar,
                 species: Species::Snover,
                 lead: Static4LeadInput::Synchronize,
                 filter: PkmFilter {
@@ -1075,7 +1230,7 @@ mod tests {
                 max_advance: 5,
                 force_second: None,
             };
-            let results = search_static4_radar_shiny(&opts);
+            let results = search_static4(&opts);
             let expected = pokefinder_honey!(
                 LeadAbility::None,
                 "test_data/method_shiny_pokeradar/sync.txt"
@@ -1096,7 +1251,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                method: Static4Method::DpptJ,
+                method: Static4Method::ShinyRadar,
                 species: Species::Snover,
                 lead: Static4LeadInput::CutecharmF,
                 filter: PkmFilter {
@@ -1113,7 +1268,7 @@ mod tests {
                 max_advance: 30,
                 force_second: None,
             };
-            let results = search_static4_radar_shiny(&opts);
+            let results = search_static4(&opts);
             let expected = pokefinder_honey!(
                 LeadAbility::CutecharmF,
                 "test_data/method_shiny_pokeradar/cutecharm_f.txt"
@@ -1128,7 +1283,7 @@ mod tests {
                 tid: 39259,
                 sid: 25081,
                 offset: 0,
-                method: Static4Method::DpptJ,
+                method: Static4Method::ShinyRadar,
                 species: Species::Snover,
                 lead: Static4LeadInput::CutecharmM,
                 filter: PkmFilter {
@@ -1145,7 +1300,7 @@ mod tests {
                 max_advance: 30,
                 force_second: None,
             };
-            let results = search_static4_radar_shiny(&opts);
+            let results = search_static4(&opts);
             let expected = pokefinder_honey!(
                 LeadAbility::CutecharmM,
                 "test_data/method_shiny_pokeradar/cutecharm_m.txt"

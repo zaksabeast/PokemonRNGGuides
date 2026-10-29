@@ -1,0 +1,669 @@
+FB090373	28	None	0: Starly	2	2B97D038	No	Adamant	0: Keen Eye	30	30	30	20	22	27	Flying	59	♀	Sturdy body
+6A070353	9	None	0: Starly	2	6252D9BB	No	Lax	1: Keen Eye	30	30	30	20	24	23	Flying	39	♂	Loves to eat
+640A037E	4	None	0: Starly	2	30FB2234	No	Timid	0: Keen Eye	30	30	30	20	27	26	Steel	59	♀	Loves to eat
+640A037E	2	None	0: Starly	2	30FB2234	No	Timid	0: Keen Eye	30	30	30	20	27	26	Steel	59	♀	Loves to eat
+AD010373	14	None	0: Starly	2	51F91528	No	Lonely	0: Keen Eye	30	30	30	20	27	27	Water	59	♀	Loves to eat
+AA140353	25	None	0: Starly	2	4AAF8493	No	Careful	1: Keen Eye	30	30	30	20	29	26	Steel	39	♂	Loves to eat
+B20B0330	28	None	0: Starly	2	1484A672	No	Relaxed	0: Keen Eye	30	30	30	20	31	28	Steel	54	♀	Somewhat vain
+B20B0330	22	None	0: Starly	2	1484A672	No	Relaxed	0: Keen Eye	30	30	30	20	31	28	Steel	54	♀	Somewhat vain
+B20B0330	20	None	0: Starly	2	1484A672	No	Relaxed	0: Keen Eye	30	30	30	20	31	28	Steel	54	♀	Somewhat vain
+060F0325	14	None	0: Starly	2	D767D4F9	No	Rash	1: Keen Eye	30	30	30	20	31	31	Water	59	♂	Somewhat vain
+060F0325	4	None	0: Starly	2	D767D4F9	No	Rash	1: Keen Eye	30	30	30	20	31	31	Water	59	♂	Somewhat vain
+860F0325	22	Yache Berry	0: Starly	2	576754F9	No	Adamant	1: Keen Eye	30	30	30	20	31	31	Water	59	♂	Alert to sounds
+81160328	18	None	0: Starly	2	7CD87467	No	Lax	1: Keen Eye	30	30	30	21	27	31	Ice	59	♀	Alert to sounds
+2E00034B	3	None	0: Starly	2	976AB190	No	Jolly	0: Keen Eye	30	30	30	21	30	26	Ground	59	♂	Sturdy body
+60030380	2	None	0: Starly	2	E214D156	No	Lonely	0: Keen Eye	30	30	30	22	24	24	Fighting	44	♀	Loves to eat
+60030380	0	None	0: Starly	2	E214D156	No	Lonely	0: Keen Eye	30	30	30	22	24	24	Fighting	44	♀	Loves to eat
+5F0B033D	13	None	0: Starly	2	42974038	No	Relaxed	0: Keen Eye	30	30	30	22	27	26	Steel	70	♀	Loves to eat
+DF0B033D	15	None	0: Starly	2	C297C038	No	Careful	0: Keen Eye	30	30	30	22	27	26	Steel	70	♀	Sturdy body
+CE120321	11	None	0: Starly	2	7C61CCEC	No	Hasty	0: Keen Eye	30	30	30	22	29	28	Steel	44	♂	Loves to eat
+CE120321	7	None	0: Starly	2	7C61CCEC	No	Hasty	0: Keen Eye	30	30	30	22	29	28	Steel	44	♂	Loves to eat
+4E120321	3	None	0: Starly	2	FC614CEC	No	Mild	0: Keen Eye	30	30	30	22	29	28	Steel	44	♂	Loves to eat
+CF10035F	21	None	0: Starly	2	0C6C6217	No	Mild	1: Keen Eye	30	30	30	22	29	29	Water	44	♀	Proud of its power
+CF10035F	17	None	0: Starly	2	0C6C6217	No	Mild	1: Keen Eye	30	30	30	22	29	29	Water	44	♀	Proud of its power
+1D0B0330	15	None	0: Starly	2	9D5662FE	No	Hardy	0: Keen Eye	30	30	30	23	20	30	Ground	49	♂	Loves to eat
+9D0B0330	17	None	0: Starly	2	1D56E2FE	No	Calm	0: Keen Eye	30	30	30	23	20	30	Ground	49	♂	Loves to eat
+9D0B0330	11	None	0: Starly	2	1D56E2FE	No	Calm	0: Keen Eye	30	30	30	23	20	30	Ground	49	♂	Loves to eat
+DA110347	5	None	0: Starly	2	4D57874D	No	Lonely	1: Keen Eye	30	30	30	23	28	24	Ground	44	♀	Proud of its power
+90120375	30	None	0: Starly	2	E61A442A	No	Mild	0: Keen Eye	30	30	30	24	21	25	Water	34	♀	Loves to eat
+2301033A	3	None	0: Starly	2	7BD8DAB9	No	Serious	1: Keen Eye	30	30	30	24	23	20	Steel	54	♂	Proud of its power
+AC05036D	21	None	0: Starly	2	EEDCC8C0	No	Calm	0: Keen Eye	30	30	30	24	23	25	Water	54	♂	Loves to eat
+AC05036D	15	None	0: Starly	2	EEDCC8C0	No	Calm	0: Keen Eye	30	30	30	24	23	25	Water	54	♂	Loves to eat
+47000360	11	None	0: Starly	2	14AEE24F	No	Rash	1: Keen Eye	30	30	30	24	24	26	Fighting	39	♀	Proud of its power
+4607032F	2	None	0: Starly	2	223A9FA9	No	Bold	1: Keen Eye	30	30	30	24	28	20	Fighting	34	♂	Loves to eat
+D80F0360	9	None	0: Starly	2	B63B80A4	No	Bashful	0: Keen Eye	30	30	30	24	28	26	Fighting	39	♂	Sturdy body
+EF100363	7	None	0: Starly	2	4FE6752E	No	Quiet	0: Keen Eye	30	30	30	24	31	21	Water	54	♀	Somewhat vain
+EF100363	3	None	0: Starly	2	4FE6752E	No	Quiet	0: Keen Eye	30	30	30	24	31	21	Water	54	♀	Somewhat vain
+6F100363	25	Yache Berry	0: Starly	2	CFE6F52E	No	Impish	0: Keen Eye	30	30	30	24	31	21	Water	54	♀	Somewhat vain
+6F100363	9	Yache Berry	0: Starly	2	CFE6F52E	No	Impish	0: Keen Eye	30	30	30	24	31	21	Water	54	♀	Somewhat vain
+71090323	17	None	0: Starly	2	69907AAA	No	Mild	0: Keen Eye	30	30	30	25	24	22	Ground	39	♂	Loves to eat
+1600036B	1	None	0: Starly	2	44616828	No	Rash	0: Keen Eye	30	30	30	25	25	30	Electric	39	♀	Loves to eat
+9600036B	17	None	0: Starly	2	C461E828	No	Timid	0: Keen Eye	30	30	30	25	25	30	Electric	39	♀	Loves to eat
+9600036B	15	None	0: Starly	2	C461E828	No	Timid	0: Keen Eye	30	30	30	25	25	30	Electric	39	♀	Loves to eat
+430A0366	17	None	0: Starly	2	7252FF40	No	Calm	0: Keen Eye	30	30	30	25	26	22	Ground	59	♀	Sturdy body
+430A0366	13	None	0: Starly	2	7252FF40	No	Calm	0: Keen Eye	30	30	30	25	26	22	Ground	59	♀	Sturdy body
+430A0366	7	None	0: Starly	2	7252FF40	No	Calm	0: Keen Eye	30	30	30	25	26	22	Ground	59	♀	Sturdy body
+780A0351	24	None	0: Starly	2	77B7E22F	No	Calm	1: Keen Eye	30	30	30	26	21	26	Steel	49	♀	Loves to eat
+5B060384	8	None	0: Starly	2	6B982AFF	No	Mild	1: Keen Eye	30	30	30	26	22	25	Flying	64	♂	Proud of its power
+5B060384	6	None	0: Starly	2	6B982AFF	No	Mild	1: Keen Eye	30	30	30	26	22	25	Flying	64	♂	Proud of its power
+D50E0350	28	None	0: Starly	2	8C961DF4	No	Impish	0: Keen Eye	30	30	30	26	22	26	Fighting	70	♂	Sturdy body
+D4070372	7	Yache Berry	0: Starly	2	2A2D7078	No	Lax	0: Keen Eye	30	30	30	26	26	22	Fighting	70	♀	Loves to eat
+B9170364	30	None	0: Starly	2	CB2BE36D	No	Quiet	1: Keen Eye	30	30	30	26	26	23	Flying	70	♀	Loves to eat
+B9170364	28	None	0: Starly	2	CB2BE36D	No	Quiet	1: Keen Eye	30	30	30	26	26	23	Flying	70	♀	Loves to eat
+B9170364	26	None	0: Starly	2	CB2BE36D	No	Quiet	1: Keen Eye	30	30	30	26	26	23	Flying	70	♀	Loves to eat
+C217036A	2	None	0: Starly	2	E212CF86	No	Modest	0: Keen Eye	30	30	30	27	25	27	Ice	49	♂	Loves to eat
+CC06037A	22	None	0: Starly	2	721D64B1	No	Calm	1: Keen Eye	30	30	30	27	25	27	Ice	49	♂	Loves to eat
+4C06037A	24	None	0: Starly	2	F21DE4B1	No	Hasty	1: Keen Eye	30	30	30	27	25	27	Ice	49	♂	Proud of its power
+4C06037A	14	None	0: Starly	2	F21DE4B1	No	Hasty	1: Keen Eye	30	30	30	27	25	27	Ice	49	♂	Proud of its power
+4C06037A	10	None	0: Starly	2	F21DE4B1	No	Hasty	1: Keen Eye	30	30	30	27	25	27	Ice	49	♂	Proud of its power
+41110324	18	None	0: Starly	2	C3139F12	No	Lonely	0: Keen Eye	30	30	30	28	24	23	Flying	39	♀	Loves to eat
+29110344	20	None	0: Starly	2	405005AF	No	Lax	1: Keen Eye	30	30	30	28	30	26	Fighting	59	♂	Strong willed
+29110344	18	None	0: Starly	2	405005AF	No	Lax	1: Keen Eye	30	30	30	28	30	26	Fighting	59	♂	Strong willed
+A9110344	30	Yache Berry	0: Starly	2	C05085AF	No	Hardy	1: Keen Eye	30	30	30	28	30	26	Fighting	59	♂	Proud of its power
+C4160372	22	None	0: Starly	2	5D573DC5	No	Impish	1: Keen Eye	30	30	30	29	20	28	Ground	34	♂	Loves to eat
+9D160366	25	None	0: Starly	2	5913428C	No	Rash	0: Keen Eye	30	30	30	29	23	27	Ice	59	♂	Sturdy body
+9D160366	5	None	0: Starly	2	5913428C	No	Rash	0: Keen Eye	30	30	30	29	23	27	Ice	59	♂	Sturdy body
+9D160366	1	None	0: Starly	2	5913428C	No	Rash	0: Keen Eye	30	30	30	29	23	27	Ice	59	♂	Sturdy body
+1D160366	9	None	0: Starly	2	D913C28C	No	Timid	0: Keen Eye	30	30	30	29	23	27	Ice	59	♂	Loves to eat
+E0110372	29	None	0: Starly	2	02D23A16	No	Serious	0: Keen Eye	30	30	30	29	25	28	Electric	34	♀	Loves to eat
+E0110372	15	None	0: Starly	2	02D23A16	No	Serious	0: Keen Eye	30	30	30	29	25	28	Electric	34	♀	Loves to eat
+6D09032F	21	None	0: Starly	2	AD7F336D	No	Bold	1: Keen Eye	30	30	30	31	25	20	Electric	44	♀	Mischievous
+6D09032F	2	None	0: Starly	2	AD7F336D	No	Bold	1: Keen Eye	30	30	30	31	25	20	Electric	44	♀	Mischievous
+ED09032F	13	None	0: Starly	2	2D7FB36D	No	Hardy	1: Keen Eye	30	30	30	31	25	20	Electric	44	♀	Mischievous
+9F0E037C	6	None	0: Starly	2	2B737273	No	Brave	1: Keen Eye	30	30	31	20	20	26	Fighting	39	♀	Capable of taking hits
+7A14032E	27	None	0: Starly	2	9BF808AA	No	Lonely	0: Keen Eye	30	30	31	20	24	24	Fighting	34	♂	Capable of taking hits
+7A14032E	19	None	0: Starly	2	9BF808AA	No	Lonely	0: Keen Eye	30	30	31	20	24	24	Fighting	34	♂	Capable of taking hits
+7A14032E	5	None	0: Starly	2	9BF808AA	No	Lonely	0: Keen Eye	30	30	31	20	24	24	Fighting	34	♂	Capable of taking hits
+7A14032E	3	None	0: Starly	2	9BF808AA	No	Lonely	0: Keen Eye	30	30	31	20	24	24	Fighting	34	♂	Capable of taking hits
+2B070353	4	None	0: Starly	2	D3D4F9E3	No	Naughty	1: Keen Eye	30	30	31	21	24	24	Rock	34	♂	Capable of taking hits
+B40A0346	22	None	0: Starly	2	CBAC8E84	No	Quirky	0: Keen Eye	30	30	31	21	25	28	Psychic	34	♂	Capable of taking hits
+B40A0346	10	None	0: Starly	2	CBAC8E84	No	Quirky	0: Keen Eye	30	30	31	21	25	28	Psychic	34	♂	Capable of taking hits
+340A0346	6	None	0: Starly	2	4BAC0E84	No	Impish	0: Keen Eye	30	30	31	21	25	28	Psychic	34	♂	Capable of taking hits
+340A0346	4	None	0: Starly	2	4BAC0E84	No	Impish	0: Keen Eye	30	30	31	21	25	28	Psychic	34	♂	Capable of taking hits
+C70D0330	14	None	0: Starly	2	173DE5F6	No	Lax	0: Keen Eye	30	30	31	21	29	20	Psychic	34	♂	Capable of taking hits
+470D0330	16	None	0: Starly	2	973D65F6	No	Naive	0: Keen Eye	30	30	31	21	29	20	Psychic	34	♂	Capable of taking hits
+470D0330	6	None	0: Starly	2	973D65F6	No	Naive	0: Keen Eye	30	30	31	21	29	20	Psychic	34	♂	Capable of taking hits
+D30C0327	4	None	0: Starly	2	61F95074	No	Serious	0: Keen Eye	30	30	31	21	31	22	Psychic	59	♀	Capable of taking hits
+C8090374	21	None	0: Starly	2	ACB64BE5	No	Impish	1: Keen Eye	30	30	31	22	23	30	Fire	70	♂	Capable of taking hits
+C8090374	5	None	0: Starly	2	ACB64BE5	No	Impish	1: Keen Eye	30	30	31	22	23	30	Fire	70	♂	Capable of taking hits
+B0080378	29	None	0: Starly	2	E3F892F4	No	Bold	0: Keen Eye	30	30	31	22	30	20	Fighting	64	♂	Capable of taking hits
+B0080378	6	None	0: Starly	2	E3F892F4	No	Bold	0: Keen Eye	30	30	31	22	30	20	Fighting	64	♂	Capable of taking hits
+D10F033F	0	None	0: Starly	2	7CCE2B7C	No	Relaxed	0: Keen Eye	30	30	31	23	21	31	Dragon	49	♀	Capable of taking hits
+98060381	8	None	0: Starly	2	DCA5A57C	No	Quirky	0: Keen Eye	30	30	31	23	23	20	Psychic	64	♀	Capable of taking hits
+98060381	4	None	0: Starly	2	DCA5A57C	No	Quirky	0: Keen Eye	30	30	31	23	23	20	Psychic	64	♀	Capable of taking hits
+18060381	16	Yache Berry	0: Starly	2	5CA5257C	No	Impish	0: Keen Eye	30	30	31	23	23	20	Psychic	64	♀	Capable of taking hits
+5B050323	12	None	0: Starly	2	DC60E3E9	No	Gentle	1: Keen Eye	30	30	31	23	25	29	Dragon	44	♂	Capable of taking hits
+0108037B	14	None	0: Starly	2	9AFF1738	No	Jolly	0: Keen Eye	30	30	31	23	28	31	Ghost	49	♀	Capable of taking hits
+8108037B	18	None	0: Starly	2	1AFF9738	No	Impish	0: Keen Eye	30	30	31	23	28	31	Ghost	49	♀	Capable of taking hits
+8108037B	16	None	0: Starly	2	1AFF9738	No	Impish	0: Keen Eye	30	30	31	23	28	31	Ghost	49	♀	Capable of taking hits
+ED17034F	4	None	0: Starly	2	93AB98CD	No	Hardy	1: Keen Eye	30	30	31	23	31	25	Dragon	64	♂	Somewhat vain
+6D17034F	0	None	0: Starly	2	13AB18CD	No	Lax	1: Keen Eye	30	30	31	23	31	25	Dragon	64	♂	Somewhat vain
+110B0381	26	None	0: Starly	2	1BD4151F	No	Gentle	1: Keen Eye	30	30	31	24	20	26	Fighting	39	♀	Capable of taking hits
+520C0320	30	None	0: Starly	2	C1A6AEAD	No	Docile	1: Keen Eye	30	30	31	24	21	27	Grass	39	♂	Capable of taking hits
+CC000380	30	None	0: Starly	2	099511F3	No	Adamant	1: Keen Eye	30	30	31	24	30	27	Poison	59	♂	Capable of taking hits
+CC000380	20	None	0: Starly	2	099511F3	No	Adamant	1: Keen Eye	30	30	31	24	30	27	Poison	59	♂	Capable of taking hits
+CC000380	18	None	0: Starly	2	099511F3	No	Adamant	1: Keen Eye	30	30	31	24	30	27	Poison	59	♂	Capable of taking hits
+4C000380	10	None	0: Starly	2	899591F3	No	Rash	1: Keen Eye	30	30	31	24	30	27	Poison	59	♂	Capable of taking hits
+0B0D036F	24	None	0: Starly	2	3B7CF4DC	No	Quiet	0: Keen Eye	30	30	31	24	31	24	Fire	54	♂	Capable of taking hits
+08060328	27	None	0: Starly	2	AB6802CE	No	Careful	0: Keen Eye	30	30	31	25	22	23	Ghost	59	♂	Capable of taking hits
+08060328	9	None	0: Starly	2	AB6802CE	No	Careful	0: Keen Eye	30	30	31	25	22	23	Ghost	59	♂	Capable of taking hits
+2C080338	7	None	0: Starly	2	7159B487	No	Brave	1: Keen Eye	30	30	31	25	22	31	Ghost	59	♂	Capable of taking hits
+D1120350	10	None	0: Starly	2	ABF82E30	No	Jolly	0: Keen Eye	30	30	31	25	26	22	Rock	59	♀	Capable of taking hits
+9013034B	11	None	0: Starly	2	C4CEB5C5	No	Timid	1: Keen Eye	30	30	31	25	27	28	Psychic	54	♂	Capable of taking hits
+55030329	24	None	0: Starly	2	3D84A530	No	Mild	0: Keen Eye	30	30	31	25	29	27	Dragon	39	♀	Capable of taking hits
+990D035F	20	None	0: Starly	2	6F622B36	No	Mild	0: Keen Eye	30	30	31	26	21	24	Fire	44	♀	Capable of taking hits
+990D035F	19	None	0: Starly	2	6F622B36	No	Mild	0: Keen Eye	30	30	31	26	21	24	Fire	44	♀	Capable of taking hits
+990D035F	7	None	0: Starly	2	6F622B36	No	Mild	0: Keen Eye	30	30	31	26	21	24	Fire	44	♀	Capable of taking hits
+190D035F	22	Yache Berry	0: Starly	2	EF62AB36	No	Relaxed	0: Keen Eye	30	30	31	26	21	24	Fire	44	♀	Capable of taking hits
+8D02033D	27	None	0: Starly	2	463CCCE3	No	Docile	1: Keen Eye	30	30	31	26	22	27	Poison	70	♂	Capable of taking hits
+AB12034C	25	None	0: Starly	2	F99B23CC	No	Adamant	0: Keen Eye	30	30	31	26	27	22	Fire	70	♂	Capable of taking hits
+7707036C	8	None	0: Starly	2	506C57A4	No	Naughty	0: Keen Eye	30	30	31	26	29	20	Fire	44	♂	Capable of taking hits
+F707036C	12	None	0: Starly	2	D06CD7A4	No	Calm	0: Keen Eye	30	30	31	26	29	20	Fire	44	♂	Capable of taking hits
+7C100364	15	None	0: Starly	2	60776CCE	No	Quirky	0: Keen Eye	30	30	31	26	29	21	Grass	44	♂	Capable of taking hits
+7C100364	10	None	0: Starly	2	60776CCE	No	Quirky	0: Keen Eye	30	30	31	26	29	21	Grass	44	♂	Capable of taking hits
+FC100364	18	None	0: Starly	2	E077ECCE	No	Modest	0: Keen Eye	30	30	31	26	29	21	Grass	44	♂	Capable of taking hits
+4F150352	23	None	0: Starly	2	71694A98	No	Lax	0: Keen Eye	30	30	31	26	29	22	Fire	49	♂	Capable of taking hits
+D903035F	5	None	0: Starly	2	35637300	No	Brave	0: Keen Eye	30	30	31	27	28	22	Rock	49	♀	Capable of taking hits
+D903035F	0	None	0: Starly	2	35637300	No	Brave	0: Keen Eye	30	30	31	27	28	22	Rock	49	♀	Capable of taking hits
+2005035A	16	None	0: Starly	2	8802874A	No	Relaxed	0: Keen Eye	30	30	31	27	31	30	Psychic	70	♀	Capable of taking hits
+A005035A	24	None	0: Starly	2	0802074A	No	Mild	0: Keen Eye	30	30	31	27	31	30	Psychic	70	♀	Somewhat vain
+0E060321	12	None	0: Starly	2	F00BEB71	No	Lax	1: Keen Eye	30	30	31	28	21	24	Fire	34	♀	Capable of taking hits
+6F060336	30	None	0: Starly	2	2FCA8675	No	Calm	1: Keen Eye	30	30	31	29	22	29	Ghost	54	♀	Capable of taking hits
+6F060336	28	None	0: Starly	2	2FCA8675	No	Calm	1: Keen Eye	30	30	31	29	22	29	Ghost	54	♀	Capable of taking hits
+6F060336	6	None	0: Starly	2	2FCA8675	No	Calm	1: Keen Eye	30	30	31	29	22	29	Ghost	54	♀	Capable of taking hits
+D4090325	24	None	0: Starly	2	776E7FEC	No	Serious	0: Keen Eye	30	30	31	29	25	21	Dragon	34	♂	Capable of taking hits
+D4090325	16	None	0: Starly	2	776E7FEC	No	Serious	0: Keen Eye	30	30	31	29	25	21	Dragon	34	♂	Capable of taking hits
+54090325	26	None	0: Starly	2	F76EFFEC	No	Adamant	0: Keen Eye	30	30	31	29	25	21	Dragon	34	♂	Capable of taking hits
+54090325	8	None	0: Starly	2	F76EFFEC	No	Adamant	0: Keen Eye	30	30	31	29	25	21	Dragon	34	♂	Capable of taking hits
+9313037E	0	None	0: Starly	2	8594E770	No	Naughty	0: Keen Eye	30	30	31	30	22	25	Poison	64	♀	Capable of taking hits
+6F130335	27	None	0: Starly	2	E7A5F7AD	No	Mild	1: Keen Eye	30	30	31	30	22	29	Poison	64	♂	Capable of taking hits
+6F130335	19	None	0: Starly	2	E7A5F7AD	No	Mild	1: Keen Eye	30	30	31	30	22	29	Poison	64	♂	Capable of taking hits
+C4110326	29	None	0: Starly	2	B368090C	No	Quirky	0: Keen Eye	30	31	30	20	24	29	Poison	34	♀	Likes to thrash about
+C80B0324	30	None	0: Starly	2	44517900	No	Bold	0: Keen Eye	30	31	30	20	25	24	Fire	34	♀	Likes to thrash about
+C80B0324	29	None	0: Starly	2	44517900	No	Bold	0: Keen Eye	30	31	30	20	25	24	Fire	34	♀	Likes to thrash about
+C80B0324	27	None	0: Starly	2	44517900	No	Bold	0: Keen Eye	30	31	30	20	25	24	Fire	34	♀	Likes to thrash about
+F90D0358	19	None	0: Starly	2	A099DA7F	No	Adamant	1: Keen Eye	30	31	30	20	30	31	Poison	59	♂	Likes to thrash about
+570A0374	7	None	0: Starly	2	66B4153D	No	Quirky	1: Keen Eye	30	31	30	21	21	20	Electric	34	♀	Likes to thrash about
+22010375	27	None	0: Starly	2	2165EA90	No	Serious	0: Keen Eye	30	31	30	21	23	21	Ice	54	♂	Likes to thrash about
+22010375	9	None	0: Starly	2	2165EA90	No	Serious	0: Keen Eye	30	31	30	21	23	21	Ice	54	♂	Likes to thrash about
+FF12035D	10	None	0: Starly	2	6CBB6E45	No	Naive	1: Keen Eye	30	31	30	21	28	27	Ghost	39	♀	Likes to thrash about
+7F12035D	12	None	0: Starly	2	ECBBEE45	No	Bold	1: Keen Eye	30	31	30	21	28	27	Ghost	39	♀	Likes to thrash about
+F7050376	7	None	0: Starly	2	6D54877C	No	Brave	0: Keen Eye	30	31	30	21	31	31	Ice	59	♀	Alert to sounds
+F7050376	5	None	0: Starly	2	6D54877C	No	Brave	0: Keen Eye	30	31	30	21	31	31	Ice	59	♀	Alert to sounds
+77050376	27	None	0: Starly	2	ED54077C	No	Relaxed	0: Keen Eye	30	31	30	21	31	31	Ice	59	♀	Alert to sounds
+77050376	25	None	0: Starly	2	ED54077C	No	Relaxed	0: Keen Eye	30	31	30	21	31	31	Ice	59	♀	Alert to sounds
+F1000347	23	None	0: Starly	2	228FC01B	No	Gentle	1: Keen Eye	30	31	30	22	20	30	Fighting	49	♀	Likes to thrash about
+F1000347	13	None	0: Starly	2	228FC01B	No	Gentle	1: Keen Eye	30	31	30	22	20	30	Fighting	49	♀	Likes to thrash about
+F1000347	11	None	0: Starly	2	228FC01B	No	Gentle	1: Keen Eye	30	31	30	22	20	30	Fighting	49	♀	Likes to thrash about
+71000347	9	None	0: Starly	2	A28F401B	No	Lonely	1: Keen Eye	30	31	30	22	20	30	Fighting	49	♀	Likes to thrash about
+71000347	1	None	0: Starly	2	A28F401B	No	Lonely	1: Keen Eye	30	31	30	22	20	30	Fighting	49	♀	Likes to thrash about
+20020376	25	None	0: Starly	2	51F74B34	No	Modest	0: Keen Eye	30	31	30	22	25	20	Fire	44	♀	Likes to thrash about
+20020376	21	None	0: Starly	2	51F74B34	No	Modest	0: Keen Eye	30	31	30	22	25	20	Fire	44	♀	Likes to thrash about
+E1020338	24	None	0: Starly	2	B0B516AD	No	Serious	1: Keen Eye	30	31	30	22	27	28	Fire	64	♂	Likes to thrash about
+E1020338	12	None	0: Starly	2	B0B516AD	No	Serious	1: Keen Eye	30	31	30	22	27	28	Fire	64	♂	Likes to thrash about
+E1020338	4	None	0: Starly	2	B0B516AD	No	Serious	1: Keen Eye	30	31	30	22	27	28	Fire	64	♂	Likes to thrash about
+04030377	26	None	0: Starly	2	C2371FD8	No	Hasty	0: Keen Eye	30	31	30	22	31	28	Fire	64	♂	Somewhat vain
+84030377	3	None	0: Starly	2	42379FD8	No	Docile	0: Keen Eye	30	31	30	22	31	28	Fire	64	♂	Somewhat vain
+FA0D0345	23	None	0: Starly	2	25FB88C6	No	Quiet	0: Keen Eye	30	31	30	23	24	21	Ghost	44	♂	Likes to thrash about
+2C02036B	10	None	0: Starly	2	649A3C15	No	Hardy	1: Keen Eye	30	31	30	23	27	23	Ice	70	♀	Likes to thrash about
+AC02036B	13	None	0: Starly	2	E49ABC15	No	Mild	1: Keen Eye	30	31	30	23	27	23	Ice	70	♀	Likes to thrash about
+AC02036B	5	None	0: Starly	2	E49ABC15	No	Mild	1: Keen Eye	30	31	30	23	27	23	Ice	70	♀	Likes to thrash about
+AC02036B	3	None	0: Starly	2	E49ABC15	No	Mild	1: Keen Eye	30	31	30	23	27	23	Ice	70	♀	Likes to thrash about
+28130373	9	None	0: Starly	2	66A2EC69	No	Timid	1: Keen Eye	30	31	30	24	25	26	Fire	39	♀	Likes to thrash about
+DC0C0346	22	None	0: Starly	2	FB81A82E	No	Naive	0: Keen Eye	30	31	30	24	26	27	Poison	59	♀	Likes to thrash about
+DC0C0346	20	None	0: Starly	2	FB81A82E	No	Naive	0: Keen Eye	30	31	30	24	26	27	Poison	59	♀	Likes to thrash about
+DC0C0346	12	None	0: Starly	2	FB81A82E	No	Naive	0: Keen Eye	30	31	30	24	26	27	Poison	59	♀	Likes to thrash about
+2E120374	16	None	0: Starly	2	C40147C8	No	Careful	0: Keen Eye	30	31	30	25	29	31	Ice	39	♂	Likes to thrash about
+AE120374	20	None	0: Starly	2	4401C7C8	No	Bashful	0: Keen Eye	30	31	30	25	29	31	Ice	39	♂	Likes to thrash about
+AE120374	13	None	0: Starly	2	4401C7C8	No	Bashful	0: Keen Eye	30	31	30	25	29	31	Ice	39	♂	Likes to thrash about
+AE120374	8	None	0: Starly	2	4401C7C8	No	Bashful	0: Keen Eye	30	31	30	25	29	31	Ice	39	♂	Likes to thrash about
+460E0374	21	None	0: Starly	2	13CE3D91	No	Docile	1: Keen Eye	30	31	30	26	21	24	Fire	44	♂	Likes to thrash about
+FF12032A	26	None	0: Starly	2	3D3E05B2	No	Mild	0: Keen Eye	30	31	30	26	26	30	Fighting	70	♂	Likes to thrash about
+7F12032A	14	None	0: Starly	2	BD3E85B2	No	Relaxed	0: Keen Eye	30	31	30	26	26	30	Fighting	70	♂	Likes to thrash about
+7F12032A	8	None	0: Starly	2	BD3E85B2	No	Relaxed	0: Keen Eye	30	31	30	26	26	30	Fighting	70	♂	Likes to thrash about
+7F12032A	6	None	0: Starly	2	BD3E85B2	No	Relaxed	0: Keen Eye	30	31	30	26	26	30	Fighting	70	♂	Likes to thrash about
+A00F036D	12	None	0: Starly	2	AD2A82B2	No	Jolly	0: Keen Eye	30	31	30	26	27	24	Fire	64	♂	Likes to thrash about
+A00F036D	4	None	0: Starly	2	AD2A82B2	No	Jolly	0: Keen Eye	30	31	30	26	27	24	Fire	64	♂	Likes to thrash about
+A00F036D	0	None	0: Starly	2	AD2A82B2	No	Jolly	0: Keen Eye	30	31	30	26	27	24	Fire	64	♂	Likes to thrash about
+200F036D	18	None	0: Starly	2	2D2A02B2	No	Sassy	0: Keen Eye	30	31	30	26	27	24	Fire	64	♂	Likes to thrash about
+200F036D	16	None	0: Starly	2	2D2A02B2	No	Sassy	0: Keen Eye	30	31	30	26	27	24	Fire	64	♂	Likes to thrash about
+200F036D	2	None	0: Starly	2	2D2A02B2	No	Sassy	0: Keen Eye	30	31	30	26	27	24	Fire	64	♂	Likes to thrash about
+E70D0376	26	None	0: Starly	2	700DB13A	No	Bold	0: Keen Eye	30	31	30	26	27	26	Fire	70	♀	Likes to thrash about
+E70D0376	10	None	0: Starly	2	700DB13A	No	Bold	0: Keen Eye	30	31	30	26	27	26	Fire	70	♀	Likes to thrash about
+F7140365	9	Yache Berry	0: Starly	2	AAB518B8	No	Naive	0: Keen Eye	30	31	30	26	30	23	Poison	70	♂	Likes to thrash about
+77140365	29	None	0: Starly	2	2AB598B8	No	Lax	0: Keen Eye	30	31	30	26	30	23	Poison	70	♂	Likes to thrash about
+77140365	13	None	0: Starly	2	2AB598B8	No	Lax	0: Keen Eye	30	31	30	26	30	23	Poison	70	♂	Likes to thrash about
+49130357	26	None	0: Starly	2	42A357AE	No	Calm	0: Keen Eye	30	31	30	26	31	28	Fire	64	♂	Somewhat vain
+49130357	20	None	0: Starly	2	42A357AE	No	Calm	0: Keen Eye	30	31	30	26	31	28	Fire	64	♂	Somewhat vain
+49130357	2	None	0: Starly	2	42A357AE	No	Calm	0: Keen Eye	30	31	30	26	31	28	Fire	64	♂	Somewhat vain
+C9130357	12	None	0: Starly	2	C2A3D7AE	No	Hasty	0: Keen Eye	30	31	30	26	31	28	Fire	64	♂	Somewhat vain
+C9130357	10	None	0: Starly	2	C2A3D7AE	No	Hasty	0: Keen Eye	30	31	30	26	31	28	Fire	64	♂	Somewhat vain
+C9130357	6	None	0: Starly	2	C2A3D7AE	No	Hasty	0: Keen Eye	30	31	30	26	31	28	Fire	64	♂	Somewhat vain
+040E0329	18	None	0: Starly	2	05733B7D	No	Quirky	1: Keen Eye	30	31	30	27	23	26	Electric	70	♀	Likes to thrash about
+040E0329	4	None	0: Starly	2	05733B7D	No	Quirky	1: Keen Eye	30	31	30	27	23	26	Electric	70	♀	Likes to thrash about
+840E0329	8	None	0: Starly	2	8573BB7D	No	Modest	1: Keen Eye	30	31	30	27	23	26	Electric	70	♀	Likes to thrash about
+840E0329	3	None	0: Starly	2	8573BB7D	No	Modest	1: Keen Eye	30	31	30	27	23	26	Electric	70	♀	Likes to thrash about
+840E0329	2	None	0: Starly	2	8573BB7D	No	Modest	1: Keen Eye	30	31	30	27	23	26	Electric	70	♀	Likes to thrash about
+E5160380	26	None	0: Starly	2	A70AC7A8	No	Rash	0: Keen Eye	30	31	30	27	26	31	Ghost	70	♂	Likes to thrash about
+E5160380	24	None	0: Starly	2	A70AC7A8	No	Rash	0: Keen Eye	30	31	30	27	26	31	Ghost	70	♂	Likes to thrash about
+E5160380	2	None	0: Starly	2	A70AC7A8	No	Rash	0: Keen Eye	30	31	30	27	26	31	Ghost	70	♂	Likes to thrash about
+0A03035A	28	None	0: Starly	2	701DD83D	No	Bashful	1: Keen Eye	30	31	30	28	24	22	Fighting	39	♀	Likes to thrash about
+0A03035A	25	None	0: Starly	2	701DD83D	No	Bashful	1: Keen Eye	30	31	30	28	24	22	Fighting	39	♀	Likes to thrash about
+EF17032C	23	None	0: Starly	2	8028ED68	No	Naive	0: Keen Eye	30	31	30	28	24	23	Poison	39	♀	Likes to thrash about
+9D130364	21	None	0: Starly	2	4ED135E1	No	Modest	1: Keen Eye	30	31	30	28	27	25	Grass	54	♂	Likes to thrash about
+9D130364	13	None	0: Starly	2	4ED135E1	No	Modest	1: Keen Eye	30	31	30	28	27	25	Grass	54	♂	Likes to thrash about
+9D130364	7	None	0: Starly	2	4ED135E1	No	Modest	1: Keen Eye	30	31	30	28	27	25	Grass	54	♂	Likes to thrash about
+9D130364	3	None	0: Starly	2	4ED135E1	No	Modest	1: Keen Eye	30	31	30	28	27	25	Grass	54	♂	Likes to thrash about
+3A0D0336	25	None	0: Starly	2	85962D39	No	Bold	1: Keen Eye	30	31	30	28	28	27	Poison	39	♀	Likes to thrash about
+3A0D0336	5	None	0: Starly	2	85962D39	No	Bold	1: Keen Eye	30	31	30	28	28	27	Poison	39	♀	Likes to thrash about
+2B0B0362	16	None	0: Starly	2	8A6165FE	No	Timid	0: Keen Eye	30	31	30	28	30	22	Fighting	59	♂	Likes to thrash about
+2B0B0362	14	None	0: Starly	2	8A6165FE	No	Timid	0: Keen Eye	30	31	30	28	30	22	Fighting	59	♂	Likes to thrash about
+31040379	20	None	0: Starly	2	E44A0ADD	No	Bashful	1: Keen Eye	30	31	30	28	31	30	Fire	59	♂	Somewhat vain
+31040379	2	None	0: Starly	2	E44A0ADD	No	Bashful	1: Keen Eye	30	31	30	28	31	30	Fire	59	♂	Somewhat vain
+8D090357	25	None	0: Starly	2	85477DD1	No	Bashful	1: Keen Eye	30	31	30	28	31	31	Grass	59	♂	Likes to thrash about
+330D0380	17	None	0: Starly	2	E4866F8D	No	Naughty	1: Keen Eye	30	31	30	29	20	21	Ghost	34	♂	Likes to thrash about
+330D0380	3	None	0: Starly	2	E4866F8D	No	Naughty	1: Keen Eye	30	31	30	29	20	21	Ghost	34	♂	Likes to thrash about
+AA13036B	29	None	0: Starly	2	DD3CDEF8	No	Lonely	0: Keen Eye	30	31	30	29	22	20	Rock	54	♂	Likes to thrash about
+AA13036B	11	None	0: Starly	2	DD3CDEF8	No	Lonely	0: Keen Eye	30	31	30	29	22	20	Rock	54	♂	Likes to thrash about
+DA070371	25	None	0: Starly	2	6132AAC9	No	Careful	1: Keen Eye	30	31	30	29	22	25	Ghost	54	♂	Likes to thrash about
+DA070371	13	None	0: Starly	2	6132AAC9	No	Careful	1: Keen Eye	30	31	30	29	22	25	Ghost	54	♂	Likes to thrash about
+C405035F	4	None	0: Starly	2	4CE39A65	No	Jolly	1: Keen Eye	30	31	30	29	25	23	Ice	39	♀	Likes to thrash about
+4405035F	26	None	0: Starly	2	CCE31A65	No	Bashful	1: Keen Eye	30	31	30	29	25	23	Ice	39	♀	Likes to thrash about
+E9170369	15	None	0: Starly	2	5B125ECC	No	Sassy	0: Keen Eye	30	31	30	29	31	27	Ice	59	♂	Somewhat vain
+E9170369	13	None	0: Starly	2	5B125ECC	No	Sassy	0: Keen Eye	30	31	30	29	31	27	Ice	59	♂	Somewhat vain
+E9170369	1	None	0: Starly	2	5B125ECC	No	Sassy	0: Keen Eye	30	31	30	29	31	27	Ice	59	♂	Somewhat vain
+D011036C	5	None	0: Starly	2	CAB0BD56	No	Jolly	0: Keen Eye	30	31	30	30	25	31	Grass	49	♀	Alert to sounds
+3A060365	23	None	0: Starly	2	6895BF44	No	Quiet	0: Keen Eye	30	31	30	30	26	22	Fighting	70	♀	Likes to thrash about
+3A060365	17	None	0: Starly	2	6895BF44	No	Quiet	0: Keen Eye	30	31	30	30	26	22	Fighting	70	♀	Likes to thrash about
+BA060365	11	Yache Berry	0: Starly	2	E8953F44	No	Sassy	0: Keen Eye	30	31	30	30	26	22	Fighting	70	♀	Likes to thrash about
+BA060365	5	Yache Berry	0: Starly	2	E8953F44	No	Sassy	0: Keen Eye	30	31	30	30	26	22	Fighting	70	♀	Likes to thrash about
+C8040365	23	None	0: Starly	2	54E9B5ED	No	Bold	1: Keen Eye	30	31	30	30	31	29	Grass	64	♂	Somewhat vain
+C8040365	13	None	0: Starly	2	54E9B5ED	No	Bold	1: Keen Eye	30	31	30	30	31	29	Grass	64	♂	Somewhat vain
+CE170332	5	None	0: Starly	2	E6F20D97	No	Gentle	1: Keen Eye	30	31	30	31	30	28	Rock	64	♂	Mischievous
+CE170332	1	None	0: Starly	2	E6F20D97	No	Gentle	1: Keen Eye	30	31	30	31	30	28	Rock	64	♂	Mischievous
+4E170332	21	None	0: Starly	2	66F28D97	No	Mild	1: Keen Eye	30	31	30	31	30	28	Rock	64	♂	Mischievous
+3F010368	0	Yache Berry	0: Starly	2	C560CDAA	No	Impish	0: Keen Eye	30	31	31	20	29	31	Grass	39	♂	Capable of taking hits
+75020323	20	None	0: Starly	2	0830A086	No	Hardy	0: Keen Eye	30	31	31	20	31	23	Grass	59	♂	Capable of taking hits
+75020323	8	None	0: Starly	2	0830A086	No	Hardy	0: Keen Eye	30	31	31	20	31	23	Grass	59	♂	Capable of taking hits
+710D0381	28	None	0: Starly	2	734887DE	No	Naive	0: Keen Eye	30	31	31	21	21	23	Dragon	39	♂	Likes to thrash about
+3C09036C	2	None	0: Starly	2	3E9D8B93	No	Hardy	1: Keen Eye	30	31	31	21	26	30	Bug	59	♂	Likes to thrash about
+E4130332	5	None	0: Starly	2	BB2E8E41	No	Modest	1: Keen Eye	30	31	31	22	21	24	Water	44	♀	Likes to thrash about
+210A0355	30	Yache Berry	0: Starly	2	68E3D19C	No	Gentle	0: Keen Eye	30	31	31	22	23	30	Water	70	♂	Likes to thrash about
+870B0373	10	None	0: Starly	2	BCA68242	No	Bold	0: Keen Eye	30	31	31	22	25	23	Grass	49	♀	Likes to thrash about
+CA16035F	10	None	0: Starly	2	C60A0DE4	No	Lax	0: Keen Eye	30	31	31	22	29	31	Grass	49	♂	Capable of taking hits
+9C080376	10	None	0: Starly	2	D6E91003	No	Hasty	1: Keen Eye	30	31	31	22	31	22	Water	70	♀	Likes to thrash about
+1C080376	8	None	0: Starly	2	56E99003	No	Docile	1: Keen Eye	30	31	31	22	31	22	Water	70	♀	Likes to thrash about
+E30D034E	8	None	0: Starly	2	99BAF3D2	No	Serious	0: Keen Eye	30	31	31	23	23	20	Psychic	64	♂	Likes to thrash about
+E30D034E	2	None	0: Starly	2	99BAF3D2	No	Serious	0: Keen Eye	30	31	31	23	23	20	Psychic	64	♂	Likes to thrash about
+B415033C	29	None	0: Starly	2	91928874	No	Impish	0: Keen Eye	30	31	31	23	24	24	Bug	44	♀	Likes to thrash about
+B415033C	25	None	0: Starly	2	91928874	No	Impish	0: Keen Eye	30	31	31	23	24	24	Bug	44	♀	Likes to thrash about
+B415033C	19	None	0: Starly	2	91928874	No	Impish	0: Keen Eye	30	31	31	23	24	24	Bug	44	♀	Likes to thrash about
+2D05036D	18	None	0: Starly	2	32860D92	No	Careful	0: Keen Eye	30	31	31	23	25	20	Psychic	44	♂	Likes to thrash about
+2D05036D	16	None	0: Starly	2	32860D92	No	Careful	0: Keen Eye	30	31	31	23	25	20	Psychic	44	♂	Likes to thrash about
+19050323	4	None	0: Starly	2	8604FCA6	No	Mild	0: Keen Eye	30	31	31	23	29	22	Psychic	49	♂	Likes to thrash about
+BA0B034C	10	None	0: Starly	2	2AF7BB6A	No	Quiet	0: Keen Eye	30	31	31	23	29	28	Psychic	44	♀	Likes to thrash about
+340F0381	25	None	0: Starly	2	01D25D18	No	Impish	0: Keen Eye	30	31	31	23	30	31	Steel	70	♀	Likes to thrash about
+340F0381	21	None	0: Starly	2	01D25D18	No	Impish	0: Keen Eye	30	31	31	23	30	31	Steel	70	♀	Likes to thrash about
+340F0381	15	None	0: Starly	2	01D25D18	No	Impish	0: Keen Eye	30	31	31	23	30	31	Steel	70	♀	Likes to thrash about
+340F0381	9	None	0: Starly	2	01D25D18	No	Impish	0: Keen Eye	30	31	31	23	30	31	Steel	70	♀	Likes to thrash about
+DF0A037D	19	None	0: Starly	2	D58B30DB	No	Rash	1: Keen Eye	30	31	31	24	23	24	Water	54	♂	Likes to thrash about
+B0100357	16	None	0: Starly	2	369FCB1F	No	Serious	1: Keen Eye	30	31	31	24	30	26	Flying	59	♀	Likes to thrash about
+B0100357	14	None	0: Starly	2	369FCB1F	No	Serious	1: Keen Eye	30	31	31	24	30	26	Flying	59	♀	Likes to thrash about
+DD120374	29	None	0: Starly	2	98A77E79	No	Gentle	1: Keen Eye	30	31	31	25	21	30	Psychic	39	♀	Likes to thrash about
+DD120374	19	None	0: Starly	2	98A77E79	No	Gentle	1: Keen Eye	30	31	31	25	21	30	Psychic	39	♀	Likes to thrash about
+5D120374	9	Yache Berry	0: Starly	2	18A7FE79	No	Mild	1: Keen Eye	30	31	31	25	21	30	Psychic	39	♀	Likes to thrash about
+5D120374	5	Yache Berry	0: Starly	2	18A7FE79	No	Mild	1: Keen Eye	30	31	31	25	21	30	Psychic	39	♀	Likes to thrash about
+5D120374	1	Yache Berry	0: Starly	2	18A7FE79	No	Mild	1: Keen Eye	30	31	31	25	21	30	Psychic	39	♀	Likes to thrash about
+860A034E	26	None	0: Starly	2	115D6DE4	No	Brave	0: Keen Eye	30	31	31	25	23	29	Dragon	54	♂	Likes to thrash about
+860A034E	24	None	0: Starly	2	115D6DE4	No	Brave	0: Keen Eye	30	31	31	25	23	29	Dragon	54	♂	Likes to thrash about
+860A034E	14	None	0: Starly	2	115D6DE4	No	Brave	0: Keen Eye	30	31	31	25	23	29	Dragon	54	♂	Likes to thrash about
+060A034E	28	None	0: Starly	2	915DEDE4	No	Bashful	0: Keen Eye	30	31	31	25	23	29	Dragon	54	♂	Likes to thrash about
+080D0343	25	None	0: Starly	2	092C14B0	No	Quirky	0: Keen Eye	30	31	31	25	25	29	Dragon	34	♂	Likes to thrash about
+080D0343	5	None	0: Starly	2	092C14B0	No	Quirky	0: Keen Eye	30	31	31	25	25	29	Dragon	34	♂	Likes to thrash about
+880D0343	3	None	0: Starly	2	892C94B0	No	Modest	0: Keen Eye	30	31	31	25	25	29	Dragon	34	♂	Likes to thrash about
+55060359	9	None	0: Starly	2	47CAC7FF	No	Relaxed	1: Keen Eye	30	31	31	25	28	30	Bug	39	♂	Likes to thrash about
+ED120372	25	None	0: Starly	2	66D91F77	No	Quirky	1: Keen Eye	30	31	31	26	26	30	Flying	70	♀	Likes to thrash about
+A4050357	20	None	0: Starly	2	E7B87A41	No	Quiet	1: Keen Eye	30	31	31	26	27	24	Water	64	♀	Likes to thrash about
+9F110352	18	Yache Berry	0: Starly	2	F544C88E	No	Timid	0: Keen Eye	30	31	31	27	21	24	Psychic	44	♂	Likes to thrash about
+A8080371	12	None	0: Starly	2	3C0BE73C	No	Brave	0: Keen Eye	30	31	31	27	23	21	Dragon	64	♀	Capable of taking hits
+A8080371	2	None	0: Starly	2	3C0BE73C	No	Brave	0: Keen Eye	30	31	31	27	23	21	Dragon	64	♀	Capable of taking hits
+28080371	16	None	0: Starly	2	BC0B673C	No	Relaxed	0: Keen Eye	30	31	31	27	23	21	Dragon	64	♀	Capable of taking hits
+2408037D	19	None	0: Starly	2	176B001B	No	Sassy	1: Keen Eye	30	31	31	27	28	28	Bug	44	♀	Likes to thrash about
+A408037D	27	None	0: Starly	2	976B801B	No	Jolly	1: Keen Eye	30	31	31	27	28	28	Bug	44	♀	Likes to thrash about
+A408037D	11	None	0: Starly	2	976B801B	No	Jolly	1: Keen Eye	30	31	31	27	28	28	Bug	44	♀	Likes to thrash about
+3E14032D	18	Yache Berry	0: Starly	2	9CC77534	No	Naive	0: Keen Eye	30	31	31	28	24	28	Flying	34	♀	Capable of taking hits
+7F120354	26	None	0: Starly	2	E2AFB917	No	Quirky	1: Keen Eye	30	31	31	28	25	30	Water	39	♀	Likes to thrash about
+7F120354	12	None	0: Starly	2	E2AFB917	No	Quirky	1: Keen Eye	30	31	31	28	25	30	Water	39	♀	Likes to thrash about
+FF120354	28	None	0: Starly	2	62AF3917	No	Impish	1: Keen Eye	30	31	31	28	25	30	Water	39	♀	Likes to thrash about
+FF120354	24	None	0: Starly	2	62AF3917	No	Impish	1: Keen Eye	30	31	31	28	25	30	Water	39	♀	Likes to thrash about
+970A0360	8	None	0: Starly	2	9142D73C	No	Gentle	0: Keen Eye	30	31	31	28	28	31	Ground	39	♀	Likes to thrash about
+170A0360	24	Yache Berry	0: Starly	2	1142573C	No	Bold	0: Keen Eye	30	31	31	28	28	31	Ground	39	♀	Capable of taking hits
+CB0A0378	20	None	0: Starly	2	C9628A07	No	Naughty	1: Keen Eye	30	31	31	29	26	21	Steel	54	♀	Likes to thrash about
+CB0A0378	12	None	0: Starly	2	C9628A07	No	Naughty	1: Keen Eye	30	31	31	29	26	21	Steel	54	♀	Likes to thrash about
+05140368	16	None	0: Starly	2	62D1AAD3	No	Careful	1: Keen Eye	30	31	31	29	30	31	Steel	59	♂	Likes to thrash about
+05140368	14	None	0: Starly	2	62D1AAD3	No	Careful	1: Keen Eye	30	31	31	29	30	31	Steel	59	♂	Likes to thrash about
+05140368	4	None	0: Starly	2	62D1AAD3	No	Careful	1: Keen Eye	30	31	31	29	30	31	Steel	59	♂	Likes to thrash about
+F512034B	30	None	0: Starly	2	56EF5854	No	Quiet	0: Keen Eye	30	31	31	30	20	21	Ground	44	♀	Capable of taking hits
+7512034B	28	None	0: Starly	2	D6EFD854	No	Impish	0: Keen Eye	30	31	31	30	20	21	Ground	44	♀	Likes to thrash about
+7512034B	16	None	0: Starly	2	D6EFD854	No	Impish	0: Keen Eye	30	31	31	30	20	21	Ground	44	♀	Likes to thrash about
+B5060349	3	Yache Berry	0: Starly	2	013E7B3F	No	Quirky	1: Keen Eye	30	31	31	30	26	21	Ground	64	♀	Likes to thrash about
+73010381	20	None	0: Starly	2	0DF54BA6	No	Rash	0: Keen Eye	30	31	31	30	28	26	Flying	49	♂	Likes to thrash about
+73010381	12	None	0: Starly	2	0DF54BA6	No	Rash	0: Keen Eye	30	31	31	30	28	26	Flying	49	♂	Likes to thrash about
+73010381	6	None	0: Starly	2	0DF54BA6	No	Rash	0: Keen Eye	30	31	31	30	28	26	Flying	49	♂	Likes to thrash about
+AC0B0373	7	None	0: Starly	2	9EE8A96F	No	Bold	1: Keen Eye	30	31	31	30	28	26	Flying	49	♀	Likes to thrash about
+AC0B0373	3	None	0: Starly	2	9EE8A96F	No	Bold	1: Keen Eye	30	31	31	30	28	26	Flying	49	♀	Likes to thrash about
+ED16036D	8	None	0: Starly	2	06997058	No	Naive	0: Keen Eye	30	31	31	31	22	20	Bug	64	♀	Capable of taking hits
+CF0C0352	26	None	0: Starly	2	28307C83	No	Bashful	1: Keen Eye	30	31	31	31	25	26	Psychic	49	♂	Likes to thrash about
+CF0C0352	16	None	0: Starly	2	28307C83	No	Bashful	1: Keen Eye	30	31	31	31	25	26	Psychic	49	♂	Likes to thrash about
+CF0C0352	14	None	0: Starly	2	28307C83	No	Bashful	1: Keen Eye	30	31	31	31	25	26	Psychic	49	♂	Likes to thrash about
+CF0C0352	2	None	0: Starly	2	28307C83	No	Bashful	1: Keen Eye	30	31	31	31	25	26	Psychic	49	♂	Likes to thrash about
+AB14037A	14	None	0: Starly	2	54C61C60	No	Hasty	0: Keen Eye	31	30	30	20	20	29	Poison	34	♀	Takes plenty of siestas
+AB14037A	12	None	0: Starly	2	54C61C60	No	Hasty	0: Keen Eye	31	30	30	20	20	29	Poison	34	♀	Takes plenty of siestas
+67100371	27	None	0: Starly	2	A9BBFF75	No	Impish	1: Keen Eye	31	30	30	20	28	30	Fighting	39	♀	Takes plenty of siestas
+67100371	21	None	0: Starly	2	A9BBFF75	No	Impish	1: Keen Eye	31	30	30	20	28	30	Fighting	39	♀	Takes plenty of siestas
+67100371	19	None	0: Starly	2	A9BBFF75	No	Impish	1: Keen Eye	31	30	30	20	28	30	Fighting	39	♀	Takes plenty of siestas
+67100371	17	None	0: Starly	2	A9BBFF75	No	Impish	1: Keen Eye	31	30	30	20	28	30	Fighting	39	♀	Takes plenty of siestas
+1E140333	14	None	0: Starly	2	373EDFEC	No	Hasty	0: Keen Eye	31	30	30	21	23	25	Ice	54	♂	Takes plenty of siestas
+C2040342	7	None	0: Starly	2	E5C8103B	No	Rash	1: Keen Eye	31	30	30	21	27	20	Electric	54	♀	Takes plenty of siestas
+C2040342	5	None	0: Starly	2	E5C8103B	No	Rash	1: Keen Eye	31	30	30	21	27	20	Electric	54	♀	Takes plenty of siestas
+42040342	3	None	0: Starly	2	65C8903B	No	Naive	1: Keen Eye	31	30	30	21	27	20	Electric	54	♀	Takes plenty of siestas
+3C01033A	10	None	0: Starly	2	B8B653ED	No	Docile	1: Keen Eye	31	30	30	21	27	23	Ice	59	♂	Takes plenty of siestas
+BC01033A	26	None	0: Starly	2	38B6D3ED	No	Lonely	1: Keen Eye	31	30	30	21	27	23	Ice	59	♂	Takes plenty of siestas
+BC01033A	14	None	0: Starly	2	38B6D3ED	No	Lonely	1: Keen Eye	31	30	30	21	27	23	Ice	59	♂	Takes plenty of siestas
+BC01033A	8	None	0: Starly	2	38B6D3ED	No	Lonely	1: Keen Eye	31	30	30	21	27	23	Ice	59	♂	Takes plenty of siestas
+080C0372	7	None	0: Starly	2	285D0F5A	No	Bashful	0: Keen Eye	31	30	30	21	30	27	Bug	59	♀	Takes plenty of siestas
+090B032D	28	None	0: Starly	2	24F77FDE	No	Brave	0: Keen Eye	31	30	30	22	24	26	Fighting	49	♂	Takes plenty of siestas
+090B032D	4	None	0: Starly	2	24F77FDE	No	Brave	0: Keen Eye	31	30	30	22	24	26	Fighting	49	♂	Takes plenty of siestas
+090B032D	0	None	0: Starly	2	24F77FDE	No	Brave	0: Keen Eye	31	30	30	22	24	26	Fighting	49	♂	Takes plenty of siestas
+890B032D	22	None	0: Starly	2	A4F7FFDE	No	Bashful	0: Keen Eye	31	30	30	22	24	26	Fighting	49	♂	Takes plenty of siestas
+890B032D	16	None	0: Starly	2	A4F7FFDE	No	Bashful	0: Keen Eye	31	30	30	22	24	26	Fighting	49	♂	Takes plenty of siestas
+C3060323	5	Yache Berry	0: Starly	2	857100EA	No	Bold	0: Keen Eye	31	30	30	22	28	24	Fighting	44	♂	Takes plenty of siestas
+BF100360	5	None	0: Starly	2	222A0998	No	Serious	0: Keen Eye	31	30	30	23	21	30	Electric	49	♂	Takes plenty of siestas
+3F100360	7	None	0: Starly	2	A22A8998	No	Adamant	0: Keen Eye	31	30	30	23	21	30	Electric	49	♂	Takes plenty of siestas
+930F0375	25	None	0: Starly	2	B09E0F92	No	Modest	0: Keen Eye	31	30	30	23	25	24	Electric	44	♂	Takes plenty of siestas
+27050322	18	None	0: Starly	2	6052156C	No	Sassy	0: Keen Eye	31	30	30	24	26	28	Fighting	54	♀	Takes plenty of siestas
+27050322	17	None	0: Starly	2	6052156C	No	Sassy	0: Keen Eye	31	30	30	24	26	28	Fighting	54	♀	Takes plenty of siestas
+8506037D	19	None	0: Starly	2	2055F203	No	Brave	1: Keen Eye	31	30	30	25	25	24	Electric	34	♀	Takes plenty of siestas
+AD140377	5	None	0: Starly	2	7FFA861B	No	Jolly	1: Keen Eye	31	30	30	25	27	31	Ice	59	♀	Alert to sounds
+2D140377	15	None	0: Starly	2	FFFA061B	No	Bashful	1: Keen Eye	31	30	30	25	27	31	Ice	59	♀	Alert to sounds
+24010343	0	None	0: Starly	2	EBABF5B8	No	Calm	0: Keen Eye	31	30	30	25	30	30	Rock	59	♂	Takes plenty of siestas
+B6070358	22	None	0: Starly	2	3A9910B6	No	Naive	0: Keen Eye	31	30	30	26	21	28	Steel	44	♂	Takes plenty of siestas
+B6070358	16	None	0: Starly	2	3A9910B6	No	Naive	0: Keen Eye	31	30	30	26	21	28	Steel	44	♂	Takes plenty of siestas
+B6070358	10	None	0: Starly	2	3A9910B6	No	Naive	0: Keen Eye	31	30	30	26	21	28	Steel	44	♂	Takes plenty of siestas
+B6070358	8	None	0: Starly	2	3A9910B6	No	Naive	0: Keen Eye	31	30	30	26	21	28	Steel	44	♂	Takes plenty of siestas
+57160326	26	None	0: Starly	2	DF84E1A6	No	Hasty	0: Keen Eye	31	30	30	26	22	29	Poison	64	♂	Takes plenty of siestas
+57160326	6	None	0: Starly	2	DF84E1A6	No	Hasty	0: Keen Eye	31	30	30	26	22	29	Poison	64	♂	Takes plenty of siestas
+1000036C	19	None	0: Starly	2	0D7478BD	No	Bashful	1: Keen Eye	31	30	30	26	23	21	Water	64	♂	Takes plenty of siestas
+9000036C	14	Yache Berry	0: Starly	2	8D74F8BD	No	Lax	1: Keen Eye	31	30	30	26	23	21	Water	64	♂	Takes plenty of siestas
+B609033E	23	Yache Berry	0: Starly	2	1EF781E9	No	Naughty	1: Keen Eye	31	30	30	26	27	21	Water	64	♂	Takes plenty of siestas
+A10A0342	1	None	0: Starly	2	937C51C6	No	Hardy	0: Keen Eye	31	30	30	26	30	29	Poison	64	♂	Takes plenty of siestas
+AA03035C	28	None	0: Starly	2	7090C356	No	Relaxed	0: Keen Eye	31	30	30	27	28	26	Rock	49	♀	Takes plenty of siestas
+AA03035C	22	None	0: Starly	2	7090C356	No	Relaxed	0: Keen Eye	31	30	30	27	28	26	Rock	49	♀	Takes plenty of siestas
+470E033F	19	None	0: Starly	2	2663843A	No	Sassy	0: Keen Eye	31	30	30	27	30	22	Rock	70	♀	Takes plenty of siestas
+0D0F0329	19	None	0: Starly	2	6C55B5F2	No	Mild	0: Keen Eye	31	30	30	27	30	30	Rock	70	♂	Takes plenty of siestas
+0D0F0329	9	None	0: Starly	2	6C55B5F2	No	Mild	0: Keen Eye	31	30	30	27	30	30	Rock	70	♂	Takes plenty of siestas
+0D0F0329	7	None	0: Starly	2	6C55B5F2	No	Mild	0: Keen Eye	31	30	30	27	30	30	Rock	70	♂	Takes plenty of siestas
+0D0F0329	5	None	0: Starly	2	6C55B5F2	No	Mild	0: Keen Eye	31	30	30	27	30	30	Rock	70	♂	Takes plenty of siestas
+DC02036A	2	None	0: Starly	2	82096F9E	No	Adamant	0: Keen Eye	31	30	30	28	23	26	Steel	59	♂	Takes plenty of siestas
+C1090373	25	None	0: Starly	2	D4ED457B	No	Hasty	1: Keen Eye	31	30	30	28	24	24	Fighting	34	♀	Takes plenty of siestas
+C1090373	13	None	0: Starly	2	D4ED457B	No	Hasty	1: Keen Eye	31	30	30	28	24	24	Fighting	34	♀	Takes plenty of siestas
+C1090373	7	None	0: Starly	2	D4ED457B	No	Hasty	1: Keen Eye	31	30	30	28	24	24	Fighting	34	♀	Takes plenty of siestas
+41090373	15	None	0: Starly	2	54EDC57B	No	Docile	1: Keen Eye	31	30	30	28	24	24	Fighting	34	♀	Takes plenty of siestas
+320C0353	24	None	0: Starly	2	141C242B	No	Serious	1: Keen Eye	31	30	30	28	31	24	Steel	54	♀	Somewhat vain
+B20C0353	28	None	0: Starly	2	941CA42B	No	Adamant	1: Keen Eye	31	30	30	28	31	24	Steel	54	♀	Somewhat vain
+B20C0353	2	None	0: Starly	2	941CA42B	No	Adamant	1: Keen Eye	31	30	30	28	31	24	Steel	54	♀	Somewhat vain
+B20C0353	0	None	0: Starly	2	941CA42B	No	Adamant	1: Keen Eye	31	30	30	28	31	24	Steel	54	♀	Somewhat vain
+B7030324	11	None	0: Starly	2	C6E1F2D0	No	Adamant	0: Keen Eye	31	30	30	29	23	21	Ice	54	♂	Takes plenty of siestas
+B7030324	1	None	0: Starly	2	C6E1F2D0	No	Adamant	0: Keen Eye	31	30	30	29	23	21	Ice	54	♂	Takes plenty of siestas
+37030324	15	None	0: Starly	2	46E172D0	No	Serious	0: Keen Eye	31	30	30	29	23	21	Ice	54	♂	Takes plenty of siestas
+A10F0377	22	None	0: Starly	2	18E7EDE3	No	Quirky	1: Keen Eye	31	30	30	29	23	24	Electric	54	♂	Takes plenty of siestas
+A10F0377	16	None	0: Starly	2	18E7EDE3	No	Quirky	1: Keen Eye	31	30	30	29	23	24	Electric	54	♂	Takes plenty of siestas
+A10F0377	10	None	0: Starly	2	18E7EDE3	No	Quirky	1: Keen Eye	31	30	30	29	23	24	Electric	54	♂	Takes plenty of siestas
+A10F0377	0	None	0: Starly	2	18E7EDE3	No	Quirky	1: Keen Eye	31	30	30	29	23	24	Electric	54	♂	Takes plenty of siestas
+AC100326	15	None	0: Starly	2	538F5561	No	Impish	1: Keen Eye	31	30	30	29	26	21	Bug	54	♀	Takes plenty of siestas
+E70C0345	28	None	0: Starly	2	1981071A	No	Serious	0: Keen Eye	31	30	30	29	26	28	Rock	54	♀	Takes plenty of siestas
+E70C0345	24	None	0: Starly	2	1981071A	No	Serious	0: Keen Eye	31	30	30	29	26	28	Rock	54	♀	Takes plenty of siestas
+E70C0345	0	None	0: Starly	2	1981071A	No	Serious	0: Keen Eye	31	30	30	29	26	28	Rock	54	♀	Takes plenty of siestas
+670C0345	10	None	0: Starly	2	9981871A	No	Adamant	0: Keen Eye	31	30	30	29	26	28	Rock	54	♀	Takes plenty of siestas
+670C0345	8	None	0: Starly	2	9981871A	No	Adamant	0: Keen Eye	31	30	30	29	26	28	Rock	54	♀	Takes plenty of siestas
+670C0345	2	None	0: Starly	2	9981871A	No	Adamant	0: Keen Eye	31	30	30	29	26	28	Rock	54	♀	Takes plenty of siestas
+C20D0356	28	None	0: Starly	2	C72C5C9E	No	Adamant	0: Keen Eye	31	30	30	29	29	29	Ice	34	♂	Takes plenty of siestas
+B9160321	28	Yache Berry	0: Starly	2	75AD300A	No	Careful	0: Keen Eye	31	30	30	30	24	25	Poison	44	♀	Takes plenty of siestas
+ED05033C	30	None	0: Starly	2	4148F552	No	Lax	0: Keen Eye	31	30	30	30	27	22	Steel	70	♀	Takes plenty of siestas
+ED05033C	12	None	0: Starly	2	4148F552	No	Lax	0: Keen Eye	31	30	30	30	27	22	Steel	70	♀	Takes plenty of siestas
+ED05033C	2	None	0: Starly	2	4148F552	No	Lax	0: Keen Eye	31	30	30	30	27	22	Steel	70	♀	Takes plenty of siestas
+BB05033C	13	None	0: Starly	2	B5C3D75A	No	Gentle	0: Keen Eye	31	30	30	30	31	26	Steel	70	♀	Takes plenty of siestas
+BB070346	28	None	0: Starly	2	DC25AD3D	No	Lonely	1: Keen Eye	31	30	30	31	26	31	Bug	70	♀	Takes plenty of siestas
+BB070346	8	None	0: Starly	2	DC25AD3D	No	Lonely	1: Keen Eye	31	30	30	31	26	31	Bug	70	♀	Takes plenty of siestas
+F4060377	26	None	0: Starly	2	9B98CD80	No	Timid	0: Keen Eye	31	30	30	31	31	22	Electric	70	♂	Mischievous
+F4060377	8	None	0: Starly	2	9B98CD80	No	Timid	0: Keen Eye	31	30	30	31	31	22	Electric	70	♂	Mischievous
+F4060377	6	None	0: Starly	2	9B98CD80	No	Timid	0: Keen Eye	31	30	30	31	31	22	Electric	70	♂	Mischievous
+74060377	24	None	0: Starly	2	1B984D80	No	Rash	0: Keen Eye	31	30	30	31	31	22	Electric	70	♂	Takes plenty of siestas
+74060377	0	None	0: Starly	2	1B984D80	No	Rash	0: Keen Eye	31	30	30	31	31	22	Electric	70	♂	Takes plenty of siestas
+23070355	13	None	0: Starly	2	5097A16F	No	Bashful	1: Keen Eye	31	30	30	31	31	29	Ice	64	♀	Somewhat vain
+23070355	1	None	0: Starly	2	5097A16F	No	Bashful	1: Keen Eye	31	30	30	31	31	29	Ice	64	♀	Somewhat vain
+DF12037B	24	Yache Berry	0: Starly	2	0335DCC0	No	Bashful	0: Keen Eye	31	30	31	20	21	29	Grass	34	♂	Takes plenty of siestas
+DF12037B	6	Yache Berry	0: Starly	2	0335DCC0	No	Bashful	0: Keen Eye	31	30	31	20	21	29	Grass	34	♂	Takes plenty of siestas
+5F12037B	20	None	0: Starly	2	83355CC0	No	Careful	0: Keen Eye	31	30	31	20	21	29	Grass	34	♂	Takes plenty of siestas
+00090369	20	None	0: Starly	2	622E7BF6	No	Impish	0: Keen Eye	31	30	31	20	22	22	Flying	59	♂	Takes plenty of siestas
+00090369	2	None	0: Starly	2	622E7BF6	No	Impish	0: Keen Eye	31	30	31	20	22	22	Flying	59	♂	Takes plenty of siestas
+00090369	0	None	0: Starly	2	622E7BF6	No	Impish	0: Keen Eye	31	30	31	20	22	22	Flying	59	♂	Takes plenty of siestas
+C600034D	3	None	0: Starly	2	0BF76156	No	Hasty	0: Keen Eye	31	30	31	20	23	28	Fire	54	♀	Takes plenty of siestas
+E515037C	4	Yache Berry	0: Starly	2	33378110	No	Hasty	0: Keen Eye	31	30	31	20	29	23	Grass	39	♀	Capable of taking hits
+6515037C	28	None	0: Starly	2	B3370110	No	Mild	0: Keen Eye	31	30	31	20	29	23	Grass	39	♀	Capable of taking hits
+1E130339	29	None	0: Starly	2	22E7AA52	No	Serious	0: Keen Eye	31	30	31	20	31	31	Grass	59	♀	Somewhat vain
+9E130339	15	None	0: Starly	2	A2E72A52	No	Quiet	0: Keen Eye	31	30	31	20	31	31	Grass	59	♀	Somewhat vain
+9E130339	9	None	0: Starly	2	A2E72A52	No	Quiet	0: Keen Eye	31	30	31	20	31	31	Grass	59	♀	Somewhat vain
+B5110354	29	None	0: Starly	2	345768C5	No	Timid	1: Keen Eye	31	30	31	21	27	26	Psychic	59	♂	Takes plenty of siestas
+B5110354	27	None	0: Starly	2	345768C5	No	Timid	1: Keen Eye	31	30	31	21	27	26	Psychic	59	♂	Takes plenty of siestas
+35110354	19	None	0: Starly	2	B457E8C5	No	Lonely	1: Keen Eye	31	30	31	21	27	26	Psychic	59	♂	Takes plenty of siestas
+12070351	7	None	0: Starly	2	31042401	No	Calm	1: Keen Eye	31	30	31	21	29	30	Psychic	39	♀	Takes plenty of siestas
+2B030368	13	None	0: Starly	2	2DECB2FA	No	Lax	0: Keen Eye	31	30	31	21	30	20	Bug	54	♂	Takes plenty of siestas
+21140366	21	None	0: Starly	2	03DF8C08	No	Quirky	0: Keen Eye	31	30	31	21	31	23	Dragon	59	♀	Capable of taking hits
+A1140366	25	None	0: Starly	2	83DF0C08	No	Naughty	0: Keen Eye	31	30	31	21	31	23	Dragon	59	♀	Capable of taking hits
+A1140366	9	None	0: Starly	2	83DF0C08	No	Naughty	0: Keen Eye	31	30	31	21	31	23	Dragon	59	♀	Capable of taking hits
+A00D0325	15	None	0: Starly	2	5AC39B8B	No	Naughty	1: Keen Eye	31	30	31	21	31	31	Dragon	59	♂	Alert to sounds
+A00D0325	13	None	0: Starly	2	5AC39B8B	No	Naughty	1: Keen Eye	31	30	31	21	31	31	Dragon	59	♂	Alert to sounds
+A00D0325	7	None	0: Starly	2	5AC39B8B	No	Naughty	1: Keen Eye	31	30	31	21	31	31	Dragon	59	♂	Alert to sounds
+A00D0325	5	None	0: Starly	2	5AC39B8B	No	Naughty	1: Keen Eye	31	30	31	21	31	31	Dragon	59	♂	Alert to sounds
+9C12036D	18	None	0: Starly	2	8E181591	No	Relaxed	1: Keen Eye	31	30	31	22	27	27	Grass	70	♂	Takes plenty of siestas
+1C12036D	21	None	0: Starly	2	0E189591	No	Brave	1: Keen Eye	31	30	31	22	27	27	Grass	70	♂	Takes plenty of siestas
+1C12036D	20	None	0: Starly	2	0E189591	No	Brave	1: Keen Eye	31	30	31	22	27	27	Grass	70	♂	Takes plenty of siestas
+07070371	30	None	0: Starly	2	AF0C1AB0	No	Naive	0: Keen Eye	31	30	31	22	28	23	Ground	49	♂	Capable of taking hits
+87070371	26	None	0: Starly	2	2F0C9AB0	No	Lax	0: Keen Eye	31	30	31	22	28	23	Ground	49	♂	Capable of taking hits
+4A170359	29	None	0: Starly	2	1AB32D69	No	Timid	1: Keen Eye	31	30	31	23	22	22	Bug	70	♀	Capable of taking hits
+4A170359	13	None	0: Starly	2	1AB32D69	No	Timid	1: Keen Eye	31	30	31	23	22	22	Bug	70	♀	Capable of taking hits
+84070347	5	None	0: Starly	2	7E94CEE5	No	Lax	1: Keen Eye	31	30	31	23	22	26	Bug	70	♂	Capable of taking hits
+4716032C	24	None	0: Starly	2	4EACAE7C	No	Impish	0: Keen Eye	31	30	31	24	20	27	Ground	39	♀	Capable of taking hits
+4716032C	22	None	0: Starly	2	4EACAE7C	No	Impish	0: Keen Eye	31	30	31	24	20	27	Ground	39	♀	Capable of taking hits
+DB100337	27	None	0: Starly	2	01223CC6	No	Careful	0: Keen Eye	31	30	31	24	25	23	Grass	39	♂	Capable of taking hits
+7E130321	29	None	0: Starly	2	85F7E361	No	Naughty	1: Keen Eye	31	30	31	24	26	23	Ground	59	♀	Takes plenty of siestas
+6B080383	2	None	0: Starly	2	78FA5167	No	Lax	1: Keen Eye	31	30	31	24	26	27	Ground	59	♀	Takes plenty of siestas
+FF0E0372	3	None	0: Starly	2	59FB20F3	No	Calm	1: Keen Eye	31	30	31	25	25	24	Psychic	34	♂	Takes plenty of siestas
+B0090378	15	None	0: Starly	2	8FE23D81	No	Rash	1: Keen Eye	31	30	31	25	25	31	Dragon	39	♂	Capable of taking hits
+B0090378	13	None	0: Starly	2	8FE23D81	No	Rash	1: Keen Eye	31	30	31	25	25	31	Dragon	39	♂	Capable of taking hits
+B0090378	5	None	0: Starly	2	8FE23D81	No	Rash	1: Keen Eye	31	30	31	25	25	31	Dragon	39	♂	Capable of taking hits
+4B110324	11	None	0: Starly	2	6EDB5CB7	No	Naughty	1: Keen Eye	31	30	31	25	26	25	Ghost	54	♂	Capable of taking hits
+4B110324	5	None	0: Starly	2	6EDB5CB7	No	Naughty	1: Keen Eye	31	30	31	25	26	25	Ghost	54	♂	Capable of taking hits
+4B110324	3	None	0: Starly	2	6EDB5CB7	No	Naughty	1: Keen Eye	31	30	31	25	26	25	Ghost	54	♂	Capable of taking hits
+42100334	16	None	0: Starly	2	20C1BFA0	No	Mild	0: Keen Eye	31	30	31	25	27	21	Dragon	54	♂	Takes plenty of siestas
+1B0E035E	29	None	0: Starly	2	1C90A012	No	Timid	0: Keen Eye	31	30	31	25	28	31	Ghost	39	♀	Capable of taking hits
+1B0E035E	27	None	0: Starly	2	1C90A012	No	Timid	0: Keen Eye	31	30	31	25	28	31	Ghost	39	♀	Capable of taking hits
+1B0E035E	25	None	0: Starly	2	1C90A012	No	Timid	0: Keen Eye	31	30	31	25	28	31	Ghost	39	♀	Capable of taking hits
+9B0E035E	16	None	0: Starly	2	9C902012	No	Modest	0: Keen Eye	31	30	31	25	28	31	Ghost	39	♀	Capable of taking hits
+310A0375	14	None	0: Starly	2	432E49B2	No	Rash	0: Keen Eye	31	30	31	26	22	22	Flying	70	♂	Takes plenty of siestas
+A8120384	27	None	0: Starly	2	09FDD635	No	Naive	1: Keen Eye	31	30	31	26	23	24	Fire	64	♀	Capable of taking hits
+A8120384	21	None	0: Starly	2	09FDD635	No	Naive	1: Keen Eye	31	30	31	26	23	24	Fire	64	♀	Capable of taking hits
+A8120384	11	None	0: Starly	2	09FDD635	No	Naive	1: Keen Eye	31	30	31	26	23	24	Fire	64	♀	Capable of taking hits
+A8120384	9	None	0: Starly	2	09FDD635	No	Naive	1: Keen Eye	31	30	31	26	23	24	Fire	64	♀	Capable of taking hits
+A8120384	3	None	0: Starly	2	09FDD635	No	Naive	1: Keen Eye	31	30	31	26	23	24	Fire	64	♀	Capable of taking hits
+4A130358	30	None	0: Starly	2	3BE4B91D	No	Mild	1: Keen Eye	31	30	31	26	24	21	Ground	44	♀	Takes plenty of siestas
+4A130358	26	None	0: Starly	2	3BE4B91D	No	Mild	1: Keen Eye	31	30	31	26	24	21	Ground	44	♀	Takes plenty of siestas
+95170340	3	None	0: Starly	2	E9900EA2	No	Impish	0: Keen Eye	31	30	31	26	27	22	Fire	70	♂	Takes plenty of siestas
+F3040332	29	None	0: Starly	2	345666F6	No	Hasty	0: Keen Eye	31	30	31	26	28	29	Ground	44	♂	Takes plenty of siestas
+C206035E	23	None	0: Starly	2	CFFE1DFF	No	Timid	1: Keen Eye	31	30	31	27	30	22	Bug	70	♂	Capable of taking hits
+C206035E	11	None	0: Starly	2	CFFE1DFF	No	Timid	1: Keen Eye	31	30	31	27	30	22	Bug	70	♂	Capable of taking hits
+C206035E	9	None	0: Starly	2	CFFE1DFF	No	Timid	1: Keen Eye	31	30	31	27	30	22	Bug	70	♂	Capable of taking hits
+C206035E	5	None	0: Starly	2	CFFE1DFF	No	Timid	1: Keen Eye	31	30	31	27	30	22	Bug	70	♂	Capable of taking hits
+BE0C0384	26	None	0: Starly	2	F26BA811	No	Quirky	1: Keen Eye	31	30	31	28	25	23	Grass	39	♀	Takes plenty of siestas
+3705037E	24	None	0: Starly	2	13F8C667	No	Careful	1: Keen Eye	31	30	31	28	29	23	Grass	39	♀	Capable of taking hits
+B705037E	28	None	0: Starly	2	93F84667	No	Adamant	1: Keen Eye	31	30	31	28	29	23	Grass	39	♀	Capable of taking hits
+B705037E	16	None	0: Starly	2	93F84667	No	Adamant	1: Keen Eye	31	30	31	28	29	23	Grass	39	♀	Capable of taking hits
+B705037E	13	None	0: Starly	2	93F84667	No	Adamant	1: Keen Eye	31	30	31	28	29	23	Grass	39	♀	Capable of taking hits
+B705037E	2	None	0: Starly	2	93F84667	No	Adamant	1: Keen Eye	31	30	31	28	29	23	Grass	39	♀	Capable of taking hits
+F509037F	14	Yache Berry	0: Starly	2	59E00A4A	No	Sassy	0: Keen Eye	31	30	31	28	30	26	Flying	59	♀	Takes plenty of siestas
+F509037F	0	Yache Berry	0: Starly	2	59E00A4A	No	Sassy	0: Keen Eye	31	30	31	28	30	26	Flying	59	♀	Takes plenty of siestas
+7509037F	28	None	0: Starly	2	D9E08A4A	No	Jolly	0: Keen Eye	31	30	31	28	30	26	Flying	59	♀	Capable of taking hits
+7509037F	24	None	0: Starly	2	D9E08A4A	No	Jolly	0: Keen Eye	31	30	31	28	30	26	Flying	59	♀	Capable of taking hits
+0508037C	26	None	0: Starly	2	63324B34	No	Hasty	0: Keen Eye	31	30	31	29	26	30	Bug	59	♀	Takes plenty of siestas
+0508037C	20	None	0: Starly	2	63324B34	No	Hasty	0: Keen Eye	31	30	31	29	26	30	Bug	59	♀	Takes plenty of siestas
+0508037C	6	None	0: Starly	2	63324B34	No	Hasty	0: Keen Eye	31	30	31	29	26	30	Bug	59	♀	Takes plenty of siestas
+8508037C	18	None	0: Starly	2	E332CB34	No	Brave	0: Keen Eye	31	30	31	29	26	30	Bug	59	♀	Takes plenty of siestas
+E30E0329	16	None	0: Starly	2	6FB735B2	No	Timid	0: Keen Eye	31	30	31	30	28	22	Flying	49	♂	Takes plenty of siestas
+E30E0329	14	None	0: Starly	2	6FB735B2	No	Timid	0: Keen Eye	31	30	31	30	28	22	Flying	49	♂	Takes plenty of siestas
+E30E0329	2	None	0: Starly	2	6FB735B2	No	Timid	0: Keen Eye	31	30	31	30	28	22	Flying	49	♂	Takes plenty of siestas
+630E0329	24	None	0: Starly	2	EFB7B5B2	No	Lonely	0: Keen Eye	31	30	31	30	28	22	Flying	49	♂	Takes plenty of siestas
+630E0329	18	None	0: Starly	2	EFB7B5B2	No	Lonely	0: Keen Eye	31	30	31	30	28	22	Flying	49	♂	Takes plenty of siestas
+FC050346	0	None	0: Starly	2	4F4AFF12	No	Lonely	0: Keen Eye	31	30	31	31	22	25	Ghost	64	♀	Takes plenty of siestas
+B30D0375	20	None	0: Starly	2	AA127EBA	No	Timid	0: Keen Eye	31	30	31	31	24	28	Bug	44	♂	Capable of taking hits
+B30D0375	8	None	0: Starly	2	AA127EBA	No	Timid	0: Keen Eye	31	30	31	31	24	28	Bug	44	♂	Capable of taking hits
+6C000338	29	None	0: Starly	2	0DDF448B	No	Impish	1: Keen Eye	31	30	31	31	26	22	Bug	70	♂	Takes plenty of siestas
+6C000338	27	None	0: Starly	2	0DDF448B	No	Impish	1: Keen Eye	31	30	31	31	26	22	Bug	70	♂	Takes plenty of siestas
+6C000338	13	None	0: Starly	2	0DDF448B	No	Impish	1: Keen Eye	31	30	31	31	26	22	Bug	70	♂	Takes plenty of siestas
+B60E0367	23	None	0: Starly	2	A2CDC880	No	Hardy	0: Keen Eye	31	31	30	20	20	29	Poison	34	♂	Takes plenty of siestas
+B60E0367	19	None	0: Starly	2	A2CDC880	No	Hardy	0: Keen Eye	31	31	30	20	20	29	Poison	34	♂	Takes plenty of siestas
+B60E0367	9	None	0: Starly	2	A2CDC880	No	Hardy	0: Keen Eye	31	31	30	20	20	29	Poison	34	♂	Takes plenty of siestas
+360E0367	21	Yache Berry	0: Starly	2	22CD4880	No	Lax	0: Keen Eye	31	31	30	20	20	29	Poison	34	♂	Takes plenty of siestas
+360E0367	5	Yache Berry	0: Starly	2	22CD4880	No	Lax	0: Keen Eye	31	31	30	20	20	29	Poison	34	♂	Takes plenty of siestas
+43150324	12	None	0: Starly	2	71BBD28C	No	Modest	0: Keen Eye	31	31	30	20	21	22	Fire	39	♂	Takes plenty of siestas
+C3150324	26	None	0: Starly	2	F1BB528C	No	Calm	0: Keen Eye	31	31	30	20	21	22	Fire	39	♂	Takes plenty of siestas
+C3150324	9	None	0: Starly	2	F1BB528C	No	Calm	0: Keen Eye	31	31	30	20	21	22	Fire	39	♂	Takes plenty of siestas
+D1040373	26	None	0: Starly	2	391A8A70	No	Jolly	0: Keen Eye	31	31	30	20	26	23	Poison	59	♀	Takes plenty of siestas
+3D0C0377	26	None	0: Starly	2	E7AEA895	No	Quiet	1: Keen Eye	31	31	30	20	29	24	Fire	34	♂	Takes plenty of siestas
+3D0C0377	24	None	0: Starly	2	E7AEA895	No	Quiet	1: Keen Eye	31	31	30	20	29	24	Fire	34	♂	Takes plenty of siestas
+A8070364	24	None	0: Starly	2	7465F8FB	No	Docile	1: Keen Eye	31	31	30	20	31	29	Grass	54	♂	Somewhat vain
+A8070364	20	None	0: Starly	2	7465F8FB	No	Docile	1: Keen Eye	31	31	30	20	31	29	Grass	54	♂	Somewhat vain
+A8070364	8	None	0: Starly	2	7465F8FB	No	Docile	1: Keen Eye	31	31	30	20	31	29	Grass	54	♂	Somewhat vain
+470D0322	7	None	0: Starly	2	B5B57AF4	No	Jolly	0: Keen Eye	31	31	30	21	20	23	Ghost	39	♂	Takes plenty of siestas
+470D0322	3	None	0: Starly	2	B5B57AF4	No	Jolly	0: Keen Eye	31	31	30	21	20	23	Ghost	39	♂	Takes plenty of siestas
+C70D0322	1	None	0: Starly	2	35B5FAF4	No	Impish	0: Keen Eye	31	31	30	21	20	23	Ghost	39	♂	Takes plenty of siestas
+9005034A	8	None	0: Starly	2	DC20ADB9	No	Calm	1: Keen Eye	31	31	30	21	24	28	Rock	34	♂	Likes to thrash about
+9005034A	0	None	0: Starly	2	DC20ADB9	No	Calm	1: Keen Eye	31	31	30	21	24	28	Rock	34	♂	Likes to thrash about
+1005034A	10	None	0: Starly	2	5C202DB9	No	Naughty	1: Keen Eye	31	31	30	21	24	28	Rock	34	♂	Takes plenty of siestas
+3916034A	30	None	0: Starly	2	A6D3AA62	No	Calm	0: Keen Eye	31	31	30	21	27	25	Dragon	54	♀	Takes plenty of siestas
+3916034A	20	None	0: Starly	2	A6D3AA62	No	Calm	0: Keen Eye	31	31	30	21	27	25	Dragon	54	♀	Takes plenty of siestas
+D3070320	22	None	0: Starly	2	DA3B6F21	No	Hasty	1: Keen Eye	31	31	30	21	31	25	Dragon	54	♀	Likes to thrash about
+9D060324	20	None	0: Starly	2	7F1CE32D	No	Sassy	1: Keen Eye	31	31	30	22	23	27	Grass	70	♀	Likes to thrash about
+9D060324	18	None	0: Starly	2	7F1CE32D	No	Sassy	1: Keen Eye	31	31	30	22	23	27	Grass	70	♀	Likes to thrash about
+1D060324	14	None	0: Starly	2	FF1C632D	No	Brave	1: Keen Eye	31	31	30	22	23	27	Grass	70	♀	Likes to thrash about
+DB15033F	9	None	0: Starly	2	E20BCE34	No	Hardy	0: Keen Eye	31	31	30	22	24	26	Fighting	49	♀	Takes plenty of siestas
+5B15033F	29	None	0: Starly	2	620B4E34	No	Lax	0: Keen Eye	31	31	30	22	24	26	Fighting	49	♀	Takes plenty of siestas
+70040354	8	None	0: Starly	2	F46CB229	No	Lonely	1: Keen Eye	31	31	30	22	29	20	Fire	44	♀	Likes to thrash about
+C70B0350	5	None	0: Starly	2	222B6359	No	Hardy	1: Keen Eye	31	31	30	22	30	31	Poison	70	♀	Likes to thrash about
+470B0350	9	None	0: Starly	2	A22BE359	No	Mild	1: Keen Eye	31	31	30	22	30	31	Poison	70	♀	Takes plenty of siestas
+690A0356	21	None	0: Starly	2	5CCA6DF4	No	Quiet	0: Keen Eye	31	31	30	23	24	28	Rock	44	♂	Takes plenty of siestas
+690A0356	7	None	0: Starly	2	5CCA6DF4	No	Quiet	0: Keen Eye	31	31	30	23	24	28	Rock	44	♂	Takes plenty of siestas
+690A0356	3	None	0: Starly	2	5CCA6DF4	No	Quiet	0: Keen Eye	31	31	30	23	24	28	Rock	44	♂	Takes plenty of siestas
+80090375	11	None	0: Starly	2	3479FC96	No	Hardy	0: Keen Eye	31	31	30	23	27	21	Dragon	64	♂	Takes plenty of siestas
+80090375	3	None	0: Starly	2	3479FC96	No	Hardy	0: Keen Eye	31	31	30	23	27	21	Dragon	64	♂	Takes plenty of siestas
+00090375	27	None	0: Starly	2	B4797C96	No	Bold	0: Keen Eye	31	31	30	23	27	21	Dragon	64	♂	Takes plenty of siestas
+00090375	23	None	0: Starly	2	B4797C96	No	Bold	0: Keen Eye	31	31	30	23	27	21	Dragon	64	♂	Takes plenty of siestas
+93130359	26	None	0: Starly	2	91482C93	No	Careful	1: Keen Eye	31	31	30	24	27	27	Grass	59	♂	Takes plenty of siestas
+93130359	8	None	0: Starly	2	91482C93	No	Careful	1: Keen Eye	31	31	30	24	27	27	Grass	59	♂	Takes plenty of siestas
+500A035C	26	None	0: Starly	2	7DD7F6F9	No	Modest	1: Keen Eye	31	31	30	24	31	20	Fire	54	♂	Likes to thrash about
+91070349	17	None	0: Starly	2	9B784846	No	Brave	0: Keen Eye	31	31	30	25	24	26	Rock	39	♀	Takes plenty of siestas
+91070349	7	None	0: Starly	2	9B784846	No	Brave	0: Keen Eye	31	31	30	25	24	26	Rock	39	♀	Takes plenty of siestas
+91070349	1	None	0: Starly	2	9B784846	No	Brave	0: Keen Eye	31	31	30	25	24	26	Rock	39	♀	Takes plenty of siestas
+11070349	11	Yache Berry	0: Starly	2	1B78C846	No	Sassy	0: Keen Eye	31	31	30	25	24	26	Rock	39	♀	Takes plenty of siestas
+11070349	9	Yache Berry	0: Starly	2	1B78C846	No	Sassy	0: Keen Eye	31	31	30	25	24	26	Rock	39	♀	Takes plenty of siestas
+E213033D	23	None	0: Starly	2	C537BFD0	No	Hasty	0: Keen Eye	31	31	30	25	26	27	Ghost	59	♂	Takes plenty of siestas
+6213033D	27	None	0: Starly	2	45373FD0	No	Calm	0: Keen Eye	31	31	30	25	26	27	Ghost	59	♂	Takes plenty of siestas
+E8040337	7	None	0: Starly	2	F4483E9D	No	Hardy	1: Keen Eye	31	31	30	26	25	22	Fire	49	♂	Likes to thrash about
+E8040337	5	None	0: Starly	2	F4483E9D	No	Hardy	1: Keen Eye	31	31	30	26	25	22	Fire	49	♂	Likes to thrash about
+68040337	11	Yache Berry	0: Starly	2	7448BE9D	No	Calm	1: Keen Eye	31	31	30	26	25	22	Fire	49	♂	Likes to thrash about
+80020379	23	None	0: Starly	2	36432486	No	Lonely	0: Keen Eye	31	31	30	26	25	24	Fire	44	♂	Takes plenty of siestas
+00020379	17	None	0: Starly	2	B643A486	No	Quiet	0: Keen Eye	31	31	30	26	25	24	Fire	44	♂	Takes plenty of siestas
+00020379	9	None	0: Starly	2	B643A486	No	Quiet	0: Keen Eye	31	31	30	26	25	24	Fire	44	♂	Takes plenty of siestas
+00020379	1	None	0: Starly	2	B643A486	No	Quiet	0: Keen Eye	31	31	30	26	25	24	Fire	44	♂	Takes plenty of siestas
+980E0328	22	None	0: Starly	2	91F26CCD	No	Timid	1: Keen Eye	31	31	30	26	27	27	Grass	70	♂	Likes to thrash about
+980E0328	16	None	0: Starly	2	91F26CCD	No	Timid	1: Keen Eye	31	31	30	26	27	27	Grass	70	♂	Likes to thrash about
+980E0328	10	None	0: Starly	2	91F26CCD	No	Timid	1: Keen Eye	31	31	30	26	27	27	Grass	70	♂	Likes to thrash about
+980E0328	6	None	0: Starly	2	91F26CCD	No	Timid	1: Keen Eye	31	31	30	26	27	27	Grass	70	♂	Likes to thrash about
+180E0328	20	None	0: Starly	2	11F2ECCD	No	Bold	1: Keen Eye	31	31	30	26	27	27	Grass	70	♂	Likes to thrash about
+180E0328	14	None	0: Starly	2	11F2ECCD	No	Bold	1: Keen Eye	31	31	30	26	27	27	Grass	70	♂	Likes to thrash about
+180E0328	2	None	0: Starly	2	11F2ECCD	No	Bold	1: Keen Eye	31	31	30	26	27	27	Grass	70	♂	Likes to thrash about
+2C0E0365	12	None	0: Starly	2	BF9E4252	No	Sassy	0: Keen Eye	31	31	30	26	30	28	Fighting	64	♀	Takes plenty of siestas
+AC0E0365	27	None	0: Starly	2	3F9EC252	No	Quiet	0: Keen Eye	31	31	30	26	30	28	Fighting	64	♀	Takes plenty of siestas
+AC0E0365	24	None	0: Starly	2	3F9EC252	No	Quiet	0: Keen Eye	31	31	30	26	30	28	Fighting	64	♀	Takes plenty of siestas
+400E0356	20	None	0: Starly	2	4C91F768	No	Sassy	0: Keen Eye	31	31	30	27	21	24	Psychic	44	♀	Takes plenty of siestas
+400E0356	12	None	0: Starly	2	4C91F768	No	Sassy	0: Keen Eye	31	31	30	27	21	24	Psychic	44	♀	Takes plenty of siestas
+5E050358	16	None	0: Starly	2	1BD45918	No	Sassy	0: Keen Eye	31	31	30	27	27	30	Psychic	70	♀	Takes plenty of siestas
+5E050358	12	None	0: Starly	2	1BD45918	No	Sassy	0: Keen Eye	31	31	30	27	27	30	Psychic	70	♀	Takes plenty of siestas
+390D037B	19	None	0: Starly	2	18BBE812	No	Lonely	0: Keen Eye	31	31	30	27	28	20	Rock	44	♀	Takes plenty of siestas
+390D037B	13	None	0: Starly	2	18BBE812	No	Lonely	0: Keen Eye	31	31	30	27	28	20	Rock	44	♀	Takes plenty of siestas
+390D037B	5	None	0: Starly	2	18BBE812	No	Lonely	0: Keen Eye	31	31	30	27	28	20	Rock	44	♀	Takes plenty of siestas
+CB16033B	22	None	0: Starly	2	3E40E32B	No	Lonely	1: Keen Eye	31	31	30	28	22	31	Poison	59	♀	Alert to sounds
+4B120371	22	None	0: Starly	2	9DD29B98	No	Naughty	0: Keen Eye	31	31	30	28	26	28	Fighting	54	♂	Takes plenty of siestas
+4B120371	6	None	0: Starly	2	9DD29B98	No	Naughty	0: Keen Eye	31	31	30	28	26	28	Fighting	54	♂	Takes plenty of siestas
+F10C0327	30	None	0: Starly	2	386458C1	No	Quiet	1: Keen Eye	31	31	30	28	29	23	Grass	39	♂	Takes plenty of siestas
+F10C0327	4	None	0: Starly	2	386458C1	No	Quiet	1: Keen Eye	31	31	30	28	29	23	Grass	39	♂	Takes plenty of siestas
+8502032D	21	None	0: Starly	2	FA56D0D4	No	Docile	0: Keen Eye	31	31	30	28	30	21	Poison	54	♂	Takes plenty of siestas
+8502032D	13	None	0: Starly	2	FA56D0D4	No	Docile	0: Keen Eye	31	31	30	28	30	21	Poison	54	♂	Takes plenty of siestas
+D6030348	24	None	0: Starly	2	53C95F2A	No	Lonely	0: Keen Eye	31	31	30	30	23	31	Grass	70	♀	Takes plenty of siestas
+E7050379	29	None	0: Starly	2	B6B84A31	No	Naughty	1: Keen Eye	31	31	30	30	24	30	Fighting	49	♀	Takes plenty of siestas
+C0070322	19	None	0: Starly	2	DA0B0BF0	No	Modest	0: Keen Eye	31	31	30	30	29	25	Grass	44	♂	Takes plenty of siestas
+40070322	1	None	0: Starly	2	5A0B8BF0	No	Timid	0: Keen Eye	31	31	30	30	29	25	Grass	44	♂	Takes plenty of siestas
+7D0F0342	15	None	0: Starly	2	3CFBF6F7	No	Rash	1: Keen Eye	31	31	30	30	30	24	Fighting	64	♂	Takes plenty of siestas
+95090323	29	None	0: Starly	2	66C35C56	No	Modest	0: Keen Eye	31	31	30	30	31	30	Fire	70	♀	Somewhat vain
+95090323	9	None	0: Starly	2	66C35C56	No	Modest	0: Keen Eye	31	31	30	30	31	30	Fire	70	♀	Somewhat vain
+7F11032D	12	None	0: Starly	2	0EF81527	No	Quiet	1: Keen Eye	31	31	30	31	21	27	Dragon	49	♀	Likes to thrash about
+FF11032D	6	None	0: Starly	2	8EF89527	No	Impish	1: Keen Eye	31	31	30	31	21	27	Dragon	49	♀	Takes plenty of siestas
+5D150330	26	None	0: Starly	2	49A96A7A	No	Timid	0: Keen Eye	31	31	30	31	23	29	Dragon	64	♀	Mischievous
+C1080340	8	None	0: Starly	2	14F58059	No	Sassy	1: Keen Eye	31	31	30	31	29	30	Psychic	49	♀	Takes plenty of siestas
+41080340	12	Yache Berry	0: Starly	2	94F50059	No	Brave	1: Keen Eye	31	31	30	31	29	30	Psychic	49	♀	Takes plenty of siestas
+41080340	4	Yache Berry	0: Starly	2	94F50059	No	Brave	1: Keen Eye	31	31	30	31	29	30	Psychic	49	♀	Takes plenty of siestas
+4C140366	6	None	0: Starly	2	404AAB16	No	Hasty	0: Keen Eye	31	31	31	20	21	28	Water	34	♀	Takes plenty of siestas
+A405035D	15	None	0: Starly	2	C12805E0	No	Relaxed	0: Keen Eye	31	31	31	20	22	23	Ground	59	♂	Takes plenty of siestas
+A405035D	7	None	0: Starly	2	C12805E0	No	Relaxed	0: Keen Eye	31	31	31	20	22	23	Ground	59	♂	Takes plenty of siestas
+2405035D	13	None	0: Starly	2	412885E0	No	Brave	0: Keen Eye	31	31	31	20	22	23	Ground	59	♂	Takes plenty of siestas
+2405035D	5	None	0: Starly	2	412885E0	No	Brave	0: Keen Eye	31	31	31	20	22	23	Ground	59	♂	Takes plenty of siestas
+370B033E	26	None	0: Starly	2	6534FC05	No	Bold	1: Keen Eye	31	31	31	20	22	29	Ground	54	♀	Takes plenty of siestas
+370B033E	0	None	0: Starly	2	6534FC05	No	Bold	1: Keen Eye	31	31	31	20	22	29	Ground	54	♀	Takes plenty of siestas
+FC010378	19	None	0: Starly	2	AC9433EA	No	Calm	0: Keen Eye	31	31	31	20	27	31	Electric	59	♂	Capable of taking hits
+FC010378	3	None	0: Starly	2	AC9433EA	No	Calm	0: Keen Eye	31	31	31	20	27	31	Electric	59	♂	Capable of taking hits
+87080363	24	None	0: Starly	2	704C4F66	No	Naughty	0: Keen Eye	31	31	31	20	29	23	Electric	39	♀	Takes plenty of siestas
+0A0A0352	20	None	0: Starly	2	7D031FCC	No	Careful	0: Keen Eye	31	31	31	20	31	27	Electric	59	♂	Takes plenty of siestas
+0A0A0352	4	None	0: Starly	2	7D031FCC	No	Careful	0: Keen Eye	31	31	31	20	31	27	Electric	59	♂	Takes plenty of siestas
+560B0372	17	None	0: Starly	2	05BBC77F	No	Impish	1: Keen Eye	31	31	31	21	24	28	Bug	34	♂	Takes plenty of siestas
+560B0372	15	None	0: Starly	2	05BBC77F	No	Impish	1: Keen Eye	31	31	31	21	24	28	Bug	34	♂	Takes plenty of siestas
+560B0372	11	None	0: Starly	2	05BBC77F	No	Impish	1: Keen Eye	31	31	31	21	24	28	Bug	34	♂	Takes plenty of siestas
+7E03032D	27	None	0: Starly	2	216EEC5D	No	Sassy	1: Keen Eye	31	31	31	22	25	26	Water	49	♀	Likes to thrash about
+FE03032D	1	None	0: Starly	2	A16E6C5D	No	Brave	1: Keen Eye	31	31	31	22	25	26	Water	49	♀	Likes to thrash about
+D7060343	11	None	0: Starly	2	56635277	No	Lonely	1: Keen Eye	31	31	31	22	26	28	Flying	64	♀	Takes plenty of siestas
+FD050320	22	None	0: Starly	2	FCBCBA84	No	Careful	0: Keen Eye	31	31	31	23	22	28	Bug	64	♂	Capable of taking hits
+FD050320	8	None	0: Starly	2	FCBCBA84	No	Careful	0: Keen Eye	31	31	31	23	22	28	Bug	64	♂	Capable of taking hits
+7D050320	30	None	0: Starly	2	7CBC3A84	No	Relaxed	0: Keen Eye	31	31	31	23	22	28	Bug	64	♂	Takes plenty of siestas
+7D050320	4	None	0: Starly	2	7CBC3A84	No	Relaxed	0: Keen Eye	31	31	31	23	22	28	Bug	64	♂	Takes plenty of siestas
+BE0B0369	30	None	0: Starly	2	E171C8F5	No	Jolly	1: Keen Eye	31	31	31	23	24	22	Bug	49	♂	Takes plenty of siestas
+BE0B0369	22	None	0: Starly	2	E171C8F5	No	Jolly	1: Keen Eye	31	31	31	23	24	22	Bug	49	♂	Takes plenty of siestas
+3E0B0369	28	None	0: Starly	2	617148F5	No	Sassy	1: Keen Eye	31	31	31	23	24	22	Bug	49	♂	Takes plenty of siestas
+3E0B0369	20	None	0: Starly	2	617148F5	No	Sassy	1: Keen Eye	31	31	31	23	24	22	Bug	49	♂	Takes plenty of siestas
+3C130334	0	None	0: Starly	2	8C50A834	No	Bold	0: Keen Eye	31	31	31	24	24	26	Flying	39	♀	Capable of taking hits
+0808037D	30	None	0: Starly	2	AD4E9B28	No	Gentle	0: Keen Eye	31	31	31	24	24	27	Ground	39	♀	Capable of taking hits
+0808037D	13	None	0: Starly	2	AD4E9B28	No	Gentle	0: Keen Eye	31	31	31	24	24	27	Ground	39	♀	Capable of taking hits
+06150355	24	None	0: Starly	2	D9F39DD1	No	Gentle	1: Keen Eye	31	31	31	25	25	26	Ice	39	♂	Likes to thrash about
+2F170378	27	None	0: Starly	2	B97C795B	No	Mild	1: Keen Eye	31	31	31	26	20	24	Flying	44	♀	Takes plenty of siestas
+2F170378	23	None	0: Starly	2	B97C795B	No	Mild	1: Keen Eye	31	31	31	26	20	24	Flying	44	♀	Takes plenty of siestas
+F10B0343	21	None	0: Starly	2	E3CB1C46	No	Adamant	0: Keen Eye	31	31	31	26	26	24	Flying	64	♀	Takes plenty of siestas
+F10B0343	17	None	0: Starly	2	E3CB1C46	No	Adamant	0: Keen Eye	31	31	31	26	26	24	Flying	64	♀	Takes plenty of siestas
+F10B0343	5	None	0: Starly	2	E3CB1C46	No	Adamant	0: Keen Eye	31	31	31	26	26	24	Flying	64	♀	Takes plenty of siestas
+7E11032D	8	None	0: Starly	2	AAA4969E	No	Relaxed	0: Keen Eye	31	31	31	26	26	31	Ground	70	♂	Takes plenty of siestas
+20050376	22	None	0: Starly	2	2B344200	No	Docile	0: Keen Eye	31	31	31	26	30	30	Flying	70	♀	Capable of taking hits
+20050376	12	None	0: Starly	2	2B344200	No	Docile	0: Keen Eye	31	31	31	26	30	30	Flying	70	♀	Capable of taking hits
+20050376	8	None	0: Starly	2	2B344200	No	Docile	0: Keen Eye	31	31	31	26	30	30	Flying	70	♀	Capable of taking hits
+20050376	6	None	0: Starly	2	2B344200	No	Docile	0: Keen Eye	31	31	31	26	30	30	Flying	70	♀	Capable of taking hits
+8717037B	25	None	0: Starly	2	EA1736E1	No	Gentle	1: Keen Eye	31	31	31	26	31	23	Electric	70	♂	Somewhat vain
+8717037B	17	None	0: Starly	2	EA1736E1	No	Gentle	1: Keen Eye	31	31	31	26	31	23	Electric	70	♂	Somewhat vain
+8717037B	15	None	0: Starly	2	EA1736E1	No	Gentle	1: Keen Eye	31	31	31	26	31	23	Electric	70	♂	Somewhat vain
+8717037B	13	None	0: Starly	2	EA1736E1	No	Gentle	1: Keen Eye	31	31	31	26	31	23	Electric	70	♂	Somewhat vain
+8717037B	3	None	0: Starly	2	EA1736E1	No	Gentle	1: Keen Eye	31	31	31	26	31	23	Electric	70	♂	Somewhat vain
+0717037B	1	None	0: Starly	2	6A17B6E1	No	Mild	1: Keen Eye	31	31	31	26	31	23	Electric	70	♂	Somewhat vain
+B0040322	17	None	0: Starly	2	A348BB51	No	Adamant	1: Keen Eye	31	31	31	27	20	26	Bug	49	♀	Takes plenty of siestas
+D300037B	22	None	0: Starly	2	B0D478AC	No	Modest	0: Keen Eye	31	31	31	27	24	20	Bug	44	♂	Capable of taking hits
+D300037B	20	None	0: Starly	2	B0D478AC	No	Modest	0: Keen Eye	31	31	31	27	24	20	Bug	44	♂	Capable of taking hits
+D300037B	18	None	0: Starly	2	B0D478AC	No	Modest	0: Keen Eye	31	31	31	27	24	20	Bug	44	♂	Capable of taking hits
+D300037B	12	None	0: Starly	2	B0D478AC	No	Modest	0: Keen Eye	31	31	31	27	24	20	Bug	44	♂	Capable of taking hits
+D300037B	6	None	0: Starly	2	B0D478AC	No	Modest	0: Keen Eye	31	31	31	27	24	20	Bug	44	♂	Capable of taking hits
+5300037B	30	None	0: Starly	2	30D4F8AC	No	Timid	0: Keen Eye	31	31	31	27	24	20	Bug	44	♂	Capable of taking hits
+EE0A0339	21	None	0: Starly	2	463A02EF	No	Lax	1: Keen Eye	31	31	31	28	20	20	Flying	34	♂	Takes plenty of siestas
+EE0A0339	3	None	0: Starly	2	463A02EF	No	Lax	1: Keen Eye	31	31	31	28	20	20	Flying	34	♂	Takes plenty of siestas
+6E0A0339	19	None	0: Starly	2	C63A82EF	No	Hardy	1: Keen Eye	31	31	31	28	20	20	Flying	34	♂	Likes to thrash about
+6E0A0339	9	None	0: Starly	2	C63A82EF	No	Hardy	1: Keen Eye	31	31	31	28	20	20	Flying	34	♂	Likes to thrash about
+AB140324	21	None	0: Starly	2	891DB177	No	Quiet	1: Keen Eye	31	31	31	28	20	22	Flying	39	♀	Takes plenty of siestas
+AB140324	17	None	0: Starly	2	891DB177	No	Quiet	1: Keen Eye	31	31	31	28	20	22	Flying	39	♀	Takes plenty of siestas
+5F0B0384	30	None	0: Starly	2	AA1BA46B	No	Impish	1: Keen Eye	31	31	31	28	20	24	Flying	34	♀	Takes plenty of siestas
+5F0B0384	28	None	0: Starly	2	AA1BA46B	No	Impish	1: Keen Eye	31	31	31	28	20	24	Flying	34	♀	Takes plenty of siestas
+DF0B0384	16	None	0: Starly	2	2A1B246B	No	Quiet	1: Keen Eye	31	31	31	28	20	24	Flying	34	♀	Takes plenty of siestas
+DF0B0384	4	None	0: Starly	2	2A1B246B	No	Quiet	1: Keen Eye	31	31	31	28	20	24	Flying	34	♀	Takes plenty of siestas
+4E09032C	28	None	0: Starly	2	C01A36F3	No	Hardy	1: Keen Eye	31	31	31	28	29	22	Water	39	♂	Takes plenty of siestas
+4E09032C	8	None	0: Starly	2	C01A36F3	No	Hardy	1: Keen Eye	31	31	31	28	29	22	Water	39	♂	Takes plenty of siestas
+480A0383	19	None	0: Starly	2	ECBF399B	No	Quirky	1: Keen Eye	31	31	31	29	30	21	Steel	54	♂	Takes plenty of siestas
+480A0383	17	None	0: Starly	2	ECBF399B	No	Quirky	1: Keen Eye	31	31	31	29	30	21	Steel	54	♂	Takes plenty of siestas
+510A0373	16	None	0: Starly	2	F96EAD1F	No	Jolly	1: Keen Eye	31	31	31	30	23	26	Water	70	♀	Takes plenty of siestas
+5C080330	28	None	0: Starly	2	DB7F3D5C	No	Lax	0: Keen Eye	31	31	31	30	23	30	Water	70	♀	Takes plenty of siestas
+5C080330	27	None	0: Starly	2	DB7F3D5C	No	Lax	0: Keen Eye	31	31	31	30	23	30	Water	70	♀	Takes plenty of siestas
+DC080330	21	None	0: Starly	2	5B7FBD5C	No	Naughty	0: Keen Eye	31	31	31	30	23	30	Water	70	♀	Takes plenty of siestas
+A708035E	13	None	0: Starly	2	3584ABBB	No	Jolly	1: Keen Eye	31	31	31	31	21	22	Ice	49	♂	Mischievous
+2708035E	15	None	0: Starly	2	B5842BBB	No	Bashful	1: Keen Eye	31	31	31	31	21	22	Ice	49	♂	Mischievous
+2708035E	1	None	0: Starly	2	B5842BBB	No	Bashful	1: Keen Eye	31	31	31	31	21	22	Ice	49	♂	Mischievous
+230B0375	16	None	0: Starly	2	458FC0E5	No	Impish	1: Keen Eye	31	31	31	31	21	23	Dark	49	♂	Mischievous
+230B0375	14	None	0: Starly	2	458FC0E5	No	Impish	1: Keen Eye	31	31	31	31	21	23	Dark	49	♂	Mischievous
+230B0375	7	None	0: Starly	2	458FC0E5	No	Impish	1: Keen Eye	31	31	31	31	21	23	Dark	49	♂	Mischievous
+A30B0375	10	None	0: Starly	2	C58F40E5	No	Jolly	1: Keen Eye	31	31	31	31	21	23	Dark	49	♂	Mischievous
+A30B0375	0	None	0: Starly	2	C58F40E5	No	Jolly	1: Keen Eye	31	31	31	31	21	23	Dark	49	♂	Mischievous
+61090329	13	None	0: Starly	2	668DB3D9	No	Quirky	1: Keen Eye	31	31	31	31	21	24	Ice	44	♂	Mischievous
+93120335	29	None	0: Starly	2	5AFF280B	No	Gentle	1: Keen Eye	31	31	31	31	26	22	Bug	70	♀	Mischievous
+93120335	9	None	0: Starly	2	5AFF280B	No	Gentle	1: Keen Eye	31	31	31	31	26	22	Bug	70	♀	Mischievous
+DC060383	11	None	0: Starly	2	21CEB48E	No	Mild	0: Keen Eye	31	31	31	31	27	24	Ice	64	♂	Takes plenty of siestas
+3701034F	15	None	0: Starly	2	08B46B66	No	Brave	0: Keen Eye	31	31	31	31	28	28	Bug	44	♀	Mischievous
+B701034F	25	None	0: Starly	2	88B4EB66	No	Bashful	0: Keen Eye	31	31	31	31	28	28	Bug	44	♀	Capable of taking hits

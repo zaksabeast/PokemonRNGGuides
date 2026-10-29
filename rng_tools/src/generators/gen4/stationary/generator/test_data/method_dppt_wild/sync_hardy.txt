@@ -1,0 +1,34 @@
+0	97	L 0	None	0: Starly	2	B7A2A7C4	No	Impish	0: Keen Eye	21	2	10	2	7	28	Steel	64	♂	Somewhat of a clown
+3	62	M 55	None	0: Starly	2	C84840C4	No	Sassy	0: Keen Eye	17	30	15	5	14	22	Bug	59	♂	Proud of its power
+18	80	ML 23	None	0: Starly	2	F0091636	No	Hardy	0: Keen Eye	11	10	13	16	9	14	Fire	36	♀	Mischievous
+20	45	MH 70	None	0: Starly	2	1C49A397	No	Bold	1: Keen Eye	3	16	27	13	12	10	Bug	38	♂	Highly persistent
+23	49	M 51	None	0: Starly	2	D3C5AA89	No	Hardy	1: Keen Eye	10	31	16	22	0	25	Poison	42	♂	Likes to thrash about
+26	51	M 56	None	0: Starly	2	82D9C3EA	No	Gentle	0: Keen Eye	6	6	24	2	5	28	Steel	42	♂	Somewhat of a clown
+31	46	H 91	None	0: Starly	2	6E031C49	No	Lax	1: Keen Eye	10	13	12	20	10	9	Poison	50	♀	Highly curious
+36	80	H 88	None	0: Starly	2	F0091636	No	Hardy	0: Keen Eye	11	10	13	16	9	14	Fire	36	♀	Mischievous
+38	81	M 55	None	0: Starly	2	B54BF009	No	Calm	1: Keen Eye	14	16	9	21	13	8	Psychic	30	♀	Mischievous
+47	126	L 12	None	0: Starly	2	3DCD8D5B	No	Bashful	1: Keen Eye	19	28	1	5	8	17	Ghost	30	♀	Likes to fight
+51	103	L 1	None	0: Starly	2	11D2AD05	No	Hardy	1: Keen Eye	25	0	12	31	21	29	Ice	40	♀	Mischievous
+66	133	ML 34	None	0: Starly	2	7D3AF699	No	Quiet	1: Keen Eye	3	16	15	7	16	12	Bug	43	♂	Somewhat vain
+70	133	MH 69	None	0: Starly	2	7D3AF699	No	Quiet	1: Keen Eye	3	16	15	7	16	12	Bug	43	♂	Somewhat vain
+73	114	L 18	None	0: Starly	2	A1E0112D	No	Serious	1: Keen Eye	20	19	16	30	28	4	Fighting	41	♀	Highly curious
+84	110	M 55	Yache Berry	0: Starly	2	34A9172E	No	Hardy	0: Keen Eye	19	12	11	11	2	6	Bug	68	♀	Likes to relax
+85	188	L 13	None	0: Starly	2	008CD6F2	No	Mild	0: Keen Eye	30	1	30	29	8	22	Rock	38	♂	Sturdy body
+90	135	H 88	None	0: Starly	2	40ECBE03	No	Jolly	1: Keen Eye	16	15	30	13	1	17	Ice	33	♀	Sturdy body
+94	107	M 55	None	0: Starly	2	BA604EE9	No	Impish	1: Keen Eye	27	8	17	25	5	14	Psychic	35	♂	Nods off a lot
+100	140	MH 72	None	0: Starly	2	F9C9D1B0	No	Hardy	0: Keen Eye	28	30	2	29	8	7	Bug	38	♂	Proud of its power
+102	140	M 42	None	0: Starly	2	F9C9D1B0	No	Hardy	0: Keen Eye	28	30	2	29	8	7	Bug	38	♂	Proud of its power
+103	131	ML 29	None	0: Starly	2	B4667ED9	No	Hardy	1: Keen Eye	25	20	29	9	31	26	Psychic	55	♂	Somewhat vain
+104	139	M 53	Yache Berry	0: Starly	2	D1B0DCB5	No	Docile	1: Keen Eye	9	14	30	30	2	28	Fighting	64	♂	Highly curious
+108	153	ML 34	None	0: Starly	2	FC00480E	No	Adamant	0: Keen Eye	11	6	28	4	0	31	Poison	36	♀	Alert to sounds
+110	145	ML 25	None	0: Starly	2	ABD4EBA6	No	Rash	0: Keen Eye	9	29	1	7	17	5	Dark	40	♂	Quick tempered
+120	140	M 53	None	0: Starly	2	F9C9D1B0	No	Hardy	0: Keen Eye	28	30	2	29	8	7	Bug	38	♂	Proud of its power
+132	217	ML 37	None	0: Starly	2	A1DA46F3	No	Serious	1: Keen Eye	21	7	23	8	3	4	Water	54	♂	Good endurance
+139	158	ML 24	None	0: Starly	2	F251CB8F	No	Quirky	1: Keen Eye	19	25	19	20	26	6	Flying	58	♂	Somewhat vain
+142	192	L 15	None	0: Starly	2	704AB585	No	Hardy	1: Keen Eye	25	30	25	7	13	24	Psychic	41	♂	Proud of its power
+147	164	ML 38	None	0: Starly	2	6AC05DE8	No	Careful	0: Keen Eye	7	31	26	17	28	13	Ghost	34	♂	Likes to thrash about
+172	331	M 51	None	0: Starly	2	7C831511	No	Bashful	1: Keen Eye	28	17	20	9	20	30	Rock	35	♀	Likes to run
+176	192	M 59	None	0: Starly	2	704AB585	No	Hardy	1: Keen Eye	25	30	25	7	13	24	Psychic	41	♂	Proud of its power
+179	212	L 1	None	0: Starly	2	ECB46C56	No	Modest	0: Keen Eye	4	22	17	4	14	9	Poison	51	♀	A little quick tempered
+187	212	M 57	None	0: Starly	2	ECB46C56	No	Modest	0: Keen Eye	4	22	17	4	14	9	Poison	51	♀	A little quick tempered
+192	341	M 50	None	0: Starly	2	1AD1F06E	No	Modest	0: Keen Eye	20	16	28	29	15	28	Electric	50	♀	Very finicky

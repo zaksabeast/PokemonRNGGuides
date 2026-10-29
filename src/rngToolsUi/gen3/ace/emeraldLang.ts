@@ -6,5 +6,10 @@ export const emeraldLangs = [
   "Italian",
   "Spanish",
   "German",
-  // Japanese isn't support yet.
+  "Japanese",
 ] as const satisfies EmeraldLang[];
+
+// Japanese isn't supported by ACE yet.
+export const aceEmeraldLangs = emeraldLangs.filter(
+  (lang): lang is Exclude<EmeraldLang, "Japanese"> => lang !== "Japanese",
+);

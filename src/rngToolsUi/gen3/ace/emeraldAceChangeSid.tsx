@@ -3,7 +3,7 @@ import { FormSection, FormSelectField } from "~/components/form";
 import { Typography } from "antd";
 import Instructions from "./instructions_ace_change_sid.mdx";
 import z from "zod";
-import { emeraldLangs } from "./emeraldLang";
+import { aceEmeraldLangs } from "./emeraldLang";
 import { toOptions } from "~/utils/options";
 import { rngTools } from "~/rngTools";
 import { AceForm } from "./aceForm";
@@ -13,7 +13,7 @@ type Props = {
 };
 
 const schema = z.object({
-  lang: z.enum(emeraldLangs),
+  lang: z.enum(aceEmeraldLangs),
 });
 
 const getInitialValues = (): FormState => {
@@ -49,7 +49,7 @@ export const EmeraldAceChangeSid = ({ sid }: Props) => {
           <FormSelectField<FormState>
             name="lang"
             label="Game Language"
-            options={toOptions(emeraldLangs)}
+            options={toOptions(aceEmeraldLangs)}
           />
         </FormSection>
       </AceForm>

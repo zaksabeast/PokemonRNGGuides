@@ -394,6 +394,7 @@ export const translations = {
   Stats: "Stats",
   Advanced: "Advanced",
   "Select All": "Select All",
+  "Deselect All": "Deselect All",
   "Select None": "Select None",
   "Hidden Power": "Hidden Power",
   Type: "Type",

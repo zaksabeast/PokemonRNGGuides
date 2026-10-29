@@ -13,15 +13,15 @@ import {
   usePokeNavGameLanguage,
   RegisteredPokeNavTrainers,
 } from "./state";
-import {
-  pokeNavTrainers,
-  pokeNavGameLanguages,
-  PokeNavGameLanguageKey,
-} from "./constants";
+import { pokeNavTrainers } from "./constants";
+import { EmeraldLang } from "~/rngTools";
 import { useHydrate } from "~/hooks/useHydrate";
 import { hydrationLock } from "~/utils/hydration";
-import { languageByKey } from "~/types/language";
-import { usePokeNavTrainerTranslations } from "./trainerTranslations";
+import {
+  gameLanguageOptions,
+  getGuideGameLanguage,
+  usePokeNavTrainerTranslations,
+} from "./trainerTranslations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 type UpdateStateProps = {
@@ -43,11 +43,6 @@ const updateTrainerState = ({
         ),
   };
 };
-
-const gameLanguageOptions = pokeNavGameLanguages.map((language) => ({
-  label: language === "ja" ? "日本語" : languageByKey[language].label,
-  value: language,
-}));
 
 export const PokeNavInput = () => {
   const t = useActiveRouteTranslations();
@@ -77,12 +72,20 @@ export const PokeNavInput = () => {
 
   return (
     <FormCard>
-      <SelectField<PokeNavGameLanguageKey>
+      <SelectField<EmeraldLang>
         label={t["Game Language"]}
         value={gameLanguage}
         options={gameLanguageOptions}
         onChange={(gameLanguage) =>
-          setGameLanguage(hydrationLock({ gameLanguage }))
+          setGameLanguage(
+            hydrationLock({
+              // Picking the guide's language goes back to following the guide
+              gameLanguage:
+                gameLanguage === getGuideGameLanguage(t.language)
+                  ? "default"
+                  : gameLanguage,
+            }),
+          )
         }
       />
       <Flex gap={12} wrap="wrap">
@@ -90,13 +93,13 @@ export const PokeNavInput = () => {
           trackerId="select_all_pokenav_trainers"
           onClick={handleSelectAll}
         >
-          Select All
+          {t["Select All"]}
         </PrimaryButton>
         <OutlinedButton
           trackerId="deselect_all_pokenav_trainers"
           onClick={handleDeselectAll}
         >
-          Deselect All
+          {t["Deselect All"]}
         </OutlinedButton>
       </Flex>
       <SwitchGroup>

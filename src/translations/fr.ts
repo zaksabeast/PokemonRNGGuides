@@ -126,6 +126,7 @@ export const translations: Partial<Translations> = {
   "Save file": "Save file",
   "Upload!": "!",
   "PokeNav Call": "PokeNav Call",
+  "Game Language": "Game Language",
   "Hatched Nature": "Hatched Nature",
   "Hatched Gender": "Hatched Gender",
   "Target caller": "Target caller",

@@ -22,7 +22,7 @@ import { toOptions } from "~/utils/options";
 import { ToolLayout } from "~/rngToolsUi/workbench/layouts/tool";
 import { gen3ProfilesAtom, Gen3ProfileSchema } from "./state";
 import { pokeNavTrainers } from "~/rngToolsUi/gen3/retailEmeraldEgg/constants";
-import { usePokeNavTranslations } from "~/translations";
+import { pokeNavTrainers as translatedTrainers } from "~/translations/en/pokeNav";
 
 type FormState = z.infer<typeof Gen3ProfileSchema>;
 type Result = FormState & { id: string };
@@ -37,7 +37,6 @@ const initialValues: FormState = {
 };
 
 const FilterFields = () => {
-  const translatedTrainers = usePokeNavTranslations("en");
   const { game } = useWatch({
     validationSchema: Gen3ProfileSchema,
     names: { game: true },

@@ -11,7 +11,7 @@ import {
   NoEggMatchCall,
   NoEggMatchCallOpts,
 } from "~/rngTools";
-import { usePokeNavTranslations } from "~/translations";
+import { pokeNavTrainers as translatedTrainers } from "~/translations/en/pokeNav";
 import { useHydrate } from "~/hooks/useHydrate";
 import {
   gen3ProfilesAtom,
@@ -60,7 +60,6 @@ const initialValues: FormState = {
 };
 
 const FilterFields = () => {
-  const translatedTrainers = usePokeNavTranslations("en");
   const matchCallOptions = sortBy(
     toOptions(
       pokeNavTrainers,
@@ -144,7 +143,6 @@ const mapResult = (res: NoEggMatchCall): Result => ({
 export const MatchCallGenerator = () => {
   const [lockedProfiles] = useAtom(gen3ProfilesAtom);
   const { client: profiles } = useHydrate(lockedProfiles);
-  const translatedTrainers = usePokeNavTranslations("en");
 
   const {
     run: generateNoEggMatchCalls,

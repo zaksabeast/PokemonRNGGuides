@@ -35,7 +35,7 @@ import {
   gen3ProfilesAtom,
 } from "~/rngToolsUi/workbench/tools/profile/gen3/state";
 import { FormikProfileSelect } from "~/rngToolsUi/workbench/components/formikProfileSelect";
-import { usePokeNavTranslations } from "~/translations";
+import { pokeNavTrainers as translatedTrainers } from "~/translations/en/pokeNav";
 import { toOptions } from "~/utils/options";
 
 const CHUNK = 200;
@@ -79,7 +79,6 @@ const initialValues: FormState = {
 };
 
 const FilterFields = () => {
-  const translatedTrainers = usePokeNavTranslations("en");
   const { egg_species } = useWatch({
     validationSchema: Validator,
     names: { egg_species: true },
@@ -219,7 +218,6 @@ const mapResult = (res: Gen3HeldEgg): Result => {
 export const EmeraldEggHeldGenerator = () => {
   const [lockedProfiles] = useAtom(gen3ProfilesAtom);
   const { client: profiles } = useHydrate(lockedProfiles);
-  const translatedTrainers = usePokeNavTranslations("en");
 
   const {
     run: generateEmeraldEgg,

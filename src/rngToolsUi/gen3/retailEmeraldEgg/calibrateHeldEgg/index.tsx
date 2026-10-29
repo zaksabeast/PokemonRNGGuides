@@ -19,7 +19,7 @@ import {
   useHeldEggState,
   useRegisteredTrainers,
 } from "../state";
-import { pokeNavTrainers, PokeNavGameLanguageKey } from "../constants";
+import { pokeNavTrainers } from "../constants";
 import { rngTools, Gen3HeldEgg, PokeNavTrainer, Species } from "~/rngTools";
 import { sortBy, uniqueId } from "lodash-es";
 import { getPkmFilterInitialValues } from "~/components/pkmFilter";
@@ -132,13 +132,13 @@ type FieldProps = {
   t: Translations;
   eggSpecies: Species;
   translatedTrainers: PokeNavTrainerTranslationPair;
-  trainerLanguage: PokeNavGameLanguageKey;
+  trainerLocale: string;
 };
 
 const Fields = ({
   t,
   translatedTrainers,
-  trainerLanguage,
+  trainerLocale,
   eggSpecies,
 }: FieldProps) => {
   const { hasEgg: hasEggString } = useWatch({
@@ -152,7 +152,7 @@ const Fields = ({
   const sortedOptions = sortLocale(
     unsortedTrainerOptions,
     "label",
-    trainerLanguage,
+    trainerLocale,
   );
   const trainerOptions = [
     { label: t["None"], value: "None" },
@@ -260,7 +260,7 @@ type InnerProps = {
 const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
   const [state] = useHeldEggState();
   const t = useActiveRouteTranslations();
-  const { translatedTrainers, language: trainerLanguage } =
+  const { translatedTrainers, locale: trainerLocale } =
     usePokeNavTrainerTranslations();
   const [{ results, previousOffsets }, setCalibration] =
     useHeldEggCalibrationState();
@@ -377,7 +377,7 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
         <Fields
           t={t}
           translatedTrainers={translatedTrainers}
-          trainerLanguage={trainerLanguage}
+          trainerLocale={trainerLocale}
           eggSpecies={state.eggSettings.egg_species}
         />
       </ToolForm>

@@ -1,0 +1,74 @@
+import{o as e,t}from"./react-DtrESx-C.js";import{T as ee,w as te}from"./index.esm-LZ1pfVgR.js";import{i as n,r}from"./dist-CLThxi1H.js";import{s as ne}from"./components-CDGaRc8u.js";import{ct as re,ot as ie,st as ae}from"./form-DA3PmISS.js";import{t as i}from"./jsx-runtime-CLxixnhA.js";import{S as a}from"./index-jzB9fByq.js";import{t as oe}from"./embeddedRunTimer-Bo92wXO_.js";import{t as se}from"./console-D3UyRIzW.js";import{d as ce,i as le,n as ue,o as de}from"./utils-CMijFYWa.js";import{r as fe}from"./labels-BIYNHrqI.js";import{n as pe}from"./wild3CalibCaughtMon.component-FWLRgj1w.js";import"./wild3LeadCycleSpeedInput-DvU-f84E.js";import{t as me}from"./calculateTargetSetupResult-DbHFiXSZ.js";import{n as he,t as ge}from"./calib-DuW1zlCH.js";import{t as _e}from"./feebasMap-C-SfCKaT.js";import{t as ve}from"./wild3LeadCycleSpeedSelector-D8JMw-1u.js";import{t as ye}from"./wild3TargetSetupAndLeadInput-Cjs6wECi.js";var o=e(t(),1),be=n(),s=i();function c(e){let t={code:`code`,li:`li`,ol:`ol`,ul:`ul`,...a(),...e.components};return(0,s.jsxs)(t.ol,{children:[`
+`,(0,s.jsx)(t.li,{children:`In-game, put the appropriate lead Pokémon in the first slot of your party and go to the map of your setup.`}),`
+`,(0,s.jsxs)(t.li,{children:[`Stand on top of a patch of grass, water, or in front of a smashable rock (depending on the player action).`,`
+`,(0,s.jsxs)(t.ul,{children:[`
+`,(0,s.jsx)(t.li,{children:`For encounters in the Safari Zone that require using a Pokéblock, place the Pokéblock in the feeder and stay within a 5-step radius of the feeder.`}),`
+`]}),`
+`]}),`
+`,(0,s.jsx)(t.li,{children:`Open your trainer card.`}),`
+`,(0,s.jsx)(t.li,{children:`Select "Battle Record" in-game, and immediately after, start the timers on the website.`}),`
+`,(0,s.jsxs)(t.li,{children:[`When the 1st timer reaches 0, press `,(0,s.jsx)(t.code,{children:`B`}),` to close the battle video. It must be closed before the first attack of the battle.`]}),`
+`,(0,s.jsxs)(t.li,{children:[`Prepare the encounter:`,`
+`,(0,s.jsxs)(t.ul,{children:[`
+`,(0,s.jsxs)(t.li,{children:[`For Sweet Scent encounters, quickly open your Pokémon party. Move your marker on `,(0,s.jsx)(t.code,{children:`SWEET SCENT`}),` of a Pokémon, and wait.`]}),`
+`,(0,s.jsxs)(t.li,{children:[`For fishing encounters, use your fishing rod until you have a Pokémon on the hook. Wait with the message "A Pokémon's on the hook!" displayed.`,`
+`,(0,s.jsxs)(t.ul,{children:[`
+`,(0,s.jsx)(t.li,{children:`The RNG manipulation can be successful even if you fail hooking a Pokémon the first try.`}),`
+`]}),`
+`]}),`
+`,(0,s.jsx)(t.li,{children:`For Rock Smash encounters, interact with the smashable rock. Wait with the message "[Pokémon] used ROCK SMASH!" displayed.`}),`
+`]}),`
+`]}),`
+`,(0,s.jsxs)(t.li,{children:[`When the 2nd timer reaches 0, press `,(0,s.jsx)(t.code,{children:`A`}),` to trigger the encounter.`]}),`
+`,(0,s.jsx)(t.li,{children:`Catch the Pokémon, even if it's not your target Pokémon. It will be used to calibrate.`}),`
+`,(0,s.jsx)(t.li,{children:`Open the Pokémon summary and fill the fields on the website with the Pokémon stats. Press "Generate".`}),`
+`,(0,s.jsx)(t.li,{children:`If there are no results or only results with Low confidence ratings, make sure the fields are correct.`}),`
+`,(0,s.jsx)(t.li,{children:`Click on the "Update Calibrate" button of the result with the highest confidence rating (the first result). This will update the timers to improve your odds of catching your target Pokémon.`}),`
+`,(0,s.jsx)(t.li,{children:`Repeat all the previous steps until you catch your target Pokémon.`}),`
+`]})}function xe(e={}){let{wrapper:t}={...a(),...e.components};return t?(0,s.jsx)(t,{...e,children:(0,s.jsx)(c,{...e})}):c(e)}function l(e){let t={code:`code`,li:`li`,ol:`ol`,ul:`ul`,...a(),...e.components};return(0,s.jsxs)(t.ol,{children:[`
+`,(0,s.jsx)(t.li,{children:`In-game, put the appropriate lead Pokémon in the first slot of your party and go to the map of your setup.`}),`
+`,(0,s.jsxs)(t.li,{children:[`Save while standing on top of a patch of grass, water, or in front of a smashable rock.`,`
+`,(0,s.jsxs)(t.ul,{children:[`
+`,(0,s.jsx)(t.li,{children:`For encounters in the Safari Zone, save in the building, right before paying the entrance fee.`}),`
+`]}),`
+`]}),`
+`,(0,s.jsx)(t.li,{children:`On the website, start the timers.`}),`
+`,(0,s.jsxs)(t.li,{children:[`When the 1st timer reaches 0, press `,(0,s.jsx)(t.code,{children:`START + SELECT + A + B`}),` to soft reset the game.`]}),`
+`,(0,s.jsx)(t.li,{children:`Select your save file.`}),`
+`,(0,s.jsxs)(t.li,{children:[`Prepare the encounter:`,`
+`,(0,s.jsxs)(t.ul,{children:[`
+`,(0,s.jsx)(t.li,{children:`For encounters in the Safari Zone, enter the Safari Zone and place the Pokéblock in the feeder if required. Afterwards, get on top of a patch of grass, water, or in front of a smashable rock.`}),`
+`,(0,s.jsxs)(t.li,{children:[`For Sweet Scent encounters, quickly open your Pokémon party. Move your marker on `,(0,s.jsx)(t.code,{children:`SWEET SCENT`}),` of a Pokémon, and wait.`]}),`
+`,(0,s.jsxs)(t.li,{children:[`For fishing encounters, use your fishing rod until you have a Pokémon on the hook. Wait with the message "A Pokémon's on the hook!" displayed.`,`
+`,(0,s.jsxs)(t.ul,{children:[`
+`,(0,s.jsx)(t.li,{children:`The RNG manipulation can be successful even if you fail hooking a Pokémon the first try.`}),`
+`]}),`
+`]}),`
+`,(0,s.jsx)(t.li,{children:`For Rock Smash encounters, interact with the smashable rock. Wait with the message "[Pokémon] used ROCK SMASH!" displayed.`}),`
+`]}),`
+`]}),`
+`,(0,s.jsxs)(t.li,{children:[`When the 2nd timer reaches 0, press `,(0,s.jsx)(t.code,{children:`A`}),` to trigger the encounter.`]}),`
+`,(0,s.jsx)(t.li,{children:`Catch the Pokémon, even if it's not your target Pokémon. It will be used to calibrate.`}),`
+`,(0,s.jsx)(t.li,{children:`Open the Pokémon summary and fill the fields on the website with the Pokémon stats. Press "Generate".`}),`
+`,(0,s.jsx)(t.li,{children:`If there are no results or only results with Low confidence ratings, make sure the fields are correct.`}),`
+`,(0,s.jsx)(t.li,{children:`Click on the "Update Calibrate" button of the result with the highest confidence rating (the first result). This will update the timers to improve your odds of catching your target Pokémon.`}),`
+`,(0,s.jsx)(t.li,{children:`Repeat all the previous steps until you catch your target Pokémon.`}),`
+`]})}function Se(e={}){let{wrapper:t}={...a(),...e.components};return t?(0,s.jsx)(t,{...e,children:(0,s.jsx)(l,{...e})}):l(e)}function u(e){let t={li:`li`,p:`p`,strong:`strong`,ul:`ul`,...a(),...e.components};return(0,s.jsxs)(s.Fragment,{children:[(0,s.jsx)(t.p,{children:`If you hit the target advance, but the obtained Pokémon is not the target Pokémon, this means you hit the wrong method. Try the RNG manipulation a few times. If this keeps happening, you have 2 options:`}),`
+`,(0,s.jsxs)(t.ul,{children:[`
+`,(0,s.jsxs)(t.li,{children:[`
+`,(0,s.jsx)(t.p,{children:`Option 1: Find a new target Pokémon with better likelihood.`}),`
+`,(0,s.jsxs)(t.ul,{children:[`
+`,(0,s.jsx)(t.li,{children:`Setups that require an Egg lead are the most consistent. It is possible only display setups with Egg lead by disabling "Recommended Setups?" and filtering "Leads".`}),`
+`]}),`
+`]}),`
+`,(0,s.jsxs)(t.li,{children:[`
+`,(0,s.jsx)(t.p,{children:`Option 2: Change your lead Pokémon to increase the likelihood of triggering the wanted method.`}),`
+`,(0,s.jsxs)(t.ul,{children:[`
+`,(0,s.jsxs)(t.li,{children:[`If your target method is `,(0,s.jsx)(t.strong,{children:`Wild-1`}),`, you need a lead with a `,(0,s.jsx)(t.strong,{children:`faster PID`}),`.`]}),`
+`,(0,s.jsxs)(t.li,{children:[`If your target method is `,(0,s.jsx)(t.strong,{children:`Wild-2`}),`, you need a lead with a `,(0,s.jsx)(t.strong,{children:`slower PID`}),`.`]}),`
+`,(0,s.jsxs)(t.li,{children:[`If your target method is `,(0,s.jsx)(t.strong,{children:`Wild-4`}),` and the method you keep triggering is `,(0,s.jsx)(t.strong,{children:`Wild-1`}),`, you need a lead with a `,(0,s.jsx)(t.strong,{children:`slower PID`}),`.`]}),`
+`,(0,s.jsxs)(t.li,{children:[`If your target method is `,(0,s.jsx)(t.strong,{children:`Wild-4`}),` and the method you keep triggering is `,(0,s.jsx)(t.strong,{children:`Wild-2`}),`, you need a lead with a `,(0,s.jsx)(t.strong,{children:`faster PID`}),`.`]}),`
+`,(0,s.jsx)(t.li,{children:`To catch a new lead Pokémon with a faster or slower PID, go back to Step 1 (Find Best Setup), and search a Target Pokémon using the "PID cycle speed" filter.`}),`
+`]}),`
+`]}),`
+`]})]})}function Ce(e={}){let{wrapper:t}={...a(),...e.components};return t?(0,s.jsx)(t,{...e,children:(0,s.jsx)(u,{...e})}):u(e)}var d={offset:4,calibNoBattleVideo:17,calibBattleVideo:11},we={OldRod:d,GoodRod:d,SuperRod:d,SweetScentLand:{offset:264,calibNoBattleVideo:10,calibBattleVideo:6},SweetScentWater:{offset:354,calibNoBattleVideo:10,calibBattleVideo:6},RockSmash:{offset:301,calibNoBattleVideo:10,calibBattleVideo:6}},Te=e=>e!=null&&ce(e)?`Press A to reel in the Pokemon`:e===`RockSmash`?`Press A to smash the rock`:`Trigger Sweet Scent`,f=e=>{let t=(0,be.c)(76),{targetSetup:n,leadCycleSpeed:r,battleVideoInfo:i,clearAll:a,displayInstructions:c,simplified:l,summaryTitle:u}=e,d=c===void 0?!0:c,f=l===void 0?!1:l,p=u===void 0?`Setup info from previous steps`:u,[m,De]=o.useState(n??null),[h,Oe]=o.useState(!1),g,_;t[0]===n?(g=t[1],_=t[2]):(g=()=>{De(n??null)},_=[n],t[0]=n,t[1]=g,t[2]=_),o.useEffect(g,_);let[ke,Ae]=o.useState(null),[v,y]=o.useState(null),b=v??r??775,x,S;t[3]!==b||t[4]!==f||t[5]!==m?(x=()=>{if(m==null)return Oe(!1),Ae(null);me(m,b,!f).then(e=>{let{content:t,hasEncounter:ee}=e;Ae(t),Oe(ee)})},S=[b,m,f],t[3]=b,t[4]=f,t[5]=m,t[6]=x,t[7]=S):(x=t[6],S=t[7]),o.useEffect(x,S);let[C,je]=o.useState(i??null),w,T;t[8]===i?(w=t[9],T=t[10]):(w=()=>{je(i??null)},T=[i],t[8]=i,t[9]=w,t[10]=T),o.useEffect(w,T);let[E,Me]=o.useState(`GBA`),[D,Ne]=o.useState(0),[O,Pe]=o.useState(!1),k;t[11]===Symbol.for(`react.memo_cache_sentinel`)?(k=()=>{y(null)},t[11]=k):k=t[11];let A;t[12]===n?A=t[13]:(A=[n],t[12]=n,t[13]=A),o.useEffect(k,A);let j;t[14]===Symbol.for(`react.memo_cache_sentinel`)?(j=()=>{Pe(!1)},t[14]=j):j=t[14];let M;t[15]===m?M=t[16]:(M=[m],t[15]=m,t[16]=M),o.useEffect(j,M);let N;t[17]!==d||t[18]!==b?(N=()=>(0,s.jsx)(ye,{setTargetSetup:De,setLeadCycleSpeed:y,leadCycleSpeed:b,displayInstructions:d,permitEnablingDebugOptions:!1,initialDisplayLeadCycleSpdButton:!0}),t[17]=d,t[18]=b,t[19]=N):N=t[19];let P=N,Fe=Ee,F,I;t[20]!==D||t[21]!==(m==null?void 0:m.targetMethod)||t[22]!==(m==null?void 0:m.targetPaintingAdvs.after)?(F=(e,t)=>{e.adv_after_painting===(m==null?void 0:m.targetPaintingAdvs.after)&&t!==(m==null?void 0:m.targetMethod)&&Pe(!0),Ne((D??0)+e.adv_after_painting-I)},I=(m==null?void 0:m.targetPaintingAdvs.after)??0,t[20]=D,t[21]=m==null?void 0:m.targetMethod,t[22]=m==null?void 0:m.targetPaintingAdvs.after,t[23]=F,t[24]=I):(F=t[23],I=t[24]);let L=(C==null?void 0:C.battleVideoAdvAfterPainting)??0,{offset:R,calibBattleVideo:Ie,calibNoBattleVideo:Le}=we[(m==null?void 0:m.action)??`SweetScentLand`],z=L>0?Ie:Le,B=I-L-(D??0)-R-z,V=(C==null?void 0:C.consoleType)??E,H;t[25]!==B||t[26]!==V?(H=Math.round(B/se[V]*1e3),t[25]=B,t[26]=V,t[27]=H):H=t[27];let U;t[28]===H?U=t[29]:(U=[5e3,H],t[28]=H,t[29]=U);let W=U,Re=L>0?`Close the Battle Video`:`Soft reset START+SELECT+A+B`,ze=m==null?void 0:m.action,G;t[30]===ze?G=t[31]:(G=Te(ze),t[30]=ze,t[31]=G);let K;t[32]!==Re||t[33]!==G?(K=[Re,G],t[32]=Re,t[33]=G,t[34]=K):K=t[34];let Be=K,q;t[35]!==m||t[36]!==h?(q=()=>m==null||!h?null:(0,s.jsx)(he,{targetPaintingAdvs:m.targetPaintingAdvs,setBattleVideoInfo:je}),t[35]=m,t[36]=h,t[37]=q):q=t[37];let Ve=q,He=C!=null||(m==null?void 0:m.targetPaintingAdvs.before)===0,J;t[38]!==i||t[39]!==a||t[40]!==L||t[41]!==r||t[42]!==v||t[43]!==f||t[44]!==p||t[45]!==n||t[46]!==ke?(J=()=>n==null?null:(0,s.jsx)(ie,{children:(0,s.jsxs)(ae,{title:p,children:[(0,s.jsx)(re,{rows:[{label:`Map`,value:de(n.map)},{label:`Player action`,value:ue(n.action)},{label:`Requires White Flute?`,value:n.requiresWhiteFlute?`Yes`:`No`,show:n.action===`RockSmash`},{label:`Pokéblock`,value:n.safariPokeblock===null?null:(0,s.jsx)(ne,{pokeblock:n.safariPokeblock}),show:n.safariPokeblock!==null},{label:`Lead`,value:le(n.lead)},...fe({targetSetup:n,battleVideoInfo:i,initialAdv:L,showTargetMethod:!f}),{label:`Lead Cycle Speed`,value:Fe(r),show:!f&&n.lead!==`Egg`&&v===null},{label:`Target Pokémon`,value:ke},{label:`Fishing spot`,value:(0,s.jsx)(_e,{selectedTileCycle:n.feebasCycles}),show:n.map===`MAP_ROUTE119`&&ce(n.action)&&n.feebasCycles!==0}]}),a!=null&&(0,s.jsx)(ee,{trackerId:`wild3Calib_clearAll`,danger:!0,maxWidth:150,size:`small`,onClick:a,children:`Clear All`})]})}),t[38]=i,t[39]=a,t[40]=L,t[41]=r,t[42]=v,t[43]=f,t[44]=p,t[45]=n,t[46]=ke,t[47]=J):J=t[47];let Ue=J,Y;t[48]!==Ve||t[49]!==P?(Y=()=>(0,s.jsxs)(s.Fragment,{children:[P(),Ve()]}),t[48]=Ve,t[49]=P,t[50]=Y):Y=t[50];let X=Y,We=((C==null?void 0:C.battleVideoAdvAfterPainting)??0)>0,Z;t[51]!==Ue||t[52]!==X||t[53]!==n?(Z=n==null?X():Ue(),t[51]=Ue,t[52]=X,t[53]=n,t[54]=Z):Z=t[54];let Q;t[55]!==i||t[56]!==z||t[57]!==He||t[58]!==E||t[59]!==d||t[60]!==b||t[61]!==O||t[62]!==D||t[63]!==Be||t[64]!==W||t[65]!==R||t[66]!==v||t[67]!==F||t[68]!==f||t[69]!==m||t[70]!==h||t[71]!==We?(Q=He&&m!=null&&h&&(0,s.jsxs)(s.Fragment,{children:[d&&(We?(0,s.jsx)(xe,{}):(0,s.jsx)(Se,{})),(0,s.jsx)(ge,{battleVideoInfoProp:i,consoleTypeFromInput:E,setConsoleTypeFromInput:Me,calibration:z,offset:R,humanInputDelay:D,setHumanInputDelay:Ne,extraRows:[{label:`Lead cycle speed (from calibration)`,value:Fe(v??0),show:!f&&v!==null}]}),(0,s.jsx)(oe,{milliseconds:W,labels:Be,startTrackerId:`start_wild3_calib_timer`,stopTrackerId:`stop_wild3_calib_timer`}),(0,s.jsx)(pe,{targetSetup:m,setLatestHitAdv:F,leadCycleSpeed:b}),O&&m!=null&&(0,s.jsx)(s.Fragment,{children:f?(0,s.jsx)(`p`,{children:`You hit the target advance but a different method. Try again, or use Ignore Recommended Setups to search with an Egg lead for a more consistent setup.`}):(0,s.jsxs)(s.Fragment,{children:[(0,s.jsx)(Ce,{}),(0,s.jsx)(ve,{targetSetup:m,permitEnablingDebugOptions:!0,setLeadCycleSpeed:y,leadCycleSpeed:b})]})})]}),t[55]=i,t[56]=z,t[57]=He,t[58]=E,t[59]=d,t[60]=b,t[61]=O,t[62]=D,t[63]=Be,t[64]=W,t[65]=R,t[66]=v,t[67]=F,t[68]=f,t[69]=m,t[70]=h,t[71]=We,t[72]=Q):Q=t[72];let $;return t[73]!==Z||t[74]!==Q?($=(0,s.jsxs)(te,{gap:32,vertical:!0,children:[Z,Q]}),t[73]=Z,t[74]=Q,t[75]=$):$=t[75],$};function p(){return`Average`}function Ee(e){return r(e).with(775,p).with(18,()=>`Fastest (${e})`).with(900,()=>`Slowest (${e})`).otherwise(()=>`${e}`)}export{f as Wild3Calib};

@@ -1,0 +1,114 @@
+var e=`---
+title: "究极之日/究极之月御三家乱数"
+navDrawerTitle: "御三家乱数"
+description: "学习在究极之日/究极之月中获得理想个体、性格及异色御三家。"
+slug: "zh-retail-usum-starter"
+translation:
+  enSlug: "retail-usum-starter"
+  language: "zh"
+---
+
+## 所需工具
+
+- [已安装 PokeReader 的 3DS](/install-pokereader)
+
+<Stepper titles={["寻找目标", "创建时间线", "库库伊对话", "选择御三家", "领取御三家"]}>
+
+<Step step={0}>
+
+## 游戏内准备
+
+1. 在走进草丛触发剧情前保存游戏。
+2. 推进剧情与对话，直到库库伊说“Go on and choose the one you'd like to keep as your partner, cousin!”时停下，先不要按 \`A\`。
+3. 等镜头停止移动后，按下 \`Start + Select\` 暂停游戏。PokeReader 的 NPC 数应为 1。
+
+## 寻找目标
+
+1. 将 PokeReader 显示的种子、TSV 和 TRV 输入下方工具。
+2. 将“Current Advance”设为 PokeReader 的 \`Advances\` 数值。
+3. 设置筛选条件，点击“Generate”。
+4. 如果没有喜欢的结果，可以提高“Max Advances”，但等待时间也会增加。
+5. 点击目标御三家对应的“Select”。木木枭、火斑喵和球球海狮的结果相同，因此可以在游戏中选择任意一只。
+
+在合理推进范围内，高个体异色御三家比较罕见。建议最多以三项完美个体为目标，更容易找到结果。
+
+<Gen7StarterSearch />
+
+</Step>
+
+<Step step={1}>
+
+## 创建时间线
+
+1. 保持暂停在库库伊的对话处，点击下方工具的“Find Safe Advances”。
+2. 按下 \`Select\`，每次推进一个画面帧，直到准确落在列表中的某个安全推进数上，再点击该项。
+3. 如果已经超过所有列出的结果，点击“Show More”。
+4. 继续逐帧推进，将实际推进数与工具预测比较。一致就说明当前时间线正确。
+
+> [!NOTE]
+> 如果推进数不一致，请检查种子是否输入正确，再从“寻找目标”重新开始。同时确认此步骤的 NPC 数为 1。
+
+<Gen7StarterKukuiTimeline />
+
+</Step>
+
+<Step step={2}>
+
+## 库库伊对话
+
+1. 保持暂停，按下 \`Select\` 逐画面帧推进，直到下方指定的推进数。
+2. 在该推进数按下 \`A\`，继续库库伊的对话。
+3. 随后按下 \`Start + Select\`，再次暂停游戏。
+
+> [!NOTE]
+> 如果距离指定推进数较远，可以按下 \`Start\` 解除暂停，接近时再按 \`Start + Select\` 暂停。
+
+<Gen7StarterPressKukuiA />
+
+> [!TIP]
+> 如果工具提示当前时间线无法到达目标，请从“寻找目标”重新开始。
+
+</Step>
+
+<Step step={3}>
+
+## 选择御三家
+
+1. 解除暂停，选择想要的御三家，推进到出现“Yes”和“No”的确认界面。
+2. 在接近下方指定推进数时按下 \`Start + Select\` 暂停，再按 \`Select\` 逐画面帧推进到指定位置。
+3. 在该推进数按下 \`A\`，选择“Yes”。
+4. 随后按下 \`Start + Select\`，再次暂停游戏。
+
+<Gen7StarterPressYes />
+
+</Step>
+
+<Step step={4}>
+
+## 领取御三家
+
+1. 解除暂停，等待出现“You chose xxx!”对话。
+2. 接近目标推进数时，按下 \`Start + Select\` 暂停。
+3. 按下 \`Select\` 逐画面帧推进，直到目标推进数。
+4. 在目标推进数按下 \`A\`。
+
+<Gen7StarterTargetAdvance />
+
+恭喜你！应该已经获得目标御三家了。
+
+## 没有获得目标时
+
+1. 再次检查所有输入，尤其是种子和 TSV。
+2. 确认在指定推进数准确继续库库伊对话，并选择“Yes”。
+3. 重新读取存档，获得新种子，再从第一步开始。
+4. 如果使用模拟器，请勿在到达目标前的最后一段剧情中加速模拟。
+
+</Step>
+
+</Stepper>
+
+## 特别鸣谢
+
+- wwwwwwzx：[3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool)，本工具部分逻辑参考了该项目。
+- 中文翻译：白希洛/Hakuhiro
+`;export{e as default};

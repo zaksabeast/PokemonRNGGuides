@@ -1,0 +1,49 @@
+var e=`---
+title: "传说 阿尔宙斯大大大量出现乱数"
+navDrawerTitle: "大大大量出现乱数"
+description: "使用 Sysbot 与 PermuteMMO，在传说 阿尔宙斯的大大大量出现中寻找异色宝可梦。"
+slug: "zh-sysbot-lpa-mmo"
+translation:
+  enSlug: "sysbot-lpa-mmo"
+  language: "zh"
+---
+
+## 所需工具
+
+- 已安装自制固件及 sysbot 的 Switch
+- 传说 阿尔宙斯存档中的 \`main\` 文件
+- Kaphotics 制作的 PermuteMMO
+- EzPzStreamz 制作的 [MMO Data Dumper](https://github.com/SteveCookTU/mmo_data_dumper/releases/tag/v0.1.0)
+
+建议将 MMO Data Dumper 与 PermuteMMO 放在同一个文件夹中，方便自动更新所需文件。也要将 \`main\` 存档放入 PermuteMMO 文件夹，以正确计算各宝可梦的异色判定次数。
+
+## 介绍
+
+传说 阿尔宙斯的大大大量出现（MMO）乱数比较直接。本指南介绍 PermuteMMO 的设置、所需数据的获取及基本操作，默认你已正确配置 sysbot。
+
+## 准备工作
+
+1. 在游戏中确认有可用的大大大量出现。
+2. 留在祝庆村，暂停游戏。
+3. 在工具文件夹中通过 \`CMD\` 运行 MMO Data Dumper。命令格式为 \`"{file_name} {ip}"\`，其中 \`{file_name}\` 是程序文件名，通常为 \`mmo_data_dumper.exe\`，\`{ip}\` 是 Switch 的 IP 地址。运行后会在 PermuteMMO 文件夹中生成 \`mo.bin\` 和 \`mmo.bin\`。
+4. 运行 PermuteMMO，查看大量出现数据及可能的异色结果，找到目标后准备推进。
+
+容易逃跑的宝可梦操作起来较麻烦，建议先选择会主动攻击的目标。必要时可以保存并重置。不要进入目标地图后再次运行导出工具；应在村子中保存，失败后重新读取存档。
+
+## 乱数操作
+
+需要按照 PermuteMMO 给出的操作序列推进，例如“A3”。其中数字表示通过多只同时参与的战斗等方式，让多少只宝可梦从场上消失。
+
+- **A（Aggressive）**：攻击型推进，最容易操作。A4 表示在一场战斗中击败 4 只宝可梦。
+- **B（Beta）**：混合容易逃跑与会主动攻击的宝可梦进行推进。
+- **O（Oblivious）**：适合魔墙人偶、大舌头、鲤鱼王等不会主动攻击的宝可梦。O2 表示击败 1 只此类宝可梦及 1 只攻击型宝可梦。
+- **S（Scaring）**：惊吓容易逃跑的宝可梦。出现红色“!”后，等其逃跑，再使用快速移动。
+- **G（Ghost）**：场上只剩 4 只宝可梦时触发的幽灵生成。G3 表示让 3 只宝可梦消失，离开一段距离，再返回。
+- **CR**：有第二波时，清理剩余宝可梦以进入第二波。
+
+按序列执行，就能在正确时机遇到目标！
+
+## 特别鸣谢
+
+- 中文翻译：白希洛/Hakuhiro
+`;export{e as default};

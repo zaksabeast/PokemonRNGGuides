@@ -1,0 +1,1 @@
+var e=e=>{let t=e/60;return t<1e3?`~${t.toFixed(1)} min`:`~${(t/60).toFixed(0)} h`},t=e=>{if(e<60)return`~${e.toFixed(1)} s`;let t=Math.round(e);return`~${Math.floor(t/60)} min ${t%60} s`};export{t as n,e as t};

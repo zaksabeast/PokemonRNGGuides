@@ -1,0 +1,31 @@
+var e=`---
+title: "心金/魂银 TID/SID 乱数"
+navDrawerTitle: "TID/SID 乱数"
+description: "学习如何在心金/魂银中获得你想要的 TID 与 SID 组合。"
+slug: "zh-emulator-hgss-tid-sid"
+translation:
+  enSlug: "emulator-hgss-tid-sid"
+  language: "zh"
+---
+
+## 第一步：了解 TID 和 SID
+
+以下是获取目标 PID 时需要了解的基础内容：
+
+1. 注意角色名中的大写和小写字母可能影响延迟。
+2. 留意本指南可能未涵盖的特殊情况。
+
+> [!TIP]
+> 如果想更快查找组合，可以寻找专用工具来辅助。
+
+## 第二步：使用专用工具
+
+如果使用 PokeFinder 查找组合时遇到困难，可以按以下方式操作：
+
+1. 寻找并使用辅助查找 TID/SID 组合的专用工具。
+2. 按照该工具提供的说明操作。
+
+## 特别鸣谢
+
+- 中文翻译：白希洛/Hakuhiro
+`;export{e as default};

@@ -303,7 +303,7 @@ export const guides = {
       type: "baseGuide",
       canonical: "/bdsp-chatot/",
       file: "guides/Brilliant Diamond and Shining Pearl/BK - How to use Shiny's site.mdx",
-      translations: null,
+      translations: { en: "/bdsp-chatot/", zh: "/zh-bdsp-chatot/" },
       guideGroupId:
         "en:true-Chatot RNG Tool:Brilliant Diamond and Shining Pearl",
       guideVariantLinks: null,
@@ -346,7 +346,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/bdsp-emulator-setup/",
       file: "guides/Brilliant Diamond and Shining Pearl/BK - Emulator Setup.mdx",
-      translations: null,
+      translations: {
+        en: "/bdsp-emulator-setup/",
+        zh: "/zh-bdsp-emulator-setup/",
+      },
       guideGroupId:
         "en:false-Ryujinx Set Up:Brilliant Diamond and Shining Pearl",
       guideVariantLinks: null,
@@ -389,7 +392,7 @@ export const guides = {
       type: "baseGuide",
       canonical: "/bdsp-pokefinder/",
       file: "guides/Brilliant Diamond and Shining Pearl/BK - How to use PokeFinder.mdx",
-      translations: null,
+      translations: { en: "/bdsp-pokefinder/", zh: "/zh-bdsp-pokefinder/" },
       guideGroupId:
         "en:false-PokeFinder Setup:Brilliant Diamond and Shining Pearl",
       guideVariantLinks: null,
@@ -569,7 +572,7 @@ export const guides = {
       type: "baseGuide",
       canonical: "/bw-emu-starter/",
       file: "guides/Gen 5/BW Emu Starter.mdx",
-      translations: null,
+      translations: { en: "/bw-emu-starter/", zh: "/zh-bw-emu-starter/" },
       guideGroupId: "en:false-Starter RNG:Black and White",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-bw-starter/" },
@@ -764,7 +767,7 @@ export const guides = {
       type: "baseGuide",
       canonical: "/cfw-bdsp-egg/",
       file: "guides/Brilliant Diamond and Shining Pearl/Egg.mdx",
-      translations: null,
+      translations: { en: "/cfw-bdsp-egg/", zh: "/zh-cfw-bdsp-egg/" },
       guideGroupId: "en:true-Egg RNG:Brilliant Diamond and Shining Pearl",
       guideVariantLinks: {
         retail: null,
@@ -806,7 +809,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/cfw-bdsp-stationary/",
       file: "guides/Brilliant Diamond and Shining Pearl/Stationary.mdx",
-      translations: null,
+      translations: {
+        en: "/cfw-bdsp-stationary/",
+        zh: "/zh-cfw-bdsp-stationary/",
+      },
       guideGroupId: "en:false-Static RNG:Brilliant Diamond and Shining Pearl",
       guideVariantLinks: {
         retail: null,
@@ -851,7 +857,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/cfw-bdsp-tidandsid/",
       file: "guides/Brilliant Diamond and Shining Pearl/TID SID RNG.mdx",
-      translations: null,
+      translations: {
+        en: "/cfw-bdsp-tidandsid/",
+        zh: "/zh-cfw-bdsp-tidandsid/",
+      },
       guideGroupId: "en:true-TID/SID RNG:Brilliant Diamond and Shining Pearl",
       guideVariantLinks: {
         retail: null,
@@ -896,7 +905,7 @@ export const guides = {
       type: "baseGuide",
       canonical: "/cfw-bdsp-wild/",
       file: "guides/Brilliant Diamond and Shining Pearl/Wild.mdx",
-      translations: null,
+      translations: { en: "/cfw-bdsp-wild/", zh: "/zh-cfw-bdsp-wild/" },
       guideGroupId: "en:true-Wild RNG:Brilliant Diamond and Shining Pearl",
       guideVariantLinks: {
         retail: null,
@@ -1097,7 +1106,7 @@ export const guides = {
       type: "baseGuide",
       canonical: "/citrarng-setup/",
       file: "guides/Tools and Emulators/CitraRNG Setup.mdx",
-      translations: null,
+      translations: { en: "/citrarng-setup/", zh: "/zh-citrarng-setup/" },
       guideGroupId:
         "en:false-Azahar Setup:Bank and Transporter|Dream Radar|Omega Ruby and Alpha Sapphire|Sun and Moon|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
@@ -1347,6 +1356,7 @@ export const guides = {
       translations: {
         de: "/de-emerald-advancing-rng-techniques/",
         en: "/emerald-advancing-rng-techniques/",
+        zh: "/zh-emerald-advancing-rng-techniques/",
       },
       guideGroupId: "de:false-RNG Advancing Techniques:Emerald",
       guideVariantLinks: null,
@@ -1392,6 +1402,7 @@ export const guides = {
       translations: {
         de: "/de-emerald-battle-video/",
         en: "/emerald-battle-video/",
+        zh: "/zh-emerald-battle-video/",
       },
       guideGroupId: "de:false-Battle Video:Emerald",
       guideVariantLinks: null,
@@ -2569,7 +2580,7 @@ export const guides = {
       type: "baseGuide",
       canonical: "/dppt-setup-rng/",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Honey.mdx",
-      translations: null,
+      translations: { en: "/dppt-setup-rng/", zh: "/zh-dppt-setup-rng/" },
       guideGroupId: "en:false-Honey Tree RNG:Diamond, Pearl, and Platinum",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-dppt-honey-tree/" },
@@ -2692,7 +2703,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/dream-radar-cart-patches/",
       file: "guides/Transporter/Gen 4 Cart Patches.mdx",
-      translations: null,
+      translations: {
+        en: "/dream-radar-cart-patches/",
+        zh: "/zh-dream-radar-cart-patches/",
+      },
       guideGroupId: "en:false-Gen 4 Cart Patches:Dream Radar",
       guideVariantLinks: null,
       displayAttributes: [],
@@ -2731,7 +2745,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/dream-radar-patches/",
       file: "guides/Tools and Emulators/Dream Radar Patches.mdx",
-      translations: null,
+      translations: {
+        en: "/dream-radar-patches/",
+        zh: "/zh-dream-radar-patches/",
+      },
       guideGroupId: "en:false-Dream Radar No-Cart Patch:Dream Radar",
       guideVariantLinks: null,
       displayAttributes: [],
@@ -2849,6 +2866,7 @@ export const guides = {
       translations: {
         de: "/de-emerald-advancing-rng-techniques/",
         en: "/emerald-advancing-rng-techniques/",
+        zh: "/zh-emerald-advancing-rng-techniques/",
       },
       guideGroupId: "en:false-RNG Advancing Techniques:Emerald",
       guideVariantLinks: {
@@ -2894,6 +2912,7 @@ export const guides = {
       translations: {
         de: "/de-emerald-battle-video/",
         en: "/emerald-battle-video/",
+        zh: "/zh-emerald-battle-video/",
       },
       guideGroupId: "en:false-Battle Video:Emerald",
       guideVariantLinks: {
@@ -2936,7 +2955,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/emerald-largest-lotad-seedot/",
       file: "guides/Gen 3/Emerald/Largest Pokemon.mdx",
-      translations: null,
+      translations: {
+        en: "/emerald-largest-lotad-seedot/",
+        zh: "/zh-emerald-largest-lotad-seedot/",
+      },
       guideGroupId: "en:false-Largest Lotad/Seedot:Emerald",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/emerald-largest-lotad-seedot/" },
@@ -3068,7 +3090,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/emerald-painting-reseeding/",
       file: "guides/Gen 3/Emerald/Painting Reseeding.mdx",
-      translations: null,
+      translations: {
+        en: "/emerald-painting-reseeding/",
+        zh: "/zh-emerald-painting-reseeding/",
+      },
       guideGroupId: "en:false-Painting Reseeding:Emerald",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/emerald-painting-reseeding/" },
@@ -3230,7 +3255,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/emerald-pokerus-retail/",
       file: "guides/Gen 3/Emerald/Pokerus Retail.mdx",
-      translations: null,
+      translations: {
+        en: "/emerald-pokerus-retail/",
+        zh: "/zh-emerald-pokerus-retail/",
+      },
       guideGroupId: "en:false-Pokérus:Emerald",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/emerald-pokerus-retail/" },
@@ -3275,6 +3303,7 @@ export const guides = {
       translations: {
         en: "/emerald-rng-with-ace/",
         it: "/it-emerald-rng-with-ace/",
+        zh: "/zh-emerald-rng-with-ace/",
       },
       guideGroupId: "en:false-RNG With ACE:Emerald",
       guideVariantLinks: {
@@ -3406,7 +3435,7 @@ export const guides = {
       type: "baseGuide",
       canonical: "/emerald-static/",
       file: "guides/Gen 3/Emerald/Gen 3 Static.mdx",
-      translations: null,
+      translations: { en: "/emerald-static/", zh: "/zh-emerald-static/" },
       guideGroupId: "en:false-Starter, Legend, and Fossil RNG:Emerald",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/emerald-static/" },
@@ -3566,7 +3595,7 @@ export const guides = {
       type: "baseGuide",
       canonical: "/emerald-wild/",
       file: "guides/Gen 3/Emerald/Gen 3 Wild.mdx",
-      translations: null,
+      translations: { en: "/emerald-wild/", zh: "/zh-emerald-wild/" },
       guideGroupId: "en:false-Wild RNG:Emerald",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/emerald-wild/" },
@@ -3638,7 +3667,7 @@ export const guides = {
       type: "baseGuide",
       canonical: "/emu-bw-egg/",
       file: "guides/Gen 5/BW Emu Egg RNG.mdx",
-      translations: null,
+      translations: { en: "/emu-bw-egg/", zh: "/zh-emu-bw-egg/" },
       guideGroupId: "en:false-Egg RNG:Black and White",
       guideVariantLinks: {
         retail: null,
@@ -3765,6 +3794,7 @@ export const guides = {
       translations: {
         en: "/emulator-b2w2-wild/",
         it: "/it-emulator-b2w2-wild/",
+        zh: "/zh-emulator-b2w2-wild/",
       },
       guideGroupId: "en:false-Wild RNG:Black 2 and White 2",
       guideVariantLinks: {
@@ -4016,7 +4046,11 @@ export const guides = {
       lastUpdated: "2026-04-21",
       type: "baseGuide",
       file: "guides/Gen 5/Wild RNG Emu.mdx",
-      translations: { en: "/emulator-bw-wild/", it: "/it-emulator-bw-wild/" },
+      translations: {
+        en: "/emulator-bw-wild/",
+        it: "/it-emulator-bw-wild/",
+        zh: "/zh-emulator-bw-wild/",
+      },
       guideGroupId: "en:false-Wild RNG:Black and White",
       guideVariantLinks: {
         retail: null,
@@ -4053,7 +4087,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/emulator-colosseum-general/",
       file: "guides/Gamecube/Colosseum General Guide (Emu).mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-colosseum-general/",
+        zh: "/zh-emulator-colosseum-general/",
+      },
       guideGroupId: "en:true-Colosseum General RNG:Gamecube",
       guideVariantLinks: {
         retail: null,
@@ -4176,7 +4213,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/emulator-dppt-pokefinder-setup/",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/PokeFinder Setup.mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-dppt-pokefinder-setup/",
+        zh: "/zh-emulator-dppt-pokefinder-setup/",
+      },
       guideGroupId: "en:false-PokeFinder Setup:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
       displayAttributes: [],
@@ -4696,7 +4736,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/emulator-hgss-special-wild/",
       file: "guides/Gen 4/HeartGold and SoulSilver/Special Wild Case (Emu).mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-hgss-special-wild/",
+        zh: "/zh-emulator-hgss-special-wild/",
+      },
       guideGroupId: "en:true-Special Wild RNG:HeartGold and SoulSilver",
       guideVariantLinks: {
         retail: null,
@@ -4789,7 +4832,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/emulator-hgss-tid-sid/",
       file: "guides/Gen 4/HeartGold and SoulSilver/TID SID.mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-hgss-tid-sid/",
+        zh: "/zh-emulator-hgss-tid-sid/",
+      },
       guideGroupId: "en:true-TID/SID RNG:HeartGold and SoulSilver",
       guideVariantLinks: {
         retail: null,
@@ -4831,7 +4877,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/emulator-hgss-wild/",
       file: "guides/Gen 4/HeartGold and SoulSilver/Wild RNG - Emulator.mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-hgss-wild/",
+        zh: "/zh-emulator-hgss-wild/",
+      },
       guideGroupId: "en:true-Wild RNG:HeartGold and SoulSilver",
       guideVariantLinks: {
         retail: null,
@@ -4958,7 +5007,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/emulator-rs-dead-battery-stationary/",
       file: "guides/Gen 3/Ruby and Sapphire/Dead Battery Stationary RNG  (Emulator).mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-rs-dead-battery-stationary/",
+        zh: "/zh-emulator-rs-dead-battery-stationary/",
+      },
       guideGroupId: "en:true-Static Dead Battery RNG:Ruby and Sapphire",
       guideVariantLinks: {
         retail: null,
@@ -5045,7 +5097,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/emulator-rs-live-battery-tid/",
       file: "guides/Gen 3/Ruby and Sapphire/Live Battery TID RNG.mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-rs-live-battery-tid/",
+        zh: "/zh-emulator-rs-live-battery-tid/",
+      },
       guideGroupId: "en:false-TID RNG:Ruby and Sapphire",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-rubysapphire-tid/" },
@@ -5136,7 +5191,7 @@ export const guides = {
       type: "baseGuide",
       canonical: "/emulator-rs-wild/",
       file: "guides/Gen 3/Ruby and Sapphire/RSE Wild RNG - Dry Battery Emulator.mdx",
-      translations: null,
+      translations: { en: "/emulator-rs-wild/", zh: "/zh-emulator-rs-wild/" },
       guideGroupId: "en:true-Wild RNG:Ruby and Sapphire",
       guideVariantLinks: {
         retail: null,
@@ -5868,6 +5923,7 @@ export const guides = {
       translations: {
         fr: "/fr-install-capturesight/",
         en: "/install-capturesight/",
+        zh: "/zh-install-capturesight/",
       },
       guideGroupId:
         "fr:false-CaptureSight:Brilliant Diamond and Shining Pearl|Legends Arceus|Sword and Shield",
@@ -5911,7 +5967,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/freeze-time-usum-fossil/",
       file: "guides/Gen 7/Fossils.mdx",
-      translations: null,
+      translations: {
+        en: "/freeze-time-usum-fossil/",
+        zh: "/zh-freeze-time-usum-fossil/",
+      },
       guideGroupId: "en:true-Fossil RNG:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: null,
@@ -6118,7 +6177,7 @@ export const guides = {
       type: "baseGuide",
       canonical: "/frlg-tips-rng/",
       file: "guides/Gen 3/FireRed and LeafGreen/Basic Rules of RNG.mdx",
-      translations: null,
+      translations: { en: "/frlg-tips-rng/", zh: "/zh-frlg-tips-rng/" },
       guideGroupId: "en:true-Basic rules of Gen 3 RNG:FireRed and LeafGreen",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/frlg-tips-rng/" },
@@ -6970,6 +7029,7 @@ export const guides = {
       translations: {
         fr: "/fr-install-capturesight/",
         en: "/install-capturesight/",
+        zh: "/zh-install-capturesight/",
       },
       guideGroupId:
         "en:false-CaptureSight:Brilliant Diamond and Shining Pearl|Legends Arceus|Sword and Shield",
@@ -7017,7 +7077,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/install-pokereader-emu/",
       file: "guides/Tools and Emulators/Emu PokeReader.mdx",
-      translations: null,
+      translations: {
+        en: "/install-pokereader-emu/",
+        zh: "/zh-install-pokereader-emu/",
+      },
       guideGroupId:
         "en:false-PokeReader Azahar:Bank and Transporter|Dream Radar|Omega Ruby and Alpha Sapphire|Sun and Moon|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
@@ -7202,6 +7265,7 @@ export const guides = {
       translations: {
         en: "/emerald-rng-with-ace/",
         it: "/it-emerald-rng-with-ace/",
+        zh: "/zh-emerald-rng-with-ace/",
       },
       guideGroupId: "it:false-RNG With ACE:Emerald",
       guideVariantLinks: null,
@@ -7294,6 +7358,7 @@ export const guides = {
       translations: {
         en: "/emulator-b2w2-wild/",
         it: "/it-emulator-b2w2-wild/",
+        zh: "/zh-emulator-b2w2-wild/",
       },
       guideGroupId: "it:false-Wild RNG:Black 2 and White 2",
       guideVariantLinks: null,
@@ -7382,7 +7447,11 @@ export const guides = {
       lastUpdated: "2026-04-21",
       type: "translatedGuide",
       file: "guides/Translations/it/Gen 5/Wild RNG Emu.mdx",
-      translations: { en: "/emulator-bw-wild/", it: "/it-emulator-bw-wild/" },
+      translations: {
+        en: "/emulator-bw-wild/",
+        it: "/it-emulator-bw-wild/",
+        zh: "/zh-emulator-bw-wild/",
+      },
       guideGroupId: "it:false-Wild RNG:Black and White",
       guideVariantLinks: null,
       displayAttributes: [],
@@ -8183,7 +8252,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/misc-3ds-ips-luma-citra/",
       file: "guides/Tools and Emulators/Using IPS Patches with Luma and Citra.mdx",
-      translations: null,
+      translations: {
+        en: "/misc-3ds-ips-luma-citra/",
+        zh: "/zh-misc-3ds-ips-luma-citra/",
+      },
       guideGroupId:
         "en:false-Using IPS Patches:Bank and Transporter|Dream Radar|Omega Ruby and Alpha Sapphire|Sun and Moon|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
@@ -8608,7 +8680,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/offline-bank-transporter-mod/",
       file: "guides/Tools and Emulators/Transporter Patches.mdx",
-      translations: null,
+      translations: {
+        en: "/offline-bank-transporter-mod/",
+        zh: "/zh-offline-bank-transporter-mod/",
+      },
       guideGroupId:
         "en:false-Bank & Transporter Offline Mod:Bank and Transporter",
       guideVariantLinks: null,
@@ -8991,7 +9066,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/retail-bw-entralink/",
       file: "guides/Gen 5/Retail Entralink.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-bw-entralink/",
+        zh: "/zh-retail-bw-entralink/",
+      },
       guideGroupId: "en:true-Entralink RNG:Black and White",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-bw-entralink/" },
@@ -9029,7 +9107,7 @@ export const guides = {
       type: "baseGuide",
       canonical: "/retail-bw-starter/",
       file: "guides/Gen 5/BW Retail Starter.mdx",
-      translations: null,
+      translations: { en: "/retail-bw-starter/", zh: "/zh-retail-bw-starter/" },
       guideGroupId: "en:false-Starter RNG:Black and White",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-bw-starter/" },
@@ -9067,7 +9145,7 @@ export const guides = {
       type: "baseGuide",
       canonical: "/retail-dppt-egg/",
       file: "guides/Gen 4/Retail Egg.mdx",
-      translations: null,
+      translations: { en: "/retail-dppt-egg/", zh: "/zh-retail-dppt-egg/" },
       guideGroupId: "en:false-Egg RNG:Diamond, Pearl, and Platinum",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-dppt-egg/" },
@@ -9105,7 +9183,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/retail-dppt-static/",
       file: "guides/Gen 4/Retail Static.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-dppt-honey-pokemon/",
+        zh: "/zh-retail-dppt-honey-pokemon/",
+      },
       guideGroupId: "en:false-Honey Pokémon RNG:Diamond, Pearl, and Platinum",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-dppt-honey-pokemon/" },
@@ -9143,7 +9224,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/retail-dppt-honey-tree/",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Retail Honey Tree.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-dppt-honey-tree/",
+        zh: "/zh-retail-dppt-honey-tree/",
+      },
       guideGroupId: "en:false-Honey Tree RNG:Diamond, Pearl, and Platinum",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-dppt-honey-tree/" },
@@ -9188,7 +9272,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/retail-dppt-lottery/",
       file: "guides/Gen 4/Lottery.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-dppt-lottery/",
+        zh: "/zh-retail-dppt-lottery/",
+      },
       guideGroupId: "en:false-Lottery RNG:Diamond, Pearl, and Platinum",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-dppt-lottery/" },
@@ -9268,7 +9355,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/retail-dppt-static/",
       file: "guides/Gen 4/Retail Static.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-dppt-static/",
+        zh: "/zh-retail-dppt-static/",
+      },
       guideGroupId:
         "en:false-Legend, Gift, and Fossil RNG:Diamond, Pearl, and Platinum",
       guideVariantLinks: {
@@ -9307,7 +9397,7 @@ export const guides = {
       type: "baseGuide",
       canonical: "/retail-hgss-swarm/",
       file: "guides/Gen 4/Swarm.mdx",
-      translations: null,
+      translations: { en: "/retail-dppt-swarm/", zh: "/zh-retail-dppt-swarm/" },
       guideGroupId: "en:false-Swarm RNG:Diamond, Pearl, and Platinum",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-dppt-swarm/" },
@@ -9467,7 +9557,7 @@ export const guides = {
       type: "baseGuide",
       canonical: "/retail-hgss-swarm/",
       file: "guides/Gen 4/Swarm.mdx",
-      translations: null,
+      translations: { en: "/retail-hgss-swarm/", zh: "/zh-retail-hgss-swarm/" },
       guideGroupId: "en:false-Swarm RNG:HeartGold and SoulSilver",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-hgss-swarm/" },
@@ -9505,7 +9595,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/retail-hgss-voltorb-flip/",
       file: "guides/Gen 4/Voltorb Flip.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-hgss-voltorb-flip/",
+        zh: "/zh-retail-hgss-voltorb-flip/",
+      },
       guideGroupId: "en:false-Voltorb Flip RNG:HeartGold and SoulSilver",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-hgss-voltorb-flip/" },
@@ -9543,7 +9636,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/retail-or-emulator/",
       file: "guides/Getting Started/Retail or Emulator.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-or-emulator/",
+        zh: "/zh-retail-or-emulator/",
+      },
       guideGroupId: "en:false-Pick Retail or Emulator:Home",
       guideVariantLinks: null,
       displayAttributes: [],
@@ -10320,7 +10416,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/retail-swsh-get-seed-with-cfw/",
       file: "guides/Sword and Shield/Get Raid Seed With CFW.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-swsh-get-seed-with-cfw/",
+        zh: "/zh-retail-swsh-get-seed-with-cfw/",
+      },
       guideGroupId: "en:false-Find Raid Seed:Sword and Shield",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-swsh-get-seed-without-cfw/" },
@@ -10362,7 +10461,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/retail-swsh-get-seed-without-cfw/",
       file: "guides/Sword and Shield/Get Raid Seed Without CFW.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-swsh-get-seed-without-cfw/",
+        zh: "/zh-retail-swsh-get-seed-without-cfw/",
+      },
       guideGroupId: "en:false-Find Raid Seed:Sword and Shield",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-swsh-get-seed-without-cfw/" },
@@ -10405,7 +10507,7 @@ export const guides = {
       type: "baseGuide",
       canonical: "/retail-swsh-raid/",
       file: "guides/Sword and Shield/Raid RNG.mdx",
-      translations: null,
+      translations: { en: "/retail-swsh-raid/", zh: "/zh-retail-swsh-raid/" },
       guideGroupId: "en:false-Raid RNG:Sword and Shield",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-swsh-raid/" },
@@ -10847,7 +10949,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/retail-usum-starter/",
       file: "guides/Gen 7/Starters.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-usum-starter/",
+        zh: "/zh-retail-usum-starter/",
+      },
       guideGroupId: "en:true-Starter RNG:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: null,
@@ -11275,7 +11380,7 @@ export const guides = {
       type: "baseGuide",
       canonical: "/rs-initial-seed/",
       file: "guides/Gen 3/Ruby and Sapphire/Initial Seed RNG.mdx",
-      translations: null,
+      translations: { en: "/rs-initial-seed/", zh: "/zh-rs-initial-seed/" },
       guideGroupId: "en:true-Initial Seed RNG:Ruby and Sapphire",
       guideVariantLinks: {
         retail: null,
@@ -11609,7 +11714,7 @@ export const guides = {
       type: "baseGuide",
       canonical: "/rs-tips-rng/",
       file: "guides/Gen 3/Ruby and Sapphire/Basic Rules of RNG.mdx",
-      translations: null,
+      translations: { en: "/rs-tips-rng/", zh: "/zh-rs-tips-rng/" },
       guideGroupId: "en:true-RNG Info:Ruby and Sapphire",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/rs-tips-rng/" },
@@ -11831,7 +11936,7 @@ export const guides = {
       type: "baseGuide",
       canonical: "/sysbot-lpa-mmo/",
       file: "guides/Legends Arceus/MMO.mdx",
-      translations: null,
+      translations: { en: "/sysbot-lpa-mmo/", zh: "/zh-sysbot-lpa-mmo/" },
       guideGroupId: "en:false-MMO RNG:Legends Arceus",
       guideVariantLinks: null,
       displayAttributes: [],
@@ -11939,7 +12044,10 @@ export const guides = {
       type: "baseGuide",
       canonical: "/transporter-rng-offline/",
       file: "guides/Transporter/Transporter with Offline Patch.mdx",
-      translations: null,
+      translations: {
+        en: "/transporter-rng-offline/",
+        zh: "/zh-transporter-rng-offline/",
+      },
       guideGroupId: "en:false-Offline Patch RNG:Bank and Transporter",
       guideVariantLinks: {
         retail: null,
@@ -11982,7 +12090,7 @@ export const guides = {
       type: "baseGuide",
       canonical: "/transporter-rng/",
       file: "guides/Transporter/Transporter.mdx",
-      translations: null,
+      translations: { en: "/transporter-rng/", zh: "/zh-transporter-rng/" },
       guideGroupId: "en:false-Transporter RNG:Bank and Transporter",
       guideVariantLinks: {
         retail: null,
@@ -12054,7 +12162,7 @@ export const guides = {
       type: "baseGuide",
       canonical: "/what-is-rng/",
       file: "guides/Getting Started/What Is RNG.mdx",
-      translations: null,
+      translations: { en: "/what-is-rng/", zh: "/zh-what-is-rng/" },
       guideGroupId: "en:false-What is RNG?:Home",
       guideVariantLinks: null,
       displayAttributes: [],
@@ -12291,7 +12399,7 @@ export const guides = {
       type: "baseGuide",
       canonical: "/your-first-rng/",
       file: "guides/Getting Started/Your First Shiny.mdx",
-      translations: null,
+      translations: { en: "/your-first-rng/", zh: "/zh-your-first-rng/" },
       guideGroupId: "en:false-Your First RNG:Home",
       guideVariantLinks: null,
       displayAttributes: [],
@@ -12438,6 +12546,176 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-bdsp-chatot/": {
+    meta: {
+      id: "/bdsp-chatot/",
+      categories: ["Brilliant Diamond and Shining Pearl"],
+      section: "tool",
+      guideVariants: null,
+      guideKey: "true-Chatot RNG Tool",
+      isNew: false,
+      title: "晶灿钻石/明亮珍珠 Chatot 工具使用指南",
+      navDrawerTitle: "Chatot 乱数工具",
+      description:
+        "学习使用 chatot.pokemonrng.com，进行晶灿钻石/明亮珍珠乱数。",
+      slug: "/zh-bdsp-chatot/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/bdsp-chatot/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-bdsp-chatot/",
+      file: "guides/Translations/zh/Brilliant Diamond and Shining Pearl/BK - How to use Shiny's site.mdx",
+      translations: { en: "/bdsp-chatot/", zh: "/zh-bdsp-chatot/" },
+      guideGroupId:
+        "zh:true-Chatot RNG Tool:Brilliant Diamond and Shining Pearl",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Brilliant Diamond and Shining Pearl/BK - How to use Shiny's site.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Brilliant Diamond and Shining Pearl/BK - How to use Shiny's site.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-bdsp-emulator-setup/": {
+    meta: {
+      id: "/bdsp-emulator-setup/",
+      categories: ["Brilliant Diamond and Shining Pearl"],
+      section: "tool",
+      guideVariants: null,
+      guideKey: "false-Ryujinx Set Up",
+      isNew: false,
+      title: "设置 Ryujinx 与 Cheat Engine",
+      navDrawerTitle: "设置 Ryujinx",
+      description:
+        "设置 Ryujinx 或 Yuzu 及 Cheat Engine，通过 Lua 脚本辅助晶灿钻石/明亮珍珠乱数。",
+      slug: "/zh-bdsp-emulator-setup/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/bdsp-emulator-setup/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-bdsp-emulator-setup/",
+      file: "guides/Translations/zh/Brilliant Diamond and Shining Pearl/BK - Emulator Setup.mdx",
+      translations: {
+        en: "/bdsp-emulator-setup/",
+        zh: "/zh-bdsp-emulator-setup/",
+      },
+      guideGroupId:
+        "zh:false-Ryujinx Set Up:Brilliant Diamond and Shining Pearl",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Brilliant Diamond and Shining Pearl/BK - Emulator Setup.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Brilliant Diamond and Shining Pearl/BK - Emulator Setup.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-bdsp-pokefinder/": {
+    meta: {
+      id: "/bdsp-pokefinder/",
+      categories: ["Brilliant Diamond and Shining Pearl"],
+      section: "tool",
+      guideVariants: null,
+      guideKey: "false-PokeFinder Setup",
+      isNew: false,
+      title: "晶灿钻石/明亮珍珠 PokeFinder 设置",
+      navDrawerTitle: "PokeFinder 设置",
+      description:
+        "逐步设置 PokeFinder，用于晶灿钻石/明亮珍珠的异色与其他乱数。",
+      slug: "/zh-bdsp-pokefinder/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/bdsp-pokefinder/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-bdsp-pokefinder/",
+      file: "guides/Translations/zh/Brilliant Diamond and Shining Pearl/BK - How to use PokeFinder.mdx",
+      translations: { en: "/bdsp-pokefinder/", zh: "/zh-bdsp-pokefinder/" },
+      guideGroupId:
+        "zh:false-PokeFinder Setup:Brilliant Diamond and Shining Pearl",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Brilliant Diamond and Shining Pearl/BK - How to use PokeFinder.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Brilliant Diamond and Shining Pearl/BK - How to use PokeFinder.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-bw-emu-starter/": {
+    meta: {
+      id: "/bw-emu-starter/",
+      categories: ["Black and White"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "false-Starter RNG",
+      isNew: false,
+      title: "黑/白模拟器御三家乱数",
+      navDrawerTitle: "御三家乱数",
+      description: "学习在黑/白模拟器中获得异色及高个体御三家。",
+      slug: "/zh-bw-emu-starter/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-03-25",
+      translation: { enSlug: "/bw-emu-starter/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-bw-emu-starter/",
+      file: "guides/Translations/zh/Gen 5/BW Emu Starter.mdx",
+      translations: { en: "/bw-emu-starter/", zh: "/zh-bw-emu-starter/" },
+      guideGroupId: "zh:false-Starter RNG:Black and White",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 5/BW Emu Starter.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 5/BW Emu Starter.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-bw2-egg/": {
     meta: {
       id: "/bw2-egg/",
@@ -12477,6 +12755,180 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-cfw-bdsp-egg/": {
+    meta: {
+      id: "/cfw-bdsp-egg/",
+      categories: ["Brilliant Diamond and Shining Pearl"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "true-Egg RNG",
+      isNew: false,
+      title: "晶灿钻石/明亮珍珠孵化乱数",
+      navDrawerTitle: "孵化乱数",
+      description:
+        "学习在已破解的 Switch 上进行晶灿钻石/明亮珍珠孵化乱数，获取理想个体的异色宝可梦。",
+      slug: "/zh-cfw-bdsp-egg/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/cfw-bdsp-egg/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-cfw-bdsp-egg/",
+      file: "guides/Translations/zh/Brilliant Diamond and Shining Pearl/Egg.mdx",
+      translations: { en: "/cfw-bdsp-egg/", zh: "/zh-cfw-bdsp-egg/" },
+      guideGroupId: "zh:true-Egg RNG:Brilliant Diamond and Shining Pearl",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Brilliant Diamond and Shining Pearl/Egg.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Brilliant Diamond and Shining Pearl/Egg.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-cfw-bdsp-stationary/": {
+    meta: {
+      id: "/cfw-bdsp-stationary/",
+      categories: ["Brilliant Diamond and Shining Pearl"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "false-Static RNG",
+      isNew: false,
+      title: "晶灿钻石/明亮珍珠定点乱数",
+      navDrawerTitle: "定点乱数",
+      description:
+        "学习在已破解的 Switch 上进行定点乱数，获得完美个体或异色传说宝可梦。",
+      slug: "/zh-cfw-bdsp-stationary/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/cfw-bdsp-stationary/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-cfw-bdsp-stationary/",
+      file: "guides/Translations/zh/Brilliant Diamond and Shining Pearl/Stationary.mdx",
+      translations: {
+        en: "/cfw-bdsp-stationary/",
+        zh: "/zh-cfw-bdsp-stationary/",
+      },
+      guideGroupId: "zh:false-Static RNG:Brilliant Diamond and Shining Pearl",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Brilliant Diamond and Shining Pearl/Stationary.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Brilliant Diamond and Shining Pearl/Stationary.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-cfw-bdsp-tidandsid/": {
+    meta: {
+      id: "/cfw-bdsp-tidandsid/",
+      categories: ["Brilliant Diamond and Shining Pearl"],
+      section: "other_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "true-TID/SID RNG",
+      isNew: false,
+      title: "晶灿钻石/明亮珍珠 TID/SID 乱数",
+      navDrawerTitle: "TID/SID 乱数",
+      description:
+        "通过自制固件辅助，在晶灿钻石/明亮珍珠中获得目标 TID/SID 组合。",
+      slug: "/zh-cfw-bdsp-tidandsid/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/cfw-bdsp-tidandsid/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-cfw-bdsp-tidandsid/",
+      file: "guides/Translations/zh/Brilliant Diamond and Shining Pearl/TID SID RNG.mdx",
+      translations: {
+        en: "/cfw-bdsp-tidandsid/",
+        zh: "/zh-cfw-bdsp-tidandsid/",
+      },
+      guideGroupId: "zh:true-TID/SID RNG:Brilliant Diamond and Shining Pearl",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Brilliant Diamond and Shining Pearl/TID SID RNG.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Brilliant Diamond and Shining Pearl/TID SID RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-cfw-bdsp-wild/": {
+    meta: {
+      id: "/cfw-bdsp-wild/",
+      categories: ["Brilliant Diamond and Shining Pearl"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "true-Wild RNG",
+      isNew: false,
+      title: "晶灿钻石/明亮珍珠野生乱数",
+      navDrawerTitle: "野生乱数",
+      description:
+        "通过自制固件辅助，在晶灿钻石/明亮珍珠中进行野生宝可梦乱数。",
+      slug: "/zh-cfw-bdsp-wild/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/cfw-bdsp-wild/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-cfw-bdsp-wild/",
+      file: "guides/Translations/zh/Brilliant Diamond and Shining Pearl/Wild.mdx",
+      translations: { en: "/cfw-bdsp-wild/", zh: "/zh-cfw-bdsp-wild/" },
+      guideGroupId: "zh:true-Wild RNG:Brilliant Diamond and Shining Pearl",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Brilliant Diamond and Shining Pearl/Wild.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Brilliant Diamond and Shining Pearl/Wild.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-channel-jirachi/": {
     meta: {
       id: "/channel-jirachi/",
@@ -12511,6 +12963,55 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gamecube/Channel.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-citrarng-setup/": {
+    meta: {
+      id: "/citrarng-setup/",
+      categories: [
+        "Dream Radar",
+        "Bank and Transporter",
+        "X and Y",
+        "Omega Ruby and Alpha Sapphire",
+        "Sun and Moon",
+        "Ultra Sun and Ultra Moon",
+      ],
+      section: "tool",
+      guideVariants: null,
+      guideKey: "false-Azahar Setup",
+      isNew: false,
+      title: "设置 3DS 模拟器（Azahar/Lime3DS/Citra）",
+      navDrawerTitle: "设置 Azahar",
+      description: "设置 3DS 模拟器用于乱数，包括导出游戏及安装更新。",
+      slug: "/zh-citrarng-setup/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/citrarng-setup/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-citrarng-setup/",
+      file: "guides/Translations/zh/Tools and Emulators/CitraRNG Setup.mdx",
+      translations: { en: "/citrarng-setup/", zh: "/zh-citrarng-setup/" },
+      guideGroupId:
+        "zh:false-Azahar Setup:Bank and Transporter|Dream Radar|Omega Ruby and Alpha Sapphire|Sun and Moon|Ultra Sun and Ultra Moon|X and Y",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Tools and Emulators/CitraRNG Setup.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Tools and Emulators/CitraRNG Setup.mdx?raw"
       );
       return file.default;
     }),
@@ -12967,6 +13468,48 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-dppt-setup-rng/": {
+    meta: {
+      id: "/dppt-setup-rng/",
+      categories: ["Diamond, Pearl, and Platinum"],
+      section: "other_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "false-Honey Tree RNG",
+      isNew: false,
+      title: "钻石/珍珠/白金蜜树乱数原理",
+      navDrawerTitle: "蜜树乱数",
+      description:
+        "了解蜜树遇敌槽位，控制钻石、珍珠和白金的蜜树宝可梦，包括小卡比兽。",
+      slug: "/zh-dppt-setup-rng/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/dppt-setup-rng/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-dppt-setup-rng/",
+      file: "guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Honey.mdx",
+      translations: { en: "/dppt-setup-rng/", zh: "/zh-dppt-setup-rng/" },
+      guideGroupId: "zh:false-Honey Tree RNG:Diamond, Pearl, and Platinum",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Honey.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Honey.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-dppt-tid-sid/": {
     meta: {
       id: "/dppt-tid-sid/",
@@ -13047,6 +13590,96 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-dream-radar-cart-patches/": {
+    meta: {
+      id: "/dream-radar-cart-patches/",
+      categories: ["Dream Radar"],
+      section: "patch",
+      guideVariants: null,
+      guideKey: "false-Gen 4 Cart Patches",
+      isNew: false,
+      title: "宝可梦梦境雷达第四世代卡带模拟补丁",
+      navDrawerTitle: "第四世代卡带补丁",
+      description:
+        "让梦境雷达认为已插入钻石、珍珠、白金、心金或魂银卡带，解锁第四世代传说宝可梦。",
+      slug: "/zh-dream-radar-cart-patches/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-03-17",
+      translation: { enSlug: "/dream-radar-cart-patches/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-dream-radar-cart-patches/",
+      file: "guides/Translations/zh/Transporter/Gen 4 Cart Patches.mdx",
+      translations: {
+        en: "/dream-radar-cart-patches/",
+        zh: "/zh-dream-radar-cart-patches/",
+      },
+      guideGroupId: "zh:false-Gen 4 Cart Patches:Dream Radar",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Transporter/Gen 4 Cart Patches.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Transporter/Gen 4 Cart Patches.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-dream-radar-patches/": {
+    meta: {
+      id: "/dream-radar-patches/",
+      categories: ["Dream Radar"],
+      section: "patch",
+      guideVariants: null,
+      guideKey: "false-Dream Radar No-Cart Patch",
+      isNew: false,
+      title: "梦境雷达免卡带补丁",
+      navDrawerTitle: "梦境雷达免卡带补丁",
+      description:
+        "让梦境雷达读取 TWiLightMenu、nds-bootstrap 或模拟器存档，无需插入游戏卡带。",
+      slug: "/zh-dream-radar-patches/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/dream-radar-patches/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-29",
+      type: "translatedGuide",
+      canonical: "/zh-dream-radar-patches/",
+      file: "guides/Translations/zh/Tools and Emulators/Dream Radar Patches.mdx",
+      translations: {
+        en: "/dream-radar-patches/",
+        zh: "/zh-dream-radar-patches/",
+      },
+      guideGroupId: "zh:false-Dream Radar No-Cart Patch:Dream Radar",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Tools and Emulators/Dream Radar Patches.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Tools and Emulators/Dream Radar Patches.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-e-tips-rng/": {
     meta: {
       id: "/zh-e-tips-rng/",
@@ -13085,6 +13718,139 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Gen 3/Emerald/Advancing RNG Techniques.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-emerald-advancing-rng-techniques/": {
+    meta: {
+      id: "/emerald-advancing-rng-techniques/",
+      categories: ["Emerald"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "false-RNG Advancing Techniques",
+      isNew: false,
+      title: "绿宝石帧数推进技巧",
+      navDrawerTitle: "绿宝石帧数推进技巧",
+      description: "了解如何利用绘画重置种子与对战录像，加快乱数操作。",
+      slug: "/zh-emerald-advancing-rng-techniques/",
+      isRoughDraft: false,
+      orderPriority: 0,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: {
+        enSlug: "/emerald-advancing-rng-techniques/",
+        language: "zh",
+      },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-emerald-advancing-rng-techniques/",
+      file: "guides/Translations/zh/Gen 3/Emerald/Advancing RNG Techniques.mdx",
+      translations: {
+        de: "/de-emerald-advancing-rng-techniques/",
+        en: "/emerald-advancing-rng-techniques/",
+        zh: "/zh-emerald-advancing-rng-techniques/",
+      },
+      guideGroupId: "zh:false-RNG Advancing Techniques:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 3/Emerald/Advancing RNG Techniques.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/Advancing RNG Techniques.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-emerald-battle-video/": {
+    meta: {
+      id: "/emerald-battle-video/",
+      categories: ["Emerald"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "false-Battle Video",
+      isNew: false,
+      title: "对战录像",
+      navDrawerTitle: "对战录像",
+      description: "学习创建或更新合适的对战录像，用于保存和恢复乱数状态。",
+      slug: "/zh-emerald-battle-video/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-03-24",
+      translation: { enSlug: "/emerald-battle-video/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-emerald-battle-video/",
+      file: "guides/Translations/zh/Gen 3/Emerald/Battle Video.mdx",
+      translations: {
+        de: "/de-emerald-battle-video/",
+        en: "/emerald-battle-video/",
+        zh: "/zh-emerald-battle-video/",
+      },
+      guideGroupId: "zh:false-Battle Video:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/zh/Gen 3/Emerald/Battle Video.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/Battle Video.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-emerald-largest-lotad-seedot/": {
+    meta: {
+      id: "/emerald-largest-lotad-seedot/",
+      categories: ["Emerald"],
+      section: "other_rng",
+      guideVariants: ["retail"],
+      guideKey: "false-Largest Lotad/Seedot",
+      isNew: false,
+      title: "最大尺寸的莲叶童子与橡实果",
+      navDrawerTitle: "最大尺寸的莲叶童子与橡实果",
+      description: "捕捉最大尺寸的莲叶童子和橡实果，向琉璃市的兄弟展示。",
+      slug: "/zh-emerald-largest-lotad-seedot/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-08-23",
+      translation: { enSlug: "/emerald-largest-lotad-seedot/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-emerald-largest-lotad-seedot/",
+      file: "guides/Translations/zh/Gen 3/Emerald/Largest Pokemon.mdx",
+      translations: {
+        en: "/emerald-largest-lotad-seedot/",
+        zh: "/zh-emerald-largest-lotad-seedot/",
+      },
+      guideGroupId: "zh:false-Largest Lotad/Seedot:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/zh/Gen 3/Emerald/Largest Pokemon.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/Largest Pokemon.mdx?raw"
       );
       return file.default;
     }),
@@ -13178,6 +13944,50 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-emerald-painting-reseeding/": {
+    meta: {
+      id: "/emerald-painting-reseeding/",
+      categories: ["Emerald"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "false-Painting Reseeding",
+      isNew: false,
+      title: "利用绘画重置种子",
+      navDrawerTitle: "绘画重置种子",
+      description: "利用绘画重置种子，快速到达原本需要长时间等待的乱数状态。",
+      slug: "/zh-emerald-painting-reseeding/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-04-07",
+      translation: { enSlug: "/emerald-painting-reseeding/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-emerald-painting-reseeding/",
+      file: "guides/Translations/zh/Gen 3/Emerald/Painting Reseeding.mdx",
+      translations: {
+        en: "/emerald-painting-reseeding/",
+        zh: "/zh-emerald-painting-reseeding/",
+      },
+      guideGroupId: "zh:false-Painting Reseeding:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 3/Emerald/Painting Reseeding.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/Painting Reseeding.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-emerald-painting-rng/": {
     meta: {
       id: "/emerald-painting-rng/",
@@ -13258,6 +14068,92 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 3/Emerald/Pokerus.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-emerald-pokerus-retail/": {
+    meta: {
+      id: "/emerald-pokerus-retail/",
+      categories: ["Emerald"],
+      section: "other_rng",
+      guideVariants: ["retail"],
+      guideKey: "false-Pokérus",
+      isNew: false,
+      title: "绿宝石实机宝可病毒乱数",
+      navDrawerTitle: "宝可病毒",
+      description: "通过乱数操作，在绿宝石中感染宝可病毒。",
+      slug: "/zh-emerald-pokerus-retail/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-08-06",
+      translation: { enSlug: "/emerald-pokerus-retail/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-emerald-pokerus-retail/",
+      file: "guides/Translations/zh/Gen 3/Emerald/Pokerus Retail.mdx",
+      translations: {
+        en: "/emerald-pokerus-retail/",
+        zh: "/zh-emerald-pokerus-retail/",
+      },
+      guideGroupId: "zh:false-Pokérus:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/zh/Gen 3/Emerald/Pokerus Retail.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/Pokerus Retail.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-emerald-rng-with-ace/": {
+    meta: {
+      id: "/emerald-rng-with-ace/",
+      categories: ["Emerald"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "false-RNG With ACE",
+      isNew: false,
+      title: "绿宝石 ACE 乱数指南",
+      navDrawerTitle: "ACE 乱数",
+      description:
+        "学习利用 ACE 设置种子、搜索目标、校准推进数并获得理想宝可梦。",
+      slug: "/zh-emerald-rng-with-ace/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-05-05",
+      translation: { enSlug: "/emerald-rng-with-ace/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-emerald-rng-with-ace/",
+      file: "guides/Translations/zh/Gen 3/Emerald/RNG With Ace.mdx",
+      translations: {
+        en: "/emerald-rng-with-ace/",
+        it: "/it-emerald-rng-with-ace/",
+        zh: "/zh-emerald-rng-with-ace/",
+      },
+      guideGroupId: "zh:false-RNG With ACE:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/zh/Gen 3/Emerald/RNG With Ace.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/RNG With Ace.mdx?raw"
       );
       return file.default;
     }),
@@ -13350,6 +14246,122 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-emerald-static/": {
+    meta: {
+      id: "/emerald-static/",
+      categories: ["Emerald"],
+      section: "pokemon_rng",
+      guideVariants: ["retail"],
+      guideKey: "false-Starter, Legend, and Fossil RNG",
+      isNew: false,
+      title: "绿宝石御三家、传说与化石乱数",
+      navDrawerTitle: "绿宝石御三家、传说与化石乱数",
+      description: "绿宝石御三家、传说、化石及游走宝可梦的定点乱数。",
+      slug: "/zh-emerald-static/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emerald-static/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-emerald-static/",
+      file: "guides/Translations/zh/Gen 3/Emerald/Gen 3 Static.mdx",
+      translations: { en: "/emerald-static/", zh: "/zh-emerald-static/" },
+      guideGroupId: "zh:false-Starter, Legend, and Fossil RNG:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/zh/Gen 3/Emerald/Gen 3 Static.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/Gen 3 Static.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-emerald-wild/": {
+    meta: {
+      id: "/emerald-wild/",
+      categories: ["Emerald"],
+      section: "pokemon_rng",
+      guideVariants: ["retail"],
+      guideKey: "false-Wild RNG",
+      isNew: false,
+      title: "绿宝石实机野生乱数",
+      navDrawerTitle: "野生乱数",
+      description:
+        "学习在绿宝石实机进行野生乱数，获得理想个体、性格及异色宝可梦。支持丑丑鱼、百变怪、狩猎地带宝可方块、大量出现、钓鱼、碎岩及绘画重置种子。",
+      slug: "/zh-emerald-wild/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-05-05",
+      translation: { enSlug: "/emerald-wild/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-emerald-wild/",
+      file: "guides/Translations/zh/Gen 3/Emerald/Gen 3 Wild.mdx",
+      translations: { en: "/emerald-wild/", zh: "/zh-emerald-wild/" },
+      guideGroupId: "zh:false-Wild RNG:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 3/Emerald/Gen 3 Wild.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/Gen 3 Wild.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-emu-bw-egg/": {
+    meta: {
+      id: "/emu-bw-egg/",
+      categories: ["Black and White"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "false-Egg RNG",
+      isNew: false,
+      title: "黑/白模拟器孵化乱数",
+      navDrawerTitle: "孵化乱数",
+      description: "通过培育屋乱数，在黑/白中获得异色及高个体的蛋。",
+      slug: "/zh-emu-bw-egg/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-03-24",
+      translation: { enSlug: "/emu-bw-egg/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-emu-bw-egg/",
+      file: "guides/Translations/zh/Gen 5/BW Emu Egg RNG.mdx",
+      translations: { en: "/emu-bw-egg/", zh: "/zh-emu-bw-egg/" },
+      guideGroupId: "zh:false-Egg RNG:Black and White",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 5/BW Emu Egg RNG.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 5/BW Emu Egg RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-emulator-b2w2-dream-radar/": {
     meta: {
       id: "/emulator-b2w2-dream-radar/",
@@ -13435,6 +14447,48 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 5/Using Runasdate to RNG Initial Seed.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-emulator-b2w2-wild/": {
+    meta: {
+      id: "/emulator-b2w2-wild/",
+      categories: ["Black 2 and White 2"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "false-Wild RNG",
+      isNew: false,
+      title: "黑2/白2模拟器野生乱数",
+      navDrawerTitle: "野生乱数",
+      description: "学习在黑2/白2中进行野生乱数，获得异色及高个体宝可梦。",
+      slug: "/zh-emulator-b2w2-wild/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-03-08",
+      translation: { enSlug: "/emulator-b2w2-wild/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-emulator-b2w2-wild/",
+      file: "guides/Translations/zh/Gen 5/Wild RNG Emu.mdx",
+      translations: {
+        en: "/emulator-b2w2-wild/",
+        it: "/it-emulator-b2w2-wild/",
+        zh: "/zh-emulator-b2w2-wild/",
+      },
+      guideGroupId: "zh:false-Wild RNG:Black 2 and White 2",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 5/Wild RNG Emu.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 5/Wild RNG Emu.mdx?raw"
       );
       return file.default;
     }),
@@ -13655,6 +14709,92 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-emulator-bw-wild/": {
+    meta: {
+      id: "/emulator-bw-wild/",
+      categories: ["Black and White"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "false-Wild RNG",
+      isNew: false,
+      title: "黑/白模拟器野生乱数",
+      navDrawerTitle: "野生乱数",
+      description: "学习在黑/白中进行野生乱数，获得异色及高个体宝可梦。",
+      slug: "/zh-emulator-bw-wild/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-03-08",
+      translation: { enSlug: "/emulator-bw-wild/", language: "zh" },
+      layout: "guide",
+      canonical: "/zh-emulator-b2w2-wild/",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 5/Wild RNG Emu.mdx",
+      translations: {
+        en: "/emulator-bw-wild/",
+        it: "/it-emulator-bw-wild/",
+        zh: "/zh-emulator-bw-wild/",
+      },
+      guideGroupId: "zh:false-Wild RNG:Black and White",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 5/Wild RNG Emu.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 5/Wild RNG Emu.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-emulator-colosseum-general/": {
+    meta: {
+      id: "/emulator-colosseum-general/",
+      categories: ["Gamecube"],
+      section: "rng_technique",
+      guideVariants: ["cfw-emu"],
+      guideKey: "true-Colosseum General RNG",
+      isNew: false,
+      title: "圆形竞技场模拟器乱数基础",
+      navDrawerTitle: "圆形竞技场模拟器乱数基础",
+      description: "学习使用模拟器在宝可梦圆形竞技场中进行乱数。",
+      slug: "/zh-emulator-colosseum-general/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-colosseum-general/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-emulator-colosseum-general/",
+      file: "guides/Translations/zh/Gamecube/Colosseum General Guide (Emu).mdx",
+      translations: {
+        en: "/emulator-colosseum-general/",
+        zh: "/zh-emulator-colosseum-general/",
+      },
+      guideGroupId: "zh:true-Colosseum General RNG:Gamecube",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gamecube/Colosseum General Guide (Emu).mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gamecube/Colosseum General Guide (Emu).mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-emulator-dppt-cute-charm/": {
     meta: {
       id: "/emulator-dppt-cute-charm/",
@@ -13734,6 +14874,53 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-emulator-dppt-pokefinder-setup/": {
+    meta: {
+      id: "/emulator-dppt-pokefinder-setup/",
+      categories: ["Diamond, Pearl, and Platinum"],
+      section: "tool",
+      guideVariants: null,
+      guideKey: "false-PokeFinder Setup",
+      isNew: false,
+      title: "钻石/珍珠/白金 PokeFinder 设置",
+      navDrawerTitle: "PokeFinder 设置",
+      description: "逐步设置 PokeFinder，用于钻石、珍珠和白金的宝可梦乱数。",
+      slug: "/zh-emulator-dppt-pokefinder-setup/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: {
+        enSlug: "/emulator-dppt-pokefinder-setup/",
+        language: "zh",
+      },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-emulator-dppt-pokefinder-setup/",
+      file: "guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/PokeFinder Setup.mdx",
+      translations: {
+        en: "/emulator-dppt-pokefinder-setup/",
+        zh: "/zh-emulator-dppt-pokefinder-setup/",
+      },
+      guideGroupId: "zh:false-PokeFinder Setup:Diamond, Pearl, and Platinum",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/PokeFinder Setup.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/PokeFinder Setup.mdx?raw"
       );
       return file.default;
     }),
@@ -14090,6 +15277,50 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-emulator-hgss-special-wild/": {
+    meta: {
+      id: "/emulator-hgss-special-wild/",
+      categories: ["HeartGold and SoulSilver"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "true-Special Wild RNG",
+      isNew: false,
+      title: "心金/魂银特殊野生乱数",
+      navDrawerTitle: "特殊野生乱数",
+      description: "介绍捕虫大赛、狩猎地带及头锤的特殊野生乱数。",
+      slug: "/zh-emulator-hgss-special-wild/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-hgss-special-wild/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-29",
+      type: "translatedGuide",
+      canonical: "/zh-emulator-hgss-special-wild/",
+      file: "guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Special Wild Case (Emu).mdx",
+      translations: {
+        en: "/emulator-hgss-special-wild/",
+        zh: "/zh-emulator-hgss-special-wild/",
+      },
+      guideGroupId: "zh:true-Special Wild RNG:HeartGold and SoulSilver",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Special Wild Case (Emu).mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Special Wild Case (Emu).mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-emulator-hgss-stationary/": {
     meta: {
       id: "/emulator-hgss-stationary/",
@@ -14130,6 +15361,94 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Stationary RNG Emu.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-emulator-hgss-tid-sid/": {
+    meta: {
+      id: "/emulator-hgss-tid-sid/",
+      categories: ["HeartGold and SoulSilver"],
+      section: "other_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "true-TID/SID RNG",
+      isNew: false,
+      title: "心金/魂银 TID/SID 乱数",
+      navDrawerTitle: "TID/SID 乱数",
+      description: "学习如何在心金/魂银中获得你想要的 TID 与 SID 组合。",
+      slug: "/zh-emulator-hgss-tid-sid/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-hgss-tid-sid/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-emulator-hgss-tid-sid/",
+      file: "guides/Translations/zh/Gen 4/HeartGold and SoulSilver/TID SID.mdx",
+      translations: {
+        en: "/emulator-hgss-tid-sid/",
+        zh: "/zh-emulator-hgss-tid-sid/",
+      },
+      guideGroupId: "zh:true-TID/SID RNG:HeartGold and SoulSilver",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 4/HeartGold and SoulSilver/TID SID.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/HeartGold and SoulSilver/TID SID.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-emulator-hgss-wild/": {
+    meta: {
+      id: "/emulator-hgss-wild/",
+      categories: ["HeartGold and SoulSilver"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "true-Wild RNG",
+      isNew: false,
+      title: "心金/魂银模拟器野生乱数",
+      navDrawerTitle: "野生乱数",
+      description: "学习在心金/魂银中进行野生乱数，获得异色及高个体宝可梦。",
+      slug: "/zh-emulator-hgss-wild/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-hgss-wild/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-emulator-hgss-wild/",
+      file: "guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Wild RNG - Emulator.mdx",
+      translations: {
+        en: "/emulator-hgss-wild/",
+        zh: "/zh-emulator-hgss-wild/",
+      },
+      guideGroupId: "zh:true-Wild RNG:HeartGold and SoulSilver",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Wild RNG - Emulator.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Wild RNG - Emulator.mdx?raw"
       );
       return file.default;
     }),
@@ -14176,6 +15495,54 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-emulator-rs-dead-battery-stationary/": {
+    meta: {
+      id: "/emulator-rs-dead-battery-stationary/",
+      categories: ["Ruby and Sapphire"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "true-Static Dead Battery RNG",
+      isNew: false,
+      title: "红宝石/蓝宝石电池耗尽定点乱数",
+      navDrawerTitle: "电池耗尽定点乱数",
+      description:
+        "学习在红宝石/蓝宝石中进行定点乱数，获得理想个体值、性格及异色宝可梦。",
+      slug: "/zh-emulator-rs-dead-battery-stationary/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: {
+        enSlug: "/emulator-rs-dead-battery-stationary/",
+        language: "zh",
+      },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-emulator-rs-dead-battery-stationary/",
+      file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Dead Battery Stationary RNG  (Emulator).mdx",
+      translations: {
+        en: "/emulator-rs-dead-battery-stationary/",
+        zh: "/zh-emulator-rs-dead-battery-stationary/",
+      },
+      guideGroupId: "zh:true-Static Dead Battery RNG:Ruby and Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Dead Battery Stationary RNG  (Emulator).mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Dead Battery Stationary RNG  (Emulator).mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-emulator-rs-egg/": {
     meta: {
       id: "/emulator-rs-egg/",
@@ -14213,6 +15580,51 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Egg RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-emulator-rs-live-battery-tid/": {
+    meta: {
+      id: "/emulator-rs-live-battery-tid/",
+      categories: ["Ruby and Sapphire"],
+      section: "other_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "false-TID RNG",
+      isNew: false,
+      title: "红宝石/蓝宝石模拟器 TID 乱数",
+      navDrawerTitle: "TID 乱数",
+      description:
+        "学习如何在红宝石/蓝宝石中通过模拟器获得你想要的 TID 与 SID 组合。",
+      slug: "/zh-emulator-rs-live-battery-tid/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-rs-live-battery-tid/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-emulator-rs-live-battery-tid/",
+      file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Live Battery TID RNG.mdx",
+      translations: {
+        en: "/emulator-rs-live-battery-tid/",
+        zh: "/zh-emulator-rs-live-battery-tid/",
+      },
+      guideGroupId: "zh:false-TID RNG:Ruby and Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Live Battery TID RNG.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Live Battery TID RNG.mdx?raw"
       );
       return file.default;
     }),
@@ -14257,6 +15669,48 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Ruby & Sapphire Live Battery Stationary Abuse.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-emulator-rs-wild/": {
+    meta: {
+      id: "/emulator-rs-wild/",
+      categories: ["Ruby and Sapphire"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "true-Wild RNG",
+      isNew: false,
+      title: "红宝石/蓝宝石野生乱数",
+      navDrawerTitle: "野生乱数",
+      description:
+        "学习在红宝石/蓝宝石中进行野生乱数，获得异色及高个体宝可梦。",
+      slug: "/zh-emulator-rs-wild/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-rs-wild/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-emulator-rs-wild/",
+      file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/RSE Wild RNG - Dry Battery Emulator.mdx",
+      translations: { en: "/emulator-rs-wild/", zh: "/zh-emulator-rs-wild/" },
+      guideGroupId: "zh:true-Wild RNG:Ruby and Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/RSE Wild RNG - Dry Battery Emulator.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/RSE Wild RNG - Dry Battery Emulator.mdx?raw"
       );
       return file.default;
     }),
@@ -14390,6 +15844,48 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-freeze-time-usum-fossil/": {
+    meta: {
+      id: "/freeze-time-usum-fossil/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "true-Fossil RNG",
+      isNew: false,
+      title: "究极之日/究极之月化石乱数",
+      navDrawerTitle: "化石乱数",
+      description:
+        "学习在究极之日/究极之月中获得理想个体、性格及异色化石宝可梦。",
+      slug: "/zh-freeze-time-usum-fossil/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/freeze-time-usum-fossil/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-freeze-time-usum-fossil/",
+      file: "guides/Translations/zh/Gen 7/Fossils.mdx",
+      translations: {
+        en: "/freeze-time-usum-fossil/",
+        zh: "/zh-freeze-time-usum-fossil/",
+      },
+      guideGroupId: "zh:true-Fossil RNG:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Fossils.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Fossils.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-frlg-gen3-sid/": {
     meta: {
       id: "/frlg-gen3-sid/",
@@ -14470,6 +15966,47 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 3/FireRed and LeafGreen/Initial Seed Botting.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-frlg-tips-rng/": {
+    meta: {
+      id: "/frlg-tips-rng/",
+      categories: ["FireRed and LeafGreen"],
+      section: "rng_technique",
+      guideVariants: ["retail", "cfw-emu"],
+      guideKey: "true-Basic rules of Gen 3 RNG",
+      isNew: false,
+      title: "火红/叶绿乱数基础",
+      navDrawerTitle: "火红/叶绿乱数基础",
+      description: "了解火红/叶绿的帧数推进方式及提高乱数稳定性的技巧。",
+      slug: "/zh-frlg-tips-rng/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/frlg-tips-rng/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-frlg-tips-rng/",
+      file: "guides/Translations/zh/Gen 3/FireRed and LeafGreen/Basic Rules of RNG.mdx",
+      translations: { en: "/frlg-tips-rng/", zh: "/zh-frlg-tips-rng/" },
+      guideGroupId: "zh:true-Basic rules of Gen 3 RNG:FireRed and LeafGreen",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 3/FireRed and LeafGreen/Basic Rules of RNG.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/FireRed and LeafGreen/Basic Rules of RNG.mdx?raw"
       );
       return file.default;
     }),
@@ -15063,6 +16600,109 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-install-capturesight/": {
+    meta: {
+      id: "/install-capturesight/",
+      categories: [
+        "Sword and Shield",
+        "Brilliant Diamond and Shining Pearl",
+        "Legends Arceus",
+      ],
+      section: "tool",
+      guideVariants: null,
+      guideKey: "false-CaptureSight",
+      isNew: false,
+      title: "安装 CaptureSight",
+      navDrawerTitle: "CaptureSight",
+      description:
+        "学习在 Switch 上安装 CaptureSight，辅助乱数操作并获取理想的宝可梦。",
+      slug: "/zh-install-capturesight/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/install-capturesight/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-install-capturesight/",
+      file: "guides/Translations/zh/Tools and Emulators/CaptureSight Install.mdx",
+      translations: {
+        fr: "/fr-install-capturesight/",
+        en: "/install-capturesight/",
+        zh: "/zh-install-capturesight/",
+      },
+      guideGroupId:
+        "zh:false-CaptureSight:Brilliant Diamond and Shining Pearl|Legends Arceus|Sword and Shield",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Tools and Emulators/CaptureSight Install.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Tools and Emulators/CaptureSight Install.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-install-pokereader-emu/": {
+    meta: {
+      id: "/install-pokereader-emu/",
+      categories: [
+        "Dream Radar",
+        "Bank and Transporter",
+        "X and Y",
+        "Omega Ruby and Alpha Sapphire",
+        "Sun and Moon",
+        "Ultra Sun and Ultra Moon",
+      ],
+      section: "tool",
+      guideVariants: null,
+      guideKey: "false-PokeReader Azahar",
+      isNew: false,
+      title: "在 Azahar 中安装 PokeReader",
+      navDrawerTitle: "在 Azahar 中安装 PokeReader",
+      description: "学习在 3DS 模拟器中安装 PokeReader，辅助乱数操作。",
+      slug: "/zh-install-pokereader-emu/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/install-pokereader-emu/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-29",
+      type: "translatedGuide",
+      canonical: "/zh-install-pokereader-emu/",
+      file: "guides/Translations/zh/Tools and Emulators/Emu PokeReader.mdx",
+      translations: {
+        en: "/install-pokereader-emu/",
+        zh: "/zh-install-pokereader-emu/",
+      },
+      guideGroupId:
+        "zh:false-PokeReader Azahar:Bank and Transporter|Dream Radar|Omega Ruby and Alpha Sapphire|Sun and Moon|Ultra Sun and Ultra Moon|X and Y",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Tools and Emulators/Emu PokeReader.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Tools and Emulators/Emu PokeReader.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-install-pokereader/": {
     meta: {
       id: "/install-pokereader/",
@@ -15197,6 +16837,59 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Tools and Emulators/mGBA Setup.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-misc-3ds-ips-luma-citra/": {
+    meta: {
+      id: "/misc-3ds-ips-luma-citra/",
+      categories: [
+        "Dream Radar",
+        "Bank and Transporter",
+        "X and Y",
+        "Omega Ruby and Alpha Sapphire",
+        "Sun and Moon",
+        "Ultra Sun and Ultra Moon",
+      ],
+      section: "supporting_info",
+      guideVariants: null,
+      guideKey: "false-Using IPS Patches",
+      isNew: false,
+      title: "在 3DS 或模拟器中使用 IPS 补丁",
+      navDrawerTitle: "使用 IPS 补丁",
+      description:
+        "学习在 Luma3DS、Azahar 或 Citra 中使用 IPS 补丁，并合并多个补丁。",
+      slug: "/zh-misc-3ds-ips-luma-citra/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/misc-3ds-ips-luma-citra/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-misc-3ds-ips-luma-citra/",
+      file: "guides/Translations/zh/Tools and Emulators/Using IPS Patches with Luma and Citra.mdx",
+      translations: {
+        en: "/misc-3ds-ips-luma-citra/",
+        zh: "/zh-misc-3ds-ips-luma-citra/",
+      },
+      guideGroupId:
+        "zh:false-Using IPS Patches:Bank and Transporter|Dream Radar|Omega Ruby and Alpha Sapphire|Sun and Moon|Ultra Sun and Ultra Moon|X and Y",
+      guideVariantLinks: null,
+      displayAttributes: ["video_guide", "web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Tools and Emulators/Using IPS Patches with Luma and Citra.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Tools and Emulators/Using IPS Patches with Luma and Citra.mdx?raw"
       );
       return file.default;
     }),
@@ -15375,6 +17068,52 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Tools and Emulators/No Dolphin Patch.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-offline-bank-transporter-mod/": {
+    meta: {
+      id: "/offline-bank-transporter-mod/",
+      categories: ["Bank and Transporter"],
+      section: "patch",
+      guideVariants: null,
+      guideKey: "false-Bank & Transporter Offline Mod",
+      isNew: false,
+      title: "宝可梦虚拟银行与宝可传送离线及 SD 重定向补丁",
+      navDrawerTitle: "虚拟银行与宝可传送离线补丁",
+      description:
+        "通过离线补丁将虚拟银行保存在 SD 卡中，使虚拟银行与宝可传送无需服务器也能使用。",
+      slug: "/zh-offline-bank-transporter-mod/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-10-11",
+      translation: { enSlug: "/offline-bank-transporter-mod/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-offline-bank-transporter-mod/",
+      file: "guides/Translations/zh/Tools and Emulators/Transporter Patches.mdx",
+      translations: {
+        en: "/offline-bank-transporter-mod/",
+        zh: "/zh-offline-bank-transporter-mod/",
+      },
+      guideGroupId:
+        "zh:false-Bank & Transporter Offline Mod:Bank and Transporter",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Tools and Emulators/Transporter Patches.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Tools and Emulators/Transporter Patches.mdx?raw"
       );
       return file.default;
     }),
@@ -15585,6 +17324,253 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-retail-bw-entralink/": {
+    meta: {
+      id: "/retail-bw-entralink/",
+      categories: ["Black and White"],
+      section: "pokemon_rng",
+      guideVariants: ["retail"],
+      guideKey: "true-Entralink RNG",
+      isNew: false,
+      title: "黑/白实机连入乱数",
+      navDrawerTitle: "连入乱数",
+      description:
+        "学习在黑/白的连入之森中进行乱数，包括阿尔宙斯等活动限定宝可梦。",
+      slug: "/zh-retail-bw-entralink/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-bw-entralink/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-29",
+      type: "translatedGuide",
+      canonical: "/zh-retail-bw-entralink/",
+      file: "guides/Translations/zh/Gen 5/Retail Entralink.mdx",
+      translations: {
+        en: "/retail-bw-entralink/",
+        zh: "/zh-retail-bw-entralink/",
+      },
+      guideGroupId: "zh:true-Entralink RNG:Black and White",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 5/Retail Entralink.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 5/Retail Entralink.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-bw-starter/": {
+    meta: {
+      id: "/retail-bw-starter/",
+      categories: ["Black and White"],
+      section: "pokemon_rng",
+      guideVariants: ["retail"],
+      guideKey: "false-Starter RNG",
+      isNew: false,
+      title: "黑/白实机御三家乱数",
+      navDrawerTitle: "御三家乱数",
+      description: "学习在黑/白实机中获得异色及高个体御三家。",
+      slug: "/zh-retail-bw-starter/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-03-29",
+      translation: { enSlug: "/retail-bw-starter/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-retail-bw-starter/",
+      file: "guides/Translations/zh/Gen 5/BW Retail Starter.mdx",
+      translations: { en: "/retail-bw-starter/", zh: "/zh-retail-bw-starter/" },
+      guideGroupId: "zh:false-Starter RNG:Black and White",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 5/BW Retail Starter.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 5/BW Retail Starter.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-dppt-egg/": {
+    meta: {
+      id: "/retail-dppt-egg/",
+      categories: ["Diamond, Pearl, and Platinum"],
+      section: "pokemon_rng",
+      guideVariants: ["retail"],
+      guideKey: "false-Egg RNG",
+      isNew: false,
+      title: "钻石/珍珠/白金实机孵化乱数",
+      navDrawerTitle: "孵化乱数",
+      description: "学习在钻石、珍珠和白金中获得理想个体、性格及异色的蛋。",
+      slug: "/zh-retail-dppt-egg/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-07-04",
+      translation: { enSlug: "/retail-dppt-egg/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-retail-dppt-egg/",
+      file: "guides/Translations/zh/Gen 4/Retail Egg.mdx",
+      translations: { en: "/retail-dppt-egg/", zh: "/zh-retail-dppt-egg/" },
+      guideGroupId: "zh:false-Egg RNG:Diamond, Pearl, and Platinum",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 4/Retail Egg.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Retail Egg.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-dppt-honey-pokemon/": {
+    meta: {
+      id: "/retail-dppt-honey-pokemon/",
+      categories: ["Diamond, Pearl, and Platinum"],
+      section: "pokemon_rng",
+      guideVariants: ["retail"],
+      guideKey: "false-Honey Pokémon RNG",
+      isNew: false,
+      title: "钻石/珍珠/白金蜜树宝可梦乱数",
+      navDrawerTitle: "蜜树宝可梦乱数",
+      description:
+        "学习在钻石、珍珠和白金中获得理想个体、性格及异色的蜜树宝可梦。",
+      slug: "/zh-retail-dppt-honey-pokemon/",
+      isRoughDraft: false,
+      orderPriority: 3,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-05-31",
+      translation: { enSlug: "/retail-dppt-honey-pokemon/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-retail-dppt-static/",
+      file: "guides/Translations/zh/Gen 4/Retail Static.mdx",
+      translations: {
+        en: "/retail-dppt-honey-pokemon/",
+        zh: "/zh-retail-dppt-honey-pokemon/",
+      },
+      guideGroupId: "zh:false-Honey Pokémon RNG:Diamond, Pearl, and Platinum",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 4/Retail Static.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Retail Static.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-dppt-honey-tree/": {
+    meta: {
+      id: "/retail-dppt-honey-tree/",
+      categories: ["Diamond, Pearl, and Platinum"],
+      section: "other_rng",
+      guideVariants: ["retail"],
+      guideKey: "false-Honey Tree RNG",
+      isNew: false,
+      title: "钻石/珍珠/白金蜜树设置乱数",
+      navDrawerTitle: "蜜树设置乱数",
+      description:
+        "在钻石、珍珠和白金中，通过蜜树设置乱数获得指定宝可梦，包括小卡比兽和三蜜蜂。",
+      slug: "/zh-retail-dppt-honey-tree/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-05-31",
+      translation: { enSlug: "/retail-dppt-honey-tree/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-retail-dppt-honey-tree/",
+      file: "guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Retail Honey Tree.mdx",
+      translations: {
+        en: "/retail-dppt-honey-tree/",
+        zh: "/zh-retail-dppt-honey-tree/",
+      },
+      guideGroupId: "zh:false-Honey Tree RNG:Diamond, Pearl, and Platinum",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Retail Honey Tree.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Retail Honey Tree.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-dppt-lottery/": {
+    meta: {
+      id: "/retail-dppt-lottery/",
+      categories: ["Diamond, Pearl, and Platinum"],
+      section: "other_rng",
+      guideVariants: ["retail"],
+      guideKey: "false-Lottery RNG",
+      isNew: false,
+      title: "钻石/珍珠/白金抽奖乱数",
+      navDrawerTitle: "抽奖乱数",
+      description:
+        "通过抽奖乱数，在钻石、珍珠和白金中反复获得大师球及学习装置。",
+      slug: "/zh-retail-dppt-lottery/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-07-19",
+      translation: { enSlug: "/retail-dppt-lottery/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-retail-dppt-lottery/",
+      file: "guides/Translations/zh/Gen 4/Lottery.mdx",
+      translations: {
+        en: "/retail-dppt-lottery/",
+        zh: "/zh-retail-dppt-lottery/",
+      },
+      guideGroupId: "zh:false-Lottery RNG:Diamond, Pearl, and Platinum",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 4/Lottery.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Lottery.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-retail-dppt-starter/": {
     meta: {
       id: "/retail-dppt-starter/",
@@ -15624,6 +17610,87 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 4/Starters.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-dppt-static/": {
+    meta: {
+      id: "/retail-dppt-static/",
+      categories: ["Diamond, Pearl, and Platinum"],
+      section: "pokemon_rng",
+      guideVariants: ["retail"],
+      guideKey: "false-Legend, Gift, and Fossil RNG",
+      isNew: false,
+      title: "钻石/珍珠/白金传说、赠送与化石乱数",
+      navDrawerTitle: "传说、赠送与化石乱数",
+      description:
+        "学习在钻石、珍珠和白金中，对赠送、传说、化石、NPC 交换及其他定点宝可梦进行乱数，获得理想个体、性格和异色。",
+      slug: "/zh-retail-dppt-static/",
+      isRoughDraft: false,
+      orderPriority: 2,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-04-05",
+      translation: { enSlug: "/retail-dppt-static/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-retail-dppt-static/",
+      file: "guides/Translations/zh/Gen 4/Retail Static.mdx",
+      translations: {
+        en: "/retail-dppt-static/",
+        zh: "/zh-retail-dppt-static/",
+      },
+      guideGroupId:
+        "zh:false-Legend, Gift, and Fossil RNG:Diamond, Pearl, and Platinum",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 4/Retail Static.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Retail Static.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-dppt-swarm/": {
+    meta: {
+      id: "/retail-dppt-swarm/",
+      categories: ["Diamond, Pearl, and Platinum"],
+      section: "pokemon_rng",
+      guideVariants: ["retail"],
+      guideKey: "false-Swarm RNG",
+      isNew: false,
+      title: "钻石/珍珠/白金大量出现乱数",
+      navDrawerTitle: "大量出现乱数",
+      description: "学习在钻石、珍珠和白金中控制大量出现的宝可梦。",
+      slug: "/zh-retail-dppt-swarm/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-07-26",
+      translation: { enSlug: "/retail-dppt-swarm/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-retail-hgss-swarm/",
+      file: "guides/Translations/zh/Gen 4/Swarm.mdx",
+      translations: { en: "/retail-dppt-swarm/", zh: "/zh-retail-dppt-swarm/" },
+      guideGroupId: "zh:false-Swarm RNG:Diamond, Pearl, and Platinum",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 4/Swarm.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Swarm.mdx?raw"
       );
       return file.default;
     }),
@@ -15747,6 +17814,130 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 4/Starters.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-hgss-swarm/": {
+    meta: {
+      id: "/retail-hgss-swarm/",
+      categories: ["HeartGold and SoulSilver"],
+      section: "pokemon_rng",
+      guideVariants: ["retail"],
+      guideKey: "false-Swarm RNG",
+      isNew: false,
+      title: "心金/魂银大量出现乱数",
+      navDrawerTitle: "大量出现乱数",
+      description: "学习在心金/魂银中控制大量出现的宝可梦。",
+      slug: "/zh-retail-hgss-swarm/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-07-26",
+      translation: { enSlug: "/retail-hgss-swarm/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-retail-hgss-swarm/",
+      file: "guides/Translations/zh/Gen 4/Swarm.mdx",
+      translations: { en: "/retail-hgss-swarm/", zh: "/zh-retail-hgss-swarm/" },
+      guideGroupId: "zh:false-Swarm RNG:HeartGold and SoulSilver",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 4/Swarm.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Swarm.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-hgss-voltorb-flip/": {
+    meta: {
+      id: "/retail-hgss-voltorb-flip/",
+      categories: ["HeartGold and SoulSilver"],
+      section: "other_rng",
+      guideVariants: ["retail"],
+      guideKey: "false-Voltorb Flip RNG",
+      isNew: false,
+      title: "心金/魂银霹雳电球翻牌乱数",
+      navDrawerTitle: "霹雳电球翻牌乱数",
+      description:
+        "预测心金/魂银霹雳电球翻牌的牌面，安全翻牌并获得游戏厅代币，用于兑换多边兽、伊布、迷你龙等奖品。",
+      slug: "/zh-retail-hgss-voltorb-flip/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-07-26",
+      translation: { enSlug: "/retail-hgss-voltorb-flip/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-retail-hgss-voltorb-flip/",
+      file: "guides/Translations/zh/Gen 4/Voltorb Flip.mdx",
+      translations: {
+        en: "/retail-hgss-voltorb-flip/",
+        zh: "/zh-retail-hgss-voltorb-flip/",
+      },
+      guideGroupId: "zh:false-Voltorb Flip RNG:HeartGold and SoulSilver",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 4/Voltorb Flip.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Voltorb Flip.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-or-emulator/": {
+    meta: {
+      id: "/retail-or-emulator/",
+      categories: ["Home"],
+      section: "getting_started",
+      guideVariants: null,
+      guideKey: "false-Pick Retail or Emulator",
+      isNew: false,
+      title: "选择实机还是模拟器",
+      navDrawerTitle: "选择实机还是模拟器",
+      description: "了解实机与模拟器上的乱数操作，选择适合自己的方式。",
+      slug: "/zh-retail-or-emulator/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-or-emulator/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-retail-or-emulator/",
+      file: "guides/Translations/zh/Getting Started/Retail or Emulator.mdx",
+      translations: {
+        en: "/retail-or-emulator/",
+        zh: "/zh-retail-or-emulator/",
+      },
+      guideGroupId: "zh:false-Pick Retail or Emulator:Home",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Getting Started/Retail or Emulator.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Getting Started/Retail or Emulator.mdx?raw"
       );
       return file.default;
     }),
@@ -16477,6 +18668,138 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-retail-swsh-get-seed-with-cfw/": {
+    meta: {
+      id: "/retail-swsh-get-seed-with-cfw/",
+      categories: ["Sword and Shield"],
+      section: "rng_technique",
+      guideVariants: ["cfw-emu"],
+      guideKey: "false-Find Raid Seed",
+      isNew: false,
+      title: "剑/盾：使用自制固件查找团体战种子",
+      navDrawerTitle: "查找团体战种子",
+      description: "通过已安装自制固件的 Switch，查找剑/盾极巨团体战种子。",
+      slug: "/zh-retail-swsh-get-seed-with-cfw/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: {
+        enSlug: "/retail-swsh-get-seed-with-cfw/",
+        language: "zh",
+      },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-retail-swsh-get-seed-with-cfw/",
+      file: "guides/Translations/zh/Sword and Shield/Get Raid Seed With CFW.mdx",
+      translations: {
+        en: "/retail-swsh-get-seed-with-cfw/",
+        zh: "/zh-retail-swsh-get-seed-with-cfw/",
+      },
+      guideGroupId: "zh:false-Find Raid Seed:Sword and Shield",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Sword and Shield/Get Raid Seed With CFW.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Sword and Shield/Get Raid Seed With CFW.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-swsh-get-seed-without-cfw/": {
+    meta: {
+      id: "/retail-swsh-get-seed-without-cfw/",
+      categories: ["Sword and Shield"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "false-Find Raid Seed",
+      isNew: false,
+      title: "剑/盾：无需自制固件查找团体战种子",
+      navDrawerTitle: "查找团体战种子",
+      description: "在未破解的 Switch 上查找剑/盾极巨团体战种子。",
+      slug: "/zh-retail-swsh-get-seed-without-cfw/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: {
+        enSlug: "/retail-swsh-get-seed-without-cfw/",
+        language: "zh",
+      },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-retail-swsh-get-seed-without-cfw/",
+      file: "guides/Translations/zh/Sword and Shield/Get Raid Seed Without CFW.mdx",
+      translations: {
+        en: "/retail-swsh-get-seed-without-cfw/",
+        zh: "/zh-retail-swsh-get-seed-without-cfw/",
+      },
+      guideGroupId: "zh:false-Find Raid Seed:Sword and Shield",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Sword and Shield/Get Raid Seed Without CFW.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Sword and Shield/Get Raid Seed Without CFW.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-swsh-raid/": {
+    meta: {
+      id: "/retail-swsh-raid/",
+      categories: ["Sword and Shield"],
+      section: "pokemon_rng",
+      guideVariants: ["retail", "cfw-emu"],
+      guideKey: "false-Raid RNG",
+      isNew: false,
+      title: "剑/盾极巨团体战乱数",
+      navDrawerTitle: "团体战乱数",
+      description: "学习在剑/盾的巢穴中进行团体战乱数，包括超极巨化宝可梦。",
+      slug: "/zh-retail-swsh-raid/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-swsh-raid/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-retail-swsh-raid/",
+      file: "guides/Translations/zh/Sword and Shield/Raid RNG.mdx",
+      translations: { en: "/retail-swsh-raid/", zh: "/zh-retail-swsh-raid/" },
+      guideGroupId: "zh:false-Raid RNG:Sword and Shield",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Sword and Shield/Raid RNG.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Sword and Shield/Raid RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-retail-usum-egg-mmsc/": {
     meta: {
       id: "/retail-usum-egg-mmsc/",
@@ -16872,6 +19195,47 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-retail-usum-starter/": {
+    meta: {
+      id: "/retail-usum-starter/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "true-Starter RNG",
+      isNew: false,
+      title: "究极之日/究极之月御三家乱数",
+      navDrawerTitle: "御三家乱数",
+      description: "学习在究极之日/究极之月中获得理想个体、性格及异色御三家。",
+      slug: "/zh-retail-usum-starter/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-starter/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-retail-usum-starter/",
+      file: "guides/Translations/zh/Gen 7/Starters.mdx",
+      translations: {
+        en: "/retail-usum-starter/",
+        zh: "/zh-retail-usum-starter/",
+      },
+      guideGroupId: "zh:true-Starter RNG:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Starters.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Starters.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-retail-usum-stationary/": {
     meta: {
       id: "/retail-usum-stationary/",
@@ -17254,6 +19618,47 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-rs-initial-seed/": {
+    meta: {
+      id: "/rs-initial-seed/",
+      categories: ["Ruby and Sapphire"],
+      section: "rng_technique",
+      guideVariants: ["cfw-emu"],
+      guideKey: "true-Initial Seed RNG",
+      isNew: false,
+      title: "红宝石/蓝宝石初始种子乱数",
+      navDrawerTitle: "初始种子乱数",
+      description: "学习如何在红宝石/蓝宝石中命中目标初始种子。",
+      slug: "/zh-rs-initial-seed/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/rs-initial-seed/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-rs-initial-seed/",
+      file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Initial Seed RNG.mdx",
+      translations: { en: "/rs-initial-seed/", zh: "/zh-rs-initial-seed/" },
+      guideGroupId: "zh:true-Initial Seed RNG:Ruby and Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Initial Seed RNG.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Initial Seed RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-rs-mirage-island/": {
     meta: {
       id: "/rs-mirage-island/",
@@ -17425,6 +19830,208 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-rs-tips-rng/": {
+    meta: {
+      id: "/rs-tips-rng/",
+      categories: ["Ruby and Sapphire"],
+      section: "rng_technique",
+      guideVariants: ["retail", "cfw-emu"],
+      guideKey: "true-RNG Info",
+      isNew: false,
+      title: "红宝石/蓝宝石乱数基础",
+      navDrawerTitle: "乱数基础",
+      description: "了解红宝石/蓝宝石的帧数推进与稳定乱数结果的技巧。",
+      slug: "/zh-rs-tips-rng/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/rs-tips-rng/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-rs-tips-rng/",
+      file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Basic Rules of RNG.mdx",
+      translations: { en: "/rs-tips-rng/", zh: "/zh-rs-tips-rng/" },
+      guideGroupId: "zh:true-RNG Info:Ruby and Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Basic Rules of RNG.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Basic Rules of RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-sysbot-lpa-mmo/": {
+    meta: {
+      id: "/sysbot-lpa-mmo/",
+      categories: ["Legends Arceus"],
+      section: "tool",
+      guideVariants: null,
+      guideKey: "false-MMO RNG",
+      isNew: false,
+      title: "传说 阿尔宙斯大大大量出现乱数",
+      navDrawerTitle: "大大大量出现乱数",
+      description:
+        "使用 Sysbot 与 PermuteMMO，在传说 阿尔宙斯的大大大量出现中寻找异色宝可梦。",
+      slug: "/zh-sysbot-lpa-mmo/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/sysbot-lpa-mmo/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-sysbot-lpa-mmo/",
+      file: "guides/Translations/zh/Legends Arceus/MMO.mdx",
+      translations: { en: "/sysbot-lpa-mmo/", zh: "/zh-sysbot-lpa-mmo/" },
+      guideGroupId: "zh:false-MMO RNG:Legends Arceus",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Legends Arceus/MMO.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Legends Arceus/MMO.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-transporter-rng-offline/": {
+    meta: {
+      id: "/transporter-rng-offline/",
+      categories: ["Bank and Transporter"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "false-Offline Patch RNG",
+      isNew: false,
+      title: "使用离线补丁进行宝可传送乱数",
+      navDrawerTitle: "离线补丁乱数",
+      description: "使用离线补丁稳定宝可传送的延迟，更可靠地进行个体值乱数。",
+      slug: "/zh-transporter-rng-offline/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/transporter-rng-offline/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-transporter-rng-offline/",
+      file: "guides/Translations/zh/Transporter/Transporter with Offline Patch.mdx",
+      translations: {
+        en: "/transporter-rng-offline/",
+        zh: "/zh-transporter-rng-offline/",
+      },
+      guideGroupId: "zh:false-Offline Patch RNG:Bank and Transporter",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Transporter/Transporter with Offline Patch.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Transporter/Transporter with Offline Patch.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-transporter-rng/": {
+    meta: {
+      id: "/transporter-rng/",
+      categories: ["Bank and Transporter"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "false-Transporter RNG",
+      isNew: false,
+      title: "第一、第二世代宝可传送乱数",
+      navDrawerTitle: "宝可传送乱数",
+      description:
+        "通过宝可传送，对 VC 宝可梦进行个体值乱数，获得完美六项个体。",
+      slug: "/zh-transporter-rng/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2025-05-08",
+      translation: { enSlug: "/transporter-rng/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-transporter-rng/",
+      file: "guides/Translations/zh/Transporter/Transporter.mdx",
+      translations: { en: "/transporter-rng/", zh: "/zh-transporter-rng/" },
+      guideGroupId: "zh:false-Transporter RNG:Bank and Transporter",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Transporter/Transporter.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Transporter/Transporter.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-what-is-rng/": {
+    meta: {
+      id: "/what-is-rng/",
+      categories: ["Home"],
+      section: "getting_started",
+      guideVariants: null,
+      guideKey: "false-What is RNG?",
+      isNew: false,
+      title: "什么是乱数？",
+      navDrawerTitle: "什么是乱数？",
+      description: "面向新手的宝可梦乱数操作入门介绍。",
+      slug: "/zh-what-is-rng/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/what-is-rng/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-what-is-rng/",
+      file: "guides/Translations/zh/Getting Started/What Is RNG.mdx",
+      translations: { en: "/what-is-rng/", zh: "/zh-what-is-rng/" },
+      guideGroupId: "zh:false-What is RNG?:Home",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/zh/Getting Started/What Is RNG.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Getting Started/What Is RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-wishing-star-jirachi/": {
     meta: {
       id: "/wishing-star-jirachi/",
@@ -17547,6 +20154,47 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 6/PokeRadar.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-your-first-rng/": {
+    meta: {
+      id: "/your-first-rng/",
+      categories: ["Home"],
+      section: "getting_started",
+      guideVariants: null,
+      guideKey: "false-Your First RNG",
+      isNew: false,
+      title: "你的第一次乱数",
+      navDrawerTitle: "你的第一次乱数",
+      description: "学习通过乱数操作获得你的第一只异色宝可梦。",
+      slug: "/zh-your-first-rng/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/your-first-rng/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-10-28",
+      type: "translatedGuide",
+      canonical: "/zh-your-first-rng/",
+      file: "guides/Translations/zh/Getting Started/Your First Shiny.mdx",
+      translations: { en: "/your-first-rng/", zh: "/zh-your-first-rng/" },
+      guideGroupId: "zh:false-Your First RNG:Home",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Getting Started/Your First Shiny.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Getting Started/Your First Shiny.mdx?raw"
       );
       return file.default;
     }),
@@ -17849,8 +20497,17 @@ export const guideSlugs = [
   "/zh-3ds-alt-settings/",
   "/zh-3ds-helper/",
   "/zh-bdsp-advance-rng/",
+  "/zh-bdsp-chatot/",
+  "/zh-bdsp-emulator-setup/",
+  "/zh-bdsp-pokefinder/",
+  "/zh-bw-emu-starter/",
   "/zh-bw2-egg/",
+  "/zh-cfw-bdsp-egg/",
+  "/zh-cfw-bdsp-stationary/",
+  "/zh-cfw-bdsp-tidandsid/",
+  "/zh-cfw-bdsp-wild/",
   "/zh-channel-jirachi/",
+  "/zh-citrarng-setup/",
   "/zh-connect-dolphin-to-gba/",
   "/zh-consistent-platinum-rng/",
   "/zh-delete-pokemon-save/",
@@ -17861,24 +20518,40 @@ export const guideSlugs = [
   "/zh-dppt-initial-seed-retail/",
   "/zh-dppt-initial-seed/",
   "/zh-dppt-pokeradar-rng/",
+  "/zh-dppt-setup-rng/",
   "/zh-dppt-tid-sid/",
   "/zh-dppt-wild/",
+  "/zh-dream-radar-cart-patches/",
+  "/zh-dream-radar-patches/",
   "/zh-e-tips-rng/",
+  "/zh-emerald-advancing-rng-techniques/",
+  "/zh-emerald-battle-video/",
+  "/zh-emerald-largest-lotad-seedot/",
   "/zh-emerald-mirage-island/",
   "/zh-emerald-overview/",
+  "/zh-emerald-painting-reseeding/",
   "/zh-emerald-painting-rng/",
   "/zh-emerald-pokerus-emu/",
+  "/zh-emerald-pokerus-retail/",
+  "/zh-emerald-rng-with-ace/",
   "/zh-emerald-shiny-starter/",
   "/zh-emerald-sid-feebas/",
+  "/zh-emerald-static/",
+  "/zh-emerald-wild/",
+  "/zh-emu-bw-egg/",
   "/zh-emulator-b2w2-dream-radar/",
   "/zh-emulator-b2w2-runasdate-inital-seed/",
+  "/zh-emulator-b2w2-wild/",
   "/zh-emulator-bw-entralink/",
   "/zh-emulator-bw-find-ds-parameters/",
   "/zh-emulator-bw-roamers/",
   "/zh-emulator-bw-runasdate-initial-seed/",
   "/zh-emulator-bw-white-forest/",
+  "/zh-emulator-bw-wild/",
+  "/zh-emulator-colosseum-general/",
   "/zh-emulator-dppt-cute-charm/",
   "/zh-emulator-dppt-egg/",
+  "/zh-emulator-dppt-pokefinder-setup/",
   "/zh-emulator-dppt-stationary/",
   "/zh-emulator-dppt-tid-sid/",
   "/zh-emulator-emerald-egg/",
@@ -17887,15 +20560,23 @@ export const guideSlugs = [
   "/zh-emulator-frlg-wild/",
   "/zh-emulator-hgss-cute-charm/",
   "/zh-emulator-hgss-egg/",
+  "/zh-emulator-hgss-special-wild/",
   "/zh-emulator-hgss-stationary/",
+  "/zh-emulator-hgss-tid-sid/",
+  "/zh-emulator-hgss-wild/",
   "/zh-emulator-oras-dexnav/",
+  "/zh-emulator-rs-dead-battery-stationary/",
   "/zh-emulator-rs-egg/",
+  "/zh-emulator-rs-live-battery-tid/",
   "/zh-emulator-rs-stationary/",
+  "/zh-emulator-rs-wild/",
   "/zh-emulator-rs-wishmaker/",
   "/zh-emulator-sm-time-finder/",
   "/zh-emulator-usum-time-finder/",
+  "/zh-freeze-time-usum-fossil/",
   "/zh-frlg-gen3-sid/",
   "/zh-frlg-seeding-bot/",
+  "/zh-frlg-tips-rng/",
   "/zh-gba-methods-lead-impact/",
   "/zh-gba-methods/",
   "/zh-gba-overview/",
@@ -17910,22 +20591,37 @@ export const guideSlugs = [
   "/zh-hgss-initial-seed/",
   "/zh-hgss-rng-advance/",
   "/zh-hgss-tid-sid/",
+  "/zh-install-capturesight/",
+  "/zh-install-pokereader-emu/",
   "/zh-install-pokereader/",
   "/zh-meteor-jirachi/",
   "/zh-mgba-setup/",
+  "/zh-misc-3ds-ips-luma-citra/",
   "/zh-misc-3ds-island-scan-sm/",
   "/zh-misc-3ds-island-scan-usum/",
   "/zh-misc-dolphin-gba-bios/",
   "/zh-no-dolphin-patch/",
+  "/zh-offline-bank-transporter-mod/",
   "/zh-oras-mirage-spots/",
   "/zh-oras-remove-time-penalty/",
   "/zh-pal-xd-eevee/",
   "/zh-pcalc-xy-friend-safari/",
   "/zh-pcalc-xy-tid/",
+  "/zh-retail-bw-entralink/",
+  "/zh-retail-bw-starter/",
+  "/zh-retail-dppt-egg/",
+  "/zh-retail-dppt-honey-pokemon/",
+  "/zh-retail-dppt-honey-tree/",
+  "/zh-retail-dppt-lottery/",
   "/zh-retail-dppt-starter/",
+  "/zh-retail-dppt-static/",
+  "/zh-retail-dppt-swarm/",
   "/zh-retail-emerald-egg/",
   "/zh-retail-emerald-wild/",
   "/zh-retail-hgss-starter/",
+  "/zh-retail-hgss-swarm/",
+  "/zh-retail-hgss-voltorb-flip/",
+  "/zh-retail-or-emulator/",
   "/zh-retail-oras-egg-mmsc/",
   "/zh-retail-oras-egg-no-mmsc/",
   "/zh-retail-oras-tid/",
@@ -17943,6 +20639,9 @@ export const guideSlugs = [
   "/zh-retail-sm-timeleap/",
   "/zh-retail-sm-timeline/",
   "/zh-retail-sm-wild/",
+  "/zh-retail-swsh-get-seed-with-cfw/",
+  "/zh-retail-swsh-get-seed-without-cfw/",
+  "/zh-retail-swsh-raid/",
   "/zh-retail-usum-egg-mmsc/",
   "/zh-retail-usum-egg-no-mmsc/",
   "/zh-retail-usum-egg-seed-no-cfw/",
@@ -17952,6 +20651,7 @@ export const guideSlugs = [
   "/zh-retail-usum-mystery-gift/",
   "/zh-retail-usum-no-cfw/",
   "/zh-retail-usum-sos/",
+  "/zh-retail-usum-starter/",
   "/zh-retail-usum-stationary/",
   "/zh-retail-usum-timeleap/",
   "/zh-retail-usum-timeline/",
@@ -17961,13 +20661,20 @@ export const guideSlugs = [
   "/zh-retail-xy-egg-no-mmsc/",
   "/zh-rs-battery/",
   "/zh-rs-gen3-sid/",
+  "/zh-rs-initial-seed/",
   "/zh-rs-mirage-island/",
   "/zh-rs-pokerus-emu/",
   "/zh-rs-pokerus-retail/",
   "/zh-rs-sid-feebas/",
+  "/zh-rs-tips-rng/",
+  "/zh-sysbot-lpa-mmo/",
+  "/zh-transporter-rng-offline/",
+  "/zh-transporter-rng/",
+  "/zh-what-is-rng/",
   "/zh-wishing-star-jirachi/",
   "/zh-xy-friend-safari-patch/",
   "/zh-xy-pokeradar/",
+  "/zh-your-first-rng/",
 ] as const;
 
 export const categories = [

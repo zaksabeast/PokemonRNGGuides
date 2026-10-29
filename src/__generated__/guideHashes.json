@@ -1179,13 +1179,49 @@
     "hash": "028d2eeff6669731313b420d75f8de3f18027f08521ed74e6a55a27c6d4bde5e",
     "lastUpdated": "2026-04-28"
   },
+  "/zh-bdsp-chatot/": {
+    "hash": "81e828ec3d75ae94298750c125d0188218f9cecf865eb227acb3c1869324b888",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-bdsp-emulator-setup/": {
+    "hash": "d56f837644666653dd9bd2750cbf4d27a0516bb3b3fc75f6476f673595711d26",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-bdsp-pokefinder/": {
+    "hash": "155cd7913b6a417990ed0b41a8c07803cd03fa58ca179a2954cf3b818fdd9e31",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-bw-emu-starter/": {
+    "hash": "a0d867196e6d677c0e67a0f1e9cdb3b8f134f51f5abb5baed1a914acc79b1d6c",
+    "lastUpdated": "2026-10-28"
+  },
   "/zh-bw2-egg/": {
     "hash": "ae505050bc0a3b0c30c6a396becabd176bcb4cd93a2389e97c69a247614b1269",
     "lastUpdated": null
   },
+  "/zh-cfw-bdsp-egg/": {
+    "hash": "5af0ee4f645723a3ef6f8869419221d1b60ef9d73b5a040454b36276585d3785",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-cfw-bdsp-stationary/": {
+    "hash": "e683b7973f37567df8d97446959477ece4f1bb65a6f4e4d106ccf2d8adcdf358",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-cfw-bdsp-tidandsid/": {
+    "hash": "67b8d264c7342bc3f8ff6b5aa94f4adbc7fce803b927dd73afcce2d0d13c4ded",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-cfw-bdsp-wild/": {
+    "hash": "1b9b944aaa07817be5c1049a31e6fad2e16efa46e9c07fc84ea3e0cebed2f6b1",
+    "lastUpdated": "2026-10-28"
+  },
   "/zh-channel-jirachi/": {
     "hash": "ab5e7f103c2fc4f5359a64cd9e318f575ccfea95b3c87ae7bf528eb738c8532a",
     "lastUpdated": "2026-03-20"
+  },
+  "/zh-citrarng-setup/": {
+    "hash": "79322a9f378464e8c71aac638fa1b56eddfc248123a19f405b6e728a084762b8",
+    "lastUpdated": "2026-10-28"
   },
   "/zh-connect-dolphin-to-gba/": {
     "hash": "ae4230215d80ba7c0d8cc72fb69e0df5a9f0fd9a17e6b3d80efee65331f4f55b",
@@ -1227,6 +1263,10 @@
     "hash": "37620a3430c9f919fead8abb1d80b64565276adc88e8c0b373965b660f64a91b",
     "lastUpdated": "2026-03-22"
   },
+  "/zh-dppt-setup-rng/": {
+    "hash": "38e429cf79fd413d3db9fc11cc7ec87c0156188c46d6a6737208e4f406dc26b8",
+    "lastUpdated": "2026-10-28"
+  },
   "/zh-dppt-tid-sid/": {
     "hash": "e03629c6da9a926d51f96d35579f1c96b3ba75ff9bee8bea59afd943d1686098",
     "lastUpdated": "2026-04-10"
@@ -1235,9 +1275,29 @@
     "hash": "0a30cdde454e802f44b6fcda1327f79d97c5f9b1a1a7bab030d0b69fe9d25ebd",
     "lastUpdated": "2026-03-20"
   },
+  "/zh-dream-radar-cart-patches/": {
+    "hash": "d3e21396a725af4a402378f19cf0a46135704489d8986fcc157bd99cdd32a4a2",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-dream-radar-patches/": {
+    "hash": "2a380d36919feeca151dbc651d8d04d3e7830fc6c524ace0d37173ed96fe9de6",
+    "lastUpdated": "2026-10-29"
+  },
   "/zh-e-tips-rng/": {
     "hash": "4b9a34c5e8f7eda05f42d1403d3688d9e6c01d03c1c02db5e63438e7075b70a5",
     "lastUpdated": "2026-05-27"
+  },
+  "/zh-emerald-advancing-rng-techniques/": {
+    "hash": "1d578d36fad614633e1ad0f2610e720396996ebde23d38b910902ad561545b88",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-emerald-battle-video/": {
+    "hash": "1f758e3ee6cdd9977bc3af8e8cd1b1e8014b804e12b8e6fe01881fad7252d1fd",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-emerald-largest-lotad-seedot/": {
+    "hash": "d89ab53b3d855038557dc02b85532026c4f5c67d63344fa0751e01f813722231",
+    "lastUpdated": "2026-10-28"
   },
   "/zh-emerald-mirage-island/": {
     "hash": "86d879d277aab2cddedac10355d6cf6dc61c385ceadd7751580878a082966fcb",
@@ -1247,6 +1307,10 @@
     "hash": "9b09625ed5959b3605c478ff5c4266b0173d78bf26a8892d2f9aebea5daa1d1a",
     "lastUpdated": "2026-05-02"
   },
+  "/zh-emerald-painting-reseeding/": {
+    "hash": "3dc31ac1591795107dbdbb279d3b999faa7d811784f36bacfc9d4b427f5fffd8",
+    "lastUpdated": "2026-10-28"
+  },
   "/zh-emerald-painting-rng/": {
     "hash": "49e182d29f7531dab02743f43d62df2e79958bf6c5d118c9622260b401940b2b",
     "lastUpdated": "2026-04-06"
@@ -1254,6 +1318,14 @@
   "/zh-emerald-pokerus-emu/": {
     "hash": "366fd0bd015d34108525dcf0171753998b0fc81481df2d5c4c0db12a7ff51b05",
     "lastUpdated": "2026-03-20"
+  },
+  "/zh-emerald-pokerus-retail/": {
+    "hash": "764ccd21890517c297b995b468fc5b37adf789a2b54654ab50bdfb5003bf64da",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-emerald-rng-with-ace/": {
+    "hash": "d46650f33b735a74d9a1251affe3f711e7c932f5c0b0bff013bdd3c0ad181f6d",
+    "lastUpdated": "2026-10-28"
   },
   "/zh-emerald-shiny-starter/": {
     "hash": "7f3892dc9eb647ba07fefcaac94066729658f46caf1532ab2facfdaee270082c",
@@ -1263,6 +1335,18 @@
     "hash": "8b399a2b81de44e7fac5e5144cafd8ef2702bb7463e62298a25391fd7697ee8e",
     "lastUpdated": "2026-03-20"
   },
+  "/zh-emerald-static/": {
+    "hash": "6efac7258664ab7652efaed5f42771184db6b17bf24a054d5be5222eb06367b0",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-emerald-wild/": {
+    "hash": "bc34f42a61896f1c63cd71544dfc8555d20bedce3401b630a14decf6f1383b1c",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-emu-bw-egg/": {
+    "hash": "65e0c9ec1e3b63e3aa9b531018b1f98fc22494e3ef0cae9c77346c033b458107",
+    "lastUpdated": "2026-10-28"
+  },
   "/zh-emulator-b2w2-dream-radar/": {
     "hash": "190e21b1531b3fbbc45a98755da1e439a88154d1de3ef4af97e738e5c8e914f0",
     "lastUpdated": "2026-03-20"
@@ -1270,6 +1354,10 @@
   "/zh-emulator-b2w2-runasdate-inital-seed/": {
     "hash": "1ea9e09ca1bc3a7fb9f98cf44a707b26d62dbbe5d93c0dda6afa59a4db536b53",
     "lastUpdated": "2026-03-20"
+  },
+  "/zh-emulator-b2w2-wild/": {
+    "hash": "6a4d0583b66319218bbce96f24875fbc6a71297ce41e837eb5d9254a93b5c9a7",
+    "lastUpdated": "2026-10-28"
   },
   "/zh-emulator-bw-entralink/": {
     "hash": "2598fa2379c98e362e6e6414d871dd54d08af4cc7260b11bf9639fea4e7d7909",
@@ -1291,6 +1379,14 @@
     "hash": "30ac21321f4ed8c1d02593385a372a4d502b2efbfae6716f0486e1f277d58162",
     "lastUpdated": "2026-03-20"
   },
+  "/zh-emulator-bw-wild/": {
+    "hash": "6a4d0583b66319218bbce96f24875fbc6a71297ce41e837eb5d9254a93b5c9a7",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-emulator-colosseum-general/": {
+    "hash": "5b94e86200628c49378ddacf2438801da05ffd4fbcde7917e8f13606af50ac2d",
+    "lastUpdated": "2026-10-28"
+  },
   "/zh-emulator-dppt-cute-charm/": {
     "hash": "93b7c6478b9b78dd55a3df40dae25525d472385aa3936a75217dee3f9ff6196c",
     "lastUpdated": "2026-03-20"
@@ -1298,6 +1394,10 @@
   "/zh-emulator-dppt-egg/": {
     "hash": "84ceafd283dbf395ae9fcb86437b67764fcf87feec1dcc51928e7a671b6d975b",
     "lastUpdated": "2026-03-20"
+  },
+  "/zh-emulator-dppt-pokefinder-setup/": {
+    "hash": "99e3a13c11c4673438240e1d04a76f184dde2c36ac76743195e3db2f606631f5",
+    "lastUpdated": "2026-10-28"
   },
   "/zh-emulator-dppt-stationary/": {
     "hash": "cd131f71cc808729b8b71fdd97d9eca3012ff701f6f9c275cb15d24b7ccc47fa",
@@ -1331,21 +1431,45 @@
     "hash": "e8da651c12a913b29b4a085bb58f73e053d3734382e8a5df650cdbf1b8455a21",
     "lastUpdated": "2026-03-20"
   },
+  "/zh-emulator-hgss-special-wild/": {
+    "hash": "27806645ab42e551574127b6473cf848f349f00cf20acc5e2ed949de549dffad",
+    "lastUpdated": "2026-10-29"
+  },
   "/zh-emulator-hgss-stationary/": {
     "hash": "f01f0932ff32aed696a88f2049e6c80668c8006d80958fb08e9f8ac40a8ed9b5",
     "lastUpdated": "2026-03-31"
+  },
+  "/zh-emulator-hgss-tid-sid/": {
+    "hash": "ab529b010165836d975ab10c552890c641da3db8061d8a81688544a0eaecafc9",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-emulator-hgss-wild/": {
+    "hash": "84b00317a7ea61c1fb17e2e07201f7c42a755203c473e868e0f3cdedc27fd041",
+    "lastUpdated": "2026-10-28"
   },
   "/zh-emulator-oras-dexnav/": {
     "hash": "bc108067f975750ae5a27444b8b25537764253e41ad3b4863a5644fc076a2ef7",
     "lastUpdated": null
   },
+  "/zh-emulator-rs-dead-battery-stationary/": {
+    "hash": "0fa80d5e2239e832e383a2f205f01da3396d9417635b8013afaa2301bdbe003e",
+    "lastUpdated": "2026-10-28"
+  },
   "/zh-emulator-rs-egg/": {
     "hash": "4c5b6098faeef475fc12806e47f6a0cf4975598e166ec703d7172e6f65f06dba",
     "lastUpdated": null
   },
+  "/zh-emulator-rs-live-battery-tid/": {
+    "hash": "5b5f1bfafda6a12a86230b8b8d9dbb8dfe780cafe101119d2dc89c92b448fc6d",
+    "lastUpdated": "2026-10-28"
+  },
   "/zh-emulator-rs-stationary/": {
     "hash": "440086023c428828bf8a8c0b0533ec60955cf629bf4659bccaa87c211db10bdc",
     "lastUpdated": null
+  },
+  "/zh-emulator-rs-wild/": {
+    "hash": "33c22120dd179be32c4e0fbd32b46f296e90e762944cbd9162575c8562a820c0",
+    "lastUpdated": "2026-10-28"
   },
   "/zh-emulator-rs-wishmaker/": {
     "hash": "ed36c3bb0a0602e35b501ff39d062c1e6af45f33cc266665b2930be8fc75f569",
@@ -1359,6 +1483,10 @@
     "hash": "f90a7d9c3a4e5f8991e27edcdced88d7d1b8b4f4ea4259d93d967763b5d3e529",
     "lastUpdated": "2026-03-20"
   },
+  "/zh-freeze-time-usum-fossil/": {
+    "hash": "527aef7d7043d5dcb7d44cd23071e8620d6419f1096a6eb93cfbbb2b6734e0ab",
+    "lastUpdated": "2026-10-28"
+  },
   "/zh-frlg-gen3-sid/": {
     "hash": "e2c37fc01901a1a787368db35ffa51714ea1ba9c14c1769f025784659a87e6df",
     "lastUpdated": "2026-03-20"
@@ -1366,6 +1494,10 @@
   "/zh-frlg-seeding-bot/": {
     "hash": "a47222ba592ffb89d3322f0b6adbbaf56b674da73e6b3ad06fa7ae4d3830aac0",
     "lastUpdated": "2026-03-20"
+  },
+  "/zh-frlg-tips-rng/": {
+    "hash": "ef5d26b063ab41cf86d895d013ed8d741e325708b662b094cc0495a3766b81cc",
+    "lastUpdated": "2026-10-28"
   },
   "/zh-gba-methods-lead-impact/": {
     "hash": "e0d062cd2acc0c7bae2276338e2ae669dfa93dcb7e35aeb0f12eb8ad2684463b",
@@ -1423,6 +1555,14 @@
     "hash": "e03629c6da9a926d51f96d35579f1c96b3ba75ff9bee8bea59afd943d1686098",
     "lastUpdated": "2026-04-10"
   },
+  "/zh-install-capturesight/": {
+    "hash": "b3f8f6946efd86a1d8d0480cc06e26ace0eaec14c3b61358dd6cf0205e8b8562",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-install-pokereader-emu/": {
+    "hash": "09185e3a1e45ba2e5aba599ebff534cec067ff703f6f9affb96fb43f8d195b59",
+    "lastUpdated": "2026-10-29"
+  },
   "/zh-install-pokereader/": {
     "hash": "0ce50cd6e1490c9aacb2784a157d623dc9c8d0c2483eae8c3cd7b97865cd5397",
     "lastUpdated": "2026-04-28"
@@ -1434,6 +1574,10 @@
   "/zh-mgba-setup/": {
     "hash": "9ade5dbb96a8af128fe4034ee39884ab697472d0be76d2c491748a38c33e74ed",
     "lastUpdated": "2026-03-20"
+  },
+  "/zh-misc-3ds-ips-luma-citra/": {
+    "hash": "c2099372f4a6ce5a458b6eead50b639696b9ea6d72b93c79b1be51cee111f6ec",
+    "lastUpdated": "2026-10-28"
   },
   "/zh-misc-3ds-island-scan-sm/": {
     "hash": "a7fabb6de6d41b8480860ec496d86008860d87ed135b1475c3bc8588919edab8",
@@ -1450,6 +1594,10 @@
   "/zh-no-dolphin-patch/": {
     "hash": "f802480c796fed0dcbb959648639e61607f6c94c1eda0a2c1217992e359bf1f5",
     "lastUpdated": "2026-04-28"
+  },
+  "/zh-offline-bank-transporter-mod/": {
+    "hash": "71e52eb073cbc1c42553882f7a0b2386cc75e0fdb1960c78653768b193421a5b",
+    "lastUpdated": "2026-10-28"
   },
   "/zh-oras-mirage-spots/": {
     "hash": "3cb95323834d5fcbb5cc52c19dbc3ce23c65978d042273064d8977e7ff31a352",
@@ -1471,9 +1619,41 @@
     "hash": "b6fefe496ac40b71b0dcd1a0ba5589955970e44470a6ac2f068e5de09d53cd7d",
     "lastUpdated": null
   },
+  "/zh-retail-bw-entralink/": {
+    "hash": "f3040572875979494e1683c6629c38da027f08b634e0ab71c91719dad0a39ab2",
+    "lastUpdated": "2026-10-29"
+  },
+  "/zh-retail-bw-starter/": {
+    "hash": "600aa6c3ae46f31ddc73aeb29b6aa5162dc43eae381da848e3482cc7899edee6",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-retail-dppt-egg/": {
+    "hash": "039c0d90882a52659a00da78eddde7eca00d834fa5eaaf29b8ae7ea758fba709",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-retail-dppt-honey-pokemon/": {
+    "hash": "44ea1ae5ec24327272381058fc002dd3dd1d7f78cad208bfdf6e147fa56a1ca5",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-retail-dppt-honey-tree/": {
+    "hash": "aa216f36a08f68d6d6486511adad89fb6495b11e53ca2355d5df1da5f0d5bb04",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-retail-dppt-lottery/": {
+    "hash": "009847b6f41eb5e611c7c2a4ca35f33299836e258b1ec43fe2aff2b867b3eeb4",
+    "lastUpdated": "2026-10-28"
+  },
   "/zh-retail-dppt-starter/": {
     "hash": "c12931cea2f9b7c8093a374fd32a2b02c9bfded3b3e4eeed3e07d0db0edbceb8",
     "lastUpdated": "2026-04-10"
+  },
+  "/zh-retail-dppt-static/": {
+    "hash": "44ea1ae5ec24327272381058fc002dd3dd1d7f78cad208bfdf6e147fa56a1ca5",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-retail-dppt-swarm/": {
+    "hash": "37e9801296efc61fa69971221138175bfb42c00946e816085b2f5f71b235d825",
+    "lastUpdated": "2026-10-28"
   },
   "/zh-retail-emerald-egg/": {
     "hash": "a57ff7173505e4e989fb45ea573a3639b4b8e76f8ecab56ddad355a1727d62e5",
@@ -1486,6 +1666,18 @@
   "/zh-retail-hgss-starter/": {
     "hash": "c12931cea2f9b7c8093a374fd32a2b02c9bfded3b3e4eeed3e07d0db0edbceb8",
     "lastUpdated": "2026-04-10"
+  },
+  "/zh-retail-hgss-swarm/": {
+    "hash": "37e9801296efc61fa69971221138175bfb42c00946e816085b2f5f71b235d825",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-retail-hgss-voltorb-flip/": {
+    "hash": "a667a9f840ec7afad0b7339870ec547d9fac98bbd423cdfa37372b62b2b80ab5",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-retail-or-emulator/": {
+    "hash": "9e29e1aa730462873a8918807f531292662580d7a21322e63341e767df2f1d4f",
+    "lastUpdated": "2026-10-28"
   },
   "/zh-retail-oras-egg-mmsc/": {
     "hash": "aee01e8464abd5b71873e8a1522cb858d1bdf1cc5775c6da2f2139dd93eec1e4",
@@ -1555,6 +1747,18 @@
     "hash": "4a86b8ec3caab5ad0c6a577db7ad38746273c21810de1e9106b5d397da2a41a3",
     "lastUpdated": "2026-03-20"
   },
+  "/zh-retail-swsh-get-seed-with-cfw/": {
+    "hash": "31328e6d7fdacefd8f04bf9b204f3261e850d4b252a7dce46dbb6070c435e3c1",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-retail-swsh-get-seed-without-cfw/": {
+    "hash": "cd69f28e2421cdee7d297041dfcb475af4b783d8d02b003662509c29c4202627",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-retail-swsh-raid/": {
+    "hash": "09f877f0bd99f58bc17aecac9ca30d59027111def8cccf7d95175d613f68e851",
+    "lastUpdated": "2026-10-28"
+  },
   "/zh-retail-usum-egg-mmsc/": {
     "hash": "ce6d5b0711a7847106258a83415ce9997dd36a06afe5ef2f614b38d1078df5c9",
     "lastUpdated": "2026-03-08"
@@ -1590,6 +1794,10 @@
   "/zh-retail-usum-sos/": {
     "hash": "29bea8c6ca415ea1086c46978d874ff190b996e515b7f5ff5ae0b840b57f7159",
     "lastUpdated": "2026-03-20"
+  },
+  "/zh-retail-usum-starter/": {
+    "hash": "2381e006c776d05a7c3944683eafdaebf59e0b40fa634c872f3a8d480bd3a94f",
+    "lastUpdated": "2026-10-28"
   },
   "/zh-retail-usum-stationary/": {
     "hash": "7b395bceb1e68fe1c26f4ef34e98f17b4364fac586669f3aa5c60189b04a72ab",
@@ -1627,6 +1835,10 @@
     "hash": "e2c37fc01901a1a787368db35ffa51714ea1ba9c14c1769f025784659a87e6df",
     "lastUpdated": "2026-03-20"
   },
+  "/zh-rs-initial-seed/": {
+    "hash": "f712b18822a628c16b93c38294d3e9472ff76dcb8c57948873d4a128b6893b45",
+    "lastUpdated": "2026-10-28"
+  },
   "/zh-rs-mirage-island/": {
     "hash": "86d879d277aab2cddedac10355d6cf6dc61c385ceadd7751580878a082966fcb",
     "lastUpdated": null
@@ -1643,6 +1855,26 @@
     "hash": "8b399a2b81de44e7fac5e5144cafd8ef2702bb7463e62298a25391fd7697ee8e",
     "lastUpdated": "2026-03-20"
   },
+  "/zh-rs-tips-rng/": {
+    "hash": "e4308dba17f92623f4972887b3cf7fddf7f24bf85e37b5b18f6efcd8976f4a80",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-sysbot-lpa-mmo/": {
+    "hash": "cf122debcdb998cc0ece280afcfc022b6a018d9054e5ce67e2ac76fd68d1961b",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-transporter-rng-offline/": {
+    "hash": "de94b3dec358f07a62850d5609e80170d6ba0eb6f97b974977fa06ffd9e435a7",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-transporter-rng/": {
+    "hash": "79bf9d26dd54cff3c62a40e4800324047807be545a39a0ddab2d41866b88018b",
+    "lastUpdated": "2026-10-28"
+  },
+  "/zh-what-is-rng/": {
+    "hash": "e1775df855f21d446cea41766f02af65ee4b3e85aa92686dc2ffe7f14c889d58",
+    "lastUpdated": "2026-10-28"
+  },
   "/zh-wishing-star-jirachi/": {
     "hash": "30204588947c22ed3a2e1c2673607b3fd7f2053b056499001e232b036c20d18f",
     "lastUpdated": null
@@ -1654,5 +1886,9 @@
   "/zh-xy-pokeradar/": {
     "hash": "b391f33bc59e87f48295fb519c40ae249e408d9f9f2cab8de9719c34c881287c",
     "lastUpdated": "2026-03-20"
+  },
+  "/zh-your-first-rng/": {
+    "hash": "795c1d1df4967695a6f17cb446572e5941c27e9090b41534bfd4307c09303482",
+    "lastUpdated": "2026-10-28"
   }
 }

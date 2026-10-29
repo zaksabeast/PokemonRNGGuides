@@ -1,0 +1,58 @@
+---
+title: "心金/魂银霹雳电球翻牌乱数"
+navDrawerTitle: "霹雳电球翻牌乱数"
+description: "预测心金/魂银霹雳电球翻牌的牌面，安全翻牌并获得游戏厅代币，用于兑换多边兽、伊布、迷你龙等奖品。"
+slug: "zh-retail-hgss-voltorb-flip"
+translation:
+  enSlug: "retail-hgss-voltorb-flip"
+  language: "zh"
+---
+
+<Stepper titles={["查找种子", "查看牌面"]}>
+
+<Step step={0}>
+
+# 查找种子
+
+1. 在霹雳电球翻牌桌前保存游戏。
+2. 软重启游戏，尽快读取存档。
+3. 通过宝可装置查看当前时间。
+4. 将日期和时间输入下方工具。
+5. 开始翻牌游戏，**不要翻任何牌**！
+6. 立即按下 `B` 退出，显示全部牌面。
+7. 点击下方每张牌进行设置，使其与游戏中的牌面一致。
+8. 点击“Generate”，从可能的种子列表中选择实际种子。
+
+<FindVoltorbFlipSeed />
+
+> [!TIP]
+> 如果没有搜索结果：
+>
+> - 再次核对牌面。
+> - 提高最大 delay。
+> - 将输入的分钟数减 1，排除查看宝可装置时已经过了一分钟的情况。
+
+</Step>
+
+<Step step={1}>
+
+# 查看牌面
+
+1. 选择要生成的牌局数量。
+2. 点击“Generate”，查看牌面。
+3. 每局先翻开全部“1”，再翻“2”，最后翻“3”。不要跳过任何数字牌，否则后续牌局预测都会错误！
+
+> [!TIP]
+> 翻牌前，可以先用游戏内的备忘功能标记所有牌，避免漏翻。
+
+<GenerateVoltorbFlipBoards />
+
+</Step>
+
+</Stepper>
+
+## 特别鸣谢
+
+- 感谢所有 [Pret](https://github.com/pret/pokeheartgold) 的贡献者。
+- Zaksabeast：制作工具及撰写指南。
+- 中文翻译：白希洛/Hakuhiro

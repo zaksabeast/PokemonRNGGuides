@@ -1,0 +1,126 @@
+---
+- title: "心金/魂银大量出现乱数"
+  navDrawerTitle: "大量出现乱数"
+  description: "学习在心金/魂银中控制大量出现的宝可梦。"
+  slug: "zh-retail-hgss-swarm"
+  translation:
+    enSlug: "retail-hgss-swarm"
+    language: "zh"
+- title: "钻石/珍珠/白金大量出现乱数"
+  navDrawerTitle: "大量出现乱数"
+  description: "学习在钻石、珍珠和白金中控制大量出现的宝可梦。"
+  slug: "zh-retail-dppt-swarm"
+  translation:
+    enSlug: "retail-dppt-swarm"
+    language: "zh"
+---
+
+<Gen4Reset />
+
+> [!NOTE]
+> 本指南为交互式教程，会根据你的设置调整操作说明！
+
+<Stepper titles={["设置", "查找种子", "选择遭遇", "获取宝可梦"]}>
+
+<Step step={0}>
+
+## 寻找目标
+
+在下方交互地图中选择游戏和目标宝可梦。
+
+<Alert type="warning" message="待补充：地图" />
+
+<SelectSwarm4Target />
+
+## 准备存档
+
+1. 钻石/珍珠/白金需要先获得宝可表的抛硬币应用。
+2. 心金/魂银需要先注册 30 号道路短裤小子阿城的电话。
+3. 按下图位置保存：钻石/珍珠/白金在祝庆市电视台门前，心金/魂银在桔梗市宝可梦学园内。这里的建立小组 NPC 将用于确定大量出现结果。
+
+<Pixelate>
+
+<EqualColumnTable>
+
+| 钻石/珍珠/白金                                                          | 心金/魂银                                                         |
+| ----------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| ![钻石珍珠白金存档位置](/images/Diamond-Pearl-Platinum/Swarm/Save.webp) | ![心金魂银存档位置](/images/HeartGold-SoulSilver/Swarm/Save.webp) |
+
+</EqualColumnTable>
+
+</Pixelate>
+
+</Step>
+
+<Step step={1}>
+
+## 查找种子
+
+1. 重启游戏，输入**读取存档时**的日期、时间及大致秒数。
+   - NDS 启动后约 15 秒。
+   - TWiLight Menu 启动后约 20 秒。
+   - 通过 3DS 启动器运行时约 30 秒。
+2. 点击“Generate”，生成可能的种子列表。
+3. 按游戏版本筛选初始种子。
+   - **心金/魂银**：通过宝可装置呼叫空木博士，根据回答点击下方对应按钮。
+   - **钻石/珍珠/白金**：使用宝可表抛硬币，根据结果点击“Heads”或“Tails”。
+
+心金/魂银的电话回答分为：
+
+- **K**：“关都地区大概还有我不了解的宝可梦，也有我还不知道的进化方式。我应该从这个角度继续研究！”
+- **E**：“宝可梦有很多不同的进化方式，有些需要满足特定条件才会进化！”
+- **P**：“感染宝可病毒的宝可梦似乎成长得更好，原因还不清楚……”
+
+> [!TIP]
+> 可以在晚上 11:50 左右开始，这样只需等待约 10 分钟就会跨日。
+> 筛选后没有结果时，可以扩大秒数和 delay 范围。仍有问题时，将秒数范围设为 0-59 搜索。
+
+<Gen4SeedFinder />
+
+</Step>
+
+<Step step={2}>
+
+## 选择遭遇
+
+<SwarmFindEncounter />
+
+</Step>
+
+<Step step={3}>
+
+## 推进乱数并获取宝可梦
+
+1. 使用下方工具追踪当前推进数。
+2. 推进到正确位置。钻石/珍珠/白金应到达带勾的结果。
+3. 到达目标后，与建立小组的 NPC 对话，创建新小组。
+4. 保存游戏，等待 DS 时钟经过午夜。
+5. 钻石/珍珠/白金可以与劲敌的妹妹对话，或查看电视新闻；心金/魂银则收听宝可装置收音机中胡桃与大木博士的“宝可梦讲座”。播报的应是目标宝可梦。
+
+   - <Pixelate>
+
+      <EqualColumnTable>
+
+     | 钻石/珍珠/白金                                                               | 心金/魂银                                                                          |
+     | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+     | ![与劲敌的妹妹对话](/images/Diamond-Pearl-Platinum/Swarm/GetThePokemon.webp) | ![收听胡桃与大木博士的广播](/images/HeartGold-SoulSilver/Swarm/GetThePokemon.webp) |
+
+      </EqualColumnTable>
+
+      </Pixelate>
+
+6. 如果没有出现目标大量出现，等待 24 小时后重试。
+
+<SwarmAdvanceFilter />
+
+**恭喜你**！操作顺利的话，应该已经刷出目标宝可梦的大量出现了。
+
+</Step>
+
+</Stepper>
+
+## 特别鸣谢
+
+- Fiask：撰写指南及制作工具。
+- Real96：[第四世代大量出现工具](https://github.com/Real96/Gen4SwarmDailyEncounterRNGTool)，本工具由该项目直接移植。
+- 中文翻译：白希洛/Hakuhiro

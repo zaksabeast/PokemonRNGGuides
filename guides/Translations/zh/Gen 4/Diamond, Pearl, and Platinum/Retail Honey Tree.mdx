@@ -1,0 +1,509 @@
+---
+title: "钻石/珍珠/白金蜜树设置乱数"
+navDrawerTitle: "蜜树设置乱数"
+description: "在钻石、珍珠和白金中，通过蜜树设置乱数获得指定宝可梦，包括小卡比兽和三蜜蜂。"
+slug: "zh-retail-dppt-honey-tree"
+translation:
+  enSlug: "retail-dppt-honey-tree"
+  language: "zh"
+---
+
+<Gen4Reset />
+
+> [!NOTE]
+> 本指南为交互式教程，会根据你的设置调整操作说明！
+
+<Gist>让蜜树出现你想要的指定宝可梦。</Gist>
+
+<Stepper titles={["设置", "查找种子", "寻找目标", "设置蜜树"]}>
+
+<Step step={0}>
+
+## 查找小卡比兽树
+
+1. 输入 TID/SID，查找你的小卡比兽树。可以参考 [TID/SID 指南](/dppt-tid-sid)获取这些数值。
+2. 点击想要进行乱数的树。
+
+<HoneyTreeTidSid />
+
+<HoneyTreeMap />
+
+<HoneyTreeTargetTree />
+
+> [!WARNING]
+> 不要连续两次使用同一棵树。必须先给另一棵树涂蜜，否则会打乱预期的乱数结果。
+
+<HoneyTreeShowIf onlyBadMunchlaxTrees>
+
+> [!CAUTION]
+> 你的小卡比兽树附近都有会干扰乱数的 NPC，乱数难度较高。
+> 可能需要多次尝试。
+>
+> <br />
+> 尝试小卡比兽前，建议先在推荐的树上练习其他宝可梦。
+
+</HoneyTreeShowIf>
+
+## 准备存档
+
+1. 队伍中至少准备一只聒噪鸟。
+2. 获得宝可表的抛硬币应用。
+3. 从花苑镇的甜甜蜜商人处购买甜甜蜜。
+4. 在目标树前保存。如果所在区域正在下雨，改在最近的城镇保存。
+
+<Pixelate>
+
+<EqualColumnTable>
+
+<HoneyTreeShowIf targetLocation="Route205South">
+
+| 甜甜蜜商人                                                    | 205 号道路南侧蜜树                                                       |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/buy-honey.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-205-south-tree.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route205North">
+
+| 甜甜蜜商人                                                    | 205 号道路北侧蜜树                                                       |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/buy-honey.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-205-north-tree.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route206">
+
+| 甜甜蜜商人                                                    | 206 号道路蜜树                                                     |
+| ------------------------------------------------------------- | ------------------------------------------------------------------ |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/buy-honey.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-206-tree.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route207">
+
+| 甜甜蜜商人                                                    | 207 号道路蜜树                                                     |
+| ------------------------------------------------------------- | ------------------------------------------------------------------ |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/buy-honey.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-207-tree.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route208">
+
+| 甜甜蜜商人                                                    | 208 号道路蜜树                                                     |
+| ------------------------------------------------------------- | ------------------------------------------------------------------ |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/buy-honey.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-208-tree.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route209">
+
+| 甜甜蜜商人                                                    | 209 号道路蜜树                                                     |
+| ------------------------------------------------------------- | ------------------------------------------------------------------ |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/buy-honey.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-209-tree.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route210South">
+
+| 甜甜蜜商人                                                    | 210 号道路南侧蜜树                                                       |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/buy-honey.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-210-south-tree.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route210North">
+
+| 甜甜蜜商人                                                    | 210 号道路北侧蜜树                                                       |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/buy-honey.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-210-north-tree.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route211East">
+
+| 甜甜蜜商人                                                    | 211 号道路东侧蜜树                                                      |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/buy-honey.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-211-east-tree.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route212North">
+
+| 甜甜蜜商人                                                    | 212 号道路北侧蜜树                                                       |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/buy-honey.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-212-north-tree.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route212South">
+
+| 甜甜蜜商人                                                    | 212 号道路南侧蜜树                                                       |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/buy-honey.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-212-south-tree.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route213">
+
+| 甜甜蜜商人                                                    | 213 号道路蜜树                                                     |
+| ------------------------------------------------------------- | ------------------------------------------------------------------ |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/buy-honey.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-213-tree.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route214">
+
+| 甜甜蜜商人                                                    | 214 号道路蜜树                                                     |
+| ------------------------------------------------------------- | ------------------------------------------------------------------ |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/buy-honey.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-214-tree.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route215">
+
+| 甜甜蜜商人                                                    | 215 号道路蜜树                                                     |
+| ------------------------------------------------------------- | ------------------------------------------------------------------ |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/buy-honey.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-215-tree.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route218">
+
+| 甜甜蜜商人                                                    | 218 号道路蜜树                                                     |
+| ------------------------------------------------------------- | ------------------------------------------------------------------ |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/buy-honey.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-218-tree.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route221">
+
+| 甜甜蜜商人                                                    | 221 号道路蜜树                                                     |
+| ------------------------------------------------------------- | ------------------------------------------------------------------ |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/buy-honey.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-221-tree.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route222">
+
+| 甜甜蜜商人                                                    | 222 号道路蜜树                                                     |
+| ------------------------------------------------------------- | ------------------------------------------------------------------ |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/buy-honey.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-222-tree.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="ValleyWindworksOutside">
+
+| 甜甜蜜商人                                                    | 山谷发电厂外的蜜树                                                        |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/buy-honey.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/valley-windworks-tree.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="EternaForestOutside">
+
+| 甜甜蜜商人                                                    | 百代森林外的蜜树                                                  |
+| ------------------------------------------------------------- | ----------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/buy-honey.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/eterna-forest.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="FuegoIronworksOutside">
+
+| 甜甜蜜商人                                                    | 多多罗铁工厂外的蜜树                                                |
+| ------------------------------------------------------------- | ------------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/buy-honey.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/fuego-ironworks.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="FloaromaMeadow">
+
+| 甜甜蜜商人                                                    | 花苑花田的蜜树                                                      |
+| ------------------------------------------------------------- | ------------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/buy-honey.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/floaroma-meadow.webp) |
+
+</HoneyTreeShowIf>
+
+</EqualColumnTable>
+
+</Pixelate>
+
+<HoneyTreeShowIf unquietableNPCs>
+
+> [!WARNING]
+> 目标树附近有会干扰乱数的 NPC，操作难度较高。如果有其他可用的树，建议更换。
+
+</HoneyTreeShowIf>
+
+</Step>
+
+<Step step={1}>
+
+## 查找种子
+
+1. 重启游戏，输入**读取存档时**的日期、时间和大致秒数。
+   - NDS 启动后约 15 秒。
+   - TWiLight Menu 启动后约 20 秒。
+   - 通过 3DS 启动器运行时约 30 秒。
+2. 点击“Generate”，生成可能的种子列表。
+3. 使用宝可表抛硬币，点击“Heads”或“Tails”筛选种子。
+4. 只剩一个种子时，点击“Select”。
+
+> [!TIP]
+> 如果找不到实际种子，请扩大 delay 和秒数搜索范围！
+
+<DpptCoinFlipSeedFinder />
+
+</Step>
+
+<Step step={2}>
+
+## 寻找目标
+
+1. 选择想要出现的宝可梦。
+2. 点击“Generate”，查看可能的遭遇结果。
+3. 点击目标结果旁的“Select”。
+
+<HoneyTreeShowIf npcTarget>
+
+> [!TIP]
+> 目标树附近有 NPC 干扰，建议将最小推进数设为 1000，再选择结果。
+> 如果已经超过目标，请回到此步骤，提高最小推进数并重新选择。
+
+</HoneyTreeShowIf>
+
+<HoneyTreeFindEncounter />
+
+</Step>
+
+<Step step={3}>
+
+## 停止 NPC 活动
+
+部分活动 NPC 会推进乱数，需要先让他们停止移动。
+
+<HoneyTreeShowIf noNpcTarget>
+
+> [!NOTE]
+> 这棵树附近没有 NPC，可以直接进入下一步。
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf npcTarget>
+
+1. 与下方列出的每个 NPC 对战。
+2. 如果 NPC 不愿对战，使用对战搜寻器。
+3. 击败对战搜寻器找到的**全部** NPC。
+
+#### 注意事项
+
+- 如果对战搜寻器提示 NPC 尚未准备好，请再次尝试。
+- 不要离开当前区域，否则 NPC 会恢复活动。
+- 对战搜寻器可能同时触发多名 NPC，使用时尽量让屏幕上只显示目标 NPC。
+
+<Pixelate>
+
+<EqualColumnTable>
+
+<HoneyTreeShowIf targetLocation="Route205South">
+
+| NPC 1                                                                     | NPC 2                                                                     | NPC 3                                                                     |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-205-south-npc-1.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-205-south-npc-2.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-205-south-npc-3.webp) |
+
+| NPC 4                                                                     | NPC 5                                                                     |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-205-south-npc-4.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-205-south-npc-5.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route206">
+
+| NPC 1                                                               |
+| ------------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-206-npc-1.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route207">
+
+| NPC 1                                                               | NPC 2                                                               |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-207-npc-1.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-207-npc-2.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route208" dp>
+
+| NPC 1                                                               | NPC 2                                                               | NPC 3                                                                       |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-208-npc-1.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-208-npc-2.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-208-npc-3-diamond.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route208" pt>
+
+| NPC 1                                                               | NPC 2                                                               |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-208-npc-1.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-208-npc-2.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route209" dp>
+
+| NPC 1                                                               |
+| ------------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-209-npc-1.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route209" pt>
+
+| NPC 1                                                               | NPC 2                                                               |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-209-npc-1.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-209-npc-2.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route210South">
+
+| NPC 1                                                                     |
+| ------------------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-210-south-npc-1.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route210North">
+
+| NPC 1                                                                     | NPC 2                                                                     |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-210-north-npc-1.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-210-north-npc-2.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route211East">
+
+| NPC 1                                                                    |
+| ------------------------------------------------------------------------ |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-211-east-npc-1.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route212North">
+
+| NPC 1                                                                     | NPC 2                                                                     | NPC 3                                                                     |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-212-north-npc-1.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-212-north-npc-2.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-212-north-npc-3.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route212South">
+
+| NPC 1                                                                     | NPC 2                                                                     | NPC 3                                                                     |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-212-south-npc-1.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-212-south-npc-2.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-212-south-npc-3.webp) |
+
+| NPC 4                                                                     | NPC 5                                                                     |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-212-south-npc-4.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-212-south-npc-5.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route213">
+
+| NPC 1                                                               | NPC 2                                                               | NPC 3                                                               |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-213-npc-1.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-213-npc-2.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-213-npc-3.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route214">
+
+| NPC 1                                                               | NPC 2                                                               | NPC 3                                                               |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-214-npc-1.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-214-npc-2.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-214-npc-3.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route215">
+
+| NPC 1                                                               |
+| ------------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-215-npc-1.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route218">
+
+| NPC 1                                                               |
+| ------------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-218-npc-1.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route221">
+
+> [!NOTE]
+> 这里有两名会移动的泳裤小伙子，但其中一人必须离开当前道路才能接近。
+>
+> <br />
+>
+> 与 NPC 2 对战可以让这两名游泳者从地图中卸载。击败后不要走到蜜树左侧，否则他们可能重新开始移动。
+
+<br />
+
+| NPC 1                                                               | NPC 2                                                               |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-221-npc-1.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-221-npc-2.webp) |
+
+</HoneyTreeShowIf>
+
+<HoneyTreeShowIf targetLocation="Route222">
+
+| NPC 1                                                               | NPC 2                                                               | NPC 3                                                               |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-222-npc-1.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-222-npc-2.webp) | ![](/images/Diamond-Pearl-Platinum/Honey-Tree/route-222-npc-3.webp) |
+
+</HoneyTreeShowIf>
+
+</EqualColumnTable>
+
+</Pixelate>
+
+</HoneyTreeShowIf>
+
+## 设置蜜树
+
+1. 站在目标树前。
+2. 点击“Generate”，查看推进数及其对应的聒噪鸟音调。
+3. 查看聒噪鸟信息，听取喋喋不休音调。
+4. 根据听到的音调点击“Low”“Medium”或“High”，筛选当前推进数。
+5. 重复第 3、4 步，停在距离目标还有 1 次推进的位置。
+
+> [!TIP]
+> 如果乱数已经超过目标，请返回上一步，提高最小推进数并寻找新目标！
+>
+> <br />
+>
+> 如果无法定位当前推进数，请提高最小和最大推进数，重新生成音调序列。
+
+<Gen4ChatterFilter />
+
+## 检查蜜树
+
+1. 关闭队伍菜单，给树涂上甜甜蜜。 <HoneyTreeShowIf unquietableNPCs>**部分 NPC 无法停止活动，请尽快完成操作。**</HoneyTreeShowIf>
+2. 接下来 6 小时内不要修改主机日期、时间，也不要换主机游玩，否则会触发时间惩罚！
+3. 等待 6 小时，宝可梦出现后检查蜜树！
+4. 如果出现了目标宝可梦，重启游戏后**再次保存**，再尝试异色乱数。否则会丢失当前蜜树结果，必须从头开始。
+
+**恭喜你**！现在已经能遭遇目标宝可梦，可以按[蜜树宝可梦乱数指南](/retail-dppt-honey-pokemon)获取异色了！
+
+</Step>
+
+</Stepper>
+
+## 特别鸣谢
+
+- 感谢所有 [Pret](https://github.com/pret/pokeplatinum) 的贡献者对蜜树机制的研究。
+- [Dragonfly Cave](https://www.dragonflycave.com/sinnoh/honey-trees/)：补充蜜树相关信息。
+- Zaksabeast：制作工具及撰写指南。
+- 中文翻译：白希洛/Hakuhiro

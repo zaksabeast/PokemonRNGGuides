@@ -21,6 +21,7 @@ export const wild3PlayingSongs = [
   "MapSong",
   "BikeSong",
   "SurfSong",
+  "DivingSong",
 ] as const satisfies readonly PlayingSong[];
 
 export type Wild3AudioInfluences = {
@@ -54,9 +55,12 @@ export type Wild3SearchAudioInfluences = {
 
 export const formatWild3Weather = (weather: Wild3Weather): string => weather;
 export const formatPlayingSong = (playingSong: PlayingSong): string =>
-  ({ MapSong: "Map song", BikeSong: "Bike song", SurfSong: "Surf song" })[
-    playingSong
-  ];
+  ({
+    MapSong: "Map song",
+    BikeSong: "Bike song",
+    SurfSong: "Surf song",
+    DivingSong: "Diving song",
+  })[playingSong];
 
 export const getWild3SearchAudioInfluences = (
   values: Wild3SearchAudioInfluences & { recommendedSetups: boolean },

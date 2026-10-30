@@ -40,7 +40,7 @@ import {
 } from "./wild3AudioInfluences";
 import { toOptions } from "~/utils/options";
 import type { Wild3Weather, PlayingSong } from "~/rngTools";
-import { getInitialCycleSummary } from "./data/initial_cycle_calibration";
+import { getInitialCycleSummary } from "./data/initial_cycle_utils";
 
 /*
 Wild3LeadCycleSpeedSelector is used to set/calibrate leadCycleSpeed.

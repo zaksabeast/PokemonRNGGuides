@@ -68,6 +68,7 @@ pub enum PlayingSong {
     MapSong,
     BikeSong,
     SurfSong,
+    DivingSong,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Tsify, Default)]

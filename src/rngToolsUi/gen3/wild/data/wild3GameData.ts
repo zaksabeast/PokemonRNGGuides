@@ -23,7 +23,7 @@ import {
   getWild3VblankDistributions,
   getWild3ActionCapabilities,
   type Wild3ActionCapabilities,
-} from "./initial_cycle_calibration";
+} from "./initial_cycle_setups";
 
 export type Wild3UiMapGameData = Wild3MapGameData & Wild3ActionCapabilities;
 
@@ -183,12 +183,10 @@ const generateWild3EmeraldMapsData = (): Wild3UiMapGameData[] => {
           map_internal_idx,
           ...getWild3ActionCapabilities({
             map_id: map.map,
-            map_internal_idx,
             slots_by_action,
           }),
           vblank_distrs: getWild3VblankDistributions({
             map_id: map.map,
-            map_internal_idx,
             slots_by_action,
           }),
           slots_by_action,

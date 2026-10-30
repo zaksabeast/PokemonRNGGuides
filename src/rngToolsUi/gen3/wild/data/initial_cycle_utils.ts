@@ -1,3 +1,9 @@
+import type { CdfKnot } from "~/rngTools";
+import type {
+  CalibrationComponent,
+  RawCdfKnot,
+} from "./initial_cycle_calibration_types";
+
 export const getInitialCycleSummary = (
   knots: readonly CdfKnot[],
 ): { min: number; max: number; median: number; average: number } | null => {

@@ -44,23 +44,30 @@ test("saved audio influences migrate movement values to playing songs", () => {
 
 test("saved playing songs retain their current values", () => {
   expect(
-    ["MapSong", "BikeSong", "SurfSong"].map((playing_song) =>
+    ["MapSong", "BikeSong", "SurfSong", "DivingSong"].map((playing_song) =>
       wild3AudioInfluencesSchema.parse({ weather: "Sunny", playing_song }),
     ),
   ).toEqual([
     { weather: "Sunny", playing_song: "MapSong" },
     { weather: "Sunny", playing_song: "BikeSong" },
     { weather: "Sunny", playing_song: "SurfSong" },
+    { weather: "Sunny", playing_song: "DivingSong" },
   ]);
 });
 
 test("playing song values have readable labels", () => {
-  const playingSongs: PlayingSong[] = ["MapSong", "BikeSong", "SurfSong"];
+  const playingSongs: PlayingSong[] = [
+    "MapSong",
+    "BikeSong",
+    "SurfSong",
+    "DivingSong",
+  ];
 
   expect(playingSongs.map(formatPlayingSong)).toEqual([
     "Map song",
     "Bike song",
     "Surf song",
+    "Diving song",
   ]);
 });
 
@@ -169,6 +176,111 @@ test("weather and playing song options respect the map, action and search option
     showAudioInfluences: false,
   });
 });
+
+test("Route 119 land Sweet Scent forbids bike music", () => {
+  expect(
+    getWild3AudioInfluenceOptions("MAP_ROUTE119", "SweetScentLand"),
+  ).toEqual({
+    weathers: ["Sunny", "Rain", "Thunderstorm"],
+    playingSongs: ["MapSong"],
+    showAudioInfluences: true,
+  });
+  expect(
+    normalizeWild3AudioInfluences("MAP_ROUTE119", "SweetScentLand", {
+      weather: "Rain",
+      playing_song: "BikeSong",
+    }),
+  ).toEqual({ weather: "Rain", playing_song: "MapSong" });
+  const map = getWild3EmeraldGameData().maps_data.find(
+    (entry) => entry.map_id === "MAP_ROUTE119",
+  );
+  expect(
+    map?.vblank_distrs
+      .filter((entry) => entry.action === "SweetScentLand")
+      .map(({ action, weather, playing_song }) => ({
+        action,
+        weather,
+        playing_song,
+      })),
+  ).toEqual([
+    { action: "SweetScentLand", weather: "Sunny", playing_song: "MapSong" },
+    { action: "SweetScentLand", weather: "Rain", playing_song: "MapSong" },
+    {
+      action: "SweetScentLand",
+      weather: "Thunderstorm",
+      playing_song: "MapSong",
+    },
+  ]);
+  expect(
+    getWild3AudioInfluenceOptions("MAP_ROUTE119", "OldRod").playingSongs,
+  ).toEqual(["MapSong", "BikeSong", "SurfSong"]);
+});
+
+test("Route 120 forbids bike music for every available action", () => {
+  const map = getWild3EmeraldGameData().maps_data.find(
+    (entry) => entry.map_id === "MAP_ROUTE120",
+  );
+  expect(map?.possible_playing_song_by_action).toEqual({
+    SweetScentLand: ["MapSong"],
+    SweetScentWater: ["SurfSong"],
+    OldRod: ["MapSong", "SurfSong"],
+    GoodRod: ["MapSong", "SurfSong"],
+    SuperRod: ["MapSong", "SurfSong"],
+    RockSmash: [],
+  });
+  expect(
+    normalizeWild3AudioInfluences("MAP_ROUTE120", "SweetScentLand", {
+      weather: "Rain",
+      playing_song: "BikeSong",
+    }),
+  ).toEqual({ weather: "Rain", playing_song: "MapSong" });
+  expect(
+    map?.vblank_distrs.filter((entry) => entry.playing_song === "BikeSong"),
+  ).toEqual([]);
+});
+
+test.each(["MAP_UNDERWATER_ROUTE124", "MAP_UNDERWATER_ROUTE126"])(
+  "%s only permits diving music",
+  (mapId) => {
+    expect(getWild3AudioInfluenceOptions(mapId, "SweetScentWater")).toEqual({
+      weathers: ["Sunny"],
+      playingSongs: ["DivingSong"],
+      showAudioInfluences: false,
+    });
+    expect(
+      normalizeWild3AudioInfluences(mapId, "SweetScentWater", {
+        playing_song: "BikeSong",
+      }),
+    ).toEqual({
+      weather: "Sunny",
+      playing_song: "DivingSong",
+    });
+    const map = getWild3EmeraldGameData().maps_data.find(
+      (entry) => entry.map_id === mapId,
+    );
+    expect(map?.possible_playing_song_by_action).toEqual({
+      SweetScentLand: [],
+      SweetScentWater: ["DivingSong"],
+      OldRod: [],
+      GoodRod: [],
+      SuperRod: [],
+      RockSmash: [],
+    });
+    expect(
+      map?.vblank_distrs.map(({ action, weather, playing_song }) => ({
+        action,
+        weather,
+        playing_song,
+      })),
+    ).toEqual([
+      {
+        action: "SweetScentWater",
+        weather: "Sunny",
+        playing_song: "DivingSong",
+      },
+    ]);
+  },
+);
 
 test("weather and playing song selection preserves valid values and normalizes map/action changes", () => {
   expect(

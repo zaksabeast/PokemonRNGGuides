@@ -36,6 +36,7 @@ export { Countdown } from "./countdown";
 export { YouTubeVideo } from "./youtubeVideo";
 export { RngToolForm, type RngToolSubmit } from "./rngToolForm";
 export { ShowIf } from "./showIf";
+export { ShowIfQuery } from "./showIfQuery";
 export { LanguageButton } from "./languageButton";
 export { Timer } from "./timer";
 export { FormikIdFilter } from "./idFilter";

@@ -7123,7 +7123,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: null,
+      lastUpdated: "2026-10-30",
       type: "baseGuide",
       canonical: "/install-pokereader/",
       file: "guides/Tools and Emulators/3DS PokeReader.mdx",

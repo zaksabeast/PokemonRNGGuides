@@ -1,3 +1,5 @@
+import type { PlayingSong, Wild3Action, Wild3Weather } from "~/rngTools";
+
 export type RawCdfKnot = readonly [
   cycle: number,
   probability: number,
@@ -12,6 +14,15 @@ export type CalibrationComponent = {
     source: string;
     [key: string]: string | number | boolean;
   };
+};
+
+export type CalibrationComponentEntry = CalibrationComponent & {
+  id: string;
+  mapId: string;
+  weather: Wild3Weather;
+  playingSong: PlayingSong;
+  action: Wild3Action;
+  isAudio: boolean;
 };
 
 export type MapCalibrationSource = {

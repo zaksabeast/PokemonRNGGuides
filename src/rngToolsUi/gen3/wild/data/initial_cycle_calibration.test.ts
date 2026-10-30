@@ -23,6 +23,63 @@ const uniform: CalibrationComponent = {
   provenance: { source: "test" },
 };
 
+function component(id: string) {
+  const result = calibrationComponents.find((entry) => entry.id === id);
+  if (result == null) {
+    throw new Error(`Missing test component: ${id}`);
+  }
+
+  return result;
+}
+
+test("calibration entries identify their recording setup", () => {
+  expect(
+    [
+      "ROUTE101_AUDIO",
+      "ROUTE123_BIKE_FISHING_RAIN_NON_AUDIO",
+      "PETALBURG_WOODS_JOINT",
+      "ROUTE119_FISHING_THUNDERSTORM_AUDIO",
+    ].map((id) => omit(component(id), ["summary", "cdf", "provenance"])),
+  ).toEqual([
+    {
+      id: "ROUTE101_AUDIO",
+      mapId: "MAP_ROUTE101",
+      weather: "Sunny",
+      playingSong: "MapSong",
+      action: "SweetScentLand",
+      isAudio: true,
+      is_fake: false,
+    },
+    {
+      id: "ROUTE123_BIKE_FISHING_RAIN_NON_AUDIO",
+      mapId: "MAP_ROUTE123",
+      weather: "Rain",
+      playingSong: "BikeSong",
+      action: "SuperRod",
+      isAudio: false,
+      is_fake: false,
+    },
+    {
+      id: "PETALBURG_WOODS_JOINT",
+      mapId: "MAP_PETALBURG_WOODS",
+      weather: "Sunny",
+      playingSong: "MapSong",
+      action: "SweetScentLand",
+      isAudio: false,
+      is_fake: false,
+    },
+    {
+      id: "ROUTE119_FISHING_THUNDERSTORM_AUDIO",
+      mapId: "MAP_ROUTE119",
+      weather: "Thunderstorm",
+      playingSong: "MapSong",
+      action: "SuperRod",
+      isAudio: true,
+      is_fake: true,
+    },
+  ]);
+});
+
 test("initial cycle summaries handle uniform distributions, jumps, and empty data", () => {
   expect(
     getInitialCycleSummary([
@@ -161,13 +218,12 @@ test("measured maps retain bounds and raw provenance without sending metadata to
 
 test("joint correction replaces convolution only for its measured setup", () => {
   const info = getWild3CalibrationInfo(map("MAP_PETALBURG_WOODS", 14))[0];
-  expect(info.joint_correction).toBe(
-    calibrationComponents.PETALBURG_WOODS_JOINT,
-  );
+  expect(info.joint_correction).toBe(component("PETALBURG_WOODS_JOINT"));
   expect(info.calibration.distribution).toEqual(
-    calibrationComponents.PETALBURG_WOODS_JOINT.cdf.map(
-      ([cycle, probability]) => ({ cycle, probability }),
-    ),
+    component("PETALBURG_WOODS_JOINT").cdf.map(([cycle, probability]) => ({
+      cycle,
+      probability,
+    })),
   );
 });
 
@@ -225,7 +281,7 @@ test("weather and playing song variants respect the map and encounter action", (
 });
 
 test("fake audio retains scales and excluded thunderstorm variants stay absent", () => {
-  const components = fakeAudioComponents(calibrationComponents.ROUTE101_AUDIO);
+  const components = fakeAudioComponents(component("ROUTE101_AUDIO"));
   expect(components.CYCLING_FISHING_SUNNY_AUDIO.summary).toEqual({
     min: 20_370,
     mid: 40_038,

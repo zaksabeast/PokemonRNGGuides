@@ -23,8 +23,19 @@ import type {
 
 const VBLANK_FREQ = 280_896;
 const components: Partial<Record<string, CalibrationComponent>> =
-  calibrationComponents;
+  Object.fromEntries(
+    calibrationComponents.map((component) => [component.id, component]),
+  );
 const combinedCdfs = new Map<string, CdfKnot[]>();
+
+function requiredComponent(id: string): CalibrationComponent {
+  const component = components[id];
+  if (component == null) {
+    throw new Error(`Missing calibration component: ${id}`);
+  }
+
+  return component;
+}
 
 type CalibrationMap = Pick<
   Wild3MapGameData,
@@ -359,9 +370,9 @@ const composeCalibration = (
     ) ??
     mapCalibrationSources[0];
   const audioName = audioComponentName(song, setup);
-  const audio = components[audioName] ?? calibrationComponents.ROUTE101_AUDIO;
+  const audio = components[audioName] ?? requiredComponent("ROUTE101_AUDIO");
   const nonAudio =
-    components[source.non_audio] ?? calibrationComponents.ROUTE101_NON_AUDIO;
+    components[source.non_audio] ?? requiredComponent("ROUTE101_NON_AUDIO");
   const exact =
     source.map_internal_idx === map.map_internal_idx &&
     matchesSetup(source) &&

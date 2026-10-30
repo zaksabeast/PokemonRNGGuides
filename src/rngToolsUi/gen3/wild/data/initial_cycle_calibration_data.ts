@@ -35,7 +35,7 @@ export const calibrationComponents = {
       [62238, 1, 15812.493654151034],
     ],
     provenance: {
-      source: "route101_walk_sweet_scent.txt",
+      source: "ROUTE101-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 2021.0526315789473,
       max_cdf_error: 0.00966561266312349,
     },
@@ -64,7 +64,7 @@ export const calibrationComponents = {
       [10274, 1, 24.33051295610788],
     ],
     provenance: {
-      source: "route101_walk_sweet_scent.txt",
+      source: "ROUTE101-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 2021.0526315789473,
       max_cdf_error: 0.007403490216816522,
     },
@@ -93,7 +93,7 @@ export const calibrationComponents = {
       [10274, 1, 24.066027689030882],
     ],
     provenance: {
-      source: "route102_walk_sweet_scent.txt",
+      source: "ROUTE102-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 2021.0526315789473,
       max_cdf_error: 0.007454739084132078,
     },
@@ -122,7 +122,7 @@ export const calibrationComponents = {
       [10274, 1, 23.956636700158644],
     ],
     provenance: {
-      source: "route103_walk_sweet_scent.txt",
+      source: "ROUTE103-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 2021.0526315789473,
       max_cdf_error: 0.006874669487043961,
     },
@@ -147,7 +147,7 @@ export const calibrationComponents = {
       [65814, 1, 17195.408271474094],
     ],
     provenance: {
-      source: "route104_walk_sweet_scent.txt",
+      source: "ROUTE104-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 2260.25,
       max_cdf_error: 0.009304018083179154,
     },
@@ -176,7 +176,7 @@ export const calibrationComponents = {
       [10505, 1, 24.565040650406505],
     ],
     provenance: {
-      source: "route104_walk_sweet_scent.txt",
+      source: "ROUTE104-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 2260.25,
       max_cdf_error: 0.0052580417108518684,
     },
@@ -208,7 +208,7 @@ export const calibrationComponents = {
       [62757, 1, 13832.744669786618],
     ],
     provenance: {
-      source: "route110_walk_sweet_scent.txt",
+      source: "ROUTE110-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 2181.818181818182,
       max_cdf_error: 0.009788530342475399,
     },
@@ -233,7 +233,7 @@ export const calibrationComponents = {
       [10736, 1, 25.24787658172994],
     ],
     provenance: {
-      source: "route110_walk_sweet_scent.txt",
+      source: "ROUTE110-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 2181.818181818182,
       max_cdf_error: 0.008840353614144592,
     },
@@ -278,7 +278,7 @@ export const calibrationComponents = {
       [61001, 1, 17044.05648635688],
     ],
     provenance: {
-      source: "petalsbourg_wood_walk_sweet_scent.txt",
+      source: "PETALBURG_WOODS-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 2326.153846153846,
       max_cdf_error: 0.009875604110244351,
     },
@@ -309,7 +309,7 @@ export const calibrationComponents = {
       [9986, 1, 24.078825594383275],
     ],
     provenance: {
-      source: "petalsbourg_wood_walk_sweet_scent.txt",
+      source: "PETALBURG_WOODS-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 2326.153846153846,
       max_cdf_error: 0,
     },
@@ -338,7 +338,7 @@ export const calibrationComponents = {
       [59163, 1, 14550.628777566184],
     ],
     provenance: {
-      source: "route113_walk_sweet_scent.txt",
+      source: "ROUTE113-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 4050,
       max_cdf_error: 0.006920355998774275,
     },
@@ -369,7 +369,7 @@ export const calibrationComponents = {
       [10306, 1, 18.844087485252746],
     ],
     provenance: {
-      source: "route113_walk_sweet_scent.txt",
+      source: "ROUTE113-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 4050,
       max_cdf_error: 0,
     },
@@ -398,7 +398,7 @@ export const calibrationComponents = {
       [57894, 1, 13145.568933823637],
     ],
     provenance: {
-      source: "safari_center_bottom_walk_sweet_scent.txt",
+      source: "SAFARI_ZONE_SOUTH-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 1216.9014084507041,
       max_cdf_error: 0.009968973138388293,
     },
@@ -429,7 +429,7 @@ export const calibrationComponents = {
       [10274, 1, 20.086397058823533],
     ],
     provenance: {
-      source: "safari_center_bottom_walk_sweet_scent.txt",
+      source: "SAFARI_ZONE_SOUTH-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 1216.9014084507041,
       max_cdf_error: 0,
     },
@@ -463,7 +463,7 @@ export const calibrationComponents = {
       [60314, 1, 10791.849317987904],
     ],
     provenance: {
-      source: "altering_cave_walk_sweet_scent.txt",
+      source: "ALTERING_CAVE-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 5525.619515,
       max_cdf_error: 0.009881422924900907,
     },
@@ -494,7 +494,7 @@ export const calibrationComponents = {
       [9773, 1, 24.396206308610402],
     ],
     provenance: {
-      source: "altering_cave_walk_sweet_scent.txt",
+      source: "ALTERING_CAVE-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 5525.619515,
       max_cdf_error: 0,
     },
@@ -525,7 +525,7 @@ export const calibrationComponents = {
       [61463, 1, 16633.8931445607],
     ],
     provenance: {
-      source: "lilycove_sunny_walk_fishing.txt",
+      source: "LILYCOVE_CITY-Sunny-MapSong-SuperRod.txt",
       song_loop_frames: 3354.689,
       sampled_frames: 3355,
       max_cdf_error: 0.008460276658098509,
@@ -611,7 +611,7 @@ export const calibrationComponents = {
       [31864, 1, 5646.439940387485],
     ],
     provenance: {
-      source: "lilycove_sunny_walk_fishing.txt",
+      source: "LILYCOVE_CITY-Sunny-MapSong-SuperRod.txt",
       song_loop_frames: 3354.689,
       sampled_frames: 3355,
       max_cdf_error: 0.007824143070044642,
@@ -640,7 +640,7 @@ export const calibrationComponents = {
       [62968, 1, 15862.439253935523],
     ],
     provenance: {
-      source: "route117_sunny_bike_fishing.txt",
+      source: "ROUTE117-Sunny-BikeSong-SuperRod.txt",
       song_loop_frames: 2921.7391304347825,
       sampled_frames: 2922,
       max_cdf_error: 0.009155341682733131,
@@ -725,7 +725,7 @@ export const calibrationComponents = {
       [46374, 1, 17792.021731690595],
     ],
     provenance: {
-      source: "route117_sunny_bike_fishing.txt",
+      source: "ROUTE117-Sunny-BikeSong-SuperRod.txt",
       song_loop_frames: 2921.7391304347825,
       sampled_frames: 2922,
       max_cdf_error: 0.009924709103353857,
@@ -756,7 +756,7 @@ export const calibrationComponents = {
       [63044, 1, 13172.424175382155],
     ],
     provenance: {
-      source: "desert_underpass_sunny_bike_sweet_scent.txt",
+      source: "DESERT_UNDERPASS-Sunny-BikeSong-SweetScentLand.txt",
       song_loop_frames: 2921.7391304347825,
       sampled_frames: 2486,
       max_cdf_error: 0.00765873047481741,
@@ -788,7 +788,7 @@ export const calibrationComponents = {
       [9753, 1, 23.003218020917142],
     ],
     provenance: {
-      source: "desert_underpass_sunny_bike_sweet_scent.txt",
+      source: "DESERT_UNDERPASS-Sunny-BikeSong-SweetScentLand.txt",
       song_loop_frames: 2921.7391304347825,
       sampled_frames: 2486,
       max_cdf_error: 0,
@@ -823,7 +823,7 @@ export const calibrationComponents = {
       [66134, 1, 18427.81131678566],
     ],
     provenance: {
-      source: "meteor_falls_b1f_2r_sunny_walk_sweet_scent.txt",
+      source: "METEOR_FALLS_B1F_2R-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 2592,
       sampled_frames: 2377,
       max_cdf_error: 0.00957444430217902,
@@ -855,7 +855,7 @@ export const calibrationComponents = {
       [9773, 1, 22.632730332351706],
     ],
     provenance: {
-      source: "meteor_falls_b1f_2r_sunny_walk_sweet_scent.txt",
+      source: "METEOR_FALLS_B1F_2R-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 2592,
       sampled_frames: 2377,
       max_cdf_error: 0,
@@ -885,7 +885,7 @@ export const calibrationComponents = {
       [64186, 1, 13798.327173168942],
     ],
     provenance: {
-      source: "route123_rain_bike_fishing.txt",
+      source: "ROUTE123-Rain-BikeSong-SuperRod.txt",
       song_loop_frames: 2921.7391304347825,
       sampled_frames: 2922,
       max_cdf_error: 0.008870673006376978,
@@ -974,7 +974,7 @@ export const calibrationComponents = {
       [39037, 1, 11285.365331964393],
     ],
     provenance: {
-      source: "route123_rain_bike_fishing.txt",
+      source: "ROUTE123-Rain-BikeSong-SuperRod.txt",
       song_loop_frames: 2921.7391304347825,
       sampled_frames: 2922,
       max_cdf_error: 0.008555783709787823,
@@ -1004,7 +1004,7 @@ export const calibrationComponents = {
       [10505, 1, 24.802481902792145],
     ],
     provenance: {
-      source: "route116_sunny_walk_sweet_scent.txt",
+      source: "ROUTE116-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 2260.25,
       sampled_frames: 1934,
       max_cdf_error: 0.00542916235780766,
@@ -1033,7 +1033,7 @@ export const calibrationComponents = {
       [59725, 1, 15086.048232474215],
     ],
     provenance: {
-      source: "mt_pyre_exterior_sunny_walk_sweet_scent.txt",
+      source: "MT_PYRE_EXTERIOR-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 3670.5882352941176,
       sampled_frames: 3338,
       max_cdf_error: 0.009317694447485647,
@@ -1065,7 +1065,7 @@ export const calibrationComponents = {
       [10274, 1, 20.335530257639302],
     ],
     provenance: {
-      source: "mt_pyre_exterior_sunny_walk_sweet_scent.txt",
+      source: "MT_PYRE_EXTERIOR-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 3670.5882352941176,
       sampled_frames: 3338,
       max_cdf_error: 0,
@@ -1101,7 +1101,7 @@ export const calibrationComponents = {
       [64458, 1, 20797.5158179006],
     ],
     provenance: {
-      source: "meteor_falls_b1f_2r_sunny_walk_fishing.txt",
+      source: "METEOR_FALLS_B1F_2R-Sunny-MapSong-SuperRod.txt",
       song_loop_frames: 2592,
       sampled_frames: 2592,
       max_cdf_error: 0.008196703840119723,
@@ -1174,7 +1174,7 @@ export const calibrationComponents = {
       [31337, 1, 5755.391975308637],
     ],
     provenance: {
-      source: "meteor_falls_b1f_2r_sunny_walk_fishing.txt",
+      source: "METEOR_FALLS_B1F_2R-Sunny-MapSong-SuperRod.txt",
       song_loop_frames: 2592,
       sampled_frames: 2592,
       max_cdf_error: 0.00943732193732194,
@@ -1210,7 +1210,7 @@ export const calibrationComponents = {
       [60175, 1, 17347.95895610853],
     ],
     provenance: {
-      source: "safari_zone_nortwest_sunny_surf_fishing.txt",
+      source: "SAFARI_ZONE_NORTHWEST-Sunny-SurfSong-SuperRod.txt",
       song_loop_frames: 4214.634146341464,
       sampled_frames: 4215,
       max_cdf_error: 0.008595913223177792,
@@ -1268,7 +1268,7 @@ export const calibrationComponents = {
       [36848, 1, 5753.625860023724],
     ],
     provenance: {
-      source: "safari_zone_nortwest_sunny_surf_fishing.txt",
+      source: "SAFARI_ZONE_NORTHWEST-Sunny-SurfSong-SuperRod.txt",
       song_loop_frames: 4214.634146341464,
       sampled_frames: 4215,
       max_cdf_error: 0.009934756820877855,
@@ -1299,7 +1299,7 @@ export const calibrationComponents = {
       [60671, 1, 12532.239048134341],
     ],
     provenance: {
-      source: "route129_sunny_surf_sweet_scent.txt",
+      source: "ROUTE129-Sunny-SurfSong-SweetScentWater.txt",
       song_loop_frames: 4214.634146341464,
       sampled_frames: 3698,
       max_cdf_error: 0.009038852264920627,
@@ -1322,7 +1322,7 @@ export const calibrationComponents = {
       [14026, 1, 26.084640346133042],
     ],
     provenance: {
-      source: "route129_sunny_surf_sweet_scent.txt",
+      source: "ROUTE129-Sunny-SurfSong-SweetScentWater.txt",
       song_loop_frames: 4214.634146341464,
       sampled_frames: 3698,
       max_cdf_error: 0.006249624421609257,
@@ -1354,7 +1354,7 @@ export const calibrationComponents = {
       [63928, 1, 15489.582527509208],
     ],
     provenance: {
-      source: "route120_walk_sweet_scent_v2.txt",
+      source: "ROUTE120-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 3438.805970149254,
       sampled_frames: 2999,
       max_cdf_error: 0.009713941344363208,
@@ -1386,7 +1386,7 @@ export const calibrationComponents = {
       [10274, 1, 22.09603201067022],
     ],
     provenance: {
-      source: "route120_walk_sweet_scent_v2.txt",
+      source: "ROUTE120-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 3438.805970149254,
       sampled_frames: 2999,
       max_cdf_error: 0,
@@ -1422,7 +1422,7 @@ export const calibrationComponents = {
       [60997, 1, 14421.005511810774],
     ],
     provenance: {
-      source: "route123_sunny_walk_sweet_scent.txt",
+      source: "ROUTE123-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 2787.0967741935483,
       sampled_frames: 2540,
       max_cdf_error: 0.007855444956172936,
@@ -1454,7 +1454,7 @@ export const calibrationComponents = {
       [10274, 1, 21.340157480314957],
     ],
     provenance: {
-      source: "route123_sunny_walk_sweet_scent.txt",
+      source: "ROUTE123-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 2787.0967741935483,
       sampled_frames: 2540,
       max_cdf_error: 0,
@@ -1483,7 +1483,7 @@ export const calibrationComponents = {
       [65980, 1, 13085.075813485255],
     ],
     provenance: {
-      source: "route120_rain_walk_sweet_scent.txt",
+      source: "ROUTE120-Rain-MapSong-SweetScentLand.txt",
       song_loop_frames: 3438.805970149254,
       sampled_frames: 2981,
       max_cdf_error: 0.008655841481828436,
@@ -1506,7 +1506,7 @@ export const calibrationComponents = {
       [9741, 1, 26.322039584032204],
     ],
     provenance: {
-      source: "route120_rain_walk_sweet_scent.txt",
+      source: "ROUTE120-Rain-MapSong-SweetScentLand.txt",
       song_loop_frames: 3438.805970149254,
       sampled_frames: 2981,
       max_cdf_error: 0.0010809199001080572,
@@ -1539,7 +1539,7 @@ export const calibrationComponents = {
       [63233, 1, 27054.634948530613],
     ],
     provenance: {
-      source: "dewford_sunny_walk_fishing.txt",
+      source: "DEWFORD_TOWN-Sunny-MapSong-SuperRod.txt",
       song_loop_frames: 3982.978723404255,
       sampled_frames: 3983,
       max_cdf_error: 0.009215131270024546,
@@ -1614,7 +1614,7 @@ export const calibrationComponents = {
       [35223, 1, 9391.801908109457],
     ],
     provenance: {
-      source: "dewford_sunny_walk_fishing.txt",
+      source: "DEWFORD_TOWN-Sunny-MapSong-SuperRod.txt",
       song_loop_frames: 3982.978723404255,
       sampled_frames: 3983,
       max_cdf_error: 0.009791614361034373,
@@ -1658,7 +1658,7 @@ export const calibrationComponents = {
       [70955, 1, 17036.846337960527],
     ],
     provenance: {
-      source: "petalsbourg_wood_walk_sweet_scent.txt",
+      source: "PETALBURG_WOODS-Sunny-MapSong-SweetScentLand.txt",
       song_loop_frames: 2326.153846153846,
       max_cdf_error: 0.009855468656439936,
     },

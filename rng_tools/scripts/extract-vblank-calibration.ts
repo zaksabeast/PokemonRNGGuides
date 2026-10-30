@@ -37,70 +37,70 @@ type Source = {
 const sources: Source[] = [
   {
     id: "ROUTE101",
-    file: "route101_walk_sweet_scent.txt",
+    file: "ROUTE101-Sunny-MapSong-SweetScentLand.txt",
     map: 0,
     song: "ROUTE101",
     loop: 38400 / 19,
   },
   {
     id: "ROUTE102",
-    file: "route102_walk_sweet_scent.txt",
+    file: "ROUTE102-Sunny-MapSong-SweetScentLand.txt",
     map: 1,
     song: "ROUTE101",
     loop: 38400 / 19,
   },
   {
     id: "ROUTE103",
-    file: "route103_walk_sweet_scent.txt",
+    file: "ROUTE103-Sunny-MapSong-SweetScentLand.txt",
     map: 2,
     song: "ROUTE101",
     loop: 38400 / 19,
   },
   {
     id: "ROUTE104",
-    file: "route104_walk_sweet_scent.txt",
+    file: "ROUTE104-Sunny-MapSong-SweetScentLand.txt",
     map: 3,
     song: "ROUTE104",
     loop: 2260.25,
   },
   {
     id: "ROUTE110",
-    file: "route110_walk_sweet_scent.txt",
+    file: "ROUTE110-Sunny-MapSong-SweetScentLand.txt",
     map: 5,
     song: "ROUTE110",
     loop: (1920 * 150) / 132,
   },
   {
     id: "PETALBURG_WOODS",
-    file: "petalsbourg_wood_walk_sweet_scent.txt",
+    file: "PETALBURG_WOODS-Sunny-MapSong-SweetScentLand.txt",
     map: 14,
     song: "PETALBURG_WOODS",
     loop: (2016 * 150) / 130,
   },
   {
     id: "ROUTE113",
-    file: "route113_walk_sweet_scent.txt",
+    file: "ROUTE113-Sunny-MapSong-SweetScentLand.txt",
     map: 8,
     song: "ROUTE113",
     loop: (3456 * 150) / 128,
   },
   {
     id: "SAFARI_ZONE_SOUTH",
-    file: "safari_center_bottom_walk_sweet_scent.txt",
+    file: "SAFARI_ZONE_SOUTH-Sunny-MapSong-SweetScentLand.txt",
     map: 20,
     song: "SAFARI_ZONE",
     loop: (1152 * 150) / 142,
   },
   {
     id: "ALTERING_CAVE",
-    file: "altering_cave_walk_sweet_scent.txt",
+    file: "ALTERING_CAVE-Sunny-MapSong-SweetScentLand.txt",
     map: 114,
     song: "RG_SEVII_CAVE",
     loop: 5525.619515,
   },
   {
     id: "LILYCOVE_FISHING_SUNNY",
-    file: "lilycove_sunny_walk_fishing.txt",
+    file: "LILYCOVE_CITY-Sunny-MapSong-SuperRod.txt",
     map: 84,
     song: "LILYCOVE",
     // Loop markers and tempo changes in pokeemerald's mus_lilycove.mid.
@@ -110,7 +110,7 @@ const sources: Source[] = [
   },
   {
     id: "ROUTE117_BIKE_FISHING_SUNNY",
-    file: "route117_sunny_bike_fishing.txt",
+    file: "ROUTE117-Sunny-BikeSong-SuperRod.txt",
     map: 11,
     song: "ROUTE110",
     loop: (2688 * 150) / 138,
@@ -120,7 +120,7 @@ const sources: Source[] = [
   },
   {
     id: "DESERT_UNDERPASS_BIKE_SUNNY",
-    file: "desert_underpass_sunny_bike_sweet_scent.txt",
+    file: "DESERT_UNDERPASS-Sunny-BikeSong-SweetScentLand.txt",
     map: 111,
     song: "MT_CHIMNEY",
     loop: (2688 * 150) / 138,
@@ -130,7 +130,7 @@ const sources: Source[] = [
   },
   {
     id: "METEOR_FALLS_B1F_2R",
-    file: "meteor_falls_b1f_2r_sunny_walk_sweet_scent.txt",
+    file: "METEOR_FALLS_B1F_2R-Sunny-MapSong-SweetScentLand.txt",
     map: 25,
     song: "CAVE_OF_ORIGIN",
     loop: (1728 * 150) / 100,
@@ -138,7 +138,7 @@ const sources: Source[] = [
   },
   {
     id: "ROUTE123_BIKE_FISHING_RAIN",
-    file: "route123_rain_bike_fishing.txt",
+    file: "ROUTE123-Rain-BikeSong-SuperRod.txt",
     map: 37,
     song: "ROUTE122",
     loop: (2688 * 150) / 138,
@@ -149,7 +149,7 @@ const sources: Source[] = [
   },
   {
     id: "ROUTE116",
-    file: "route116_sunny_walk_sweet_scent.txt",
+    file: "ROUTE116-Sunny-MapSong-SweetScentLand.txt",
     map: 10,
     song: "ROUTE104",
     loop: 2260.25,
@@ -157,7 +157,7 @@ const sources: Source[] = [
   },
   {
     id: "MT_PYRE_EXTERIOR",
-    file: "mt_pyre_exterior_sunny_walk_sweet_scent.txt",
+    file: "MT_PYRE_EXTERIOR-Sunny-MapSong-SweetScentLand.txt",
     map: 43,
     song: "MT_PYRE_EXTERIOR",
     loop: (2496 * 150) / 102,
@@ -165,7 +165,7 @@ const sources: Source[] = [
   },
   {
     id: "METEOR_FALLS_B1F_2R_FISHING_SUNNY",
-    file: "meteor_falls_b1f_2r_sunny_walk_fishing.txt",
+    file: "METEOR_FALLS_B1F_2R-Sunny-MapSong-SuperRod.txt",
     map: 25,
     song: "CAVE_OF_ORIGIN",
     loop: (1728 * 150) / 100,
@@ -174,7 +174,7 @@ const sources: Source[] = [
   },
   {
     id: "SAFARI_ZONE_NORTHWEST_SURF_FISHING_SUNNY",
-    file: "safari_zone_nortwest_sunny_surf_fishing.txt",
+    file: "SAFARI_ZONE_NORTHWEST-Sunny-SurfSong-SuperRod.txt",
     map: 74,
     song: "SAFARI_ZONE",
     loop: (2304 * 150) / 82,
@@ -184,7 +184,7 @@ const sources: Source[] = [
   },
   {
     id: "ROUTE129_SURF_SUNNY",
-    file: "route129_sunny_surf_sweet_scent.txt",
+    file: "ROUTE129-Sunny-SurfSong-SweetScentWater.txt",
     map: 50,
     song: "ROUTE119",
     loop: (2304 * 150) / 82,
@@ -195,7 +195,7 @@ const sources: Source[] = [
   },
   {
     id: "ROUTE120",
-    file: "route120_walk_sweet_scent_v2.txt",
+    file: "ROUTE120-Sunny-MapSong-SweetScentLand.txt",
     map: 34,
     song: "ROUTE120",
     loop: (3072 * 150) / 134,
@@ -204,7 +204,7 @@ const sources: Source[] = [
   },
   {
     id: "ROUTE123_SUNNY",
-    file: "route123_sunny_walk_sweet_scent.txt",
+    file: "ROUTE123-Sunny-MapSong-SweetScentLand.txt",
     map: 37,
     song: "ROUTE122",
     loop: (2304 * 150) / 124,
@@ -213,7 +213,7 @@ const sources: Source[] = [
   },
   {
     id: "ROUTE120_RAIN",
-    file: "route120_rain_walk_sweet_scent.txt",
+    file: "ROUTE120-Rain-MapSong-SweetScentLand.txt",
     map: 34,
     song: "ROUTE120",
     loop: (3072 * 150) / 134,
@@ -223,7 +223,7 @@ const sources: Source[] = [
   },
   {
     id: "DEWFORD_FISHING_SUNNY",
-    file: "dewford_sunny_walk_fishing.txt",
+    file: "DEWFORD_TOWN-Sunny-MapSong-SuperRod.txt",
     map: 85,
     song: "DEWFORD",
     loop: (2496 * 150) / 94,

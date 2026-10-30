@@ -1,0 +1,1 @@
+import{vs as e}from"./schemas-CEI3cDjQ.js";function t(t,n){return e(t,n)}export{t};

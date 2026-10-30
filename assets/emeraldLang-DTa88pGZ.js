@@ -1,0 +1,1 @@
+import{n as e}from"./language-JiMtHISO.js";var t=[`English`,`French`,`Italian`,`Spanish`,`German`,`Japanese`],n={English:`en`,French:`fr`,Italian:`it`,Spanish:`es`,German:`de`,Japanese:`ja`},r=t=>{let r=n[t];return r===`ja`?`日本語`:e[r].label},i=e=>e.map(e=>({label:r(e),value:e}));export{t as n,i as r,n as t};

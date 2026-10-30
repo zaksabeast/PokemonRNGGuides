@@ -1,0 +1,51 @@
+var e=`---
+title: "你的第一次乱数"
+description: "学习通过乱数操作获得你的第一只异色宝可梦。"
+slug: "zh-your-first-rng"
+translation:
+  enSlug: "your-first-rng"
+  language: "zh"
+---
+
+宝可梦是否异色取决于训练家 ID（TID）和里 ID（SID）。TID 可以在训练家卡上查看，而 SID 在游戏中不会显示。
+
+## 实时操作推荐（实机）
+
+首先需要确定你的 SID。获得 SID 后，就可以开始获取异色宝可梦了！
+
+**绿宝石**
+
+1. 通过[丑丑鱼](/emerald-sid-feebas)确定 SID，或在新存档中获取[异色御三家](/emerald-shiny-starter)的同时确定 SID。
+2. 获取[异色蛋](/retail-emerald-egg)或[异色传说宝可梦](/emerald-static)。
+
+**钻石/珍珠/白金**
+
+1. 新建存档时，获取适用于[迷人之躯乱数的 TID/SID](/dppt-tid-sid)。
+2. 获取[异色御三家](/retail-dppt-starter)。
+
+## 暂停操作推荐（模拟器）
+
+信息显示工具会直接显示 TID 和 SID，因此可以直接开始乱数！
+
+**绿宝石**
+
+- 孵出[异色蛋](/emulator-emerald-egg)。
+- 感染[宝可病毒](/emerald-pokerus-emu)。
+
+**究极之日/究极之月**
+
+- 孵出[异色蛋](/retail-usum-egg-no-mmsc)。
+- 捕捉[岛屿扫描的异色宝可梦](/retail-usum-island-scan)。
+
+<LinkButton
+  type="primary"
+  trackerId="return-to-home"
+  link={{ type: "slug", slug: "/" }}
+>
+  返回首页查看更多指南
+</LinkButton>
+
+## 特别鸣谢
+
+- 中文翻译：白希洛/Hakuhiro
+`;export{e as default};

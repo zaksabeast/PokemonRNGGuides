@@ -1,0 +1,1 @@
+import{n as e}from"./rngTools-BH39yVrG.js";var t=async(t,n,r)=>{let i=e=>({advs:{frame_before_painting:r,adv_after_painting:e},wait_dur:e});if(t==null||n.length===0)return i;let a=new Uint32Array(new Set(n)),o=await e.find_fastest_advs_considering_painting(t,a),s=new Map;return o.forEach((e,t)=>{s.set(a[t],e)}),e=>s.get(e)??i(e)};export{t};

@@ -1,0 +1,77 @@
+var e=`---
+- title: "HeartGold and Soulsilver Egg RNG"
+  navDrawerTitle: "Egg RNG"
+  description: "Learn how to RNG eggs from the Daycare in HeartGold and SoulSilver for shiny, high-IV Pokémon."
+  slug: "emulator-hgss-egg"
+  category: "HeartGold and SoulSilver"
+  section: "pokemon_rng"
+  variant: "cfw-emu"
+- title: "HeartGold and Soulsilver Egg RNG"
+  navDrawerTitle: "Egg RNG"
+  description: "Learn how to RNG eggs from the Daycare in HeartGold and SoulSilver for shiny, high-IV Pokémon."
+  slug: "emulator-hgss-breeding"
+  category: "HeartGold and SoulSilver"
+  section: "pokemon_rng"
+  variant: "cfw-emu"
+  hideFromNavDrawer: true
+  canonical: "emulator-hgss-egg"
+---
+
+## Tools
+
+- [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases)
+- [Desmume](/desmume-setup)
+- [Lua Scripts](https://github.com/Real96/PokeLua/blob/main/Gen%204/DeSmuMe/HGSS_RNG_DeSmuMe.lua)
+- A Chatot with Chatter (two recommended)
+- An empty party slot
+
+## Step 1: Setup & PID RNG
+
+This process is split into two parts: **PID RNG** and **IV RNG**.
+Check [this website](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_breeding) for details on held items, inheritance, Nature, and IVs.
+
+1. Place both parents in the daycare, keeping track of their order, IVs, and Nature.
+2. Save the game.
+3. Register a sound with Chatter (it can be empty; you only need it registered).
+4. Open PokeFinder → Gen 4 tab → "Egg" → "Searcher".
+5. Enter all required data.
+6. Use international parents if you want Masuda Method (higher shiny chance).
+7. Set Min Delay to 700.
+8. Set Max Delay as needed (increase it for more specific spreads).
+9. Set Held Advances to 0 / 0; ignore Pickup Advances for now.
+10. Generate results and choose a target.
+11. Hit the target Initial Seed using [this guide](/hgss-initial-seed).
+12. Generate the egg and save in front of the daycare man.
+13. Stop here if you only need shiny, Nature, gender, or ability. Congrats, you got it!
+
+\`\`\`
+It is suggested to have a 6IV Ditto if you're not aiming for a specific moveset, so IVs won't be a huge problem.
+\`\`\`
+
+\`\`\`
+Note: If you want to be sure, create a save state, take the egg, verify it with PKHeX, and reload the state.
+\`\`\`
+
+## Step 2: IV RNG
+
+1. Return to PokeFinder → "Searcher".
+2. Set Min Delay to 700.
+3. Set Max Delay as needed (increase it for more specific spreads).
+4. Set Held Advances to 0 / 100000.
+5. Set Pickup Advances minimum to \`number of uncaptured roamers + 1\`.
+6. Set Pickup Advances maximum as needed (increase it for more specific spreads).
+7. Enter desired IVs in the filter.
+8. Generate results and choose a target.
+9. Hit the new Initial Seed.
+10. Advance using Chatot (or NPCs if you accept risk) until you reach the correct Pickup Advance.
+11. Make a save state as backup.
+12. Close the menu while spamming \`A\` to receive the egg without extra Advances.
+13. If you miss, reload the save state and repeat from step 12.
+
+**Congrats! You've now got your Pokémon!**
+
+## Credits
+
+- Fiask for finalizing and translating the guide to Italian.
+- Chinese translation: xuanyelin, Hakuhiro.
+`;export{e as default};

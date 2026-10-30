@@ -1,0 +1,35 @@
+var e=`---
+title: "什么是乱数？"
+description: "面向新手的宝可梦乱数操作入门介绍。"
+slug: "zh-what-is-rng"
+translation:
+  enSlug: "what-is-rng"
+  language: "zh"
+---
+
+## 欢迎了解宝可梦乱数！
+
+简单来说，乱数操作可以让你更容易获得异色宝可梦。
+
+游戏中的许多结果看似随机，但我们已经了解游戏生成随机数的方式，因此可以预测这些结果，并告诉你在什么时机按下 \`A\`，才能获得想要的宝可梦。
+
+你可以选择异色御三家开局、捕捉异色传说宝可梦，也可以孵出异色宝可梦。
+
+## 不只是异色
+
+乱数操作还可以让你获得完美个体的宝可梦、通过抽奖反复获得大师球、在游戏厅中取得理想结果，等等！
+
+这是一种有趣的玩法，既增加了挑战，也能带来丰厚的收获。
+
+<LinkButton
+  type="primary"
+  trackerId="retail-or-emulator"
+  link={{ type: "slug", slug: "/retail-or-emulator/" }}
+>
+  了解乱数操作方式
+</LinkButton>
+
+## 特别鸣谢
+
+- 中文翻译：白希洛/Hakuhiro
+`;export{e as default};

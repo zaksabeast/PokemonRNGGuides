@@ -1,0 +1,87 @@
+var e=`---
+title: "绿宝石 ACE 乱数指南"
+navDrawerTitle: "ACE 乱数"
+description: "学习利用 ACE 设置种子、搜索目标、校准推进数并获得理想宝可梦。"
+slug: "zh-emerald-rng-with-ace"
+translation:
+  enSlug: "emerald-rng-with-ace"
+  language: "zh"
+---
+
+## 所需工具
+
+- [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases)
+- [可稳定执行 ACE 的宝可梦](https://e-sh4rk.github.io/ACE3/emerald/getting-started/introduction/)
+- [Mystic Timer](/mystic-timer)
+- 会甜甜香气的宝可梦（仅野生乱数需要）
+- 队伍中至少一个空位（可选，推荐保留以加快校准）
+
+> [!IMPORTANT]
+> 本指南需要你具备第三世代乱数的基础知识。
+> 虽然使用了 ACE，但通过此方法获得的宝可梦仍符合合法生成条件。
+
+## 第一步：准备种子与代码
+
+先选择目标，再生成用于修改初始种子的 ACE 代码。
+
+1. 打开 \`PokeFinder → Gen 3 → Wild/Static\`。
+2. 进入“Researcher”标签页，筛选目标宝可梦。野生乱数选择“Wild 2”。暂时不要关闭 PokeFinder。
+   - ![在 PokeFinder 中搜索目标](/images/Emerald/ACE/SearchingTarget.webp)
+3. 复制目标对应的种子。
+4. 使用 [E-Sh4rk 的种子脚本](https://e-sh4rk.github.io/CodeGenerator/scripts/seed/index.html)，计算代码需要使用的种子。
+   - ![第一个脚本](/images/Emerald/ACE/1stScript.webp)
+5. 粘贴种子，在开头加上 \`0x\`。
+6. 将 category 设为 \`5\`。
+7. 将范围设为 \`-900 -900\`，约为 15 秒。
+8. 复制输出的种子。
+9. 使用 [E-Sh4rk 的 ACE 代码生成器](https://e-sh4rk.github.io/CodeGenerator/index.html)生成代码。
+   - ![ACE 代码生成器](/images/Emerald/ACE/2ndScript.webp)
+10. 在“RNG and PID Manipulation”中选择“Change PRNG Seed”。
+11. 粘贴种子，保留 \`0x\`，然后点击“Compute”。
+12. 将所有代码输入游戏。
+13. 保存游戏，执行代码，确认可以正常运行。
+
+> [!WARNING]
+> 如果游戏崩溃或卡死，请检查代码，确保第 12、13、14 号盒子，以及第 11 号盒子的最后一行中没有宝可梦或残留数据。重复尝试，直到出现宝可梦图鉴完成奖状。
+>
+> <br />
+>
+> 如果遇到问题，可以在第 11、12、13、14 号盒子按下图方式清除残留数据。
+>
+> <br />
+> ![清除残留数据](/images/Emerald/ACE/RemoveGhostData.webp)
+
+## 第二步：进行宝可梦乱数
+
+设置新初始种子后，开始乱数操作。
+
+1. 在捕捉目标所需的位置保存游戏。
+2. 打开 Mystic Timer，选择第三世代。
+3. 将计时器设为 \`Target Advance = 900\`。
+4. 启动计时器，同时打开用于执行 ACE 的宝可梦信息界面。
+5. 之后按普通乱数流程操作。
+
+| Mystic Timer 设置                                            |
+| ------------------------------------------------------------ |
+| ![Mystic Timer 与 ACE](/images/Emerald/ACE/TimerConfig.webp) |
+
+## 第三步：校准
+
+由于直接修改了种子，校准方式与普通乱数不同。
+
+1. 根据捕捉地点设置参数。野生乱数选择“Wild 2”。
+2. 在“Generator”标签页，将代码生成器中使用的 Current Seed 粘贴到 \`Initial Advance\` 栏，再点击生成。
+3. 筛选并找到实际获得的宝可梦。
+4. 使用 PokeFinder 输出的数值进行校准。
+5. 重复操作，直到获得目标宝可梦。
+
+## 疑难解答
+
+- 即使其他条件正确，个体值也可能不一致。ACE 可能改变音频或画面，进而影响野生生成过程中的周期计数，使实际生成方式不再是 Wild 2。
+- 个体值不符时，只能重新尝试。
+
+## 特别鸣谢
+
+- Fiask：撰写指南及意大利语翻译。
+- 中文翻译：白希洛/Hakuhiro
+`;export{e as default};

@@ -1,0 +1,135 @@
+var e=`---
+- title: "Diamond, Pearl, and Platinum PokéRadar RNG"
+  navDrawerTitle: "PokéRadar RNG"
+  description: "Learn how to RNG PokéRadar in Diamond, Pearl, and Platinum for shiny, high-IV Pokémon."
+  slug: "dppt-pokeradar-rng"
+  category: "Diamond, Pearl, and Platinum"
+  section: "pokemon_rng"
+  isRoughDraft: true
+  variant:
+    - "retail"
+    - "cfw-emu"
+---
+
+## Tools
+
+- Unlock PokeRadar
+- Lots of PokeBalls (Quick Ball are recommended)
+- Chatot with Chatter (Use two to speed up the process)
+- Coin Toss Pokètch application
+- [Chatot Pitch Finder](/chatot-pitch-elm-call-finder/)
+
+> [!WARNING]
+> A basic understanding of Gen 4 RNG is required, such as knowing how to hit the initial seed or how to advance the RNG.
+> The process itself is easy, but randomly moving NPCs can make it tricky in some areas. Be aware this requires a lot of patience!
+
+> [!TIP]
+> To create a long chain, input your Initial Seed into the "Grid" tool (step 4) and advance the RNG to any advance — the specific one doesn't matter, as long as you know which one it is.
+
+<Stepper titles={["Preparations", "Target Searcher", "Chain Starter", "Shiny patch"]}>
+
+<Step step={0}>
+
+## Intro
+
+In this guide we will explain how PokéRadar works and how to perform RNG Manipulation with it on Pokemon Diamond, Pearl and Platinum!
+
+The PokéRadar is an item that allows you to find particular wild Pokémon in the tall grass and create "chains" of consecutive encounters with the same species. It is the most famous method of hunting shiny Pokémon in Gen 4 together with the Masuda method. The longer the chain, the higher the chances of finding a shiny.
+
+It is usually used to catch PokéRadar exclusive Pokémon or perform wild RNG manipulation in areas that sweet scent fails in, such as during a Routes 216 or 228 due to the blizzard and sandstorm.
+
+### Grass shake types
+
+The grass can shake in two different ways: **Slow** and **Fast**
+
+See the image here below: on the left we have the slow ones, and on the right, the fast ones. The difference is noticeable.
+
+| Patch types                                             |
+| ------------------------------------------------------- |
+| ![](/images/Diamond-Pearl-Platinum/shaking-patches.gif) |
+
+Fast patches contain Pokémon exclusive to the PokéRadar, but apart from that, there are no significant differences.
+
+## In-game preparations
+
+1. Make sure you have a charged PokéRadar.
+2. Go to the area with as much tall grass as possible, trying to cover the entire 9x9. If this is not possible, try to cover as many tiles as possible.
+3. Save the game.
+
+Always keep a repel activated.
+
+</Step>
+
+<Step step={1}>
+
+## Search for Your Target
+
+1. Fill in the Searcher form below with your desired target, then click "Select" once you find the result you like.
+2. Hit your target seed, then press \`X\` as fast as possible to open the menu and stop the RNG from advancing.
+
+<PokeRadar4ShinySearcher />
+
+</Step>
+
+<Step step={2}>
+
+## Start the Chain
+
+1. Use PokéRadar and choose a patch, then get in front of it without entering.
+2. Use the tool below to get the Advance, then use Chatot and stop 1 advance before your target and then take the step, since taking a step in tall grass advances the RNG.
+3. Close the menu while holding the D-Pad on the same side as the patch to take a step and start the battle. If the target doesn't appear, repeat from Step 2.
+4. Defeat or catch it to end the battle and start the chain (catching increases the chance of continuing the chain).
+
+If possible, exit the tall grass, take 50 steps, then reposition yourself as before and open the menu.
+
+> [!WARNING]
+> Don't exit the location, or the chain will break.
+
+> [!TIP]
+> To hit the advance, keep the menu open, hold the D-pad in the direction of the patch, and finally hold down the B button to close the menu and start running. Doing this will reduce execution time, and any NPCs present might not cause any issues.
+
+<PokeRadar4ChainStarter />
+
+Be aware, your chain will break if:
+
+- A random encounter starts (it is therefore very important to use repellent as mentioned earlier).
+- You encounter a Pokémon other than the one in the chain.
+- You enter a patch of grass that doesn't have the same vibration.
+- You change route, enter a building or leave the area.
+- You move so far away from the grass patches that all the shaking patches are no longer on your screen.
+- You turn off the game or restart it.
+- You use the bike.
+- PokéRadar usage fails.
+
+</Step>
+
+<Step step={3}>
+
+## Get the Shiny Patch
+
+1. Advance the RNG to the Shiny Patch Advance, then activate PokeRadar. If done correctly, you'll get a shiny patch. Shiny guaranteed!
+
+> [!NOTE]
+> You can stop here if you only want a shiny, without RNGing the spread.
+
+### Get your spread
+
+1. Get in front of it without entering, then use Chatot and stop 1 advance before your target and then take the step, and take a step to start the battle.
+2. Catch the Pokémon and check its IVs. If they're correct, congrats. Otherwise, repeat from Step 2.
+
+## Grid Tool
+
+Use this tool to predict where the patch will spawn!
+
+<PokeRadar4PatchGrid />
+
+</Step>
+
+</Stepper>
+
+## Credits
+
+- Fiask, for writing the guide as well as developing the tool.
+- Real96 and Sergi, for helping to read the code and understand how it works.
+- Thanks to all [Pret](https://github.com/pret/pokeplatinum) contributors for their research.
+`;export{e as default};

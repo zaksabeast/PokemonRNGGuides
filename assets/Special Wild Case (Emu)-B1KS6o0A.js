@@ -1,0 +1,37 @@
+import{t as e}from"./jsx-runtime-Bl9_0yti.js";import{S as t}from"./index-9x-tX0ur.js";var n=e(),r={title:`心金/魂银特殊野生乱数`,navDrawerTitle:`特殊野生乱数`,description:`介绍捕虫大赛、狩猎地带及头锤的特殊野生乱数。`,slug:`zh-emulator-hgss-special-wild`,translation:{enSlug:`emulator-hgss-special-wild`,language:`zh`}};function i(e){let r={a:`a`,blockquote:`blockquote`,code:`code`,h2:`h2`,li:`li`,ol:`ol`,p:`p`,ul:`ul`,...t(),...e.components};return(0,n.jsxs)(n.Fragment,{children:[(0,n.jsx)(r.p,{children:`本指南涵盖：`}),`
+`,(0,n.jsxs)(r.ul,{children:[`
+`,(0,n.jsx)(r.li,{children:`有、无迷人之躯队首时的捕虫大赛乱数。`}),`
+`,(0,n.jsx)(r.li,{children:`有、无迷人之躯队首时的狩猎地带乱数。`}),`
+`,(0,n.jsx)(r.li,{children:`头锤乱数。`}),`
+`]}),`
+`,(0,n.jsx)(r.p,{children:`需要准备：`}),`
+`,(0,n.jsxs)(r.ul,{children:[`
+`,(0,n.jsx)(r.li,{children:(0,n.jsx)(r.a,{href:`/desmume-setup`,children:`DeSmuME`})}),`
+`,(0,n.jsx)(r.li,{children:`RNG Reporter`}),`
+`]}),`
+`,(0,n.jsx)(r.p,{children:`开始前，应已掌握普通野生乱数。`}),`
+`,(0,n.jsx)(r.h2,{children:`捕虫大赛`}),`
+`,(0,n.jsx)(r.p,{children:`遇敌槽位共 10 个，搜索范围设为 0-9。具体宝可梦分布请参考 Serebii 的 Pokearth 数据。在正确日期，于接待员面前保存，进入后还需要走到草丛。`}),`
+`,(0,n.jsxs)(r.ol,{children:[`
+`,(0,n.jsx)(r.li,{children:`如果使用迷人之躯，打开第四世代 Time Finder，在 Encounter Type 中选择 Bug Catching Contest，可以选择任意目标帧。`}),`
+`,(0,n.jsx)(r.li,{children:`如果不用迷人之躯，选择普通或同步队首。游戏在不满足某些条件时会跳过结果，为避免这种情况，应选择至少有一项个体值为 31 的目标帧，无其他要求。`}),`
+`]}),`
+`,(0,n.jsx)(r.h2,{children:`狩猎地带`}),`
+`,(0,n.jsx)(r.p,{children:`遇敌槽位共 10 个，会受到摆设及经过天数影响。通过 Serebii 的 Pokearth 查询条件和可出现的宝可梦。槽位会变化，因此需要自行确定各槽位对应的种类。`}),`
+`,(0,n.jsxs)(r.p,{children:[`在入口接待员前保存，以任意初始种子进入狩猎地带。在 RNG Reporter 主窗口选择 `,(0,n.jsx)(r.code,{children:`Method K => Encounter Type: Safari Zone`}),`，输入初始种子，通过实际遭遇确认槽位，建立自己的遇敌表。确定目标槽位后，再搜索目标帧。`]}),`
+`,(0,n.jsxs)(r.ol,{children:[`
+`,(0,n.jsx)(r.li,{children:`使用迷人之躯时，与捕虫大赛相同，可以选择任意目标帧。`}),`
+`,(0,n.jsx)(r.li,{children:`不使用迷人之躯时，同样需要至少有一项个体值为 31，以避免游戏跳过不满足条件的结果。`}),`
+`]}),`
+`,(0,n.jsx)(r.h2,{children:`头锤`}),`
+`,(0,n.jsx)(r.p,{children:`遇敌槽位取决于 ID。可以通过提供遇敌槽位的网站，了解各树木可能出现的宝可梦。树木的遇敌槽位似乎每天都会变化，华蓝市北面可出现三蜜蜂或懒人獭的特殊树木也不例外。`}),`
+`,(0,n.jsxs)(r.p,{children:[`在树前保存，以任意初始种子重新进入。在 RNG Reporter 主窗口选择 `,(0,n.jsx)(r.code,{children:`Method K => Encounter Type: Headbutt tree`}),`，输入初始种子，建立自己的遇敌表。验证后，再搜索目标帧。`]}),`
+`,(0,n.jsx)(r.p,{children:`推荐使用同步队首，提高可用结果数量。`}),`
+`,(0,n.jsxs)(r.blockquote,{"alert-type":`TIP`,children:[`
+`,(0,n.jsx)(r.p,{children:`可能需要比目标提前 1 帧操作。例如目标为第 130 帧时，可以在 PIDRNG 第 129 帧使用头锤。建议创建即时存档，分别测试目标帧与提前 1 帧。有时目标帧可以成功，有时则需要提前。`}),`
+`]}),`
+`,(0,n.jsx)(r.p,{children:`更新 3：这种差异似乎与种子有关，有时需要提前 1 帧，有时不需要。`}),`
+`,(0,n.jsx)(r.h2,{children:`特别鸣谢`}),`
+`,(0,n.jsxs)(r.ul,{children:[`
+`,(0,n.jsx)(r.li,{children:`中文翻译：白希洛/Hakuhiro`}),`
+`]})]})}function a(e={}){let{wrapper:r}={...t(),...e.components};return r?(0,n.jsx)(r,{...e,children:(0,n.jsx)(i,{...e})}):i(e)}export{a as default,r as frontmatter};

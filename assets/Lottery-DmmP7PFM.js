@@ -1,0 +1,152 @@
+var e=`---
+title: "钻石/珍珠/白金抽奖乱数"
+navDrawerTitle: "抽奖乱数"
+description: "通过抽奖乱数，在钻石、珍珠和白金中反复获得大师球及学习装置。"
+slug: "zh-retail-dppt-lottery"
+translation:
+  enSlug: "retail-dppt-lottery"
+  language: "zh"
+---
+
+<Stepper titles={['设置', '选择奖品', '命中种子', '推进到目标', '领取奖品']}>
+
+<Step step={0}>
+
+## 设置
+
+在下方选择游戏和主机，然后进入下一步。
+
+<Gen4ConfigSetup onlyDppt />
+
+</Step>
+
+<Step step={1}>
+
+## 选择奖品
+
+在下方填写 TID 等信息，选择想要获得的抽奖奖品。
+
+<Lottery4Searcher />
+
+</Step>
+
+<Step step={2}>
+
+## 准备存档
+
+1. 如果使用白金版，NDS 的主机日期设为 **12/31/2099**，3DS 则设为 **12/31/2050**。
+2. 至少准备一只已录制喋喋不休的聒噪鸟，最好准备两只。
+3. 将宝可表切换到抛硬币应用。
+4. 在祝庆电视台南面的建立小组 NPC 旁保存游戏。
+
+<Pixelate>
+
+<EqualColumnTable>
+
+| 建立小组的 NPC                                                   | 抛硬币应用                                                         |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------ |
+| ![建立小组的 NPC](/images/Diamond-Pearl-Platinum/group-npc.webp) | ![宝可表抛硬币应用](/images/Diamond-Pearl-Platinum/coin-flip.webp) |
+
+</EqualColumnTable>
+
+</Pixelate>
+
+## 设置主机
+
+1. 将主机日期设为 **<Gen4ConsoleSetDateString format="date" />**。
+2. 将主机时间设为 **<Gen4ConsoleSetDateString format="time" />**，暂时不要确认。
+
+| 确认时间界面                                                    |
+| --------------------------------------------------------------- |
+| ![确认时间界面](/images/HeartGold-SoulSilver/SetTimeScreen.jpg) |
+
+## 命中种子
+
+<Gen4ShowIf is3dsNormalSettings>
+  [了解如何使用 3DS 辅助工具](/3ds-helper).
+</Gen4ShowIf>
+
+1. 按下 \`A\` 确认主机时间，同时启动下方计时器。
+2. <Gen4ShowIf is3dsNormalSettings>退出设置，重启主机，再启动游戏。</Gen4ShowIf>
+   <Gen4ShowIf is3dsAltSettings>
+     按下 \`Start\` 退出 Alt Settings，再启动游戏。
+   </Gen4ShowIf>
+   <Gen4ShowIf isNdsDsi>退出设置，重启主机。</Gen4ShowIf>
+3. 第一个计时器结束时， <Gen4ShowIf is3dsNormalSettings is3dsAltSettings>按下 \`L + R + Start + Select\` 软重启游戏。</Gen4ShowIf><Gen4ShowIf isNdsDsi>按下 \`A\` 启动游戏。</Gen4ShowIf>
+4. 推进到读取存档的界面。
+5. 第二个计时器结束时，立即按下 \`A\` 读取存档。
+
+> [!TIP]
+> 如果没有足够时间命中种子，请返回上一步，提高“Max Delay”后重新搜索奖品。
+
+<Gen4EmbeddedTimer />
+
+## 校准种子
+
+1. 点击下方的“Generate”，生成可能命中的种子列表。
+2. 在宝可表中抛硬币，点击下方对应的正面或反面按钮，筛选结果。
+3. 如果只剩一个结果，且不是目标种子，点击“Calibrate”。
+4. 重新尝试命中目标。
+5. 如果实际结果的“Flip Delay”列已勾选，需要通过以下方式之一切换 delay 奇偶：
+   - **所有版本**：插入 GBA 卡带。
+   - **心金/魂银**：在继续游戏界面，用触屏依次点击向下和向上箭头。
+   - **钻石/珍珠/白金**：选择“New Game”，再按下 \`B\` 返回继续游戏界面。
+   - 如果切换过 delay 奇偶，之后每次尝试都需要执行相同操作。
+
+> [!TIP]
+> 如果找不到实际种子，请扩大 delay 和秒数偏差范围，再次搜索。
+
+<DpptCoinFlipSeedCalibrator />
+
+</Step>
+
+<Step step={3}>
+
+## 推进到目标
+
+1. 点击下方的“Generate”，生成抛硬币结果列表。
+2. 在宝可表中抛硬币，点击对应的正面或反面按钮，追踪当前推进数。
+3. 停在目标推进数之前，再进入下一步。
+
+<DpptCoinFlipAdvanceFilter />
+
+</Step>
+
+<Step step={4}>
+
+## 领取奖品
+
+1. 与建立小组的 NPC 对话，创建新小组。
+2. 保存游戏。
+3. 关闭游戏，将主机时间改为晚上 11:59。
+4. 尽快进入游戏并读取存档，确保此时仍为晚上 11:59。
+5. 等待时间经过午夜 12:00。
+6. 与祝庆电视台内的抽奖 NPC 对话，领取奖品。
+
+> [!WARNING]
+> 如果在午夜 12:00 才读取存档，就无法获得正确奖品！
+
+<Pixelate>
+
+<EqualColumnTable>
+
+| 建立小组的 NPC                                                   | 抽奖柜台                                                                 |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| ![建立小组的 NPC](/images/Diamond-Pearl-Platinum/group-npc.webp) | ![抽奖柜台](/images/Diamond-Pearl-Platinum/Lottery/lottery-counter.webp) |
+
+</EqualColumnTable>
+
+</Pixelate>
+
+**恭喜你**！应该已经获得目标奖品了！
+
+</Step>
+
+</Stepper>
+
+## 特别鸣谢
+
+- 感谢所有 [Pret](https://github.com/pret/pokeplatinum) 的贡献者。
+- Zaksabeast：制作工具及撰写指南。
+- 中文翻译：白希洛/Hakuhiro
+`;export{e as default};

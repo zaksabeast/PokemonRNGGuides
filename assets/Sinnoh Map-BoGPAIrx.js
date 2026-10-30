@@ -1,0 +1,12 @@
+var e=`---
+title: "Interactive Sinnoh Map"
+navDrawerTitle: "Interactive Sinnoh Map"
+description: "Interactive Sinnoh maps for Diamond, Pearl, and Platinum featuring touch-friendly navigation, highlighted areas, toggle-able markers, and more."
+slug: "sinnoh-map"
+category: "Diamond, Pearl, and Platinum"
+section: "supporting_info"
+addedOn: "2026-05-14"
+---
+
+<StandaloneSinnohMap />
+`;export{e as default};

@@ -1,0 +1,1 @@
+import{h as e,l as t,s as n}from"./_cacheHas-ClGIpZUA.js";import{Ns as r}from"./schemas-CEI3cDjQ.js";function i(i,a,o){if(!e(o))return!1;var s=typeof a;return(s==`number`?n(o)&&r(a,o.length):s==`string`&&a in o)?t(o[a],i):!1}export{i as t};

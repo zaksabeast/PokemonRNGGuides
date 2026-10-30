@@ -1,0 +1,59 @@
+var e=`---
+title: "安装 CaptureSight"
+navDrawerTitle: "CaptureSight"
+description: "学习在 Switch 上安装 CaptureSight，辅助乱数操作并获取理想的宝可梦。"
+slug: "zh-install-capturesight"
+translation:
+  enSlug: "install-capturesight"
+  language: "zh"
+---
+
+## 所需工具
+
+- 已安装 Atmosphere 自制固件的 Switch（[CFW 安装指南](https://switch.hacks.guide/)）
+
+## 第一步：安装 Tesla 浮层
+
+- [nx-ovlloader](https://github.com/WerWolv/nx-ovlloader/releases)
+- [Tesla Menu](https://github.com/WerWolv/Tesla-Menu/releases)
+
+1. 下载最新版 Tesla Menu 和 nx-ovlloader。
+2. 解压文件，将文件夹合并到 SD 卡根目录。
+
+## 第二步：安装 CaptureSight
+
+- [CaptureSight](https://github.com/zaksabeast/CaptureSight/releases)
+
+1. 下载 \`capturesight.ovl\`，放入 SD 卡的 \`/switch/.overlays\` 目录。
+
+## 使用 CaptureSight
+
+1. 启动支持的宝可梦游戏，例如剑/盾或晶灿钻石/明亮珍珠。
+2. 按下 \`L + 方向键下 + 按下右摇杆\`，打开或关闭 Tesla Menu 浮层。
+3. 打开 CaptureSight 浮层。
+
+## 疑难解答
+
+### dmnt:cht is not running
+
+- 出现此错误，说明你没有使用 Atmosphere，或安装不正确。请按[此指南](https://switch.hacks.guide/extras/updating.html)将 Atmosphere 更新到最新版。
+
+### No cheat process! Is a game running? Is something else using dmnt:cht?
+
+- 请先启动游戏，再运行 CaptureSight。同时确认没有使用 sysbot-base，两者会产生冲突，无法同时运行。
+
+### Unsupported game update!
+
+- 将游戏更新到最新版通常可以解决。CaptureSight 尚未支持最新版游戏时，也可能出现此错误。
+
+### Unsupported game! Title Id: \\<title_id\\>
+
+- 当前游戏不受 CaptureSight 支持。支持的游戏包括：
+  - 剑/盾。
+  - 晶灿钻石/明亮珍珠。
+  - 传说 阿尔宙斯。
+
+## 特别鸣谢
+
+- 中文翻译：白希洛/Hakuhiro
+`;export{e as default};

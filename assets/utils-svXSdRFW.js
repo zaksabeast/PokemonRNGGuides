@@ -1,0 +1,1 @@
+import{r as e,t}from"./dist-p_bQBD1b.js";var n=n=>e(n).with(`CutecharmF`,()=>`Cutecharm`).with(`CutecharmM`,()=>`Cutecharm`).with(`None`,()=>`None`).with(`Pressure`,()=>`Pressure`).with({Synchronize:t.any},()=>`Synchronize`).exhaustive();export{n as t};

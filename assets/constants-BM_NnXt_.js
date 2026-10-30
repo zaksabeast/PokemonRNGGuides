@@ -1,0 +1,1 @@
+import{i as e,t}from"./react-Bw5yJGdz.js";var n=e({game:`Black`,language:`English`,dsType:`DS`,calibrationType:`ivs`}),r=()=>t(n),i=[`Black`,`White`,`Black2`,`White2`],a=[`English`,`French`,`German`,`Italian`,`Japanese`,`Korean`,`Spanish`],o=[`DS`,`DSi`,`DS3`],s=[`R`,`L`,`X`,`Y`,`A`,`B`,`Select`,`Start`,`Right`,`Left`,`Up`,`Down`];export{r as a,a as i,s as n,i as r,o as t};

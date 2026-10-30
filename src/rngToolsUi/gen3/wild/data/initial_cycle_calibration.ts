@@ -18,6 +18,9 @@ import type {
   RawCdfKnot,
 } from "./initial_cycle_calibration_types";
 
+// NO_PROD fishing : bike instead of walk => +1,772 cycles non-audio cycles.
+// NO_PROD fishing : surf instead of walk => +5,420.63 cycles non-audio cycles.
+
 const VBLANK_FREQ = 280_896;
 const components: Partial<Record<string, CalibrationComponent>> =
   calibrationComponents;
@@ -325,7 +328,9 @@ const composeCalibration = (
     setup.action === "SuperRod";
   const matchesSetup = (source: MapCalibrationSource): boolean => {
     return (
-      (source.mode === "fishing") === fishing &&
+      (source.mode === "fishing"
+        ? fishing
+        : setup.action === (source.action ?? "SweetScentLand")) &&
       (source.playing_song ?? "MapSong") === setup.playing_song &&
       (source.weather ?? "Sunny") === setup.weather
     );
@@ -359,9 +364,7 @@ const composeCalibration = (
     components[source.non_audio] ?? calibrationComponents.ROUTE101_NON_AUDIO;
   const exact =
     source.map_internal_idx === map.map_internal_idx &&
-    (source.mode === "fishing" ? fishing : setup.action === "SweetScentLand") &&
-    setup.playing_song === (source.playing_song ?? "MapSong") &&
-    setup.weather === (source.weather ?? "Sunny") &&
+    matchesSetup(source) &&
     source.song === song;
   const joint =
     exact && source.joint_correction != null

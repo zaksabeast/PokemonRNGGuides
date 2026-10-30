@@ -22,4 +22,5 @@ export type MapCalibrationSource = {
   mode?: "fishing";
   playing_song?: "BikeSong" | "SurfSong";
   weather?: "Rain";
+  action?: "SweetScentWater";
 };

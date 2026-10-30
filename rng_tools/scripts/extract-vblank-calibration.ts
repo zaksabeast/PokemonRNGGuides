@@ -30,6 +30,7 @@ type Source = {
   mode?: CaptureMode;
   audio?: string;
   playing_song?: MapCalibrationSource["playing_song"];
+  action?: MapCalibrationSource["action"];
   weather?: "Rain";
 };
 
@@ -180,6 +181,54 @@ const sources: Source[] = [
     mode: "fishing",
     audio: "SURF_FISHING_SUNNY_AUDIO",
     playing_song: "SurfSong",
+  },
+  {
+    id: "ROUTE129_SURF_SUNNY",
+    file: "route129_sunny_surf_sweet_scent.txt",
+    map: 50,
+    song: "ROUTE119",
+    loop: (2304 * 150) / 82,
+    mode: "sweet_scent",
+    audio: "SURF_SUNNY_AUDIO",
+    playing_song: "SurfSong",
+    action: "SweetScentWater",
+  },
+  {
+    id: "ROUTE120",
+    file: "route120_walk_sweet_scent_v2.txt",
+    map: 34,
+    song: "ROUTE120",
+    loop: (3072 * 150) / 134,
+    mode: "sweet_scent",
+    audio: "ROUTE120_SUNNY_AUDIO",
+  },
+  {
+    id: "ROUTE123_SUNNY",
+    file: "route123_sunny_walk_sweet_scent.txt",
+    map: 37,
+    song: "ROUTE122",
+    loop: (2304 * 150) / 124,
+    mode: "sweet_scent",
+    audio: "ROUTE122_SUNNY_AUDIO",
+  },
+  {
+    id: "ROUTE120_RAIN",
+    file: "route120_rain_walk_sweet_scent.txt",
+    map: 34,
+    song: "ROUTE120",
+    loop: (3072 * 150) / 134,
+    mode: "sweet_scent",
+    audio: "ROUTE120_RAIN_AUDIO",
+    weather: "Rain",
+  },
+  {
+    id: "DEWFORD_FISHING_SUNNY",
+    file: "dewford_sunny_walk_fishing.txt",
+    map: 85,
+    song: "DEWFORD",
+    loop: (2496 * 150) / 94,
+    mode: "fishing",
+    audio: "DEWFORD_FISHING_SUNNY_AUDIO",
   },
 ];
 
@@ -576,6 +625,7 @@ export async function extract(check = false) {
         ? { playing_song: capture.playing_song }
         : {}),
       ...(capture.weather != null ? { weather: capture.weather } : {}),
+      ...(capture.action != null ? { action: capture.action } : {}),
     });
     let lo = audio[0].x + non[0].x;
     let hi = audio.at(-1)!.x + non.at(-1)!.x;

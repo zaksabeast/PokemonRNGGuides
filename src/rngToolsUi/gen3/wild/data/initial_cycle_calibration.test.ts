@@ -182,7 +182,8 @@ test("fallback and synthetic setups retain conservative filtering bounds", () =>
   });
   expect(distribution[0].probability).toBe(0);
   const info = getWild3CalibrationInfo(map("MAP_ROUTE101", 0)).find(
-    (info) => info.calibration.playing_song === "SurfSong",
+    ({ calibration }) =>
+      calibration.action === "OldRod" && calibration.playing_song === "MapSong",
   );
   expect(info?.audio.is_fake).toBe(true);
   expect(info?.fallback).toBe(true);
@@ -562,8 +563,8 @@ test.each(["OldRod", "GoodRod", "SuperRod"] as const)(
         min: 0,
         max: 280895,
         audio: "route117_sunny_bike_fishing.txt",
-        non_audio: "route101_walk_sweet_scent.txt",
-        sampled_frames: undefined,
+        non_audio: "route123_sunny_walk_sweet_scent.txt",
+        sampled_frames: 2540,
         fallback: true,
         joint_correction: null,
       },
@@ -704,6 +705,155 @@ test.each(["OldRod", "GoodRod", "SuperRod"] as const)(
         audio: "safari_zone_nortwest_sunny_surf_fishing.txt",
         non_audio: "safari_zone_nortwest_sunny_surf_fishing.txt",
         sampled_frames: 4215,
+        joint_correction: null,
+      },
+    ]);
+  },
+);
+
+test("Route 129 has measured bounds only for water Sweet Scent", () => {
+  const measured = getWild3CalibrationInfo(map("MAP_ROUTE129", 50)).filter(
+    ({ fallback }) => !fallback,
+  );
+
+  expect(
+    measured.map(({ calibration, audio, non_audio, joint_correction }) => ({
+      ...omit(calibration, "distribution"),
+      audio: audio.provenance.source,
+      non_audio: non_audio.provenance.source,
+      sampled_frames: non_audio.provenance.sampled_frames,
+      joint_correction,
+    })),
+  ).toEqual([
+    {
+      action: "SweetScentWater",
+      playing_song: "SurfSong",
+      weather: "Sunny",
+      min: 38877,
+      max: 74697,
+      audio: "route129_sunny_surf_sweet_scent.txt",
+      non_audio: "route129_sunny_surf_sweet_scent.txt",
+      sampled_frames: 3698,
+      joint_correction: null,
+    },
+  ]);
+});
+
+test("Route 129 water Sweet Scent non-audio does not replace fishing timing", () => {
+  const fishing = getWild3CalibrationInfo(map("MAP_ROUTE129", 50)).filter(
+    ({ calibration }) => calibration.action === "SuperRod",
+  );
+
+  expect(
+    fishing.map(({ calibration, non_audio, fallback }) => [
+      calibration.playing_song,
+      non_audio.provenance.source,
+      fallback,
+      calibration.min,
+      calibration.max,
+    ]),
+  ).toEqual([
+    ["MapSong", "route101_walk_sweet_scent.txt", true, 0, 280895],
+    ["BikeSong", "route101_walk_sweet_scent.txt", true, 0, 280895],
+    ["SurfSong", "route101_walk_sweet_scent.txt", true, 0, 280895],
+  ]);
+});
+
+test("Route 120 keeps sunny and rainy walking Sweet Scent timing separate", () => {
+  const measured = getWild3CalibrationInfo(map("MAP_ROUTE120", 34)).filter(
+    ({ fallback }) => !fallback,
+  );
+
+  expect(
+    measured.map(({ calibration, audio, non_audio, joint_correction }) => ({
+      ...omit(calibration, "distribution"),
+      audio: audio.provenance.source,
+      non_audio: non_audio.provenance.source,
+      sampled_frames: non_audio.provenance.sampled_frames,
+      joint_correction,
+    })),
+  ).toEqual([
+    {
+      action: "SweetScentLand",
+      playing_song: "MapSong",
+      weather: "Sunny",
+      min: 47794,
+      max: 74202,
+      audio: "route120_walk_sweet_scent_v2.txt",
+      non_audio: "route120_walk_sweet_scent_v2.txt",
+      sampled_frames: 2999,
+      joint_correction: null,
+    },
+    {
+      action: "SweetScentLand",
+      playing_song: "MapSong",
+      weather: "Rain",
+      min: 54428,
+      max: 75721,
+      audio: "route120_rain_walk_sweet_scent.txt",
+      non_audio: "route120_rain_walk_sweet_scent.txt",
+      sampled_frames: 2981,
+      joint_correction: null,
+    },
+  ]);
+});
+
+test("Route 123 sunny walking Sweet Scent has its own measured timing", () => {
+  const measured = getWild3CalibrationInfo(map("MAP_ROUTE123", 37)).filter(
+    ({ calibration, fallback }) =>
+      calibration.action === "SweetScentLand" && !fallback,
+  );
+
+  expect(
+    measured.map(({ calibration, audio, non_audio, joint_correction }) => ({
+      ...omit(calibration, "distribution"),
+      audio: audio.provenance.source,
+      non_audio: non_audio.provenance.source,
+      sampled_frames: non_audio.provenance.sampled_frames,
+      joint_correction,
+    })),
+  ).toEqual([
+    {
+      action: "SweetScentLand",
+      playing_song: "MapSong",
+      weather: "Sunny",
+      min: 41856,
+      max: 71271,
+      audio: "route123_sunny_walk_sweet_scent.txt",
+      non_audio: "route123_sunny_walk_sweet_scent.txt",
+      sampled_frames: 2540,
+      joint_correction: null,
+    },
+  ]);
+});
+
+test.each(["OldRod", "GoodRod", "SuperRod"] as const)(
+  "Dewford %s has measured sunny fishing bounds only with map music",
+  (action) => {
+    const measured = getWild3CalibrationInfo(
+      map("MAP_DEWFORD_TOWN", 85),
+    ).filter(
+      ({ calibration, fallback }) => calibration.action === action && !fallback,
+    );
+
+    expect(
+      measured.map(({ calibration, audio, non_audio, joint_correction }) => ({
+        ...omit(calibration, "distribution"),
+        audio: audio.provenance.source,
+        non_audio: non_audio.provenance.source,
+        sampled_frames: non_audio.provenance.sampled_frames,
+        joint_correction,
+      })),
+    ).toEqual([
+      {
+        action,
+        playing_song: "MapSong",
+        weather: "Sunny",
+        min: 34469,
+        max: 98456,
+        audio: "dewford_sunny_walk_fishing.txt",
+        non_audio: "dewford_sunny_walk_fishing.txt",
+        sampled_frames: 3983,
         joint_correction: null,
       },
     ]);

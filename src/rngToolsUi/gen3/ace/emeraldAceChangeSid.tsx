@@ -3,17 +3,25 @@ import { FormSection, FormSelectField } from "~/components/form";
 import { Typography } from "antd";
 import Instructions from "./instructions_ace_change_sid.mdx";
 import z from "zod";
-import { emeraldLangs } from "./emeraldLang";
-import { toOptions } from "~/utils/options";
-import { rngTools } from "~/rngTools";
+import {
+  emeraldLangs,
+  getEmeraldLangOptions,
+} from "~/rngToolsUi/gen3/shared/emeraldLang";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { EmeraldLang, rngTools } from "~/rngTools";
 import { AceForm } from "./aceForm";
+
+// Japanese isn't supported by ACE yet.
+const aceEmeraldLangs = emeraldLangs.filter(
+  (lang): lang is Exclude<EmeraldLang, "Japanese"> => lang !== "Japanese",
+);
 
 type Props = {
   sid: number;
 };
 
 const schema = z.object({
-  lang: z.enum(emeraldLangs),
+  lang: z.enum(aceEmeraldLangs),
 });
 
 const getInitialValues = (): FormState => {
@@ -25,7 +33,8 @@ const getInitialValues = (): FormState => {
 export type FormState = z.infer<typeof schema>;
 
 export const EmeraldAceChangeSid = ({ sid }: Props) => {
-  const manipName = `Change SID to ${sid}`;
+  const t = useActiveRouteTranslations();
+  const manipName = t["Change SID to {sid}"].replace("{sid}", sid.toString());
 
   const initialValues = getInitialValues();
 
@@ -48,8 +57,8 @@ export const EmeraldAceChangeSid = ({ sid }: Props) => {
         <FormSection>
           <FormSelectField<FormState>
             name="lang"
-            label="Game Language"
-            options={toOptions(emeraldLangs)}
+            label={t["Game Language"]}
+            options={getEmeraldLangOptions(aceEmeraldLangs)}
           />
         </FormSection>
       </AceForm>

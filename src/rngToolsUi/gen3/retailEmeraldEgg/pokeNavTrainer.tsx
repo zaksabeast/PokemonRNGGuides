@@ -1,17 +1,28 @@
+import React from "react";
 import { Skeleton } from "antd";
 import { Flex } from "~/components";
 import {
   FormCard,
   OutlinedButton,
   PrimaryButton,
+  SelectField,
   SwitchField,
   SwitchGroup,
 } from "~/components/form";
-import { useRegisteredTrainers, RegisteredPokeNavTrainers } from "./state";
+import {
+  useRegisteredTrainers,
+  usePokeNavGameLanguage,
+  RegisteredPokeNavTrainers,
+} from "./state";
 import { pokeNavTrainers } from "./constants";
+import { EmeraldLang } from "~/rngTools";
 import { useHydrate } from "~/hooks/useHydrate";
 import { hydrationLock } from "~/utils/hydration";
-import { usePokeNavTranslations } from "~/translations";
+import {
+  gameLanguageOptions,
+  getGuideGameLanguage,
+  usePokeNavTrainerTranslations,
+} from "./trainerTranslations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 type UpdateStateProps = {
@@ -36,9 +47,11 @@ const updateTrainerState = ({
 
 export const PokeNavInput = () => {
   const t = useActiveRouteTranslations();
-  const translatedTrainers = usePokeNavTranslations(t.language);
+  const { translatedTrainers, language: gameLanguage } =
+    usePokeNavTrainerTranslations();
   const [lockedState, setRegisteredTrainers] = useRegisteredTrainers();
   const { hydrated, client } = useHydrate(lockedState);
+  const [, setGameLanguage] = usePokeNavGameLanguage();
 
   const handleSelectAll = () =>
     setRegisteredTrainers(
@@ -60,18 +73,37 @@ export const PokeNavInput = () => {
 
   return (
     <FormCard>
+      <SelectField<EmeraldLang>
+        label={t["Game Language"]}
+        value={gameLanguage}
+        options={gameLanguageOptions}
+        onChange={(gameLanguage) =>
+          // A transition keeps the current names shown while the new language loads
+          React.startTransition(() =>
+            setGameLanguage(
+              hydrationLock({
+                // Picking the guide's language goes back to following the guide
+                gameLanguage:
+                  gameLanguage === getGuideGameLanguage(t.language)
+                    ? "default"
+                    : gameLanguage,
+              }),
+            ),
+          )
+        }
+      />
       <Flex gap={12} wrap="wrap">
         <PrimaryButton
           trackerId="select_all_pokenav_trainers"
           onClick={handleSelectAll}
         >
-          Select All
+          {t["Select All"]}
         </PrimaryButton>
         <OutlinedButton
           trackerId="deselect_all_pokenav_trainers"
           onClick={handleDeselectAll}
         >
-          Deselect All
+          {t["Deselect All"]}
         </OutlinedButton>
       </Flex>
       <SwitchGroup>

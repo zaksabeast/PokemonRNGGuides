@@ -1,6 +1,7 @@
+use crate::gen3::EmeraldLang;
 use crate::gen3::ace::ace_code_generator::{
-    AceResult, CommandBytes, EmeraldLang, PC, R11, R12, cached_constants, data_proc,
-    fit_codes_into_boxes, mov_like, preferred_bytes, str_pre, strh, tweak_mov, tweak_sbc,
+    AceResult, CommandBytes, PC, R11, R12, cached_constants, data_proc, fit_codes_into_boxes,
+    mov_like, preferred_bytes, str_pre, strh, tweak_mov, tweak_sbc,
 };
 use wasm_bindgen::prelude::*;
 
@@ -103,6 +104,11 @@ mod tests {
 
     fn boxes(result: Option<AceResult>) -> Vec<Vec<u8>> {
         result.map(|res| res.raw_boxes).unwrap_or(vec![])
+    }
+
+    #[test]
+    fn japanese_is_unsupported() {
+        assert_eq!(fit_codes_into_boxes(&[], EmeraldLang::Japanese), None);
     }
 
     // cargo test --release emerald_ace -- --ignored

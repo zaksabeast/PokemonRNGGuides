@@ -125,6 +125,8 @@ export const translations: Partial<Translations> = {
   "Save file": "Save file",
   "Upload!": "Upload!",
   "PokeNav Call": "PokeNav Anruf",
+  "Game Language": "Spielsprache",
+  "Change SID to {sid}": "SID zu {sid} ändern",
   "Hatched Nature": "Geschlüpftes Wesen",
   "Hatched Gender": "Geschlüpftes Geschlecht",
   "Number of times to open the Pokedex": "Anzahl der Aufrufe des Pokedex",

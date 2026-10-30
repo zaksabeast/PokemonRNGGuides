@@ -12,6 +12,7 @@ import { NullableIvs } from "~/components/ivInput";
 import type { HeldEggCalibrationResult } from "./calibrateHeldEgg/result";
 import type { HeldEggCalibrationFilters } from "./calibrateHeldEgg/validator";
 import { pokeNavTrainers as trainers } from "./constants";
+import { emeraldLangs } from "~/rngToolsUi/gen3/shared/emeraldLang";
 
 export const RegisteredPokeNavTrainersSchema = z.object({
   registeredTrainers: z.enum(trainers).array(),
@@ -32,6 +33,25 @@ const registeredTrainers = atomWithPersistence(
 );
 
 export const useRegisteredTrainers = () => useAtom(registeredTrainers);
+
+const PokeNavGameLanguageSchema = z.object({
+  // "default" follows the guide language
+  gameLanguage: z.enum(["default", ...emeraldLangs]),
+});
+
+type PokeNavGameLanguage = z.infer<typeof PokeNavGameLanguageSchema>;
+
+const initialGameLanguage: PokeNavGameLanguage = {
+  gameLanguage: "default",
+};
+
+const pokeNavGameLanguage = atomWithPersistence(
+  "emerald_pokenav_game_language",
+  PokeNavGameLanguageSchema,
+  initialGameLanguage,
+);
+
+export const usePokeNavGameLanguage = () => useAtom(pokeNavGameLanguage);
 
 type HeldEggSettings = {
   compatability: Compatability;

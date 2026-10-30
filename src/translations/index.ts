@@ -1,10 +1,6 @@
 import React from "react";
 import { match } from "ts-pattern";
 import { translations as enTranslations, Translations } from "./en";
-import {
-  pokeNavTrainers as enPokeNavTrainers,
-  PokeNavTrainerTranslationPair,
-} from "./en/pokeNav";
 import { sortLocale } from "~/utils/sortLocale";
 import { memoize } from "lodash-es";
 import { LanguageKey } from "~/types/language";
@@ -26,25 +22,6 @@ const getTranslations = memoize(
     return { ...enTranslations, ...translations, language } as Translations;
   },
 );
-
-const getPokeNavTranslations = memoize(
-  async (language: LanguageKey): Promise<PokeNavTrainerTranslationPair> => {
-    const { pokeNavTrainers } = await match(language)
-      .with("en", () => ({ pokeNavTrainers: enPokeNavTrainers }))
-      .with("fr", () => ({ pokeNavTrainers: enPokeNavTrainers }))
-      .with("es", () => ({ pokeNavTrainers: enPokeNavTrainers }))
-      .with("zh", () => ({ pokeNavTrainers: enPokeNavTrainers }))
-      .with("it", () => ({ pokeNavTrainers: enPokeNavTrainers }))
-      .with("de", () => import("./de/pokeNav"))
-      .exhaustive();
-    return pokeNavTrainers;
-  },
-);
-
-export const usePokeNavTranslations = (language: LanguageKey) => {
-  const translation = getPokeNavTranslations(language);
-  return React.use(translation);
-};
 
 export const useTranslations = (language: LanguageKey) => {
   const translation = getTranslations(language);

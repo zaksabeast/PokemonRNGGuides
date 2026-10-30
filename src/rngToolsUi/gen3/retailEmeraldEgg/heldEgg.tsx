@@ -25,7 +25,8 @@ import { useHeldEggState, useRegisteredTrainers } from "./state";
 import { useHydrate } from "~/hooks/useHydrate";
 import { Skeleton } from "antd";
 import { approximateGen3FrameTime } from "~/utils/approximateGen3FrameTime";
-import { Translations, usePokeNavTranslations } from "~/translations";
+import { Translations } from "~/translations";
+import { usePokeNavTrainerTranslations } from "./trainerTranslations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { PokeNavTrainerTranslations } from "~/translations/en/pokeNav";
 import { useField, useWatch } from "~/hooks/form";
@@ -244,7 +245,7 @@ type InnerProps = {
 
 const InnerRetailEmeraldHeldEgg = ({ registeredTrainers }: InnerProps) => {
   const t = useActiveRouteTranslations();
-  const translatedTrainers = usePokeNavTranslations(t.language);
+  const { translatedTrainers } = usePokeNavTrainerTranslations();
   const [, setState] = useHeldEggState();
   const [results, setResults] = React.useState<Result[]>([]);
 

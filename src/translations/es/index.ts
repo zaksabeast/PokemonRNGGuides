@@ -1,4 +1,4 @@
-import type { Translations } from "./en";
+import type { Translations } from "../en";
 
 export const translations: Partial<Translations> = {
   Nature: "Nature",

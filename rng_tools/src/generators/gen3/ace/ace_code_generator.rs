@@ -4,6 +4,7 @@
 // Limitation: It only supports what's necessary for changing SID and RNG reseeding for
 // English, French, Spanish, Italian, German languages.
 
+use crate::gen3::EmeraldLang;
 use arrayvec::ArrayVec;
 use once_cell::sync::Lazy;
 use serde::{Deserialize, Serialize};
@@ -44,18 +45,6 @@ pub(super) const R11: u32 = 11;
 pub(super) const R12: u32 = 12;
 const LR: u32 = 14;
 pub(super) const PC: u32 = 15;
-
-#[derive(Clone, Copy, Default, Debug, Eq, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub enum EmeraldLang {
-    #[default]
-    English,
-    French,
-    Italian,
-    Spanish,
-    German,
-    Japanese,
-}
 
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize, Tsify)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -835,7 +824,8 @@ fn certificate_exit(lang: EmeraldLang) -> Option<(usize, Vec<CommandBytes>)> {
                 imm: 0xd6,
             },
         ],
-        EmeraldLang::Japanese => panic!("japanese exit is not supported"),
+        // Japanese exit isn't supported yet
+        EmeraldLang::Japanese => return None,
     };
 
     let mut out = vec![

@@ -30,7 +30,8 @@ import { Gen3EmbeddedTimer } from "~/rngToolsUi/gen3/shared/timer";
 import { formatOffset } from "~/utils/offsetSymbol";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { useWatch } from "~/hooks/form";
-import { Translations, usePokeNavTranslations } from "~/translations";
+import { Translations } from "~/translations";
+import { usePokeNavTrainerTranslations } from "../trainerTranslations";
 import {
   PokeNavTrainerTranslationPair,
   PokeNavTrainerTranslations,
@@ -131,9 +132,15 @@ type FieldProps = {
   t: Translations;
   eggSpecies: Species;
   translatedTrainers: PokeNavTrainerTranslationPair;
+  trainerLocale: string;
 };
 
-const Fields = ({ t, translatedTrainers, eggSpecies }: FieldProps) => {
+const Fields = ({
+  t,
+  translatedTrainers,
+  trainerLocale,
+  eggSpecies,
+}: FieldProps) => {
   const { hasEgg: hasEggString } = useWatch({
     validationSchema: Validator,
     names: { hasEgg: true },
@@ -142,7 +149,11 @@ const Fields = ({ t, translatedTrainers, eggSpecies }: FieldProps) => {
     pokeNavTrainers,
     (name) => translatedTrainers.withoutTitle[name],
   );
-  const sortedOptions = sortLocale(unsortedTrainerOptions, "label");
+  const sortedOptions = sortLocale(
+    unsortedTrainerOptions,
+    "label",
+    trainerLocale,
+  );
   const trainerOptions = [
     { label: t["None"], value: "None" },
     ...sortedOptions,
@@ -250,7 +261,8 @@ type InnerProps = {
 const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
   const [state] = useHeldEggState();
   const t = useActiveRouteTranslations();
-  const translatedTrainers = usePokeNavTranslations(t.language);
+  const { translatedTrainers, locale: trainerLocale } =
+    usePokeNavTrainerTranslations();
   const [{ results, previousOffsets }, setCalibration] =
     useHeldEggCalibrationState();
 
@@ -366,6 +378,7 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
         <Fields
           t={t}
           translatedTrainers={translatedTrainers}
+          trainerLocale={trainerLocale}
           eggSpecies={state.eggSettings.egg_species}
         />
       </ToolForm>

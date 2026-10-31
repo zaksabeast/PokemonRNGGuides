@@ -5,7 +5,7 @@ import type {
   Wild3Weather,
 } from "~/rngTools";
 import { calibrationComponents } from "./initial_cycle_calibration_data";
-import { mapCalibrationSettings } from "./initial_cycle_calibration_maps";
+import { getMapCalibrationSong } from "./initial_cycle_calibration_maps";
 import type { CalibrationComponentEntry } from "./initial_cycle_calibration_types";
 import {
   combineCalibrationComponents,
@@ -29,9 +29,9 @@ const normalizeAction = (action: Wild3Action): Wild3Action =>
   action === "OldRod" || action === "GoodRod" ? "SuperRod" : action;
 
 const sameMapSong = (left: string, right: string): boolean => {
-  const song = mapCalibrationSettings[left]?.song;
+  const song = getMapCalibrationSong(left);
 
-  return song != null && song === mapCalibrationSettings[right]?.song;
+  return song != null && song === getMapCalibrationSong(right);
 };
 
 const samePlayingSong = (left: Setup, right: Setup): boolean =>

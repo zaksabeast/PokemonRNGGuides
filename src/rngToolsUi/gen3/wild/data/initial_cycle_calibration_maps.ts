@@ -64,6 +64,7 @@ const mapCalibrationSettings: Partial<Record<string, MapCalibrationSettings>> =
     MAP_ROUTE115: createMapCalibrationSettings("ROUTE104"),
     MAP_NEW_MAUVILLE_INSIDE: createMapCalibrationSettings("MT_PYRE"),
     MAP_ROUTE119: createMapCalibrationSettings("ROUTE119", {
+      can_bike_for_sweet_scent_land: false,
       weathers_sweet_scent_land: ["Sunny", "Rain", "Thunderstorm"],
       weathers_sweet_scent_water: ["Sunny", "Rain", "Thunderstorm"],
       weathers_fishing: ["Sunny", "Rain", "Thunderstorm"],
@@ -185,3 +186,6 @@ export const getMapCalibrationSettings = (map: string) => {
     createMapCalibrationSettings("ROUTE101")
   );
 };
+
+export const getMapCalibrationSong = (map: string): string | undefined =>
+  mapCalibrationSettings[map]?.song;

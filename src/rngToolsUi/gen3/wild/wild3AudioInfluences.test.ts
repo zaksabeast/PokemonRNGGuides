@@ -213,7 +213,7 @@ test("Route 119 land Sweet Scent forbids bike music", () => {
   ]);
   expect(
     getWild3AudioInfluenceOptions("MAP_ROUTE119", "OldRod").playingSongs,
-  ).toEqual(["MapSong", "BikeSong", "SurfSong"]);
+  ).toEqual(["SurfSong"]);
 });
 
 test("Route 120 forbids bike music for every available action", () => {

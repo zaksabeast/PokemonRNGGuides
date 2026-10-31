@@ -88,6 +88,24 @@ test("fishing captures split audio from the full encounter offset", () => {
   ).toThrow("Invalid or incomplete capture");
 });
 
+const rockSmashLog = [
+  "event,1,0,encounter_attempt,200,18239,18239,m4aSoundMain,0x082E0124,5122748709,7254,141",
+  "event,1,0,encounter_attempt,200,18239,18239,TryReceiveLinkBattleData,0x08033648,5122795613,54158,46904",
+  "event,1,0,encounter_attempt,200,18239,18239,RockSmashWildEncounter,0x080B550C,5122802451,60996,100",
+  "# attempt run=1 delay=0 frame=18239 target_offset=60996 encounter_offset=60996 sweet_scent_hits=0 mode=rock_smash endpoint=RockSmashWildEncounter",
+].join("\n");
+
+test("Rock Smash captures split audio at the Rock Smash encounter endpoint", () => {
+  expect(parseLog(rockSmashLog, "rock_smash")).toEqual([
+    { frame: 18239, audio: 46904, nonAudio: 14092, total: 60996 },
+  ]);
+  expect(() => parseLog(rockSmashLog)).toThrow();
+  expect(() => parseLog(rockSmashLog, "fishing")).toThrow();
+  expect(() =>
+    parseLog(rockSmashLog.replace("60996,100", "60997,100"), "rock_smash"),
+  ).toThrow("Invalid or incomplete capture");
+});
+
 test("one song loop keeps the first observation per frame and rounds up", () => {
   expect(
     selectLoopFrames(

@@ -1,11 +1,13 @@
 import { readFile, writeFile, rename } from "node:fs/promises";
 import { fakeAudioComponents } from "../../src/rngToolsUi/gen3/wild/data/fake_vblank_audio";
 import { emerald_wild_encounters } from "../../src/rngToolsUi/gen3/wild/data/emerald_wild_encounters";
-import { mapCalibrationSettings } from "../../src/rngToolsUi/gen3/wild/data/initial_cycle_calibration_maps";
+import { getMapCalibrationSettings } from "../../src/rngToolsUi/gen3/wild/data/initial_cycle_calibration_maps";
+import type { CalibrationComponentEntry } from "../../src/rngToolsUi/gen3/wild/data/initial_cycle_calibration_types";
 import type {
-  CalibrationComponentEntry,
-  MapCalibrationSource,
-} from "../../src/rngToolsUi/gen3/wild/data/initial_cycle_calibration_types";
+  PlayingSong,
+  Wild3Action,
+  Wild3Weather,
+} from "../../src/rngTools";
 import { format, resolveConfig } from "prettier";
 
 // This script generates initial_cycle_calibration_data.ts which represents Emerald wild initial cycle models.
@@ -22,7 +24,7 @@ type Observation = {
 };
 type Weighted = { value: number; weight: number };
 export type Knot = { x: number; p: number; area: number };
-type CaptureMode = "sweet_scent" | "fishing";
+type CaptureMode = "sweet_scent" | "fishing" | "rock_smash";
 type Source = {
   id: string;
   file: string;
@@ -31,9 +33,9 @@ type Source = {
   loop: number;
   mode?: CaptureMode;
   audio?: string;
-  playing_song?: MapCalibrationSource["playing_song"];
-  action?: MapCalibrationSource["action"];
-  weather?: "Rain";
+  playing_song?: PlayingSong;
+  action?: Wild3Action;
+  weather?: Wild3Weather;
 };
 
 const sources: Source[] = [
@@ -232,6 +234,571 @@ const sources: Source[] = [
     mode: "fishing",
     audio: "DEWFORD_FISHING_SUNNY_AUDIO",
   },
+  {
+    id: "ABANDONED_SHIP_ROOMS_B1F_SUNNY_MAPSONG_SUPERROD",
+    file: "ABANDONED_SHIP_ROOMS_B1F-Sunny-MapSong-SuperRod.txt",
+    map: 22,
+    song: "ABANDONED_SHIP",
+    loop: (1536 * 150) / 100,
+    mode: "fishing",
+    audio: "ABANDONED_SHIP_FISHING_SUNNY_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SuperRod",
+  },
+  {
+    id: "DEWFORD_TOWN_SUNNY_BIKESONG_SUPERROD",
+    file: "DEWFORD_TOWN-Sunny-BikeSong-SuperRod.txt",
+    map: 85,
+    song: "DEWFORD",
+    loop: (2688 * 150) / 138,
+    mode: "fishing",
+    audio: "DEWFORD_TOWN_SUNNY_BIKESONG_SUPERROD_AUDIO",
+    playing_song: "BikeSong",
+    weather: "Sunny",
+    action: "SuperRod",
+  },
+  {
+    id: "DEWFORD_TOWN_SUNNY_SURFSONG_SUPERROD",
+    file: "DEWFORD_TOWN-Sunny-SurfSong-SuperRod.txt",
+    map: 85,
+    song: "DEWFORD",
+    loop: (2304 * 150) / 82,
+    mode: "fishing",
+    audio: "DEWFORD_TOWN_SUNNY_SURFSONG_SUPERROD_AUDIO",
+    playing_song: "SurfSong",
+    weather: "Sunny",
+    action: "SuperRod",
+  },
+  {
+    id: "EVER_GRANDE_CITY_SUNNY_MAPSONG_SUPERROD",
+    file: "EVER_GRANDE_CITY-Sunny-MapSong-SuperRod.txt",
+    map: 89,
+    song: "EVER_GRANDE",
+    loop: (3072 * 150) / 128,
+    mode: "fishing",
+    audio: "EVER_GRANDE_FISHING_SUNNY_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SuperRod",
+  },
+  {
+    id: "MAGMA_HIDEOUT_1F_SUNNY_MAPSONG_SWEETSCENTLAND",
+    file: "MAGMA_HIDEOUT_1F-Sunny-MapSong-SweetScentLand.txt",
+    map: 99,
+    song: "AQUA_MAGMA_HIDEOUT",
+    loop: (1920 * 150) / 118,
+    mode: "sweet_scent",
+    audio: "AQUA_MAGMA_HIDEOUT_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SweetScentLand",
+  },
+  {
+    id: "UNDERWATER_ROUTE126_SUNNY_DIVINGSONG_SWEETSCENTWATER",
+    file: "MAP_UNDERWATER_ROUTE126-Sunny-DivingSong-SweetScentWater.txt",
+    map: 21,
+    song: "UNDERWATER",
+    loop: (2112 * 150) / 86,
+    mode: "sweet_scent",
+    audio: "UNDERWATER_SUNNY_AUDIO",
+    playing_song: "DivingSong",
+    weather: "Sunny",
+    action: "SweetScentWater",
+  },
+  {
+    id: "METEOR_FALLS_1F_1R_SUNNY_MAPSONG_SWEETSCENTLAND",
+    file: "METEOR_FALLS_1F_1R-Sunny-MapSong-SweetScentLand.txt",
+    map: 77,
+    song: "CAVE_OF_ORIGIN",
+    loop: (1728 * 150) / 100,
+    mode: "sweet_scent",
+    audio: "METEOR_FALLS_1F_1R_SUNNY_MAPSONG_SWEETSCENTLAND_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SweetScentLand",
+  },
+  {
+    id: "MT_PYRE_2F_SUNNY_MAPSONG_SWEETSCENTLAND",
+    file: "MT_PYRE_2F-Sunny-MapSong-SweetScentLand.txt",
+    map: 38,
+    song: "MT_PYRE",
+    loop: (1920 * 150) / 90,
+    mode: "sweet_scent",
+    audio: "MT_PYRE_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SweetScentLand",
+  },
+  {
+    id: "MT_PYRE_SUMMIT_SUNNY_MAPSONG_SWEETSCENTLAND",
+    file: "MT_PYRE_SUMMIT-Sunny-MapSong-SweetScentLand.txt",
+    map: 44,
+    song: "MT_PYRE_EXTERIOR",
+    loop: (2496 * 150) / 102,
+    mode: "sweet_scent",
+    audio: "MT_PYRE_SUMMIT_SUNNY_MAPSONG_SWEETSCENTLAND_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SweetScentLand",
+  },
+  {
+    id: "PETALBURG_CITY_SUNNY_MAPSONG_SUPERROD",
+    file: "PETALBURG_CITY-Sunny-MapSong-SuperRod.txt",
+    map: 90,
+    song: "PETALBURG",
+    loop: (1536 * 150) / 126,
+    mode: "fishing",
+    audio: "PETALBURG_FISHING_SUNNY_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SuperRod",
+  },
+  {
+    id: "ROUTE102_SUNNY_MAPSONG_SUPERROD",
+    file: "ROUTE102-Sunny-MapSong-SuperRod.txt",
+    map: 1,
+    song: "ROUTE101",
+    loop: 38400 / 19,
+    mode: "fishing",
+    audio: "ROUTE101_FISHING_SUNNY_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SuperRod",
+  },
+  {
+    id: "ROUTE110_SUNNY_BIKESONG_SWEETSCENTLAND",
+    file: "ROUTE110-Sunny-BikeSong-SweetScentLand.txt",
+    map: 5,
+    song: "ROUTE110",
+    loop: (2688 * 150) / 138,
+    mode: "sweet_scent",
+    audio: "ROUTE110_SUNNY_BIKESONG_SWEETSCENTLAND_AUDIO",
+    playing_song: "BikeSong",
+    weather: "Sunny",
+    action: "SweetScentLand",
+  },
+  {
+    id: "ROUTE115_SUNNY_MAPSONG_SUPERROD",
+    file: "ROUTE115-Sunny-MapSong-SuperRod.txt",
+    map: 31,
+    song: "ROUTE104",
+    loop: 2260.25,
+    mode: "fishing",
+    audio: "ROUTE104_FISHING_SUNNY_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SuperRod",
+  },
+  {
+    id: "ROUTE119_RAIN_MAPSONG_SWEETSCENTLAND",
+    file: "ROUTE119-Rain-MapSong-SweetScentLand.txt",
+    map: 33,
+    song: "ROUTE119",
+    loop: (3072 * 150) / 136,
+    mode: "sweet_scent",
+    audio: "ROUTE119_RAIN_AUDIO",
+    playing_song: "MapSong",
+    weather: "Rain",
+    action: "SweetScentLand",
+  },
+  {
+    id: "ROUTE119_RAIN_SURFSONG_SWEETSCENTWATER",
+    file: "ROUTE119-Rain-SurfSong-SweetScentWater.txt",
+    map: 33,
+    song: "ROUTE119",
+    loop: (2304 * 150) / 82,
+    mode: "sweet_scent",
+    audio: "SURF_RAIN_AUDIO",
+    playing_song: "SurfSong",
+    weather: "Rain",
+    action: "SweetScentWater",
+  },
+  {
+    id: "ROUTE119_SUNNY_MAPSONG_SWEETSCENTLAND",
+    file: "ROUTE119-Sunny-MapSong-SweetScentLand.txt",
+    map: 33,
+    song: "ROUTE119",
+    loop: (3072 * 150) / 136,
+    mode: "sweet_scent",
+    audio: "ROUTE119_SUNNY_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SweetScentLand",
+  },
+  {
+    id: "ROUTE119_THUNDERSTORM_MAPSONG_SWEETSCENTLAND",
+    file: "ROUTE119-Thunderstorm-MapSong-SweetScentLand.txt",
+    map: 33,
+    song: "ROUTE119",
+    loop: (3072 * 150) / 136,
+    mode: "sweet_scent",
+    audio: "ROUTE119_THUNDERSTORM_AUDIO",
+    playing_song: "MapSong",
+    weather: "Thunderstorm",
+    action: "SweetScentLand",
+  },
+  {
+    id: "ROUTE119_THUNDERSTORM_SURFSONG_SWEETSCENTWATER",
+    file: "ROUTE119-Thunderstorm-SurfSong-SweetScentWater.txt",
+    map: 33,
+    song: "ROUTE119",
+    loop: (2304 * 150) / 82,
+    mode: "sweet_scent",
+    audio: "SURF_THUNDERSTORM_AUDIO",
+    playing_song: "SurfSong",
+    weather: "Thunderstorm",
+    action: "SweetScentWater",
+  },
+  {
+    id: "ROUTE122_SUNNY_MAPSONG_SWEETSCENTLAND",
+    file: "ROUTE122-Sunny-MapSong-SweetScentLand.txt",
+    map: 36,
+    song: "ROUTE122",
+    loop: (2304 * 150) / 124,
+    mode: "sweet_scent",
+    audio: "ROUTE122_SUNNY_MAPSONG_SWEETSCENTLAND_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SweetScentLand",
+  },
+  {
+    id: "ROUTE123_RAIN_MAPSONG_SWEETSCENTLAND",
+    file: "ROUTE123-Rain-MapSong-SweetScentLand.txt",
+    map: 37,
+    song: "ROUTE122",
+    loop: (2304 * 150) / 124,
+    mode: "sweet_scent",
+    audio: "ROUTE122_RAIN_AUDIO",
+    playing_song: "MapSong",
+    weather: "Rain",
+    action: "SweetScentLand",
+  },
+  {
+    id: "ROUTE130_SUNNY_MAPSONG_SWEETSCENTLAND",
+    file: "ROUTE130-Sunny-MapSong-SweetScentLand.txt",
+    map: 51,
+    song: "ROUTE119",
+    loop: (3072 * 150) / 136,
+    mode: "sweet_scent",
+    audio: "ROUTE130_SUNNY_MAPSONG_SWEETSCENTLAND_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SweetScentLand",
+  },
+  {
+    id: "SEAFLOOR_CAVERN_ENTRANCE_SUNNY_MAPSONG_SUPERROD",
+    file: "SEAFLOOR_CAVERN_ENTRANCE-Sunny-MapSong-SuperRod.txt",
+    map: 65,
+    song: "MT_CHIMNEY",
+    loop: (4464 * 150) / 124,
+    mode: "fishing",
+    audio: "MT_CHIMNEY_FISHING_SUNNY_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SuperRod",
+  },
+  {
+    id: "SHOAL_CAVE_LOW_TIDE_ENTRANCE_ROOM_SUNNY_MAPSONG_SUPERROD",
+    file: "SHOAL_CAVE_LOW_TIDE_ENTRANCE_ROOM-Sunny-MapSong-SuperRod.txt",
+    map: 83,
+    song: "MT_PYRE",
+    loop: (1920 * 150) / 90,
+    mode: "fishing",
+    audio: "MT_PYRE_FISHING_SUNNY_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SuperRod",
+  },
+  {
+    id: "SHOAL_CAVE_LOW_TIDE_ENTRANCE_ROOM_SUNNY_MAPSONG_SWEETSCENTLAND",
+    file: "SHOAL_CAVE_LOW_TIDE_ENTRANCE_ROOM-Sunny-MapSong-SweetScentLand.txt",
+    map: 83,
+    song: "MT_PYRE",
+    loop: (1920 * 150) / 90,
+    mode: "sweet_scent",
+    audio:
+      "SHOAL_CAVE_LOW_TIDE_ENTRANCE_ROOM_SUNNY_MAPSONG_SWEETSCENTLAND_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SweetScentLand",
+  },
+  {
+    id: "SKY_PILLAR_1F_SUNNY_MAPSONG_SWEETSCENTLAND",
+    file: "SKY_PILLAR_1F-Sunny-MapSong-SweetScentLand.txt",
+    map: 93,
+    song: "MT_CHIMNEY",
+    loop: (4464 * 150) / 124,
+    mode: "sweet_scent",
+    audio: "MT_CHIMNEY_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SweetScentLand",
+  },
+  {
+    id: "VICTORY_ROAD_1F_SUNNY_MAPSONG_SWEETSCENTLAND",
+    file: "VICTORY_ROAD_1F-Sunny-MapSong-SweetScentLand.txt",
+    map: 19,
+    song: "VICTORY_ROAD",
+    loop: (2400 * 150) / 134,
+    mode: "sweet_scent",
+    audio: "VICTORY_ROAD_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SweetScentLand",
+  },
+  {
+    id: "ROUTE111_SUNNY_MAPSONG_ROCKSMASH",
+    file: "MAP_ROUTE111-Sunny-MapSong-RockSmash.txt",
+    map: 6,
+    song: "ROUTE110",
+    loop: (1920 * 150) / 132,
+    mode: "rock_smash",
+    audio: "ROUTE111_SUNNY_MAPSONG_ROCKSMASH_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "RockSmash",
+  },
+  {
+    id: "SAFARI_ZONE_NORTHEAST_SUNNY_MAPSONG_ROCKSMASH",
+    file: "MAP_SAFARI_ZONE_NORTHEAST-Sunny-MapSong-RockSmash.txt",
+    map: 98,
+    song: "SAFARI_ZONE",
+    loop: (1152 * 150) / 142,
+    mode: "rock_smash",
+    audio: "SAFARI_ZONE_NORTHEAST_SUNNY_MAPSONG_ROCKSMASH_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "RockSmash",
+  },
+  {
+    id: "MOSSDEEP_CITY_SUNNY_MAPSONG_SUPERROD",
+    file: "MOSSDEEP_CITY-Sunny-MapSong-SuperRod.txt",
+    map: 87,
+    song: "RUSTBORO",
+    loop: (3072 * 150) / 128,
+    mode: "fishing",
+    audio: "RUSTBORO_FISHING_SUNNY_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SuperRod",
+  },
+  {
+    id: "ROUTE114_SUNNY_MAPSONG_ROCKSMASH",
+    file: "ROUTE114-Sunny-MapSong-RockSmash.txt",
+    map: 9,
+    song: "ROUTE110",
+    loop: (1920 * 150) / 132,
+    mode: "rock_smash",
+    audio: "ROUTE114_SUNNY_MAPSONG_ROCKSMASH_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "RockSmash",
+  },
+  {
+    id: "ROUTE122_SUNNY_MAPSONG_SUPERROD",
+    file: "ROUTE122-Sunny-MapSong-SuperRod.txt",
+    map: 36,
+    song: "ROUTE122",
+    loop: (2304 * 150) / 124,
+    mode: "fishing",
+    audio: "ROUTE122_FISHING_SUNNY_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SuperRod",
+  },
+  {
+    id: "ROUTE123_RAIN_MAPSONG_SUPERROD",
+    file: "ROUTE123-Rain-MapSong-SuperRod.txt",
+    map: 37,
+    song: "ROUTE122",
+    loop: (2304 * 150) / 124,
+    mode: "fishing",
+    audio: "ROUTE122_FISHING_RAIN_AUDIO",
+    playing_song: "MapSong",
+    weather: "Rain",
+    action: "SuperRod",
+  },
+  {
+    id: "ROUTE124_SUNNY_MAPSONG_SUPERROD",
+    file: "ROUTE124-Sunny-MapSong-SuperRod.txt",
+    map: 13,
+    song: "ROUTE120",
+    loop: (3072 * 150) / 134,
+    mode: "fishing",
+    audio: "ROUTE120_FISHING_SUNNY_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SuperRod",
+  },
+  {
+    id: "ROUTE131_SUNNY_MAPSONG_SUPERROD",
+    file: "ROUTE131-Sunny-MapSong-SuperRod.txt",
+    map: 52,
+    song: "ROUTE119",
+    loop: (3072 * 150) / 136,
+    mode: "fishing",
+    audio: "ROUTE119_FISHING_SUNNY_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SuperRod",
+  },
+  {
+    id: "SLATEPORT_CITY_SUNNY_MAPSONG_SUPERROD",
+    file: "SLATEPORT_CITY-Sunny-MapSong-SuperRod.txt",
+    map: 86,
+    song: "SLATEPORT",
+    loop: (4032 * 150) / 124,
+    mode: "fishing",
+    audio: "SLATEPORT_FISHING_SUNNY_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SuperRod",
+  },
+  {
+    id: "SOOTOPOLIS_CITY_SUNNY_MAPSONG_SUPERROD",
+    file: "SOOTOPOLIS_CITY-Sunny-MapSong-SuperRod.txt",
+    map: 94,
+    song: "SOOTOPOLIS",
+    loop: (2952 * 150) / 136,
+    mode: "fishing",
+    audio: "SOOTOPOLIS_FISHING_SUNNY_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SuperRod",
+  },
+  {
+    id: "VICTORY_ROAD_B2F_SUNNY_MAPSONG_SUPERROD",
+    file: "VICTORY_ROAD_B2F-Sunny-MapSong-SuperRod.txt",
+    map: 76,
+    song: "VICTORY_ROAD",
+    loop: (2400 * 150) / 134,
+    mode: "fishing",
+    audio: "VICTORY_ROAD_FISHING_SUNNY_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SuperRod",
+  },
+  {
+    id: "GRANITE_CAVE_B2F_SUNNY_MAPSONG_ROCKSMASH",
+    file: "MAP_GRANITE_CAVE_B2F-Sunny-MapSong-RockSmash.txt",
+    map: 23,
+    song: "PETALBURG_WOODS",
+    loop: (2016 * 150) / 130,
+    mode: "rock_smash",
+    audio: "GRANITE_CAVE_B2F_SUNNY_MAPSONG_ROCKSMASH_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "RockSmash",
+  },
+  {
+    id: "VICTORY_ROAD_B1F_SUNNY_MAPSONG_ROCKSMASH",
+    file: "MAP_VICTORY_ROAD_B1F-Sunny-MapSong-RockSmash.txt",
+    map: 75,
+    song: "VICTORY_ROAD",
+    loop: (2400 * 150) / 134,
+    mode: "rock_smash",
+    audio: "VICTORY_ROAD_B1F_SUNNY_MAPSONG_ROCKSMASH_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "RockSmash",
+  },
+  {
+    id: "ROUTE114_SUNNY_BIKESONG_ROCKSMASH",
+    file: "ROUTE114-Sunny-BikeSong-RockSmash.txt",
+    map: 9,
+    song: "ROUTE110",
+    loop: (2688 * 150) / 138,
+    mode: "rock_smash",
+    audio: "ROUTE114_SUNNY_BIKESONG_ROCKSMASH_AUDIO",
+    playing_song: "BikeSong",
+    weather: "Sunny",
+    action: "RockSmash",
+  },
+  {
+    id: "ROUTE110_SUNNY_MAPSONG_SUPERROD",
+    file: "ROUTE110-Sunny-MapSong-SuperRod.txt",
+    map: 5,
+    song: "ROUTE110",
+    loop: (1920 * 150) / 132,
+    mode: "fishing",
+    audio: "ROUTE110_FISHING_SUNNY_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SuperRod",
+  },
+  {
+    id: "ROUTE118_SUNNY_MAPSONG_SUPERROD",
+    file: "ROUTE118-Sunny-MapSong-SuperRod.txt",
+    map: 12,
+    song: "ROUTE118",
+    loop: (1920 * 150) / 132,
+    mode: "fishing",
+    audio: "ROUTE118_FISHING_SUNNY_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SuperRod",
+  },
+  {
+    id: "ROUTE118_SUNNY_MAPSONG_SWEETSCENTLAND",
+    file: "ROUTE118-Sunny-MapSong-SweetScentLand.txt",
+    map: 12,
+    song: "ROUTE118",
+    loop: (3072 * 150) / 136,
+    mode: "sweet_scent",
+    audio: "ROUTE118_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SweetScentLand",
+  },
+  {
+    id: "ROUTE119_RAIN_SURFSONG_SUPERROD",
+    file: "ROUTE119-Rain-SurfSong-SuperRod.txt",
+    map: 33,
+    song: "ROUTE119",
+    loop: (2304 * 150) / 82,
+    mode: "fishing",
+    audio: "SURF_FISHING_RAIN_AUDIO",
+    playing_song: "SurfSong",
+    weather: "Rain",
+    action: "SuperRod",
+  },
+  {
+    id: "ROUTE119_THUNDERSTORM_SURFSONG_SUPERROD",
+    file: "ROUTE119-Thunderstorm-SurfSong-SuperRod.txt",
+    map: 33,
+    song: "ROUTE119",
+    loop: (2304 * 150) / 82,
+    mode: "fishing",
+    audio: "SURF_FISHING_THUNDERSTORM_AUDIO",
+    playing_song: "SurfSong",
+    weather: "Thunderstorm",
+    action: "SuperRod",
+  },
+  {
+    id: "ROUTE123_RAIN_BIKESONG_SWEETSCENTLAND",
+    file: "ROUTE123-Rain-BikeSong-SweetScentLand.txt",
+    map: 37,
+    song: "ROUTE122",
+    loop: (2688 * 150) / 138,
+    mode: "sweet_scent",
+    audio: "CYCLING_RAIN_AUDIO",
+    playing_song: "BikeSong",
+    weather: "Rain",
+    action: "SweetScentLand",
+  },
+  {
+    id: "SAFARI_ZONE_SOUTHEAST_SUNNY_MAPSONG_SUPERROD",
+    file: "SAFARI_ZONE_SOUTHEAST-Sunny-MapSong-SuperRod.txt",
+    map: 97,
+    song: "SAFARI_ZONE",
+    loop: (1152 * 150) / 142,
+    mode: "fishing",
+    audio: "SAFARI_ZONE_FISHING_SUNNY_AUDIO",
+    playing_song: "MapSong",
+    weather: "Sunny",
+    action: "SuperRod",
+  },
 ];
 
 type CaptureMetadata = {
@@ -249,9 +816,12 @@ export function parseLog(
   mode: CaptureMode = "sweet_scent",
 ): Observation[] {
   const endpoint =
-    mode === "fishing" ? "FishingWildEncounter" : "SweetScentWildEncounter";
-  const target =
-    mode === "fishing" ? "FishingWildEncounter" : "TrySweetScentEncounter";
+    mode === "fishing"
+      ? "FishingWildEncounter"
+      : mode === "rock_smash"
+        ? "RockSmashWildEncounter"
+        : "SweetScentWildEncounter";
+  const target = mode === "sweet_scent" ? "TrySweetScentEncounter" : endpoint;
   const events = new Map<number, Map<string, number>>();
   const observations: Observation[] = [];
   const runs = new Set<number>();
@@ -525,7 +1095,11 @@ function fakeComponentSetup(id: string) {
     : playingSong === "SurfSong"
       ? "SweetScentWater"
       : "SweetScentLand";
-  const map = Object.entries(mapCalibrationSettings).find(
+  const settingsByMap =
+    emerald_wild_encounters.wild_encounter_groups[0].encounters.map(
+      (map) => [map.map, getMapCalibrationSettings(map.map)] as const,
+    );
+  const map = settingsByMap.find(
     ([, settings]) =>
       settings?.song === song &&
       (fishing
@@ -569,7 +1143,6 @@ export async function extract(check = false) {
   }
   const models = new Map<string, ReturnType<typeof fit>>();
   const components: Record<string, CalibrationComponentEntry> = {};
-  const mapSources: MapCalibrationSource[] = [];
   const diagnostics: Array<
     { component: string; knots: number; max_cdf_error: number } & Record<
       string,
@@ -693,18 +1266,6 @@ export async function extract(check = false) {
       if (error > 0.02 || intervalError > 0.025)
         throw new Error("Joint correction validation failed for " + capture.id);
     }
-    mapSources.push({
-      map_internal_idx: capture.map,
-      song: capture.song,
-      non_audio: capture.id + "_NON_AUDIO",
-      joint_correction: joint ? capture.id + "_JOINT" : null,
-      ...(capture.mode === "fishing" ? { mode: capture.mode } : {}),
-      ...(capture.playing_song != null
-        ? { playing_song: capture.playing_song }
-        : {}),
-      ...(capture.weather != null ? { weather: capture.weather } : {}),
-      ...(capture.action != null ? { action: capture.action } : {}),
-    });
     let lo = audio[0].x + non[0].x;
     let hi = audio.at(-1)!.x + non.at(-1)!.x;
     for (let i = 0; i < 48; i++) {
@@ -763,12 +1324,9 @@ export async function extract(check = false) {
   );
   const code = await format(
     "// Generated by bun run rng_tools/scripts/extract-vblank-calibration.ts. Do not edit.\n" +
-      'import type { CalibrationComponentEntry, MapCalibrationSource } from "./initial_cycle_calibration_types";\n' +
+      'import type { CalibrationComponentEntry } from "./initial_cycle_calibration_types";\n' +
       "export const calibrationComponents: CalibrationComponentEntry[] = " +
       JSON.stringify(Object.values(components)) +
-      ";\n" +
-      "export const mapCalibrationSources: MapCalibrationSource[] = " +
-      JSON.stringify(mapSources) +
       ";\n",
     {
       ...(await resolveConfig(

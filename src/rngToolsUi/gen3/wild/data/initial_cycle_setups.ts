@@ -9,7 +9,7 @@ import { isFishingAction, wild3Actions } from "../utils";
 import { getInitialCycleInfo } from "./initial_cycle_calibration";
 import {
   getMapCalibrationSettings,
-  mapCalibrationSettings,
+  getMapCalibrationSong,
 } from "./initial_cycle_calibration_maps";
 
 type CalibrationMap = Pick<Wild3MapGameData, "map_id" | "slots_by_action">;
@@ -20,10 +20,7 @@ export type Wild3ActionCapabilities = {
 };
 
 const actionWeathers = (mapId: string, action: Wild3Action): Wild3Weather[] => {
-  const settings = mapCalibrationSettings[mapId];
-  if (settings == null) {
-    return ["Sunny"];
-  }
+  const settings = getMapCalibrationSettings(mapId);
 
   switch (action) {
     case "SweetScentLand":
@@ -130,8 +127,8 @@ export const getWild3VblankDistributions = (
             info.audio.weather === weather &&
             info.audio.playingSong === playing_song &&
             (playing_song !== "MapSong" ||
-              mapCalibrationSettings[info.audio.mapId]?.song ===
-                mapCalibrationSettings[map.map_id]?.song);
+              getMapCalibrationSong(info.audio.mapId) ===
+                getMapCalibrationSong(map.map_id));
 
           return {
             action,

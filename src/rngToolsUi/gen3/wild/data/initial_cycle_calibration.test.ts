@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import type { PlayingSong } from "~/rngTools";
+import type { PlayingSong, Wild3Action, Wild3Weather } from "~/rngTools";
 import {
   adjustNonAudioComponent,
   getInitialCycleInfo,
@@ -268,7 +268,7 @@ test("diving has no assumed movement adjustment", () => {
   });
 });
 
-test("real data selects independently and preserves rod equivalence", () => {
+test("measured Dewford bike fishing replaces adjusted fallback and preserves rod equivalence", () => {
   const result = getInitialCycleInfo(
     "MAP_DEWFORD_TOWN",
     "Sunny",
@@ -280,9 +280,9 @@ test("real data selects independently and preserves rod equivalence", () => {
     nonAudio: result.nonAudio.id,
     adjustment: result.nonAudioAdjustment,
   }).toEqual({
-    audio: "CYCLING_FISHING_SUNNY_AUDIO",
-    nonAudio: "DEWFORD_FISHING_SUNNY_NON_AUDIO",
-    adjustment: 1772,
+    audio: "DEWFORD_TOWN_SUNNY_BIKESONG_SUPERROD_AUDIO",
+    nonAudio: "DEWFORD_TOWN_SUNNY_BIKESONG_SUPERROD_NON_AUDIO",
+    adjustment: 0,
   });
   expect(
     getInitialCycleInfo("MAP_DEWFORD_TOWN", "Sunny", "BikeSong", "GoodRod"),
@@ -294,18 +294,18 @@ test("real data selects independently and preserves rod equivalence", () => {
     combineCalibrationComponents(result.audio, result.nonAudio),
   );
   expect(result.summary).toEqual({
-    min: 52222,
-    max: 99963,
-    median: 75940.65247427893,
-    average: 74708.44150656847,
+    min: 52218,
+    max: 98008,
+    median: 75794.70489085195,
+    average: 74574.6878347137,
   });
   expect(
     calibrationComponents.find((entry) => entry.id === result.nonAudio.id)
       ?.summary,
   ).toEqual({
-    min: 24965,
-    mid: 24991,
-    max: 35223,
+    min: 26737,
+    mid: 26768,
+    max: 35040,
   });
 });
 
@@ -336,4 +336,347 @@ test("merging point masses preserves the exact jump and summary", () => {
     median: 300,
     average: 300,
   });
+});
+
+test("new recordings each provide measured audio and non-audio within one song loop", () => {
+  const files = [
+    "ABANDONED_SHIP_ROOMS_B1F-Sunny-MapSong-SuperRod.txt",
+    "DEWFORD_TOWN-Sunny-BikeSong-SuperRod.txt",
+    "DEWFORD_TOWN-Sunny-SurfSong-SuperRod.txt",
+    "EVER_GRANDE_CITY-Sunny-MapSong-SuperRod.txt",
+    "MAGMA_HIDEOUT_1F-Sunny-MapSong-SweetScentLand.txt",
+    "MAP_UNDERWATER_ROUTE126-Sunny-DivingSong-SweetScentWater.txt",
+    "METEOR_FALLS_1F_1R-Sunny-MapSong-SweetScentLand.txt",
+    "MT_PYRE_2F-Sunny-MapSong-SweetScentLand.txt",
+    "MT_PYRE_SUMMIT-Sunny-MapSong-SweetScentLand.txt",
+    "PETALBURG_CITY-Sunny-MapSong-SuperRod.txt",
+    "ROUTE102-Sunny-MapSong-SuperRod.txt",
+    "ROUTE110-Sunny-BikeSong-SweetScentLand.txt",
+    "ROUTE115-Sunny-MapSong-SuperRod.txt",
+    "ROUTE119-Rain-MapSong-SweetScentLand.txt",
+    "ROUTE119-Rain-SurfSong-SweetScentWater.txt",
+    "ROUTE119-Sunny-MapSong-SweetScentLand.txt",
+    "ROUTE119-Thunderstorm-MapSong-SweetScentLand.txt",
+    "ROUTE119-Thunderstorm-SurfSong-SweetScentWater.txt",
+    "ROUTE122-Sunny-MapSong-SweetScentLand.txt",
+    "ROUTE123-Rain-MapSong-SweetScentLand.txt",
+    "ROUTE130-Sunny-MapSong-SweetScentLand.txt",
+    "SEAFLOOR_CAVERN_ENTRANCE-Sunny-MapSong-SuperRod.txt",
+    "SHOAL_CAVE_LOW_TIDE_ENTRANCE_ROOM-Sunny-MapSong-SuperRod.txt",
+    "SHOAL_CAVE_LOW_TIDE_ENTRANCE_ROOM-Sunny-MapSong-SweetScentLand.txt",
+    "SKY_PILLAR_1F-Sunny-MapSong-SweetScentLand.txt",
+    "VICTORY_ROAD_1F-Sunny-MapSong-SweetScentLand.txt",
+    "MAP_ROUTE111-Sunny-MapSong-RockSmash.txt",
+    "MAP_SAFARI_ZONE_NORTHEAST-Sunny-MapSong-RockSmash.txt",
+    "MOSSDEEP_CITY-Sunny-MapSong-SuperRod.txt",
+    "ROUTE114-Sunny-MapSong-RockSmash.txt",
+    "ROUTE122-Sunny-MapSong-SuperRod.txt",
+    "ROUTE123-Rain-MapSong-SuperRod.txt",
+    "ROUTE124-Sunny-MapSong-SuperRod.txt",
+    "ROUTE131-Sunny-MapSong-SuperRod.txt",
+    "SLATEPORT_CITY-Sunny-MapSong-SuperRod.txt",
+    "SOOTOPOLIS_CITY-Sunny-MapSong-SuperRod.txt",
+    "VICTORY_ROAD_B2F-Sunny-MapSong-SuperRod.txt",
+    "MAP_GRANITE_CAVE_B2F-Sunny-MapSong-RockSmash.txt",
+    "MAP_VICTORY_ROAD_B1F-Sunny-MapSong-RockSmash.txt",
+    "ROUTE114-Sunny-BikeSong-RockSmash.txt",
+    "ROUTE110-Sunny-MapSong-SuperRod.txt",
+    "ROUTE118-Sunny-MapSong-SuperRod.txt",
+    "ROUTE118-Sunny-MapSong-SweetScentLand.txt",
+    "ROUTE119-Rain-SurfSong-SuperRod.txt",
+    "ROUTE119-Thunderstorm-SurfSong-SuperRod.txt",
+    "ROUTE123-Rain-BikeSong-SweetScentLand.txt",
+    "SAFARI_ZONE_SOUTHEAST-Sunny-MapSong-SuperRod.txt",
+  ];
+  const recordings = files.map((source) => ({
+    source,
+    kinds: calibrationComponents
+      .filter((component) => component.provenance.source === source)
+      .map((component) => ({
+        isAudio: component.isAudio,
+        isFake: component.is_fake,
+      })),
+  }));
+  expect(recordings).toEqual(
+    files.map((source) => ({
+      source,
+      kinds: [
+        { isAudio: true, isFake: false },
+        { isAudio: false, isFake: false },
+      ],
+    })),
+  );
+  const invalidFrameCounts = calibrationComponents
+    .filter((component) => files.includes(component.provenance.source))
+    .filter((component) => {
+      const frames = component.provenance.sampled_frames;
+      const loop = component.provenance.song_loop_frames;
+
+      return (
+        typeof frames !== "number" ||
+        typeof loop !== "number" ||
+        frames <= 0 ||
+        frames > Math.ceil(loop)
+      );
+    })
+    .map((component) => component.id);
+  expect(invalidFrameCounts).toEqual([]);
+});
+
+test("new diving and thunderstorm captures retain their setup metadata", () => {
+  const ids = [
+    "UNDERWATER_SUNNY_AUDIO",
+    "ROUTE119_THUNDERSTORM_AUDIO",
+    "SURF_THUNDERSTORM_AUDIO",
+  ];
+  expect(
+    ids.map((id) => {
+      const entry = calibrationComponents.find(
+        (component) => component.id === id,
+      );
+      if (entry == null) {
+        throw new Error(id);
+      }
+
+      return {
+        id: entry.id,
+        mapId: entry.mapId,
+        weather: entry.weather,
+        playingSong: entry.playingSong,
+        action: entry.action,
+        isAudio: entry.isAudio,
+        isFake: entry.is_fake,
+      };
+    }),
+  ).toEqual([
+    {
+      id: "UNDERWATER_SUNNY_AUDIO",
+      mapId: "MAP_UNDERWATER_ROUTE126",
+      weather: "Sunny",
+      playingSong: "DivingSong",
+      action: "SweetScentWater",
+      isAudio: true,
+      isFake: false,
+    },
+    {
+      id: "ROUTE119_THUNDERSTORM_AUDIO",
+      mapId: "MAP_ROUTE119",
+      weather: "Thunderstorm",
+      playingSong: "MapSong",
+      action: "SweetScentLand",
+      isAudio: true,
+      isFake: false,
+    },
+    {
+      id: "SURF_THUNDERSTORM_AUDIO",
+      mapId: "MAP_ROUTE119",
+      weather: "Thunderstorm",
+      playingSong: "SurfSong",
+      action: "SweetScentWater",
+      isAudio: true,
+      isFake: false,
+    },
+  ]);
+});
+
+test.each([
+  [
+    "MAP_ROUTE111",
+    "Sunny",
+    "RockSmash",
+    "MAP_ROUTE111-Sunny-MapSong-RockSmash.txt",
+  ],
+  [
+    "MAP_SAFARI_ZONE_NORTHEAST",
+    "Sunny",
+    "RockSmash",
+    "MAP_SAFARI_ZONE_NORTHEAST-Sunny-MapSong-RockSmash.txt",
+  ],
+  [
+    "MAP_MOSSDEEP_CITY",
+    "Sunny",
+    "SuperRod",
+    "MOSSDEEP_CITY-Sunny-MapSong-SuperRod.txt",
+  ],
+  [
+    "MAP_ROUTE114",
+    "Sunny",
+    "RockSmash",
+    "ROUTE114-Sunny-MapSong-RockSmash.txt",
+  ],
+  ["MAP_ROUTE122", "Sunny", "SuperRod", "ROUTE122-Sunny-MapSong-SuperRod.txt"],
+  ["MAP_ROUTE123", "Rain", "SuperRod", "ROUTE123-Rain-MapSong-SuperRod.txt"],
+  ["MAP_ROUTE124", "Sunny", "SuperRod", "ROUTE124-Sunny-MapSong-SuperRod.txt"],
+  ["MAP_ROUTE131", "Sunny", "SuperRod", "ROUTE131-Sunny-MapSong-SuperRod.txt"],
+  [
+    "MAP_SLATEPORT_CITY",
+    "Sunny",
+    "SuperRod",
+    "SLATEPORT_CITY-Sunny-MapSong-SuperRod.txt",
+  ],
+  [
+    "MAP_SOOTOPOLIS_CITY",
+    "Sunny",
+    "SuperRod",
+    "SOOTOPOLIS_CITY-Sunny-MapSong-SuperRod.txt",
+  ],
+  [
+    "MAP_VICTORY_ROAD_B2F",
+    "Sunny",
+    "SuperRod",
+    "VICTORY_ROAD_B2F-Sunny-MapSong-SuperRod.txt",
+  ],
+] satisfies [string, Wild3Weather, Wild3Action, string][])(
+  "%s %s %s selects both measured components from %s",
+  (mapId, weather, action, source) => {
+    const info = getInitialCycleInfo(mapId, weather, "MapSong", action);
+    expect({
+      audioSource: info.audio.provenance.source,
+      nonAudioSource: info.nonAudio.provenance.source,
+      audioFake: info.audio.is_fake,
+      nonAudioFake: info.nonAudio.is_fake,
+      adjustment: info.nonAudioAdjustment,
+    }).toEqual({
+      audioSource: source,
+      nonAudioSource: source,
+      audioFake: false,
+      nonAudioFake: false,
+      adjustment: 0,
+    });
+  },
+);
+
+test.each([
+  [
+    "MAP_GRANITE_CAVE_B2F",
+    "MapSong",
+    "MAP_GRANITE_CAVE_B2F-Sunny-MapSong-RockSmash.txt",
+  ],
+  [
+    "MAP_VICTORY_ROAD_B1F",
+    "MapSong",
+    "MAP_VICTORY_ROAD_B1F-Sunny-MapSong-RockSmash.txt",
+  ],
+  ["MAP_ROUTE114", "BikeSong", "ROUTE114-Sunny-BikeSong-RockSmash.txt"],
+] satisfies [string, PlayingSong, string][])(
+  "%s Rock Smash with %s uses new recording %s",
+  (mapId, playingSong, source) => {
+    const info = getInitialCycleInfo(mapId, "Sunny", playingSong, "RockSmash");
+    expect({
+      audioSource: info.audio.provenance.source,
+      nonAudioSource: info.nonAudio.provenance.source,
+      audioAction: info.audio.action,
+      nonAudioAction: info.nonAudio.action,
+      audioSong: info.audio.playingSong,
+      nonAudioSong: info.nonAudio.playingSong,
+      adjustment: info.nonAudioAdjustment,
+    }).toEqual({
+      audioSource: source,
+      nonAudioSource: source,
+      audioAction: "RockSmash",
+      nonAudioAction: "RockSmash",
+      audioSong: playingSong,
+      nonAudioSong: playingSong,
+      adjustment: 0,
+    });
+  },
+);
+
+test.each([
+  [
+    "MAP_ROUTE110",
+    "Sunny",
+    "MapSong",
+    "SuperRod",
+    "ROUTE110-Sunny-MapSong-SuperRod.txt",
+  ],
+  [
+    "MAP_ROUTE118",
+    "Sunny",
+    "MapSong",
+    "SuperRod",
+    "ROUTE118-Sunny-MapSong-SuperRod.txt",
+  ],
+  [
+    "MAP_ROUTE118",
+    "Sunny",
+    "MapSong",
+    "SweetScentLand",
+    "ROUTE118-Sunny-MapSong-SweetScentLand.txt",
+  ],
+  [
+    "MAP_ROUTE119",
+    "Rain",
+    "SurfSong",
+    "SuperRod",
+    "ROUTE119-Rain-SurfSong-SuperRod.txt",
+  ],
+  [
+    "MAP_ROUTE119",
+    "Thunderstorm",
+    "SurfSong",
+    "SuperRod",
+    "ROUTE119-Thunderstorm-SurfSong-SuperRod.txt",
+  ],
+  [
+    "MAP_ROUTE123",
+    "Rain",
+    "BikeSong",
+    "SweetScentLand",
+    "ROUTE123-Rain-BikeSong-SweetScentLand.txt",
+  ],
+  [
+    "MAP_SAFARI_ZONE_SOUTHEAST",
+    "Sunny",
+    "MapSong",
+    "SuperRod",
+    "SAFARI_ZONE_SOUTHEAST-Sunny-MapSong-SuperRod.txt",
+  ],
+] satisfies [string, Wild3Weather, PlayingSong, Wild3Action, string][])(
+  "%s %s %s %s uses completed recording %s",
+  (mapId, weather, playingSong, action, source) => {
+    const info = getInitialCycleInfo(mapId, weather, playingSong, action);
+    expect({
+      audioSource: info.audio.provenance.source,
+      nonAudioSource: info.nonAudio.provenance.source,
+      audioFake: info.audio.is_fake,
+      nonAudioFake: info.nonAudio.is_fake,
+      audioAction: info.audio.action,
+      nonAudioAction: info.nonAudio.action,
+      audioSong: info.audio.playingSong,
+      nonAudioSong: info.nonAudio.playingSong,
+      audioWeather: info.audio.weather,
+      nonAudioWeather: info.nonAudio.weather,
+      adjustment: info.nonAudioAdjustment,
+    }).toEqual({
+      audioSource: source,
+      nonAudioSource: source,
+      audioFake: false,
+      nonAudioFake: false,
+      audioAction: action,
+      nonAudioAction: action,
+      audioSong: playingSong,
+      nonAudioSong: playingSong,
+      audioWeather: weather,
+      nonAudioWeather: weather,
+      adjustment: 0,
+    });
+  },
+);
+
+test("Route 118 recordings use the west fishing and east land song-loop durations", () => {
+  const files = [
+    "ROUTE118-Sunny-MapSong-SuperRod.txt",
+    "ROUTE118-Sunny-MapSong-SweetScentLand.txt",
+  ];
+  expect(
+    files.map((source) =>
+      calibrationComponents
+        .filter((entry) => entry.provenance.source === source)
+        .map((entry) => entry.provenance.song_loop_frames),
+    ),
+  ).toEqual([
+    [2181.818181818182, 2181.818181818182],
+    [3388.235294117647, 3388.235294117647],
+  ]);
 });

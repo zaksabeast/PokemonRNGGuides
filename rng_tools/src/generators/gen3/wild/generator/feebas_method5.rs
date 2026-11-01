@@ -1,10 +1,12 @@
 use super::*;
 
 /*
+The goal is to generate Pokemon outcomes when vblank occurs between CheckFeebas and PID generation, when fishing on a Feebas tile.
+This class handles both Feebas and non-Feebas outcome.
+
 calculate_:                         Calculate a return value (and updates rng state). No other side effect.
 complete_from_X_until_the_end:      Generate the step X until the end of the Pokemon encounter. It generates a single outcome assuming no vblank.
-simulate_wild_method5_feebas_XXX:   Generate the Pokemon outcome if a vblank occurs right before XXX
-
+simulate_wild_method5_feebas_XXX:   Generate the Pokemon outcome if a vblank occurs right before XXX.
 */
 
 #[derive(Clone, Copy)]

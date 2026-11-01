@@ -549,7 +549,7 @@ fn exclude_method3_from_pending_method5(
 
 fn generate_personality(
     mut rng: Pokerng,
-    gen_data: GenTmpData<'_>,
+    mut gen_data: GenTmpData<'_>,
     mut cycle_counter: CycleFrameCounter,
     map_data: &Wild3MapGameData,
 ) -> Wild3GeneratorResults {
@@ -558,20 +558,7 @@ fn generate_personality(
     let required_gender = gen_data.required_gender;
     let encounter_gender_ratio = gen_data.encounter_gender_ratio;
 
-    let mut results: Vec<Wild3GeneratorMonResult> = match &gen_data.feebas_method5_ctx {
-        Some(context) => {
-            let cycle_range = context.cycle_counter.cycle_range_to(&cycle_counter);
-
-            feebas_method5::generate(
-                context.rng,
-                opts,
-                map_data,
-                gen_data.encounter_idx == Wild3EncounterIndex::Feebas,
-                cycle_range,
-            )
-        }
-        None => vec![],
-    };
+    let mut results = vec![];
 
     let methods_contains_wild3 = opts.methods.contains(&Gen3Method::Wild3);
     let methods_contains_wild5 = opts.methods.contains(&Gen3Method::Wild5);
@@ -584,11 +571,17 @@ fn generate_personality(
         let pid_low = rand_next_u16(&mut rng, "pid_low", 1) as u32;
 
         let method3_range = 80;
+        let mut feebas_cycle_range = None;
 
         if (methods_contains_wild3 || methods_contains_wild5)
             && cycle_counter.can_generate_method(method3_range)
             && let Some((wild3_pid, wild3_ivs)) = simulate_wild_method3(&gen_data, rng, pid_low)
         {
+            feebas_cycle_range = gen_data
+                .feebas_method5_ctx
+                .as_ref()
+                .map(|context| context.cycle_counter.cycle_range_to(&cycle_counter));
+
             exclude_method3_from_pending_method5(
                 &mut results,
                 &mut pending_method5_index,
@@ -610,6 +603,19 @@ fn generate_personality(
         }
 
         cycle_counter.add_cycle(method3_range);
+
+        if let Some(context) = gen_data.feebas_method5_ctx.take() {
+            let cycle_range = feebas_cycle_range
+                .unwrap_or_else(|| context.cycle_counter.cycle_range_to(&cycle_counter));
+            results.extend(feebas_method5::generate(
+                context.rng,
+                opts,
+                map_data,
+                gen_data.encounter_idx == Wild3EncounterIndex::Feebas,
+                cycle_range,
+            ));
+        }
+
         cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidHigh);
         let pid_high = rand_next_u16(&mut rng, "pid_high", 1) as u32;
         pid = (pid_high << 16) | pid_low;

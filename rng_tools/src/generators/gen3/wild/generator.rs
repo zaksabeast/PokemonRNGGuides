@@ -75,9 +75,9 @@ fn FishingWildEncounter(
         let encounter = map_data.feebas.as_ref()?;
         let level = ChooseWildMonLevel(rng, encounter, opts.lead, cycle_counter);
         let encounter_idx = Wild3EncounterIndex::Feebas;
-        // We don't want to validate the lvl because it could change is a vblank occurs before ChooseWildMonLevel.
+        // We don't want to validate the lvl because it could change if a vblank occurs before ChooseWildMonLevel.
         let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, None)?;
-        return Some(CreateWildMon(
+        return CreateWildMon(
             *rng,
             opts,
             map_data,
@@ -86,14 +86,14 @@ fn FishingWildEncounter(
             level,
             encounter,
             feebas_method5_ctx,
-        ));
+        );
     }
 
     GetCurrentMapWildMonHeaderId(map_data, cycle_counter);
     let (encounter_idx, level) = GenerateFishingWildMon(rng, opts, map_data, cycle_counter)?;
 
-    let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, level)?;
-    Some(CreateWildMon(
+    let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, Some(level))?;
+    CreateWildMon(
         *rng,
         opts,
         map_data,
@@ -102,7 +102,7 @@ fn FishingWildEncounter(
         level,
         encounter,
         feebas_method5_ctx,
-    ))
+    )
 }
 
 fn CheckFeebas(
@@ -161,7 +161,7 @@ fn RockSmashWildEncounter(
     cycle_counter.add_cycle(131);
     let (encounter_idx, level) = TryGenerateWildMon(rng, opts, map_data, 0, cycle_counter)?;
     let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, Some(level))?;
-    Some(CreateWildMon(
+    CreateWildMon(
         *rng,
         opts,
         map_data,
@@ -170,7 +170,7 @@ fn RockSmashWildEncounter(
         level,
         encounter,
         None,
-    ))
+    )
 }
 
 fn WildEncounterCheck(
@@ -238,7 +238,7 @@ fn SweetScentWildEncounter(
     {
         let (outbreak, level) = SetUpMassOutbreakEncounter(rng, 0, opts, map_data, cycle_counter)?;
         let encounter = get_encounter_if_respects_filter(opts, map_data, outbreak, Some(level))?;
-        return Some(CreateWildMon(
+        return CreateWildMon(
             *rng,
             opts,
             map_data,
@@ -247,12 +247,12 @@ fn SweetScentWildEncounter(
             level,
             encounter,
             None,
-        ));
+        );
     }
 
     let (encounter_idx, level) = TryGenerateWildMon(rng, opts, map_data, 0, cycle_counter)?;
     let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, Some(level))?;
-    Some(CreateWildMon(
+    CreateWildMon(
         *rng,
         opts,
         map_data,
@@ -261,7 +261,7 @@ fn SweetScentWildEncounter(
         level,
         encounter,
         None,
-    ))
+    )
 }
 
 fn GetCurrentMapWildMonHeaderId(
@@ -476,14 +476,12 @@ fn CreateWildMon(
     };
 
     // Can't early filter with feebas
-    if feebas_method5_ctx.is_none() {
-        if let Some(gender) = required_gender {
-            if let Some(target_gender) = opts.filter.gender
-                && target_gender != gender
-            {
-                return None;
-            }
-        }
+    if feebas_method5_ctx.is_none()
+        && let Some(gender) = required_gender
+        && let Some(target_gender) = opts.filter.gender
+        && target_gender != gender
+    {
+        return None;
     }
 
     let (required_nature, used_safari_pokeblock) = PickWildMonNature(
@@ -495,12 +493,11 @@ fn CreateWildMon(
     );
 
     // Can't early filter with feebas
-    if feebas_method5_ctx.is_none() {
-        if let Some(target_nature) = opts.filter.nature
-            && !target_nature[required_nature as usize]
-        {
-            return None;
-        }
+    if feebas_method5_ctx.is_none()
+        && let Some(target_nature) = opts.filter.nature
+        && !target_nature[required_nature as usize]
+    {
+        return None;
     }
 
     let gen_data = GenTmpData {
@@ -1528,6 +1525,14 @@ fn create_if_passes_filter(
     } else {
         None
     };
+
+    // If fishing feebas, that test was skipped early on.
+    if gen_data.feebas_method5_ctx.is_some()
+        && let Some(required_lvl) = gen_data.opts.gen3_filter.lvl
+        && required_lvl != gen_data.lvl
+    {
+        return None;
+    }
 
     Some(Wild3GeneratorMonResult {
         pid,

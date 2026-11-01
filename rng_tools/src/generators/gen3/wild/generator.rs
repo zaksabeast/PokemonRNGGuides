@@ -1526,9 +1526,8 @@ fn create_if_passes_filter(
         None
     };
 
-    // If fishing feebas, that test was skipped early on.
-    if gen_data.feebas_method5_ctx.is_some()
-        && let Some(required_lvl) = gen_data.opts.gen3_filter.lvl
+    // If fishing feebas, that test may have been skipped early on.
+    if let Some(required_lvl) = gen_data.opts.gen3_filter.lvl
         && required_lvl != gen_data.lvl
     {
         return None;

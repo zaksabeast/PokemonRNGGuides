@@ -49,8 +49,9 @@ fn result(
 }
 
 #[test]
-fn vanilla_generates_feebas_encounter() {
-    let opts = options(Gen3Lead::Vanilla);
+fn vanilla_keeps_shifted_feebas_matching_level_filter() {
+    let mut opts = options(Gen3Lead::Vanilla);
+    opts.gen3_filter.lvl = Some(20);
     let mut data = game_data();
     let mut encounter = encounter();
     encounter.species_data.species = Species::Feebas;
@@ -59,36 +60,13 @@ fn vanilla_generates_feebas_encounter() {
 
     assert_eq!(
         generated.mon_results,
-        vec![
-            result(
-                Wild3EncounterIndex::Feebas,
-                20,
-                1_434_552_371,
-                Ivs::new(15, 13, 14, 22, 16, 10),
-                Gen3Method::Wild5,
-            ),
-            result(
-                Wild3EncounterIndex::Feebas,
-                26,
-                1_434_552_371,
-                Ivs::new(15, 13, 14, 22, 16, 10),
-                Gen3Method::Wild5,
-            ),
-            result(
-                Wild3EncounterIndex::Feebas,
-                26,
-                2_728_376_208,
-                Ivs::new(24, 26, 1, 22, 6, 5),
-                Gen3Method::Wild5,
-            ),
-            result(
-                Wild3EncounterIndex::Feebas,
-                26,
-                2_285_078_183,
-                Ivs::new(1, 12, 21, 13, 14, 15),
-                Gen3Method::Wild1,
-            ),
-        ]
+        vec![result(
+            Wild3EncounterIndex::Feebas,
+            20,
+            1_434_552_371,
+            Ivs::new(15, 13, 14, 22, 16, 10),
+            Gen3Method::Wild5,
+        )]
     );
 }
 

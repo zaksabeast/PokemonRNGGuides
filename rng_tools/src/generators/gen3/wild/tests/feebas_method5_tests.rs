@@ -765,7 +765,6 @@ fn pid_generation_uses_the_saved_rng_and_includes_lead_cycles_in_the_range() {
         tsv_trv: TsvTrv::from_tid_sid(0, 0),
         feebas_method5_ctx: Some(FeebasMethod5Context {
             rng: Pokerng::new(3_278_898_337),
-            is_feebas: true,
             cycle_counter: saved_cycle_counter,
         }),
     };
@@ -778,19 +777,19 @@ fn pid_generation_uses_the_saved_rng_and_includes_lead_cycles_in_the_range() {
                 20,
                 1_434_552_371,
                 Ivs::new(15, 13, 14, 22, 16, 10),
-                CycleRange::new(100, 0, 34),
+                CycleRange::new(100, 1, 34),
             ),
             ranged_result(
                 26,
                 1_434_552_371,
                 Ivs::new(15, 13, 14, 22, 16, 10),
-                CycleRange::new(134, 0, 34),
+                CycleRange::new(134, 1, 34),
             ),
             ranged_result(
                 26,
                 2_728_376_208,
                 Ivs::new(24, 26, 1, 22, 6, 5),
-                CycleRange::new(168, 0, 33),
+                CycleRange::new(168, 1, 33),
             ),
         ]
     );

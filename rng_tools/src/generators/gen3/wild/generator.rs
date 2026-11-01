@@ -68,7 +68,6 @@ fn FishingWildEncounter(
     let feebas_method5_ctx =
         feebas_method5::is_enabled(opts, map_data).then(|| FeebasMethod5Context {
             rng: *rng,
-            is_feebas,
             cycle_counter: cycle_counter.clone(),
         });
 
@@ -560,14 +559,29 @@ fn generate_personality(
     let required_gender = gen_data.required_gender;
     let encounter_gender_ratio = gen_data.encounter_gender_ratio;
 
-    let mut feebas_method5_results = match &gen_data.feebas_method5_ctx {
+    let mut results: Vec<Wild3GeneratorMonResult> = match &gen_data.feebas_method5_ctx {
         Some(context) => {
             let cycle_start = feebas_method5_cycle_position(&context.cycle_counter, opts);
             let cycle_end = feebas_method5_cycle_position(&cycle_counter, opts);
-            let cycle_range =
-                CycleRange::new(cycle_start, 0, cycle_end.saturating_sub(cycle_start));
+            let modulo_count = cycle_counter.create_cycle_range(0).start.lead_pid_mod
+                - context
+                    .cycle_counter
+                    .create_cycle_range(0)
+                    .start
+                    .lead_pid_mod;
+            let cycle_range = CycleRange::new(
+                cycle_start,
+                modulo_count,
+                cycle_end.saturating_sub(cycle_start),
+            );
 
-            feebas_method5::generate(context.rng, opts, map_data, context.is_feebas, cycle_range)
+            feebas_method5::generate(
+                context.rng,
+                opts,
+                map_data,
+                gen_data.encounter_idx == Wild3EncounterIndex::Feebas,
+                cycle_range,
+            )
         }
         None => vec![],
     };
@@ -589,7 +603,7 @@ fn generate_personality(
             && let Some((wild3_pid, wild3_ivs)) = simulate_wild_method3(&gen_data, rng, pid_low)
         {
             exclude_method3_from_pending_method5(
-                &mut feebas_method5_results,
+                &mut results,
                 &mut pending_method5_index,
                 cycle_counter.get_current_post_cycle_count(),
                 method3_range,
@@ -604,7 +618,7 @@ fn generate_personality(
                     cycle_counter.create_cycle_range(method3_range),
                 )
             {
-                feebas_method5_results.push(result);
+                results.push(result);
             }
         }
 
@@ -657,9 +671,9 @@ fn generate_personality(
                     )
                 {
                     if res.cycle_range.is_some() {
-                        pending_method5_index = Some(feebas_method5_results.len());
+                        pending_method5_index = Some(results.len());
                     }
-                    feebas_method5_results.push(res);
+                    results.push(res);
                 }
             }
         }
@@ -682,7 +696,7 @@ fn generate_personality(
 
     if !passes_pid_filter_internal(&gen_data, pid) {
         return Wild3GeneratorResults {
-            mon_results: feebas_method5_results,
+            mon_results: results,
             cycle_counter,
         };
     }
@@ -690,7 +704,7 @@ fn generate_personality(
     cycle_counter.add_cycle(
         calc_modulo_cycle_unsigned(pid, 25) + if required_gender.is_some() { 246 } else { 154 },
     );
-    CreateMon(rng, gen_data, cycle_counter, pid, feebas_method5_results)
+    CreateMon(rng, gen_data, cycle_counter, pid, results)
 }
 
 fn CreateMon(
@@ -1032,12 +1046,6 @@ fn ChooseWildMonLevel(
     encounter.min_level + increment
 }
 
-struct FeebasMethod5Context {
-    rng: Pokerng,
-    is_feebas: bool,
-    cycle_counter: CycleFrameCounter,
-}
-
 fn feebas_method5_cycle_position(
     cycle_counter: &CycleFrameCounter,
     opts: &Wild3GeneratorOptions,
@@ -1080,6 +1088,12 @@ struct GenTmpData<'a> {
     used_safari_pokeblock: Option<[u8; 5]>,
     tsv_trv: TsvTrv,
     feebas_method5_ctx: Option<FeebasMethod5Context>,
+}
+
+// State at the end of CheckFeebas
+struct FeebasMethod5Context {
+    rng: Pokerng,
+    cycle_counter: CycleFrameCounter,
 }
 
 fn rand_next_u16(rng: &mut Pokerng, _reason: &str, _modulo: u16) -> u16 {

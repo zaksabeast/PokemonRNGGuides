@@ -145,7 +145,11 @@ fn level_ability_preserves_zero_increment_on_failure() {
     );
     assert_eq!(
         simulate_wild_method5_feebas_level_ability(Pokerng::new(0), context, 0),
-        Some(candidate(30, 4_231_227_355, Ivs::new(12, 25, 27, 2, 31, 30)))
+        Some(candidate(
+            30,
+            4_231_227_355,
+            Ivs::new(12, 25, 27, 2, 31, 30)
+        ))
     );
 }
 
@@ -238,11 +242,41 @@ fn failed_feebas_roll_still_collects_every_early_branch() {
     assert_eq!(
         generated.mon_results,
         vec![
-            result(slot, 25, 1_281_017_505, Ivs::new(29, 29, 5, 23, 24, 22), Gen3Method::Wild5),
-            result(slot, 25, 1_281_017_505, Ivs::new(29, 29, 5, 23, 24, 22), Gen3Method::Wild5),
-            result(slot, 29, 1_281_017_505, Ivs::new(29, 29, 5, 23, 24, 22), Gen3Method::Wild5),
-            result(slot, 29, 1_570_497_449, Ivs::new(1, 21, 17, 2, 19, 26), Gen3Method::Wild5),
-            result(slot, 29, 4_099_577_474, Ivs::new(4, 3, 10, 14, 19, 28), Gen3Method::Wild1),
+            result(
+                slot,
+                25,
+                1_281_017_505,
+                Ivs::new(29, 29, 5, 23, 24, 22),
+                Gen3Method::Wild5
+            ),
+            result(
+                slot,
+                25,
+                1_281_017_505,
+                Ivs::new(29, 29, 5, 23, 24, 22),
+                Gen3Method::Wild5
+            ),
+            result(
+                slot,
+                29,
+                1_281_017_505,
+                Ivs::new(29, 29, 5, 23, 24, 22),
+                Gen3Method::Wild5
+            ),
+            result(
+                slot,
+                29,
+                1_570_497_449,
+                Ivs::new(1, 21, 17, 2, 19, 26),
+                Gen3Method::Wild5
+            ),
+            result(
+                slot,
+                29,
+                4_099_577_474,
+                Ivs::new(4, 3, 10, 14, 19, 28),
+                Gen3Method::Wild1
+            ),
         ]
     );
 }
@@ -266,16 +300,40 @@ fn non_feebas_tile_collects_the_slot_branch() {
                 Ivs::new(17, 17, 4, 16, 30, 15),
                 Gen3Method::Wild5,
             ),
-            result(slot, 28, 1_350_938_376, Ivs::new(17, 17, 4, 16, 30, 15), Gen3Method::Wild5),
-            result(slot, 25, 1_350_938_376, Ivs::new(17, 17, 4, 16, 30, 15), Gen3Method::Wild5),
-            result(slot, 25, 695_037_558, Ivs::new(8, 23, 28, 12, 25, 6), Gen3Method::Wild5),
-            result(slot, 25, 3_952_654_783, Ivs::new(16, 12, 8, 6, 5, 10), Gen3Method::Wild1),
+            result(
+                slot,
+                28,
+                1_350_938_376,
+                Ivs::new(17, 17, 4, 16, 30, 15),
+                Gen3Method::Wild5
+            ),
+            result(
+                slot,
+                25,
+                1_350_938_376,
+                Ivs::new(17, 17, 4, 16, 30, 15),
+                Gen3Method::Wild5
+            ),
+            result(
+                slot,
+                25,
+                695_037_558,
+                Ivs::new(8, 23, 28, 12, 25, 6),
+                Gen3Method::Wild5
+            ),
+            result(
+                slot,
+                25,
+                3_952_654_783,
+                Ivs::new(16, 12, 8, 6, 5, 10),
+                Gen3Method::Wild1
+            ),
         ]
     );
 }
 
 #[test]
-fn shifted_level_survives_baseline_level_filter() {
+fn baseline_level_filter_stops_before_method5_generation() {
     let opts = Wild3GeneratorOptions {
         gen3_filter: Gen3PkmFilter {
             lvl: Some(20),
@@ -286,18 +344,12 @@ fn shifted_level_survives_baseline_level_filter() {
 
     assert_eq!(
         generate_wild3_internal(Pokerng::new(38), &opts, &game_data()).mon_results,
-        vec![result(
-            Wild3EncounterIndex::Feebas,
-            20,
-            1_434_552_371,
-            Ivs::new(15, 13, 14, 22, 16, 10),
-            Gen3Method::Wild5,
-        )]
+        vec![]
     );
 }
 
 #[test]
-fn shifted_slot_survives_baseline_species_filter() {
+fn baseline_species_filter_stops_before_method5_generation() {
     let opts = Wild3GeneratorOptions {
         feebas_state: Wild3FeebasState::InMapButNotOnFeebasTile,
         gen3_filter: Gen3PkmFilter {
@@ -307,17 +359,13 @@ fn shifted_slot_survives_baseline_species_filter() {
         ..options(Gen3Lead::Vanilla)
     };
     let mut data = game_data();
-    data.slots_by_action[Wild3Action::GoodRod as usize][1].species_data.species = Species::Magikarp;
+    data.slots_by_action[Wild3Action::GoodRod as usize][1]
+        .species_data
+        .species = Species::Magikarp;
 
     assert_eq!(
         generate_wild3_internal(Pokerng::new(23), &opts, &data).mon_results,
-        vec![result(
-            Wild3EncounterIndex::Slot(EncounterSlot::Slot1),
-            28,
-            1_350_938_376,
-            Ivs::new(17, 17, 4, 16, 30, 15),
-            Gen3Method::Wild5,
-        )]
+        vec![]
     );
 }
 
@@ -460,9 +508,7 @@ fn accepted_pid_is_not_retried_to_satisfy_final_filters() {
     };
 
     assert_eq!(
-        simulate_wild_method5_feebas_pid_low(
-            Pokerng::new(6), context, 24, None, Nature::Adamant,
-        ),
+        simulate_wild_method5_feebas_pid_low(Pokerng::new(6), context, 24, None, Nature::Adamant,),
         Some(candidate(24, 1_432_582_478, Ivs::new(23, 14, 17, 0, 5, 10)))
     );
 
@@ -494,7 +540,11 @@ fn accepted_pid_is_not_retried_to_satisfy_final_filters() {
 
         assert_eq!(
             simulate_wild_method5_feebas_pid_low(
-                Pokerng::new(6), context, 24, None, Nature::Adamant,
+                Pokerng::new(6),
+                context,
+                24,
+                None,
+                Nature::Adamant,
             ),
             None
         );
@@ -509,40 +559,303 @@ fn accepted_pid_is_not_retried_to_satisfy_final_filters() {
     };
 
     assert_eq!(
-        simulate_wild_method5_feebas_pid_low(
-            Pokerng::new(6), context, 24, None, Nature::Adamant,
-        ),
+        simulate_wild_method5_feebas_pid_low(Pokerng::new(6), context, 24, None, Nature::Adamant,),
         None
     );
 }
 
 #[test]
-fn unsupported_timing_and_unrelated_setups_do_not_add_candidates() {
+fn unrelated_setups_do_not_add_candidates() {
     let mut opts = options(Gen3Lead::Vanilla);
     let mut data = game_data();
+    let range = CycleRange::new(100, 0, 101);
     opts.methods = vec![Gen3Method::Wild1];
-    assert_eq!(generate(Pokerng::new(0), &opts, &data, true), vec![]);
+    assert_eq!(generate(Pokerng::new(0), &opts, &data, true, range), vec![]);
 
     opts.methods = vec![Gen3Method::Wild5];
-    opts.cycle_opts = Wild3GeneratorCycleOpts::LikelihoodForLead {
-        min_max_initial_cycle: (45_000, 75_000),
-        lead_cycle_spd: 500,
-    };
-    assert_eq!(generate(Pokerng::new(0), &opts, &data, true), vec![]);
-
-    opts.cycle_opts = Wild3GeneratorCycleOpts::Inactive;
     opts.feebas_state = Wild3FeebasState::NotInMap;
-    assert_eq!(generate(Pokerng::new(0), &opts, &data, false), vec![]);
+    assert_eq!(
+        generate(Pokerng::new(0), &opts, &data, false, range),
+        vec![]
+    );
 
     opts.feebas_state = Wild3FeebasState::OnFeebasTile;
     opts.action = Wild3Action::SweetScentLand;
-    assert_eq!(generate(Pokerng::new(0), &opts, &data, true), vec![]);
+    assert_eq!(generate(Pokerng::new(0), &opts, &data, true, range), vec![]);
 
     opts.action = Wild3Action::GoodRod;
     data.is_safari = true;
-    assert_eq!(generate(Pokerng::new(0), &opts, &data, true), vec![]);
+    assert_eq!(generate(Pokerng::new(0), &opts, &data, true, range), vec![]);
 
     data.is_safari = false;
     data.feebas = None;
-    assert_eq!(generate(Pokerng::new(0), &opts, &data, false), vec![]);
+    assert_eq!(
+        generate(Pokerng::new(0), &opts, &data, false, range),
+        vec![]
+    );
+}
+
+fn ranged_result(
+    lvl: u8,
+    pid: u32,
+    ivs: Ivs,
+    cycle_range: CycleAndModRange,
+) -> Wild3GeneratorMonResult {
+    Wild3GeneratorMonResult {
+        encounter_idx: Wild3EncounterIndex::Feebas,
+        lvl,
+        pid,
+        ivs,
+        method: Gen3Method::Wild5,
+        cycle_range: Some(cycle_range),
+        used_safari_pokeblock: None,
+    }
+}
+
+#[test]
+fn cycle_range_is_divided_between_calls_including_the_remainder() {
+    let opts = Wild3GeneratorOptions {
+        cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead {
+            min_max_initial_cycle: (45_000, 75_000),
+            lead_cycle_spd: 500,
+        },
+        ..options(Gen3Lead::Vanilla)
+    };
+
+    assert_eq!(
+        generate(
+            Pokerng::new(3_278_898_337),
+            &opts,
+            &game_data(),
+            true,
+            CycleRange::new(100, 7, 101),
+        ),
+        vec![
+            ranged_result(
+                20,
+                1_434_552_371,
+                Ivs::new(15, 13, 14, 22, 16, 10),
+                CycleRange::new(100, 7, 34),
+            ),
+            ranged_result(
+                26,
+                1_434_552_371,
+                Ivs::new(15, 13, 14, 22, 16, 10),
+                CycleRange::new(134, 7, 34),
+            ),
+            ranged_result(
+                26,
+                2_728_376_208,
+                Ivs::new(24, 26, 1, 22, 6, 5),
+                CycleRange::new(168, 7, 33),
+            ),
+        ]
+    );
+}
+
+#[test]
+fn rejected_candidate_does_not_change_other_cycle_windows() {
+    let opts = Wild3GeneratorOptions {
+        gen3_filter: Gen3PkmFilter {
+            lvl: Some(26),
+            ..Default::default()
+        },
+        cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead {
+            min_max_initial_cycle: (45_000, 75_000),
+            lead_cycle_spd: 500,
+        },
+        ..options(Gen3Lead::Vanilla)
+    };
+
+    assert_eq!(
+        generate(
+            Pokerng::new(3_278_898_337),
+            &opts,
+            &game_data(),
+            true,
+            CycleRange::new(100, 7, 101),
+        ),
+        vec![
+            ranged_result(
+                26,
+                1_434_552_371,
+                Ivs::new(15, 13, 14, 22, 16, 10),
+                CycleRange::new(134, 7, 34),
+            ),
+            ranged_result(
+                26,
+                2_728_376_208,
+                Ivs::new(24, 26, 1, 22, 6, 5),
+                CycleRange::new(168, 7, 33),
+            ),
+        ]
+    );
+}
+
+#[test]
+fn ranges_shorter_than_the_call_count_have_no_empty_results() {
+    let opts = Wild3GeneratorOptions {
+        cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead {
+            min_max_initial_cycle: (45_000, 75_000),
+            lead_cycle_spd: 500,
+        },
+        ..options(Gen3Lead::Vanilla)
+    };
+
+    assert_eq!(
+        generate(
+            Pokerng::new(3_278_898_337),
+            &opts,
+            &game_data(),
+            true,
+            CycleRange::new(100, 0, 2),
+        ),
+        vec![
+            ranged_result(
+                20,
+                1_434_552_371,
+                Ivs::new(15, 13, 14, 22, 16, 10),
+                CycleRange::new(100, 0, 1),
+            ),
+            ranged_result(
+                26,
+                1_434_552_371,
+                Ivs::new(15, 13, 14, 22, 16, 10),
+                CycleRange::new(101, 0, 1),
+            ),
+        ]
+    );
+    assert_eq!(
+        generate(
+            Pokerng::new(3_278_898_337),
+            &opts,
+            &game_data(),
+            true,
+            CycleRange::new(100, 0, 0),
+        ),
+        vec![],
+    );
+}
+
+#[test]
+fn pid_generation_uses_the_saved_rng_and_includes_lead_cycles_in_the_range() {
+    let opts = Wild3GeneratorOptions {
+        methods: vec![Gen3Method::Wild5],
+        cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead {
+            min_max_initial_cycle: (45_000, 75_000),
+            lead_cycle_spd: 100,
+        },
+        ..options(Gen3Lead::Vanilla)
+    };
+    let data = game_data();
+    let mut cycle_counter = CycleFrameCounter::new(&opts);
+    cycle_counter.add_cycle(100);
+    let saved_cycle_counter = cycle_counter.clone();
+    cycle_counter.add_cycle(1);
+    cycle_counter.add_mod(1);
+
+    let gen_data = GenTmpData {
+        opts: &opts,
+        encounter_idx: Wild3EncounterIndex::Feebas,
+        lvl: 26,
+        encounter_gender_ratio: GenderRatio::OneToOne,
+        required_gender: None,
+        required_nature: Nature::Impish,
+        used_safari_pokeblock: None,
+        tsv_trv: TsvTrv::from_tid_sid(0, 0),
+        feebas_method5_ctx: Some(FeebasMethod5Context {
+            rng: Pokerng::new(3_278_898_337),
+            is_feebas: true,
+            cycle_counter: saved_cycle_counter,
+        }),
+    };
+
+    assert_eq!(
+        generate_personality(Pokerng::new(1_696_283_507), gen_data, cycle_counter, &data)
+            .mon_results,
+        vec![
+            ranged_result(
+                20,
+                1_434_552_371,
+                Ivs::new(15, 13, 14, 22, 16, 10),
+                CycleRange::new(100, 0, 34),
+            ),
+            ranged_result(
+                26,
+                1_434_552_371,
+                Ivs::new(15, 13, 14, 22, 16, 10),
+                CycleRange::new(134, 0, 34),
+            ),
+            ranged_result(
+                26,
+                2_728_376_208,
+                Ivs::new(24, 26, 1, 22, 6, 5),
+                CycleRange::new(168, 0, 33),
+            ),
+        ]
+    );
+}
+
+#[test]
+fn false_check_feebas_splits_the_range_between_four_calls() {
+    let opts = Wild3GeneratorOptions {
+        cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead {
+            min_max_initial_cycle: (45_000, 75_000),
+            lead_cycle_spd: 500,
+        },
+        ..options(Gen3Lead::Vanilla)
+    };
+    let slot = Wild3EncounterIndex::Slot(EncounterSlot::Slot0);
+
+    assert_eq!(
+        generate(
+            Pokerng::with_advances(75, 1),
+            &opts,
+            &game_data(),
+            false,
+            CycleRange::new(100, 0, 101),
+        ),
+        vec![
+            Wild3GeneratorMonResult {
+                cycle_range: Some(CycleRange::new(100, 0, 26)),
+                ..result(
+                    slot,
+                    25,
+                    1_281_017_505,
+                    Ivs::new(29, 29, 5, 23, 24, 22),
+                    Gen3Method::Wild5
+                )
+            },
+            Wild3GeneratorMonResult {
+                cycle_range: Some(CycleRange::new(126, 0, 25)),
+                ..result(
+                    slot,
+                    25,
+                    1_281_017_505,
+                    Ivs::new(29, 29, 5, 23, 24, 22),
+                    Gen3Method::Wild5
+                )
+            },
+            Wild3GeneratorMonResult {
+                cycle_range: Some(CycleRange::new(151, 0, 25)),
+                ..result(
+                    slot,
+                    29,
+                    1_281_017_505,
+                    Ivs::new(29, 29, 5, 23, 24, 22),
+                    Gen3Method::Wild5
+                )
+            },
+            Wild3GeneratorMonResult {
+                cycle_range: Some(CycleRange::new(176, 0, 25)),
+                ..result(
+                    slot,
+                    29,
+                    1_570_497_449,
+                    Ivs::new(1, 21, 17, 2, 19, 26),
+                    Gen3Method::Wild5
+                )
+            },
+        ]
+    );
 }

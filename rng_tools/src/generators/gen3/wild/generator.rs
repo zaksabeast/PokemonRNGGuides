@@ -12,10 +12,10 @@ use crate::{
     PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE, PERTINENT_SOLO_POKEBLOCKS_BY_NATURE,
     POKEBLOCK_NATURE_STAT_FACTORS, TsvTrv,
     gen3::{
-        CycleAndModRange, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method, Moment, Wild3Action,
-        Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState, Wild3GeneratorCycleOpts,
-        Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
-        get_default_min_mid_max_initial_cycle_for_feebas,
+        COMMON_LEAD_RANGE, CycleAndModRange, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method,
+        Moment, Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState,
+        Wild3GeneratorCycleOpts, Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState,
+        Wild3SafariPokeblockGenOpt, get_default_min_mid_max_initial_cycle_for_feebas,
         get_default_min_mid_max_vblank_cycle_duration_for_feebas, passes_pid_filter,
     },
     is_max_size,
@@ -65,37 +65,19 @@ fn FishingWildEncounter(
     cycle_counter.on_moment_reached(Moment::FishingWildEncounter);
 
     let is_feebas = CheckFeebas(rng, opts, cycle_counter);
-    let early_method5 = feebas_method5::generate(*rng, opts, map_data, is_feebas);
-    let generated =
-        FishingWildEncounterAfterCheckFeebas(rng, opts, map_data, cycle_counter, is_feebas);
+    let feebas_method5_ctx =
+        feebas_method5::is_enabled(opts, map_data).then(|| FeebasMethod5Context {
+            rng: *rng,
+            is_feebas,
+            cycle_counter: cycle_counter.clone(),
+        });
 
-    if early_method5.is_empty() {
-        return generated;
-    }
-
-    let mut generated = generated.unwrap_or_else(|| Wild3GeneratorResults {
-        mon_results: vec![],
-        cycle_counter: cycle_counter.clone(),
-    });
-    let mut results = early_method5;
-    results.append(&mut generated.mon_results);
-    generated.mon_results = results;
-
-    Some(generated)
-}
-
-fn FishingWildEncounterAfterCheckFeebas(
-    rng: &mut Pokerng,
-    opts: &Wild3GeneratorOptions,
-    map_data: &Wild3MapGameData,
-    cycle_counter: &mut CycleFrameCounter,
-    is_feebas: bool,
-) -> Option<Wild3GeneratorResults> {
     if is_feebas {
         let encounter = map_data.feebas.as_ref()?;
         let level = ChooseWildMonLevel(rng, encounter, opts.lead, cycle_counter);
         let encounter_idx = Wild3EncounterIndex::Feebas;
         let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, level)?;
+
         return Some(CreateWildMon(
             *rng,
             opts,
@@ -104,13 +86,14 @@ fn FishingWildEncounterAfterCheckFeebas(
             encounter_idx,
             level,
             encounter,
+            feebas_method5_ctx,
         ));
     }
 
     GetCurrentMapWildMonHeaderId(map_data, cycle_counter);
     let (encounter_idx, level) = GenerateFishingWildMon(rng, opts, map_data, cycle_counter)?;
-
     let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, level)?;
+
     Some(CreateWildMon(
         *rng,
         opts,
@@ -119,6 +102,7 @@ fn FishingWildEncounterAfterCheckFeebas(
         encounter_idx,
         level,
         encounter,
+        feebas_method5_ctx,
     ))
 }
 
@@ -186,6 +170,7 @@ fn RockSmashWildEncounter(
         encounter_idx,
         level,
         encounter,
+        None,
     ))
 }
 
@@ -262,6 +247,7 @@ fn SweetScentWildEncounter(
             outbreak,
             level,
             encounter,
+            None,
         ));
     }
 
@@ -275,6 +261,7 @@ fn SweetScentWildEncounter(
         encounter_idx,
         level,
         encounter,
+        None,
     ))
 }
 
@@ -427,6 +414,7 @@ fn CreateWildMon(
     encounter_idx: Wild3EncounterIndex,
     lvl: u8,
     encounter: &Wild3EncounterGameData,
+    feebas_method5_ctx: Option<FeebasMethod5Context>,
 ) -> Wild3GeneratorResults {
     cycle_counter.on_moment_reached(Moment::CreateWildMon);
     let encounter_gender_ratio = encounter.species_data.gender_ratio();
@@ -503,12 +491,13 @@ fn CreateWildMon(
         required_nature,
         used_safari_pokeblock,
         tsv_trv: TsvTrv::from_tid_sid(opts.tid, opts.sid),
+        feebas_method5_ctx,
     };
 
     if required_gender.is_some() {
-        CreateMonWithGenderNatureLetter(rng, gen_data, cycle_counter)
+        CreateMonWithGenderNatureLetter(rng, gen_data, cycle_counter, map_data)
     } else {
-        CreateMonWithNature(rng, gen_data, cycle_counter)
+        CreateMonWithNature(rng, gen_data, cycle_counter, map_data)
     }
 }
 
@@ -516,20 +505,22 @@ fn CreateMonWithNature(
     rng: Pokerng,
     gen_data: GenTmpData<'_>,
     mut cycle_counter: CycleFrameCounter,
+    map_data: &Wild3MapGameData,
 ) -> Wild3GeneratorResults {
     cycle_counter.on_moment_reached(Moment::CreateMonWithNature);
     cycle_counter.add_cycle(42);
-    generate_personality(rng, gen_data, cycle_counter)
+    generate_personality(rng, gen_data, cycle_counter, map_data)
 }
 
 fn CreateMonWithGenderNatureLetter(
     rng: Pokerng,
     gen_data: GenTmpData<'_>,
     mut cycle_counter: CycleFrameCounter,
+    map_data: &Wild3MapGameData,
 ) -> Wild3GeneratorResults {
     cycle_counter.on_moment_reached(Moment::CreateMonWithGenderNatureLetter);
     cycle_counter.add_cycle(64);
-    generate_personality(rng, gen_data, cycle_counter)
+    generate_personality(rng, gen_data, cycle_counter, map_data)
 }
 
 fn exclude_method3_from_pending_method5(
@@ -562,12 +553,24 @@ fn generate_personality(
     mut rng: Pokerng,
     gen_data: GenTmpData<'_>,
     mut cycle_counter: CycleFrameCounter,
+    map_data: &Wild3MapGameData,
 ) -> Wild3GeneratorResults {
     let opts = gen_data.opts;
     let required_nature = gen_data.required_nature;
     let required_gender = gen_data.required_gender;
     let encounter_gender_ratio = gen_data.encounter_gender_ratio;
-    let mut results: Vec<Wild3GeneratorMonResult> = Vec::new();
+
+    let mut feebas_method5_results = match &gen_data.feebas_method5_ctx {
+        Some(context) => {
+            let cycle_start = feebas_method5_cycle_position(&context.cycle_counter, opts);
+            let cycle_end = feebas_method5_cycle_position(&cycle_counter, opts);
+            let cycle_range =
+                CycleRange::new(cycle_start, 0, cycle_end.saturating_sub(cycle_start));
+
+            feebas_method5::generate(context.rng, opts, map_data, context.is_feebas, cycle_range)
+        }
+        None => vec![],
+    };
 
     let methods_contains_wild3 = opts.methods.contains(&Gen3Method::Wild3);
     let methods_contains_wild5 = opts.methods.contains(&Gen3Method::Wild5);
@@ -586,7 +589,7 @@ fn generate_personality(
             && let Some((wild3_pid, wild3_ivs)) = simulate_wild_method3(&gen_data, rng, pid_low)
         {
             exclude_method3_from_pending_method5(
-                &mut results,
+                &mut feebas_method5_results,
                 &mut pending_method5_index,
                 cycle_counter.get_current_post_cycle_count(),
                 method3_range,
@@ -601,7 +604,7 @@ fn generate_personality(
                     cycle_counter.create_cycle_range(method3_range),
                 )
             {
-                results.push(result);
+                feebas_method5_results.push(result);
             }
         }
 
@@ -654,9 +657,9 @@ fn generate_personality(
                     )
                 {
                     if res.cycle_range.is_some() {
-                        pending_method5_index = Some(results.len());
+                        pending_method5_index = Some(feebas_method5_results.len());
                     }
-                    results.push(res);
+                    feebas_method5_results.push(res);
                 }
             }
         }
@@ -679,7 +682,7 @@ fn generate_personality(
 
     if !passes_pid_filter_internal(&gen_data, pid) {
         return Wild3GeneratorResults {
-            mon_results: results,
+            mon_results: feebas_method5_results,
             cycle_counter,
         };
     }
@@ -687,7 +690,7 @@ fn generate_personality(
     cycle_counter.add_cycle(
         calc_modulo_cycle_unsigned(pid, 25) + if required_gender.is_some() { 246 } else { 154 },
     );
-    CreateMon(rng, gen_data, cycle_counter, pid, results)
+    CreateMon(rng, gen_data, cycle_counter, pid, feebas_method5_results)
 }
 
 fn CreateMon(
@@ -1029,6 +1032,44 @@ fn ChooseWildMonLevel(
     encounter.min_level + increment
 }
 
+struct FeebasMethod5Context {
+    rng: Pokerng,
+    is_feebas: bool,
+    cycle_counter: CycleFrameCounter,
+}
+
+fn feebas_method5_cycle_position(
+    cycle_counter: &CycleFrameCounter,
+    opts: &Wild3GeneratorOptions,
+) -> usize {
+    if let CycleFrameCounter::DetailedBreakdown { current_cycle, .. } = cycle_counter {
+        let initial_cycle = match opts.cycle_opts {
+            Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog { initial_cycle, .. }
+            | Wild3GeneratorCycleOpts::CycleAtMomentWithEmuLog { initial_cycle, .. } => {
+                initial_cycle
+            }
+            _ => 0,
+        };
+
+        return (current_cycle.frame * VBLANK_FREQ + current_cycle.cycle)
+            .saturating_sub(initial_cycle);
+    }
+
+    // Uniform windows use a representative lead speed when searching all leads.
+    let lead_cycle_spd = match opts.lead {
+        Gen3Lead::Egg => 0,
+        _ => opts
+            .cycle_opts
+            .lead_cycle_spd()
+            .unwrap_or((COMMON_LEAD_RANGE.start + COMMON_LEAD_RANGE.end) / 2),
+    };
+
+    cycle_counter
+        .create_cycle_range(0)
+        .apply_mod_cycle_count(lead_cycle_spd)
+        .start
+}
+
 struct GenTmpData<'a> {
     opts: &'a Wild3GeneratorOptions,
     encounter_idx: Wild3EncounterIndex,
@@ -1038,6 +1079,7 @@ struct GenTmpData<'a> {
     required_nature: Nature,
     used_safari_pokeblock: Option<[u8; 5]>,
     tsv_trv: TsvTrv,
+    feebas_method5_ctx: Option<FeebasMethod5Context>,
 }
 
 fn rand_next_u16(rng: &mut Pokerng, _reason: &str, _modulo: u16) -> u16 {

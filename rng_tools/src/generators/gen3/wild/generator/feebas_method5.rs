@@ -20,34 +20,64 @@ pub(super) fn generate(
     opts: &Wild3GeneratorOptions,
     map_data: &Wild3MapGameData,
     is_feebas: bool,
+    cycle_range: CycleAndModRange,
 ) -> Vec<Wild3GeneratorMonResult> {
-    // The legacy Feebas counter cannot represent these windows reliably. Keep
-    // them out of likelihood calculations until post-CheckFeebas timing is modeled.
-    if opts.cycle_opts != Wild3GeneratorCycleOpts::Inactive
-        || !opts.methods.contains(&Gen3Method::Wild5)
-        || opts.feebas_state == Wild3FeebasState::NotInMap
-        || map_data.feebas.is_none()
-        || map_data.is_safari
-        || !matches!(
-            opts.action,
-            Wild3Action::OldRod | Wild3Action::GoodRod | Wild3Action::SuperRod
-        )
-    {
+    if !is_enabled(opts, map_data) {
         return vec![];
     }
 
-    collect_candidates(rng, opts, map_data, is_feebas)
+    let candidates = collect_candidates(rng, opts, map_data, is_feebas);
+    let count = candidates.len();
+    candidates
         .into_iter()
-        .map(|candidate| Wild3GeneratorMonResult {
-            encounter_idx: candidate.encounter_idx,
-            lvl: candidate.lvl,
-            pid: candidate.pid,
-            ivs: candidate.ivs,
-            method: Gen3Method::Wild5,
-            cycle_range: None,
-            used_safari_pokeblock: None,
+        .enumerate()
+        .filter_map(|(index, candidate)| {
+            let candidate = candidate?;
+            let range = uniform_cycle_range(cycle_range, index, count);
+            let cycle_range = if opts.cycle_opts == Wild3GeneratorCycleOpts::Inactive {
+                None
+            } else {
+                if range.len == 0 {
+                    return None;
+                }
+
+                Some(range)
+            };
+
+            Some(Wild3GeneratorMonResult {
+                encounter_idx: candidate.encounter_idx,
+                lvl: candidate.lvl,
+                pid: candidate.pid,
+                ivs: candidate.ivs,
+                method: Gen3Method::Wild5,
+                cycle_range,
+                used_safari_pokeblock: None,
+            })
         })
         .collect()
+}
+
+pub(super) fn is_enabled(opts: &Wild3GeneratorOptions, map_data: &Wild3MapGameData) -> bool {
+    opts.methods.contains(&Gen3Method::Wild5)
+        && opts.feebas_state != Wild3FeebasState::NotInMap
+        && map_data.feebas.is_some()
+        && !map_data.is_safari
+        && matches!(
+            opts.action,
+            Wild3Action::OldRod | Wild3Action::GoodRod | Wild3Action::SuperRod
+        )
+}
+
+fn uniform_cycle_range(range: CycleAndModRange, index: usize, count: usize) -> CycleAndModRange {
+    let width = range.len / count;
+    let remainder = range.len % count;
+    let offset = width * index + index.min(remainder);
+
+    CycleRange::new(
+        range.start.cycle + offset,
+        range.start.lead_pid_mod,
+        width + usize::from(index < remainder),
+    )
 }
 
 fn collect_candidates(
@@ -55,12 +85,14 @@ fn collect_candidates(
     opts: &Wild3GeneratorOptions,
     map_data: &Wild3MapGameData,
     is_feebas: bool,
-) -> Vec<FeebasMethod5Candidate> {
+) -> Vec<Option<FeebasMethod5Candidate>> {
     let mut results = vec![];
     let encounter_idx = if is_feebas {
         Wild3EncounterIndex::Feebas
     } else {
-        results.extend(simulate_wild_method5_feebas_fishing_slot(rng, opts, map_data));
+        results.push(simulate_wild_method5_feebas_fishing_slot(
+            rng, opts, map_data,
+        ));
 
         fishing_slot(&mut rng, opts.action)
     };
@@ -73,11 +105,11 @@ fn collect_candidates(
         encounter,
     };
 
-    results.extend(simulate_wild_method5_feebas_level(rng, context));
+    results.push(simulate_wild_method5_feebas_level(rng, context));
 
     let increment = level_increment(&mut rng, encounter);
     if opts.lead == Gen3Lead::HustleVitalSpiritPressure {
-        results.extend(simulate_wild_method5_feebas_level_ability(
+        results.push(simulate_wild_method5_feebas_level_ability(
             rng, context, increment,
         ));
     }
@@ -85,12 +117,12 @@ fn collect_candidates(
     let lvl = finish_level(&mut rng, context, increment);
     let mut required_gender = None;
     if uses_cute_charm(context) {
-        results.extend(simulate_wild_method5_feebas_cute_charm(rng, context, lvl));
+        results.push(simulate_wild_method5_feebas_cute_charm(rng, context, lvl));
         required_gender = roll_cute_charm(&mut rng, opts.lead);
     }
 
     let required_nature = collect_nature(&mut rng, context, lvl, required_gender, &mut results);
-    results.extend(simulate_wild_method5_feebas_pid_low(
+    results.push(simulate_wild_method5_feebas_pid_low(
         rng,
         context,
         lvl,
@@ -106,10 +138,10 @@ fn collect_nature(
     context: FeebasEncounter<'_>,
     lvl: u8,
     required_gender: Option<Gender>,
-    results: &mut Vec<FeebasMethod5Candidate>,
+    results: &mut Vec<Option<FeebasMethod5Candidate>>,
 ) -> Nature {
     if let Gen3Lead::Synchronize(nature) = context.opts.lead {
-        results.extend(simulate_wild_method5_feebas_synchronize(
+        results.push(simulate_wild_method5_feebas_synchronize(
             *rng,
             context,
             lvl,
@@ -129,9 +161,9 @@ fn collect_random_nature(
     context: FeebasEncounter<'_>,
     lvl: u8,
     required_gender: Option<Gender>,
-    results: &mut Vec<FeebasMethod5Candidate>,
+    results: &mut Vec<Option<FeebasMethod5Candidate>>,
 ) -> Nature {
-    results.extend(simulate_wild_method5_feebas_nature(
+    results.push(simulate_wild_method5_feebas_nature(
         *rng,
         context,
         lvl,
@@ -168,7 +200,11 @@ fn finish_level(rng: &mut Pokerng, context: FeebasEncounter<'_>, increment: u8) 
 
 fn uses_cute_charm(context: FeebasEncounter<'_>) -> bool {
     matches!(context.opts.lead, Gen3Lead::CuteCharm(_))
-        && context.encounter.species_data.gender_ratio().has_multiple_genders()
+        && context
+            .encounter
+            .species_data
+            .gender_ratio()
+            .has_multiple_genders()
 }
 
 fn roll_cute_charm(rng: &mut Pokerng, lead: Gen3Lead) -> Option<Gender> {
@@ -241,7 +277,11 @@ fn complete_pid(
         .gen3_filter
         .species
         .is_none_or(|species| species == context.encounter.species_data.species);
-    let level_matches = context.opts.gen3_filter.lvl.is_none_or(|wanted| wanted == lvl);
+    let level_matches = context
+        .opts
+        .gen3_filter
+        .lvl
+        .is_none_or(|wanted| wanted == lvl);
     if !species_matches || !level_matches {
         return None;
     }
@@ -255,6 +295,7 @@ fn complete_pid(
         required_nature,
         used_safari_pokeblock: None,
         tsv_trv: TsvTrv::from_tid_sid(context.opts.tid, context.opts.sid),
+        feebas_method5_ctx: None,
     };
 
     let pid = loop {
@@ -262,9 +303,8 @@ fn complete_pid(
         let high = u32::from(rng.rand::<u16>());
         let pid = (high << 16) | low;
         if Nature::from_pid(pid) == required_nature
-            && required_gender.is_none_or(|gender| {
-                gen_data.encounter_gender_ratio.gender_from_pid(pid) == gender
-            })
+            && required_gender
+                .is_none_or(|gender| gen_data.encounter_gender_ratio.gender_from_pid(pid) == gender)
         {
             break pid;
         }

@@ -420,6 +420,54 @@ impl CycleFrameCounter {
         }
     }
 
+    pub fn cycle_range_to(&self, end: &Self) -> CycleAndModRange {
+        match (self, end) {
+            (
+                Self::MinMaxRange {
+                    base_cycle_count: start_cycle,
+                    lead_pid_mod_count: start_mod,
+                    ..
+                },
+                Self::MinMaxRange {
+                    base_cycle_count: end_cycle,
+                    lead_pid_mod_count: end_mod,
+                    ..
+                },
+            )
+            | (
+                Self::CheckValidAllLeadSpds {
+                    base_cycle_count: start_cycle,
+                    lead_pid_mod_count: start_mod,
+                    ..
+                },
+                Self::CheckValidAllLeadSpds {
+                    base_cycle_count: end_cycle,
+                    lead_pid_mod_count: end_mod,
+                    ..
+                },
+            ) => CycleAndModRange::new(
+                *start_cycle,
+                end_mod.saturating_sub(*start_mod),
+                end_cycle.saturating_sub(*start_cycle),
+            ),
+            (
+                Self::DetailedBreakdown {
+                    current_cycle: start,
+                    ..
+                },
+                Self::DetailedBreakdown {
+                    current_cycle: end, ..
+                },
+            ) => {
+                let start_cycle = start.frame * VBLANK_FREQ + start.cycle;
+                let end_cycle = end.frame * VBLANK_FREQ + end.cycle;
+
+                CycleAndModRange::new(start_cycle, 0, end_cycle.saturating_sub(start_cycle))
+            }
+            _ => CycleAndModRange::new(0, 0, 0),
+        }
+    }
+
     pub fn get_current_post_cycle_count(&self) -> usize {
         match self {
             CycleFrameCounter::Inactive | CycleFrameCounter::DetailedBreakdown { .. } => 0,
@@ -463,5 +511,81 @@ impl CycleFrameCounter {
                 cycle_at_moments, ..
             } => cycle_at_moments.clone(),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn check_valid_all_lead_spds_cycle_range() {
+        let start = CycleFrameCounter::CheckValidAllLeadSpds {
+            min_lead_cycle_spd: 100,
+            max_lead_cycle_spd: 200,
+            earliest_slowest_cycle: 500,
+            latest_fastest_cycle: 300,
+            cycle_instability: 0.0,
+            base_cycle_count: 100,
+            lead_pid_mod_count: 2,
+        };
+        let end = CycleFrameCounter::CheckValidAllLeadSpds {
+            min_lead_cycle_spd: 100,
+            max_lead_cycle_spd: 200,
+            earliest_slowest_cycle: 1130,
+            latest_fastest_cycle: 630,
+            cycle_instability: 0.0,
+            base_cycle_count: 130,
+            lead_pid_mod_count: 5,
+        };
+
+        assert_eq!(start.cycle_range_to(&end), CycleAndModRange::new(100, 3, 30));
+    }
+
+    #[test]
+    fn min_max_cycle_range() {
+        let start = CycleFrameCounter::MinMaxRange {
+            min_max_cycles: MinMaxCycleFrame::new((300, 500), (100, 200)),
+            cycle_instability: 0.0,
+            base_cycle_count: 100,
+            lead_pid_mod_count: 2,
+            generate_even_if_impossible: false,
+        };
+        let end = CycleFrameCounter::MinMaxRange {
+            min_max_cycles: MinMaxCycleFrame::new((630, 1130), (100, 200)),
+            cycle_instability: 0.0,
+            base_cycle_count: 130,
+            lead_pid_mod_count: 5,
+            generate_even_if_impossible: false,
+        };
+
+        assert_eq!(start.cycle_range_to(&end), CycleAndModRange::new(100, 3, 30));
+    }
+
+    #[test]
+    fn detailed_breakdown_cycle_range() {
+        let start = CycleFrameCounter::DetailedBreakdown {
+            lead_cycle_spd: 100,
+            current_cycle: CycleFrame {
+                cycle: 280_886,
+                frame: 1,
+            },
+            vblank_cycles: vec![],
+            cycle_at_moments: vec![],
+        };
+        let end = CycleFrameCounter::DetailedBreakdown {
+            lead_cycle_spd: 100,
+            current_cycle: CycleFrame {
+                cycle: 340,
+                frame: 2,
+            },
+            vblank_cycles: vec![],
+            cycle_at_moments: vec![],
+        };
+
+        assert_eq!(
+            start.cycle_range_to(&end),
+            CycleAndModRange::new(561_782, 0, 350)
+        );
     }
 }

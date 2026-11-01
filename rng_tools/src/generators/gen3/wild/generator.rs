@@ -12,10 +12,10 @@ use crate::{
     PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE, PERTINENT_SOLO_POKEBLOCKS_BY_NATURE,
     POKEBLOCK_NATURE_STAT_FACTORS, TsvTrv,
     gen3::{
-        COMMON_LEAD_RANGE, CycleAndModRange, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method,
-        Moment, Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState,
-        Wild3GeneratorCycleOpts, Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState,
-        Wild3SafariPokeblockGenOpt, get_default_min_mid_max_initial_cycle_for_feebas,
+        CycleAndModRange, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method, Moment, Wild3Action,
+        Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState, Wild3GeneratorCycleOpts,
+        Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
+        get_default_min_mid_max_initial_cycle_for_feebas,
         get_default_min_mid_max_vblank_cycle_duration_for_feebas, passes_pid_filter,
     },
     is_max_size,
@@ -76,7 +76,6 @@ fn FishingWildEncounter(
         let level = ChooseWildMonLevel(rng, encounter, opts.lead, cycle_counter);
         let encounter_idx = Wild3EncounterIndex::Feebas;
         let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, level)?;
-
         return Some(CreateWildMon(
             *rng,
             opts,
@@ -91,8 +90,8 @@ fn FishingWildEncounter(
 
     GetCurrentMapWildMonHeaderId(map_data, cycle_counter);
     let (encounter_idx, level) = GenerateFishingWildMon(rng, opts, map_data, cycle_counter)?;
-    let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, level)?;
 
+    let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, level)?;
     Some(CreateWildMon(
         *rng,
         opts,
@@ -561,19 +560,7 @@ fn generate_personality(
 
     let mut results: Vec<Wild3GeneratorMonResult> = match &gen_data.feebas_method5_ctx {
         Some(context) => {
-            let cycle_start = feebas_method5_cycle_position(&context.cycle_counter, opts);
-            let cycle_end = feebas_method5_cycle_position(&cycle_counter, opts);
-            let modulo_count = cycle_counter.create_cycle_range(0).start.lead_pid_mod
-                - context
-                    .cycle_counter
-                    .create_cycle_range(0)
-                    .start
-                    .lead_pid_mod;
-            let cycle_range = CycleRange::new(
-                cycle_start,
-                modulo_count,
-                cycle_end.saturating_sub(cycle_start),
-            );
+            let cycle_range = context.cycle_counter.cycle_range_to(&cycle_counter);
 
             feebas_method5::generate(
                 context.rng,
@@ -1044,38 +1031,6 @@ fn ChooseWildMonLevel(
         }
     }
     encounter.min_level + increment
-}
-
-fn feebas_method5_cycle_position(
-    cycle_counter: &CycleFrameCounter,
-    opts: &Wild3GeneratorOptions,
-) -> usize {
-    if let CycleFrameCounter::DetailedBreakdown { current_cycle, .. } = cycle_counter {
-        let initial_cycle = match opts.cycle_opts {
-            Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog { initial_cycle, .. }
-            | Wild3GeneratorCycleOpts::CycleAtMomentWithEmuLog { initial_cycle, .. } => {
-                initial_cycle
-            }
-            _ => 0,
-        };
-
-        return (current_cycle.frame * VBLANK_FREQ + current_cycle.cycle)
-            .saturating_sub(initial_cycle);
-    }
-
-    // Uniform windows use a representative lead speed when searching all leads.
-    let lead_cycle_spd = match opts.lead {
-        Gen3Lead::Egg => 0,
-        _ => opts
-            .cycle_opts
-            .lead_cycle_spd()
-            .unwrap_or((COMMON_LEAD_RANGE.start + COMMON_LEAD_RANGE.end) / 2),
-    };
-
-    cycle_counter
-        .create_cycle_range(0)
-        .apply_mod_cycle_count(lead_cycle_spd)
-        .start
 }
 
 struct GenTmpData<'a> {

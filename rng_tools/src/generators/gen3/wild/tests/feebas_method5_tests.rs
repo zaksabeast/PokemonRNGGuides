@@ -57,7 +57,7 @@ fn result(
     }
 }
 
-type Simulator = fn(Pokerng, FeebasEncounter<'_>) -> Option<FeebasMethod5Candidate>;
+type Simulator = fn(Pokerng, GenTmpDataFeebas<'_>) -> Option<FeebasMethod5Candidate>;
 
 #[test]
 fn named_simulators_complete_the_shifted_encounter() {
@@ -100,7 +100,7 @@ fn named_simulators_complete_the_shifted_encounter() {
 
     for (lead, simulate, expected) in cases {
         let opts = options(lead);
-        let context = FeebasEncounter {
+        let context = GenTmpDataFeebas {
             opts: &opts,
             encounter_idx: Wild3EncounterIndex::Feebas,
             encounter: &encounter,
@@ -118,7 +118,7 @@ fn fishing_slot_simulator_reselects_the_encounter() {
     let rng = Pokerng::new(0x12345678);
 
     assert_eq!(
-        simulate_wild_method5_feebas_fishing_slot(rng, &opts, &data),
+        simulate_wild_method5_feebas_encounter_idx(rng, &opts, &data),
         Some(FeebasMethod5Candidate {
             encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot0),
             lvl: 28,
@@ -133,7 +133,7 @@ fn fishing_slot_simulator_reselects_the_encounter() {
 fn level_ability_preserves_zero_increment_on_failure() {
     let opts = options(Gen3Lead::HustleVitalSpiritPressure);
     let encounter = encounter();
-    let context = FeebasEncounter {
+    let context = GenTmpDataFeebas {
         opts: &opts,
         encounter_idx: Wild3EncounterIndex::Feebas,
         encounter: &encounter,
@@ -181,7 +181,7 @@ fn shifted_cute_charm_and_synchronize_rolls_change_the_continuation() {
 
     for (index, (lead, simulate, expected)) in cases.into_iter().enumerate() {
         let opts = options(lead);
-        let context = FeebasEncounter {
+        let context = GenTmpDataFeebas {
             opts: &opts,
             encounter_idx: Wild3EncounterIndex::Feebas,
             encounter: &encounter,
@@ -501,7 +501,7 @@ fn genderless_encounter_skips_cute_charm_roll() {
 fn accepted_pid_is_not_retried_to_satisfy_final_filters() {
     let mut opts = options(Gen3Lead::Vanilla);
     let encounter = encounter();
-    let context = FeebasEncounter {
+    let context = GenTmpDataFeebas {
         opts: &opts,
         encounter_idx: Wild3EncounterIndex::Feebas,
         encounter: &encounter,
@@ -532,7 +532,7 @@ fn accepted_pid_is_not_retried_to_satisfy_final_filters() {
 
     for filter in filters {
         opts.filter = filter;
-        let context = FeebasEncounter {
+        let context = GenTmpDataFeebas {
             opts: &opts,
             encounter_idx: Wild3EncounterIndex::Feebas,
             encounter: &encounter,
@@ -552,7 +552,7 @@ fn accepted_pid_is_not_retried_to_satisfy_final_filters() {
 
     opts.filter = PkmFilter::default();
     opts.gen3_filter.max_size = true;
-    let context = FeebasEncounter {
+    let context = GenTmpDataFeebas {
         opts: &opts,
         encounter_idx: Wild3EncounterIndex::Feebas,
         encounter: &encounter,
@@ -738,7 +738,7 @@ fn ranges_shorter_than_the_call_count_have_no_empty_results() {
 }
 
 #[test]
-fn pid_generation_uses_the_saved_rng_and_includes_lead_cycles_in_the_range() {
+fn pid_generation_uses_the_saved_rng_and_tracks_modulo_separately() {
     let opts = Wild3GeneratorOptions {
         methods: vec![Gen3Method::Wild5],
         cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead {
@@ -772,26 +772,12 @@ fn pid_generation_uses_the_saved_rng_and_includes_lead_cycles_in_the_range() {
     assert_eq!(
         generate_personality(Pokerng::new(1_696_283_507), gen_data, cycle_counter, &data)
             .mon_results,
-        vec![
-            ranged_result(
-                20,
-                1_434_552_371,
-                Ivs::new(15, 13, 14, 22, 16, 10),
-                CycleRange::new(100, 1, 34),
-            ),
-            ranged_result(
-                26,
-                1_434_552_371,
-                Ivs::new(15, 13, 14, 22, 16, 10),
-                CycleRange::new(134, 1, 34),
-            ),
-            ranged_result(
-                26,
-                2_728_376_208,
-                Ivs::new(24, 26, 1, 22, 6, 5),
-                CycleRange::new(168, 1, 33),
-            ),
-        ]
+        vec![ranged_result(
+            20,
+            1_434_552_371,
+            Ivs::new(15, 13, 14, 22, 16, 10),
+            CycleRange::new(100, 1, 1),
+        )]
     );
 }
 

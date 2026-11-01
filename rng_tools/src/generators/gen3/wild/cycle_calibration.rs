@@ -11,6 +11,11 @@ use crate::rng::lcrng::Pokerng;
 
 const CYCLE_ERROR_BUFFER: f64 = 50.0;
 
+/*
+Cycle calibration is the calibration occuring between the start of Pokemon encounter function and its end.
+It doesn't include initial cycle calibration nor vblank calibration.
+*/
+
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct CalibrationRecord {
@@ -67,8 +72,7 @@ pub(super) fn calculate_cycle_score(
                     vblank_durations
                         .get(frame)
                         .copied()
-                        .unwrap_or_else(|| get_min_mid_max_vblank_cycle_duration().1)
-                        as u64
+                        .unwrap_or_else(|| MISSING_VBLANK_FALLBACK) as u64
                 })
                 .sum::<u64>();
 
@@ -169,7 +173,7 @@ fn generate_then_calculate_cycle_score(
         };
         opts.cycle_opts = Wild3GeneratorCycleOpts::CycleAtMomentWithEmuLog {
             lead_cycle_spd,
-            initial_cycle_at_sweet_scent: initial.cycle,
+            initial_cycle: initial.cycle,
             vblank_cycles: record.vblank_durations.clone(),
         };
         let generated = generate_wild3(Pokerng::with_jump(0, record.advance), &opts, map_data);
@@ -239,7 +243,7 @@ pub(super) fn map_pokeblock_cycle_calibration(
         using_white_flute: false,
         cycle_opts: Wild3GeneratorCycleOpts::CycleAtMomentWithEmuLog {
             lead_cycle_spd: 0,
-            initial_cycle_at_sweet_scent: 0,
+            initial_cycle: 0,
             vblank_cycles: vec![],
         },
         ..Wild3GeneratorOptions::default()

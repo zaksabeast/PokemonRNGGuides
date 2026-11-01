@@ -11,6 +11,7 @@ import {
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import type { TargetSetup } from "./wild3TargetSetupInput";
 import { isFishingAction, wild3Actions } from "./utils";
+import { normalizeWild3AudioInfluences } from "./wild3AudioInfluences";
 import { getIvRangeFromStats } from "~/types/statRange";
 import {
   gen3PkmFilterFieldsToRustInput,
@@ -97,6 +98,11 @@ export const createWild3SearcherOptions = async (
     methods: gen3Methods,
     cycle_opts: {
       Calibrate: {
+        ...normalizeWild3AudioInfluences(
+          targetSetup.map,
+          targetSetup.action,
+          targetSetup,
+        ),
         lead_cycle_speed: leadCycleSpeed,
       },
     },

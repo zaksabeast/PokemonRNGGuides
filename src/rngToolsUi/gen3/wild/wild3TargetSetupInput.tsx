@@ -40,6 +40,10 @@ import { Pokeblock, pokeblockSchema } from "~/types/pokeblock";
 import { PaintingReseedingFields } from "../pokemonRng/targetSetupInput";
 import { lcrng_distance } from "~/utils/lcrng";
 import { FeebasTilesField } from "./feebasMap";
+import {
+  normalizeWild3AudioInfluences,
+  type Wild3AudioInfluences,
+} from "./wild3AudioInfluences";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -81,7 +85,7 @@ type Props = {
   setTargetSetup: (targetSetup: TargetSetup | null) => void;
 };
 
-export type TargetSetup = {
+export type TargetSetup = Wild3AudioInfluences & {
   map: string;
   action: Wild3Action;
   feebasState: Wild3FeebasState;
@@ -122,6 +126,7 @@ const convertFormStateValuesToTargetSetup = (
 ): TargetSetup => {
   return {
     map: values.map,
+    ...normalizeWild3AudioInfluences(values.map, values.action),
     action: values.action,
     feebasState: values.feebasState,
     feebasCycles: values.feebasCycles[0] ?? 0,

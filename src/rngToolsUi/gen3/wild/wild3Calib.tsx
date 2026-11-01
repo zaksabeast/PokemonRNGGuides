@@ -39,6 +39,11 @@ import { match } from "ts-pattern";
 import { Wild3TargetSetupAndLeadInput } from "./wild3TargetSetupAndLeadInput";
 import { Gen3CalibFields, CalibOffset } from "../pokemonRng/calib";
 import { getGen3CalibPreviousStepRows } from "../pokemonRng/labels";
+import {
+  normalizeWild3AudioInfluences,
+  formatWild3Weather,
+  formatPlayingSong,
+} from "./wild3AudioInfluences";
 
 const FISHING_CALIB_OFFSET: CalibOffset = {
   offset: 4,
@@ -152,15 +157,15 @@ export const Wild3Calib = ({
 
   React.useEffect(() => {
     setOverwriteLeadCycleSpeed(null);
-  }, [targetSetupProp]);
-
-  React.useEffect(() => {
     setHasHitTargetAdv(false);
-  }, [targetSetup]);
+  }, [targetSetupProp]);
 
   const targetSetupInputForm = () => (
     <Wild3TargetSetupAndLeadInput
-      setTargetSetup={setTargetSetup}
+      setTargetSetup={(setup) => {
+        setTargetSetup(setup);
+        setHasHitTargetAdv(false);
+      }}
       setLeadCycleSpeed={setOverwriteLeadCycleSpeed}
       leadCycleSpeed={finalLeadCycleSpeed}
       displayInstructions={displayInstructions}
@@ -240,6 +245,12 @@ export const Wild3Calib = ({
       return null;
     }
 
+    const audioInfluences = normalizeWild3AudioInfluences(
+      targetSetupProp.map,
+      targetSetupProp.action,
+      targetSetupProp,
+    );
+
     const rows: SummaryRow[] = [
       {
         label: "Map",
@@ -248,6 +259,16 @@ export const Wild3Calib = ({
       {
         label: "Player action",
         value: formatActionName(targetSetupProp.action),
+      },
+      {
+        label: "Weather audio",
+        value: formatWild3Weather(audioInfluences.weather),
+        show: !simplified,
+      },
+      {
+        label: "Playing song",
+        value: formatPlayingSong(audioInfluences.playing_song),
+        show: !simplified,
       },
       {
         label: "Requires White Flute?",
@@ -384,6 +405,12 @@ export const Wild3Calib = ({
                   <Instructions_calib_wrong_method />
                   <Wild3LeadCycleSpeedSelector
                     targetSetup={targetSetup}
+                    setWeather={(weather) =>
+                      setTargetSetup({ ...targetSetup, weather })
+                    }
+                    setPlayingSong={(playing_song) =>
+                      setTargetSetup({ ...targetSetup, playing_song })
+                    }
                     permitEnablingDebugOptions
                     setLeadCycleSpeed={setOverwriteLeadCycleSpeed}
                     leadCycleSpeed={finalLeadCycleSpeed}

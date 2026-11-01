@@ -6,7 +6,12 @@ import {
   Flex,
   PokemonName,
 } from "~/components";
-import { FormCard, FormSection, SwitchField } from "~/components/form";
+import {
+  FormCard,
+  FormSection,
+  SwitchField,
+  SelectField,
+} from "~/components/form";
 import { formatProbability } from "~/utils/formatProbability";
 import React from "react";
 
@@ -26,6 +31,16 @@ import {
   Wild3Distributions,
 } from "./wild3SetupToDistribution";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
+import {
+  getWild3AudioInfluenceOptions,
+  normalizeWild3AudioInfluences,
+  getWild3InitialCycleDistributionForSetup,
+  formatPlayingSong,
+  formatWild3Weather,
+} from "./wild3AudioInfluences";
+import { toOptions } from "~/utils/options";
+import type { Wild3Weather, Wild3PlayingSong } from "~/rngTools";
+import { getInitialCycleSummary } from "./data/initial_cycle_main";
 
 /*
 Wild3LeadCycleSpeedSelector is used to set/calibrate leadCycleSpeed.
@@ -34,6 +49,8 @@ It is like Wild3LeadCycleSpeedInput, but displays the impact of lead cycle speed
 
 export type Props = {
   targetSetup: TargetSetup;
+  setWeather: (weather: Wild3Weather) => void;
+  setPlayingSong: (playing_song: Wild3PlayingSong) => void;
   permitEnablingDebugOptions: boolean;
   setLeadCycleSpeed: (leadCycleSpeed: number) => void;
   leadCycleSpeed: number | null;
@@ -44,7 +61,7 @@ const getColumns = (targetSetup: TargetSetup): ResultColumn<UiResult>[] => {
     {
       title: "",
       key: "isWanted",
-      dataIndex: "pre_sweet_scent_cycle_range",
+      dataIndex: "initial_cycle_range",
       render: (_, values) => {
         if (values.method !== targetSetup.targetMethod) {
           return null;
@@ -57,24 +74,16 @@ const getColumns = (targetSetup: TargetSetup): ResultColumn<UiResult>[] => {
       },
     },
     {
-      title: (
-        <>
-          Cycle at start
-          <br /> of Sweet Scent
-        </>
-      ),
-      key: "Cycle at start",
+      title: "Initial cycle",
       tooltip:
         "Processor cycle counter when reaching start of the Pokémon generation.",
-      dataIndex: "pre_sweet_scent_cycle_range",
-      render: (
-        pre_sweet_scent_cycle_range,
-        { display_negative_cycle_as_0 },
-      ) => {
-        const range = pre_sweet_scent_cycle_range;
+      dataIndex: "initial_cycle_range",
+      render: (initial_cycle_range, { display_negative_cycle_as_0 }) => {
+        const range = initial_cycle_range;
         const start = display_negative_cycle_as_0
           ? Math.max(range.start, 0)
           : range.start;
+
         return `${formatLargeInteger(start)} to ${formatLargeInteger(range.start + range.len - 1)}`;
       },
     },
@@ -106,6 +115,8 @@ const getColumns = (targetSetup: TargetSetup): ResultColumn<UiResult>[] => {
 
 export const Wild3LeadCycleSpeedSelector = ({
   targetSetup,
+  setWeather,
+  setPlayingSong,
   permitEnablingDebugOptions,
   setLeadCycleSpeed: setLeadCycleSpeedProp,
   leadCycleSpeed: leadCycleSpeedProp,
@@ -116,26 +127,71 @@ export const Wild3LeadCycleSpeedSelector = ({
     leadCycleSpeedProp ?? null,
   );
   const actualLeadCycleSpeed = targetSetup.lead === "Egg" ? 0 : leadCycleSpeed;
+  const selectedSetup = React.useMemo(() => {
+    const audioInfluences = normalizeWild3AudioInfluences(
+      targetSetup.map,
+      targetSetup.action,
+      targetSetup,
+    );
+
+    return { ...targetSetup, ...audioInfluences };
+  }, [targetSetup]);
+  const { weathers, playingSongs } = getWild3AudioInfluenceOptions(
+    targetSetup.map,
+    targetSetup.action,
+  );
+  const initialCycleDistribution =
+    getWild3InitialCycleDistributionForSetup(selectedSetup);
+  const initialCycleSummary = getInitialCycleSummary(
+    initialCycleDistribution?.distribution ?? [],
+  );
 
   React.useEffect(() => {
     setLeadCycleSpeed(leadCycleSpeedProp ?? null);
   }, [leadCycleSpeedProp]);
 
   React.useEffect(() => {
-    setupToDistributions(targetSetup, {
-      LikelihoodForLead: { lead_cycle_spd: actualLeadCycleSpeed ?? 0 },
+    if (initialCycleDistribution == null) {
+      setDistributions(null);
+      return;
+    }
+
+    setupToDistributions(selectedSetup, {
+      LikelihoodForLead: {
+        min_max_initial_cycle: [
+          initialCycleDistribution.min,
+          initialCycleDistribution.max,
+        ],
+        lead_cycle_spd: actualLeadCycleSpeed ?? 0,
+      },
     }).then((val) => {
       setDistributions(val);
     });
-  }, [actualLeadCycleSpeed, targetSetup]);
+  }, [actualLeadCycleSpeed, selectedSetup, initialCycleDistribution]);
 
   return (
     <>
-      {targetSetup.lead === "Egg" ? (
-        <Typography.Text>Egg lead can't be calibrated.</Typography.Text>
-      ) : (
-        <FormCard>
-          <FormSection>
+      <FormCard>
+        <FormSection>
+          {weathers.length > 1 && (
+            <SelectField
+              label="Weather audio"
+              value={selectedSetup.weather}
+              options={toOptions(weathers, formatWild3Weather)}
+              onChange={setWeather}
+            />
+          )}
+          {playingSongs.length > 1 && (
+            <SelectField
+              label="Playing song"
+              value={selectedSetup.playing_song}
+              options={toOptions(playingSongs, formatPlayingSong)}
+              onChange={setPlayingSong}
+            />
+          )}
+          {targetSetup.lead === "Egg" ? (
+            <Typography.Text>Egg lead can't be calibrated.</Typography.Text>
+          ) : (
             <Wild3LeadCycleSpeedInput
               label="Lead Cycle Speed"
               {...leadCycleSpeedTooltip()}
@@ -145,9 +201,17 @@ export const Wild3LeadCycleSpeedSelector = ({
               leadCycleSpeed={leadCycleSpeed ?? AVERAGE_LEAD_CYCLE_SPEED}
               setLeadCycleSpeed={setLeadCycleSpeedProp}
             />
+          )}
+        </FormSection>
+        {initialCycleSummary != null && (
+          <FormSection>
+            Possible initial cycle:{" "}
+            {formatLargeInteger(initialCycleSummary.min)} -{" "}
+            {formatLargeInteger(initialCycleSummary.max)} (Median:{" "}
+            {formatLargeInteger(initialCycleSummary.median)})
           </FormSection>
-        </FormCard>
-      )}
+        )}
+      </FormCard>
 
       <ResultTable<UiResult>
         columns={getColumns(targetSetup)}
@@ -166,7 +230,7 @@ export const Wild3LeadCycleSpeedSelector = ({
       {permitEnablingDebugOptions && (
         <Wild3CycleAtMoments
           leadCycleSpeed={actualLeadCycleSpeed}
-          targetSetup={targetSetup}
+          targetSetup={selectedSetup}
         />
       )}
     </>
@@ -175,6 +239,8 @@ export const Wild3LeadCycleSpeedSelector = ({
 
 export const Wild3LeadCycleSpeedSelectorWithBtn = ({
   targetSetup,
+  setWeather,
+  setPlayingSong,
   permitEnablingDebugOptions,
   setLeadCycleSpeed,
   leadCycleSpeed,
@@ -199,6 +265,8 @@ export const Wild3LeadCycleSpeedSelectorWithBtn = ({
       {displayLeadCycleSpeed && (
         <Wild3LeadCycleSpeedSelector
           targetSetup={targetSetup}
+          setWeather={setWeather}
+          setPlayingSong={setPlayingSong}
           permitEnablingDebugOptions={permitEnablingDebugOptions}
           setLeadCycleSpeed={setLeadCycleSpeed}
           leadCycleSpeed={leadCycleSpeed}

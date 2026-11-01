@@ -2,7 +2,8 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-use super::Wild3Action;
+use super::ALL_WILD3_ACTIONS;
+use super::{Wild3Action, Wild3InitialCycleDistribution, Wild3PlayingSong, Wild3Weather};
 use crate::{EncounterSlot, GenderRatio, Nature, PokemonType, Species};
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
@@ -119,6 +120,7 @@ pub struct Wild3MapGameData {
     pub rock_smash_rate: u32,
     pub is_safari: bool,
     pub actions_with_safari_pokeblock: Vec<Wild3Action>, // Not all actions have a pokeblock feeder nearby
+    pub initial_cycle_distrs: Vec<Wild3InitialCycleDistribution>,
 }
 
 #[derive(Debug, Default, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -138,6 +140,22 @@ pub fn get_encounter_for_wild3_map_game_data(
 }
 
 impl Wild3MapGameData {
+    pub fn get_initial_cycle_distr(
+        &self,
+        action: Wild3Action,
+        playing_song: Wild3PlayingSong,
+        weather: Wild3Weather,
+    ) -> &Wild3InitialCycleDistribution {
+        self.initial_cycle_distrs
+            .iter()
+            .find(|distr| {
+                distr.action == action
+                    && distr.playing_song == playing_song
+                    && distr.weather == weather
+            })
+            .unwrap_or_else(|| Wild3InitialCycleDistribution::new_default(action))
+    }
+
     pub fn get_encounter(
         &self,
         action: Wild3Action,
@@ -175,13 +193,21 @@ impl Wild3MapGameData {
 
 impl Default for Wild3MapGameData {
     fn default() -> Self {
+        let initial_cycle_distrs = ALL_WILD3_ACTIONS
+            .into_iter()
+            .map(Wild3InitialCycleDistribution::new_default)
+            .cloned()
+            .collect();
+
         Self {
-            slots_by_action: (0..=Wild3Action::RockSmash as usize)
-                .map(|_i| {
+            initial_cycle_distrs,
+            slots_by_action: ALL_WILD3_ACTIONS
+                .map(|_| {
                     (0..=EncounterSlot::Slot11 as usize)
                         .map(|_i| Wild3EncounterGameData::default())
                         .collect::<Vec<_>>()
                 })
+                .into_iter()
                 .collect::<Vec<_>>(),
             map_id: String::default(),
             map_internal_idx: 0,

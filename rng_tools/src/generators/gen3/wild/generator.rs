@@ -22,6 +22,8 @@ use crate::{
     rng::{Rng, lcrng::Pokerng},
 };
 
+mod feebas_method5;
+
 pub fn generate_wild3_internal(
     mut rng: Pokerng,
     opts: &Wild3GeneratorOptions,
@@ -62,7 +64,34 @@ fn FishingWildEncounter(
     cycle_counter.add_cycle(1186);
     cycle_counter.on_moment_reached(Moment::FishingWildEncounter);
 
-    if CheckFeebas(rng, opts, cycle_counter) {
+    let is_feebas = CheckFeebas(rng, opts, cycle_counter);
+    let early_method5 = feebas_method5::generate(*rng, opts, map_data, is_feebas);
+    let generated =
+        FishingWildEncounterAfterCheckFeebas(rng, opts, map_data, cycle_counter, is_feebas);
+
+    if early_method5.is_empty() {
+        return generated;
+    }
+
+    let mut generated = generated.unwrap_or_else(|| Wild3GeneratorResults {
+        mon_results: vec![],
+        cycle_counter: cycle_counter.clone(),
+    });
+    let mut results = early_method5;
+    results.append(&mut generated.mon_results);
+    generated.mon_results = results;
+
+    Some(generated)
+}
+
+fn FishingWildEncounterAfterCheckFeebas(
+    rng: &mut Pokerng,
+    opts: &Wild3GeneratorOptions,
+    map_data: &Wild3MapGameData,
+    cycle_counter: &mut CycleFrameCounter,
+    is_feebas: bool,
+) -> Option<Wild3GeneratorResults> {
+    if is_feebas {
         let encounter = map_data.feebas.as_ref()?;
         let level = ChooseWildMonLevel(rng, encounter, opts.lead, cycle_counter);
         let encounter_idx = Wild3EncounterIndex::Feebas;

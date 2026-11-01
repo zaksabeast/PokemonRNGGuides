@@ -426,6 +426,12 @@ impl CycleFrameCounter {
                 Self::MinMaxRange {
                     base_cycle_count: start_cycle,
                     lead_pid_mod_count: start_mod,
+                    min_max_cycles:
+                        MinMaxCycleFrame {
+                            min_lead_cycle_spd,
+                            max_lead_cycle_spd,
+                            ..
+                        },
                     ..
                 },
                 Self::MinMaxRange {
@@ -438,6 +444,8 @@ impl CycleFrameCounter {
                 Self::CheckValidAllLeadSpds {
                     base_cycle_count: start_cycle,
                     lead_pid_mod_count: start_mod,
+                    min_lead_cycle_spd,
+                    max_lead_cycle_spd,
                     ..
                 },
                 Self::CheckValidAllLeadSpds {
@@ -445,11 +453,17 @@ impl CycleFrameCounter {
                     lead_pid_mod_count: end_mod,
                     ..
                 },
-            ) => CycleAndModRange::new(
-                *start_cycle,
-                end_mod.saturating_sub(*start_mod),
-                end_cycle.saturating_sub(*start_cycle),
-            ),
+            ) => {
+                // Searches without a specified lead speed use the midpoint of the tracked range.
+                let lead_cycle_spd = (min_lead_cycle_spd + max_lead_cycle_spd) / 2;
+                let modulo_cycles = end_mod.saturating_sub(*start_mod) * lead_cycle_spd;
+
+                CycleAndModRange::new(
+                    *start_cycle,
+                    *start_mod,
+                    end_cycle.saturating_sub(*start_cycle) + modulo_cycles,
+                )
+            }
             (
                 Self::DetailedBreakdown {
                     current_cycle: start,
@@ -517,6 +531,7 @@ impl CycleFrameCounter {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::gen3::CycleRange;
 
     #[test]
     fn check_valid_all_lead_spds_cycle_range() {
@@ -539,27 +554,39 @@ mod tests {
             lead_pid_mod_count: 5,
         };
 
-        assert_eq!(start.cycle_range_to(&end), CycleAndModRange::new(100, 3, 30));
+        let range = start.cycle_range_to(&end);
+
+        assert_eq!(range, CycleAndModRange::new(100, 2, 480));
+        assert_eq!(
+            range.apply_mod_cycle_count(150),
+            CycleRange::from_start_len(400, 480)
+        );
     }
 
     #[test]
     fn min_max_cycle_range() {
         let start = CycleFrameCounter::MinMaxRange {
-            min_max_cycles: MinMaxCycleFrame::new((300, 500), (100, 200)),
+            min_max_cycles: MinMaxCycleFrame::new((100, 100), (100, 100)),
             cycle_instability: 0.0,
             base_cycle_count: 100,
-            lead_pid_mod_count: 2,
+            lead_pid_mod_count: 0,
             generate_even_if_impossible: false,
         };
         let end = CycleFrameCounter::MinMaxRange {
-            min_max_cycles: MinMaxCycleFrame::new((630, 1130), (100, 200)),
+            min_max_cycles: MinMaxCycleFrame::new((430, 430), (100, 100)),
             cycle_instability: 0.0,
             base_cycle_count: 130,
-            lead_pid_mod_count: 5,
+            lead_pid_mod_count: 3,
             generate_even_if_impossible: false,
         };
 
-        assert_eq!(start.cycle_range_to(&end), CycleAndModRange::new(100, 3, 30));
+        let range = start.cycle_range_to(&end);
+
+        assert_eq!(range, CycleAndModRange::new(100, 0, 330));
+        assert_eq!(
+            range.apply_mod_cycle_count(100),
+            CycleRange::from_start_len(100, 330)
+        );
     }
 
     #[test]

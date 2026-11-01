@@ -49,50 +49,43 @@ fn result(
 }
 
 #[test]
-fn vanilla_generates_non_feebas_encounter() {
+fn vanilla_generates_feebas_encounter() {
     let opts = options(Gen3Lead::Vanilla);
     let mut data = game_data();
-    data.slots_by_action[Wild3Action::GoodRod as usize][0]
-        .species_data
-        .species = Species::Carvanha;
-    let generated = generate_wild3_internal(Pokerng::new(75), &opts, &data);
+    let mut encounter = encounter();
+    encounter.species_data.species = Species::Feebas;
+    data.feebas = Some(encounter);
+    let generated = generate_wild3_internal(Pokerng::new(38), &opts, &data);
 
     assert_eq!(
         generated.mon_results,
         vec![
             result(
-                Wild3EncounterIndex::Slot(EncounterSlot::Slot0),
-                25,
-                1_281_017_505,
-                Ivs::new(29, 29, 5, 23, 24, 22),
+                Wild3EncounterIndex::Feebas,
+                20,
+                1_434_552_371,
+                Ivs::new(15, 13, 14, 22, 16, 10),
                 Gen3Method::Wild5,
             ),
             result(
-                Wild3EncounterIndex::Slot(EncounterSlot::Slot0),
-                25,
-                1_281_017_505,
-                Ivs::new(29, 29, 5, 23, 24, 22),
+                Wild3EncounterIndex::Feebas,
+                26,
+                1_434_552_371,
+                Ivs::new(15, 13, 14, 22, 16, 10),
                 Gen3Method::Wild5,
             ),
             result(
-                Wild3EncounterIndex::Slot(EncounterSlot::Slot0),
-                29,
-                1_281_017_505,
-                Ivs::new(29, 29, 5, 23, 24, 22),
+                Wild3EncounterIndex::Feebas,
+                26,
+                2_728_376_208,
+                Ivs::new(24, 26, 1, 22, 6, 5),
                 Gen3Method::Wild5,
             ),
             result(
-                Wild3EncounterIndex::Slot(EncounterSlot::Slot0),
-                29,
-                1_570_497_449,
-                Ivs::new(1, 21, 17, 2, 19, 26),
-                Gen3Method::Wild5,
-            ),
-            result(
-                Wild3EncounterIndex::Slot(EncounterSlot::Slot0),
-                29,
-                4_099_577_474,
-                Ivs::new(4, 3, 10, 14, 19, 28),
+                Wild3EncounterIndex::Feebas,
+                26,
+                2_285_078_183,
+                Ivs::new(1, 12, 21, 13, 14, 15),
                 Gen3Method::Wild1,
             ),
         ]

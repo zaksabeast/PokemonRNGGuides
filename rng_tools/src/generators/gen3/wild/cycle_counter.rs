@@ -449,7 +449,9 @@ impl CycleFrameCounter {
                     ..
                 },
             ) => {
-                // Searches without a specified lead speed use the midpoint of the tracked range.
+                // Limitation: Searches without a specified lead speed use the midpoint of the tracked range.
+                // The likelihood won't be exact, but it doesn't really matter because it's already an estimation.
+                // The likelihood in feebas_method5 is simplified to be an uniform distribution.
                 let lead_cycle_spd = (min_lead_cycle_spd + max_lead_cycle_spd) / 2;
                 let modulo_cycles = end_mod.saturating_sub(*start_mod) * lead_cycle_spd;
 

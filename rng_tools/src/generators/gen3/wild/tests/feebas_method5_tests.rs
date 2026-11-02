@@ -49,7 +49,9 @@ fn result(
 }
 
 #[test]
-fn vanilla_keeps_shifted_feebas_matching_level_filter() {
+fn wild3_feebas_method5_vanilla_level_filter() {
+    // Note: The vblank occurs right before choosing the level. Without that vblank, the level would be 26.
+
     let mut opts = options(Gen3Lead::Vanilla);
     opts.gen3_filter.lvl = Some(20);
     let mut data = game_data();
@@ -71,7 +73,7 @@ fn vanilla_keeps_shifted_feebas_matching_level_filter() {
 }
 
 #[test]
-fn synchronize_generates_complete_encounter() {
+fn wild3_feebas_method5_synchronize() {
     let opts = options(Gen3Lead::Synchronize(Nature::Adamant));
     let generated = generate_wild3_internal(Pokerng::new(42), &opts, &game_data());
 
@@ -111,7 +113,7 @@ fn synchronize_generates_complete_encounter() {
 }
 
 #[test]
-fn cute_charm_generates_complete_encounter() {
+fn wild3_feebas_method5_cute_charm() {
     let opts = options(Gen3Lead::CuteCharm(Gender::Male));
     let mut data = game_data();
     let mut encounter = encounter();

@@ -475,7 +475,7 @@ fn CreateWildMon(
         }
     };
 
-    // Can't early filter with feebas
+    // Can't filter early with feebas
     if feebas_method5_ctx.is_none()
         && let Some(gender) = required_gender
         && let Some(target_gender) = opts.filter.gender
@@ -492,7 +492,7 @@ fn CreateWildMon(
         pick_random_wild_mon_nature,
     );
 
-    // Can't early filter with feebas
+    // Can't filter early with feebas
     if feebas_method5_ctx.is_none()
         && let Some(target_nature) = opts.filter.nature
         && !target_nature[required_nature as usize]
@@ -582,8 +582,7 @@ fn generate_personality(
     let required_nature = gen_data.required_nature;
     let required_gender = gen_data.required_gender;
     let encounter_gender_ratio = gen_data.encounter_gender_ratio;
-
-    let mut results = vec![];
+    let mut results: Vec<Wild3GeneratorMonResult> = Vec::new();
 
     let methods_contains_wild3 = opts.methods.contains(&Gen3Method::Wild3);
     let methods_contains_wild5 = opts.methods.contains(&Gen3Method::Wild5);

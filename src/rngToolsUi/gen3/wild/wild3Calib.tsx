@@ -160,12 +160,14 @@ export const Wild3Calib = ({
     setHasHitTargetAdv(false);
   }, [targetSetupProp]);
 
+  const handleTargetSetupChange = React.useCallback((setup: TargetSetup) => {
+    setTargetSetup(setup);
+    setHasHitTargetAdv(false);
+  }, []);
+
   const targetSetupInputForm = () => (
     <Wild3TargetSetupAndLeadInput
-      setTargetSetup={(setup) => {
-        setTargetSetup(setup);
-        setHasHitTargetAdv(false);
-      }}
+      setTargetSetup={handleTargetSetupChange}
       setLeadCycleSpeed={setOverwriteLeadCycleSpeed}
       leadCycleSpeed={finalLeadCycleSpeed}
       displayInstructions={displayInstructions}

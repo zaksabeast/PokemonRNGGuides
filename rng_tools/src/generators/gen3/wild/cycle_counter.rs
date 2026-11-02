@@ -145,7 +145,6 @@ pub enum CycleFrameCounter {
         earliest_slowest_cycle: usize,
         // Cycles assuming latest initial timing with the fastest lead
         latest_fastest_cycle: usize,
-        cycle_instability: f32,
         base_cycle_count: usize,
         lead_pid_mod_count: usize,
     },
@@ -154,7 +153,6 @@ pub enum CycleFrameCounter {
     // It also gives approximative likelihood for each method.
     MinMaxRange {
         min_max_cycles: MinMaxCycleFrame,
-        cycle_instability: f32,
         base_cycle_count: usize,
         lead_pid_mod_count: usize,
         generate_even_if_impossible: bool,
@@ -195,7 +193,6 @@ impl CycleFrameCounter {
                         max_lead_cycle_spd,
                         earliest_slowest_cycle: min_max_initial_cycle.0,
                         latest_fastest_cycle: min_max_initial_cycle.1,
-                        cycle_instability: 0.0,
                         base_cycle_count: 0,
                         lead_pid_mod_count: 0,
                     };
@@ -209,7 +206,6 @@ impl CycleFrameCounter {
                             None,
                         ),
                     ),
-                    cycle_instability: 0.0,
                     base_cycle_count: 0,
                     lead_pid_mod_count: 0,
                     generate_even_if_impossible: *generate_even_if_impossible,
@@ -224,7 +220,6 @@ impl CycleFrameCounter {
                     *min_max_initial_cycle,
                     (*lead_cycle_spd, *lead_cycle_spd),
                 ),
-                cycle_instability: 0.0,
                 base_cycle_count: 0,
                 lead_pid_mod_count: 0,
                 generate_even_if_impossible: true,
@@ -493,28 +488,6 @@ impl CycleFrameCounter {
             } => *base_cycle_count,
         }
     }
-    pub fn set_cycle_instability(&mut self, instability: f32) {
-        match self {
-            CycleFrameCounter::Inactive | CycleFrameCounter::DetailedBreakdown { .. } => {}
-            CycleFrameCounter::MinMaxRange {
-                cycle_instability, ..
-            }
-            | CycleFrameCounter::CheckValidAllLeadSpds {
-                cycle_instability, ..
-            } => *cycle_instability = instability,
-        }
-    }
-    pub fn get_cycle_instability(&self) -> f32 {
-        match self {
-            CycleFrameCounter::Inactive | CycleFrameCounter::DetailedBreakdown { .. } => 0.0,
-            CycleFrameCounter::MinMaxRange {
-                cycle_instability, ..
-            }
-            | CycleFrameCounter::CheckValidAllLeadSpds {
-                cycle_instability, ..
-            } => *cycle_instability,
-        }
-    }
 
     pub fn get_cycle_at_moments(&self) -> Vec<CycleFrameMoment> {
         match self {
@@ -540,7 +513,6 @@ mod tests {
             max_lead_cycle_spd: 200,
             earliest_slowest_cycle: 500,
             latest_fastest_cycle: 300,
-            cycle_instability: 0.0,
             base_cycle_count: 100,
             lead_pid_mod_count: 2,
         };
@@ -549,7 +521,6 @@ mod tests {
             max_lead_cycle_spd: 200,
             earliest_slowest_cycle: 1130,
             latest_fastest_cycle: 630,
-            cycle_instability: 0.0,
             base_cycle_count: 130,
             lead_pid_mod_count: 5,
         };
@@ -567,14 +538,12 @@ mod tests {
     fn min_max_cycle_range() {
         let start = CycleFrameCounter::MinMaxRange {
             min_max_cycles: MinMaxCycleFrame::new((100, 100), (100, 100)),
-            cycle_instability: 0.0,
             base_cycle_count: 100,
             lead_pid_mod_count: 0,
             generate_even_if_impossible: false,
         };
         let end = CycleFrameCounter::MinMaxRange {
             min_max_cycles: MinMaxCycleFrame::new((430, 430), (100, 100)),
-            cycle_instability: 0.0,
             base_cycle_count: 130,
             lead_pid_mod_count: 3,
             generate_even_if_impossible: false,

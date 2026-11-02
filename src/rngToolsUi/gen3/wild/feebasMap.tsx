@@ -41,11 +41,10 @@ const getTileKey = (tile: FeebasTile) =>
   `${tile.websiteImageX},${tile.websiteImageY}`;
 
 const TileGlow = styled(MapGlow)<{
-  $instability: FeebasTile["instability"];
   $selected: boolean;
-}>(({ $instability, $selected }) => ({
-  backgroundColor: $instability === 0 ? "lightgreen" : "red",
-  opacity: $selected ? 1 : $instability === 0 ? 0 : 0.2,
+}>(({ $selected }) => ({
+  backgroundColor: "lightgreen",
+  opacity: $selected ? 1 : 0,
 }));
 
 const FeebasMapContainer = styled.div({
@@ -175,7 +174,6 @@ export const FeebasTilesSelector = ({
       ],
       node: (
         <TileGlow
-          $instability={tile.instability}
           $selected={isSelected}
           onClick={() => toggleTile(tile)}
           role="button"

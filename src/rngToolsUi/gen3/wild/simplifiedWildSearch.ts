@@ -185,7 +185,7 @@ export const searchSimplifiedWild = async (
 
   const candidates: Candidate[] = [];
   for (const res of results) {
-    if (res.cycle_instability !== 0 || res.cycle_data_by_lead == null) {
+    if (res.cycle_data_by_lead == null) {
       continue;
     }
     const leadCycleSpeed = getSimplifiedLeadSpeed(res.lead);

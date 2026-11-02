@@ -115,7 +115,6 @@ fn generate_dist_results(
     initial_cycle_distr: &Wild3InitialCycleDistribution,
 ) -> Vec<Wild3MethodDistributionResult> {
     let generated = generate_wild3(rng, opts, game_data);
-    let cycle_instability = generated.cycle_counter.get_cycle_instability();
     let lead_cycle_spd = opts.cycle_opts.lead_cycle_spd().unwrap();
 
     generated
@@ -132,7 +131,6 @@ fn generate_dist_results(
                 rng.seed(),
                 advances,
                 encounter,
-                cycle_instability,
                 &vec![initial_cycle_distr],
             );
             let cycle_data = calculate_cycle_data_for_specific_lead_spd(

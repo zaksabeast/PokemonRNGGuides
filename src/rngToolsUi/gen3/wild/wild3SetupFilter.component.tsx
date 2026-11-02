@@ -177,8 +177,7 @@ export const Wild3SetupFilter = () => {
           label="Feebas fishing spots"
           tooltip={{
             title: "Feebas fishing spots",
-            description:
-              "Select the tiles where you can fish Feebas. If possible, avoid red tiles because they cause unstable results.",
+            description: "Select the tiles where you can fish Feebas.",
           }}
         />
       )}

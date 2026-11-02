@@ -29,16 +29,19 @@ export const Wild3TargetSetupAndLeadInput = ({
     null,
   );
 
-  const setTargetSetupBoth = (targetSetup: TargetSetup | null) => {
-    if (targetSetup == null && permitEnablingDebugOptions) {
-      return; // When debugging, it is useful to not reset the target setup and debugging info.
-    }
+  const setTargetSetupBoth = React.useCallback(
+    (targetSetup: TargetSetup | null) => {
+      if (targetSetup == null && permitEnablingDebugOptions) {
+        return; // When debugging, it is useful to not reset the target setup and debugging info.
+      }
 
-    setTargetSetup?.(targetSetup);
-    if (targetSetup != null) {
-      setTargetSetupProp?.(targetSetup);
-    }
-  };
+      setTargetSetup(targetSetup);
+      if (targetSetup != null) {
+        setTargetSetupProp?.(targetSetup);
+      }
+    },
+    [permitEnablingDebugOptions, setTargetSetupProp],
+  );
 
   const [leadCycleSpeed, setLeadCycleSpeed] =
     React.useState<number>(leadCycleSpeedProp);

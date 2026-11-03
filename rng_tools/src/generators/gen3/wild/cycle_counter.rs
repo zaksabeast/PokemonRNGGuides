@@ -172,7 +172,7 @@ pub enum CycleFrameCounter {
 pub const MISSING_VBLANK_FALLBACK: usize = 55_000;
 
 impl CycleFrameCounter {
-    pub(super) fn set_feebas_timing(&mut self, timing: super::feebas_timing::FeebasCounterTiming) {
+    pub(super) fn set_feebas_timing(&mut self, timing: super::feebas_timing::FeebasCycleCounter) {
         match self {
             Self::Inactive => {}
             Self::DetailedBreakdown { current_cycle, .. } => {
@@ -548,7 +548,7 @@ mod tests {
             vblank_cycles: vec![],
             cycle_at_moments: vec![],
         };
-        counter.set_feebas_timing(super::super::feebas_timing::FeebasCounterTiming {
+        counter.set_feebas_timing(super::super::feebas_timing::FeebasCycleCounter {
             vblank_count: 3,
             min_cycle_after_check_feebas: 45000,
             max_cycle_after_check_feebas: 45000,
@@ -575,7 +575,7 @@ mod tests {
             lead_pid_mod_count: 0,
             generate_even_if_impossible: true,
         };
-        counter.set_feebas_timing(super::super::feebas_timing::FeebasCounterTiming {
+        counter.set_feebas_timing(super::super::feebas_timing::FeebasCycleCounter {
             vblank_count: 3,
             min_cycle_after_check_feebas: 45000,
             max_cycle_after_check_feebas: 60000,

@@ -24,7 +24,10 @@ use crate::{
 
 mod feebas_method5;
 
-use super::feebas_timing::{FISHING_CHECK_OFFSET, FeebasCounterTiming, FeebasTiming};
+use super::feebas_timing::{
+    DEFAULT_FEEBAS_VBLANK_DISTR, FISHING_CHECK_OFFSET, FeebasCycleCounter,
+    FeebasCycleCounterWithProbability,
+};
 
 pub fn generate_wild3_internal(
     rng: Pokerng,
@@ -36,7 +39,7 @@ pub fn generate_wild3_internal(
         && opts.feebas_state != Wild3FeebasState::NotInMap
         && check_rng.rand::<u16>() % 100 <= 49;
     let timing = timed_check.then(|| {
-        let mut distr = map_data
+        let mut initial_cycle_distr = map_data
             .get_initial_cycle_distr(
                 opts.action,
                 super::Wild3PlayingSong::MapSong,
@@ -49,23 +52,24 @@ pub fn generate_wild3_internal(
         } = opts.cycle_opts
         {
             // Search bounds may combine several audio distributions; retain every admitted initial cycle.
-            distr.min = min_max_initial_cycle.0;
-            distr.max = min_max_initial_cycle.1;
-            distr.distribution = vec![
+            initial_cycle_distr.min = min_max_initial_cycle.0;
+            initial_cycle_distr.max = min_max_initial_cycle.1;
+            initial_cycle_distr.distribution = vec![
                 super::CdfKnot {
-                    cycle: distr.min as f64,
+                    cycle: initial_cycle_distr.min as f64,
                     probability: 0.0,
                 },
                 super::CdfKnot {
-                    cycle: distr.max as f64,
+                    cycle: initial_cycle_distr.max as f64,
                     probability: 1.0,
                 },
             ];
         }
 
-        FeebasTiming::new(
+        FeebasCycleCounterWithProbability::new(
             opts.feebas_cycles,
-            &distr,
+            &initial_cycle_distr,
+            &DEFAULT_FEEBAS_VBLANK_DISTR,
             opts.feebas_vblank_count.map_or(
                 super::Wild3FeebasVblankSelection::MostProbable,
                 super::Wild3FeebasVblankSelection::Exact,
@@ -79,14 +83,19 @@ pub fn generate_wild3_internal(
         return Wild3GeneratorResults::empty();
     }
 
-    generate_wild3_with_feebas_timing(rng, opts, map_data, timing.map(|timing| timing.counter))
+    generate_wild3_with_feebas_timing(
+        rng,
+        opts,
+        map_data,
+        timing.map(|timing| timing.cycle_counter),
+    )
 }
 
 pub(super) fn generate_wild3_with_feebas_timing(
     mut rng: Pokerng,
     opts: &Wild3GeneratorOptions,
     map_data: &Wild3MapGameData,
-    feebas_timing: Option<FeebasCounterTiming>,
+    feebas_timing: Option<FeebasCycleCounter>,
 ) -> Wild3GeneratorResults {
     let mut cycle_counter = CycleFrameCounter::new(opts);
 
@@ -109,7 +118,7 @@ fn Fishing_StartEncounter(
     opts: &Wild3GeneratorOptions,
     map_data: &Wild3MapGameData,
     cycle_counter: &mut CycleFrameCounter,
-    feebas_timing: Option<FeebasCounterTiming>,
+    feebas_timing: Option<FeebasCycleCounter>,
 ) -> Option<Wild3GeneratorResults> {
     cycle_counter.on_moment_reached(Moment::Fishing_StartEncounter);
     FishingWildEncounter(rng, opts, map_data, cycle_counter, feebas_timing)
@@ -120,7 +129,7 @@ fn FishingWildEncounter(
     opts: &Wild3GeneratorOptions,
     map_data: &Wild3MapGameData,
     cycle_counter: &mut CycleFrameCounter,
-    feebas_timing: Option<FeebasCounterTiming>,
+    feebas_timing: Option<FeebasCycleCounter>,
 ) -> Option<Wild3GeneratorResults> {
     cycle_counter.add_cycle(FISHING_CHECK_OFFSET);
     cycle_counter.on_moment_reached(Moment::FishingWildEncounter);
@@ -170,7 +179,7 @@ fn CheckFeebas(
     rng: &mut Pokerng,
     opts: &Wild3GeneratorOptions,
     cycle_counter: &mut CycleFrameCounter,
-    feebas_timing: Option<FeebasCounterTiming>,
+    feebas_timing: Option<FeebasCycleCounter>,
 ) -> bool {
     cycle_counter.on_moment_reached(Moment::CheckFeebas);
     if opts.feebas_state == Wild3FeebasState::NotInMap {

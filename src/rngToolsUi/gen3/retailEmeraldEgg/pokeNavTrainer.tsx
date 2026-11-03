@@ -24,6 +24,7 @@ import {
   usePokeNavTrainerTranslations,
 } from "./trainerTranslations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { track } from "~/analytics";
 
 type UpdateStateProps = {
   prev: RegisteredPokeNavTrainers;
@@ -67,6 +68,26 @@ export const PokeNavInput = () => {
       }),
     );
 
+  const handleGameLanguageChange = (selectedLanguage: EmeraldLang) => {
+    track("Emerald Egg Game Language Changed", {
+      gameLanguage: selectedLanguage,
+      guideLanguage: t.language,
+    });
+
+    // A transition keeps the current names shown while the new language loads
+    React.startTransition(() =>
+      setGameLanguage(
+        hydrationLock({
+          // Picking the guide's language goes back to following the guide
+          gameLanguage:
+            selectedLanguage === getGuideGameLanguage(t.language)
+              ? "default"
+              : selectedLanguage,
+        }),
+      ),
+    );
+  };
+
   if (!hydrated) {
     return <Skeleton />;
   }
@@ -77,20 +98,7 @@ export const PokeNavInput = () => {
         label={t["Game Language"]}
         value={gameLanguage}
         options={gameLanguageOptions}
-        onChange={(gameLanguage) =>
-          // A transition keeps the current names shown while the new language loads
-          React.startTransition(() =>
-            setGameLanguage(
-              hydrationLock({
-                // Picking the guide's language goes back to following the guide
-                gameLanguage:
-                  gameLanguage === getGuideGameLanguage(t.language)
-                    ? "default"
-                    : gameLanguage,
-              }),
-            ),
-          )
-        }
+        onChange={handleGameLanguageChange}
       />
       <Flex gap={12} wrap="wrap">
         <PrimaryButton

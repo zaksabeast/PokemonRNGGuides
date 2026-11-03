@@ -35,7 +35,7 @@ import Onix from "~/assets/box-sprites/onix.png";
 import Pidgeot from "~/assets/box-sprites/pidgeot.png";
 import Prinplup from "~/assets/box-sprites/prinplup.png";
 import Ralts from "~/assets/box-sprites/ralts.png";
-import Rhyorn from "~/assets/box-sprites/rhyorn.png";
+import Rhyhorn from "~/assets/box-sprites/rhyhorn.png";
 import Roselia from "~/assets/box-sprites/roselia.png";
 import Rotom from "~/assets/box-sprites/rotom.png";
 import Samurott from "~/assets/box-sprites/samurott.png";
@@ -89,7 +89,7 @@ const image = {
   Pidgeot,
   Prinplup,
   Ralts,
-  Rhyorn,
+  Rhyhorn,
   Roselia,
   Rotom,
   Samurott,

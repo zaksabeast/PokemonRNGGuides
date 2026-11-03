@@ -407,6 +407,9 @@ export const Wild3Calib = ({
                   <Instructions_calib_wrong_method />
                   <Wild3LeadCycleSpeedSelector
                     targetSetup={targetSetup}
+                    setFeebasVblankSelection={(feebasVblankSelection) =>
+                      setTargetSetup({ ...targetSetup, feebasVblankSelection })
+                    }
                     setWeather={(weather) =>
                       setTargetSetup({ ...targetSetup, weather })
                     }

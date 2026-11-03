@@ -271,6 +271,9 @@ export const Wild3TargetSetupSearcher = ({
       {targetSetup != null && (
         <Wild3LeadCycleSpeedSelectorWithBtn
           targetSetup={targetSetup}
+          setFeebasVblankSelection={(feebasVblankSelection) =>
+            setTargetSetupBoth({ ...targetSetup, feebasVblankSelection })
+          }
           setWeather={(weather) =>
             setTargetSetupBoth({ ...targetSetup, weather })
           }

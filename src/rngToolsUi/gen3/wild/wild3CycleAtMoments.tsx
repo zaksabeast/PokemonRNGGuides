@@ -302,6 +302,7 @@ export const Wild3CycleAtMoments = ({ targetSetup, leadCycleSpeed }: Props) => {
   const [displayDebuggingOptions, setDisplayDebuggingOptions] =
     React.useState(false);
 
+  const [omittedEmuLog, setOmittedEmuLog] = React.useState(false);
   const [uiResult, setUiResult] = React.useState(createEmptyUiResult());
 
   React.useEffect(() => {
@@ -347,6 +348,7 @@ export const Wild3CycleAtMoments = ({ targetSetup, leadCycleSpeed }: Props) => {
       );
       if (!cancelled) {
         setUiResult(result);
+        setOmittedEmuLog(distributions.omittedEmuLog);
       }
     };
     void updateUiResult();
@@ -400,6 +402,12 @@ export const Wild3CycleAtMoments = ({ targetSetup, leadCycleSpeed }: Props) => {
 
   return (
     <>
+      {omittedEmuLog && (
+        <Typography.Text>
+          The emulator-log trace is omitted because its CheckFeebas VBlank count
+          differs from the selected count.
+        </Typography.Text>
+      )}
       <FormCard>
         <SwitchField
           label="Display debugging options?"

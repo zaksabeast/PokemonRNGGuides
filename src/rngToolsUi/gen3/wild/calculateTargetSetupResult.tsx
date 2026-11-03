@@ -6,6 +6,7 @@ import {
   Wild3GeneratorOptions,
   Wild3InitialCycleDistribution,
 } from "~/rngTools";
+import { setupToDistributions } from "./wild3SetupToDistribution";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 import { TargetSetup } from "./wild3TargetSetupInput";
 import {
@@ -153,6 +154,10 @@ export const calculateTargetSetupResult = async (
     mass_outbreak_state: targetSetup.massOutbreakState,
     feebas_state: targetSetup.feebasState,
     feebas_cycles: targetSetup.feebasCycles,
+    feebas_vblank_count:
+      targetSetup.feebasVblankSelection === "MostProbable"
+        ? null
+        : targetSetup.feebasVblankSelection.Exact,
     cycle_opts:
       lead_cycle_speed == null
         ? {
@@ -176,12 +181,46 @@ export const calculateTargetSetupResult = async (
         : null,
   };
 
-  const genRes = await rngTools.generate_wild3_wasm(
-    targetSetup.targetPaintingAdvs.before,
-    targetSetup.targetPaintingAdvs.after,
-    opts,
-    map_data,
+  const selectedDistribution =
+    targetSetup.feebasState !== "NotInMap" &&
+    ["OldRod", "GoodRod", "SuperRod"].includes(targetSetup.action)
+      ? await setupToDistributions(targetSetup, {
+          LikelihoodForLead: {
+            min_max_initial_cycle: [distribution.min, distribution.max],
+            lead_cycle_spd: lead_cycle_speed ?? AVERAGE_LEAD_CYCLE_SPEED,
+          },
+        })
+      : null;
+  const selectedResult = selectedDistribution?.uiResults.find(
+    (result) => result.method === targetSetup.targetMethod,
   );
+  const genRes =
+    selectedDistribution == null
+      ? await rngTools.generate_wild3_wasm(
+          targetSetup.targetPaintingAdvs.before,
+          targetSetup.targetPaintingAdvs.after,
+          opts,
+          map_data,
+        )
+      : {
+          mon_results:
+            selectedResult == null
+              ? []
+              : [
+                  {
+                    ...selectedResult,
+                    ivs: {
+                      hp: selectedResult.hp,
+                      atk: selectedResult.atk,
+                      def: selectedResult.def,
+                      spa: selectedResult.spa,
+                      spd: selectedResult.spd,
+                      spe: selectedResult.spe,
+                    },
+                    cycle_range: undefined,
+                  },
+                ],
+        };
 
   if (genRes.mon_results.length === 0) {
     if (targetSetup.action === "RockSmash") {
@@ -220,9 +259,16 @@ export const calculateTargetSetupResult = async (
   const gender = await rngTools.get_species_gender_from_pid(species, res.pid);
   const { ivs } = res;
 
-  const probabilityInfo = showProbabilityInfo
-    ? await getProbabilityInfo(res, lead_cycle_speed, distribution)
-    : null;
+  const probabilityInfo = showProbabilityInfo ? (
+    selectedResult == null ? (
+      await getProbabilityInfo(res, lead_cycle_speed, distribution)
+    ) : (
+      <Flex mt={10}>
+        {formatProbability(selectedResult.method_probability)} likelihood to hit
+        method {res.method}.
+      </Flex>
+    )
+  ) : null;
   const abilityStr = await getAbilityDisplayStr(species, res.pid);
 
   return {

@@ -1,4 +1,8 @@
 import {
+  getWild3FeebasUiSelectionResult,
+  type Wild3FeebasUiSelectionResult,
+} from "./wild3FeebasSelection";
+import {
   Gen3Method,
   rngTools,
   Species,
@@ -77,6 +81,8 @@ const convertSearcherResultsToUIResults = (
 export type Wild3Distributions = {
   uiResults: UiResult[];
   cycle_at_moments: CycleFrameMoment[];
+  feebasSelection: Wild3FeebasUiSelectionResult | null;
+  omittedEmuLog: boolean;
   advanceAtSweetScent: number;
   hasError: boolean;
   idealLeadCycleSpd: number | null;
@@ -109,6 +115,7 @@ export const setupToDistributions = async (
     mass_outbreak_state: targetSetup.massOutbreakState,
     feebas_state: targetSetup.feebasState,
     feebas_cycles: targetSetup.feebasCycles,
+    feebas_vblank_count: null,
     cycle_opts,
     safari_pokeblock:
       canUsePokeblock && targetSetup.safariPokeblock !== null
@@ -134,6 +141,8 @@ export const setupToDistributions = async (
     return {
       uiResults: [],
       cycle_at_moments: [],
+      feebasSelection: null,
+      omittedEmuLog: false,
       advanceAtSweetScent: 0,
       hasError: true,
       idealLeadCycleSpd: null,
@@ -161,18 +170,23 @@ export const setupToDistributions = async (
     )
     .otherwise(() => argsWithoutEmuLog(AVERAGE_LEAD_CYCLE_SPEED));
 
-  const { results, cycle_at_moments } =
-    await rngTools.generate_gen3_wild_distribution(
-      targetSetup.targetPaintingAdvs.before,
-      targetSetup.targetPaintingAdvs.after,
-      opts,
-      map_data,
-      distributionArgs.leadCycleSpd,
-      audioInfluences.playing_song,
-      audioInfluences.weather,
-      distributionArgs.initialCycleAtSweetScent,
-      distributionArgs.vblankCycles,
-    );
+  const {
+    results,
+    cycle_at_moments,
+    feebas_probability_by_vblank,
+    omitted_emu_log,
+  } = await rngTools.generate_gen3_wild_distribution(
+    targetSetup.targetPaintingAdvs.before,
+    targetSetup.targetPaintingAdvs.after,
+    opts,
+    map_data,
+    distributionArgs.leadCycleSpd,
+    audioInfluences.playing_song,
+    audioInfluences.weather,
+    distributionArgs.initialCycleAtSweetScent,
+    distributionArgs.vblankCycles,
+    targetSetup.feebasVblankSelection,
+  );
 
   const resultForTargetMethod = results.find(
     (res) => res.searcher_res.method === targetSetup.targetMethod,
@@ -184,6 +198,15 @@ export const setupToDistributions = async (
   return {
     uiResults: convertSearcherResultsToUIResults(results),
     cycle_at_moments,
+    feebasSelection:
+      targetSetup.feebasState !== "NotInMap" &&
+      ["OldRod", "GoodRod", "SuperRod"].includes(targetSetup.action)
+        ? getWild3FeebasUiSelectionResult(
+            targetSetup.feebasVblankSelection,
+            feebas_probability_by_vblank,
+          )
+        : null,
+    omittedEmuLog: omitted_emu_log,
     advanceAtSweetScent:
       (lcrng_distance(0, targetSetup.targetPaintingAdvs.before) +
         targetSetup.targetPaintingAdvs.after) %

@@ -393,6 +393,7 @@ const setupInfoToTargetSetup = (
     action: setupInfo.action,
     feebasState: setupInfo.feebas_state,
     feebasCycles: setupInfo.feebas_cycles,
+    feebasVblankSelection: "MostProbable",
     roamerState: setupInfo.roamer_state,
     massOutbreakState: setupInfo.mass_outbreak_state,
     targetPaintingAdvs: {

@@ -369,6 +369,10 @@ fn create_result(
         roamer_state: Wild3RoamerState::Inactive,
         mass_outbreak_state,
         feebas_state,
+        feebas_vblank_count: match path.encounter_idx_to_lvl_arc {
+            EncounterIdxToLvlArc::CheckFeebasSuccess { vblank_count } => Some(vblank_count),
+            _ => None,
+        },
         safari_pokeblock: safari_pokeblock.clone(),
         cycle_opts: opts.cycle_opts.generator_cycle_opts(initial_cycle_groups),
         using_white_flute: opts.using_white_flute,

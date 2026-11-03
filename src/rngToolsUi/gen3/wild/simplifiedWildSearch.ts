@@ -221,6 +221,7 @@ export const searchSimplifiedWild = async (
         lead: res.lead,
         feebasState: res.feebas_state,
         feebasCycles: res.feebas_cycles,
+        feebasVblankSelection: "MostProbable",
         roamerState: res.roamer_state,
         massOutbreakState: res.mass_outbreak_state,
         targetPaintingAdvs: { before: 0, after: res.advance },

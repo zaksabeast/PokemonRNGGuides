@@ -72,6 +72,7 @@ pub struct Wild3GeneratorOptions {
     pub mass_outbreak_state: Wild3MassOutbreakState,
     pub feebas_state: Wild3FeebasState,
     pub feebas_cycles: usize,
+    pub feebas_vblank_count: Option<usize>,
     pub using_white_flute: bool,
     pub safari_pokeblock: Option<Wild3SafariPokeblockGenOpt>,
 }
@@ -92,6 +93,7 @@ impl Default for Wild3GeneratorOptions {
             mass_outbreak_state: Wild3MassOutbreakState::default(),
             feebas_state: Wild3FeebasState::default(),
             feebas_cycles: 0,
+            feebas_vblank_count: None,
             using_white_flute: true,
             safari_pokeblock: None,
         }

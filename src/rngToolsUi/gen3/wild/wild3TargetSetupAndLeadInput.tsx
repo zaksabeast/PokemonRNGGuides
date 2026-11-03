@@ -54,11 +54,18 @@ export const Wild3TargetSetupAndLeadInput = ({
       return setTargetSetupResult(null);
     }
 
+    let current = true;
+
     calculateTargetSetupResult(targetSetup, leadCycleSpeed).then(
       ({ content }) => {
-        setTargetSetupResult(content);
+        if (current) {
+          setTargetSetupResult(content);
+        }
       },
     );
+    return () => {
+      current = false;
+    };
   }, [leadCycleSpeed, targetSetup]);
 
   const setLeadCycleSpeedBoth = (spd: number) => {
@@ -70,15 +77,25 @@ export const Wild3TargetSetupAndLeadInput = ({
     <Flex vertical gap={10}>
       {displayInstructions && <Instructions_calib_skip_setup />}
       <Wild3TargetSetupInput setTargetSetup={setTargetSetupBoth} />
-      {targetSetupResult != null && targetSetup != null && (
+      {targetSetup != null && (
         <Flex vertical gap={20} mt={20}>
           <FormCard>
             <FormSummary
-              rows={[{ label: "Target Pokémon", value: targetSetupResult }]}
+              rows={[
+                {
+                  label: "Target Pokémon",
+                  value:
+                    targetSetupResult ??
+                    "No Pokémon result for the selected count.",
+                },
+              ]}
             />
           </FormCard>
           <Wild3LeadCycleSpeedSelectorWithBtn
             targetSetup={targetSetup}
+            setFeebasVblankSelection={(feebasVblankSelection) =>
+              setTargetSetupBoth({ ...targetSetup, feebasVblankSelection })
+            }
             setWeather={(weather) =>
               setTargetSetupBoth({ ...targetSetup, weather })
             }

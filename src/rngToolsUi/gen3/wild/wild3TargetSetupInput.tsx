@@ -2,6 +2,7 @@ import {
   Gen3Method,
   Wild3Action,
   Wild3FeebasState,
+  Wild3FeebasVblankSelection,
   Wild3RoamerState,
   Wild3MassOutbreakState,
   Gen3Lead,
@@ -90,6 +91,7 @@ export type TargetSetup = Wild3AudioInfluences & {
   action: Wild3Action;
   feebasState: Wild3FeebasState;
   feebasCycles: number;
+  feebasVblankSelection: Wild3FeebasVblankSelection;
   roamerState: Wild3RoamerState;
   massOutbreakState: Wild3MassOutbreakState;
   lead: Gen3Lead;
@@ -130,6 +132,7 @@ const convertFormStateValuesToTargetSetup = (
     action: values.action,
     feebasState: values.feebasState,
     feebasCycles: values.feebasCycles[0] ?? 0,
+    feebasVblankSelection: "MostProbable",
     roamerState: values.roamerState,
     massOutbreakState: values.massOutbreakState,
     lead: gen3Leads[values.leadIdx],

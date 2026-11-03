@@ -49,6 +49,38 @@ fn result(
 }
 
 #[test]
+fn selected_count_advances_once_per_interrupt() {
+    let mut opts = options(Gen3Lead::Egg);
+    opts.methods = vec![Gen3Method::Wild1];
+    opts.feebas_cycles = 219710;
+    let actual = [0, 1].map(|count| {
+        opts.feebas_vblank_count = Some(count);
+
+        generate_wild3_internal(Pokerng::new(42), &opts, &game_data()).mon_results
+    });
+
+    assert_eq!(
+        actual,
+        [
+            vec![result(
+                Wild3EncounterIndex::Feebas,
+                29,
+                2319565386,
+                Ivs::new(15, 26, 26, 9, 31, 27),
+                Gen3Method::Wild1
+            )],
+            vec![result(
+                Wild3EncounterIndex::Feebas,
+                28,
+                1426764715,
+                Ivs::new(16, 31, 0, 19, 28, 18),
+                Gen3Method::Wild1
+            )],
+        ]
+    );
+}
+
+#[test]
 fn wild3_feebas_method5_vanilla_level_filter() {
     // Note: The vblank occurs right before choosing the level. Without that vblank, the level would be 26.
 

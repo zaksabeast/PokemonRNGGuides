@@ -79,33 +79,33 @@ fn count_domain(check_feebas_cycles: usize, duration: f64, count: usize) -> Scen
     Scenario { start, end, shift }
 }
 
-fn duration_samples(
+fn generate_random_distribution_samples<const COUNT: usize>(
     vblank_cycle_distr: &Wild3VblankCycleDistribution,
-    steps: usize,
-) -> impl Iterator<Item = f64> + '_ {
-    (0..steps).filter_map(move |index| {
+) -> [f64; COUNT] {
+    std::array::from_fn(|index| {
         cdf_quantile(
             &vblank_cycle_distr.distribution,
-            (index as f64 + 0.5) / steps as f64,
+            (index as f64 + 0.5) / COUNT as f64,
         )
+        .unwrap_or(0.0)
     })
 }
 
 fn calculate_probability_by_vblank(
     check_feebas_cycles: usize,
     initial_cycle_distr: &Wild3InitialCycleDistribution,
-    vblank_cycle_distr: &Wild3VblankCycleDistribution,
-    steps: usize,
+    vblank_cycle_samples: &[f64],
 ) -> [f64; MAX_FEEBAS_VBLANK + 1] {
     std::array::from_fn(|count| {
-        duration_samples(vblank_cycle_distr, steps)
-            .map(|duration| {
+        vblank_cycle_samples
+            .iter()
+            .map(|&duration| {
                 let domain = count_domain(check_feebas_cycles, duration, count);
 
                 initial_cycle_distr.probability(domain.start, domain.end)
             })
             .sum::<f64>()
-            / steps as f64
+            / vblank_cycle_samples.len() as f64
     })
 }
 
@@ -116,13 +116,14 @@ impl FeebasCycleCounterWithProbability {
         vblank_cycle_distr: &Wild3VblankCycleDistribution,
         selection: Wild3FeebasVblankSelection,
     ) -> Self {
+        let vblank_cycle_samples =
+            generate_random_distribution_samples::<SCENARIO_COUNT>(vblank_cycle_distr);
         let probability_by_vblank = calculate_probability_by_vblank(
             check_feebas_cycles,
             initial_cycle_distr,
-            vblank_cycle_distr,
-            SCENARIO_COUNT,
+            &vblank_cycle_samples,
         );
-        let count = match selection {
+        let vblank_count = match selection {
             Wild3FeebasVblankSelection::Exact(count) => count,
             Wild3FeebasVblankSelection::MostProbable => probability_by_vblank
                 .iter()
@@ -131,10 +132,14 @@ impl FeebasCycleCounterWithProbability {
                 .map(|(index, _)| index)
                 .unwrap_or(0),
         };
-        let probability = probability_by_vblank.get(count).copied().unwrap_or(0.0);
-        let scenarios: Vec<_> = duration_samples(vblank_cycle_distr, SCENARIO_COUNT)
-            .map(|duration| {
-                let domain = count_domain(check_feebas_cycles, duration, count);
+        let probability = probability_by_vblank
+            .get(vblank_count)
+            .copied()
+            .unwrap_or(0.0);
+        let scenarios: Vec<_> = vblank_cycle_samples
+            .iter()
+            .map(|&duration| {
+                let domain = count_domain(check_feebas_cycles, duration, vblank_count);
 
                 Scenario {
                     start: domain.start.max(initial_cycle_distr.min as f64),
@@ -163,17 +168,16 @@ impl FeebasCycleCounterWithProbability {
         });
         let initial_cycle_distr =
             initial_cycle_distr_from_events(events, probability, initial_cycle_distr);
-        let cycle_counter = FeebasCycleCounter {
-            vblank_count: count,
-            min_cycle_after_check_feebas: initial_cycle_distr.min + FISHING_CHECK_OFFSET,
-            max_cycle_after_check_feebas: initial_cycle_distr.max + FISHING_CHECK_OFFSET,
-            most_probable_cycle_after_check_feebas: representative_phase,
-        };
 
         Self {
             probability_by_vblank,
+            cycle_counter: FeebasCycleCounter {
+                vblank_count,
+                min_cycle_after_check_feebas: initial_cycle_distr.min + FISHING_CHECK_OFFSET,
+                max_cycle_after_check_feebas: initial_cycle_distr.max + FISHING_CHECK_OFFSET,
+                most_probable_cycle_after_check_feebas: representative_phase,
+            },
             initial_cycle_distr,
-            cycle_counter,
             most_probable_initial_cycle,
             scenarios,
         }
@@ -320,8 +324,7 @@ mod tests {
             calculate_probability_by_vblank(
                 0,
                 &initial_cycle_distr,
-                &DEFAULT_FEEBAS_VBLANK_DISTR,
-                128
+                &generate_random_distribution_samples::<128>(&DEFAULT_FEEBAS_VBLANK_DISTR),
             ),
             [1.0, 0.0, 0.0, 0.0, 0.0]
         );
@@ -401,20 +404,15 @@ mod tests {
     #[test]
     fn duration_resolution_matches_finer_quadrature() {
         let initial_cycle_distr = uniform(45000, 75000);
+        let coarse_durations =
+            generate_random_distribution_samples::<128>(&DEFAULT_FEEBAS_VBLANK_DISTR);
+        let fine_durations =
+            generate_random_distribution_samples::<4096>(&DEFAULT_FEEBAS_VBLANK_DISTR);
 
         for work in [0, 200000, 219710, 430000, 650000, 800000] {
-            let coarse = calculate_probability_by_vblank(
-                work,
-                &initial_cycle_distr,
-                &DEFAULT_FEEBAS_VBLANK_DISTR,
-                128,
-            );
-            let fine = calculate_probability_by_vblank(
-                work,
-                &initial_cycle_distr,
-                &DEFAULT_FEEBAS_VBLANK_DISTR,
-                4096,
-            );
+            let coarse =
+                calculate_probability_by_vblank(work, &initial_cycle_distr, &coarse_durations);
+            let fine = calculate_probability_by_vblank(work, &initial_cycle_distr, &fine_durations);
             let total: f64 = coarse.iter().sum();
             assert!((total - 1.0).abs() < 1e-10);
 
@@ -422,6 +420,30 @@ mod tests {
                 assert!((coarse - fine).abs() < 0.0001);
             }
         }
+    }
+
+    #[test]
+    fn missing_duration_quantiles_use_zero_cycles() {
+        let vblank_cycle_distr = Wild3VblankCycleDistribution {
+            distribution: vec![
+                CdfKnot {
+                    cycle: 45000.0,
+                    probability: 0.0,
+                },
+                CdfKnot {
+                    cycle: 45000.0,
+                    probability: 0.5,
+                },
+            ],
+            ..uniform(45000, 45000)
+        };
+        let durations = generate_random_distribution_samples::<4>(&vblank_cycle_distr);
+
+        assert_eq!(durations, [45000.0, 45000.0, 0.0, 0.0]);
+        assert_eq!(
+            calculate_probability_by_vblank(0, &uniform(45000, 75000), &durations),
+            [1.0, 0.0, 0.0, 0.0, 0.0]
+        );
     }
 
     #[test]
@@ -528,8 +550,7 @@ mod tests {
             calculate_probability_by_vblank(
                 440606,
                 &uniform(45000, 45000),
-                &vblank_cycle_distr,
-                128
+                &generate_random_distribution_samples::<128>(&vblank_cycle_distr),
             ),
             [0.0, 1.0, 0.0, 0.0, 0.0]
         );

@@ -20,7 +20,10 @@ import {
 import { gen3Methods } from "~/types";
 import { pokeblockSchema } from "~/types/pokeblock";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
-import { wild3AudioInfluencesSchema } from "./wild3AudioInfluences";
+import {
+  wild3AudioInfluencesSchema,
+  normalizeWild3AudioInfluences,
+} from "./wild3AudioInfluences";
 import { EmeraldAceChangeSid } from "../ace/emeraldAceChangeSid";
 import { createBattleVideoInfoAtom } from "../pokemonRng/shared";
 
@@ -134,7 +137,11 @@ const targetSetupAtomSchema = z.object({
         .nullable()
         .default(null),
     })
-    .and(wild3AudioInfluencesSchema)
+    .and(wild3AudioInfluencesSchema.partial())
+    .transform((setup) => ({
+      ...setup,
+      ...normalizeWild3AudioInfluences(setup.map, setup.action, setup),
+    }))
     .nullable(),
 });
 

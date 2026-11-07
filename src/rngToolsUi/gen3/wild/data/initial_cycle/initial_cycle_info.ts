@@ -1,4 +1,4 @@
-import * as _ from "lodash-es";
+import { maxBy, memoize } from "lodash-es";
 import type {
   CdfKnot,
   Wild3PlayingSong,
@@ -72,9 +72,13 @@ export const selectInitialCycleDataset = (
   datasets: readonly InitialCycleDataset[],
   input: InitialCycleSetup,
   isAudio: boolean,
-): InitialCycleDataset => {
+): InitialCycleDataset | null => {
+  if (datasets.length === 0) {
+    return null;
+  }
+
   const best =
-    _.maxBy(
+    maxBy(
       datasets.filter((candidate) => candidate.isAudio === isAudio),
       (candidate) => getMatchingRank(candidate, input, isAudio),
     ) ?? datasets[0];
@@ -123,7 +127,7 @@ export const adjustNonAudioComponent = (
   };
 };
 
-const mergeCalibrationComponents = _.memoize(
+const mergeCalibrationComponents = memoize(
   (
     audio: InitialCycleDataset,
     nonAudio: InitialCycleDataset,
@@ -143,7 +147,7 @@ export const getInitialCycleInfo = (
   weather: Wild3Weather,
   playingSong: Wild3PlayingSong,
   action: Wild3Action,
-): InitialCycleInfo => {
+): InitialCycleInfo | null => {
   const input = { mapId, weather, playingSong, action };
   const audio = selectInitialCycleDataset(calibrationComponents, input, true);
   const nonAudio = selectInitialCycleDataset(
@@ -151,6 +155,10 @@ export const getInitialCycleInfo = (
     input,
     false,
   );
+
+  if (audio == null || nonAudio == null) {
+    return null;
+  }
 
   return mergeCalibrationComponents(audio, nonAudio);
 };

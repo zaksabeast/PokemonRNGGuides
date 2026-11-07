@@ -70,7 +70,17 @@ const getInitialCycleDistributions = (
   return wild3Actions.flatMap((action) =>
     possible_weather_by_action[action].flatMap((weather) =>
       possible_playing_song_by_action[action].map((playing_song) => {
-        const info = getInitialCycleInfo(map_id, weather, playing_song, action);
+        // Note: The fallback should never be used because getPossibleWeathersAndPlayingSongs only returns
+        // valid possible weathers and playing songs.
+        const info = getInitialCycleInfo(
+          map_id,
+          weather,
+          playing_song,
+          action,
+        ) ?? {
+          summary: { min: 0, max: 0 },
+          distribution: [],
+        };
 
         return {
           action,

@@ -227,6 +227,15 @@ export const combineCalibrationComponents = (
 export const getInitialCycleSummary = (
   knots: readonly CdfKnot[],
 ): { min: number; max: number; median: number; average: number } => {
+  if (knots.length === 0) {
+    return {
+      min: 0,
+      max: 0,
+      median: 0,
+      average: 0,
+    };
+  }
+
   const first = knots[0];
   const last = knots[knots.length - 1];
 

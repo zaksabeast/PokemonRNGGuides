@@ -6,6 +6,7 @@ import { EmeraldPaintingReseeding } from "../paintingReseeding/paintingReseeding
 import { Wild3TargetSetupSearcher } from "./wild3TargetSetupSearcher";
 import { hydrationLock } from "~/utils/hydration";
 import z from "zod";
+import { isEqual, omit } from "lodash-es";
 import { Flex } from "~/components/flex";
 import { useCurrentStep } from "~/components/stepper/state";
 import { Wild3Calib } from "./wild3Calib";
@@ -172,21 +173,37 @@ export const useBattleVideoInfo = () => useAtom(battleVideoInfoAtom);
 // Step 1: Vanilla Wild3TargetSetupSearcher
 export const Wild3TargetSetupSearcher_WithSetTargetSetup = () => {
   const [targetSetup, setTargetSetup] = useTargetSetup();
-  const { hydrated } = useHydrate(targetSetup);
+  const targetSetupHydrate = useHydrate(targetSetup);
 
   const [, setLeadCycleSpeed] = useLeadCycleSpeed();
   const [, setBattleVideoInfo] = useBattleVideoInfo();
 
-  if (!hydrated) {
+  if (!targetSetupHydrate.hydrated) {
     return <Skeleton />;
   }
 
   const handleSetTargetSetup = (targetSetup: TargetSetup | null) => {
+    const previousSetup = targetSetupHydrate.client.targetSetup;
+    const preserveCalibration =
+      previousSetup != null &&
+      targetSetup != null &&
+      isEqual(
+        omit(previousSetup, ["weather", "playing_song"]),
+        omit(targetSetup, ["weather", "playing_song"]),
+      );
+
     setTargetSetup(
       hydrationLock({
         targetSetup,
       }),
     );
+
+    if (preserveCalibration) {
+      // Note: Wild3LeadCycleSpeedInput updates leadCycleSpeed. This is particularily useful
+      // if the selected speed is Ideal.
+      return;
+    }
+
     setLeadCycleSpeed(
       hydrationLock({
         leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,

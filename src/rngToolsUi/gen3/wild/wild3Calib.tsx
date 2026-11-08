@@ -170,13 +170,13 @@ export const Wild3Calib = ({
     setHasHitTargetAdv(false);
   }, [targetSetupProp]);
 
-  const handleTargetSetupChange = React.useCallback((setup: TargetSetup) => {
+  const handleTargetSetupChange = (setup: TargetSetup) => {
     setTargetSetup(setup);
     setOverwriteAudioInfluences(
       getDefaultWild3AudioInfluences(setup.map, setup.action),
     );
     setHasHitTargetAdv(false);
-  }, []);
+  };
 
   const targetSetupInputForm = () => (
     <Wild3TargetSetupAndLeadInput

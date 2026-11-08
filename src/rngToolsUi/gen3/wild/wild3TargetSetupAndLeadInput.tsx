@@ -51,25 +51,22 @@ export const Wild3TargetSetupAndLeadInput = ({
     setLocalAudioInfluences(audio);
   };
 
-  const setTargetSetupBoth = React.useCallback(
-    (targetSetup: TargetSetup | null) => {
-      if (targetSetup == null && permitEnablingDebugOptions) {
-        return; // When debugging, it is useful to not reset the target setup and debugging info.
-      }
+  const setTargetSetupBoth = (targetSetup: TargetSetup | null) => {
+    if (targetSetup == null && permitEnablingDebugOptions) {
+      return; // When debugging, it is useful to not reset the target setup and debugging info.
+    }
 
-      setTargetSetup(targetSetup);
-      if (targetSetup != null) {
-        const audio = getDefaultWild3AudioInfluences(
-          targetSetup.map,
-          targetSetup.action,
-        );
-        setLocalAudioInfluences(audio);
-        setAudioInfluencesProp?.(audio);
-        setTargetSetupProp?.(targetSetup);
-      }
-    },
-    [permitEnablingDebugOptions, setTargetSetupProp, setAudioInfluencesProp],
-  );
+    setTargetSetup(targetSetup);
+    if (targetSetup != null) {
+      const audio = getDefaultWild3AudioInfluences(
+        targetSetup.map,
+        targetSetup.action,
+      );
+      setLocalAudioInfluences(audio);
+      setAudioInfluencesProp?.(audio);
+      setTargetSetupProp?.(targetSetup);
+    }
+  };
 
   const [localLeadCycleSpeed, setLeadCycleSpeed] =
     React.useState<number>(leadCycleSpeedProp);

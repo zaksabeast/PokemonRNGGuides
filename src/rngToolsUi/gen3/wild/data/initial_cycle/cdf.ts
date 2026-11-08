@@ -93,7 +93,7 @@ export const getInitialCycleQualitativeProbability = (
   );
 
   return {
-    probabilityTxt: `${formatProbability(probability)} chance that the initial cycle is within (${formatLargeInteger(start)}, ${formatLargeInteger(end)})`,
+    probabilityTxt: `${formatProbability(probability)} chance that the initial cycle is within (${formatLargeInteger(start)} to ${formatLargeInteger(end)})`,
     qualitativeTxt: qualitative,
   };
 };

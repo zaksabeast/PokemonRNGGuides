@@ -38,6 +38,7 @@ import {
   getTargetSetupSearcherInitialValues,
   getTargetResultColumns,
 } from "../pokemonRng/targetSetupSearcher";
+import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 
 const Validator = z
   .object({
@@ -256,6 +257,8 @@ export const Wild3TargetSetupSearcher = ({
   const setTargetSetupBoth = (targetSetup: TargetSetup | null) => {
     setTargetSetup(targetSetup);
     setTargetSetupProp?.(targetSetup);
+
+    setLeadCycleSpeed(AVERAGE_LEAD_CYCLE_SPEED);
   };
 
   const setLeadCycleSpeedBoth = (spd: number) => {

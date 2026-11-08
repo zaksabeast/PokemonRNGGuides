@@ -1,5 +1,5 @@
 import type { CdfKnot } from "~/rngTools";
-import { InitialCycleDataset } from "./initial_cycle_dataset";
+import type { InitialCycleDataset } from "./initial_cycle_dataset";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { formatProbability } from "~/utils/formatProbability";
 

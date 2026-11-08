@@ -10,8 +10,7 @@ import {
   type InitialCycleDataset,
 } from "./initial_cycle_dataset";
 import { getInitialCycleMapGameData } from "./initial_cycle_map_game_data";
-import { combineCalibrationComponents } from "./cdf";
-import { getInitialCycleSummary } from "../initial_cycle_main";
+import { combineCalibrationComponents, getInitialCycleSummary } from "./cdf";
 
 type InitialCycleSetup = Pick<
   InitialCycleDataset,

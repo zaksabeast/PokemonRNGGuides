@@ -1,10 +1,5 @@
-import type {
-  Wild3Action,
-  Wild3MapGameData,
-  Wild3PlayingSong,
-  Wild3Weather,
-} from "~/rngTools";
-import { isFishingAction, wild3Actions } from "~/rngToolsUi/gen3/wild/utils";
+import type { Wild3Action, Wild3PlayingSong, Wild3Weather } from "~/rngTools";
+import { isFishingAction } from "~/rngToolsUi/gen3/wild/utils";
 
 // Emerald music, weather, and bike permissions for each map
 
@@ -223,13 +218,8 @@ export const getPossibleWeathers = (
 
 export const getPossiblePlayingSongs = (
   map_id: string,
-  slots_by_action: Wild3MapGameData["slots_by_action"],
   action: Wild3Action,
 ): Wild3PlayingSong[] => {
-  if (slots_by_action[wild3Actions.indexOf(action)].length === 0) {
-    return [];
-  }
-
   if (
     map_id === "MAP_UNDERWATER_ROUTE124" ||
     map_id === "MAP_UNDERWATER_ROUTE126"

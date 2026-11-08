@@ -11,6 +11,7 @@ import { defaultMinMaxStats, MinMaxStats } from "~/types/stat";
 import { toOptions } from "~/utils/options";
 import { Gen3Method, Nature, rngTools, Species } from "~/rngTools";
 import type { TargetSetup } from "./wild3TargetSetupInput";
+import type { Wild3AudioInfluences } from "./wild3AudioInfluences";
 import { getStatRange } from "~/types/statRange";
 import uniq from "lodash-es/uniq";
 import clamp from "lodash-es/clamp";
@@ -140,11 +141,13 @@ const searchCaughtMon = async (
   values: FormState,
   targetSetup: TargetSetup,
   leadCycleSpeed: number,
+  audioInfluences: Wild3AudioInfluences,
 ) => {
   const opts = await createWild3SearcherOptions(
     values,
     targetSetup,
     leadCycleSpeed,
+    audioInfluences,
   );
   if (opts == null) {
     return [];
@@ -198,6 +201,7 @@ const searchCaughtMon = async (
 
 type Props = {
   targetSetup: TargetSetup;
+  audioInfluences: Wild3AudioInfluences;
   setLatestHitAdv?: (
     hitAdv: {
       frame_before_painting: number;
@@ -210,6 +214,7 @@ type Props = {
 
 export const Wild3CalibCaughtMon = ({
   targetSetup,
+  audioInfluences,
   leadCycleSpeed,
   setLatestHitAdv,
 }: Props) => {
@@ -219,7 +224,14 @@ export const Wild3CalibCaughtMon = ({
   const usingPaintingReseeding = targetSetup.targetPaintingAdvs.before > 0;
 
   const onSubmit: ToolFormSubmit<FormState> = async (values) => {
-    setResults(await searchCaughtMon(values, targetSetup, leadCycleSpeed));
+    setResults(
+      await searchCaughtMon(
+        values,
+        targetSetup,
+        leadCycleSpeed,
+        audioInfluences,
+      ),
+    );
   };
 
   const onRemove = (values: CaughtMonResult) => {

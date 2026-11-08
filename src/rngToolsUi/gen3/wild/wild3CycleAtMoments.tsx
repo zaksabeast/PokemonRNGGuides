@@ -36,6 +36,7 @@ import { match } from "ts-pattern";
 import { Tooltip } from "antd";
 import {
   normalizeWild3AudioInfluences,
+  type Wild3AudioInfluences,
   getWild3InitialCycleDistributionForSetup,
 } from "./wild3AudioInfluences";
 import { getInitialCycleQualitativeProbability } from "./data/initial_cycle_main";
@@ -198,6 +199,7 @@ const parseCycleAtMomentsJsonStr = (input: string) => {
 
 type Props = {
   targetSetup: TargetSetup;
+  audioInfluences: Wild3AudioInfluences;
   /** leadCycleSpeedFromTool is null if egg lead */
   leadCycleSpeed: number | null;
 };
@@ -267,6 +269,7 @@ const createUiResult = async (
 const getInitialCycleLikelihood = (
   input: string,
   targetSetup: TargetSetup,
+  preferredAudioInfluences: Wild3AudioInfluences,
 ): { qualitativeTxt: string; probabilityTxt: string } | null => {
   const json = parseCycleAtMomentsJsonStr(input);
   const initialCycle = json?.cycleAtMoments[0]?.cycle;
@@ -277,7 +280,7 @@ const getInitialCycleLikelihood = (
   const audioInfluences = normalizeWild3AudioInfluences(
     targetSetup.map,
     targetSetup.action,
-    targetSetup,
+    preferredAudioInfluences,
   );
   const distribution = getWild3InitialCycleDistributionForSetup({
     ...targetSetup,
@@ -295,7 +298,11 @@ const getInitialCycleLikelihood = (
   return typeof likelihood === "string" ? null : likelihood;
 };
 
-export const Wild3CycleAtMoments = ({ targetSetup, leadCycleSpeed }: Props) => {
+export const Wild3CycleAtMoments = ({
+  targetSetup,
+  audioInfluences: preferredAudioInfluences,
+  leadCycleSpeed,
+}: Props) => {
   const [compareCycleAtMomentsStr, setCompareCycleAtMomentsStr] =
     React.useState("");
 
@@ -311,7 +318,7 @@ export const Wild3CycleAtMoments = ({ targetSetup, leadCycleSpeed }: Props) => {
       const audioInfluences = normalizeWild3AudioInfluences(
         targetSetup.map,
         targetSetup.action,
-        targetSetup,
+        preferredAudioInfluences,
       );
       const distribution = getWild3InitialCycleDistributionForSetup({
         ...targetSetup,
@@ -339,7 +346,11 @@ export const Wild3CycleAtMoments = ({ targetSetup, leadCycleSpeed }: Props) => {
               },
             };
 
-      const distributions = await setupToDistributions(targetSetup, cycle_opts);
+      const distributions = await setupToDistributions(
+        targetSetup,
+        cycle_opts,
+        audioInfluences,
+      );
 
       const result = await createUiResult(
         compareCycleAtMomentsStr,
@@ -353,11 +364,17 @@ export const Wild3CycleAtMoments = ({ targetSetup, leadCycleSpeed }: Props) => {
     return () => {
       cancelled = true;
     };
-  }, [compareCycleAtMomentsStr, targetSetup, leadCycleSpeed]);
+  }, [
+    compareCycleAtMomentsStr,
+    targetSetup,
+    preferredAudioInfluences,
+    leadCycleSpeed,
+  ]);
 
   const initialCycleLikelihood = getInitialCycleLikelihood(
     compareCycleAtMomentsStr,
     targetSetup,
+    preferredAudioInfluences,
   );
   const resultRows: SummaryRow[] = [
     {

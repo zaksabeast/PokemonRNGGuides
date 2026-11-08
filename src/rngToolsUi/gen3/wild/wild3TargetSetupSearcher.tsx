@@ -29,7 +29,10 @@ import { Wild3ResultSetupInfos } from "./wild3ResultSetupInfos";
 import { TargetSetup } from "./wild3TargetSetupInput";
 import { Pokeblock, wild3SafariPokeblockSearchOpt } from "~/types/pokeblock";
 import { Wild3LeadCycleSpeedSelectorWithBtn } from "./wild3LeadCycleSpeedSelector";
-import { type Wild3AudioInfluences } from "./wild3AudioInfluences";
+import {
+  defaultAudioInfluences,
+  type Wild3AudioInfluences,
+} from "./wild3AudioInfluences";
 import {
   targetSetupSearcherSchema,
   getTargetSetupSearcherInitialValues,
@@ -192,11 +195,13 @@ const getPidPathColumns = (
 type Props = {
   setTargetSetup: (targetSetup: TargetSetup | null) => void;
   setLeadCycleSpeed: (leadCycleSpeed: number) => void;
+  setAudioInfluences: (audioInfluences: Wild3AudioInfluences) => void;
 };
 
 export const Wild3TargetSetupSearcher = ({
   setTargetSetup: setTargetSetupProp,
   setLeadCycleSpeed: setLeadCycleSpeedProp,
+  setAudioInfluences: setAudioInfluencesProp,
 }: Props) => {
   const [pidPathResults, setPidPathResults] = React.useState<PidPathResult[]>(
     [],
@@ -245,6 +250,9 @@ export const Wild3TargetSetupSearcher = ({
 
   const [leadCycleSpeed, setLeadCycleSpeed] = React.useState<number | null>(0);
 
+  const [audioInfluences, setAudioInfluences] =
+    React.useState<Wild3AudioInfluences>(defaultAudioInfluences);
+
   const setTargetSetupBoth = (targetSetup: TargetSetup | null) => {
     setTargetSetup(targetSetup);
     setTargetSetupProp?.(targetSetup);
@@ -253,6 +261,11 @@ export const Wild3TargetSetupSearcher = ({
   const setLeadCycleSpeedBoth = (spd: number) => {
     setLeadCycleSpeed(spd);
     setLeadCycleSpeedProp?.(spd);
+  };
+
+  const setAudioInfluencesBoth = (audioInfluences: Wild3AudioInfluences) => {
+    setAudioInfluences(audioInfluences);
+    setAudioInfluencesProp?.(audioInfluences);
   };
 
   return (
@@ -277,18 +290,15 @@ export const Wild3TargetSetupSearcher = ({
           rngManipulatedLeadPid={rngManipulatedLeadPid}
           tidForAceSid={tidForAceSid}
           setTargetSetup={setTargetSetupBoth}
+          setAudioInfluences={setAudioInfluencesBoth}
         />
       )}
 
       {targetSetup != null && (
         <Wild3LeadCycleSpeedSelectorWithBtn
           targetSetup={targetSetup}
-          setWeather={(weather) =>
-            setTargetSetupBoth({ ...targetSetup, weather })
-          }
-          setPlayingSong={(playing_song) =>
-            setTargetSetupBoth({ ...targetSetup, playing_song })
-          }
+          audioInfluences={audioInfluences}
+          setAudioInfluences={setAudioInfluencesBoth}
           permitEnablingDebugOptions={false}
           setLeadCycleSpeed={setLeadCycleSpeedBoth}
           leadCycleSpeed={leadCycleSpeed}

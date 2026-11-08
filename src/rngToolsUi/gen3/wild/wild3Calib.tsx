@@ -40,7 +40,9 @@ import { Wild3TargetSetupAndLeadInput } from "./wild3TargetSetupAndLeadInput";
 import { Gen3CalibFields, CalibOffset } from "../pokemonRng/calib";
 import { getGen3CalibPreviousStepRows } from "../pokemonRng/labels";
 import {
-  normalizeWild3AudioInfluences,
+  defaultAudioInfluences,
+  getDefaultWild3AudioInfluences,
+  type Wild3AudioInfluences,
   formatWild3Weather,
   formatPlayingSong,
 } from "./wild3AudioInfluences";
@@ -86,6 +88,7 @@ const getEncounterTimerLabel = (action: Wild3Action | undefined): string => {
 
 type Props = AllOrNone<{
   targetSetup: TargetSetup;
+  audioInfluences: Wild3AudioInfluences;
   battleVideoInfo: BattleVideoInfo;
   leadCycleSpeed: number;
   clearAll?: () => void;
@@ -97,6 +100,7 @@ type Props = AllOrNone<{
 
 export const Wild3Calib = ({
   targetSetup: targetSetupProp,
+  audioInfluences: audioInfluencesProp,
   leadCycleSpeed: leadCycleSpeedProp,
   battleVideoInfo: battleVideoInfoProp,
   clearAll,
@@ -117,12 +121,16 @@ export const Wild3Calib = ({
   const [targetSetupResult, setTargetSetupResult] =
     React.useState<React.ReactNode>(null);
 
+  const [overwriteAudioInfluences, setOverwriteAudioInfluences] =
+    React.useState<Wild3AudioInfluences | null>(null);
   const [overwriteLeadCycleSpeed, setOverwriteLeadCycleSpeed] = React.useState<
     number | null
   >(null);
 
   const finalLeadCycleSpeed =
     overwriteLeadCycleSpeed ?? leadCycleSpeedProp ?? AVERAGE_LEAD_CYCLE_SPEED;
+  const finalAudioInfluences =
+    overwriteAudioInfluences ?? audioInfluencesProp ?? defaultAudioInfluences;
 
   React.useEffect(() => {
     if (targetSetup == null) {
@@ -133,12 +141,13 @@ export const Wild3Calib = ({
     calculateTargetSetupResult(
       targetSetup,
       finalLeadCycleSpeed,
+      finalAudioInfluences,
       !simplified,
     ).then(({ content, hasEncounter }) => {
       setTargetSetupResult(content);
       setTargetSetupHasEncounter(hasEncounter);
     });
-  }, [finalLeadCycleSpeed, targetSetup, simplified]);
+  }, [finalLeadCycleSpeed, targetSetup, finalAudioInfluences, simplified]);
 
   const [battleVideoInfo, setBattleVideoInfo] =
     React.useState<BattleVideoInfo | null>(battleVideoInfoProp ?? null);
@@ -157,17 +166,23 @@ export const Wild3Calib = ({
 
   React.useEffect(() => {
     setOverwriteLeadCycleSpeed(null);
+    setOverwriteAudioInfluences(null);
     setHasHitTargetAdv(false);
   }, [targetSetupProp]);
 
   const handleTargetSetupChange = React.useCallback((setup: TargetSetup) => {
     setTargetSetup(setup);
+    setOverwriteAudioInfluences(
+      getDefaultWild3AudioInfluences(setup.map, setup.action),
+    );
     setHasHitTargetAdv(false);
   }, []);
 
   const targetSetupInputForm = () => (
     <Wild3TargetSetupAndLeadInput
       setTargetSetup={handleTargetSetupChange}
+      audioInfluences={finalAudioInfluences}
+      setAudioInfluences={setOverwriteAudioInfluences}
       setLeadCycleSpeed={setOverwriteLeadCycleSpeed}
       leadCycleSpeed={finalLeadCycleSpeed}
       displayInstructions={displayInstructions}
@@ -247,12 +262,6 @@ export const Wild3Calib = ({
       return null;
     }
 
-    const audioInfluences = normalizeWild3AudioInfluences(
-      targetSetupProp.map,
-      targetSetupProp.action,
-      targetSetupProp,
-    );
-
     const rows: SummaryRow[] = [
       {
         label: "Map",
@@ -264,12 +273,12 @@ export const Wild3Calib = ({
       },
       {
         label: "Weather audio",
-        value: formatWild3Weather(audioInfluences.weather),
+        value: formatWild3Weather(finalAudioInfluences.weather),
         show: !simplified,
       },
       {
         label: "Playing song",
-        value: formatPlayingSong(audioInfluences.playing_song),
+        value: formatPlayingSong(finalAudioInfluences.playing_song),
         show: !simplified,
       },
       {
@@ -391,6 +400,7 @@ export const Wild3Calib = ({
           />
           <Wild3CalibCaughtMon
             targetSetup={targetSetup}
+            audioInfluences={finalAudioInfluences}
             setLatestHitAdv={setLatestHitAdv}
             leadCycleSpeed={finalLeadCycleSpeed}
           />
@@ -407,12 +417,8 @@ export const Wild3Calib = ({
                   <Instructions_calib_wrong_method />
                   <Wild3LeadCycleSpeedSelector
                     targetSetup={targetSetup}
-                    setWeather={(weather) =>
-                      setTargetSetup({ ...targetSetup, weather })
-                    }
-                    setPlayingSong={(playing_song) =>
-                      setTargetSetup({ ...targetSetup, playing_song })
-                    }
+                    audioInfluences={finalAudioInfluences}
+                    setAudioInfluences={setOverwriteAudioInfluences}
                     permitEnablingDebugOptions
                     setLeadCycleSpeed={setOverwriteLeadCycleSpeed}
                     leadCycleSpeed={finalLeadCycleSpeed}

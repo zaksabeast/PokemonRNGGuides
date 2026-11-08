@@ -60,8 +60,9 @@ export const Wild3LeadCycleSpeedInput = ({
   leadCycleSpeed: number;
   setLeadCycleSpeed?: (leadCycleSpeed: number) => void;
 }) => {
-  const [leadSpeedType, setLeadSpeedType] =
-    React.useState<LeadSpeedType>("Average");
+  const [leadSpeedType, setLeadSpeedType] = React.useState<LeadSpeedType>(
+    leadCycleSpeed === AVERAGE_LEAD_CYCLE_SPEED ? "Average" : "Custom",
+  );
   const [leadCycleSpeedCustom, setLeadCycleSpeedCustom] = React.useState<
     number | null
   >(leadCycleSpeed);

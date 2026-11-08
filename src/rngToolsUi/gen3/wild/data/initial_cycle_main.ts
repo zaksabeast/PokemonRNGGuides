@@ -6,7 +6,7 @@ import type {
   Wild3Weather,
 } from "~/rngTools";
 import { wild3Actions } from "~/rngToolsUi/gen3/wild/utils";
-import { initial_cycle_distributions as initialCycleData } from "./initial_cycle/initial_cycle_distributions";
+import { getInitialCycleInfo } from "./initial_cycle/initial_cycle_info";
 import {
   getPossiblePlayingSongs,
   getPossibleWeathers,
@@ -18,11 +18,6 @@ export {
 
 // This file exports the functions needed by the rest of the application.
 // Functions in ./initial_cycle shouldn't be exported outside.
-
-const distributionIndexesByMap: Record<
-  string,
-  Record<string, number>
-> = initialCycleData.setups;
 
 export const getInitialCycleUiMapGameData = (
   map_id: string,
@@ -75,9 +70,12 @@ const getInitialCycleDistributions = (
   return wild3Actions.flatMap((action) =>
     possible_weather_by_action[action].flatMap((weather) =>
       possible_playing_song_by_action[action].map((playing_song) => {
-        const key = `${action}:${weather}:${playing_song}`;
-        const index = distributionIndexesByMap[map_id]?.[key];
-        const distribution = initialCycleData.distributions[index] ?? {
+        const info = getInitialCycleInfo(
+          map_id,
+          weather,
+          playing_song,
+          action,
+        ) ?? {
           summary: { min: 0, max: 0 },
           distribution: [],
         };
@@ -86,7 +84,9 @@ const getInitialCycleDistributions = (
           action,
           weather,
           playing_song,
-          ...distribution,
+          min: info.summary.min,
+          max: info.summary.max,
+          distribution: info.distribution,
         };
       }),
     ),

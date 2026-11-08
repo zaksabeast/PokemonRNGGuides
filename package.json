@@ -20,7 +20,6 @@
     "build:rng_tools": "wasm-pack build rng_tools",
     "build:rng_tools:dev": "wasm-pack build rng_tools --dev",
     "build:wild3": "bun run scripts/wild3/generateWildGameData.ts",
-    "build:wild3:initial-cycles": "bun run scripts/wild3/generateInitialCycles.ts",
     "minimize-css": "bunx postcss dist/assets/*.css --replace",
     "lint": "bun run lint:rust && bun run lint:ts",
     "lint:ts": "bun run build:rng_tools && bun run lint:ts:types && bun run build:guides:check && bun run lint:ts:code && bun run lint:ts:format",

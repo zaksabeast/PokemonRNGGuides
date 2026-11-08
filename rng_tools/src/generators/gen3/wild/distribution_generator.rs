@@ -133,7 +133,7 @@ fn generate_dist_results(
                 advances,
                 encounter,
                 cycle_instability,
-                &vec![initial_cycle_distr],
+                &[initial_cycle_distr],
             );
             let cycle_data = calculate_cycle_data_for_specific_lead_spd(
                 &searcher_res

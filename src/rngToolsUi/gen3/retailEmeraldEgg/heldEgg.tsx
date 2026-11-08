@@ -57,7 +57,6 @@ const Calibration = () => {
         name="calibration"
         label={t["Calibration"]}
         numType="decimal"
-        helperText={t["Do not change. Only for advanced users."]}
       />
     </SwitchField>
   );

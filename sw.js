@@ -1,25 +1,26 @@
+// Replaces caching workers that returning visitors still have registered at this path, then removes itself.
+const deleteAllCaches = async () => {
+  const cacheNames = await self.caches.keys();
 
-self.addEventListener('install', (e) => {
-  self.skipWaiting();
+  await Promise.all(
+    cacheNames.map((cacheName) => self.caches.delete(cacheName)),
+  );
+};
+
+const reloadOpenWindows = async () => {
+  const windowClients = await self.clients.matchAll({ type: "window" });
+
+  await Promise.all(windowClients.map((client) => client.navigate(client.url)));
+};
+
+const removeServiceWorker = async () => {
+  await deleteAllCaches();
+  await self.registration.unregister();
+  await reloadOpenWindows();
+};
+
+self.addEventListener("install", () => self.skipWaiting());
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil(removeServiceWorker());
 });
-self.addEventListener('activate', (e) => {
-  self.registration.unregister()
-    .then(() => self.clients.matchAll())
-    .then((clients) => {
-      clients.forEach((client) => {
-        if (client instanceof WindowClient)
-          client.navigate(client.url);
-      });
-      return Promise.resolve();
-    })
-    .then(() => {
-      self.caches.keys().then((cacheNames) => {
-        Promise.all(
-          cacheNames.map((cacheName) => {
-            return self.caches.delete(cacheName);
-          }),
-        );
-      })
-    });
-});
-    

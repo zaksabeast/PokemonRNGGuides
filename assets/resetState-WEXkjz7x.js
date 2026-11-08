@@ -1,0 +1,1 @@
+import{c as e}from"./index-y6jgcYnb.js";var t=()=>(e(),null);export{t as Gen4Reset};

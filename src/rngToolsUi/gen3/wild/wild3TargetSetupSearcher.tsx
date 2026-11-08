@@ -3,6 +3,7 @@ import {
   type ShinyType,
   Wild3PaintingAdvsAndDur,
   Wild3SearcherResultMon,
+  Wild3SearcherCycleData,
 } from "~/rngTools";
 import { Flex, Icon, Link, ResultColumn, TooltipWithIcon } from "~/components";
 import { ToolForm, type ToolFormSubmit } from "~/components/form";
@@ -29,15 +30,22 @@ import { TargetSetup } from "./wild3TargetSetupInput";
 import { Pokeblock, wild3SafariPokeblockSearchOpt } from "~/types/pokeblock";
 import { Wild3LeadCycleSpeedSelectorWithBtn } from "./wild3LeadCycleSpeedSelector";
 import {
+  defaultAudioInfluences,
+  type Wild3AudioInfluences,
+} from "./wild3AudioInfluences";
+import {
   targetSetupSearcherSchema,
   getTargetSetupSearcherInitialValues,
   getTargetResultColumns,
 } from "../pokemonRng/targetSetupSearcher";
+import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 
 const Validator = z
   .object({
     maps: z.array(z.string()).min(1),
     recommendedSetups: z.boolean(),
+    considerWeather: z.boolean(),
+    hasUnlockedBike: z.boolean(),
     // Limitation: value in Select must be a primitive, so we use the index instead of Gen3Lead.
     leadIdxs: z
       .array(
@@ -89,6 +97,9 @@ export type ResultSetupInfo = Wild3SearcherResultMon &
     mapName: string;
     actionName: string;
     primaryLikelihood: number;
+    primaryCycleData: Wild3SearcherCycleData | null;
+    showLikelihoodAudioInfluences: boolean;
+    targetAudioInfluences: Wild3AudioInfluences;
     initial_seed: number;
     requiresWhiteFlute: boolean;
     requiredPokeblock: Pokeblock | null;
@@ -100,6 +111,8 @@ const getInitialValues = (): FormState => {
     maps: [],
     leadIdxs: gen3Leads.map((_, i) => i),
     recommendedSetups: true,
+    considerWeather: true,
+    hasUnlockedBike: true,
     methods: ["Wild1", "Wild2", "Wild4"], // Wild5 is not supported by the reverse searcher. Wild3 has too low probability.
     actions: [...wild3Actions],
     roamerStates: [...wild3RoamerStates],
@@ -152,9 +165,8 @@ const getPidPathColumns = (
         }
 
         // results are sorted by primaryLikelihood
-        const text = formatProbability(
-          resultSetupInfos[0]?.primaryLikelihood ?? 0,
-        );
+        const best = resultSetupInfos[0];
+        const text = formatProbability(best?.primaryLikelihood ?? 0);
         const isVeryReliableSetup = resultSetupInfos.some(
           (res) =>
             res.lead === "Egg" &&
@@ -184,11 +196,13 @@ const getPidPathColumns = (
 type Props = {
   setTargetSetup: (targetSetup: TargetSetup | null) => void;
   setLeadCycleSpeed: (leadCycleSpeed: number) => void;
+  setAudioInfluences: (audioInfluences: Wild3AudioInfluences) => void;
 };
 
 export const Wild3TargetSetupSearcher = ({
   setTargetSetup: setTargetSetupProp,
   setLeadCycleSpeed: setLeadCycleSpeedProp,
+  setAudioInfluences: setAudioInfluencesProp,
 }: Props) => {
   const [pidPathResults, setPidPathResults] = React.useState<PidPathResult[]>(
     [],
@@ -237,14 +251,24 @@ export const Wild3TargetSetupSearcher = ({
 
   const [leadCycleSpeed, setLeadCycleSpeed] = React.useState<number | null>(0);
 
+  const [audioInfluences, setAudioInfluences] =
+    React.useState<Wild3AudioInfluences>(defaultAudioInfluences);
+
   const setTargetSetupBoth = (targetSetup: TargetSetup | null) => {
     setTargetSetup(targetSetup);
     setTargetSetupProp?.(targetSetup);
+
+    setLeadCycleSpeed(AVERAGE_LEAD_CYCLE_SPEED);
   };
 
   const setLeadCycleSpeedBoth = (spd: number) => {
     setLeadCycleSpeed(spd);
     setLeadCycleSpeedProp?.(spd);
+  };
+
+  const setAudioInfluencesBoth = (audioInfluences: Wild3AudioInfluences) => {
+    setAudioInfluences(audioInfluences);
+    setAudioInfluencesProp?.(audioInfluences);
   };
 
   return (
@@ -269,12 +293,15 @@ export const Wild3TargetSetupSearcher = ({
           rngManipulatedLeadPid={rngManipulatedLeadPid}
           tidForAceSid={tidForAceSid}
           setTargetSetup={setTargetSetupBoth}
+          setAudioInfluences={setAudioInfluencesBoth}
         />
       )}
 
       {targetSetup != null && (
         <Wild3LeadCycleSpeedSelectorWithBtn
           targetSetup={targetSetup}
+          audioInfluences={audioInfluences}
+          setAudioInfluences={setAudioInfluencesBoth}
           permitEnablingDebugOptions={false}
           setLeadCycleSpeed={setLeadCycleSpeedBoth}
           leadCycleSpeed={leadCycleSpeed}

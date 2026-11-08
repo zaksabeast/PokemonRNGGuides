@@ -2,9 +2,9 @@ import {
   AbilityType,
   rngTools,
   Species,
-  Wild3Action,
   Wild3GeneratorMonResult,
   Wild3GeneratorOptions,
+  Wild3InitialCycleDistribution,
 } from "~/rngTools";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 import { TargetSetup } from "./wild3TargetSetupInput";
@@ -22,29 +22,36 @@ import { formatProbability } from "~/utils/formatProbability";
 import { formatHex } from "~/utils/formatHex";
 import { Flex, PokemonName } from "~/components";
 
+import {
+  getWild3InitialCycleDistribution,
+  normalizeWild3AudioInfluences,
+  type Wild3AudioInfluences,
+} from "./wild3AudioInfluences";
+
 const getProbabilityInfo = async (
   res: Wild3GeneratorMonResult,
-  action: Wild3Action,
   lead_cycle_speed: number | null,
+  distribution: Wild3InitialCycleDistribution,
 ) => {
   if (lead_cycle_speed == null || res.cycle_range == null) {
     return null;
   }
 
-  const info = await rngTools.calculate_cycle_data(
+  const info = await rngTools.calculate_cycle_data_for_specific_lead_spd(
     res.cycle_range,
-    action,
     lead_cycle_speed,
+    distribution,
   );
 
   const ideal_lead_spd = await rngTools.calculate_ideal_lead_pid_cycle_count(
     res.cycle_range,
+    distribution,
   );
 
-  const ideal_info = await rngTools.calculate_cycle_data(
+  const ideal_info = await rngTools.calculate_cycle_data_for_specific_lead_spd(
     res.cycle_range,
-    action,
     ideal_lead_spd,
+    distribution,
   );
 
   const leadDesc =
@@ -108,8 +115,29 @@ export const getAbilityDisplayStrFromAbType = async (
 export const calculateTargetSetupResult = async (
   targetSetup: TargetSetup,
   lead_cycle_speed: number | null,
+  audioInfluences: Wild3AudioInfluences,
   showProbabilityInfo = true,
 ) => {
+  const map_data = emeraldWildGameData.maps_data.find(
+    (map) => map.map_id === targetSetup.map,
+  );
+  const validatedAudioInfluences = normalizeWild3AudioInfluences(
+    targetSetup.map,
+    targetSetup.action,
+    audioInfluences,
+  );
+  const distribution =
+    map_data == null
+      ? undefined
+      : getWild3InitialCycleDistribution(
+          map_data,
+          targetSetup.action,
+          validatedAudioInfluences,
+        );
+  if (map_data == null || distribution == null) {
+    return { content: null, hasEncounter: false };
+  }
+
   const opts: Wild3GeneratorOptions = {
     tid: 0,
     sid: 0,
@@ -131,11 +159,17 @@ export const calculateTargetSetupResult = async (
       lead_cycle_speed == null
         ? {
             Searching: {
+              min_max_initial_cycle: [distribution.min, distribution.max],
               generate_even_if_impossible: true,
               consider_rng_manipulated_lead_pid: true,
             },
           }
-        : { LikelihoodForLead: { lead_cycle_spd: lead_cycle_speed } },
+        : {
+            LikelihoodForLead: {
+              min_max_initial_cycle: [distribution.min, distribution.max],
+              lead_cycle_spd: lead_cycle_speed,
+            },
+          },
     safari_pokeblock:
       targetSetup.safariPokeblock != null
         ? {
@@ -143,13 +177,6 @@ export const calculateTargetSetupResult = async (
           }
         : null,
   };
-
-  const map_data = emeraldWildGameData.maps_data.find(
-    (table) => table.map_id === targetSetup.map,
-  );
-  if (map_data == null) {
-    return { content: null, hasEncounter: false };
-  }
 
   const genRes = await rngTools.generate_wild3_wasm(
     targetSetup.targetPaintingAdvs.before,
@@ -196,7 +223,7 @@ export const calculateTargetSetupResult = async (
   const { ivs } = res;
 
   const probabilityInfo = showProbabilityInfo
-    ? await getProbabilityInfo(res, targetSetup.action, lead_cycle_speed)
+    ? await getProbabilityInfo(res, lead_cycle_speed, distribution)
     : null;
   const abilityStr = await getAbilityDisplayStr(species, res.pid);
 

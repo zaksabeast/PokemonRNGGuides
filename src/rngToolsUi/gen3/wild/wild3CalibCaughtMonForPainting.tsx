@@ -11,6 +11,7 @@ import { Tooltip } from "antd";
 import { getGen3IvRating } from "../ivRater";
 import { formatHex } from "~/utils/formatHex";
 import { createWild3SearcherOptions } from "./wild3CalibCaughtMon";
+import { defaultAudioInfluences } from "./wild3AudioInfluences";
 import {
   validator,
   FormState,
@@ -61,6 +62,7 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
     values,
     targetSetup,
     leadCycleSpeed,
+    defaultAudioInfluences,
   );
 
   if (opts == null) {

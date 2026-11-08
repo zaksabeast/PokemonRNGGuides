@@ -1,11 +1,12 @@
 #![allow(non_snake_case)] // To have the same function names as pokeemerald decompil project.
-use wasm_bindgen::prelude::*;
 
-use super::generator_main::{
-    INFINITE_CYCLE, VBLANK_FREQ, Wild3GeneratorMonResult, Wild3GeneratorOptions,
-    Wild3GeneratorResults,
+use super::{
+    MinMidMax, calc_modulo_cycle_signed, calc_modulo_cycle_unsigned,
+    generator_main::{
+        INFINITE_CYCLE, VBLANK_FREQ, Wild3GeneratorMonResult, Wild3GeneratorOptions,
+        Wild3GeneratorResults,
+    },
 };
-use super::{calc_modulo_cycle_signed, calc_modulo_cycle_unsigned};
 use crate::{
     EncounterSlot, Gender, GenderRatio, Ivs, NATURE_COUNT, Nature,
     PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE, PERTINENT_SOLO_POKEBLOCKS_BY_NATURE,
@@ -14,8 +15,8 @@ use crate::{
         CycleAndModRange, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method, Moment, Wild3Action,
         Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState, Wild3GeneratorCycleOpts,
         Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
-        get_min_mid_max_pre_sweet_scent_cycle, get_min_mid_max_vblank_cycle_duration,
-        passes_pid_filter,
+        get_default_min_mid_max_initial_cycle_for_feebas,
+        get_default_min_mid_max_vblank_cycle_duration_for_feebas, passes_pid_filter,
     },
     is_max_size,
     rng::{Rng, lcrng::Pokerng},
@@ -558,7 +559,7 @@ fn generate_personality(
             exclude_method3_from_pending_method5(
                 &mut results,
                 &mut pending_method5_index,
-                cycle_counter.get_current_post_sweet_scent_cycle_count(),
+                cycle_counter.get_current_post_cycle_count(),
                 method3_range,
             );
             if methods_contains_wild3
@@ -1015,14 +1016,13 @@ fn rand_next_u16(rng: &mut Pokerng, _reason: &str, _modulo: u16) -> u16 {
     // rand_next_u16_with_debug_print(rng, _reason, _modulo) // Uncomment for debugging
 }
 
-#[wasm_bindgen]
 // Only returns the mid case (which is the one used by the generator)
 pub fn get_feebas_vblank_from_feebas_cycle(feebas_cycles: usize) -> usize {
-    let (_, mid, _) = get_min_mid_max_pre_sweet_scent_cycle(Wild3Action::OldRod);
-    let (_, mid_vblank, _) = get_min_mid_max_vblank_cycle_duration();
+    let initial_cycle = get_default_min_mid_max_initial_cycle_for_feebas().mid;
+    let mid_vblank = get_default_min_mid_max_vblank_cycle_duration_for_feebas().mid;
 
     let (_, mid_case_vblank) =
-        apply_cycles_causing_vblanks_on_cycle_counter(mid, feebas_cycles, mid_vblank);
+        apply_cycles_causing_vblanks_on_cycle_counter(initial_cycle, feebas_cycles, mid_vblank);
 
     mid_case_vblank
 }
@@ -1054,8 +1054,13 @@ fn handle_feebas_cycle_counter(
 ) {
     cycle_counter.on_moment_reached(Moment::CheckFeebas);
 
-    let (min, mid, max) = get_min_mid_max_pre_sweet_scent_cycle(Wild3Action::OldRod);
-    let (min_vblank, mid_vblank, max_vblank) = get_min_mid_max_vblank_cycle_duration();
+    // Limitation: Feebas hasn't been updated with the new vblank calibration logic.
+    let MinMidMax { min, mid, max } = get_default_min_mid_max_initial_cycle_for_feebas();
+    let MinMidMax {
+        min: min_vblank,
+        mid: mid_vblank,
+        max: max_vblank,
+    } = get_default_min_mid_max_vblank_cycle_duration_for_feebas();
 
     let (_, min_case_vblank) =
         apply_cycles_causing_vblanks_on_cycle_counter(min, feebas_cycles, min_vblank);
@@ -1077,8 +1082,7 @@ fn handle_feebas_cycle_counter(
     // The generator always calculates for the mid case (most probable case).
     rng.jump(mid_case_vblank);
 
-    let abs_cycle_from_cycle_counter =
-        cycle_counter.get_current_post_sweet_scent_cycle_count() + mid; // At this points, lead_pid_mod is 0.
+    let abs_cycle_from_cycle_counter = cycle_counter.get_current_post_cycle_count() + mid; // At this points, lead_pid_mod is 0.
     // Limitation: We can only add cycles. In most cases, mid_case_cycle should be > abs_cycle_from_cycle_counter, because abs_cycle_from_cycle_counter is small.
     if mid_case_cycle > abs_cycle_from_cycle_counter {
         cycle_counter.add_cycle(mid_case_cycle - abs_cycle_from_cycle_counter);
@@ -1462,36 +1466,10 @@ fn create_if_passes_filter(
     })
 }
 
+#[path = "tests/generator_tests.rs"]
 #[cfg(test)]
-mod header_lookup_tests {
-    use super::*;
+mod tests;
 
-    #[test]
-    fn calibrated_map_header_lookup_cycles() {
-        // Independent lookup intervals from the calibration fixtures. The
-        // Sweet Scent intervals include another 526 cycles at the call site.
-        for (header_id, expected) in [
-            (0, 218),
-            (6, 782),
-            (20, 1758),
-            (33, 3099),
-            (75, 6605),
-            (98, 7849),
-        ] {
-            let opts = Wild3GeneratorOptions {
-                cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead { lead_cycle_spd: 0 },
-                ..Wild3GeneratorOptions::default()
-            };
-            let mut counter = CycleFrameCounter::new(&opts);
-            let map_data = Wild3MapGameData {
-                map_internal_idx: header_id,
-                ..Wild3MapGameData::default()
-            };
-            assert_eq!(
-                GetCurrentMapWildMonHeaderId(&map_data, &mut counter),
-                header_id
-            );
-            assert_eq!(counter.get_current_post_sweet_scent_cycle_count(), expected);
-        }
-    }
-}
+#[path = "tests/generator_cycle_tests.rs"]
+#[cfg(test)]
+mod tests_cycle;

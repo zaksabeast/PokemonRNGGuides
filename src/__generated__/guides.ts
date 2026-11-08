@@ -3537,7 +3537,7 @@ export const guides = {
       section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "false-Wild RNG Easy Shiny",
-      isNew: true,
+      isNew: false,
       title: "Pokemon Emerald Shiny Wild RNG",
       navDrawerTitle: "Wild RNG Easy Shiny",
       description: "Catch a wild shiny Pokemon in Emerald.",
@@ -6239,7 +6239,7 @@ export const guides = {
       section: "technical_info",
       guideVariants: null,
       guideKey: "false-Methods 3-5",
-      isNew: true,
+      isNew: false,
       title: "Methods 3-5 in Emerald",
       navDrawerTitle: "Methods 3-5",
       description:

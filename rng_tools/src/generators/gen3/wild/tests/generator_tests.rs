@@ -9,7 +9,24 @@ use crate::{
     rng::lcrng::Pokerng,
 };
 
-use super::super::generator::tests::assert_mon_results_eq_unordered;
+fn assert_mon_results_eq_unordered(
+    actual: &[Wild3GeneratorMonResult],
+    expected: &[Wild3GeneratorMonResult],
+    message: &str,
+) {
+    for mon in actual.iter().chain(expected) {
+        let actual_count = actual.iter().filter(|candidate| *candidate == mon).count();
+        let expected_count = expected
+            .iter()
+            .filter(|candidate| *candidate == mon)
+            .count();
+
+        assert_eq!(
+            actual_count, expected_count,
+            "{message}: occurrence count for {mon:?}\nactual: {actual:?}\nexpected: {expected:?}"
+        );
+    }
+}
 
 #[test]
 fn test_generate_wild3_no_filter() {

@@ -40,6 +40,7 @@ import { Pokeblock, pokeblockSchema } from "~/types/pokeblock";
 import { PaintingReseedingFields } from "../pokemonRng/targetSetupInput";
 import { lcrng_distance } from "~/utils/lcrng";
 import { FeebasTilesField } from "./feebasMap";
+import { getDefaultWild3AudioInfluences } from "./wild3AudioInfluences";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -320,7 +321,11 @@ export const Wild3TargetSetupInputFields = ({
 export const Wild3TargetSetupInput = ({ setTargetSetup }: Props) => {
   const onSubmit: ToolFormSubmit<FormState> = async (values) => {
     const targetSetup = convertFormStateValuesToTargetSetup(values);
-    const { content } = await calculateTargetSetupResult(targetSetup, null);
+    const { content } = await calculateTargetSetupResult(
+      targetSetup,
+      null,
+      getDefaultWild3AudioInfluences(targetSetup.map, targetSetup.action),
+    );
     setTargetSetup(content == null ? null : targetSetup);
   };
 

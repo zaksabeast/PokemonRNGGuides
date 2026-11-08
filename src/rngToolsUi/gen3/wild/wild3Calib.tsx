@@ -41,7 +41,6 @@ import { Gen3CalibFields, CalibOffset } from "../pokemonRng/calib";
 import { getGen3CalibPreviousStepRows } from "../pokemonRng/labels";
 import {
   defaultAudioInfluences,
-  getDefaultWild3AudioInfluences,
   type Wild3AudioInfluences,
   formatWild3Weather,
   formatPlayingSong,
@@ -172,9 +171,8 @@ export const Wild3Calib = ({
 
   const handleTargetSetupChange = (setup: TargetSetup) => {
     setTargetSetup(setup);
-    setOverwriteAudioInfluences(
-      getDefaultWild3AudioInfluences(setup.map, setup.action),
-    );
+    setOverwriteLeadCycleSpeed(null);
+    setOverwriteAudioInfluences(null);
     setHasHitTargetAdv(false);
   };
 

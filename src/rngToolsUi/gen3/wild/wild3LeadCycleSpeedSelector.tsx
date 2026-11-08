@@ -123,8 +123,10 @@ export const Wild3LeadCycleSpeedSelector = ({
 }: Props) => {
   const [distributions, setDistributions] =
     React.useState<Wild3Distributions | null>(null);
-  const actualLeadCycleSpeed =
-    targetSetup.lead === "Egg" ? 0 : leadCycleSpeedProp;
+  const [leadCycleSpeed, setLeadCycleSpeed] = React.useState<number | null>(
+    leadCycleSpeedProp ?? null,
+  );
+  const actualLeadCycleSpeed = targetSetup.lead === "Egg" ? 0 : leadCycleSpeed;
   const selectedAudio = normalizeWild3AudioInfluences(
     targetSetup.map,
     targetSetup.action,
@@ -141,6 +143,10 @@ export const Wild3LeadCycleSpeedSelector = ({
   const initialCycleSummary = getInitialCycleSummary(
     initialCycleDistribution?.distribution ?? [],
   );
+
+  React.useEffect(() => {
+    setLeadCycleSpeed(leadCycleSpeedProp ?? null);
+  }, [leadCycleSpeedProp]);
 
   React.useEffect(() => {
     if (initialCycleDistribution == null) {
@@ -203,7 +209,7 @@ export const Wild3LeadCycleSpeedSelector = ({
               idealLeadCycleSpeed={
                 distributions?.idealLeadCycleSpd ?? AVERAGE_LEAD_CYCLE_SPEED
               }
-              leadCycleSpeed={leadCycleSpeedProp ?? AVERAGE_LEAD_CYCLE_SPEED}
+              leadCycleSpeed={leadCycleSpeed ?? AVERAGE_LEAD_CYCLE_SPEED}
               setLeadCycleSpeed={setLeadCycleSpeedProp}
             />
           )}

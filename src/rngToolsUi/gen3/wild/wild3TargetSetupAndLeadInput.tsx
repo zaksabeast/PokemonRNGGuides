@@ -40,15 +40,12 @@ export const Wild3TargetSetupAndLeadInput = ({
 
   const [localAudioInfluences, setLocalAudioInfluences] =
     React.useState<Wild3AudioInfluences>(defaultAudioInfluences);
+
   const audioInfluences = audioInfluencesProp ?? localAudioInfluences;
-  const setAudioInfluences = (audio: Wild3AudioInfluences) => {
-    if (setAudioInfluencesProp != null) {
-      setAudioInfluencesProp(audio);
 
-      return;
-    }
-
+  const setAudioInfluencesBoth = (audio: Wild3AudioInfluences) => {
     setLocalAudioInfluences(audio);
+    setAudioInfluencesProp?.(audio);
   };
 
   const setTargetSetupBoth = (targetSetup: TargetSetup | null) => {
@@ -62,8 +59,7 @@ export const Wild3TargetSetupAndLeadInput = ({
         targetSetup.map,
         targetSetup.action,
       );
-      setLocalAudioInfluences(audio);
-      setAudioInfluencesProp?.(audio);
+      setAudioInfluencesBoth(audio);
       setTargetSetupProp?.(targetSetup);
     }
   };
@@ -91,12 +87,8 @@ export const Wild3TargetSetupAndLeadInput = ({
   }, [leadCycleSpeed, targetSetup, audioInfluences]);
 
   const setLeadCycleSpeedBoth = (spd: number) => {
-    if (setLeadCycleSpeedProp != null) {
-      setLeadCycleSpeedProp(spd);
-      return;
-    }
-
     setLeadCycleSpeed(spd);
+    setLeadCycleSpeedProp?.(spd);
   };
 
   return (
@@ -113,7 +105,7 @@ export const Wild3TargetSetupAndLeadInput = ({
           <Wild3LeadCycleSpeedSelectorWithBtn
             targetSetup={targetSetup}
             audioInfluences={audioInfluences}
-            setAudioInfluences={setAudioInfluences}
+            setAudioInfluences={setAudioInfluencesBoth}
             permitEnablingDebugOptions={permitEnablingDebugOptions}
             setLeadCycleSpeed={setLeadCycleSpeedBoth}
             leadCycleSpeed={leadCycleSpeed}

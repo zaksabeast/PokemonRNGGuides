@@ -28,6 +28,11 @@ export type Wild3AudioInfluences = {
   playing_song: Wild3PlayingSong;
 };
 
+export const defaultAudioInfluences: Wild3AudioInfluences = {
+  weather: "Sunny",
+  playing_song: "MapSong",
+};
+
 export const wild3AudioInfluencesSchema = z.object({
   weather: z.enum(wild3Weathers),
   playing_song: z.enum(wild3PlayingSongs),
@@ -104,6 +109,13 @@ export const getWild3AudioInfluenceOptions = (
   };
 };
 
+export const getDefaultWild3AudioInfluences = (
+  mapId: string,
+  action: Wild3Action,
+): Wild3AudioInfluences => {
+  return normalizeWild3AudioInfluences(mapId, action, {});
+};
+
 export const normalizeWild3AudioInfluences = (
   mapId: string,
   action: Wild3Action,
@@ -117,16 +129,18 @@ export const normalizeWild3AudioInfluences = (
   return {
     weather:
       weathers.find((weather) => weather === preferred.weather) ??
-      weathers.find((weather) => weather === "Sunny") ??
+      weathers.find((weather) => weather === defaultAudioInfluences.weather) ??
       weathers[0] ??
-      "Sunny",
+      defaultAudioInfluences.weather,
     playing_song:
       playingSongs.find(
         (playing_song) => playing_song === preferred.playing_song,
       ) ??
-      playingSongs.find((playing_song) => playing_song === "MapSong") ??
+      playingSongs.find(
+        (playing_song) => playing_song === defaultAudioInfluences.playing_song,
+      ) ??
       playingSongs[0] ??
-      "MapSong",
+      defaultAudioInfluences.playing_song,
   };
 };
 

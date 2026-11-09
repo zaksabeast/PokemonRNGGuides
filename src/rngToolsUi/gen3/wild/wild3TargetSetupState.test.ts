@@ -15,8 +15,6 @@ const oldSavedSetup = {
     requiresWhiteFlute: false,
     safariPokeblock: null,
     aceSid: null,
-    weather: "Sunny",
-    playing_song: "MapSong",
   },
 } as const;
 

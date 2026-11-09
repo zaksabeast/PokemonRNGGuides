@@ -12,6 +12,12 @@ import { Wild3Calib } from "./wild3Calib";
 import { BattleVideoInfo } from "../battleVideo/battleVideo";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 import { targetSetupAtomSchema } from "./wild3TargetSetupState";
+import {
+  defaultAudioInfluences,
+  wild3AudioInfluencesSchema,
+  normalizeWild3AudioInfluences,
+  type Wild3AudioInfluences,
+} from "./wild3AudioInfluences";
 import { EmeraldAceChangeSid } from "../ace/emeraldAceChangeSid";
 import { createBattleVideoInfoAtom } from "../pokemonRng/shared";
 
@@ -105,6 +111,16 @@ const targetSetupAtom = atomWithPersistence(
   { targetSetup: null },
 );
 
+const wild3AudioInfluencesAtomSchema = z.object({
+  audioInfluences: wild3AudioInfluencesSchema,
+});
+
+const wild3AudioInfluencesAtom = atomWithPersistence(
+  "emerald_wild_audioInfluences",
+  wild3AudioInfluencesAtomSchema,
+  { audioInfluences: defaultAudioInfluences },
+);
+
 const leadCycleSpeedAtomSchema = z.object({
   leadCycleSpeed: z.number().int().min(0).max(900),
 });
@@ -120,18 +136,20 @@ const battleVideoInfoAtom = createBattleVideoInfoAtom(
 );
 
 export const useTargetSetup = () => useAtom(targetSetupAtom);
+export const useWild3AudioInfluences = () => useAtom(wild3AudioInfluencesAtom);
 export const useLeadCycleSpeed = () => useAtom(leadCycleSpeedAtom);
 export const useBattleVideoInfo = () => useAtom(battleVideoInfoAtom);
 
 // Step 1: Vanilla Wild3TargetSetupSearcher
 export const Wild3TargetSetupSearcher_WithSetTargetSetup = () => {
   const [targetSetup, setTargetSetup] = useTargetSetup();
-  const { hydrated } = useHydrate(targetSetup);
+  const targetSetupHydrate = useHydrate(targetSetup);
 
   const [, setLeadCycleSpeed] = useLeadCycleSpeed();
+  const [, setAudioInfluences] = useWild3AudioInfluences();
   const [, setBattleVideoInfo] = useBattleVideoInfo();
 
-  if (!hydrated) {
+  if (!targetSetupHydrate.hydrated) {
     return <Skeleton />;
   }
 
@@ -140,6 +158,9 @@ export const Wild3TargetSetupSearcher_WithSetTargetSetup = () => {
       hydrationLock({
         targetSetup,
       }),
+    );
+    setAudioInfluences(
+      hydrationLock({ audioInfluences: defaultAudioInfluences }),
     );
     setLeadCycleSpeed(
       hydrationLock({
@@ -153,15 +174,14 @@ export const Wild3TargetSetupSearcher_WithSetTargetSetup = () => {
     );
   };
 
+  const handleSetAudioInfluences = (audioInfluences: Wild3AudioInfluences) => {
+    setAudioInfluences(hydrationLock({ audioInfluences }));
+  };
+
   const handleSetLeadCycleSpeed = (leadCycleSpeed: number) => {
     setLeadCycleSpeed(
       hydrationLock({
         leadCycleSpeed,
-      }),
-    );
-    setBattleVideoInfo(
-      hydrationLock({
-        battleVideoInfo: null,
       }),
     );
   };
@@ -169,6 +189,7 @@ export const Wild3TargetSetupSearcher_WithSetTargetSetup = () => {
   return (
     <Wild3TargetSetupSearcher
       setTargetSetup={handleSetTargetSetup}
+      setAudioInfluences={handleSetAudioInfluences}
       setLeadCycleSpeed={handleSetLeadCycleSpeed}
     />
   );
@@ -203,6 +224,8 @@ export const EmeraldWildPaintingReseeding_WithTargetSetup = () => {
 
   const [targetSetupLock, setTargetSetup] = useTargetSetup();
   const targetSetupHydrate = useHydrate(targetSetupLock);
+  const [, setAudioInfluences] = useWild3AudioInfluences();
+  const [, setLeadCycleSpeed] = useLeadCycleSpeed();
 
   const [battleVideoInfo, setBattleVideoInfo] = useBattleVideoInfo();
   const battleVideoInfoHydrate = useHydrate(battleVideoInfo);
@@ -233,6 +256,14 @@ export const EmeraldWildPaintingReseeding_WithTargetSetup = () => {
         targetSetup: null,
       }),
     );
+    setLeadCycleSpeed(
+      hydrationLock({
+        leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
+      }),
+    );
+    setAudioInfluences(
+      hydrationLock({ audioInfluences: defaultAudioInfluences }),
+    );
     setBattleVideoInfo(
       hydrationLock({
         battleVideoInfo: null,
@@ -255,6 +286,9 @@ export const EmeraldWildPaintingReseeding_WithTargetSetup = () => {
 export const Wild3Calib_WithTargetSetupAndBattleVideo = () => {
   const [targetSetupLock, setTargetSetup] = useTargetSetup();
   const targetSetupHydrate = useHydrate(targetSetupLock);
+  const [audioInfluencesLock, setAudioInfluencesAtom] =
+    useWild3AudioInfluences();
+  const audioInfluencesHydrate = useHydrate(audioInfluencesLock);
 
   const [leadCycleSpeedLock, setLeadCycleSpeed] = useLeadCycleSpeed();
   const leadCycleSpeedHydrate = useHydrate(leadCycleSpeedLock);
@@ -264,12 +298,14 @@ export const Wild3Calib_WithTargetSetupAndBattleVideo = () => {
 
   if (
     !targetSetupHydrate.hydrated ||
+    !audioInfluencesHydrate.hydrated ||
     !leadCycleSpeedHydrate.hydrated ||
     !battleVideoHydrate.hydrated
   ) {
     return <Skeleton />;
   }
   const { targetSetup } = targetSetupHydrate.client;
+  const { audioInfluences } = audioInfluencesHydrate.client;
   const { leadCycleSpeed } = leadCycleSpeedHydrate.client;
   const { battleVideoInfo } = battleVideoHydrate.client;
 
@@ -302,6 +338,9 @@ export const Wild3Calib_WithTargetSetupAndBattleVideo = () => {
         targetSetup: null,
       }),
     );
+    setAudioInfluencesAtom(
+      hydrationLock({ audioInfluences: defaultAudioInfluences }),
+    );
     setLeadCycleSpeed(
       hydrationLock({
         leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
@@ -317,6 +356,11 @@ export const Wild3Calib_WithTargetSetupAndBattleVideo = () => {
   return (
     <Wild3Calib
       targetSetup={targetSetup}
+      audioInfluences={normalizeWild3AudioInfluences(
+        targetSetup.map,
+        targetSetup.action,
+        audioInfluences,
+      )}
       leadCycleSpeed={leadCycleSpeed}
       battleVideoInfo={battleVideoInfoWithFallback}
       clearAll={clearAll}

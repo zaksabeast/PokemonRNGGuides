@@ -1,5 +1,31 @@
 // https://github.com/pret/pokeemerald/blob/master/src/data/wild_encounters.json
 
+const EMERALD_UNUSED_MAPS = [
+  "MAP_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP1",
+  "MAP_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP2",
+  "MAP_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP3",
+];
+
+type EmeraldEncounter =
+  (typeof emerald_wild_encounters)["wild_encounter_groups"][number]["encounters"][number];
+
+export const isValidMap = (
+  map: EmeraldEncounter,
+): map is Extract<EmeraldEncounter, { map: string }> => {
+  if (!("map" in map)) {
+    return false;
+  }
+
+  if (map.map === "MAP_ALTERING_CAVE" && map.base_label !== "gAlteringCave1") {
+    return false;
+  }
+  if (EMERALD_UNUSED_MAPS.includes(map.map)) {
+    return false;
+  }
+
+  return true;
+};
+
 export const emerald_wild_encounters = {
   wild_encounter_groups: [
     {

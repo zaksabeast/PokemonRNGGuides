@@ -31,6 +31,7 @@ import { match, P } from "ts-pattern";
 
 import {
   normalizeWild3AudioInfluences,
+  type Wild3AudioInfluences,
   getWild3InitialCycleDistributionForSetup,
 } from "./wild3AudioInfluences";
 
@@ -92,6 +93,7 @@ export type Wild3Distributions = {
 export const setupToDistributions = async (
   targetSetup: TargetSetup,
   cycle_opts: Wild3GeneratorCycleOpts,
+  preferredAudioInfluences: Wild3AudioInfluences,
 ): Promise<Wild3Distributions> => {
   const { canUsePokeblock } = getPossibleValuesForMap(
     targetSetup.map,
@@ -131,7 +133,7 @@ export const setupToDistributions = async (
   const audioInfluences = normalizeWild3AudioInfluences(
     targetSetup.map,
     targetSetup.action,
-    targetSetup,
+    preferredAudioInfluences,
   );
   const distribution = getWild3InitialCycleDistributionForSetup({
     ...targetSetup,

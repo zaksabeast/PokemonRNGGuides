@@ -7,8 +7,15 @@ import React from "react";
 import { Wild3LeadCycleSpeedSelectorWithBtn } from "./wild3LeadCycleSpeedSelector";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
+import {
+  defaultAudioInfluences,
+  getDefaultWild3AudioInfluences,
+  type Wild3AudioInfluences,
+} from "./wild3AudioInfluences";
 
 type Props = {
+  audioInfluences?: Wild3AudioInfluences;
+  setAudioInfluences?: (audioInfluences: Wild3AudioInfluences) => void;
   setTargetSetup?: (targetSetup: TargetSetup) => void;
   setLeadCycleSpeed?: (spd: number) => void;
   leadCycleSpeed: number;
@@ -19,6 +26,8 @@ type Props = {
 
 export const Wild3TargetSetupAndLeadInput = ({
   setTargetSetup: setTargetSetupProp,
+  audioInfluences: audioInfluencesProp,
+  setAudioInfluences: setAudioInfluencesProp,
   setLeadCycleSpeed: setLeadCycleSpeedProp,
   leadCycleSpeed: leadCycleSpeedProp,
   displayInstructions,
@@ -29,22 +38,36 @@ export const Wild3TargetSetupAndLeadInput = ({
     null,
   );
 
-  const setTargetSetupBoth = React.useCallback(
-    (targetSetup: TargetSetup | null) => {
-      if (targetSetup == null && permitEnablingDebugOptions) {
-        return; // When debugging, it is useful to not reset the target setup and debugging info.
-      }
+  const [localAudioInfluences, setLocalAudioInfluences] =
+    React.useState<Wild3AudioInfluences>(defaultAudioInfluences);
 
-      setTargetSetup(targetSetup);
-      if (targetSetup != null) {
-        setTargetSetupProp?.(targetSetup);
-      }
-    },
-    [permitEnablingDebugOptions, setTargetSetupProp],
-  );
+  const audioInfluences = audioInfluencesProp ?? localAudioInfluences;
 
-  const [leadCycleSpeed, setLeadCycleSpeed] =
+  const setAudioInfluencesBoth = (audio: Wild3AudioInfluences) => {
+    setLocalAudioInfluences(audio);
+    setAudioInfluencesProp?.(audio);
+  };
+
+  const setTargetSetupBoth = (targetSetup: TargetSetup | null) => {
+    if (targetSetup == null && permitEnablingDebugOptions) {
+      return; // When debugging, it is useful to not reset the target setup and debugging info.
+    }
+
+    setTargetSetup(targetSetup);
+    if (targetSetup != null) {
+      const audio = getDefaultWild3AudioInfluences(
+        targetSetup.map,
+        targetSetup.action,
+      );
+      setAudioInfluencesBoth(audio);
+      setTargetSetupProp?.(targetSetup);
+    }
+  };
+
+  const [localLeadCycleSpeed, setLeadCycleSpeed] =
     React.useState<number>(leadCycleSpeedProp);
+  const leadCycleSpeed =
+    setLeadCycleSpeedProp == null ? localLeadCycleSpeed : leadCycleSpeedProp;
 
   const [targetSetupResult, setTargetSetupResult] =
     React.useState<React.ReactNode>(null);
@@ -56,17 +79,20 @@ export const Wild3TargetSetupAndLeadInput = ({
 
     let current = true;
 
-    calculateTargetSetupResult(targetSetup, leadCycleSpeed).then(
-      ({ content }) => {
-        if (current) {
-          setTargetSetupResult(content);
-        }
-      },
-    );
+    calculateTargetSetupResult(
+      targetSetup,
+      leadCycleSpeed,
+      audioInfluences,
+    ).then(({ content }) => {
+      if (current) {
+        setTargetSetupResult(content);
+      }
+    });
+
     return () => {
       current = false;
     };
-  }, [leadCycleSpeed, targetSetup]);
+  }, [leadCycleSpeed, targetSetup, audioInfluences]);
 
   const setLeadCycleSpeedBoth = (spd: number) => {
     setLeadCycleSpeed(spd);
@@ -96,12 +122,8 @@ export const Wild3TargetSetupAndLeadInput = ({
             setFeebasVblankSelection={(feebasVblankSelection) =>
               setTargetSetupBoth({ ...targetSetup, feebasVblankSelection })
             }
-            setWeather={(weather) =>
-              setTargetSetupBoth({ ...targetSetup, weather })
-            }
-            setPlayingSong={(playing_song) =>
-              setTargetSetupBoth({ ...targetSetup, playing_song })
-            }
+            audioInfluences={audioInfluences}
+            setAudioInfluences={setAudioInfluencesBoth}
             permitEnablingDebugOptions={permitEnablingDebugOptions}
             setLeadCycleSpeed={setLeadCycleSpeedBoth}
             leadCycleSpeed={leadCycleSpeed}

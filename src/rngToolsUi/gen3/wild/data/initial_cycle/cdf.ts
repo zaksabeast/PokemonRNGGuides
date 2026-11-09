@@ -1,5 +1,5 @@
 import type { CdfKnot } from "~/rngTools";
-import { InitialCycleDataset } from "./initial_cycle_dataset";
+import type { InitialCycleDataset } from "./initial_cycle_dataset";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { formatProbability } from "~/utils/formatProbability";
 
@@ -93,7 +93,7 @@ export const getInitialCycleQualitativeProbability = (
   );
 
   return {
-    probabilityTxt: `${formatProbability(probability)} chance that the initial cycle is within (${formatLargeInteger(start)}, ${formatLargeInteger(end)})`,
+    probabilityTxt: `${formatProbability(probability)} chance that the initial cycle is within (${formatLargeInteger(start)} to ${formatLargeInteger(end)})`,
     qualitativeTxt: qualitative,
   };
 };
@@ -227,6 +227,15 @@ export const combineCalibrationComponents = (
 export const getInitialCycleSummary = (
   knots: readonly CdfKnot[],
 ): { min: number; max: number; median: number; average: number } => {
+  if (knots.length === 0) {
+    return {
+      min: 0,
+      max: 0,
+      median: 0,
+      average: 0,
+    };
+  }
+
   const first = knots[0];
   const last = knots[knots.length - 1];
 

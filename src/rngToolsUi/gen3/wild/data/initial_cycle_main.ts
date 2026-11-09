@@ -38,7 +38,7 @@ const getPossibleWeathersAndPlayingSongs = (
   const weathers = (action: Wild3Action): Wild3Weather[] =>
     available(action) ? getPossibleWeathers(map_id, action) : [];
   const songs = (action: Wild3Action): Wild3PlayingSong[] =>
-    getPossiblePlayingSongs(map_id, slots_by_action, action);
+    available(action) ? getPossiblePlayingSongs(map_id, action) : [];
 
   return {
     possible_weather_by_action: {
@@ -70,7 +70,15 @@ const getInitialCycleDistributions = (
   return wild3Actions.flatMap((action) =>
     possible_weather_by_action[action].flatMap((weather) =>
       possible_playing_song_by_action[action].map((playing_song) => {
-        const info = getInitialCycleInfo(map_id, weather, playing_song, action);
+        const info = getInitialCycleInfo(
+          map_id,
+          weather,
+          playing_song,
+          action,
+        ) ?? {
+          summary: { min: 0, max: 0 },
+          distribution: [],
+        };
 
         return {
           action,

@@ -23,7 +23,8 @@ import type { TargetSetup } from "./wild3TargetSetupInput";
 import { doesRockSmashSetupRequireWhiteFlute } from "./searchWild3Target";
 import {
   getWild3InitialCycleDistribution,
-  normalizeWild3AudioInfluences,
+  getDefaultWild3AudioInfluences,
+  type Wild3AudioInfluences,
 } from "./wild3AudioInfluences";
 
 export const simplifiedLeads = gen3Leads.filter(
@@ -157,6 +158,7 @@ export const buildSimplifiedSearchOptions = (
 export type SelectedWildSetup = {
   targetSetup: TargetSetup;
   probability: number;
+  audioInfluences: Wild3AudioInfluences;
   leadCycleSpeed: number;
 };
 
@@ -190,7 +192,7 @@ export const searchSimplifiedWild = async (
     }
     const leadCycleSpeed = getSimplifiedLeadSpeed(res.lead);
     const map = opts.map_setups[res.map_idx].map_data;
-    const audioInfluences = normalizeWild3AudioInfluences(
+    const audioInfluences = getDefaultWild3AudioInfluences(
       map.map_id,
       res.action,
     );
@@ -211,11 +213,11 @@ export const searchSimplifiedWild = async (
     candidates.push({
       probability: cycleData.method_probability,
       leadCycleSpeed,
+      audioInfluences,
       leadOrder: simplifiedLeads.findIndex(
         (lead) => JSON.stringify(lead) === JSON.stringify(res.lead),
       ),
       targetSetup: {
-        ...audioInfluences,
         map: map.map_id,
         action: res.action,
         lead: res.lead,

@@ -11,7 +11,10 @@ import {
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import type { TargetSetup } from "./wild3TargetSetupInput";
 import { isFishingAction, wild3Actions } from "./utils";
-import { normalizeWild3AudioInfluences } from "./wild3AudioInfluences";
+import {
+  normalizeWild3AudioInfluences,
+  type Wild3AudioInfluences,
+} from "./wild3AudioInfluences";
 import { getIvRangeFromStats } from "~/types/statRange";
 import {
   gen3PkmFilterFieldsToRustInput,
@@ -28,6 +31,7 @@ export const createWild3SearcherOptions = async (
   values: FormState,
   targetSetup: TargetSetup,
   leadCycleSpeed: number,
+  audioInfluences: Wild3AudioInfluences,
 ) => {
   const initial_seed = targetSetup.targetPaintingAdvs.before;
 
@@ -101,7 +105,7 @@ export const createWild3SearcherOptions = async (
         ...normalizeWild3AudioInfluences(
           targetSetup.map,
           targetSetup.action,
-          targetSetup,
+          audioInfluences,
         ),
         lead_cycle_speed: leadCycleSpeed,
       },

@@ -8,7 +8,6 @@ import {
 } from "./utils";
 import { gen3Methods } from "~/types";
 import { pokeblockSchema } from "~/types/pokeblock";
-import { wild3AudioInfluencesSchema } from "./wild3AudioInfluences";
 
 export const targetSetupAtomSchema = z.object({
   targetSetup: z
@@ -43,6 +42,5 @@ export const targetSetupAtomSchema = z.object({
         .nullable()
         .default(null),
     })
-    .and(wild3AudioInfluencesSchema)
     .nullable(),
 });

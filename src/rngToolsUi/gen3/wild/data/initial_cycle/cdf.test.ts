@@ -15,17 +15,17 @@ test("uniform distributions remain common across wide ranges and at the edges", 
   ).toEqual([
     {
       probabilityTxt:
-        "5.0% chance that the initial cycle is within (-3,000, 3,000)",
+        "5.0% chance that the initial cycle is within (-3,000 to 3,000)",
       qualitativeTxt: "Common",
     },
     {
       probabilityTxt:
-        "10% chance that the initial cycle is within (27,000, 33,000)",
+        "10% chance that the initial cycle is within (27,000 to 33,000)",
       qualitativeTxt: "Common",
     },
     {
       probabilityTxt:
-        "5.0% chance that the initial cycle is within (57,000, 63,000)",
+        "5.0% chance that the initial cycle is within (57,000 to 63,000)",
       qualitativeTxt: "Common",
     },
   ]);
@@ -47,25 +47,27 @@ test("qualitative probability uses the specified ratios against uniform likeliho
     ),
   ).toEqual([
     {
-      probabilityTxt: "0% chance that the initial cycle is within (0, 6,000)",
+      probabilityTxt: "0% chance that the initial cycle is within (0 to 6,000)",
       qualitativeTxt: "Impossible",
     },
     {
-      probabilityTxt: "2.0% chance that the initial cycle is within (0, 6,000)",
+      probabilityTxt:
+        "2.0% chance that the initial cycle is within (0 to 6,000)",
       qualitativeTxt: "Very unlikely",
     },
     {
-      probabilityTxt: "2.5% chance that the initial cycle is within (0, 6,000)",
+      probabilityTxt:
+        "2.5% chance that the initial cycle is within (0 to 6,000)",
       qualitativeTxt: "Unlikely",
     },
     {
       probabilityTxt:
-        "12.5% chance that the initial cycle is within (0, 6,000)",
+        "12.5% chance that the initial cycle is within (0 to 6,000)",
       qualitativeTxt: "Common",
     },
     {
       probabilityTxt:
-        "75.0% chance that the initial cycle is within (0, 6,000)",
+        "75.0% chance that the initial cycle is within (0 to 6,000)",
       qualitativeTxt: "Very Common",
     },
   ]);
@@ -83,25 +85,27 @@ test("qualitative probability includes point masses at either 3000-cycle boundar
     ),
   ).toEqual([
     {
-      probabilityTxt: "0% chance that the initial cycle is within (-6,001, -1)",
+      probabilityTxt:
+        "0% chance that the initial cycle is within (-6,001 to -1)",
       qualitativeTxt: "Impossible",
     },
     {
       probabilityTxt:
-        "100% chance that the initial cycle is within (-6,000, 0)",
+        "100% chance that the initial cycle is within (-6,000 to 0)",
       qualitativeTxt: "Common",
     },
     {
       probabilityTxt:
-        "100% chance that the initial cycle is within (-3,000, 3,000)",
+        "100% chance that the initial cycle is within (-3,000 to 3,000)",
       qualitativeTxt: "Common",
     },
     {
-      probabilityTxt: "100% chance that the initial cycle is within (0, 6,000)",
+      probabilityTxt:
+        "100% chance that the initial cycle is within (0 to 6,000)",
       qualitativeTxt: "Common",
     },
     {
-      probabilityTxt: "0% chance that the initial cycle is within (1, 6,001)",
+      probabilityTxt: "0% chance that the initial cycle is within (1 to 6,001)",
       qualitativeTxt: "Impossible",
     },
   ]);

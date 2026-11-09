@@ -18,6 +18,8 @@ Every comment adds something the reader can't get from the code:
 - Each fact is stated once, in the most specific place.
 - Fields, type aliases, and private helpers get a comment only when they carry an external fact or a non-obvious "why".
 - Explanations for end users go in user docs or guides.
+- Don't credit where code was ported from ("A port of X", "follows X's order") in comments. Instead, credit it in the `## Credits` section of each guide that uses the tool.
+- Doc comments tell a caller what they need to know. A note about how the body works goes inside the body, next to the line it explains.
 
 If code needs a comment to be understood, first try to fix the code: a better name, a smaller function, a clearer type. Comment only what is left.
 
@@ -36,6 +38,28 @@ type TimelineState = (usize, NpcModel);
 - Build names from words a reviewer already knows: the domain's terms and plain English.
 - Use the domain's vocabulary consistently: one concept, one term, matching what the codebase already calls it.
 - Keep existing names as they are unless renaming is the task.
+- If a name needs a comment to explain it, rename it instead.
+- Numbers name their unit: `completedStepCount` and `shownStepIndex`, not `done` and `viewing`.
+- Booleans say whether something should happen, is true now, or already happened: `shouldAccept` or `isShownStepCompleted`, not `isAccept` or `isPast`.
+- Collections are plural: `egg_seeds` for four seeds, not `seed`.
+- A name says what the value holds: `ball_parent` for a parent slot, not `ball`.
+- Avoid algorithm jargon (`relax`, `visit`) in favor of what the code does in the domain (`keep_shorter_path`).
+
+```
+// Bad: needs comments to explain the names.
+type Progress = {
+  // Eggs accepted or rejected so far.
+  done: number;
+  // The egg shown, which can be an earlier one.
+  viewing: number;
+};
+
+// Good: the names carry the meaning and the unit.
+type StepProgress = {
+  completedStepCount: number;
+  shownStepIndex: number;
+};
+```
 
 ## 3. Function bodies
 
@@ -63,6 +87,23 @@ const borderColor = match({ hasPlan, press })
   .otherwise(() => "Primary");
 ```
 
+Choose between several booleans with `match` too, instead of a chain of `if`s or nested ternaries.
+
+Don't build an object literal only to index it on the spot. Instead, name the map, and in TypeScript check it with `as const satisfies Record<Key, Value>`.
+
+```
+// Bad: an anonymous object built and indexed in one expression.
+label: { First: t["Ability 1"], Second: t["Ability 2"] }[ability],
+
+// Good: a named map the compiler checks for every key.
+const abilityLabels = {
+  First: "Ability 1",
+  Second: "Ability 2",
+} as const satisfies Record<AbilityType, Translation>;
+
+label: t[abilityLabels[ability]],
+```
+
 Readability starts with control flow. Fix it before renaming things or trimming comments.
 
 Keep hot paths fast, even at some cost to elegance. In a tight loop, mutate state in place rather than cloning large state on every iteration.
@@ -76,6 +117,7 @@ Blank lines are punctuation. They tell the reader which lines belong together, s
 - **Order each group from given to derived.** Measured or chosen values come first, and values computed from them follow.
 - **Keep checks next to what they protect.** A compile-time assert sits directly beside the constant that depends on it.
 - **Split function bodies into steps.** Put a blank line between setup, the main loop, and the result. A blank line means "next step", so use one only where a new step begins.
+- **Group a component's hooks.** Separate hook calls with a blank line wherever they change concern, such as translations and navigation, then shared state, then local state, then a tool hook.
 
 ```
 // Bad: one wall of unrelated values.
@@ -134,6 +176,8 @@ Core logic (generators, searchers, calculators) should be generic. Caller-specif
 - Types are constraints that the compiler checks. Don't silence the type checker with `as X`, `as unknown as X`, `any`, or `unwrap` on things that can fail. A cast that makes an error disappear without proving the invariant is worse than the error. Instead, prove the invariant: narrow with type guards or `match`, validate with `satisfies`, tighten the types, and handle fallible results explicitly.
 - If a type-safe solution would be disproportionately complex, say so plainly and let the maintainer decide. Don't hide the problem behind a cast.
 - Keep types explicit at module and component boundaries.
+- When fields only matter in some cases, encode the cases in an enum instead of booleans plus comments. `pairing: DifferentSpecies | SameSpecies | Ditto(slot)` beats `ditto: Option<Slot>` with a `same_species` flag commented "Ignored with a Ditto".
+- Use the project's existing types instead of deriving new ones from component props. For colors, use `Color` from `@emotion/react`.
 
 ## 7. Tests
 
@@ -143,7 +187,7 @@ Core logic (generators, searchers, calculators) should be generic. Caller-specif
 
 ## 8. Scope and reuse
 
-- Reuse existing helpers, components, and patterns before writing new ones. Put shared primitives in the shared location the project already uses, outside feature folders.
+- Reuse existing helpers, components, and patterns before writing new ones. Put shared primitives in the shared location the project already uses, outside feature folders. Shared UI constants, such as `PLACEHOLDER`, live in `src/components`.
 - Don't restore code that history shows was removed on purpose. Instead, ask why it was removed.
 - Smaller is better. A PR adding thousands of lines for one feature should make you suspect that existing code is being duplicated or over-abstracted.
 
@@ -153,7 +197,10 @@ Before submitting, check each changed file:
 
 - [ ] Every comment states an external fact or a non-obvious "why", in one or two sentences, and says it only once.
 - [ ] Every doc comment adds information beyond its item's name.
-- [ ] Every new name is understandable without reading its definition.
+- [ ] Port sources are credited in the guide's `## Credits`, not in comments, and doc comments describe the item, not its body.
+- [ ] Every new name is understandable without reading its definition: numbers name their unit, booleans their tense, collections are plural.
+- [ ] No object literal is built only to be indexed on the spot.
+- [ ] Fields that only apply in some cases are an enum, not booleans with comments.
 - [ ] Every function body is flat: single-level loops, one-line conditions, and plain assignments, with helpers holding the rest.
 - [ ] No immediately invoked functions: values come from `match`, and rendering choices are components.
 - [ ] Related constants are grouped, unrelated groups and function steps are separated by blank lines.

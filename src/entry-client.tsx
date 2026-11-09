@@ -2,8 +2,6 @@ import { createRoot, hydrateRoot } from "react-dom/client";
 import { App } from "~/app";
 import { settings } from "~/settings";
 import { initAmplitude } from "~/analytics";
-import { registerSW } from "virtual:pwa-register";
-import { dispatchNeedRefresh } from "~/swRefresh/event";
 import { Router } from "wouter";
 import {
   createCache as createAntdCache,
@@ -14,10 +12,6 @@ import { CacheProvider as EmotionCacheProvider } from "@emotion/react";
 import { HelmetProvider } from "@dr.pogodin/react-helmet";
 import { MetaTags } from "./components";
 import { RouteSchema } from "~/routes/defs";
-
-const updateSw = registerSW({
-  onNeedRefresh: dispatchNeedRefresh,
-});
 
 if (!settings.isDev) {
   initAmplitude(settings.amplitudeApiKey, {
@@ -45,7 +39,7 @@ const app = (
       <AntdCacheProvider cache={antdCache} hashPriority="low">
         <Router>
           <MetaTags />
-          <App updateSw={updateSw} />
+          <App />
         </Router>
       </AntdCacheProvider>
     </EmotionCacheProvider>

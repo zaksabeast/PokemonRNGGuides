@@ -25,6 +25,11 @@ impl TinyMT {
         rng
     }
 
+    /// Resumes from a saved state, like the egg seeds, without seeding.
+    pub fn from_state(state: [u32; 4]) -> Self {
+        Self { state }
+    }
+
     pub fn next_state(&mut self) {
         let mut y = self.state[3];
         let mut x = (self.state[0] & 0x7FFFFFFF) ^ self.state[1] ^ self.state[2];
@@ -87,6 +92,23 @@ impl Rng for TinyMT {}
 #[cfg(test)]
 mod test {
     use super::*;
+
+    #[test]
+    fn from_state_keeps_the_state() {
+        let state = [0x11112222, 0x33334444, 0x55556666, 0x77778888];
+        assert_eq!(TinyMT::from_state(state).get_state(), state);
+    }
+
+    #[test]
+    fn from_state_generates_random_values() {
+        let mut rng = TinyMT::from_state([0x11112222, 0x33334444, 0x55556666, 0x77778888]);
+
+        for _ in 0..156 {
+            rng.next_state();
+        }
+
+        assert_eq!(rng.rand::<u32>(), 0x670e7a39);
+    }
 
     #[test]
     fn should_generate_random_values() {

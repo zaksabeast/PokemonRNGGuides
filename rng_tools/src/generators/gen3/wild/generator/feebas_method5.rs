@@ -279,6 +279,7 @@ fn complete_from_pid_until_the_end(
         encounter_idx: gen_data_feebas.encounter_idx,
         lvl,
         encounter_gender_ratio: gen_data_feebas.encounter.species_data.gender_ratio(),
+        encounter_species: gen_data_feebas.encounter.species_data.species,
         required_gender,
         required_nature,
         used_safari_pokeblock: None,

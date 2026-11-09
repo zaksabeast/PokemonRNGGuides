@@ -10,7 +10,7 @@ use super::{
 use crate::{
     EncounterSlot, Gender, GenderRatio, Ivs, NATURE_COUNT, Nature,
     PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE, PERTINENT_SOLO_POKEBLOCKS_BY_NATURE,
-    POKEBLOCK_NATURE_STAT_FACTORS, TsvTrv,
+    POKEBLOCK_NATURE_STAT_FACTORS, Species, TsvTrv,
     gen3::{
         CycleAndModRange, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method, Moment, Wild3Action,
         Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState, Wild3GeneratorCycleOpts,
@@ -76,7 +76,7 @@ fn FishingWildEncounter(
         let level = ChooseWildMonLevel(rng, encounter, opts.lead, cycle_counter);
         let encounter_idx = Wild3EncounterIndex::Feebas;
         // We don't want to validate the lvl because it could change if a vblank occurs before ChooseWildMonLevel.
-        let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, None)?;
+        let encounter = map_data.get_encounter(opts.action, encounter_idx)?;
         return CreateWildMon(
             *rng,
             opts,
@@ -92,7 +92,12 @@ fn FishingWildEncounter(
     GetCurrentMapWildMonHeaderId(map_data, cycle_counter);
     let (encounter_idx, level) = GenerateFishingWildMon(rng, opts, map_data, cycle_counter)?;
 
-    let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, Some(level))?;
+    let encounter = match feebas_method5_ctx.as_ref() {
+        // We don't want to validate the lvl because it could change if a vblank occurs before ChooseWildMonLevel.
+        Some(_) => map_data.get_encounter(opts.action, encounter_idx),
+        None => get_encounter_if_respects_filter(opts, map_data, encounter_idx, level),
+    }?;
+
     CreateWildMon(
         *rng,
         opts,
@@ -160,7 +165,7 @@ fn RockSmashWildEncounter(
     }
     cycle_counter.add_cycle(131);
     let (encounter_idx, level) = TryGenerateWildMon(rng, opts, map_data, 0, cycle_counter)?;
-    let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, Some(level))?;
+    let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, level)?;
     CreateWildMon(
         *rng,
         opts,
@@ -237,7 +242,7 @@ fn SweetScentWildEncounter(
         && DoMassOutbreakEncounterTest(rng, opts, cycle_counter)
     {
         let (outbreak, level) = SetUpMassOutbreakEncounter(rng, 0, opts, map_data, cycle_counter)?;
-        let encounter = get_encounter_if_respects_filter(opts, map_data, outbreak, Some(level))?;
+        let encounter = get_encounter_if_respects_filter(opts, map_data, outbreak, level)?;
         return CreateWildMon(
             *rng,
             opts,
@@ -251,7 +256,7 @@ fn SweetScentWildEncounter(
     }
 
     let (encounter_idx, level) = TryGenerateWildMon(rng, opts, map_data, 0, cycle_counter)?;
-    let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, Some(level))?;
+    let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, level)?;
     CreateWildMon(
         *rng,
         opts,
@@ -349,7 +354,7 @@ fn get_encounter_if_respects_filter<'a>(
     opts: &Wild3GeneratorOptions,
     map_data: &'a Wild3MapGameData,
     encounter_idx: Wild3EncounterIndex,
-    lvl: Option<u8>,
+    lvl: u8,
 ) -> Option<&'a Wild3EncounterGameData> {
     let encounter = map_data.get_encounter(opts.action, encounter_idx)?;
 
@@ -359,12 +364,10 @@ fn get_encounter_if_respects_filter<'a>(
         return None;
     }
 
-    if let Some(lvl) = lvl {
-        if let Some(wanted_lvl) = opts.gen3_filter.lvl
-            && lvl != wanted_lvl
-        {
-            return None;
-        }
+    if let Some(wanted_lvl) = opts.gen3_filter.lvl
+        && lvl != wanted_lvl
+    {
+        return None;
     }
 
     Some(encounter)
@@ -503,6 +506,7 @@ fn CreateWildMon(
     let gen_data = GenTmpData {
         opts,
         encounter_idx,
+        encounter_species: encounter.species_data.species,
         lvl,
         encounter_gender_ratio,
         required_gender,
@@ -1066,6 +1070,7 @@ fn ChooseWildMonLevel(
 struct GenTmpData<'a> {
     opts: &'a Wild3GeneratorOptions,
     encounter_idx: Wild3EncounterIndex,
+    encounter_species: Species,
     lvl: u8,
     encounter_gender_ratio: GenderRatio,
     required_gender: Option<Gender>,
@@ -1499,6 +1504,12 @@ fn create_if_passes_filter(
     };
 
     // If fishing feebas, that test may have been skipped early on.
+    if let Some(required_species) = gen_data.opts.gen3_filter.species
+        && required_species != gen_data.encounter_species
+    {
+        return None;
+    }
+
     if let Some(required_lvl) = gen_data.opts.gen3_filter.lvl
         && required_lvl != gen_data.lvl
     {

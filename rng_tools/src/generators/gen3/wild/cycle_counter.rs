@@ -509,7 +509,7 @@ mod tests {
     use crate::gen3::CycleRange;
 
     #[test]
-    fn check_valid_all_lead_spds_cycle_range() {
+    fn wild3_check_valid_all_lead_spds_cycle_range() {
         let start = CycleFrameCounter::CheckValidAllLeadSpds {
             min_lead_cycle_spd: 100,
             max_lead_cycle_spd: 200,
@@ -537,7 +537,7 @@ mod tests {
     }
 
     #[test]
-    fn min_max_cycle_range() {
+    fn wild3_min_max_cycle_range() {
         let start = CycleFrameCounter::MinMaxRange {
             min_max_cycles: MinMaxCycleFrame::new((100, 100), (100, 100)),
             base_cycle_count: 100,
@@ -561,7 +561,7 @@ mod tests {
     }
 
     #[test]
-    fn detailed_breakdown_cycle_range() {
+    fn wild3_detailed_breakdown_cycle_range() {
         let start = CycleFrameCounter::DetailedBreakdown {
             lead_cycle_spd: 100,
             current_cycle: CycleFrame {

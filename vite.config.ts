@@ -6,7 +6,6 @@ import mdx from "@mdx-js/rollup";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import remarkGfm from "remark-gfm";
-import { VitePWA } from "vite-plugin-pwa";
 import wasm from "vite-plugin-wasm";
 import { visit } from "unist-util-visit";
 import type { Plugin } from "unified";
@@ -109,40 +108,6 @@ export default defineConfig({
       presets: ["@babel/preset-typescript", reactCompilerPreset()],
     }),
     wasm(),
-    VitePWA({
-      registerType: "autoUpdate",
-      selfDestroying: true,
-      srcDir: "src",
-      filename: "sw.js",
-      workbox: {
-        maximumFileSizeToCacheInBytes: 4000000,
-        navigateFallbackDenylist: [/\//],
-        runtimeCaching: [
-          {
-            urlPattern: ({ url }) => !url.pathname.endsWith(".wasm"),
-            handler: "NetworkFirst",
-          },
-          {
-            urlPattern: ({ url }) => url.pathname.endsWith(".wasm"),
-            handler: "CacheFirst",
-            options: {
-              cacheName: "wasm-cache",
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
-              },
-            },
-          },
-        ],
-      },
-      manifest: {
-        name: "PokemonRNG.com",
-        short_name: "PokemonRNG.com",
-        start_url: "/",
-        display: "standalone",
-        description: "Guaranteed perfect shinies",
-      },
-    }),
   ],
   css: {
     // postcss.config.js purges against the prerendered dist HTML, so it only runs in minimize-css

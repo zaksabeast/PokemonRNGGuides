@@ -8,6 +8,8 @@ PokemonRNGGuides is the pokemonrng.com site: MDX guides for Pokemon RNG manipula
 
 All code must follow [CODE_STYLE.md](./CODE_STYLE.md). Read it before writing code, and run its self-review checklist before finishing.
 
+Don't add code comments. Write code clear enough not to need them. CODE_STYLE.md lists the rare exceptions.
+
 ## Commands
 
 Bun is the package manager. Use `bun run <script>`, never npm/pnpm/yarn. Run the smallest command that validates the change. Don't run formatting or linting unless the task asks for it.

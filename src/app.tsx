@@ -6,7 +6,6 @@ import { ThemeProvider } from "~/theme/provider";
 import { MDXProvider } from "@mdx-js/react";
 import { markdownComponents } from "~/markdownExports";
 import { PageLanguageContext } from "~/markdownExports/languageContext";
-import { NeedsUpdateNotification } from "~/swRefresh/notification";
 import { useActiveRoute } from "./hooks/useActiveRoute";
 import { getGuide } from "./guides";
 import { useUpdateHydration } from "./hooks/useHydrate";
@@ -14,11 +13,7 @@ import { useUserInteraction } from "./hooks/useUserInteraction";
 import { resumeSharedAudioContext } from "~/utils/sharedAudio";
 import { SizeContext } from "~/theme/size";
 
-type Props = {
-  updateSw: (reloadPage: boolean) => void;
-};
-
-export const App = ({ updateSw }: Props) => {
+export const App = () => {
   useUpdateHydration();
   const route = useActiveRoute();
   const currentLanguage = getGuide(route).meta.translation?.language ?? "en";
@@ -45,7 +40,6 @@ export const App = ({ updateSw }: Props) => {
           <AntdApp>
             <PageLanguageContext.Provider value={currentLanguage}>
               <MDXProvider components={markdownComponents}>
-                <NeedsUpdateNotification updateSw={updateSw} />
                 <Flex minHeight="100dvh" vertical backgroundColor="BgBase">
                   <Router />
                 </Flex>

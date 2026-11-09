@@ -439,6 +439,83 @@ export const translations = {
   "Ordinary lead": "Ordinary lead",
   Synchronize: "Synchronize",
   "Synchronize Nature": "Synchronize Nature",
+  "Shiny Charm": "Shiny Charm",
+  Egg: "Egg",
+  "Gender Ratio": "Gender Ratio",
+  "50% male": "50% male",
+  "87.5% male": "87.5% male",
+  "75% male": "75% male",
+  "25% male": "25% male",
+  "12.5% male": "12.5% male",
+  "Male only": "Male only",
+  "Female only": "Female only",
+  "Nidoran or Volbeat/Illumise": "Nidoran or Volbeat/Illumise",
+  "Male Parent": "Male Parent",
+  "Female Parent": "Female Parent",
+  IVs: "IVs",
+  Everstone: "Everstone",
+  "Destiny Knot": "Destiny Knot",
+  "Power Weight": "Power Weight",
+  "Power Bracer": "Power Bracer",
+  "Power Belt": "Power Belt",
+  "Power Lens": "Power Lens",
+  "Power Band": "Power Band",
+  "Power Anklet": "Power Anklet",
+  Ditto: "Ditto",
+  "Accepts + Rejects": "Accepts + Rejects",
+  "Accepts left": "Accepts left",
+  "Rejects left": "Rejects left",
+  Accept: "Accept",
+  Reject: "Reject",
+  "Egg seeds before": "Egg seeds before",
+  "The next egg is your target, so there's nothing to accept or reject.":
+    "The next egg is your target, so there's nothing to accept or reject.",
+  "Eggs to accept and reject": "Eggs to accept and reject",
+  "Egg {current} of {total}": "Egg {current} of {total}",
+  "already done": "already done",
+  Previous: "Previous",
+  Next: "Next",
+  "Back to current egg": "Back to current egg",
+  "Redo from this egg": "Redo from this egg",
+  "Accepted, next egg": "Accepted, next egg",
+  "Rejected, next egg": "Rejected, next egg",
+  "All done": "All done",
+  "The next egg is your target. Don't accept it yet.":
+    "The next egg is your target. Don't accept it yet.",
+  Continue: "Continue",
+  "Target Egg": "Target Egg",
+  "Egg seeds before accepting": "Egg seeds before accepting",
+  "Egg seeds after accepting": "Egg seeds after accepting",
+  "Use as current egg seeds": "Use as current egg seeds",
+  "The male Pokemon at the Nursery, or Ditto.":
+    "The male Pokemon at the Nursery, or Ditto.",
+  "The female Pokemon at the Nursery, or Ditto.":
+    "The female Pokemon at the Nursery, or Ditto.",
+  "Only show eggs that match these. Leave them as they are to see every egg.":
+    "Only show eggs that match these. Leave them as they are to see every egg.",
+  "Egg Seeds": "Egg Seeds",
+  "Enter all four in the order PokeReader or your seed finder shows them.":
+    "Enter all four in the order PokeReader or your seed finder shows them.",
+  "Your Trainer Shiny Value. Eggs with a matching PSV hatch shiny.":
+    "Your Trainer Shiny Value. Eggs with a matching PSV hatch shiny.",
+  "How far ahead to search. Higher values find more eggs, but they can take more accepts and rejects to reach.":
+    "How far ahead to search. Higher values find more eggs, but they can take more accepts and rejects to reach.",
+  "The parents are from games in different languages":
+    "The parents are from games in different languages",
+  "You have the Shiny Charm": "You have the Shiny Charm",
+  "The gender ratio of the Pokemon that hatches, listed in its Pokedex entry.":
+    "The gender ratio of the Pokemon that hatches, listed in its Pokedex entry.",
+  "Same Species": "Same Species",
+  "Both parents are the same species": "Both parents are the same species",
+  "Turn on if this parent is a Ditto": "Turn on if this parent is a Ditto",
+  "Held Item": "Held Item",
+  "Ability 1": "Ability 1",
+  "Ability 2": "Ability 2",
+  "Hidden Ability": "Hidden Ability",
+  "Ability 1 and 2 follow the order the species' abilities are listed in. If the species only has one ability, either works.":
+    "Ability 1 and 2 follow the order the species' abilities are listed in. If the species only has one ability, either works.",
+  "Only needed when this parent holds an Everstone.":
+    "Only needed when this parent holds an Everstone.",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

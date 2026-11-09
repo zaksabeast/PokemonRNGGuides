@@ -1,7 +1,6 @@
 import { MetaTags } from "~/components";
 import { App } from "~/app";
 import { Router } from "wouter";
-import { noop } from "lodash-es";
 import { RouteSchema } from "~/routes/defs";
 import {
   createCache as createAntdCache,
@@ -110,7 +109,7 @@ export const render = async (url: string): Promise<RenderResult> => {
         <AntdCacheProvider cache={antdCache} hashPriority="low">
           <Router ssrPath={route}>
             <MetaTags />
-            <App updateSw={noop} />
+            <App />
           </Router>
         </AntdCacheProvider>
       </EmotionCacheProvider>

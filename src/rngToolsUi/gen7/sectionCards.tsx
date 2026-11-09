@@ -10,7 +10,14 @@ import {
   Tag,
   Typography,
 } from "~/components";
-import { Gen7Gift, Gen7Press } from "~/rngTools";
+import {
+  Gen7Gift,
+  Gen7Press,
+  type Gender,
+  type Ivs,
+  type Nature,
+  type ShinyType,
+} from "~/rngTools";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { formatMinutesAndSeconds } from "~/utils/formatDuration";
 import { SAFE_ADVANCE_COUNT } from "./useSafeAdvances";
@@ -19,13 +26,33 @@ import { Color } from "@emotion/react";
 const ADVANCE_TAG_MIN_WIDTH = 64;
 const ADVANCE_BUTTON_MIN_WIDTH = 80;
 export const PRESS_TIMING_MIN_HEIGHT = 78;
-const PLACEHOLDER = "-";
 const NEXT_ADVANCE_PLACEHOLDER_COUNT = 5;
 const SECONDS_PER_STEP = 2 / 60;
 
+type LabeledCountProps = {
+  label: string;
+  labelColor?: Color;
+  count: number | null;
+  fontSize?: number;
+};
+
+export const LabeledCount = ({
+  label,
+  labelColor = "TextSecondary",
+  count,
+  fontSize = 36,
+}: LabeledCountProps) => (
+  <Flex vertical>
+    <Typography.Text color={labelColor}>{label}</Typography.Text>
+    <Typography.Text fontSize={fontSize} strong>
+      {count ?? "-"}
+    </Typography.Text>
+  </Flex>
+);
+
 type PressTimingProps = {
   label: string;
-  labelColor: React.ComponentProps<typeof Typography.Text>["color"];
+  labelColor: Color;
   advance: number | null;
   waitLabel: string;
   waitSteps: number | null;
@@ -39,42 +66,42 @@ export const PressTiming = ({
   waitSteps,
 }: PressTimingProps) => (
   <Flex gap={32} wrap align="flex-end">
-    <Flex vertical>
-      <Typography.Text color={labelColor}>{label}</Typography.Text>
-      <Typography.Text fontSize={36} strong>
-        {advance ?? PLACEHOLDER}
-      </Typography.Text>
-    </Flex>
+    <LabeledCount label={label} labelColor={labelColor} count={advance} />
     <Flex vertical>
       <Typography.Text color="TextSecondary">{waitLabel}</Typography.Text>
       <Typography.Text fontSize={24}>
         {waitSteps == null
-          ? PLACEHOLDER
+          ? "-"
           : formatMinutesAndSeconds(waitSteps * SECONDS_PER_STEP)}
       </Typography.Text>
     </Flex>
   </Flex>
 );
 
-const formatIvs = ({ ivs }: Gen7Gift) =>
+const formatIvs = (ivs: Ivs) =>
   [ivs.hp, ivs.atk, ivs.def, ivs.spa, ivs.spd, ivs.spe].join("/");
 
-type GiftTagsProps = {
-  gift: Gen7Gift | null;
+type PokemonTagsProps = {
+  pokemon: {
+    nature: Nature;
+    gender: Gender;
+    ivs: Ivs;
+    shiny: ShinyType;
+  } | null;
   // Undefined hides the tag.
   abilityName?: string | null;
 };
 
-export const GiftTags = ({ gift, abilityName }: GiftTagsProps) => {
+export const PokemonTags = ({ pokemon, abilityName }: PokemonTagsProps) => {
   const t = useActiveRouteTranslations();
 
   return (
     <Flex gap={8} wrap>
-      <Tag>{gift == null ? PLACEHOLDER : gift.nature}</Tag>
-      <Tag>{gift == null ? PLACEHOLDER : gift.gender}</Tag>
-      {abilityName !== undefined && <Tag>{abilityName ?? PLACEHOLDER}</Tag>}
-      <Tag>{gift == null ? PLACEHOLDER : formatIvs(gift)}</Tag>
-      <Tag>{gift == null ? PLACEHOLDER : t[shinyLabels[gift.shiny]]}</Tag>
+      <Tag>{pokemon == null ? "-" : pokemon.nature}</Tag>
+      <Tag>{pokemon == null ? "-" : pokemon.gender}</Tag>
+      {abilityName !== undefined && <Tag>{abilityName ?? "-"}</Tag>}
+      <Tag>{pokemon == null ? "-" : formatIvs(pokemon.ivs)}</Tag>
+      <Tag>{pokemon == null ? "-" : t[shinyLabels[pokemon.shiny]]}</Tag>
     </Flex>
   );
 };
@@ -174,7 +201,7 @@ export const TargetAdvanceCard = ({
           waitSteps={waitSteps}
         />
       </Flex>
-      <GiftTags gift={gift} abilityName={abilityName} />
+      <PokemonTags pokemon={gift} abilityName={abilityName} />
     </SectionCard>
   );
 };
@@ -210,7 +237,7 @@ export const SafeAdvancesCard = ({
             minWidth={ADVANCE_BUTTON_MIN_WIDTH}
             disabled
           >
-            {PLACEHOLDER}
+            -
           </Button>
         ))
       : safeAdvances.map((safeAdvance) => (
@@ -277,7 +304,7 @@ export const NextAdvancesCard = ({
           minWidth={ADVANCE_TAG_MIN_WIDTH}
           textAlign="center"
         >
-          {safeAdvance ?? PLACEHOLDER}
+          {safeAdvance ?? "-"}
         </Tag>
         <Icon name="ArrowRightAlt" />
         {shownAdvances.map((advance, index) => (
@@ -287,7 +314,7 @@ export const NextAdvancesCard = ({
             minWidth={ADVANCE_TAG_MIN_WIDTH}
             textAlign="center"
           >
-            {advance ?? PLACEHOLDER}
+            {advance ?? "-"}
           </Tag>
         ))}
       </Flex>

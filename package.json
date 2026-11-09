@@ -10,7 +10,7 @@
     "format:ts": "bun prettier . --write --list-different",
     "format:rust": "bun run scripts/format-rust",
     "build": "bun run build:client && bun run build:prerender && bun run minimize-css && touch dist/.nojekyll",
-    "build:client": "NODE_ENV=production bunx --bun vite build && cp dist/index.html dist/404.html && cp dist/sw.js dist/sw.ts",
+    "build:client": "NODE_ENV=production bunx --bun vite build && cp dist/index.html dist/404.html",
     "build:prerender": "bun run build:server && NODE_ENV=production bun run scripts/prerender && bun run build:server:clean",
     "build:server": "NODE_ENV=production bunx --bun vite build --ssr src/entry-server.jsx --outDir dist/server",
     "build:server:clean": "rm -rf dist/server",
@@ -78,6 +78,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@typescript/native-preview": "^7.0.0-dev.20260515.1",
+    "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9.19.0",
     "eslint-plugin-no-relative-import-paths": "^1.6.1",
     "eslint-plugin-react": "^7.37.5",
@@ -97,7 +98,6 @@
     "typescript-eslint": "^8.57.2",
     "unist-util-visit": "^5.1.0",
     "vite": "8.3.5",
-    "vite-plugin-pwa": "^1.2.0",
     "vite-plugin-wasm": "^3.4.1",
     "vitest": "5.0.4"
   }

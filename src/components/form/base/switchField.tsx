@@ -11,6 +11,7 @@ import {
   type InfoTooltipContent,
 } from "./infoTooltip";
 import { useFieldIds, useInfoTooltip } from "./hooks";
+import { type LabeledFieldProps } from "./field";
 import { SWITCH_ROW_INSET, SwitchGroupContext } from "./switchContext";
 import { SwitchGroup } from "./switchGroup";
 
@@ -62,14 +63,21 @@ const LabelLine = styled.div({
   gap: 4,
 });
 
-const Label = styled.span(({ theme }) => ({
+const Label = styled(
+  "span",
+  styledPropGuard,
+)<{ $invalid: boolean }>(({ theme, $invalid }) => ({
   ...theme.typography.bodyLarge,
   minWidth: 0,
+  color: $invalid ? theme.token.colorError : undefined,
 }));
 
-const SupportingText = styled.span(({ theme }) => ({
+const SupportingText = styled(
+  "span",
+  styledPropGuard,
+)<{ $invalid: boolean }>(({ theme, $invalid }) => ({
   ...theme.typography.bodyMedium,
-  color: theme.token.colorTextSecondary,
+  color: $invalid ? theme.token.colorError : theme.token.colorTextSecondary,
 }));
 
 const Track = styled(
@@ -141,6 +149,8 @@ export type SwitchFieldProps = {
   label: React.ReactNode;
   tooltip?: InfoTooltipContent;
   supportingText?: React.ReactNode;
+  errorMessage?: LabeledFieldProps["errorMessage"];
+  invalid?: LabeledFieldProps["invalid"];
   value: boolean;
   onChange?: (value: boolean) => void;
   name?: string;
@@ -153,6 +163,8 @@ const SwitchItem = ({
   label,
   tooltip,
   supportingText,
+  errorMessage,
+  invalid = false,
   value,
   onChange,
   name,
@@ -161,14 +173,16 @@ const SwitchItem = ({
 }: SwitchFieldProps) => {
   const ids = useFieldIds();
   const infoTooltip = useInfoTooltip();
-  const showSupportingText = supportingText != null && !value;
+  const isInvalid = invalid || errorMessage != null;
+  const message = errorMessage ?? supportingText;
+  const showMessage = message != null;
   // Drops empty nodes, so an empty list or a false condition doesn't render an empty block
   const hasOwnedFields = React.Children.toArray(children).length > 0;
 
   return (
     <Item>
       <Row
-        $twoLine={showSupportingText}
+        $twoLine={showMessage}
         $disabled={disabled}
         // The switch button handles keyboard input, this makes the whole row clickable
         onClick={() => {
@@ -179,7 +193,9 @@ const SwitchItem = ({
       >
         <Text>
           <LabelLine>
-            <Label id={ids.labelId}>{label}</Label>
+            <Label id={ids.labelId} $invalid={isInvalid}>
+              {label}
+            </Label>
             {tooltip != null && (
               <InfoTooltipButton
                 open={infoTooltip.open}
@@ -188,8 +204,10 @@ const SwitchItem = ({
               />
             )}
           </LabelLine>
-          {showSupportingText && (
-            <SupportingText id={ids.helperId}>{supportingText}</SupportingText>
+          {showMessage && (
+            <SupportingText id={ids.helperId} $invalid={isInvalid}>
+              {message}
+            </SupportingText>
           )}
         </Text>
         <Track
@@ -198,7 +216,8 @@ const SwitchItem = ({
           name={name}
           aria-checked={value}
           aria-labelledby={ids.labelId}
-          aria-describedby={ids.helperId}
+          aria-describedby={showMessage ? ids.helperId : undefined}
+          aria-invalid={isInvalid}
           disabled={disabled}
           $checked={value}
         >
@@ -246,13 +265,14 @@ export const FormSwitchField = <FormState extends GenericForm>({
   onChange,
   ...props
 }: FormSwitchFieldProps<FormState>) => {
-  const [{ value }, , { setValue }] = useField<boolean>(name);
+  const [{ value }, { error }, { setValue }] = useField<boolean>(name);
 
   return (
     <SwitchField
       {...props}
       name={name}
       value={value}
+      errorMessage={error}
       onChange={(updatedValue) => {
         setValue(updatedValue);
         onChange?.(updatedValue);

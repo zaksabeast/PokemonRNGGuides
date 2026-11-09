@@ -635,13 +635,16 @@ fn generate_personality(
         if let Some(context) = gen_data.feebas_method5_ctx.take() {
             let cycle_range = feebas_cycle_range
                 .unwrap_or_else(|| context.cycle_counter.cycle_range_to(&cycle_counter));
-            results.extend(feebas_method5::generate(
-                context.rng,
-                opts,
-                map_data,
-                gen_data.encounter_idx == Wild3EncounterIndex::Feebas,
-                cycle_range,
-            ));
+
+            if context.cycle_counter.can_generate_method(cycle_range.len) {
+                results.extend(feebas_method5::generate(
+                    context.rng,
+                    opts,
+                    map_data,
+                    gen_data.encounter_idx == Wild3EncounterIndex::Feebas,
+                    cycle_range,
+                ));
+            }
         }
 
         cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidHigh);

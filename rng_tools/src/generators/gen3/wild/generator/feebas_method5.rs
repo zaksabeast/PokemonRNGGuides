@@ -42,6 +42,11 @@ pub(super) fn generate(
         .enumerate()
         .filter_map(|(index, candidate)| {
             let candidate = candidate?;
+
+            // Limitation: The cycle length for each method is not considered. We apply a uniform cycle range to each,
+            // which means the exact likelihood for Wild5 is imprecise.
+            // Wild5 are only generated when calibrating (with generate_even_if_impossible = true), so the impact on the user
+            // is negligeable.
             let range = uniform_cycle_range(cycle_range, index, count);
             let cycle_range = if opts.cycle_opts == Wild3GeneratorCycleOpts::Inactive {
                 None

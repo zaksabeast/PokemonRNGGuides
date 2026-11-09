@@ -28,6 +28,7 @@ import { FeebasTileVisualizerButton } from "./feebasMap";
 import { Wild3UiMapNameWithAudioTooltip } from "./wild3UiMapNameWithAudioTooltip";
 
 import {
+  type Wild3AudioInfluences,
   getCommonWild3CycleData,
   formatWild3Likelihood,
 } from "./wild3AudioInfluences";
@@ -376,6 +377,7 @@ type Props = {
   rngManipulatedLeadPid: boolean;
   tidForAceSid: AceSidConfig | null;
   setTargetSetup: (targetSetup: TargetSetup | null) => void;
+  setAudioInfluences: (audioInfluences: Wild3AudioInfluences) => void;
 };
 
 const setupInfoToTargetSetup = (
@@ -389,7 +391,6 @@ const setupInfoToTargetSetup = (
 
   return {
     map: setupInfo.mapId,
-    ...setupInfo.targetAudioInfluences,
     action: setupInfo.action,
     feebasState: setupInfo.feebas_state,
     feebasCycles: setupInfo.feebas_cycles,
@@ -409,6 +410,7 @@ const setupInfoToTargetSetup = (
 
 export const Wild3ResultSetupInfos = ({
   setTargetSetup,
+  setAudioInfluences,
   selectedPidPathResult,
   rngManipulatedLeadPid,
   tidForAceSid,
@@ -448,6 +450,10 @@ export const Wild3ResultSetupInfos = ({
         ? null
         : setupInfoToTargetSetup(setupInfo, tidForAceSid);
     setTargetSetup(newTargetSetup);
+
+    if (setupInfo != null) {
+      setAudioInfluences(setupInfo.targetAudioInfluences);
+    }
   };
 
   return (

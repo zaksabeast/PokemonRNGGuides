@@ -354,6 +354,11 @@ test("measured Dewford bike fishing replaces adjusted fallback and preserves rod
     "BikeSong",
     "OldRod",
   );
+
+  if (audio == null || nonAudio == null || result == null) {
+    throw new Error("Missing Dewford bike-fishing calibration data");
+  }
+
   expect({
     audio: audio.id,
     nonAudio: nonAudio.id,

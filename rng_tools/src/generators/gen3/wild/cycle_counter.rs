@@ -293,7 +293,7 @@ impl CycleFrameCounter {
                     current_cycle.cycle += vblank_cycles
                         .get(current_cycle.frame)
                         .copied()
-                        .unwrap_or_else(|| MISSING_VBLANK_FALLBACK);
+                        .unwrap_or(MISSING_VBLANK_FALLBACK);
                     current_cycle.frame += 1;
                 }
             }

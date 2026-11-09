@@ -34,12 +34,12 @@ import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import {
   getWild3AudioInfluenceOptions,
   normalizeWild3AudioInfluences,
+  type Wild3AudioInfluences,
   getWild3InitialCycleDistributionForSetup,
   formatPlayingSong,
   formatWild3Weather,
 } from "./wild3AudioInfluences";
 import { toOptions } from "~/utils/options";
-import type { Wild3Weather, Wild3PlayingSong } from "~/rngTools";
 import { getInitialCycleSummary } from "./data/initial_cycle_main";
 
 /*
@@ -49,8 +49,8 @@ It is like Wild3LeadCycleSpeedInput, but displays the impact of lead cycle speed
 
 export type Props = {
   targetSetup: TargetSetup;
-  setWeather: (weather: Wild3Weather) => void;
-  setPlayingSong: (playing_song: Wild3PlayingSong) => void;
+  audioInfluences: Wild3AudioInfluences;
+  setAudioInfluences: (audioInfluences: Wild3AudioInfluences) => void;
   permitEnablingDebugOptions: boolean;
   setLeadCycleSpeed: (leadCycleSpeed: number) => void;
   leadCycleSpeed: number | null;
@@ -115,8 +115,8 @@ const getColumns = (targetSetup: TargetSetup): ResultColumn<UiResult>[] => {
 
 export const Wild3LeadCycleSpeedSelector = ({
   targetSetup,
-  setWeather,
-  setPlayingSong,
+  audioInfluences,
+  setAudioInfluences,
   permitEnablingDebugOptions,
   setLeadCycleSpeed: setLeadCycleSpeedProp,
   leadCycleSpeed: leadCycleSpeedProp,
@@ -127,21 +127,19 @@ export const Wild3LeadCycleSpeedSelector = ({
     leadCycleSpeedProp ?? null,
   );
   const actualLeadCycleSpeed = targetSetup.lead === "Egg" ? 0 : leadCycleSpeed;
-  const selectedSetup = React.useMemo(() => {
-    const audioInfluences = normalizeWild3AudioInfluences(
-      targetSetup.map,
-      targetSetup.action,
-      targetSetup,
-    );
-
-    return { ...targetSetup, ...audioInfluences };
-  }, [targetSetup]);
+  const selectedAudio = normalizeWild3AudioInfluences(
+    targetSetup.map,
+    targetSetup.action,
+    audioInfluences,
+  );
   const { weathers, playingSongs } = getWild3AudioInfluenceOptions(
     targetSetup.map,
     targetSetup.action,
   );
-  const initialCycleDistribution =
-    getWild3InitialCycleDistributionForSetup(selectedSetup);
+  const initialCycleDistribution = getWild3InitialCycleDistributionForSetup({
+    ...targetSetup,
+    ...selectedAudio,
+  });
   const initialCycleSummary = getInitialCycleSummary(
     initialCycleDistribution?.distribution ?? [],
   );
@@ -156,18 +154,27 @@ export const Wild3LeadCycleSpeedSelector = ({
       return;
     }
 
-    setupToDistributions(selectedSetup, {
-      LikelihoodForLead: {
-        min_max_initial_cycle: [
-          initialCycleDistribution.min,
-          initialCycleDistribution.max,
-        ],
-        lead_cycle_spd: actualLeadCycleSpeed ?? 0,
+    setupToDistributions(
+      targetSetup,
+      {
+        LikelihoodForLead: {
+          min_max_initial_cycle: [
+            initialCycleDistribution.min,
+            initialCycleDistribution.max,
+          ],
+          lead_cycle_spd: actualLeadCycleSpeed ?? 0,
+        },
       },
-    }).then((val) => {
+      audioInfluences,
+    ).then((val) => {
       setDistributions(val);
     });
-  }, [actualLeadCycleSpeed, selectedSetup, initialCycleDistribution]);
+  }, [
+    actualLeadCycleSpeed,
+    targetSetup,
+    audioInfluences,
+    initialCycleDistribution,
+  ]);
 
   return (
     <>
@@ -176,17 +183,21 @@ export const Wild3LeadCycleSpeedSelector = ({
           {weathers.length > 1 && (
             <SelectField
               label="Weather audio"
-              value={selectedSetup.weather}
+              value={selectedAudio.weather}
               options={toOptions(weathers, formatWild3Weather)}
-              onChange={setWeather}
+              onChange={(weather) =>
+                setAudioInfluences({ ...audioInfluences, weather })
+              }
             />
           )}
           {playingSongs.length > 1 && (
             <SelectField
               label="Playing song"
-              value={selectedSetup.playing_song}
+              value={selectedAudio.playing_song}
               options={toOptions(playingSongs, formatPlayingSong)}
-              onChange={setPlayingSong}
+              onChange={(playing_song) =>
+                setAudioInfluences({ ...audioInfluences, playing_song })
+              }
             />
           )}
           {targetSetup.lead === "Egg" ? (
@@ -230,7 +241,8 @@ export const Wild3LeadCycleSpeedSelector = ({
       {permitEnablingDebugOptions && (
         <Wild3CycleAtMoments
           leadCycleSpeed={actualLeadCycleSpeed}
-          targetSetup={selectedSetup}
+          targetSetup={targetSetup}
+          audioInfluences={audioInfluences}
         />
       )}
     </>
@@ -239,8 +251,8 @@ export const Wild3LeadCycleSpeedSelector = ({
 
 export const Wild3LeadCycleSpeedSelectorWithBtn = ({
   targetSetup,
-  setWeather,
-  setPlayingSong,
+  audioInfluences,
+  setAudioInfluences,
   permitEnablingDebugOptions,
   setLeadCycleSpeed,
   leadCycleSpeed,
@@ -265,8 +277,8 @@ export const Wild3LeadCycleSpeedSelectorWithBtn = ({
       {displayLeadCycleSpeed && (
         <Wild3LeadCycleSpeedSelector
           targetSetup={targetSetup}
-          setWeather={setWeather}
-          setPlayingSong={setPlayingSong}
+          audioInfluences={audioInfluences}
+          setAudioInfluences={setAudioInfluences}
           permitEnablingDebugOptions={permitEnablingDebugOptions}
           setLeadCycleSpeed={setLeadCycleSpeed}
           leadCycleSpeed={leadCycleSpeed}

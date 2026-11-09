@@ -25,6 +25,7 @@ import { Flex, PokemonName } from "~/components";
 import {
   getWild3InitialCycleDistribution,
   normalizeWild3AudioInfluences,
+  type Wild3AudioInfluences,
 } from "./wild3AudioInfluences";
 
 const getProbabilityInfo = async (
@@ -114,15 +115,16 @@ export const getAbilityDisplayStrFromAbType = async (
 export const calculateTargetSetupResult = async (
   targetSetup: TargetSetup,
   lead_cycle_speed: number | null,
+  audioInfluences: Wild3AudioInfluences,
   showProbabilityInfo = true,
 ) => {
   const map_data = emeraldWildGameData.maps_data.find(
     (map) => map.map_id === targetSetup.map,
   );
-  const audioInfluences = normalizeWild3AudioInfluences(
+  const validatedAudioInfluences = normalizeWild3AudioInfluences(
     targetSetup.map,
     targetSetup.action,
-    targetSetup,
+    audioInfluences,
   );
   const distribution =
     map_data == null
@@ -130,7 +132,7 @@ export const calculateTargetSetupResult = async (
       : getWild3InitialCycleDistribution(
           map_data,
           targetSetup.action,
-          audioInfluences,
+          validatedAudioInfluences,
         );
   if (map_data == null || distribution == null) {
     return { content: null, hasEncounter: false };

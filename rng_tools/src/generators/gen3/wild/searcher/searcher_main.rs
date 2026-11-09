@@ -125,13 +125,19 @@ impl Wild3SearcherCycleOpts {
             .iter()
             .map(|calibration| (calibration.min, calibration.max))
             .reduce(|(min, max), (next_min, next_max)| (min.min(next_min), max.max(next_max)))
-            .unwrap()
+            .unwrap_or_else(|| {
+                Wild3InitialCycleDistribution::new_default(Wild3Action::SweetScentLand).to_min_max()
+            })
     }
 
     pub fn generator_cycle_opts(
         &self,
         distrs: &[&Wild3InitialCycleDistribution],
     ) -> Wild3GeneratorCycleOpts {
+        if matches!(self, Self::Inactive) {
+            return Wild3GeneratorCycleOpts::Inactive;
+        }
+
         let min_max_initial_cycle = Self::get_min_max_initial_cycle_from_distrs(distrs);
 
         match self {
@@ -190,15 +196,7 @@ impl Wild3SearcherCycleOpts {
                 weather,
                 playing_song,
                 ..
-            } => {
-                let calibration = map_data.initial_cycle_distrs.iter().find(|calibration| {
-                    calibration.action == action
-                        && calibration.weather == *weather
-                        && calibration.playing_song == *playing_song
-                });
-
-                vec![calibration.unwrap_or(default)]
-            }
+            } => vec![map_data.get_initial_cycle_distr(action, *playing_song, *weather)],
         }
     }
 }

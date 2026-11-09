@@ -131,7 +131,7 @@ fn generate_dist_results(
                 rng.seed(),
                 advances,
                 encounter,
-                &vec![initial_cycle_distr],
+                &[initial_cycle_distr],
             );
             let cycle_data = calculate_cycle_data_for_specific_lead_spd(
                 &searcher_res

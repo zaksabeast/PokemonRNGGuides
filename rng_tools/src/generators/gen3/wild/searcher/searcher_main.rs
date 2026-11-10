@@ -254,7 +254,6 @@ pub struct Wild3SearcherResultMon {
     pub encounter_idx: Wild3EncounterIndex,
     pub lvl: u8,
     pub cycle_data_by_lead: Option<Wild3SearcherCycleDataByLead>,
-    pub cycle_instability: f32,
     pub used_safari_pokeblock: Option<[u8; 5]>,
 
     pub species: Species,
@@ -288,7 +287,6 @@ impl Wild3SearcherResultMon {
         seed: u32,
         advance: usize,
         encounter: &Wild3EncounterGameData,
-        cycle_instability: f32,
         initial_cycle_distrs: &[&Wild3InitialCycleDistribution],
     ) -> Wild3SearcherResultMon {
         let cycle_data_by_lead = gen_res.cycle_range.map(|cycle_range| {
@@ -324,7 +322,6 @@ impl Wild3SearcherResultMon {
             feebas_state: gen_opts.feebas_state,
             feebas_cycles: gen_opts.feebas_cycles,
             mass_outbreak_state: gen_opts.mass_outbreak_state,
-            cycle_instability,
         }
     }
 }

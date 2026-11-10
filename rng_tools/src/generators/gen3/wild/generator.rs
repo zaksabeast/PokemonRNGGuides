@@ -1,7 +1,7 @@
 #![allow(non_snake_case)] // To have the same function names as pokeemerald decompil project.
 
 use super::{
-    MinMidMax, calc_modulo_cycle_signed, calc_modulo_cycle_unsigned,
+    calc_modulo_cycle_signed, calc_modulo_cycle_unsigned,
     generator_main::{
         INFINITE_CYCLE, VBLANK_FREQ, Wild3GeneratorMonResult, Wild3GeneratorOptions,
         Wild3GeneratorResults,
@@ -10,7 +10,7 @@ use super::{
 use crate::{
     EncounterSlot, Gender, GenderRatio, Ivs, NATURE_COUNT, Nature,
     PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE, PERTINENT_SOLO_POKEBLOCKS_BY_NATURE,
-    POKEBLOCK_NATURE_STAT_FACTORS, TsvTrv,
+    POKEBLOCK_NATURE_STAT_FACTORS, Species, TsvTrv,
     gen3::{
         CycleAndModRange, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method, Moment, Wild3Action,
         Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState, Wild3GeneratorCycleOpts,
@@ -21,6 +21,8 @@ use crate::{
     is_max_size,
     rng::{Rng, lcrng::Pokerng},
 };
+
+mod feebas_method5;
 
 pub fn generate_wild3_internal(
     mut rng: Pokerng,
@@ -62,12 +64,20 @@ fn FishingWildEncounter(
     cycle_counter.add_cycle(1186);
     cycle_counter.on_moment_reached(Moment::FishingWildEncounter);
 
-    if CheckFeebas(rng, opts, cycle_counter) {
+    let is_feebas = CheckFeebas(rng, opts, cycle_counter);
+    let feebas_method5_ctx =
+        feebas_method5::is_enabled(opts, map_data).then(|| FeebasMethod5Context {
+            rng: *rng,
+            cycle_counter: cycle_counter.clone(),
+        });
+
+    if is_feebas {
         let encounter = map_data.feebas.as_ref()?;
         let level = ChooseWildMonLevel(rng, encounter, opts.lead, cycle_counter);
         let encounter_idx = Wild3EncounterIndex::Feebas;
-        let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, level)?;
-        return Some(CreateWildMon(
+        // We don't want to validate the lvl because it could change if a vblank occurs before ChooseWildMonLevel.
+        let encounter = map_data.get_encounter(opts.action, encounter_idx)?;
+        return CreateWildMon(
             *rng,
             opts,
             map_data,
@@ -75,14 +85,20 @@ fn FishingWildEncounter(
             encounter_idx,
             level,
             encounter,
-        ));
+            feebas_method5_ctx,
+        );
     }
 
     GetCurrentMapWildMonHeaderId(map_data, cycle_counter);
     let (encounter_idx, level) = GenerateFishingWildMon(rng, opts, map_data, cycle_counter)?;
 
-    let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, level)?;
-    Some(CreateWildMon(
+    let encounter = match feebas_method5_ctx.as_ref() {
+        // We don't want to validate the lvl because it could change if a vblank occurs before ChooseWildMonLevel.
+        Some(_) => map_data.get_encounter(opts.action, encounter_idx),
+        None => get_encounter_if_respects_filter(opts, map_data, encounter_idx, level),
+    }?;
+
+    CreateWildMon(
         *rng,
         opts,
         map_data,
@@ -90,7 +106,8 @@ fn FishingWildEncounter(
         encounter_idx,
         level,
         encounter,
-    ))
+        feebas_method5_ctx,
+    )
 }
 
 fn CheckFeebas(
@@ -149,7 +166,7 @@ fn RockSmashWildEncounter(
     cycle_counter.add_cycle(131);
     let (encounter_idx, level) = TryGenerateWildMon(rng, opts, map_data, 0, cycle_counter)?;
     let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, level)?;
-    Some(CreateWildMon(
+    CreateWildMon(
         *rng,
         opts,
         map_data,
@@ -157,7 +174,8 @@ fn RockSmashWildEncounter(
         encounter_idx,
         level,
         encounter,
-    ))
+        None,
+    )
 }
 
 fn WildEncounterCheck(
@@ -225,7 +243,7 @@ fn SweetScentWildEncounter(
     {
         let (outbreak, level) = SetUpMassOutbreakEncounter(rng, 0, opts, map_data, cycle_counter)?;
         let encounter = get_encounter_if_respects_filter(opts, map_data, outbreak, level)?;
-        return Some(CreateWildMon(
+        return CreateWildMon(
             *rng,
             opts,
             map_data,
@@ -233,12 +251,13 @@ fn SweetScentWildEncounter(
             outbreak,
             level,
             encounter,
-        ));
+            None,
+        );
     }
 
     let (encounter_idx, level) = TryGenerateWildMon(rng, opts, map_data, 0, cycle_counter)?;
     let encounter = get_encounter_if_respects_filter(opts, map_data, encounter_idx, level)?;
-    Some(CreateWildMon(
+    CreateWildMon(
         *rng,
         opts,
         map_data,
@@ -246,7 +265,8 @@ fn SweetScentWildEncounter(
         encounter_idx,
         level,
         encounter,
-    ))
+        None,
+    )
 }
 
 fn GetCurrentMapWildMonHeaderId(
@@ -398,7 +418,8 @@ fn CreateWildMon(
     encounter_idx: Wild3EncounterIndex,
     lvl: u8,
     encounter: &Wild3EncounterGameData,
-) -> Wild3GeneratorResults {
+    feebas_method5_ctx: Option<FeebasMethod5Context>,
+) -> Option<Wild3GeneratorResults> {
     cycle_counter.on_moment_reached(Moment::CreateWildMon);
     let encounter_gender_ratio = encounter.species_data.gender_ratio();
 
@@ -457,6 +478,15 @@ fn CreateWildMon(
         }
     };
 
+    // Can't filter early with feebas
+    if feebas_method5_ctx.is_none()
+        && let Some(gender) = required_gender
+        && let Some(target_gender) = opts.filter.gender
+        && target_gender != gender
+    {
+        return None;
+    }
+
     let (required_nature, used_safari_pokeblock) = PickWildMonNature(
         &mut rng,
         opts,
@@ -465,21 +495,36 @@ fn CreateWildMon(
         pick_random_wild_mon_nature,
     );
 
+    // Can't filter early with feebas
+    if feebas_method5_ctx.is_none()
+        && let Some(target_nature) = opts.filter.nature
+        && !target_nature[required_nature as usize]
+    {
+        return None;
+    }
+
     let gen_data = GenTmpData {
         opts,
         encounter_idx,
+        encounter_species: encounter.species_data.species,
         lvl,
         encounter_gender_ratio,
         required_gender,
         required_nature,
         used_safari_pokeblock,
         tsv_trv: TsvTrv::from_tid_sid(opts.tid, opts.sid),
+        feebas_method5_ctx,
     };
 
     if required_gender.is_some() {
-        CreateMonWithGenderNatureLetter(rng, gen_data, cycle_counter)
+        Some(CreateMonWithGenderNatureLetter(
+            rng,
+            gen_data,
+            cycle_counter,
+            map_data,
+        ))
     } else {
-        CreateMonWithNature(rng, gen_data, cycle_counter)
+        Some(CreateMonWithNature(rng, gen_data, cycle_counter, map_data))
     }
 }
 
@@ -487,20 +532,22 @@ fn CreateMonWithNature(
     rng: Pokerng,
     gen_data: GenTmpData<'_>,
     mut cycle_counter: CycleFrameCounter,
+    map_data: &Wild3MapGameData,
 ) -> Wild3GeneratorResults {
     cycle_counter.on_moment_reached(Moment::CreateMonWithNature);
     cycle_counter.add_cycle(42);
-    generate_personality(rng, gen_data, cycle_counter)
+    generate_personality(rng, gen_data, cycle_counter, map_data)
 }
 
 fn CreateMonWithGenderNatureLetter(
     rng: Pokerng,
     gen_data: GenTmpData<'_>,
     mut cycle_counter: CycleFrameCounter,
+    map_data: &Wild3MapGameData,
 ) -> Wild3GeneratorResults {
     cycle_counter.on_moment_reached(Moment::CreateMonWithGenderNatureLetter);
     cycle_counter.add_cycle(64);
-    generate_personality(rng, gen_data, cycle_counter)
+    generate_personality(rng, gen_data, cycle_counter, map_data)
 }
 
 fn exclude_method3_from_pending_method5(
@@ -531,8 +578,9 @@ fn exclude_method3_from_pending_method5(
 
 fn generate_personality(
     mut rng: Pokerng,
-    gen_data: GenTmpData<'_>,
+    mut gen_data: GenTmpData<'_>,
     mut cycle_counter: CycleFrameCounter,
+    map_data: &Wild3MapGameData,
 ) -> Wild3GeneratorResults {
     let opts = gen_data.opts;
     let required_nature = gen_data.required_nature;
@@ -551,11 +599,17 @@ fn generate_personality(
         let pid_low = rand_next_u16(&mut rng, "pid_low", 1) as u32;
 
         let method3_range = 80;
+        let mut feebas_cycle_range = None;
 
         if (methods_contains_wild3 || methods_contains_wild5)
             && cycle_counter.can_generate_method(method3_range)
             && let Some((wild3_pid, wild3_ivs)) = simulate_wild_method3(&gen_data, rng, pid_low)
         {
+            feebas_cycle_range = gen_data
+                .feebas_method5_ctx
+                .as_ref()
+                .map(|context| context.cycle_counter.cycle_range_to(&cycle_counter));
+
             exclude_method3_from_pending_method5(
                 &mut results,
                 &mut pending_method5_index,
@@ -577,6 +631,22 @@ fn generate_personality(
         }
 
         cycle_counter.add_cycle(method3_range);
+
+        if let Some(context) = gen_data.feebas_method5_ctx.take() {
+            let cycle_range = feebas_cycle_range
+                .unwrap_or_else(|| context.cycle_counter.cycle_range_to(&cycle_counter));
+
+            if context.cycle_counter.can_generate_method(cycle_range.len) {
+                results.extend(feebas_method5::generate(
+                    context.rng,
+                    opts,
+                    map_data,
+                    gen_data.encounter_idx == Wild3EncounterIndex::Feebas,
+                    cycle_range,
+                ));
+            }
+        }
+
         cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidHigh);
         let pid_high = rand_next_u16(&mut rng, "pid_high", 1) as u32;
         pid = (pid_high << 16) | pid_low;
@@ -1003,12 +1073,20 @@ fn ChooseWildMonLevel(
 struct GenTmpData<'a> {
     opts: &'a Wild3GeneratorOptions,
     encounter_idx: Wild3EncounterIndex,
+    encounter_species: Species,
     lvl: u8,
     encounter_gender_ratio: GenderRatio,
     required_gender: Option<Gender>,
     required_nature: Nature,
     used_safari_pokeblock: Option<[u8; 5]>,
     tsv_trv: TsvTrv,
+    feebas_method5_ctx: Option<FeebasMethod5Context>,
+}
+
+// State at the end of CheckFeebas
+struct FeebasMethod5Context {
+    rng: Pokerng,
+    cycle_counter: CycleFrameCounter,
 }
 
 fn rand_next_u16(rng: &mut Pokerng, _reason: &str, _modulo: u16) -> u16 {
@@ -1055,29 +1133,10 @@ fn handle_feebas_cycle_counter(
     cycle_counter.on_moment_reached(Moment::CheckFeebas);
 
     // Limitation: Feebas hasn't been updated with the new vblank calibration logic.
-    let MinMidMax { min, mid, max } = get_default_min_mid_max_initial_cycle_for_feebas();
-    let MinMidMax {
-        min: min_vblank,
-        mid: mid_vblank,
-        max: max_vblank,
-    } = get_default_min_mid_max_vblank_cycle_duration_for_feebas();
-
-    let (_, min_case_vblank) =
-        apply_cycles_causing_vblanks_on_cycle_counter(min, feebas_cycles, min_vblank);
+    let mid = get_default_min_mid_max_initial_cycle_for_feebas().mid;
+    let mid_vblank = get_default_min_mid_max_vblank_cycle_duration_for_feebas().mid;
     let (mid_case_cycle, mid_case_vblank) =
         apply_cycles_causing_vblanks_on_cycle_counter(mid, feebas_cycles, mid_vblank);
-    let (_, max_case_vblank) =
-        apply_cycles_causing_vblanks_on_cycle_counter(max, feebas_cycles, max_vblank);
-
-    /*
-    It's impossible to predict the exact duration of the vblanks, but it's typically between 45K and 65K.
-    If the resulting rng state is the same no matter if the vblanks are 45K or 65K, then we consider this setup to be stable.
-    Additional vblanks will occur between PID generation and IV generation (method 1 to 4).
-    The Pokemon stats generated by the generator will be the correct one (even though the exact probability for each method may be off a bit).
-
-    If the rng state is different between the min and max vblank duration, this means vblank could occur during steps prior to PID generation.
-    Ex: Vblank between selecting the level and selecting the nature. Those possibilities are not supported by the generator.
-    */
 
     // The generator always calculates for the mid case (most probable case).
     rng.jump(mid_case_vblank);
@@ -1087,14 +1146,6 @@ fn handle_feebas_cycle_counter(
     if mid_case_cycle > abs_cycle_from_cycle_counter {
         cycle_counter.add_cycle(mid_case_cycle - abs_cycle_from_cycle_counter);
     }
-
-    let vblank_diff = max_case_vblank - min_case_vblank;
-    cycle_counter.set_cycle_instability(if vblank_diff != 0 {
-        1.0
-    } else {
-        // Each vblank adds instability because vblank duration is variable.
-        mid_case_vblank as f32 / MAX_FEEBAS_VBLANK as f32
-    });
 }
 
 fn pick_wild_mon_nature_safari(
@@ -1454,6 +1505,19 @@ fn create_if_passes_filter(
     } else {
         None
     };
+
+    // If fishing feebas, that test may have been skipped early on.
+    if let Some(required_species) = gen_data.opts.gen3_filter.species
+        && required_species != gen_data.encounter_species
+    {
+        return None;
+    }
+
+    if let Some(required_lvl) = gen_data.opts.gen3_filter.lvl
+        && required_lvl != gen_data.lvl
+    {
+        return None;
+    }
 
     Some(Wild3GeneratorMonResult {
         pid,

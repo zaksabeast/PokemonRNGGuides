@@ -145,7 +145,6 @@ pub enum CycleFrameCounter {
         earliest_slowest_cycle: usize,
         // Cycles assuming latest initial timing with the fastest lead
         latest_fastest_cycle: usize,
-        cycle_instability: f32,
         base_cycle_count: usize,
         lead_pid_mod_count: usize,
     },
@@ -154,7 +153,6 @@ pub enum CycleFrameCounter {
     // It also gives approximative likelihood for each method.
     MinMaxRange {
         min_max_cycles: MinMaxCycleFrame,
-        cycle_instability: f32,
         base_cycle_count: usize,
         lead_pid_mod_count: usize,
         generate_even_if_impossible: bool,
@@ -195,7 +193,6 @@ impl CycleFrameCounter {
                         max_lead_cycle_spd,
                         earliest_slowest_cycle: min_max_initial_cycle.0,
                         latest_fastest_cycle: min_max_initial_cycle.1,
-                        cycle_instability: 0.0,
                         base_cycle_count: 0,
                         lead_pid_mod_count: 0,
                     };
@@ -209,7 +206,6 @@ impl CycleFrameCounter {
                             None,
                         ),
                     ),
-                    cycle_instability: 0.0,
                     base_cycle_count: 0,
                     lead_pid_mod_count: 0,
                     generate_even_if_impossible: *generate_even_if_impossible,
@@ -224,7 +220,6 @@ impl CycleFrameCounter {
                     *min_max_initial_cycle,
                     (*lead_cycle_spd, *lead_cycle_spd),
                 ),
-                cycle_instability: 0.0,
                 base_cycle_count: 0,
                 lead_pid_mod_count: 0,
                 generate_even_if_impossible: true,
@@ -420,6 +415,70 @@ impl CycleFrameCounter {
         }
     }
 
+    pub fn cycle_range_to(&self, end: &Self) -> CycleAndModRange {
+        match (self, end) {
+            (
+                Self::MinMaxRange {
+                    base_cycle_count: start_cycle,
+                    lead_pid_mod_count: start_mod,
+                    min_max_cycles:
+                        MinMaxCycleFrame {
+                            min_lead_cycle_spd,
+                            max_lead_cycle_spd,
+                            ..
+                        },
+                    ..
+                },
+                Self::MinMaxRange {
+                    base_cycle_count: end_cycle,
+                    lead_pid_mod_count: end_mod,
+                    ..
+                },
+            )
+            | (
+                Self::CheckValidAllLeadSpds {
+                    base_cycle_count: start_cycle,
+                    lead_pid_mod_count: start_mod,
+                    min_lead_cycle_spd,
+                    max_lead_cycle_spd,
+                    ..
+                },
+                Self::CheckValidAllLeadSpds {
+                    base_cycle_count: end_cycle,
+                    lead_pid_mod_count: end_mod,
+                    ..
+                },
+            ) => {
+                // Limitation: Searches without a specified lead speed use the midpoint of the tracked range.
+                // The likelihood won't be exact, but it doesn't really matter because it's already an estimation.
+                // The likelihood in feebas_method5 is simplified to be an uniform distribution.
+                let lead_cycle_spd = (min_lead_cycle_spd + max_lead_cycle_spd) / 2;
+                let modulo_cycles = end_mod.saturating_sub(*start_mod) * lead_cycle_spd;
+
+                CycleAndModRange::new(
+                    *start_cycle,
+                    *start_mod,
+                    end_cycle.saturating_sub(*start_cycle) + modulo_cycles,
+                )
+            }
+            (
+                Self::DetailedBreakdown {
+                    current_cycle: start,
+                    ..
+                },
+                Self::DetailedBreakdown {
+                    current_cycle: end, ..
+                },
+            ) => {
+                let start_cycle = start.frame * VBLANK_FREQ + start.cycle;
+                let end_cycle = end.frame * VBLANK_FREQ + end.cycle;
+
+                CycleAndModRange::new(start_cycle, 0, end_cycle.saturating_sub(start_cycle))
+            }
+            _ => CycleAndModRange::new(0, 0, 0),
+        }
+    }
+
     pub fn get_current_post_cycle_count(&self) -> usize {
         match self {
             CycleFrameCounter::Inactive | CycleFrameCounter::DetailedBreakdown { .. } => 0,
@@ -429,28 +488,6 @@ impl CycleFrameCounter {
             | CycleFrameCounter::CheckValidAllLeadSpds {
                 base_cycle_count, ..
             } => *base_cycle_count,
-        }
-    }
-    pub fn set_cycle_instability(&mut self, instability: f32) {
-        match self {
-            CycleFrameCounter::Inactive | CycleFrameCounter::DetailedBreakdown { .. } => {}
-            CycleFrameCounter::MinMaxRange {
-                cycle_instability, ..
-            }
-            | CycleFrameCounter::CheckValidAllLeadSpds {
-                cycle_instability, ..
-            } => *cycle_instability = instability,
-        }
-    }
-    pub fn get_cycle_instability(&self) -> f32 {
-        match self {
-            CycleFrameCounter::Inactive | CycleFrameCounter::DetailedBreakdown { .. } => 0.0,
-            CycleFrameCounter::MinMaxRange {
-                cycle_instability, ..
-            }
-            | CycleFrameCounter::CheckValidAllLeadSpds {
-                cycle_instability, ..
-            } => *cycle_instability,
         }
     }
 
@@ -463,5 +500,90 @@ impl CycleFrameCounter {
                 cycle_at_moments, ..
             } => cycle_at_moments.clone(),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::gen3::CycleRange;
+
+    #[test]
+    fn wild3_check_valid_all_lead_spds_cycle_range() {
+        let start = CycleFrameCounter::CheckValidAllLeadSpds {
+            min_lead_cycle_spd: 100,
+            max_lead_cycle_spd: 200,
+            earliest_slowest_cycle: 500,
+            latest_fastest_cycle: 300,
+            base_cycle_count: 100,
+            lead_pid_mod_count: 2,
+        };
+        let end = CycleFrameCounter::CheckValidAllLeadSpds {
+            min_lead_cycle_spd: 100,
+            max_lead_cycle_spd: 200,
+            earliest_slowest_cycle: 1130,
+            latest_fastest_cycle: 630,
+            base_cycle_count: 130,
+            lead_pid_mod_count: 5,
+        };
+
+        let range = start.cycle_range_to(&end);
+
+        assert_eq!(range, CycleAndModRange::new(100, 2, 480));
+        assert_eq!(
+            range.apply_mod_cycle_count(150),
+            CycleRange::from_start_len(400, 480)
+        );
+    }
+
+    #[test]
+    fn wild3_min_max_cycle_range() {
+        let start = CycleFrameCounter::MinMaxRange {
+            min_max_cycles: MinMaxCycleFrame::new((100, 100), (100, 100)),
+            base_cycle_count: 100,
+            lead_pid_mod_count: 0,
+            generate_even_if_impossible: false,
+        };
+        let end = CycleFrameCounter::MinMaxRange {
+            min_max_cycles: MinMaxCycleFrame::new((430, 430), (100, 100)),
+            base_cycle_count: 130,
+            lead_pid_mod_count: 3,
+            generate_even_if_impossible: false,
+        };
+
+        let range = start.cycle_range_to(&end);
+
+        assert_eq!(range, CycleAndModRange::new(100, 0, 330));
+        assert_eq!(
+            range.apply_mod_cycle_count(100),
+            CycleRange::from_start_len(100, 330)
+        );
+    }
+
+    #[test]
+    fn wild3_detailed_breakdown_cycle_range() {
+        let start = CycleFrameCounter::DetailedBreakdown {
+            lead_cycle_spd: 100,
+            current_cycle: CycleFrame {
+                cycle: 280_886,
+                frame: 1,
+            },
+            vblank_cycles: vec![],
+            cycle_at_moments: vec![],
+        };
+        let end = CycleFrameCounter::DetailedBreakdown {
+            lead_cycle_spd: 100,
+            current_cycle: CycleFrame {
+                cycle: 340,
+                frame: 2,
+            },
+            vblank_cycles: vec![],
+            cycle_at_moments: vec![],
+        };
+
+        assert_eq!(
+            start.cycle_range_to(&end),
+            CycleAndModRange::new(561_782, 0, 350)
+        );
     }
 }

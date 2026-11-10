@@ -401,7 +401,6 @@ fn create_result(
                     path.seed,
                     advance,
                     encounter,
-                    gen_results.cycle_counter.get_cycle_instability(),
                     initial_cycle_groups,
                 ));
             }

@@ -2,10 +2,7 @@ import React from "react";
 import * as tst from "ts-toolbelt";
 import { useField } from "~/hooks/form";
 import { FormFieldProps, GenericForm } from "~/types/form";
-import {
-  getNumberInputChangeResult,
-  serializers,
-} from "~/components/numberInput/utils";
+import { getNumberInputChangeResult, serializers } from "./numberInputUtils";
 import { LabeledFieldProps, FieldFrame } from "./field";
 import { useFieldIds } from "./hooks";
 import { FieldInput } from "./textField";

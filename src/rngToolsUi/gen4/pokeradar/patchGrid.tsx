@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, Flex, NumberInput, Select, Typography } from "~/components";
+import { Button, Flex } from "~/components";
+import { NumberField, SelectField } from "~/components/form";
 import {
   rngTools,
   Patch,
@@ -44,9 +45,11 @@ export const PokeRadar4PatchGrid: React.FC<PokeRadar4PatchGridProps> = ({
   const initialBattleResult =
     initialBattleResultProp ?? selectedPatch?.battleResult ?? "Catch";
 
-  const [seed, setSeed] = React.useState<number>(initialSeed);
-  const [advance, setAdvance] = React.useState<number>(initialAdvance);
-  const [chainCount, setChainCount] = React.useState<number>(initialChainCount);
+  const [seed, setSeed] = React.useState<number | null>(initialSeed);
+  const [advance, setAdvance] = React.useState<number | null>(initialAdvance);
+  const [chainCount, setChainCount] = React.useState<number | null>(
+    initialChainCount,
+  );
   const [battleResult, setBattleResult] =
     React.useState<BattleResult>(initialBattleResult);
   const [selectedShake, setSelectedShake] = React.useState<ShakeType>("Slow");
@@ -59,7 +62,13 @@ export const PokeRadar4PatchGrid: React.FC<PokeRadar4PatchGridProps> = ({
     setBattleResult(initialBattleResult);
   }, [initialSeed, initialAdvance, initialChainCount, initialBattleResult]);
 
+  const isMissingNumber = seed == null || advance == null || chainCount == null;
+
   const handleCalculate = async () => {
+    if (isMissingNumber) {
+      return;
+    }
+
     const result = await rngTools.pokeradar4_simulate_advance({
       init_seed: seed,
       target_advance: advance,
@@ -79,60 +88,42 @@ export const PokeRadar4PatchGrid: React.FC<PokeRadar4PatchGridProps> = ({
       borderRadius={8}
     >
       <Flex wrap="wrap" gap={16}>
-        <Flex vertical gap={4}>
-          <Typography.Text>Initial Seed</Typography.Text>
-          <NumberInput
-            numType="hex"
-            value={seed}
-            onChange={(num) => {
-              if (num != null) {
-                setSeed(num);
-              }
-            }}
-          />
-        </Flex>
-        <Flex vertical gap={4}>
-          <Typography.Text>Advance</Typography.Text>
-          <NumberInput
-            numType="decimal"
-            value={advance}
-            onChange={(num) => {
-              if (num != null) {
-                setAdvance(num);
-              }
-            }}
-          />
-        </Flex>
-        <Flex vertical gap={4}>
-          <Typography.Text>Chain Count</Typography.Text>
-          <NumberInput
-            numType="decimal"
-            value={chainCount}
-            onChange={(num) => {
-              if (num != null) {
-                setChainCount(num);
-              }
-            }}
-          />
-        </Flex>
-        <Flex vertical gap={4}>
-          <Typography.Text>Battle Result</Typography.Text>
-          <Select<BattleResult>
-            value={battleResult}
-            onChange={setBattleResult}
-            options={BATTLE_RESULT_OPTIONS}
-          />
-        </Flex>
-        <Flex vertical gap={4}>
-          <Typography.Text>Shake Type</Typography.Text>
-          <Select<ShakeType>
-            value={selectedShake}
-            onChange={setSelectedShake}
-            options={SHAKE_TYPE_OPTIONS}
-          />
-        </Flex>
+        <NumberField
+          label="Initial Seed"
+          numType="hex"
+          value={seed}
+          onChange={setSeed}
+        />
+        <NumberField
+          label="Advance"
+          numType="decimal"
+          value={advance}
+          onChange={setAdvance}
+        />
+        <NumberField
+          label="Chain Count"
+          numType="decimal"
+          value={chainCount}
+          onChange={setChainCount}
+        />
+        <SelectField<BattleResult>
+          label="Battle Result"
+          value={battleResult}
+          onChange={setBattleResult}
+          options={BATTLE_RESULT_OPTIONS}
+        />
+        <SelectField<ShakeType>
+          label="Shake Type"
+          value={selectedShake}
+          onChange={setSelectedShake}
+          options={SHAKE_TYPE_OPTIONS}
+        />
       </Flex>
-      <Button trackerId="pokeradar4-calculate" onClick={handleCalculate}>
+      <Button
+        trackerId="pokeradar4-calculate"
+        disabled={isMissingNumber}
+        onClick={handleCalculate}
+      >
         Calculate
       </Button>
       <Flex mt={8} vertical>

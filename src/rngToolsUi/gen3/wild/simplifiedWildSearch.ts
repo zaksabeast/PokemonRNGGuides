@@ -11,11 +11,11 @@ import {
 import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
-} from "~/components/pkmFilter";
+} from "~/components/form/pokemon/pkmFilterFields";
 import {
   getGen3PkmFilterInitialValues,
   gen3PkmFilterFieldsToRustInput,
-} from "~/components/gen3PkmFilter";
+} from "~/components/form/pokemon/gen3PkmFilterFields";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { gen3Leads, wild3Actions, isFishingAction } from "./utils";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";

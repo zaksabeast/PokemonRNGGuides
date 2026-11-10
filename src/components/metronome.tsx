@@ -1,18 +1,13 @@
 import styled from "@emotion/styled";
-import { Tooltip } from "antd";
 import { Flex } from "./flex";
-import { Icon } from "./icons";
 import { Button } from "./button";
+import { SelectField, type SelectOption } from "./form";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
-import { Select } from "./select";
-import { Typography } from "./typography";
 import { Metronome } from "~/hooks/useMetronome";
-import { toOptions } from "~/utils/options";
 
-const options = toOptions(
-  [0, 100, 200, 300, 400, 500, 600, 700, 800, 900],
-  (ms) => `${ms}ms`,
-);
+const offsetOptions: SelectOption<number>[] = [
+  0, 100, 200, 300, 400, 500, 600, 700, 800, 900,
+].map((ms) => ({ label: `${ms}ms`, value: ms }));
 
 const NoTransitionButton = styled(Button)({
   transition: "none",
@@ -30,22 +25,19 @@ export const MetronomeButton = ({
   const route = useActiveRoute();
 
   return (
-    <Flex gap={16} justify="space-between" align="center">
-      <Flex gap={16} align="center">
-        <Tooltip title="Enable this only if you have a second offset of 1 after several RNG attempts.">
-          <Flex gap={8}>
-            <Typography.Text strong>3ds Offset</Typography.Text>
-            <Icon name="InformationCircle" size={16} />
-          </Flex>
-        </Tooltip>
-        <Flex width={100}>
-          <Select
-            fullFlex
-            value={offset}
-            options={options}
-            onChange={setOffset}
-          />
-        </Flex>
+    <Flex gap={16} justify="space-between" align="flex-end">
+      <Flex vertical width={140}>
+        <SelectField<number>
+          label="3ds Offset"
+          tooltip={{
+            title: "3ds Offset",
+            description:
+              "Enable this only if you have a second offset of 1 after several RNG attempts.",
+          }}
+          value={offset}
+          options={offsetOptions}
+          onChange={setOffset}
+        />
       </Flex>
       <NoTransitionButton
         flex={1}

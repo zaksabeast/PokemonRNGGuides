@@ -25,11 +25,11 @@ import {
   IvsSchema,
   NullableIvs,
   NullableIvsSchema,
-} from "~/components/ivInput";
+} from "~/components/form/pokemon/ivFields";
 import {
   defaultHiddenPowerFilter,
   HiddenPowerSchema,
-} from "~/components/hiddenPowerInput";
+} from "~/components/form/pokemon/hiddenPowerFilter";
 import { HexSchema } from "~/utils/number";
 import { usePickupEggState } from "./state";
 import { useCurrentStep } from "~/components/stepper/state";

@@ -2,7 +2,7 @@ import { shinyLabels } from "~/rngTools/shiny";
 import { CopyToClipboardButton } from "~/components";
 import { PokeNavTrainer } from "~/rngTools";
 import { useHydrate } from "~/hooks/useHydrate";
-import { NullableIvs } from "~/components/ivInput";
+import { NullableIvs } from "~/components/form/pokemon/ivFields";
 import {
   HeldEggCalibrationState,
   HeldEggState,

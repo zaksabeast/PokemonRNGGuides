@@ -14,7 +14,7 @@ import { formatSpeciesLabel } from "~/types/species";
 import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
-} from "~/components/pkmFilter";
+} from "~/components/form/pokemon/pkmFilterFields";
 import { Translations } from "~/translations";
 import { selectedShinyPatchAtom, type SelectedShinyPatch } from "./state";
 import { useAtomValue } from "jotai";

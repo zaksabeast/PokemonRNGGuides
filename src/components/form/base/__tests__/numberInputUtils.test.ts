@@ -3,7 +3,7 @@ import {
   getNumberInputBlurValue,
   getNumberInputChangeResult,
   shouldClearTransientValue,
-} from "../numberInput/utils";
+} from "../numberInputUtils";
 
 describe("numberInputUtils", () => {
   it("keeps transient text when replacing a controlled value with '-'", () => {

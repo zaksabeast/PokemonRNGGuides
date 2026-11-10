@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { pokeNavTrainers } from "../constants";
-import { pkmFilterSchema } from "~/components/pkmFilter";
+import { pkmFilterSchema } from "~/components/form/pokemon/pkmFilterFields";
 import { nature } from "~/types";
 
 export const Validator = z

@@ -4,16 +4,9 @@ import { memoize, map, get } from "lodash-es";
 import { useTranslationState } from "./state";
 import { guides, GuideSlug } from "~/guides";
 import { LanguageKey } from "~/types/language";
-import {
-  Flex,
-  CopyToClipboardButton,
-  TextArea,
-  Typography,
-  Input,
-  Field,
-  FormFieldTable,
-} from "~/components";
-import { Translations, useTranslations } from "~/translations";
+import { Flex, CopyToClipboardButton, Typography } from "~/components";
+import { FormSection, TextAreaField, TextField } from "~/components/form";
+import { useTranslations } from "~/translations";
 import { formatRelativeUrl } from "~/utils/formatRelativeUrl";
 import { match, P } from "ts-pattern";
 
@@ -81,10 +74,11 @@ const TranslateGuide = ({
   return (
     <Flex vertical gap={16}>
       <Typography.Title level={3}>Translate Guide</Typography.Title>
-      <TextArea
+      <TextAreaField
+        label="Guide"
+        monospace
         value={file}
-        fontFamily="monospace"
-        onChange={(event) => setFile(event.target.value)}
+        onChange={setFile}
         rows={25}
       />
       <CopyToClipboardButton text={file} />
@@ -97,34 +91,30 @@ type TranslateToolsProps = {
 };
 
 const TranslateTools = ({ selectedLanguage }: TranslateToolsProps) => {
-  const [translations, setTranslations] = React.useState<Partial<Translations>>(
-    {},
-  );
+  const [translations, setTranslations] = React.useState<
+    Record<string, string>
+  >({});
   const rawTranslations = useTranslations(selectedLanguage);
 
   React.useEffect(() => {
     setTranslations(rawTranslations);
   }, [rawTranslations]);
 
-  const fields: Field[] = map(rawTranslations, (value, key) => ({
-    label: key,
-    input: (
-      <Input
-        defaultValue={value}
-        onChange={(event) =>
-          setTranslations((prev) => ({
-            ...prev,
-            [key]: event.target.value,
-          }))
-        }
-      />
-    ),
-  }));
+  const fields = map(rawTranslations, (value, key) => (
+    <TextField
+      key={key}
+      label={key}
+      value={translations[key] ?? value}
+      onChange={(translation) =>
+        setTranslations((prev) => ({ ...prev, [key]: translation }))
+      }
+    />
+  ));
 
   return (
     <Flex vertical gap={16}>
       <Typography.Title level={3}>Translate Tools</Typography.Title>
-      <FormFieldTable fields={fields} />
+      <FormSection>{fields}</FormSection>
       <CopyToClipboardButton text={JSON.stringify(translations, null, 2)} />
     </Flex>
   );

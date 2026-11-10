@@ -13,7 +13,7 @@ import {
 import styled from "@emotion/styled";
 import { type FeebasTile, getFeebasTiles } from "./feebasMapData";
 import { useField } from "~/hooks/form";
-import { GenericForm, GuaranteeFormNameType } from "~/types";
+import { GenericForm, Paths } from "~/types";
 import FeebasMap from "~/assets/Emerald/Wild/FeebasMap.png";
 
 const tiles = getFeebasTiles();
@@ -85,7 +85,7 @@ type FeebasTilesFieldProps<FormState extends GenericForm> = Pick<
   LabeledFieldProps,
   "label" | "tooltip"
 > & {
-  name: GuaranteeFormNameType<FormState, number[]>;
+  name: Paths<FormState, number[]>;
   canOnlySelectOne?: boolean;
 };
 

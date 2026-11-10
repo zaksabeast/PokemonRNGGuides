@@ -13,8 +13,8 @@ import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
   pkmFilterSchema,
-} from "~/components/pkmFilter";
-import { IvsSchema } from "~/components/ivInput";
+} from "~/components/form/pokemon/pkmFilterFields";
+import { IvsSchema } from "~/components/form/pokemon/ivFields";
 import { HexSchema } from "~/utils/number";
 import { RustOption } from "~/types/utils";
 import { ability12H } from "~/types/ability";

@@ -22,7 +22,7 @@ import {
 import { pokeNavTrainers } from "../constants";
 import { rngTools, Gen3HeldEgg, PokeNavTrainer, Species } from "~/rngTools";
 import { sortBy, uniqueId } from "lodash-es";
-import { getPkmFilterInitialValues } from "~/components/pkmFilter";
+import { getPkmFilterInitialValues } from "~/components/form/pokemon/pkmFilterFields";
 import { toOptions } from "~/utils/options";
 import { useHydrate } from "~/hooks/useHydrate";
 import { Skeleton } from "antd";

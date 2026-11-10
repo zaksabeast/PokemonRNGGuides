@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import * as tst from "ts-toolbelt";
 
-export type GridProps = {
+type GridProps = {
   mobile?: tst.L.KeySet<1, 12>;
   smallTablet?: tst.L.KeySet<1, 12>;
   tablet?: tst.L.KeySet<1, 12>;

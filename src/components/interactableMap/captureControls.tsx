@@ -3,8 +3,7 @@ import { Button } from "../button";
 import { Card } from "../card";
 import { CopyToClipboardButton } from "../copyToClipboardButton";
 import { Flex } from "../flex";
-import { RadioGroup } from "../radio";
-import { TextArea } from "../textArea";
+import { RadioField, TextAreaField, type RadioOption } from "../form";
 import { Typography } from "../typography";
 import type { MapCapturedGeometry, MapCaptureMode, Point } from "./types";
 import { isPolygonValid } from "./utils";
@@ -35,10 +34,10 @@ const getDraftGeometry = ({
   return null;
 };
 
-const CAPTURE_MODE_OPTIONS = [
+const CAPTURE_MODE_OPTIONS: RadioOption<MapCaptureMode>[] = [
   { label: "Point", value: "point" },
   { label: "Polygon", value: "polygon" },
-] as const;
+];
 
 export const CaptureControls = ({
   mode,
@@ -90,10 +89,12 @@ export const CaptureControls = ({
         </Flex>
 
         <Flex vertical gap={12}>
-          <RadioGroup<MapCaptureMode>
+          <RadioField<MapCaptureMode>
+            ariaLabel="Capture mode"
+            cellSize="word"
             value={mode}
             options={CAPTURE_MODE_OPTIONS}
-            onChange={(event) => onSelectMode(event.target.value)}
+            onChange={onSelectMode}
           />
 
           <Flex wrap gap={8}>
@@ -133,10 +134,11 @@ export const CaptureControls = ({
           )}
         </Flex>
 
-        <TextArea
+        <TextAreaField
+          label="Marker JSON"
           readOnly
-          fontFamily="monospace"
-          autoSize={{ minRows: 6, maxRows: 12 }}
+          monospace
+          rows={6}
           value={previewText}
         />
 

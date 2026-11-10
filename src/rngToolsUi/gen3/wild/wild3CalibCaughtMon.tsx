@@ -1,7 +1,7 @@
 import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
-} from "~/components/pkmFilter";
+} from "~/components/form/pokemon/pkmFilterFields";
 import { gen3Methods } from "~/types";
 import {
   Wild3EncounterGameData,
@@ -19,7 +19,7 @@ import { getIvRangeFromStats } from "~/types/statRange";
 import {
   gen3PkmFilterFieldsToRustInput,
   getGen3PkmFilterInitialValues,
-} from "~/components/gen3PkmFilter";
+} from "~/components/form/pokemon/gen3PkmFilterFields";
 import {
   BATTLE_VIDEO_CONFIDENCE_RANGE,
   type FormState,

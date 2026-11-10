@@ -1,5 +1,5 @@
-import { gen3PkmFilterFieldsToRustInput } from "~/components/gen3PkmFilter";
-import { pkmFilterFieldsToRustInput } from "~/components/pkmFilter";
+import { gen3PkmFilterFieldsToRustInput } from "~/components/form/pokemon/gen3PkmFilterFields";
+import { pkmFilterFieldsToRustInput } from "~/components/form/pokemon/pkmFilterFields";
 import { rngTools } from "~/rngTools";
 import { flattenIvs } from "~/rngToolsUi/shared/ivColumns";
 

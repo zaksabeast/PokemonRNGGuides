@@ -22,7 +22,7 @@ import { formatHex } from "~/utils/formatHex";
 import { PidPathResult, ResultSetupInfo } from "./wild3TargetSetupSearcher";
 import { GBA_FPS } from "~/utils/consts";
 import { TargetSetup } from "./wild3TargetSetupInput";
-import { Wild3PokeblockDescription } from "~/components/wild3Pokeblock";
+import { Wild3PokeblockDescription } from "~/components/form/pokemon/pokeblockField";
 import { targetAdvanceAfterPaintingTitle } from "../pokemonRng/labels";
 import { FeebasTileVisualizerButton } from "./feebasMap";
 import { Wild3UiMapNameWithAudioTooltip } from "./wild3UiMapNameWithAudioTooltip";

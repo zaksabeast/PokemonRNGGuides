@@ -17,7 +17,12 @@ import {
   gen3PkmFilterFieldsToRustInput,
 } from "~/components/gen3PkmFilter";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
-import { gen3Leads, wild3Actions, isFishingAction } from "./utils";
+import {
+  gen3Leads,
+  wild3Actions,
+  isFishingAction,
+  getFeebasTileCycle,
+} from "./utils";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 import type { TargetSetup } from "./wild3TargetSetupInput";
 import { doesRockSmashSetupRequireWhiteFlute } from "./searchWild3Target";
@@ -222,7 +227,7 @@ export const searchSimplifiedWild = async (
         action: res.action,
         lead: res.lead,
         feebasState: res.feebas_state,
-        feebasCycles: res.feebas_cycles,
+        feebasCycles: getFeebasTileCycle(res.feebas_tile),
         roamerState: res.roamer_state,
         massOutbreakState: res.mass_outbreak_state,
         targetPaintingAdvs: { before: 0, after: res.advance },

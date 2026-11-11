@@ -36,8 +36,8 @@ pub struct Wild3FeebasTile {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Tsify)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3InitialCycleDistribution {
-    pub checkfeebas_vblank_count: Option<usize>,
-    pub checkfeebas_vblank_count_probability: f64,
+    pub feebas_vblank_count: Option<usize>,
+    pub feebas_vblank_count_probability: f64,
     // TODO: Replace with Option<Wild3FeebasTileId>
     pub feebas_tile: Option<Wild3FeebasTile>,
     pub min: usize,
@@ -73,8 +73,8 @@ impl Wild3InitialCycleDistribution {
         };
 
         Self {
-            checkfeebas_vblank_count: None,
-            checkfeebas_vblank_count_probability: 1.0,
+            feebas_vblank_count: None,
+            feebas_vblank_count_probability: 1.0,
             feebas_tile: None,
             min,
             max,

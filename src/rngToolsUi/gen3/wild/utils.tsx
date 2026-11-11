@@ -14,6 +14,10 @@ import { TooltipWithIcon } from "~/components/tooltipWithIcon";
 
 export const FEEBAS_MAP = "MAP_ROUTE119";
 
+export const getFeebasTileCycle = (
+  tile: number | { cycle_counter: number } | null | undefined,
+): number => (typeof tile === "number" ? tile : (tile?.cycle_counter ?? 0));
+
 export const formatMapName = (label: string) => {
   return label
     .split("_")

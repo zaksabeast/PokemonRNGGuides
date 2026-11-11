@@ -12,8 +12,9 @@ use super::super::{
 use crate::{
     AbilityType, Gender, HiddenPower, Ivs, Nature, PkmFilter, ShinyType, Species,
     gen3::{
-        Gen3Lead, Gen3Method, Gen3PkmFilter, SpeciesData, Wild3GeneratorCycleOpts,
-        Wild3InitialCycleDistribution, search_wild3_naive, search_wild3_reverse,
+        Gen3Lead, Gen3Method, Gen3PkmFilter, SpeciesData, Wild3FeebasTileId,
+        Wild3GeneratorCycleOpts, Wild3InitialCycleDistribution, search_wild3_naive,
+        search_wild3_reverse,
         searcher_painter::Wild3PaintingOpts,
         wild::{
             Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex, Wild3MapGameData,
@@ -283,11 +284,7 @@ pub struct Wild3SearcherResultMon {
     pub action: Wild3Action,
     pub roamer_state: Wild3RoamerState,
     pub feebas_state: Wild3FeebasState,
-    // TODO: Remove feebas_cycles, feebas_tile will be used instead
-    pub feebas_cycles: usize,
-    // TODO: Use Wild3FeebasTileId
-    pub feebas_tile: Option<super::super::Wild3FeebasTile>,
-    pub checkfeebas_vblank_count: Option<usize>,
+    pub feebas_vblank_count: Option<usize>,
     pub mass_outbreak_state: Wild3MassOutbreakState,
 }
 
@@ -331,12 +328,7 @@ impl Wild3SearcherResultMon {
             action: gen_opts.action,
             roamer_state: gen_opts.roamer_state,
             feebas_state: gen_opts.feebas_state,
-            feebas_cycles: gen_opts.feebas_cycles,
-            feebas_tile: gen_opts
-                .feebas_initial_distribution
-                .as_ref()
-                .and_then(|distr| distr.feebas_tile),
-            checkfeebas_vblank_count: gen_opts.feebas_vblank_count,
+            feebas_vblank_count: gen_opts.feebas_vblank_count,
             mass_outbreak_state: gen_opts.mass_outbreak_state,
         }
     }

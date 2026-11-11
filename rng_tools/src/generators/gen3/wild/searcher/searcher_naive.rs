@@ -68,20 +68,27 @@ fn search_wild3_naive_at_given_advance(
                 vec![None]
             };
 
-            let feebas_cycles =
-                if action.is_fishing() && *feebas_state != Wild3FeebasState::NotInMap {
-                    opts.feebas_cycles.clone()
-                } else {
-                    vec![0]
-                };
-
-            let pokeblock_feebas_products = iproduct!(&pokeblock_states, &feebas_cycles);
+            // Note: InMapButNotOnFeebasTile is not supported.
+            let fishing_on_feebas_tile =
+                action.is_fishing() && *feebas_state != Wild3FeebasState::NotInMap;
 
             let initial_cycle_distrs = opts
                 .cycle_opts
                 .get_initial_cycle_distrs(&map_setups.map_data, *action);
 
-            for (safari_pokeblock, feebas_cycles) in pokeblock_feebas_products {
+            let feebas_distributions: Vec<_> = if fishing_on_feebas_tile {
+                initial_cycle_distrs
+                    .iter()
+                    .copied()
+                    .filter(|distribution| distribution.feebas_tile.is_some())
+                    .map(Some)
+                    .collect()
+            } else {
+                vec![None]
+            };
+            let pokeblock_feebas_products = iproduct!(&pokeblock_states, &feebas_distributions);
+
+            for (safari_pokeblock, feebas_distribution) in pokeblock_feebas_products {
                 let gen_opts = Wild3GeneratorOptions {
                     tid: opts.tid,
                     sid: opts.sid,
@@ -94,8 +101,8 @@ fn search_wild3_naive_at_given_advance(
                     roamer_state: *roamer_state,
                     mass_outbreak_state: *mass_outbreak_state,
                     feebas_state: *feebas_state,
-                    feebas_cycles: *feebas_cycles,
-                    feebas_vblank_count: None,
+                    feebas_initial_distribution: feebas_distribution
+                        .map(Wild3InitialCycleDistribution::clone),
                     safari_pokeblock: safari_pokeblock.clone(),
                     cycle_opts: opts.cycle_opts.generator_cycle_opts(&initial_cycle_distrs),
                     using_white_flute: opts.using_white_flute,

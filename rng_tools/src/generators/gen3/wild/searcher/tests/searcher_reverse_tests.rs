@@ -44,23 +44,21 @@ fn prepared_feebas_counts_match_naive_search_and_replay() {
     };
     let mut naive = search_wild3_naive(&options);
     let mut reverse = search_wild3_reverse(&options);
-    let key = |result: &Wild3SearcherResultMon| (result.advance, result.checkfeebas_vblank_count, result.pid);
+    let key = |result: &Wild3SearcherResultMon| (result.advance, result.feebas_vblank_count, result.pid);
     naive.sort_by_key(key);
     reverse.sort_by_key(key);
 
     assert_eq!(reverse, naive);
-    assert_eq!(naive.iter().filter_map(|result| result.checkfeebas_vblank_count).sorted().dedup().collect_vec(), vec![0, 1]);
+    assert_eq!(naive.iter().filter_map(|result| result.feebas_vblank_count).sorted().dedup().collect_vec(), vec![0, 1]);
 
     for result in naive {
         let map = &options.map_setups[0].map_data;
-        let distribution = map.initial_cycle_distrs.iter().find(|distribution| distribution.checkfeebas_vblank_count == result.checkfeebas_vblank_count).expect("prepared distribution");
+        let distribution = map.initial_cycle_distrs.iter().find(|distribution| distribution.feebas_vblank_count == result.feebas_vblank_count).expect("prepared distribution");
         let replay = generate_wild3(Pokerng::new(result.seed), &Wild3GeneratorOptions {
             action,
             lead: result.lead,
             methods: vec![result.method],
             feebas_state: result.feebas_state,
-            feebas_cycles: result.feebas_cycles,
-            feebas_vblank_count: result.checkfeebas_vblank_count,
             feebas_initial_distribution: Some(distribution.clone()),
             ..Default::default()
         }, map);
@@ -74,7 +72,7 @@ fn prepared_feebas_counts_match_naive_search_and_replay() {
             cycle_range: None,
             used_safari_pokeblock: None,
         }]);
-        assert_eq!(result.feebas_tile, Some(crate::gen3::Wild3FeebasTile { x: 1, y: 2, cycle_counter: 219710 }));
+        assert_eq!(result.feebas_tile, Some(219710));
     }
 }
 
@@ -476,8 +474,8 @@ fn test_search_reverse_wild3_feebas_no_cyles() {
         species: Species::Feebas,
         feebas_state: Wild3FeebasState::OnFeebasTile,
         action: Wild3Action::SuperRod,
-        checkfeebas_vblank_count: Some(0),
-        feebas_tile: Some(crate::gen3::Wild3FeebasTile { x: 1, y: 2, cycle_counter: 0 }),
+        feebas_vblank_count: Some(0),
+        feebas_tile: Some(0),
         ..Default::default()
     }];
     assert!(does_search_wild3_reverse_support_options(&options));
@@ -535,9 +533,8 @@ fn test_search_reverse_wild3_feebas_many_cyles() {
         species: Species::Feebas,
         feebas_state: Wild3FeebasState::OnFeebasTile,
         action: Wild3Action::SuperRod,
-        feebas_cycles: 100_000,
-        checkfeebas_vblank_count: Some(0),
-        feebas_tile: Some(crate::gen3::Wild3FeebasTile { x: 1, y: 2, cycle_counter: 100_000 }),
+        feebas_vblank_count: Some(0),
+        feebas_tile: Some(100_000),
         ..Default::default()
     };
     let expected_results = [
@@ -545,9 +542,8 @@ fn test_search_reverse_wild3_feebas_many_cyles() {
         Wild3SearcherResultMon {
             advance: 15520,
             seed: Pokerng::with_jump(options.initial_seed, 15520).seed(),
-            feebas_cycles: 500_000,
-            checkfeebas_vblank_count: Some(2),
-            feebas_tile: Some(crate::gen3::Wild3FeebasTile { x: 1, y: 2, cycle_counter: 500_000 }),
+            feebas_vblank_count: Some(2),
+            feebas_tile: Some(500_000),
             ..expected_mon
         },
     ];

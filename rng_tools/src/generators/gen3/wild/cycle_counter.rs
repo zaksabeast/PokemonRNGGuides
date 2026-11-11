@@ -172,38 +172,6 @@ pub enum CycleFrameCounter {
 pub const MISSING_VBLANK_FALLBACK: usize = 55_000;
 
 impl CycleFrameCounter {
-    pub(super) fn set_feebas_timing(&mut self, timing: super::feebas_timing::FeebasCycleCounter) {
-        match self {
-            Self::Inactive => {}
-            Self::DetailedBreakdown { current_cycle, .. } => {
-                current_cycle.frame += timing.vblank_count;
-                current_cycle.cycle = timing.most_probable_cycle_after_check_feebas;
-            }
-            Self::MinMaxRange { min_max_cycles, base_cycle_count, .. } => {
-                *base_cycle_count = 0;
-                // Range counters use a virtual entry phase from the conditioned CDF; traces retain real frames.
-                min_max_cycles.min_cycle = CycleFrame {
-                    frame: 0,
-                    cycle: timing.min_cycle_after_check_feebas,
-                };
-                min_max_cycles.max_cycle = CycleFrame {
-                    frame: 0,
-                    cycle: timing.max_cycle_after_check_feebas,
-                };
-            }
-            Self::CheckValidAllLeadSpds {
-                earliest_slowest_cycle,
-                latest_fastest_cycle,
-                base_cycle_count,
-                ..
-            } => {
-                *base_cycle_count = 0;
-                *earliest_slowest_cycle = timing.min_cycle_after_check_feebas;
-                *latest_fastest_cycle = timing.max_cycle_after_check_feebas;
-            }
-        }
-    }
-
     pub fn new(opts: &Wild3GeneratorOptions) -> Self {
         match &opts.cycle_opts {
             Wild3GeneratorCycleOpts::Inactive => CycleFrameCounter::Inactive,
@@ -539,72 +507,6 @@ impl CycleFrameCounter {
 mod tests {
     use super::*;
     use crate::gen3::CycleRange;
-
-    #[test]
-    fn selected_feebas_phase_can_move_earlier_and_preserves_elapsed_frames() {
-        let mut counter = CycleFrameCounter::DetailedBreakdown {
-            lead_cycle_spd: 0,
-            current_cycle: CycleFrame {
-                frame: 2,
-                cycle: 100000,
-            },
-            vblank_cycles: vec![],
-            cycle_at_moments: vec![],
-        };
-        counter.set_feebas_timing(super::super::feebas_timing::FeebasCycleCounter {
-            vblank_count: 3,
-            min_cycle_after_check_feebas: 45000,
-            max_cycle_after_check_feebas: 45000,
-            most_probable_cycle_after_check_feebas: 45000,
-        });
-        counter.on_moment_reached(Moment::CheckFeebas);
-        counter.add_cycle(471792);
-        counter.on_moment_reached(Moment::ChooseWildMonLevel);
-
-        assert_eq!(
-            counter.get_cycle_at_moments(),
-            vec![
-                CycleFrameMoment::new(Moment::CheckFeebas, 5, 45000),
-                CycleFrameMoment::new(Moment::ChooseWildMonLevel, 7, 65000),
-            ]
-        );
-    }
-
-    #[test]
-    fn selected_feebas_phase_resets_range_without_charging_interrupt_twice() {
-        let mut counter = CycleFrameCounter::MinMaxRange {
-            min_max_cycles: MinMaxCycleFrame::new((90000, 110000), (0, 0)),
-            base_cycle_count: 1186,
-            lead_pid_mod_count: 0,
-            generate_even_if_impossible: true,
-        };
-        counter.set_feebas_timing(super::super::feebas_timing::FeebasCycleCounter {
-            vblank_count: 3,
-            min_cycle_after_check_feebas: 45000,
-            max_cycle_after_check_feebas: 60000,
-            most_probable_cycle_after_check_feebas: 50000,
-        });
-        counter.add_cycle(1000);
-        let CycleFrameCounter::MinMaxRange {
-            min_max_cycles,
-            base_cycle_count,
-            lead_pid_mod_count,
-            generate_even_if_impossible,
-        } = counter
-        else {
-            panic!("range counter");
-        };
-
-        assert_eq!(
-            (
-                min_max_cycles,
-                base_cycle_count,
-                lead_pid_mod_count,
-                generate_even_if_impossible
-            ),
-            (MinMaxCycleFrame::new((46000, 61000), (0, 0)), 1000, 0, true,)
-        );
-    }
 
     #[test]
     fn wild3_check_valid_all_lead_spds_cycle_range() {

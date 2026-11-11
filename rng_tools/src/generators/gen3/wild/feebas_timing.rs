@@ -25,11 +25,11 @@ pub(super) fn select_distribution<'a>(
 ) -> Option<&'a super::Wild3InitialCycleDistribution> {
     match selection {
         Wild3FeebasVblankSelection::Exact(count) => candidates.iter().copied()
-            .find(|distribution| distribution.checkfeebas_vblank_count == Some(count)),
+            .find(|distribution| distribution.feebas_vblank_count == Some(count)),
         Wild3FeebasVblankSelection::MostProbable => candidates.iter().copied().reduce(|best, next| {
-            let higher_probability = next.checkfeebas_vblank_count_probability > best.checkfeebas_vblank_count_probability;
-            let lower_tied_count = next.checkfeebas_vblank_count_probability == best.checkfeebas_vblank_count_probability
-                && next.checkfeebas_vblank_count < best.checkfeebas_vblank_count;
+            let higher_probability = next.feebas_vblank_count_probability > best.feebas_vblank_count_probability;
+            let lower_tied_count = next.feebas_vblank_count_probability == best.feebas_vblank_count_probability
+                && next.feebas_vblank_count < best.feebas_vblank_count;
             if higher_probability || lower_tied_count {
                 return next;
             }
@@ -57,8 +57,8 @@ pub(super) fn prepared_distribution(
             super::CdfKnot { cycle: max as f64, probability: 1.0 },
         ],
         feebas_tile: Some(super::Wild3FeebasTile { x: 1, y: 2, cycle_counter: cycles }),
-        checkfeebas_vblank_count: Some(count),
-        checkfeebas_vblank_count_probability: probability,
+        feebas_vblank_count: Some(count),
+        feebas_vblank_count_probability: probability,
         ..super::Wild3InitialCycleDistribution::new_default(action).clone()
     }
 }
@@ -93,7 +93,12 @@ pub(super) fn timing_from_emu_log(
     else {
         return None;
     };
-    counter.add_cycle(opts.feebas_cycles);
+    counter.add_cycle(
+        opts.feebas_initial_distribution
+            .as_ref()
+            .and_then(|distribution| distribution.feebas_tile)
+            .map_or(0, |tile| tile.cycle_counter),
+    );
     let super::CycleFrameCounter::DetailedBreakdown {
         current_cycle: after,
         ..

@@ -151,7 +151,7 @@ impl Wild3MapGameData {
             .iter()
             .find(|distr| {
                 distr.action == action
-                    && distr.checkfeebas_vblank_count.is_none()
+                    && distr.feebas_vblank_count.is_none()
                     && distr.playing_song == playing_song
                     && distr.weather == weather
             })

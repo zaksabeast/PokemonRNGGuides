@@ -148,7 +148,8 @@ fn find_best_cycle_data_for_lead_spd(
         .map(|distr| Wild3SearcherCycleData {
             lead_pid_cycle_count: lead_spd,
             initial_cycle_range: initial_range,
-            method_probability: distr.probability_for_range(&initial_range) * distr.checkfeebas_vblank_count_probability,
+            method_probability: distr.probability_for_range(&initial_range)
+                * distr.feebas_vblank_count_probability,
             playing_song: distr.playing_song,
             weather: distr.weather,
         });
@@ -203,7 +204,8 @@ pub fn calculate_cycle_data_for_specific_lead_spd(
     Wild3SearcherCycleData {
         lead_pid_cycle_count,
         initial_cycle_range,
-        method_probability: distr.probability_for_range(&initial_cycle_range) * distr.checkfeebas_vblank_count_probability,
+        method_probability: distr.probability_for_range(&initial_cycle_range)
+            * distr.feebas_vblank_count_probability,
         playing_song: distr.playing_song,
         weather: distr.weather,
     }
@@ -250,7 +252,7 @@ fn calculate_ideal_lead_cycle_data(
         Some(Wild3SearcherCycleData {
             lead_pid_cycle_count: speed,
             initial_cycle_range: initial_range,
-            method_probability: probability * distr.checkfeebas_vblank_count_probability,
+            method_probability: probability * distr.feebas_vblank_count_probability,
             playing_song: distr.playing_song,
             weather: distr.weather,
         })
@@ -291,8 +293,8 @@ mod tests {
                     probability: if index < 32 { 0.0 } else { 1.0 },
                 })
                 .collect(),
-            checkfeebas_vblank_count: None,
-            checkfeebas_vblank_count_probability: 1.0,
+            feebas_vblank_count: None,
+            feebas_vblank_count_probability: 1.0,
             feebas_tile: None,
             action: Wild3Action::SweetScentLand,
             playing_song: Wild3PlayingSong::MapSong,

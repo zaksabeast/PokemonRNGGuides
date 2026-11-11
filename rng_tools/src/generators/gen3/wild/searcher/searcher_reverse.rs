@@ -356,7 +356,7 @@ fn create_result(
     let matching = initial_cycle_groups
         .iter()
         .copied()
-        .filter(|distribution| distribution.checkfeebas_vblank_count == feebas_vblank_count)
+        .filter(|distribution| distribution.feebas_vblank_count == feebas_vblank_count)
         .collect_vec();
     let feebas_cycles_list = if feebas_vblank_count.is_some() {
         matching
@@ -387,7 +387,6 @@ fn create_result(
         roamer_state: Wild3RoamerState::Inactive,
         mass_outbreak_state,
         feebas_state,
-        feebas_vblank_count,
         safari_pokeblock: safari_pokeblock.clone(),
         cycle_opts: opts.cycle_opts.generator_cycle_opts(initial_cycle_groups),
         using_white_flute: opts.using_white_flute,

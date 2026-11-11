@@ -247,13 +247,13 @@ impl<'a> EncounterIdxPathGenerator<'a> {
         }
 
         if permit_feebas_arcs(&species_data) {
-            // TODO: Put in a function get_possible_checkfeebas_vblank_count
+            // TODO: Put in a function get_possible_feebas_vblank_count
             {
                 let mut counts = map_setups
                     .iter()
                     .flat_map(|setup| &setup.map_data.initial_cycle_distrs)
-                    .filter(|distribution| distribution.checkfeebas_vblank_count_probability > 0.0)
-                    .filter_map(|distribution| distribution.checkfeebas_vblank_count)
+                    .filter(|distribution| distribution.feebas_vblank_count_probability > 0.0)
+                    .filter_map(|distribution| distribution.feebas_vblank_count)
                     .collect_vec();
                 counts.sort_unstable();
                 counts.dedup();

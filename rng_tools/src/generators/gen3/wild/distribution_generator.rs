@@ -4,9 +4,7 @@ use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 use super::Wild3GeneratorOptions;
-use super::feebas_timing::{
-    FeebasCycleCounter, timing_from_emu_log,
-};
+use super::feebas_timing::{FeebasCycleCounter, timing_from_emu_log};
 use super::generator::generate_wild3_with_feebas_timing;
 use super::{Wild3FeebasState, Wild3FeebasVblankSelection};
 use crate::rng::Rng;
@@ -137,7 +135,6 @@ pub fn generate_gen3_wild_distribution(
             },
             methods,
             feebas_initial_distribution: selected.cloned(),
-            feebas_vblank_count: timing.map(|timing| timing.vblank_count),
             ..opts.clone()
         },
         game_data,
@@ -168,26 +165,29 @@ fn select_feebas_distribution<'a>(
             distribution.action == opts.action
                 && distribution.playing_song == playing_song
                 && distribution.weather == weather
-                && distribution
-                    .feebas_tile
-                    .is_some_and(|tile| tile.cycle_counter == opts.feebas_cycles)
-                && distribution.checkfeebas_vblank_count.is_some()
+                && distribution.feebas_tile.is_some_and(|tile| {
+                    opts.feebas_initial_distribution
+                        .as_ref()
+                        .and_then(|distribution| distribution.feebas_tile)
+                        .is_some_and(|selected| tile.cycle_counter == selected.cycle_counter)
+                })
+                && distribution.feebas_vblank_count.is_some()
         })
         .collect_vec();
     let mut probabilities = vec![];
     for distribution in &candidates {
-        if let Some(count) = distribution.checkfeebas_vblank_count {
+        if let Some(count) = distribution.feebas_vblank_count {
             probabilities.resize(probabilities.len().max(count + 1), 0.0);
-            probabilities[count] = distribution.checkfeebas_vblank_count_probability;
+            probabilities[count] = distribution.feebas_vblank_count_probability;
         }
     }
 
     let selected = super::feebas_timing::select_distribution(&candidates, feebas_selection);
     let selected = selected
-        .filter(|distribution| timed_check && distribution.checkfeebas_vblank_count_probability > 0.0);
+        .filter(|distribution| timed_check && distribution.feebas_vblank_count_probability > 0.0);
     let timing = selected.and_then(|distribution| {
         distribution
-            .checkfeebas_vblank_count
+            .feebas_vblank_count
             .map(|count| FeebasCycleCounter {
                 vblank_count: count,
                 min_cycle_after_check_feebas: distribution.min,
@@ -221,12 +221,7 @@ fn generate_dist_results(
     initial_cycle_distr: &Wild3InitialCycleDistribution,
     timing: Option<FeebasCycleCounter>,
 ) -> Vec<Wild3MethodDistributionResult> {
-    let generated = generate_wild3_with_feebas_timing(
-        rng,
-        opts,
-        game_data,
-        timing,
-    );
+    let generated = generate_wild3_with_feebas_timing(rng, opts, game_data, timing);
     let lead_cycle_spd = opts.cycle_opts.lead_cycle_spd().unwrap();
 
     generated
@@ -271,157 +266,6 @@ mod test {
         assert_list_eq,
         gen3::{Gen3Method, Moment, Wild3MapGameData},
     };
-
-    fn fishing_distribution(
-        seed: u32,
-        state: Wild3FeebasState,
-        count: usize,
-        emu_log: bool,
-    ) -> Wild3MethodDistributionResults {
-        let opts = Wild3GeneratorOptions {
-            action: super::super::Wild3Action::GoodRod,
-            lead: super::super::Gen3Lead::Egg,
-            feebas_cycles: 219710,
-            feebas_state: state,
-            ..Default::default()
-        };
-        let mut data = Wild3MapGameData {
-            feebas: Some(super::super::Wild3EncounterGameData::default()),
-            ..Default::default()
-        };
-        data.initial_cycle_distrs.extend([
-            super::super::feebas_timing::prepared_distribution(opts.action, 0, 219710, 265896, 280896, 0.5),
-            super::super::feebas_timing::prepared_distribution(opts.action, 1, 219710, 45000, 80000, 0.5),
-        ]);
-        data.slots_by_action[opts.action as usize] =
-            vec![super::super::Wild3EncounterGameData::default(); 3];
-
-        generate_gen3_wild_distribution(
-            seed,
-            0,
-            &opts,
-            &data,
-            0,
-            Wild3PlayingSong::MapSong,
-            Wild3Weather::Sunny,
-            emu_log.then_some(60000),
-            emu_log.then_some(vec![55000; 10]),
-            Wild3FeebasVblankSelection::Exact(count),
-        )
-    }
-
-    #[test]
-    fn selected_branch_probability_is_not_renormalized() {
-        for state in [
-            Wild3FeebasState::OnFeebasTile,
-            Wild3FeebasState::InMapButNotOnFeebasTile,
-        ] {
-            let dist = fishing_distribution(42, state, 1, false);
-            let total: f64 = dist.results.iter().map(|row| row.method_probability).sum();
-            assert!((total - 0.5).abs() < 1e-10, "{total}");
-            assert_eq!(
-                dist.feebas_probability_by_vblank,
-                Some(vec![0.5, 0.5])
-            );
-
-            for row in dist.results {
-                let nested = row
-                    .searcher_res
-                    .cycle_data_by_lead
-                    .expect("distribution cycle data");
-                assert!(
-                    (nested
-                        .specified_lead
-                        .expect("specified speed")
-                        .method_probability
-                        - row.method_probability)
-                        .abs()
-                        < 1e-10
-                );
-            }
-        }
-    }
-
-    #[test]
-    fn trace_count_matches_selection_and_logs_take_precedence() {
-        let dist = fishing_distribution(42, Wild3FeebasState::OnFeebasTile, 1, false);
-        let before = dist
-            .cycle_at_moments
-            .iter()
-            .find(|moment| moment.moment == Moment::CheckFeebas)
-            .expect("check moment");
-        let after = dist
-            .cycle_at_moments
-            .iter()
-            .find(|moment| moment.moment == Moment::ChooseWildMonLevel)
-            .expect("level moment");
-        assert_eq!(after.frame - before.frame, 1);
-        let matching = fishing_distribution(42, Wild3FeebasState::OnFeebasTile, 1, true);
-        let after = matching
-            .cycle_at_moments
-            .iter()
-            .find(|moment| moment.moment == Moment::ChooseWildMonLevel)
-            .expect("level moment");
-
-        assert_eq!(
-            (matching.omitted_emu_log, after.frame, after.cycle),
-            (false, 1, 55000)
-        );
-        let mismatch = fishing_distribution(42, Wild3FeebasState::OnFeebasTile, 0, true);
-
-        assert_eq!(
-            (mismatch.omitted_emu_log, mismatch.cycle_at_moments),
-            (true, vec![])
-        );
-    }
-
-    #[test]
-    fn impossible_count_is_distinct_from_bypassed_check() {
-        let impossible = fishing_distribution(42, Wild3FeebasState::OnFeebasTile, 99, false);
-
-        assert_eq!(
-            (
-                impossible.results,
-                impossible.cycle_at_moments,
-                impossible.feebas_probability_by_vblank
-            ),
-            (vec![], vec![], Some(vec![0.5, 0.5]))
-        );
-        for (seed, state) in [
-            (42, Wild3FeebasState::NotInMap),
-            (2, Wild3FeebasState::OnFeebasTile),
-        ] {
-            let zero = fishing_distribution(seed, state, 0, false);
-            let impossible = fishing_distribution(seed, state, 99, false);
-
-            assert_eq!(zero.results, impossible.results);
-            assert_eq!(zero.feebas_probability_by_vblank, None);
-        }
-    }
-
-    #[test]
-    fn non_fishing_distribution_has_no_count_penalty() {
-        let opts = Wild3GeneratorOptions {
-            feebas_state: Wild3FeebasState::OnFeebasTile,
-            ..Default::default()
-        };
-        let dist = generate_gen3_wild_distribution(
-            0,
-            44,
-            &opts,
-            &Wild3MapGameData::default(),
-            700,
-            Wild3PlayingSong::MapSong,
-            Wild3Weather::Sunny,
-            None,
-            None,
-            Wild3FeebasVblankSelection::Exact(99),
-        );
-        let total: f64 = dist.results.iter().map(|row| row.method_probability).sum();
-
-        assert_eq!(dist.feebas_probability_by_vblank, None);
-        assert!((total - 1.0).abs() < 1e-10);
-    }
 
     #[derive(Debug, PartialEq)]
     struct ResultForTest {

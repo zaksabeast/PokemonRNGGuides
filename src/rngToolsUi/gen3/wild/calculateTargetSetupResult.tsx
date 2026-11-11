@@ -154,17 +154,7 @@ export const calculateTargetSetupResult = async (
     roamer_state: targetSetup.roamerState,
     mass_outbreak_state: targetSetup.massOutbreakState,
     feebas_state: targetSetup.feebasState,
-    feebas_initial_distribution:
-      targetSetup.feebasState === "NotInMap"
-        ? null
-        : {
-            ...distribution,
-            feebas_tile: {
-              x: distribution.feebas_tile?.x ?? 0,
-              y: distribution.feebas_tile?.y ?? 0,
-              cycle_counter: targetSetup.feebasCycles,
-            },
-          },
+    feebas_cycles: targetSetup.feebasCycles,
     cycle_opts:
       lead_cycle_speed == null
         ? {

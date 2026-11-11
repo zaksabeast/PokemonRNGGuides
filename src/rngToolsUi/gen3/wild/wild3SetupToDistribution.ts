@@ -110,7 +110,7 @@ export const setupToDistributions = async (
     roamer_state: targetSetup.roamerState,
     mass_outbreak_state: targetSetup.massOutbreakState,
     feebas_state: targetSetup.feebasState,
-    feebas_initial_distribution: null,
+    feebas_cycles: targetSetup.feebasCycles,
     cycle_opts,
     safari_pokeblock:
       canUsePokeblock && targetSetup.safariPokeblock !== null
@@ -140,17 +140,6 @@ export const setupToDistributions = async (
       hasError: true,
       idealLeadCycleSpd: null,
       cycle_opts,
-    };
-  }
-
-  if (targetSetup.feebasState !== "NotInMap") {
-    opts.feebas_initial_distribution = {
-      ...distribution,
-      feebas_tile: {
-        x: distribution.feebas_tile?.x ?? 0,
-        y: distribution.feebas_tile?.y ?? 0,
-        cycle_counter: targetSetup.feebasCycles,
-      },
     };
   }
 

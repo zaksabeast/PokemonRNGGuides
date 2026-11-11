@@ -13,7 +13,6 @@ import { Tooltip } from "antd";
 
 import {
   FEEBAS_MAP,
-  getFeebasTileCycle,
   formatLeadName,
   formatMassOutbreakStateName,
   isFishingAction,
@@ -141,13 +140,11 @@ const getResultSetupInfoColumns = ({
     { title: "Player action", dataIndex: "actionName" },
     {
       title: "Fishing spot",
-      dataIndex: "feebas_tile",
+      dataIndex: "feebas_cycles",
       show: isFishingInFeebasMap,
       render: (feebasCycles, values) => {
         return isFishingAction(values.action) && values.mapId === FEEBAS_MAP ? (
-          <FeebasTileVisualizerButton
-            selectedTileCycle={getFeebasTileCycle(feebasCycles)}
-          />
+          <FeebasTileVisualizerButton selectedTileCycle={feebasCycles} />
         ) : null;
       },
     },
@@ -396,7 +393,7 @@ const setupInfoToTargetSetup = (
     map: setupInfo.mapId,
     action: setupInfo.action,
     feebasState: setupInfo.feebas_state,
-    feebasCycles: getFeebasTileCycle(setupInfo.feebas_tile),
+    feebasCycles: setupInfo.feebas_cycles,
     roamerState: setupInfo.roamer_state,
     massOutbreakState: setupInfo.mass_outbreak_state,
     targetPaintingAdvs: {

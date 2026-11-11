@@ -99,6 +99,7 @@ impl Wild3SearcherCycleDataByLead {
     }
 }
 
+/** initial_cycle_distrs includes ALL distributions, even those that don't apply with the setup required for that result */
 pub fn calculate_cycle_data_by_lead(
     post_cycle_range: &CycleAndModRange,
     egg_lead: bool,

@@ -37,6 +37,7 @@ pub enum Wild3GeneratorCycleOpts {
     },
     CycleAtMomentNoEmuLog {
         initial_cycle: usize,
+        feebas_initial_cycle: (usize, usize),
         playing_song: Wild3PlayingSong,
         lead_cycle_spd: usize,
     },
@@ -93,7 +94,7 @@ impl Default for Wild3GeneratorOptions {
             roamer_state: Wild3RoamerState::default(),
             mass_outbreak_state: Wild3MassOutbreakState::default(),
             feebas_state: Wild3FeebasState::default(),
-            feebas_initial_distribution: None,
+            feebas_vblank_count: None,
             using_white_flute: true,
             safari_pokeblock: None,
         }

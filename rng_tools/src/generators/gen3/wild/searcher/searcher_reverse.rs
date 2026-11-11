@@ -323,15 +323,12 @@ fn get_leads(seed_lead: Gen3Lead, opts: &Wild3SearcherOptions) -> ArrayVec<Gen3L
     leads
 }
 
-const FEEBAS_CYCLE_ZERO: [usize; 1] = [0];
-
 fn create_result(
     path: &EncounterIdxPath,
     opts: &Wild3SearcherOptions,
     map_setups: &Wild3MapSetups,
     map_idx: usize,
     encounter_gender_ratio: GenderRatio,
-    initial_cycle_by_feebas_vblank: &[Vec<&Wild3InitialCycleDistribution>],
     initial_cycle_groups: &[&Wild3InitialCycleDistribution],
 ) -> Vec<Wild3SearcherResultMon> {
     let mass_outbreak_state = match path.encounter_idx_to_lvl_arc {
@@ -339,33 +336,18 @@ fn create_result(
         _ => Wild3MassOutbreakState::Inactive,
     };
 
-    let (feebas_state, feebas_cycles_list, feebas_vblank_count) =
-        match path.encounter_idx_to_lvl_arc {
-            EncounterIdxToLvlArc::CheckFeebasSuccess { vblank_count } => (
-                Wild3FeebasState::OnFeebasTile,
-                initial_cycle_by_feebas_vblank[vblank_count].as_slice(),
-                feebas_vblank_count,
-            ),
-            _ => (
-                Wild3FeebasState::NotInMap,
-                FEEBAS_CYCLE_ZERO.as_slice(),
-                None,
-            ),
-        };
+    let (feebas_state, feebas_vblank_count) = match path.encounter_idx_to_lvl_arc {
+        EncounterIdxToLvlArc::CheckFeebasSuccess { vblank_count } => {
+            (Wild3FeebasState::OnFeebasTile, Some(vblank_count))
+        }
+        _ => (Wild3FeebasState::NotInMap, None),
+    };
 
-    let matching = initial_cycle_groups
+    let matching_initial_cycle_groups = initial_cycle_groups
         .iter()
         .copied()
-        .filter(|distribution| distribution.feebas_vblank_count == feebas_vblank_count)
+        .filter(|distr| distr.feebas_vblank_count == feebas_vblank_count)
         .collect_vec();
-    let feebas_cycles_list = if feebas_vblank_count.is_some() {
-        matching
-            .into_iter()
-            .map(|distribution| vec![distribution])
-            .collect_vec()
-    } else {
-        vec![matching]
-    };
 
     let safari_pokeblock = if path.nature_gender_to_pid_arc.uses_safari_pokeblock() {
         Some(create_pokeblock_gen_opt(
@@ -387,13 +369,15 @@ fn create_result(
         roamer_state: Wild3RoamerState::Inactive,
         mass_outbreak_state,
         feebas_state,
+        feebas_vblank_count,
         safari_pokeblock: safari_pokeblock.clone(),
-        cycle_opts: opts.cycle_opts.generator_cycle_opts(initial_cycle_groups),
+        cycle_opts: opts
+            .cycle_opts
+            .generator_cycle_opts(initial_cycle_groups, feebas_vblank_count),
         using_white_flute: opts.using_white_flute,
 
         // overwritten below
         lead: Gen3Lead::Egg,
-        feebas_initial_distribution: None,
     };
 
     let mut results = Vec::new();
@@ -402,26 +386,21 @@ fn create_result(
     for lead in get_leads(path.lead(encounter_gender_ratio), opts) {
         gen_opts.lead = lead;
 
-        for &feebas_initial_distribution in feebas_cycles_list {
-            gen_opts.feebas_initial_distribution = feebas_initial_distribution;
+        let gen_results = generate_wild3(Pokerng::new(path.seed), &gen_opts, &map_setups.map_data);
 
-            let gen_results =
-                generate_wild3(Pokerng::new(path.seed), &gen_opts, &map_setups.map_data);
-
-            for gen_res in &gen_results.mon_results {
-                let encounter = map_setups
-                    .map_data
-                    .get_encounter(gen_opts.action, gen_res.encounter_idx)
-                    .unwrap();
-                results.push(Wild3SearcherResultMon::new(
-                    gen_res,
-                    &gen_opts,
-                    path.seed,
-                    advance,
-                    encounter,
-                    distributions,
-                ));
-            }
+        for gen_res in &gen_results.mon_results {
+            let encounter = map_setups
+                .map_data
+                .get_encounter(gen_opts.action, gen_res.encounter_idx)
+                .unwrap();
+            results.push(Wild3SearcherResultMon::new(
+                gen_res,
+                &gen_opts,
+                path.seed,
+                advance,
+                encounter,
+                &matching_initial_cycle_groups,
+            ));
         }
     }
 

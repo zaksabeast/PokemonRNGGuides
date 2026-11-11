@@ -38,8 +38,7 @@ pub struct Wild3FeebasTile {
 pub struct Wild3InitialCycleDistribution {
     pub feebas_vblank_count: Option<usize>,
     pub feebas_vblank_count_probability: f64,
-    // TODO: Replace with Option<Wild3FeebasTileId>
-    pub feebas_tile: Option<Wild3FeebasTile>,
+    pub feebas_tile: Option<Wild3FeebasTileId>,
     pub min: usize,
     pub max: usize,
     pub distribution: Vec<CdfKnot>,

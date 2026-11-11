@@ -121,9 +121,11 @@ pub enum Wild3SearcherCycleOpts {
 impl Wild3SearcherCycleOpts {
     fn get_min_max_initial_cycle_from_distrs(
         distrs: &[&Wild3InitialCycleDistribution],
+        feebas_vblank_count: Option<usize>,
     ) -> (usize, usize) {
         distrs
             .iter()
+            .filter(|calibration| calibration.feebas_vblank_count == feebas_vblank_count)
             .map(|calibration| (calibration.min, calibration.max))
             .reduce(|(min, max), (next_min, next_max)| (min.min(next_min), max.max(next_max)))
             .unwrap_or_else(|| {
@@ -134,12 +136,18 @@ impl Wild3SearcherCycleOpts {
     pub fn generator_cycle_opts(
         &self,
         distrs: &[&Wild3InitialCycleDistribution],
+        feebas_vblank_count: Option<usize>,
     ) -> Wild3GeneratorCycleOpts {
         if matches!(self, Self::Inactive) {
             return Wild3GeneratorCycleOpts::Inactive;
         }
 
-        let min_max_initial_cycle = Self::get_min_max_initial_cycle_from_distrs(distrs);
+        let min_max_initial_cycle = Self::get_min_max_initial_cycle_from_distrs(distrs, None);
+
+        let feebas_min_max_initial_cycle = match feebas_vblank_count {
+            None => (0, 0),
+            _ => Self::get_min_max_initial_cycle_from_distrs(distrs, feebas_vblank_count),
+        };
 
         match self {
             Self::Inactive => Wild3GeneratorCycleOpts::Inactive,
@@ -149,6 +157,7 @@ impl Wild3SearcherCycleOpts {
                 ..
             } => Wild3GeneratorCycleOpts::Searching {
                 min_max_initial_cycle,
+                feebas_min_max_initial_cycle,
                 generate_even_if_impossible: *generate_even_if_impossible,
                 consider_rng_manipulated_lead_pid: *consider_rng_manipulated_lead_pid,
             },
@@ -157,6 +166,7 @@ impl Wild3SearcherCycleOpts {
             } => Wild3GeneratorCycleOpts::LikelihoodForLead {
                 lead_cycle_spd: *lead_cycle_speed,
                 min_max_initial_cycle,
+                feebas_min_max_initial_cycle,
             },
         }
     }

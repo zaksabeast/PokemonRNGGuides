@@ -3,9 +3,8 @@ use itertools::Itertools;
 use crate::{
     EncounterSlot, Gender, GenderRatio, Species,
     gen3::{
-        Gen3Lead, MAX_FEEBAS_VBLANK, SpeciesData, Wild3Action, Wild3EncounterGameData,
-        Wild3EncounterIndex, Wild3FeebasState, Wild3MassOutbreakState,
-        get_feebas_vblank_from_feebas_cycle,
+        Gen3Lead, SpeciesData, Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex,
+        Wild3FeebasState, Wild3MassOutbreakState,
         wild::{
             lcrng_distance,
             searcher::{
@@ -164,7 +163,6 @@ pub struct EncounterIdxPathGenerator<'a> {
     actions: Vec<Wild3Action>,
     species_data: SpeciesData,
     using_white_flute: bool,
-    pub feebas_cycles_by_vblank: [Vec<usize>; MAX_FEEBAS_VBLANK],
 }
 
 struct Wild3MapSetupsForReverse<'a> {
@@ -223,7 +221,6 @@ impl<'a> EncounterIdxPathGenerator<'a> {
         map_setups: &'a [Wild3MapSetups],
         species_data: SpeciesData,
         using_white_flute: bool,
-        feebas_cycles: &[usize],
     ) -> Self {
         let actions: Vec<Wild3Action> = map_setups
             .iter()
@@ -249,20 +246,24 @@ impl<'a> EncounterIdxPathGenerator<'a> {
             arcs.push(EncounterIdxToLvlArc::SlotStaticSuccess);
         }
 
-        let mut feebas_cycles_by_vblank: [Vec<usize>; MAX_FEEBAS_VBLANK] = Default::default();
-        for cycle in feebas_cycles {
-            feebas_cycles_by_vblank[get_feebas_vblank_from_feebas_cycle(*cycle)].push(*cycle)
-        }
-
         if permit_feebas_arcs(&species_data) {
-            feebas_cycles_by_vblank
-                .iter()
-                .enumerate()
-                .for_each(|(vblank_count, list)| {
-                    if !list.is_empty() {
-                        arcs.push(EncounterIdxToLvlArc::CheckFeebasSuccess { vblank_count });
-                    }
-                });
+            // TODO: Put in a function get_possible_checkfeebas_vblank_count
+            {
+                let mut counts = map_setups
+                    .iter()
+                    .flat_map(|setup| &setup.map_data.initial_cycle_distrs)
+                    .filter(|distribution| distribution.checkfeebas_vblank_count_probability > 0.0)
+                    .filter_map(|distribution| distribution.checkfeebas_vblank_count)
+                    .collect_vec();
+                counts.sort_unstable();
+                counts.dedup();
+            }
+
+            arcs.extend(
+                counts
+                    .into_iter()
+                    .map(|vblank_count| EncounterIdxToLvlArc::CheckFeebasSuccess { vblank_count }),
+            );
         }
 
         let map_setups: Vec<Wild3MapSetupsForReverse<'a>> = map_setups
@@ -281,7 +282,6 @@ impl<'a> EncounterIdxPathGenerator<'a> {
             actions,
             species_data,
             using_white_flute,
-            feebas_cycles_by_vblank,
         }
     }
 

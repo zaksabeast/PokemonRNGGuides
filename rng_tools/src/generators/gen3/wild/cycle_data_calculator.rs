@@ -3,7 +3,7 @@ use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 use super::cdf::CdfCursor;
-use super::{CycleRange, MinMidMax, VBLANK_FREQ, Wild3PlayingSong, Wild3Weather};
+use super::{CycleRange, VBLANK_FREQ, Wild3PlayingSong, Wild3Weather};
 use crate::gen3::{
     COMMON_LEAD_RANGE, CycleAndModRange, FASTEST_MODULO_CYCLE_24, INFINITE_CYCLE,
     SLOWEST_MODULO_CYCLE_24, Wild3InitialCycleDistribution,
@@ -148,7 +148,7 @@ fn find_best_cycle_data_for_lead_spd(
         .map(|distr| Wild3SearcherCycleData {
             lead_pid_cycle_count: lead_spd,
             initial_cycle_range: initial_range,
-            method_probability: distr.probability_for_range(&initial_range),
+            method_probability: distr.probability_for_range(&initial_range) * distr.checkfeebas_vblank_count_probability,
             playing_song: distr.playing_song,
             weather: distr.weather,
         });
@@ -203,7 +203,7 @@ pub fn calculate_cycle_data_for_specific_lead_spd(
     Wild3SearcherCycleData {
         lead_pid_cycle_count,
         initial_cycle_range,
-        method_probability: distr.probability_for_range(&initial_cycle_range),
+        method_probability: distr.probability_for_range(&initial_cycle_range) * distr.checkfeebas_vblank_count_probability,
         playing_song: distr.playing_song,
         weather: distr.weather,
     }
@@ -250,7 +250,7 @@ fn calculate_ideal_lead_cycle_data(
         Some(Wild3SearcherCycleData {
             lead_pid_cycle_count: speed,
             initial_cycle_range: initial_range,
-            method_probability: probability,
+            method_probability: probability * distr.checkfeebas_vblank_count_probability,
             playing_song: distr.playing_song,
             weather: distr.weather,
         })
@@ -276,15 +276,6 @@ fn calculate_initial_cycle_range(post_cycle_range: &CycleRange<usize>) -> CycleR
     }
 }
 
-// Limitation: Feebas hasn't been updated with the new initial cycle calibration logic.
-pub fn get_default_min_mid_max_vblank_cycle_duration_for_feebas() -> MinMidMax {
-    MinMidMax::new(45_000, 55_000, 65_000)
-}
-
-pub fn get_default_min_mid_max_initial_cycle_for_feebas() -> MinMidMax {
-    MinMidMax::new(45_000, 55_000, 75_000)
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -300,6 +291,9 @@ mod tests {
                     probability: if index < 32 { 0.0 } else { 1.0 },
                 })
                 .collect(),
+            checkfeebas_vblank_count: None,
+            checkfeebas_vblank_count_probability: 1.0,
+            feebas_tile: None,
             action: Wild3Action::SweetScentLand,
             playing_song: Wild3PlayingSong::MapSong,
             weather: Wild3Weather::Sunny,

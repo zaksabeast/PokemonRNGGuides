@@ -140,6 +140,7 @@ pub fn get_encounter_for_wild3_map_game_data(
 }
 
 impl Wild3MapGameData {
+    // NO_PROD: must return multiple for feebas
     pub fn get_initial_cycle_distr(
         &self,
         action: Wild3Action,
@@ -150,6 +151,7 @@ impl Wild3MapGameData {
             .iter()
             .find(|distr| {
                 distr.action == action
+                    && distr.checkfeebas_vblank_count.is_none()
                     && distr.playing_song == playing_song
                     && distr.weather == weather
             })

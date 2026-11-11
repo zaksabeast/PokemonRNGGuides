@@ -288,9 +288,6 @@ export const Wild3TargetSetupSearcher = ({
       {targetSetup != null && (
         <Wild3LeadCycleSpeedSelectorWithBtn
           targetSetup={targetSetup}
-          setFeebasVblankSelection={(feebasVblankSelection) =>
-            setTargetSetupBoth({ ...targetSetup, feebasVblankSelection })
-          }
           audioInfluences={audioInfluences}
           setAudioInfluences={setAudioInfluencesBoth}
           permitEnablingDebugOptions={false}

@@ -6,6 +6,8 @@ fn options(lead: Gen3Lead) -> Wild3GeneratorOptions {
         action: Wild3Action::GoodRod,
         methods: vec![Gen3Method::Wild1, Gen3Method::Wild5],
         feebas_state: Wild3FeebasState::OnFeebasTile,
+        feebas_vblank_count: Some(0),
+        feebas_initial_distribution: Some(crate::gen3::wild::feebas_timing::prepared_distribution(Wild3Action::GoodRod, 0, 0, 46186, 76186, 1.0)),
         lead,
         ..Default::default()
     }
@@ -57,7 +59,7 @@ fn wild3_feebas_method5_search_window() {
             pid: 1_434_552_371,
             ivs: Ivs::new(15, 13, 14, 22, 16, 10),
             method: Gen3Method::Wild5,
-            cycle_range: Some(CycleRange::new(1_186, 0, 5_447)),
+            cycle_range: Some(CycleRange::new(0, 0, 5_447)),
             used_safari_pokeblock: None,
         },
         Wild3GeneratorMonResult {
@@ -66,7 +68,7 @@ fn wild3_feebas_method5_search_window() {
             pid: 1_434_552_371,
             ivs: Ivs::new(15, 13, 14, 22, 16, 10),
             method: Gen3Method::Wild5,
-            cycle_range: Some(CycleRange::new(6_633, 0, 5_446)),
+            cycle_range: Some(CycleRange::new(5_447, 0, 5_446)),
             used_safari_pokeblock: None,
         },
         Wild3GeneratorMonResult {
@@ -75,7 +77,7 @@ fn wild3_feebas_method5_search_window() {
             pid: 2_728_376_208,
             ivs: Ivs::new(24, 26, 1, 22, 6, 5),
             method: Gen3Method::Wild5,
-            cycle_range: Some(CycleRange::new(12_079, 0, 5_446)),
+            cycle_range: Some(CycleRange::new(10_893, 0, 5_446)),
             used_safari_pokeblock: None,
         },
     ];
@@ -88,6 +90,7 @@ fn wild3_feebas_method5_search_window() {
         let mut opts = options(Gen3Lead::Egg);
         opts.methods = vec![Gen3Method::Wild5];
         opts.feebas_cycles = 26_433;
+        opts.feebas_initial_distribution = Some(crate::gen3::wild::feebas_timing::prepared_distribution(Wild3Action::GoodRod, 0, 26433, initial_cycles.0 + 27619, initial_cycles.1 + 27619, 1.0));
         opts.cycle_opts = Wild3GeneratorCycleOpts::Searching {
             min_max_initial_cycle: initial_cycles,
             generate_even_if_impossible,
@@ -107,6 +110,7 @@ fn selected_count_advances_once_per_interrupt() {
     opts.feebas_cycles = 219710;
     let actual = [0, 1].map(|count| {
         opts.feebas_vblank_count = Some(count);
+        opts.feebas_initial_distribution = Some(crate::gen3::wild::feebas_timing::prepared_distribution(Wild3Action::GoodRod, count, 219710, 45000, 80000, 0.5));
 
         generate_wild3_internal(Pokerng::new(42), &opts, &game_data()).mon_results
     });

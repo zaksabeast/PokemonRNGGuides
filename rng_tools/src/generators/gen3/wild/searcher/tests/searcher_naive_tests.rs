@@ -503,7 +503,6 @@ fn test_search_wild3_naive_magikarp_in_feebas_map() {
                 feebas_states: vec![feebas_state],
                 ..Default::default()
             }],
-            feebas_cycles: vec![350_226],
             methods: vec![Gen3Method::Wild4],
             cycle_opts: Wild3SearcherCycleOpts::Calibrate {
                 weather: Wild3Weather::Sunny,

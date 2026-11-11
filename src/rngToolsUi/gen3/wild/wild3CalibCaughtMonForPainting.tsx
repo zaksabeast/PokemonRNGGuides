@@ -49,7 +49,6 @@ const createTargetSetupAtVictoryRoad = (targetPaintingAdvs: {
     safariPokeblock: null,
     aceSid: null, // Unused
     feebasCycles: 0, // Unused
-    feebasVblankSelection: "MostProbable",
   };
 };
 

@@ -77,21 +77,13 @@ export const Wild3TargetSetupAndLeadInput = ({
       return setTargetSetupResult(null);
     }
 
-    let current = true;
-
     calculateTargetSetupResult(
       targetSetup,
       leadCycleSpeed,
       audioInfluences,
     ).then(({ content }) => {
-      if (current) {
-        setTargetSetupResult(content);
-      }
+      setTargetSetupResult(content);
     });
-
-    return () => {
-      current = false;
-    };
   }, [leadCycleSpeed, targetSetup, audioInfluences]);
 
   const setLeadCycleSpeedBoth = (spd: number) => {
@@ -103,25 +95,15 @@ export const Wild3TargetSetupAndLeadInput = ({
     <Flex vertical gap={10}>
       {displayInstructions && <Instructions_calib_skip_setup />}
       <Wild3TargetSetupInput setTargetSetup={setTargetSetupBoth} />
-      {targetSetup != null && (
+      {targetSetupResult != null && targetSetup != null && (
         <Flex vertical gap={20} mt={20}>
           <FormCard>
             <FormSummary
-              rows={[
-                {
-                  label: "Target Pokémon",
-                  value:
-                    targetSetupResult ??
-                    "No Pokémon result for the selected count.",
-                },
-              ]}
+              rows={[{ label: "Target Pokémon", value: targetSetupResult }]}
             />
           </FormCard>
           <Wild3LeadCycleSpeedSelectorWithBtn
             targetSetup={targetSetup}
-            setFeebasVblankSelection={(feebasVblankSelection) =>
-              setTargetSetupBoth({ ...targetSetup, feebasVblankSelection })
-            }
             audioInfluences={audioInfluences}
             setAudioInfluences={setAudioInfluencesBoth}
             permitEnablingDebugOptions={permitEnablingDebugOptions}

@@ -179,7 +179,8 @@ impl CycleFrameCounter {
                 current_cycle.frame += timing.vblank_count;
                 current_cycle.cycle = timing.most_probable_cycle_after_check_feebas;
             }
-            Self::MinMaxRange { min_max_cycles, .. } => {
+            Self::MinMaxRange { min_max_cycles, base_cycle_count, .. } => {
+                *base_cycle_count = 0;
                 // Range counters use a virtual entry phase from the conditioned CDF; traces retain real frames.
                 min_max_cycles.min_cycle = CycleFrame {
                     frame: 0,
@@ -193,8 +194,10 @@ impl CycleFrameCounter {
             Self::CheckValidAllLeadSpds {
                 earliest_slowest_cycle,
                 latest_fastest_cycle,
+                base_cycle_count,
                 ..
             } => {
+                *base_cycle_count = 0;
                 *earliest_slowest_cycle = timing.min_cycle_after_check_feebas;
                 *latest_fastest_cycle = timing.max_cycle_after_check_feebas;
             }
@@ -599,7 +602,7 @@ mod tests {
                 lead_pid_mod_count,
                 generate_even_if_impossible
             ),
-            (MinMaxCycleFrame::new((46000, 61000), (0, 0)), 2186, 0, true,)
+            (MinMaxCycleFrame::new((46000, 61000), (0, 0)), 1000, 0, true,)
         );
     }
 

@@ -10,8 +10,16 @@ import { Flex } from "~/components/flex";
 import { useCurrentStep } from "~/components/stepper/state";
 import { Wild3Calib } from "./wild3Calib";
 import { BattleVideoInfo } from "../battleVideo/battleVideo";
+import {
+  gen3LeadSchema,
+  wild3Actions,
+  wild3FeebasStates,
+  wild3MassOutbreakStates,
+  wild3RoamerStates,
+} from "./utils";
+import { gen3Methods } from "~/types";
+import { pokeblockSchema } from "~/types/pokeblock";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
-import { targetSetupAtomSchema } from "./wild3TargetSetupState";
 import {
   defaultAudioInfluences,
   wild3AudioInfluencesSchema,
@@ -104,6 +112,35 @@ All-in-one Wild webtool:
              if target setup was skipped, displays Wild3TargetSetupInput
 
 */
+
+const targetSetupAtomSchema = z.object({
+  targetSetup: z
+    .object({
+      map: z.string(),
+      feebasState: z.enum(wild3FeebasStates),
+      feebasCycles: z.number().int().min(0).max(0xffffffff).default(0),
+      roamerState: z.enum(wild3RoamerStates),
+      massOutbreakState: z.enum(wild3MassOutbreakStates),
+      action: z.enum(wild3Actions),
+      lead: gen3LeadSchema,
+      targetPaintingAdvs: z.object({
+        before: z.number().int().min(0).max(0xffffffff),
+        after: z.number().int().min(0).max(0xffffffff),
+      }),
+      targetMethod: z.enum(gen3Methods),
+      requiresWhiteFlute: z.boolean().optional().default(false),
+      safariPokeblock: pokeblockSchema.optional().default(null),
+      aceSid: z
+        .number()
+        .int()
+        .min(0)
+        .max(0xffff)
+        .optional()
+        .nullable()
+        .default(null),
+    })
+    .nullable(),
+});
 
 const targetSetupAtom = atomWithPersistence(
   "emerald_wild_targetSetup",

@@ -192,11 +192,20 @@ impl Wild3SearcherCycleOpts {
                     vec![default]
                 }
             }
+            // TODO: Calibrate when fishing in feebas map must provide a feebas_tile.
             Self::Calibrate {
                 weather,
                 playing_song,
                 ..
-            } => vec![map_data.get_initial_cycle_distr(action, *playing_song, *weather)],
+            } => map_data
+                .initial_cycle_distrs
+                .iter()
+                .filter(|distribution| {
+                    distribution.action == action
+                        && distribution.playing_song == *playing_song
+                        && distribution.weather == *weather
+                })
+                .collect(),
         }
     }
 }
@@ -219,7 +228,6 @@ pub struct Wild3SearcherOptions {
     pub painting_opts: Option<Wild3PaintingOpts>,
     pub using_white_flute: bool,
     pub considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt,
-    pub feebas_cycles: Vec<usize>,
 }
 
 impl Default for Wild3SearcherOptions {
@@ -240,7 +248,6 @@ impl Default for Wild3SearcherOptions {
             painting_opts: None,
             using_white_flute: true,
             considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt::default(),
-            feebas_cycles: vec![0],
         }
     }
 }
@@ -276,7 +283,11 @@ pub struct Wild3SearcherResultMon {
     pub action: Wild3Action,
     pub roamer_state: Wild3RoamerState,
     pub feebas_state: Wild3FeebasState,
+    // TODO: Remove feebas_cycles, feebas_tile will be used instead
     pub feebas_cycles: usize,
+    // TODO: Use Wild3FeebasTileId
+    pub feebas_tile: Option<super::super::Wild3FeebasTile>,
+    pub checkfeebas_vblank_count: Option<usize>,
     pub mass_outbreak_state: Wild3MassOutbreakState,
 }
 
@@ -321,6 +332,11 @@ impl Wild3SearcherResultMon {
             roamer_state: gen_opts.roamer_state,
             feebas_state: gen_opts.feebas_state,
             feebas_cycles: gen_opts.feebas_cycles,
+            feebas_tile: gen_opts
+                .feebas_initial_distribution
+                .as_ref()
+                .and_then(|distr| distr.feebas_tile),
+            checkfeebas_vblank_count: gen_opts.feebas_vblank_count,
             mass_outbreak_state: gen_opts.mass_outbreak_state,
         }
     }

@@ -1,4 +1,3 @@
-import type { Wild3FeebasUiSelectionResult } from "./wild3FeebasSelection";
 import {
   ResultColumn,
   Icon,
@@ -41,7 +40,6 @@ import {
   formatWild3Weather,
 } from "./wild3AudioInfluences";
 import { toOptions } from "~/utils/options";
-import type { Wild3FeebasVblankSelection } from "~/rngTools";
 import { getInitialCycleSummary } from "./data/initial_cycle_main";
 
 /*
@@ -51,7 +49,6 @@ It is like Wild3LeadCycleSpeedInput, but displays the impact of lead cycle speed
 
 export type Props = {
   targetSetup: TargetSetup;
-  setFeebasVblankSelection: (selection: Wild3FeebasVblankSelection) => void;
   audioInfluences: Wild3AudioInfluences;
   setAudioInfluences: (audioInfluences: Wild3AudioInfluences) => void;
   permitEnablingDebugOptions: boolean;
@@ -83,9 +80,6 @@ const getColumns = (targetSetup: TargetSetup): ResultColumn<UiResult>[] => {
       dataIndex: "initial_cycle_range",
       render: (initial_cycle_range, { display_negative_cycle_as_0 }) => {
         const range = initial_cycle_range;
-        if (range.len === 0) {
-          return "-";
-        }
         const start = display_negative_cycle_as_0
           ? Math.max(range.start, 0)
           : range.start;
@@ -119,61 +113,8 @@ const getColumns = (targetSetup: TargetSetup): ResultColumn<UiResult>[] => {
   return columns;
 };
 
-const FeebasVblankField = ({
-  value,
-  result,
-  onChange,
-}: {
-  value: Wild3FeebasVblankSelection;
-  result: Wild3FeebasUiSelectionResult | null;
-  onChange: (value: Wild3FeebasVblankSelection) => void;
-}) => {
-  const explicitCount = value === "MostProbable" ? null : value.Exact;
-  const options: { label: string; value: string | number }[] = [
-    { label: "Most probable", value: "MostProbable" },
-    ...(result?.probability_by_vblank ?? []).map((probability, count) => ({
-      label: `${count} (${formatProbability(probability)})`,
-      value: count,
-    })),
-  ];
-  if (
-    explicitCount != null &&
-    !options.some(({ value }) => value === explicitCount)
-  ) {
-    options.push({ label: `${explicitCount} (0%)`, value: explicitCount });
-  }
-
-  return (
-    <>
-      <SelectField<string | number>
-        label="VBlanks during CheckFeebas"
-        tooltip={{
-          title: "CheckFeebas timing estimate",
-          description:
-            "Estimated using a shared uniform VBlank duration of 45,000 to 65,000 cycles. Likelihood includes the chance of the selected count and the outcome within that count. Initial-cycle ranges are envelopes and may overlap.",
-        }}
-        value={explicitCount ?? "MostProbable"}
-        options={options}
-        onChange={(value) =>
-          onChange(
-            typeof value === "number" ? { Exact: value } : "MostProbable",
-          )
-        }
-      />
-      {result != null && (
-        <Typography.Text>
-          {result.active
-            ? `Selected: ${result.count} VBlanks (estimated ${formatProbability(result.probability)})`
-            : "Timed CheckFeebas path bypassed for this seed."}
-        </Typography.Text>
-      )}
-    </>
-  );
-};
-
 export const Wild3LeadCycleSpeedSelector = ({
   targetSetup,
-  setFeebasVblankSelection,
   audioInfluences,
   setAudioInfluences,
   permitEnablingDebugOptions,
@@ -213,8 +154,6 @@ export const Wild3LeadCycleSpeedSelector = ({
       return;
     }
 
-    let current = true;
-
     setupToDistributions(
       targetSetup,
       {
@@ -228,14 +167,8 @@ export const Wild3LeadCycleSpeedSelector = ({
       },
       audioInfluences,
     ).then((val) => {
-      if (current) {
-        setDistributions(val);
-      }
+      setDistributions(val);
     });
-
-    return () => {
-      current = false;
-    };
   }, [
     actualLeadCycleSpeed,
     targetSetup,
@@ -247,14 +180,6 @@ export const Wild3LeadCycleSpeedSelector = ({
     <>
       <FormCard>
         <FormSection>
-          {targetSetup.feebasState !== "NotInMap" &&
-            ["OldRod", "GoodRod", "SuperRod"].includes(targetSetup.action) && (
-              <FeebasVblankField
-                value={targetSetup.feebasVblankSelection}
-                result={distributions?.feebasSelection ?? null}
-                onChange={setFeebasVblankSelection}
-              />
-            )}
           {weathers.length > 1 && (
             <SelectField
               label="Weather audio"
@@ -309,10 +234,7 @@ export const Wild3LeadCycleSpeedSelector = ({
         !distributions.hasError &&
         distributions.uiResults.length === 0 && (
           <Typography.Text strong fontSize={16}>
-            {distributions.feebasSelection?.active &&
-            distributions.feebasSelection.probability === 0
-              ? "The selected VBlank count is impossible under the current timing estimate."
-              : "Result: No Pokémon encounter when using that setup."}
+            Result: No Pokémon encounter when using that setup.
           </Typography.Text>
         )}
 
@@ -329,7 +251,6 @@ export const Wild3LeadCycleSpeedSelector = ({
 
 export const Wild3LeadCycleSpeedSelectorWithBtn = ({
   targetSetup,
-  setFeebasVblankSelection,
   audioInfluences,
   setAudioInfluences,
   permitEnablingDebugOptions,
@@ -356,7 +277,6 @@ export const Wild3LeadCycleSpeedSelectorWithBtn = ({
       {displayLeadCycleSpeed && (
         <Wild3LeadCycleSpeedSelector
           targetSetup={targetSetup}
-          setFeebasVblankSelection={setFeebasVblankSelection}
           audioInfluences={audioInfluences}
           setAudioInfluences={setAudioInfluences}
           permitEnablingDebugOptions={permitEnablingDebugOptions}

@@ -71,8 +71,10 @@ pub struct Wild3GeneratorOptions {
     pub roamer_state: Wild3RoamerState,
     pub mass_outbreak_state: Wild3MassOutbreakState,
     pub feebas_state: Wild3FeebasState,
+    // TODO: Remove feebas_cycles. Use feebas_initial_distribution.feebas_tile instead if needed.
     pub feebas_cycles: usize,
     pub feebas_vblank_count: Option<usize>,
+    pub feebas_initial_distribution: Option<super::Wild3InitialCycleDistribution>,
     pub using_white_flute: bool,
     pub safari_pokeblock: Option<Wild3SafariPokeblockGenOpt>,
 }
@@ -94,6 +96,7 @@ impl Default for Wild3GeneratorOptions {
             feebas_state: Wild3FeebasState::default(),
             feebas_cycles: 0,
             feebas_vblank_count: None,
+            feebas_initial_distribution: None,
             using_white_flute: true,
             safari_pokeblock: None,
         }

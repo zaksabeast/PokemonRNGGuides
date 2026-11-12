@@ -33,7 +33,7 @@ export const renderGuide = (route: Route) => {
   root.render(
     <Provider store={createStore()}>
       <Router hook={hook}>
-        <App updateSw={() => {}} />
+        <App />
       </Router>
     </Provider>,
   );

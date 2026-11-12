@@ -9,7 +9,6 @@ export type FeebasTile = {
   cycleCounter: number;
   section: number;
   yInSection: number;
-  instability: number;
   tileNoInSection: number;
 };
 
@@ -19,22 +18,6 @@ export const getFeebasTiles = (): FeebasTile[] => {
   if (feebasTilesCache !== undefined) {
     return feebasTilesCache;
   }
-
-  // Copy from searcher_reverse.rs
-  const FEEBAS_CYCLE_COUNT_BY_VBLANK = [
-    { min: 0, max: 235895 },
-    { min: 205896, max: 471791 },
-    { min: 421792, max: 707687 },
-    { min: 637688, max: 800000 },
-  ];
-
-  const getInstability = (cycleCounter: number) => {
-    const count = FEEBAS_CYCLE_COUNT_BY_VBLANK.filter(({ min, max }) => {
-      return cycleCounter >= min && cycleCounter <= max;
-    }).length;
-
-    return count > 1 ? 1 : 0;
-  };
 
   const tiles = [
     "0000000000000000000000000000000000000000",
@@ -169,7 +152,6 @@ export const getFeebasTiles = (): FeebasTile[] => {
           ingameX,
           canContainFeebas: val === "1",
           cycleCounter: cycleCounter,
-          instability: getInstability(cycleCounter),
           section,
           yInSection,
           tileNoInSection,

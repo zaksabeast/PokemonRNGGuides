@@ -114,6 +114,7 @@ export const SimplifiedEmeraldWild = () => {
           <Wild3Calib
             key={JSON.stringify(selected.targetSetup)}
             targetSetup={selected.targetSetup}
+            audioInfluences={selected.audioInfluences}
             leadCycleSpeed={selected.leadCycleSpeed}
             battleVideoInfo={{
               targetPaintingAdvs: selected.targetSetup.targetPaintingAdvs,

@@ -1,4 +1,4 @@
-import { Select } from "~/components";
+import { SelectField } from "~/components/form";
 import { useTranslationState } from "./state";
 import { LanguageKey } from "~/types/language";
 import { toOptions } from "~/utils/options";
@@ -17,7 +17,8 @@ export const TranslationHelperSelectLanguage = () => {
   const [state, setState] = useTranslationState();
 
   return (
-    <Select<LanguageKey>
+    <SelectField<LanguageKey>
+      label="Language"
       value={state.selectedLanguage}
       options={toOptions(languageOptions, toUpper)}
       onChange={(language) =>

@@ -52,7 +52,7 @@ export const getText = (element: Element) => {
   return (element.textContent ?? "").replace(/\s+/g, " ").trim();
 };
 
-const getOnly = <Item extends Element>(
+export const getOnly = <Item extends Element>(
   items: Item[],
   description: string,
 ): Item => {
@@ -143,26 +143,67 @@ export const getButton = (
   return getOnly(buttons, `button named "${name}"`);
 };
 
-/** Types into a React-controlled input the way a user does, then leaves the field */
-export const typeInto = (input: HTMLElement, value: string) => {
-  if (!(input instanceof HTMLInputElement)) {
-    throw new Error("Expected an <input>");
+export const click = (element: Element) => {
+  element.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+};
+
+// React tracks the last value it set, so setting `.value` directly is ignored
+const getValueSetter = (field: HTMLInputElement | HTMLTextAreaElement) => {
+  const prototype =
+    field instanceof HTMLTextAreaElement
+      ? HTMLTextAreaElement.prototype
+      : HTMLInputElement.prototype;
+
+  return Object.getOwnPropertyDescriptor(prototype, "value")?.set;
+};
+
+/** Types into a React-controlled input or text area the way a user does, then leaves the field */
+export const typeInto = (field: HTMLElement, value: string) => {
+  if (
+    !(field instanceof HTMLInputElement) &&
+    !(field instanceof HTMLTextAreaElement)
+  ) {
+    throw new Error("Expected an <input> or <textarea>");
   }
 
-  // React tracks the last value it set, so setting `.value` directly is ignored
-  const setValue = Object.getOwnPropertyDescriptor(
-    HTMLInputElement.prototype,
-    "value",
-  )?.set;
+  getValueSetter(field)?.call(field, value);
+  field.dispatchEvent(new Event("input", { bubbles: true }));
+  field.dispatchEvent(new FocusEvent("focusout", { bubbles: true }));
+};
 
-  setValue?.call(input, value);
-  input.dispatchEvent(new Event("input", { bubbles: true }));
-  input.dispatchEvent(new FocusEvent("focusout", { bubbles: true }));
+export const closestAncestorWithText = (element: Element) => {
+  let ancestor = element.parentElement;
+  while (ancestor != null && getText(ancestor) === "") {
+    ancestor = ancestor.parentElement;
+  }
+
+  return ancestor;
+};
+
+/** The only <input> whose field shows exactly `fieldText`, for fields without a `<label for>` */
+export const getInputByFieldText = (root: ParentNode, fieldText: string) => {
+  const inputs = [...root.querySelectorAll("input")].filter((input) => {
+    const field = closestAncestorWithText(input);
+
+    return field != null && getText(field) === fieldText;
+  });
+
+  return getOnly(inputs, `input in a field named "${fieldText}"`);
+};
+
+export const readTextNodes = (root: Element) => {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  const texts: string[] = [];
+  while (walker.nextNode() != null) {
+    texts.push((walker.currentNode.textContent ?? "").trim());
+  }
+
+  return texts.filter((text) => text !== "");
 };
 
 // Each option repeats its label in an aria-hidden copy that sizes the cell
-const getOptionLabel = (input: HTMLInputElement) => {
-  const cell = input.parentElement?.cloneNode(true);
+export const getRadioOptionLabel = (input: HTMLInputElement) => {
+  const cell = input.closest("label")?.cloneNode(true);
   if (!(cell instanceof Element)) {
     return "";
   }
@@ -177,9 +218,91 @@ const getOptionLabel = (input: HTMLInputElement) => {
 export const selectRadio = (group: HTMLElement, optionLabel: string) => {
   const inputs = [
     ...group.querySelectorAll<HTMLInputElement>("input[type=radio]"),
-  ].filter((input) => getOptionLabel(input) === optionLabel);
+  ].filter((input) => getRadioOptionLabel(input) === optionLabel);
 
   getOnly(inputs, `radio option "${optionLabel}"`).click();
+};
+
+const getComboboxes = (element: Element) => {
+  return [...element.querySelectorAll<HTMLElement>("[role=combobox]")];
+};
+
+const getNearestComboboxes = (
+  element: Element,
+  root: ParentNode,
+): HTMLElement[] => {
+  let container: Element | null = element;
+  while (container != null) {
+    const comboboxes = getComboboxes(container);
+    if (comboboxes.length > 0 || container === root) {
+      return comboboxes;
+    }
+
+    container = container.parentElement;
+  }
+
+  return [];
+};
+
+const hasChildWithText = (element: Element, text: string) => {
+  return [...element.children].some((child) => getText(child) === text);
+};
+
+const getInnermostElementsWithText = (root: ParentNode, text: string) => {
+  return [...root.querySelectorAll("*")].filter(
+    (element) => getText(element) === text && !hasChildWithText(element, text),
+  );
+};
+
+export const getInnermostElementWithText = (root: ParentNode, text: string) => {
+  return getOnly(
+    getInnermostElementsWithText(root, text),
+    `element showing "${text}"`,
+  );
+};
+
+/** The only select near the given text, which can be a field label or a nearby heading. */
+export const getSelectByLabel = (
+  root: ParentNode,
+  label: string,
+): HTMLElement => {
+  const selects = getInnermostElementsWithText(root, label)
+    .map((element) => getNearestComboboxes(element, root))
+    .filter((comboboxes) => comboboxes.length === 1)
+    .flat();
+
+  return getOnly([...new Set(selects)], `select labelled "${label}"`);
+};
+
+const getOpenOption = (select: HTMLElement, optionLabel: string) => {
+  const listboxId = select.getAttribute("aria-controls");
+  const listbox = listboxId != null ? document.getElementById(listboxId) : null;
+  if (listbox == null) {
+    throw new Error("Select isn't open");
+  }
+
+  const options = [
+    ...listbox.querySelectorAll<HTMLElement>("[role=option]"),
+  ].filter((option) => getText(option) === optionLabel);
+
+  return getOnly(options, `select option "${optionLabel}"`);
+};
+
+export const getShownOptionLabel = (select: HTMLElement) => {
+  const selection = closestAncestorWithText(select);
+
+  return selection == null ? "" : getText(selection);
+};
+
+/** Opens an antd select and clicks an option the way a user does */
+export const selectOption = async (
+  select: HTMLElement,
+  optionLabel: string,
+) => {
+  select.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+  const option = await waitFor(() => getOpenOption(select, optionLabel));
+
+  option.click();
 };
 
 export type TableRow = { cells: Record<string, string>; element: HTMLElement };
@@ -226,4 +349,21 @@ export const readTimer = (root: ParentNode): TimerPhase[] => {
   const rows = root.querySelectorAll("[data-timer-phase]");
 
   return [...rows].map(readTimerPhase);
+};
+
+/** Replaces the clipboard and returns every text written to it, oldest first */
+export const stubClipboard = () => {
+  const copiedTexts: string[] = [];
+  const clipboard: Pick<Clipboard, "writeText"> = {
+    writeText: async (text) => {
+      copiedTexts.push(text);
+    },
+  };
+
+  Object.defineProperty(navigator, "clipboard", {
+    configurable: true,
+    value: clipboard,
+  });
+
+  return copiedTexts;
 };

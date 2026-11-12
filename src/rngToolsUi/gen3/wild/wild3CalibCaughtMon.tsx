@@ -1,7 +1,7 @@
 import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
-} from "~/components/pkmFilter";
+} from "~/components/form/pokemon/pkmFilterFields";
 import { gen3Methods } from "~/types";
 import {
   Wild3EncounterGameData,
@@ -11,11 +11,15 @@ import {
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import type { TargetSetup } from "./wild3TargetSetupInput";
 import { isFishingAction, wild3Actions } from "./utils";
+import {
+  normalizeWild3AudioInfluences,
+  type Wild3AudioInfluences,
+} from "./wild3AudioInfluences";
 import { getIvRangeFromStats } from "~/types/statRange";
 import {
   gen3PkmFilterFieldsToRustInput,
   getGen3PkmFilterInitialValues,
-} from "~/components/gen3PkmFilter";
+} from "~/components/form/pokemon/gen3PkmFilterFields";
 import {
   BATTLE_VIDEO_CONFIDENCE_RANGE,
   type FormState,
@@ -27,6 +31,7 @@ export const createWild3SearcherOptions = async (
   values: FormState,
   targetSetup: TargetSetup,
   leadCycleSpeed: number,
+  audioInfluences: Wild3AudioInfluences,
 ) => {
   const initial_seed = targetSetup.targetPaintingAdvs.before;
 
@@ -97,6 +102,11 @@ export const createWild3SearcherOptions = async (
     methods: gen3Methods,
     cycle_opts: {
       Calibrate: {
+        ...normalizeWild3AudioInfluences(
+          targetSetup.map,
+          targetSetup.action,
+          audioInfluences,
+        ),
         lead_cycle_speed: leadCycleSpeed,
       },
     },

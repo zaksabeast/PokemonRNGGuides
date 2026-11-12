@@ -3537,7 +3537,7 @@ export const guides = {
       section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "false-Wild RNG Easy Shiny",
-      isNew: true,
+      isNew: false,
       title: "Pokemon Emerald Shiny Wild RNG",
       navDrawerTitle: "Wild RNG Easy Shiny",
       description: "Catch a wild shiny Pokemon in Emerald.",
@@ -6239,7 +6239,7 @@ export const guides = {
       section: "technical_info",
       guideVariants: null,
       guideKey: "false-Methods 3-5",
-      isNew: true,
+      isNew: false,
       title: "Methods 3-5 in Emerald",
       navDrawerTitle: "Methods 3-5",
       description:
@@ -12135,6 +12135,44 @@ export const guides = {
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
     getRawFile: memoize(async () => {
       const file = await import("~/../guides/Hubs.mdx?raw");
+      return file.default;
+    }),
+  },
+  "/usum-egg/": {
+    meta: {
+      id: "/usum-egg/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "true-Egg RNG",
+      isNew: false,
+      title: "Ultra Sun and Ultra Moon Egg RNG",
+      navDrawerTitle: "Egg RNG",
+      description:
+        "Learn how to RNG eggs in Ultra Sun and Ultra Moon for perfect IVs, natures, and shinies.",
+      slug: "/usum-egg/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-11-08",
+      type: "baseGuide",
+      canonical: "/usum-egg/",
+      file: "guides/Gen 7/Eggs.mdx",
+      translations: null,
+      guideGroupId: "en:true-Egg RNG:Ultra Sun and Ultra Moon",
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/usum-egg/" },
+      },
+      displayAttributes: ["web_tool", "rough_draft"],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 7/Eggs.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 7/Eggs.mdx?raw");
       return file.default;
     }),
   },
@@ -20487,6 +20525,7 @@ export const guideSlugs = [
   "/transporter-rng-offline/",
   "/transporter-rng/",
   "/ultra-sun-and-ultra-moon/",
+  "/usum-egg/",
   "/what-is-rng/",
   "/wishing-star-jirachi/",
   "/x-and-y/",

@@ -13,7 +13,7 @@ import {
 import styled from "@emotion/styled";
 import { type FeebasTile, getFeebasTiles } from "./feebasMapData";
 import { useField } from "~/hooks/form";
-import { GenericForm, GuaranteeFormNameType } from "~/types";
+import { GenericForm, Paths } from "~/types";
 import FeebasMap from "~/assets/Emerald/Wild/FeebasMap.png";
 
 const tiles = getFeebasTiles();
@@ -41,11 +41,10 @@ const getTileKey = (tile: FeebasTile) =>
   `${tile.websiteImageX},${tile.websiteImageY}`;
 
 const TileGlow = styled(MapGlow)<{
-  $instability: FeebasTile["instability"];
   $selected: boolean;
-}>(({ $instability, $selected }) => ({
-  backgroundColor: $instability === 0 ? "lightgreen" : "red",
-  opacity: $selected ? 1 : $instability === 0 ? 0 : 0.2,
+}>(({ $selected }) => ({
+  backgroundColor: "lightgreen",
+  opacity: $selected ? 1 : 0,
 }));
 
 const FeebasMapContainer = styled.div({
@@ -86,7 +85,7 @@ type FeebasTilesFieldProps<FormState extends GenericForm> = Pick<
   LabeledFieldProps,
   "label" | "tooltip"
 > & {
-  name: GuaranteeFormNameType<FormState, number[]>;
+  name: Paths<FormState, number[]>;
   canOnlySelectOne?: boolean;
 };
 
@@ -175,7 +174,6 @@ export const FeebasTilesSelector = ({
       ],
       node: (
         <TileGlow
-          $instability={tile.instability}
           $selected={isSelected}
           onClick={() => toggleTile(tile)}
           role="button"

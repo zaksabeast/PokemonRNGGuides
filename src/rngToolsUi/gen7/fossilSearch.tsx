@@ -23,7 +23,7 @@ import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
   pkmFilterSchema,
-} from "~/components/pkmFilter";
+} from "~/components/form/pokemon/pkmFilterFields";
 import { HexSchema } from "~/utils/number";
 import { chunkRange } from "~/utils/chunkRange";
 import { toOptions } from "~/utils/options";

@@ -22,9 +22,16 @@ import { formatHex } from "~/utils/formatHex";
 import { PidPathResult, ResultSetupInfo } from "./wild3TargetSetupSearcher";
 import { GBA_FPS } from "~/utils/consts";
 import { TargetSetup } from "./wild3TargetSetupInput";
-import { Wild3PokeblockDescription } from "~/components/wild3Pokeblock";
+import { Wild3PokeblockDescription } from "~/components/form/pokemon/pokeblockField";
 import { targetAdvanceAfterPaintingTitle } from "../pokemonRng/labels";
 import { FeebasTileVisualizerButton } from "./feebasMap";
+import { Wild3UiMapNameWithAudioTooltip } from "./wild3UiMapNameWithAudioTooltip";
+
+import {
+  type Wild3AudioInfluences,
+  getCommonWild3CycleData,
+  formatWild3Likelihood,
+} from "./wild3AudioInfluences";
 
 const getMethodLikelihoodColumValue = (
   cycleData: Wild3SearcherCycleData,
@@ -32,12 +39,13 @@ const getMethodLikelihoodColumValue = (
 ) => {
   const content = formatProbability(cycleData.method_probability);
   const end =
-    cycleData.pre_sweet_scent_cycle_range.start +
-    cycleData.pre_sweet_scent_cycle_range.len;
+    cycleData.initial_cycle_range.start + cycleData.initial_cycle_range.len;
+  const startTxt = formatLargeInteger(cycleData.initial_cycle_range.start);
+  const endTxt = formatLargeInteger(end);
   const tooltip =
     end === 0
       ? `Method ${method} can't be triggered.`
-      : `Method ${method} is triggered if the cycle counter is between ${cycleData.pre_sweet_scent_cycle_range.start} and ${end}.`;
+      : `Method ${method} is triggered if the cycle counter is between ${startTxt} and ${endTxt}.`;
   return {
     tooltip: tooltip,
     content,
@@ -115,7 +123,20 @@ const getResultSetupInfoColumns = ({
   }
 
   columns.push(
-    { title: "Map", dataIndex: "mapName" },
+    {
+      title: "Map",
+      dataIndex: "mapName",
+      render: (mapName, setupInfo) => (
+        <Wild3UiMapNameWithAudioTooltip
+          mapId={setupInfo.mapId}
+          action={setupInfo.action}
+          data={setupInfo.primaryCycleData}
+          showAudioInfluences={setupInfo.showLikelihoodAudioInfluences}
+        >
+          {mapName}
+        </Wild3UiMapNameWithAudioTooltip>
+      ),
+    },
     { title: "Player action", dataIndex: "actionName" },
     {
       title: "Fishing spot",
@@ -202,41 +223,12 @@ const getResultSetupInfoColumns = ({
       key: "<>Method <br />Likelihood</>",
       dataIndex: "cycle_data_by_lead",
       render: (cycle_data_by_lead, values) => {
-        const text = (() => {
-          if (cycle_data_by_lead === undefined) {
-            return "";
-          }
-          const [least_likely, most_likely] =
-            cycle_data_by_lead.common_lower_lead.method_probability <
-            cycle_data_by_lead.common_upper_lead.method_probability
-              ? [
-                  cycle_data_by_lead.common_lower_lead,
-                  cycle_data_by_lead.common_upper_lead,
-                ]
-              : [
-                  cycle_data_by_lead.common_upper_lead,
-                  cycle_data_by_lead.common_lower_lead,
-                ];
+        if (cycle_data_by_lead == null) {
+          return "";
+        }
 
-          const leastFormat = formatProbability(
-            least_likely.method_probability,
-          );
-          const mostFormat = formatProbability(most_likely.method_probability);
-
-          if (leastFormat === mostFormat) {
-            return leastFormat;
-          }
-
-          if (
-            least_likely.method_probability === 0 ||
-            most_likely.method_probability - least_likely.method_probability >
-              0.1
-          ) {
-            return `${leastFormat} - ${mostFormat}`;
-          }
-
-          return leastFormat;
-        })();
+        const data = getCommonWild3CycleData(cycle_data_by_lead);
+        const text = formatWild3Likelihood(data);
         const isVeryReliableSetup =
           text === "100%" && values.lead === "Egg" && values.method === "Wild1";
         const title = `Method ${values.method}${isVeryReliableSetup ? " (Very reliable setup)" : ""}`;
@@ -266,7 +258,7 @@ const getResultSetupInfoColumns = ({
         title: "Ideal Lead Speed",
         dataIndex: "cycle_data_by_lead",
         render: (cycle_data_by_lead, values) => {
-          if (cycle_data_by_lead === undefined) {
+          if (cycle_data_by_lead == null) {
             return "";
           }
           if (values.lead === "Egg") {
@@ -308,7 +300,7 @@ const getResultSetupInfoColumns = ({
             title: "Ideal",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
-              if (cycle_data_by_lead === undefined) {
+              if (cycle_data_by_lead == null) {
                 return "";
               }
               return tooltipHelper(
@@ -324,7 +316,7 @@ const getResultSetupInfoColumns = ({
             tooltip: "Lead PID speed equal to 18 cycles",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
-              if (cycle_data_by_lead === undefined) {
+              if (cycle_data_by_lead == null) {
                 return "";
               }
               return tooltipHelper(
@@ -341,7 +333,7 @@ const getResultSetupInfoColumns = ({
               "Lead PID speed between 608 and 868 cycles (99.9% of all PIDs)",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
-              if (cycle_data_by_lead === undefined) {
+              if (cycle_data_by_lead == null) {
                 return "";
               }
               const least_likely_common =
@@ -362,7 +354,7 @@ const getResultSetupInfoColumns = ({
             tooltip: "Lead PID speed equal to 900 cycles",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
-              if (cycle_data_by_lead === undefined) {
+              if (cycle_data_by_lead == null) {
                 return "";
               }
               return tooltipHelper(
@@ -385,6 +377,7 @@ type Props = {
   rngManipulatedLeadPid: boolean;
   tidForAceSid: AceSidConfig | null;
   setTargetSetup: (targetSetup: TargetSetup | null) => void;
+  setAudioInfluences: (audioInfluences: Wild3AudioInfluences) => void;
 };
 
 const setupInfoToTargetSetup = (
@@ -417,6 +410,7 @@ const setupInfoToTargetSetup = (
 
 export const Wild3ResultSetupInfos = ({
   setTargetSetup,
+  setAudioInfluences,
   selectedPidPathResult,
   rngManipulatedLeadPid,
   tidForAceSid,
@@ -456,6 +450,10 @@ export const Wild3ResultSetupInfos = ({
         ? null
         : setupInfoToTargetSetup(setupInfo, tidForAceSid);
     setTargetSetup(newTargetSetup);
+
+    if (setupInfo != null) {
+      setAudioInfluences(setupInfo.targetAudioInfluences);
+    }
   };
 
   return (

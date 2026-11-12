@@ -162,6 +162,14 @@ export const Wild3SetupFilter = () => {
           }}
           options={toOptions(supportedGen3Methods)}
         />
+        <FormSwitchField<FormState>
+          name="considerWeather"
+          label="Consider all weathers"
+        />
+        <FormSwitchField<FormState>
+          name="hasUnlockedBike"
+          label="Has unlocked bike"
+        />
       </SwitchField>
       {species === "Feebas" && (
         <FeebasTilesField<FormState>
@@ -169,8 +177,7 @@ export const Wild3SetupFilter = () => {
           label="Feebas fishing spots"
           tooltip={{
             title: "Feebas fishing spots",
-            description:
-              "Select the tiles where you can fish Feebas. If possible, avoid red tiles because they cause unstable results.",
+            description: "Select the tiles where you can fish Feebas.",
           }}
         />
       )}

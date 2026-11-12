@@ -24,6 +24,16 @@ describe("Retail TID/SID guide", () => {
     expect(guide.hitTargetText()).not.toContain(NDS_INSTRUCTIONS);
   });
 
+  it("keeps the picked 3ds Offset", async () => {
+    const guide = await openRetailTidGuide();
+    guide.setConsole("3DS (Normal Settings)");
+    expect(await guide.threeDsOffset()).toBe("0ms");
+
+    await guide.setThreeDsOffset("300ms");
+
+    await guide.waitForThreeDsOffset("300ms");
+  });
+
   it("shows placeholders until a target is selected", async () => {
     const guide = await openRetailTidGuide();
 

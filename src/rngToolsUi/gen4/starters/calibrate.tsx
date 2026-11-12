@@ -17,7 +17,7 @@ import {
   StatsValue,
 } from "~/rngTools";
 import { z } from "zod";
-import { pkmFilterNatureFieldToRustInput } from "~/components/pkmFilter";
+import { pkmFilterNatureFieldToRustInput } from "~/components/form/pokemon/pkmFilterFields";
 import { toOptions } from "~/utils/options";
 import { useStarterState } from "./state";
 import { useAtom } from "jotai";
@@ -30,7 +30,7 @@ import { characteristics, Characteristic4Options } from "../gen4types";
 import { fromRngDateTime, toRngDateTime } from "~/utils/time";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { Translations } from "~/translations";
-import { defaultHiddenPowerFilter } from "~/components/hiddenPowerInput";
+import { defaultHiddenPowerFilter } from "~/components/form/pokemon/hiddenPowerFilter";
 import { getStatRange, getIvRangeFromStats } from "~/types/statRange";
 
 type Result = Gen4StaticPokemon & {

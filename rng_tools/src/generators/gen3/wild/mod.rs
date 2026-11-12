@@ -1,4 +1,5 @@
 mod calc_modulo_cycle_count;
+mod cdf;
 #[cfg(test)]
 mod cycle_calibration;
 #[cfg(test)]
@@ -11,12 +12,14 @@ mod filter;
 mod game_data;
 mod generator;
 mod generator_main;
+mod initial_cycle;
 mod lcrng_distance;
 mod most_dense_pid_chunks_by_spd;
 mod searcher;
 mod types;
 
 pub use calc_modulo_cycle_count::*;
+pub use cdf::{CdfKnot, cdf_less_than};
 pub use cycle_counter::*;
 pub use cycle_data_calculator::*;
 pub use cycle_range::*;
@@ -24,6 +27,7 @@ pub use filter::*;
 pub use game_data::*;
 pub use generator::*;
 pub use generator_main::*;
+pub use initial_cycle::*;
 pub use lcrng_distance::*;
 pub use most_dense_pid_chunks_by_spd::*;
 pub use searcher::*;

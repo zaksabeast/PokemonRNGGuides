@@ -31,14 +31,14 @@ import {
   ToolForm,
 } from "~/components/form";
 import { formatOffset } from "~/utils/offsetSymbol";
-import { pkmFilterNatureFieldToRustInput } from "~/components/pkmFilter";
+import { pkmFilterNatureFieldToRustInput } from "~/components/form/pokemon/pkmFilterFields";
 import { toOptions } from "~/utils/options";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { Static4Target, useStatic4State } from "./state";
 import { useAtom } from "jotai";
 import { gen4StateAtom } from "../shared/state";
 import { CalibrateTimerButton } from "../shared/calibrateTimerButton";
-import { defaultHiddenPowerFilter } from "~/components/hiddenPowerInput";
+import { defaultHiddenPowerFilter } from "~/components/form/pokemon/hiddenPowerFilter";
 import { getIvRangeFromStats } from "~/types/statRange";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
 import { fromRngDateTime, toRngDateTime } from "~/utils/time";

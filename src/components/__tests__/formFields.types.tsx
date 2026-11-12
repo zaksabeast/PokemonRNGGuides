@@ -1,4 +1,5 @@
 import {
+  FormBigIntField,
   FormDateField,
   FormNumberField,
   FormRadioField,
@@ -7,9 +8,12 @@ import {
   FormSwitchField,
   FormTextField,
   FormTimeField,
+  NumberField,
 } from "../form";
 import { RngDate } from "~/rngTools";
 import { RngTime } from "~/utils/time";
+import { FormFieldProps } from "~/types/form";
+import { check, Pass } from "~/typeTest";
 
 type Gender = "Male" | "Female";
 type Action = "walk" | "fish";
@@ -17,11 +21,14 @@ type Action = "walk" | "fish";
 type FormState = {
   count: number;
   nullableCount: number | null;
+  seed: bigint | null;
   name: string;
+  nullableName: string | null;
   gender: Gender;
   nullableGender: Gender | null;
   actions: Action[];
   enabled: boolean;
+  nullableEnabled: boolean | null;
   date: RngDate;
   nullableDate: RngDate | null;
   time: RngTime;
@@ -29,6 +36,7 @@ type FormState = {
   nested: {
     count: number;
     name: string;
+    gender: Gender;
     active: boolean;
     date: RngDate;
     time: RngTime;
@@ -50,14 +58,30 @@ const countOptions = [
   { label: "6", value: 6 },
 ];
 
+export const FieldNameTest = () => {
+  type TextFormState = {
+    name: string;
+    count: number;
+    nullableName: string | null;
+    nested: { label: string };
+  };
+  type Result = FormFieldProps<TextFormState, string, { placeholder?: string }>;
+  type Expected = { name: "name" | "nested.label"; placeholder?: string };
+  check<Result, Expected>(Pass);
+};
+
 export const TextFieldNameTest = () => (
   <>
     <FormTextField<FormState> name="name" label="Name" />
     <FormTextField<FormState> name="nested.name" label="Name" />
     {/* @ts-expect-error number fields can't be used */}
     <FormTextField<FormState> name="count" label="Count" />
+    {/* @ts-expect-error nullable fields can't be used */}
+    <FormTextField<FormState> name="nullableName" label="Name" />
     {/* @ts-expect-error name must be a form field */}
     <FormTextField<FormState> name="unknown" label="Unknown" />
+    {/* @ts-expect-error name is required */}
+    <FormTextField<FormState> label="Name" />
   </>
 );
 
@@ -82,6 +106,20 @@ export const NumberFieldNameTest = () => (
       // @ts-expect-error hex_bigint isn't supported
       numType="hex_bigint"
     />
+    {/* @ts-expect-error bigint fields need FormBigIntField */}
+    <FormNumberField<FormState> name="seed" label="Seed" numType="decimal" />
+    {/* @ts-expect-error hex_bigint needs BigIntField */}
+    <NumberField label="Count" value={1} numType="hex_bigint" />
+  </>
+);
+
+export const BigIntFieldNameTest = () => (
+  <>
+    <FormBigIntField<FormState> name="seed" label="Seed" />
+    {/* @ts-expect-error number fields need FormNumberField */}
+    <FormBigIntField<FormState> name="count" label="Count" />
+    {/* @ts-expect-error name must be a form field */}
+    <FormBigIntField<FormState> name="unknown" label="Unknown" />
   </>
 );
 
@@ -123,11 +161,28 @@ export const SelectFieldTest = () => (
       label="Actions"
       options={actionOptions}
     />
+    <FormSelectField<FormState>
+      name="nested.gender"
+      label="Gender"
+      options={genderOptions}
+    />
     {/* @ts-expect-error options must match the field type */}
     <FormSelectField<FormState>
       name="gender"
       label="Gender"
       options={actionOptions}
+    />
+    {/* @ts-expect-error options must match the field type */}
+    <FormSelectField<FormState>
+      name="gender"
+      label="Gender"
+      options={[{ label: "Unknown", value: "Unknown" }]}
+    />
+    {/* @ts-expect-error options must match the field type */}
+    <FormSelectField<FormState>
+      name="count"
+      label="Count"
+      options={genderOptions}
     />
     {/* @ts-expect-error null options need a nullable field */}
     <FormSelectField<FormState>
@@ -153,6 +208,12 @@ export const SelectFieldTest = () => (
       // @ts-expect-error options must match the array's item type
       options={genderOptions}
     />
+    <FormMultiSelectField<FormState>
+      name="actions"
+      label="Actions"
+      // @ts-expect-error options must match the array's item type
+      options={countOptions}
+    />
   </>
 );
 
@@ -175,6 +236,13 @@ export const RadioFieldTest = () => (
       label="Count"
       cellSize="number"
       options={countOptions}
+      disabled
+    />
+    <FormRadioField<FormState>
+      name="gender"
+      label="Gender"
+      cellSize="word"
+      options={[{ label: "Male", value: "Male" }] as const}
     />
     {/* @ts-expect-error cellSize is required */}
     <FormRadioField<FormState>
@@ -188,6 +256,20 @@ export const RadioFieldTest = () => (
       label="Gender"
       cellSize="number"
       options={countOptions}
+    />
+    {/* @ts-expect-error options must match the field type */}
+    <FormRadioField<FormState>
+      name="count"
+      label="Count"
+      cellSize="number"
+      options={genderOptions}
+    />
+    {/* @ts-expect-error options must match the field type */}
+    <FormRadioField<FormState>
+      name="gender"
+      label="Gender"
+      cellSize="word"
+      options={[{ label: "Unknown", value: "Unknown" }]}
     />
     {/* @ts-expect-error null options need a nullable field */}
     <FormRadioField<FormState>
@@ -218,6 +300,8 @@ export const SwitchFieldTest = () => (
     </FormSwitchField>
     {/* @ts-expect-error string fields can't be used */}
     <FormSwitchField<FormState> name="name" label="Name" />
+    {/* @ts-expect-error nullable fields can't be used */}
+    <FormSwitchField<FormState> name="nullableEnabled" label="Enabled" />
   </>
 );
 

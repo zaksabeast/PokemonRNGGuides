@@ -153,7 +153,6 @@ pub struct CycleCounter {
     pub cycle: CycleAndModCount,
     #[serde(with = "crate::serde_utils::arrayvec")]
     pub cycle_at_moments: ArrayVec<CycleAndModAtMoment, MOMENT_COUNT>,
-    pub cycle_instability: f32,
 }
 
 impl CycleCounter {

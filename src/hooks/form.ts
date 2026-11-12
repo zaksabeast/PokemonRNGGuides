@@ -1,4 +1,3 @@
-import { RadioChangeEvent, InputProps as AntdInputProps } from "antd";
 import {
   useController,
   useFormContext as useRHFormContext,
@@ -7,22 +6,15 @@ import {
 } from "react-hook-form";
 import { match, P } from "ts-pattern";
 import { GenericForm } from "~/types";
-import * as tst from "ts-toolbelt";
 import { z } from "zod";
 import { zipObject } from "lodash-es";
 import { NullableSchema } from "~/utils/nullableSchema";
 
-export type FieldStatus = tst.U.NonNullable<AntdInputProps["status"]>;
-
 export const useField = <Value>(
   name: string,
 ): [
-  {
-    value: Value;
-    onBlur: () => void;
-    onChange: (event: React.ChangeEvent | RadioChangeEvent) => void;
-  },
-  { error?: string | undefined; status?: FieldStatus },
+  { value: Value; onBlur: () => void },
+  { error?: string | undefined },
   { setValue: (value: Value) => void },
 ] => {
   const {
@@ -34,11 +26,7 @@ export const useField = <Value>(
     .with(P.union(P.string, undefined), (msg) => msg)
     .otherwise((msg) => JSON.stringify(msg));
 
-  return [
-    { value, onBlur, onChange },
-    { error, status: error != null ? "error" : undefined },
-    { setValue: onChange },
-  ];
+  return [{ value, onBlur }, { error }, { setValue: onChange }];
 };
 
 export const useFormContext = <FormState extends GenericForm>() => {

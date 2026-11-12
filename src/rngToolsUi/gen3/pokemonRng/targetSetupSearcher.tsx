@@ -8,11 +8,11 @@ import { species } from "~/types/species";
 import {
   getPkmFilterInitialValues,
   pkmFilterSchema,
-} from "~/components/pkmFilter";
+} from "~/components/form/pokemon/pkmFilterFields";
 import {
   gen3PkmFilterSchema,
   getGen3PkmFilterInitialValues,
-} from "~/components/gen3PkmFilter";
+} from "~/components/form/pokemon/gen3PkmFilterFields";
 import { Static3Game } from "../static/constants.tsx";
 import { Tooltip } from "antd";
 import { ivColumns } from "~/rngToolsUi/shared/ivColumns";

@@ -6,6 +6,8 @@ import {
   Wild3RoamerState,
   Wild3MassOutbreakState,
   Wild3FeebasState,
+  Wild3Weather,
+  Wild3PlayingSong,
 } from "~/rngTools";
 import { uniq, union } from "lodash-es";
 import { species as allSpecies } from "~/types/species";
@@ -16,12 +18,18 @@ import {
 } from "../utils";
 
 // https://github.com/pret/pokeemerald/blob/master/src/data/wild_encounters.json
-import { emerald_wild_encounters } from "./emerald_wild_encounters";
+import { emerald_wild_encounters, isValidMap } from "./emerald_wild_encounters";
 import { emerald_wild_special_encounters } from "./emerald_wild_special_encounters";
 import z from "zod";
+import { getInitialCycleUiMapGameData } from "./initial_cycle_main";
+
+export type Wild3UiMapGameData = Wild3MapGameData & {
+  possible_weather_by_action: Record<Wild3Action, Wild3Weather[]>;
+  possible_playing_song_by_action: Record<Wild3Action, Wild3PlayingSong[]>;
+};
 
 export type Wild3GameData = {
-  maps_data: Wild3MapGameData[];
+  maps_data: Wild3UiMapGameData[];
   species: Species[];
   maps: string[];
   mapSetupsBySpecies: Map<Species, Wild3MapSetups[]>;
@@ -80,12 +88,6 @@ const createSortedArrayWithoutDuplicates = <T extends string>(array: T[]) => {
   return uniq(array).sort((lhs, rhs) => lhs.localeCompare(rhs));
 };
 
-const EMERALD_UNUSED_MAPS = [
-  "MAP_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP1",
-  "MAP_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP2",
-  "MAP_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP3",
-];
-
 const EMERALD_ACTIONS_WITH_POKEBLOCK_FEEDER_BY_MAP = {
   MAP_SAFARI_ZONE_SOUTH: ["SweetScentLand"],
   MAP_SAFARI_ZONE_SOUTHEAST: [
@@ -112,23 +114,13 @@ const EMERALD_ACTIONS_WITH_POKEBLOCK_FEEDER_BY_MAP = {
   ],
 } as Record<string, Wild3Action[]>;
 
-const generateWild3EmeraldMapsData = (): Wild3MapGameData[] => {
+const generateWild3EmeraldMapsData = (): Wild3UiMapGameData[] => {
   const wild3RoamerStatesSchema = z.enum(wild3RoamerStates);
   const wild3MassOutbreakStatesSchema = z.enum(wild3MassOutbreakStates);
 
   return emerald_wild_encounters.wild_encounter_groups.flatMap((grp) => {
     return grp.encounters.flatMap((map, map_internal_idx) => {
-      if (!("map" in map)) {
-        return [];
-      }
-
-      if (
-        map.map === "MAP_ALTERING_CAVE" &&
-        map.base_label !== "gAlteringCave1"
-      ) {
-        return [];
-      }
-      if (EMERALD_UNUSED_MAPS.includes(map.map)) {
+      if (!isValidMap(map)) {
         return [];
       }
 
@@ -174,6 +166,7 @@ const generateWild3EmeraldMapsData = (): Wild3MapGameData[] => {
         {
           map_id: map.map,
           map_internal_idx,
+          ...getInitialCycleUiMapGameData(map.map, slots_by_action),
           slots_by_action,
           roamers,
           mass_outbreaks,

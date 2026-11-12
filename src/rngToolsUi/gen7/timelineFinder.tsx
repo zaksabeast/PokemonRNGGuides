@@ -1,18 +1,14 @@
 import React from "react";
 import { match } from "ts-pattern";
 import { z } from "zod";
+import { Alert, Flex, SectionCard } from "~/components";
 import {
-  Alert,
-  Card,
-  Field,
-  Flex,
-  FormFieldTable,
-  FormikNumberInput,
-  Grid,
-  RngToolForm,
-  RngToolSubmit,
-  SectionCard,
-} from "~/components";
+  FieldRow,
+  FormNumberField,
+  FormSection,
+  ToolForm,
+  type ToolFormSubmit,
+} from "~/components/form";
 import {
   multiWorkerRngTools,
   Gen7TargetTimeline,
@@ -67,44 +63,33 @@ const initialValues: FormState = {
 const Fields = () => {
   const t = useActiveRouteTranslations();
 
-  const fields = [
-    {
-      label: t["Initial Seed"],
-      direction: "column",
-      input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
-    },
-    {
-      label: t["NPC Count"],
-      direction: "column",
-      input: (
-        <FormikNumberInput<FormState> name="npc_count" numType="decimal" />
-      ),
-    },
-    {
-      label: t["Current Advance"],
-      direction: "column",
-      input: (
-        <FormikNumberInput<FormState>
-          name="current_advance"
+  return (
+    <FormSection>
+      <FieldRow>
+        <FormNumberField<FormState>
+          name="seed"
+          label={t["Initial Seed"]}
+          numType="hex"
+        />
+        <FormNumberField<FormState>
+          name="npc_count"
+          label={t["NPC Count"]}
           numType="decimal"
         />
-      ),
-    },
-    {
-      label: t["Target Advance"],
-      direction: "column",
-      input: (
-        <FormikNumberInput<FormState> name="target_advance" numType="decimal" />
-      ),
-    },
-  ] as const satisfies Field[];
-
-  return (
-    <Grid mobile={1} smallTablet={2} gap="0 16px">
-      {fields.map((field) => (
-        <FormFieldTable key={field.label} fields={[field]} />
-      ))}
-    </Grid>
+      </FieldRow>
+      <FieldRow>
+        <FormNumberField<FormState>
+          name="current_advance"
+          label={t["Current Advance"]}
+          numType="decimal"
+        />
+        <FormNumberField<FormState>
+          name="target_advance"
+          label={t["Target Advance"]}
+          numType="decimal"
+        />
+      </FieldRow>
+    </FormSection>
   );
 };
 
@@ -225,7 +210,7 @@ export const Gen7TimelineFinder = () => {
   const { safeAdvances, canShowMore, findSafeAdvances, showMore } =
     useSafeAdvances(fetchSafeAdvances, waitFor);
 
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+  const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     setSubmitted(opts);
     setSelection(null);
     await findSafeAdvances(opts, opts.current_advance);
@@ -252,21 +237,19 @@ export const Gen7TimelineFinder = () => {
 
   return (
     <Flex vertical gap={16}>
-      <Card>
-        <RngToolForm<FormState, never>
-          initialValues={initialValues}
-          validationSchema={Validator}
-          onSubmit={onSubmit}
-          submitTrackerId="gen7_find_safe_advances"
-          submitButtonLabel={t["Find Safe Advances"]}
-          disableGenerate={loading}
-          allowCancel
-          cancelTrackerId="gen7_cancel_timeline_finder"
-          onCancel={cancel}
-        >
-          <Fields />
-        </RngToolForm>
-      </Card>
+      <ToolForm<FormState, never>
+        initialValues={initialValues}
+        validationSchema={Validator}
+        onSubmit={onSubmit}
+        submitTrackerId="gen7_find_safe_advances"
+        submitButtonLabel={t["Find Safe Advances"]}
+        disableGenerate={loading}
+        allowCancel
+        cancelTrackerId="gen7_cancel_timeline_finder"
+        onCancel={cancel}
+      >
+        <Fields />
+      </ToolForm>
       <SafeAdvancesCard
         safeAdvances={safeAdvances}
         selected={selection?.safeAdvance ?? null}

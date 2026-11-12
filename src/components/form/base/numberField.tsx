@@ -8,7 +8,7 @@ import {
   serializers,
   shouldClearTransientValue,
   type NumericNumberInputType,
-} from "~/components/numberInput/utils";
+} from "./numberInputUtils";
 import { LabeledFieldProps, FieldFrame } from "./field";
 import { useFieldIds } from "./hooks";
 import { FieldInput } from "./textField";

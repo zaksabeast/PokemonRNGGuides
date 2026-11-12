@@ -4,11 +4,14 @@ import { LabeledFieldProps, FieldFrame } from "./field";
 import { useFieldIds } from "./hooks";
 import { textFieldStyles } from "./styles";
 
-const FieldTextArea = styled.textarea(({ theme }) => ({
-  ...textFieldStyles(theme),
-  paddingBlock: 12,
-  resize: "vertical",
-}));
+const FieldTextArea = styled.textarea<{ $monospace: boolean }>(
+  ({ theme, $monospace }) => ({
+    ...textFieldStyles(theme),
+    paddingBlock: 12,
+    resize: "vertical",
+    ...($monospace && { fontFamily: "monospace" }),
+  }),
+);
 
 export type TextAreaFieldProps = LabeledFieldProps & {
   value: string;
@@ -17,7 +20,9 @@ export type TextAreaFieldProps = LabeledFieldProps & {
   name?: string;
   placeholder?: string;
   disabled?: boolean;
+  readOnly?: boolean;
   rows?: number;
+  monospace?: boolean;
 };
 
 export const TextAreaField = ({
@@ -29,6 +34,7 @@ export const TextAreaField = ({
   value,
   onChange,
   rows = 4,
+  monospace = false,
   ...inputProps
 }: TextAreaFieldProps) => {
   const ids = useFieldIds();
@@ -46,6 +52,7 @@ export const TextAreaField = ({
         {...inputProps}
         id={ids.inputId}
         rows={rows}
+        $monospace={monospace}
         autoComplete="off"
         aria-invalid={invalid === true || errorMessage != null}
         aria-describedby={ids.helperId}

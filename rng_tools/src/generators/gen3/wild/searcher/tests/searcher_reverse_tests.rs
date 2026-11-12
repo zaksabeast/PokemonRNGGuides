@@ -2,10 +2,11 @@ use super::*;
 use crate::{
     EncounterSlot, HiddenPowerFilter, PokemonType, ShinyFilter, ShinyType,
     gen3::{
-        FASTEST_DIVIDENDS_MOD_24_RANGE, Gen3PidSpeedFilter, Wild3SearcherCycleOpts,
-        Wild3SpecialEncounterGameData, apply_cycles_causing_vblanks_on_cycle_counter,
-        calculate_pid_speed, get_min_mid_max_pre_sweet_scent_cycle,
-        get_min_mid_max_vblank_cycle_duration, search_wild3_naive,
+        FASTEST_DIVIDENDS_MOD_24_RANGE, Gen3PidSpeedFilter, MinMidMax, Wild3PlayingSong,
+        Wild3SearcherCycleOpts, Wild3SpecialEncounterGameData, Wild3Weather,
+        apply_cycles_causing_vblanks_on_cycle_counter, calculate_pid_speed,
+        get_default_min_mid_max_initial_cycle_for_feebas,
+        get_default_min_mid_max_vblank_cycle_duration_for_feebas, search_wild3_naive,
     },
 };
 
@@ -467,7 +468,6 @@ fn test_search_reverse_wild3_feebas_many_cyles() {
             advance: 15520,
             seed: Pokerng::with_jump(options.initial_seed, 15520).seed(),
             feebas_cycles: 500_000,
-            cycle_instability: 0f32, // 0 because consider_cycles is false
             ..expected_mon
         },
     ];
@@ -674,6 +674,8 @@ fn test_search_reverse_wild3_safari_egg_gligar_has_result() {
         map_setups: create_safari_southeast_map_setups(),
         methods: vec![Gen3Method::Wild1],
         cycle_opts: Wild3SearcherCycleOpts::SearchNewTarget {
+            consider_weather: false,
+            consider_bike: false,
             consider_rng_manipulated_lead_pid: true,
             generate_even_if_impossible: true,
         },
@@ -714,7 +716,9 @@ fn test_search_reverse_wild3_safari_cute_charm_pokeblock_hoothoot_has_result() {
         map_setups: create_safari_southeast_map_setups(),
         methods: vec![Gen3Method::Wild4],
         cycle_opts: Wild3SearcherCycleOpts::Calibrate {
-            lead_cycle_speed: Some(18),
+            weather: Wild3Weather::Sunny,
+            playing_song: Wild3PlayingSong::MapSong,
+            lead_cycle_speed: 18,
         },
         considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt::Specific([0, 0, 1, 0, 0]),
         ..Default::default()
@@ -771,7 +775,6 @@ fn test_search_reverse_wild2_synchronize_multiple_natures() {
     );
 }
 
-// Validate that FEEBAS_CYCLE_COUNT_BY_VBLANK has the correct value.
 #[test]
 fn test_search_reverse_wild3_vblank_group_feebas() {
     fn update_bounds(
@@ -788,12 +791,21 @@ fn test_search_reverse_wild3_vblank_group_feebas() {
         }
     }
 
-    let mut groups: [Option<std::ops::RangeInclusive<usize>>; 4] = [None, None, None, None];
+    let mut groups: [Option<std::ops::RangeInclusive<usize>>; MAX_FEEBAS_VBLANK] =
+        Default::default();
 
     for feebas_cycles in 0..=800_000 {
-        let (min_presweet, _, max_presweet) =
-            get_min_mid_max_pre_sweet_scent_cycle(Wild3Action::OldRod);
-        let (min_vblank_dur, _, max_vblank_dur) = get_min_mid_max_vblank_cycle_duration();
+        // The legacy Feebas table was generated with these fixed initial-cycle bounds.
+        let MinMidMax {
+            min: min_presweet,
+            max: max_presweet,
+            ..
+        } = get_default_min_mid_max_initial_cycle_for_feebas();
+        let MinMidMax {
+            min: min_vblank_dur,
+            max: max_vblank_dur,
+            ..
+        } = get_default_min_mid_max_vblank_cycle_duration_for_feebas();
 
         let (_, min_vblank_count) = apply_cycles_causing_vblanks_on_cycle_counter(
             min_presweet,
@@ -871,7 +883,9 @@ fn test_search_reverse_wild3_feebas_on_feebas_tile() {
         feebas_cycles: vec![350_226],
         methods: vec![Gen3Method::Wild2],
         cycle_opts: Wild3SearcherCycleOpts::Calibrate {
-            lead_cycle_speed: Some(calculate_pid_speed(0x7933A9CB)),
+            weather: Wild3Weather::Sunny,
+            playing_song: Wild3PlayingSong::MapSong,
+            lead_cycle_speed: calculate_pid_speed(0x7933A9CB),
         },
         using_white_flute: false,
         ..Default::default()

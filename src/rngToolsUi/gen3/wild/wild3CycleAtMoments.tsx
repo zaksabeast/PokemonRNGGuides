@@ -1,6 +1,12 @@
 /* eslint-disable no-param-reassign */
-import { rngTools } from "~/rngTools";
-import { ResultColumn, ResultTable, Flex, Typography } from "~/components";
+import { rngTools, Wild3GeneratorCycleOpts } from "~/rngTools";
+import {
+  ResultColumn,
+  ResultTable,
+  Flex,
+  Icon,
+  Typography,
+} from "~/components";
 import {
   FormCard,
   FormSummary,
@@ -28,6 +34,12 @@ import {
 } from "./wild3CycleAtMomentsFormatting";
 import { match } from "ts-pattern";
 import { Tooltip } from "antd";
+import {
+  normalizeWild3AudioInfluences,
+  type Wild3AudioInfluences,
+  getWild3InitialCycleDistributionForSetup,
+} from "./wild3AudioInfluences";
+import { getInitialCycleQualitativeProbability } from "./data/initial_cycle_main";
 
 const uiCycleAtMomentColumns: ResultColumn<UiResultCycleAtMoment>[] = [
   {
@@ -187,6 +199,7 @@ const parseCycleAtMomentsJsonStr = (input: string) => {
 
 type Props = {
   targetSetup: TargetSetup;
+  audioInfluences: Wild3AudioInfluences;
   /** leadCycleSpeedFromTool is null if egg lead */
   leadCycleSpeed: number | null;
 };
@@ -253,7 +266,43 @@ const createUiResult = async (
   return uiResult;
 };
 
-export const Wild3CycleAtMoments = ({ targetSetup, leadCycleSpeed }: Props) => {
+const getInitialCycleLikelihood = (
+  input: string,
+  targetSetup: TargetSetup,
+  preferredAudioInfluences: Wild3AudioInfluences,
+): { qualitativeTxt: string; probabilityTxt: string } | null => {
+  const json = parseCycleAtMomentsJsonStr(input);
+  const initialCycle = json?.cycleAtMoments[0]?.cycle;
+  if (initialCycle == null) {
+    return null;
+  }
+
+  const audioInfluences = normalizeWild3AudioInfluences(
+    targetSetup.map,
+    targetSetup.action,
+    preferredAudioInfluences,
+  );
+  const distribution = getWild3InitialCycleDistributionForSetup({
+    ...targetSetup,
+    ...audioInfluences,
+  });
+  if (distribution == null) {
+    return null;
+  }
+
+  const likelihood = getInitialCycleQualitativeProbability(
+    distribution.distribution,
+    initialCycle,
+  );
+
+  return typeof likelihood === "string" ? null : likelihood;
+};
+
+export const Wild3CycleAtMoments = ({
+  targetSetup,
+  audioInfluences: preferredAudioInfluences,
+  leadCycleSpeed,
+}: Props) => {
   const [compareCycleAtMomentsStr, setCompareCycleAtMomentsStr] =
     React.useState("");
 
@@ -266,19 +315,42 @@ export const Wild3CycleAtMoments = ({ targetSetup, leadCycleSpeed }: Props) => {
     let cancelled = false;
     const updateUiResult = async () => {
       const json = parseCycleAtMomentsJsonStr(compareCycleAtMomentsStr);
-      const cycle_opts =
+      const audioInfluences = normalizeWild3AudioInfluences(
+        targetSetup.map,
+        targetSetup.action,
+        preferredAudioInfluences,
+      );
+      const distribution = getWild3InitialCycleDistributionForSetup({
+        ...targetSetup,
+        ...audioInfluences,
+      });
+
+      if (distribution == null) {
+        setUiResult(createEmptyUiResult());
+        return;
+      }
+
+      const cycle_opts: Wild3GeneratorCycleOpts =
         json == null
-          ? { CycleAtMomentNoEmuLog: { lead_cycle_spd: leadCycleSpeed ?? 0 } }
+          ? {
+              LikelihoodForLead: {
+                min_max_initial_cycle: [distribution.min, distribution.max],
+                lead_cycle_spd: leadCycleSpeed ?? 0,
+              },
+            }
           : {
               CycleAtMomentWithEmuLog: {
                 lead_cycle_spd: leadCycleSpeed ?? 0,
-                initial_cycle_at_sweet_scent:
-                  json.cycleAtMoments[0]?.cycle ?? 0,
+                initial_cycle: json.cycleAtMoments[0]?.cycle ?? 0,
                 vblank_cycles: json.vblankDurations,
               },
             };
 
-      const distributions = await setupToDistributions(targetSetup, cycle_opts);
+      const distributions = await setupToDistributions(
+        targetSetup,
+        cycle_opts,
+        audioInfluences,
+      );
 
       const result = await createUiResult(
         compareCycleAtMomentsStr,
@@ -292,13 +364,43 @@ export const Wild3CycleAtMoments = ({ targetSetup, leadCycleSpeed }: Props) => {
     return () => {
       cancelled = true;
     };
-  }, [compareCycleAtMomentsStr, targetSetup, leadCycleSpeed]);
+  }, [
+    compareCycleAtMomentsStr,
+    targetSetup,
+    preferredAudioInfluences,
+    leadCycleSpeed,
+  ]);
 
+  const initialCycleLikelihood = getInitialCycleLikelihood(
+    compareCycleAtMomentsStr,
+    targetSetup,
+    preferredAudioInfluences,
+  );
   const resultRows: SummaryRow[] = [
     {
-      label: "Cycle at start of Sweet Scent",
+      label:
+        initialCycleLikelihood == null
+          ? "Most probable initial cycle"
+          : "Initial cycle",
       value: formatLargeInteger(
         uiResult.uiCycleAtMoments[0]?.dataFromTool.cycle ?? 0,
+      ),
+    },
+    {
+      label: "Initial cycle likelihood",
+      show: initialCycleLikelihood != null,
+      value: initialCycleLikelihood != null && (
+        <Flex align="center" gap={4}>
+          {initialCycleLikelihood.qualitativeTxt}
+          <Tooltip
+            title={initialCycleLikelihood.probabilityTxt}
+            placement="bottom"
+          >
+            <span aria-label="Initial cycle probability">
+              <Icon name="InfoOutline" />
+            </span>
+          </Tooltip>
+        </Flex>
       ),
     },
     {

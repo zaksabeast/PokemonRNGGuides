@@ -4,7 +4,7 @@ import {
   ability12HOptionsIfNoSpecies,
   ability12OptionsIfNoSpecies,
   getAbilityFilterOptions,
-} from "~/components/abilityFilterOptions";
+} from "./abilityFilterOptions";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { GenericForm } from "~/types/form";
 import { Paths } from "~/types";

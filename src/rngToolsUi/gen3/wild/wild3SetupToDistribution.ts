@@ -13,11 +13,11 @@ import { TargetSetup } from "./wild3TargetSetupInput";
 import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
-} from "~/components/pkmFilter";
+} from "~/components/form/pokemon/pkmFilterFields";
 import {
   gen3PkmFilterFieldsToRustInput,
   getGen3PkmFilterInitialValues,
-} from "~/components/gen3PkmFilter";
+} from "~/components/form/pokemon/gen3PkmFilterFields";
 import { emeraldWildGameData } from "./wild3CalibCaughtMon";
 import { FlattenIvs } from "~/rngToolsUi/shared/ivColumns";
 import { lcrng_distance } from "~/utils/lcrng";
@@ -25,12 +25,18 @@ import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 import sortBy from "lodash-es/sortBy";
 import { match, P } from "ts-pattern";
 
+import {
+  normalizeWild3AudioInfluences,
+  type Wild3AudioInfluences,
+  getWild3InitialCycleDistributionForSetup,
+} from "./wild3AudioInfluences";
+
 export type UiResult = FlattenIvs<
   Wild3SearcherResultMon & {
     species: Species;
     uid: number;
     method_probability: Wild3MethodDistributionResult["method_probability"];
-    pre_sweet_scent_cycle_range: Wild3MethodDistributionResult["pre_sweet_scent_cycle_range"];
+    initial_cycle_range: Wild3MethodDistributionResult["initial_cycle_range"];
     display_negative_cycle_as_0: boolean;
   }
 >;
@@ -44,14 +50,10 @@ const convertSearcherResultsToUIResults = (
   // display it as (0 -> positive)
   const display_negative_cycle_as_0 =
     results.filter((res) => {
-      return res.pre_sweet_scent_cycle_range.start < 0;
+      return res.initial_cycle_range.start < 0;
     }).length <= 1 &&
     results.every((res) => {
-      return (
-        res.pre_sweet_scent_cycle_range.start +
-          res.pre_sweet_scent_cycle_range.len >=
-        0
-      );
+      return res.initial_cycle_range.start + res.initial_cycle_range.len >= 0;
     });
 
   const convertSearcherResultToUIResult = (
@@ -61,15 +63,15 @@ const convertSearcherResultsToUIResults = (
       ...res.searcher_res,
       ...res.searcher_res.ivs,
       method_probability: res.method_probability,
-      pre_sweet_scent_cycle_range: res.pre_sweet_scent_cycle_range,
+      initial_cycle_range: res.initial_cycle_range,
       species: res.searcher_res.species,
       display_negative_cycle_as_0,
       uid: nextUid++,
     };
   };
   return sortBy(results.map(convertSearcherResultToUIResult), [
-    (el) => el.pre_sweet_scent_cycle_range.start,
-    (el) => el.pre_sweet_scent_cycle_range.len,
+    (el) => el.initial_cycle_range.start,
+    (el) => el.initial_cycle_range.len,
   ]);
 };
 
@@ -85,6 +87,7 @@ export type Wild3Distributions = {
 export const setupToDistributions = async (
   targetSetup: TargetSetup,
   cycle_opts: Wild3GeneratorCycleOpts,
+  preferredAudioInfluences: Wild3AudioInfluences,
 ): Promise<Wild3Distributions> => {
   const { canUsePokeblock } = getPossibleValuesForMap(
     targetSetup.map,
@@ -120,7 +123,16 @@ export const setupToDistributions = async (
   const map_data = emeraldWildGameData.maps_data.find(
     (table) => table.map_id === targetSetup.map,
   );
-  if (map_data == null) {
+  const audioInfluences = normalizeWild3AudioInfluences(
+    targetSetup.map,
+    targetSetup.action,
+    preferredAudioInfluences,
+  );
+  const distribution = getWild3InitialCycleDistributionForSetup({
+    ...targetSetup,
+    ...audioInfluences,
+  });
+  if (map_data == null || distribution == null) {
     return {
       uiResults: [],
       cycle_at_moments: [],
@@ -140,7 +152,7 @@ export const setupToDistributions = async (
   const distributionArgs = match(cycle_opts)
     .with({ CycleAtMomentWithEmuLog: P.select() }, (emuLog) => ({
       leadCycleSpd: emuLog.lead_cycle_spd,
-      initialCycleAtSweetScent: emuLog.initial_cycle_at_sweet_scent,
+      initialCycleAtSweetScent: emuLog.initial_cycle,
       vblankCycles: new Uint32Array(emuLog.vblank_cycles),
     }))
     .with({ CycleAtMomentNoEmuLog: P.select() }, ({ lead_cycle_spd }) =>
@@ -158,6 +170,8 @@ export const setupToDistributions = async (
       opts,
       map_data,
       distributionArgs.leadCycleSpd,
+      audioInfluences.playing_song,
+      audioInfluences.weather,
       distributionArgs.initialCycleAtSweetScent,
       distributionArgs.vblankCycles,
     );

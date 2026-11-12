@@ -2,7 +2,7 @@ import * as tst from "ts-toolbelt";
 import { ResultColumn } from "~/components";
 import { InheritedIv, InheritedIvs, Ivs } from "~/rngTools";
 import { match, P } from "ts-pattern";
-import { NullableIvs } from "~/components/ivInput";
+import { NullableIvs } from "~/components/form/pokemon/ivFields";
 import { Translations } from "~/translations";
 
 export type FlattenIvs<T extends { ivs: Record<keyof Ivs, unknown> }> =

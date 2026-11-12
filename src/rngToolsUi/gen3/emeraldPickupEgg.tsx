@@ -19,8 +19,8 @@ import {
   inheritedIvColumns,
 } from "~/rngToolsUi/shared/ivColumns";
 import { z } from "zod";
-import { defaultHiddenPowerFilter } from "~/components/hiddenPowerInput";
-import { IvsSchema } from "~/components/ivInput";
+import { defaultHiddenPowerFilter } from "~/components/form/pokemon/hiddenPowerFilter";
+import { IvsSchema } from "~/components/form/pokemon/ivFields";
 import { HexSchema } from "~/utils/number";
 import { Translations } from "~/translations";
 

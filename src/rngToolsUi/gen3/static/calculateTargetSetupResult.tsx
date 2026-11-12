@@ -1,11 +1,11 @@
 import {
   getGen3PkmFilterInitialValues,
   gen3PkmFilterFieldsToRustInput,
-} from "~/components/gen3PkmFilter";
+} from "~/components/form/pokemon/gen3PkmFilterFields";
 import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
-} from "~/components/pkmFilter";
+} from "~/components/form/pokemon/pkmFilterFields";
 import { PokemonInfo } from "~/rngToolsUi/gen3/pokemonRng/ResultPokemonInfo";
 import { rngTools } from "~/rngTools";
 import { TargetSetup } from "./static3TargetSetupSearcher";

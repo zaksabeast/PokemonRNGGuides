@@ -11,16 +11,21 @@ import {
 import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
-} from "~/components/pkmFilter";
+} from "~/components/form/pokemon/pkmFilterFields";
 import {
   getGen3PkmFilterInitialValues,
   gen3PkmFilterFieldsToRustInput,
-} from "~/components/gen3PkmFilter";
+} from "~/components/form/pokemon/gen3PkmFilterFields";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { gen3Leads, wild3Actions, isFishingAction } from "./utils";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 import type { TargetSetup } from "./wild3TargetSetupInput";
 import { doesRockSmashSetupRequireWhiteFlute } from "./searchWild3Target";
+import {
+  getWild3InitialCycleDistribution,
+  getDefaultWild3AudioInfluences,
+  type Wild3AudioInfluences,
+} from "./wild3AudioInfluences";
 
 export const simplifiedLeads = gen3Leads.filter(
   (lead) => lead === "Vanilla" || lead === "Egg" || isSynchronizeLead(lead),
@@ -138,6 +143,8 @@ export const buildSimplifiedSearchOptions = (
   methods: ["Wild1", "Wild2", "Wild4"],
   cycle_opts: {
     SearchNewTarget: {
+      consider_weather: false,
+      consider_bike: false,
       consider_rng_manipulated_lead_pid: false,
       generate_even_if_impossible: false,
     },
@@ -151,6 +158,7 @@ export const buildSimplifiedSearchOptions = (
 export type SelectedWildSetup = {
   targetSetup: TargetSetup;
   probability: number;
+  audioInfluences: Wild3AudioInfluences;
   leadCycleSpeed: number;
 };
 
@@ -179,19 +187,33 @@ export const searchSimplifiedWild = async (
 
   const candidates: Candidate[] = [];
   for (const res of results) {
-    if (res.cycle_instability !== 0 || res.cycle_data_by_lead == null) {
+    if (res.cycle_data_by_lead == null) {
       continue;
     }
     const leadCycleSpeed = getSimplifiedLeadSpeed(res.lead);
-    const cycleData = await rngTools.calculate_cycle_data(
-      res.cycle_data_by_lead.post_sweet_scent_range,
-      res.action,
-      leadCycleSpeed,
-    );
     const map = opts.map_setups[res.map_idx].map_data;
+    const audioInfluences = getDefaultWild3AudioInfluences(
+      map.map_id,
+      res.action,
+    );
+    const distribution = getWild3InitialCycleDistribution(
+      map,
+      res.action,
+      audioInfluences,
+    );
+    if (distribution == null) {
+      continue;
+    }
+
+    const cycleData = await rngTools.calculate_cycle_data_for_specific_lead_spd(
+      res.cycle_data_by_lead.post_cycle_range,
+      leadCycleSpeed,
+      distribution,
+    );
     candidates.push({
       probability: cycleData.method_probability,
       leadCycleSpeed,
+      audioInfluences,
       leadOrder: simplifiedLeads.findIndex(
         (lead) => JSON.stringify(lead) === JSON.stringify(res.lead),
       ),

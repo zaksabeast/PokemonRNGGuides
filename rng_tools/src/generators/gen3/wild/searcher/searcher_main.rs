@@ -246,6 +246,7 @@ pub struct Wild3SearcherOptions {
     pub sid: u16,
     pub initial_advances: usize,
     pub max_advances: usize,
+    /** max_result_count limits PID path groups (number of distinct PID/IVs Pokémon). It doesn't limit the number of setups for each distinct Pokémon. */
     pub max_result_count: usize,
     pub filter: PkmFilter,
     pub gen3_filter: Gen3PkmFilter,

@@ -82,7 +82,7 @@ fn wild3_feebas_method5_search_window() {
 
     for (initial_cycles, generate_even_if_impossible, expected) in [
         ((45_000, 75_000), false, vec![]),
-        ((240_000, 240_000), false, expected_candidates.clone()),
+        ((270_000, 270_000), false, expected_candidates.clone()),
         ((45_000, 75_000), true, expected_candidates),
     ] {
         let mut opts = options(Gen3Lead::Egg);

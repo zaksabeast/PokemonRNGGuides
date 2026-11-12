@@ -389,7 +389,7 @@ fn test_search_reverse_wild3_feebas_no_cyles() {
         ..Default::default()
     });
 
-    let expected_results = [Wild3SearcherResultMon {
+    let expected_mon = Wild3SearcherResultMon {
         encounter_idx: Wild3EncounterIndex::Feebas,
         pid: 1969203656,
         advance: 15522,
@@ -405,8 +405,18 @@ fn test_search_reverse_wild3_feebas_no_cyles() {
         species: Species::Feebas,
         feebas_state: Wild3FeebasState::OnFeebasTile,
         action: Wild3Action::SuperRod,
+        feebas_vblank_count: Some(0),
         ..Default::default()
-    }];
+    };
+    let expected_results = [
+        expected_mon.clone(),
+        Wild3SearcherResultMon {
+            advance: 15520,
+            seed: Pokerng::with_jump(options.initial_seed, 15520).seed(),
+            feebas_vblank_count: Some(2),
+            ..expected_mon
+        },
+    ];
     assert!(does_search_wild3_reverse_support_options(&options));
     let result = search_wild3_reverse(&options);
     assert_eq!(result, expected_results);
@@ -815,6 +825,10 @@ fn test_search_reverse_wild3_feebas_on_feebas_tile() {
                     encounter_data: encounter(40, 40, Species::Latias),
                 }],
                 feebas: Some(encounter(20, 25, Species::Feebas)),
+                initial_cycle_distrs: vec![Wild3InitialCycleDistribution {
+                    feebas_vblank_count: Some(1),
+                    ..Wild3InitialCycleDistribution::new_default(Wild3Action::OldRod).clone()
+                }],
                 is_safari: false,
                 rock_smash_rate: 0,
                 actions_with_safari_pokeblock: vec![],

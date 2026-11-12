@@ -76,19 +76,19 @@ fn search_wild3_naive_at_given_advance(
                 .cycle_opts
                 .get_initial_cycle_distrs(&map_setups.map_data, *action);
 
-            let feebas_distributions: Vec<_> = if fishing_on_feebas_tile {
+            let feebas_vblank_counts: Vec<Option<usize>> = if fishing_on_feebas_tile {
                 initial_cycle_distrs
                     .iter()
-                    .copied()
-                    .filter(|distribution| distribution.feebas_tile.is_some())
-                    .map(Some)
+                    .map(|distribution| distribution.feebas_vblank_count)
+                    .sorted()
+                    .dedup()
                     .collect()
             } else {
                 vec![None]
             };
-            let pokeblock_feebas_products = iproduct!(&pokeblock_states, &feebas_distributions);
+            let pokeblock_feebas_products = iproduct!(&pokeblock_states, &feebas_vblank_counts);
 
-            for (safari_pokeblock, feebas_distribution) in pokeblock_feebas_products {
+            for (safari_pokeblock, feebas_vblank_count) in pokeblock_feebas_products {
                 let gen_opts = Wild3GeneratorOptions {
                     tid: opts.tid,
                     sid: opts.sid,
@@ -101,10 +101,11 @@ fn search_wild3_naive_at_given_advance(
                     roamer_state: *roamer_state,
                     mass_outbreak_state: *mass_outbreak_state,
                     feebas_state: *feebas_state,
-                    feebas_initial_distribution: feebas_distribution
-                        .map(Wild3InitialCycleDistribution::clone),
+                    feebas_vblank_count: *feebas_vblank_count,
                     safari_pokeblock: safari_pokeblock.clone(),
-                    cycle_opts: opts.cycle_opts.generator_cycle_opts(&initial_cycle_distrs),
+                    cycle_opts: opts
+                        .cycle_opts
+                        .generator_cycle_opts(&initial_cycle_distrs, *feebas_vblank_count),
                     using_white_flute: opts.using_white_flute,
                 };
 

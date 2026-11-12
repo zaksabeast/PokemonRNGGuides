@@ -203,20 +203,28 @@ impl Wild3SearcherCycleOpts {
                     vec![default]
                 }
             }
-            // TODO: Calibrate when fishing in feebas map must provide a feebas_tile.
+
             Self::Calibrate {
                 weather,
                 playing_song,
                 ..
-            } => map_data
-                .initial_cycle_distrs
-                .iter()
-                .filter(|distribution| {
-                    distribution.action == action
-                        && distribution.playing_song == *playing_song
-                        && distribution.weather == *weather
-                })
-                .collect(),
+            } => {
+                let list = map_data
+                    .initial_cycle_distrs
+                    .iter()
+                    .filter(|distribution| {
+                        distribution.action == action
+                            && distribution.playing_song == *playing_song
+                            && distribution.weather == *weather
+                    })
+                    .collect_vec();
+
+                if !list.is_empty() {
+                    list
+                } else {
+                    vec![default]
+                }
+            }
         }
     }
 }

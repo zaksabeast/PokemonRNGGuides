@@ -456,7 +456,7 @@ fn test_search_reverse_wild3_feebas_many_cyles() {
         species: Species::Feebas,
         feebas_state: Wild3FeebasState::OnFeebasTile,
         action: Wild3Action::SuperRod,
-        feebas_vblank_count: Some(1),
+        feebas_vblank_count: Some(0),
         ..Default::default()
     };
     let expected_results = [
@@ -464,7 +464,7 @@ fn test_search_reverse_wild3_feebas_many_cyles() {
         Wild3SearcherResultMon {
             advance: 15520,
             seed: Pokerng::with_jump(options.initial_seed, 15520).seed(),
-            feebas_vblank_count: Some(1),
+            feebas_vblank_count: Some(2),
             ..expected_mon
         },
     ];

@@ -123,10 +123,10 @@ fn CheckFeebas(
         return false;
     }
 
-    cycle_counter.set_cycle_for_feebas(
-        opts.cycle_opts.feebas_min_max_cycle(),
-        opts.feebas_vblank_count.unwrap_or(0),
-    );
+    let feebas_vblank_count = opts.feebas_vblank_count.unwrap_or(0);
+    rng.jump(feebas_vblank_count);
+
+    cycle_counter.set_cycle_for_feebas(opts.cycle_opts.feebas_min_max_cycle(), feebas_vblank_count);
 
     opts.feebas_state == Wild3FeebasState::OnFeebasTile
 }

@@ -24,7 +24,6 @@ pub use cdf::{CdfKnot, cdf_less_than};
 pub use cycle_counter::*;
 pub use cycle_data_calculator::*;
 pub use cycle_range::*;
-pub use feebas_timing::Wild3FeebasVblankSelection;
 pub use filter::*;
 pub use game_data::*;
 pub use generator::*;

@@ -290,7 +290,6 @@ fn test_generate_wild3_feebas() {
         action: Wild3Action::GoodRod,
         methods: vec![Gen3Method::Wild1],
         feebas_state: Wild3FeebasState::OnFeebasTile,
-        feebas_initial_distribution: Some(crate::gen3::wild::feebas_timing::prepared_distribution(Wild3Action::GoodRod, 0, 0, 46186, 76186, 1.0)),
         ..Default::default()
     };
     let mut game_data = Wild3MapGameData::default();

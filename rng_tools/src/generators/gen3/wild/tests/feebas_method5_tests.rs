@@ -6,14 +6,6 @@ fn options(lead: Gen3Lead) -> Wild3GeneratorOptions {
         action: Wild3Action::GoodRod,
         methods: vec![Gen3Method::Wild1, Gen3Method::Wild5],
         feebas_state: Wild3FeebasState::OnFeebasTile,
-        feebas_initial_distribution: Some(crate::gen3::wild::feebas_timing::prepared_distribution(
-            Wild3Action::GoodRod,
-            0,
-            0,
-            46186,
-            76186,
-            1.0,
-        )),
         lead,
         ..Default::default()
     }

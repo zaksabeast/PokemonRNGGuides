@@ -15,6 +15,7 @@ fn test_generate_wild3_cycle_method_3() {
         lead: Gen3Lead::Synchronize(Nature::Serious),
         cycle_opts: Wild3GeneratorCycleOpts::Searching {
             min_max_initial_cycle: (30_000, 70_000),
+            feebas_min_max_initial_cycle: (30_000, 70_000),
             generate_even_if_impossible: false,
             consider_rng_manipulated_lead_pid: true,
         },
@@ -58,6 +59,7 @@ fn test_generate_wild3_cycle_method_3_no_rng_lead_pid() {
         filter: PkmFilter::new_allow_all(),
         cycle_opts: Wild3GeneratorCycleOpts::Searching {
             min_max_initial_cycle: (30_000, 70_000),
+            feebas_min_max_initial_cycle: (30_000, 70_000),
             generate_even_if_impossible: false,
             consider_rng_manipulated_lead_pid: false,
         },
@@ -136,6 +138,7 @@ fn test_generate_wild3_cycle_methods_1_2_4() {
         lead: Gen3Lead::Synchronize(Nature::Hardy),
         cycle_opts: Wild3GeneratorCycleOpts::Searching {
             min_max_initial_cycle: (30_000, 70_000),
+            feebas_min_max_initial_cycle: (30_000, 70_000),
             generate_even_if_impossible: false,
             consider_rng_manipulated_lead_pid: true,
         },

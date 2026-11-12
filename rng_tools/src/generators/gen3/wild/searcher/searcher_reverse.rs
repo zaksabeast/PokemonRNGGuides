@@ -131,6 +131,7 @@ fn extend_pid_paths_to_results(
             species: Species::Bulbasaur,
         }),
         opts.using_white_flute,
+        opts.cycle_opts.generate_even_if_impossible(),
     );
     let initial_cycle_groups = opts
         .map_setups

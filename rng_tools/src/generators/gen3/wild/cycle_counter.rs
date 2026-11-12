@@ -111,6 +111,20 @@ impl MinMaxCycleFrame {
         self.min_cycle.add_cycle(cycle);
         self.max_cycle.add_cycle(cycle);
     }
+    pub fn set_cycle_for_feebas(
+        &mut self,
+        feebas_min_max_cycle: (usize, usize),
+        feebas_vblank_count: usize,
+    ) {
+        self.min_cycle = CycleFrame {
+            cycle: feebas_min_max_cycle.0,
+            frame: feebas_vblank_count,
+        };
+        self.max_cycle = CycleFrame {
+            cycle: feebas_min_max_cycle.1,
+            frame: feebas_vblank_count,
+        };
+    }
     pub fn add_mod(&mut self, lead_pid_mod: usize) {
         self.min_cycle
             .add_cycle(lead_pid_mod * self.min_lead_cycle_spd);
@@ -266,6 +280,38 @@ impl CycleFrameCounter {
             | CycleFrameCounter::CheckValidAllLeadSpds { .. } => {
                 self.add_cycle(cycle);
                 self.add_mod(lead_pid_mod);
+            }
+        }
+    }
+    pub fn set_cycle_for_feebas(
+        &mut self,
+        feebas_min_max_cycle: (usize, usize),
+        feebas_vblank_count: usize,
+    ) {
+        match self {
+            CycleFrameCounter::Inactive => {}
+            CycleFrameCounter::CheckValidAllLeadSpds {
+                earliest_slowest_cycle,
+                latest_fastest_cycle,
+                base_cycle_count,
+                ..
+            } => {
+                *base_cycle_count = 0;
+                *earliest_slowest_cycle = feebas_min_max_cycle.0;
+                *latest_fastest_cycle = feebas_min_max_cycle.1;
+            }
+            CycleFrameCounter::DetailedBreakdown { current_cycle, .. } => {
+                //NO_PROD should apply vblank logic manual.
+                current_cycle.cycle = feebas_min_max_cycle.0; // Both .0 and .1 should be equal.
+                current_cycle.frame = feebas_vblank_count;
+            }
+            CycleFrameCounter::MinMaxRange {
+                base_cycle_count,
+                min_max_cycles,
+                ..
+            } => {
+                *base_cycle_count = 0;
+                min_max_cycles.set_cycle_for_feebas(feebas_min_max_cycle, feebas_vblank_count);
             }
         }
     }

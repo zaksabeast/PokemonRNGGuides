@@ -2,11 +2,9 @@ use super::*;
 use crate::{
     EncounterSlot, HiddenPowerFilter, PokemonType, ShinyFilter, ShinyType,
     gen3::{
-        FASTEST_DIVIDENDS_MOD_24_RANGE, Gen3PidSpeedFilter, MinMidMax, Wild3PlayingSong,
-        Wild3SearcherCycleOpts, Wild3SpecialEncounterGameData, Wild3Weather,
-        apply_cycles_causing_vblanks_on_cycle_counter, calculate_pid_speed,
-        get_default_min_mid_max_initial_cycle_for_feebas,
-        get_default_min_mid_max_vblank_cycle_duration_for_feebas, search_wild3_naive,
+        FASTEST_DIVIDENDS_MOD_24_RANGE, Gen3PidSpeedFilter, Wild3PlayingSong,
+        Wild3SearcherCycleOpts, Wild3SpecialEncounterGameData, Wild3Weather, calculate_pid_speed,
+        search_wild3_naive,
     },
 };
 
@@ -429,7 +427,6 @@ fn test_search_reverse_wild3_feebas_many_cyles() {
             species: Some(Species::Feebas),
             ..Default::default()
         },
-        feebas_cycles: vec![100_000, 500_000],
         ..Default::default()
     };
 
@@ -459,7 +456,7 @@ fn test_search_reverse_wild3_feebas_many_cyles() {
         species: Species::Feebas,
         feebas_state: Wild3FeebasState::OnFeebasTile,
         action: Wild3Action::SuperRod,
-        feebas_cycles: 100_000,
+        feebas_vblank_count: Some(1),
         ..Default::default()
     };
     let expected_results = [
@@ -467,7 +464,7 @@ fn test_search_reverse_wild3_feebas_many_cyles() {
         Wild3SearcherResultMon {
             advance: 15520,
             seed: Pokerng::with_jump(options.initial_seed, 15520).seed(),
-            feebas_cycles: 500_000,
+            feebas_vblank_count: Some(1),
             ..expected_mon
         },
     ];
@@ -776,59 +773,6 @@ fn test_search_reverse_wild2_synchronize_multiple_natures() {
 }
 
 #[test]
-fn test_search_reverse_wild3_vblank_group_feebas() {
-    fn update_bounds(
-        range: &Option<std::ops::RangeInclusive<usize>>,
-        new_val: usize,
-    ) -> Option<std::ops::RangeInclusive<usize>> {
-        match range {
-            None => Some(new_val..=new_val),
-            Some(range) => {
-                let min = new_val.min(range.clone().min()?);
-                let max = new_val.max(range.clone().max()?);
-                Some(min..=max)
-            }
-        }
-    }
-
-    let mut groups: [Option<std::ops::RangeInclusive<usize>>; MAX_FEEBAS_VBLANK] =
-        Default::default();
-
-    for feebas_cycles in 0..=800_000 {
-        // The legacy Feebas table was generated with these fixed initial-cycle bounds.
-        let MinMidMax {
-            min: min_presweet,
-            max: max_presweet,
-            ..
-        } = get_default_min_mid_max_initial_cycle_for_feebas();
-        let MinMidMax {
-            min: min_vblank_dur,
-            max: max_vblank_dur,
-            ..
-        } = get_default_min_mid_max_vblank_cycle_duration_for_feebas();
-
-        let (_, min_vblank_count) = apply_cycles_causing_vblanks_on_cycle_counter(
-            min_presweet,
-            feebas_cycles,
-            min_vblank_dur,
-        );
-        let (_, max_vblank_count) = apply_cycles_causing_vblanks_on_cycle_counter(
-            max_presweet,
-            feebas_cycles,
-            max_vblank_dur,
-        );
-
-        groups[min_vblank_count] = update_bounds(&groups[min_vblank_count], feebas_cycles);
-        groups[max_vblank_count] = update_bounds(&groups[max_vblank_count], feebas_cycles);
-    }
-
-    assert_eq!(
-        groups.map(|x| x.unwrap_or(0..=0)),
-        FEEBAS_CYCLE_COUNT_BY_VBLANK
-    );
-}
-
-#[test]
 fn test_search_reverse_wild3_feebas_on_feebas_tile() {
     let encounter = |min_level, max_level, species| Wild3EncounterGameData {
         min_level,
@@ -880,7 +824,6 @@ fn test_search_reverse_wild3_feebas_on_feebas_tile() {
             feebas_states: vec![Wild3FeebasState::OnFeebasTile],
             ..Default::default()
         }],
-        feebas_cycles: vec![350_226],
         methods: vec![Gen3Method::Wild2],
         cycle_opts: Wild3SearcherCycleOpts::Calibrate {
             weather: Wild3Weather::Sunny,

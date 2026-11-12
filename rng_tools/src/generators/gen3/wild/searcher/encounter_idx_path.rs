@@ -215,12 +215,15 @@ impl<'a> Wild3MapSetupsForReverse<'a> {
     }
 }
 
+const MAX_FEEBAS_VBLANK_COUNT: usize = 5;
+
 impl<'a> EncounterIdxPathGenerator<'a> {
     pub fn new(
         leads: &[Gen3Lead],
         map_setups: &'a [Wild3MapSetups],
         species_data: SpeciesData,
         using_white_flute: bool,
+        generate_even_if_impossible: bool,
     ) -> Self {
         let actions: Vec<Wild3Action> = map_setups
             .iter()
@@ -247,18 +250,27 @@ impl<'a> EncounterIdxPathGenerator<'a> {
         }
 
         if permit_feebas_arcs(&species_data) {
-            let possible_feebas_vblank_counts = map_setups
-                .iter()
-                .flat_map(|setup| &setup.map_data.initial_cycle_distrs)
-                .filter(|distribution| distribution.feebas_vblank_count_probability > 0.0)
-                .filter_map(|distribution| distribution.feebas_vblank_count)
-                .sorted()
-                .dedup();
+            if generate_even_if_impossible {
+                arcs.extend(
+                    (0..=MAX_FEEBAS_VBLANK_COUNT).map(|vblank_count| {
+                        EncounterIdxToLvlArc::CheckFeebasSuccess { vblank_count }
+                    }),
+                );
+            } else {
+                let possible_feebas_vblank_counts = map_setups
+                    .iter()
+                    .flat_map(|setup| &setup.map_data.initial_cycle_distrs)
+                    .filter(|distribution| distribution.feebas_vblank_count_probability > 0.0)
+                    .filter_map(|distribution| distribution.feebas_vblank_count)
+                    .sorted()
+                    .dedup();
 
-            arcs.extend(
-                possible_feebas_vblank_counts
-                    .map(|vblank_count| EncounterIdxToLvlArc::CheckFeebasSuccess { vblank_count }),
-            );
+                arcs.extend(
+                    possible_feebas_vblank_counts.map(|vblank_count| {
+                        EncounterIdxToLvlArc::CheckFeebasSuccess { vblank_count }
+                    }),
+                );
+            }
         }
 
         let map_setups: Vec<Wild3MapSetupsForReverse<'a>> = map_setups

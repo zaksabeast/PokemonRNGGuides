@@ -79,6 +79,7 @@ fn test_generate_wild3_cycle_method_5() {
         methods: vec![Gen3Method::Wild5],
         cycle_opts: Wild3GeneratorCycleOpts::Searching {
             min_max_initial_cycle: (30_000, 70_000),
+            feebas_min_max_initial_cycle: (30_000, 70_000),
             generate_even_if_impossible: false,
             consider_rng_manipulated_lead_pid: true,
         },

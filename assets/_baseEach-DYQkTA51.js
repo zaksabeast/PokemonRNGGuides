@@ -1,0 +1,1 @@
+import{s as e}from"./_cacheHas-ClGIpZUA.js";import{t}from"./_baseForOwn-Duzt9Y6o.js";function n(t,n){return function(r,i){if(r==null)return r;if(!e(r))return t(r,i);for(var a=r.length,o=n?a:-1,s=Object(r);(n?o--:++o<a)&&i(s[o],o,s)!==!1;);return r}}var r=n(t);export{r as t};

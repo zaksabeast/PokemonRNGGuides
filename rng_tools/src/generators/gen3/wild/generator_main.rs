@@ -6,7 +6,7 @@ use crate::{
     Ivs, PkmFilter,
     gen3::{
         CycleAndModCount, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method, Gen3PkmFilter,
-        Wild3Action, Wild3EncounterIndex, Wild3FeebasState, Wild3FeebasTileId, Wild3MapGameData,
+        Wild3Action, Wild3EncounterIndex, Wild3FeebasState, Wild3MapGameData,
         Wild3MassOutbreakState, Wild3PlayingSong, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
         generate_wild3_internal,
     },

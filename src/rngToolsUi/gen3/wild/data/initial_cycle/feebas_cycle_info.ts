@@ -11,14 +11,12 @@ import {
   type FeebasCycleDatasetGroup,
   type FeebasCycleScenario,
 } from "./feebas_cycle_dataset";
+import { isFishingAction, wild3Actions } from "~/rngToolsUi/gen3/wild/utils";
 
 const VBLANK_FREQ = 280_896;
-const CDF_EDGE_WIDTH_CYCLES = 3_000;
-const FISHING_ACTIONS: Wild3Action[] = [
-  "OldRod",
-  "GoodRod",
-  "SuperRod",
-] as const;
+const FISHING_ACTIONS: Wild3Action[] = wild3Actions.filter((action) =>
+  isFishingAction(action),
+);
 
 const simulateCheckFeebasScenario = (
   scenario: FeebasCycleScenario,
@@ -46,15 +44,8 @@ const getConditionalCdf = (cycleWeights: Map<number, number>): CdfKnot[] => {
     (sum, [, weight]) => sum + weight,
     0,
   );
-  const minCycle = Math.max(
-    0,
-    sortedCycleWeights[0][0] - CDF_EDGE_WIDTH_CYCLES,
-  );
-  const maxCycle = Math.min(
-    VBLANK_FREQ,
-    sortedCycleWeights[sortedCycleWeights.length - 1][0] +
-      CDF_EDGE_WIDTH_CYCLES,
-  );
+  const minCycle = sortedCycleWeights[0][0];
+  const maxCycle = sortedCycleWeights[sortedCycleWeights.length - 1][0];
   const distribution: CdfKnot[] = [{ cycle: minCycle, probability: 0 }];
   let cumulativeWeight = 0;
 
@@ -76,22 +67,40 @@ const getConditionalCdf = (cycleWeights: Map<number, number>): CdfKnot[] => {
 };
 
 class CycleWeightsByVblankCount {
+  // map[vblankCount][cycle] = weight
   private map = new Map<number, Map<number, number>>();
+  totalWeight = 0;
 
-  addScenarioResult(vblankCount, cycle, weight) {}
+  addScenarioResult(vblankCount: number, cycle: number, weight: number): void {
+    const weightByCycle =
+      this.map.get(vblankCount) ?? new Map<number, number>();
+    weightByCycle.set(cycle, (weightByCycle.get(cycle) ?? 0) + weight);
+    this.map.set(vblankCount, weightByCycle);
+    this.totalWeight += weight;
+  }
 
   getResults(): {
     feebas_vblank_count: number;
     weightByCycle: Map<number, number>;
-  }[] {}
+    feebas_vblank_count_probability: number;
+  }[] {
+    return [...this.map]
+      .sort(([left], [right]) => left - right)
+      .map(([feebas_vblank_count, weightByCycle]) => ({
+        feebas_vblank_count,
+        weightByCycle,
+        feebas_vblank_count_probability:
+          [...weightByCycle.values()].reduce((sum, weight) => sum + weight, 0) /
+          this.totalWeight,
+      }));
+  }
 }
 
 const getFeebasCycleDistributionsFromContext = (
   tile: Wild3FeebasTile,
   context: FeebasCycleDatasetGroup,
 ): Wild3InitialCycleDistribution[] => {
-  const cycleWeightsByVblankCount = new Map<number, Map<number, number>>();
-  let totalWeight = 0;
+  const cycleWeightsByVblankCount = new CycleWeightsByVblankCount();
 
   for (const scenario of context.scenarios) {
     const { vblankCount, cycle } = simulateCheckFeebasScenario(
@@ -99,34 +108,32 @@ const getFeebasCycleDistributionsFromContext = (
       tile.cycle_counter,
     );
     const weight = scenario[2];
-    const cycleWeights =
-      cycleWeightsByVblankCount.get(vblankCount) ?? new Map<number, number>();
-    cycleWeights.set(cycle, (cycleWeights.get(cycle) ?? 0) + weight);
-    cycleWeightsByVblankCount.set(vblankCount, cycleWeights);
-    totalWeight += weight;
+    cycleWeightsByVblankCount.addScenarioResult(vblankCount, cycle, weight);
   }
 
-  return [...cycleWeightsByVblankCount]
-    .sort(([left], [right]) => left - right)
-    .flatMap(([feebas_vblank_count, cycleWeights]) => {
-      const distribution = getConditionalCdf(cycleWeights);
-      const groupWeight = [...cycleWeights.values()].reduce(
-        (sum, weight) => sum + weight,
-        0,
-      );
-
-      return FISHING_ACTIONS.map((action) => ({
+  return cycleWeightsByVblankCount
+    .getResults()
+    .flatMap(
+      ({
         feebas_vblank_count,
-        feebas_vblank_count_probability: groupWeight / totalWeight,
-        feebas_tile: tile.cycle_counter,
-        min: distribution[0].cycle,
-        max: distribution[distribution.length - 1].cycle,
-        distribution,
-        action,
-        playing_song: context.playingSong,
-        weather: context.weather,
-      }));
-    });
+        weightByCycle,
+        feebas_vblank_count_probability,
+      }) => {
+        const distribution = getConditionalCdf(weightByCycle);
+
+        return FISHING_ACTIONS.map((action) => ({
+          feebas_vblank_count,
+          feebas_vblank_count_probability,
+          feebas_tile: tile.cycle_counter,
+          min: distribution[0].cycle,
+          max: distribution[distribution.length - 1].cycle,
+          distribution,
+          action,
+          playing_song: context.playingSong,
+          weather: context.weather,
+        }));
+      },
+    );
 };
 
 export const getFeebasCycleDistributions = (

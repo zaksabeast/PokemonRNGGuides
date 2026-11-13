@@ -3,8 +3,7 @@
 use super::{
     calc_modulo_cycle_signed, calc_modulo_cycle_unsigned,
     generator_main::{
-        INFINITE_CYCLE, VBLANK_FREQ, Wild3GeneratorMonResult, Wild3GeneratorOptions,
-        Wild3GeneratorResults,
+        INFINITE_CYCLE, Wild3GeneratorMonResult, Wild3GeneratorOptions, Wild3GeneratorResults,
     },
 };
 use crate::{

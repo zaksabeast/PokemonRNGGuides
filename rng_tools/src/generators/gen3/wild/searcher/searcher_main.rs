@@ -12,9 +12,8 @@ use super::super::{
 use crate::{
     AbilityType, Gender, HiddenPower, Ivs, Nature, PkmFilter, ShinyType, Species,
     gen3::{
-        Gen3Lead, Gen3Method, Gen3PkmFilter, SpeciesData, Wild3FeebasTileId,
-        Wild3GeneratorCycleOpts, Wild3InitialCycleDistribution, search_wild3_naive,
-        search_wild3_reverse,
+        Gen3Lead, Gen3Method, Gen3PkmFilter, SpeciesData, Wild3GeneratorCycleOpts,
+        Wild3InitialCycleDistribution, search_wild3_naive, search_wild3_reverse,
         searcher_painter::Wild3PaintingOpts,
         wild::{
             Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex, Wild3MapGameData,

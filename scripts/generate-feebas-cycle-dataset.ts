@@ -5,7 +5,6 @@ import { format, resolveConfig } from "prettier";
 type SampleGroup = {
   playingSong: string;
   weather: string;
-  durationCount: number;
   records: number[][];
 };
 
@@ -70,7 +69,6 @@ for (const line of source.split(/\r?\n/)) {
   const group = groups.get(key) ?? {
     playingSong,
     weather,
-    durationCount: durations.length,
     records: [],
   };
   group.records.push([startCycle, ...durations]);
@@ -186,14 +184,30 @@ const summarize = (records: number[][]): WeightedScenario[] => {
     .sort((left, right) => left.record[0] - right.record[0]);
 };
 
-const entries = [...groups.values()]
+const contexts = new Map<
+  string,
+  { playingSong: string; weather: string; scenarios: WeightedScenario[] }
+>();
+for (const group of groups.values()) {
+  const key = `${group.playingSong}|${group.weather}`;
+  const context = contexts.get(key) ?? {
+    playingSong: group.playingSong,
+    weather: group.weather,
+    scenarios: [],
+  };
+  context.scenarios.push(...summarize(group.records));
+  contexts.set(key, context);
+}
+
+const entries = [...contexts.values()]
   .sort((left, right) =>
-    `${left.playingSong}|${left.weather}|${left.durationCount}`.localeCompare(
-      `${right.playingSong}|${right.weather}|${right.durationCount}`,
+    `${left.playingSong}|${left.weather}`.localeCompare(
+      `${right.playingSong}|${right.weather}`,
     ),
   )
-  .map(({ playingSong, weather, durationCount, records }) => {
-    const scenarios = summarize(records)
+  .map(({ playingSong, weather, scenarios }) => {
+    const weightedScenarios = scenarios
+      .sort((left, right) => left.record[0] - right.record[0])
       .map(({ record, weight }) => {
         const [cycleAtStartOfCheckFeebas, ...vblankDurations] = record;
 
@@ -201,7 +215,7 @@ const entries = [...groups.values()]
       })
       .join("\n");
 
-    return `  { playingSong: ${JSON.stringify(playingSong)}, weather: ${JSON.stringify(weather)}, durationCount: ${durationCount}, scenarios: [\n${scenarios}\n  ] },`;
+    return `  { playingSong: ${JSON.stringify(playingSong)}, weather: ${JSON.stringify(weather)}, scenarios: [\n${weightedScenarios}\n  ] },`;
   });
 
 const output = `import type { Wild3PlayingSong, Wild3Weather } from "~/rngTools";
@@ -215,7 +229,6 @@ export type FeebasCycleScenario = readonly [
 export type FeebasCycleDatasetGroup = {
   playingSong: Wild3PlayingSong;
   weather: Wild3Weather;
-  durationCount: 3 | 4 | 5;
   scenarios: readonly FeebasCycleScenario[];
 };
 

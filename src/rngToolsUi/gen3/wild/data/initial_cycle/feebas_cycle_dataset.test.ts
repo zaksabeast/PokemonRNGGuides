@@ -28,29 +28,42 @@ test("weighted Feebas scenarios summarize complete observed trajectories", () =>
   let sampleWeight = 0;
 
   for (const group of feebasCycleDataset) {
-    const key = `${group.playingSong}|${group.weather}|${group.durationCount}`;
-    const records = sourceGroups.get(key);
-    expect(records).toBeDefined();
-    const sourceRecords = new Set(records?.map((record) => record.join(",")));
+    const key = `${group.playingSong}|${group.weather}`;
+    const records = [...sourceGroups]
+      .filter(([sourceKey]) => sourceKey.startsWith(`${key}|`))
+      .flatMap(([, sourceRecords]) => sourceRecords);
+    const sourceRecords = new Set(records.map((record) => record.join(",")));
+    const weightsByDurationCount = new Map<number, number>();
     const groupWeight = group.scenarios.reduce((sum, scenario) => {
       const [cycleAtStartOfCheckFeebas, vblankDurations, scenarioWeight] =
         scenario;
-      expect(vblankDurations).toHaveLength(group.durationCount);
+      expect([3, 4, 5]).toContain(vblankDurations.length);
       expect(
         sourceRecords.has(
           [cycleAtStartOfCheckFeebas, ...vblankDurations].join(","),
         ),
       ).toBe(true);
+      weightsByDurationCount.set(
+        vblankDurations.length,
+        (weightsByDurationCount.get(vblankDurations.length) ?? 0) +
+          scenarioWeight,
+      );
 
       return sum + scenarioWeight;
     }, 0);
 
-    expect(groupWeight).toBe(records?.length);
+    for (const durationCount of [3, 4, 5]) {
+      expect(weightsByDurationCount.get(durationCount) ?? 0).toBe(
+        sourceGroups.get(`${key}|${durationCount}`)?.length ?? 0,
+      );
+    }
+
+    expect(groupWeight).toBe(records.length);
     scenarioCount += group.scenarios.length;
     sampleWeight += groupWeight;
   }
 
-  expect(feebasCycleDataset.length).toBe(sourceGroups.size);
+  expect(feebasCycleDataset.length).toBe(7);
   expect(sampleWeight).toBe(1_000);
   expect(scenarioCount).toBeLessThan(200);
 });

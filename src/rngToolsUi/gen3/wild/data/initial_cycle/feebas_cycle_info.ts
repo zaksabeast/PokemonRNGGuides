@@ -8,6 +8,7 @@ import type {
 } from "~/rngTools";
 import {
   feebasCycleDataset,
+  type FeebasCycleDatasetGroup,
   type FeebasCycleScenario,
 } from "./feebas_cycle_dataset";
 
@@ -19,35 +20,7 @@ const FISHING_ACTIONS: Wild3Action[] = [
   "SuperRod",
 ] as const;
 
-type FeebasCycleContext = {
-  playingSong: Wild3PlayingSong;
-  weather: Wild3Weather;
-  scenarios: FeebasCycleScenario[];
-};
-
-const getFeebasCycleContexts = (): FeebasCycleContext[] => {
-  const contexts = new Map<string, FeebasCycleContext>();
-  for (const group of feebasCycleDataset) {
-    const key = `${group.playingSong}:${group.weather}`;
-    const context = contexts.get(key);
-    if (context != null) {
-      context.scenarios.push(...group.scenarios);
-      continue;
-    }
-
-    contexts.set(key, {
-      playingSong: group.playingSong,
-      weather: group.weather,
-      scenarios: [...group.scenarios],
-    });
-  }
-
-  return [...contexts.values()];
-};
-
-const feebasCycleContexts = getFeebasCycleContexts();
-
-const getCycleAfterCheckFeebas = (
+const simulateCheckFeebasScenario = (
   scenario: FeebasCycleScenario,
   workCycles: number,
 ): { vblankCount: number; cycle: number } => {
@@ -102,15 +75,26 @@ const getConditionalCdf = (cycleWeights: Map<number, number>): CdfKnot[] => {
   return distribution;
 };
 
-const getContextDistributions = (
-  context: FeebasCycleContext,
+class CycleWeightsByVblankCount {
+  private map = new Map<number, Map<number, number>>();
+
+  addScenarioResult(vblankCount, cycle, weight) {}
+
+  getResults(): {
+    feebas_vblank_count: number;
+    weightByCycle: Map<number, number>;
+  }[] {}
+}
+
+const getFeebasCycleDistributionsFromContext = (
   tile: Wild3FeebasTile,
+  context: FeebasCycleDatasetGroup,
 ): Wild3InitialCycleDistribution[] => {
   const cycleWeightsByVblankCount = new Map<number, Map<number, number>>();
   let totalWeight = 0;
 
   for (const scenario of context.scenarios) {
-    const { vblankCount, cycle } = getCycleAfterCheckFeebas(
+    const { vblankCount, cycle } = simulateCheckFeebasScenario(
       scenario,
       tile.cycle_counter,
     );
@@ -150,7 +134,7 @@ export const getFeebasCycleDistributions = (
   playingSong: Wild3PlayingSong,
   weather: Wild3Weather,
 ): Wild3InitialCycleDistribution[] => {
-  const context = feebasCycleContexts.find(
+  const context = feebasCycleDataset.find(
     (candidate) =>
       candidate.playingSong === playingSong && candidate.weather === weather,
   );
@@ -158,5 +142,5 @@ export const getFeebasCycleDistributions = (
     return [];
   }
 
-  return getContextDistributions(context, tile);
+  return getFeebasCycleDistributionsFromContext(tile, context);
 };

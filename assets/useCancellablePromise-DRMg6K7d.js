@@ -1,0 +1,1 @@
+import{i as e,t}from"./react-C3DXPPl0.js";import{i as n}from"./rngTools-DsL6DimF.js";var r=e(t(),1),i=()=>{let[e,t]=r.useState(null);return{loading:e!=null,waitFor:async e=>{t(e);try{return await e}catch(e){if(n(e))return null;throw e}finally{t(t=>t===e?null:t)}},cancel:()=>{var t;e==null||(t=e.terminate)==null||t.call(e)}}};export{i as t};

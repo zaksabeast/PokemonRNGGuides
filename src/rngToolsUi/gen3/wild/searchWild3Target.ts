@@ -18,8 +18,7 @@ import {
   getWild3EmeraldGameData,
   withFeebasCycleDistributions,
 } from "./data/wild3GameData";
-import { getFeebasTiles } from "./feebasMapData";
-import { getFeebasCycleDistributions } from "./data/initial_cycle/feebas_cycle_info";
+import { getAllFeebasCycleDistributions } from "./data/initial_cycle/feebas_cycle_info";
 
 import type { FormState, PidPathResult } from "./wild3TargetSetupSearcher.tsx";
 import {
@@ -178,23 +177,9 @@ const getMapSetupsConsideringStateSubsets = (
     return filteredSetups;
   }
 
-  const mapData = emeraldWildGameData.maps_data.find(
-    (map) => map.map_id === filteredSetups[0].map_data.map_id,
+  const feebasCycleDistributions = values.feebasCycles.flatMap((feebasCycle) =>
+    getAllFeebasCycleDistributions(feebasCycle),
   );
-  const feebasCycleDistributions = 
-      (mapData?.possible_weather_by_action.OldRod ?? []).flatMap((weather) =>
-        (mapData?.possible_playing_song_by_action.OldRod ?? []).flatMap(
-          (playingSong) => {
-              values.feebasCycles.map(feebasCycle => {
-              getFeebasCycleDistributions(
-                feebasCycle,
-                playingSong,
-                weather,
-             }),
-          )
-        ),
-      ),
-    );
 
   return withFeebasCycleDistributions(filteredSetups, feebasCycleDistributions);
 };

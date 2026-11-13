@@ -135,7 +135,7 @@ const getFeebasCycleDistributionsFromContext = (
     );
 };
 
-export const getFeebasCycleDistributions = (
+const getFeebasCycleDistributions = (
   checkFeebasCycle: number,
   playingSong: Wild3PlayingSong,
   weather: Wild3Weather,
@@ -151,16 +151,25 @@ export const getFeebasCycleDistributions = (
   return getFeebasCycleDistributionsFromContext(checkFeebasCycle, context);
 };
 
-//TODO: Convert to real code. Use a cache.
-let cache = new Map<number, Wild3InitialCycleDistribution[]>();
- 
-export const getAllFeebasCycleDistributions = (checkFeebasCycle: number) => {
-  const possiblePlayingSongs:Wild3PlayingSong[] = ["SurfSong"];
-  const possibleWeathers:Wild3Weather[] = ["Sunny", "Rain", "Thunderstorm"];
-  for each
-  getFeebasCycleDistributions(
-                feebasCycle,
-                playingSong,
-                weather,
-             }),
+const feebasCycleDistributionsCache = new Map<
+  number,
+  Wild3InitialCycleDistribution[]
+>();
+const feebasWeathers: Wild3Weather[] = ["Sunny", "Rain", "Thunderstorm"];
+
+export const getAllFeebasCycleDistributions = (
+  checkFeebasCycle: number,
+): Wild3InitialCycleDistribution[] => {
+  const cachedDistributions =
+    feebasCycleDistributionsCache.get(checkFeebasCycle);
+  if (cachedDistributions != null) {
+    return cachedDistributions;
+  }
+
+  const distributions = feebasWeathers.flatMap((weather) =>
+    getFeebasCycleDistributions(checkFeebasCycle, "SurfSong", weather),
+  );
+  feebasCycleDistributionsCache.set(checkFeebasCycle, distributions);
+
+  return distributions;
 };

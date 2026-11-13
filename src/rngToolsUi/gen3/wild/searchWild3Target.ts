@@ -14,7 +14,12 @@ import {
   formatMapName,
   isFishingAction,
 } from "./utils";
-import { getWild3EmeraldGameData } from "./data/wild3GameData";
+import {
+  getWild3EmeraldGameData,
+  withFeebasCycleDistributions,
+} from "./data/wild3GameData";
+import { getFeebasTiles } from "./feebasMapData";
+import { getFeebasCycleDistributions } from "./data/initial_cycle/feebas_cycle_info";
 
 import type { FormState, PidPathResult } from "./wild3TargetSetupSearcher.tsx";
 import {
@@ -156,7 +161,7 @@ const getMapSetupsConsideringStateSubsets = (
           };
         });
 
-  return setups.filter((setup) => {
+  const filteredSetups = setups.filter((setup) => {
     // We remove feebas map for fishing non-feebas because it's not supported by the reverse searcher.
     // Limitation: It prevents Tentacool to be obtained from Sweet Scent on Water.
     if (
@@ -168,6 +173,30 @@ const getMapSetupsConsideringStateSubsets = (
     }
     return true;
   });
+
+  if (values.species !== "Feebas" || filteredSetups.length === 0) {
+    return filteredSetups;
+  }
+
+  const mapData = emeraldWildGameData.maps_data.find(
+    (map) => map.map_id === filteredSetups[0].map_data.map_id,
+  );
+  const feebasCycleDistributions = 
+      (mapData?.possible_weather_by_action.OldRod ?? []).flatMap((weather) =>
+        (mapData?.possible_playing_song_by_action.OldRod ?? []).flatMap(
+          (playingSong) => {
+              values.feebasCycles.map(feebasCycle => {
+              getFeebasCycleDistributions(
+                feebasCycle,
+                playingSong,
+                weather,
+             }),
+          )
+        ),
+      ),
+    );
+
+  return withFeebasCycleDistributions(filteredSetups, feebasCycleDistributions);
 };
 
 export const searchWild3Target = async (values: FormState) => {
@@ -181,6 +210,7 @@ export const searchWild3Target = async (values: FormState) => {
     : values.initial_advances;
 
   const map_setups = getMapSetupsConsideringStateSubsets(values);
+
   const methods = values.recommendedSetups
     ? (["Wild1", "Wild2", "Wild4"] as Gen3Method[])
     : values.methods;
@@ -219,7 +249,6 @@ export const searchWild3Target = async (values: FormState) => {
     leads: leadsToUse,
     map_setups,
     methods,
-    feebas_cycles: values.feebasCycles.length === 0 ? [0] : values.feebasCycles,
     cycle_opts: createWild3TargetCycleOptions(values),
     using_white_flute: values.recommendedSetups
       ? true

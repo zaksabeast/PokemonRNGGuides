@@ -4,7 +4,7 @@ use wasm_bindgen::prelude::*;
 
 use super::ALL_WILD3_ACTIONS;
 use super::{Wild3Action, Wild3InitialCycleDistribution, Wild3PlayingSong, Wild3Weather};
-use crate::gen3::Wild3FeebasTileId;
+use crate::gen3::usize;
 use crate::{EncounterSlot, GenderRatio, Nature, PokemonType, Species};
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
@@ -146,13 +146,13 @@ impl Wild3MapGameData {
         action: Wild3Action,
         playing_song: Wild3PlayingSong,
         weather: Wild3Weather,
-        feebas_tile: Option<Wild3FeebasTileId>,
+        check_feebas_cycle: Option<usize>,
     ) -> &Wild3InitialCycleDistribution {
         self.initial_cycle_distrs
             .iter()
             .find(|distr| {
                 distr.action == action
-                    && distr.feebas_tile == feebas_tile
+                    && distr.check_feebas_cycle == check_feebas_cycle
                     && distr.playing_song == playing_song
                     && distr.weather == weather
             })

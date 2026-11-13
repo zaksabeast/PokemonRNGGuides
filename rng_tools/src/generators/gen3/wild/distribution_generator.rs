@@ -3,14 +3,14 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-use super::Wild3GeneratorOptions;
 use super::Wild3FeebasState;
+use super::Wild3GeneratorOptions;
 use crate::rng::Rng;
 use crate::{
     gen3::{
-        CycleFrameMoment, CycleRange, Gen3Method, Wild3GeneratorCycleOpts, generate_wild3,
-        Wild3FeebasTileId, Wild3InitialCycleDistribution, Wild3MapGameData, Wild3PlayingSong,
-        Wild3SearcherResultMon, Wild3Weather, calculate_cycle_data_for_specific_lead_spd,
+        CycleFrameMoment, CycleRange, Gen3Method, Wild3FeebasTileId, Wild3GeneratorCycleOpts,
+        Wild3InitialCycleDistribution, Wild3MapGameData, Wild3PlayingSong, Wild3SearcherResultMon,
+        Wild3Weather, calculate_cycle_data_for_specific_lead_spd, generate_wild3,
     },
     rng::lcrng::Pokerng,
 };
@@ -43,7 +43,7 @@ pub fn generate_gen3_wild_distribution(
     weather: Wild3Weather,
     initial_cycle: Option<usize>,
     vblank_cycles: Option<Vec<usize>>,
-    feebas_tile: Option<Wild3FeebasTileId>,
+    check_feebas_cycle: Option<Wild3FeebasTileId>,
 ) -> Wild3MethodDistributionResults {
     let base_initial_cycle_distr =
         game_data.get_initial_cycle_distr(opts.action, playing_song, weather, None);
@@ -59,7 +59,7 @@ pub fn generate_gen3_wild_distribution(
             distribution.action == opts.action
                 && distribution.playing_song == playing_song
                 && distribution.weather == weather
-                && distribution.feebas_tile == feebas_tile
+                && distribution.check_feebas_cycle == check_feebas_cycle
         })
         .collect_vec();
     let selected = feebas_distributions
@@ -68,9 +68,9 @@ pub fn generate_gen3_wild_distribution(
         .filter(|distribution| {
             distribution.feebas_vblank_count.is_some()
                 && distribution.feebas_vblank_count_probability > 0.0
-                && opts.feebas_vblank_count.is_none_or(|count| {
-                    distribution.feebas_vblank_count == Some(count)
-                })
+                && opts
+                    .feebas_vblank_count
+                    .is_none_or(|count| distribution.feebas_vblank_count == Some(count))
         })
         .max_by(|left, right| {
             left.feebas_vblank_count_probability
@@ -222,7 +222,7 @@ mod test {
     #[test]
     fn selects_feebas_distributions_for_requested_tile() {
         let distribution = |tile, vblank_count, probability| Wild3InitialCycleDistribution {
-            feebas_tile: Some(tile),
+            check_feebas_cycle: Some(tile),
             feebas_vblank_count: Some(vblank_count),
             feebas_vblank_count_probability: probability,
             ..Wild3InitialCycleDistribution::new_default(Wild3Action::GoodRod).clone()
@@ -253,9 +253,17 @@ mod test {
             Some(4),
         );
 
-        assert_eq!(result.feebas_probability_by_vblank, Some(vec![0.0, 0.3, 0.7]));
+        assert_eq!(
+            result.feebas_probability_by_vblank,
+            Some(vec![0.0, 0.3, 0.7])
+        );
         assert!(!result.results.is_empty());
-        assert!(result.results.iter().all(|res| res.searcher_res.feebas_vblank_count == Some(2)));
+        assert!(
+            result
+                .results
+                .iter()
+                .all(|res| res.searcher_res.feebas_vblank_count == Some(2))
+        );
     }
 
     #[derive(Debug, PartialEq)]

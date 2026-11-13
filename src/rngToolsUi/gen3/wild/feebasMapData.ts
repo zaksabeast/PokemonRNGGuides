@@ -6,7 +6,7 @@ export type FeebasTile = {
   ingameY: number;
   ingameX: number;
   canContainFeebas: boolean;
-  cycleCounter: number;
+  checkFeebasCycle: number;
   section: number;
   yInSection: number;
   tileNoInSection: number;
@@ -151,7 +151,7 @@ export const getFeebasTiles = (): FeebasTile[] => {
           ingameY,
           ingameX,
           canContainFeebas: val === "1",
-          cycleCounter: cycleCounter,
+          checkFeebasCycle: cycleCounter,
           section,
           yInSection,
           tileNoInSection,

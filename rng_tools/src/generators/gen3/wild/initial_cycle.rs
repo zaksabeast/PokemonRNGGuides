@@ -23,14 +23,12 @@ pub enum Wild3Weather {
     Thunderstorm,
 }
 
-pub type Wild3FeebasTileId = usize;
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Tsify)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3FeebasTile {
     pub x: usize,
     pub y: usize,
-    pub cycle_counter: Wild3FeebasTileId,
+    pub check_feebas_cycle: usize,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Tsify)]
@@ -38,7 +36,7 @@ pub struct Wild3FeebasTile {
 pub struct Wild3InitialCycleDistribution {
     pub feebas_vblank_count: Option<usize>,
     pub feebas_vblank_count_probability: f64,
-    pub feebas_tile: Option<Wild3FeebasTileId>,
+    pub check_feebas_cycle: Option<usize>,
     pub min: usize,
     pub max: usize,
     pub distribution: Vec<CdfKnot>,
@@ -74,7 +72,7 @@ impl Wild3InitialCycleDistribution {
         Self {
             feebas_vblank_count: None,
             feebas_vblank_count_probability: 1.0,
-            feebas_tile: None,
+            check_feebas_cycle: None,
             min,
             max,
             distribution: vec![

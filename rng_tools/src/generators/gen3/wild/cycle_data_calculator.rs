@@ -296,7 +296,7 @@ mod tests {
                 .collect(),
             feebas_vblank_count: None,
             feebas_vblank_count_probability: 1.0,
-            feebas_tile: None,
+            check_feebas_cycle: None,
             action: Wild3Action::SweetScentLand,
             playing_song: Wild3PlayingSong::MapSong,
             weather: Wild3Weather::Sunny,

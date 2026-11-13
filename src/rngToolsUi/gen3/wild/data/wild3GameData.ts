@@ -8,6 +8,7 @@ import {
   Wild3FeebasState,
   Wild3Weather,
   Wild3PlayingSong,
+  Wild3InitialCycleDistribution,
 } from "~/rngTools";
 import { uniq, union } from "lodash-es";
 import { species as allSpecies } from "~/types/species";
@@ -333,3 +334,32 @@ const generateWild3EmeraldGameData = (): Wild3GameData => {
     mapSetupsBySpecies: generateMapSetupsBySpecies(maps_data, species),
   };
 };
+
+const withFeebasCycleDistributionsForMapData = (
+  map_data: Wild3MapGameData,
+  feebas_cycle_distrs: Wild3InitialCycleDistribution[],
+): Wild3MapGameData => {
+  if (map_data.feebas === null) {
+    return { ...map_data };
+  }
+
+  return {
+    ...map_data,
+    initial_cycle_distrs: [
+      ...map_data.initial_cycle_distrs,
+      ...feebas_cycle_distrs,
+    ],
+  };
+};
+
+export const withFeebasCycleDistributions = (
+  map_setups: Wild3MapSetups[],
+  feebas_cycle_distrs: Wild3InitialCycleDistribution[],
+): Wild3MapSetups[] =>
+  map_setups.map((setup) => ({
+    ...setup,
+    map_data: withFeebasCycleDistributionsForMapData(
+      setup.map_data,
+      feebas_cycle_distrs,
+    ),
+  }));

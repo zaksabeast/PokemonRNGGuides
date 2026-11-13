@@ -2,12 +2,16 @@ import { expect, test } from "bun:test";
 import { getFeebasCycleDistributions } from "./feebas_cycle_info";
 
 test("Feebas distributions preserve count probabilities and produce continuous conditional CDFs", () => {
-  const tile = { x: 1, y: 2, cycle_counter: 205_803 };
-  const distributions = getFeebasCycleDistributions(tile, "BikeSong", "Sunny");
+  const cycle_counter = 205_803;
+  const distributions = getFeebasCycleDistributions(
+    cycle_counter,
+    "BikeSong",
+    "Sunny",
+  );
   const probabilitiesByContext = new Map<string, number>();
 
   for (const result of distributions) {
-    expect(result.feebas_tile).toBe(tile.cycle_counter);
+    expect(result.check_feebas_cycle).toBe(cycle_counter);
     expect(result.playing_song).toBe("BikeSong");
     expect(result.weather).toBe("Sunny");
     expect(result.feebas_vblank_count).toBeGreaterThanOrEqual(0);
@@ -62,10 +66,6 @@ test("Feebas distributions preserve count probabilities and produce continuous c
 
 test("Feebas distributions are empty without matching observations", () => {
   expect(
-    getFeebasCycleDistributions(
-      { x: 1, y: 2, cycle_counter: 205_803 },
-      "BikeSong",
-      "Thunderstorm",
-    ),
+    getFeebasCycleDistributions(205_803, "BikeSong", "Thunderstorm"),
   ).toEqual([]);
 });

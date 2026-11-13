@@ -1,7 +1,6 @@
 import type {
   CdfKnot,
   Wild3Action,
-  Wild3FeebasTile,
   Wild3InitialCycleDistribution,
   Wild3PlayingSong,
   Wild3Weather,
@@ -20,10 +19,10 @@ const FISHING_ACTIONS: Wild3Action[] = wild3Actions.filter((action) =>
 
 const simulateCheckFeebasScenario = (
   scenario: FeebasCycleScenario,
-  workCycles: number,
+  checkFeebasCycle: number,
 ): { vblankCount: number; cycle: number } => {
   const [startCycle, vblankDurations] = scenario;
-  let remainingCycles = workCycles;
+  let remainingCycles = checkFeebasCycle;
   let cycle = startCycle;
   let vblankCount = 0;
 
@@ -97,7 +96,7 @@ class CycleWeightsByVblankCount {
 }
 
 const getFeebasCycleDistributionsFromContext = (
-  tile: Wild3FeebasTile,
+  checkFeebasCycle: number,
   context: FeebasCycleDatasetGroup,
 ): Wild3InitialCycleDistribution[] => {
   const cycleWeightsByVblankCount = new CycleWeightsByVblankCount();
@@ -105,7 +104,7 @@ const getFeebasCycleDistributionsFromContext = (
   for (const scenario of context.scenarios) {
     const { vblankCount, cycle } = simulateCheckFeebasScenario(
       scenario,
-      tile.cycle_counter,
+      checkFeebasCycle,
     );
     const weight = scenario[2];
     cycleWeightsByVblankCount.addScenarioResult(vblankCount, cycle, weight);
@@ -124,7 +123,7 @@ const getFeebasCycleDistributionsFromContext = (
         return FISHING_ACTIONS.map((action) => ({
           feebas_vblank_count,
           feebas_vblank_count_probability,
-          feebas_tile: tile.cycle_counter,
+          check_feebas_cycle: checkFeebasCycle,
           min: distribution[0].cycle,
           max: distribution[distribution.length - 1].cycle,
           distribution,
@@ -137,7 +136,7 @@ const getFeebasCycleDistributionsFromContext = (
 };
 
 export const getFeebasCycleDistributions = (
-  tile: Wild3FeebasTile,
+  checkFeebasCycle: number,
   playingSong: Wild3PlayingSong,
   weather: Wild3Weather,
 ): Wild3InitialCycleDistribution[] => {
@@ -149,5 +148,19 @@ export const getFeebasCycleDistributions = (
     return [];
   }
 
-  return getFeebasCycleDistributionsFromContext(tile, context);
+  return getFeebasCycleDistributionsFromContext(checkFeebasCycle, context);
+};
+
+//TODO: Convert to real code. Use a cache.
+let cache = new Map<number, Wild3InitialCycleDistribution[]>();
+ 
+export const getAllFeebasCycleDistributions = (checkFeebasCycle: number) => {
+  const possiblePlayingSongs:Wild3PlayingSong[] = ["SurfSong"];
+  const possibleWeathers:Wild3Weather[] = ["Sunny", "Rain", "Thunderstorm"];
+  for each
+  getFeebasCycleDistributions(
+                feebasCycle,
+                playingSong,
+                weather,
+             }),
 };

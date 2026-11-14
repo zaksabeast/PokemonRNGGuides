@@ -177,8 +177,8 @@ const getMapSetupsConsideringStateSubsets = (
     return filteredSetups;
   }
 
-  const feebasCycleDistributions = values.feebasCycles.flatMap((feebasCycle) =>
-    getAllFeebasCycleDistributions(feebasCycle),
+  const feebasCycleDistributions = values.feebasCycles.flatMap((feebasCycles) =>
+    getAllFeebasCycleDistributions(feebasCycles),
   );
 
   return withFeebasCycleDistributions(filteredSetups, feebasCycleDistributions);

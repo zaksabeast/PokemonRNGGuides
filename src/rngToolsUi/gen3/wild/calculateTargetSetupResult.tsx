@@ -23,11 +23,10 @@ import { formatHex } from "~/utils/formatHex";
 import { Flex, PokemonName } from "~/components";
 
 import {
-  getWild3InitialCycleDistribution,
+  getWild3InitialCycleDistributionForSetup,
   normalizeWild3AudioInfluences,
   type Wild3AudioInfluences,
 } from "./wild3AudioInfluences";
-import { getFeebasCycleDistribution } from "./data/initial_cycle/feebas_cycle_info";
 
 const getProbabilityInfo = async (
   res: Wild3GeneratorMonResult,
@@ -117,6 +116,7 @@ export const calculateTargetSetupResult = async (
   targetSetup: TargetSetup,
   lead_cycle_speed: number | null,
   audioInfluences: Wild3AudioInfluences,
+  feebasCycles: number | null,
   showProbabilityInfo = true,
 ) => {
   const map_data = emeraldWildGameData.maps_data.find(
@@ -132,36 +132,18 @@ export const calculateTargetSetupResult = async (
     targetSetup.action,
     audioInfluences,
   );
-  const initial_cycle_distr = getWild3InitialCycleDistribution(
-    map_data,
-    targetSetup.action,
-    validatedAudioInfluences,
-  );
+  const { initial_cycle_opts, initial_cycle_distr, feebas_cycle_distr } =
+    getWild3InitialCycleDistributionForSetup({
+      map: targetSetup.map,
+      action: targetSetup.action,
+      ...validatedAudioInfluences,
+      feebasCycles,
+      feebasVblankCount: targetSetup.feebasVblankCount,
+    });
 
-  if (initial_cycle_distr == null) {
+  if (initial_cycle_opts == null) {
     return { content: null, hasEncounter: false };
   }
-
-  const feebas_cycle_distr =
-    targetSetup.feebasCycles != null && targetSetup.feebasVblankCount != null
-      ? getFeebasCycleDistribution(
-          targetSetup.feebasCycles,
-          validatedAudioInfluences.playing_song,
-          validatedAudioInfluences.weather,
-          targetSetup.feebasVblankCount,
-        )
-      : initial_cycle_distr;
-
-  const initial_cycle_opts = {
-    min_max_initial_cycle: [
-      initial_cycle_distr.min,
-      initial_cycle_distr.max,
-    ] satisfies [number, number],
-    feebas_min_max_initial_cycle: [
-      feebas_cycle_distr.min,
-      feebas_cycle_distr.max,
-    ] satisfies [number, number],
-  };
 
   const opts: Wild3GeneratorOptions = {
     tid: 0,
@@ -233,6 +215,9 @@ export const calculateTargetSetupResult = async (
   }
 
   const { species } = encounter.species_data;
+  // Note: We don't support fishing on non-feebas tile in the feebas map. Catching a non-feebas means
+  // CheckFeebas() failed.
+  const distr = species === "Feebas" ? feebas_cycle_distr : initial_cycle_distr;
 
   const nature = nature_from_pid(res.pid);
 
@@ -248,7 +233,7 @@ export const calculateTargetSetupResult = async (
   const { ivs } = res;
 
   const probabilityInfo = showProbabilityInfo
-    ? await getProbabilityInfo(res, lead_cycle_speed, initial_cycle_distr)
+    ? await getProbabilityInfo(res, lead_cycle_speed, distr)
     : null;
   const abilityStr = await getAbilityDisplayStr(species, res.pid);
 

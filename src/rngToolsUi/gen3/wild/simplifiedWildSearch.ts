@@ -22,7 +22,7 @@ import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 import type { TargetSetup } from "./wild3TargetSetupInput";
 import { doesRockSmashSetupRequireWhiteFlute } from "./searchWild3Target";
 import {
-  getWild3InitialCycleDistribution,
+  getWild3InitialCycleDistributionForSetup,
   getDefaultWild3AudioInfluences,
   type Wild3AudioInfluences,
 } from "./wild3AudioInfluences";
@@ -195,19 +195,21 @@ export const searchSimplifiedWild = async (
       map.map_id,
       res.action,
     );
-    const distribution = getWild3InitialCycleDistribution(
-      map,
-      res.action,
-      audioInfluences,
-    );
-    if (distribution == null) {
+    const { initial_cycle_distr } = getWild3InitialCycleDistributionForSetup({
+      map: map.map_id,
+      action: res.action,
+      ...audioInfluences,
+      feebasCycles: null,
+      feebasVblankCount: null,
+    });
+    if (initial_cycle_distr == null) {
       continue;
     }
 
     const cycleData = await rngTools.calculate_cycle_data_for_specific_lead_spd(
       res.cycle_data_by_lead.post_cycle_range,
       leadCycleSpeed,
-      distribution,
+      initial_cycle_distr,
     );
     candidates.push({
       probability: cycleData.method_probability,
@@ -221,7 +223,6 @@ export const searchSimplifiedWild = async (
         action: res.action,
         lead: res.lead,
         feebasState: res.feebas_state,
-        feebasCycles: null,
         feebasVblankCount: 0,
         roamerState: res.roamer_state,
         massOutbreakState: res.mass_outbreak_state,

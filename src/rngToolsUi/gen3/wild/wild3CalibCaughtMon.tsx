@@ -34,6 +34,7 @@ export const emeraldWildGameData = getWild3EmeraldGameData();
 export const createWild3SearcherOptions = async (
   values: FormState,
   targetSetup: TargetSetup,
+  feebasCycles: number | null,
   leadCycleSpeed: number,
   audioInfluences: Wild3AudioInfluences,
 ) => {
@@ -61,13 +62,10 @@ export const createWild3SearcherOptions = async (
     },
   ];
 
-  if (
-    targetSetup.feebasState === "OnFeebasTile" &&
-    targetSetup.feebasCycles != null
-  ) {
+  if (targetSetup.feebasState === "OnFeebasTile" && feebasCycles != null) {
     map_setups = withFeebasCycleDistributions(
       map_setups,
-      getAllFeebasCycleDistributions(targetSetup.feebasCycles),
+      getAllFeebasCycleDistributions(feebasCycles),
     );
   }
 

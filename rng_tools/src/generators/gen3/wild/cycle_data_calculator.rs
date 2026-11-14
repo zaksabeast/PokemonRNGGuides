@@ -28,6 +28,7 @@ pub struct Wild3SearcherCycleData {
     pub method_probability: f64,
     pub playing_song: Wild3PlayingSong,
     pub weather: Wild3Weather,
+    pub check_feebas_cycle: Option<usize>,
 }
 
 impl Wild3SearcherCycleData {
@@ -45,6 +46,7 @@ impl Wild3SearcherCycleData {
             method_probability,
             playing_song,
             weather,
+            check_feebas_cycle: None,
         }
     }
     pub fn new_default() -> Self {
@@ -54,6 +56,7 @@ impl Wild3SearcherCycleData {
             method_probability: 0f64,
             playing_song: Wild3PlayingSong::MapSong,
             weather: Wild3Weather::Sunny,
+            check_feebas_cycle: None,
         }
     }
     pub fn new_for_test(
@@ -153,6 +156,7 @@ fn find_best_cycle_data_for_lead_spd(
                 * distr.feebas_vblank_count_probability,
             playing_song: distr.playing_song,
             weather: distr.weather,
+            check_feebas_cycle: distr.check_feebas_cycle,
         });
 
     find_best_cycle_data(candidates).unwrap_or_else(Wild3SearcherCycleData::new_default)
@@ -209,6 +213,7 @@ pub fn calculate_cycle_data_for_specific_lead_spd(
             * distr.feebas_vblank_count_probability,
         playing_song: distr.playing_song,
         weather: distr.weather,
+        check_feebas_cycle: distr.check_feebas_cycle,
     }
 }
 
@@ -256,6 +261,7 @@ fn calculate_ideal_lead_cycle_data(
             method_probability: probability * distr.feebas_vblank_count_probability,
             playing_song: distr.playing_song,
             weather: distr.weather,
+            check_feebas_cycle: distr.check_feebas_cycle,
         })
     });
 
@@ -320,11 +326,12 @@ mod tests {
         let mut second = first.clone();
         second.distribution[31].cycle = 31_500.0;
         second.weather = Wild3Weather::Rain;
+        second.check_feebas_cycle = Some(123);
         let mut third = second.clone();
         third.weather = Wild3Weather::Thunderstorm;
         let range = CycleAndModRange::new(216_896, 100, 500);
         let distributions = [&first, &second, &third];
-        let expected = Wild3SearcherCycleData::new(
+        let mut expected = Wild3SearcherCycleData::new(
             320,
             31_500,
             500,
@@ -332,6 +339,7 @@ mod tests {
             Wild3PlayingSong::MapSong,
             Wild3Weather::Rain,
         );
+        expected.check_feebas_cycle = Some(123);
 
         assert_eq!(
             find_best_cycle_data_for_lead_spd(&range, 320, &distributions),

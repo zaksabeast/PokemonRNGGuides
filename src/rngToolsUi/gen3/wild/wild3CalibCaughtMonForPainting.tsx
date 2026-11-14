@@ -48,7 +48,6 @@ const createTargetSetupAtVictoryRoad = (targetPaintingAdvs: {
     requiresWhiteFlute: false, // Unused
     safariPokeblock: null,
     aceSid: null, // Unused
-    feebasCycles: null, // Unused
     feebasVblankCount: null,
   };
 };
@@ -62,6 +61,7 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
   const opts = await createWild3SearcherOptions(
     values,
     targetSetup,
+    null,
     leadCycleSpeed,
     defaultAudioInfluences,
   );

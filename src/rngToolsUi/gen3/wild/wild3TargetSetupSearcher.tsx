@@ -183,12 +183,14 @@ const getPidPathColumns = (
 
 type Props = {
   setTargetSetup: (targetSetup: TargetSetup | null) => void;
+  setFeebasCycles: (feebasCycles: number | null) => void;
   setLeadCycleSpeed: (leadCycleSpeed: number) => void;
   setAudioInfluences: (audioInfluences: Wild3AudioInfluences) => void;
 };
 
 export const Wild3TargetSetupSearcher = ({
   setTargetSetup: setTargetSetupProp,
+  setFeebasCycles: setFeebasCyclesProp,
   setLeadCycleSpeed: setLeadCycleSpeedProp,
   setAudioInfluences: setAudioInfluencesProp,
 }: Props) => {
@@ -208,6 +210,7 @@ export const Wild3TargetSetupSearcher = ({
   const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
     null,
   );
+  const [feebasCycles, setFeebasCycles] = React.useState<number | null>(null);
 
   const onSubmit: ToolFormSubmit<FormState> = async (values) => {
     const pidPathResults = await searchWild3Target(values);
@@ -249,6 +252,11 @@ export const Wild3TargetSetupSearcher = ({
     setLeadCycleSpeed(AVERAGE_LEAD_CYCLE_SPEED);
   };
 
+  const setFeebasCyclesBoth = (cycles: number | null) => {
+    setFeebasCycles(cycles);
+    setFeebasCyclesProp(cycles);
+  };
+
   const setLeadCycleSpeedBoth = (spd: number) => {
     setLeadCycleSpeed(spd);
     setLeadCycleSpeedProp?.(spd);
@@ -281,6 +289,7 @@ export const Wild3TargetSetupSearcher = ({
           rngManipulatedLeadPid={rngManipulatedLeadPid}
           tidForAceSid={tidForAceSid}
           setTargetSetup={setTargetSetupBoth}
+          setFeebasCycles={setFeebasCyclesBoth}
           setAudioInfluences={setAudioInfluencesBoth}
         />
       )}
@@ -288,6 +297,7 @@ export const Wild3TargetSetupSearcher = ({
       {targetSetup != null && (
         <Wild3LeadCycleSpeedSelectorWithBtn
           targetSetup={targetSetup}
+          feebasCycles={feebasCycles}
           audioInfluences={audioInfluences}
           setAudioInfluences={setAudioInfluencesBoth}
           permitEnablingDebugOptions={false}

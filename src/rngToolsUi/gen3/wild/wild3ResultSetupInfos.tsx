@@ -140,11 +140,15 @@ const getResultSetupInfoColumns = ({
     { title: "Player action", dataIndex: "actionName" },
     {
       title: "Fishing spot",
-      dataIndex: "feebas_cycles",
+      dataIndex: "primaryCycleData",
       show: isFishingInFeebasMap,
-      render: (feebasCycles, values) => {
-        return isFishingAction(values.action) && values.mapId === FEEBAS_MAP ? (
-          <FeebasTileVisualizerButton selectedTileCycle={feebasCycles} />
+      render: (cycleData, values) => {
+        return isFishingAction(values.action) &&
+          values.mapId === FEEBAS_MAP &&
+          cycleData?.check_feebas_cycle != null ? (
+          <FeebasTileVisualizerButton
+            selectedTileCycle={cycleData.check_feebas_cycle}
+          />
         ) : null;
       },
     },
@@ -377,6 +381,7 @@ type Props = {
   rngManipulatedLeadPid: boolean;
   tidForAceSid: AceSidConfig | null;
   setTargetSetup: (targetSetup: TargetSetup | null) => void;
+  setFeebasCycles: (feebasCycles: number | null) => void;
   setAudioInfluences: (audioInfluences: Wild3AudioInfluences) => void;
 };
 
@@ -393,8 +398,6 @@ const setupInfoToTargetSetup = (
     map: setupInfo.mapId,
     action: setupInfo.action,
     feebasState: setupInfo.feebas_state,
-    //NO_PROD
-    feebasCycles: setupInfo.feebas_cycles,
     feebasVblankCount: setupInfo.feebas_vblank_count ?? null,
     roamerState: setupInfo.roamer_state,
     massOutbreakState: setupInfo.mass_outbreak_state,
@@ -412,6 +415,7 @@ const setupInfoToTargetSetup = (
 
 export const Wild3ResultSetupInfos = ({
   setTargetSetup,
+  setFeebasCycles,
   setAudioInfluences,
   selectedPidPathResult,
   rngManipulatedLeadPid,
@@ -452,6 +456,7 @@ export const Wild3ResultSetupInfos = ({
         ? null
         : setupInfoToTargetSetup(setupInfo, tidForAceSid);
     setTargetSetup(newTargetSetup);
+    setFeebasCycles(setupInfo?.primaryCycleData?.check_feebas_cycle ?? null);
 
     if (setupInfo != null) {
       setAudioInfluences(setupInfo.targetAudioInfluences);

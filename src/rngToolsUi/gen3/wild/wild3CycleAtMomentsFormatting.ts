@@ -29,6 +29,7 @@ export type UiResult = {
   uiCycleAtMoments: UiResultCycleAtMoment[];
   vblankDurations: number[];
   errorMsg: string;
+  caughtFeebas: boolean;
 };
 
 export type UiResultCycleAtMoment = {

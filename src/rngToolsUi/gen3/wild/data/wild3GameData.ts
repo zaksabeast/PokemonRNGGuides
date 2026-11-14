@@ -335,7 +335,7 @@ const generateWild3EmeraldGameData = (): Wild3GameData => {
   };
 };
 
-const withFeebasCycleDistributionsForMapData = (
+export const withFeebasCycleDistributionsForMapData = (
   map_data: Wild3MapGameData,
   feebas_cycle_distrs: Wild3InitialCycleDistribution[],
 ): Wild3MapGameData => {

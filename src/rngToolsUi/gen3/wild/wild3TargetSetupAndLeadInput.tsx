@@ -81,6 +81,7 @@ export const Wild3TargetSetupAndLeadInput = ({
       targetSetup,
       leadCycleSpeed,
       audioInfluences,
+      null,
     ).then(({ content }) => {
       setTargetSetupResult(content);
     });
@@ -104,6 +105,7 @@ export const Wild3TargetSetupAndLeadInput = ({
           </FormCard>
           <Wild3LeadCycleSpeedSelectorWithBtn
             targetSetup={targetSetup}
+            feebasCycles={null}
             audioInfluences={audioInfluences}
             setAudioInfluences={setAudioInfluencesBoth}
             permitEnablingDebugOptions={permitEnablingDebugOptions}

@@ -199,6 +199,7 @@ const parseCycleAtMomentsJsonStr = (input: string) => {
 
 type Props = {
   targetSetup: TargetSetup;
+  feebasCycles: number | null;
   audioInfluences: Wild3AudioInfluences;
   /** leadCycleSpeedFromTool is null if egg lead */
   leadCycleSpeed: number | null;
@@ -213,6 +214,7 @@ const createEmptyUiResult = (): UiResult => {
     uiCycleAtMoments: [],
     vblankDurations: [],
     errorMsg: "",
+    caughtFeebas: false,
   };
 };
 
@@ -226,6 +228,11 @@ const createUiResult = async (
   if (compareCycleAtMomentsStr !== "" && json == null) {
     uiResult.errorMsg = "Error: Invalid JSON format or content.";
   }
+
+  // They should all be Feebas, or none Feebas. It only depends on the RNG advance at the very start.
+  uiResult.caughtFeebas = distFromTool.uiResults.some(
+    (res) => res.species === "Feebas",
+  );
 
   fillDataFromTool(uiResult, distFromTool);
 
@@ -270,6 +277,8 @@ const getInitialCycleLikelihood = (
   input: string,
   targetSetup: TargetSetup,
   preferredAudioInfluences: Wild3AudioInfluences,
+  feebasCycles: number | null,
+  caughtFeebas: boolean,
 ): { qualitativeTxt: string; probabilityTxt: string } | null => {
   const json = parseCycleAtMomentsJsonStr(input);
   const initialCycle = json?.cycleAtMoments[0]?.cycle;
@@ -282,16 +291,19 @@ const getInitialCycleLikelihood = (
     targetSetup.action,
     preferredAudioInfluences,
   );
-  const distribution = getWild3InitialCycleDistributionForSetup({
-    ...targetSetup,
-    ...audioInfluences,
-  });
-  if (distribution == null) {
+  const { initial_cycle_distr, feebas_cycle_distr } =
+    getWild3InitialCycleDistributionForSetup({
+      ...targetSetup,
+      ...audioInfluences,
+      feebasCycles,
+    });
+  const distr = caughtFeebas ? feebas_cycle_distr : initial_cycle_distr;
+  if (distr == null) {
     return null;
   }
 
   const likelihood = getInitialCycleQualitativeProbability(
-    distribution.distribution,
+    distr.distribution,
     initialCycle,
   );
 
@@ -300,6 +312,7 @@ const getInitialCycleLikelihood = (
 
 export const Wild3CycleAtMoments = ({
   targetSetup,
+  feebasCycles,
   audioInfluences: preferredAudioInfluences,
   leadCycleSpeed,
 }: Props) => {
@@ -320,12 +333,13 @@ export const Wild3CycleAtMoments = ({
         targetSetup.action,
         preferredAudioInfluences,
       );
-      const distribution = getWild3InitialCycleDistributionForSetup({
+      const { initial_cycle_opts } = getWild3InitialCycleDistributionForSetup({
         ...targetSetup,
         ...audioInfluences,
+        feebasCycles,
       });
 
-      if (distribution == null) {
+      if (initial_cycle_opts == null) {
         setUiResult(createEmptyUiResult());
         return;
       }
@@ -334,7 +348,7 @@ export const Wild3CycleAtMoments = ({
         json == null
           ? {
               LikelihoodForLead: {
-                min_max_initial_cycle: [distribution.min, distribution.max],
+                ...initial_cycle_opts,
                 lead_cycle_spd: leadCycleSpeed ?? 0,
               },
             }
@@ -348,6 +362,7 @@ export const Wild3CycleAtMoments = ({
 
       const distributions = await setupToDistributions(
         targetSetup,
+        feebasCycles,
         cycle_opts,
         audioInfluences,
       );
@@ -367,6 +382,7 @@ export const Wild3CycleAtMoments = ({
   }, [
     compareCycleAtMomentsStr,
     targetSetup,
+    feebasCycles,
     preferredAudioInfluences,
     leadCycleSpeed,
   ]);
@@ -375,6 +391,8 @@ export const Wild3CycleAtMoments = ({
     compareCycleAtMomentsStr,
     targetSetup,
     preferredAudioInfluences,
+    feebasCycles,
+    uiResult.caughtFeebas,
   );
   const resultRows: SummaryRow[] = [
     {

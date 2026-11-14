@@ -49,6 +49,7 @@ It is like Wild3LeadCycleSpeedInput, but displays the impact of lead cycle speed
 
 export type Props = {
   targetSetup: TargetSetup;
+  feebasCycles: number | null;
   audioInfluences: Wild3AudioInfluences;
   setAudioInfluences: (audioInfluences: Wild3AudioInfluences) => void;
   permitEnablingDebugOptions: boolean;
@@ -115,6 +116,7 @@ const getColumns = (targetSetup: TargetSetup): ResultColumn<UiResult>[] => {
 
 export const Wild3LeadCycleSpeedSelector = ({
   targetSetup,
+  feebasCycles,
   audioInfluences,
   setAudioInfluences,
   permitEnablingDebugOptions,
@@ -136,12 +138,19 @@ export const Wild3LeadCycleSpeedSelector = ({
     targetSetup.map,
     targetSetup.action,
   );
-  const initialCycleDistribution = getWild3InitialCycleDistributionForSetup({
-    ...targetSetup,
-    ...selectedAudio,
-  });
+  const { initial_cycle_opts, initial_cycle_distr, feebas_cycle_distr } =
+    getWild3InitialCycleDistributionForSetup({
+      ...targetSetup,
+      ...selectedAudio,
+      feebasCycles,
+    });
+
+  // We assume that if the player is fishing on FeebasTile, they want a Feebas.
+  const initial_distr =
+    feebasCycles == null ? initial_cycle_distr : feebas_cycle_distr;
+
   const initialCycleSummary = getInitialCycleSummary(
-    initialCycleDistribution?.distribution ?? [],
+    initial_distr?.distribution ?? [],
   );
 
   React.useEffect(() => {
@@ -149,19 +158,18 @@ export const Wild3LeadCycleSpeedSelector = ({
   }, [leadCycleSpeedProp]);
 
   React.useEffect(() => {
-    if (initialCycleDistribution == null) {
+    if (initial_cycle_opts == null) {
       setDistributions(null);
       return;
     }
 
     setupToDistributions(
       targetSetup,
+      feebasCycles,
       {
         LikelihoodForLead: {
-          min_max_initial_cycle: [
-            initialCycleDistribution.min,
-            initialCycleDistribution.max,
-          ],
+          ...initial_cycle_opts,
+          feebas_min_max_initial_cycle: [0, 0],
           lead_cycle_spd: actualLeadCycleSpeed ?? 0,
         },
       },
@@ -172,8 +180,9 @@ export const Wild3LeadCycleSpeedSelector = ({
   }, [
     actualLeadCycleSpeed,
     targetSetup,
+    feebasCycles,
     audioInfluences,
-    initialCycleDistribution,
+    initial_cycle_opts,
   ]);
 
   return (
@@ -242,6 +251,7 @@ export const Wild3LeadCycleSpeedSelector = ({
         <Wild3CycleAtMoments
           leadCycleSpeed={actualLeadCycleSpeed}
           targetSetup={targetSetup}
+          feebasCycles={feebasCycles}
           audioInfluences={audioInfluences}
         />
       )}
@@ -251,6 +261,7 @@ export const Wild3LeadCycleSpeedSelector = ({
 
 export const Wild3LeadCycleSpeedSelectorWithBtn = ({
   targetSetup,
+  feebasCycles,
   audioInfluences,
   setAudioInfluences,
   permitEnablingDebugOptions,
@@ -277,6 +288,7 @@ export const Wild3LeadCycleSpeedSelectorWithBtn = ({
       {displayLeadCycleSpeed && (
         <Wild3LeadCycleSpeedSelector
           targetSetup={targetSetup}
+          feebasCycles={feebasCycles}
           audioInfluences={audioInfluences}
           setAudioInfluences={setAudioInfluences}
           permitEnablingDebugOptions={permitEnablingDebugOptions}

@@ -88,7 +88,6 @@ export type TargetSetup = {
   map: string;
   action: Wild3Action;
   feebasState: Wild3FeebasState;
-  feebasCycles: number | null;
   feebasVblankCount: number | null;
   roamerState: Wild3RoamerState;
   massOutbreakState: Wild3MassOutbreakState;
@@ -129,7 +128,6 @@ const convertFormStateValuesToTargetSetup = (
     map: values.map,
     action: values.action,
     feebasState: values.feebasState,
-    feebasCycles: values.feebasCycles[0] ?? null,
     roamerState: values.roamerState,
     massOutbreakState: values.massOutbreakState,
     lead: gen3Leads[values.leadIdx],
@@ -345,6 +343,9 @@ export const Wild3TargetSetupInput = ({ setTargetSetup }: Props) => {
       targetSetup,
       null,
       getDefaultWild3AudioInfluences(targetSetup.map, targetSetup.action),
+      values.feebasState === "OnFeebasTile"
+        ? (values.feebasCycles[0] ?? null)
+        : null,
     );
     setTargetSetup(content == null ? null : targetSetup);
   };

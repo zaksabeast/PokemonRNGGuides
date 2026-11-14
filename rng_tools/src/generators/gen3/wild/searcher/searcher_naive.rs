@@ -110,6 +110,11 @@ fn search_wild3_naive_at_given_advance(
                 };
 
                 let generated = generate_wild3(rng, &gen_opts, &map_setups.map_data);
+                let matching_initial_cycle_distrs = initial_cycle_distrs
+                    .iter()
+                    .copied()
+                    .filter(|distr| distr.feebas_vblank_count == *feebas_vblank_count)
+                    .collect_vec();
 
                 generated.mon_results.iter().for_each(|gen_res| {
                     let encounter = map_setups
@@ -122,7 +127,7 @@ fn search_wild3_naive_at_given_advance(
                         rng.seed(),
                         advance,
                         encounter,
-                        &initial_cycle_distrs,
+                        &matching_initial_cycle_distrs,
                     ));
                 });
             }

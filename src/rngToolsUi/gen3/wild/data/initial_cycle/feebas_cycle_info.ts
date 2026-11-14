@@ -135,11 +135,19 @@ const getFeebasCycleDistributionsFromContext = (
     );
 };
 
-const getFeebasCycleDistributions = (
+const getFeebasCycleDistributionsForAllVblankCounts = (
   checkFeebasCycle: number,
   playingSong: Wild3PlayingSong,
   weather: Wild3Weather,
 ): Wild3InitialCycleDistribution[] => {
+  const cachedDistributions =
+    feebasCycleDistributionsCache.get(checkFeebasCycle);
+  if (cachedDistributions != null) {
+    return cachedDistributions.filter((distr) => {
+      return distr.playing_song === playingSong && distr.weather === weather;
+    });
+  }
+
   const context = feebasCycleDataset.find(
     (candidate) =>
       candidate.playingSong === playingSong && candidate.weather === weather,
@@ -156,6 +164,7 @@ const feebasCycleDistributionsCache = new Map<
   Wild3InitialCycleDistribution[]
 >();
 const feebasWeathers: Wild3Weather[] = ["Sunny", "Rain", "Thunderstorm"];
+const feebasSongs: Wild3PlayingSong[] = ["SurfSong"];
 
 export const getAllFeebasCycleDistributions = (
   checkFeebasCycle: number,
@@ -167,9 +176,40 @@ export const getAllFeebasCycleDistributions = (
   }
 
   const distributions = feebasWeathers.flatMap((weather) =>
-    getFeebasCycleDistributions(checkFeebasCycle, "SurfSong", weather),
+    feebasSongs.flatMap((playingSong) =>
+      getFeebasCycleDistributionsForAllVblankCounts(
+        checkFeebasCycle,
+        playingSong,
+        weather,
+      ),
+    ),
   );
   feebasCycleDistributionsCache.set(checkFeebasCycle, distributions);
 
   return distributions;
+};
+
+export const getFeebasCycleDistribution = (
+  checkFeebasCycle: number,
+  playingSong: Wild3PlayingSong,
+  weather: Wild3Weather,
+  feebasVblankCount: number,
+): Wild3InitialCycleDistribution => {
+  return (
+    getFeebasCycleDistributionsForAllVblankCounts(
+      checkFeebasCycle,
+      playingSong,
+      weather,
+    ).find((distr) => distr.feebas_vblank_count === feebasVblankCount) ?? {
+      feebas_vblank_count: feebasVblankCount,
+      feebas_vblank_count_probability: 0,
+      check_feebas_cycle: checkFeebasCycle,
+      min: 0,
+      max: 0,
+      distribution: [],
+      action: "OldRod",
+      playing_song: playingSong,
+      weather,
+    }
+  );
 };

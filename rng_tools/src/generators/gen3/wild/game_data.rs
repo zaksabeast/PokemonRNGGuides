@@ -145,15 +145,15 @@ impl Wild3MapGameData {
         action: Wild3Action,
         playing_song: Wild3PlayingSong,
         weather: Wild3Weather,
-        check_feebas_cycle: Option<usize>,
+        feebas: bool,
     ) -> &Wild3InitialCycleDistribution {
         self.initial_cycle_distrs
             .iter()
             .find(|distr| {
                 distr.action == action
-                    && distr.check_feebas_cycle == check_feebas_cycle
                     && distr.playing_song == playing_song
                     && distr.weather == weather
+                    && feebas == distr.check_feebas_cycle.is_some()
             })
             .unwrap_or_else(|| Wild3InitialCycleDistribution::new_default(action))
     }

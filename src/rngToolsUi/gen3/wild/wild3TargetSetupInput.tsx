@@ -86,7 +86,8 @@ export type TargetSetup = {
   map: string;
   action: Wild3Action;
   feebasState: Wild3FeebasState;
-  feebasCycles: number;
+  feebasCycles: number | null;
+  feebasVblankCount: number | null;
   roamerState: Wild3RoamerState;
   massOutbreakState: Wild3MassOutbreakState;
   lead: Gen3Lead;
@@ -125,7 +126,7 @@ const convertFormStateValuesToTargetSetup = (
     map: values.map,
     action: values.action,
     feebasState: values.feebasState,
-    feebasCycles: values.feebasCycles[0] ?? 0,
+    feebasCycles: values.feebasCycles[0] ?? null,
     roamerState: values.roamerState,
     massOutbreakState: values.massOutbreakState,
     lead: gen3Leads[values.leadIdx],
@@ -135,6 +136,7 @@ const convertFormStateValuesToTargetSetup = (
         : 0,
       after: values.targetAdvance,
     },
+    feebasVblankCount: values.feebasVblankCount,
     targetMethod: values.targetMethod,
     requiresWhiteFlute:
       values.action === "RockSmash" && values.requiresWhiteFlute,

@@ -27,6 +27,7 @@ import {
   normalizeWild3AudioInfluences,
   type Wild3AudioInfluences,
 } from "./wild3AudioInfluences";
+import { getFeebasCycleDistribution } from "./data/initial_cycle/feebas_cycle_info";
 
 const getProbabilityInfo = async (
   res: Wild3GeneratorMonResult,
@@ -121,22 +122,46 @@ export const calculateTargetSetupResult = async (
   const map_data = emeraldWildGameData.maps_data.find(
     (map) => map.map_id === targetSetup.map,
   );
+
+  if (map_data == null) {
+    return { content: null, hasEncounter: false };
+  }
+
   const validatedAudioInfluences = normalizeWild3AudioInfluences(
     targetSetup.map,
     targetSetup.action,
     audioInfluences,
   );
-  const distribution =
-    map_data == null
-      ? undefined
-      : getWild3InitialCycleDistribution(
-          map_data,
-          targetSetup.action,
-          validatedAudioInfluences,
-        );
-  if (map_data == null || distribution == null) {
+  const initial_cycle_distr = getWild3InitialCycleDistribution(
+    map_data,
+    targetSetup.action,
+    validatedAudioInfluences,
+  );
+
+  if (initial_cycle_distr == null) {
     return { content: null, hasEncounter: false };
   }
+
+  const feebas_cycle_distr =
+    targetSetup.feebasCycles != null && targetSetup.feebasVblankCount != null
+      ? getFeebasCycleDistribution(
+          targetSetup.feebasCycles,
+          validatedAudioInfluences.playing_song,
+          validatedAudioInfluences.weather,
+          targetSetup.feebasVblankCount,
+        )
+      : initial_cycle_distr;
+
+  const initial_cycle_opts = {
+    min_max_initial_cycle: [
+      initial_cycle_distr.min,
+      initial_cycle_distr.max,
+    ] satisfies [number, number],
+    feebas_min_max_initial_cycle: [
+      feebas_cycle_distr.min,
+      feebas_cycle_distr.max,
+    ] satisfies [number, number],
+  };
 
   const opts: Wild3GeneratorOptions = {
     tid: 0,
@@ -154,19 +179,19 @@ export const calculateTargetSetupResult = async (
     roamer_state: targetSetup.roamerState,
     mass_outbreak_state: targetSetup.massOutbreakState,
     feebas_state: targetSetup.feebasState,
-    feebas_cycles: targetSetup.feebasCycles,
+    feebas_vblank_count: targetSetup.feebasVblankCount,
     cycle_opts:
       lead_cycle_speed == null
         ? {
             Searching: {
-              min_max_initial_cycle: [distribution.min, distribution.max],
+              ...initial_cycle_opts,
               generate_even_if_impossible: true,
               consider_rng_manipulated_lead_pid: true,
             },
           }
         : {
             LikelihoodForLead: {
-              min_max_initial_cycle: [distribution.min, distribution.max],
+              ...initial_cycle_opts,
               lead_cycle_spd: lead_cycle_speed,
             },
           },
@@ -223,7 +248,7 @@ export const calculateTargetSetupResult = async (
   const { ivs } = res;
 
   const probabilityInfo = showProbabilityInfo
-    ? await getProbabilityInfo(res, lead_cycle_speed, distribution)
+    ? await getProbabilityInfo(res, lead_cycle_speed, initial_cycle_distr)
     : null;
   const abilityStr = await getAbilityDisplayStr(species, res.pid);
 

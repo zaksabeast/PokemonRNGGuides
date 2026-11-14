@@ -45,6 +45,7 @@ import { static4LeadSchema, getLeadOptions } from "../shared/leads";
 import { DpPt, Gen3GameVersions } from "~/types/games";
 import { getEncounters } from "~/rngToolsUi/gen4/encounters/wild";
 import { ivColumns } from "~/rngToolsUi/shared/ivColumns";
+import { getGen4SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
 import {
   BATTLE_RESULTS,
   TIMES,
@@ -52,8 +53,6 @@ import {
   TROPHY_GARDEN,
   TROPHY_GARDEN_DP,
   TROPHY_GARDEN_PT,
-  TROPHY_GARDEN_LEVEL,
-  TROPHY_GARDEN_SLOTS,
 } from "./constants";
 import { useSetAtom } from "jotai";
 import { useCurrentStep } from "~/components/stepper/state";
@@ -81,9 +80,9 @@ const Validator = z
     dualSlotGame: z.enum(Gen3GameVersions).nullable(),
     chainCount: z.number().int().min(0).max(1000),
     battleResult: z.enum(BATTLE_RESULTS),
-    replace: z.boolean(),
-    replacement1: z.enum(species),
-    replacement2: z.enum(species),
+    shouldReplaceTrophyGarden: z.boolean(),
+    newestTrophyGardenSpecies: z.enum(species),
+    olderTrophyGardenSpecies: z.enum(species),
   })
   .extend(pkmFilterSchema.shape);
 
@@ -108,9 +107,9 @@ const initialValues: FormState = {
   dualSlotGame: null,
   chainCount: 1,
   battleResult: "Catch",
-  replace: false,
-  replacement1: "Clefairy",
-  replacement2: "Jigglypuff",
+  shouldReplaceTrophyGarden: false,
+  newestTrophyGardenSpecies: "Jigglypuff",
+  olderTrophyGardenSpecies: "Clefairy",
   ...getPkmFilterInitialValues(),
 };
 
@@ -136,48 +135,28 @@ type EncounterOpts = Pick<
   | "timeOfDay"
   | "swarmActive"
   | "dualSlotGame"
-  | "replace"
-  | "replacement1"
-  | "replacement2"
+  | "shouldReplaceTrophyGarden"
+  | "newestTrophyGardenSpecies"
+  | "olderTrophyGardenSpecies"
 >;
 
 // Route encounters, with the Trophy Garden slots replaced by the
 // chosen substitutes (if "Replace?" is enabled).
-const getFormEncounters = (opts: EncounterOpts) => {
-  const encounters = getEncounters({
+const getFormEncounters = (opts: EncounterOpts) =>
+  getEncounters({
     game: opts.game,
     location: opts.route,
     timeOfDay: opts.timeOfDay,
     swarmActive: opts.swarmActive,
     dualSlotCartridge: opts.dualSlotGame,
     radarActive: false,
+    trophyGardenReplacements: opts.shouldReplaceTrophyGarden
+      ? {
+          newest: opts.newestTrophyGardenSpecies,
+          older: opts.olderTrophyGardenSpecies,
+        }
+      : null,
   });
-
-  if (opts.route !== TROPHY_GARDEN || !opts.replace) {
-    return encounters;
-  }
-
-  const [slot1, slot2] = TROPHY_GARDEN_SLOTS;
-  return encounters.map((enc, slot) => {
-    if (slot === slot1) {
-      return {
-        ...enc,
-        species: opts.replacement1,
-        minLevel: TROPHY_GARDEN_LEVEL,
-        maxLevel: TROPHY_GARDEN_LEVEL,
-      };
-    }
-    if (slot === slot2) {
-      return {
-        ...enc,
-        species: opts.replacement2,
-        minLevel: TROPHY_GARDEN_LEVEL,
-        maxLevel: TROPHY_GARDEN_LEVEL,
-      };
-    }
-    return enc;
-  });
-};
 
 const getSpeciesEncounterSlots = (opts: FormState): number[] =>
   getFormEncounters(opts).flatMap((enc, slot) =>
@@ -212,9 +191,9 @@ const FormContent = () => {
     timeOfDay,
     swarmActive,
     dualSlotGame,
-    replace,
-    replacement1,
-    replacement2,
+    shouldReplaceTrophyGarden,
+    newestTrophyGardenSpecies,
+    olderTrophyGardenSpecies,
   } = useWatch({
     validationSchema: Validator,
     names: {
@@ -224,9 +203,9 @@ const FormContent = () => {
       timeOfDay: true,
       swarmActive: true,
       dualSlotGame: true,
-      replace: true,
-      replacement1: true,
-      replacement2: true,
+      shouldReplaceTrophyGarden: true,
+      newestTrophyGardenSpecies: true,
+      olderTrophyGardenSpecies: true,
     },
   });
 
@@ -239,9 +218,12 @@ const FormContent = () => {
           timeOfDay,
           swarmActive,
           dualSlotGame: dualSlotGame ?? null,
-          replace: replace ?? false,
-          replacement1: replacement1 ?? initialValues.replacement1,
-          replacement2: replacement2 ?? initialValues.replacement2,
+          shouldReplaceTrophyGarden: shouldReplaceTrophyGarden ?? false,
+          newestTrophyGardenSpecies:
+            newestTrophyGardenSpecies ??
+            initialValues.newestTrophyGardenSpecies,
+          olderTrophyGardenSpecies:
+            olderTrophyGardenSpecies ?? initialValues.olderTrophyGardenSpecies,
         });
 
   const encounterLevels = encounters
@@ -258,7 +240,7 @@ const FormContent = () => {
     value: species,
   }));
 
-  const trophyGardenOptions = toOptions(
+  const trophyGardenOptions = getGen4SpeciesOptions().byFilteredName(
     game === "Platinum" ? TROPHY_GARDEN_PT : TROPHY_GARDEN_DP,
   );
 
@@ -299,18 +281,21 @@ const FormContent = () => {
           options={sortBy(toOptions(POKERADAR_ROUTES), (opt) => opt.label)}
         />
         {route === TROPHY_GARDEN && (
-          <FormSwitchField<FormState> name="replace" label="Replace?" />
+          <FormSwitchField<FormState>
+            name="shouldReplaceTrophyGarden"
+            label="Replace?"
+          />
         )}
-        {route === TROPHY_GARDEN && replace && (
+        {route === TROPHY_GARDEN && shouldReplaceTrophyGarden && (
           <FieldRow>
             <FormSelectField<FormState>
-              name="replacement1"
-              label="Replacement 1 (slot 7)"
+              name="newestTrophyGardenSpecies"
+              label="Newest Pokémon (slot 6)"
               options={trophyGardenOptions}
             />
             <FormSelectField<FormState>
-              name="replacement2"
-              label="Replacement 2 (slot 6)"
+              name="olderTrophyGardenSpecies"
+              label="Older Pokémon (slot 7)"
               options={trophyGardenOptions}
             />
           </FieldRow>

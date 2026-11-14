@@ -1,4 +1,4 @@
-import { BattleResult, ShakeType } from "~/rngTools";
+import { BattleResult, ShakeType, Species } from "~/rngTools";
 
 export const BATTLE_RESULTS = [
   "Catch",
@@ -69,11 +69,11 @@ export const TROPHY_GARDEN_DP = [
   "Azurill",
   "Plusle",
   "Minun",
-  "Castform",
+  "Castform_Normal",
   "Bonsly",
-  "Mime Jr.",
+  "MimeJr",
   "Happiny",
-] as const;
+] as const satisfies Species[];
 
 export const TROPHY_GARDEN_PT = [
   "Clefairy",
@@ -88,11 +88,11 @@ export const TROPHY_GARDEN_PT = [
   "Azurill",
   "Plusle",
   "Minun",
-  "Castform",
+  "Castform_Normal",
   "Bonsly",
-  "Mime Jr.",
+  "MimeJr",
   "Happiny",
-] as const;
+] as const satisfies Species[];
 
 export const TROPHY_GARDEN_LEVEL = 5;
 

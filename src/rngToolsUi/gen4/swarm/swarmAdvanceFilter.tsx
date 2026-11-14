@@ -1,13 +1,12 @@
-import { useAtom } from "jotai";
-import { gen4StateAtom } from "../shared/state";
+import { useAtomValue } from "jotai";
+import { gen4SetupAtom } from "../shared/state/setup";
 import { DpptCoinFlipAdvanceFilter } from "../shared/dpptCoinFlip/advanceFilter";
 import { HgssSwarmAdvanceTracker } from "./hgssSwarmAdvanceTracker";
 
 export const SwarmAdvanceFilter = () => {
-  const [state] = useAtom(gen4StateAtom);
-  const game = state.config.game;
+  const setup = useAtomValue(gen4SetupAtom);
 
-  if (game === "HeartGold" || game === "SoulSilver") {
+  if (setup.group === "hgss") {
     return <HgssSwarmAdvanceTracker />;
   }
 

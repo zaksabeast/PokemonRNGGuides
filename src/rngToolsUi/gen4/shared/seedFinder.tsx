@@ -1,14 +1,12 @@
 import { HgssElmCallSeedFinder } from "./hgssElmCalls/seedFinder";
 import { DpptCoinFlipSeedFinder } from "./dpptCoinFlip/seedFinder";
-import { useAtom } from "jotai";
-import { gen4StateAtom } from "./state";
+import { useAtomValue } from "jotai";
+import { gen4SetupAtom } from "./state/setup";
 
 export const Gen4SeedFinder = () => {
-  const [state] = useAtom(gen4StateAtom);
+  const setup = useAtomValue(gen4SetupAtom);
 
-  const game = state.config.game;
-
-  if (game === "HeartGold" || game === "SoulSilver") {
+  if (setup.group === "hgss") {
     return <HgssElmCallSeedFinder />;
   }
 

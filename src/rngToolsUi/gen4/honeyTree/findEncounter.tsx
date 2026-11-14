@@ -11,9 +11,9 @@ import {
 } from "~/components/form";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { toOptions } from "~/utils/options";
-import { gen4StateAtom } from "../shared/state";
+import { gen4TargetAtom, selectGen4AdvanceAtom } from "../shared/state/target";
 import { honeyTreeAtom } from "./state";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { type Species, rngTools } from "~/rngTools";
 import { uniqueId, sortBy } from "lodash-es";
 import { useCurrentStep } from "~/components/stepper/state";
@@ -50,7 +50,7 @@ type SelectButtonProps = {
 };
 
 const SelectButton = ({ disabled, advance }: SelectButtonProps) => {
-  const [, setState] = useAtom(gen4StateAtom);
+  const selectAdvance = useSetAtom(selectGen4AdvanceAtom);
   const [, setStep] = useCurrentStep();
 
   return (
@@ -58,7 +58,7 @@ const SelectButton = ({ disabled, advance }: SelectButtonProps) => {
       trackerId="honey_tree_select_advance"
       disabled={disabled}
       onClick={() => {
-        setState({ target: { lcrngAdvance: advance } });
+        selectAdvance({ lcrngAdvance: advance });
         setStep((step) => step + 1);
       }}
     >
@@ -112,10 +112,10 @@ const SpeciesSelect = ({ isMunchlaxTree }: SpeciesSelectProps) => {
 
 export const HoneyTreeFindEncounter = () => {
   const t = useActiveRouteTranslations();
-  const [{ target }] = useAtom(gen4StateAtom);
+  const target = useAtomValue(gen4TargetAtom);
   const [state] = useAtom(honeyTreeAtom);
   const [results, setResults] = React.useState<Result[]>([]);
-  const initialSeed = target?.seedTime?.seed;
+  const initialSeed = target?.seedTime.seed;
 
   React.useEffect(() => {
     setResults([]);

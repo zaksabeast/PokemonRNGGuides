@@ -7,8 +7,8 @@ import {
 } from "~/utils/sharedAudio";
 import { ChatterPitch, ChatterState, rngTools } from "~/rngTools";
 import { type Translations } from "~/translations";
-import { useAtom } from "jotai";
-import { gen4StateAtom } from "./state";
+import { useAtomValue } from "jotai";
+import { gen4TargetAtom, getCalibratedLcrngAdvance } from "./state/target";
 import { Icon, type ResultColumn, Alert } from "~/components";
 import {
   FormSection,
@@ -20,19 +20,13 @@ import { SequenceButtons } from "./advanceFilter/sequenceButtons";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { findSubArrayIndices } from "~/utils/findIndexBy";
 import {
-  advanceFilterValidator,
-  decorateAdvanceResultsWithTarget,
-  getAdvanceFilterInitialValues,
-  initialAdvanceFilterPageSettings,
   LooseAdvanceFilterFormState,
-  markMatchedAdvanceResults,
   renderAdvanceFilterStatus,
-  shouldDisableAdvanceFilterGenerate,
   type AdvanceFilterBaseProps,
-  type AdvanceFilterPageSettings,
   type AdvanceFilterResult,
 } from "./advanceFilter/utils";
 import { AdvanceFilterFields } from "./advanceFilter/fields";
+import { useAdvanceFilterResults } from "./advanceFilter/useAdvanceFilterResults";
 
 const loadAudioBuffer = async (
   ctx: AudioContext,
@@ -224,29 +218,6 @@ const isMiniPitchEqualToChatter = (
     .otherwise(() => false);
 };
 
-const markResultsWithChatter = ({
-  results,
-  filter,
-  pageSize,
-}: {
-  results: Result[];
-  filter: MiniPitch[];
-  pageSize: number;
-}) => {
-  const indicies = findSubArrayIndices(
-    results,
-    filter,
-    isMiniPitchEqualToChatter,
-  );
-
-  return markMatchedAdvanceResults({
-    results,
-    indices: indicies,
-    pageSize,
-    mark: "Heard",
-  });
-};
-
 type ChatterFilterButtonsProps = {
   pitches: MiniPitch[];
   setPitches: (pitches: MiniPitch[]) => void;
@@ -295,62 +266,31 @@ const ChatterFilterButtons = ({
 export const ChatterFilterBase = ({
   seed,
   targetAdvance,
+  minAdvance,
   submitTrackerId,
   mode,
 }: AdvanceFilterBaseProps) => {
-  const resolvedSeed = seed ?? null;
-  const resolvedTargetAdvance = targetAdvance ?? null;
   const [filter, setFilter] = React.useState<MiniPitch[]>([]);
-  const [results, setResults] = React.useState<Result[]>([]);
-  const [pageSettings, setPageSettings] =
-    React.useState<AdvanceFilterPageSettings>(initialAdvanceFilterPageSettings);
 
   React.useEffect(() => {
     setFilter([]);
-    setResults([]);
   }, [seed, targetAdvance]);
 
-  const onSubmit = async (opts: LooseAdvanceFilterFormState) => {
-    if (opts.targetAdvance == null || opts.seed == null) {
-      return;
-    }
-
-    const chatters = await rngTools.get_chatters({
-      initial_advances: opts.minAdvance,
-      max_advances: Math.max(opts.maxAdvance - opts.minAdvance, 0),
-      seed: opts.seed,
-    });
-    const chattersWithTarget = decorateAdvanceResultsWithTarget(
-      chatters,
-      opts.targetAdvance,
-    );
-    setResults(chattersWithTarget);
-  };
-
-  const { hasMatch, markedResults, autoCurrentPage } = markResultsWithChatter({
-    results,
+  const { hasResults, hasNoMatches, toolFormProps } = useAdvanceFilterResults({
+    mode,
+    seed,
+    targetAdvance,
+    minAdvance,
+    generate: (opts) => rngTools.get_chatters(opts),
     filter,
-    pageSize: pageSettings.pageSize,
+    findMatches: (results) =>
+      findSubArrayIndices(results, filter, isMiniPitchEqualToChatter),
+    mark: "Heard",
   });
-
-  React.useEffect(
-    () => {
-      setPageSettings((prev) => ({
-        ...prev,
-        currentPage: autoCurrentPage,
-      }));
-    },
-    // Trigger this on any filter change
-    [filter, autoCurrentPage],
-  );
-
-  const initialValues = getAdvanceFilterInitialValues(
-    resolvedSeed,
-    resolvedTargetAdvance,
-  );
 
   return (
     <ToolForm<LooseAdvanceFilterFormState, Result>
+      {...toolFormProps}
       filters={
         <>
           <ChatterSounds />
@@ -359,7 +299,7 @@ export const ChatterFilterBase = ({
             setPitches={setFilter}
             onClickPitch={(pitch) => setFilter((prev) => [...prev, pitch])}
           />
-          {filter.length > 0 && hasMatch === false && (
+          {(hasNoMatches || (filter.length > 0 && !hasResults)) && (
             <Alert
               showIcon
               type="error"
@@ -369,39 +309,21 @@ export const ChatterFilterBase = ({
           )}
         </>
       }
-      pagination={{
-        current: pageSettings.currentPage,
-        pageSize: pageSettings.pageSize,
-        onChange: (currentPage, pageSize) => {
-          setPageSettings((prev) => ({ ...prev, currentPage, pageSize }));
-        },
-      }}
       getColumns={getColumns}
-      results={markedResults}
-      initialValues={initialValues}
-      values={initialValues}
-      validationSchema={advanceFilterValidator}
-      onSubmit={onSubmit}
-      rowKey="advance"
-      disableGenerate={shouldDisableAdvanceFilterGenerate(
-        mode,
-        resolvedSeed,
-        resolvedTargetAdvance,
-      )}
       submitTrackerId={submitTrackerId}
     >
-      <AdvanceFilterFields mode={mode} targetAdvance={resolvedTargetAdvance} />
+      <AdvanceFilterFields mode={mode} targetAdvance={targetAdvance} />
     </ToolForm>
   );
 };
 
 export const Gen4ChatterFilter = () => {
-  const [{ target }] = useAtom(gen4StateAtom);
+  const target = useAtomValue(gen4TargetAtom);
 
   return (
     <ChatterFilterBase
-      seed={target.seedTime?.seed ?? null}
-      targetAdvance={target.lcrngAdvance}
+      seed={target?.seedTime.seed ?? null}
+      targetAdvance={getCalibratedLcrngAdvance(target)}
       mode="embedded"
       submitTrackerId="chatter_filter_generate"
     />

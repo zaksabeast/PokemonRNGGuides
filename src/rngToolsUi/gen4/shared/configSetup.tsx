@@ -1,4 +1,4 @@
-import { useAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { match } from "ts-pattern";
 import { Link } from "~/components";
 import {
@@ -8,19 +8,25 @@ import {
   SelectField,
 } from "~/components/form";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
-import { DpPt, Gen4GameVersions, Gen4GameVersion } from "~/types/games";
+import { Gen4GameVersion } from "~/types/games";
 import { toOptions } from "~/utils/options";
 import { Gen4Console } from "../gen4types";
-import { gen4StateAtom } from "./state";
+import {
+  gen4GuideGamesAtom,
+  gen4SetupAtom,
+  setGen4ConsoleAtom,
+  setGen4GameAtom,
+  setHgssAdvanceMethodAtom,
+  type Gen4AdvanceMethod,
+} from "./state/setup";
 
-type Props = {
-  onlyDppt?: boolean;
-};
-
-export const Gen4ConfigSetup = ({ onlyDppt }: Props) => {
+export const Gen4ConfigSetup = () => {
   const t = useActiveRouteTranslations();
-  const [state, updateState] = useAtom(gen4StateAtom);
-  const gameOptions = onlyDppt ? DpPt : Gen4GameVersions;
+  const setup = useAtomValue(gen4SetupAtom);
+  const guideGames = useAtomValue(gen4GuideGamesAtom);
+  const setGame = useSetAtom(setGen4GameAtom);
+  const setConsole = useSetAtom(setGen4ConsoleAtom);
+  const setAdvanceMethod = useSetAtom(setHgssAdvanceMethodAtom);
 
   const consoleOptions: { label: string; value: Gen4Console }[] = [
     { label: t["NDS/DSi"], value: "NdsDsi" },
@@ -28,7 +34,12 @@ export const Gen4ConfigSetup = ({ onlyDppt }: Props) => {
     { label: t["3DS (Alt Settings)"], value: "3dsAltSettings" },
   ];
 
-  const consoleHelp = match(state.config.console)
+  const advanceMethodOptions: { label: string; value: Gen4AdvanceMethod }[] = [
+    { label: t["Pokégear Calls"], value: "pokegearCall" },
+    { label: t["Chatot"], value: "chatot" },
+  ];
+
+  const consoleHelp = match(setup.console)
     .with("3dsNormalSettings", () => (
       <Link href="/3ds-helper/">
         {t["Learn how to use the 3DS Helper here"]}
@@ -47,20 +58,27 @@ export const Gen4ConfigSetup = ({ onlyDppt }: Props) => {
       <FormSection>
         <SelectField<Gen4GameVersion>
           label={t["Game"]}
-          value={state.config.game}
-          options={toOptions(gameOptions, (game) => t[game])}
-          onChange={(game) => updateState({ config: { game } })}
+          value={setup.game}
+          options={toOptions(guideGames, (game) => t[game])}
+          onChange={setGame}
         />
         <RadioField<Gen4Console>
           label={t["Console"]}
           cellSize="word"
-          value={state.config.console}
+          value={setup.console}
           options={consoleOptions}
-          onChange={(gameConsole) =>
-            updateState({ config: { console: gameConsole } })
-          }
+          onChange={setConsole}
           helperText={consoleHelp}
         />
+        {setup.group === "hgss" && (
+          <RadioField<Gen4AdvanceMethod>
+            label={t["Advance Method"]}
+            cellSize="word"
+            value={setup.advanceMethod}
+            options={advanceMethodOptions}
+            onChange={setAdvanceMethod}
+          />
+        )}
       </FormSection>
     </FormCard>
   );

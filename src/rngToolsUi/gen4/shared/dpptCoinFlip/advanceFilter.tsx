@@ -1,52 +1,24 @@
-import React from "react";
 import { Alert, Flex, PixelImage, type ResultColumn } from "~/components";
 import { ToolForm } from "~/components/form";
-import { useAtom } from "jotai";
-import { gen4StateAtom } from "../state";
+import { useAtomValue, useSetAtom } from "jotai";
+import { gen4TargetAtom } from "../state/target";
+import { gen4MarkersAtom, setGen4MarkersAtom } from "../state/markers";
 import { rngTools, type CoinFlip, type CoinFlipAdvanceState } from "~/rngTools";
 import { type Translations } from "~/translations";
 import { findCoinFlipSequenceIndices } from "./utils";
 import { CoinFlipFilterButtons } from "./coinFlipButtons";
 import {
-  advanceFilterValidator,
-  decorateAdvanceResultsWithTarget,
-  getAdvanceFilterInitialValues,
-  initialAdvanceFilterPageSettings,
   LooseAdvanceFilterFormState,
-  markMatchedAdvanceResults,
   renderAdvanceFilterStatus,
-  shouldDisableAdvanceFilterGenerate,
-  type AdvanceFilterPageSettings,
   type AdvanceFilterResult,
 } from "../advanceFilter/utils";
 import { AdvanceFilterFields } from "../advanceFilter/fields";
+import { useAdvanceFilterResults } from "../advanceFilter/useAdvanceFilterResults";
 
 type Result = AdvanceFilterResult<CoinFlipAdvanceState>;
 
 const getCoinFlipImageName = (coinFlip: CoinFlip) => {
   return coinFlip === "Heads" ? "DpptHeads" : "DpptTails";
-};
-
-const markResultsWithCoinFlips = ({
-  results,
-  filter,
-  pageSize,
-}: {
-  results: Result[];
-  filter: string;
-  pageSize: number;
-}) => {
-  const indices = findCoinFlipSequenceIndices(
-    results.map((result) => result.coin_flip),
-    filter,
-  );
-
-  return markMatchedAdvanceResults({
-    results,
-    indices,
-    pageSize,
-    mark: "Seen",
-  });
 };
 
 const getColumns = (t: Translations): ResultColumn<Result>[] => [
@@ -73,101 +45,55 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
 
 export const DpptCoinFlipAdvanceFilter = () => {
   const mode = "embedded" as const;
-  const [state, setState] = useAtom(gen4StateAtom);
-  const [results, setResults] = React.useState<Result[]>([]);
-  const [pageSettings, setPageSettings] =
-    React.useState<AdvanceFilterPageSettings>(initialAdvanceFilterPageSettings);
+  const target = useAtomValue(gen4TargetAtom);
+  const markers = useAtomValue(gen4MarkersAtom);
+  const setMarkers = useSetAtom(setGen4MarkersAtom);
+  const targetAdvance = target?.mtAdvance ?? null;
 
-  const hasResults = results.length > 0;
-  const resolvedSeed = state.target.seedTime?.seed ?? null;
-  const resolvedTargetAdvance = state.target.mtAdvance;
-
-  React.useEffect(() => {
-    setResults([]);
-  }, [resolvedSeed, resolvedTargetAdvance, setState]);
-
-  const onSubmit = async (opts: LooseAdvanceFilterFormState) => {
-    if (opts.targetAdvance == null || opts.seed == null) {
-      return;
-    }
-
-    const coinFlips = await rngTools.get_coin_flips({
-      seed: opts.seed,
-      initial_advances: opts.minAdvance,
-      max_advances: Math.max(opts.maxAdvance - opts.minAdvance, 0),
+  const { hasResults, resultCount, hasNoMatches, toolFormProps } =
+    useAdvanceFilterResults({
+      mode,
+      seed: target?.seedTime.seed ?? null,
+      targetAdvance,
+      generate: (opts) => rngTools.get_coin_flips(opts),
+      filter: markers.coinFlips,
+      findMatches: (results) =>
+        findCoinFlipSequenceIndices(
+          results.map((result) => result.coin_flip),
+          markers.coinFlips,
+        ),
+      mark: "Seen",
     });
-
-    setResults(decorateAdvanceResultsWithTarget(coinFlips, opts.targetAdvance));
-  };
-
-  const { hasMatch, markedResults, autoCurrentPage } = markResultsWithCoinFlips(
-    {
-      results,
-      filter: state.gameState.coinFlips,
-      pageSize: pageSettings.pageSize,
-    },
-  );
-
-  React.useEffect(() => {
-    setPageSettings((prev) => ({
-      ...prev,
-      currentPage: autoCurrentPage,
-    }));
-  }, [state.gameState.coinFlips, autoCurrentPage]);
-
-  const initialValues = getAdvanceFilterInitialValues(
-    resolvedSeed,
-    resolvedTargetAdvance,
-  );
 
   return (
     <ToolForm<LooseAdvanceFilterFormState, Result>
-      pagination={{
-        current: pageSettings.currentPage,
-        pageSize: pageSettings.pageSize,
-        onChange: (currentPage, pageSize) => {
-          setPageSettings((prev) => ({ ...prev, currentPage, pageSize }));
-        },
-      }}
+      {...toolFormProps}
       getColumns={getColumns}
-      results={markedResults}
-      initialValues={initialValues}
-      values={initialValues}
-      validationSchema={advanceFilterValidator}
-      onSubmit={onSubmit}
-      rowKey="advance"
-      disableGenerate={shouldDisableAdvanceFilterGenerate(
-        mode,
-        resolvedSeed,
-        resolvedTargetAdvance,
-      )}
       submitTrackerId="coin_flip_advance_filter_generate"
       filters={
         <>
           <CoinFlipFilterButtons
             hasResults={hasResults}
-            maxCoinFlips={results.length}
-            coinFlipFilter={state.gameState.coinFlips}
+            maxCoinFlips={resultCount}
+            coinFlipFilter={markers.coinFlips}
             onCoinFlipFilterChange={(coinFlips) => {
-              setState({ gameState: { coinFlips } });
+              setMarkers({ coinFlips });
             }}
             headsTrackerId="coin_flip_advance_filter_heads"
             tailsTrackerId="coin_flip_advance_filter_tails"
           />
-          {hasResults &&
-            state.gameState.coinFlips.length > 0 &&
-            hasMatch === false && (
-              <Alert
-                showIcon
-                type="error"
-                title="No matches found"
-                description="A coin flip may be incorrect, or the advance range may be too small. Try increasing the advance range."
-              />
-            )}
+          {hasNoMatches && (
+            <Alert
+              showIcon
+              type="error"
+              title="No matches found"
+              description="A coin flip may be incorrect, or the advance range may be too small. Try increasing the advance range."
+            />
+          )}
         </>
       }
     >
-      <AdvanceFilterFields mode={mode} targetAdvance={resolvedTargetAdvance} />
+      <AdvanceFilterFields mode={mode} targetAdvance={targetAdvance} />
     </ToolForm>
   );
 };

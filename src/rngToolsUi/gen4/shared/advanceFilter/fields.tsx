@@ -9,7 +9,7 @@ import {
 
 type AdvanceFilterFieldsProps = {
   mode: AdvanceFilterMode;
-  targetAdvance: number | null;
+  targetAdvance?: number | null;
 };
 
 export const AdvanceFilterFields = ({

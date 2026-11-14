@@ -20,8 +20,9 @@ import {
   NullableIvsSchema,
 } from "~/components/form/pokemon/ivFields";
 import { maxIvs } from "~/types/ivs";
-import { useAtom } from "jotai";
-import { gen4StateAtom } from "../shared/state";
+import { useAtomValue, useSetAtom } from "jotai";
+import { gen4SetupAtom } from "../shared/state/setup";
+import { selectGen4TargetAtom } from "../shared/state/target";
 import { z } from "zod";
 import {
   multiWorkerRngTools,
@@ -211,7 +212,8 @@ const mapResult = (result: Egg4Result): Result => ({
 
 export const Egg4Search = () => {
   const t = useActiveRouteTranslations();
-  const [state, setState] = useAtom(gen4StateAtom);
+  const selectTarget = useSetAtom(selectGen4TargetAtom);
+  const setup = useAtomValue(gen4SetupAtom);
   const [, setCurrentStep] = useCurrentStep();
   const {
     run: searchEgg4,
@@ -227,8 +229,6 @@ export const Egg4Search = () => {
     ],
   });
 
-  const game = state.config.game;
-
   const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     const chunked = chunkRange([opts.min_delay, opts.max_delay], 200);
     const chunkedOpts = chunked.map(
@@ -239,7 +239,7 @@ export const Egg4Search = () => {
         held_min_advances: opts.held_min_advances,
         held_offset: 0,
         pickup_offset: 0,
-        is_dppt: game === "Diamond" || game === "Pearl" || game === "Platinum",
+        is_dppt: setup.group === "dppt",
         force_seconds: null,
         is_masuda: opts.is_masuda,
         min_delay,
@@ -264,12 +264,10 @@ export const Egg4Search = () => {
         <Button
           trackerId="select_egg4_pickup"
           onClick={() => {
-            setState({
-              target: {
-                seedTime: target.seedTime,
-                mtAdvance: target.heldAdvance,
-                lcrngAdvance: target.pickupAdvance,
-              },
+            selectTarget({
+              seedTime: target.seedTime,
+              mtAdvance: target.heldAdvance,
+              lcrngAdvance: target.pickupAdvance,
             });
             setCurrentStep((step) => step + 1);
           }}

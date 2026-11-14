@@ -1,16 +1,16 @@
 import React from "react";
-import { useAtom } from "jotai";
-import { gen4StateAtom } from "../shared/state";
+import { useAtomValue } from "jotai";
+import { gen4TargetAtom } from "../shared/state/target";
 import { Alert, Button, Flex, Typography } from "~/components";
 
 export const HgssSwarmAdvanceTracker = () => {
-  const [state] = useAtom(gen4StateAtom);
+  const target = useAtomValue(gen4TargetAtom);
 
   const [currentAdvance, setCurrentAdvance] = React.useState(0);
   const [history, setHistory] = React.useState<number[]>([]);
 
-  const seed = state.target.seedTime?.seed ?? null;
-  const targetAdvance = state.target.mtAdvance ?? null;
+  const seed = target?.seedTime.seed ?? null;
+  const targetAdvance = target?.mtAdvance ?? null;
 
   React.useEffect(() => {
     setCurrentAdvance(0);

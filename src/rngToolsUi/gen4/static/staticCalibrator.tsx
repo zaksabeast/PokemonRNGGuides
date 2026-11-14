@@ -34,14 +34,17 @@ import { formatOffset } from "~/utils/offsetSymbol";
 import { pkmFilterNatureFieldToRustInput } from "~/components/form/pokemon/pkmFilterFields";
 import { toOptions } from "~/utils/options";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
-import { Static4Target, useStatic4State } from "./state";
-import { useAtom } from "jotai";
-import { gen4StateAtom } from "../shared/state";
+import { useStatic4RemainingAdvances, useStatic4Target } from "./state";
+import { useSetAtom } from "jotai";
+import {
+  calibrateStatic4AdvanceAtom,
+  type Static4Target,
+} from "../shared/state/target";
 import { CalibrateTimerButton } from "../shared/calibrateTimerButton";
 import { defaultHiddenPowerFilter } from "~/components/form/pokemon/hiddenPowerFilter";
 import { getIvRangeFromStats } from "~/types/statRange";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
-import { fromRngDateTime, toRngDateTime } from "~/utils/time";
+import { fromRngDateTime, getSecondOffset, toRngDateTime } from "~/utils/time";
 import { formatHex } from "~/utils/formatHex";
 import { useCurrentStep } from "~/components/stepper/state";
 
@@ -76,15 +79,16 @@ type CalibrateStatic4AdvanceProps = {
 };
 
 const CalibrateStatic4Advance = ({ result }: CalibrateStatic4AdvanceProps) => {
-  const [state, setState] = useStatic4State();
+  const calibrateStatic4Advance = useSetAtom(calibrateStatic4AdvanceAtom);
+  const remainingAdvances = useStatic4RemainingAdvances();
   const [messageApi, contextHolder] = message.useMessage();
   const [, setCurrentStep] = useCurrentStep();
 
-  if (state.chatotSummaryCount == null) {
+  if (remainingAdvances == null) {
     return null;
   }
 
-  if (state.chatotSummaryCount < result.advanceOffset) {
+  if (remainingAdvances < result.advanceOffset) {
     return (
       <Typography.Text type="danger">
         Impossible target: Not enough advances to calibrate
@@ -98,13 +102,7 @@ const CalibrateStatic4Advance = ({ result }: CalibrateStatic4AdvanceProps) => {
       <Button
         trackerId="calibrate_static4_advance"
         onClick={() => {
-          setState((prev) => ({
-            ...prev,
-            chatotSummaryCount: Math.max(
-              (prev.chatotSummaryCount ?? 0) - result.advanceOffset,
-              0,
-            ),
-          }));
+          calibrateStatic4Advance(result.advanceOffset);
           messageApi.success("Calibrated");
           setCurrentStep((step) => step - 2);
         }}
@@ -250,8 +248,10 @@ const mapResult = (
     targetLcrngAdvance: number;
   },
 ): Result => {
-  const secondOffset =
-    resultSeedTime.datetime.second - targetSeedTime.datetime.second;
+  const secondOffset = getSecondOffset(
+    resultSeedTime.datetime,
+    targetSeedTime.datetime,
+  );
   const delayOffset = resultSeedTime.delay - targetSeedTime.delay;
   const advanceOffset = result.advance - targetLcrngAdvance;
 
@@ -277,8 +277,7 @@ const mapResult = (
 
 export const Static4Calibrator = () => {
   const t = useActiveRouteTranslations();
-  const [static4State] = useStatic4State();
-  const [state] = useAtom(gen4StateAtom);
+  const static4Target = useStatic4Target();
 
   const {
     run: generateStatic4States,
@@ -292,16 +291,13 @@ export const Static4Calibrator = () => {
   });
 
   const onSubmit = async (opts: FormState) => {
-    const staticTarget = static4State.target;
-    const targetSeedTime = state.target?.seedTime;
-    const targetLcrngAdvance = state.target?.lcrngAdvance;
-    if (
-      staticTarget == null ||
-      targetSeedTime == null ||
-      targetLcrngAdvance == null
-    ) {
+    const targetLcrngAdvance = static4Target?.target.lcrngAdvance;
+    if (static4Target == null || targetLcrngAdvance == null) {
       return;
     }
+
+    const { details: staticTarget } = static4Target;
+    const targetSeedTime = static4Target.target.seedTime;
 
     const caughtStats: StatsValue = {
       hp: opts.hpStat,
@@ -393,7 +389,7 @@ export const Static4Calibrator = () => {
     speStat: 0,
     nature: "Adamant",
     gender: "Male",
-    filter_level: static4State.target?.level ?? 1,
+    filter_level: static4Target?.details.level ?? 1,
     filter_characteristic: "AlertToSounds",
     delayRange: 50,
     secondsRange: 1,
@@ -415,7 +411,7 @@ export const Static4Calibrator = () => {
       cancelTrackerId="cancel_calibrate_static4"
       progressPercent={progressPercent}
     >
-      <Fields t={t} target={static4State.target} />
+      <Fields t={t} target={static4Target?.details ?? null} />
     </ToolForm>
   );
 };

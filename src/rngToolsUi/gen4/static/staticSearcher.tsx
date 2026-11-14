@@ -1,7 +1,13 @@
 import React from "react";
-import { atom, useAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { uniqueId, map, sortBy } from "lodash-es";
-import { ResultColumn, Button, ShinyIcon } from "~/components";
+import {
+  ResultColumn,
+  Button,
+  Flex,
+  ShinyIcon,
+  Typography,
+} from "~/components";
 import {
   FieldRow,
   FormNumberField,
@@ -21,8 +27,8 @@ import {
   pkmFilterFieldsToRustInput,
   pkmFilterSchema,
 } from "~/components/form/pokemon/pkmFilterFields";
-import { useStatic4State } from "./state";
-import { gen4StateAtom } from "../shared/state";
+import { gen4SetupAtom } from "../shared/state/setup";
+import { selectGen4TargetAtom } from "../shared/state/target";
 import {
   flattenIvs,
   FlattenIvs,
@@ -35,10 +41,7 @@ import { chunkIvs } from "~/utils/chunkIvs";
 import { MonthSchema, monthToRustFilter } from "~/utils/time";
 import { Gen4GameVersion } from "~/types/games";
 import { getStatRange } from "~/types/statRange";
-import {
-  defaultEncounter,
-  EncountersByGame as StaticEncountersByGame,
-} from "../encounters/static";
+import { EncountersByGame as StaticEncountersByGame } from "../encounters/static";
 import { EncountersByGame as HoneyEncountersByGame } from "../encounters/honey";
 import { type Encounter } from "../encounters/encounter";
 import { useField, useWatch } from "~/hooks/form";
@@ -49,6 +52,9 @@ import { static4LeadSchema, getLeadOptions } from "../shared/leads";
 type Result = FlattenIvs<
   Static4State["state"] & {
     seed_time: Static4State["seed_time"];
+    roamerAdvances: number;
+    encounter: Encounter;
+    advanceOffset: number;
     key: string;
     second: number;
     seed: number;
@@ -56,10 +62,10 @@ type Result = FlattenIvs<
   }
 >;
 
-const searchedEncounterAtom = atom<Encounter & { advanceOffset: number }>({
-  ...defaultEncounter,
-  advanceOffset: 0,
-});
+type SearchOpts = RustOption<SearchStatic4Opts> & {
+  // Used to map results, not by search_static4
+  encounter: Encounter;
+};
 
 type SelectButtonProps = {
   target: Result;
@@ -67,11 +73,22 @@ type SelectButtonProps = {
 
 const SelectButton = ({ target }: SelectButtonProps) => {
   const [, setCurrentStep] = useCurrentStep();
-  const [, setStaticState] = useStatic4State();
-  const [, setState] = useAtom(gen4StateAtom);
-  const [
-    { isFixedGender, minLevel, maxLevel, species, form, advanceOffset, method },
-  ] = useAtom(searchedEncounterAtom);
+  const selectTarget = useSetAtom(selectGen4TargetAtom);
+  const { isFixedGender, minLevel, maxLevel, species, form, method } =
+    target.encounter;
+
+  if (target.advance < target.roamerAdvances) {
+    return (
+      <Flex vertical gap={4}>
+        <Button trackerId="select_gen4_static" disabled>
+          Select
+        </Button>
+        <Typography.Text type="secondary">
+          Roamers use {target.roamerAdvances} advances when the save loads
+        </Typography.Text>
+      </Flex>
+    );
+  }
 
   return (
     <Button
@@ -81,14 +98,17 @@ const SelectButton = ({ target }: SelectButtonProps) => {
           species,
           levelRange: [minLevel, maxLevel],
         });
-        setStaticState({
-          chatotSummaryCount: target.advance,
-          coinFlipFilter: "",
-          target: {
+        selectTarget({
+          seedTime: target.seed_time,
+          lcrngAdvance: target.advance,
+          roamerAdvances: target.roamerAdvances,
+          details: {
+            tool: "static",
+            advanceCalibration: 0,
             species,
             form,
             minMaxStats,
-            advanceOffset,
+            advanceOffset: target.advanceOffset,
             isFixedGender,
             method,
             encounterMinLevel: minLevel,
@@ -97,9 +117,6 @@ const SelectButton = ({ target }: SelectButtonProps) => {
             gender: target.gender,
             level: target.level,
           },
-        });
-        setState({
-          target: { seedTime: target.seed_time, lcrngAdvance: target.advance },
         });
         setCurrentStep((prev) => prev + 1);
       }}
@@ -146,7 +163,12 @@ const initialValues: FormState = {
   ...getPkmFilterInitialValues(),
 };
 
-const columns: ResultColumn<Result>[] = [
+const roamerAdvancesColumn: ResultColumn<Result> = {
+  title: "Roamer Advances",
+  dataIndex: "roamerAdvances",
+};
+
+const getColumns = (isHgss: boolean): ResultColumn<Result>[] => [
   {
     title: "Select",
     dataIndex: "key",
@@ -174,6 +196,7 @@ const columns: ResultColumn<Result>[] = [
     render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
   },
   { title: "Advance", dataIndex: "advance" },
+  ...(isHgss ? [roamerAdvancesColumn] : []),
   { title: "Delay", dataIndex: "delay" },
   {
     title: "Second",
@@ -304,11 +327,14 @@ const Fields = ({ game, encountersByGame }: FieldsProps) => {
   );
 };
 
-const mapResult = (res: Static4State): Result => {
-  const { state, seed_time } = res;
+const mapResult = (res: Static4State, opts: SearchOpts): Result => {
+  const { state, seed_time, roamer_advances } = res;
   return {
     ...flattenIvs(state),
     seed_time,
+    roamerAdvances: roamer_advances,
+    encounter: opts.encounter,
+    advanceOffset: opts.offset,
     key: uniqueId(),
     second: seed_time.datetime.second,
     seed: seed_time.seed,
@@ -321,9 +347,9 @@ type Static4SearcherProps = {
 };
 
 export const Static4Searcher = ({ honey = false }: Static4SearcherProps) => {
-  const [state] = useAtom(gen4StateAtom);
-  const [, setSearchedEncounter] = useAtom(searchedEncounterAtom);
-  const game = state.config.game;
+  const setup = useAtomValue(gen4SetupAtom);
+  const { game } = setup;
+  const isHgss = setup.group === "hgss";
 
   const encountersByGame = honey
     ? HoneyEncountersByGame
@@ -346,9 +372,8 @@ export const Static4Searcher = ({ honey = false }: Static4SearcherProps) => {
       return;
     }
 
-    setSearchedEncounter({ ...encounter, advanceOffset: opts.offset });
-
-    const baseOpts: RustOption<SearchStatic4Opts> = {
+    const baseOpts: SearchOpts = {
+      encounter,
       filter: pkmFilterFieldsToRustInput(opts),
       force_second: opts.force_second,
       max_advance: opts.max_advance,
@@ -365,6 +390,7 @@ export const Static4Searcher = ({ honey = false }: Static4SearcherProps) => {
       encounter_min_level: encounter.minLevel,
       encounter_max_level: encounter.maxLevel,
       method: encounter.method,
+      roamers: setup.group === "hgss" ? setup.roamers : null,
     };
     const chunkedIvs = chunkIvs(opts.filter_min_ivs, opts.filter_max_ivs);
     const searchOpts = chunkedIvs.map(([minIvs, maxIvs]) => ({
@@ -381,7 +407,7 @@ export const Static4Searcher = ({ honey = false }: Static4SearcherProps) => {
 
   return (
     <ToolForm<FormState, Result>
-      columns={columns}
+      columns={getColumns(isHgss)}
       results={results}
       initialValues={initialValues}
       validationSchema={Validator}

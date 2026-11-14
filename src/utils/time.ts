@@ -62,13 +62,19 @@ export const toRngDate = (date: Dayjs): RngDate => {
   };
 };
 
+// Uses setUTCFullYear because Date.UTC maps years 0-99 to 1900-1999.
+const toUtcDayjs = (
+  date: RngDate,
+  time: RngTime = { hour: 0, minute: 0, second: 0 },
+): Dayjs => {
+  const utcDate = new Date(0);
+  utcDate.setUTCFullYear(date.year, date.month - 1, date.day);
+  utcDate.setUTCHours(time.hour, time.minute, time.second, 0);
+  return dayjs.utc(utcDate);
+};
+
 export const fromRngDate = (date: RngDate): Dayjs => {
-  return dayjs()
-    .utc()
-    .year(date.year)
-    .month(date.month - 1)
-    .date(date.day)
-    .startOf("day");
+  return toUtcDayjs(date);
 };
 
 export const formatRngDate = (date: RngDate): string => {
@@ -87,14 +93,14 @@ export const toRngDateTime = (date: Dayjs): RngDateTime => {
 };
 
 export const fromRngDateTime = (date: RngDateTime): Dayjs => {
-  return dayjs()
-    .utc()
-    .year(date.year)
-    .month(date.month - 1)
-    .date(date.day)
-    .hour(date.hour)
-    .minute(date.minute)
-    .second(date.second);
+  return toUtcDayjs(date, date);
+};
+
+export const getSecondOffset = (
+  result: RngDateTime,
+  target: RngDateTime,
+): number => {
+  return fromRngDateTime(result).diff(fromRngDateTime(target), "second");
 };
 
 export const formatRngDateTime = (

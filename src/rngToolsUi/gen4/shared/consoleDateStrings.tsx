@@ -2,8 +2,9 @@ import { Dayjs } from "dayjs";
 import { rngChronoFormat, fromRngDateTime } from "~/utils/time";
 import { match, P } from "ts-pattern";
 import { sum } from "lodash-es";
-import { gen4StateAtom } from "../shared/state";
-import { useAtom } from "jotai";
+import { gen4TargetAtom } from "./state/target";
+import { gen4TimerAtom } from "./state/timer";
+import { useAtomValue } from "jotai";
 
 const adjustTargetForTimer = (timerMs: number[], targetDatetime: Dayjs) => {
   const targetMinutes = Math.floor(sum(timerMs) / 1000 / 60); // Convert milliseconds to minutes
@@ -60,16 +61,16 @@ type Gen4ConsoleSetDateStringProps = {
 export const Gen4ConsoleSetDateString = ({
   format,
 }: Gen4ConsoleSetDateStringProps) => {
-  const [state] = useAtom(gen4StateAtom);
-  const targetSeedTime = state.target.seedTime;
+  const target = useAtomValue(gen4TargetAtom);
+  const timer = useAtomValue(gen4TimerAtom);
   const targetDateTime =
-    targetSeedTime == null ? null : fromRngDateTime(targetSeedTime.datetime);
+    target == null ? null : fromRngDateTime(target.seedTime.datetime);
 
   return (
     <ConsoleSetDateString
       format={format}
       targetDatetime={targetDateTime}
-      timerMs={state.timer.ms}
+      timerMs={timer.ms}
     />
   );
 };

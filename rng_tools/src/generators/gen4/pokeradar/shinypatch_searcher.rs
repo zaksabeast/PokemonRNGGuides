@@ -80,6 +80,7 @@ mod tests {
                 level: 1,
                 encounter_slot: 0,
             },
+            roamer_advances: 0,
         }
     }
 

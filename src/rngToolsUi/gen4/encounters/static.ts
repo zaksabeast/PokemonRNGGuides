@@ -690,5 +690,3 @@ export const EncountersByGame = {
   HeartGold: HeartGoldEncounters,
   SoulSilver: SoulSilverEncounters,
 } as const satisfies Record<Gen4GameVersion, Record<string, Encounter>>;
-
-export const defaultEncounter = DiamondEncounters["eevee-5"];

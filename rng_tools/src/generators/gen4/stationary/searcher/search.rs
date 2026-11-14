@@ -283,6 +283,7 @@ mod tests {
                 max_advance: 30,
                 force_second: None,
                 method: Static4Method::One,
+                roamers: None,
                 species: Species::Omanyte,
                 lead: Static4LeadInput::None,
                 filter: PkmFilter {
@@ -313,6 +314,7 @@ mod tests {
                 max_advance: 30,
                 force_second: None,
                 method: Static4Method::One,
+                roamers: None,
                 species: Species::Omanyte,
                 lead: Static4LeadInput::None,
                 filter: PkmFilter {
@@ -344,6 +346,7 @@ mod tests {
                 max_advance: 60,
                 force_second: None,
                 method: Static4Method::One,
+                roamers: None,
                 species: Species::Omanyte,
                 lead: Static4LeadInput::None,
                 filter: PkmFilter {
@@ -385,6 +388,7 @@ mod tests {
                 min_delay: 800,
                 max_delay: 1750,
                 force_second: Some(datetime.second),
+                roamers: None,
             }
             .filter(std::iter::once(state));
 
@@ -409,7 +413,8 @@ mod tests {
                         seed: 0x860c06ef,
                         datetime: datetime!(2026-05-09 12:59:30).unwrap(),
                         delay: 1749
-                    }
+                    },
+                    roamer_advances: 0,
                 }]
             );
         }
@@ -440,6 +445,7 @@ mod tests {
                 min_delay: 1749,
                 max_delay: 1750,
                 force_second: Some(datetime.second),
+                roamers: None,
             }
             .filter(std::iter::once(state));
 
@@ -464,7 +470,111 @@ mod tests {
                         seed: 0x860c06ef,
                         datetime: datetime!(2025-05-09 12:59:30).unwrap(),
                         delay: 1750
-                    }
+                    },
+                    roamer_advances: 0,
+                }]
+            );
+        }
+    }
+
+    mod roamers {
+        use super::*;
+        use crate::gen4::seed_time::SeedTime4;
+        use crate::gen4::seed_time::roamers::{HgssRoamers, JohtoRoamerRoute, KantoRoamerRoute};
+        use crate::{assert_list_eq, datetime, ivs};
+
+        fn filter_seed(roamers: Option<HgssRoamers>) -> Vec<Static4State> {
+            let datetime = datetime!(2026-05-14 12:34:30).unwrap();
+            let seed = calc_seed(&datetime, 1749);
+            let state = BaseStatic4State::new(
+                seed,
+                Species::Omanyte,
+                Nature::Hardy,
+                1,
+                0,
+                12345,
+                54321,
+                ivs!(0 / 0 / 0 / 0 / 0 / 0),
+                LeadAbility::None,
+                0,
+            );
+
+            SeedFilters {
+                offset: 0,
+                min_advance: 0,
+                max_advance: 0,
+                year: Some(datetime.year),
+                month: Some(datetime.month),
+                min_delay: 1749,
+                max_delay: 1749,
+                force_second: Some(datetime.second),
+                roamers,
+            }
+            .filter(std::iter::once(state))
+        }
+
+        #[test]
+        fn keeps_hits_below_roamer_advances() {
+            let results = filter_seed(Some(HgssRoamers {
+                raikou: Some(JohtoRoamerRoute::Route42),
+                entei: Some(JohtoRoamerRoute::Route42),
+                lati: Some(KantoRoamerRoute::Route1),
+            }));
+
+            assert_list_eq!(
+                results,
+                [Static4State {
+                    state: BaseStatic4State {
+                        seed: 0x860c06ef,
+                        advance: 0,
+                        pid: 0,
+                        ivs: ivs!(0 / 0 / 0 / 0 / 0 / 0),
+                        ability: AbilityType::First,
+                        gender: Gender::Female,
+                        nature: Nature::Hardy,
+                        shiny: ShinyType::NotShiny,
+                        characteristic: Characteristic::LovesToEat,
+                        lead: LeadAbility::None,
+                        level: 1,
+                        encounter_slot: 0
+                    },
+                    seed_time: SeedTime4 {
+                        seed: 0x860c06ef,
+                        datetime: datetime!(2026-05-09 12:59:30).unwrap(),
+                        delay: 1749
+                    },
+                    roamer_advances: 3,
+                }]
+            );
+        }
+
+        #[test]
+        fn no_roamer_advances_without_roamers() {
+            let results = filter_seed(None);
+
+            assert_list_eq!(
+                results,
+                [Static4State {
+                    state: BaseStatic4State {
+                        seed: 0x860c06ef,
+                        advance: 0,
+                        pid: 0,
+                        ivs: ivs!(0 / 0 / 0 / 0 / 0 / 0),
+                        ability: AbilityType::First,
+                        gender: Gender::Female,
+                        nature: Nature::Hardy,
+                        shiny: ShinyType::NotShiny,
+                        characteristic: Characteristic::LovesToEat,
+                        lead: LeadAbility::None,
+                        level: 1,
+                        encounter_slot: 0
+                    },
+                    seed_time: SeedTime4 {
+                        seed: 0x860c06ef,
+                        datetime: datetime!(2026-05-09 12:59:30).unwrap(),
+                        delay: 1749
+                    },
+                    roamer_advances: 0,
                 }]
             );
         }
@@ -482,6 +592,7 @@ mod tests {
                 offset: 0,
                 lead: Static4LeadInput::None,
                 method: Static4Method::DpptJ,
+                roamers: None,
                 species: Species::Drifloon,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
@@ -511,6 +622,7 @@ mod tests {
                 offset: 0,
                 lead: Static4LeadInput::Pressure,
                 method: Static4Method::DpptJ,
+                roamers: None,
                 species: Species::Drifloon,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
@@ -541,6 +653,7 @@ mod tests {
                 sid: 54321,
                 offset: 0,
                 method: Static4Method::DpptJ,
+                roamers: None,
                 species: Species::Drifloon,
                 lead: Static4LeadInput::CutecharmM,
                 filter: PkmFilter {
@@ -571,6 +684,7 @@ mod tests {
                 sid: 54321,
                 offset: 0,
                 method: Static4Method::DpptJ,
+                roamers: None,
                 species: Species::Drifloon,
                 lead: Static4LeadInput::CutecharmF,
                 filter: PkmFilter {
@@ -601,6 +715,7 @@ mod tests {
                 sid: 54321,
                 offset: 0,
                 method: Static4Method::DpptJ,
+                roamers: None,
                 species: Species::Drifloon,
                 lead: Static4LeadInput::Synchronize,
                 filter: PkmFilter {
@@ -642,6 +757,7 @@ mod tests {
                 offset: 0,
                 species: Species::Snorlax,
                 method: Static4Method::HgssK,
+                roamers: None,
                 lead: Static4LeadInput::None,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
@@ -671,6 +787,7 @@ mod tests {
                 offset: 0,
                 species: Species::Snorlax,
                 method: Static4Method::HgssK,
+                roamers: None,
                 lead: Static4LeadInput::Pressure,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
@@ -702,6 +819,7 @@ mod tests {
                 offset: 0,
                 species: Species::Snorlax,
                 method: Static4Method::HgssK,
+                roamers: None,
                 lead: Static4LeadInput::Synchronize,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 25 / 25 / 20),
@@ -737,6 +855,7 @@ mod tests {
                 offset: 0,
                 species: Species::Snorlax,
                 method: Static4Method::HgssK,
+                roamers: None,
                 lead: Static4LeadInput::CutecharmF,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
@@ -767,6 +886,7 @@ mod tests {
                 offset: 0,
                 species: Species::Snorlax,
                 method: Static4Method::HgssK,
+                roamers: None,
                 lead: Static4LeadInput::CutecharmM,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
@@ -802,6 +922,7 @@ mod tests {
                 offset: 0,
                 species: Species::Munchlax,
                 method: Static4Method::Honey,
+                roamers: None,
                 lead: Static4LeadInput::None,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
@@ -832,6 +953,7 @@ mod tests {
                 offset: 0,
                 species: Species::Munchlax,
                 method: Static4Method::Honey,
+                roamers: None,
                 lead: Static4LeadInput::Synchronize,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 25 / 25 / 20),
@@ -867,6 +989,7 @@ mod tests {
                 offset: 0,
                 species: Species::Munchlax,
                 method: Static4Method::Honey,
+                roamers: None,
                 lead: Static4LeadInput::CutecharmF,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
@@ -899,6 +1022,7 @@ mod tests {
                 offset: 0,
                 species: Species::Munchlax,
                 method: Static4Method::Honey,
+                roamers: None,
                 lead: Static4LeadInput::CutecharmM,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
@@ -931,6 +1055,7 @@ mod tests {
                 offset: 0,
                 species: Species::Munchlax,
                 method: Static4Method::Honey,
+                roamers: None,
                 lead: Static4LeadInput::Pressure,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
@@ -968,6 +1093,7 @@ mod tests {
                 offset: 0,
                 species: Species::Starly,
                 method: Static4Method::DpptWild,
+                roamers: None,
                 lead,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
@@ -1047,6 +1173,7 @@ mod tests {
                 sid: 25081,
                 offset: 0,
                 method: Static4Method::Radar,
+                roamers: None,
                 species: Species::Snover,
                 lead: Static4LeadInput::None,
                 filter: PkmFilter {
@@ -1077,6 +1204,7 @@ mod tests {
                 sid: 25081,
                 offset: 0,
                 method: Static4Method::Radar,
+                roamers: None,
                 species: Species::Snover,
                 lead: Static4LeadInput::Synchronize,
                 filter: PkmFilter {
@@ -1113,6 +1241,7 @@ mod tests {
                 sid: 25081,
                 offset: 0,
                 method: Static4Method::Radar,
+                roamers: None,
                 species: Species::Snover,
                 lead: Static4LeadInput::CutecharmF,
                 filter: PkmFilter {
@@ -1145,6 +1274,7 @@ mod tests {
                 sid: 25081,
                 offset: 0,
                 method: Static4Method::Radar,
+                roamers: None,
                 species: Species::Snover,
                 lead: Static4LeadInput::CutecharmM,
                 filter: PkmFilter {
@@ -1182,6 +1312,7 @@ mod tests {
                 sid: 25081,
                 offset: 0,
                 method: Static4Method::ShinyRadar,
+                roamers: None,
                 species: Species::Snover,
                 lead: Static4LeadInput::None,
                 filter: PkmFilter {
@@ -1214,6 +1345,7 @@ mod tests {
                 sid: 25081,
                 offset: 0,
                 method: Static4Method::ShinyRadar,
+                roamers: None,
                 species: Species::Snover,
                 lead: Static4LeadInput::Synchronize,
                 filter: PkmFilter {
@@ -1252,6 +1384,7 @@ mod tests {
                 sid: 25081,
                 offset: 0,
                 method: Static4Method::ShinyRadar,
+                roamers: None,
                 species: Species::Snover,
                 lead: Static4LeadInput::CutecharmF,
                 filter: PkmFilter {
@@ -1284,6 +1417,7 @@ mod tests {
                 sid: 25081,
                 offset: 0,
                 method: Static4Method::ShinyRadar,
+                roamers: None,
                 species: Species::Snover,
                 lead: Static4LeadInput::CutecharmM,
                 filter: PkmFilter {

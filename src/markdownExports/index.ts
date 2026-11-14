@@ -47,7 +47,6 @@ import { HomePageComponent } from "~/pageComponents/home";
 import { GamePageComponent } from "~/pageComponents/gamePage";
 import { withTags } from "~/components/tagDetector/provider";
 import { mapValues } from "lodash-es";
-import { Starter4ShowIf } from "~/rngToolsUi/gen4/starters/showIf";
 import { TranslationHelperSelectGuide } from "~/rngToolsUi/translationHelper/selectGuide";
 import { TranslationHelperEditGuide } from "~/rngToolsUi/translationHelper/editGuide";
 import { ToolTranslationButton } from "~/rngToolsUi/translationHelper/toolTranslations";
@@ -95,7 +94,6 @@ const nonTools = {
   Stepper,
   Step,
   Glossary,
-  Starter4ShowIf,
   WhatNext,
   YouTubeTable,
   EqualColumnTable,
@@ -412,9 +410,9 @@ const tools = {
     () => import("~/rngToolsUi/gen4/shared/dpptCoinFlip/seedCalibrator"),
     (mod) => mod.DpptCoinFlipSeedCalibrator,
   ),
-  Static4ChatotCount: lazyLoad(
+  Static4RemainingAdvances: lazyLoad(
     () => import("~/rngToolsUi/gen4/static/stateText"),
-    (mod) => mod.Static4ChatotCount,
+    (mod) => mod.Static4RemainingAdvances,
   ),
   Static4SyncNature: lazyLoad(
     () => import("~/rngToolsUi/gen4/static/stateText"),
@@ -488,6 +486,14 @@ const tools = {
     () => import("~/rngToolsUi/gen4/shared/chatterFilter"),
     (mod) => mod.Gen4ChatterFilter,
   ),
+  Gen4LcrngAdvanceFilter: lazyLoad(
+    () => import("~/rngToolsUi/gen4/shared/lcrngAdvanceFilter"),
+    (mod) => mod.Gen4LcrngAdvanceFilter,
+  ),
+  Gen4RoamerSetup: lazyLoad(
+    () => import("~/rngToolsUi/gen4/shared/roamerSetup"),
+    (mod) => mod.Gen4RoamerSetup,
+  ),
   Gen4ConfigSetup: lazyLoad(
     () => import("~/rngToolsUi/gen4/shared/configSetup"),
     (mod) => mod.Gen4ConfigSetup,
@@ -519,6 +525,10 @@ const tools = {
   Gen4SeedFinder: lazyLoad(
     () => import("~/rngToolsUi/gen4/shared/seedFinder"),
     (mod) => mod.Gen4SeedFinder,
+  ),
+  Gen4SeedCalibrator: lazyLoad(
+    () => import("~/rngToolsUi/gen4/shared/seedCalibrator"),
+    (mod) => mod.Gen4SeedCalibrator,
   ),
   SwarmAdvanceFilter: lazyLoad(
     () => import("~/rngToolsUi/gen4/swarm/swarmAdvanceFilter"),

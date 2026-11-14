@@ -15,8 +15,8 @@ import {
   type VoltorbFlipLevel,
 } from "~/rngTools";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
-import { gen4StateAtom } from "../shared/state";
-import { useAtom } from "jotai";
+import { gen4TargetAtom } from "../shared/state/target";
+import { useAtomValue } from "jotai";
 import { VoltorbFlipBoard } from "./board/board";
 import { BoardSizeContainer } from "./board/boardSizeContainer";
 
@@ -89,10 +89,10 @@ const levelMap: Record<VoltorbFlipLevel, number> = {
 const seedBoardSkip = 1;
 
 export const GenerateVoltorbFlipBoards = () => {
-  const [state] = useAtom(gen4StateAtom);
+  const target = useAtomValue(gen4TargetAtom);
   const [results, setResults] = React.useState<Result[]>([]);
 
-  const initialSeed = state.target.seedTime?.seed;
+  const initialSeed = target?.seedTime.seed;
 
   const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
     const boardLevels = new Array(opts.boardCount + seedBoardSkip)
@@ -103,7 +103,7 @@ export const GenerateVoltorbFlipBoards = () => {
     const res = await rngTools.generate_voltorb_flip_boards({
       board_levels: boardLevels,
       quit_first_board: true,
-      seed: state.target.seedTime?.seed ?? 0,
+      seed: initialSeed ?? 0,
     });
     const mapped = res.map((board) => ({ board, id: uniqueId() }));
     setResults(mapped);

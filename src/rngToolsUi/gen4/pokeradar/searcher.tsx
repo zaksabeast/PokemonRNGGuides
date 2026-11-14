@@ -511,6 +511,7 @@ export const PokeRadar4ShinySearcher: React.FC = () => {
       force_second: null,
       lead: opts.lead,
       method: "ShinyRadar",
+      roamers: null,
     };
 
     const chunkedIvs = chunkIvs(opts.filter_min_ivs, opts.filter_max_ivs);

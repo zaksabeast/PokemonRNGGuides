@@ -18,8 +18,9 @@ import { useBatchedTool } from "~/hooks/useBatchedTool";
 import { uniqueId } from "lodash-es";
 import { chunkRange } from "~/utils/chunkRange";
 import { RustOption } from "~/types/utils";
-import { useAtom } from "~/state/localStorage";
-import { gen4StateAtom } from "../shared/state";
+import { useAtomValue, useSetAtom } from "jotai";
+import { gen4SetupAtom } from "../shared/state/setup";
+import { selectGen4TargetAtom } from "../shared/state/target";
 import { useCurrentStep } from "~/components/stepper/state";
 import { formatHex } from "~/utils/formatHex";
 
@@ -63,8 +64,8 @@ const initialValues: FormState = {
 
 const Fields = () => {
   const t = useActiveRouteTranslations();
-  const [state] = useAtom(gen4StateAtom);
-  const isDp = state.config.game === "Diamond" || state.config.game === "Pearl";
+  const { game } = useAtomValue(gen4SetupAtom);
+  const isDp = game === "Diamond" || game === "Pearl";
 
   return (
     <>
@@ -136,7 +137,8 @@ const mapResult = (result: SearchLottery4Res): Result => ({
 export const Lottery4Searcher = () => {
   const t = useActiveRouteTranslations();
   const [, setCurrentStep] = useCurrentStep();
-  const [state, setState] = useAtom(gen4StateAtom);
+  const selectTarget = useSetAtom(selectGen4TargetAtom);
+  const { game } = useAtomValue(gen4SetupAtom);
   const {
     run: searchLottery4,
     data: results,
@@ -157,11 +159,9 @@ export const Lottery4Searcher = () => {
         <Button
           trackerId="select_lottery4"
           onClick={() => {
-            setState({
-              target: {
-                seedTime: target.seed_time,
-                mtAdvance: target.mt_advance,
-              },
+            selectTarget({
+              seedTime: target.seed_time,
+              mtAdvance: target.mt_advance,
             });
             setCurrentStep((step) => step + 1);
           }}
@@ -200,7 +200,7 @@ export const Lottery4Searcher = () => {
     const chunksOpts = chunked.map(
       ([min_delay, max_delay]): RustOption<SearchLottery4Opts> => ({
         ...opts,
-        game: state.config.game,
+        game,
         force_seconds: null,
         min_delay,
         max_delay,

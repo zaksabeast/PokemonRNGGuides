@@ -1,12 +1,17 @@
-import { id4Atom } from "./state";
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
+import { gen4TargetAtom } from "../shared/state/target";
+
+const useSelectedId4 = () => {
+  const details = useAtomValue(gen4TargetAtom)?.details;
+  return details?.tool === "id" ? details.id : null;
+};
 
 export const Id4Tid = () => {
-  const [state] = useAtom(id4Atom);
-  return state.id?.tid ?? "???";
+  const id = useSelectedId4();
+  return id?.tid ?? "???";
 };
 
 export const Id4Sid = () => {
-  const [state] = useAtom(id4Atom);
-  return state.id?.sid ?? "???";
+  const id = useSelectedId4();
+  return id?.sid ?? "???";
 };

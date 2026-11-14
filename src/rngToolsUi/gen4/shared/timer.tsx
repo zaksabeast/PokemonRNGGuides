@@ -12,7 +12,9 @@ import { useAtom } from "~/state/localStorage";
 import { multiTimerStateAtom } from "~/state/multiTimerState";
 import { hydrationLock } from "~/utils/hydration";
 import { Gen4EmbeddedSetup } from "./embeddedSetup";
-import { gen4StateAtom, gen4TimerAtom } from "./state";
+import { useAtomValue, useSetAtom } from "jotai";
+import { gen4SetupAtom } from "./state/setup";
+import { gen4TimerAtom, setGen4TimerSettingsAtom } from "./state/timer";
 
 type InnerProps = {
   maxBeepCount: number;
@@ -23,13 +25,14 @@ const InnerGen4EmbeddedTimer = ({
   maxBeepCount,
   setMaxBeepCount,
 }: InnerProps) => {
-  const [{ config, timer }] = useAtom(gen4StateAtom);
-  const [, updateTimer] = useAtom(gen4TimerAtom);
+  const setup = useAtomValue(gen4SetupAtom);
+  const timer = useAtomValue(gen4TimerAtom);
+  const setTimerSettings = useSetAtom(setGen4TimerSettingsAtom);
   const [mode, setMode] = React.useState<TimerMode>("run");
   const metronome = useMetronome({ enableAudio: true });
   const sequence = useTimerSequence({ milliseconds: timer.ms, maxBeepCount });
 
-  const is3ds = config.console === "3dsNormalSettings";
+  const is3ds = setup.console === "3dsNormalSettings";
 
   return (
     <Flex vertical gap={16}>
@@ -66,8 +69,7 @@ const InnerGen4EmbeddedTimer = ({
           maxBeepCount={maxBeepCount}
           setMaxBeepCount={setMaxBeepCount}
           onSet={(settings) => {
-            // Updating through gen4StateAtom would reset the target second to the seed's
-            updateTimer(settings);
+            setTimerSettings(settings);
             setMode("run");
           }}
         />

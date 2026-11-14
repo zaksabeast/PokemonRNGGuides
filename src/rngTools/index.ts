@@ -181,7 +181,7 @@ const spawnRngToolWorker = async (
  * Returns a promise with a terminate() method that kills the worker.
  *
  * @example
- * const promise = callRngToolInTempWorker("search_dppt_ids", opts);
+ * const promise = callRngToolInTempWorker("search_gen4_ids", opts);
  * // Later, if needed: promise.terminate?.();
  */
 const callRngToolInTempWorker = <
@@ -232,7 +232,7 @@ const callRngToolInTempWorker = <
  * Warning!  Browsers have worker limits.
  *
  * @example
- * const res = await multiWorkerRngTools.search_dppt_ids(opts);
+ * const res = await multiWorkerRngTools.search_gen4_ids(opts);
  */
 export const multiWorkerRngTools = new Proxy(
   {},

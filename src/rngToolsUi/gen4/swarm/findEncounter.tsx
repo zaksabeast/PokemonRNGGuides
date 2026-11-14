@@ -10,25 +10,22 @@ import {
 } from "~/components/form";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { useSwarmState } from "./state";
-import { useAtom } from "jotai";
-import { gen4StateAtom } from "../shared/state";
+import { useAtomValue, useSetAtom } from "jotai";
+import { gen4SetupAtom } from "../shared/state/setup";
+import { gen4TargetAtom, selectGen4AdvanceAtom } from "../shared/state/target";
 import { gameMons, type SwarmRoute } from "./constants";
 import { rngTools, type SwarmPokemon, type SwarmGame } from "~/rngTools";
 import { uniqueId } from "lodash-es";
 import { useCurrentStep } from "~/components/stepper/state";
 import { Translations } from "~/translations";
+import { type Gen4GameVersion } from "~/types/games";
 
-const gameVersionToSwarmGame = (game: string): SwarmGame => {
-  if (game === "Diamond" || game === "Pearl") {
-    return "DP";
-  }
-  if (game === "Platinum") {
-    return "PT";
-  }
-  if (game === "HeartGold") {
-    return "HG";
-  }
-  return "SS";
+const SwarmGameByVersion: Record<Gen4GameVersion, SwarmGame> = {
+  Diamond: "DP",
+  Pearl: "DP",
+  Platinum: "PT",
+  HeartGold: "HG",
+  SoulSilver: "SS",
 };
 
 type Result = {
@@ -54,18 +51,14 @@ type SelectButtonProps = {
 };
 
 const SelectButton = ({ advance }: SelectButtonProps) => {
-  const [, setGen4State] = useAtom(gen4StateAtom);
+  const selectAdvance = useSetAtom(selectGen4AdvanceAtom);
   const [, setStep] = useCurrentStep();
 
   return (
     <Button
       trackerId="swarm_select_advance"
       onClick={() => {
-        setGen4State({
-          target: {
-            mtAdvance: advance,
-          },
-        });
+        selectAdvance({ mtAdvance: advance });
 
         setStep((step) => step + 1);
       }}
@@ -93,40 +86,35 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
 
 export const SwarmFindEncounter = () => {
   const t = useActiveRouteTranslations();
-  const [state] = useAtom(gen4StateAtom);
+  const target = useAtomValue(gen4TargetAtom);
+  const setup = useAtomValue(gen4SetupAtom);
   const [targetRoutes] = useSwarmState();
-  const targetRoute = targetRoutes[state.config.game];
+  const targetRoute = targetRoutes[setup.game];
 
   const defaultMinAdvance =
-    state.config.game === "Diamond" ||
-    state.config.game === "Pearl" ||
-    state.config.game === "Platinum"
-      ? state.gameState.coinFlips.length
-      : 0;
+    setup.group === "dppt" ? (target?.coinFlipCount ?? 0) : 0;
 
   const [results, setResults] = React.useState<Result[]>([]);
 
   React.useEffect(() => {
     setResults([]);
-  }, [state.target.seedTime]);
+  }, [target?.seedTime]);
 
-  const mons = gameMons[state.config.game];
+  const mons = gameMons[setup.game];
   const targetSpecies = (mons as Partial<Record<SwarmRoute, string>>)[
     targetRoute
   ];
 
-  const seed = state.target.seedTime?.seed;
+  const seed = target?.seedTime.seed;
 
   const onSubmit = async (opts: FormState) => {
     if (seed == null || targetSpecies == null) {
       return;
     }
 
-    const swarmGame = gameVersionToSwarmGame(state.config.game);
-
     const results = await rngTools.find_swarm_advances({
       seed,
-      game: swarmGame,
+      game: SwarmGameByVersion[setup.game],
       wanted_pokemon: targetSpecies as SwarmPokemon,
       min_advances: opts.minAdvances,
       max_advances: opts.maxAdvances,
@@ -145,7 +133,7 @@ export const SwarmFindEncounter = () => {
 
   return (
     <ToolForm<FormState, Result>
-      key={state.gameState.coinFlips.length}
+      key={defaultMinAdvance}
       initialValues={getInitialValues(defaultMinAdvance)}
       disableGenerate={seed == null}
       submitTrackerId="swarm_find_encounter"

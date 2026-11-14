@@ -29,6 +29,16 @@ pub fn build_seedtime4_ab_lookup(
     month: Option<u32>,
     second_range: Option<RangeInclusive<u32>>,
 ) -> SeedTime4AbLookup {
+    build_seedtime4_ab_lookup_with_minutes(year, month, 0..=59, second_range)
+}
+
+/// Builds a lookup table for SeedTime4 ab seed generation, limited to the given minutes.
+pub fn build_seedtime4_ab_lookup_with_minutes(
+    year: u32,
+    month: Option<u32>,
+    minute_range: RangeInclusive<u32>,
+    second_range: Option<RangeInclusive<u32>>,
+) -> SeedTime4AbLookup {
     let year = year.clamp(2000, 2100);
     let mut lookup = [None; 256];
     let mut remaining = 256;
@@ -38,7 +48,7 @@ pub fn build_seedtime4_ab_lookup(
         let max_days = get_days_in_month(year as i32, month);
 
         for day in 1..=max_days {
-            for minute in 0..60 {
+            for minute in minute_range.clone() {
                 for second in second_range.clone() {
                     if second > 59 {
                         continue;

@@ -27,16 +27,17 @@ impl CoinFlip {
             })
             .collect()
     }
+
+    fn from_rand(rand: u32) -> Self {
+        match rand & 1 {
+            0 => CoinFlip::Tails,
+            _ => CoinFlip::Heads,
+        }
+    }
 }
 
 pub fn coin_flips(seed: u32, count: usize) -> Vec<CoinFlip> {
-    MT::new(seed)
-        .take(count)
-        .map(|rand| match rand & 1 {
-            0 => CoinFlip::Tails,
-            _ => CoinFlip::Heads,
-        })
-        .collect()
+    MT::new(seed).take(count).map(CoinFlip::from_rand).collect()
 }
 
 #[derive(Debug, Tsify, Serialize, Deserialize)]
@@ -58,10 +59,7 @@ impl CoinFlipAdvanceState {
     fn new(rand: u32, advance: usize) -> Self {
         Self {
             advance,
-            coin_flip: match rand & 1 {
-                0 => CoinFlip::Tails,
-                _ => CoinFlip::Heads,
-            },
+            coin_flip: CoinFlip::from_rand(rand),
         }
     }
 }
@@ -83,13 +81,20 @@ pub fn get_coin_flips(opts: &CoinFlipAdvanceOpts) -> Vec<CoinFlipAdvanceState> {
         .collect()
 }
 
+#[derive(Debug, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct CoinFlipsForSeedsOpts {
+    pub seeds: Vec<u32>,
+    pub count: usize,
+}
+
 #[wasm_bindgen]
-pub fn coin_flips_for_seeds(seeds: &[u32], count: usize) -> Vec<CoinFlipResult> {
-    seeds
+pub fn coin_flips_for_seeds(opts: CoinFlipsForSeedsOpts) -> Vec<CoinFlipResult> {
+    opts.seeds
         .iter()
         .map(|&seed| CoinFlipResult {
             seed,
-            coin_flips: coin_flips(seed, count),
+            coin_flips: coin_flips(seed, opts.count),
         })
         .collect()
 }

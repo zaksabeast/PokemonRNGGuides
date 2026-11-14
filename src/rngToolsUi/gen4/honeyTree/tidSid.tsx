@@ -11,8 +11,8 @@ import {
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { useWatch } from "~/hooks/form";
 import { honeyTreeAtom, INITIAL_GAME } from "./state";
-import { gen4StateAtom } from "../shared/state";
-import { useAtom } from "jotai";
+import { clearGen4TargetAtom } from "../shared/state/target";
+import { useAtom, useSetAtom } from "jotai";
 import { rngTools } from "~/rngTools";
 import { toOptions } from "~/utils/options";
 import { DpPt } from "~/types/games";
@@ -34,7 +34,7 @@ const initialValues: LooseFormState = {
 
 const Fields = () => {
   const t = useActiveRouteTranslations();
-  const [, setState] = useAtom(gen4StateAtom);
+  const clearTarget = useSetAtom(clearGen4TargetAtom);
   const [, setHoneyTreeState] = useAtom(honeyTreeAtom);
   const { tid, sid, game } = useWatch({
     validationSchema: Validator,
@@ -52,9 +52,7 @@ const Fields = () => {
           ? await rngTools.get_muchlax_trees(tid, sid)
           : null;
 
-      setState({
-        target: { seedTime: null, lcrngAdvance: null, mtAdvance: null },
-      });
+      clearTarget();
       setHoneyTreeState((prev) => ({
         ...prev,
         game: game ?? prev.game,
@@ -63,7 +61,7 @@ const Fields = () => {
     };
 
     submitForm();
-  }, [tid, sid, game, setState, setHoneyTreeState]);
+  }, [tid, sid, game, clearTarget, setHoneyTreeState]);
 
   return (
     <FormSection title={t["Your game"]}>

@@ -24,8 +24,8 @@ import {
   multiWorkerRngTools,
 } from "~/rngTools";
 import { z } from "zod";
-import { id4Atom } from "./state";
-import { gen4StateAtom } from "../shared/state";
+import { gen4SetupAtom } from "../shared/state/setup";
+import { selectGen4TargetAtom } from "../shared/state/target";
 import { useCurrentStep } from "~/components/stepper/state";
 import { useFormContext, useWatch } from "~/hooks/form";
 import { nature } from "~/types/nature";
@@ -43,9 +43,7 @@ import { chunkRange } from "~/utils/chunkRange";
 import { RustOption } from "~/types";
 import { Translations } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
-import { useAtom } from "jotai";
-import { getGameDateTime } from "./utils";
-import { toRngDateTime } from "~/utils/time";
+import { useAtomValue, useSetAtom } from "jotai";
 
 const idTypes = ["Cute Charm", "Any TID"] as const;
 type IdType = (typeof idTypes)[number];
@@ -59,31 +57,20 @@ type SelectButtonProps = {
 };
 
 const SelectButton = ({ target }: SelectButtonProps) => {
-  const [state, setState] = useAtom(gen4StateAtom);
-  const [, setId4State] = useAtom(id4Atom);
+  const selectTarget = useSetAtom(selectGen4TargetAtom);
   const [, setCurrentStep] = useCurrentStep();
-
-  const adjustedDateTime = getGameDateTime({
-    seedTime: target.seed_time,
-    game: state.config.game,
-  });
 
   return (
     <Button
       trackerId="select_id4_target"
       onClick={() => {
-        if (adjustedDateTime == null) {
-          return;
-        }
-        setState({
-          target: {
-            seedTime: {
-              ...target.seed_time,
-              datetime: toRngDateTime(adjustedDateTime),
-            },
+        selectTarget({
+          seedTime: {
+            ...target.seed_time,
+            datetime: target.game_datetime,
           },
+          details: { tool: "id", id: target },
         });
-        setId4State({ id: target });
         setCurrentStep((step) => step + 1);
       }}
     >
@@ -180,7 +167,7 @@ const getColumns = ({
 };
 
 const Validator = z.object({
-  year: z.number().int().min(2000).max(2100),
+  year: z.number().int().min(2000).max(2099),
   min_delay: z.number().int().min(5000),
   max_delay: z.number().int().min(5000),
   id_type: z.enum(idTypes),
@@ -313,19 +300,20 @@ const mapResult = (res: Id4): Result => ({
   ...res,
   seed: res.seed_time.seed,
   delay: res.seed_time.delay,
-  seconds: res.seed_time.datetime.second,
+  seconds: res.game_datetime.second,
   ...getCuteCharmTsvProps(res.tsv),
 });
 
 export const Id4Searcher = () => {
   const t = useActiveRouteTranslations();
   const [messageApi, contextHolder] = message.useMessage();
+  const { game } = useAtomValue(gen4SetupAtom);
   const {
-    run: searchDpptIds,
+    run: searchGen4Ids,
     data: results,
     progressPercent,
     cancel,
-  } = useBatchedTool(multiWorkerRngTools.search_dppt_ids, { map: mapResult });
+  } = useBatchedTool(multiWorkerRngTools.search_gen4_ids, { map: mapResult });
 
   const [idType, setIdType] = React.useState<IdType>(defaultIdType);
 
@@ -363,11 +351,12 @@ export const Id4Searcher = () => {
           year: opts.year,
           min_delay,
           max_delay,
+          game,
           filter: idFilter,
           force_second: opts.force_second,
         }),
       );
-      await searchDpptIds(searchOpts);
+      await searchGen4Ids(searchOpts);
 
       setIdType(opts.id_type);
     } catch (error) {

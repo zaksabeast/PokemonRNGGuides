@@ -732,7 +732,7 @@
     "lastUpdated": null
   },
   "/it-retail-dppt-starter/": {
-    "hash": "9277bd86db9c0b4aec2679e854d31547c06833eb90140ce35eff2cefe66eefe2",
+    "hash": "401c26a10beb8fbbe89109de1ad42fd4cc3ca77e018af8f3614648f4c5659643",
     "lastUpdated": "2026-04-10"
   },
   "/it-retail-emerald-wild/": {
@@ -740,7 +740,7 @@
     "lastUpdated": "2026-10-18"
   },
   "/it-retail-hgss-starter/": {
-    "hash": "9277bd86db9c0b4aec2679e854d31547c06833eb90140ce35eff2cefe66eefe2",
+    "hash": "401c26a10beb8fbbe89109de1ad42fd4cc3ca77e018af8f3614648f4c5659643",
     "lastUpdated": "2026-04-10"
   },
   "/it-rs-gen3-sid/": {
@@ -852,11 +852,11 @@
     "lastUpdated": "2026-03-29"
   },
   "/retail-dppt-egg/": {
-    "hash": "4803ec642c884afbcb0abc395f2a0bd973b741f2f3f9716f204b672e5d5594e8",
+    "hash": "6ce790c615f1f9fcec28bf5d5c79e8c97c7f12e6c446a43d69f6654e3643cb41",
     "lastUpdated": "2026-07-04"
   },
   "/retail-dppt-honey-pokemon/": {
-    "hash": "83d1c00e7754b97bd64fe070be4d174e45784d5993140915c0df708bb04ab793",
+    "hash": "614c3ae8ef7505c275f316b17a81b5371b9c24f14af714d8c4faf97a2c98bde3",
     "lastUpdated": "2026-09-19"
   },
   "/retail-dppt-honey-tree/": {
@@ -864,15 +864,15 @@
     "lastUpdated": "2026-05-31"
   },
   "/retail-dppt-lottery/": {
-    "hash": "fc24370da95b6a9353380bc27a5e842c71240bb074c05cc21aa05bd1384e74b6",
+    "hash": "e0651ccfa4023f5170f2c77a71aff4e7b0e50eb6a873d39e4d7c2857434e27d8",
     "lastUpdated": "2026-07-19"
   },
   "/retail-dppt-starter/": {
-    "hash": "f03666b7cd152819ed9d79fdd91cf8328eac4f155e0814e08fe6989e1d8c358b",
+    "hash": "ae6bafacc9569c5d4ef11bf6b567cbb951d7520fb77cd8e1d1986ab8a6fbb873",
     "lastUpdated": "2026-09-28"
   },
   "/retail-dppt-static/": {
-    "hash": "83d1c00e7754b97bd64fe070be4d174e45784d5993140915c0df708bb04ab793",
+    "hash": "614c3ae8ef7505c275f316b17a81b5371b9c24f14af714d8c4faf97a2c98bde3",
     "lastUpdated": "2026-09-19"
   },
   "/retail-dppt-swarm/": {
@@ -888,7 +888,7 @@
     "lastUpdated": "2026-10-18"
   },
   "/retail-hgss-starter/": {
-    "hash": "f03666b7cd152819ed9d79fdd91cf8328eac4f155e0814e08fe6989e1d8c358b",
+    "hash": "ae6bafacc9569c5d4ef11bf6b567cbb951d7520fb77cd8e1d1986ab8a6fbb873",
     "lastUpdated": "2026-09-28"
   },
   "/retail-hgss-swarm/": {
@@ -1648,7 +1648,7 @@
     "lastUpdated": "2026-10-28"
   },
   "/zh-retail-dppt-starter/": {
-    "hash": "c12931cea2f9b7c8093a374fd32a2b02c9bfded3b3e4eeed3e07d0db0edbceb8",
+    "hash": "fa2b026de5a88537cc1be445b806e1577286fcca99b7f71c833bcffb5563906e",
     "lastUpdated": "2026-04-10"
   },
   "/zh-retail-dppt-static/": {
@@ -1668,7 +1668,7 @@
     "lastUpdated": "2026-10-18"
   },
   "/zh-retail-hgss-starter/": {
-    "hash": "c12931cea2f9b7c8093a374fd32a2b02c9bfded3b3e4eeed3e07d0db0edbceb8",
+    "hash": "fa2b026de5a88537cc1be445b806e1577286fcca99b7f71c833bcffb5563906e",
     "lastUpdated": "2026-04-10"
   },
   "/zh-retail-hgss-swarm/": {

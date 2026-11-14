@@ -45,7 +45,16 @@ import { static4LeadSchema, getLeadOptions } from "../shared/leads";
 import { DpPt, Gen3GameVersions } from "~/types/games";
 import { getEncounters } from "~/rngToolsUi/gen4/encounters/wild";
 import { ivColumns } from "~/rngToolsUi/shared/ivColumns";
-import { BATTLE_RESULTS, TIMES, POKERADAR_ROUTES } from "./constants";
+import {
+  BATTLE_RESULTS,
+  TIMES,
+  POKERADAR_ROUTES,
+  TROPHY_GARDEN,
+  TROPHY_GARDEN_DP,
+  TROPHY_GARDEN_PT,
+  TROPHY_GARDEN_LEVEL,
+  TROPHY_GARDEN_SLOTS,
+} from "./constants";
 import { useSetAtom } from "jotai";
 import { useCurrentStep } from "~/components/stepper/state";
 import { selectedShinyPatchAtom } from "./state";
@@ -72,6 +81,9 @@ const Validator = z
     dualSlotGame: z.enum(Gen3GameVersions).nullable(),
     chainCount: z.number().int().min(0).max(1000),
     battleResult: z.enum(BATTLE_RESULTS),
+    replace: z.boolean(),
+    replacement1: z.enum(species),
+    replacement2: z.enum(species),
   })
   .extend(pkmFilterSchema.shape);
 
@@ -96,6 +108,9 @@ const initialValues: FormState = {
   dualSlotGame: null,
   chainCount: 1,
   battleResult: "Catch",
+  replace: false,
+  replacement1: "Clefairy",
+  replacement2: "Jigglypuff",
   ...getPkmFilterInitialValues(),
 };
 
@@ -114,15 +129,60 @@ type ResultRow = {
   lead: LeadAbility;
 } & Ivs;
 
-const getSpeciesEncounterSlots = (opts: FormState): number[] =>
-  getEncounters({
+type EncounterOpts = Pick<
+  FormState,
+  | "game"
+  | "route"
+  | "timeOfDay"
+  | "swarmActive"
+  | "dualSlotGame"
+  | "replace"
+  | "replacement1"
+  | "replacement2"
+>;
+
+// Route encounters, with the Trophy Garden slots replaced by the
+// chosen substitutes (if "Replace?" is enabled).
+const getFormEncounters = (opts: EncounterOpts) => {
+  const encounters = getEncounters({
     game: opts.game,
     location: opts.route,
     timeOfDay: opts.timeOfDay,
     swarmActive: opts.swarmActive,
     dualSlotCartridge: opts.dualSlotGame,
     radarActive: false,
-  }).flatMap((enc, slot) => (enc.species === opts.species ? [slot] : []));
+  });
+
+  if (opts.route !== TROPHY_GARDEN || !opts.replace) {
+    return encounters;
+  }
+
+  const [slot1, slot2] = TROPHY_GARDEN_SLOTS;
+  return encounters.map((enc, slot) => {
+    if (slot === slot1) {
+      return {
+        ...enc,
+        species: opts.replacement1,
+        minLevel: TROPHY_GARDEN_LEVEL,
+        maxLevel: TROPHY_GARDEN_LEVEL,
+      };
+    }
+    if (slot === slot2) {
+      return {
+        ...enc,
+        species: opts.replacement2,
+        minLevel: TROPHY_GARDEN_LEVEL,
+        maxLevel: TROPHY_GARDEN_LEVEL,
+      };
+    }
+    return enc;
+  });
+};
+
+const getSpeciesEncounterSlots = (opts: FormState): number[] =>
+  getFormEncounters(opts).flatMap((enc, slot) =>
+    enc.species === opts.species ? [slot] : [],
+  );
 
 const toResultRow = (result: RadarShinyPatchResult): ResultRow => {
   const spread = result.state.state;
@@ -145,29 +205,43 @@ const toResultRow = (result: RadarShinyPatchResult): ResultRow => {
 
 const FormContent = () => {
   const t = useActiveRouteTranslations();
-  const { game, route, species, timeOfDay, swarmActive, dualSlotGame } =
-    useWatch({
-      validationSchema: Validator,
-      names: {
-        game: true,
-        route: true,
-        species: true,
-        timeOfDay: true,
-        swarmActive: true,
-        dualSlotGame: true,
-      },
-    });
+  const {
+    game,
+    route,
+    species,
+    timeOfDay,
+    swarmActive,
+    dualSlotGame,
+    replace,
+    replacement1,
+    replacement2,
+  } = useWatch({
+    validationSchema: Validator,
+    names: {
+      game: true,
+      route: true,
+      species: true,
+      timeOfDay: true,
+      swarmActive: true,
+      dualSlotGame: true,
+      replace: true,
+      replacement1: true,
+      replacement2: true,
+    },
+  });
 
   const encounters =
     game == null || route == null || timeOfDay == null || swarmActive == null
       ? []
-      : getEncounters({
+      : getFormEncounters({
           game,
-          location: route,
+          route,
           timeOfDay,
           swarmActive,
-          dualSlotCartridge: dualSlotGame ?? null,
-          radarActive: false,
+          dualSlotGame: dualSlotGame ?? null,
+          replace: replace ?? false,
+          replacement1: replacement1 ?? initialValues.replacement1,
+          replacement2: replacement2 ?? initialValues.replacement2,
         });
 
   const encounterLevels = encounters
@@ -183,6 +257,10 @@ const FormContent = () => {
     label: formatSpeciesLabel(species),
     value: species,
   }));
+
+  const trophyGardenOptions = toOptions(
+    game === "Platinum" ? TROPHY_GARDEN_PT : TROPHY_GARDEN_DP,
+  );
 
   return (
     <>
@@ -220,6 +298,23 @@ const FormContent = () => {
           label="Route"
           options={sortBy(toOptions(POKERADAR_ROUTES), (opt) => opt.label)}
         />
+        {route === TROPHY_GARDEN && (
+          <FormSwitchField<FormState> name="replace" label="Replace?" />
+        )}
+        {route === TROPHY_GARDEN && replace && (
+          <FieldRow>
+            <FormSelectField<FormState>
+              name="replacement1"
+              label="Replacement 1 (slot 7)"
+              options={trophyGardenOptions}
+            />
+            <FormSelectField<FormState>
+              name="replacement2"
+              label="Replacement 2 (slot 6)"
+              options={trophyGardenOptions}
+            />
+          </FieldRow>
+        )}
         <FormSelectField<FormState>
           name="timeOfDay"
           label={t["Time"]}

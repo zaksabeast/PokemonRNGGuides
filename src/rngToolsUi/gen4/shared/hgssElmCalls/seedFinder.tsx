@@ -49,7 +49,7 @@ export const HgssElmCallSeedFinder = () => {
       getColumns={(t) => [
         ...getSeedTimeSearchColumns(t, { trackerId: "elm_call_select_seed" }),
         {
-          title: t["Elm Call Count"],
+          title: t.Calls,
           dataIndex: "elmCalls",
           render: (elmCalls: ElmCall[]) => elmCalls.join(", "),
         },
@@ -72,7 +72,7 @@ export const HgssElmCallSeedFinder = () => {
       rowKey="id"
       submitTrackerId="hit_elm_call_seed_search"
     >
-      <SeedTimeSearchFields filterItemCountLabel="Elm Call Count" />
+      <SeedTimeSearchFields filterItemCountLabel="Call Count" />
     </ToolForm>
   );
 };

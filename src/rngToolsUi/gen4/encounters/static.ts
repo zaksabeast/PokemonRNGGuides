@@ -91,15 +91,6 @@ const CommonDpptEncounters = {
     isFixedGender: true,
     method: "DpptJ",
   },
-
-  // Events
-  "manaphy-1": {
-    species: "Manaphy",
-    minLevel: 1,
-    maxLevel: 1,
-    isFixedGender: true,
-    method: "One",
-  },
 } as const satisfies Record<string, Encounter>;
 
 const DiamondEncounters = {
@@ -581,15 +572,6 @@ const CommonHgSsEncounters = {
   "giratina-1": {
     species: "Giratina_Origin",
     form: 1,
-    minLevel: 1,
-    maxLevel: 1,
-    isFixedGender: true,
-    method: "One",
-  },
-
-  // Events
-  "manaphy-1": {
-    species: "Manaphy",
     minLevel: 1,
     maxLevel: 1,
     isFixedGender: true,

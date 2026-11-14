@@ -5,7 +5,7 @@ import {
   type Static4Details,
 } from "../shared/state/target";
 import { gen4MarkersAtom } from "../shared/state/markers";
-import { gen4SetupAtom, getGen4AdvanceMethod } from "../shared/state/setup";
+import { gen4SetupAtom, getGen4ElmCallAdvances } from "../shared/state/setup";
 
 type ActiveStatic4Target = {
   target: Gen4Target;
@@ -32,15 +32,10 @@ export const useStatic4RemainingAdvances = (): number | null => {
     return null;
   }
 
-  const elmCallAdvances =
-    getGen4AdvanceMethod(setup) === "pokegearCall"
-      ? markers.elmCalls.length
-      : 0;
-
   return (
     targetAdvance +
     static4Target.details.advanceCalibration -
     static4Target.target.roamerAdvances -
-    elmCallAdvances
+    getGen4ElmCallAdvances(setup, markers.elmCalls)
   );
 };

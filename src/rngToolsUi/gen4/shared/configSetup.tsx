@@ -16,8 +16,6 @@ import {
   gen4SetupAtom,
   setGen4ConsoleAtom,
   setGen4GameAtom,
-  setHgssAdvanceMethodAtom,
-  type Gen4AdvanceMethod,
 } from "./state/setup";
 
 export const Gen4ConfigSetup = () => {
@@ -26,17 +24,11 @@ export const Gen4ConfigSetup = () => {
   const guideGames = useAtomValue(gen4GuideGamesAtom);
   const setGame = useSetAtom(setGen4GameAtom);
   const setConsole = useSetAtom(setGen4ConsoleAtom);
-  const setAdvanceMethod = useSetAtom(setHgssAdvanceMethodAtom);
 
   const consoleOptions: { label: string; value: Gen4Console }[] = [
     { label: t["NDS/DSi"], value: "NdsDsi" },
     { label: t["3DS (Normal Settings)"], value: "3dsNormalSettings" },
     { label: t["3DS (Alt Settings)"], value: "3dsAltSettings" },
-  ];
-
-  const advanceMethodOptions: { label: string; value: Gen4AdvanceMethod }[] = [
-    { label: t["Pokégear Calls"], value: "pokegearCall" },
-    { label: t["Chatot"], value: "chatot" },
   ];
 
   const consoleHelp = match(setup.console)
@@ -70,15 +62,6 @@ export const Gen4ConfigSetup = () => {
           onChange={setConsole}
           helperText={consoleHelp}
         />
-        {setup.group === "hgss" && (
-          <RadioField<Gen4AdvanceMethod>
-            label={t["Advance Method"]}
-            cellSize="word"
-            value={setup.advanceMethod}
-            options={advanceMethodOptions}
-            onChange={setAdvanceMethod}
-          />
-        )}
       </FormSection>
     </FormCard>
   );

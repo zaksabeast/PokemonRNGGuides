@@ -147,7 +147,7 @@ const Validator = z
 
 type FormState = z.infer<typeof Validator>;
 
-const initialValues: FormState = {
+const dpptInitialValues: FormState = {
   tid: 0,
   sid: 0,
   year: 2000,
@@ -161,6 +161,11 @@ const initialValues: FormState = {
   force_second: null,
   lead: "None",
   ...getPkmFilterInitialValues(),
+};
+
+const hgssInitialValues: FormState = {
+  ...dpptInitialValues,
+  min_advance: 15,
 };
 
 const roamerAdvancesColumn: ResultColumn<Result> = {
@@ -409,7 +414,7 @@ export const Static4Searcher = ({ honey = false }: Static4SearcherProps) => {
     <ToolForm<FormState, Result>
       columns={getColumns(isHgss)}
       results={results}
-      initialValues={initialValues}
+      initialValues={isHgss ? hgssInitialValues : dpptInitialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
       rowKey="key"

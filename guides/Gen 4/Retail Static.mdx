@@ -17,14 +17,34 @@
   variant: "retail"
   addedOn: "2026-05-31"
   orderPriority: 3
+- title: "HeartGold and SoulSilver Static RNG Guide"
+  navDrawerTitle: "Legend, Gift, and Fossil RNG"
+  description: "Learn how to RNG gift, legendary, fossil, NPC trade, and other static Pokémon in HeartGold and SoulSilver for perfect IVs, natures, and shinies."
+  slug: "retail-hgss-static"
+  category: "HeartGold and SoulSilver"
+  section: "pokemon_rng"
+  variant: "retail"
+  isRoughDraft: true
 ---
 
-<Gen4Reset games="dppt" />
+<ShowIf slugs={["retail-dppt-static", "retail-dppt-honey-pokemon"]}>
+  <Gen4Reset games="dppt" />
+</ShowIf>
+
+<ShowIf slug="retail-hgss-static">
+  <Gen4Reset games="hgss" />
+</ShowIf>
 
 > [!NOTE]
 > This guide is interactive and updates instructions based on your settings!
 
 <ShowIf slug="retail-dppt-static">
+
+<Gist>Get shiny legend and gift Pokémon with perfect IVs and natures.</Gist>
+
+</ShowIf>
+
+<ShowIf slug="retail-hgss-static">
 
 <Gist>Get shiny legend and gift Pokémon with perfect IVs and natures.</Gist>
 
@@ -52,6 +72,20 @@ Choose the game and console you're playing below then continue to the next step.
 
 <Gen4ConfigSetup />
 
+<Gen4ShowIf game="hgss">
+
+### Story progress
+
+Before you start, you need to do one of these:
+
+- Defeat Juggler Irwin on Route 35.
+- Do **all three** of these:
+  1. Hatch the Togepi egg and show Togepi to Professor Elm.
+  2. Bring a Pokémon with Pokérus to a Pokémon Center.
+  3. Step into the Kanto region.
+
+</Gen4ShowIf>
+
 </Step>
 
 <Step step={1}>
@@ -61,7 +95,7 @@ Choose the game and console you're playing below then continue to the next step.
 1. Fill out the tool below to find a Pokémon that suits you.
 2. If you can't find a Pokémon you like, you can increase the min and max delays. This will increase the time to get the Pokémon.
 
-<ShowIf slug="retail-dppt-static">
+<ShowIf slugs={["retail-dppt-static", "retail-hgss-static"]}>
   <Static4Searcher />
 </ShowIf>
 
@@ -75,32 +109,52 @@ Choose the game and console you're playing below then continue to the next step.
 
 ## Prepare the save
 
-1. If you're on Platinum, set your console date to **12/31/2099** on NDS or **12/31/2050** on 3DS.
-2. Your party should have:
+<Gen4ShowIf game="dppt">
+
+If you're on Platinum, set your console date to **12/31/2099** on NDS or **12/31/2050** on 3DS.
+
+</Gen4ShowIf>
+
+1. Your party should have:
+
+   <Gen4ShowIf game="dppt">
+
+   - At least one Chatot with Chatter (two is optimal).
+
+   </Gen4ShowIf>
+
+   <Gen4ShowIf game="hgss">
+
+   - Optionally, at least one Chatot with Chatter (two is optimal) if you want to advance the RNG with Chatot instead of Pokégear calls.
+
+   </Gen4ShowIf>
 
    <Static4ShowIfLead lead="None">
 
-   - At least one Chatot with Chatter (two is optimal).
    - A lead Pokémon without sync or cute charm.
 
    </Static4ShowIfLead>
 
    <Static4ShowIfLead lead="Cutecharm">
 
-   - At least one Chatot with Chatter (two is optimal).
    - A lead Pokémon with the Cute Charm ability for your trainer's ID
 
    </Static4ShowIfLead>
 
    <Static4ShowIfLead lead="Synchronize">
 
-   - At least one Chatot with Chatter (two is optimal).
    - A lead Pokémon with the Synchronize ability and <Static4SyncNature /> nature.
 
    </Static4ShowIfLead>
 
-3. Switch your Poketch to the Coin Flip app.
-4. Save in front of the Pokémon you want to RNG. <ShowIf slug="retail-dppt-honey-pokemon">If the area is raining, save in the nearest town instead.</ShowIf>
+2. <Gen4ShowIf game="dppt">
+     Switch your Poketch to the Coin Flip app.
+   </Gen4ShowIf>
+   <Gen4ShowIf game="hgss">
+     Make sure you have the Pokégear so you can call Professor Elm or Juggler
+     Irwin.
+   </Gen4ShowIf>
+3. Save in front of the Pokémon you want to RNG. <ShowIf slug="retail-dppt-honey-pokemon">If the area is raining, save in the nearest town instead.</ShowIf>
 
 ## Prepare the console
 
@@ -141,19 +195,33 @@ Choose the game and console you're playing below then continue to the next step.
 ## Calibrate the seed
 
 1. Click "Generate" below to generate a list of possible seeds you hit.
-2. Flip the coin in the Poketch and click the heads or tails buttons below to filter results.
+2. <Gen4ShowIf game="dppt">
+     Flip the coin in the Poketch and click the heads or tails buttons below to
+     filter results.
+   </Gen4ShowIf>
+   <Gen4ShowIf game="hgss">
+     **Immediately** open the menu as fast as possible when the save loads to
+     stop NPCs from moving. Then call Professor Elm or Juggler Irwin with the
+     Pokégear and click the button below that matches what they talk about to
+     filter results.
+   </Gen4ShowIf>
 3. If you have one result left and it isn't your target seed, click "Calibrate".
 4. Try to hit your target again.
 5. If the "Flip Delay" column is checked for the Pokémon you hit, take one of these actions:
-   - For **Any game**, insert a GBA cart
-   - For **HeartGold and SoulSilver**, use the touch screen to press the down and up arrows on the continue screen.
-   - For **Diamond, Pearl, and Platinum**, click "New Game", then press `B` to return to the continue screen.
+   - Insert a GBA cart.
+   - <Gen4ShowIf game="hgss">
+       Use the touch screen to press the down and up arrows on the continue
+       screen.
+     </Gen4ShowIf>
+     <Gen4ShowIf game="dppt">
+       Click "New Game", then press `B` to return to the continue screen.
+     </Gen4ShowIf>
    - If you've flipped the delay, you need to keep flipping it every time.
 
 > [!TIP]
 > If you don't see your seed, increase the delay and second offsets and try again.
 
-<DpptCoinFlipSeedCalibrator />
+<Gen4SeedCalibrator />
 
 </Step>
 
@@ -179,13 +247,36 @@ You can skip this if you can open/close your party fast enough to avoid NPC nois
 
 ## Get your Pokémon
 
-<ShowIf slug="retail-dppt-static">
+<ShowIf slugs={["retail-dppt-static", "retail-hgss-static"]}>
 
 Follow these steps once you've hit your target seed.
 
-1. **Immediately** open your party menu as fast as possible when the save loads.
-2. Open Chatot's summary screen **<Static4RemainingAdvances />** times to advance the RNG. Verify the Chatter pitches below.
+<Gen4ShowIf game="hgss">
+
+Choose whether you'll advance the RNG with Pokégear calls or Chatot.
+
+<Gen4AdvanceMethodSetup />
+
+</Gen4ShowIf>
+
+<Gen4ShowIf advanceMethod="chatot">
+
+1. <Gen4ShowIf game="dppt">
+     **Immediately** open your party menu as fast as possible when the save
+     loads.
+   </Gen4ShowIf>
+   <Gen4ShowIf game="hgss">Open your party menu.</Gen4ShowIf>
+2. Open Chatot's summary screen and enter the Chatter pitches below until you're 1 advance before your target.
 3. Exit the party and catch or receive your target Pokémon.
+
+</Gen4ShowIf>
+
+<Gen4ShowIf advanceMethod="pokegearCall">
+
+1. Call Professor Elm or Juggler Irwin with the Pokégear and enter their responses below until you're 1 advance before your target.
+2. Catch or receive your target Pokémon.
+
+</Gen4ShowIf>
 
 </ShowIf>
 
@@ -205,7 +296,7 @@ Follow these steps once you've hit your target seed and quieted the NPCs.
 
 </ShowIf>
 
-<Gen4ChatterFilter />
+<Gen4LcrngAdvanceFilter />
 
 </Step>
 
@@ -213,11 +304,11 @@ Follow these steps once you've hit your target seed and quieted the NPCs.
 
 ### Calibrate Advances
 
-Use this if you didn't get your Pokémon after advancing the correct number of times and verifying Chatter pitches.
+Use this if you didn't get your Pokémon after advancing the correct number of times and verifying <Gen4ShowIf advanceMethod="chatot">Chatter pitches</Gen4ShowIf><Gen4ShowIf advanceMethod="pokegearCall">Pokégear call responses</Gen4ShowIf>.
 
 1. Check your Pokémon stats.
 2. Fill out the form below with the stats of the Pokémon you caught and click "Generate".
-3. Click "Calibrate Advance" to adjust your Chatot summary count, or use the "Calibrate Timer" to adjust your seed timing.
+3. Click "Calibrate Advance" to adjust your <Gen4ShowIf advanceMethod="chatot">Chatot summary</Gen4ShowIf><Gen4ShowIf advanceMethod="pokegearCall">Pokégear call</Gen4ShowIf> count, or use the "Calibrate Timer" to adjust your seed timing.
 4. Try to hit your target again.
 
 > [!NOTE]

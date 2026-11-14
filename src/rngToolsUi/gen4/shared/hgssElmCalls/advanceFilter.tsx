@@ -28,7 +28,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
     dataIndex: "advance",
   },
   {
-    title: t["Elm Call"],
+    title: t.Call,
     dataIndex: "elm_call",
     disableVerticalPadding: true,
     render: (elmCall: ElmCall) => (
@@ -88,7 +88,7 @@ export const HgssElmCallAdvanceFilterBase = ({
               showIcon
               type="error"
               title="No matches found"
-              description="An Elm Call may be incorrect, or the advance range may be too small. Try increasing the advance range."
+              description="A call may be incorrect, or the advance range may be too small. Try increasing the advance range."
             />
           )}
         </>

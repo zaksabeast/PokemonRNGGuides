@@ -410,10 +410,6 @@ const tools = {
     () => import("~/rngToolsUi/gen4/shared/dpptCoinFlip/seedCalibrator"),
     (mod) => mod.DpptCoinFlipSeedCalibrator,
   ),
-  Static4RemainingAdvances: lazyLoad(
-    () => import("~/rngToolsUi/gen4/static/stateText"),
-    (mod) => mod.Static4RemainingAdvances,
-  ),
   Static4SyncNature: lazyLoad(
     () => import("~/rngToolsUi/gen4/static/stateText"),
     (mod) => mod.Static4SyncNature,
@@ -497,6 +493,10 @@ const tools = {
   Gen4ConfigSetup: lazyLoad(
     () => import("~/rngToolsUi/gen4/shared/configSetup"),
     (mod) => mod.Gen4ConfigSetup,
+  ),
+  Gen4AdvanceMethodSetup: lazyLoad(
+    () => import("~/rngToolsUi/gen4/shared/advanceMethodSetup"),
+    (mod) => mod.Gen4AdvanceMethodSetup,
   ),
   Gen4EmbeddedTimer: lazyLoad(
     () => import("~/rngToolsUi/gen4/shared/timer"),

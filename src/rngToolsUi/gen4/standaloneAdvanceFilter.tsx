@@ -17,7 +17,7 @@ export const StandaloneGen4AdvanceFilter = () => {
 
   const filterModeOptions: RadioOption<FilterMode>[] = [
     { label: t["Chatot Pitches"], value: "chatot" },
-    { label: t["Elm Calls"], value: "elm" },
+    { label: t["Pokégear Calls"], value: "elm" },
   ];
 
   const filter =

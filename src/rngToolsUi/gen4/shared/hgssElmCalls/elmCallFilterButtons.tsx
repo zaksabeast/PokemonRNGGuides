@@ -30,9 +30,9 @@ const labels: Record<Caller, Record<CallType, string>> = {
   },
   irwin: {
     // eslint-disable-next-line id-length
-    E: "Glad (E)",
+    K: "Glad (K)",
     // eslint-disable-next-line id-length
-    K: "Escapades (K)",
+    E: "Escapades (E)",
     // eslint-disable-next-line id-length
     P: "Questions (P)",
   },
@@ -84,7 +84,7 @@ export const ElmCallFilterButtons = ({
         </OutlinedButton>
       </SequenceButtons>
       <TextField
-        label={t["Elm Calls"]}
+        label={t.Calls}
         placeholder="EKP"
         errorMessage={getErrorMessage({
           hasResults,

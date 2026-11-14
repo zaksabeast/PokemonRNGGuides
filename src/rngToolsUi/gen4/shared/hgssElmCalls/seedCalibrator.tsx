@@ -83,7 +83,7 @@ export const HgssElmCallSeedCalibrator = () => {
       getColumns={(t) => [
         ...getCalibrationColumns(t),
         {
-          title: t["Elm Calls"],
+          title: t.Calls,
           dataIndex: "elmCalls",
           render: (elmCalls: ElmCall[]) => elmCalls.join(", "),
         },

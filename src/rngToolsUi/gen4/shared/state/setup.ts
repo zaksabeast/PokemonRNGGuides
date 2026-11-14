@@ -7,7 +7,7 @@ import {
   type Gen4GameVersion,
   type HgSs,
 } from "~/types/games";
-import type { Gen4Console } from "../../gen4types";
+import type { Gen4Console } from "~/rngToolsUi/gen4/gen4types";
 
 export type Gen4AdvanceMethod = "pokegearCall" | "chatot";
 
@@ -50,9 +50,15 @@ export const getGen4Roamers = (setup: Gen4Setup): HgssRoamers => {
   return getHgssSetup(setup).roamers;
 };
 
-// DPPt can only advance with Chatot
 export const getGen4AdvanceMethod = (setup: Gen4Setup): Gen4AdvanceMethod => {
   return setup.group === "hgss" ? setup.advanceMethod : "chatot";
+};
+
+export const getGen4ElmCallAdvances = (
+  setup: Gen4Setup,
+  elmCalls: string,
+): number => {
+  return setup.group === "hgss" ? elmCalls.length : 0;
 };
 
 const setupAtom = atom(createGen4Setup(Gen4GameVersions[0], "NdsDsi"));

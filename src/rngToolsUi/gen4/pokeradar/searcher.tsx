@@ -57,6 +57,7 @@ import {
 import { useSetAtom } from "jotai";
 import { useCurrentStep } from "~/components/stepper/state";
 import { selectedShinyPatchAtom } from "./state";
+import { PokemonIcon } from "~/components/pokemonIcon";
 
 const LIMIT = 1000;
 
@@ -238,6 +239,7 @@ const FormContent = () => {
   const speciesOptions = uniqueSpecies.map(({ species }) => ({
     label: formatSpeciesLabel(species),
     value: species,
+    icon: <PokemonIcon species={species} size={24} />,
   }));
 
   const trophyGardenOptions = getGen4SpeciesOptions().byFilteredName(

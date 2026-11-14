@@ -8,6 +8,7 @@ import {
 } from "~/rngTools";
 import {
   FormSection,
+  FormNumberField,
   FormSelectField,
   FormSwitchField,
   PokeblockField,
@@ -68,6 +69,7 @@ const Validator = z
     requiresWhiteFlute: z.boolean(),
     safariPokeblock: pokeblockSchema,
     feebasCycles: z.array(z.number().int().min(0).max(0xffffffff)),
+    feebasVblankCount: z.number().int().min(0).max(10),
   })
   .refine(
     ({ feebasState, feebasCycles }) =>
@@ -116,6 +118,7 @@ const getInitialValues = (): FormState => {
     requiresWhiteFlute: false,
     safariPokeblock: null,
     feebasCycles: [],
+    feebasVblankCount: 0,
   };
 };
 
@@ -136,7 +139,8 @@ const convertFormStateValuesToTargetSetup = (
         : 0,
       after: values.targetAdvance,
     },
-    feebasVblankCount: values.feebasVblankCount,
+    feebasVblankCount:
+      values.feebasState === "OnFeebasTile" ? values.feebasVblankCount : null,
     targetMethod: values.targetMethod,
     requiresWhiteFlute:
       values.action === "RockSmash" && values.requiresWhiteFlute,
@@ -148,6 +152,7 @@ const convertFormStateValuesToTargetSetup = (
 type FieldsProps = {
   mapId: string;
   action: Wild3Action;
+  feebasState: Wild3FeebasState;
   usingPaintingReseeding: boolean;
   equivalentInitialAdvs: number;
 };
@@ -155,6 +160,7 @@ type FieldsProps = {
 const Fields = ({
   mapId,
   action,
+  feebasState,
   usingPaintingReseeding,
   equivalentInitialAdvs,
 }: FieldsProps) => {
@@ -229,6 +235,13 @@ const Fields = ({
             label="Feebas fishing spot"
             canOnlySelectOne
           />
+          {feebasState === "OnFeebasTile" && (
+            <FormNumberField<FormState>
+              name="feebasVblankCount"
+              label="VBlank count during Feebas tile check"
+              numType="decimal"
+            />
+          )}
         </>
       )}
       {roamer_states.length > 1 && (
@@ -266,6 +279,9 @@ export const Wild3TargetSetupInputFields = ({
   });
   const feebasCycles = useWatch_UNSAFE<FormState, "feebasCycles">({
     name: "feebasCycles",
+  });
+  const feebasVblankCount = useWatch_UNSAFE<FormState, "feebasVblankCount">({
+    name: "feebasVblankCount",
   });
   const massOutbreakState = useWatch_UNSAFE<FormState, "massOutbreakState">({
     name: "massOutbreakState",
@@ -308,12 +324,14 @@ export const Wild3TargetSetupInputFields = ({
     targetFrameBeforePainting,
     usingPaintingReseeding,
     feebasCycles,
+    feebasVblankCount,
   ]);
 
   return (
     <Fields
       mapId={map}
       action={action}
+      feebasState={feebasState}
       usingPaintingReseeding={usingPaintingReseeding}
       equivalentInitialAdvs={equivalentInitialAdvs}
     />

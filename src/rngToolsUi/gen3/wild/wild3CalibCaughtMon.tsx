@@ -61,7 +61,10 @@ export const createWild3SearcherOptions = async (
     },
   ];
 
-  if (targetSetup.feebasState === "OnFeebasTile") {
+  if (
+    targetSetup.feebasState === "OnFeebasTile" &&
+    targetSetup.feebasCycles != null
+  ) {
     map_setups = withFeebasCycleDistributions(
       map_setups,
       getAllFeebasCycleDistributions(targetSetup.feebasCycles),

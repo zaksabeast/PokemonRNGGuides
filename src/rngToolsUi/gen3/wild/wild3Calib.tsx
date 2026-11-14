@@ -318,7 +318,7 @@ export const Wild3Calib = ({
       },
       {
         label: "Fishing spot",
-        value: (
+        value: targetSetupProp.feebasCycles != null && (
           <FeebasTileVisualizer
             selectedTileCycle={targetSetupProp.feebasCycles}
           />
@@ -326,7 +326,7 @@ export const Wild3Calib = ({
         show:
           targetSetupProp.map === FEEBAS_MAP &&
           isFishingAction(targetSetupProp.action) &&
-          targetSetupProp.feebasCycles !== 0,
+          targetSetupProp.feebasCycles !== null,
       },
     ];
 

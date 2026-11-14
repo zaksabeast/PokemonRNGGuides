@@ -393,7 +393,9 @@ const setupInfoToTargetSetup = (
     map: setupInfo.mapId,
     action: setupInfo.action,
     feebasState: setupInfo.feebas_state,
+    //NO_PROD
     feebasCycles: setupInfo.feebas_cycles,
+    feebasVblankCount: setupInfo.feebas_vblank_count ?? null,
     roamerState: setupInfo.roamer_state,
     massOutbreakState: setupInfo.mass_outbreak_state,
     targetPaintingAdvs: {

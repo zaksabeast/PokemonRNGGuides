@@ -1,0 +1,4497 @@
+[
+    0,
+    1000,
+    {
+        "tid": 0,
+        "sid": 0,
+        "map_idx": 0,
+        "action": "OldRod",
+        "methods": [
+            "Wild1",
+            "Wild2",
+            "Wild3",
+            "Wild4",
+            "Wild5"
+        ],
+        "lead": "Vanilla",
+        "filter": {
+            "shiny": "Any",
+            "nature": null,
+            "gender": null,
+            "min_ivs": {
+                "hp": 0,
+                "atk": 0,
+                "def": 0,
+                "spa": 0,
+                "spd": 0,
+                "spe": 0
+            },
+            "max_ivs": {
+                "hp": 31,
+                "atk": 31,
+                "def": 31,
+                "spa": 31,
+                "spd": 31,
+                "spe": 31
+            },
+            "ability": null,
+            "hidden_power": {
+                "active": false,
+                "pokemon_types": [],
+                "min_bp": 30,
+                "max_bp": 70
+            }
+        },
+        "gen3_filter": {
+            "max_size": false,
+            "pid_speed": {
+                "active": false,
+                "min_cycle_count": 18,
+                "max_cycle_count": 900
+            },
+            "lvl": null,
+            "species": null
+        },
+        "using_white_flute": false,
+        "roamer_state": "Inactive",
+        "mass_outbreak_state": "Inactive",
+        "feebas_state": "OnFeebasTile",
+        "feebas_vblank_count": 3,
+        "cycle_opts": {
+            "LikelihoodForLead": {
+                "min_max_initial_cycle": [
+                    49072,
+                    141272
+                ],
+                "feebas_min_max_initial_cycle": [
+                    0,
+                    0
+                ],
+                "lead_cycle_spd": 775
+            }
+        },
+        "safari_pokeblock": null
+    },
+    {
+        "map_id": "MAP_ROUTE119",
+        "map_internal_idx": 33,
+        "possible_weather_by_action": {
+            "SweetScentLand": [
+                "Sunny",
+                "Rain",
+                "Thunderstorm"
+            ],
+            "SweetScentWater": [
+                "Sunny",
+                "Rain",
+                "Thunderstorm"
+            ],
+            "OldRod": [
+                "Sunny",
+                "Rain",
+                "Thunderstorm"
+            ],
+            "GoodRod": [
+                "Sunny",
+                "Rain",
+                "Thunderstorm"
+            ],
+            "SuperRod": [
+                "Sunny",
+                "Rain",
+                "Thunderstorm"
+            ],
+            "RockSmash": []
+        },
+        "possible_playing_song_by_action": {
+            "SweetScentLand": [
+                "MapSong"
+            ],
+            "SweetScentWater": [
+                "SurfSong"
+            ],
+            "OldRod": [
+                "SurfSong"
+            ],
+            "GoodRod": [
+                "SurfSong"
+            ],
+            "SuperRod": [
+                "SurfSong"
+            ],
+            "RockSmash": []
+        },
+        "initial_cycle_distrs": [
+            {
+                "action": "SweetScentLand",
+                "weather": "Sunny",
+                "playing_song": "MapSong",
+                "min": 46615,
+                "max": 74915,
+                "distribution": [
+                    {
+                        "cycle": 46615,
+                        "probability": 0
+                    },
+                    {
+                        "cycle": 47057.1875,
+                        "probability": 0.0007734995779073401
+                    },
+                    {
+                        "cycle": 47499.375,
+                        "probability": 0.0015610547501823347
+                    },
+                    {
+                        "cycle": 47941.5625,
+                        "probability": 0.00234860992245733
+                    },
+                    {
+                        "cycle": 48383.75,
+                        "probability": 0.003136165094732325
+                    },
+                    {
+                        "cycle": 48825.9375,
+                        "probability": 0.0039237202670073185
+                    },
+                    {
+                        "cycle": 49268.125,
+                        "probability": 0.004711275439282314
+                    },
+                    {
+                        "cycle": 49710.3125,
+                        "probability": 0.005498830611557309
+                    },
+                    {
+                        "cycle": 50152.5,
+                        "probability": 0.006286385783832302
+                    },
+                    {
+                        "cycle": 50594.6875,
+                        "probability": 0.007073940956107298
+                    },
+                    {
+                        "cycle": 51036.875,
+                        "probability": 0.011066369844540198
+                    },
+                    {
+                        "cycle": 51479.0625,
+                        "probability": 0.015758113966431373
+                    },
+                    {
+                        "cycle": 51921.25,
+                        "probability": 0.02044985808832254
+                    },
+                    {
+                        "cycle": 52363.4375,
+                        "probability": 0.02514160221021372
+                    },
+                    {
+                        "cycle": 52805.625,
+                        "probability": 0.029969475404380816
+                    },
+                    {
+                        "cycle": 53247.8125,
+                        "probability": 0.037197047186706335
+                    },
+                    {
+                        "cycle": 53690,
+                        "probability": 0.04442464301914521
+                    },
+                    {
+                        "cycle": 54132.1875,
+                        "probability": 0.05165223885158409
+                    },
+                    {
+                        "cycle": 54574.375,
+                        "probability": 0.058879834684022955
+                    },
+                    {
+                        "cycle": 55016.5625,
+                        "probability": 0.06610743051646185
+                    },
+                    {
+                        "cycle": 55458.75,
+                        "probability": 0.07333502634890073
+                    },
+                    {
+                        "cycle": 55900.9375,
+                        "probability": 0.10334332289203606
+                    },
+                    {
+                        "cycle": 56343.125,
+                        "probability": 0.13733488491155685
+                    },
+                    {
+                        "cycle": 56785.3125,
+                        "probability": 0.16486386861183294
+                    },
+                    {
+                        "cycle": 57227.5,
+                        "probability": 0.19279255235217765
+                    },
+                    {
+                        "cycle": 57669.6875,
+                        "probability": 0.24093326168575835
+                    },
+                    {
+                        "cycle": 58111.875,
+                        "probability": 0.27417941882818503
+                    },
+                    {
+                        "cycle": 58554.0625,
+                        "probability": 0.30939140703833395
+                    },
+                    {
+                        "cycle": 58996.25,
+                        "probability": 0.35336391101605724
+                    },
+                    {
+                        "cycle": 59438.4375,
+                        "probability": 0.39197846538060055
+                    },
+                    {
+                        "cycle": 59880.625,
+                        "probability": 0.44536293485579354
+                    },
+                    {
+                        "cycle": 60322.8125,
+                        "probability": 0.5339779934046198
+                    },
+                    {
+                        "cycle": 60765,
+                        "probability": 0.6220848608803671
+                    },
+                    {
+                        "cycle": 61207.1875,
+                        "probability": 0.7056158123610985
+                    },
+                    {
+                        "cycle": 61649.375,
+                        "probability": 0.7865964819626514
+                    },
+                    {
+                        "cycle": 62091.5625,
+                        "probability": 0.849043962254211
+                    },
+                    {
+                        "cycle": 62533.75,
+                        "probability": 0.8801576318785099
+                    },
+                    {
+                        "cycle": 62975.9375,
+                        "probability": 0.8935892475008769
+                    },
+                    {
+                        "cycle": 63418.125,
+                        "probability": 0.9070208631232438
+                    },
+                    {
+                        "cycle": 63860.3125,
+                        "probability": 0.9204524787456106
+                    },
+                    {
+                        "cycle": 64302.5,
+                        "probability": 0.9338840943679779
+                    },
+                    {
+                        "cycle": 64744.6875,
+                        "probability": 0.9427098963722546
+                    },
+                    {
+                        "cycle": 65186.875,
+                        "probability": 0.9483322075729174
+                    },
+                    {
+                        "cycle": 65629.0625,
+                        "probability": 0.95395451877358
+                    },
+                    {
+                        "cycle": 66071.25,
+                        "probability": 0.9595768299742425
+                    },
+                    {
+                        "cycle": 66513.4375,
+                        "probability": 0.9651991411749051
+                    },
+                    {
+                        "cycle": 66955.625,
+                        "probability": 0.9708214523755677
+                    },
+                    {
+                        "cycle": 67397.8125,
+                        "probability": 0.9762528467708248
+                    },
+                    {
+                        "cycle": 67840,
+                        "probability": 0.9776549480110648
+                    },
+                    {
+                        "cycle": 68282.1875,
+                        "probability": 0.9790562888615291
+                    },
+                    {
+                        "cycle": 68724.375,
+                        "probability": 0.9804576297119929
+                    },
+                    {
+                        "cycle": 69166.5625,
+                        "probability": 0.9818589705624571
+                    },
+                    {
+                        "cycle": 69608.75,
+                        "probability": 0.9832603114129211
+                    },
+                    {
+                        "cycle": 70050.9375,
+                        "probability": 0.9846616522633855
+                    },
+                    {
+                        "cycle": 70493.125,
+                        "probability": 0.9860629931138494
+                    },
+                    {
+                        "cycle": 70935.3125,
+                        "probability": 0.9874643339643137
+                    },
+                    {
+                        "cycle": 71377.5,
+                        "probability": 0.9888656748147775
+                    },
+                    {
+                        "cycle": 71819.6875,
+                        "probability": 0.9902670156652418
+                    },
+                    {
+                        "cycle": 72261.875,
+                        "probability": 0.991668356515706
+                    },
+                    {
+                        "cycle": 72704.0625,
+                        "probability": 0.9930696973661702
+                    },
+                    {
+                        "cycle": 73146.25,
+                        "probability": 0.9944710382166342
+                    },
+                    {
+                        "cycle": 73588.4375,
+                        "probability": 0.9958723790670982
+                    },
+                    {
+                        "cycle": 74030.625,
+                        "probability": 0.9972737199175626
+                    },
+                    {
+                        "cycle": 74472.8125,
+                        "probability": 0.9986750607680264
+                    },
+                    {
+                        "cycle": 74915,
+                        "probability": 1
+                    }
+                ],
+                "feebas_vblank_count_probability": 1
+            },
+            {
+                "action": "SweetScentLand",
+                "weather": "Rain",
+                "playing_song": "MapSong",
+                "min": 56753,
+                "max": 76229,
+                "distribution": [
+                    {
+                        "cycle": 56753,
+                        "probability": 0
+                    },
+                    {
+                        "cycle": 57057.3125,
+                        "probability": 0.0014168052284203318
+                    },
+                    {
+                        "cycle": 57361.625,
+                        "probability": 0.002859866973324713
+                    },
+                    {
+                        "cycle": 57665.9375,
+                        "probability": 0.004302928718229094
+                    },
+                    {
+                        "cycle": 57970.25,
+                        "probability": 0.0057459904631334754
+                    },
+                    {
+                        "cycle": 58274.5625,
+                        "probability": 0.007189052208037857
+                    },
+                    {
+                        "cycle": 58578.875,
+                        "probability": 0.00863211395294224
+                    },
+                    {
+                        "cycle": 58883.1875,
+                        "probability": 0.010075175697846621
+                    },
+                    {
+                        "cycle": 59187.5,
+                        "probability": 0.011518237442751001
+                    },
+                    {
+                        "cycle": 59491.8125,
+                        "probability": 0.012961299187655383
+                    },
+                    {
+                        "cycle": 59796.125,
+                        "probability": 0.017271181985615815
+                    },
+                    {
+                        "cycle": 60100.4375,
+                        "probability": 0.02404721014059189
+                    },
+                    {
+                        "cycle": 60404.75,
+                        "probability": 0.03082323829556797
+                    },
+                    {
+                        "cycle": 60709.0625,
+                        "probability": 0.04006123343805817
+                    },
+                    {
+                        "cycle": 61013.375,
+                        "probability": 0.06254469230064127
+                    },
+                    {
+                        "cycle": 61317.6875,
+                        "probability": 0.09975186444348078
+                    },
+                    {
+                        "cycle": 61622,
+                        "probability": 0.13984499481881366
+                    },
+                    {
+                        "cycle": 61926.3125,
+                        "probability": 0.18606310314215146
+                    },
+                    {
+                        "cycle": 62230.625,
+                        "probability": 0.2573817092317577
+                    },
+                    {
+                        "cycle": 62534.9375,
+                        "probability": 0.3417542658404764
+                    },
+                    {
+                        "cycle": 62839.25,
+                        "probability": 0.4295188767963034
+                    },
+                    {
+                        "cycle": 63143.5625,
+                        "probability": 0.5216511053154778
+                    },
+                    {
+                        "cycle": 63447.875,
+                        "probability": 0.6220260282920219
+                    },
+                    {
+                        "cycle": 63752.1875,
+                        "probability": 0.7194585021654649
+                    },
+                    {
+                        "cycle": 64056.5,
+                        "probability": 0.8051889078071192
+                    },
+                    {
+                        "cycle": 64360.8125,
+                        "probability": 0.8581078898565929
+                    },
+                    {
+                        "cycle": 64665.125,
+                        "probability": 0.8926908583416379
+                    },
+                    {
+                        "cycle": 64969.4375,
+                        "probability": 0.9116943751182548
+                    },
+                    {
+                        "cycle": 65273.75,
+                        "probability": 0.9235817111353545
+                    },
+                    {
+                        "cycle": 65578.0625,
+                        "probability": 0.931982290497834
+                    },
+                    {
+                        "cycle": 65882.375,
+                        "probability": 0.936958309432405
+                    },
+                    {
+                        "cycle": 66186.6875,
+                        "probability": 0.9419343283669759
+                    },
+                    {
+                        "cycle": 66491,
+                        "probability": 0.946910347301547
+                    },
+                    {
+                        "cycle": 66795.3125,
+                        "probability": 0.9518863662361181
+                    },
+                    {
+                        "cycle": 67099.625,
+                        "probability": 0.956862385170689
+                    },
+                    {
+                        "cycle": 67403.9375,
+                        "probability": 0.96183840410526
+                    },
+                    {
+                        "cycle": 67708.25,
+                        "probability": 0.9646235254580144
+                    },
+                    {
+                        "cycle": 68012.5625,
+                        "probability": 0.9668412424763215
+                    },
+                    {
+                        "cycle": 68316.875,
+                        "probability": 0.9690589594946286
+                    },
+                    {
+                        "cycle": 68621.1875,
+                        "probability": 0.9712766765129356
+                    },
+                    {
+                        "cycle": 68925.5,
+                        "probability": 0.9734943935312428
+                    },
+                    {
+                        "cycle": 69229.8125,
+                        "probability": 0.9757121105495499
+                    },
+                    {
+                        "cycle": 69534.125,
+                        "probability": 0.977929827567857
+                    },
+                    {
+                        "cycle": 69838.4375,
+                        "probability": 0.9801475445861642
+                    },
+                    {
+                        "cycle": 70142.75,
+                        "probability": 0.982365261604471
+                    },
+                    {
+                        "cycle": 70447.0625,
+                        "probability": 0.9845829786227781
+                    },
+                    {
+                        "cycle": 70751.375,
+                        "probability": 0.9868006956410853
+                    },
+                    {
+                        "cycle": 71055.6875,
+                        "probability": 0.9890184126593925
+                    },
+                    {
+                        "cycle": 71360,
+                        "probability": 0.9912361296776994
+                    },
+                    {
+                        "cycle": 71664.3125,
+                        "probability": 0.9934538466960064
+                    },
+                    {
+                        "cycle": 71968.625,
+                        "probability": 0.9956715637143134
+                    },
+                    {
+                        "cycle": 72272.9375,
+                        "probability": 0.9961755521329283
+                    },
+                    {
+                        "cycle": 72577.25,
+                        "probability": 0.996471721577457
+                    },
+                    {
+                        "cycle": 72881.5625,
+                        "probability": 0.9967678910219854
+                    },
+                    {
+                        "cycle": 73185.875,
+                        "probability": 0.997064060466514
+                    },
+                    {
+                        "cycle": 73490.1875,
+                        "probability": 0.9973602299110425
+                    },
+                    {
+                        "cycle": 73794.5,
+                        "probability": 0.9976563993555713
+                    },
+                    {
+                        "cycle": 74098.8125,
+                        "probability": 0.9979525688000996
+                    },
+                    {
+                        "cycle": 74403.125,
+                        "probability": 0.998248738244628
+                    },
+                    {
+                        "cycle": 74707.4375,
+                        "probability": 0.9985449076891566
+                    },
+                    {
+                        "cycle": 75011.75,
+                        "probability": 0.9988410771336852
+                    },
+                    {
+                        "cycle": 75316.0625,
+                        "probability": 0.9991372465782137
+                    },
+                    {
+                        "cycle": 75620.375,
+                        "probability": 0.9994334160227425
+                    },
+                    {
+                        "cycle": 75924.6875,
+                        "probability": 0.9997295854672709
+                    },
+                    {
+                        "cycle": 76229,
+                        "probability": 1
+                    }
+                ],
+                "feebas_vblank_count_probability": 1
+            },
+            {
+                "action": "SweetScentLand",
+                "weather": "Thunderstorm",
+                "playing_song": "MapSong",
+                "min": 56896,
+                "max": 76356,
+                "distribution": [
+                    {
+                        "cycle": 56896,
+                        "probability": 0
+                    },
+                    {
+                        "cycle": 57200.0625,
+                        "probability": 0.0013701476605075848
+                    },
+                    {
+                        "cycle": 57504.125,
+                        "probability": 0.002765184643673317
+                    },
+                    {
+                        "cycle": 57808.1875,
+                        "probability": 0.004160221626839047
+                    },
+                    {
+                        "cycle": 58112.25,
+                        "probability": 0.005555258610004779
+                    },
+                    {
+                        "cycle": 58416.3125,
+                        "probability": 0.0069502955931705105
+                    },
+                    {
+                        "cycle": 58720.375,
+                        "probability": 0.008345332576336241
+                    },
+                    {
+                        "cycle": 59024.4375,
+                        "probability": 0.009740369559501973
+                    },
+                    {
+                        "cycle": 59328.5,
+                        "probability": 0.011135406542667706
+                    },
+                    {
+                        "cycle": 59632.5625,
+                        "probability": 0.01444933818004806
+                    },
+                    {
+                        "cycle": 59936.625,
+                        "probability": 0.020068162355736868
+                    },
+                    {
+                        "cycle": 60240.6875,
+                        "probability": 0.025686986531425673
+                    },
+                    {
+                        "cycle": 60544.75,
+                        "probability": 0.031305810707114475
+                    },
+                    {
+                        "cycle": 60848.8125,
+                        "probability": 0.04038529392689782
+                    },
+                    {
+                        "cycle": 61152.875,
+                        "probability": 0.062139102823570325
+                    },
+                    {
+                        "cycle": 61456.9375,
+                        "probability": 0.0984087027703681
+                    },
+                    {
+                        "cycle": 61761,
+                        "probability": 0.1377185317436096
+                    },
+                    {
+                        "cycle": 62065.0625,
+                        "probability": 0.18590457668806168
+                    },
+                    {
+                        "cycle": 62369.125,
+                        "probability": 0.2644911183439798
+                    },
+                    {
+                        "cycle": 62673.1875,
+                        "probability": 0.35773562418552046
+                    },
+                    {
+                        "cycle": 62977.25,
+                        "probability": 0.44690988463849024
+                    },
+                    {
+                        "cycle": 63281.3125,
+                        "probability": 0.5372667926922721
+                    },
+                    {
+                        "cycle": 63585.375,
+                        "probability": 0.6312578580315659
+                    },
+                    {
+                        "cycle": 63889.4375,
+                        "probability": 0.7303037932845297
+                    },
+                    {
+                        "cycle": 64193.5,
+                        "probability": 0.8177958259606335
+                    },
+                    {
+                        "cycle": 64497.5625,
+                        "probability": 0.8648018434476643
+                    },
+                    {
+                        "cycle": 64801.625,
+                        "probability": 0.894541810135125
+                    },
+                    {
+                        "cycle": 65105.6875,
+                        "probability": 0.9112518940966416
+                    },
+                    {
+                        "cycle": 65409.75,
+                        "probability": 0.9233463135102709
+                    },
+                    {
+                        "cycle": 65713.8125,
+                        "probability": 0.9315039751927723
+                    },
+                    {
+                        "cycle": 66017.875,
+                        "probability": 0.9358450500983855
+                    },
+                    {
+                        "cycle": 66321.9375,
+                        "probability": 0.9401861250039982
+                    },
+                    {
+                        "cycle": 66626,
+                        "probability": 0.9445271999096113
+                    },
+                    {
+                        "cycle": 66930.0625,
+                        "probability": 0.9488682748152244
+                    },
+                    {
+                        "cycle": 67234.125,
+                        "probability": 0.9532093497208375
+                    },
+                    {
+                        "cycle": 67538.1875,
+                        "probability": 0.9575504246264503
+                    },
+                    {
+                        "cycle": 67842.25,
+                        "probability": 0.9618914995320634
+                    },
+                    {
+                        "cycle": 68146.3125,
+                        "probability": 0.9662325744376763
+                    },
+                    {
+                        "cycle": 68450.375,
+                        "probability": 0.9705736493432894
+                    },
+                    {
+                        "cycle": 68754.4375,
+                        "probability": 0.9732788390634183
+                    },
+                    {
+                        "cycle": 69058.5,
+                        "probability": 0.9753487601809159
+                    },
+                    {
+                        "cycle": 69362.5625,
+                        "probability": 0.9774186812984137
+                    },
+                    {
+                        "cycle": 69666.625,
+                        "probability": 0.9794886024159112
+                    },
+                    {
+                        "cycle": 69970.6875,
+                        "probability": 0.9815585235334092
+                    },
+                    {
+                        "cycle": 70274.75,
+                        "probability": 0.9836284446509066
+                    },
+                    {
+                        "cycle": 70578.8125,
+                        "probability": 0.9856983657684044
+                    },
+                    {
+                        "cycle": 70882.875,
+                        "probability": 0.9877682868859018
+                    },
+                    {
+                        "cycle": 71186.9375,
+                        "probability": 0.9898382080033998
+                    },
+                    {
+                        "cycle": 71491,
+                        "probability": 0.9919081291208971
+                    },
+                    {
+                        "cycle": 71795.0625,
+                        "probability": 0.9939780502383948
+                    },
+                    {
+                        "cycle": 72099.125,
+                        "probability": 0.9960479713558926
+                    },
+                    {
+                        "cycle": 72403.1875,
+                        "probability": 0.9965038097342839
+                    },
+                    {
+                        "cycle": 72707.25,
+                        "probability": 0.9967744299258746
+                    },
+                    {
+                        "cycle": 73011.3125,
+                        "probability": 0.9970450501174656
+                    },
+                    {
+                        "cycle": 73315.375,
+                        "probability": 0.9973156703090562
+                    },
+                    {
+                        "cycle": 73619.4375,
+                        "probability": 0.997586290500647
+                    },
+                    {
+                        "cycle": 73923.5,
+                        "probability": 0.9978569106922378
+                    },
+                    {
+                        "cycle": 74227.5625,
+                        "probability": 0.9981275308838289
+                    },
+                    {
+                        "cycle": 74531.625,
+                        "probability": 0.9983981510754195
+                    },
+                    {
+                        "cycle": 74835.6875,
+                        "probability": 0.9986687712670099
+                    },
+                    {
+                        "cycle": 75139.75,
+                        "probability": 0.9989393914586009
+                    },
+                    {
+                        "cycle": 75443.8125,
+                        "probability": 0.9992100116501919
+                    },
+                    {
+                        "cycle": 75747.875,
+                        "probability": 0.9994806318417824
+                    },
+                    {
+                        "cycle": 76051.9375,
+                        "probability": 0.9997512520333732
+                    },
+                    {
+                        "cycle": 76356,
+                        "probability": 1
+                    }
+                ],
+                "feebas_vblank_count_probability": 1
+            },
+            {
+                "action": "SweetScentWater",
+                "weather": "Sunny",
+                "playing_song": "SurfSong",
+                "min": 38344,
+                "max": 74164,
+                "distribution": [
+                    {
+                        "cycle": 38344,
+                        "probability": 0
+                    },
+                    {
+                        "cycle": 38903.6875,
+                        "probability": 0.00008773861411640006
+                    },
+                    {
+                        "cycle": 39463.375,
+                        "probability": 0.00017634378177162536
+                    },
+                    {
+                        "cycle": 40023.0625,
+                        "probability": 0.0002649489494268506
+                    },
+                    {
+                        "cycle": 40582.75,
+                        "probability": 0.00035355411708207587
+                    },
+                    {
+                        "cycle": 41142.4375,
+                        "probability": 0.0004421592847373012
+                    },
+                    {
+                        "cycle": 41702.125,
+                        "probability": 0.0005307644523925264
+                    },
+                    {
+                        "cycle": 42261.8125,
+                        "probability": 0.0006193696200477517
+                    },
+                    {
+                        "cycle": 42821.5,
+                        "probability": 0.0007079747877029771
+                    },
+                    {
+                        "cycle": 43381.1875,
+                        "probability": 0.0007965799553582022
+                    },
+                    {
+                        "cycle": 43940.875,
+                        "probability": 0.0008851851230134276
+                    },
+                    {
+                        "cycle": 44500.5625,
+                        "probability": 0.0009737902906686528
+                    },
+                    {
+                        "cycle": 45060.25,
+                        "probability": 0.001062395458323878
+                    },
+                    {
+                        "cycle": 45619.9375,
+                        "probability": 0.0011510006259791033
+                    },
+                    {
+                        "cycle": 46179.625,
+                        "probability": 0.0012396057936343288
+                    },
+                    {
+                        "cycle": 46739.3125,
+                        "probability": 0.001328210961289554
+                    },
+                    {
+                        "cycle": 47299,
+                        "probability": 0.0014168161289447793
+                    },
+                    {
+                        "cycle": 47858.6875,
+                        "probability": 0.0015054212966000048
+                    },
+                    {
+                        "cycle": 48418.375,
+                        "probability": 0.0015940264642552297
+                    },
+                    {
+                        "cycle": 48978.0625,
+                        "probability": 0.001682631631910455
+                    },
+                    {
+                        "cycle": 49537.75,
+                        "probability": 0.0017712367995656804
+                    },
+                    {
+                        "cycle": 50097.4375,
+                        "probability": 0.0018598419672209055
+                    },
+                    {
+                        "cycle": 50657.125,
+                        "probability": 0.0019484471348761312
+                    },
+                    {
+                        "cycle": 51216.8125,
+                        "probability": 0.002037052302531356
+                    },
+                    {
+                        "cycle": 51776.5,
+                        "probability": 0.0021256574701865815
+                    },
+                    {
+                        "cycle": 52336.1875,
+                        "probability": 0.005886813280513331
+                    },
+                    {
+                        "cycle": 52895.875,
+                        "probability": 0.012364577898343294
+                    },
+                    {
+                        "cycle": 53455.5625,
+                        "probability": 0.018842342516173262
+                    },
+                    {
+                        "cycle": 54015.25,
+                        "probability": 0.02532010713400323
+                    },
+                    {
+                        "cycle": 54574.9375,
+                        "probability": 0.0317978717518332
+                    },
+                    {
+                        "cycle": 55134.625,
+                        "probability": 0.03708425444821676
+                    },
+                    {
+                        "cycle": 55694.3125,
+                        "probability": 0.03728040362136486
+                    },
+                    {
+                        "cycle": 56254,
+                        "probability": 0.03747655279451296
+                    },
+                    {
+                        "cycle": 56813.6875,
+                        "probability": 0.03767270196766108
+                    },
+                    {
+                        "cycle": 57373.375,
+                        "probability": 0.03786885114080918
+                    },
+                    {
+                        "cycle": 57933.0625,
+                        "probability": 0.03806500031395729
+                    },
+                    {
+                        "cycle": 58492.75,
+                        "probability": 0.0382611494871054
+                    },
+                    {
+                        "cycle": 59052.4375,
+                        "probability": 0.042756838138241375
+                    },
+                    {
+                        "cycle": 59612.125,
+                        "probability": 0.05745252683700699
+                    },
+                    {
+                        "cycle": 60171.8125,
+                        "probability": 0.11072546018374416
+                    },
+                    {
+                        "cycle": 60731.5,
+                        "probability": 0.21701518376991433
+                    },
+                    {
+                        "cycle": 61291.1875,
+                        "probability": 0.38404887029167556
+                    },
+                    {
+                        "cycle": 61850.875,
+                        "probability": 0.5810298127016424
+                    },
+                    {
+                        "cycle": 62410.5625,
+                        "probability": 0.7516299347719589
+                    },
+                    {
+                        "cycle": 62970.25,
+                        "probability": 0.8483879270062221
+                    },
+                    {
+                        "cycle": 63529.9375,
+                        "probability": 0.9013250453828305
+                    },
+                    {
+                        "cycle": 64089.625,
+                        "probability": 0.9352624518569934
+                    },
+                    {
+                        "cycle": 64649.3125,
+                        "probability": 0.9450816603282836
+                    },
+                    {
+                        "cycle": 65209,
+                        "probability": 0.9549008687995736
+                    },
+                    {
+                        "cycle": 65768.6875,
+                        "probability": 0.9647200772708636
+                    },
+                    {
+                        "cycle": 66328.375,
+                        "probability": 0.9712275703640094
+                    },
+                    {
+                        "cycle": 66888.0625,
+                        "probability": 0.9749875506646639
+                    },
+                    {
+                        "cycle": 67447.75,
+                        "probability": 0.9787475309653183
+                    },
+                    {
+                        "cycle": 68007.4375,
+                        "probability": 0.9825075112659726
+                    },
+                    {
+                        "cycle": 68567.125,
+                        "probability": 0.9862674915666269
+                    },
+                    {
+                        "cycle": 69126.8125,
+                        "probability": 0.9900274718672814
+                    },
+                    {
+                        "cycle": 69686.5,
+                        "probability": 0.9937874521679357
+                    },
+                    {
+                        "cycle": 70246.1875,
+                        "probability": 0.9961782042264783
+                    },
+                    {
+                        "cycle": 70805.875,
+                        "probability": 0.9967278968487553
+                    },
+                    {
+                        "cycle": 71365.5625,
+                        "probability": 0.9972775894710322
+                    },
+                    {
+                        "cycle": 71925.25,
+                        "probability": 0.997827282093309
+                    },
+                    {
+                        "cycle": 72484.9375,
+                        "probability": 0.998376974715586
+                    },
+                    {
+                        "cycle": 73044.625,
+                        "probability": 0.9989266673378628
+                    },
+                    {
+                        "cycle": 73604.3125,
+                        "probability": 0.9994763599601397
+                    },
+                    {
+                        "cycle": 74164,
+                        "probability": 1
+                    }
+                ],
+                "feebas_vblank_count_probability": 1
+            },
+            {
+                "action": "SweetScentWater",
+                "weather": "Rain",
+                "playing_song": "SurfSong",
+                "min": 57646,
+                "max": 77746,
+                "distribution": [
+                    {
+                        "cycle": 57646,
+                        "probability": 0
+                    },
+                    {
+                        "cycle": 57960.0625,
+                        "probability": 0.00019888526612573114
+                    },
+                    {
+                        "cycle": 58274.125,
+                        "probability": 0.0004012983360564862
+                    },
+                    {
+                        "cycle": 58588.1875,
+                        "probability": 0.000603711405987241
+                    },
+                    {
+                        "cycle": 58902.25,
+                        "probability": 0.0008061244759179961
+                    },
+                    {
+                        "cycle": 59216.3125,
+                        "probability": 0.001008537545848751
+                    },
+                    {
+                        "cycle": 59530.375,
+                        "probability": 0.0012109506157795059
+                    },
+                    {
+                        "cycle": 59844.4375,
+                        "probability": 0.0014133636857102609
+                    },
+                    {
+                        "cycle": 60158.5,
+                        "probability": 0.001615776755641016
+                    },
+                    {
+                        "cycle": 60472.5625,
+                        "probability": 0.0018181898255717709
+                    },
+                    {
+                        "cycle": 60786.625,
+                        "probability": 0.002020602895502526
+                    },
+                    {
+                        "cycle": 61100.6875,
+                        "probability": 0.0022230159654332807
+                    },
+                    {
+                        "cycle": 61414.75,
+                        "probability": 0.0024254290353640357
+                    },
+                    {
+                        "cycle": 61728.8125,
+                        "probability": 0.0026278421052947907
+                    },
+                    {
+                        "cycle": 62042.875,
+                        "probability": 0.0028302551752255453
+                    },
+                    {
+                        "cycle": 62356.9375,
+                        "probability": 0.0030326682451563007
+                    },
+                    {
+                        "cycle": 62671,
+                        "probability": 0.0032350813150870557
+                    },
+                    {
+                        "cycle": 62985.0625,
+                        "probability": 0.0034374943850178107
+                    },
+                    {
+                        "cycle": 63299.125,
+                        "probability": 0.021295158027469126
+                    },
+                    {
+                        "cycle": 63613.1875,
+                        "probability": 0.07568176473971297
+                    },
+                    {
+                        "cycle": 63927.25,
+                        "probability": 0.15794194679378187
+                    },
+                    {
+                        "cycle": 64241.3125,
+                        "probability": 0.2456079940788908
+                    },
+                    {
+                        "cycle": 64555.375,
+                        "probability": 0.3749431617158375
+                    },
+                    {
+                        "cycle": 64869.4375,
+                        "probability": 0.5354761574651986
+                    },
+                    {
+                        "cycle": 65183.5,
+                        "probability": 0.6436548569547259
+                    },
+                    {
+                        "cycle": 65497.5625,
+                        "probability": 0.7310380661515696
+                    },
+                    {
+                        "cycle": 65811.625,
+                        "probability": 0.8241965689800929
+                    },
+                    {
+                        "cycle": 66125.6875,
+                        "probability": 0.877970509128939
+                    },
+                    {
+                        "cycle": 66439.75,
+                        "probability": 0.8968042798584221
+                    },
+                    {
+                        "cycle": 66753.8125,
+                        "probability": 0.9156380505879052
+                    },
+                    {
+                        "cycle": 67067.875,
+                        "probability": 0.9330060384255708
+                    },
+                    {
+                        "cycle": 67381.9375,
+                        "probability": 0.9391933489115838
+                    },
+                    {
+                        "cycle": 67696,
+                        "probability": 0.9453806593975967
+                    },
+                    {
+                        "cycle": 68010.0625,
+                        "probability": 0.9515679698836096
+                    },
+                    {
+                        "cycle": 68324.125,
+                        "probability": 0.9577552803696225
+                    },
+                    {
+                        "cycle": 68638.1875,
+                        "probability": 0.9639425908556355
+                    },
+                    {
+                        "cycle": 68952.25,
+                        "probability": 0.9693618887145109
+                    },
+                    {
+                        "cycle": 69266.3125,
+                        "probability": 0.9715804809011912
+                    },
+                    {
+                        "cycle": 69580.375,
+                        "probability": 0.9737990730878715
+                    },
+                    {
+                        "cycle": 69894.4375,
+                        "probability": 0.9760176652745519
+                    },
+                    {
+                        "cycle": 70208.5,
+                        "probability": 0.9782362574612321
+                    },
+                    {
+                        "cycle": 70522.5625,
+                        "probability": 0.9804548496479124
+                    },
+                    {
+                        "cycle": 70836.625,
+                        "probability": 0.9826734418345928
+                    },
+                    {
+                        "cycle": 71150.6875,
+                        "probability": 0.9848920340212732
+                    },
+                    {
+                        "cycle": 71464.75,
+                        "probability": 0.9871106262079533
+                    },
+                    {
+                        "cycle": 71778.8125,
+                        "probability": 0.9893292183946336
+                    },
+                    {
+                        "cycle": 72092.875,
+                        "probability": 0.991547810581314
+                    },
+                    {
+                        "cycle": 72406.9375,
+                        "probability": 0.9937664027679944
+                    },
+                    {
+                        "cycle": 72721,
+                        "probability": 0.9959849949546745
+                    },
+                    {
+                        "cycle": 73035.0625,
+                        "probability": 0.9974118411398339
+                    },
+                    {
+                        "cycle": 73349.125,
+                        "probability": 0.997585362123626
+                    },
+                    {
+                        "cycle": 73663.1875,
+                        "probability": 0.9977588831074181
+                    },
+                    {
+                        "cycle": 73977.25,
+                        "probability": 0.9979324040912102
+                    },
+                    {
+                        "cycle": 74291.3125,
+                        "probability": 0.9981059250750021
+                    },
+                    {
+                        "cycle": 74605.375,
+                        "probability": 0.9982794460587944
+                    },
+                    {
+                        "cycle": 74919.4375,
+                        "probability": 0.9984529670425862
+                    },
+                    {
+                        "cycle": 75233.5,
+                        "probability": 0.9986264880263785
+                    },
+                    {
+                        "cycle": 75547.5625,
+                        "probability": 0.9988000090101706
+                    },
+                    {
+                        "cycle": 75861.625,
+                        "probability": 0.9989735299939626
+                    },
+                    {
+                        "cycle": 76175.6875,
+                        "probability": 0.9991470509777548
+                    },
+                    {
+                        "cycle": 76489.75,
+                        "probability": 0.9993205719615468
+                    },
+                    {
+                        "cycle": 76803.8125,
+                        "probability": 0.999494092945339
+                    },
+                    {
+                        "cycle": 77117.875,
+                        "probability": 0.999667613929131
+                    },
+                    {
+                        "cycle": 77431.9375,
+                        "probability": 0.999841134912923
+                    },
+                    {
+                        "cycle": 77746,
+                        "probability": 1
+                    }
+                ],
+                "feebas_vblank_count_probability": 1
+            },
+            {
+                "action": "SweetScentWater",
+                "weather": "Thunderstorm",
+                "playing_song": "SurfSong",
+                "min": 56865,
+                "max": 77307,
+                "distribution": [
+                    {
+                        "cycle": 56865,
+                        "probability": 0
+                    },
+                    {
+                        "cycle": 57184.40625,
+                        "probability": 0.0001826591628070661
+                    },
+                    {
+                        "cycle": 57503.8125,
+                        "probability": 0.00036846567127886854
+                    },
+                    {
+                        "cycle": 57823.21875,
+                        "probability": 0.000554272179750671
+                    },
+                    {
+                        "cycle": 58142.625,
+                        "probability": 0.0007400786882224735
+                    },
+                    {
+                        "cycle": 58462.03125,
+                        "probability": 0.000925885196694276
+                    },
+                    {
+                        "cycle": 58781.4375,
+                        "probability": 0.0011116917051660785
+                    },
+                    {
+                        "cycle": 59100.84375,
+                        "probability": 0.0012974982136378808
+                    },
+                    {
+                        "cycle": 59420.25,
+                        "probability": 0.0014833047221096832
+                    },
+                    {
+                        "cycle": 59739.65625,
+                        "probability": 0.0016691112305814856
+                    },
+                    {
+                        "cycle": 60059.0625,
+                        "probability": 0.0018549177390532882
+                    },
+                    {
+                        "cycle": 60378.46875,
+                        "probability": 0.002040724247525091
+                    },
+                    {
+                        "cycle": 60697.875,
+                        "probability": 0.0022265307559968936
+                    },
+                    {
+                        "cycle": 61017.28125,
+                        "probability": 0.0024123372644686957
+                    },
+                    {
+                        "cycle": 61336.6875,
+                        "probability": 0.0025981437729404983
+                    },
+                    {
+                        "cycle": 61656.09375,
+                        "probability": 0.0027839502814123005
+                    },
+                    {
+                        "cycle": 61975.5,
+                        "probability": 0.002969756789884103
+                    },
+                    {
+                        "cycle": 62294.90625,
+                        "probability": 0.0031555632983559056
+                    },
+                    {
+                        "cycle": 62614.3125,
+                        "probability": 0.006497061018188718
+                    },
+                    {
+                        "cycle": 62933.71875,
+                        "probability": 0.025041854468997225
+                    },
+                    {
+                        "cycle": 63253.125,
+                        "probability": 0.09157363251892776
+                    },
+                    {
+                        "cycle": 63572.53125,
+                        "probability": 0.17679993123635146
+                    },
+                    {
+                        "cycle": 63891.9375,
+                        "probability": 0.276670237458885
+                    },
+                    {
+                        "cycle": 64211.34375,
+                        "probability": 0.4297612550441322
+                    },
+                    {
+                        "cycle": 64530.75,
+                        "probability": 0.5825727144806976
+                    },
+                    {
+                        "cycle": 64850.15625,
+                        "probability": 0.6814200073482414
+                    },
+                    {
+                        "cycle": 65169.5625,
+                        "probability": 0.7842261900101571
+                    },
+                    {
+                        "cycle": 65488.96875,
+                        "probability": 0.8555170380627507
+                    },
+                    {
+                        "cycle": 65808.375,
+                        "probability": 0.8979881695643254
+                    },
+                    {
+                        "cycle": 66127.78125,
+                        "probability": 0.9195497436657641
+                    },
+                    {
+                        "cycle": 66447.1875,
+                        "probability": 0.9323101214023609
+                    },
+                    {
+                        "cycle": 66766.59375,
+                        "probability": 0.9408937666419257
+                    },
+                    {
+                        "cycle": 67086,
+                        "probability": 0.9464500720643026
+                    },
+                    {
+                        "cycle": 67405.40625,
+                        "probability": 0.9520063774866798
+                    },
+                    {
+                        "cycle": 67724.8125,
+                        "probability": 0.957562682909057
+                    },
+                    {
+                        "cycle": 68044.21875,
+                        "probability": 0.963118988331434
+                    },
+                    {
+                        "cycle": 68363.625,
+                        "probability": 0.9686752937538112
+                    },
+                    {
+                        "cycle": 68683.03125,
+                        "probability": 0.9725800437986328
+                    },
+                    {
+                        "cycle": 69002.4375,
+                        "probability": 0.9746571641097117
+                    },
+                    {
+                        "cycle": 69321.84375,
+                        "probability": 0.9767342844207907
+                    },
+                    {
+                        "cycle": 69641.25,
+                        "probability": 0.9788114047318694
+                    },
+                    {
+                        "cycle": 69960.65625,
+                        "probability": 0.9808885250429483
+                    },
+                    {
+                        "cycle": 70280.0625,
+                        "probability": 0.9829656453540273
+                    },
+                    {
+                        "cycle": 70599.46875,
+                        "probability": 0.9850427656651063
+                    },
+                    {
+                        "cycle": 70918.875,
+                        "probability": 0.9871198859761852
+                    },
+                    {
+                        "cycle": 71238.28125,
+                        "probability": 0.989197006287264
+                    },
+                    {
+                        "cycle": 71557.6875,
+                        "probability": 0.9912741265983428
+                    },
+                    {
+                        "cycle": 71877.09375,
+                        "probability": 0.9933512469094217
+                    },
+                    {
+                        "cycle": 72196.5,
+                        "probability": 0.9954283672205007
+                    },
+                    {
+                        "cycle": 72515.90625,
+                        "probability": 0.997265363631185
+                    },
+                    {
+                        "cycle": 72835.3125,
+                        "probability": 0.9974485363674935
+                    },
+                    {
+                        "cycle": 73154.71875,
+                        "probability": 0.9976317091038021
+                    },
+                    {
+                        "cycle": 73474.125,
+                        "probability": 0.9978148818401106
+                    },
+                    {
+                        "cycle": 73793.53125,
+                        "probability": 0.997998054576419
+                    },
+                    {
+                        "cycle": 74112.9375,
+                        "probability": 0.9981812273127273
+                    },
+                    {
+                        "cycle": 74432.34375,
+                        "probability": 0.998364400049036
+                    },
+                    {
+                        "cycle": 74751.75,
+                        "probability": 0.9985475727853443
+                    },
+                    {
+                        "cycle": 75071.15625,
+                        "probability": 0.9987307455216528
+                    },
+                    {
+                        "cycle": 75390.5625,
+                        "probability": 0.9989139182579612
+                    },
+                    {
+                        "cycle": 75709.96875,
+                        "probability": 0.9990970909942698
+                    },
+                    {
+                        "cycle": 76029.375,
+                        "probability": 0.9992802637305784
+                    },
+                    {
+                        "cycle": 76348.78125,
+                        "probability": 0.9994634364668867
+                    },
+                    {
+                        "cycle": 76668.1875,
+                        "probability": 0.9996466092031953
+                    },
+                    {
+                        "cycle": 76987.59375,
+                        "probability": 0.9998297819395037
+                    },
+                    {
+                        "cycle": 77307,
+                        "probability": 1
+                    }
+                ],
+                "feebas_vblank_count_probability": 1
+            },
+            {
+                "action": "OldRod",
+                "weather": "Sunny",
+                "playing_song": "SurfSong",
+                "min": 40310,
+                "max": 98157,
+                "distribution": [
+                    {
+                        "cycle": 40310,
+                        "probability": 0
+                    },
+                    {
+                        "cycle": 41213.859375,
+                        "probability": 0.00011437159888193269
+                    },
+                    {
+                        "cycle": 42117.71875,
+                        "probability": 0.0002468039585497044
+                    },
+                    {
+                        "cycle": 43021.578125,
+                        "probability": 0.00037973884809129995
+                    },
+                    {
+                        "cycle": 43925.4375,
+                        "probability": 0.0005156720130225155
+                    },
+                    {
+                        "cycle": 44829.296875,
+                        "probability": 0.0006657520015260209
+                    },
+                    {
+                        "cycle": 45733.15625,
+                        "probability": 0.0008190032878083907
+                    },
+                    {
+                        "cycle": 46637.015625,
+                        "probability": 0.0009727500866044711
+                    },
+                    {
+                        "cycle": 47540.875,
+                        "probability": 0.0011269923979142754
+                    },
+                    {
+                        "cycle": 48444.734375,
+                        "probability": 0.0012815673986338852
+                    },
+                    {
+                        "cycle": 49348.59375,
+                        "probability": 0.0014361512801070652
+                    },
+                    {
+                        "cycle": 50252.453125,
+                        "probability": 0.0015907351615802518
+                    },
+                    {
+                        "cycle": 51156.3125,
+                        "probability": 0.0017453190430534275
+                    },
+                    {
+                        "cycle": 52060.171875,
+                        "probability": 0.0018999029245266139
+                    },
+                    {
+                        "cycle": 52964.03125,
+                        "probability": 0.002054486805999787
+                    },
+                    {
+                        "cycle": 53867.890625,
+                        "probability": 0.0022090706874729645
+                    },
+                    {
+                        "cycle": 54771.75,
+                        "probability": 0.006114878726978235
+                    },
+                    {
+                        "cycle": 55675.609375,
+                        "probability": 0.013537832079235711
+                    },
+                    {
+                        "cycle": 56579.46875,
+                        "probability": 0.02096078543149323
+                    },
+                    {
+                        "cycle": 57483.328125,
+                        "probability": 0.02565809592837286
+                    },
+                    {
+                        "cycle": 58387.1875,
+                        "probability": 0.026932580850863967
+                    },
+                    {
+                        "cycle": 59291.046875,
+                        "probability": 0.02864267595543015
+                    },
+                    {
+                        "cycle": 60194.90625,
+                        "probability": 0.03026045505666783
+                    },
+                    {
+                        "cycle": 61098.765625,
+                        "probability": 0.03150185223786307
+                    },
+                    {
+                        "cycle": 62002.625,
+                        "probability": 0.03768810608539293
+                    },
+                    {
+                        "cycle": 62906.484375,
+                        "probability": 0.059634546773006766
+                    },
+                    {
+                        "cycle": 63810.34375,
+                        "probability": 0.094624264089449
+                    },
+                    {
+                        "cycle": 64714.203125,
+                        "probability": 0.12451623137427555
+                    },
+                    {
+                        "cycle": 65618.0625,
+                        "probability": 0.13399256193243606
+                    },
+                    {
+                        "cycle": 66521.921875,
+                        "probability": 0.14348558918911564
+                    },
+                    {
+                        "cycle": 67425.78125,
+                        "probability": 0.15452392009810118
+                    },
+                    {
+                        "cycle": 68329.640625,
+                        "probability": 0.16455022852847623
+                    },
+                    {
+                        "cycle": 69233.5,
+                        "probability": 0.18380535546594878
+                    },
+                    {
+                        "cycle": 70137.359375,
+                        "probability": 0.22458464974899195
+                    },
+                    {
+                        "cycle": 71041.21875,
+                        "probability": 0.2909415259988799
+                    },
+                    {
+                        "cycle": 71945.078125,
+                        "probability": 0.3829928550937017
+                    },
+                    {
+                        "cycle": 72848.9375,
+                        "probability": 0.4408863462116404
+                    },
+                    {
+                        "cycle": 73752.796875,
+                        "probability": 0.47081020895887576
+                    },
+                    {
+                        "cycle": 74656.65625,
+                        "probability": 0.4925589512052104
+                    },
+                    {
+                        "cycle": 75560.515625,
+                        "probability": 0.5172421229321467
+                    },
+                    {
+                        "cycle": 76464.375,
+                        "probability": 0.5483766020369888
+                    },
+                    {
+                        "cycle": 77368.234375,
+                        "probability": 0.5957118385733393
+                    },
+                    {
+                        "cycle": 78272.09375,
+                        "probability": 0.6645179379204073
+                    },
+                    {
+                        "cycle": 79175.953125,
+                        "probability": 0.7620710925417737
+                    },
+                    {
+                        "cycle": 80079.8125,
+                        "probability": 0.8439251634410092
+                    },
+                    {
+                        "cycle": 80983.671875,
+                        "probability": 0.8921420555518399
+                    },
+                    {
+                        "cycle": 81887.53125,
+                        "probability": 0.9210169829185788
+                    },
+                    {
+                        "cycle": 82791.390625,
+                        "probability": 0.9433997275102868
+                    },
+                    {
+                        "cycle": 83695.25,
+                        "probability": 0.9607986053477436
+                    },
+                    {
+                        "cycle": 84599.109375,
+                        "probability": 0.9731320089196686
+                    },
+                    {
+                        "cycle": 85502.96875,
+                        "probability": 0.9821351068029198
+                    },
+                    {
+                        "cycle": 86406.828125,
+                        "probability": 0.9890897970527094
+                    },
+                    {
+                        "cycle": 87310.6875,
+                        "probability": 0.9918090508305111
+                    },
+                    {
+                        "cycle": 88214.546875,
+                        "probability": 0.9939661817208335
+                    },
+                    {
+                        "cycle": 89118.40625,
+                        "probability": 0.9960060638861385
+                    },
+                    {
+                        "cycle": 90022.265625,
+                        "probability": 0.997894336504049
+                    },
+                    {
+                        "cycle": 90926.125,
+                        "probability": 0.9991126911585568
+                    },
+                    {
+                        "cycle": 91829.984375,
+                        "probability": 0.9994245488398319
+                    },
+                    {
+                        "cycle": 92733.84375,
+                        "probability": 0.9996338730497364
+                    },
+                    {
+                        "cycle": 93637.703125,
+                        "probability": 0.9998170090044364
+                    },
+                    {
+                        "cycle": 94541.5625,
+                        "probability": 0.9999622338018401
+                    },
+                    {
+                        "cycle": 95445.421875,
+                        "probability": 0.9999815148168386
+                    },
+                    {
+                        "cycle": 96349.28125,
+                        "probability": 0.9999917843630394
+                    },
+                    {
+                        "cycle": 97253.140625,
+                        "probability": 0.9999979460907599
+                    },
+                    {
+                        "cycle": 98157,
+                        "probability": 1
+                    }
+                ],
+                "feebas_vblank_count_probability": 1
+            },
+            {
+                "action": "OldRod",
+                "weather": "Rain",
+                "playing_song": "SurfSong",
+                "min": 49366,
+                "max": 99196,
+                "distribution": [
+                    {
+                        "cycle": 49366,
+                        "probability": 0
+                    },
+                    {
+                        "cycle": 50144.59375,
+                        "probability": 0.00006712538350587551
+                    },
+                    {
+                        "cycle": 50923.1875,
+                        "probability": 0.00014687691615032628
+                    },
+                    {
+                        "cycle": 51701.78125,
+                        "probability": 0.0002266284487947769
+                    },
+                    {
+                        "cycle": 52480.375,
+                        "probability": 0.00030774311829337355
+                    },
+                    {
+                        "cycle": 53258.96875,
+                        "probability": 0.00039166677863703987
+                    },
+                    {
+                        "cycle": 54037.5625,
+                        "probability": 0.0004834466701933477
+                    },
+                    {
+                        "cycle": 54816.15625,
+                        "probability": 0.000575765072221981
+                    },
+                    {
+                        "cycle": 55594.75,
+                        "probability": 0.0006683405195069333
+                    },
+                    {
+                        "cycle": 56373.34375,
+                        "probability": 0.0007611730120482108
+                    },
+                    {
+                        "cycle": 57151.9375,
+                        "probability": 0.0008542312977723148
+                    },
+                    {
+                        "cycle": 57930.53125,
+                        "probability": 0.0009473226049161396
+                    },
+                    {
+                        "cycle": 58709.125,
+                        "probability": 0.0010404139120599697
+                    },
+                    {
+                        "cycle": 59487.71875,
+                        "probability": 0.0011335052192037987
+                    },
+                    {
+                        "cycle": 60266.3125,
+                        "probability": 0.0012265965263476189
+                    },
+                    {
+                        "cycle": 61044.90625,
+                        "probability": 0.0013196878334914455
+                    },
+                    {
+                        "cycle": 61823.5,
+                        "probability": 0.0014127791406352767
+                    },
+                    {
+                        "cycle": 62602.09375,
+                        "probability": 0.0015058704477790813
+                    },
+                    {
+                        "cycle": 63380.6875,
+                        "probability": 0.0022323669711580224
+                    },
+                    {
+                        "cycle": 64159.28125,
+                        "probability": 0.007527781939123405
+                    },
+                    {
+                        "cycle": 64937.875,
+                        "probability": 0.013445966001636738
+                    },
+                    {
+                        "cycle": 65716.46875,
+                        "probability": 0.019364150064150123
+                    },
+                    {
+                        "cycle": 66495.0625,
+                        "probability": 0.02389759566829397
+                    },
+                    {
+                        "cycle": 67273.65625,
+                        "probability": 0.024854312296551984
+                    },
+                    {
+                        "cycle": 68052.25,
+                        "probability": 0.026004426283833728
+                    },
+                    {
+                        "cycle": 68830.84375,
+                        "probability": 0.027171149904693142
+                    },
+                    {
+                        "cycle": 69609.4375,
+                        "probability": 0.028224329186524507
+                    },
+                    {
+                        "cycle": 70388.03125,
+                        "probability": 0.03026439794221668
+                    },
+                    {
+                        "cycle": 71166.625,
+                        "probability": 0.043647083363776505
+                    },
+                    {
+                        "cycle": 71945.21875,
+                        "probability": 0.07352938912907371
+                    },
+                    {
+                        "cycle": 72723.8125,
+                        "probability": 0.116036341795314
+                    },
+                    {
+                        "cycle": 73502.40625,
+                        "probability": 0.14791641320765495
+                    },
+                    {
+                        "cycle": 74281,
+                        "probability": 0.16787976780363917
+                    },
+                    {
+                        "cycle": 75059.59375,
+                        "probability": 0.17654204003091864
+                    },
+                    {
+                        "cycle": 75838.1875,
+                        "probability": 0.18666866661950438
+                    },
+                    {
+                        "cycle": 76616.78125,
+                        "probability": 0.1970317596268549
+                    },
+                    {
+                        "cycle": 77395.375,
+                        "probability": 0.20817696602223235
+                    },
+                    {
+                        "cycle": 78173.96875,
+                        "probability": 0.2298186881317266
+                    },
+                    {
+                        "cycle": 78952.5625,
+                        "probability": 0.26994912491922923
+                    },
+                    {
+                        "cycle": 79731.15625,
+                        "probability": 0.3750855832455452
+                    },
+                    {
+                        "cycle": 80509.75,
+                        "probability": 0.5327293945901276
+                    },
+                    {
+                        "cycle": 81288.34375,
+                        "probability": 0.691562659886289
+                    },
+                    {
+                        "cycle": 82066.9375,
+                        "probability": 0.7846497158265531
+                    },
+                    {
+                        "cycle": 82845.53125,
+                        "probability": 0.8410950180056913
+                    },
+                    {
+                        "cycle": 83624.125,
+                        "probability": 0.8807627835814946
+                    },
+                    {
+                        "cycle": 84402.71875,
+                        "probability": 0.9200760500070978
+                    },
+                    {
+                        "cycle": 85181.3125,
+                        "probability": 0.9463082604090953
+                    },
+                    {
+                        "cycle": 85959.90625,
+                        "probability": 0.9623888850976674
+                    },
+                    {
+                        "cycle": 86738.5,
+                        "probability": 0.9739472492524686
+                    },
+                    {
+                        "cycle": 87517.09375,
+                        "probability": 0.982618505763486
+                    },
+                    {
+                        "cycle": 88295.6875,
+                        "probability": 0.9902887818179401
+                    },
+                    {
+                        "cycle": 89074.28125,
+                        "probability": 0.9930952729767996
+                    },
+                    {
+                        "cycle": 89852.875,
+                        "probability": 0.9948953590496569
+                    },
+                    {
+                        "cycle": 90631.46875,
+                        "probability": 0.9965803947332914
+                    },
+                    {
+                        "cycle": 91410.0625,
+                        "probability": 0.9981551049168595
+                    },
+                    {
+                        "cycle": 92188.65625,
+                        "probability": 0.999267706942729
+                    },
+                    {
+                        "cycle": 92967.25,
+                        "probability": 0.9994891357424878
+                    },
+                    {
+                        "cycle": 93745.84375,
+                        "probability": 0.9996598896137113
+                    },
+                    {
+                        "cycle": 94524.4375,
+                        "probability": 0.9998130273875652
+                    },
+                    {
+                        "cycle": 95303.03125,
+                        "probability": 0.9999360675446807
+                    },
+                    {
+                        "cycle": 96081.625,
+                        "probability": 0.999980101271576
+                    },
+                    {
+                        "cycle": 96860.21875,
+                        "probability": 0.9999888069652615
+                    },
+                    {
+                        "cycle": 97638.8125,
+                        "probability": 0.999995025317894
+                    },
+                    {
+                        "cycle": 98417.40625,
+                        "probability": 0.9999987563294735
+                    },
+                    {
+                        "cycle": 99196,
+                        "probability": 1
+                    }
+                ],
+                "feebas_vblank_count_probability": 1
+            },
+            {
+                "action": "OldRod",
+                "weather": "Thunderstorm",
+                "playing_song": "SurfSong",
+                "min": 49072,
+                "max": 141272,
+                "distribution": [
+                    {
+                        "cycle": 49072,
+                        "probability": 0
+                    },
+                    {
+                        "cycle": 50512.625,
+                        "probability": 0.00018661878593710657
+                    },
+                    {
+                        "cycle": 51953.25,
+                        "probability": 0.00039342384650422566
+                    },
+                    {
+                        "cycle": 53393.875,
+                        "probability": 0.0006149750449753184
+                    },
+                    {
+                        "cycle": 54834.5,
+                        "probability": 0.0008529204967158948
+                    },
+                    {
+                        "cycle": 56275.125,
+                        "probability": 0.0010921874003949187
+                    },
+                    {
+                        "cycle": 57715.75,
+                        "probability": 0.001332281694214732
+                    },
+                    {
+                        "cycle": 59156.375,
+                        "probability": 0.0015723880781859376
+                    },
+                    {
+                        "cycle": 60597,
+                        "probability": 0.0018124944621571298
+                    },
+                    {
+                        "cycle": 62037.625,
+                        "probability": 0.0020526008461283405
+                    },
+                    {
+                        "cycle": 63478.25,
+                        "probability": 0.0039111958497638375
+                    },
+                    {
+                        "cycle": 64918.875,
+                        "probability": 0.01318054199598716
+                    },
+                    {
+                        "cycle": 66359.5,
+                        "probability": 0.02078390535323879
+                    },
+                    {
+                        "cycle": 67800.125,
+                        "probability": 0.02202870958879817
+                    },
+                    {
+                        "cycle": 69240.75,
+                        "probability": 0.023472128171714554
+                    },
+                    {
+                        "cycle": 70681.375,
+                        "probability": 0.033766024914733364
+                    },
+                    {
+                        "cycle": 72122,
+                        "probability": 0.08595982777662207
+                    },
+                    {
+                        "cycle": 73562.625,
+                        "probability": 0.13947201031189618
+                    },
+                    {
+                        "cycle": 75003.25,
+                        "probability": 0.16390630383424556
+                    },
+                    {
+                        "cycle": 76443.875,
+                        "probability": 0.17987933508299164
+                    },
+                    {
+                        "cycle": 77884.5,
+                        "probability": 0.21560458271204105
+                    },
+                    {
+                        "cycle": 79325.125,
+                        "probability": 0.3565541997072086
+                    },
+                    {
+                        "cycle": 80765.75,
+                        "probability": 0.6463613898992595
+                    },
+                    {
+                        "cycle": 82206.375,
+                        "probability": 0.8111287216908136
+                    },
+                    {
+                        "cycle": 83647,
+                        "probability": 0.8891606243904001
+                    },
+                    {
+                        "cycle": 85087.625,
+                        "probability": 0.9388493708266564
+                    },
+                    {
+                        "cycle": 86528.25,
+                        "probability": 0.9625400773758404
+                    },
+                    {
+                        "cycle": 87968.875,
+                        "probability": 0.9772510793975512
+                    },
+                    {
+                        "cycle": 89409.5,
+                        "probability": 0.9814063730028149
+                    },
+                    {
+                        "cycle": 90850.125,
+                        "probability": 0.9846777787938739
+                    },
+                    {
+                        "cycle": 92290.75,
+                        "probability": 0.9863236228242043
+                    },
+                    {
+                        "cycle": 93731.375,
+                        "probability": 0.9866649241109722
+                    },
+                    {
+                        "cycle": 95172,
+                        "probability": 0.9869127710870709
+                    },
+                    {
+                        "cycle": 96612.625,
+                        "probability": 0.9869432343517455
+                    },
+                    {
+                        "cycle": 98053.25,
+                        "probability": 0.9869562220181827
+                    },
+                    {
+                        "cycle": 99493.875,
+                        "probability": 0.9869608501656044
+                    },
+                    {
+                        "cycle": 100934.5,
+                        "probability": 0.9869640246490464
+                    },
+                    {
+                        "cycle": 102375.125,
+                        "probability": 0.9869671991324883
+                    },
+                    {
+                        "cycle": 103815.75,
+                        "probability": 0.9869703736159302
+                    },
+                    {
+                        "cycle": 105256.375,
+                        "probability": 0.9869735480993722
+                    },
+                    {
+                        "cycle": 106697,
+                        "probability": 0.9869855688515419
+                    },
+                    {
+                        "cycle": 108137.625,
+                        "probability": 0.9870247895414948
+                    },
+                    {
+                        "cycle": 109578.25,
+                        "probability": 0.9870818427361079
+                    },
+                    {
+                        "cycle": 111018.875,
+                        "probability": 0.9871388734661855
+                    },
+                    {
+                        "cycle": 112459.5,
+                        "probability": 0.9871974508723215
+                    },
+                    {
+                        "cycle": 113900.125,
+                        "probability": 0.9872899641881706
+                    },
+                    {
+                        "cycle": 115340.75,
+                        "probability": 0.9875259933153228
+                    },
+                    {
+                        "cycle": 116781.375,
+                        "probability": 0.9878876036830986
+                    },
+                    {
+                        "cycle": 118222,
+                        "probability": 0.9882951972316874
+                    },
+                    {
+                        "cycle": 119662.625,
+                        "probability": 0.9887229185733726
+                    },
+                    {
+                        "cycle": 121103.25,
+                        "probability": 0.9892433825479109
+                    },
+                    {
+                        "cycle": 122543.875,
+                        "probability": 0.9901106836557605
+                    },
+                    {
+                        "cycle": 123984.5,
+                        "probability": 0.9916399316865148
+                    },
+                    {
+                        "cycle": 125425.125,
+                        "probability": 0.9935050752864272
+                    },
+                    {
+                        "cycle": 126865.75,
+                        "probability": 0.9954599480605532
+                    },
+                    {
+                        "cycle": 128306.375,
+                        "probability": 0.997352049410332
+                    },
+                    {
+                        "cycle": 129747,
+                        "probability": 0.9988376836583756
+                    },
+                    {
+                        "cycle": 131187.625,
+                        "probability": 0.999522362161014
+                    },
+                    {
+                        "cycle": 132628.25,
+                        "probability": 0.9997544615404272
+                    },
+                    {
+                        "cycle": 134068.875,
+                        "probability": 0.9998663870852724
+                    },
+                    {
+                        "cycle": 135509.5,
+                        "probability": 0.9999373586528915
+                    },
+                    {
+                        "cycle": 136950.125,
+                        "probability": 0.9999771611534144
+                    },
+                    {
+                        "cycle": 138390.75,
+                        "probability": 0.9999907433883723
+                    },
+                    {
+                        "cycle": 139831.375,
+                        "probability": 0.999997685847093
+                    },
+                    {
+                        "cycle": 141272,
+                        "probability": 1
+                    }
+                ],
+                "feebas_vblank_count_probability": 1
+            },
+            {
+                "action": "GoodRod",
+                "weather": "Sunny",
+                "playing_song": "SurfSong",
+                "min": 40310,
+                "max": 98157,
+                "distribution": [
+                    {
+                        "cycle": 40310,
+                        "probability": 0
+                    },
+                    {
+                        "cycle": 41213.859375,
+                        "probability": 0.00011437159888193269
+                    },
+                    {
+                        "cycle": 42117.71875,
+                        "probability": 0.0002468039585497044
+                    },
+                    {
+                        "cycle": 43021.578125,
+                        "probability": 0.00037973884809129995
+                    },
+                    {
+                        "cycle": 43925.4375,
+                        "probability": 0.0005156720130225155
+                    },
+                    {
+                        "cycle": 44829.296875,
+                        "probability": 0.0006657520015260209
+                    },
+                    {
+                        "cycle": 45733.15625,
+                        "probability": 0.0008190032878083907
+                    },
+                    {
+                        "cycle": 46637.015625,
+                        "probability": 0.0009727500866044711
+                    },
+                    {
+                        "cycle": 47540.875,
+                        "probability": 0.0011269923979142754
+                    },
+                    {
+                        "cycle": 48444.734375,
+                        "probability": 0.0012815673986338852
+                    },
+                    {
+                        "cycle": 49348.59375,
+                        "probability": 0.0014361512801070652
+                    },
+                    {
+                        "cycle": 50252.453125,
+                        "probability": 0.0015907351615802518
+                    },
+                    {
+                        "cycle": 51156.3125,
+                        "probability": 0.0017453190430534275
+                    },
+                    {
+                        "cycle": 52060.171875,
+                        "probability": 0.0018999029245266139
+                    },
+                    {
+                        "cycle": 52964.03125,
+                        "probability": 0.002054486805999787
+                    },
+                    {
+                        "cycle": 53867.890625,
+                        "probability": 0.0022090706874729645
+                    },
+                    {
+                        "cycle": 54771.75,
+                        "probability": 0.006114878726978235
+                    },
+                    {
+                        "cycle": 55675.609375,
+                        "probability": 0.013537832079235711
+                    },
+                    {
+                        "cycle": 56579.46875,
+                        "probability": 0.02096078543149323
+                    },
+                    {
+                        "cycle": 57483.328125,
+                        "probability": 0.02565809592837286
+                    },
+                    {
+                        "cycle": 58387.1875,
+                        "probability": 0.026932580850863967
+                    },
+                    {
+                        "cycle": 59291.046875,
+                        "probability": 0.02864267595543015
+                    },
+                    {
+                        "cycle": 60194.90625,
+                        "probability": 0.03026045505666783
+                    },
+                    {
+                        "cycle": 61098.765625,
+                        "probability": 0.03150185223786307
+                    },
+                    {
+                        "cycle": 62002.625,
+                        "probability": 0.03768810608539293
+                    },
+                    {
+                        "cycle": 62906.484375,
+                        "probability": 0.059634546773006766
+                    },
+                    {
+                        "cycle": 63810.34375,
+                        "probability": 0.094624264089449
+                    },
+                    {
+                        "cycle": 64714.203125,
+                        "probability": 0.12451623137427555
+                    },
+                    {
+                        "cycle": 65618.0625,
+                        "probability": 0.13399256193243606
+                    },
+                    {
+                        "cycle": 66521.921875,
+                        "probability": 0.14348558918911564
+                    },
+                    {
+                        "cycle": 67425.78125,
+                        "probability": 0.15452392009810118
+                    },
+                    {
+                        "cycle": 68329.640625,
+                        "probability": 0.16455022852847623
+                    },
+                    {
+                        "cycle": 69233.5,
+                        "probability": 0.18380535546594878
+                    },
+                    {
+                        "cycle": 70137.359375,
+                        "probability": 0.22458464974899195
+                    },
+                    {
+                        "cycle": 71041.21875,
+                        "probability": 0.2909415259988799
+                    },
+                    {
+                        "cycle": 71945.078125,
+                        "probability": 0.3829928550937017
+                    },
+                    {
+                        "cycle": 72848.9375,
+                        "probability": 0.4408863462116404
+                    },
+                    {
+                        "cycle": 73752.796875,
+                        "probability": 0.47081020895887576
+                    },
+                    {
+                        "cycle": 74656.65625,
+                        "probability": 0.4925589512052104
+                    },
+                    {
+                        "cycle": 75560.515625,
+                        "probability": 0.5172421229321467
+                    },
+                    {
+                        "cycle": 76464.375,
+                        "probability": 0.5483766020369888
+                    },
+                    {
+                        "cycle": 77368.234375,
+                        "probability": 0.5957118385733393
+                    },
+                    {
+                        "cycle": 78272.09375,
+                        "probability": 0.6645179379204073
+                    },
+                    {
+                        "cycle": 79175.953125,
+                        "probability": 0.7620710925417737
+                    },
+                    {
+                        "cycle": 80079.8125,
+                        "probability": 0.8439251634410092
+                    },
+                    {
+                        "cycle": 80983.671875,
+                        "probability": 0.8921420555518399
+                    },
+                    {
+                        "cycle": 81887.53125,
+                        "probability": 0.9210169829185788
+                    },
+                    {
+                        "cycle": 82791.390625,
+                        "probability": 0.9433997275102868
+                    },
+                    {
+                        "cycle": 83695.25,
+                        "probability": 0.9607986053477436
+                    },
+                    {
+                        "cycle": 84599.109375,
+                        "probability": 0.9731320089196686
+                    },
+                    {
+                        "cycle": 85502.96875,
+                        "probability": 0.9821351068029198
+                    },
+                    {
+                        "cycle": 86406.828125,
+                        "probability": 0.9890897970527094
+                    },
+                    {
+                        "cycle": 87310.6875,
+                        "probability": 0.9918090508305111
+                    },
+                    {
+                        "cycle": 88214.546875,
+                        "probability": 0.9939661817208335
+                    },
+                    {
+                        "cycle": 89118.40625,
+                        "probability": 0.9960060638861385
+                    },
+                    {
+                        "cycle": 90022.265625,
+                        "probability": 0.997894336504049
+                    },
+                    {
+                        "cycle": 90926.125,
+                        "probability": 0.9991126911585568
+                    },
+                    {
+                        "cycle": 91829.984375,
+                        "probability": 0.9994245488398319
+                    },
+                    {
+                        "cycle": 92733.84375,
+                        "probability": 0.9996338730497364
+                    },
+                    {
+                        "cycle": 93637.703125,
+                        "probability": 0.9998170090044364
+                    },
+                    {
+                        "cycle": 94541.5625,
+                        "probability": 0.9999622338018401
+                    },
+                    {
+                        "cycle": 95445.421875,
+                        "probability": 0.9999815148168386
+                    },
+                    {
+                        "cycle": 96349.28125,
+                        "probability": 0.9999917843630394
+                    },
+                    {
+                        "cycle": 97253.140625,
+                        "probability": 0.9999979460907599
+                    },
+                    {
+                        "cycle": 98157,
+                        "probability": 1
+                    }
+                ],
+                "feebas_vblank_count_probability": 1
+            },
+            {
+                "action": "GoodRod",
+                "weather": "Rain",
+                "playing_song": "SurfSong",
+                "min": 49366,
+                "max": 99196,
+                "distribution": [
+                    {
+                        "cycle": 49366,
+                        "probability": 0
+                    },
+                    {
+                        "cycle": 50144.59375,
+                        "probability": 0.00006712538350587551
+                    },
+                    {
+                        "cycle": 50923.1875,
+                        "probability": 0.00014687691615032628
+                    },
+                    {
+                        "cycle": 51701.78125,
+                        "probability": 0.0002266284487947769
+                    },
+                    {
+                        "cycle": 52480.375,
+                        "probability": 0.00030774311829337355
+                    },
+                    {
+                        "cycle": 53258.96875,
+                        "probability": 0.00039166677863703987
+                    },
+                    {
+                        "cycle": 54037.5625,
+                        "probability": 0.0004834466701933477
+                    },
+                    {
+                        "cycle": 54816.15625,
+                        "probability": 0.000575765072221981
+                    },
+                    {
+                        "cycle": 55594.75,
+                        "probability": 0.0006683405195069333
+                    },
+                    {
+                        "cycle": 56373.34375,
+                        "probability": 0.0007611730120482108
+                    },
+                    {
+                        "cycle": 57151.9375,
+                        "probability": 0.0008542312977723148
+                    },
+                    {
+                        "cycle": 57930.53125,
+                        "probability": 0.0009473226049161396
+                    },
+                    {
+                        "cycle": 58709.125,
+                        "probability": 0.0010404139120599697
+                    },
+                    {
+                        "cycle": 59487.71875,
+                        "probability": 0.0011335052192037987
+                    },
+                    {
+                        "cycle": 60266.3125,
+                        "probability": 0.0012265965263476189
+                    },
+                    {
+                        "cycle": 61044.90625,
+                        "probability": 0.0013196878334914455
+                    },
+                    {
+                        "cycle": 61823.5,
+                        "probability": 0.0014127791406352767
+                    },
+                    {
+                        "cycle": 62602.09375,
+                        "probability": 0.0015058704477790813
+                    },
+                    {
+                        "cycle": 63380.6875,
+                        "probability": 0.0022323669711580224
+                    },
+                    {
+                        "cycle": 64159.28125,
+                        "probability": 0.007527781939123405
+                    },
+                    {
+                        "cycle": 64937.875,
+                        "probability": 0.013445966001636738
+                    },
+                    {
+                        "cycle": 65716.46875,
+                        "probability": 0.019364150064150123
+                    },
+                    {
+                        "cycle": 66495.0625,
+                        "probability": 0.02389759566829397
+                    },
+                    {
+                        "cycle": 67273.65625,
+                        "probability": 0.024854312296551984
+                    },
+                    {
+                        "cycle": 68052.25,
+                        "probability": 0.026004426283833728
+                    },
+                    {
+                        "cycle": 68830.84375,
+                        "probability": 0.027171149904693142
+                    },
+                    {
+                        "cycle": 69609.4375,
+                        "probability": 0.028224329186524507
+                    },
+                    {
+                        "cycle": 70388.03125,
+                        "probability": 0.03026439794221668
+                    },
+                    {
+                        "cycle": 71166.625,
+                        "probability": 0.043647083363776505
+                    },
+                    {
+                        "cycle": 71945.21875,
+                        "probability": 0.07352938912907371
+                    },
+                    {
+                        "cycle": 72723.8125,
+                        "probability": 0.116036341795314
+                    },
+                    {
+                        "cycle": 73502.40625,
+                        "probability": 0.14791641320765495
+                    },
+                    {
+                        "cycle": 74281,
+                        "probability": 0.16787976780363917
+                    },
+                    {
+                        "cycle": 75059.59375,
+                        "probability": 0.17654204003091864
+                    },
+                    {
+                        "cycle": 75838.1875,
+                        "probability": 0.18666866661950438
+                    },
+                    {
+                        "cycle": 76616.78125,
+                        "probability": 0.1970317596268549
+                    },
+                    {
+                        "cycle": 77395.375,
+                        "probability": 0.20817696602223235
+                    },
+                    {
+                        "cycle": 78173.96875,
+                        "probability": 0.2298186881317266
+                    },
+                    {
+                        "cycle": 78952.5625,
+                        "probability": 0.26994912491922923
+                    },
+                    {
+                        "cycle": 79731.15625,
+                        "probability": 0.3750855832455452
+                    },
+                    {
+                        "cycle": 80509.75,
+                        "probability": 0.5327293945901276
+                    },
+                    {
+                        "cycle": 81288.34375,
+                        "probability": 0.691562659886289
+                    },
+                    {
+                        "cycle": 82066.9375,
+                        "probability": 0.7846497158265531
+                    },
+                    {
+                        "cycle": 82845.53125,
+                        "probability": 0.8410950180056913
+                    },
+                    {
+                        "cycle": 83624.125,
+                        "probability": 0.8807627835814946
+                    },
+                    {
+                        "cycle": 84402.71875,
+                        "probability": 0.9200760500070978
+                    },
+                    {
+                        "cycle": 85181.3125,
+                        "probability": 0.9463082604090953
+                    },
+                    {
+                        "cycle": 85959.90625,
+                        "probability": 0.9623888850976674
+                    },
+                    {
+                        "cycle": 86738.5,
+                        "probability": 0.9739472492524686
+                    },
+                    {
+                        "cycle": 87517.09375,
+                        "probability": 0.982618505763486
+                    },
+                    {
+                        "cycle": 88295.6875,
+                        "probability": 0.9902887818179401
+                    },
+                    {
+                        "cycle": 89074.28125,
+                        "probability": 0.9930952729767996
+                    },
+                    {
+                        "cycle": 89852.875,
+                        "probability": 0.9948953590496569
+                    },
+                    {
+                        "cycle": 90631.46875,
+                        "probability": 0.9965803947332914
+                    },
+                    {
+                        "cycle": 91410.0625,
+                        "probability": 0.9981551049168595
+                    },
+                    {
+                        "cycle": 92188.65625,
+                        "probability": 0.999267706942729
+                    },
+                    {
+                        "cycle": 92967.25,
+                        "probability": 0.9994891357424878
+                    },
+                    {
+                        "cycle": 93745.84375,
+                        "probability": 0.9996598896137113
+                    },
+                    {
+                        "cycle": 94524.4375,
+                        "probability": 0.9998130273875652
+                    },
+                    {
+                        "cycle": 95303.03125,
+                        "probability": 0.9999360675446807
+                    },
+                    {
+                        "cycle": 96081.625,
+                        "probability": 0.999980101271576
+                    },
+                    {
+                        "cycle": 96860.21875,
+                        "probability": 0.9999888069652615
+                    },
+                    {
+                        "cycle": 97638.8125,
+                        "probability": 0.999995025317894
+                    },
+                    {
+                        "cycle": 98417.40625,
+                        "probability": 0.9999987563294735
+                    },
+                    {
+                        "cycle": 99196,
+                        "probability": 1
+                    }
+                ],
+                "feebas_vblank_count_probability": 1
+            },
+            {
+                "action": "GoodRod",
+                "weather": "Thunderstorm",
+                "playing_song": "SurfSong",
+                "min": 49072,
+                "max": 141272,
+                "distribution": [
+                    {
+                        "cycle": 49072,
+                        "probability": 0
+                    },
+                    {
+                        "cycle": 50512.625,
+                        "probability": 0.00018661878593710657
+                    },
+                    {
+                        "cycle": 51953.25,
+                        "probability": 0.00039342384650422566
+                    },
+                    {
+                        "cycle": 53393.875,
+                        "probability": 0.0006149750449753184
+                    },
+                    {
+                        "cycle": 54834.5,
+                        "probability": 0.0008529204967158948
+                    },
+                    {
+                        "cycle": 56275.125,
+                        "probability": 0.0010921874003949187
+                    },
+                    {
+                        "cycle": 57715.75,
+                        "probability": 0.001332281694214732
+                    },
+                    {
+                        "cycle": 59156.375,
+                        "probability": 0.0015723880781859376
+                    },
+                    {
+                        "cycle": 60597,
+                        "probability": 0.0018124944621571298
+                    },
+                    {
+                        "cycle": 62037.625,
+                        "probability": 0.0020526008461283405
+                    },
+                    {
+                        "cycle": 63478.25,
+                        "probability": 0.0039111958497638375
+                    },
+                    {
+                        "cycle": 64918.875,
+                        "probability": 0.01318054199598716
+                    },
+                    {
+                        "cycle": 66359.5,
+                        "probability": 0.02078390535323879
+                    },
+                    {
+                        "cycle": 67800.125,
+                        "probability": 0.02202870958879817
+                    },
+                    {
+                        "cycle": 69240.75,
+                        "probability": 0.023472128171714554
+                    },
+                    {
+                        "cycle": 70681.375,
+                        "probability": 0.033766024914733364
+                    },
+                    {
+                        "cycle": 72122,
+                        "probability": 0.08595982777662207
+                    },
+                    {
+                        "cycle": 73562.625,
+                        "probability": 0.13947201031189618
+                    },
+                    {
+                        "cycle": 75003.25,
+                        "probability": 0.16390630383424556
+                    },
+                    {
+                        "cycle": 76443.875,
+                        "probability": 0.17987933508299164
+                    },
+                    {
+                        "cycle": 77884.5,
+                        "probability": 0.21560458271204105
+                    },
+                    {
+                        "cycle": 79325.125,
+                        "probability": 0.3565541997072086
+                    },
+                    {
+                        "cycle": 80765.75,
+                        "probability": 0.6463613898992595
+                    },
+                    {
+                        "cycle": 82206.375,
+                        "probability": 0.8111287216908136
+                    },
+                    {
+                        "cycle": 83647,
+                        "probability": 0.8891606243904001
+                    },
+                    {
+                        "cycle": 85087.625,
+                        "probability": 0.9388493708266564
+                    },
+                    {
+                        "cycle": 86528.25,
+                        "probability": 0.9625400773758404
+                    },
+                    {
+                        "cycle": 87968.875,
+                        "probability": 0.9772510793975512
+                    },
+                    {
+                        "cycle": 89409.5,
+                        "probability": 0.9814063730028149
+                    },
+                    {
+                        "cycle": 90850.125,
+                        "probability": 0.9846777787938739
+                    },
+                    {
+                        "cycle": 92290.75,
+                        "probability": 0.9863236228242043
+                    },
+                    {
+                        "cycle": 93731.375,
+                        "probability": 0.9866649241109722
+                    },
+                    {
+                        "cycle": 95172,
+                        "probability": 0.9869127710870709
+                    },
+                    {
+                        "cycle": 96612.625,
+                        "probability": 0.9869432343517455
+                    },
+                    {
+                        "cycle": 98053.25,
+                        "probability": 0.9869562220181827
+                    },
+                    {
+                        "cycle": 99493.875,
+                        "probability": 0.9869608501656044
+                    },
+                    {
+                        "cycle": 100934.5,
+                        "probability": 0.9869640246490464
+                    },
+                    {
+                        "cycle": 102375.125,
+                        "probability": 0.9869671991324883
+                    },
+                    {
+                        "cycle": 103815.75,
+                        "probability": 0.9869703736159302
+                    },
+                    {
+                        "cycle": 105256.375,
+                        "probability": 0.9869735480993722
+                    },
+                    {
+                        "cycle": 106697,
+                        "probability": 0.9869855688515419
+                    },
+                    {
+                        "cycle": 108137.625,
+                        "probability": 0.9870247895414948
+                    },
+                    {
+                        "cycle": 109578.25,
+                        "probability": 0.9870818427361079
+                    },
+                    {
+                        "cycle": 111018.875,
+                        "probability": 0.9871388734661855
+                    },
+                    {
+                        "cycle": 112459.5,
+                        "probability": 0.9871974508723215
+                    },
+                    {
+                        "cycle": 113900.125,
+                        "probability": 0.9872899641881706
+                    },
+                    {
+                        "cycle": 115340.75,
+                        "probability": 0.9875259933153228
+                    },
+                    {
+                        "cycle": 116781.375,
+                        "probability": 0.9878876036830986
+                    },
+                    {
+                        "cycle": 118222,
+                        "probability": 0.9882951972316874
+                    },
+                    {
+                        "cycle": 119662.625,
+                        "probability": 0.9887229185733726
+                    },
+                    {
+                        "cycle": 121103.25,
+                        "probability": 0.9892433825479109
+                    },
+                    {
+                        "cycle": 122543.875,
+                        "probability": 0.9901106836557605
+                    },
+                    {
+                        "cycle": 123984.5,
+                        "probability": 0.9916399316865148
+                    },
+                    {
+                        "cycle": 125425.125,
+                        "probability": 0.9935050752864272
+                    },
+                    {
+                        "cycle": 126865.75,
+                        "probability": 0.9954599480605532
+                    },
+                    {
+                        "cycle": 128306.375,
+                        "probability": 0.997352049410332
+                    },
+                    {
+                        "cycle": 129747,
+                        "probability": 0.9988376836583756
+                    },
+                    {
+                        "cycle": 131187.625,
+                        "probability": 0.999522362161014
+                    },
+                    {
+                        "cycle": 132628.25,
+                        "probability": 0.9997544615404272
+                    },
+                    {
+                        "cycle": 134068.875,
+                        "probability": 0.9998663870852724
+                    },
+                    {
+                        "cycle": 135509.5,
+                        "probability": 0.9999373586528915
+                    },
+                    {
+                        "cycle": 136950.125,
+                        "probability": 0.9999771611534144
+                    },
+                    {
+                        "cycle": 138390.75,
+                        "probability": 0.9999907433883723
+                    },
+                    {
+                        "cycle": 139831.375,
+                        "probability": 0.999997685847093
+                    },
+                    {
+                        "cycle": 141272,
+                        "probability": 1
+                    }
+                ],
+                "feebas_vblank_count_probability": 1
+            },
+            {
+                "action": "SuperRod",
+                "weather": "Sunny",
+                "playing_song": "SurfSong",
+                "min": 40310,
+                "max": 98157,
+                "distribution": [
+                    {
+                        "cycle": 40310,
+                        "probability": 0
+                    },
+                    {
+                        "cycle": 41213.859375,
+                        "probability": 0.00011437159888193269
+                    },
+                    {
+                        "cycle": 42117.71875,
+                        "probability": 0.0002468039585497044
+                    },
+                    {
+                        "cycle": 43021.578125,
+                        "probability": 0.00037973884809129995
+                    },
+                    {
+                        "cycle": 43925.4375,
+                        "probability": 0.0005156720130225155
+                    },
+                    {
+                        "cycle": 44829.296875,
+                        "probability": 0.0006657520015260209
+                    },
+                    {
+                        "cycle": 45733.15625,
+                        "probability": 0.0008190032878083907
+                    },
+                    {
+                        "cycle": 46637.015625,
+                        "probability": 0.0009727500866044711
+                    },
+                    {
+                        "cycle": 47540.875,
+                        "probability": 0.0011269923979142754
+                    },
+                    {
+                        "cycle": 48444.734375,
+                        "probability": 0.0012815673986338852
+                    },
+                    {
+                        "cycle": 49348.59375,
+                        "probability": 0.0014361512801070652
+                    },
+                    {
+                        "cycle": 50252.453125,
+                        "probability": 0.0015907351615802518
+                    },
+                    {
+                        "cycle": 51156.3125,
+                        "probability": 0.0017453190430534275
+                    },
+                    {
+                        "cycle": 52060.171875,
+                        "probability": 0.0018999029245266139
+                    },
+                    {
+                        "cycle": 52964.03125,
+                        "probability": 0.002054486805999787
+                    },
+                    {
+                        "cycle": 53867.890625,
+                        "probability": 0.0022090706874729645
+                    },
+                    {
+                        "cycle": 54771.75,
+                        "probability": 0.006114878726978235
+                    },
+                    {
+                        "cycle": 55675.609375,
+                        "probability": 0.013537832079235711
+                    },
+                    {
+                        "cycle": 56579.46875,
+                        "probability": 0.02096078543149323
+                    },
+                    {
+                        "cycle": 57483.328125,
+                        "probability": 0.02565809592837286
+                    },
+                    {
+                        "cycle": 58387.1875,
+                        "probability": 0.026932580850863967
+                    },
+                    {
+                        "cycle": 59291.046875,
+                        "probability": 0.02864267595543015
+                    },
+                    {
+                        "cycle": 60194.90625,
+                        "probability": 0.03026045505666783
+                    },
+                    {
+                        "cycle": 61098.765625,
+                        "probability": 0.03150185223786307
+                    },
+                    {
+                        "cycle": 62002.625,
+                        "probability": 0.03768810608539293
+                    },
+                    {
+                        "cycle": 62906.484375,
+                        "probability": 0.059634546773006766
+                    },
+                    {
+                        "cycle": 63810.34375,
+                        "probability": 0.094624264089449
+                    },
+                    {
+                        "cycle": 64714.203125,
+                        "probability": 0.12451623137427555
+                    },
+                    {
+                        "cycle": 65618.0625,
+                        "probability": 0.13399256193243606
+                    },
+                    {
+                        "cycle": 66521.921875,
+                        "probability": 0.14348558918911564
+                    },
+                    {
+                        "cycle": 67425.78125,
+                        "probability": 0.15452392009810118
+                    },
+                    {
+                        "cycle": 68329.640625,
+                        "probability": 0.16455022852847623
+                    },
+                    {
+                        "cycle": 69233.5,
+                        "probability": 0.18380535546594878
+                    },
+                    {
+                        "cycle": 70137.359375,
+                        "probability": 0.22458464974899195
+                    },
+                    {
+                        "cycle": 71041.21875,
+                        "probability": 0.2909415259988799
+                    },
+                    {
+                        "cycle": 71945.078125,
+                        "probability": 0.3829928550937017
+                    },
+                    {
+                        "cycle": 72848.9375,
+                        "probability": 0.4408863462116404
+                    },
+                    {
+                        "cycle": 73752.796875,
+                        "probability": 0.47081020895887576
+                    },
+                    {
+                        "cycle": 74656.65625,
+                        "probability": 0.4925589512052104
+                    },
+                    {
+                        "cycle": 75560.515625,
+                        "probability": 0.5172421229321467
+                    },
+                    {
+                        "cycle": 76464.375,
+                        "probability": 0.5483766020369888
+                    },
+                    {
+                        "cycle": 77368.234375,
+                        "probability": 0.5957118385733393
+                    },
+                    {
+                        "cycle": 78272.09375,
+                        "probability": 0.6645179379204073
+                    },
+                    {
+                        "cycle": 79175.953125,
+                        "probability": 0.7620710925417737
+                    },
+                    {
+                        "cycle": 80079.8125,
+                        "probability": 0.8439251634410092
+                    },
+                    {
+                        "cycle": 80983.671875,
+                        "probability": 0.8921420555518399
+                    },
+                    {
+                        "cycle": 81887.53125,
+                        "probability": 0.9210169829185788
+                    },
+                    {
+                        "cycle": 82791.390625,
+                        "probability": 0.9433997275102868
+                    },
+                    {
+                        "cycle": 83695.25,
+                        "probability": 0.9607986053477436
+                    },
+                    {
+                        "cycle": 84599.109375,
+                        "probability": 0.9731320089196686
+                    },
+                    {
+                        "cycle": 85502.96875,
+                        "probability": 0.9821351068029198
+                    },
+                    {
+                        "cycle": 86406.828125,
+                        "probability": 0.9890897970527094
+                    },
+                    {
+                        "cycle": 87310.6875,
+                        "probability": 0.9918090508305111
+                    },
+                    {
+                        "cycle": 88214.546875,
+                        "probability": 0.9939661817208335
+                    },
+                    {
+                        "cycle": 89118.40625,
+                        "probability": 0.9960060638861385
+                    },
+                    {
+                        "cycle": 90022.265625,
+                        "probability": 0.997894336504049
+                    },
+                    {
+                        "cycle": 90926.125,
+                        "probability": 0.9991126911585568
+                    },
+                    {
+                        "cycle": 91829.984375,
+                        "probability": 0.9994245488398319
+                    },
+                    {
+                        "cycle": 92733.84375,
+                        "probability": 0.9996338730497364
+                    },
+                    {
+                        "cycle": 93637.703125,
+                        "probability": 0.9998170090044364
+                    },
+                    {
+                        "cycle": 94541.5625,
+                        "probability": 0.9999622338018401
+                    },
+                    {
+                        "cycle": 95445.421875,
+                        "probability": 0.9999815148168386
+                    },
+                    {
+                        "cycle": 96349.28125,
+                        "probability": 0.9999917843630394
+                    },
+                    {
+                        "cycle": 97253.140625,
+                        "probability": 0.9999979460907599
+                    },
+                    {
+                        "cycle": 98157,
+                        "probability": 1
+                    }
+                ],
+                "feebas_vblank_count_probability": 1
+            },
+            {
+                "action": "SuperRod",
+                "weather": "Rain",
+                "playing_song": "SurfSong",
+                "min": 49366,
+                "max": 99196,
+                "distribution": [
+                    {
+                        "cycle": 49366,
+                        "probability": 0
+                    },
+                    {
+                        "cycle": 50144.59375,
+                        "probability": 0.00006712538350587551
+                    },
+                    {
+                        "cycle": 50923.1875,
+                        "probability": 0.00014687691615032628
+                    },
+                    {
+                        "cycle": 51701.78125,
+                        "probability": 0.0002266284487947769
+                    },
+                    {
+                        "cycle": 52480.375,
+                        "probability": 0.00030774311829337355
+                    },
+                    {
+                        "cycle": 53258.96875,
+                        "probability": 0.00039166677863703987
+                    },
+                    {
+                        "cycle": 54037.5625,
+                        "probability": 0.0004834466701933477
+                    },
+                    {
+                        "cycle": 54816.15625,
+                        "probability": 0.000575765072221981
+                    },
+                    {
+                        "cycle": 55594.75,
+                        "probability": 0.0006683405195069333
+                    },
+                    {
+                        "cycle": 56373.34375,
+                        "probability": 0.0007611730120482108
+                    },
+                    {
+                        "cycle": 57151.9375,
+                        "probability": 0.0008542312977723148
+                    },
+                    {
+                        "cycle": 57930.53125,
+                        "probability": 0.0009473226049161396
+                    },
+                    {
+                        "cycle": 58709.125,
+                        "probability": 0.0010404139120599697
+                    },
+                    {
+                        "cycle": 59487.71875,
+                        "probability": 0.0011335052192037987
+                    },
+                    {
+                        "cycle": 60266.3125,
+                        "probability": 0.0012265965263476189
+                    },
+                    {
+                        "cycle": 61044.90625,
+                        "probability": 0.0013196878334914455
+                    },
+                    {
+                        "cycle": 61823.5,
+                        "probability": 0.0014127791406352767
+                    },
+                    {
+                        "cycle": 62602.09375,
+                        "probability": 0.0015058704477790813
+                    },
+                    {
+                        "cycle": 63380.6875,
+                        "probability": 0.0022323669711580224
+                    },
+                    {
+                        "cycle": 64159.28125,
+                        "probability": 0.007527781939123405
+                    },
+                    {
+                        "cycle": 64937.875,
+                        "probability": 0.013445966001636738
+                    },
+                    {
+                        "cycle": 65716.46875,
+                        "probability": 0.019364150064150123
+                    },
+                    {
+                        "cycle": 66495.0625,
+                        "probability": 0.02389759566829397
+                    },
+                    {
+                        "cycle": 67273.65625,
+                        "probability": 0.024854312296551984
+                    },
+                    {
+                        "cycle": 68052.25,
+                        "probability": 0.026004426283833728
+                    },
+                    {
+                        "cycle": 68830.84375,
+                        "probability": 0.027171149904693142
+                    },
+                    {
+                        "cycle": 69609.4375,
+                        "probability": 0.028224329186524507
+                    },
+                    {
+                        "cycle": 70388.03125,
+                        "probability": 0.03026439794221668
+                    },
+                    {
+                        "cycle": 71166.625,
+                        "probability": 0.043647083363776505
+                    },
+                    {
+                        "cycle": 71945.21875,
+                        "probability": 0.07352938912907371
+                    },
+                    {
+                        "cycle": 72723.8125,
+                        "probability": 0.116036341795314
+                    },
+                    {
+                        "cycle": 73502.40625,
+                        "probability": 0.14791641320765495
+                    },
+                    {
+                        "cycle": 74281,
+                        "probability": 0.16787976780363917
+                    },
+                    {
+                        "cycle": 75059.59375,
+                        "probability": 0.17654204003091864
+                    },
+                    {
+                        "cycle": 75838.1875,
+                        "probability": 0.18666866661950438
+                    },
+                    {
+                        "cycle": 76616.78125,
+                        "probability": 0.1970317596268549
+                    },
+                    {
+                        "cycle": 77395.375,
+                        "probability": 0.20817696602223235
+                    },
+                    {
+                        "cycle": 78173.96875,
+                        "probability": 0.2298186881317266
+                    },
+                    {
+                        "cycle": 78952.5625,
+                        "probability": 0.26994912491922923
+                    },
+                    {
+                        "cycle": 79731.15625,
+                        "probability": 0.3750855832455452
+                    },
+                    {
+                        "cycle": 80509.75,
+                        "probability": 0.5327293945901276
+                    },
+                    {
+                        "cycle": 81288.34375,
+                        "probability": 0.691562659886289
+                    },
+                    {
+                        "cycle": 82066.9375,
+                        "probability": 0.7846497158265531
+                    },
+                    {
+                        "cycle": 82845.53125,
+                        "probability": 0.8410950180056913
+                    },
+                    {
+                        "cycle": 83624.125,
+                        "probability": 0.8807627835814946
+                    },
+                    {
+                        "cycle": 84402.71875,
+                        "probability": 0.9200760500070978
+                    },
+                    {
+                        "cycle": 85181.3125,
+                        "probability": 0.9463082604090953
+                    },
+                    {
+                        "cycle": 85959.90625,
+                        "probability": 0.9623888850976674
+                    },
+                    {
+                        "cycle": 86738.5,
+                        "probability": 0.9739472492524686
+                    },
+                    {
+                        "cycle": 87517.09375,
+                        "probability": 0.982618505763486
+                    },
+                    {
+                        "cycle": 88295.6875,
+                        "probability": 0.9902887818179401
+                    },
+                    {
+                        "cycle": 89074.28125,
+                        "probability": 0.9930952729767996
+                    },
+                    {
+                        "cycle": 89852.875,
+                        "probability": 0.9948953590496569
+                    },
+                    {
+                        "cycle": 90631.46875,
+                        "probability": 0.9965803947332914
+                    },
+                    {
+                        "cycle": 91410.0625,
+                        "probability": 0.9981551049168595
+                    },
+                    {
+                        "cycle": 92188.65625,
+                        "probability": 0.999267706942729
+                    },
+                    {
+                        "cycle": 92967.25,
+                        "probability": 0.9994891357424878
+                    },
+                    {
+                        "cycle": 93745.84375,
+                        "probability": 0.9996598896137113
+                    },
+                    {
+                        "cycle": 94524.4375,
+                        "probability": 0.9998130273875652
+                    },
+                    {
+                        "cycle": 95303.03125,
+                        "probability": 0.9999360675446807
+                    },
+                    {
+                        "cycle": 96081.625,
+                        "probability": 0.999980101271576
+                    },
+                    {
+                        "cycle": 96860.21875,
+                        "probability": 0.9999888069652615
+                    },
+                    {
+                        "cycle": 97638.8125,
+                        "probability": 0.999995025317894
+                    },
+                    {
+                        "cycle": 98417.40625,
+                        "probability": 0.9999987563294735
+                    },
+                    {
+                        "cycle": 99196,
+                        "probability": 1
+                    }
+                ],
+                "feebas_vblank_count_probability": 1
+            },
+            {
+                "action": "SuperRod",
+                "weather": "Thunderstorm",
+                "playing_song": "SurfSong",
+                "min": 49072,
+                "max": 141272,
+                "distribution": [
+                    {
+                        "cycle": 49072,
+                        "probability": 0
+                    },
+                    {
+                        "cycle": 50512.625,
+                        "probability": 0.00018661878593710657
+                    },
+                    {
+                        "cycle": 51953.25,
+                        "probability": 0.00039342384650422566
+                    },
+                    {
+                        "cycle": 53393.875,
+                        "probability": 0.0006149750449753184
+                    },
+                    {
+                        "cycle": 54834.5,
+                        "probability": 0.0008529204967158948
+                    },
+                    {
+                        "cycle": 56275.125,
+                        "probability": 0.0010921874003949187
+                    },
+                    {
+                        "cycle": 57715.75,
+                        "probability": 0.001332281694214732
+                    },
+                    {
+                        "cycle": 59156.375,
+                        "probability": 0.0015723880781859376
+                    },
+                    {
+                        "cycle": 60597,
+                        "probability": 0.0018124944621571298
+                    },
+                    {
+                        "cycle": 62037.625,
+                        "probability": 0.0020526008461283405
+                    },
+                    {
+                        "cycle": 63478.25,
+                        "probability": 0.0039111958497638375
+                    },
+                    {
+                        "cycle": 64918.875,
+                        "probability": 0.01318054199598716
+                    },
+                    {
+                        "cycle": 66359.5,
+                        "probability": 0.02078390535323879
+                    },
+                    {
+                        "cycle": 67800.125,
+                        "probability": 0.02202870958879817
+                    },
+                    {
+                        "cycle": 69240.75,
+                        "probability": 0.023472128171714554
+                    },
+                    {
+                        "cycle": 70681.375,
+                        "probability": 0.033766024914733364
+                    },
+                    {
+                        "cycle": 72122,
+                        "probability": 0.08595982777662207
+                    },
+                    {
+                        "cycle": 73562.625,
+                        "probability": 0.13947201031189618
+                    },
+                    {
+                        "cycle": 75003.25,
+                        "probability": 0.16390630383424556
+                    },
+                    {
+                        "cycle": 76443.875,
+                        "probability": 0.17987933508299164
+                    },
+                    {
+                        "cycle": 77884.5,
+                        "probability": 0.21560458271204105
+                    },
+                    {
+                        "cycle": 79325.125,
+                        "probability": 0.3565541997072086
+                    },
+                    {
+                        "cycle": 80765.75,
+                        "probability": 0.6463613898992595
+                    },
+                    {
+                        "cycle": 82206.375,
+                        "probability": 0.8111287216908136
+                    },
+                    {
+                        "cycle": 83647,
+                        "probability": 0.8891606243904001
+                    },
+                    {
+                        "cycle": 85087.625,
+                        "probability": 0.9388493708266564
+                    },
+                    {
+                        "cycle": 86528.25,
+                        "probability": 0.9625400773758404
+                    },
+                    {
+                        "cycle": 87968.875,
+                        "probability": 0.9772510793975512
+                    },
+                    {
+                        "cycle": 89409.5,
+                        "probability": 0.9814063730028149
+                    },
+                    {
+                        "cycle": 90850.125,
+                        "probability": 0.9846777787938739
+                    },
+                    {
+                        "cycle": 92290.75,
+                        "probability": 0.9863236228242043
+                    },
+                    {
+                        "cycle": 93731.375,
+                        "probability": 0.9866649241109722
+                    },
+                    {
+                        "cycle": 95172,
+                        "probability": 0.9869127710870709
+                    },
+                    {
+                        "cycle": 96612.625,
+                        "probability": 0.9869432343517455
+                    },
+                    {
+                        "cycle": 98053.25,
+                        "probability": 0.9869562220181827
+                    },
+                    {
+                        "cycle": 99493.875,
+                        "probability": 0.9869608501656044
+                    },
+                    {
+                        "cycle": 100934.5,
+                        "probability": 0.9869640246490464
+                    },
+                    {
+                        "cycle": 102375.125,
+                        "probability": 0.9869671991324883
+                    },
+                    {
+                        "cycle": 103815.75,
+                        "probability": 0.9869703736159302
+                    },
+                    {
+                        "cycle": 105256.375,
+                        "probability": 0.9869735480993722
+                    },
+                    {
+                        "cycle": 106697,
+                        "probability": 0.9869855688515419
+                    },
+                    {
+                        "cycle": 108137.625,
+                        "probability": 0.9870247895414948
+                    },
+                    {
+                        "cycle": 109578.25,
+                        "probability": 0.9870818427361079
+                    },
+                    {
+                        "cycle": 111018.875,
+                        "probability": 0.9871388734661855
+                    },
+                    {
+                        "cycle": 112459.5,
+                        "probability": 0.9871974508723215
+                    },
+                    {
+                        "cycle": 113900.125,
+                        "probability": 0.9872899641881706
+                    },
+                    {
+                        "cycle": 115340.75,
+                        "probability": 0.9875259933153228
+                    },
+                    {
+                        "cycle": 116781.375,
+                        "probability": 0.9878876036830986
+                    },
+                    {
+                        "cycle": 118222,
+                        "probability": 0.9882951972316874
+                    },
+                    {
+                        "cycle": 119662.625,
+                        "probability": 0.9887229185733726
+                    },
+                    {
+                        "cycle": 121103.25,
+                        "probability": 0.9892433825479109
+                    },
+                    {
+                        "cycle": 122543.875,
+                        "probability": 0.9901106836557605
+                    },
+                    {
+                        "cycle": 123984.5,
+                        "probability": 0.9916399316865148
+                    },
+                    {
+                        "cycle": 125425.125,
+                        "probability": 0.9935050752864272
+                    },
+                    {
+                        "cycle": 126865.75,
+                        "probability": 0.9954599480605532
+                    },
+                    {
+                        "cycle": 128306.375,
+                        "probability": 0.997352049410332
+                    },
+                    {
+                        "cycle": 129747,
+                        "probability": 0.9988376836583756
+                    },
+                    {
+                        "cycle": 131187.625,
+                        "probability": 0.999522362161014
+                    },
+                    {
+                        "cycle": 132628.25,
+                        "probability": 0.9997544615404272
+                    },
+                    {
+                        "cycle": 134068.875,
+                        "probability": 0.9998663870852724
+                    },
+                    {
+                        "cycle": 135509.5,
+                        "probability": 0.9999373586528915
+                    },
+                    {
+                        "cycle": 136950.125,
+                        "probability": 0.9999771611534144
+                    },
+                    {
+                        "cycle": 138390.75,
+                        "probability": 0.9999907433883723
+                    },
+                    {
+                        "cycle": 139831.375,
+                        "probability": 0.999997685847093
+                    },
+                    {
+                        "cycle": 141272,
+                        "probability": 1
+                    }
+                ],
+                "feebas_vblank_count_probability": 1
+            },
+            {
+                "feebas_vblank_count": 3,
+                "feebas_vblank_count_probability": 0.92,
+                "check_feebas_cycle": 736792,
+                "min": 47534,
+                "max": 272553,
+                "distribution": [
+                    {
+                        "cycle": 47534,
+                        "probability": 0
+                    },
+                    {
+                        "cycle": 71524.5,
+                        "probability": 0.02608695652173913
+                    },
+                    {
+                        "cycle": 95515,
+                        "probability": 0.08260869565217391
+                    },
+                    {
+                        "cycle": 104939,
+                        "probability": 0.14782608695652175
+                    },
+                    {
+                        "cycle": 130799,
+                        "probability": 0.2
+                    },
+                    {
+                        "cycle": 141888,
+                        "probability": 0.24347826086956523
+                    },
+                    {
+                        "cycle": 144015,
+                        "probability": 0.30434782608695654
+                    },
+                    {
+                        "cycle": 149269,
+                        "probability": 0.3782608695652174
+                    },
+                    {
+                        "cycle": 159773,
+                        "probability": 0.48695652173913045
+                    },
+                    {
+                        "cycle": 225622,
+                        "probability": 0.5782608695652174
+                    },
+                    {
+                        "cycle": 233120,
+                        "probability": 0.6565217391304348
+                    },
+                    {
+                        "cycle": 249034,
+                        "probability": 0.7391304347826086
+                    },
+                    {
+                        "cycle": 252894,
+                        "probability": 0.8
+                    },
+                    {
+                        "cycle": 256184,
+                        "probability": 0.8565217391304348
+                    },
+                    {
+                        "cycle": 264412,
+                        "probability": 0.9043478260869565
+                    },
+                    {
+                        "cycle": 272553,
+                        "probability": 0.9652173913043478
+                    },
+                    {
+                        "cycle": 272553,
+                        "probability": 1
+                    }
+                ],
+                "action": "OldRod",
+                "playing_song": "SurfSong",
+                "weather": "Thunderstorm"
+            }
+        ],
+        "slots_by_action": [
+            [
+                {
+                    "min_level": 25,
+                    "max_level": 25,
+                    "species_data": {
+                        "species": "Zigzagoon"
+                    }
+                },
+                {
+                    "min_level": 25,
+                    "max_level": 25,
+                    "species_data": {
+                        "species": "Linoone"
+                    }
+                },
+                {
+                    "min_level": 27,
+                    "max_level": 27,
+                    "species_data": {
+                        "species": "Zigzagoon"
+                    }
+                },
+                {
+                    "min_level": 25,
+                    "max_level": 25,
+                    "species_data": {
+                        "species": "Oddish"
+                    }
+                },
+                {
+                    "min_level": 27,
+                    "max_level": 27,
+                    "species_data": {
+                        "species": "Linoone"
+                    }
+                },
+                {
+                    "min_level": 26,
+                    "max_level": 26,
+                    "species_data": {
+                        "species": "Oddish"
+                    }
+                },
+                {
+                    "min_level": 27,
+                    "max_level": 27,
+                    "species_data": {
+                        "species": "Oddish"
+                    }
+                },
+                {
+                    "min_level": 24,
+                    "max_level": 24,
+                    "species_data": {
+                        "species": "Oddish"
+                    }
+                },
+                {
+                    "min_level": 25,
+                    "max_level": 25,
+                    "species_data": {
+                        "species": "Tropius"
+                    }
+                },
+                {
+                    "min_level": 26,
+                    "max_level": 26,
+                    "species_data": {
+                        "species": "Tropius"
+                    }
+                },
+                {
+                    "min_level": 27,
+                    "max_level": 27,
+                    "species_data": {
+                        "species": "Tropius"
+                    }
+                },
+                {
+                    "min_level": 25,
+                    "max_level": 25,
+                    "species_data": {
+                        "species": "Kecleon"
+                    }
+                }
+            ],
+            [
+                {
+                    "min_level": 5,
+                    "max_level": 35,
+                    "species_data": {
+                        "species": "Tentacool"
+                    }
+                },
+                {
+                    "min_level": 10,
+                    "max_level": 30,
+                    "species_data": {
+                        "species": "Wingull"
+                    }
+                },
+                {
+                    "min_level": 15,
+                    "max_level": 25,
+                    "species_data": {
+                        "species": "Wingull"
+                    }
+                },
+                {
+                    "min_level": 25,
+                    "max_level": 30,
+                    "species_data": {
+                        "species": "Pelipper"
+                    }
+                },
+                {
+                    "min_level": 25,
+                    "max_level": 30,
+                    "species_data": {
+                        "species": "Pelipper"
+                    }
+                }
+            ],
+            [
+                {
+                    "min_level": 5,
+                    "max_level": 10,
+                    "species_data": {
+                        "species": "Magikarp"
+                    }
+                },
+                {
+                    "min_level": 5,
+                    "max_level": 10,
+                    "species_data": {
+                        "species": "Tentacool"
+                    }
+                }
+            ],
+            [
+                {
+                    "min_level": 10,
+                    "max_level": 30,
+                    "species_data": {
+                        "species": "Magikarp"
+                    }
+                },
+                {
+                    "min_level": 10,
+                    "max_level": 30,
+                    "species_data": {
+                        "species": "Tentacool"
+                    }
+                },
+                {
+                    "min_level": 10,
+                    "max_level": 30,
+                    "species_data": {
+                        "species": "Carvanha"
+                    }
+                }
+            ],
+            [
+                {
+                    "min_level": 25,
+                    "max_level": 30,
+                    "species_data": {
+                        "species": "Carvanha"
+                    }
+                },
+                {
+                    "min_level": 30,
+                    "max_level": 35,
+                    "species_data": {
+                        "species": "Carvanha"
+                    }
+                },
+                {
+                    "min_level": 20,
+                    "max_level": 25,
+                    "species_data": {
+                        "species": "Carvanha"
+                    }
+                },
+                {
+                    "min_level": 35,
+                    "max_level": 40,
+                    "species_data": {
+                        "species": "Carvanha"
+                    }
+                },
+                {
+                    "min_level": 40,
+                    "max_level": 45,
+                    "species_data": {
+                        "species": "Carvanha"
+                    }
+                }
+            ],
+            []
+        ],
+        "roamers": [
+            {
+                "id": "ActiveInMapLatios",
+                "encounter_data": {
+                    "min_level": 40,
+                    "max_level": 40,
+                    "species_data": {
+                        "species": "Latios"
+                    }
+                }
+            },
+            {
+                "id": "ActiveInMapLatias",
+                "encounter_data": {
+                    "min_level": 40,
+                    "max_level": 40,
+                    "species_data": {
+                        "species": "Latias"
+                    }
+                }
+            }
+        ],
+        "mass_outbreaks": [],
+        "feebas": {
+            "min_level": 20,
+            "max_level": 25,
+            "species_data": {
+                "species": "Feebas"
+            }
+        },
+        "is_safari": false,
+        "rock_smash_rate": 0,
+        "actions_with_safari_pokeblock": []
+    },
+    775,
+    "SurfSong",
+    "Thunderstorm",
+    null,
+    null
+]

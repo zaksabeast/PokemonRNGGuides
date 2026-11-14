@@ -41,6 +41,7 @@ import {
 } from "./wild3AudioInfluences";
 import { toOptions } from "~/utils/options";
 import { getInitialCycleSummary } from "./data/initial_cycle_main";
+import { getFeebasTiles } from "./feebasMapData";
 
 /*
 Wild3LeadCycleSpeedSelector is used to set/calibrate leadCycleSpeed.
@@ -114,6 +115,11 @@ const getColumns = (targetSetup: TargetSetup): ResultColumn<UiResult>[] => {
   return columns;
 };
 
+const formatInitialCycleSummary = (
+  summary: ReturnType<typeof getInitialCycleSummary>,
+): string =>
+  `${formatLargeInteger(summary.min)} - ${formatLargeInteger(summary.max)} (Median: ${formatLargeInteger(summary.median)})`;
+
 export const Wild3LeadCycleSpeedSelector = ({
   targetSetup,
   feebasCycles,
@@ -138,19 +144,25 @@ export const Wild3LeadCycleSpeedSelector = ({
     targetSetup.map,
     targetSetup.action,
   );
-  const { initial_cycle_opts, initial_cycle_distr, feebas_cycle_distr } =
+  const { initial_cycle_distr, feebas_cycle_distr } =
     getWild3InitialCycleDistributionForSetup({
       ...targetSetup,
       ...selectedAudio,
       feebasCycles,
     });
+  const initialCycleMin = initial_cycle_distr?.min;
+  const initialCycleMax = initial_cycle_distr?.max;
 
-  // We assume that if the player is fishing on FeebasTile, they want a Feebas.
-  const initial_distr =
-    feebasCycles == null ? initial_cycle_distr : feebas_cycle_distr;
-
-  const initialCycleSummary = getInitialCycleSummary(
-    initial_distr?.distribution ?? [],
+  const isFeebas =
+    targetSetup.feebasState === "OnFeebasTile" && feebasCycles != null;
+  const feebasTile = isFeebas
+    ? getFeebasTiles().find((tile) => tile.checkFeebasCycle === feebasCycles)
+    : null;
+  const initialCycleBeforeFeebas = getInitialCycleSummary(
+    initial_cycle_distr?.distribution ?? [],
+  );
+  const initialCycleAfterFeebas = getInitialCycleSummary(
+    feebas_cycle_distr?.distribution ?? [],
   );
 
   React.useEffect(() => {
@@ -158,8 +170,9 @@ export const Wild3LeadCycleSpeedSelector = ({
   }, [leadCycleSpeedProp]);
 
   React.useEffect(() => {
-    if (initial_cycle_opts == null) {
+    if (initialCycleMin == null || initialCycleMax == null) {
       setDistributions(null);
+
       return;
     }
 
@@ -168,7 +181,7 @@ export const Wild3LeadCycleSpeedSelector = ({
       feebasCycles,
       {
         LikelihoodForLead: {
-          ...initial_cycle_opts,
+          min_max_initial_cycle: [initialCycleMin, initialCycleMax],
           feebas_min_max_initial_cycle: [0, 0],
           lead_cycle_spd: actualLeadCycleSpeed ?? 0,
         },
@@ -182,7 +195,8 @@ export const Wild3LeadCycleSpeedSelector = ({
     targetSetup,
     feebasCycles,
     audioInfluences,
-    initial_cycle_opts,
+    initialCycleMin,
+    initialCycleMax,
   ]);
 
   return (
@@ -209,6 +223,37 @@ export const Wild3LeadCycleSpeedSelector = ({
               }
             />
           )}
+          {isFeebas ? (
+            <>
+              <Typography.Text>
+                Possible initial cycle before checking feebas tile:{" "}
+                {formatInitialCycleSummary(initialCycleBeforeFeebas)}
+              </Typography.Text>
+              {targetSetup.feebasVblankCount != null && (
+                <Typography.Text>
+                  {targetSetup.feebasVblankCount} required Vblanks while
+                  checking feebas tile.{" "}
+                  {formatProbability(
+                    feebas_cycle_distr?.feebas_vblank_count_probability ?? 0,
+                  )}{" "}
+                  likelihood
+                  {feebasTile != null &&
+                    ` for tile (${feebasTile.ingameX}, ${feebasTile.ingameY})`}
+                </Typography.Text>
+              )}
+              <Typography.Text>
+                Possible cycle after checking feebas tile:{" "}
+                {formatInitialCycleSummary(initialCycleAfterFeebas)}
+              </Typography.Text>
+            </>
+          ) : (
+            <Typography.Text>
+              Possible initial cycle (impacted by audio):{" "}
+              {formatInitialCycleSummary(initialCycleBeforeFeebas)}
+            </Typography.Text>
+          )}
+        </FormSection>
+        <FormSection>
           {targetSetup.lead === "Egg" ? (
             <Typography.Text>Egg lead can't be calibrated.</Typography.Text>
           ) : (
@@ -223,14 +268,6 @@ export const Wild3LeadCycleSpeedSelector = ({
             />
           )}
         </FormSection>
-        {initialCycleSummary != null && (
-          <FormSection>
-            Possible initial cycle:{" "}
-            {formatLargeInteger(initialCycleSummary.min)} -{" "}
-            {formatLargeInteger(initialCycleSummary.max)} (Median:{" "}
-            {formatLargeInteger(initialCycleSummary.median)})
-          </FormSection>
-        )}
       </FormCard>
 
       <ResultTable<UiResult>
@@ -279,7 +316,7 @@ export const Wild3LeadCycleSpeedSelectorWithBtn = ({
       {!displayLeadCycleSpeed && (
         <FormCard>
           <SwitchField
-            label="Display lead cycle speed calibration?"
+            label="Display advanced cycle calibration?"
             onChange={setDisplayLeadCycleSpeed}
             value={displayLeadCycleSpeed}
           />

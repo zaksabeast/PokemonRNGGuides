@@ -189,6 +189,18 @@ export const setupToDistributions = async (
       distributionArgs.vblankCycles,
     );
 
+  console.log(results, cycle_at_moments, [
+    targetSetup.targetPaintingAdvs.before,
+    targetSetup.targetPaintingAdvs.after,
+    opts,
+    gameData,
+    distributionArgs.leadCycleSpd,
+    audioInfluences.playing_song,
+    audioInfluences.weather,
+    distributionArgs.initialCycleAtSweetScent,
+    distributionArgs.vblankCycles,
+  ]);
+
   const resultForTargetMethod = results.find(
     (res) => res.searcher_res.method === targetSetup.targetMethod,
   );

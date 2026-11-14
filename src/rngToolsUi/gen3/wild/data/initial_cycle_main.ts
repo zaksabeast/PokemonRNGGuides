@@ -88,7 +88,7 @@ const getInitialCycleDistributions = (
           max: info.summary.max,
           distribution: info.distribution,
           feebas_vblank_count: undefined,
-          feebas_vblank_count_probability: 0,
+          feebas_vblank_count_probability: 1,
           check_feebas_cycle: undefined,
         };
       }),

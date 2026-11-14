@@ -6,6 +6,7 @@ import { PiPersonSimpleWalkBold } from "react-icons/pi";
 import { expect } from "vitest";
 import { renderGuide } from "../utils/render";
 import {
+  closestAncestor,
   getButton,
   getInputByFieldText,
   getSelectByLabel,
@@ -63,10 +64,8 @@ const getPatchGrid = (root: ParentNode, playerIconMarkup: string) => {
     (svg) => svg.innerHTML === playerIconMarkup,
   );
 
-  let grid = playerIcon?.parentElement ?? null;
-  while (grid != null && !isGridOfSize(grid)) {
-    grid = grid.parentElement;
-  }
+  const grid =
+    playerIcon == null ? null : closestAncestor(playerIcon, isGridOfSize);
 
   if (grid == null) {
     throw new Error("Patch grid isn't rendered");

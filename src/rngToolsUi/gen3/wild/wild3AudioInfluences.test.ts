@@ -308,12 +308,19 @@ test("weather and playing song selection preserves valid values and normalizes m
 });
 
 test("distribution selection matches all three audio influence fields", () => {
-  const distribution = getWild3InitialCycleDistributionForSetup({
-    map: "MAP_ROUTE119",
-    action: "OldRod",
-    weather: "Rain",
-    playing_song: "SurfSong",
-  });
+  const { initial_cycle_distr: distribution } =
+    getWild3InitialCycleDistributionForSetup({
+      map: "MAP_ROUTE119",
+      action: "OldRod",
+      weather: "Rain",
+      playing_song: "SurfSong",
+      feebasCycles: null,
+      feebasVblankCount: null,
+    });
+  if (distribution == null) {
+    throw new Error("Missing Route 119 Old Rod distribution");
+  }
+
   const settings = omit(distribution, "distribution");
 
   expect(settings).toEqual({
@@ -333,8 +340,10 @@ test("distribution selection matches all three audio influence fields", () => {
       action: "SweetScentWater",
       weather: "Rain",
       playing_song: "BikeSong",
-    }),
-  ).toBeUndefined();
+      feebasCycles: null,
+      feebasVblankCount: null,
+    }).initial_cycle_distr,
+  ).toBeNull();
 });
 
 const lower: Wild3SearcherCycleData = {

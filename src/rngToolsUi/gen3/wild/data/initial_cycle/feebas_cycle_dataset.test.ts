@@ -1,6 +1,9 @@
 import { readFileSync } from "node:fs";
 import { expect, test } from "bun:test";
-import { feebasCycleDataset } from "./feebas_cycle_dataset";
+import {
+  feebasCycleDataset,
+  type FeebasCycleScenario,
+} from "./feebas_cycle_dataset";
 
 const sourceGroups = new Map<string, number[][]>();
 const source = readFileSync(
@@ -88,7 +91,10 @@ const vblankCountForCycles = (
 
 test("weighted scenarios approximate Feebas vblank count frequencies", () => {
   const sourceRecords = [...sourceGroups.values()].flat();
-  const scenarios = feebasCycleDataset.flatMap((group) => group.scenarios);
+  const scenarios: FeebasCycleScenario[] = [];
+  for (const group of feebasCycleDataset) {
+    scenarios.push(...group.scenarios);
+  }
 
   for (const workCycles of [100_000, 250_000, 500_000]) {
     const sourceCounts = new Map<number, number>();

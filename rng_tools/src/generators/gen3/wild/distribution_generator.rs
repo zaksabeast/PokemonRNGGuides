@@ -8,7 +8,7 @@ use super::Wild3GeneratorOptions;
 use crate::rng::Rng;
 use crate::{
     gen3::{
-        CycleFrameMoment, CycleRange, Gen3Method, Wild3FeebasTileId, Wild3GeneratorCycleOpts,
+        CycleFrameMoment, CycleRange, Gen3Method, Wild3GeneratorCycleOpts,
         Wild3InitialCycleDistribution, Wild3MapGameData, Wild3PlayingSong, Wild3SearcherResultMon,
         Wild3Weather, calculate_cycle_data_for_specific_lead_spd, generate_wild3,
     },
@@ -29,7 +29,6 @@ pub struct Wild3MethodDistributionResults {
     pub results: Vec<Wild3MethodDistributionResult>,
     pub cycle_at_moments: Vec<CycleFrameMoment>,
     pub feebas_probability_by_vblank: Option<Vec<f64>>,
-    pub omitted_emu_log: bool,
 }
 
 #[wasm_bindgen]
@@ -43,7 +42,6 @@ pub fn generate_gen3_wild_distribution(
     weather: Wild3Weather,
     initial_cycle: Option<usize>,
     vblank_cycles: Option<Vec<usize>>,
-    check_feebas_cycle: Option<Wild3FeebasTileId>,
 ) -> Wild3MethodDistributionResults {
     let base_initial_cycle_distr =
         game_data.get_initial_cycle_distr(opts.action, playing_song, weather, None);
@@ -90,7 +88,6 @@ pub fn generate_gen3_wild_distribution(
             results: vec![],
             cycle_at_moments: vec![],
             feebas_probability_by_vblank: Some(probabilities),
-            omitted_emu_log: initial_cycle.is_some() && vblank_cycles.is_some(),
         };
     }
 
@@ -153,7 +150,6 @@ pub fn generate_gen3_wild_distribution(
         results,
         cycle_at_moments,
         feebas_probability_by_vblank: timed_check.then_some(probabilities),
-        omitted_emu_log: false,
     }
 }
 

@@ -4,7 +4,6 @@ use wasm_bindgen::prelude::*;
 
 use super::ALL_WILD3_ACTIONS;
 use super::{Wild3Action, Wild3InitialCycleDistribution, Wild3PlayingSong, Wild3Weather};
-use crate::gen3::usize;
 use crate::{EncounterSlot, GenderRatio, Nature, PokemonType, Species};
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]

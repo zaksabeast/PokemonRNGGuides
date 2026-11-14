@@ -152,7 +152,6 @@ export const buildSimplifiedSearchOptions = (
   painting_opts: null,
   using_white_flute: true,
   considered_safari_pokeblocks: "None",
-  feebas_cycles: [0],
 });
 
 export type SelectedWildSetup = {
@@ -222,7 +221,7 @@ export const searchSimplifiedWild = async (
         action: res.action,
         lead: res.lead,
         feebasState: res.feebas_state,
-        feebasCycles: res.feebas_cycles,
+        feebasCycles: 0,
         roamerState: res.roamer_state,
         massOutbreakState: res.mass_outbreak_state,
         targetPaintingAdvs: { before: 0, after: res.advance },

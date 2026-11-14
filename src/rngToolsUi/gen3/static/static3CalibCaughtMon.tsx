@@ -3,7 +3,7 @@ import { ToolForm, type ToolFormSubmit } from "~/components/form";
 import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
-} from "~/components/pkmFilter";
+} from "~/components/form/pokemon/pkmFilterFields";
 import {
   Gen3StaticMethod,
   Nature,
@@ -16,7 +16,7 @@ import { getIvRangeFromStats, getStatRange } from "~/types/statRange";
 import {
   gen3PkmFilterFieldsToRustInput,
   getGen3PkmFilterInitialValues,
-} from "~/components/gen3PkmFilter";
+} from "~/components/form/pokemon/gen3PkmFilterFields";
 import {
   BATTLE_VIDEO_CONFIDENCE_RANGE,
   CaughtMonResult,

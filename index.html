@@ -9,12 +9,64 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@500&display=swap"
+      rel="preload"
+      href="/fonts/roboto-latin-400.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
+    <link
+      rel="preload"
+      href="/fonts/roboto-latin-500.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <style>
+      @font-face {
+        font-family: "Roboto";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url("/fonts/roboto-latin-400.woff2") format("woff2");
+      }
+
+      @font-face {
+        font-family: "Roboto";
+        font-style: normal;
+        font-weight: 500;
+        font-display: swap;
+        src: url("/fonts/roboto-latin-500.woff2") format("woff2");
+      }
+
+      @font-face {
+        font-family: "Roboto";
+        font-style: normal;
+        font-weight: 700;
+        font-display: swap;
+        src: url("/fonts/roboto-latin-700.woff2") format("woff2");
+      }
+
+      @font-face {
+        font-family: "Roboto Mono";
+        font-style: normal;
+        font-weight: 500;
+        font-display: swap;
+        src: url("/fonts/roboto-mono-latin-500.woff2") format("woff2");
+      }
+
+      /* Overrides match Roboto's metrics (ascent 1900, descent 500, 2048 units per em) on Arial, so swapping fonts doesn't shift layout. */
+      @font-face {
+        font-family: "Roboto Fallback";
+        src: local("Arial");
+        size-adjust: 100.3%;
+        ascent-override: 92.49%;
+        descent-override: 24.34%;
+        line-gap-override: 0%;
+      }
+    </style>
 
     <script>
       (() => {

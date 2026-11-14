@@ -1,5 +1,4 @@
 import { PokemonType } from "~/rngTools";
-import { toOptions } from "~/utils/options";
 
 export const pokemonTypes = [
   "Normal",
@@ -40,5 +39,3 @@ export const hiddenPowerTypes = [
   "Steel",
   "Water",
 ] as const satisfies PokemonType[];
-
-export const hiddenPowerTypeOptions = toOptions(hiddenPowerTypes);

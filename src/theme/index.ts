@@ -60,7 +60,7 @@ const lightModetokens: Partial<AliasToken> = {
   colorLinkHover: "#1592B8",
   colorLinkActive: "#065A76",
 
-  fontFamily: "Roboto, 'Helvetica Neue', Arial, sans-serif",
+  fontFamily: "Roboto, 'Roboto Fallback', 'Helvetica Neue', Arial, sans-serif",
   borderRadius: 20,
   controlHeight: 40,
   controlHeightLG: 56,
@@ -118,7 +118,7 @@ const darkModetokens: Partial<AliasToken> = {
   colorLinkHover: "#A8E8FA",
   colorLinkActive: "#A8E8FA",
 
-  fontFamily: "Roboto, 'Helvetica Neue', Arial, sans-serif",
+  fontFamily: "Roboto, 'Roboto Fallback', 'Helvetica Neue', Arial, sans-serif",
   borderRadius: 20,
   controlHeight: 40,
   controlHeightLG: 56,

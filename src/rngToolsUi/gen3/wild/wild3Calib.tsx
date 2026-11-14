@@ -29,7 +29,7 @@ import Instructions_calib_without_battle_video from "./instructions_calib_withou
 import Instructions_calib_wrong_method from "./instructions_calib_wrong_method.mdx";
 import { Wild3LeadCycleSpeedSelector } from "./wild3LeadCycleSpeedSelector";
 import { Wild3Action } from "../../../../rng_tools/pkg/rng_tools";
-import { Wild3PokeblockDescription } from "~/components/wild3Pokeblock";
+import { Wild3PokeblockDescription } from "~/components/form/pokemon/pokeblockField";
 import {
   AVERAGE_LEAD_CYCLE_SPEED,
   FASTEST_LEAD_CYCLE_SPEED,

@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
+import { Icon, type IconName } from "~/components/icons";
 import { useField } from "~/hooks/form";
 import { FormFieldProps, GenericForm } from "~/types/form";
 import { LabeledFieldProps, FieldFrame } from "./field";
@@ -7,6 +8,43 @@ import { useFieldIds } from "./hooks";
 import { textFieldStyles } from "./styles";
 
 export const FieldInput = styled.input(({ theme }) => textFieldStyles(theme));
+
+const TrailingIconLayout = styled.div({
+  position: "relative",
+  "& > input": {
+    paddingInlineEnd: 48,
+  },
+});
+
+const TrailingIconSlot = styled.span(({ theme }) => ({
+  position: "absolute",
+  insetBlock: 0,
+  insetInlineEnd: 12,
+  display: "flex",
+  alignItems: "center",
+  color: theme.token.colorTextSecondary,
+  fontSize: 24,
+  pointerEvents: "none",
+}));
+
+type TextInputProps = React.ComponentProps<typeof FieldInput> & {
+  trailingIcon?: IconName;
+};
+
+const TextInput = ({ trailingIcon, ...inputProps }: TextInputProps) => {
+  if (trailingIcon == null) {
+    return <FieldInput {...inputProps} />;
+  }
+
+  return (
+    <TrailingIconLayout>
+      <FieldInput {...inputProps} />
+      <TrailingIconSlot aria-hidden>
+        <Icon name={trailingIcon} />
+      </TrailingIconSlot>
+    </TrailingIconLayout>
+  );
+};
 
 type SharedInputProps = {
   name?: string;
@@ -20,6 +58,7 @@ export type TextFieldProps = LabeledFieldProps &
   SharedInputProps & {
     value: string;
     onChange?: (value: string) => void;
+    trailingIcon?: IconName;
   };
 
 export const TextField = ({
@@ -43,7 +82,7 @@ export const TextField = ({
       errorMessage={errorMessage}
       invalid={invalid}
     >
-      <FieldInput
+      <TextInput
         {...inputProps}
         id={ids.inputId}
         type="text"

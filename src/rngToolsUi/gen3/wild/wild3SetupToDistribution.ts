@@ -13,11 +13,11 @@ import { TargetSetup } from "./wild3TargetSetupInput";
 import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
-} from "~/components/pkmFilter";
+} from "~/components/form/pokemon/pkmFilterFields";
 import {
   gen3PkmFilterFieldsToRustInput,
   getGen3PkmFilterInitialValues,
-} from "~/components/gen3PkmFilter";
+} from "~/components/form/pokemon/gen3PkmFilterFields";
 import { emeraldWildGameData } from "./wild3CalibCaughtMon";
 import { FlattenIvs } from "~/rngToolsUi/shared/ivColumns";
 import { lcrng_distance } from "~/utils/lcrng";

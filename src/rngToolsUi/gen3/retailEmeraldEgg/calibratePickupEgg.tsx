@@ -9,7 +9,7 @@ import {
   StatRadioFields,
   ToolForm,
 } from "~/components/form";
-import { Evs, EvsSchema } from "~/components/evInput";
+import { Evs, EvsSchema } from "~/components/form/pokemon/evs";
 import { useWatch } from "~/hooks/form";
 import { CalibrateTimerButton } from "~/components/calibrateTimerButton";
 import { PickupEggState, useHeldEggState, usePickupEggState } from "./state";
@@ -32,7 +32,7 @@ import {
 } from "~/types/stat";
 import { getStatRange } from "~/types/statRange";
 import { z } from "zod";
-import { defaultHiddenPowerFilter } from "~/components/hiddenPowerInput";
+import { defaultHiddenPowerFilter } from "~/components/form/pokemon/hiddenPowerFilter";
 import pmap from "p-map";
 import { isEqual, sortBy, startCase, mapValues } from "lodash-es";
 import { ivMethods } from "./constants";

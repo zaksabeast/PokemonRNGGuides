@@ -4,11 +4,14 @@ import {
   getButton,
   getByLabel,
   getFirstTableRow,
+  getSelectByLabel,
+  getShownOptionLabel,
   getStep,
   getStepperButton,
   getText,
   isShown,
   readTimer,
+  selectOption,
   selectRadio,
   typeInto,
   waitFor,
@@ -81,6 +84,10 @@ export const openRetailTidGuide = async () => {
 
   const timer = () => readTimer(hitTarget);
 
+  const threeDsOffsetSelect = () => getSelectByLabel(hitTarget, "3ds Offset");
+
+  const threeDsOffset = () => getShownOptionLabel(threeDsOffsetSelect());
+
   return {
     setConsole: (option: string) => {
       selectRadio(getByLabel(setUp, "Console"), option);
@@ -90,6 +97,18 @@ export const openRetailTidGuide = async () => {
 
     waitForHitTargetText: (text: string) => {
       return waitFor(() => expect(getText(hitTarget)).toContain(text));
+    },
+
+    threeDsOffset: () => waitFor(threeDsOffset),
+
+    setThreeDsOffset: async (offset: string) => {
+      const select = await waitFor(threeDsOffsetSelect);
+
+      await selectOption(select, offset);
+    },
+
+    waitForThreeDsOffset: (offset: string) => {
+      return waitFor(() => expect(threeDsOffset()).toBe(offset));
     },
 
     /** Searches with the default settings */

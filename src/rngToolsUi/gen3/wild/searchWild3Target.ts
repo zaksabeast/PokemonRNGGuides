@@ -5,9 +5,9 @@ import {
   Wild3SearcherOptions,
   Gen3Method,
 } from "~/rngTools";
-import { pkmFilterFieldsToRustInput } from "~/components/pkmFilter";
+import { pkmFilterFieldsToRustInput } from "~/components/form/pokemon/pkmFilterFields";
 import { orderBy, intersection } from "lodash-es";
-import { gen3PkmFilterFieldsToRustInput } from "~/components/gen3PkmFilter";
+import { gen3PkmFilterFieldsToRustInput } from "~/components/form/pokemon/gen3PkmFilterFields";
 import {
   gen3Leads,
   formatActionName,

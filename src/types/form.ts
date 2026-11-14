@@ -34,11 +34,3 @@ export type FormFieldProps<
 export type RequireFormFields<FormState, Fields> = FormState extends Fields
   ? unknown
   : { "The form is missing fields this component uses": Fields };
-
-export type GuaranteeFormNameType<FormState extends GenericForm, Type> = {
-  [K in keyof FormState]: FormState[K] extends Type
-    ? K extends string
-      ? K
-      : never
-    : never;
-}[keyof FormState];

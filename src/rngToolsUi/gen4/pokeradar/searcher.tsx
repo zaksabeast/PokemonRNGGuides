@@ -37,7 +37,7 @@ import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
   pkmFilterSchema,
-} from "~/components/pkmFilter";
+} from "~/components/form/pokemon/pkmFilterFields";
 import { formatHex } from "~/utils/formatHex";
 import { RustOption } from "~/types";
 import { toOptions } from "~/utils/options";

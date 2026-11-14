@@ -1,8 +1,15 @@
 import { Modal } from "antd";
-import { RngTask } from "./challenges";
-import { Flex, Select, Typography, Link } from "~/components";
+import { RngTask, RngTaskStatus } from "./challenges";
+import { Flex, Typography, Link } from "~/components";
+import { SelectField, type SelectOption } from "~/components/form";
 import { upperFirst } from "lodash-es";
 import { track } from "~/analytics";
+
+const statusOptions: SelectOption<RngTaskStatus>[] = [
+  { label: "Not Started", value: "not-started" },
+  { label: "In Progress", value: "in-progress" },
+  { label: "Completed", value: "completed" },
+];
 
 type TableColumn = {
   label: string;
@@ -31,34 +38,6 @@ const InnerChallengeModal = ({
           label: "Tips",
           value: task.tips,
         },
-    {
-      label: "Status",
-      value: (
-        <Select<RngTask["status"]>
-          fullFlex
-          options={[
-            {
-              label: <Typography.Text>Not Started</Typography.Text>,
-              value: "not-started",
-            },
-            {
-              label: <Typography.Text>In Progress</Typography.Text>,
-              value: "in-progress",
-            },
-            {
-              label: <Typography.Text>Completed</Typography.Text>,
-              value: "completed",
-            },
-          ]}
-          value={task.status}
-          onChange={(value) => {
-            if (task != null) {
-              onUpdateTask({ ...task, status: value });
-            }
-          }}
-        />
-      ),
-    },
   ].filter((column) => column != null);
 
   return (
@@ -82,6 +61,12 @@ const InnerChallengeModal = ({
           ))}
         </tbody>
       </table>
+      <SelectField<RngTaskStatus>
+        label="Status"
+        options={statusOptions}
+        value={task.status}
+        onChange={(status) => onUpdateTask({ ...task, status })}
+      />
     </Flex>
   );
 };

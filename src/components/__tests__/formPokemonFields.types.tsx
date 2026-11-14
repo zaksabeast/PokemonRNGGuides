@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { type Ivs, type Nature } from "~/rngTools";
-import { type PkmFilterFields } from "../pkmFilter";
-import { type NullableIvs } from "../ivInput";
+import { type PkmFilterFields } from "../form/pokemon/pkmFilterFields";
+import { type NullableIvs } from "../form/pokemon/ivFields";
 import { StatFieldsSchema, defaultMinMaxStats } from "~/types/stat";
 import {
   IvFields,

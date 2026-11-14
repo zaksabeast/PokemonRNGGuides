@@ -33,6 +33,7 @@ const SetupControls = styled.div(({ theme }) => ({
   gap: 16,
   [theme.containerQueries.mobile]: {
     flexDirection: "column",
+    flexWrap: "nowrap",
     alignItems: "stretch",
     gap: 12,
   },

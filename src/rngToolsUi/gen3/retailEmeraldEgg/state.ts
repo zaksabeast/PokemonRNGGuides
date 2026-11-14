@@ -8,7 +8,7 @@ import {
 import { atomWithPersistence } from "~/state/localStorage";
 import { maxIvs } from "~/types/ivs";
 import { z } from "zod";
-import { NullableIvs } from "~/components/ivInput";
+import { NullableIvs } from "~/components/form/pokemon/ivFields";
 import type { HeldEggCalibrationResult } from "./calibrateHeldEgg/result";
 import type { HeldEggCalibrationFilters } from "./calibrateHeldEgg/validator";
 import { pokeNavTrainers as trainers } from "./constants";

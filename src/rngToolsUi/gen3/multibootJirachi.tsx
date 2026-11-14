@@ -24,7 +24,7 @@ import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
   pkmFilterSchema,
-} from "~/components/pkmFilter";
+} from "~/components/form/pokemon/pkmFilterFields";
 import { Translations } from "~/translations";
 
 const JirachiSaveErrorSchema: z.Schema<JirachiSaveError> = z.union([

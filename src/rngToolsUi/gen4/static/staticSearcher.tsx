@@ -20,7 +20,7 @@ import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
   pkmFilterSchema,
-} from "~/components/pkmFilter";
+} from "~/components/form/pokemon/pkmFilterFields";
 import { useStatic4State } from "./state";
 import { gen4StateAtom } from "../shared/state";
 import {

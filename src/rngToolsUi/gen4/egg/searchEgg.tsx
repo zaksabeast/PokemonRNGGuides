@@ -15,7 +15,10 @@ import {
 import { useWatch } from "~/hooks/form";
 import { species } from "~/types/species";
 import { getGen4SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
-import { IvsSchema, NullableIvsSchema } from "~/components/ivInput";
+import {
+  IvsSchema,
+  NullableIvsSchema,
+} from "~/components/form/pokemon/ivFields";
 import { maxIvs } from "~/types/ivs";
 import { useAtom } from "jotai";
 import { gen4StateAtom } from "../shared/state";
@@ -33,7 +36,7 @@ import {
   getPkmFilterInitialValues,
   pkmFilterSchema,
   pkmFilterFieldsToRustInput,
-} from "~/components/pkmFilter";
+} from "~/components/form/pokemon/pkmFilterFields";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { useCurrentStep } from "~/components/stepper/state";
 import { useBatchedTool } from "~/hooks/useBatchedTool";

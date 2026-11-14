@@ -1,6 +1,6 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
-import { type Gen3PkmFilterFields } from "~/components/gen3PkmFilter";
+import { type Gen3PkmFilterFields } from "~/components/form/pokemon/gen3PkmFilterFields";
 import { Link } from "~/components/link";
 import { GenericForm, type RequireFormFields } from "~/types/form";
 import { FieldRow } from "~/components/form/base/layout";

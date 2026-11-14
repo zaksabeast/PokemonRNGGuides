@@ -1,7 +1,5 @@
-import {
-  type PkmFilterFields as PkmFilterValues,
-  type PkmFilterProps,
-} from "~/components/pkmFilter";
+import { type PkmFilterFields as PkmFilterValues } from "~/components/form/pokemon/pkmFilterFields";
+import { type Species } from "~/rngTools";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { GenericForm, type RequireFormFields } from "~/types/form";
 import { SwitchGroup } from "~/components/form/base/switchGroup";
@@ -15,6 +13,18 @@ import { GenderFilterField } from "./genderField";
 import { HiddenPowerField } from "./hiddenPowerField";
 import { IvRangeFields } from "./ivFields";
 import { NatureFilterField } from "./natureFields";
+
+type PkmFilterProps = {
+  generation: number;
+  displayShiny?: boolean;
+  displayNature?: boolean;
+  displayAbility?: boolean;
+  displayHiddenAbility?: boolean;
+  displayGender?: boolean;
+  displayIvs?: boolean;
+  displayHiddenPower?: boolean;
+  species?: Species;
+};
 
 type Props<FormState extends GenericForm> = PkmFilterProps &
   RequireFormFields<FormState, PkmFilterValues>;

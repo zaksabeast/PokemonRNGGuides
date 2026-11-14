@@ -3,7 +3,7 @@ import { FormSection, IvRangeFields } from "~/components/form";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { initialProfile5Values, Profile5Validator } from "./shared/validator";
 import { Profile5Searcher, ValidatorMapper } from "./shared/form";
-import { IvsSchema } from "~/components/ivInput";
+import { IvsSchema } from "~/components/form/pokemon/ivFields";
 import { maxIvs, minIvs } from "~/types/ivs";
 
 const Validator = z

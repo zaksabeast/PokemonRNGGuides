@@ -1,10 +1,10 @@
 import React from "react";
 import { Table } from "antd";
-import { Input, Icon } from "~/components";
+import { TextField } from "~/components/form";
 import { sosCallRates } from "./sosCallRates";
 import styled from "@emotion/styled";
 
-const StyledInput = styled(Input)({
+const SearchFieldLayout = styled.div({
   marginBottom: 16,
   maxWidth: 300,
 });
@@ -40,12 +40,15 @@ export const Gen7SosList = () => {
 
   return (
     <div>
-      <StyledInput
-        placeholder="Search Pokemon name"
-        value={searchText}
-        onChange={(event) => setSearchText(event.target.value)}
-        suffix={<Icon name="OutlineSearch" color="Primary" />}
-      />
+      <SearchFieldLayout>
+        <TextField
+          label="Pokemon"
+          placeholder="Search Pokemon name"
+          trailingIcon="OutlineSearch"
+          value={searchText}
+          onChange={setSearchText}
+        />
+      </SearchFieldLayout>
       <Table columns={columns} dataSource={filteredData} rowKey="dexnum" />
     </div>
   );

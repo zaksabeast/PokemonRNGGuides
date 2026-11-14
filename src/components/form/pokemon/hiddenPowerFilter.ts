@@ -1,4 +1,4 @@
-import { hiddenPowerTypes } from "../types/pokemonTypes";
+import { hiddenPowerTypes } from "~/types/pokemonTypes";
 import { z } from "zod";
 
 export const HiddenPowerSchema = z

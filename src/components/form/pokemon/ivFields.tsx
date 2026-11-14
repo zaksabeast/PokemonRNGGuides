@@ -1,11 +1,35 @@
 import React from "react";
 import styled from "@emotion/styled";
+import { z } from "zod";
 import { type Ivs } from "~/rngTools";
-import { type NullableIvs } from "~/components/ivInput";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { GenericForm } from "~/types/form";
 import { Paths } from "~/types";
 import { StatGrid } from "./statGrid";
+
+const IvSchema = z.number().int().min(0).max(31);
+
+export const IvsSchema: z.Schema<Ivs> = z.object({
+  hp: IvSchema,
+  atk: IvSchema,
+  def: IvSchema,
+  spa: IvSchema,
+  spd: IvSchema,
+  spe: IvSchema,
+});
+
+export const NullableIvsSchema: z.Schema<{
+  [key in keyof Ivs]: Ivs[key] | null;
+}> = z.object({
+  hp: IvSchema.nullable(),
+  atk: IvSchema.nullable(),
+  def: IvSchema.nullable(),
+  spa: IvSchema.nullable(),
+  spd: IvSchema.nullable(),
+  spe: IvSchema.nullable(),
+});
+
+export type NullableIvs = z.infer<typeof NullableIvsSchema>;
 
 const IV_MAX_LENGTH = 2;
 

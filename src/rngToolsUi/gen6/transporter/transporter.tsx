@@ -18,7 +18,7 @@ import {
 import {
   pkmFilterSchema,
   getPkmFilterInitialValues,
-} from "~/components/pkmFilter";
+} from "~/components/form/pokemon/pkmFilterFields";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";

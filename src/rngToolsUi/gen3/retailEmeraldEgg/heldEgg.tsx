@@ -19,7 +19,7 @@ import { getGen3SpeciesOptions } from "~/components/form/pokemon/speciesOptions"
 import {
   getPkmFilterInitialValues,
   pkmFilterSchema,
-} from "~/components/pkmFilter";
+} from "~/components/form/pokemon/pkmFilterFields";
 import { z } from "zod";
 import { useHeldEggState, useRegisteredTrainers } from "./state";
 import { useHydrate } from "~/hooks/useHydrate";

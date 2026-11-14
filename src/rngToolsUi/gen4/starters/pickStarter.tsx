@@ -18,7 +18,7 @@ import {
   getPkmFilterInitialValues,
   pkmFilterSchema,
   pkmFilterFieldsToRustInput,
-} from "~/components/pkmFilter";
+} from "~/components/form/pokemon/pkmFilterFields";
 import {
   flattenIvs,
   FlattenIvs,

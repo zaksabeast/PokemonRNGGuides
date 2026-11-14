@@ -8,13 +8,13 @@ import {
 import {
   gen3PkmFilterFieldsToRustInput,
   getGen3PkmFilterInitialValues,
-} from "~/components/gen3PkmFilter";
+} from "~/components/form/pokemon/gen3PkmFilterFields";
 import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
   pkmFilterNatureFieldToRustInput,
-} from "~/components/pkmFilter";
-import { defaultHiddenPowerFilter } from "~/components/hiddenPowerInput";
+} from "~/components/form/pokemon/pkmFilterFields";
+import { defaultHiddenPowerFilter } from "~/components/form/pokemon/hiddenPowerFilter";
 import { getIvRangeFromStats } from "~/types/statRange";
 import { nature_from_pid } from "~/types";
 

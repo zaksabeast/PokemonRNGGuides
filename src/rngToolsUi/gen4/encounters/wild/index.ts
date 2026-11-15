@@ -12,6 +12,16 @@ const gameEncounters = {
   Platinum: platinumEncounters,
 };
 
+const TROPHY_GARDEN_LOCATION = "Trophy Garden";
+
+const TROPHY_GARDEN_NEWEST_SLOT = 6;
+const TROPHY_GARDEN_OLDER_SLOT = 7;
+
+type TrophyGardenReplacements = {
+  newest: Species;
+  older: Species;
+};
+
 type WildEncounterOpts = {
   game: DpPt;
   location: Location;
@@ -19,6 +29,7 @@ type WildEncounterOpts = {
   swarmActive: boolean;
   radarActive: boolean;
   dualSlotCartridge: Gen3GameVersion | null;
+  trophyGardenReplacements?: TrophyGardenReplacements | null;
 };
 
 const wildForms: Partial<Record<Species, number>> = {
@@ -49,6 +60,7 @@ export const getEncounters = ({
   timeOfDay,
   radarActive,
   dualSlotCartridge,
+  trophyGardenReplacements,
 }: WildEncounterOpts): Encounter[] => {
   const locationEncounters = gameEncounters[game][location];
   const encounters = getGrassEncounters(game, location);
@@ -78,6 +90,13 @@ export const getEncounters = ({
   if (dualSlotCartridge != null) {
     encounters[8].species = locationEncounters.dualSlots[dualSlotCartridge][0];
     encounters[9].species = locationEncounters.dualSlots[dualSlotCartridge][1];
+  }
+
+  if (location === TROPHY_GARDEN_LOCATION && trophyGardenReplacements != null) {
+    encounters[TROPHY_GARDEN_NEWEST_SLOT].species =
+      trophyGardenReplacements.newest;
+    encounters[TROPHY_GARDEN_OLDER_SLOT].species =
+      trophyGardenReplacements.older;
   }
 
   return encounters;

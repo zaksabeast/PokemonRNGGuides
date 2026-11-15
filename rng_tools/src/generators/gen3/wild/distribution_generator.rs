@@ -136,9 +136,9 @@ fn generate_dist_results(
 
             // Note: This works because we only support fishing on Feebas tiles.
             let init_distr = if gen_res.encounter_idx == Wild3EncounterIndex::Feebas {
-                initial_cycle_distr
-            } else {
                 feebas_cycle_distr
+            } else {
+                initial_cycle_distr
             };
             let searcher_res = Wild3SearcherResultMon::new(
                 gen_res,
@@ -245,7 +245,13 @@ mod test {
             vblank_cycles,
         );
 
-        assert!(!distribution.results.is_empty());
+        let total_likelihood: f64 = distribution
+            .results
+            .iter()
+            .map(|result| result.method_probability)
+            .sum();
+
+        assert!((total_likelihood - 0.92).abs() < 1e-10);
         assert!(!distribution.cycle_at_moments.is_empty());
     }
 

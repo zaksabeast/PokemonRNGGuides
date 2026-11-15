@@ -78,7 +78,9 @@ const getColumns = (targetSetup: TargetSetup): ResultColumn<UiResult>[] => {
     {
       title: "Initial cycle",
       tooltip:
-        "Processor cycle counter when reaching start of the Pokémon generation.",
+        targetSetup.feebasState === "OnFeebasTile"
+          ? "Processor cycle counter when reaching start of the Pokémon generation after checking feebas tile."
+          : "Processor cycle counter when reaching start of the Pokémon generation.",
       dataIndex: "initial_cycle_range",
       render: (initial_cycle_range, { display_negative_cycle_as_0 }) => {
         const range = initial_cycle_range;
@@ -229,16 +231,15 @@ export const Wild3LeadCycleSpeedSelector = ({
                 Possible initial cycle before checking feebas tile:{" "}
                 {formatInitialCycleSummary(initialCycleBeforeFeebas)}
               </Typography.Text>
-              {targetSetup.feebasVblankCount != null && (
+              {targetSetup.feebasVblankCount != null && feebasTile != null && (
                 <Typography.Text>
                   {targetSetup.feebasVblankCount} required Vblanks while
                   checking feebas tile.{" "}
                   {formatProbability(
                     feebas_cycle_distr?.feebas_vblank_count_probability ?? 0,
                   )}{" "}
-                  likelihood
-                  {feebasTile != null &&
-                    ` for tile (${feebasTile.ingameX}, ${feebasTile.ingameY})`}
+                  likelihood when using tile
+                  {` (${feebasTile.ingameX}, ${feebasTile.ingameY})`}
                 </Typography.Text>
               )}
               <Typography.Text>

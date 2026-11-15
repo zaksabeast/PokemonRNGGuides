@@ -23,7 +23,10 @@ import { PidPathResult, ResultSetupInfo } from "./wild3TargetSetupSearcher";
 import { GBA_FPS } from "~/utils/consts";
 import { TargetSetup } from "./wild3TargetSetupInput";
 import { Wild3PokeblockDescription } from "~/components/form/pokemon/pokeblockField";
-import { targetAdvanceAfterPaintingTitle } from "../pokemonRng/labels";
+import {
+  likelihoodLabel,
+  targetAdvanceAfterPaintingTitle,
+} from "../pokemonRng/labels";
 import { FeebasTileVisualizerButton } from "./feebasMap";
 import { Wild3UiMapNameWithAudioTooltip } from "./wild3UiMapNameWithAudioTooltip";
 
@@ -218,12 +221,7 @@ const getResultSetupInfoColumns = ({
 
   if (!rngManipulatedLeadPid) {
     columns.push({
-      title: (
-        <span>
-          Method <br />
-          Likelihood
-        </span>
-      ),
+      ...likelihoodLabel(),
       key: "<>Method <br />Likelihood</>",
       dataIndex: "cycle_data_by_lead",
       render: (cycle_data_by_lead, values) => {

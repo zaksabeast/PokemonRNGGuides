@@ -5,7 +5,7 @@ import {
   type Gen4TimerSettings,
 } from "~/rngTools";
 import { initialGen4Timer } from "~/rngToolsUi/timer/atoms";
-import type { Gen4Console } from "../../gen4types";
+import type { Gen4Console } from "~/rngToolsUi/gen4/gen4types";
 import { gen4SetupAtom } from "./setup";
 import { gen4TargetAtom } from "./target";
 

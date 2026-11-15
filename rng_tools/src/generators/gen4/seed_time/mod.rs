@@ -15,6 +15,6 @@ pub use generator::{
     generate_seedtime4s, relative_gen4_datetimes, relative_seedtime4s, seedtime4_iter,
     seedtime4_iter_with_lookup,
 };
-pub(crate) use utils::seedtime4_search_second_range;
 pub use searcher::{SeedTime4Searcher, find_seedtime4_with_lookup};
 pub use seed_time4::SeedTime4;
+pub(crate) use utils::seedtime4_search_second_range;

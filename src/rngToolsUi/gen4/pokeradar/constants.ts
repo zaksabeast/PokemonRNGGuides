@@ -93,8 +93,3 @@ export const TROPHY_GARDEN_PT = [
   "MimeJr",
   "Happiny",
 ] as const satisfies Species[];
-
-export const TROPHY_GARDEN_LEVEL = 5;
-
-//The switched Pokémon will be in slot 6 and the older one will be in slot 7
-export const TROPHY_GARDEN_SLOTS = [7, 6] as const;

@@ -14,7 +14,6 @@ const gameEncounters = {
 
 const TROPHY_GARDEN_LOCATION = "Trophy Garden";
 
-// The newest (switched) Pokémon is in slot 6, the older one is in slot 7
 const TROPHY_GARDEN_NEWEST_SLOT = 6;
 const TROPHY_GARDEN_OLDER_SLOT = 7;
 

@@ -1,0 +1,1 @@
+import{i as e,r as t,t as n}from"./dist-p_bQBD1b.js";import{n as r}from"./state-CdEebs68.js";var i=e(),a=()=>{var e;let a=(0,i.c)(2),c=(e=r())==null?void 0:e.details.lead,l;return a[0]===c?l=a[1]:(l=t(c).with({Synchronize:n.string},o).otherwise(s),a[0]=c,a[1]=l),l};function o(e){return e.Synchronize}function s(){return`???`}export{a as Static4SyncNature};

@@ -1,0 +1,1 @@
+import{t as e}from"./_defineProperty-kwjzgkE6.js";function t(){}function n(t,n,r){n==`__proto__`&&e?e(t,n,{configurable:!0,enumerable:!0,value:r,writable:!0}):t[n]=r}export{t as n,n as t};

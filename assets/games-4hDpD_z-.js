@@ -1,0 +1,1 @@
+var e=[`Ruby`,`Sapphire`,`Emerald`],t=[`FireRed`,`LeafGreen`],n=[...e,...t],r=[`Diamond`,`Pearl`,`Platinum`],i=[`HeartGold`,`SoulSilver`],a=[...r,...i],o={dppt:r,hgss:i},s=e=>i.some(t=>t===e);export{s as a,o as i,n,a as r,r as t};

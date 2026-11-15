@@ -1,0 +1,1 @@
+import{t as e}from"./isEqual-PeZV_9AQ.js";var t=(t,n,r=e)=>{let i=[];if(t.length===0||n.length===0)return i;let a=n.length,o=t.length-a;for(let e=0;e<=o;e++)if(r(t[e],n[0])){let o=!0;for(let i=1;i<a;i++)if(!r(t[e+i],n[i])){o=!1;break}o&&i.push({start:e,end:e+a-1})}return i};export{t};

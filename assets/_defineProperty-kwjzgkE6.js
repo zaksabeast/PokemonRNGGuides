@@ -1,0 +1,1 @@
+import{u as e}from"./_cacheHas-D3-QG1PZ.js";var t=function(){try{var t=e(Object,`defineProperty`);return t({},``,{}),t}catch{}}();export{t};

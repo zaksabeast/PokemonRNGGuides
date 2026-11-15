@@ -1,0 +1,1 @@
+import{n as e}from"./react-Bw5yJGdz.js";import{r as t}from"./target-0YfmWLcU.js";var n=()=>{var n;let r=(n=e(t))==null?void 0:n.details;return(r==null?void 0:r.tool)===`id`?r.id:null},r=()=>{let e=n();return(e==null?void 0:e.tid)??`???`},i=()=>{let e=n();return(e==null?void 0:e.sid)??`???`};export{i as Id4Sid,r as Id4Tid};

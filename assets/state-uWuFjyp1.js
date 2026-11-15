@@ -1,0 +1,1 @@
+import{n as e}from"./react-Bw5yJGdz.js";import{r as t}from"./target-0YfmWLcU.js";var n=[`Turtwig`,`Chimchar`,`Piplup`],r=[`Chikorita`,`Cyndaquil`,`Totodile`],i=[...n,...r],a=()=>{var n;let r=(n=e(t))==null?void 0:n.details;return(r==null?void 0:r.tool)===`starter`?r.species:null};export{a as i,n,r,i as t};

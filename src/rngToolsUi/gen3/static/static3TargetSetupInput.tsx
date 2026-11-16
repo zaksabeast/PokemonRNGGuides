@@ -1,7 +1,6 @@
 import React from "react";
 import {
   FormSection,
-  FormSelectField,
   FormSwitchField,
   ToolForm,
   type ToolFormSubmit,
@@ -16,7 +15,8 @@ import {
 } from "./constants.tsx";
 import { PaintingReseedingFields } from "../pokemonRng/targetSetupInput";
 import { species } from "~/types/species";
-import { getGen3SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
+import { getGen3Species } from "~/components/form/pokemon/speciesOptions";
+import { FormSpeciesField } from "~/components/form/pokemon/speciesField";
 import { lcrng_distance } from "~/utils/lcrng";
 import { z } from "zod";
 
@@ -104,10 +104,10 @@ const Static3TargetSetupInputFields = ({
 
   return (
     <FormSection>
-      <FormSelectField<FormState>
+      <FormSpeciesField<FormState>
         name="species"
         label="Species"
-        options={getGen3SpeciesOptions().byFilteredName(
+        species={getGen3Species().byFilteredName(
           getPossibleStatic3Species(GAME),
         )}
       />

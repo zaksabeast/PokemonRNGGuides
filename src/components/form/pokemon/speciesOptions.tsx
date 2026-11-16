@@ -1,31 +1,36 @@
 import { Species } from "~/rngTools";
-import { PokemonIcon } from "~/components/pokemonIcon";
+import type { SelectOption } from "~/components/form/base/selectField";
 import { species, formatSpeciesLabel } from "~/types/species";
 import { sortBy, memoize } from "lodash-es";
+import { SpeciesOptionIcon } from "./speciesOptionIcon";
 
-const createLazyOptions = (end: number) => {
+const getSpeciesOptionDisplay = memoize((value: Species) => ({
+  label: formatSpeciesLabel(value),
+  icon: <SpeciesOptionIcon species={value} />,
+}));
+
+export const toSpeciesOptions = <Value extends Species>(
+  speciesList: readonly Value[],
+): SelectOption<Value>[] =>
+  speciesList.map((value) => ({ ...getSpeciesOptionDisplay(value), value }));
+
+const createLazySpecies = (end: number) => {
   return memoize(() => {
-    const speciesByDex = species.slice(1, end).map((value) => ({
-      value,
-      label: formatSpeciesLabel(value),
-      icon: <PokemonIcon species={value} size={24} />,
-    }));
-    const speciesOptionsByName = sortBy(speciesByDex, (option) => option.label);
+    const speciesByDex = species.slice(1, end);
+    const speciesByName = sortBy(speciesByDex, formatSpeciesLabel);
 
     return {
       byDex: speciesByDex,
-      byName: speciesOptionsByName,
-      byFilteredName: <Value extends Species>(species: readonly Value[]) => {
-        const includedSpecies = new Set<Species>(species);
-        return speciesOptionsByName.filter(
-          (option): option is typeof option & { value: Value } =>
-            includedSpecies.has(option.value),
+      byName: speciesByName,
+      byFilteredName: <Value extends Species>(
+        includedSpeciesList: readonly Value[],
+      ) => {
+        const includedSpecies = new Set<Species>(includedSpeciesList);
+
+        return speciesByName.filter((value): value is Value =>
+          includedSpecies.has(value),
         );
       },
-      byNameOptional: [
-        { label: "None", value: "None" } as const,
-        ...speciesOptionsByName,
-      ],
     };
   });
 };
@@ -36,6 +41,6 @@ const gen3End = 393;
 const gen4End = 529;
 const gen5End = 649;
 
-export const getGen3SpeciesOptions = createLazyOptions(gen3End);
-export const getGen4SpeciesOptions = createLazyOptions(gen4End);
-export const getGen5SpeciesOptions = createLazyOptions(gen5End);
+export const getGen3Species = createLazySpecies(gen3End);
+export const getGen4Species = createLazySpecies(gen4End);
+export const getGen5Species = createLazySpecies(gen5End);

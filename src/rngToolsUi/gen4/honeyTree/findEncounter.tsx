@@ -5,12 +5,11 @@ import {
   FieldRow,
   FormNumberField,
   FormSection,
-  FormSelectField,
   NumberField,
   ToolForm,
 } from "~/components/form";
+import { FormSpeciesField } from "~/components/form/pokemon/speciesField";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
-import { toOptions } from "~/utils/options";
 import { gen4TargetAtom, selectGen4AdvanceAtom } from "../shared/state/target";
 import { honeyTreeAtom } from "./state";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
@@ -18,11 +17,7 @@ import { type Species, rngTools } from "~/rngTools";
 import { uniqueId, sortBy } from "lodash-es";
 import { useCurrentStep } from "~/components/stepper/state";
 import { Translations } from "~/translations";
-import {
-  ALL_SPECIES,
-  getSpecies,
-  type HoneyTreeSpecies,
-} from "../encounters/honey";
+import { ALL_SPECIES, getSpecies } from "../encounters/honey";
 
 type Result = {
   id: string;
@@ -97,15 +92,13 @@ const SpeciesSelect = ({ isMunchlaxTree }: SpeciesSelectProps) => {
   const [state] = useAtom(honeyTreeAtom);
 
   const species = sortBy(getSpecies(state.game, isMunchlaxTree));
-  const optionLabels = ["Any", ...species] as const;
-  const formatSpecies = (spec: HoneyTreeSpecies | "Any") =>
-    spec === "Burmy_Plant" ? "Burmy" : spec;
 
   return (
-    <FormSelectField<FormState>
+    <FormSpeciesField<FormState>
       name="species"
       label={t["Species"]}
-      options={toOptions(optionLabels, formatSpecies)}
+      species={species}
+      emptyOption={{ label: t["Any"], value: "Any" }}
     />
   );
 };

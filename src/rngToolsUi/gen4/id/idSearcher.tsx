@@ -30,7 +30,8 @@ import { useCurrentStep } from "~/components/stepper/state";
 import { useFormContext, useWatch } from "~/hooks/form";
 import { nature } from "~/types/nature";
 import { species } from "~/types/species";
-import { getGen4SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
+import { getGen4Species } from "~/components/form/pokemon/speciesOptions";
+import { FormSpeciesField } from "~/components/form/pokemon/speciesField";
 import { toOptions } from "~/utils/options";
 import {
   getCuteCharmTsvProps,
@@ -270,10 +271,11 @@ const Id4SearcherFields = () => {
               ]}
               disabled={maxShinyOdds}
             />
-            <FormSelectField<FormState>
+            <FormSpeciesField<FormState>
               name="target_species"
               label={t["Target Species"]}
-              options={getGen4SpeciesOptions().byNameOptional}
+              species={getGen4Species().byName}
+              emptyOption={{ label: t["None"], value: "None" }}
               disabled={maxShinyOdds}
             />
             <FormNumberField<FormState>

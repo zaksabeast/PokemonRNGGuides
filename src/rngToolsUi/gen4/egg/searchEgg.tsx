@@ -5,7 +5,6 @@ import {
   FieldRow,
   FormNumberField,
   FormSection,
-  FormSelectField,
   FormSwitchField,
   NullableIvFields,
   PkmFilter,
@@ -14,7 +13,8 @@ import {
 } from "~/components/form";
 import { useWatch } from "~/hooks/form";
 import { species } from "~/types/species";
-import { getGen4SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
+import { getGen4Species } from "~/components/form/pokemon/speciesOptions";
+import { FormSpeciesField } from "~/components/form/pokemon/speciesField";
 import {
   IvsSchema,
   NullableIvsSchema,
@@ -109,10 +109,10 @@ const Fields = () => {
             numType="decimal"
           />
         </FieldRow>
-        <FormSelectField<FormState>
+        <FormSpeciesField<FormState>
           name="species"
           label={t["Species"]}
-          options={getGen4SpeciesOptions().byName}
+          species={getGen4Species().byName}
         />
         <FormSwitchField<FormState>
           name="is_masuda"

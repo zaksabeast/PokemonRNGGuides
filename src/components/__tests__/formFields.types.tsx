@@ -10,7 +10,8 @@ import {
   FormTimeField,
   NumberField,
 } from "../form";
-import { RngDate } from "~/rngTools";
+import { FormSpeciesField } from "../form/pokemon/speciesField";
+import { RngDate, type Species } from "~/rngTools";
 import { RngTime } from "~/utils/time";
 import { FormFieldProps } from "~/types/form";
 import { check, Pass } from "~/typeTest";
@@ -322,6 +323,61 @@ export const DateFieldTest = () => (
     <FormDateField<FormState> name="unknown" label="Unknown" />
     {/* @ts-expect-error label is required */}
     <FormDateField<FormState> name="date" />
+  </>
+);
+
+type SpeciesFormState = {
+  species: Species;
+  anySpecies: Species | "Any";
+  nullableSpecies: Species | null;
+};
+
+const fieldSpecies = ["Bulbasaur", "Squirtle"] satisfies Species[];
+
+export const SpeciesFieldTest = () => (
+  <>
+    <FormSpeciesField<SpeciesFormState>
+      name="species"
+      label="Species"
+      species={fieldSpecies}
+    />
+    <FormSpeciesField<SpeciesFormState>
+      name="species"
+      label="Species"
+      species={fieldSpecies}
+      emptyOption={{ label: "None", value: "None" }}
+    />
+    <FormSpeciesField<SpeciesFormState>
+      name="anySpecies"
+      label="Species"
+      species={fieldSpecies}
+      emptyOption={{ label: "Any", value: "Any" }}
+    />
+    <FormSpeciesField<SpeciesFormState>
+      name="nullableSpecies"
+      label="Species"
+      species={fieldSpecies}
+      emptyOption={{ label: "None", value: null }}
+    />
+    {/* @ts-expect-error fields with an empty value need its option */}
+    <FormSpeciesField<SpeciesFormState>
+      name="anySpecies"
+      label="Species"
+      species={fieldSpecies}
+    />
+    {/* @ts-expect-error nullable fields need a null option */}
+    <FormSpeciesField<SpeciesFormState>
+      name="nullableSpecies"
+      label="Species"
+      species={fieldSpecies}
+    />
+    {/* @ts-expect-error the empty option must match the field */}
+    <FormSpeciesField<SpeciesFormState>
+      name="species"
+      label="Species"
+      species={fieldSpecies}
+      emptyOption={{ label: "Any", value: "Any" }}
+    />
   </>
 );
 

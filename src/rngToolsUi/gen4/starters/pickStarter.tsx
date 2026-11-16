@@ -24,7 +24,7 @@ import {
   FlattenIvs,
   getIvColumns,
 } from "~/rngToolsUi/shared/ivColumns";
-import { toOptions } from "~/utils/options";
+import { FormSpeciesField } from "~/components/form/pokemon/speciesField";
 import { useCurrentStep } from "~/components/stepper/state";
 import { match } from "ts-pattern";
 import { dpptStarters, hgssStarters, allStarters } from "./state";
@@ -201,10 +201,10 @@ const Fields = ({ game, t }: FieldsProps) => {
             numType="decimal"
           />
         </FieldRow>
-        <FormSelectField<FormState>
+        <FormSpeciesField<FormState>
           name="species"
           label={t["Species"]}
-          options={toOptions(starters)}
+          species={starters}
         />
       </FormSection>
 

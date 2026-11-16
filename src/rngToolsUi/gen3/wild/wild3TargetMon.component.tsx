@@ -1,10 +1,6 @@
-import { getGen3SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
-import {
-  FormSection,
-  FormSelectField,
-  Gen3PkmFilter,
-  PkmFilter,
-} from "~/components/form";
+import { getGen3Species } from "~/components/form/pokemon/speciesOptions";
+import { FormSpeciesField } from "~/components/form/pokemon/speciesField";
+import { FormSection, Gen3PkmFilter, PkmFilter } from "~/components/form";
 import { useFormContext, useWatch_UNSAFE } from "~/hooks/form";
 import React from "react";
 import { gen3SpeciesHasVariableSize } from "~/types";
@@ -34,12 +30,10 @@ export const Wild3TargetMon = () => {
 
   return (
     <FormSection title="Target Pokémon">
-      <FormSelectField<FormState>
+      <FormSpeciesField<FormState>
         name="species"
         label="Species"
-        options={getGen3SpeciesOptions().byFilteredName(
-          emeraldWildGameData.species,
-        )}
+        species={getGen3Species().byFilteredName(emeraldWildGameData.species)}
       />
       <PkmFilter<FormState>
         generation={3}

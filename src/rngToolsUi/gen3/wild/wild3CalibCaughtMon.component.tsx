@@ -1,9 +1,9 @@
-import { getGen3SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
+import { getGen3Species } from "~/components/form/pokemon/speciesOptions";
+import { FormSpeciesField } from "~/components/form/pokemon/speciesField";
 import React from "react";
 import {
   FormRadioField,
   FormSection,
-  FormSelectField,
   ToolForm,
   type ToolFormSubmit,
 } from "~/components/form";
@@ -96,10 +96,10 @@ export const Fields = ({
 
   // A select, since a map can have more species than fit a radio's single row
   const speciesField = (
-    <FormSelectField<FormState>
+    <FormSpeciesField<FormState>
       name="wildSpecies"
       label="Species"
-      options={getGen3SpeciesOptions().byFilteredName(speciesList)}
+      species={getGen3Species().byFilteredName(speciesList)}
     />
   );
 

@@ -4,10 +4,10 @@ import {
   FormDateField,
   FormNumberField,
   FormSection,
-  FormSelectField,
   ToolForm,
   type ToolFormSubmit,
 } from "~/components/form";
+import { FormSpeciesField } from "~/components/form/pokemon/speciesField";
 import { rngTools, MirageSpot } from "~/rngTools";
 import { formatRngDate, rngDate, RngDateSchema } from "~/utils/time";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
@@ -122,16 +122,11 @@ const Fields = () => {
       </FormSection>
 
       <FormSection title={t["Filters"]}>
-        <FormSelectField<FormState>
+        <FormSpeciesField<FormState>
           name="filter_species"
           label={t["Species"]}
-          options={[
-            { label: t["None"], value: null },
-            ...mirageSpotSpecies.map((species) => ({
-              label: species,
-              value: species,
-            })),
-          ]}
+          species={mirageSpotSpecies}
+          emptyOption={{ label: t["None"], value: null }}
         />
       </FormSection>
     </>

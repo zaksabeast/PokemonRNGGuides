@@ -27,7 +27,7 @@ import {
   LeadAbility,
   Species,
 } from "~/rngTools";
-import { formatSpeciesLabel, species } from "~/types/species";
+import { species } from "~/types/species";
 import { useWatch } from "~/hooks/form";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
@@ -45,7 +45,8 @@ import { static4LeadSchema, getLeadOptions } from "../shared/leads";
 import { DpPt, Gen3GameVersions } from "~/types/games";
 import { getEncounters } from "~/rngToolsUi/gen4/encounters/wild";
 import { ivColumns } from "~/rngToolsUi/shared/ivColumns";
-import { getGen4SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
+import { getGen4Species } from "~/components/form/pokemon/speciesOptions";
+import { FormSpeciesField } from "~/components/form/pokemon/speciesField";
 import {
   BATTLE_RESULTS,
   TIMES,
@@ -57,7 +58,6 @@ import {
 import { useSetAtom } from "jotai";
 import { useCurrentStep } from "~/components/stepper/state";
 import { selectedShinyPatchAtom } from "./state";
-import { PokemonIcon } from "~/components/pokemonIcon";
 
 const LIMIT = 1000;
 
@@ -236,13 +236,9 @@ const FormContent = () => {
   );
 
   const uniqueSpecies = uniqBy(encounters, ({ species }) => species);
-  const speciesOptions = uniqueSpecies.map(({ species }) => ({
-    label: formatSpeciesLabel(species),
-    value: species,
-    icon: <PokemonIcon species={species} size={24} />,
-  }));
+  const encounterSpecies = uniqueSpecies.map(({ species }) => species);
 
-  const trophyGardenOptions = getGen4SpeciesOptions().byFilteredName(
+  const trophyGardenSpecies = getGen4Species().byFilteredName(
     game === "Platinum" ? TROPHY_GARDEN_PT : TROPHY_GARDEN_DP,
   );
 
@@ -290,15 +286,15 @@ const FormContent = () => {
         )}
         {route === TROPHY_GARDEN && shouldReplaceTrophyGarden && (
           <FieldRow>
-            <FormSelectField<FormState>
+            <FormSpeciesField<FormState>
               name="newestTrophyGardenSpecies"
               label="Newest Pokémon (slot 6)"
-              options={trophyGardenOptions}
+              species={trophyGardenSpecies}
             />
-            <FormSelectField<FormState>
+            <FormSpeciesField<FormState>
               name="olderTrophyGardenSpecies"
               label="Older Pokémon (slot 7)"
-              options={trophyGardenOptions}
+              species={trophyGardenSpecies}
             />
           </FieldRow>
         )}
@@ -319,10 +315,10 @@ const FormContent = () => {
             ...toOptions(Gen3GameVersions),
           ]}
         />
-        <FormSelectField<FormState>
+        <FormSpeciesField<FormState>
           name="species"
           label={t["Species"]}
-          options={speciesOptions}
+          species={encounterSpecies}
         />
         <FormRadioField<FormState>
           name="level"

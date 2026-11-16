@@ -39,7 +39,8 @@ import { ivMethods } from "./constants";
 import { Gen3EmbeddedTimer } from "~/rngToolsUi/gen3/shared/timer";
 import { match, P } from "ts-pattern";
 import { Nullable } from "~/types/utils";
-import { getGen3SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
+import { getGen3Species } from "~/components/form/pokemon/speciesOptions";
+import { SpeciesField } from "~/components/form/pokemon/speciesField";
 import { atom, useAtom } from "jotai";
 import { formatOffset } from "~/utils/offsetSymbol";
 import { Translations } from "~/translations";
@@ -66,10 +67,10 @@ const HeldEggSpeciesSelect = () => {
   const [heldEgg, setHeldEgg] = useCurrentlyHeldEgg();
 
   return (
-    <SelectField<Species>
+    <SpeciesField
       name="species"
       label={t["Species"]}
-      options={getGen3SpeciesOptions().byName}
+      species={getGen3Species().byName}
       value={heldEgg.species}
       onChange={(value) => setHeldEgg((prev) => ({ ...prev, species: value }))}
     />

@@ -27,6 +27,7 @@ import {
   pkmFilterFieldsToRustInput,
   pkmFilterSchema,
 } from "~/components/form/pokemon/pkmFilterFields";
+import { SpeciesOptionIcon } from "~/components/form/pokemon/speciesOptionIcon";
 import { gen4SetupAtom } from "../shared/state/setup";
 import { selectGen4TargetAtom } from "../shared/state/target";
 import {
@@ -253,6 +254,7 @@ const Fields = ({ game, encountersByGame }: FieldsProps) => {
     map(encounters, (enc, id) => ({
       label: enc.label ?? formatSpeciesLabel(enc.species),
       value: id,
+      icon: <SpeciesOptionIcon species={enc.species} />,
     })),
     (enc) => enc.label,
   );

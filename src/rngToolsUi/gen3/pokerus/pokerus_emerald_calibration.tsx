@@ -1,4 +1,5 @@
-import { getGen3SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
+import { getGen3Species } from "~/components/form/pokemon/speciesOptions";
+import { SpeciesField } from "~/components/form/pokemon/speciesField";
 import { Button, Icon, ResultColumn } from "~/components";
 import {
   FieldRow,
@@ -200,10 +201,10 @@ const CalibrationInputs = ({
   return (
     <FormSection title="Calibration">
       {isStatic && (
-        <SelectField<Species>
+        <SpeciesField
           label="Stationary Pokémon"
           value={staticSpecies}
-          options={getGen3SpeciesOptions().byFilteredName(
+          species={getGen3Species().byFilteredName(
             getPossibleStatic3Species("emerald"),
           )}
           onChange={setStaticSpecies}

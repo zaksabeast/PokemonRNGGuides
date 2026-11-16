@@ -5,13 +5,13 @@ import {
   FormMultiSelectField,
   FormNumberField,
   FormSection,
-  FormSelectField,
   SwitchField,
   ToolForm,
   type ToolFormSubmit,
 } from "~/components/form";
 import { useField, useFormContext, useWatch_UNSAFE } from "~/hooks/form";
 import { toOptions } from "~/utils/options";
+import { FormSpeciesField } from "~/components/form/pokemon/speciesField";
 import { formatActionName, formatLeadName, formatMapName } from "./utils";
 import { Wild3Calib } from "./wild3Calib";
 import {
@@ -45,10 +45,10 @@ const Fields = ({ onInputsChange }: { onInputsChange: () => void }) => {
 
   return (
     <FormSection>
-      <FormSelectField<FormState, "species">
+      <FormSpeciesField<FormState>
         name="species"
         label="Target Species"
-        options={toOptions(simplifiedSpecies)}
+        species={simplifiedSpecies}
       />
       <FieldRow>
         <FormNumberField<FormState> name="tid" label="TID" numType="decimal" />

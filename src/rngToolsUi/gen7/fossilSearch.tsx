@@ -27,6 +27,7 @@ import {
 import { HexSchema } from "~/utils/number";
 import { chunkRange } from "~/utils/chunkRange";
 import { toOptions } from "~/utils/options";
+import { FormSpeciesField } from "~/components/form/pokemon/speciesField";
 import { nature } from "~/types/nature";
 import { RustOption } from "~/types/utils";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
@@ -153,10 +154,10 @@ const Fields = () => {
       </FormSection>
 
       <FormSection title={t["Search"]}>
-        <FormSelectField<FormState>
+        <FormSpeciesField<FormState>
           name="species"
           label={t["Fossil"]}
-          options={toOptions(fossilSpecies)}
+          species={fossilSpecies}
         />
         <FieldRow>
           <FormNumberField<FormState>

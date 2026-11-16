@@ -1,4 +1,7 @@
-import { getGen3SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
+import {
+  getGen3Species,
+  toSpeciesOptions,
+} from "~/components/form/pokemon/speciesOptions";
 import React from "react";
 import {
   FormCard,
@@ -54,7 +57,7 @@ export const TargetPokemon = ({
           cellSize="word"
           value={species}
           onChange={setSpecies}
-          options={getGen3SpeciesOptions().byFilteredName(starters)}
+          options={toSpeciesOptions(getGen3Species().byFilteredName(starters))}
         />
         <FormSummary rows={[{ label: "Info", value: targetPokemonDesc }]} />
       </FormSection>

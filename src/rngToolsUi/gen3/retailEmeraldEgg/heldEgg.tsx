@@ -15,7 +15,8 @@ import {
 import { useCurrentStep } from "~/components/stepper/state";
 import { rngTools, Gen3HeldEgg, PokeNavTrainer } from "~/rngTools";
 import { species } from "~/types/species";
-import { getGen3SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
+import { getGen3Species } from "~/components/form/pokemon/speciesOptions";
+import { FormSpeciesField } from "~/components/form/pokemon/speciesField";
 import {
   getPkmFilterInitialValues,
   pkmFilterSchema,
@@ -192,10 +193,10 @@ const Fields = ({ t }: FieldsProps) => {
             numType="decimal"
           />
         </FieldRow>
-        <FormSelectField<FormState>
+        <FormSpeciesField<FormState>
           name="egg_species"
           label={t["Egg species"]}
-          options={getGen3SpeciesOptions().byName}
+          species={getGen3Species().byName}
         />
         <FormSelectField<FormState>
           name="compatability"

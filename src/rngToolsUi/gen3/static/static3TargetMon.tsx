@@ -1,8 +1,8 @@
-import { getGen3SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
+import { getGen3Species } from "~/components/form/pokemon/speciesOptions";
+import { FormSpeciesField } from "~/components/form/pokemon/speciesField";
 import { Typography, Link } from "~/components";
 import {
   FormSection,
-  FormSelectField,
   FormSummary,
   FormSwitchField,
   Gen3PkmFilter,
@@ -57,10 +57,10 @@ export const Static3TargetMon = ({ game }: { game: Static3Game }) => {
 
   return (
     <FormSection title="Target Pokémon">
-      <FormSelectField<FormState>
+      <FormSpeciesField<FormState>
         name="species"
         label="Species"
-        options={getGen3SpeciesOptions().byFilteredName(possibleSpecies)}
+        species={getGen3Species().byFilteredName(possibleSpecies)}
       />
       {hasMultiplePossibleRoaming && (
         <FormSwitchField<FormState> name="roaming" label="Roaming" />

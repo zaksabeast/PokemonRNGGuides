@@ -17,7 +17,8 @@ import {
 } from "~/components/form";
 import { rngTools, Gen3HeldEgg } from "~/rngTools";
 import { species } from "~/types/species";
-import { getGen3SpeciesOptions } from "~/components/form/pokemon/speciesOptions";
+import { getGen3Species } from "~/components/form/pokemon/speciesOptions";
+import { FormSpeciesField } from "~/components/form/pokemon/speciesField";
 import { nature } from "~/types/nature";
 import { gender } from "~/types/gender";
 import { z } from "zod";
@@ -97,10 +98,10 @@ const Fields = () => {
             numType="decimal"
           />
         </FieldRow>
-        <FormSelectField<FormState>
+        <FormSpeciesField<FormState>
           name="egg_species"
           label={t["Egg species"]}
-          options={getGen3SpeciesOptions().byName}
+          species={getGen3Species().byName}
         />
         <FormSelectField<FormState>
           name="compatability"

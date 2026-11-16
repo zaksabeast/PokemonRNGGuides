@@ -11,10 +11,11 @@ import {
 import { useWatch, useField } from "~/hooks/form";
 import { defaultMinMaxStats, MinMaxStats } from "~/types";
 import {
-  getGen3SpeciesOptions,
-  getGen4SpeciesOptions,
-  getGen5SpeciesOptions,
+  getGen3Species,
+  getGen4Species,
+  getGen5Species,
 } from "~/components/form/pokemon/speciesOptions";
+import { FormSpeciesField } from "~/components/form/pokemon/speciesField";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { getStatRange } from "~/types/statRange";
 import {
@@ -23,11 +24,11 @@ import {
 } from "../gen4/gen4types";
 import { Validator, type FormState } from "./types";
 
-type SpeciesFieldProps = {
+type GenSpeciesFieldProps = {
   disabled: boolean;
 };
 
-export const SpeciesField = ({ disabled }: SpeciesFieldProps) => {
+export const GenSpeciesField = ({ disabled }: GenSpeciesFieldProps) => {
   const t = useActiveRouteTranslations();
   const [, , { setValue }] = useField<FormState["species"]>("species");
   const watched = useWatch({
@@ -35,10 +36,10 @@ export const SpeciesField = ({ disabled }: SpeciesFieldProps) => {
     validationSchema: Validator,
   });
 
-  const speciesOptions = match(watched.gen)
-    .with("3", () => getGen3SpeciesOptions().byName)
-    .with("4", () => getGen4SpeciesOptions().byName)
-    .with("5", () => getGen5SpeciesOptions().byName)
+  const genSpecies = match(watched.gen)
+    .with("3", () => getGen3Species().byName)
+    .with("4", () => getGen4Species().byName)
+    .with("5", () => getGen5Species().byName)
     .with(undefined, () => [])
     .with(null, () => [])
     .exhaustive();
@@ -52,10 +53,10 @@ export const SpeciesField = ({ disabled }: SpeciesFieldProps) => {
   }, [setValue, watched.gen]);
 
   return (
-    <FormSelectField<FormState>
+    <FormSpeciesField<FormState>
       name="species"
       label={t["Species"]}
-      options={speciesOptions}
+      species={genSpecies}
       disabled={disabled}
     />
   );
@@ -148,7 +149,7 @@ export const Fields = ({ hasSubmitted }: FieldsProps) => {
             { label: t["Gen 5"], value: "5" },
           ]}
         />
-        <SpeciesField disabled={hasSubmitted} />
+        <GenSpeciesField disabled={hasSubmitted} />
         <FormSelectField<FormState>
           name="nature"
           label={t["Nature"]}

@@ -5,6 +5,7 @@ export type FeebasTile = {
   websiteImageX: number;
   ingameY: number;
   ingameX: number;
+  ingameTileId: number | null;
   canContainFeebas: boolean;
   checkFeebasCycle: number;
   section: number;
@@ -20,9 +21,9 @@ export const getFeebasTiles = (): FeebasTile[] => {
   }
 
   const tiles = [
-    "0000000000000000000000000000000000000000",
-    "0000000000000000000000000000000000000000",
-    "0000000000000000001000000000000000000000",
+    "0000000000000002200000000000000000000000",
+    "0000000000000000200000000000000000000000",
+    "0000000000000000201000000000000000000000",
     "0000000000000000001100000000000000000000",
     "0000000000000000111100000000000000000000",
     "0000000000000000011100000000000000000000",
@@ -48,10 +49,10 @@ export const getFeebasTiles = (): FeebasTile[] => {
     "0000000000000000111111100000000000000000",
     "0000000000000000111111110000000000000000",
     "0000000000000000111111111111111000000000",
-    "0000000000000000000011111111111110000000",
-    "0000000000000000000001111111111110000000",
-    "0000000000000000000000001111111111100000",
-    "0000000000000000000000000000111111100000",
+    "0000000000000000000211111111111110000000",
+    "0000000000000000000021111111111110000000",
+    "0000000000000000000000021111111111100000",
+    "0000000000000000000000000002111111100000",
     "0000000000000000000000000000001111100000",
     "0000000000000000000000000000000111110000",
     "0000000000000000000000000000000111000000",
@@ -126,11 +127,14 @@ export const getFeebasTiles = (): FeebasTile[] => {
   const SECTION_HEIGHTS = [45, 91];
   const CYCLE_PER_CHECK = 413;
 
+  let nextIngameTileId = 0;
   feebasTilesCache = tiles
     .map((row, websiteImageY) => {
       return row.split("").map((val, websiteImageX) => {
         const ingameX = websiteImageX;
         const ingameY = 16 + websiteImageY;
+        const ingameTileId =
+          val === "1" || val === "2" ? nextIngameTileId++ : null;
         const [section, yInSection] = match(ingameY)
           .when(
             (y) => y <= SECTION_HEIGHTS[0],
@@ -150,6 +154,7 @@ export const getFeebasTiles = (): FeebasTile[] => {
           websiteImageX,
           ingameY,
           ingameX,
+          ingameTileId,
           canContainFeebas: val === "1",
           checkFeebasCycle: cycleCounter,
           section,

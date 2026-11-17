@@ -2,7 +2,6 @@ import type {
   CdfKnot,
   Wild3Action,
   Wild3InitialCycleDistribution,
-  Wild3PlayingSong,
   Wild3Weather,
 } from "~/rngTools";
 import {
@@ -137,20 +136,19 @@ const getFeebasCycleDistributionsFromContext = (
 
 const getFeebasCycleDistributionsForAllVblankCounts = (
   checkFeebasCycle: number,
-  playingSong: Wild3PlayingSong,
   weather: Wild3Weather,
 ): Wild3InitialCycleDistribution[] => {
   const cachedDistributions =
     feebasCycleDistributionsCache.get(checkFeebasCycle);
   if (cachedDistributions != null) {
     return cachedDistributions.filter((distr) => {
-      return distr.playing_song === playingSong && distr.weather === weather;
+      return distr.playing_song === FEEBAS_SONG && distr.weather === weather;
     });
   }
 
   const context = feebasCycleDataset.find(
     (candidate) =>
-      candidate.playingSong === playingSong && candidate.weather === weather,
+      candidate.playingSong === FEEBAS_SONG && candidate.weather === weather,
   );
   if (context == null) {
     return [];
@@ -164,7 +162,7 @@ const feebasCycleDistributionsCache = new Map<
   Wild3InitialCycleDistribution[]
 >();
 const feebasWeathers: Wild3Weather[] = ["Sunny", "Rain", "Thunderstorm"];
-const feebasSongs: Wild3PlayingSong[] = ["SurfSong"];
+const FEEBAS_SONG = "SurfSong";
 
 export const getAllFeebasCycleDistributions = (
   checkFeebasCycle: number,
@@ -176,13 +174,7 @@ export const getAllFeebasCycleDistributions = (
   }
 
   const distributions = feebasWeathers.flatMap((weather) =>
-    feebasSongs.flatMap((playingSong) =>
-      getFeebasCycleDistributionsForAllVblankCounts(
-        checkFeebasCycle,
-        playingSong,
-        weather,
-      ),
-    ),
+    getFeebasCycleDistributionsForAllVblankCounts(checkFeebasCycle, weather),
   );
   feebasCycleDistributionsCache.set(checkFeebasCycle, distributions);
 
@@ -191,14 +183,12 @@ export const getAllFeebasCycleDistributions = (
 
 export const getFeebasCycleDistribution = (
   checkFeebasCycle: number,
-  playingSong: Wild3PlayingSong,
   weather: Wild3Weather,
   feebasVblankCount: number,
 ): Wild3InitialCycleDistribution => {
   return (
     getFeebasCycleDistributionsForAllVblankCounts(
       checkFeebasCycle,
-      playingSong,
       weather,
     ).find((distr) => distr.feebas_vblank_count === feebasVblankCount) ?? {
       feebas_vblank_count: feebasVblankCount,
@@ -208,7 +198,7 @@ export const getFeebasCycleDistribution = (
       max: 0,
       distribution: [],
       action: "OldRod",
-      playing_song: playingSong,
+      playing_song: FEEBAS_SONG,
       weather,
     }
   );

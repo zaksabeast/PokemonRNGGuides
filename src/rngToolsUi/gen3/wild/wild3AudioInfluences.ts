@@ -174,7 +174,6 @@ export const getWild3InitialCycleDistributionForSetup = (
     setup.feebasCycles != null && setup.feebasVblankCount != null
       ? getFeebasCycleDistribution(
           setup.feebasCycles,
-          setup.playing_song,
           setup.weather,
           setup.feebasVblankCount,
         )

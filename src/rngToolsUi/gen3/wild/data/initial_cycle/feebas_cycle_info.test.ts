@@ -55,24 +55,22 @@ test("Feebas distributions preserve count probabilities and produce continuous c
       result.feebas_vblank_count === 1,
   );
   if (matching == null) {
-    throw new Error("Missing one-vblank BikeSong distribution");
+    throw new Error("Missing one-vblank SurfSong distribution");
   }
 
   expect(matching.distribution.length).toBeGreaterThan(2);
 });
 
 test("Feebas distributions have zero probability without matching observations", () => {
-  expect(
-    getFeebasCycleDistribution(205_803, "BikeSong", "Thunderstorm", 1),
-  ).toEqual({
-    feebas_vblank_count: 1,
+  expect(getFeebasCycleDistribution(205_803, "Thunderstorm", 10)).toEqual({
+    feebas_vblank_count: 10,
     feebas_vblank_count_probability: 0,
     check_feebas_cycle: 205_803,
     min: 0,
     max: 0,
     distribution: [],
     action: "OldRod",
-    playing_song: "BikeSong",
+    playing_song: "SurfSong",
     weather: "Thunderstorm",
   });
 });

@@ -1,5 +1,5 @@
 import { readFile, writeFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { basename, resolve } from "node:path";
 import { format, resolveConfig } from "prettier";
 
 type SampleGroup = {
@@ -17,17 +17,79 @@ const VBLANK_CYCLE_COUNT = 280_896;
 const DURATION_SCALE = 90_000;
 const SAMPLES_PER_SCENARIO = 8;
 
-const samplePath = resolve(
-  import.meta.dir,
-  "../src/rngToolsUi/gen3/wild/data/initial_cycle/feebas_cycles_samples.txt",
-);
 const outputPath = resolve(
   import.meta.dir,
   "../src/rngToolsUi/gen3/wild/data/initial_cycle/feebas_cycle_dataset.ts",
 );
 
+const rawLogPaths = Bun.argv.slice(2);
+if (rawLogPaths.length !== 3) {
+  throw new Error("Provide the Sunny, Rain, and Thunderstorm Feebas logs.");
+}
+
+const getWeatherFromRawLogPath = (path: string): string => {
+  const name = basename(path);
+  const match =
+    /^feebas_cycles_samples_(sunny|rain|thunderstorm)\.local\.txt$/.exec(name);
+  if (match == null) {
+    throw new Error(`Unknown Feebas sample weather: ${path}`);
+  }
+
+  return match[1][0].toUpperCase() + match[1].slice(1);
+};
+
+if (new Set(rawLogPaths.map(getWeatherFromRawLogPath)).size !== 3) {
+  throw new Error("Provide one Feebas log for each weather.");
+}
+
+const getSamplesFromRawLog = async (path: string): Promise<string[]> => {
+  const weather = getWeatherFromRawLogPath(path);
+  const source = await readFile(path, "utf8");
+  const runs = new Map<
+    number,
+    { startCycle: number | null; durations: number[]; completed: boolean }
+  >();
+
+  for (const line of source.split(/\r?\n/)) {
+    if (!line.startsWith("event,")) {
+      continue;
+    }
+
+    const parts = line.split(",");
+    const runId = Number(parts[1]);
+    const run = runs.get(runId) ?? {
+      startCycle: null,
+      durations: [],
+      completed: false,
+    };
+    if (parts[7] === "CheckFeebas") {
+      run.startCycle = Number(parts[10]);
+    }
+
+    if (parts[7] === "VBlankIntr_End" && parts[13] === "during_CheckFeebas") {
+      run.durations.push(Number(parts[12]));
+    }
+
+    if (parts[13] === "after_CheckFeebas") {
+      run.completed = true;
+    }
+
+    runs.set(runId, run);
+  }
+
+  return [...runs.values()].map(({ startCycle, durations, completed }) => {
+    if (startCycle == null || !completed) {
+      throw new Error(`Incomplete Feebas run in ${path}`);
+    }
+
+    return `SurfSong | ${weather} | ${startCycle} | (${durations.join(",")})`;
+  });
+};
+
 const groups = new Map<string, SampleGroup>();
-const source = await readFile(samplePath, "utf8");
+const source = (await Promise.all(rawLogPaths.map(getSamplesFromRawLog)))
+  .flat()
+  .join("\n");
 
 for (const line of source.split(/\r?\n/)) {
   if (line === "" || line.startsWith("#") || line.startsWith("playing_song")) {
@@ -232,9 +294,9 @@ export type FeebasCycleDatasetGroup = {
   scenarios: readonly FeebasCycleScenario[];
 };
 
-export const feebasCycleDataset = [
+export const feebasCycleDataset: readonly FeebasCycleDatasetGroup[] = [
 ${entries.join("\n")}
-] as const satisfies readonly FeebasCycleDatasetGroup[];
+];
 `;
 
 const prettierConfig = await resolveConfig(outputPath);

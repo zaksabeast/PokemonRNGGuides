@@ -10,6 +10,7 @@ import {
   type FeebasCycleScenario,
 } from "./feebas_cycle_dataset";
 import { isFishingAction, wild3Actions } from "~/rngToolsUi/gen3/wild/utils";
+import { range } from "lodash-es";
 
 const VBLANK_FREQ = 280_896;
 const FISHING_ACTIONS: Wild3Action[] = wild3Actions.filter((action) =>
@@ -66,7 +67,9 @@ const getConditionalCdf = (cycleWeights: Map<number, number>): CdfKnot[] => {
 
 class CycleWeightsByVblankCount {
   // map[vblankCount][cycle] = weight
-  private map = new Map<number, Map<number, number>>();
+  private map = new Map<number, Map<number, number>>(
+    range(6).map((vblank) => [vblank, new Map()]),
+  );
   totalWeight = 0;
 
   addScenarioResult(vblankCount: number, cycle: number, weight: number): void {
@@ -117,17 +120,18 @@ const getFeebasCycleDistributionsFromContext = (
         weightByCycle,
         feebas_vblank_count_probability,
       }) => {
-        const distribution = getConditionalCdf(weightByCycle);
+        const distribution =
+          weightByCycle.size === 0 ? [] : getConditionalCdf(weightByCycle);
 
         return FISHING_ACTIONS.map((action) => ({
           feebas_vblank_count,
           feebas_vblank_count_probability,
           check_feebas_cycle: checkFeebasCycle,
-          min: distribution[0].cycle,
-          max: distribution[distribution.length - 1].cycle,
+          min: distribution[0]?.cycle ?? 0,
+          max: distribution[distribution.length - 1]?.cycle ?? 0,
           distribution,
           action,
-          playing_song: context.playingSong,
+          playing_song: FEEBAS_SONG,
           weather: context.weather,
         }));
       },
@@ -140,15 +144,15 @@ const getFeebasCycleDistributionsForAllVblankCounts = (
 ): Wild3InitialCycleDistribution[] => {
   const cachedDistributions =
     feebasCycleDistributionsCache.get(checkFeebasCycle);
+
   if (cachedDistributions != null) {
     return cachedDistributions.filter((distr) => {
-      return distr.playing_song === FEEBAS_SONG && distr.weather === weather;
+      return distr.weather === weather;
     });
   }
 
   const context = feebasCycleDataset.find(
-    (candidate) =>
-      candidate.playingSong === FEEBAS_SONG && candidate.weather === weather,
+    (candidate) => candidate.weather === weather,
   );
   if (context == null) {
     return [];

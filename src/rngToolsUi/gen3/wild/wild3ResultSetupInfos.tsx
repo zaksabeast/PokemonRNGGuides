@@ -158,6 +158,19 @@ const getResultSetupInfoColumns = ({
     {
       title: (
         <span>
+          Feebas tile check
+          <br />
+          VBlanks
+        </span>
+      ),
+      key: "feebasVblankCount",
+      dataIndex: "feebas_vblank_count",
+      render: (count) => count ?? "N/A",
+      show: isFishingInFeebasMap,
+    },
+    {
+      title: (
+        <span>
           Requires
           <br />
           White Flute?

@@ -145,7 +145,6 @@ impl Wild3MapGameData {
         action: Wild3Action,
         playing_song: Wild3PlayingSong,
         weather: Wild3Weather,
-        feebas: bool,
     ) -> &Wild3InitialCycleDistribution {
         self.initial_cycle_distrs
             .iter()
@@ -153,9 +152,19 @@ impl Wild3MapGameData {
                 distr.action == action
                     && distr.playing_song == playing_song
                     && distr.weather == weather
-                    && feebas == distr.check_feebas_cycle.is_some()
+                    && distr.check_feebas_cycle.is_none()
             })
             .unwrap_or_else(|| Wild3InitialCycleDistribution::new_default(action))
+    }
+    pub fn get_feebas_initial_cycle_distr(
+        &self,
+        weather: Wild3Weather,
+        feebas: bool,
+    ) -> &Wild3InitialCycleDistribution {
+        self.initial_cycle_distrs
+            .iter()
+            .find(|distr| distr.weather == weather && feebas == distr.check_feebas_cycle.is_some())
+            .unwrap_or_else(|| Wild3InitialCycleDistribution::new_default(Wild3Action::SuperRod))
     }
 
     pub fn get_encounter(

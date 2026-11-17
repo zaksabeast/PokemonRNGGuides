@@ -154,6 +154,8 @@ export const Wild3LeadCycleSpeedSelector = ({
     });
   const initialCycleMin = initial_cycle_distr?.min;
   const initialCycleMax = initial_cycle_distr?.max;
+  const feebasCycleMin = feebas_cycle_distr?.min;
+  const feebasCycleMax = feebas_cycle_distr?.max;
 
   const isFeebas =
     targetSetup.feebasState === "OnFeebasTile" && feebasCycles != null;
@@ -172,7 +174,12 @@ export const Wild3LeadCycleSpeedSelector = ({
   }, [leadCycleSpeedProp]);
 
   React.useEffect(() => {
-    if (initialCycleMin == null || initialCycleMax == null) {
+    if (
+      initialCycleMin == null ||
+      initialCycleMax == null ||
+      feebasCycleMin == null ||
+      feebasCycleMax == null
+    ) {
       setDistributions(null);
 
       return;
@@ -184,7 +191,7 @@ export const Wild3LeadCycleSpeedSelector = ({
       {
         LikelihoodForLead: {
           min_max_initial_cycle: [initialCycleMin, initialCycleMax],
-          feebas_min_max_initial_cycle: [0, 0],
+          feebas_min_max_initial_cycle: [feebasCycleMin, feebasCycleMax],
           lead_cycle_spd: actualLeadCycleSpeed ?? 0,
         },
       },
@@ -199,6 +206,8 @@ export const Wild3LeadCycleSpeedSelector = ({
     audioInfluences,
     initialCycleMin,
     initialCycleMax,
+    feebasCycleMin,
+    feebasCycleMax,
   ]);
 
   return (
@@ -234,7 +243,7 @@ export const Wild3LeadCycleSpeedSelector = ({
               {targetSetup.feebasVblankCount != null && feebasTile != null && (
                 <Typography.Text>
                   {targetSetup.feebasVblankCount} required Vblanks during Feebas
-                  tile check.{" "}
+                  tile check:{" "}
                   {formatProbability(
                     feebas_cycle_distr?.feebas_vblank_count_probability ?? 0,
                   )}{" "}

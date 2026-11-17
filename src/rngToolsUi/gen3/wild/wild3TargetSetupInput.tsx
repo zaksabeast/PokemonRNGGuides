@@ -5,21 +5,24 @@ import {
   Wild3RoamerState,
   Wild3MassOutbreakState,
   Gen3Lead,
+  Wild3Weather,
 } from "~/rngTools";
 import {
+  FieldFrame,
   FormSection,
-  FormNumberField,
   FormSelectField,
   FormSwitchField,
   PokeblockField,
   SwitchGroup,
   ToolForm,
+  useFieldIds,
   type ToolFormSubmit,
 } from "~/components/form";
 import { toOptions } from "~/utils/options";
-import { useFormContext, useWatch_UNSAFE } from "~/hooks/form";
+import { useField, useFormContext, useWatch_UNSAFE } from "~/hooks/form";
 import React from "react";
 import { z } from "zod";
+import styled from "@emotion/styled";
 
 import {
   formatMapName,
@@ -42,8 +45,81 @@ import { PaintingReseedingFields } from "../pokemonRng/targetSetupInput";
 import { lcrng_distance } from "~/utils/lcrng";
 import { FeebasTilesField } from "./feebasMap";
 import { getDefaultWild3AudioInfluences } from "./wild3AudioInfluences";
+import { getAllFeebasCycleDistributions } from "./data/initial_cycle/feebas_cycle_info";
+import { formatProbability } from "~/utils/formatProbability";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
+const feebasWeathers = [
+  "Sunny",
+  "Rain",
+  "Thunderstorm",
+] as const satisfies readonly Wild3Weather[];
+const feebasVblankCounts = [0, 1, 2, 3, 4, 5] as const;
+
+const VblankCountRows = styled.div({
+  display: "flex",
+  flexDirection: "column",
+  gap: 8,
+});
+
+const VblankCountHeader = styled.div(({ theme }) => ({
+  display: "none",
+  [theme.mediaQueries.up("mobile")]: {
+    display: "grid",
+    gridTemplateColumns: "minmax(100px, 1fr) repeat(3, minmax(0, 1fr))",
+    gap: 8,
+    paddingInline: 12,
+    color: theme.token.colorTextSecondary,
+  },
+}));
+
+const VblankCountRow = styled.label<{ $selected: boolean }>(
+  ({ theme, $selected }) => ({
+    display: "grid",
+    gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+    gap: 8,
+    padding: 12,
+    border: `1px solid ${theme.token.colorBorder}`,
+    borderRadius: theme.shape.medium,
+    backgroundColor: $selected ? theme.token.colorPrimaryBg : undefined,
+    cursor: "pointer",
+    [theme.mediaQueries.up("mobile")]: {
+      gridTemplateColumns: "minmax(100px, 1fr) repeat(3, minmax(0, 1fr))",
+      alignItems: "center",
+    },
+    ":hover": {
+      backgroundColor: $selected
+        ? theme.token.colorPrimaryBg
+        : theme.token.colorStateLayerHover,
+    },
+  }),
+);
+
+const VblankCountChoice = styled.span(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  gap: 8,
+  gridColumn: "1 / -1",
+  color: theme.token.colorText,
+  [theme.mediaQueries.up("mobile")]: {
+    gridColumn: "auto",
+  },
+  input: {
+    accentColor: theme.token.colorPrimary,
+  },
+}));
+
+const VblankWeatherLabel = styled.span(({ theme }) => ({
+  display: "block",
+  color: theme.token.colorTextSecondary,
+  [theme.mediaQueries.up("mobile")]: {
+    display: "none",
+  },
+}));
+
+const VblankProbability = styled.span({
+  minWidth: 0,
+});
 
 // Wild5 is not supported. To support it, we would need to be able to indicate the number of PID rerolls when the vblank occured.
 // Wild3 is currently bugged.
@@ -81,7 +157,10 @@ const Validator = z
   );
 
 type Props = {
-  setTargetSetup: (targetSetup: TargetSetup | null) => void;
+  setTargetSetup: (
+    targetSetup: TargetSetup | null,
+    feebasCycles?: number | null,
+  ) => void;
 };
 
 export type TargetSetup = {
@@ -147,10 +226,97 @@ const convertFormStateValuesToTargetSetup = (
   };
 };
 
+const FeebasVblankCountField = ({
+  checkFeebasCycle,
+}: {
+  checkFeebasCycle: number | null;
+}) => {
+  const ids = useFieldIds();
+  const [{ value, onBlur }, { error }, { setValue }] =
+    useField<number>("feebasVblankCount");
+  const distributions =
+    checkFeebasCycle == null
+      ? []
+      : getAllFeebasCycleDistributions(checkFeebasCycle).filter(
+          (distribution) => distribution.action === "OldRod",
+        );
+  const isSelectedCountAvailable = feebasVblankCounts.some(
+    (count) => count === value,
+  );
+  const rows = feebasVblankCounts.map((count) => ({
+    count,
+    probabilities: feebasWeathers.map((weather) =>
+      formatProbability(
+        distributions.find(
+          (distribution) =>
+            distribution.weather === weather &&
+            distribution.feebas_vblank_count === count,
+        )?.feebas_vblank_count_probability ?? 0,
+      ),
+    ),
+  }));
+
+  React.useEffect(() => {
+    if (!isSelectedCountAvailable) {
+      setValue(feebasVblankCounts[0]);
+    }
+  }, [isSelectedCountAvailable, setValue]);
+
+  return (
+    <FieldFrame
+      ids={ids}
+      labelTarget="group"
+      label="VBlank count during Feebas tile check"
+      errorMessage={error}
+    >
+      {checkFeebasCycle == null ? (
+        <span>Select a Feebas fishing spot to see the likelihoods.</span>
+      ) : (
+        <VblankCountRows
+          role="radiogroup"
+          aria-labelledby={ids.labelId}
+          aria-describedby={ids.helperId}
+          aria-invalid={error != null}
+          onBlur={onBlur}
+        >
+          <VblankCountHeader>
+            <span>VBlanks</span>
+            {feebasWeathers.map((weather) => (
+              <span key={weather}>{weather}</span>
+            ))}
+          </VblankCountHeader>
+          {rows.map(({ count, probabilities }) => (
+            <VblankCountRow key={count} $selected={value === count}>
+              <VblankCountChoice>
+                <input
+                  type="radio"
+                  name={ids.inputId}
+                  value={count}
+                  checked={value === count}
+                  aria-label={`${count} VBlanks. ${feebasWeathers.map((weather, index) => `${weather} ${probabilities[index]}`).join(", ")}`}
+                  onChange={() => setValue(count)}
+                />
+                {count}
+              </VblankCountChoice>
+              {feebasWeathers.map((weather, index) => (
+                <VblankProbability key={weather}>
+                  <VblankWeatherLabel>{weather}</VblankWeatherLabel>
+                  {probabilities[index]}
+                </VblankProbability>
+              ))}
+            </VblankCountRow>
+          ))}
+        </VblankCountRows>
+      )}
+    </FieldFrame>
+  );
+};
+
 type FieldsProps = {
   mapId: string;
   action: Wild3Action;
   feebasState: Wild3FeebasState;
+  feebasCycles: number[];
   usingPaintingReseeding: boolean;
   equivalentInitialAdvs: number;
 };
@@ -159,6 +325,7 @@ const Fields = ({
   mapId,
   action,
   feebasState,
+  feebasCycles,
   usingPaintingReseeding,
   equivalentInitialAdvs,
 }: FieldsProps) => {
@@ -234,10 +401,8 @@ const Fields = ({
             canOnlySelectOne
           />
           {feebasState === "OnFeebasTile" && (
-            <FormNumberField<FormState>
-              name="feebasVblankCount"
-              label="VBlank count during Feebas tile check"
-              numType="decimal"
+            <FeebasVblankCountField
+              checkFeebasCycle={feebasCycles[0] ?? null}
             />
           )}
         </>
@@ -330,6 +495,7 @@ export const Wild3TargetSetupInputFields = ({
       mapId={map}
       action={action}
       feebasState={feebasState}
+      feebasCycles={feebasCycles}
       usingPaintingReseeding={usingPaintingReseeding}
       equivalentInitialAdvs={equivalentInitialAdvs}
     />
@@ -339,15 +505,17 @@ export const Wild3TargetSetupInputFields = ({
 export const Wild3TargetSetupInput = ({ setTargetSetup }: Props) => {
   const onSubmit: ToolFormSubmit<FormState> = async (values) => {
     const targetSetup = convertFormStateValuesToTargetSetup(values);
+    const feebasCycles =
+      values.feebasState === "OnFeebasTile"
+        ? (values.feebasCycles[0] ?? null)
+        : null;
     const { content } = await calculateTargetSetupResult(
       targetSetup,
       null,
       getDefaultWild3AudioInfluences(targetSetup.map, targetSetup.action),
-      values.feebasState === "OnFeebasTile"
-        ? (values.feebasCycles[0] ?? null)
-        : null,
+      feebasCycles,
     );
-    setTargetSetup(content == null ? null : targetSetup);
+    setTargetSetup(content == null ? null : targetSetup, feebasCycles);
   };
 
   const initialValues = getInitialValues();

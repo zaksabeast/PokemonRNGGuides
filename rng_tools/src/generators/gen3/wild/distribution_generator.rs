@@ -161,7 +161,7 @@ fn generate_dist_results(
             Wild3MethodDistributionResult {
                 searcher_res,
                 initial_cycle_range: cycle_data.initial_cycle_range,
-                method_probability: cycle_data.method_probability,
+                method_probability: cycle_data.method_probability, // It already includes init_distr.feebas_vblank_count_probability
             }
         })
         .collect()
@@ -242,7 +242,7 @@ mod test {
             playing_song,
             weather,
             initial_cycle,
-            vblank_cycles,
+            vblank_cycles.clone(),
         );
 
         let total_likelihood: f64 = distribution
@@ -253,6 +253,31 @@ mod test {
 
         assert!((total_likelihood - 0.92).abs() < 1e-10);
         assert!(!distribution.cycle_at_moments.is_empty());
+
+        let non_feebas_distribution = generate_gen3_wild_distribution(
+            initial_seed,
+            1001,
+            &opts,
+            &game_data,
+            lead_cycle_spd,
+            playing_song,
+            weather,
+            initial_cycle,
+            vblank_cycles,
+        );
+        let non_feebas_likelihood: f64 = non_feebas_distribution
+            .results
+            .iter()
+            .map(|result| result.method_probability)
+            .sum();
+
+        assert!(
+            non_feebas_distribution
+                .results
+                .iter()
+                .all(|result| result.searcher_res.encounter_idx != Wild3EncounterIndex::Feebas)
+        );
+        assert!((non_feebas_likelihood - 0.92).abs() < 1e-10);
     }
 
     #[ignore]

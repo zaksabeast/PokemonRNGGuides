@@ -176,6 +176,18 @@ export const setupToDistributions = async (
     )
     .otherwise(() => argsWithoutEmuLog(AVERAGE_LEAD_CYCLE_SPEED));
 
+  console.log([
+    targetSetup.targetPaintingAdvs.before,
+    targetSetup.targetPaintingAdvs.after,
+    opts,
+    gameData,
+    distributionArgs.leadCycleSpd,
+    audioInfluences.playing_song,
+    audioInfluences.weather,
+    distributionArgs.initialCycleAtSweetScent,
+    distributionArgs.vblankCycles,
+  ]);
+
   const { results, cycle_at_moments } =
     await rngTools.generate_gen3_wild_distribution(
       targetSetup.targetPaintingAdvs.before,
@@ -188,6 +200,8 @@ export const setupToDistributions = async (
       distributionArgs.initialCycleAtSweetScent,
       distributionArgs.vblankCycles,
     );
+
+  console.log({ results, cycle_at_moments });
 
   const resultForTargetMethod = results.find(
     (res) => res.searcher_res.method === targetSetup.targetMethod,

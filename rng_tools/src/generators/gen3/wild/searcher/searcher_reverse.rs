@@ -1,4 +1,4 @@
-use std::hint::black_box;
+use std::{collections::HashMap, hint::black_box};
 
 use arrayvec::ArrayVec;
 use itertools::Itertools;
@@ -138,8 +138,17 @@ fn extend_pid_paths_to_results(
         .iter()
         .map(|setup| {
             ALL_WILD3_ACTIONS.map(|action| {
-                opts.cycle_opts
+                let mut groups: HashMap<Option<usize>, Vec<&Wild3InitialCycleDistribution>> =
+                    HashMap::new();
+
+                for distr in opts
+                    .cycle_opts
                     .get_initial_cycle_distrs(&setup.map_data, action)
+                {
+                    groups.entry(distr.feebas_vblank_count).or_default().push(distr);
+                }
+
+                groups
             })
         })
         .collect_vec();
@@ -330,7 +339,7 @@ fn create_result(
     map_setups: &Wild3MapSetups,
     map_idx: usize,
     encounter_gender_ratio: GenderRatio,
-    initial_cycle_groups: &[&Wild3InitialCycleDistribution],
+    initial_cycle_groups: &HashMap<Option<usize>, Vec<&Wild3InitialCycleDistribution>>,
 ) -> Vec<Wild3SearcherResultMon> {
     let mass_outbreak_state = match path.encounter_idx_to_lvl_arc {
         EncounterIdxToLvlArc::MassOutbreakSuccess(mass_outbreak_state) => mass_outbreak_state,
@@ -345,10 +354,9 @@ fn create_result(
     };
 
     let matching_initial_cycle_groups = initial_cycle_groups
-        .iter()
-        .copied()
-        .filter(|distr| distr.feebas_vblank_count == feebas_vblank_count)
-        .collect_vec();
+        .get(&feebas_vblank_count)
+        .map(Vec::as_slice)
+        .unwrap_or(&[]);
 
     let safari_pokeblock = if path.nature_gender_to_pid_arc.uses_safari_pokeblock() {
         Some(create_pokeblock_gen_opt(
@@ -374,7 +382,7 @@ fn create_result(
         safari_pokeblock: safari_pokeblock.clone(),
         cycle_opts: opts
             .cycle_opts
-            .generator_cycle_opts(initial_cycle_groups, feebas_vblank_count),
+            .generator_cycle_opts(matching_initial_cycle_groups, feebas_vblank_count),
         using_white_flute: opts.using_white_flute,
 
         // overwritten below
@@ -400,7 +408,7 @@ fn create_result(
                 path.seed,
                 advance,
                 encounter,
-                &matching_initial_cycle_groups,
+                matching_initial_cycle_groups,
             ));
         }
     }

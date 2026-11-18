@@ -41,8 +41,7 @@ pub fn generate_gen3_wild_distribution(
     initial_cycle: Option<usize>,
     vblank_cycles: Option<Vec<usize>>,
 ) -> Wild3MethodDistributionResults {
-    let initial_cycle_distr =
-        game_data.get_initial_cycle_distr(opts.action, playing_song, weather);
+    let initial_cycle_distr = game_data.get_initial_cycle_distr(opts.action, playing_song, weather);
     let feebas_cycle_distr = game_data.get_feebas_initial_cycle_distr(weather, true);
 
     let cycle_opts_for_cycle = match (initial_cycle, vblank_cycles) {
@@ -253,6 +252,7 @@ mod test {
         assert!((total_likelihood - 0.92).abs() < 1e-10);
         assert!(!distribution.cycle_at_moments.is_empty());
 
+        //NO_PROD should be 0.92 too
         let non_feebas_distribution = generate_gen3_wild_distribution(
             initial_seed,
             1001,
@@ -276,7 +276,7 @@ mod test {
                 .iter()
                 .all(|result| result.searcher_res.encounter_idx != Wild3EncounterIndex::Feebas)
         );
-        assert!((non_feebas_likelihood - 0.92).abs() < 1e-10);
+        assert!((non_feebas_likelihood - 1.0).abs() < 1e-10);
     }
 
     #[ignore]

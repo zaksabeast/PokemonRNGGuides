@@ -2,8 +2,9 @@ import { Flex } from "~/components";
 import { FormCard, RadioField, type RadioOption } from "~/components/form";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { ChatterFilterBase } from "./shared/chatterFilter";
-import { HgssCallAdvanceFilter } from "./shared/hgssElmCalls/advanceFilter";
-import { atom, useAtom } from "jotai";
+import { HgssElmCallAdvanceFilterBase } from "./shared/hgssElmCalls/advanceFilter";
+import { gen4TargetAtom } from "./shared/state/target";
+import { atom, useAtom, useAtomValue } from "jotai";
 
 type FilterMode = "chatot" | "elm";
 
@@ -12,10 +13,11 @@ const filterModeAtom = atom<FilterMode>("chatot");
 export const StandaloneGen4AdvanceFilter = () => {
   const t = useActiveRouteTranslations();
   const [filterMode, setFilterMode] = useAtom(filterModeAtom);
+  const target = useAtomValue(gen4TargetAtom);
 
   const filterModeOptions: RadioOption<FilterMode>[] = [
     { label: t["Chatot Pitches"], value: "chatot" },
-    { label: t["Elm Calls"], value: "elm" },
+    { label: t["Pokégear Calls"], value: "elm" },
   ];
 
   const filter =
@@ -25,7 +27,12 @@ export const StandaloneGen4AdvanceFilter = () => {
         submitTrackerId="standalone_chatter_filter"
       />
     ) : (
-      <HgssCallAdvanceFilter />
+      <HgssElmCallAdvanceFilterBase
+        seed={target?.seedTime.seed}
+        targetAdvance={target?.mtAdvance}
+        mode="standalone"
+        submitTrackerId="elm_call_advance_filter_generate"
+      />
     );
 
   return (

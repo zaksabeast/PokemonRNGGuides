@@ -1,4 +1,4 @@
-import { BattleResult, ShakeType } from "~/rngTools";
+import { BattleResult, ShakeType, Species } from "~/rngTools";
 
 export const BATTLE_RESULTS = [
   "Catch",
@@ -53,3 +53,43 @@ export const POKERADAR_ROUTES = [
   "Route 229",
   "Route 230",
 ] as const;
+
+export const TROPHY_GARDEN = "Trophy Garden";
+
+export const TROPHY_GARDEN_DP = [
+  "Clefairy",
+  "Jigglypuff",
+  "Meowth",
+  "Chansey",
+  "Eevee",
+  "Porygon",
+  "Cleffa",
+  "Igglybuff",
+  "Marill",
+  "Azurill",
+  "Plusle",
+  "Minun",
+  "Castform_Normal",
+  "Bonsly",
+  "MimeJr",
+  "Happiny",
+] as const satisfies Species[];
+
+export const TROPHY_GARDEN_PT = [
+  "Clefairy",
+  "Jigglypuff",
+  "Meowth",
+  "Chansey",
+  "Ditto",
+  "Eevee",
+  "Cleffa",
+  "Igglybuff",
+  "Marill",
+  "Azurill",
+  "Plusle",
+  "Minun",
+  "Castform_Normal",
+  "Bonsly",
+  "MimeJr",
+  "Happiny",
+] as const satisfies Species[];

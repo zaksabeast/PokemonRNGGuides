@@ -1,9 +1,7 @@
 use super::coin_flips::{CoinFlip, coin_flips};
-use super::{SeedTime4, calc_seed};
+use super::{SeedTime4, relative_seedtime4s};
 use crate::RngDateTime;
-use chrono::Duration;
 use serde::{Deserialize, Serialize};
-use std::ops::RangeInclusive;
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
@@ -17,12 +15,12 @@ pub struct DpptSeedTime4 {
 }
 
 impl DpptSeedTime4 {
-    pub fn new(seed: u32, datetime: RngDateTime, delay: u32, coin_flip_count: usize) -> Self {
+    fn new(seedtime: SeedTime4, coin_flip_count: usize) -> Self {
         Self {
-            seed,
-            datetime,
-            delay,
-            coin_flips: coin_flips(seed, coin_flip_count),
+            coin_flips: coin_flips(seedtime.seed, coin_flip_count),
+            seed: seedtime.seed,
+            datetime: seedtime.datetime,
+            delay: seedtime.delay,
         }
     }
 }
@@ -36,44 +34,14 @@ pub struct RelativeDpptSeedtimeOpts {
     pub coin_flip_count: usize,
 }
 
-impl RelativeDpptSeedtimeOpts {
-    fn second_range(&self) -> RangeInclusive<i32> {
-        -self.second_offset..=self.second_offset
-    }
-
-    fn delay_range(&self) -> RangeInclusive<i32> {
-        -self.delay_offset..=self.delay_offset
-    }
-}
-
 /// Generates a list of seed times relative to a given seed time, with specified offsets for delay and seconds.
 /// Useful for finding seeds that are close to a known seed time, such as when calibrating a DPPT RNG.
 #[wasm_bindgen]
 pub fn get_relative_dppt_seedtimes(opts: RelativeDpptSeedtimeOpts) -> Vec<DpptSeedTime4> {
-    let datetime = opts.seedtime.datetime.to_naive_datetime();
-    let datetime = match datetime {
-        Some(dt) => dt,
-        None => return vec![],
-    };
-
-    let mut results = vec![];
-
-    for second_offset in opts.second_range() {
-        for delay_offset in opts.delay_range() {
-            let offset_datetime = datetime + Duration::seconds(second_offset as i64);
-            let datetime = RngDateTime::from(offset_datetime);
-            let delay = opts.seedtime.delay.wrapping_add(delay_offset as u32);
-            let seed = calc_seed(&datetime, delay);
-            results.push(DpptSeedTime4::new(
-                seed,
-                datetime,
-                delay,
-                opts.coin_flip_count,
-            ));
-        }
-    }
-
-    results
+    relative_seedtime4s(&opts.seedtime, opts.delay_offset, opts.second_offset)
+        .into_iter()
+        .map(|seedtime| DpptSeedTime4::new(seedtime, opts.coin_flip_count))
+        .collect()
 }
 
 #[cfg(test)]

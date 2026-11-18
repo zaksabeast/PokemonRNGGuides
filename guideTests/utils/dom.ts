@@ -52,10 +52,7 @@ export const getText = (element: Element) => {
   return (element.textContent ?? "").replace(/\s+/g, " ").trim();
 };
 
-export const getOnly = <Item extends Element>(
-  items: Item[],
-  description: string,
-): Item => {
+export const getOnly = <Item>(items: Item[], description: string): Item => {
   const [item] = items;
   if (items.length > 1) {
     throw new AmbiguousMatchError(
@@ -171,13 +168,20 @@ export const typeInto = (field: HTMLElement, value: string) => {
   field.dispatchEvent(new FocusEvent("focusout", { bubbles: true }));
 };
 
-export const closestAncestorWithText = (element: Element) => {
+export const closestAncestor = (
+  element: Element,
+  isMatch: (ancestor: HTMLElement) => boolean,
+) => {
   let ancestor = element.parentElement;
-  while (ancestor != null && getText(ancestor) === "") {
+  while (ancestor != null && !isMatch(ancestor)) {
     ancestor = ancestor.parentElement;
   }
 
   return ancestor;
+};
+
+export const closestAncestorWithText = (element: Element) => {
+  return closestAncestor(element, (ancestor) => getText(ancestor) !== "");
 };
 
 /** The only <input> whose field shows exactly `fieldText`, for fields without a `<label for>` */
@@ -325,6 +329,60 @@ export const readTable = (root: ParentNode): TableRow[] => {
   return [...rows].map((row) => readRow(row, headers));
 };
 
+const isSearchDone = (root: ParentNode) => {
+  return root.querySelector('[role=progressbar][aria-valuenow="100"]') != null;
+};
+
+/** Waits for a batched search's progress bar to finish, since rows are only sorted after that */
+export const waitForSearchResults = (root: ParentNode) => {
+  return waitFor(() => {
+    if (!isSearchDone(root)) {
+      throw new Error("Search is still running");
+    }
+
+    return readTable(root);
+  });
+};
+
+export const getInputValue = (field: HTMLElement) => {
+  if (!(field instanceof HTMLInputElement)) {
+    throw new Error("Expected an <input>");
+  }
+
+  return field.value;
+};
+
+/** Reads a tool's results table, skipping markdown tables in the same step */
+export const readResultTable = (root: ParentNode): TableRow[] => {
+  const resultTables = [...root.querySelectorAll<HTMLElement>(".ant-table")];
+
+  return readTable(getOnly(resultTables, "result table"));
+};
+
+const readOpenSelectOptionLabels = () => {
+  const openDropdowns = [
+    ...document.querySelectorAll(
+      ".ant-select-dropdown:not(.ant-select-dropdown-hidden)",
+    ),
+  ];
+  const dropdown = getOnly(openDropdowns, "open select");
+  const labels = [...dropdown.querySelectorAll(".ant-select-item-option")].map(
+    getText,
+  );
+  if (labels.length === 0) {
+    throw new Error("Select has no options yet");
+  }
+
+  return labels;
+};
+
+/** Opens an antd select and reads every option it offers */
+export const readSelectOptionLabels = (select: HTMLElement) => {
+  select.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+
+  return waitFor(readOpenSelectOptionLabels);
+};
+
 /** Throws until results appear, so it can be passed to waitFor */
 export const getFirstTableRow = (root: ParentNode): TableRow => {
   const [row] = readTable(root);
@@ -349,21 +407,4 @@ export const readTimer = (root: ParentNode): TimerPhase[] => {
   const rows = root.querySelectorAll("[data-timer-phase]");
 
   return [...rows].map(readTimerPhase);
-};
-
-/** Replaces the clipboard and returns every text written to it, oldest first */
-export const stubClipboard = () => {
-  const copiedTexts: string[] = [];
-  const clipboard: Pick<Clipboard, "writeText"> = {
-    writeText: async (text) => {
-      copiedTexts.push(text);
-    },
-  };
-
-  Object.defineProperty(navigator, "clipboard", {
-    configurable: true,
-    value: clipboard,
-  });
-
-  return copiedTexts;
 };

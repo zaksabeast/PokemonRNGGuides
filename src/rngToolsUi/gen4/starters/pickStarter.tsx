@@ -27,13 +27,9 @@ import {
 import { toOptions } from "~/utils/options";
 import { useCurrentStep } from "~/components/stepper/state";
 import { match } from "ts-pattern";
-import {
-  dpptStarters,
-  hgssStarters,
-  useStarterState,
-  allStarters,
-} from "./state";
-import { gen4StateAtom } from "../shared/state";
+import { dpptStarters, hgssStarters, allStarters } from "./state";
+import { gen4SetupAtom } from "../shared/state/setup";
+import { selectGen4TargetAtom } from "../shared/state/target";
 import { Gen4GameVersion } from "~/types/games";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
 import { chunkIvs } from "~/utils/chunkIvs";
@@ -42,7 +38,7 @@ import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { Translations } from "~/translations";
 import { MONTHS, MonthSchema, monthToRustFilter } from "~/utils/time";
 import { useWatch } from "~/hooks/form";
-import { useAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 
 type Result = FlattenIvs<
   Static4State["state"] & {
@@ -61,16 +57,16 @@ type SelectButtonProps = {
 
 const SelectButton = ({ target }: SelectButtonProps) => {
   const [, setCurrentStep] = useCurrentStep();
-  const [, setStarter] = useStarterState();
-  const [, setState] = useAtom(gen4StateAtom);
+  const selectTarget = useSetAtom(selectGen4TargetAtom);
 
   return (
     <Button
       trackerId="select_gen4_starter"
       onClick={() => {
-        setStarter({ species: target.species });
-        setState({
-          target: { seedTime: target.seed_time, lcrngAdvance: target.advance },
+        selectTarget({
+          seedTime: target.seed_time,
+          lcrngAdvance: target.advance,
+          details: { tool: "starter", species: target.species },
         });
         setCurrentStep((prev) => prev + 1);
       }}
@@ -282,7 +278,7 @@ const mapResult = (
 
 export const PickStarter4 = () => {
   const t = useActiveRouteTranslations();
-  const [state] = useAtom(gen4StateAtom);
+  const { game } = useAtomValue(gen4SetupAtom);
   const {
     run: searchStarterSeeds,
     data: results,
@@ -291,8 +287,6 @@ export const PickStarter4 = () => {
   } = useBatchedTool(multiWorkerRngTools.search_static4, {
     map: mapResult,
   });
-
-  const game = state.config.game;
 
   const onSubmit = async (opts: FormState) => {
     const advance = getStarterAdvance({
@@ -312,6 +306,7 @@ export const PickStarter4 = () => {
       lead: "None",
       offset: 0,
       method: "One",
+      roamers: null,
     };
     const chunkedIvs = chunkIvs(opts.filter_min_ivs, opts.filter_max_ivs);
     const searchOpts = chunkedIvs.map(([minIvs, maxIvs]) => ({

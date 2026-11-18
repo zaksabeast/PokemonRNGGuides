@@ -1,6 +1,7 @@
 use crate::PkmFilter;
 use crate::Species;
 use crate::gen4::Static4Method;
+use crate::gen4::seed_time::roamers::HgssRoamers;
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
@@ -34,4 +35,5 @@ pub struct SearchStatic4Opts {
     pub force_second: Option<u32>,
     pub lead: Static4LeadInput,
     pub method: Static4Method,
+    pub roamers: Option<HgssRoamers>,
 }

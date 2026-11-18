@@ -1,4 +1,4 @@
-import { useStatic4State } from "./state";
+import { useStatic4Target } from "./state";
 import { normalizeTargetLead } from "./utils";
 
 type Static4ShowIfLeadSyncProps = {
@@ -10,8 +10,10 @@ export const Static4ShowIfLead = ({
   lead,
   children,
 }: Static4ShowIfLeadSyncProps) => {
-  const [state] = useStatic4State();
-  const normalizedLead = normalizeTargetLead(state.target?.lead ?? "None");
+  const static4Target = useStatic4Target();
+  const normalizedLead = normalizeTargetLead(
+    static4Target?.details.lead ?? "None",
+  );
 
   if (lead === normalizedLead) {
     return <>{children}</>;

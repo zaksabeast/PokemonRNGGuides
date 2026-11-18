@@ -515,16 +515,17 @@ const applyUpdatedTimestamps = (
   guides: GuideWithFile[],
   previousHashes: GuideHashMap,
   currentHashes: Record<string, string>,
+  skipDateBump: boolean,
 ): GuideWithFile[] => {
   const today = dayjs.utc().format("YYYY-MM-DD");
 
   return guides.map((guide) => {
     const previousEntry = previousHashes[guide.slug];
-    const currentHash = currentHashes[guide.slug];
-    const previousHash = previousEntry?.hash;
+    const isNewGuide = previousEntry == null;
+    const hasChanged = previousEntry?.hash !== currentHashes[guide.slug];
 
-    // If file has changed, update lastUpdated to today
-    if (previousHash !== currentHash || previousHash == null) {
+    // New guides always get today, changed guides only when not skipping the date bump
+    if (isNewGuide || (hasChanged && !skipDateBump)) {
       const validated = DateSchema.parse(today);
       return {
         ...guide,
@@ -532,8 +533,8 @@ const applyUpdatedTimestamps = (
       };
     }
 
-    // If file hasn't changed, restore the previous lastUpdated date
-    if (previousEntry?.lastUpdated != null && previousHash === currentHash) {
+    // Otherwise restore the previous lastUpdated date
+    if (previousEntry.lastUpdated != null) {
       const validated = DateSchema.parse(previousEntry.lastUpdated);
       return {
         ...guide,
@@ -1184,9 +1185,11 @@ const writeCompiledGuides = async (compiledGuides: string) => {
 const main = async ({
   check,
   noDetectedTags,
+  skipDateBump,
 }: {
   check: boolean;
   noDetectedTags: boolean;
+  skipDateBump: boolean;
 }) => {
   const guideFiles = await getGuideFiles();
   const { guides, guideComponents } = await parseGuideFiles(guideFiles);
@@ -1201,6 +1204,7 @@ const main = async ({
     guides,
     previousHashes,
     currentHashes,
+    skipDateBump,
   );
 
   validateCanonicalUnchanged(guidesWithTimestamps);
@@ -1246,4 +1250,5 @@ const main = async ({
 main({
   check: process.argv.includes("--check"),
   noDetectedTags: process.argv.includes("--no-detected-tags"),
+  skipDateBump: process.argv.includes("--skip-date-bump"),
 });

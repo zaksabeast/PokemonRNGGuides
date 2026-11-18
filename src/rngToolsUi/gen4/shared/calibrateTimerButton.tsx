@@ -1,6 +1,6 @@
 import { message } from "antd";
-import { useAtom } from "jotai";
-import { gen4StateAtom } from "./state";
+import { useSetAtom } from "jotai";
+import { calibrateGen4TimerAtom } from "./state/timer";
 import { useCurrentStep } from "~/components/stepper/state";
 import { Button } from "~/components";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
@@ -17,12 +17,12 @@ export const CalibrateTimerButton = ({
   lastStepOnClick = 1,
 }: CalibrateTimerButtonProps) => {
   const t = useActiveRouteTranslations();
-  const [, updateState] = useAtom(gen4StateAtom);
+  const calibrateTimer = useSetAtom(calibrateGen4TimerAtom);
   const [, setCurrentStep] = useCurrentStep();
   const [messageApi, contextHolder] = message.useMessage();
 
   const onClick = async () => {
-    updateState({ timer: { hitDelay } });
+    calibrateTimer(hitDelay);
     setCurrentStep((step) => step - lastStepOnClick);
     messageApi.success("Calibrated timer");
   };

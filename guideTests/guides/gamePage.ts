@@ -2,6 +2,7 @@ import { expect } from "vitest";
 import type { Route } from "~/routes/defs";
 import { renderGuide } from "../utils/render";
 import {
+  closestAncestor,
   getInnermostElementWithText,
   getOnly,
   getRadioOptionLabel,
@@ -19,12 +20,12 @@ const SETUP_LABEL = "Your setup";
 const POKEMON_RNG_HEADING = "Pokemon RNG";
 const RADIO_SELECTOR = "input[type=radio]";
 
-const getRadioGroupAround = (element: Element) => {
-  let group = element.parentElement;
-  while (group != null && group.querySelector(RADIO_SELECTOR) == null) {
-    group = group.parentElement;
-  }
+const hasRadios = (element: Element) => {
+  return element.querySelector(RADIO_SELECTOR) != null;
+};
 
+const getRadioGroupAround = (element: Element) => {
+  const group = closestAncestor(element, hasRadios);
   if (group == null) {
     throw new Error("No radios around the setup label");
   }

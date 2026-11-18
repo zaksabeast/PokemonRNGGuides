@@ -81,6 +81,13 @@ impl RngDateTime {
         )
     }
 
+    pub fn add_seconds(&self, seconds: i64) -> Option<Self> {
+        let datetime = self
+            .to_naive_datetime()?
+            .checked_add_signed(Duration::seconds(seconds))?;
+        Some(Self::from(datetime))
+    }
+
     pub fn as_seconds_iterator(&mut self) -> SecondsIterator<'_> {
         SecondsIterator::new(self)
     }

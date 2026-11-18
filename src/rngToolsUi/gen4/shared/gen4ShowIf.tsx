@@ -1,9 +1,10 @@
-import { match } from "ts-pattern";
-import { gen4StateAtom } from "./state";
-import { useAtom } from "jotai";
+import { match, P } from "ts-pattern";
+import { useAtomValue } from "jotai";
+import { gen4SetupAtom, getGen4AdvanceMethod } from "./state/setup";
 
 export type Gen4ShowIfProps = {
-  game?: string;
+  game?: string; // A game or game group, not a strict type in case mdx has bad value
+  advanceMethod?: string;
   isNdsDsi?: boolean;
   is3dsAltSettings?: boolean;
   is3dsNormalSettings?: boolean;
@@ -11,16 +12,21 @@ export type Gen4ShowIfProps = {
 };
 
 export const Gen4ShowIf = ({ children, ...settings }: Gen4ShowIfProps) => {
-  const [state] = useAtom(gen4StateAtom);
+  const setup = useAtomValue(gen4SetupAtom);
+  const advanceMethod = getGen4AdvanceMethod(setup);
   const show = match(settings)
-    .with({ game: state.config.game }, () => true)
-    .with({ isNdsDsi: state.config.console === "NdsDsi" }, () => true)
     .with(
-      { is3dsAltSettings: state.config.console === "3dsAltSettings" },
+      {
+        game: P.union(setup.game, setup.group),
+        advanceMethod: P.optional(advanceMethod),
+      },
       () => true,
     )
+    .with({ game: P.optional(P.nullish), advanceMethod }, () => true)
+    .with({ isNdsDsi: setup.console === "NdsDsi" }, () => true)
+    .with({ is3dsAltSettings: setup.console === "3dsAltSettings" }, () => true)
     .with(
-      { is3dsNormalSettings: state.config.console === "3dsNormalSettings" },
+      { is3dsNormalSettings: setup.console === "3dsNormalSettings" },
       () => true,
     )
     .otherwise(() => false);

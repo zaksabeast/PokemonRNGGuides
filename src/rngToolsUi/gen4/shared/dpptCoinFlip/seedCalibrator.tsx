@@ -1,123 +1,45 @@
 import React from "react";
-import { gen4StateAtom } from "../state";
-import { useAtom } from "jotai";
-import { rngTools, DpptSeedTime4 } from "~/rngTools";
-import { type ResultColumn, Icon } from "~/components";
-import {
-  FieldRow,
-  FormNumberField,
-  FormSection,
-  ToolForm,
-  type ToolFormSubmit,
-} from "~/components/form";
-import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
-import { uniqueId, sortBy } from "lodash-es";
-import { CalibrateTimerButton } from "../calibrateTimerButton";
-import { z } from "zod";
+import { gen4TargetAtom } from "../state/target";
+import { gen4MarkersAtom, setGen4MarkersAtom } from "../state/markers";
+import { useAtomValue, useSetAtom } from "jotai";
+import { rngTools } from "~/rngTools";
+import { ToolForm, type ToolFormSubmit } from "~/components/form";
 import { matchesCoinFlipFilter, shrinkCoinFlips, SmallCoinFlip } from "./utils";
 import { CoinFlipFilterButtons } from "./coinFlipButtons";
+import {
+  type CalibrationRow,
+  type SeedCalibratorFormState,
+  getCalibrationColumns,
+  seedCalibratorInitialValues,
+  seedCalibratorValidator,
+  toCalibrationRows,
+} from "../seedTimeCalibration/utils";
+import { SeedCalibratorFields } from "../seedTimeCalibration/fields";
 
 const COIN_FLIPS = 20;
 
-type ResultRow = Omit<DpptSeedTime4, "coin_flips"> & {
-  id: string;
-  isTarget: boolean;
-  flipDelay: boolean;
-  delayOffset: number;
-  secondOffset: number;
-  second: number;
+type ResultRow = CalibrationRow & {
   coinFlips: SmallCoinFlip[];
 };
 
-type FormState = {
-  delayOffset: number;
-  secondOffset: number;
-};
-
-const Validator = z.object({
-  delayOffset: z.number().int().min(0),
-  secondOffset: z.number().int().min(0),
-});
-
-const initialValues: FormState = {
-  delayOffset: 1000,
-  secondOffset: 5,
-};
-
-const columns: ResultColumn<ResultRow>[] = [
-  {
-    title: "Calibrate",
-    dataIndex: "id",
-    disableVerticalPadding: true,
-    render: (_, target) => (
-      <CalibrateTimerButton
-        hitDelay={target.delay}
-        trackerId="calibrate_gen4_seed"
-        lastStepOnClick={0}
-      />
-    ),
-  },
-  {
-    title: "Is Target",
-    dataIndex: "isTarget",
-    key: "isTarget",
-    render: (isTarget: boolean) =>
-      isTarget ? <Icon name="CheckCircle" color="Success" size={30} /> : null,
-  },
-  {
-    title: "Flip Delay",
-    dataIndex: "flipDelay",
-    render: (flipDelay) =>
-      flipDelay ? <Icon name="CheckCircle" color="Warning" size={30} /> : null,
-  },
-  {
-    title: "Delay Offset",
-    dataIndex: "delayOffset",
-    key: "delayOffset",
-  },
-  {
-    title: "Second Offset",
-    dataIndex: "secondOffset",
-    key: "secondOffset",
-  },
-  {
-    title: "Seed",
-    dataIndex: "seed",
-    key: "seed",
-    render: (seed) => seed.toString(16).toUpperCase().padStart(8, "0"),
-  },
-  {
-    title: "Delay",
-    dataIndex: "delay",
-    key: "delay",
-  },
-  {
-    title: "Second",
-    dataIndex: "second",
-    key: "second",
-  },
-  {
-    title: "Coin Flips",
-    dataIndex: "coinFlips",
-    key: "coin_flips",
-    render: (coinFlips: SmallCoinFlip[]) => coinFlips.join(", "),
-  },
-];
-
 export const DpptCoinFlipSeedCalibrator = () => {
-  const t = useActiveRouteTranslations();
-  const [state, setState] = useAtom(gen4StateAtom);
+  const target = useAtomValue(gen4TargetAtom);
+  const markers = useAtomValue(gen4MarkersAtom);
+  const setMarkers = useSetAtom(setGen4MarkersAtom);
   const [allResults, setAllResults] = React.useState<ResultRow[]>([]);
 
   const filteredResults = allResults.filter((result) =>
-    matchesCoinFlipFilter(result.coinFlips, state.gameState.coinFlips),
+    matchesCoinFlipFilter(result.coinFlips, markers.coinFlips),
   );
 
-  const onSubmit: ToolFormSubmit<FormState> = async (formState) => {
-    const seedTime = state.target.seedTime;
-    if (seedTime == null) {
+  const onSubmit: ToolFormSubmit<SeedCalibratorFormState> = async (
+    formState,
+  ) => {
+    if (target == null) {
       return;
     }
+
+    const { seedTime } = target;
 
     const searchResults = await rngTools.get_relative_dppt_seedtimes({
       seedtime: seedTime,
@@ -126,44 +48,35 @@ export const DpptCoinFlipSeedCalibrator = () => {
       coin_flip_count: COIN_FLIPS,
     });
 
-    const { datetime: targetDateTime, delay: targetDelay } = seedTime;
-
-    const mappedResults = searchResults.map((result) => {
-      const secondOffset = result.datetime.second - targetDateTime.second;
-      return {
-        ...result,
-        id: uniqueId(),
-        isTarget: result.seed === seedTime.seed,
-        delayOffset: result.delay - targetDelay,
-        secondOffset,
-        second: result.datetime.second,
+    setAllResults(
+      toCalibrationRows(searchResults, seedTime, (result) => ({
         coinFlips: shrinkCoinFlips(result.coin_flips),
-        flipDelay: targetDelay % 2 !== result.delay % 2,
-      };
-    });
-    const sortedResults = sortBy(mappedResults, [
-      (res) => Math.abs(res.delayOffset),
-      (res) => Math.abs(res.secondOffset),
-    ]);
-
-    setAllResults(sortedResults);
-    setState({ gameState: { coinFlips: "" } });
+      })),
+    );
+    setMarkers({ coinFlips: "" });
   };
 
   return (
-    <ToolForm<FormState, ResultRow>
-      columns={columns}
+    <ToolForm<SeedCalibratorFormState, ResultRow>
+      getColumns={(t) => [
+        ...getCalibrationColumns(t),
+        {
+          title: t["Coin Flips"],
+          dataIndex: "coinFlips",
+          render: (coinFlips: SmallCoinFlip[]) => coinFlips.join(", "),
+        },
+      ]}
       results={filteredResults}
-      initialValues={initialValues}
-      validationSchema={Validator}
-      disableGenerate={state.target == null}
+      initialValues={seedCalibratorInitialValues}
+      validationSchema={seedCalibratorValidator}
+      disableGenerate={target == null}
       filters={
         <CoinFlipFilterButtons
           maxCoinFlips={COIN_FLIPS}
           hasResults={allResults.length > 0}
-          coinFlipFilter={state.gameState.coinFlips}
+          coinFlipFilter={markers.coinFlips}
           onCoinFlipFilterChange={(coinFlips) => {
-            setState({ gameState: { coinFlips } });
+            setMarkers({ coinFlips });
           }}
           headsTrackerId="seed_calibrator_add_heads"
           tailsTrackerId="seed_calibrator_add_tails"
@@ -173,20 +86,7 @@ export const DpptCoinFlipSeedCalibrator = () => {
       rowKey="id"
       submitTrackerId="gen4_generate_calibration_seeds"
     >
-      <FormSection>
-        <FieldRow>
-          <FormNumberField<FormState>
-            name="delayOffset"
-            label={t["Delay Offset"]}
-            numType="decimal"
-          />
-          <FormNumberField<FormState>
-            name="secondOffset"
-            label={t["Second Offset"]}
-            numType="decimal"
-          />
-        </FieldRow>
-      </FormSection>
+      <SeedCalibratorFields />
     </ToolForm>
   );
 };

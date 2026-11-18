@@ -5,7 +5,7 @@ import { match } from "ts-pattern";
 import { z } from "zod";
 import { type IndexRange } from "~/utils/findIndexBy";
 
-type FilterMark = "Heard" | "Seen";
+export type FilterMark = "Heard" | "Seen";
 export type AdvanceFilterStatus = "Target" | FilterMark | null;
 
 export type AdvanceFilterPageSettings = {
@@ -17,12 +17,14 @@ export type AdvanceFilterBaseProps =
   | {
       seed: number | null;
       targetAdvance: number | null;
+      minAdvance?: number;
       submitTrackerId: string;
       mode: "embedded";
     }
   | {
-      seed?: null;
-      targetAdvance?: null;
+      seed?: number | null;
+      targetAdvance?: number | null;
+      minAdvance?: number;
       submitTrackerId: string;
       mode: "standalone";
     };
@@ -115,9 +117,10 @@ export const decorateAdvanceResultsWithTarget = <T extends { advance: number }>(
 export const getAdvanceFilterInitialValues = (
   seed: number | null,
   targetAdvance: number | null,
+  minAdvance: number,
 ): LooseAdvanceFilterFormState => ({
   seed,
-  minAdvance: 0,
+  minAdvance,
   maxAdvance: (targetAdvance ?? 0) + 10,
   targetAdvance: targetAdvance ?? 0,
 });
@@ -146,7 +149,7 @@ export const getErrorMessage = ({
   }
 
   if (!hasResults) {
-    return 'Click "Generate" to generate coin flips';
+    return `Click "Generate" to generate ${unitName}`;
   }
 
   if (filter.length > maxResults) {

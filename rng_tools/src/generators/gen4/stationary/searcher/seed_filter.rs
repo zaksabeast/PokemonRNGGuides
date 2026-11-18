@@ -1,5 +1,6 @@
 use super::opts::SearchStatic4Opts;
 use crate::gen4::seed_time::SeedTime4Searcher;
+use crate::gen4::seed_time::roamers::{HgssRoamers, hgss_roamer_result};
 use crate::gen4::stationary::searcher::base_state::{BaseStatic4State, Static4State};
 use crate::rng::Rng;
 use crate::rng::lcrng::Pokerng;
@@ -13,6 +14,7 @@ pub struct SeedFilters {
     pub min_delay: u32,
     pub max_delay: u32,
     pub force_second: Option<u32>,
+    pub roamers: Option<HgssRoamers>,
 }
 
 impl SeedFilters {
@@ -37,7 +39,8 @@ impl SeedFilters {
 
             for advance in min_advance..=max_advance {
                 if let Some(seed_time) = seed_time_lookup.find(seed) {
-                    let found_state = state.add_seedtime(advance, seed_time);
+                    let roamer_advances = self.roamer_advances(seed_time.seed);
+                    let found_state = state.add_seedtime(advance, seed_time, roamer_advances);
                     results.push(found_state);
                 }
 
@@ -46,6 +49,11 @@ impl SeedFilters {
         }
 
         results
+    }
+
+    fn roamer_advances(&self, seed: u32) -> usize {
+        self.roamers
+            .map_or(0, |roamers| hgss_roamer_result(seed, &roamers).advances)
     }
 }
 
@@ -60,6 +68,7 @@ impl From<&SearchStatic4Opts> for SeedFilters {
             min_delay: opts.min_delay,
             max_delay: opts.max_delay,
             force_second: opts.force_second,
+            roamers: opts.roamers,
         }
     }
 }

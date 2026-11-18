@@ -11,12 +11,13 @@ import { CalibrateTimerButton } from "../shared/calibrateTimerButton";
 import { rngTools, Id4 } from "~/rngTools";
 import { denormalizeIdFilterOrDefault } from "~/types/id";
 import { z } from "zod";
-import { useAtom } from "jotai";
-import { gen4StateAtom } from "../shared/state";
+import { useAtomValue } from "jotai";
+import { gen4SetupAtom } from "../shared/state/setup";
+import { gen4TargetAtom } from "../shared/state/target";
 import { sortBy } from "lodash-es";
 import { formatOffset } from "~/utils/offsetSymbol";
 import { Translations } from "~/translations";
-import { getSecondOffset } from "./utils";
+import { getSecondOffset } from "~/utils/time";
 
 type Result = Id4 & {
   flipDelay: boolean;
@@ -85,21 +86,22 @@ const initialValues: FormState = {
 
 export const CalibrateId4 = () => {
   const t = useActiveRouteTranslations();
-  const [{ config, target }] = useAtom(gen4StateAtom);
+  const target = useAtomValue(gen4TargetAtom);
+  const { game } = useAtomValue(gen4SetupAtom);
   const [results, setResults] = React.useState<Result[]>([]);
 
   const onSubmit: ToolFormSubmit<FormState> = async (opts) => {
-    if (target.seedTime == null) {
+    if (target == null) {
       return;
     }
 
     const { datetime: targetDateTime, delay: targetDelay } = target.seedTime;
 
-    const minDelay = targetDelay - 1000;
+    const minDelay = Math.max(targetDelay - 1000, 0);
     const maxDelay = targetDelay + 1000;
-
-    const results = await rngTools.generate_dppt_ids({
-      datetime: targetDateTime,
+    const results = await rngTools.generate_gen4_ids({
+      game_datetime: targetDateTime,
+      game,
       min_delay: minDelay,
       max_delay: maxDelay,
       filter: denormalizeIdFilterOrDefault({
@@ -109,27 +111,22 @@ export const CalibrateId4 = () => {
       }),
     });
 
-    const sortedResults = sortBy(results, (result) =>
-      Math.abs(result.seed_time.delay - targetDelay),
+    const formattedResults = results.map((result) => ({
+      ...result,
+      seed: result.seed_time.seed,
+      flipDelay: targetDelay % 2 !== result.seed_time.delay % 2,
+      delayOffset: result.seed_time.delay - targetDelay,
+      delay: result.seed_time.delay,
+      seconds: result.game_datetime.second,
+      secondOffset: getSecondOffset(result.game_datetime, targetDateTime),
+    }));
+
+    setResults(
+      sortBy(formattedResults, [
+        (result) => Math.abs(result.delayOffset),
+        (result) => Math.abs(result.secondOffset),
+      ]),
     );
-
-    const formattedResults = sortedResults.map((result) => {
-      const secondOffset =
-        result.seed_time.datetime.second -
-        getSecondOffset(config.game) -
-        targetDateTime.second;
-      return {
-        ...result,
-        seed: result.seed_time.seed,
-        flipDelay: targetDelay % 2 !== result.seed_time.delay % 2,
-        delayOffset: result.seed_time.delay - targetDelay,
-        delay: result.seed_time.delay,
-        seconds: result.seed_time.datetime.second,
-        secondOffset,
-      };
-    });
-
-    setResults(formattedResults);
   };
 
   return (

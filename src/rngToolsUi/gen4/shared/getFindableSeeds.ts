@@ -1,5 +1,11 @@
 import { uniqueId, keyBy } from "lodash-es";
-import { rngTools, RngDate, SeedTime4, ElmCall } from "~/rngTools";
+import {
+  rngTools,
+  RngDate,
+  SeedTime4,
+  ElmCall,
+  type HgssRoamers,
+} from "~/rngTools";
 import { addRngTime, RngTime } from "~/utils/time";
 import { shrinkCoinFlips, SmallCoinFlip } from "./dpptCoinFlip/utils";
 
@@ -41,8 +47,11 @@ const getFindableSeeds = async ({
 export type GetSeedTime4WithMarkersOpts = {
   filterItemCount: number;
   includeCoinFlips: boolean;
-  includeElmCalls: boolean;
-} & SeedFinderOpts;
+} & (
+  | { includeElmCalls: false }
+  | { includeElmCalls: true; roamers: HgssRoamers }
+) &
+  SeedFinderOpts;
 
 export type SeedTime4WithMarkers = {
   id: string;
@@ -57,10 +66,17 @@ export const getSeedTime4WithMarkers = async (
 ): Promise<SeedTime4WithMarkers[]> => {
   const { seedTimesBySeed, seedList } = await getFindableSeeds(opts);
   const coinFlips = opts.includeCoinFlips
-    ? await rngTools.coin_flips_for_seeds(seedList, opts.filterItemCount)
+    ? await rngTools.coin_flips_for_seeds({
+        seeds: [...seedList],
+        count: opts.filterItemCount,
+      })
     : [];
   const elmCalls = opts.includeElmCalls
-    ? await rngTools.elm_calls_for_seeds(seedList, opts.filterItemCount)
+    ? await rngTools.elm_calls_for_seeds({
+        seeds: [...seedList],
+        count: opts.filterItemCount,
+        roamers: opts.roamers,
+      })
     : [];
 
   const coinFlipsBySeed = keyBy(coinFlips, ({ seed }) => seed);

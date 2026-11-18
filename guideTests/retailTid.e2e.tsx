@@ -1,9 +1,5 @@
-import { beforeAll, beforeEach, describe, expect, it } from "vitest";
-import {
-  openRetailTidGuide,
-  type IdResult,
-  type RetailTidGuide,
-} from "./guides/retailTid";
+import { describe, expect, it } from "vitest";
+import { openRetailTidGuide } from "./guides/retailTid";
 
 const NDS_INSTRUCTIONS =
   "Exit the settings on your console and restart your console.";
@@ -44,88 +40,122 @@ describe("Retail TID/SID guide", () => {
     expect(guide.calibrateTargetText()).toBe("Target TID: ??? / SID: ???");
   });
 
-  describe("after selecting a target", () => {
-    let guide: RetailTidGuide;
-    let target: IdResult;
+  it("sets the date, time, and timer for the selected target", async () => {
+    const guide = await openRetailTidGuide();
 
-    beforeAll(async () => {
-      guide = await openRetailTidGuide();
-      target = await guide.selectFirstSearchResult();
-    });
+    const target = await guide.selectFirstSearchResult();
 
-    it("selects the expected TID", () => {
-      expect(target).toMatchInlineSnapshot(`
-        {
-          "delay": "5000",
-          "genderRatios": "All",
-          "natures": "Mild, Quiet, Bashful, Rash, Calm, Gentle, Sassy, Careful",
-          "seconds": "58",
-          "sid": "23615",
-          "targetGender": "Female",
-          "tid": "23595",
-          "tsv": "2",
-        }
-      `);
-    });
-
-    it("sets the console date and time", () => {
-      expect(guide.consoleDateTime()).toMatchInlineSnapshot(`
-        {
-          "date": "Jan 1, 2000",
-          "time": "20:07",
-        }
-      `);
-    });
-
-    it("sets the timer", () => {
-      expect(guide.timer()).toMatchInlineSnapshot(`
-        [
-          {
-            "duration": "30.646",
-            "label": "Seconds",
-          },
-          {
-            "duration": "87.554",
-            "label": "Delay",
-          },
-        ]
-      `);
-    });
-
-    it("shows the target ID in Calibrate", () => {
-      expect(guide.calibrateTargetText()).toBe(
-        "Target TID: 23595 / SID: 23615",
-      );
+    expect({
+      target,
+      consoleDateTime: guide.consoleDateTime(),
+      timer: guide.timer(),
+      calibrateTargetText: guide.calibrateTargetText(),
+    }).toEqual({
+      target: {
+        delay: "5000",
+        genderRatios: "All",
+        natures: "Mild, Quiet, Bashful, Rash, Calm, Gentle, Sassy, Careful",
+        seconds: "58",
+        sid: "23615",
+        targetGender: "Female",
+        tid: "23595",
+        tsv: "2",
+      },
+      consoleDateTime: { date: "Jan 1, 2000", time: "20:07" },
+      timer: [
+        { duration: "30.646", label: "Seconds" },
+        { duration: "87.554", label: "Delay" },
+      ],
+      calibrateTargetText: "Target TID: 23595 / SID: 23615",
     });
   });
 
-  describe("calibrating", () => {
-    let guide: RetailTidGuide;
+  it("shortens the delay timer after a late delay", async () => {
+    const guide = await openRetailTidGuide();
+    await guide.selectFirstSearchResult();
+    const before = guide.timer();
 
-    // Calibrating changes the timer, so each test gets its own guide
-    beforeEach(async () => {
-      guide = await openRetailTidGuide();
-      await guide.selectFirstSearchResult();
+    const result = await guide.calibrateWith(LATE_DELAY_TID);
+
+    expect(result).toEqual({ delayOffset: "+10", secondOffset: "0" });
+    expect(await guide.timerAfterChange(before)).toEqual([
+      { duration: "30.763", label: "Seconds" },
+      { duration: "87.437", label: "Delay" },
+    ]);
+  });
+
+  it("resets an edited target second after selecting a target again", async () => {
+    const guide = await openRetailTidGuide();
+    await guide.selectFirstSearchResult();
+    const editedTimer = await guide.setTargetSeconds("50");
+
+    await guide.selectFirstSearchResult();
+
+    expect({
+      editedTimer,
+      timer: await guide.timerAfterChange(editedTimer),
+    }).toEqual({
+      editedTimer: [
+        { duration: "22.646", label: "Seconds" },
+        { duration: "87.554", label: "Delay" },
+      ],
+      timer: [
+        { duration: "30.646", label: "Seconds" },
+        { duration: "87.554", label: "Delay" },
+      ],
     });
+  });
+});
 
-    it("shortens the delay timer after a late delay", async () => {
-      const before = guide.timer();
+describe("HGSS retail TID/SID guide", () => {
+  const openHgssGuide = async () => {
+    const guide = await openRetailTidGuide("/hgss-tid-sid/");
+    await guide.setGame("HeartGold");
 
-      const result = await guide.calibrateWith(LATE_DELAY_TID);
+    return guide;
+  };
 
-      expect(result).toEqual({ delayOffset: "+10", secondOffset: "0" });
-      expect(await guide.timerAfterChange(before)).toMatchInlineSnapshot(`
-        [
-          {
-            "duration": "30.763",
-            "label": "Seconds",
-          },
-          {
-            "duration": "87.437",
-            "label": "Delay",
-          },
-        ]
-      `);
+  it("targets the DPPt ID 3 seconds earlier, with the same console date and time", async () => {
+    const guide = await openHgssGuide();
+
+    const target = await guide.selectFirstSearchResult();
+
+    expect({
+      target,
+      consoleDateTime: guide.consoleDateTime(),
+      timer: guide.timer(),
+      calibrateTargetText: guide.calibrateTargetText(),
+    }).toEqual({
+      target: {
+        delay: "5000",
+        genderRatios: "All",
+        natures: "Mild, Quiet, Bashful, Rash, Calm, Gentle, Sassy, Careful",
+        seconds: "55",
+        sid: "23615",
+        targetGender: "Female",
+        tid: "23595",
+        tsv: "2",
+      },
+      consoleDateTime: { date: "Jan 1, 2000", time: "20:07" },
+      timer: [
+        { duration: "27.646", label: "Seconds" },
+        { duration: "87.554", label: "Delay" },
+      ],
+      calibrateTargetText: "Target TID: 23595 / SID: 23615",
     });
+  });
+
+  it("shortens the delay timer after a late delay", async () => {
+    const guide = await openHgssGuide();
+    await guide.selectFirstSearchResult();
+    const before = guide.timer();
+
+    const result = await guide.calibrateWith(LATE_DELAY_TID);
+
+    expect(result).toEqual({ delayOffset: "+10", secondOffset: "0" });
+    expect(await guide.timerAfterChange(before)).toEqual([
+      { duration: "27.763", label: "Seconds" },
+      { duration: "87.437", label: "Delay" },
+    ]);
   });
 });

@@ -21,7 +21,7 @@ pub(super) fn seedtime4_month_range(month: Option<u32>) -> RangeInclusive<u32> {
     }
 }
 
-pub(super) fn seedtime4_search_second_range(second: Option<u32>) -> RangeInclusive<u32> {
+pub(crate) fn seedtime4_search_second_range(second: Option<u32>) -> RangeInclusive<u32> {
     match second {
         Some(second) => second..=second,
         None => 1..=58,

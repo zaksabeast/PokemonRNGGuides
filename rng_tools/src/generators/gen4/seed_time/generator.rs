@@ -1,7 +1,8 @@
-use super::ab::{AbParts, build_seedtime4_ab_lookup};
+use super::ab::{AbParts, SeedTime4AbLookup, build_seedtime4_ab_lookup};
 use super::seed_time4::SeedTime4;
-use super::utils::{calc_delay_from_seed, seedtime4_search_second_range};
+use super::utils::calc_delay_from_seed;
 use crate::RngDateTime;
+use chrono::{Datelike, Duration};
 use itertools::iproduct;
 use serde::{Deserialize, Serialize};
 use std::ops::RangeInclusive;
@@ -70,6 +71,39 @@ pub fn generate_seedtime4s(opts: Seed4CalcOpts) -> Vec<SeedTime4> {
         .collect()
 }
 
+/// Gen 4 clocks only support dates from 2000 through 2099.
+pub const GEN4_YEARS: RangeInclusive<i32> = 2000..=2099;
+
+/// Generates the datetimes within `second_offset` seconds of a given datetime,
+/// skipping any that fall outside the years a gen 4 clock supports.
+pub fn relative_gen4_datetimes(
+    datetime: &RngDateTime,
+    second_offset: i32,
+) -> impl Iterator<Item = RngDateTime> {
+    let datetime = datetime.to_naive_datetime();
+    (-second_offset..=second_offset).filter_map(move |second| {
+        let datetime = datetime? + Duration::seconds(second as i64);
+        GEN4_YEARS
+            .contains(&datetime.year())
+            .then(|| RngDateTime::from(datetime))
+    })
+}
+
+pub fn relative_seedtime4s(
+    seedtime: &SeedTime4,
+    delay_offset: i32,
+    second_offset: i32,
+) -> Vec<SeedTime4> {
+    let datetimes = relative_gen4_datetimes(&seedtime.datetime, second_offset);
+
+    iproduct!(datetimes, -delay_offset..=delay_offset)
+        .filter_map(|(datetime, delay)| {
+            let delay = seedtime.delay.checked_add_signed(delay)?;
+            Some(seedtime4_from_datetime_delay(datetime, delay))
+        })
+        .collect()
+}
+
 /// Generates an iterator of SeedTime4 structs.
 /// Useful for efficiently searching for seeds without allocating a large vector.
 pub fn seedtime4_iter(
@@ -78,8 +112,17 @@ pub fn seedtime4_iter(
     month: Option<u32>,
     second_range: Option<RangeInclusive<u32>>,
 ) -> impl Iterator<Item = SeedTime4> {
+    let ab_lookup = build_seedtime4_ab_lookup(year, month, second_range);
+    seedtime4_iter_with_lookup(delay_range, year, ab_lookup)
+}
+
+/// Generates an iterator of SeedTime4 structs using a prebuilt ab lookup.
+pub fn seedtime4_iter_with_lookup(
+    delay_range: RangeInclusive<u32>,
+    year: u32,
+    ab_lookup: SeedTime4AbLookup,
+) -> impl Iterator<Item = SeedTime4> {
     let clamped_year = year.clamp(2000, 2100);
-    let ab_lookup = build_seedtime4_ab_lookup(clamped_year, month, second_range.clone());
     let cloned_delays = delay_range.clone();
     iproduct!(cloned_delays, 0..=0xff_u32, 0..24_u32).filter_map(move |(delay, ab, cd)| {
         let seed = ((ab << 24) | (cd << 16))
@@ -111,21 +154,6 @@ pub fn seedtime4_iter(
             },
         })
     })
-}
-
-/// Generates an iterator of SeedTime4 structs with a forced second value.
-pub fn seedtime4_iter_with_second(
-    delay_range: RangeInclusive<u32>,
-    year: u32,
-    month: Option<u32>,
-    second: Option<u32>,
-) -> impl Iterator<Item = SeedTime4> {
-    seedtime4_iter(
-        delay_range,
-        year,
-        month,
-        Some(seedtime4_search_second_range(second)),
-    )
 }
 
 #[cfg(test)]
@@ -229,6 +257,65 @@ mod tests {
         }
     }
 
+    mod relative_seedtime4s {
+        use super::*;
+        use crate::assert_list_eq;
+
+        #[test]
+        fn skips_negative_delays() {
+            let target = seedtime4_from_datetime_delay(datetime!(2026-05-14 12:34:30).unwrap(), 2);
+            let result = relative_seedtime4s(&target, 3, 0);
+            let datetime = datetime!(2026-05-14 12:34:30).unwrap();
+            let expected = [
+                SeedTime4::new(0x860c001a, datetime.clone(), 0),
+                SeedTime4::new(0x860c001b, datetime.clone(), 1),
+                SeedTime4::new(0x860c001c, datetime.clone(), 2),
+                SeedTime4::new(0x860c001d, datetime.clone(), 3),
+                SeedTime4::new(0x860c001e, datetime.clone(), 4),
+                SeedTime4::new(0x860c001f, datetime, 5),
+            ];
+
+            assert_list_eq!(result, expected);
+        }
+
+        #[test]
+        fn crosses_minute_boundary() {
+            let target = seedtime4_from_datetime_delay(datetime!(2026-05-14 12:34:59).unwrap(), 2);
+            let result = relative_seedtime4s(&target, 0, 1);
+            let expected = [
+                SeedTime4::new(0xa20c001c, datetime!(2026-05-14 12:34:58).unwrap(), 2),
+                SeedTime4::new(0xa30c001c, datetime!(2026-05-14 12:34:59).unwrap(), 2),
+                SeedTime4::new(0x690c001c, datetime!(2026-05-14 12:35:00).unwrap(), 2),
+            ];
+
+            assert_list_eq!(result, expected);
+        }
+
+        #[test]
+        fn skips_years_before_2000() {
+            let target = seedtime4_from_datetime_delay(datetime!(2000-01-01 00:00:00).unwrap(), 2);
+            let result = relative_seedtime4s(&target, 0, 1);
+            let expected = [
+                SeedTime4::new(0x01000002, datetime!(2000-01-01 00:00:00).unwrap(), 2),
+                SeedTime4::new(0x02000002, datetime!(2000-01-01 00:00:01).unwrap(), 2),
+            ];
+
+            assert_list_eq!(result, expected);
+        }
+
+        #[test]
+        fn skips_years_after_2099() {
+            let target = seedtime4_from_datetime_delay(datetime!(2099-12-31 23:59:59).unwrap(), 2);
+            let result = relative_seedtime4s(&target, 0, 1);
+            let expected = [
+                SeedTime4::new(0xe9170065, datetime!(2099-12-31 23:59:58).unwrap(), 2),
+                SeedTime4::new(0xea170065, datetime!(2099-12-31 23:59:59).unwrap(), 2),
+            ];
+
+            assert_list_eq!(result, expected);
+        }
+    }
+
     mod seedtime4_iter {
         use super::*;
 
@@ -286,6 +373,7 @@ mod tests {
     mod seedtime4_search_iter {
         use super::*;
         use crate::assert_list_eq;
+        use crate::gen4::seed_time::seedtime4_search_second_range;
 
         #[test]
         fn matches_new_without_forced_second() {
@@ -294,7 +382,8 @@ mod tests {
             let month = None;
             let second = None;
 
-            let results = seedtime4_iter_with_second(delay_range.clone(), year, month, second)
+            let second_range = Some(seedtime4_search_second_range(second));
+            let results = seedtime4_iter(delay_range.clone(), year, month, second_range)
                 .take(64)
                 .collect::<Vec<_>>();
 
@@ -319,7 +408,8 @@ mod tests {
             let month = Some(4);
             let second = Some(56);
 
-            let results = seedtime4_iter_with_second(delay_range.clone(), year, month, second)
+            let second_range = Some(seedtime4_search_second_range(second));
+            let results = seedtime4_iter(delay_range.clone(), year, month, second_range)
                 .take(64)
                 .collect::<Vec<_>>();
             let expected = [

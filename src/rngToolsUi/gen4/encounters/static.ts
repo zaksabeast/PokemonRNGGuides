@@ -91,15 +91,6 @@ const CommonDpptEncounters = {
     isFixedGender: true,
     method: "DpptJ",
   },
-
-  // Events
-  "manaphy-1": {
-    species: "Manaphy",
-    minLevel: 1,
-    maxLevel: 1,
-    isFixedGender: true,
-    method: "One",
-  },
 } as const satisfies Record<string, Encounter>;
 
 const DiamondEncounters = {
@@ -371,6 +362,50 @@ const CommonHgSsEncounters = {
   // Fossils
   ...FossilEncounters,
 
+  //Starter Gifts
+  "bulbasaur-5": {
+    species: "Bulbasaur",
+    minLevel: 5,
+    maxLevel: 5,
+    isFixedGender: false,
+    method: "One",
+  },
+  "charmander-5": {
+    species: "Charmander",
+    minLevel: 5,
+    maxLevel: 5,
+    isFixedGender: false,
+    method: "One",
+  },
+  "squirtle-5": {
+    species: "Squirtle",
+    minLevel: 5,
+    maxLevel: 5,
+    isFixedGender: false,
+    method: "One",
+  },
+  "treecko-5": {
+    species: "Treecko",
+    minLevel: 5,
+    maxLevel: 5,
+    isFixedGender: false,
+    method: "One",
+  },
+  "torchic-5": {
+    species: "Torchic",
+    minLevel: 5,
+    maxLevel: 5,
+    isFixedGender: false,
+    method: "One",
+  },
+  "mudkip-5": {
+    species: "Mudkip",
+    minLevel: 5,
+    maxLevel: 5,
+    isFixedGender: false,
+    method: "One",
+  },
+
   // Gifts
   "tentacool-15": {
     species: "Tentacool",
@@ -586,15 +621,6 @@ const CommonHgSsEncounters = {
     isFixedGender: true,
     method: "One",
   },
-
-  // Events
-  "manaphy-1": {
-    species: "Manaphy",
-    minLevel: 1,
-    maxLevel: 1,
-    isFixedGender: true,
-    method: "One",
-  },
 } as const satisfies Record<string, Encounter>;
 
 const HeartGoldEncounters = {
@@ -690,5 +716,3 @@ export const EncountersByGame = {
   HeartGold: HeartGoldEncounters,
   SoulSilver: SoulSilverEncounters,
 } as const satisfies Record<Gen4GameVersion, Record<string, Encounter>>;
-
-export const defaultEncounter = DiamondEncounters["eevee-5"];

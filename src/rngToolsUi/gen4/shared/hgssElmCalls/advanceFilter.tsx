@@ -1,49 +1,21 @@
-import React from "react";
 import { Alert, Flex, type ResultColumn } from "~/components";
 import { ToolForm } from "~/components/form";
-import { useAtom } from "jotai";
-import { gen4StateAtom } from "../state";
+import { useAtomValue, useSetAtom } from "jotai";
+import { gen4MarkersAtom, setGen4MarkersAtom } from "../state/markers";
 import { rngTools, type ElmCall, type ElmCallAdvanceState } from "~/rngTools";
 import { type Translations } from "~/translations";
 import { findElmCallSequenceIndices } from "./utils";
 import { ElmCallFilterButtons } from "./elmCallFilterButtons";
 import {
-  advanceFilterValidator,
-  decorateAdvanceResultsWithTarget,
-  getAdvanceFilterInitialValues,
-  initialAdvanceFilterPageSettings,
   LooseAdvanceFilterFormState,
-  markMatchedAdvanceResults,
   renderAdvanceFilterStatus,
-  shouldDisableAdvanceFilterGenerate,
-  type AdvanceFilterPageSettings,
+  type AdvanceFilterBaseProps,
   type AdvanceFilterResult,
 } from "../advanceFilter/utils";
 import { AdvanceFilterFields } from "../advanceFilter/fields";
+import { useAdvanceFilterResults } from "../advanceFilter/useAdvanceFilterResults";
 
 type Result = AdvanceFilterResult<ElmCallAdvanceState>;
-
-const markResultsWithElmCalls = ({
-  results,
-  filter,
-  pageSize,
-}: {
-  results: Result[];
-  filter: string;
-  pageSize: number;
-}) => {
-  const indices = findElmCallSequenceIndices(
-    results.map((result) => result.elm_call),
-    filter,
-  );
-
-  return markMatchedAdvanceResults({
-    results,
-    indices,
-    pageSize,
-    mark: "Seen",
-  });
-};
 
 const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
@@ -56,7 +28,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
     dataIndex: "advance",
   },
   {
-    title: t["Elm Call"],
+    title: t.Call,
     dataIndex: "elm_call",
     disableVerticalPadding: true,
     render: (elmCall: ElmCall) => (
@@ -67,102 +39,62 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   },
 ];
 
-export const HgssCallAdvanceFilter = () => {
-  const mode = "standalone" as const;
-  const [state, setState] = useAtom(gen4StateAtom);
-  const [results, setResults] = React.useState<Result[]>([]);
-  const [pageSettings, setPageSettings] =
-    React.useState<AdvanceFilterPageSettings>(initialAdvanceFilterPageSettings);
+export const HgssElmCallAdvanceFilterBase = ({
+  seed,
+  targetAdvance,
+  minAdvance,
+  submitTrackerId,
+  mode,
+}: AdvanceFilterBaseProps) => {
+  const markers = useAtomValue(gen4MarkersAtom);
+  const setMarkers = useSetAtom(setGen4MarkersAtom);
 
-  const hasResults = results.length > 0;
-  const resolvedSeed = state.target.seedTime?.seed ?? null;
-  const resolvedTargetAdvance = state.target.mtAdvance;
-
-  React.useEffect(() => {
-    setResults([]);
-  }, [resolvedSeed, resolvedTargetAdvance, setState]);
-
-  const onSubmit = async (opts: LooseAdvanceFilterFormState) => {
-    if (opts.targetAdvance == null || opts.seed == null) {
-      return;
-    }
-
-    const elmCalls = await rngTools.get_elm_calls({
-      seed: opts.seed,
-      initial_advances: opts.minAdvance,
-      max_advances: Math.max(opts.maxAdvance - opts.minAdvance, 0),
+  const { hasResults, resultCount, hasNoMatches, toolFormProps } =
+    useAdvanceFilterResults({
+      mode,
+      seed,
+      targetAdvance,
+      minAdvance,
+      generate: (opts) => rngTools.get_elm_calls(opts),
+      filter: markers.elmCalls,
+      findMatches: (results) =>
+        findElmCallSequenceIndices(
+          results.map((result) => result.elm_call),
+          markers.elmCalls,
+        ),
+      mark: "Seen",
     });
-
-    setResults(decorateAdvanceResultsWithTarget(elmCalls, opts.targetAdvance));
-  };
-
-  const { hasMatch, markedResults, autoCurrentPage } = markResultsWithElmCalls({
-    results,
-    filter: state.gameState.elmCalls,
-    pageSize: pageSettings.pageSize,
-  });
-
-  React.useEffect(() => {
-    setPageSettings((prev) => ({
-      ...prev,
-      currentPage: autoCurrentPage,
-    }));
-  }, [state.gameState.elmCalls, autoCurrentPage]);
-
-  const initialValues = getAdvanceFilterInitialValues(
-    resolvedSeed,
-    resolvedTargetAdvance,
-  );
 
   return (
     <ToolForm<LooseAdvanceFilterFormState, Result>
-      pagination={{
-        current: pageSettings.currentPage,
-        pageSize: pageSettings.pageSize,
-        onChange: (currentPage, pageSize) => {
-          setPageSettings((prev) => ({ ...prev, currentPage, pageSize }));
-        },
-      }}
+      {...toolFormProps}
       getColumns={getColumns}
-      results={markedResults}
-      initialValues={initialValues}
-      values={initialValues}
-      validationSchema={advanceFilterValidator}
-      onSubmit={onSubmit}
-      rowKey="advance"
-      disableGenerate={shouldDisableAdvanceFilterGenerate(
-        mode,
-        resolvedSeed,
-        resolvedTargetAdvance,
-      )}
-      submitTrackerId="elm_call_advance_filter_generate"
+      submitTrackerId={submitTrackerId}
       filters={
         <>
           <ElmCallFilterButtons
             hasResults={hasResults}
-            maxElmCalls={results.length}
-            elmCallFilter={state.gameState.elmCalls}
+            maxElmCalls={resultCount}
+            elmCallFilter={markers.elmCalls}
             onElmCallFilterChange={(elmCalls) => {
-              setState({ gameState: { elmCalls } });
+              setMarkers({ elmCalls });
             }}
             eTrackerId="elm_call_advance_filter_e"
             kTrackerId="elm_call_advance_filter_k"
             pTrackerId="elm_call_advance_filter_p"
           />
-          {hasResults &&
-            state.gameState.elmCalls.length > 0 &&
-            hasMatch === false && (
-              <Alert
-                showIcon
-                type="error"
-                title="No matches found"
-                description="An Elm Call may be incorrect, or the advance range may be too small. Try increasing the advance range."
-              />
-            )}
+          {hasNoMatches && (
+            <Alert
+              showIcon
+              type="error"
+              title="No matches found"
+              description="A call may be incorrect, or the advance range may be too small. Try increasing the advance range."
+            />
+          )}
         </>
       }
     >
-      <AdvanceFilterFields mode={mode} targetAdvance={resolvedTargetAdvance} />
+      <AdvanceFilterFields mode={mode} targetAdvance={targetAdvance} />
     </ToolForm>
   );
 };

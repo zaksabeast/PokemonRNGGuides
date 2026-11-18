@@ -23,8 +23,8 @@ import {
 } from "~/utils/time";
 import { Translations } from "~/translations";
 import { useCurrentStep } from "~/components/stepper/state";
-import { useAtom, atom } from "jotai";
-import { gen4StateAtom } from "../shared/state";
+import { useAtom, useSetAtom, atom } from "jotai";
+import { selectGen4TargetAtom } from "../shared/state/target";
 import { EditableBoard } from "./board/editableBoard";
 import { formatHex } from "~/utils/formatHex";
 import { BoardSizeContainer } from "./board/boardSizeContainer";
@@ -88,14 +88,14 @@ type SelectButtonProps = {
 };
 
 const SelectButton = ({ seedTime }: SelectButtonProps) => {
-  const [, setState] = useAtom(gen4StateAtom);
+  const selectTarget = useSetAtom(selectGen4TargetAtom);
   const [, setCurrentStep] = useCurrentStep();
 
   return (
     <Button
       trackerId="voltorb_flip_select_seed"
       onClick={() => {
-        setState({ target: { seedTime } });
+        selectTarget({ seedTime });
         setCurrentStep((step) => step + 1);
       }}
     >

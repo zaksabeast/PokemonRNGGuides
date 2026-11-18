@@ -19,15 +19,16 @@ import {
 import { z } from "zod";
 import { pkmFilterNatureFieldToRustInput } from "~/components/form/pokemon/pkmFilterFields";
 import { toOptions } from "~/utils/options";
-import { useStarterState } from "./state";
-import { useAtom } from "jotai";
-import { gen4StateAtom } from "../shared/state";
+import { useStarterSpecies } from "./state";
+import { useAtomValue } from "jotai";
+import { gen4SetupAtom } from "../shared/state/setup";
+import { gen4TargetAtom } from "../shared/state/target";
 import { maleFemale, nature, StatFieldsSchema } from "~/types";
 import { formatOffset } from "~/utils/offsetSymbol";
 import { sortBy } from "lodash-es";
 import pMap from "p-map";
 import { characteristics, Characteristic4Options } from "../gen4types";
-import { fromRngDateTime, toRngDateTime } from "~/utils/time";
+import { fromRngDateTime, getSecondOffset, toRngDateTime } from "~/utils/time";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { Translations } from "~/translations";
 import { defaultHiddenPowerFilter } from "~/components/form/pokemon/hiddenPowerFilter";
@@ -127,21 +128,25 @@ type FieldsProps = {
 };
 
 const Fields = ({ t }: FieldsProps) => {
-  const [starter] = useStarterState();
+  const species = useStarterSpecies();
   const [minMaxStats, setMinMaxStats] =
     React.useState<MinMaxStats>(defaultMinMaxStats);
 
   React.useEffect(() => {
+    if (species == null) {
+      return;
+    }
+
     const run = async () => {
       const stats = await getStatRange({
-        species: starter.species,
+        species,
         levelRange: [5, 6],
       });
       setMinMaxStats(stats);
     };
 
     run();
-  }, [starter.species]);
+  }, [species]);
 
   return (
     <>
@@ -175,16 +180,20 @@ const Fields = ({ t }: FieldsProps) => {
 
 export const CalibrateStarter4 = () => {
   const t = useActiveRouteTranslations();
-  const [state] = useAtom(gen4StateAtom);
-  const [starter] = useStarterState();
+  const target = useAtomValue(gen4TargetAtom);
+  const { game } = useAtomValue(gen4SetupAtom);
+  const targetSpecies = useStarterSpecies();
   const [results, setResults] = React.useState<Result[]>([]);
 
-  const targetDateTime = state.target.seedTime?.datetime ?? defaultDateTime;
-  const targetDelay = state.target.seedTime?.delay ?? 0;
-  const targetAdvance = state.target.lcrngAdvance ?? 0;
-  const targetSpecies = starter.species;
+  const targetDateTime = target?.seedTime.datetime ?? defaultDateTime;
+  const targetDelay = target?.seedTime.delay ?? 0;
+  const targetAdvance = target?.lcrngAdvance ?? 0;
 
   const onSubmit = async (opts: FormState) => {
+    if (targetSpecies == null) {
+      return;
+    }
+
     const minDelay = Math.max(targetDelay - 500, 0);
     const maxDelay = targetDelay + 500;
 
@@ -213,7 +222,7 @@ export const CalibrateStarter4 = () => {
       fromRngDateTime(targetDateTime).subtract(1, "seconds"),
     );
 
-    const maxAdvances = state.config.game === "Platinum" ? 40 : 20;
+    const maxAdvances = game === "Platinum" ? 40 : 20;
 
     const seedTimes = await rngTools.generate_seedtime4s({
       datetime,
@@ -250,7 +259,7 @@ export const CalibrateStarter4 = () => {
         },
       });
       return states.map((state): Result => {
-        const secondOffset = seedTime.datetime.second - targetDateTime.second;
+        const secondOffset = getSecondOffset(seedTime.datetime, targetDateTime);
         return {
           ...state,
           seed: seedTime.seed,
@@ -280,6 +289,7 @@ export const CalibrateStarter4 = () => {
       validationSchema={Validator}
       onSubmit={onSubmit}
       rowKey="key"
+      disableGenerate={targetSpecies == null}
       submitTrackerId="calibrate_gen4_starter"
     >
       <Fields t={t} />

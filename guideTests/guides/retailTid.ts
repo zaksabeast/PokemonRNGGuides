@@ -1,4 +1,5 @@
 import { expect } from "vitest";
+import type { Route } from "~/routes/defs";
 import { renderGuide } from "../utils/render";
 import {
   getButton,
@@ -7,9 +8,7 @@ import {
   getSelectByLabel,
   getShownOptionLabel,
   getStep,
-  getStepperButton,
   getText,
-  isShown,
   readTimer,
   selectOption,
   selectRadio,
@@ -18,6 +17,7 @@ import {
   type TableRow,
   type TimerPhase,
 } from "../utils/dom";
+import { createGoToStep } from "../utils/stepper";
 
 /** A TID search result as the results table shows it */
 export type IdResult = {
@@ -48,47 +48,42 @@ const toIdResult = ({ cells }: TableRow): IdResult => ({
  * Drives the Retail TID/SID guide (dppt-tid-sid) the way a user would.
  * This is the only place that knows the guide's steps, labels, and columns.
  */
-export const openRetailTidGuide = async () => {
-  const container = renderGuide("/dppt-tid-sid/");
+export const openRetailTidGuide = async (route: Route = "/dppt-tid-sid/") => {
+  const container = renderGuide(route);
   const setUp = await waitFor(() => getStep(container, STEPS.setUp));
   const pickTid = getStep(container, STEPS.pickTid);
   const hitTarget = getStep(container, STEPS.hitTarget);
   const calibrate = getStep(container, STEPS.calibrate);
-  const steps = [setUp, pickTid, hitTarget, calibrate];
-
-  const currentStep = () => steps.findIndex(isShown);
-
-  const shownStep = () =>
-    waitFor(() => {
-      const step = currentStep();
-      expect(step).not.toBe(-1);
-
-      return step;
-    });
-
-  const moveTowardStep = async (from: number, step: number) => {
-    getStepperButton(container, from < step ? "next" : "previous").click();
-    await waitFor(() => expect(currentStep()).not.toBe(from));
-  };
-
-  const goToStep = async (step: number) => {
-    let from = await shownStep();
-    while (from !== step) {
-      await moveTowardStep(from, step);
-      from = await shownStep();
-    }
-  };
+  const goToStep = createGoToStep(container, [
+    setUp,
+    pickTid,
+    hitTarget,
+    calibrate,
+  ]);
 
   const hitTargetInstructions = () =>
     [...hitTarget.querySelectorAll("li")].map(getText);
 
   const timer = () => readTimer(hitTarget);
 
+  const timerAfterChange = (previous: TimerPhase[]) =>
+    waitFor(() => {
+      const current = timer();
+      expect(current).not.toEqual([]);
+      expect(current).not.toEqual(previous);
+
+      return current;
+    });
+
   const threeDsOffsetSelect = () => getSelectByLabel(hitTarget, "3ds Offset");
 
   const threeDsOffset = () => getShownOptionLabel(threeDsOffsetSelect());
 
   return {
+    setGame: (game: string) => {
+      return selectOption(getSelectByLabel(setUp, "Game"), game);
+    },
+
     setConsole: (option: string) => {
       selectRadio(getByLabel(setUp, "Console"), option);
     },
@@ -136,13 +131,22 @@ export const openRetailTidGuide = async () => {
 
     timer,
 
-    timerAfterChange: (previous: TimerPhase[]) =>
-      waitFor(() => {
-        const current = timer();
-        expect(current).not.toEqual(previous);
+    timerAfterChange,
 
-        return current;
-      }),
+    /** Overrides the timer's target second from its Edit view */
+    setTargetSeconds: async (targetSeconds: string) => {
+      await goToStep(STEPS.hitTarget);
+      const before = timer();
+      getButton(hitTarget, "Edit").click();
+      const field = await waitFor(() =>
+        getByLabel(hitTarget, "Target Seconds"),
+      );
+
+      typeInto(field, targetSeconds);
+      getButton(hitTarget, "Set Timer").click();
+
+      return timerAfterChange(before);
+    },
 
     calibrateTargetText: () =>
       /Target TID: (\d+|\?+) \/ SID: (\d+|\?+)/.exec(getText(calibrate))?.[0],

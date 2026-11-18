@@ -1,3 +1,4 @@
+use super::roamers::{HgssRoamers, hgss_roamer_result};
 use crate::rng::lcrng::Pokerng;
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
@@ -11,14 +12,21 @@ pub enum ElmCall {
     P,
 }
 
-fn elm_calls(seed: u32, count: usize) -> Vec<ElmCall> {
-    Pokerng::new(seed)
-        .take(count)
-        .map(|rand| match (rand >> 16) as u16 % 3 {
+impl ElmCall {
+    fn from_rand(rand: u32) -> Self {
+        match (rand >> 16) as u16 % 3 {
             0 => ElmCall::E,
             1 => ElmCall::K,
             _ => ElmCall::P,
-        })
+        }
+    }
+}
+
+pub(super) fn elm_calls(seed: u32, skip: usize, count: usize) -> Vec<ElmCall> {
+    Pokerng::new(seed)
+        .skip(skip)
+        .take(count)
+        .map(ElmCall::from_rand)
         .collect()
 }
 
@@ -41,11 +49,7 @@ impl ElmCallAdvanceState {
     fn new(rand: u32, advance: usize) -> Self {
         Self {
             advance,
-            elm_call: match (rand >> 16) as u16 % 3 {
-                0 => ElmCall::E,
-                1 => ElmCall::K,
-                _ => ElmCall::P,
-            },
+            elm_call: ElmCall::from_rand(rand),
         }
     }
 }
@@ -67,13 +71,24 @@ pub fn get_elm_calls(opts: &ElmCallAdvanceOpts) -> Vec<ElmCallAdvanceState> {
         .collect()
 }
 
+#[derive(Debug, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct ElmCallsForSeedsOpts {
+    pub seeds: Vec<u32>,
+    pub count: usize,
+    pub roamers: HgssRoamers,
+}
+
 #[wasm_bindgen]
-pub fn elm_calls_for_seeds(seeds: &[u32], count: usize) -> Vec<ElmCallResult> {
-    seeds
+pub fn elm_calls_for_seeds(opts: ElmCallsForSeedsOpts) -> Vec<ElmCallResult> {
+    opts.seeds
         .iter()
-        .map(|&seed| ElmCallResult {
-            seed,
-            elm_calls: elm_calls(seed, count),
+        .map(|&seed| {
+            let roamer_advances = hgss_roamer_result(seed, &opts.roamers).advances;
+            ElmCallResult {
+                seed,
+                elm_calls: elm_calls(seed, roamer_advances, opts.count),
+            }
         })
         .collect()
 }
@@ -84,11 +99,43 @@ macro_rules! elm_calls {
         let s = $flips;
         s.chars()
             .map(|c| match c {
-                'E' => $crate::generators::gen4::seed_time::ElmCall::E,
-                'K' => $crate::generators::gen4::seed_time::ElmCall::K,
-                'P' => $crate::generators::gen4::seed_time::ElmCall::P,
-                _ => $crate::generators::gen4::seed_time::ElmCall::E,
+                'E' => $crate::generators::gen4::seed_time::elm_call::ElmCall::E,
+                'K' => $crate::generators::gen4::seed_time::elm_call::ElmCall::K,
+                'P' => $crate::generators::gen4::seed_time::elm_call::ElmCall::P,
+                _ => $crate::generators::gen4::seed_time::elm_call::ElmCall::E,
             })
-            .collect::<Vec<$crate::generators::gen4::seed_time::ElmCall>>()
+            .collect::<Vec<$crate::generators::gen4::seed_time::elm_call::ElmCall>>()
     }};
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use crate::gen4::seed_time::roamers::JohtoRoamerRoute;
+
+    #[test]
+    fn no_roamers() {
+        let opts = ElmCallsForSeedsOpts {
+            seeds: vec![0],
+            count: 2,
+            roamers: HgssRoamers::default(),
+        };
+        let results = elm_calls_for_seeds(opts);
+        assert_eq!(results[0].elm_calls, vec![ElmCall::E, ElmCall::P]);
+    }
+
+    #[test]
+    fn skips_roamer_advances() {
+        let opts = ElmCallsForSeedsOpts {
+            seeds: vec![0],
+            count: 2,
+            roamers: HgssRoamers {
+                raikou: Some(JohtoRoamerRoute::Route42),
+                entei: None,
+                lati: None,
+            },
+        };
+        let results = elm_calls_for_seeds(opts);
+        assert_eq!(results[0].elm_calls, vec![ElmCall::P, ElmCall::E]);
+    }
 }

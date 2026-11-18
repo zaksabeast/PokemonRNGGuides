@@ -53,11 +53,20 @@ impl BaseStatic4State {
         }
     }
 
-    pub fn add_seedtime(&self, advance: usize, seed_time: SeedTime4) -> Static4State {
+    pub fn add_seedtime(
+        &self,
+        advance: usize,
+        seed_time: SeedTime4,
+        roamer_advances: usize,
+    ) -> Static4State {
         let mut state = self.clone();
         state.advance = advance;
         state.seed = seed_time.seed;
-        Static4State { state, seed_time }
+        Static4State {
+            state,
+            seed_time,
+            roamer_advances,
+        }
     }
 }
 
@@ -92,6 +101,7 @@ impl PkmState for BaseStatic4State {
 pub struct Static4State {
     pub state: BaseStatic4State,
     pub seed_time: SeedTime4,
+    pub roamer_advances: usize,
 }
 
 impl PartialEq<BaseStatic4State> for Static4State {

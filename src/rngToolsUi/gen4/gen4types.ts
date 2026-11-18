@@ -3,7 +3,11 @@ import { Characteristic, LeadAbility, Nature } from "~/rngTools";
 import { toOptions } from "~/utils/options";
 import { startCase, sortBy } from "lodash-es";
 import { z } from "zod";
-import type { Gen4GameVersion } from "~/types/games";
+import {
+  Gen4GamesByGroup,
+  Gen4GameVersions,
+  type Gen4GameVersion,
+} from "~/types/games";
 
 export const Gen4ConsoleSchema = z.enum([
   "NdsDsi",
@@ -13,70 +17,18 @@ export const Gen4ConsoleSchema = z.enum([
 
 export type Gen4Console = z.infer<typeof Gen4ConsoleSchema>;
 
+export const getGen4GameOptions = (
+  games: string | undefined, // Not a strict type in case mdx has bad value
+): readonly Gen4GameVersion[] => {
+  return match(games)
+    .with("dppt", "hgss", (group) => Gen4GamesByGroup[group])
+    .otherwise(() => Gen4GameVersions);
+};
+
 export type Gen4GameAndConsole = {
   game: Gen4GameVersion;
   console: Gen4Console;
 };
-
-export const StaticEncounterSpecies = [
-  "Turtwig",
-  "Chimchar",
-  "Piplup",
-  "Cyndaquil",
-  "Chikorita",
-  "Totodile",
-  "Charmander",
-  "Squirtle",
-  "Bulbasaur",
-  "Treecko",
-  "Mudkip",
-  "Torchic",
-  "Omanyte",
-  "Kabuto",
-  "Aerodactyl",
-  "Lileep",
-  "Anorith",
-  "Cranidos",
-  "Shieldon",
-  "Eevee",
-  "Porygon",
-  "Togepi",
-  "Riolu",
-  "Drifloon",
-  "Spiritomb",
-  "Rotom",
-  "Lugia",
-  "HoOh",
-  "Dialga",
-  "Palkia",
-  "Giratina",
-  "Regice",
-  "Regirock",
-  "Registeel",
-  "Uxie",
-  "Azelf",
-  "Heatran",
-  "Regigigas",
-  "Mesprit",
-  "Cresselia",
-  "Zapdos",
-  "Articuno",
-  "Moltres",
-  "Tentacool",
-  "Dratini",
-  "Tyrogue",
-  "Mareep",
-  "Wooper",
-  "Slugma",
-  "MrMime",
-  "Abra",
-  "Ekans",
-  "Raikou",
-  "Entei",
-  "Suicune",
-  "Voltorb",
-  "Snorlax",
-] as const;
 
 export const leadAbilities = [
   "None",

@@ -1,13 +1,17 @@
 import { FormCard, FormSection, SelectField } from "~/components/form";
 import { isGameRoute, useSwarmState } from "./state";
 import { gameRoutes, gameMons, SwarmRoute } from "./constants";
-import { Gen4GameVersion, Gen4GameVersions } from "~/types/games";
+import { Gen4GameVersion } from "~/types/games";
 import type { Species } from "~/rngTools";
 import { formatSpeciesLabel } from "~/types";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { type Translations } from "~/translations";
-import { useAtom } from "jotai";
-import { gen4StateAtom } from "../shared/state";
+import { useAtomValue, useSetAtom } from "jotai";
+import {
+  gen4GuideGamesAtom,
+  gen4SetupAtom,
+  setGen4GameAtom,
+} from "../shared/state/setup";
 import { toOptions } from "~/utils/options";
 
 const formatRouteLabel = (
@@ -23,9 +27,10 @@ const formatRouteLabel = (
 
 export const SelectSwarm4Target = () => {
   const t = useActiveRouteTranslations();
-  const [state, setState] = useAtom(gen4StateAtom);
+  const { game } = useAtomValue(gen4SetupAtom);
+  const guideGames = useAtomValue(gen4GuideGamesAtom);
+  const setGame = useSetAtom(setGen4GameAtom);
   const [targetRoutes, setTargetRoutes] = useSwarmState();
-  const game = state.config.game;
 
   const setTargetRoute = (route: SwarmRoute) => {
     if (isGameRoute(game, route)) {
@@ -39,8 +44,8 @@ export const SelectSwarm4Target = () => {
         <SelectField<Gen4GameVersion>
           label={t["Game"]}
           value={game}
-          options={toOptions(Gen4GameVersions, (game) => t[game])}
-          onChange={(game) => setState({ config: { game } })}
+          options={toOptions(guideGames, (game) => t[game])}
+          onChange={setGame}
         />
         <SelectField<SwarmRoute>
           label={t["Target Pokémon"]}

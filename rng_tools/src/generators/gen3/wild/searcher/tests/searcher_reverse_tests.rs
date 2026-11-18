@@ -825,10 +825,13 @@ fn test_search_reverse_wild3_feebas_on_feebas_tile() {
                     encounter_data: encounter(40, 40, Species::Latias),
                 }],
                 feebas: Some(encounter(20, 25, Species::Feebas)),
-                initial_cycle_distrs: vec![Wild3InitialCycleDistribution {
-                    feebas_vblank_count: Some(1),
-                    ..Wild3InitialCycleDistribution::new_default(Wild3Action::OldRod).clone()
-                }],
+                initial_cycle_distrs: vec![
+                    Wild3InitialCycleDistribution::new_default(Wild3Action::OldRod).clone(),
+                    Wild3InitialCycleDistribution {
+                        feebas_vblank_count: Some(1),
+                        ..Wild3InitialCycleDistribution::new_default(Wild3Action::OldRod).clone()
+                    },
+                ],
                 is_safari: false,
                 rock_smash_rate: 0,
                 actions_with_safari_pokeblock: vec![],
@@ -848,12 +851,12 @@ fn test_search_reverse_wild3_feebas_on_feebas_tile() {
         ..Default::default()
     };
 
-    let results: Vec<Wild3SearcherResultMon> = search_wild3_naive(&options);
-    assert!(!results.is_empty());
+    let naive_results: Vec<Wild3SearcherResultMon> = search_wild3_naive(&options);
+    assert!(!naive_results.is_empty());
 
     assert!(does_search_wild3_reverse_support_options(&options));
-    let results = search_wild3_reverse(&options);
-    assert!(!results.is_empty());
+    let reverse_results = search_wild3_reverse(&options);
+    assert_eq!(naive_results, reverse_results);
 }
 
 #[test]

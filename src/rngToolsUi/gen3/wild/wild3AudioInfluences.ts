@@ -151,7 +151,6 @@ export const getWild3InitialCycleDistributionForSetup = (
     feebasVblankCount: number | null;
   },
 ) => {
-  debugger;
   const map = getWild3EmeraldGameData().maps_data.find(
     (map) => map.map_id === setup.map,
   );

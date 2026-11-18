@@ -116,7 +116,14 @@ fn search_wild3_naive_at_given_advance(
                     .filter(|distr| distr.feebas_vblank_count == *feebas_vblank_count)
                     .collect_vec();
 
-                generated.mon_results.iter().for_each(|gen_res| {
+                for gen_res in &generated.mon_results {
+                    if fishing_on_feebas_tile
+                        && (gen_res.encounter_idx == Wild3EncounterIndex::Feebas)
+                            != feebas_vblank_count.is_some()
+                    {
+                        continue;
+                    }
+
                     let encounter = map_setups
                         .map_data
                         .get_encounter(gen_opts.action, gen_res.encounter_idx)
@@ -129,7 +136,7 @@ fn search_wild3_naive_at_given_advance(
                         encounter,
                         &matching_initial_cycle_distrs,
                     ));
-                });
+                }
             }
         }
     }

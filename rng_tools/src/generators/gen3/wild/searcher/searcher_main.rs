@@ -179,7 +179,7 @@ impl Wild3SearcherCycleOpts {
         }
     }
 
-    /** Always returns at least 1 value */
+    /** Always returns at least 1 value. Returns both non-feebas and feebas distributions. */
     pub fn get_initial_cycle_distrs<'a>(
         &self,
         map_data: &'a Wild3MapGameData,

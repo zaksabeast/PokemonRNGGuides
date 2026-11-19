@@ -301,7 +301,6 @@ impl CycleFrameCounter {
                 *latest_fastest_cycle = feebas_min_max_cycle.1;
             }
             CycleFrameCounter::DetailedBreakdown { current_cycle, .. } => {
-                //NO_PROD should apply vblank logic manual.
                 current_cycle.cycle = feebas_min_max_cycle.0; // Both .0 and .1 should be equal.
                 current_cycle.frame = feebas_vblank_count;
             }

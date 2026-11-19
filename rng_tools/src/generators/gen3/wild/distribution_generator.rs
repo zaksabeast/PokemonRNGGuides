@@ -41,8 +41,9 @@ pub fn generate_gen3_wild_distribution(
     initial_cycle: Option<usize>,
     vblank_cycles: Option<Vec<usize>>,
 ) -> Wild3MethodDistributionResults {
-    let initial_cycle_distr = game_data.get_initial_cycle_distr(opts.action, playing_song, weather);
-    let feebas_cycle_distr = game_data.get_feebas_initial_cycle_distr(weather, true);
+    let initial_cycle_distr =
+        game_data.get_non_feebas_initial_cycle_distr(opts.action, playing_song, weather);
+    let feebas_cycle_distr = game_data.get_feebas_initial_cycle_distr(weather);
 
     let cycle_opts_for_cycle = match (initial_cycle, vblank_cycles) {
         (Some(initial_cycle), Some(vblank_cycles)) => {

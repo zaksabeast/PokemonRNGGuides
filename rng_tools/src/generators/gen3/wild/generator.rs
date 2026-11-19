@@ -63,6 +63,10 @@ fn FishingWildEncounter(
     cycle_counter.on_moment_reached(Moment::FishingWildEncounter);
 
     let is_feebas = CheckFeebas(rng, opts, cycle_counter);
+    if is_feebas != opts.feebas_vblank_count.is_some() {
+        return None; // opts.feebas_vblank_count acts as a filter.
+    }
+
     let feebas_method5_ctx =
         feebas_method5::is_enabled(opts, map_data).then(|| FeebasMethod5Context {
             rng: *rng,

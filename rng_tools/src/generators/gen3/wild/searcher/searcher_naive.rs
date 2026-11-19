@@ -117,13 +117,6 @@ fn search_wild3_naive_at_given_advance(
                     .collect_vec();
 
                 for gen_res in &generated.mon_results {
-                    if fishing_on_feebas_tile
-                        && (gen_res.encounter_idx == Wild3EncounterIndex::Feebas)
-                            != feebas_vblank_count.is_some()
-                    {
-                        continue;
-                    }
-
                     let encounter = map_setups
                         .map_data
                         .get_encounter(gen_opts.action, gen_res.encounter_idx)

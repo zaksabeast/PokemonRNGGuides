@@ -25,17 +25,13 @@ pub(super) fn cdf_probability(knots: &[CdfKnot], start: f64, end: f64) -> f64 {
 }
 
 pub(super) fn cdf_median(knots: &[CdfKnot]) -> Option<f64> {
-    cdf_quantile(knots, 0.5)
-}
-
-pub(super) fn cdf_quantile(knots: &[CdfKnot], probability: f64) -> Option<f64> {
-    let index = knots.partition_point(|knot| knot.probability < probability);
+    let index = knots.partition_point(|knot| knot.probability < 0.5);
     let right = knots.get(index)?;
     let Some(left) = index.checked_sub(1).and_then(|index| knots.get(index)) else {
         return Some(right.cycle);
     };
 
-    let fraction = (probability - left.probability) / (right.probability - left.probability);
+    let fraction = (0.5 - left.probability) / (right.probability - left.probability);
 
     Some(left.cycle + fraction * (right.cycle - left.cycle))
 }

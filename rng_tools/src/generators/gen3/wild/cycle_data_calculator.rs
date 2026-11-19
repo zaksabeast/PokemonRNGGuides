@@ -102,19 +102,19 @@ impl Wild3SearcherCycleDataByLead {
     }
 }
 
-/** initial_cycle_distrs includes ALL distributions, even those that don't apply with the setup required for that result */
+/** initial_cycle_distrs should only include those matching the required setup */
 pub fn calculate_cycle_data_by_lead(
     post_cycle_range: &CycleAndModRange,
     egg_lead: bool,
     specified_lead_cycle_speed: Option<usize>,
-    initial_cycle_distr: &[&Wild3InitialCycleDistribution],
+    initial_cycle_distrs: &[&Wild3InitialCycleDistribution],
 ) -> Wild3SearcherCycleDataByLead {
-    if initial_cycle_distr.is_empty() {
+    if initial_cycle_distrs.is_empty() {
         return Wild3SearcherCycleDataByLead::new_default(*post_cycle_range);
     }
 
     let data_for_lead_spd =
-        |speed| find_best_cycle_data_for_lead_spd(post_cycle_range, speed, initial_cycle_distr);
+        |speed| find_best_cycle_data_for_lead_spd(post_cycle_range, speed, initial_cycle_distrs);
 
     if egg_lead {
         let data = data_for_lead_spd(0);
@@ -135,7 +135,7 @@ pub fn calculate_cycle_data_by_lead(
         specified_lead: specified_lead_cycle_speed.map(data_for_lead_spd),
         slowest_lead: data_for_lead_spd(SLOWEST_MODULO_CYCLE_24),
         fastest_lead: data_for_lead_spd(FASTEST_MODULO_CYCLE_24),
-        ideal_lead: find_best_cycle_data_for_ideal_lead_spd(post_cycle_range, initial_cycle_distr),
+        ideal_lead: find_best_cycle_data_for_ideal_lead_spd(post_cycle_range, initial_cycle_distrs),
         common_lower_lead: data_for_lead_spd(COMMON_LEAD_RANGE.start),
         common_upper_lead: data_for_lead_spd(COMMON_LEAD_RANGE.end),
     }

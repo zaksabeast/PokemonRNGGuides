@@ -860,6 +860,127 @@ fn test_search_reverse_wild3_feebas_on_feebas_tile() {
 }
 
 #[test]
+fn test_search_reverse_wild3_feebas_vblank_counts() {
+    let encounter = |min_level, max_level, species| Wild3EncounterGameData {
+        min_level,
+        max_level,
+        species_data: SpeciesData { species },
+    };
+    let normal_distribution =
+        Wild3InitialCycleDistribution::new_default(Wild3Action::OldRod).clone();
+    let options = Wild3SearcherOptions {
+        initial_advances: 59783,
+        max_advances: 0,
+        max_result_count: 10,
+        leads: vec![Gen3Lead::Vanilla],
+        methods: vec![Gen3Method::Wild1],
+        map_setups: vec![Wild3MapSetups {
+            map_data: Wild3MapGameData {
+                map_id: "MAP_ROUTE119".to_string(),
+                slots_by_action: vec![
+                    vec![],
+                    vec![],
+                    vec![encounter(5, 10, Species::Magikarp)],
+                    vec![],
+                    vec![],
+                    vec![],
+                ],
+                feebas: Some(encounter(20, 25, Species::Feebas)),
+                initial_cycle_distrs: vec![
+                    normal_distribution.clone(),
+                    Wild3InitialCycleDistribution {
+                        feebas_vblank_count: Some(0),
+                        feebas_vblank_count_probability: 0.2,
+                        check_feebas_cycle: Some(205_803),
+                        ..normal_distribution.clone()
+                    },
+                    Wild3InitialCycleDistribution {
+                        feebas_vblank_count: Some(1),
+                        feebas_vblank_count_probability: 0.8,
+                        check_feebas_cycle: Some(205_803),
+                        ..normal_distribution
+                    },
+                ],
+                ..Default::default()
+            },
+            actions: vec![Wild3Action::OldRod],
+            feebas_states: vec![Wild3FeebasState::OnFeebasTile],
+            ..Default::default()
+        }],
+        gen3_filter: Gen3PkmFilter {
+            species: Some(Species::Feebas),
+            ..Default::default()
+        },
+        cycle_opts: Wild3SearcherCycleOpts::Calibrate {
+            weather: Wild3Weather::Sunny,
+            playing_song: Wild3PlayingSong::MapSong,
+            lead_cycle_speed: 775,
+        },
+        ..Default::default()
+    };
+
+    let results = [
+        (Ivs::new(5, 15, 4, 17, 17, 29), Nature::Mild, 21),
+        (Ivs::new(9, 4, 8, 6, 23, 1), Nature::Serious, 23),
+    ]
+    .into_iter()
+    .flat_map(|(ivs, nature, level)| {
+        search_wild3_reverse(&Wild3SearcherOptions {
+            filter: PkmFilter {
+                nature: PkmFilter::new_nature_filter(&[nature]),
+                min_ivs: ivs,
+                max_ivs: ivs,
+                ..Default::default()
+            },
+            gen3_filter: Gen3PkmFilter {
+                lvl: Some(level),
+                species: Some(Species::Feebas),
+                ..Default::default()
+            },
+            ..options.clone()
+        })
+    })
+    .map(|result| {
+        (
+            result.advance,
+            result.encounter_idx,
+            result.species,
+            result.feebas_vblank_count,
+            result.pid,
+            result.cycle_data_by_lead.map(|data| {
+                (
+                    data.ideal_lead.method_probability,
+                    data.ideal_lead.check_feebas_cycle,
+                )
+            }),
+        )
+    })
+    .collect::<Vec<_>>();
+
+    assert_eq!(
+        results,
+        vec![
+            (
+                59783,
+                Wild3EncounterIndex::Feebas,
+                Species::Feebas,
+                Some(0),
+                2085016591,
+                Some((0.2, Some(205_803))),
+            ),
+            (
+                59783,
+                Wild3EncounterIndex::Feebas,
+                Species::Feebas,
+                Some(1),
+                563486912,
+                Some((0.8, Some(205_803))),
+            ),
+        ]
+    );
+}
+
+#[test]
 fn test_search_reverse_wild3_hidden_power_grass_70() {
     let options = Wild3SearcherOptions {
         methods: vec![Gen3Method::Wild4],

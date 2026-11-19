@@ -146,27 +146,20 @@ export const Wild3LeadCycleSpeedSelector = ({
     targetSetup.map,
     targetSetup.action,
   );
-  const { initial_cycle_distr, feebas_cycle_distr } =
-    getWild3InitialCycleDistributionForSetup({
-      ...targetSetup,
-      ...selectedAudio,
-      feebasCycles,
-    });
+  const { initial_cycle_distr } = getWild3InitialCycleDistributionForSetup({
+    ...targetSetup,
+    ...selectedAudio,
+    feebasCycles,
+  });
   const initialCycleMin = initial_cycle_distr?.min;
   const initialCycleMax = initial_cycle_distr?.max;
-  const feebasCycleMin = feebas_cycle_distr?.min;
-  const feebasCycleMax = feebas_cycle_distr?.max;
-
   const isFeebas =
     targetSetup.feebasState === "OnFeebasTile" && feebasCycles != null;
   const feebasTile = isFeebas
     ? getFeebasTiles().find((tile) => tile.checkFeebasCycle === feebasCycles)
     : null;
-  const initialCycleBeforeFeebas = getInitialCycleSummary(
+  const initialCycleSummary = getInitialCycleSummary(
     initial_cycle_distr?.distribution ?? [],
-  );
-  const initialCycleAfterFeebas = getInitialCycleSummary(
-    feebas_cycle_distr?.distribution ?? [],
   );
 
   React.useEffect(() => {
@@ -174,12 +167,7 @@ export const Wild3LeadCycleSpeedSelector = ({
   }, [leadCycleSpeedProp]);
 
   React.useEffect(() => {
-    if (
-      initialCycleMin == null ||
-      initialCycleMax == null ||
-      feebasCycleMin == null ||
-      feebasCycleMax == null
-    ) {
+    if (initialCycleMin == null || initialCycleMax == null) {
       setDistributions(null);
 
       return;
@@ -190,8 +178,7 @@ export const Wild3LeadCycleSpeedSelector = ({
       feebasCycles,
       {
         LikelihoodForLead: {
-          min_max_initial_cycle: [initialCycleMin, initialCycleMax],
-          feebas_min_max_initial_cycle: [feebasCycleMin, feebasCycleMax],
+          min_max_cycle: [initialCycleMax, initialCycleMax],
           lead_cycle_spd: actualLeadCycleSpeed ?? 0,
         },
       },
@@ -206,8 +193,6 @@ export const Wild3LeadCycleSpeedSelector = ({
     audioInfluences,
     initialCycleMin,
     initialCycleMax,
-    feebasCycleMin,
-    feebasCycleMax,
   ]);
 
   return (
@@ -236,16 +221,12 @@ export const Wild3LeadCycleSpeedSelector = ({
           )}
           {isFeebas ? (
             <>
-              <Typography.Text>
-                Possible initial cycle before Feebas tile check:{" "}
-                {formatInitialCycleSummary(initialCycleBeforeFeebas)}
-              </Typography.Text>
               {targetSetup.feebasVblankCount != null && feebasTile != null && (
                 <Typography.Text>
                   {targetSetup.feebasVblankCount} required Vblanks during Feebas
                   tile check:{" "}
                   {formatProbability(
-                    feebas_cycle_distr?.feebas_vblank_count_probability ?? 0,
+                    initial_cycle_distr?.feebas_vblank_count_probability ?? 0,
                   )}{" "}
                   likelihood when using tile
                   {` (${feebasTile.ingameX}, ${feebasTile.ingameY})`}
@@ -253,13 +234,13 @@ export const Wild3LeadCycleSpeedSelector = ({
               )}
               <Typography.Text>
                 Possible cycle after Feebas tile check:{" "}
-                {formatInitialCycleSummary(initialCycleAfterFeebas)}
+                {formatInitialCycleSummary(initialCycleSummary)}
               </Typography.Text>
             </>
           ) : (
             <Typography.Text>
               Possible initial cycle (impacted by audio):{" "}
-              {formatInitialCycleSummary(initialCycleBeforeFeebas)}
+              {formatInitialCycleSummary(initialCycleSummary)}
             </Typography.Text>
           )}
         </FormSection>

@@ -290,6 +290,7 @@ fn test_generate_wild3_feebas() {
         action: Wild3Action::GoodRod,
         methods: vec![Gen3Method::Wild1],
         feebas_state: Wild3FeebasState::OnFeebasTile,
+        feebas_vblank_count: Some(0),
         ..Default::default()
     };
     let mut game_data = Wild3MapGameData::default();
@@ -311,6 +312,7 @@ fn test_generate_wild3_feebas() {
 
     //if not on Feebas tile, doesn't get feebas
     options.feebas_state = Wild3FeebasState::InMapButNotOnFeebasTile;
+    options.feebas_vblank_count = None;
     let result = generate_wild3(Pokerng::new(0), &options, &game_data).mon_results;
     assert!(!result.is_empty());
     assert!(!matches!(

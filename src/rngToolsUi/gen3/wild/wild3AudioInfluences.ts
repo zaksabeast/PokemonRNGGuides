@@ -155,44 +155,36 @@ export const getWild3InitialCycleDistributionForSetup = (
     (map) => map.map_id === setup.map,
   );
 
-  const initial_cycle_distr = map?.initial_cycle_distrs.find(
-    (distribution) =>
-      distribution.action === setup.action &&
-      distribution.weather === setup.weather &&
-      distribution.playing_song === setup.playing_song,
-  );
-
-  if (initial_cycle_distr == null) {
-    return {
-      initial_cycle_distr: null,
-      feebas_cycle_distr: null,
-      initial_cycle_opts: null,
-    };
-  }
-
-  const feebas_cycle_distr =
+  const initial_cycle_distr =
     setup.feebasCycles != null && setup.feebasVblankCount != null
       ? getFeebasCycleDistribution(
           setup.feebasCycles,
           setup.weather,
           setup.feebasVblankCount,
         )
-      : initial_cycle_distr;
+      : map?.initial_cycle_distrs.find(
+          (distribution) =>
+            distribution.action === setup.action &&
+            distribution.weather === setup.weather &&
+            distribution.playing_song === setup.playing_song,
+          // Note: All distributions from static getWild3EmeraldGameData() have feebas_vblank_count to null.
+        );
 
+  if (initial_cycle_distr == null) {
+    return {
+      initial_cycle_distr: null,
+      initial_cycle_opts: null,
+    };
+  }
   const initial_cycle_opts = {
-    min_max_initial_cycle: [
+    min_max_cycle: [
       initial_cycle_distr.min,
       initial_cycle_distr.max,
-    ] satisfies [number, number],
-    feebas_min_max_initial_cycle: [
-      feebas_cycle_distr.min,
-      feebas_cycle_distr.max,
     ] satisfies [number, number],
   };
 
   return {
     initial_cycle_distr,
-    feebas_cycle_distr,
     initial_cycle_opts,
   };
 };

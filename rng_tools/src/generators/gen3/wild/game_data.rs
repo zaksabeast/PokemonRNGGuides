@@ -140,11 +140,12 @@ pub fn get_encounter_for_wild3_map_game_data(
 }
 
 impl Wild3MapGameData {
-    pub fn get_non_feebas_initial_cycle_distr(
+    pub fn get_initial_cycle_distr(
         &self,
         action: Wild3Action,
         playing_song: Wild3PlayingSong,
         weather: Wild3Weather,
+        feebas_vblank_count: Option<usize>,
     ) -> &Wild3InitialCycleDistribution {
         self.initial_cycle_distrs
             .iter()
@@ -152,18 +153,9 @@ impl Wild3MapGameData {
                 distr.action == action
                     && distr.playing_song == playing_song
                     && distr.weather == weather
-                    && distr.check_feebas_cycle.is_none()
+                    && distr.feebas_vblank_count == feebas_vblank_count
             })
             .unwrap_or_else(|| Wild3InitialCycleDistribution::new_default(action))
-    }
-    pub fn get_feebas_initial_cycle_distr(
-        &self,
-        weather: Wild3Weather,
-    ) -> &Wild3InitialCycleDistribution {
-        self.initial_cycle_distrs
-            .iter()
-            .find(|distr| distr.weather == weather && distr.check_feebas_cycle.is_some())
-            .unwrap_or_else(|| Wild3InitialCycleDistribution::new_default(Wild3Action::SuperRod))
     }
 
     pub fn get_encounter(

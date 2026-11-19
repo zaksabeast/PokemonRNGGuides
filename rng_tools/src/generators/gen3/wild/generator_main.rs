@@ -25,19 +25,16 @@ pub enum Wild3GeneratorCycleOpts {
     #[default]
     Inactive,
     Searching {
-        min_max_initial_cycle: (usize, usize),
-        feebas_min_max_initial_cycle: (usize, usize),
+        min_max_cycle: (usize, usize),
         generate_even_if_impossible: bool,
         consider_rng_manipulated_lead_pid: bool,
     },
     LikelihoodForLead {
-        min_max_initial_cycle: (usize, usize),
-        feebas_min_max_initial_cycle: (usize, usize),
+        min_max_cycle: (usize, usize),
         lead_cycle_spd: usize,
     },
     CycleAtMomentNoEmuLog {
         initial_cycle: usize,
-        feebas_initial_cycle: usize,
         playing_song: Wild3PlayingSong,
         lead_cycle_spd: usize,
     },
@@ -59,19 +56,12 @@ impl Wild3GeneratorCycleOpts {
     }
     pub fn feebas_min_max_cycle(&self) -> (usize, usize) {
         match self {
-            Self::Searching {
-                feebas_min_max_initial_cycle,
-                ..
+            Self::Searching { min_max_cycle, .. }
+            | Self::LikelihoodForLead { min_max_cycle, .. } => *min_max_cycle,
+            Self::CycleAtMomentNoEmuLog { initial_cycle, .. }
+            | Self::CycleAtMomentWithEmuLog { initial_cycle, .. } => {
+                (*initial_cycle, *initial_cycle)
             }
-            | Self::LikelihoodForLead {
-                feebas_min_max_initial_cycle,
-                ..
-            } => *feebas_min_max_initial_cycle,
-            Self::CycleAtMomentNoEmuLog {
-                feebas_initial_cycle,
-                ..
-            } => (*feebas_initial_cycle, *feebas_initial_cycle),
-            Self::CycleAtMomentWithEmuLog { initial_cycle, .. } => (*initial_cycle, *initial_cycle),
             _ => (0, 0),
         }
     }

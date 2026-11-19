@@ -127,7 +127,7 @@ impl Wild3SearcherCycleOpts {
             _ => true,
         }
     }
-    fn get_min_max_initial_cycle_from_distrs(
+    fn get_min_max_cycle_from_distrs(
         distrs: &[&Wild3InitialCycleDistribution],
         feebas_vblank_count: Option<usize>,
     ) -> (usize, usize) {
@@ -150,12 +150,7 @@ impl Wild3SearcherCycleOpts {
             return Wild3GeneratorCycleOpts::Inactive;
         }
 
-        let min_max_initial_cycle = Self::get_min_max_initial_cycle_from_distrs(distrs, None);
-
-        let feebas_min_max_initial_cycle = match feebas_vblank_count {
-            None => (0, 0),
-            _ => Self::get_min_max_initial_cycle_from_distrs(distrs, feebas_vblank_count),
-        };
+        let min_max_cycle = Self::get_min_max_cycle_from_distrs(distrs, feebas_vblank_count);
 
         match self {
             Self::Inactive => Wild3GeneratorCycleOpts::Inactive,
@@ -164,8 +159,7 @@ impl Wild3SearcherCycleOpts {
                 generate_even_if_impossible,
                 ..
             } => Wild3GeneratorCycleOpts::Searching {
-                min_max_initial_cycle,
-                feebas_min_max_initial_cycle,
+                min_max_cycle,
                 generate_even_if_impossible: *generate_even_if_impossible,
                 consider_rng_manipulated_lead_pid: *consider_rng_manipulated_lead_pid,
             },
@@ -173,8 +167,7 @@ impl Wild3SearcherCycleOpts {
                 lead_cycle_speed, ..
             } => Wild3GeneratorCycleOpts::LikelihoodForLead {
                 lead_cycle_spd: *lead_cycle_speed,
-                min_max_initial_cycle,
-                feebas_min_max_initial_cycle,
+                min_max_cycle,
             },
         }
     }

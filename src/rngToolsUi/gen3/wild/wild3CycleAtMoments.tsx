@@ -214,7 +214,6 @@ const createEmptyUiResult = (): UiResult => {
     uiCycleAtMoments: [],
     vblankDurations: [],
     errorMsg: "",
-    caughtFeebas: false,
   };
 };
 
@@ -228,11 +227,6 @@ const createUiResult = async (
   if (compareCycleAtMomentsStr !== "" && json == null) {
     uiResult.errorMsg = "Error: Invalid JSON format or content.";
   }
-
-  // They should all be Feebas, or none Feebas. It only depends on the RNG advance at the very start.
-  uiResult.caughtFeebas = distFromTool.uiResults.some(
-    (res) => res.species === "Feebas",
-  );
 
   fillDataFromTool(uiResult, distFromTool);
 
@@ -278,7 +272,6 @@ const getInitialCycleLikelihood = (
   targetSetup: TargetSetup,
   preferredAudioInfluences: Wild3AudioInfluences,
   feebasCycles: number | null,
-  caughtFeebas: boolean,
 ): { qualitativeTxt: string; probabilityTxt: string } | null => {
   const json = parseCycleAtMomentsJsonStr(input);
   const initialCycle = json?.cycleAtMoments[0]?.cycle;
@@ -291,19 +284,18 @@ const getInitialCycleLikelihood = (
     targetSetup.action,
     preferredAudioInfluences,
   );
-  const { initial_cycle_distr, feebas_cycle_distr } =
-    getWild3InitialCycleDistributionForSetup({
-      ...targetSetup,
-      ...audioInfluences,
-      feebasCycles,
-    });
-  const distr = caughtFeebas ? feebas_cycle_distr : initial_cycle_distr;
-  if (distr == null) {
+  const { initial_cycle_distr } = getWild3InitialCycleDistributionForSetup({
+    ...targetSetup,
+    ...audioInfluences,
+    feebasCycles,
+  });
+
+  if (initial_cycle_distr == null) {
     return null;
   }
 
   const likelihood = getInitialCycleQualitativeProbability(
-    distr.distribution,
+    initial_cycle_distr.distribution,
     initialCycle,
   );
 
@@ -392,7 +384,6 @@ export const Wild3CycleAtMoments = ({
     targetSetup,
     preferredAudioInfluences,
     feebasCycles,
-    uiResult.caughtFeebas,
   );
   const resultRows: SummaryRow[] = [
     {

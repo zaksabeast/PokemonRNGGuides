@@ -6,7 +6,7 @@ use wasm_bindgen::prelude::*;
 use super::Wild3GeneratorOptions;
 use crate::{
     gen3::{
-        CycleFrameMoment, CycleRange, Gen3Method, Wild3EncounterIndex, Wild3GeneratorCycleOpts,
+        CycleFrameMoment, CycleRange, Gen3Method, Wild3GeneratorCycleOpts,
         Wild3InitialCycleDistribution, Wild3MapGameData, Wild3PlayingSong, Wild3SearcherResultMon,
         Wild3Weather, calculate_cycle_data_for_specific_lead_spd, generate_wild3,
     },
@@ -41,9 +41,12 @@ pub fn generate_gen3_wild_distribution(
     initial_cycle: Option<usize>,
     vblank_cycles: Option<Vec<usize>>,
 ) -> Wild3MethodDistributionResults {
-    let initial_cycle_distr =
-        game_data.get_non_feebas_initial_cycle_distr(opts.action, playing_song, weather);
-    let feebas_cycle_distr = game_data.get_feebas_initial_cycle_distr(weather);
+    let initial_cycle_distr = game_data.get_initial_cycle_distr(
+        opts.action,
+        playing_song,
+        weather,
+        opts.feebas_vblank_count,
+    );
 
     let cycle_opts_for_cycle = match (initial_cycle, vblank_cycles) {
         (Some(initial_cycle), Some(vblank_cycles)) => {
@@ -55,7 +58,6 @@ pub fn generate_gen3_wild_distribution(
         }
         _ => Wild3GeneratorCycleOpts::CycleAtMomentNoEmuLog {
             initial_cycle: initial_cycle_distr.median(),
-            feebas_initial_cycle: feebas_cycle_distr.median(),
             lead_cycle_spd,
             playing_song,
         },
@@ -86,8 +88,7 @@ pub fn generate_gen3_wild_distribution(
         advances,
         &Wild3GeneratorOptions {
             cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead {
-                min_max_initial_cycle: initial_cycle_distr.to_min_max(),
-                feebas_min_max_initial_cycle: feebas_cycle_distr.to_min_max(),
+                min_max_cycle: initial_cycle_distr.to_min_max(),
                 lead_cycle_spd,
             },
             methods,
@@ -95,7 +96,6 @@ pub fn generate_gen3_wild_distribution(
         },
         game_data,
         initial_cycle_distr,
-        feebas_cycle_distr,
     );
 
     Wild3MethodDistributionResults {
@@ -119,7 +119,6 @@ fn generate_dist_results(
     opts: &Wild3GeneratorOptions,
     game_data: &Wild3MapGameData,
     initial_cycle_distr: &Wild3InitialCycleDistribution,
-    feebas_cycle_distr: &Wild3InitialCycleDistribution,
 ) -> Vec<Wild3MethodDistributionResult> {
     let generated = generate_wild3(rng, opts, game_data);
     let lead_cycle_spd = opts.cycle_opts.lead_cycle_spd().unwrap();
@@ -133,19 +132,13 @@ fn generate_dist_results(
                 .get_encounter(opts.action, gen_res.encounter_idx)
                 .unwrap();
 
-            // Note: This works because we only support fishing on Feebas tiles.
-            let init_distr = if gen_res.encounter_idx == Wild3EncounterIndex::Feebas {
-                feebas_cycle_distr
-            } else {
-                initial_cycle_distr
-            };
             let searcher_res = Wild3SearcherResultMon::new(
                 gen_res,
                 opts,
                 rng.seed(),
                 advances,
                 encounter,
-                &[init_distr],
+                &[initial_cycle_distr],
             );
             let cycle_data = calculate_cycle_data_for_specific_lead_spd(
                 &searcher_res
@@ -154,7 +147,7 @@ fn generate_dist_results(
                     .unwrap()
                     .post_cycle_range,
                 lead_cycle_spd,
-                init_distr,
+                initial_cycle_distr,
             );
 
             Wild3MethodDistributionResult {

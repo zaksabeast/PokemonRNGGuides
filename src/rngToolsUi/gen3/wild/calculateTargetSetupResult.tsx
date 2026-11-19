@@ -132,7 +132,7 @@ export const calculateTargetSetupResult = async (
     targetSetup.action,
     audioInfluences,
   );
-  const { initial_cycle_opts, initial_cycle_distr, feebas_cycle_distr } =
+  const { initial_cycle_opts, initial_cycle_distr } =
     getWild3InitialCycleDistributionForSetup({
       map: targetSetup.map,
       action: targetSetup.action,
@@ -201,6 +201,18 @@ export const calculateTargetSetupResult = async (
         hasEncounter: false,
       };
     }
+    if (targetSetup.feebasState === "OnFeebasTile") {
+      return {
+        content: (
+          <div>
+            {targetSetup.feebasVblankCount == null
+              ? "The target Pokémon is not Feebas, but that setup results in a Feebas."
+              : "The target Pokémon is Feebas, but that setup doesn't result in a Feebas."}
+          </div>
+        ),
+        hasEncounter: false,
+      };
+    }
     return { content: null, hasEncounter: false };
   }
 
@@ -215,9 +227,6 @@ export const calculateTargetSetupResult = async (
   }
 
   const { species } = encounter.species_data;
-  // Note: We don't support fishing on non-feebas tile in the feebas map. Catching a non-feebas means
-  // CheckFeebas() failed.
-  const distr = species === "Feebas" ? feebas_cycle_distr : initial_cycle_distr;
 
   const nature = nature_from_pid(res.pid);
 
@@ -234,7 +243,7 @@ export const calculateTargetSetupResult = async (
 
   const probabilityInfo =
     showProbabilityInfo && species !== "Feebas"
-      ? await getProbabilityInfo(res, lead_cycle_speed, distr)
+      ? await getProbabilityInfo(res, lead_cycle_speed, initial_cycle_distr)
       : null;
   const abilityStr = await getAbilityDisplayStr(species, res.pid);
 

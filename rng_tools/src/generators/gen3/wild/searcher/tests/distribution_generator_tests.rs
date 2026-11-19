@@ -2,8 +2,8 @@ use super::*;
 use crate::{
     assert_list_eq,
     gen3::{
-        CdfKnot, Gen3Method, Moment, Wild3Action, Wild3EncounterGameData, Wild3FeebasState,
-        Wild3InitialCycleDistribution, Wild3MapGameData,
+        CdfKnot, Gen3Method, Moment, Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex,
+        Wild3FeebasState, Wild3InitialCycleDistribution, Wild3MapGameData,
     },
 };
 
@@ -159,7 +159,7 @@ fn test_wild3_distribution_generator_feebas() {
             .iter()
             .all(|result| result.searcher_res.encounter_idx != Wild3EncounterIndex::Feebas)
     );
-    assert!((non_feebas_likelihood - 1.0).abs() < 1e-10);
+    assert_eq!(non_feebas_likelihood, 0.0);
 }
 
 #[test]

@@ -89,6 +89,12 @@ fn search_wild3_naive_at_given_advance(
             let pokeblock_feebas_products = iproduct!(&pokeblock_states, &feebas_vblank_counts);
 
             for (safari_pokeblock, feebas_vblank_count) in pokeblock_feebas_products {
+                let matching_initial_cycle_distrs = initial_cycle_distrs
+                    .iter()
+                    .copied()
+                    .filter(|distr| distr.feebas_vblank_count == *feebas_vblank_count)
+                    .collect_vec();
+
                 let gen_opts = Wild3GeneratorOptions {
                     tid: opts.tid,
                     sid: opts.sid,
@@ -105,16 +111,11 @@ fn search_wild3_naive_at_given_advance(
                     safari_pokeblock: safari_pokeblock.clone(),
                     cycle_opts: opts
                         .cycle_opts
-                        .generator_cycle_opts(&initial_cycle_distrs, *feebas_vblank_count),
+                        .generator_cycle_opts(&matching_initial_cycle_distrs, *feebas_vblank_count),
                     using_white_flute: opts.using_white_flute,
                 };
 
                 let generated = generate_wild3(rng, &gen_opts, &map_setups.map_data);
-                let matching_initial_cycle_distrs = initial_cycle_distrs
-                    .iter()
-                    .copied()
-                    .filter(|distr| distr.feebas_vblank_count == *feebas_vblank_count)
-                    .collect_vec();
 
                 for gen_res in &generated.mon_results {
                     let encounter = map_setups

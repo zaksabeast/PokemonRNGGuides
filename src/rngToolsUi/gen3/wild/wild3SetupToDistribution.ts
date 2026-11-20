@@ -130,13 +130,17 @@ export const setupToDistributions = async (
     targetSetup.action,
     preferredAudioInfluences,
   );
-  const { initial_cycle_opts, feebas_cycle_distr } =
+  const { initial_cycle_opts, initial_cycle_distr } =
     getWild3InitialCycleDistributionForSetup({
       ...targetSetup,
       ...audioInfluences,
       feebasCycles,
     });
-  if (map_data == null || initial_cycle_opts == null) {
+  if (
+    map_data == null ||
+    initial_cycle_distr == null ||
+    initial_cycle_opts == null
+  ) {
     return {
       uiResults: [],
       cycle_at_moments: [],
@@ -153,7 +157,7 @@ export const setupToDistributions = async (
     targetSetup.feebasVblankCount != null;
 
   const gameData = forFeebas
-    ? withFeebasCycleDistributionsForMapData(map_data, [feebas_cycle_distr])
+    ? withFeebasCycleDistributionsForMapData(map_data, [initial_cycle_distr])
     : map_data;
 
   const argsWithoutEmuLog = (leadCycleSpd: number) => ({
@@ -176,18 +180,6 @@ export const setupToDistributions = async (
     )
     .otherwise(() => argsWithoutEmuLog(AVERAGE_LEAD_CYCLE_SPEED));
 
-  console.log([
-    targetSetup.targetPaintingAdvs.before,
-    targetSetup.targetPaintingAdvs.after,
-    opts,
-    gameData,
-    distributionArgs.leadCycleSpd,
-    audioInfluences.playing_song,
-    audioInfluences.weather,
-    distributionArgs.initialCycleAtSweetScent,
-    distributionArgs.vblankCycles,
-  ]);
-
   const { results, cycle_at_moments } =
     await rngTools.generate_gen3_wild_distribution(
       targetSetup.targetPaintingAdvs.before,
@@ -200,8 +192,6 @@ export const setupToDistributions = async (
       distributionArgs.initialCycleAtSweetScent,
       distributionArgs.vblankCycles,
     );
-
-  console.log({ results, cycle_at_moments });
 
   const resultForTargetMethod = results.find(
     (res) => res.searcher_res.method === targetSetup.targetMethod,

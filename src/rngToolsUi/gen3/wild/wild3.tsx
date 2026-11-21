@@ -122,7 +122,7 @@ const targetSetupAtomSchema = z.object({
         .number()
         .int()
         .min(0)
-        .max(10)
+        .max(5)
         .nullable()
         .optional()
         .default(null),

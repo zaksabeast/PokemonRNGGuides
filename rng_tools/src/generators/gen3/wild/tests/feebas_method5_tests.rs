@@ -81,7 +81,7 @@ fn wild3_feebas_method5_search_window() {
         },
     ];
 
-    for (min_max_cycle, generate_even_if_impossible, expected) in [
+    for (min_max_initial_cycle, generate_even_if_impossible, expected) in [
         ((45_000, 75_000), false, vec![]),
         ((270_000, 270_000), false, expected_candidates.clone()),
         ((45_000, 75_000), true, expected_candidates),
@@ -89,7 +89,7 @@ fn wild3_feebas_method5_search_window() {
         let mut opts = options(Gen3Lead::Egg);
         opts.methods = vec![Gen3Method::Wild5];
         opts.cycle_opts = Wild3GeneratorCycleOpts::Searching {
-            min_max_cycle,
+            min_max_initial_cycle,
             generate_even_if_impossible,
             consider_rng_manipulated_lead_pid: false,
         };

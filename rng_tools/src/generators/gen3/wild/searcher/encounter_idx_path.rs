@@ -215,7 +215,7 @@ impl<'a> Wild3MapSetupsForReverse<'a> {
     }
 }
 
-const MAX_FEEBAS_VBLANK_COUNT: usize = 5;
+const MAX_FEEBAS_VBLANK_COUNT: usize = 5; // The maximum vblank count according to current distributions is 3.
 
 impl<'a> EncounterIdxPathGenerator<'a> {
     pub fn new(

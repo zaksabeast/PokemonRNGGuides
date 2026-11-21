@@ -89,7 +89,7 @@ const getInitialCycleDistributions = (
           distribution: info.distribution,
           feebas_vblank_count: undefined,
           feebas_vblank_count_probability: 1,
-          check_feebas_cycle: undefined,
+          feebas_cycle: undefined,
         };
       }),
     ),

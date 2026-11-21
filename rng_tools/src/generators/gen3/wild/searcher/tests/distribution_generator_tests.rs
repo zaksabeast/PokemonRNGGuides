@@ -67,7 +67,7 @@ fn test_wild3_distribution_generator_feebas() {
         ],
         feebas_vblank_count: None,
         feebas_vblank_count_probability: 1.0,
-        check_feebas_cycle: None,
+        feebas_cycle: None,
     };
     let feebas_cycle_distr = Wild3InitialCycleDistribution {
         min: 47_534,
@@ -84,7 +84,7 @@ fn test_wild3_distribution_generator_feebas() {
         ],
         feebas_vblank_count: Some(3),
         feebas_vblank_count_probability: 0.92,
-        check_feebas_cycle: Some(736_792),
+        feebas_cycle: Some(736_792),
         ..initial_cycle_distr.clone()
     };
     let game_data = Wild3MapGameData {

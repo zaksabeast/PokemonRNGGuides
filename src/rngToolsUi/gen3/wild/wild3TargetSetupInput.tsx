@@ -145,7 +145,7 @@ const Validator = z
     requiresWhiteFlute: z.boolean(),
     safariPokeblock: pokeblockSchema,
     feebasCycles: z.array(z.number().int().min(0).max(0xffffffff)),
-    feebasVblankCount: z.number().int().min(0).max(10),
+    feebasVblankCount: z.number().int().min(0).max(5),
   })
   .refine(
     ({ feebasState, feebasCycles }) =>
@@ -227,17 +227,17 @@ const convertFormStateValuesToTargetSetup = (
 };
 
 const FeebasVblankCountField = ({
-  checkFeebasCycle,
+  feebasCycle,
 }: {
-  checkFeebasCycle: number | null;
+  feebasCycle: number | null;
 }) => {
   const ids = useFieldIds();
   const [{ value, onBlur }, { error }, { setValue }] =
     useField<number>("feebasVblankCount");
   const distributions =
-    checkFeebasCycle == null
+    feebasCycle == null
       ? []
-      : getAllFeebasCycleDistributions(checkFeebasCycle).filter(
+      : getAllFeebasCycleDistributions(feebasCycle).filter(
           (distribution) => distribution.action === "OldRod",
         );
   const isSelectedCountAvailable = feebasVblankCounts.some(
@@ -269,7 +269,7 @@ const FeebasVblankCountField = ({
       label="VBlank count during Feebas tile check"
       errorMessage={error}
     >
-      {checkFeebasCycle == null ? (
+      {feebasCycle == null ? (
         <span>Select a Feebas fishing spot to see the likelihoods.</span>
       ) : (
         <VblankCountRows
@@ -401,9 +401,7 @@ const Fields = ({
             canOnlySelectOne
           />
           {feebasState === "OnFeebasTile" && (
-            <FeebasVblankCountField
-              checkFeebasCycle={feebasCycles[0] ?? null}
-            />
+            <FeebasVblankCountField feebasCycle={feebasCycles[0] ?? null} />
           )}
         </>
       )}

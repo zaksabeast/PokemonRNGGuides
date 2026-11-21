@@ -28,7 +28,6 @@ pub struct Wild3MethodDistributionResults {
     pub cycle_at_moments: Vec<CycleFrameMoment>,
 }
 
-/** game_data should only contain 1 feebas_vblank_count. the function uses the first one and ignore the others. */
 #[wasm_bindgen]
 pub fn generate_gen3_wild_distribution(
     initial_seed: u32,
@@ -88,7 +87,7 @@ pub fn generate_gen3_wild_distribution(
         advances,
         &Wild3GeneratorOptions {
             cycle_opts: Wild3GeneratorCycleOpts::LikelihoodForLead {
-                min_max_cycle: initial_cycle_distr.to_min_max(),
+                min_max_initial_cycle: initial_cycle_distr.to_min_max(),
                 lead_cycle_spd,
             },
             methods,
@@ -153,7 +152,7 @@ fn generate_dist_results(
             Wild3MethodDistributionResult {
                 searcher_res,
                 initial_cycle_range: cycle_data.initial_cycle_range,
-                method_probability: cycle_data.method_probability, // It already includes init_distr.feebas_vblank_count_probability
+                method_probability: cycle_data.method_probability, // It already includes initial_cycle_distr.feebas_vblank_count_probability
             }
         })
         .collect()

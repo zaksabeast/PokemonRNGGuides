@@ -241,10 +241,9 @@ export const calculateTargetSetupResult = async (
   const gender = await rngTools.get_species_gender_from_pid(species, res.pid);
   const { ivs } = res;
 
-  const probabilityInfo =
-    showProbabilityInfo && species !== "Feebas"
-      ? await getProbabilityInfo(res, lead_cycle_speed, initial_cycle_distr)
-      : null;
+  const probabilityInfo = showProbabilityInfo
+    ? await getProbabilityInfo(res, lead_cycle_speed, initial_cycle_distr)
+    : null;
   const abilityStr = await getAbilityDisplayStr(species, res.pid);
 
   return {

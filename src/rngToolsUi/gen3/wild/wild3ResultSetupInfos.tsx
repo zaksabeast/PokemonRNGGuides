@@ -148,9 +148,9 @@ const getResultSetupInfoColumns = ({
       render: (cycleData, values) => {
         return isFishingAction(values.action) &&
           values.mapId === FEEBAS_MAP &&
-          cycleData?.check_feebas_cycle != null ? (
+          cycleData?.feebas_cycle != null ? (
           <FeebasTileVisualizerButton
-            selectedTileCycle={cycleData.check_feebas_cycle}
+            selectedTileCycle={cycleData.feebas_cycle}
           />
         ) : null;
       },
@@ -467,7 +467,7 @@ export const Wild3ResultSetupInfos = ({
         ? null
         : setupInfoToTargetSetup(setupInfo, tidForAceSid);
     setTargetSetup(newTargetSetup);
-    setFeebasCycles(setupInfo?.primaryCycleData?.check_feebas_cycle ?? null);
+    setFeebasCycles(setupInfo?.primaryCycleData?.feebas_cycle ?? null);
 
     if (setupInfo != null) {
       setAudioInfluences(setupInfo.targetAudioInfluences);

@@ -117,9 +117,11 @@ const getColumns = (targetSetup: TargetSetup): ResultColumn<UiResult>[] => {
   return columns;
 };
 
-const formatInitialCycleSummary = (
-  summary: ReturnType<typeof getInitialCycleSummary>,
-): string =>
+const formatInitialCycleSummary = (summary: {
+  min: number;
+  max: number;
+  median: number;
+}): string =>
   `${formatLargeInteger(summary.min)} - ${formatLargeInteger(summary.max)} (Median: ${formatLargeInteger(summary.median)})`;
 
 export const Wild3LeadCycleSpeedSelector = ({
@@ -156,7 +158,7 @@ export const Wild3LeadCycleSpeedSelector = ({
   const isFeebas =
     targetSetup.feebasState === "OnFeebasTile" && feebasCycles != null;
   const feebasTile = isFeebas
-    ? getFeebasTiles().find((tile) => tile.checkFeebasCycle === feebasCycles)
+    ? getFeebasTiles().find((tile) => tile.feebasCycle === feebasCycles)
     : null;
   const initialCycleSummary = getInitialCycleSummary(
     initial_cycle_distr?.distribution ?? [],
@@ -178,7 +180,7 @@ export const Wild3LeadCycleSpeedSelector = ({
       feebasCycles,
       {
         LikelihoodForLead: {
-          min_max_cycle: [initialCycleMax, initialCycleMax],
+          min_max_initial_cycle: [initialCycleMax, initialCycleMax],
           lead_cycle_spd: actualLeadCycleSpeed ?? 0,
         },
       },
@@ -229,7 +231,7 @@ export const Wild3LeadCycleSpeedSelector = ({
                     initial_cycle_distr?.feebas_vblank_count_probability ?? 0,
                   )}{" "}
                   likelihood when using tile
-                  {` (${feebasTile.ingameX}, ${feebasTile.ingameY})`}
+                  {` (${feebasTile.ingameX}, ${feebasTile.ingameY}, ID=${feebasTile.ingameTileId})`}
                 </Typography.Text>
               )}
               <Typography.Text>

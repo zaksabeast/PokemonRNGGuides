@@ -192,7 +192,7 @@ impl CycleFrameCounter {
             Wild3GeneratorCycleOpts::Searching {
                 generate_even_if_impossible,
                 consider_rng_manipulated_lead_pid,
-                min_max_cycle,
+                min_max_initial_cycle,
                 ..
             } => {
                 if !*consider_rng_manipulated_lead_pid && !*generate_even_if_impossible {
@@ -205,15 +205,15 @@ impl CycleFrameCounter {
                     return CycleFrameCounter::CheckValidAllLeadSpds {
                         min_lead_cycle_spd,
                         max_lead_cycle_spd,
-                        earliest_slowest_cycle: min_max_cycle.0,
-                        latest_fastest_cycle: min_max_cycle.1,
+                        earliest_slowest_cycle: min_max_initial_cycle.0,
+                        latest_fastest_cycle: min_max_initial_cycle.1,
                         base_cycle_count: 0,
                         lead_pid_mod_count: 0,
                     };
                 }
                 CycleFrameCounter::MinMaxRange {
                     min_max_cycles: MinMaxCycleFrame::new(
-                        *min_max_cycle,
+                        *min_max_initial_cycle,
                         MinMaxCycleFrame::min_max_lead_cycle_spd(
                             opts.lead == Gen3Lead::Egg,
                             true,
@@ -227,11 +227,11 @@ impl CycleFrameCounter {
             }
             Wild3GeneratorCycleOpts::LikelihoodForLead {
                 lead_cycle_spd,
-                min_max_cycle,
+                min_max_initial_cycle,
                 ..
             } => CycleFrameCounter::MinMaxRange {
                 min_max_cycles: MinMaxCycleFrame::new(
-                    *min_max_cycle,
+                    *min_max_initial_cycle,
                     (*lead_cycle_spd, *lead_cycle_spd),
                 ),
                 base_cycle_count: 0,

@@ -28,7 +28,7 @@ pub enum Wild3Weather {
 pub struct Wild3FeebasTile {
     pub x: usize,
     pub y: usize,
-    pub check_feebas_cycle: usize,
+    pub feebas_cycle: usize,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Tsify)]
@@ -36,7 +36,7 @@ pub struct Wild3FeebasTile {
 pub struct Wild3InitialCycleDistribution {
     pub feebas_vblank_count: Option<usize>,
     pub feebas_vblank_count_probability: f64,
-    pub check_feebas_cycle: Option<usize>,
+    pub feebas_cycle: Option<usize>,
     pub min: usize,
     pub max: usize,
     pub distribution: Vec<CdfKnot>,
@@ -72,7 +72,7 @@ impl Wild3InitialCycleDistribution {
         Self {
             feebas_vblank_count: None,
             feebas_vblank_count_probability: 1.0,
-            check_feebas_cycle: None,
+            feebas_cycle: None,
             min,
             max,
             distribution: vec![

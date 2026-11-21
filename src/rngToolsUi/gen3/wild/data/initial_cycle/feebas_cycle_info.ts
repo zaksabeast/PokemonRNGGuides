@@ -12,6 +12,7 @@ import {
 import { isFishingAction, wild3Actions } from "~/rngToolsUi/gen3/wild/utils";
 import { range } from "lodash-es";
 
+const MAX_FEEBAS_VBLANK_COUNT = 5; // The maximum vblank count according to current distributions is 3.
 const VBLANK_FREQ = 280_896;
 const FISHING_ACTIONS: Wild3Action[] = wild3Actions.filter((action) =>
   isFishingAction(action),
@@ -19,10 +20,10 @@ const FISHING_ACTIONS: Wild3Action[] = wild3Actions.filter((action) =>
 
 const simulateCheckFeebasScenario = (
   scenario: FeebasCycleScenario,
-  checkFeebasCycle: number,
+  feebasCycle: number,
 ): { vblankCount: number; cycle: number } => {
   const [startCycle, vblankDurations] = scenario;
-  let remainingCycles = checkFeebasCycle;
+  let remainingCycles = feebasCycle;
   let cycle = startCycle;
   let vblankCount = 0;
 
@@ -35,7 +36,11 @@ const simulateCheckFeebasScenario = (
   return { vblankCount, cycle: cycle + remainingCycles };
 };
 
-const getConditionalCdf = (cycleWeights: Map<number, number>): CdfKnot[] => {
+const getWeightedCdf = (cycleWeights: Map<number, number>): CdfKnot[] => {
+  if (cycleWeights.size === 0) {
+    return [];
+  }
+
   const sortedCycleWeights = [...cycleWeights].sort(
     ([left], [right]) => left - right,
   );
@@ -68,7 +73,7 @@ const getConditionalCdf = (cycleWeights: Map<number, number>): CdfKnot[] => {
 class CycleWeightsByVblankCount {
   // map[vblankCount][cycle] = weight
   private map = new Map<number, Map<number, number>>(
-    range(6).map((vblank) => [vblank, new Map()]),
+    range(MAX_FEEBAS_VBLANK_COUNT).map((vblank) => [vblank, new Map()]),
   );
   totalWeight = 0;
 
@@ -98,7 +103,7 @@ class CycleWeightsByVblankCount {
 }
 
 const getFeebasCycleDistributionsFromContext = (
-  checkFeebasCycle: number,
+  feebasCycle: number,
   context: FeebasCycleDatasetGroup,
 ): Wild3InitialCycleDistribution[] => {
   const cycleWeightsByVblankCount = new CycleWeightsByVblankCount();
@@ -106,7 +111,7 @@ const getFeebasCycleDistributionsFromContext = (
   for (const scenario of context.scenarios) {
     const { vblankCount, cycle } = simulateCheckFeebasScenario(
       scenario,
-      checkFeebasCycle,
+      feebasCycle,
     );
     const weight = scenario[2];
     cycleWeightsByVblankCount.addScenarioResult(vblankCount, cycle, weight);
@@ -120,13 +125,12 @@ const getFeebasCycleDistributionsFromContext = (
         weightByCycle,
         feebas_vblank_count_probability,
       }) => {
-        const distribution =
-          weightByCycle.size === 0 ? [] : getConditionalCdf(weightByCycle);
+        const distribution = getWeightedCdf(weightByCycle);
 
         return FISHING_ACTIONS.map((action) => ({
           feebas_vblank_count,
           feebas_vblank_count_probability,
-          check_feebas_cycle: checkFeebasCycle,
+          feebas_cycle: feebasCycle,
           min: distribution[0]?.cycle ?? 0,
           max: distribution[distribution.length - 1]?.cycle ?? 0,
           distribution,
@@ -139,11 +143,10 @@ const getFeebasCycleDistributionsFromContext = (
 };
 
 const getFeebasCycleDistributionsForAllVblankCounts = (
-  checkFeebasCycle: number,
+  feebasCycle: number,
   weather: Wild3Weather,
 ): Wild3InitialCycleDistribution[] => {
-  const cachedDistributions =
-    feebasCycleDistributionsCache.get(checkFeebasCycle);
+  const cachedDistributions = feebasCycleDistributionsCache.get(feebasCycle);
 
   if (cachedDistributions != null) {
     return cachedDistributions.filter((distr) => {
@@ -158,7 +161,7 @@ const getFeebasCycleDistributionsForAllVblankCounts = (
     return [];
   }
 
-  return getFeebasCycleDistributionsFromContext(checkFeebasCycle, context);
+  return getFeebasCycleDistributionsFromContext(feebasCycle, context);
 };
 
 const feebasCycleDistributionsCache = new Map<
@@ -169,35 +172,34 @@ const feebasWeathers: Wild3Weather[] = ["Sunny", "Rain", "Thunderstorm"];
 const FEEBAS_SONG = "SurfSong";
 
 export const getAllFeebasCycleDistributions = (
-  checkFeebasCycle: number,
+  feebasCycle: number,
 ): Wild3InitialCycleDistribution[] => {
-  const cachedDistributions =
-    feebasCycleDistributionsCache.get(checkFeebasCycle);
+  const cachedDistributions = feebasCycleDistributionsCache.get(feebasCycle);
+
   if (cachedDistributions != null) {
     return cachedDistributions;
   }
 
   const distributions = feebasWeathers.flatMap((weather) =>
-    getFeebasCycleDistributionsForAllVblankCounts(checkFeebasCycle, weather),
+    getFeebasCycleDistributionsForAllVblankCounts(feebasCycle, weather),
   );
-  feebasCycleDistributionsCache.set(checkFeebasCycle, distributions);
+  feebasCycleDistributionsCache.set(feebasCycle, distributions);
 
   return distributions;
 };
 
 export const getFeebasCycleDistribution = (
-  checkFeebasCycle: number,
+  feebasCycle: number,
   weather: Wild3Weather,
   feebasVblankCount: number,
 ): Wild3InitialCycleDistribution => {
   return (
-    getFeebasCycleDistributionsForAllVblankCounts(
-      checkFeebasCycle,
-      weather,
-    ).find((distr) => distr.feebas_vblank_count === feebasVblankCount) ?? {
+    getFeebasCycleDistributionsForAllVblankCounts(feebasCycle, weather).find(
+      (distr) => distr.feebas_vblank_count === feebasVblankCount,
+    ) ?? {
       feebas_vblank_count: feebasVblankCount,
       feebas_vblank_count_probability: 0,
-      check_feebas_cycle: checkFeebasCycle,
+      feebas_cycle: feebasCycle,
       min: 0,
       max: 0,
       distribution: [],

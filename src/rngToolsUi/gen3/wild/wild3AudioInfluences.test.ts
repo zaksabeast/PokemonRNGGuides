@@ -331,7 +331,7 @@ test("distribution selection matches all three audio influence fields", () => {
     max: 99196,
     feebas_vblank_count: undefined,
     feebas_vblank_count_probability: 0,
-    check_feebas_cycle: undefined,
+    feebas_cycle: undefined,
   });
 
   expect(
@@ -352,7 +352,7 @@ const lower: Wild3SearcherCycleData = {
   method_probability: 0.25,
   playing_song: "MapSong",
   weather: "Sunny",
-  check_feebas_cycle: undefined,
+  feebas_cycle: undefined,
 };
 const upper: Wild3SearcherCycleData = {
   lead_pid_cycle_count: 868,
@@ -360,7 +360,7 @@ const upper: Wild3SearcherCycleData = {
   method_probability: 0.75,
   playing_song: "BikeSong",
   weather: "Rain",
-  check_feebas_cycle: undefined,
+  feebas_cycle: undefined,
 };
 
 test("selected setup audio influences normalize to the map and action", () => {

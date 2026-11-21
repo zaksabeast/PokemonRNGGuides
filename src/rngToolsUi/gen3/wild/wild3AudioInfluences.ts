@@ -177,7 +177,7 @@ export const getWild3InitialCycleDistributionForSetup = (
     };
   }
   const initial_cycle_opts = {
-    min_max_cycle: [
+    min_max_initial_cycle: [
       initial_cycle_distr.min,
       initial_cycle_distr.max,
     ] satisfies [number, number],

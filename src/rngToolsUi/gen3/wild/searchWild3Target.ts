@@ -195,7 +195,6 @@ export const searchWild3Target = async (values: FormState) => {
     : values.initial_advances;
 
   const map_setups = getMapSetupsConsideringStateSubsets(values);
-
   const methods = values.recommendedSetups
     ? (["Wild1", "Wild2", "Wild4"] as Gen3Method[])
     : values.methods;

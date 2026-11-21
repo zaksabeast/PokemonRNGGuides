@@ -68,9 +68,8 @@ fn search_wild3_naive_at_given_advance(
                 vec![None]
             };
 
-            // Note: InMapButNotOnFeebasTile is not supported.
             let fishing_on_feebas_tile =
-                action.is_fishing() && *feebas_state != Wild3FeebasState::NotInMap;
+                action.is_fishing() && *feebas_state == Wild3FeebasState::OnFeebasTile;
 
             let initial_cycle_distrs = opts
                 .cycle_opts
@@ -117,7 +116,7 @@ fn search_wild3_naive_at_given_advance(
 
                 let generated = generate_wild3(rng, &gen_opts, &map_setups.map_data);
 
-                for gen_res in &generated.mon_results {
+                generated.mon_results.iter().for_each(|gen_res| {
                     let encounter = map_setups
                         .map_data
                         .get_encounter(gen_opts.action, gen_res.encounter_idx)
@@ -130,7 +129,7 @@ fn search_wild3_naive_at_given_advance(
                         encounter,
                         &matching_initial_cycle_distrs,
                     ));
-                }
+                });
             }
         }
     }

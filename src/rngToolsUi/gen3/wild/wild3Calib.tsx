@@ -334,7 +334,7 @@ export const Wild3Calib = ({
         show:
           targetSetupProp.map === FEEBAS_MAP &&
           isFishingAction(targetSetupProp.action) &&
-          finalFeebasCycles !== null,
+          finalFeebasCycles != null,
       },
     ];
 

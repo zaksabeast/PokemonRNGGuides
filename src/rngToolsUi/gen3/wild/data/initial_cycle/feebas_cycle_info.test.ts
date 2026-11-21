@@ -12,7 +12,7 @@ test("Feebas distributions preserve count probabilities and produce continuous c
   const probabilitiesByContext = new Map<string, number>();
 
   for (const result of distributions) {
-    expect(result.check_feebas_cycle).toBe(cycle_counter);
+    expect(result.feebas_cycle).toBe(cycle_counter);
     expect(result.playing_song).toBe("SurfSong");
     expect(result.weather).toBe("Sunny");
     expect(result.feebas_vblank_count).toBeGreaterThanOrEqual(0);
@@ -65,7 +65,7 @@ test("Feebas distributions have zero probability without matching observations",
   expect(getFeebasCycleDistribution(205_803, "Thunderstorm", 10)).toEqual({
     feebas_vblank_count: 10,
     feebas_vblank_count_probability: 0,
-    check_feebas_cycle: 205_803,
+    feebas_cycle: 205_803,
     min: 0,
     max: 0,
     distribution: [],

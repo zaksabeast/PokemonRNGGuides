@@ -891,13 +891,13 @@ fn test_search_reverse_wild3_feebas_vblank_counts() {
                     Wild3InitialCycleDistribution {
                         feebas_vblank_count: Some(0),
                         feebas_vblank_count_probability: 0.2,
-                        check_feebas_cycle: Some(205_803),
+                        feebas_cycle: Some(205_803),
                         ..normal_distribution.clone()
                     },
                     Wild3InitialCycleDistribution {
                         feebas_vblank_count: Some(1),
                         feebas_vblank_count_probability: 0.8,
-                        check_feebas_cycle: Some(205_803),
+                        feebas_cycle: Some(205_803),
                         ..normal_distribution
                     },
                 ],
@@ -950,7 +950,7 @@ fn test_search_reverse_wild3_feebas_vblank_counts() {
             result.cycle_data_by_lead.map(|data| {
                 (
                     data.ideal_lead.method_probability,
-                    data.ideal_lead.check_feebas_cycle,
+                    data.ideal_lead.feebas_cycle,
                 )
             }),
         )

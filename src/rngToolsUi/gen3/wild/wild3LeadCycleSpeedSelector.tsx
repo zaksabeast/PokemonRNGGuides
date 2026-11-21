@@ -231,7 +231,8 @@ export const Wild3LeadCycleSpeedSelector = ({
                     initial_cycle_distr?.feebas_vblank_count_probability ?? 0,
                   )}{" "}
                   likelihood when using tile
-                  {` (${feebasTile.ingameX}, ${feebasTile.ingameY}, ID=${feebasTile.ingameTileId})`}
+                  {` (${feebasTile.ingameX}, ${feebasTile.ingameY}, ID=${feebasTile.ingameTileId})`}{" "}
+                  during {audioInfluences.weather} weather
                 </Typography.Text>
               )}
               <Typography.Text>

@@ -112,4 +112,11 @@ impl Wild3InitialCycleDistribution {
             None => self.min + (self.max - self.min) / 2,
         }
     }
+    pub fn is_equivalent_action(&self, action: Wild3Action) -> bool {
+        if self.action.is_fishing() && action.is_fishing() {
+            return true;
+        }
+
+        self.action == action
+    }
 }

@@ -150,7 +150,7 @@ impl Wild3MapGameData {
         self.initial_cycle_distrs
             .iter()
             .find(|distr| {
-                distr.action == action
+                distr.is_equivalent_action(action)
                     && distr.playing_song == playing_song
                     && distr.weather == weather
                     && distr.feebas_vblank_count == feebas_vblank_count

@@ -191,11 +191,11 @@ impl Wild3SearcherCycleOpts {
                 let list = map_data
                     .initial_cycle_distrs
                     .iter()
-                    .filter(|calibration| {
-                        calibration.action == action
-                            && (*consider_weather || calibration.weather == Wild3Weather::Sunny)
+                    .filter(|init_distr| {
+                        init_distr.is_equivalent_action(action)
+                            && (*consider_weather || init_distr.weather == Wild3Weather::Sunny)
                             && (*consider_bike
-                                || calibration.playing_song != Wild3PlayingSong::BikeSong)
+                                || init_distr.playing_song != Wild3PlayingSong::BikeSong)
                     })
                     .collect_vec();
 
@@ -214,10 +214,10 @@ impl Wild3SearcherCycleOpts {
                 let list = map_data
                     .initial_cycle_distrs
                     .iter()
-                    .filter(|distribution| {
-                        distribution.action == action
-                            && distribution.playing_song == *playing_song
-                            && distribution.weather == *weather
+                    .filter(|init_distr| {
+                        init_distr.is_equivalent_action(action)
+                            && init_distr.playing_song == *playing_song
+                            && init_distr.weather == *weather
                     })
                     .collect_vec();
 

@@ -145,7 +145,10 @@ fn extend_pid_paths_to_results(
                     .cycle_opts
                     .get_initial_cycle_distrs(&setup.map_data, action)
                 {
-                    groups.entry(distr.feebas_vblank_count).or_default().push(distr);
+                    groups
+                        .entry(distr.feebas_vblank_count)
+                        .or_default()
+                        .push(distr);
                 }
 
                 groups

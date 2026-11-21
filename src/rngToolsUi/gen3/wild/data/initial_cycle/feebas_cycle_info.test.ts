@@ -16,7 +16,25 @@ test("Feebas distributions preserve count probabilities and produce continuous c
     expect(result.playing_song).toBe("SurfSong");
     expect(result.weather).toBe("Sunny");
     expect(result.feebas_vblank_count).toBeGreaterThanOrEqual(0);
-    expect(result.feebas_vblank_count_probability).toBeGreaterThan(0);
+    expect(result.feebas_vblank_count_probability).toBeGreaterThanOrEqual(0);
+
+    const key = `${result.action}:${result.playing_song}:${result.weather}`;
+    probabilitiesByContext.set(
+      key,
+      (probabilitiesByContext.get(key) ?? 0) +
+        result.feebas_vblank_count_probability,
+    );
+
+    if (result.feebas_vblank_count_probability === 0) {
+      expect({
+        min: result.min,
+        max: result.max,
+        distribution: result.distribution,
+      }).toEqual({ min: 0, max: 0, distribution: [] });
+
+      continue;
+    }
+
     expect(result.distribution[0]).toEqual({
       cycle: result.min,
       probability: 0,
@@ -33,13 +51,6 @@ test("Feebas distributions preserve count probabilities and produce continuous c
         result.distribution[index - 1].probability,
       );
     }
-
-    const key = `${result.action}:${result.playing_song}:${result.weather}`;
-    probabilitiesByContext.set(
-      key,
-      (probabilitiesByContext.get(key) ?? 0) +
-        result.feebas_vblank_count_probability,
-    );
   }
 
   expect(probabilitiesByContext.size).toBe(3);

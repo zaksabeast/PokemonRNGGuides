@@ -119,13 +119,13 @@ pub enum Wild3SearcherCycleOpts {
 
 impl Wild3SearcherCycleOpts {
     pub fn generate_even_if_impossible(&self) -> bool {
-        match self {
+        !matches!(
+            self,
             Self::SearchNewTarget {
                 generate_even_if_impossible: false,
                 ..
-            } => false,
-            _ => true,
-        }
+            }
+        )
     }
     fn get_min_max_cycle_from_distrs(
         distrs: &[&Wild3InitialCycleDistribution],

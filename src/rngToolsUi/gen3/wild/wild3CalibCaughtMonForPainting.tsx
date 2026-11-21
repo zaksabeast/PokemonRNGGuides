@@ -124,6 +124,7 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
             adv_after_painting: targetSetup.targetPaintingAdvs.after,
           },
           method: result.method,
+          feebas_vblank_count: result.feebas_vblank_count,
           score,
           probabilityHitMethodsAtAdvance,
           distanceFromTargetAfter,

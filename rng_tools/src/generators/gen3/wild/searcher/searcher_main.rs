@@ -118,11 +118,22 @@ pub enum Wild3SearcherCycleOpts {
 }
 
 impl Wild3SearcherCycleOpts {
-    fn get_min_max_initial_cycle_from_distrs(
+    pub fn generate_even_if_impossible(&self) -> bool {
+        !matches!(
+            self,
+            Self::SearchNewTarget {
+                generate_even_if_impossible: false,
+                ..
+            }
+        )
+    }
+    fn get_min_max_cycle_from_distrs(
         distrs: &[&Wild3InitialCycleDistribution],
+        feebas_vblank_count: Option<usize>,
     ) -> (usize, usize) {
         distrs
             .iter()
+            .filter(|calibration| calibration.feebas_vblank_count == feebas_vblank_count)
             .map(|calibration| (calibration.min, calibration.max))
             .reduce(|(min, max), (next_min, next_max)| (min.min(next_min), max.max(next_max)))
             .unwrap_or_else(|| {
@@ -133,12 +144,14 @@ impl Wild3SearcherCycleOpts {
     pub fn generator_cycle_opts(
         &self,
         distrs: &[&Wild3InitialCycleDistribution],
+        feebas_vblank_count: Option<usize>,
     ) -> Wild3GeneratorCycleOpts {
         if matches!(self, Self::Inactive) {
             return Wild3GeneratorCycleOpts::Inactive;
         }
 
-        let min_max_initial_cycle = Self::get_min_max_initial_cycle_from_distrs(distrs);
+        let min_max_initial_cycle =
+            Self::get_min_max_cycle_from_distrs(distrs, feebas_vblank_count);
 
         match self {
             Self::Inactive => Wild3GeneratorCycleOpts::Inactive,
@@ -160,7 +173,7 @@ impl Wild3SearcherCycleOpts {
         }
     }
 
-    /** Always returns at least 1 value */
+    /** Always returns at least 1 value. Returns both non-feebas and feebas distributions. */
     pub fn get_initial_cycle_distrs<'a>(
         &self,
         map_data: &'a Wild3MapGameData,
@@ -178,11 +191,11 @@ impl Wild3SearcherCycleOpts {
                 let list = map_data
                     .initial_cycle_distrs
                     .iter()
-                    .filter(|calibration| {
-                        calibration.action == action
-                            && (*consider_weather || calibration.weather == Wild3Weather::Sunny)
+                    .filter(|init_distr| {
+                        init_distr.is_equivalent_action(action)
+                            && (*consider_weather || init_distr.weather == Wild3Weather::Sunny)
                             && (*consider_bike
-                                || calibration.playing_song != Wild3PlayingSong::BikeSong)
+                                || init_distr.playing_song != Wild3PlayingSong::BikeSong)
                     })
                     .collect_vec();
 
@@ -192,11 +205,28 @@ impl Wild3SearcherCycleOpts {
                     vec![default]
                 }
             }
+
             Self::Calibrate {
                 weather,
                 playing_song,
                 ..
-            } => vec![map_data.get_initial_cycle_distr(action, *playing_song, *weather)],
+            } => {
+                let list = map_data
+                    .initial_cycle_distrs
+                    .iter()
+                    .filter(|init_distr| {
+                        init_distr.is_equivalent_action(action)
+                            && init_distr.playing_song == *playing_song
+                            && init_distr.weather == *weather
+                    })
+                    .collect_vec();
+
+                if !list.is_empty() {
+                    list
+                } else {
+                    vec![default]
+                }
+            }
         }
     }
 }
@@ -209,6 +239,7 @@ pub struct Wild3SearcherOptions {
     pub sid: u16,
     pub initial_advances: usize,
     pub max_advances: usize,
+    /** max_result_count limits PID path groups (number of distinct PID/IVs Pokémon). It doesn't limit the number of setups for each distinct Pokémon. */
     pub max_result_count: usize,
     pub filter: PkmFilter,
     pub gen3_filter: Gen3PkmFilter,
@@ -219,7 +250,6 @@ pub struct Wild3SearcherOptions {
     pub painting_opts: Option<Wild3PaintingOpts>,
     pub using_white_flute: bool,
     pub considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt,
-    pub feebas_cycles: Vec<usize>,
 }
 
 impl Default for Wild3SearcherOptions {
@@ -240,7 +270,6 @@ impl Default for Wild3SearcherOptions {
             painting_opts: None,
             using_white_flute: true,
             considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt::default(),
-            feebas_cycles: vec![0],
         }
     }
 }
@@ -276,7 +305,7 @@ pub struct Wild3SearcherResultMon {
     pub action: Wild3Action,
     pub roamer_state: Wild3RoamerState,
     pub feebas_state: Wild3FeebasState,
-    pub feebas_cycles: usize,
+    pub feebas_vblank_count: Option<usize>,
     pub mass_outbreak_state: Wild3MassOutbreakState,
 }
 
@@ -320,7 +349,7 @@ impl Wild3SearcherResultMon {
             action: gen_opts.action,
             roamer_state: gen_opts.roamer_state,
             feebas_state: gen_opts.feebas_state,
-            feebas_cycles: gen_opts.feebas_cycles,
+            feebas_vblank_count: gen_opts.feebas_vblank_count,
             mass_outbreak_state: gen_opts.mass_outbreak_state,
         }
     }

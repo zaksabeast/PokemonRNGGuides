@@ -1,4 +1,4 @@
-use std::hint::black_box;
+use std::{collections::HashMap, hint::black_box};
 
 use arrayvec::ArrayVec;
 use itertools::Itertools;
@@ -7,8 +7,8 @@ use super::*;
 use crate::{
     GenderRatio, Species, TsvTrv,
     gen3::{
-        ALL_WILD3_ACTIONS, MAX_FEEBAS_VBLANK, SpeciesData, Wild3InSafariMapStatus,
-        create_pokeblock_gen_opt, find_pid_paths_reverse_pid_cycle_speed_low_high,
+        ALL_WILD3_ACTIONS, SpeciesData, Wild3InSafariMapStatus, create_pokeblock_gen_opt,
+        find_pid_paths_reverse_pid_cycle_speed_low_high,
         find_pid_paths_reverse_pid_cycle_speed_mid, find_pid_paths_reverse_pid_shiny,
         searcher_painter::Wild3PaintingAdvFinder,
         wild::{
@@ -131,15 +131,27 @@ fn extend_pid_paths_to_results(
             species: Species::Bulbasaur,
         }),
         opts.using_white_flute,
-        &opts.feebas_cycles,
+        opts.cycle_opts.generate_even_if_impossible(),
     );
     let initial_cycle_groups = opts
         .map_setups
         .iter()
         .map(|setup| {
             ALL_WILD3_ACTIONS.map(|action| {
-                opts.cycle_opts
+                let mut groups: HashMap<Option<usize>, Vec<&Wild3InitialCycleDistribution>> =
+                    HashMap::new();
+
+                for distr in opts
+                    .cycle_opts
                     .get_initial_cycle_distrs(&setup.map_data, action)
+                {
+                    groups
+                        .entry(distr.feebas_vblank_count)
+                        .or_default()
+                        .push(distr);
+                }
+
+                groups
             })
         })
         .collect_vec();
@@ -188,7 +200,6 @@ fn extend_pid_paths_to_results(
                     map_setups,
                     encounter_idx_path.map_setups_idx,
                     encounter_gender_ratio,
-                    &encounter_idx_gen.feebas_cycles_by_vblank,
                     &initial_cycle_groups[encounter_idx_path.map_setups_idx]
                         [encounter_idx_path.action as usize],
                 )
@@ -325,29 +336,30 @@ fn get_leads(seed_lead: Gen3Lead, opts: &Wild3SearcherOptions) -> ArrayVec<Gen3L
     leads
 }
 
-const FEEBAS_CYCLE_ZERO: [usize; 1] = [0];
-
 fn create_result(
     path: &EncounterIdxPath,
     opts: &Wild3SearcherOptions,
     map_setups: &Wild3MapSetups,
     map_idx: usize,
     encounter_gender_ratio: GenderRatio,
-    feebas_cycles_by_vblank: &[Vec<usize>],
-    initial_cycle_groups: &[&Wild3InitialCycleDistribution],
+    initial_cycle_groups: &HashMap<Option<usize>, Vec<&Wild3InitialCycleDistribution>>,
 ) -> Vec<Wild3SearcherResultMon> {
     let mass_outbreak_state = match path.encounter_idx_to_lvl_arc {
         EncounterIdxToLvlArc::MassOutbreakSuccess(mass_outbreak_state) => mass_outbreak_state,
         _ => Wild3MassOutbreakState::Inactive,
     };
 
-    let (feebas_state, feebas_cycles_list) = match path.encounter_idx_to_lvl_arc {
-        EncounterIdxToLvlArc::CheckFeebasSuccess { vblank_count } => (
-            Wild3FeebasState::OnFeebasTile,
-            feebas_cycles_by_vblank[vblank_count].as_slice(),
-        ),
-        _ => (Wild3FeebasState::NotInMap, FEEBAS_CYCLE_ZERO.as_slice()),
+    let (feebas_state, feebas_vblank_count) = match path.encounter_idx_to_lvl_arc {
+        EncounterIdxToLvlArc::CheckFeebasSuccess { vblank_count } => {
+            (Wild3FeebasState::OnFeebasTile, Some(vblank_count))
+        }
+        _ => (Wild3FeebasState::NotInMap, None),
     };
+
+    let matching_initial_cycle_groups = initial_cycle_groups
+        .get(&feebas_vblank_count)
+        .map(Vec::as_slice)
+        .unwrap_or(&[]);
 
     let safari_pokeblock = if path.nature_gender_to_pid_arc.uses_safari_pokeblock() {
         Some(create_pokeblock_gen_opt(
@@ -369,13 +381,15 @@ fn create_result(
         roamer_state: Wild3RoamerState::Inactive,
         mass_outbreak_state,
         feebas_state,
+        feebas_vblank_count,
         safari_pokeblock: safari_pokeblock.clone(),
-        cycle_opts: opts.cycle_opts.generator_cycle_opts(initial_cycle_groups),
+        cycle_opts: opts
+            .cycle_opts
+            .generator_cycle_opts(matching_initial_cycle_groups, feebas_vblank_count),
         using_white_flute: opts.using_white_flute,
 
         // overwritten below
         lead: Gen3Lead::Egg,
-        feebas_cycles: 0,
     };
 
     let mut results = Vec::new();
@@ -384,47 +398,25 @@ fn create_result(
     for lead in get_leads(path.lead(encounter_gender_ratio), opts) {
         gen_opts.lead = lead;
 
-        for &feebas_cycles in feebas_cycles_list {
-            gen_opts.feebas_cycles = feebas_cycles;
+        let gen_results = generate_wild3(Pokerng::new(path.seed), &gen_opts, &map_setups.map_data);
 
-            let gen_results =
-                generate_wild3(Pokerng::new(path.seed), &gen_opts, &map_setups.map_data);
-
-            for gen_res in &gen_results.mon_results {
-                let encounter = map_setups
-                    .map_data
-                    .get_encounter(gen_opts.action, gen_res.encounter_idx)
-                    .unwrap();
-                results.push(Wild3SearcherResultMon::new(
-                    gen_res,
-                    &gen_opts,
-                    path.seed,
-                    advance,
-                    encounter,
-                    initial_cycle_groups,
-                ));
-            }
+        for gen_res in &gen_results.mon_results {
+            let encounter = map_setups
+                .map_data
+                .get_encounter(gen_opts.action, gen_res.encounter_idx)
+                .unwrap();
+            results.push(Wild3SearcherResultMon::new(
+                gen_res,
+                &gen_opts,
+                path.seed,
+                advance,
+                encounter,
+                matching_initial_cycle_groups,
+            ));
         }
     }
 
     results
-}
-
-// Generated with test: cargo test test_search_reverse_wild3_vblank_group_feebas
-// Hardcoded in feebasMapData.ts
-pub const FEEBAS_CYCLE_COUNT_BY_VBLANK: [std::ops::RangeInclusive<usize>; MAX_FEEBAS_VBLANK] = [
-    0..=235895,
-    205896..=471791,
-    421792..=707687,
-    637688..=800000,
-];
-
-pub fn get_feebas_possible_vblank_count(feebas_cycles: usize) -> Vec<usize> {
-    FEEBAS_CYCLE_COUNT_BY_VBLANK
-        .iter()
-        .enumerate()
-        .filter_map(|(count, range)| range.contains(&feebas_cycles).then_some(count))
-        .collect()
 }
 
 #[path = "tests/searcher_reverse_tests.rs"]

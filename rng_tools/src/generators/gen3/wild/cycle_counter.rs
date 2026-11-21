@@ -48,7 +48,7 @@ impl CycleFrameMoment {
 impl CycleFrame {
     pub fn add_cycle(&mut self, cycle: usize) {
         self.cycle += cycle;
-        while self.cycle > VBLANK_FREQ {
+        while self.cycle >= VBLANK_FREQ {
             self.cycle -= VBLANK_FREQ;
             self.frame += 1;
         }
@@ -110,6 +110,20 @@ impl MinMaxCycleFrame {
     pub fn add_cycle(&mut self, cycle: usize) {
         self.min_cycle.add_cycle(cycle);
         self.max_cycle.add_cycle(cycle);
+    }
+    pub fn set_cycle_for_feebas(
+        &mut self,
+        feebas_min_max_cycle: (usize, usize),
+        feebas_vblank_count: usize,
+    ) {
+        self.min_cycle = CycleFrame {
+            cycle: feebas_min_max_cycle.0,
+            frame: feebas_vblank_count,
+        };
+        self.max_cycle = CycleFrame {
+            cycle: feebas_min_max_cycle.1,
+            frame: feebas_vblank_count,
+        };
     }
     pub fn add_mod(&mut self, lead_pid_mod: usize) {
         self.min_cycle
@@ -269,6 +283,37 @@ impl CycleFrameCounter {
             }
         }
     }
+    pub fn set_cycle_for_feebas(
+        &mut self,
+        feebas_min_max_cycle: (usize, usize),
+        feebas_vblank_count: usize,
+    ) {
+        match self {
+            CycleFrameCounter::Inactive => {}
+            CycleFrameCounter::CheckValidAllLeadSpds {
+                earliest_slowest_cycle,
+                latest_fastest_cycle,
+                base_cycle_count,
+                ..
+            } => {
+                *base_cycle_count = 0;
+                *earliest_slowest_cycle = feebas_min_max_cycle.0;
+                *latest_fastest_cycle = feebas_min_max_cycle.1;
+            }
+            CycleFrameCounter::DetailedBreakdown { current_cycle, .. } => {
+                current_cycle.cycle = feebas_min_max_cycle.0; // Both .0 and .1 should be equal.
+                current_cycle.frame = feebas_vblank_count;
+            }
+            CycleFrameCounter::MinMaxRange {
+                base_cycle_count,
+                min_max_cycles,
+                ..
+            } => {
+                *base_cycle_count = 0;
+                min_max_cycles.set_cycle_for_feebas(feebas_min_max_cycle, feebas_vblank_count);
+            }
+        }
+    }
     pub fn add_cycle(&mut self, cycle: usize) {
         match self {
             CycleFrameCounter::Inactive => {}
@@ -288,7 +333,7 @@ impl CycleFrameCounter {
                 ..
             } => {
                 current_cycle.cycle += cycle;
-                while current_cycle.cycle > VBLANK_FREQ {
+                while current_cycle.cycle >= VBLANK_FREQ {
                     current_cycle.cycle -= VBLANK_FREQ;
                     current_cycle.cycle += vblank_cycles
                         .get(current_cycle.frame)

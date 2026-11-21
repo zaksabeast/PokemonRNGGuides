@@ -40,6 +40,7 @@ import { Pokeblock, pokeblockSchema } from "~/types/pokeblock";
 import { PaintingReseedingFields } from "../pokemonRng/targetSetupInput";
 import { lcrng_distance } from "~/utils/lcrng";
 import { FeebasTilesField } from "./feebasMap";
+import { FeebasVblankCountField } from "./wild3FeebasVblankCountSelector";
 import { getDefaultWild3AudioInfluences } from "./wild3AudioInfluences";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
@@ -68,6 +69,7 @@ const Validator = z
     requiresWhiteFlute: z.boolean(),
     safariPokeblock: pokeblockSchema,
     feebasCycles: z.array(z.number().int().min(0).max(0xffffffff)),
+    feebasVblankCount: z.number().int().min(0).max(5).nullable(),
   })
   .refine(
     ({ feebasState, feebasCycles }) =>
@@ -79,14 +81,17 @@ const Validator = z
   );
 
 type Props = {
-  setTargetSetup: (targetSetup: TargetSetup | null) => void;
+  setTargetSetup: (
+    targetSetup: TargetSetup | null,
+    feebasCycles?: number | null,
+  ) => void;
 };
 
 export type TargetSetup = {
   map: string;
   action: Wild3Action;
   feebasState: Wild3FeebasState;
-  feebasCycles: number;
+  feebasVblankCount: number | null;
   roamerState: Wild3RoamerState;
   massOutbreakState: Wild3MassOutbreakState;
   lead: Gen3Lead;
@@ -115,6 +120,7 @@ const getInitialValues = (): FormState => {
     requiresWhiteFlute: false,
     safariPokeblock: null,
     feebasCycles: [],
+    feebasVblankCount: 0,
   };
 };
 
@@ -125,7 +131,6 @@ const convertFormStateValuesToTargetSetup = (
     map: values.map,
     action: values.action,
     feebasState: values.feebasState,
-    feebasCycles: values.feebasCycles[0] ?? 0,
     roamerState: values.roamerState,
     massOutbreakState: values.massOutbreakState,
     lead: gen3Leads[values.leadIdx],
@@ -135,6 +140,8 @@ const convertFormStateValuesToTargetSetup = (
         : 0,
       after: values.targetAdvance,
     },
+    feebasVblankCount:
+      values.feebasState === "OnFeebasTile" ? values.feebasVblankCount : null,
     targetMethod: values.targetMethod,
     requiresWhiteFlute:
       values.action === "RockSmash" && values.requiresWhiteFlute,
@@ -146,6 +153,8 @@ const convertFormStateValuesToTargetSetup = (
 type FieldsProps = {
   mapId: string;
   action: Wild3Action;
+  feebasState: Wild3FeebasState;
+  feebasCycles: number[];
   usingPaintingReseeding: boolean;
   equivalentInitialAdvs: number;
 };
@@ -153,6 +162,8 @@ type FieldsProps = {
 const Fields = ({
   mapId,
   action,
+  feebasState,
+  feebasCycles,
   usingPaintingReseeding,
   equivalentInitialAdvs,
 }: FieldsProps) => {
@@ -227,6 +238,9 @@ const Fields = ({
             label="Feebas fishing spot"
             canOnlySelectOne
           />
+          {feebasState === "OnFeebasTile" && (
+            <FeebasVblankCountField feebasCycle={feebasCycles[0] ?? null} />
+          )}
         </>
       )}
       {roamer_states.length > 1 && (
@@ -264,6 +278,9 @@ export const Wild3TargetSetupInputFields = ({
   });
   const feebasCycles = useWatch_UNSAFE<FormState, "feebasCycles">({
     name: "feebasCycles",
+  });
+  const feebasVblankCount = useWatch_UNSAFE<FormState, "feebasVblankCount">({
+    name: "feebasVblankCount",
   });
   const massOutbreakState = useWatch_UNSAFE<FormState, "massOutbreakState">({
     name: "massOutbreakState",
@@ -306,12 +323,15 @@ export const Wild3TargetSetupInputFields = ({
     targetFrameBeforePainting,
     usingPaintingReseeding,
     feebasCycles,
+    feebasVblankCount,
   ]);
 
   return (
     <Fields
       mapId={map}
       action={action}
+      feebasState={feebasState}
+      feebasCycles={feebasCycles}
       usingPaintingReseeding={usingPaintingReseeding}
       equivalentInitialAdvs={equivalentInitialAdvs}
     />
@@ -321,12 +341,17 @@ export const Wild3TargetSetupInputFields = ({
 export const Wild3TargetSetupInput = ({ setTargetSetup }: Props) => {
   const onSubmit: ToolFormSubmit<FormState> = async (values) => {
     const targetSetup = convertFormStateValuesToTargetSetup(values);
+    const feebasCycles =
+      values.feebasState === "OnFeebasTile"
+        ? (values.feebasCycles[0] ?? null)
+        : null;
     const { content } = await calculateTargetSetupResult(
       targetSetup,
       null,
       getDefaultWild3AudioInfluences(targetSetup.map, targetSetup.action),
+      feebasCycles,
     );
-    setTargetSetup(content == null ? null : targetSetup);
+    setTargetSetup(content == null ? null : targetSetup, feebasCycles);
   };
 
   const initialValues = getInitialValues();

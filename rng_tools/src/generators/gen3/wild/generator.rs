@@ -3,8 +3,7 @@
 use super::{
     calc_modulo_cycle_signed, calc_modulo_cycle_unsigned,
     generator_main::{
-        INFINITE_CYCLE, VBLANK_FREQ, Wild3GeneratorMonResult, Wild3GeneratorOptions,
-        Wild3GeneratorResults,
+        INFINITE_CYCLE, Wild3GeneratorMonResult, Wild3GeneratorOptions, Wild3GeneratorResults,
     },
 };
 use crate::{
@@ -15,8 +14,7 @@ use crate::{
         CycleAndModRange, CycleFrameCounter, CycleRange, Gen3Lead, Gen3Method, Moment, Wild3Action,
         Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState, Wild3GeneratorCycleOpts,
         Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
-        get_default_min_mid_max_initial_cycle_for_feebas,
-        get_default_min_mid_max_vblank_cycle_duration_for_feebas, passes_pid_filter,
+        passes_pid_filter,
     },
     is_max_size,
     rng::{Rng, lcrng::Pokerng},
@@ -65,6 +63,10 @@ fn FishingWildEncounter(
     cycle_counter.on_moment_reached(Moment::FishingWildEncounter);
 
     let is_feebas = CheckFeebas(rng, opts, cycle_counter);
+    if is_feebas != opts.feebas_vblank_count.is_some() {
+        return None; // opts.feebas_vblank_count acts as a filter.
+    }
+
     let feebas_method5_ctx =
         feebas_method5::is_enabled(opts, map_data).then(|| FeebasMethod5Context {
             rng: *rng,
@@ -123,7 +125,13 @@ fn CheckFeebas(
     if rng.rand::<u16>() % 100 > 49 {
         return false;
     }
-    handle_feebas_cycle_counter(rng, cycle_counter, opts.feebas_cycles);
+
+    if let Some(feebas_vblank_count) = opts.feebas_vblank_count {
+        rng.jump(feebas_vblank_count);
+        cycle_counter
+            .set_cycle_for_feebas(opts.cycle_opts.feebas_min_max_cycle(), feebas_vblank_count);
+    }
+
     opts.feebas_state == Wild3FeebasState::OnFeebasTile
 }
 
@@ -1092,60 +1100,6 @@ struct FeebasMethod5Context {
 fn rand_next_u16(rng: &mut Pokerng, _reason: &str, _modulo: u16) -> u16 {
     rng.rand::<u16>()
     // rand_next_u16_with_debug_print(rng, _reason, _modulo) // Uncomment for debugging
-}
-
-// Only returns the mid case (which is the one used by the generator)
-pub fn get_feebas_vblank_from_feebas_cycle(feebas_cycles: usize) -> usize {
-    let initial_cycle = get_default_min_mid_max_initial_cycle_for_feebas().mid;
-    let mid_vblank = get_default_min_mid_max_vblank_cycle_duration_for_feebas().mid;
-
-    let (_, mid_case_vblank) =
-        apply_cycles_causing_vblanks_on_cycle_counter(initial_cycle, feebas_cycles, mid_vblank);
-
-    mid_case_vblank
-}
-
-pub fn apply_cycles_causing_vblanks_on_cycle_counter(
-    cycle: usize,
-    cycle_to_add: usize,
-    vblank_dur: usize,
-) -> (usize /*new_cycle*/, usize /*vblank_count*/) {
-    let cycles_until_vblank = VBLANK_FREQ - cycle;
-    if cycle_to_add < cycles_until_vblank {
-        return (cycle + cycle_to_add, 0);
-    }
-
-    let remaining = cycle_to_add - cycles_until_vblank;
-    let cycles_between_vblanks = VBLANK_FREQ - vblank_dur;
-    let vblank_count = 1 + remaining / cycles_between_vblanks;
-    let new_cycle = vblank_dur + remaining % cycles_between_vblanks;
-
-    (new_cycle, vblank_count)
-}
-
-pub const MAX_FEEBAS_VBLANK: usize = 4;
-
-fn handle_feebas_cycle_counter(
-    rng: &mut Pokerng,
-    cycle_counter: &mut CycleFrameCounter,
-    feebas_cycles: usize,
-) {
-    cycle_counter.on_moment_reached(Moment::CheckFeebas);
-
-    // Limitation: Feebas hasn't been updated with the new vblank calibration logic.
-    let mid = get_default_min_mid_max_initial_cycle_for_feebas().mid;
-    let mid_vblank = get_default_min_mid_max_vblank_cycle_duration_for_feebas().mid;
-    let (mid_case_cycle, mid_case_vblank) =
-        apply_cycles_causing_vblanks_on_cycle_counter(mid, feebas_cycles, mid_vblank);
-
-    // The generator always calculates for the mid case (most probable case).
-    rng.jump(mid_case_vblank);
-
-    let abs_cycle_from_cycle_counter = cycle_counter.get_current_post_cycle_count() + mid; // At this points, lead_pid_mod is 0.
-    // Limitation: We can only add cycles. In most cases, mid_case_cycle should be > abs_cycle_from_cycle_counter, because abs_cycle_from_cycle_counter is small.
-    if mid_case_cycle > abs_cycle_from_cycle_counter {
-        cycle_counter.add_cycle(mid_case_cycle - abs_cycle_from_cycle_counter);
-    }
 }
 
 fn pick_wild_mon_nature_safari(

@@ -97,7 +97,10 @@ const createStatic3SearcherOptions = async (
   return opts;
 };
 
-const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
+const searchCaughtMon = async (
+  values: FormState,
+  targetSetup: TargetSetup,
+): Promise<CaughtMonResult[]> => {
   const opts = await createStatic3SearcherOptions(values, targetSetup);
   if (opts == null) {
     return [];
@@ -129,7 +132,7 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
         probabilityHitMethodsAtAdvance,
         distanceFromTargetAfter,
         distanceFromTargetBefore: 0,
-      };
+      } satisfies CaughtMonResult;
     })
     .flat();
 

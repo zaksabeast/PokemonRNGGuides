@@ -199,6 +199,7 @@ const parseCycleAtMomentsJsonStr = (input: string) => {
 
 type Props = {
   targetSetup: TargetSetup;
+  feebasCycles: number | null;
   audioInfluences: Wild3AudioInfluences;
   /** leadCycleSpeedFromTool is null if egg lead */
   leadCycleSpeed: number | null;
@@ -270,6 +271,7 @@ const getInitialCycleLikelihood = (
   input: string,
   targetSetup: TargetSetup,
   preferredAudioInfluences: Wild3AudioInfluences,
+  feebasCycles: number | null,
 ): { qualitativeTxt: string; probabilityTxt: string } | null => {
   const json = parseCycleAtMomentsJsonStr(input);
   const initialCycle = json?.cycleAtMoments[0]?.cycle;
@@ -282,16 +284,18 @@ const getInitialCycleLikelihood = (
     targetSetup.action,
     preferredAudioInfluences,
   );
-  const distribution = getWild3InitialCycleDistributionForSetup({
+  const { initial_cycle_distr } = getWild3InitialCycleDistributionForSetup({
     ...targetSetup,
     ...audioInfluences,
+    feebasCycles,
   });
-  if (distribution == null) {
+
+  if (initial_cycle_distr == null) {
     return null;
   }
 
   const likelihood = getInitialCycleQualitativeProbability(
-    distribution.distribution,
+    initial_cycle_distr.distribution,
     initialCycle,
   );
 
@@ -300,6 +304,7 @@ const getInitialCycleLikelihood = (
 
 export const Wild3CycleAtMoments = ({
   targetSetup,
+  feebasCycles,
   audioInfluences: preferredAudioInfluences,
   leadCycleSpeed,
 }: Props) => {
@@ -320,12 +325,13 @@ export const Wild3CycleAtMoments = ({
         targetSetup.action,
         preferredAudioInfluences,
       );
-      const distribution = getWild3InitialCycleDistributionForSetup({
+      const { initial_cycle_opts } = getWild3InitialCycleDistributionForSetup({
         ...targetSetup,
         ...audioInfluences,
+        feebasCycles,
       });
 
-      if (distribution == null) {
+      if (initial_cycle_opts == null) {
         setUiResult(createEmptyUiResult());
         return;
       }
@@ -334,7 +340,7 @@ export const Wild3CycleAtMoments = ({
         json == null
           ? {
               LikelihoodForLead: {
-                min_max_initial_cycle: [distribution.min, distribution.max],
+                ...initial_cycle_opts,
                 lead_cycle_spd: leadCycleSpeed ?? 0,
               },
             }
@@ -348,6 +354,7 @@ export const Wild3CycleAtMoments = ({
 
       const distributions = await setupToDistributions(
         targetSetup,
+        feebasCycles,
         cycle_opts,
         audioInfluences,
       );
@@ -367,6 +374,7 @@ export const Wild3CycleAtMoments = ({
   }, [
     compareCycleAtMomentsStr,
     targetSetup,
+    feebasCycles,
     preferredAudioInfluences,
     leadCycleSpeed,
   ]);
@@ -375,6 +383,7 @@ export const Wild3CycleAtMoments = ({
     compareCycleAtMomentsStr,
     targetSetup,
     preferredAudioInfluences,
+    feebasCycles,
   );
   const resultRows: SummaryRow[] = [
     {

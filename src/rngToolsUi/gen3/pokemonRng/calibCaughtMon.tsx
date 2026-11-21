@@ -64,6 +64,7 @@ export type CaughtMonResult = {
     adv_after_painting: number;
   };
   method: Gen3Method | Gen3StaticMethod;
+  feebas_vblank_count: number | null | undefined;
   score: number;
   probabilityHitMethodsAtAdvance: number;
   distanceFromTargetAfter: number;
@@ -120,7 +121,7 @@ export const confidenceRatingColumn: ResultColumn<CaughtMonResult> = {
       .with(P.number.between(2000, 10000), () => "Low")
       .otherwise(() => "Very Low");
 
-    const { method } = values;
+    const { method, feebas_vblank_count } = values;
     const prob = formatProbability(values.probabilityHitMethodsAtAdvance);
 
     const ratingTxt =
@@ -132,7 +133,12 @@ export const confidenceRatingColumn: ResultColumn<CaughtMonResult> = {
       values.distanceFromTargetBefore + values.distanceFromTargetAfter,
     );
 
-    const title = `Distance from target: ${dist} advances. Method ${method} (${prob} likelihood)`;
+    const feebasInfo =
+      feebas_vblank_count == null
+        ? ""
+        : `, x${feebas_vblank_count} VBlanks during Feebas tile check`;
+
+    const title = `Distance from target: ${dist} advances. Method ${method}${feebasInfo} (${prob} likelihood)`;
     return <Tooltip title={title}>{ratingTxt}</Tooltip>;
   },
 };
@@ -339,6 +345,8 @@ export const createUiResultBase = (
       adv_after_painting: targetPaintingAdvs.after,
     },
     method: result.method,
+    feebas_vblank_count:
+      "feebas_vblank_count" in result ? result.feebas_vblank_count : null,
     uid: nextUid++,
     ...getGen3IvRating(result.ivs),
     statsWithRareCandy: {

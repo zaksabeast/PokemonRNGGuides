@@ -8,7 +8,11 @@ import {
   Wild3MapSetups,
   Wild3SearcherOptions,
 } from "~/rngTools";
-import { getWild3EmeraldGameData } from "./data/wild3GameData";
+import {
+  getWild3EmeraldGameData,
+  withFeebasCycleDistributions,
+} from "./data/wild3GameData";
+import { getAllFeebasCycleDistributions } from "./data/initial_cycle/feebas_cycle_info";
 import type { TargetSetup } from "./wild3TargetSetupInput";
 import { isFishingAction, wild3Actions } from "./utils";
 import {
@@ -30,6 +34,7 @@ export const emeraldWildGameData = getWild3EmeraldGameData();
 export const createWild3SearcherOptions = async (
   values: FormState,
   targetSetup: TargetSetup,
+  feebasCycles: number | null,
   leadCycleSpeed: number,
   audioInfluences: Wild3AudioInfluences,
 ) => {
@@ -46,13 +51,23 @@ export const createWild3SearcherOptions = async (
   if (map_data == null) {
     return null;
   }
-  const map_setup: Wild3MapSetups = {
-    map_data,
-    actions: [targetSetup.action],
-    roamer_states: [targetSetup.roamerState],
-    mass_outbreak_states: [targetSetup.massOutbreakState],
-    feebas_states: [targetSetup.feebasState],
-  };
+
+  let map_setups: Wild3MapSetups[] = [
+    {
+      map_data,
+      actions: [targetSetup.action],
+      roamer_states: [targetSetup.roamerState],
+      mass_outbreak_states: [targetSetup.massOutbreakState],
+      feebas_states: [targetSetup.feebasState],
+    },
+  ];
+
+  if (targetSetup.feebasState === "OnFeebasTile" && feebasCycles != null) {
+    map_setups = withFeebasCycleDistributions(
+      map_setups,
+      getAllFeebasCycleDistributions(feebasCycles),
+    );
+  }
 
   const minMaxIvs = await getIvRangeFromStats({
     species: values.wildSpecies,
@@ -97,8 +112,7 @@ export const createWild3SearcherOptions = async (
       values.wildSpecies,
     ),
     leads: [targetSetup.lead],
-    map_setups: [map_setup],
-    feebas_cycles: [targetSetup.feebasCycles],
+    map_setups,
     methods: gen3Methods,
     cycle_opts: {
       Calibrate: {

@@ -23,9 +23,20 @@ pub enum Wild3Weather {
     Thunderstorm,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Tsify)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Wild3FeebasTile {
+    pub x: usize,
+    pub y: usize,
+    pub feebas_cycle: usize,
+}
+
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Tsify)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3InitialCycleDistribution {
+    pub feebas_vblank_count: Option<usize>,
+    pub feebas_vblank_count_probability: f64,
+    pub feebas_cycle: Option<usize>,
     pub min: usize,
     pub max: usize,
     pub distribution: Vec<CdfKnot>,
@@ -59,6 +70,9 @@ impl Wild3InitialCycleDistribution {
         };
 
         Self {
+            feebas_vblank_count: None,
+            feebas_vblank_count_probability: 1.0,
+            feebas_cycle: None,
             min,
             max,
             distribution: vec![
@@ -97,5 +111,12 @@ impl Wild3InitialCycleDistribution {
             Some(cycle) => cycle.ceil() as usize,
             None => self.min + (self.max - self.min) / 2,
         }
+    }
+    pub fn is_equivalent_action(&self, action: Wild3Action) -> bool {
+        if self.action.is_fishing() && action.is_fishing() {
+            return true;
+        }
+
+        self.action == action
     }
 }

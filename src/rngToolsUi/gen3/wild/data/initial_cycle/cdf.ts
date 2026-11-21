@@ -75,11 +75,21 @@ export const getInitialCycleQualitativeProbability = (
   knots: readonly CdfKnot[],
   value: number,
 ) => {
+  const start = value - INITIAL_CYCLE_PROXIMITY;
+  const end = value + INITIAL_CYCLE_PROXIMITY;
+
+  const chanceTxt = `chance that the initial cycle is within (${formatLargeInteger(start)} to ${formatLargeInteger(end)})`;
+
+  if (knots.length === 0) {
+    return {
+      probabilityTxt: `0%${chanceTxt}`,
+      qualitativeTxt: "Impossible",
+    };
+  }
+
   const first = knots[0];
   const last = knots[knots.length - 1];
 
-  const start = value - INITIAL_CYCLE_PROXIMITY;
-  const end = value + INITIAL_CYCLE_PROXIMITY;
   const overlap = Math.max(
     0,
     Math.min(end, last.cycle) - Math.max(start, first.cycle),
@@ -93,7 +103,7 @@ export const getInitialCycleQualitativeProbability = (
   );
 
   return {
-    probabilityTxt: `${formatProbability(probability)} chance that the initial cycle is within (${formatLargeInteger(start)} to ${formatLargeInteger(end)})`,
+    probabilityTxt: `${formatProbability(probability)}${chanceTxt}`,
     qualitativeTxt: qualitative,
   };
 };

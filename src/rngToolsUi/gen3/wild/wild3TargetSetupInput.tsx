@@ -69,7 +69,7 @@ const Validator = z
     requiresWhiteFlute: z.boolean(),
     safariPokeblock: pokeblockSchema,
     feebasCycles: z.array(z.number().int().min(0).max(0xffffffff)),
-    feebasVblankCount: z.number().int().min(0).max(5),
+    feebasVblankCount: z.number().int().min(0).max(5).nullable(),
   })
   .refine(
     ({ feebasState, feebasCycles }) =>

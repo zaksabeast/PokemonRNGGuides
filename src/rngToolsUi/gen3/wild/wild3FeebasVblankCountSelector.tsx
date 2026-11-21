@@ -11,7 +11,9 @@ const feebasWeathers = [
   "Rain",
   "Thunderstorm",
 ] as const satisfies readonly Wild3Weather[];
-const feebasVblankCounts = [0, 1, 2, 3, 4, 5] as const;
+const feebasVblankCounts = [null, 0, 1, 2, 3, 4, 5] as const;
+
+const NONE = "none";
 
 const VblankCountRows = styled.div({
   display: "flex",
@@ -84,8 +86,9 @@ export const FeebasVblankCountField = ({
   feebasCycle: number | null;
 }) => {
   const ids = useFieldIds();
-  const [{ value, onBlur }, { error }, { setValue }] =
-    useField<number>("feebasVblankCount");
+  const [{ value, onBlur }, { error }, { setValue }] = useField<number | null>(
+    "feebasVblankCount",
+  );
   const distributions =
     feebasCycle == null
       ? []
@@ -98,19 +101,21 @@ export const FeebasVblankCountField = ({
   const rows = feebasVblankCounts.map((count) => ({
     count,
     probabilities: feebasWeathers.map((weather) =>
-      formatProbability(
-        distributions.find(
-          (distribution) =>
-            distribution.weather === weather &&
-            distribution.feebas_vblank_count === count,
-        )?.feebas_vblank_count_probability ?? 0,
-      ),
+      count == null
+        ? "N/A"
+        : formatProbability(
+            distributions.find(
+              (distribution) =>
+                distribution.weather === weather &&
+                distribution.feebas_vblank_count === count,
+            )?.feebas_vblank_count_probability ?? 0,
+          ),
     ),
   }));
 
   React.useEffect(() => {
     if (!isSelectedCountAvailable) {
-      setValue(feebasVblankCounts[0]);
+      setValue(0);
     }
   }, [isSelectedCountAvailable, setValue]);
 
@@ -138,17 +143,21 @@ export const FeebasVblankCountField = ({
             ))}
           </VblankCountHeader>
           {rows.map(({ count, probabilities }) => (
-            <VblankCountRow key={count} $selected={value === count}>
+            <VblankCountRow key={count ?? NONE} $selected={value === count}>
               <VblankCountChoice>
                 <input
                   type="radio"
                   name={ids.inputId}
-                  value={count}
+                  value={count ?? NONE}
                   checked={value === count}
-                  aria-label={`${count} VBlanks. ${feebasWeathers.map((weather, index) => `${weather} ${probabilities[index]}`).join(", ")}`}
+                  aria-label={
+                    count == null
+                      ? "None"
+                      : `${count} VBlanks. ${feebasWeathers.map((weather, index) => `${weather} ${probabilities[index]}`).join(", ")}`
+                  }
                   onChange={() => setValue(count)}
                 />
-                {count}
+                {count ?? "None"}
               </VblankCountChoice>
               {feebasWeathers.map((weather, index) => (
                 <VblankProbability key={weather}>

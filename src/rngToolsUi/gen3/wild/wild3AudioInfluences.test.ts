@@ -323,16 +323,29 @@ test("distribution selection matches all three audio influence fields", () => {
 
   const settings = omit(distribution, "distribution");
 
-  expect(settings).toEqual({
+  const expectedSettings = {
     action: "OldRod",
     playing_song: "SurfSong",
     weather: "Rain",
     min: 49366,
     max: 99196,
     feebas_vblank_count: undefined,
-    feebas_vblank_count_probability: 0,
+    feebas_vblank_count_probability: 1,
     feebas_cycle: undefined,
-  });
+  } as const;
+
+  expect(settings).toEqual(expectedSettings);
+
+  const withoutVblankCount = getWild3InitialCycleDistributionForSetup({
+    map: "MAP_ROUTE119",
+    action: "OldRod",
+    weather: "Rain",
+    playing_song: "SurfSong",
+    feebasCycles: 651714,
+    feebasVblankCount: null,
+  }).initial_cycle_distr;
+
+  expect(omit(withoutVblankCount, "distribution")).toEqual(expectedSettings);
 
   expect(
     getWild3InitialCycleDistributionForSetup({

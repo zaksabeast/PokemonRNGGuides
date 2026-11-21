@@ -156,7 +156,9 @@ export const Wild3LeadCycleSpeedSelector = ({
   const initialCycleMin = initial_cycle_distr?.min;
   const initialCycleMax = initial_cycle_distr?.max;
   const isFeebas =
-    targetSetup.feebasState === "OnFeebasTile" && feebasCycles != null;
+    targetSetup.feebasState === "OnFeebasTile" &&
+    feebasCycles != null &&
+    targetSetup.feebasVblankCount != null;
   const feebasTile = isFeebas
     ? getFeebasTiles().find((tile) => tile.feebasCycle === feebasCycles)
     : null;

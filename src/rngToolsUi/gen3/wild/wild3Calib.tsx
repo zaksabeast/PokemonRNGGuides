@@ -90,6 +90,7 @@ type Props = AllOrNone<{
   audioInfluences: Wild3AudioInfluences;
   battleVideoInfo: BattleVideoInfo;
   leadCycleSpeed: number;
+  feebasCycles?: number | null;
   clearAll?: () => void;
   displayInstructions?: boolean;
 }> & {
@@ -101,6 +102,7 @@ export const Wild3Calib = ({
   targetSetup: targetSetupProp,
   audioInfluences: audioInfluencesProp,
   leadCycleSpeed: leadCycleSpeedProp,
+  feebasCycles: feebasCyclesProp,
   battleVideoInfo: battleVideoInfoProp,
   clearAll,
   displayInstructions = true,
@@ -110,6 +112,9 @@ export const Wild3Calib = ({
   const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
     targetSetupProp ?? null,
   );
+  const [localFeebasCycles, setLocalFeebasCycles] = React.useState<
+    number | null
+  >(null);
   const [targetSetupHasEncounter, setTargetSetupHasEncounter] =
     React.useState(false);
 
@@ -130,6 +135,8 @@ export const Wild3Calib = ({
     overwriteLeadCycleSpeed ?? leadCycleSpeedProp ?? AVERAGE_LEAD_CYCLE_SPEED;
   const finalAudioInfluences =
     overwriteAudioInfluences ?? audioInfluencesProp ?? defaultAudioInfluences;
+  const finalFeebasCycles =
+    feebasCyclesProp === undefined ? localFeebasCycles : feebasCyclesProp;
 
   React.useEffect(() => {
     if (targetSetup == null) {
@@ -141,12 +148,19 @@ export const Wild3Calib = ({
       targetSetup,
       finalLeadCycleSpeed,
       finalAudioInfluences,
+      finalFeebasCycles,
       !simplified,
     ).then(({ content, hasEncounter }) => {
       setTargetSetupResult(content);
       setTargetSetupHasEncounter(hasEncounter);
     });
-  }, [finalLeadCycleSpeed, targetSetup, finalAudioInfluences, simplified]);
+  }, [
+    finalLeadCycleSpeed,
+    targetSetup,
+    finalAudioInfluences,
+    finalFeebasCycles,
+    simplified,
+  ]);
 
   const [battleVideoInfo, setBattleVideoInfo] =
     React.useState<BattleVideoInfo | null>(battleVideoInfoProp ?? null);
@@ -179,6 +193,7 @@ export const Wild3Calib = ({
   const targetSetupInputForm = () => (
     <Wild3TargetSetupAndLeadInput
       setTargetSetup={handleTargetSetupChange}
+      setFeebasCycles={setLocalFeebasCycles}
       audioInfluences={finalAudioInfluences}
       setAudioInfluences={setOverwriteAudioInfluences}
       setLeadCycleSpeed={setOverwriteLeadCycleSpeed}
@@ -318,15 +333,13 @@ export const Wild3Calib = ({
       },
       {
         label: "Fishing spot",
-        value: (
-          <FeebasTileVisualizer
-            selectedTileCycle={targetSetupProp.feebasCycles}
-          />
+        value: finalFeebasCycles != null && (
+          <FeebasTileVisualizer selectedTileCycle={finalFeebasCycles} />
         ),
         show:
           targetSetupProp.map === FEEBAS_MAP &&
           isFishingAction(targetSetupProp.action) &&
-          targetSetupProp.feebasCycles !== 0,
+          finalFeebasCycles != null,
       },
     ];
 
@@ -398,6 +411,7 @@ export const Wild3Calib = ({
           />
           <Wild3CalibCaughtMon
             targetSetup={targetSetup}
+            feebasCycles={finalFeebasCycles}
             audioInfluences={finalAudioInfluences}
             setLatestHitAdv={setLatestHitAdv}
             leadCycleSpeed={finalLeadCycleSpeed}
@@ -415,6 +429,7 @@ export const Wild3Calib = ({
                   <Instructions_calib_wrong_method />
                   <Wild3LeadCycleSpeedSelector
                     targetSetup={targetSetup}
+                    feebasCycles={finalFeebasCycles}
                     audioInfluences={finalAudioInfluences}
                     setAudioInfluences={setOverwriteAudioInfluences}
                     permitEnablingDebugOptions

@@ -14,7 +14,11 @@ import {
   formatMapName,
   isFishingAction,
 } from "./utils";
-import { getWild3EmeraldGameData } from "./data/wild3GameData";
+import {
+  getWild3EmeraldGameData,
+  withFeebasCycleDistributions,
+} from "./data/wild3GameData";
+import { getAllFeebasCycleDistributions } from "./data/initial_cycle/feebas_cycle_info";
 
 import type { FormState, PidPathResult } from "./wild3TargetSetupSearcher.tsx";
 import {
@@ -156,7 +160,7 @@ const getMapSetupsConsideringStateSubsets = (
           };
         });
 
-  return setups.filter((setup) => {
+  const filteredSetups = setups.filter((setup) => {
     // We remove feebas map for fishing non-feebas because it's not supported by the reverse searcher.
     // Limitation: It prevents Tentacool to be obtained from Sweet Scent on Water.
     if (
@@ -168,6 +172,16 @@ const getMapSetupsConsideringStateSubsets = (
     }
     return true;
   });
+
+  if (values.species !== "Feebas" || filteredSetups.length === 0) {
+    return filteredSetups;
+  }
+
+  const feebasCycleDistributions = values.feebasCycles.flatMap((feebasCycles) =>
+    getAllFeebasCycleDistributions(feebasCycles),
+  );
+
+  return withFeebasCycleDistributions(filteredSetups, feebasCycleDistributions);
 };
 
 export const searchWild3Target = async (values: FormState) => {
@@ -219,7 +233,6 @@ export const searchWild3Target = async (values: FormState) => {
     leads: leadsToUse,
     map_setups,
     methods,
-    feebas_cycles: values.feebasCycles.length === 0 ? [0] : values.feebasCycles,
     cycle_opts: createWild3TargetCycleOptions(values),
     using_white_flute: values.recommendedSetups
       ? true

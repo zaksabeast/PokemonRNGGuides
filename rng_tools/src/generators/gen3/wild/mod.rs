@@ -8,6 +8,7 @@ mod cycle_counter;
 mod cycle_data_calculator;
 mod cycle_range;
 mod distribution_generator;
+mod feebas_timing;
 mod filter;
 mod game_data;
 mod generator;

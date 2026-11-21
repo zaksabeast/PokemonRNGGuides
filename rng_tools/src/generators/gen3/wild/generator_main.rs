@@ -54,6 +54,23 @@ impl Wild3GeneratorCycleOpts {
             _ => None,
         }
     }
+    pub fn feebas_min_max_cycle(&self) -> (usize, usize) {
+        match self {
+            Self::Searching {
+                min_max_initial_cycle,
+                ..
+            }
+            | Self::LikelihoodForLead {
+                min_max_initial_cycle,
+                ..
+            } => *min_max_initial_cycle,
+            Self::CycleAtMomentNoEmuLog { initial_cycle, .. }
+            | Self::CycleAtMomentWithEmuLog { initial_cycle, .. } => {
+                (*initial_cycle, *initial_cycle)
+            }
+            _ => (0, 0),
+        }
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -71,7 +88,7 @@ pub struct Wild3GeneratorOptions {
     pub roamer_state: Wild3RoamerState,
     pub mass_outbreak_state: Wild3MassOutbreakState,
     pub feebas_state: Wild3FeebasState,
-    pub feebas_cycles: usize,
+    pub feebas_vblank_count: Option<usize>,
     pub using_white_flute: bool,
     pub safari_pokeblock: Option<Wild3SafariPokeblockGenOpt>,
 }
@@ -91,7 +108,7 @@ impl Default for Wild3GeneratorOptions {
             roamer_state: Wild3RoamerState::default(),
             mass_outbreak_state: Wild3MassOutbreakState::default(),
             feebas_state: Wild3FeebasState::default(),
-            feebas_cycles: 0,
+            feebas_vblank_count: None,
             using_white_flute: true,
             safari_pokeblock: None,
         }

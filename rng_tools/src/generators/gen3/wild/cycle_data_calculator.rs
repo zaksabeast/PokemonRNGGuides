@@ -3,7 +3,7 @@ use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 use super::cdf::CdfCursor;
-use super::{CycleRange, MinMidMax, VBLANK_FREQ, Wild3PlayingSong, Wild3Weather};
+use super::{CycleRange, VBLANK_FREQ, Wild3PlayingSong, Wild3Weather};
 use crate::gen3::{
     COMMON_LEAD_RANGE, CycleAndModRange, FASTEST_MODULO_CYCLE_24, INFINITE_CYCLE,
     SLOWEST_MODULO_CYCLE_24, Wild3InitialCycleDistribution,
@@ -28,6 +28,7 @@ pub struct Wild3SearcherCycleData {
     pub method_probability: f64,
     pub playing_song: Wild3PlayingSong,
     pub weather: Wild3Weather,
+    pub feebas_cycle: Option<usize>,
 }
 
 impl Wild3SearcherCycleData {
@@ -45,6 +46,7 @@ impl Wild3SearcherCycleData {
             method_probability,
             playing_song,
             weather,
+            feebas_cycle: None,
         }
     }
     pub fn new_default() -> Self {
@@ -54,6 +56,7 @@ impl Wild3SearcherCycleData {
             method_probability: 0f64,
             playing_song: Wild3PlayingSong::MapSong,
             weather: Wild3Weather::Sunny,
+            feebas_cycle: None,
         }
     }
     pub fn new_for_test(
@@ -99,18 +102,19 @@ impl Wild3SearcherCycleDataByLead {
     }
 }
 
+/** initial_cycle_distrs should only include those matching the required setup */
 pub fn calculate_cycle_data_by_lead(
     post_cycle_range: &CycleAndModRange,
     egg_lead: bool,
     specified_lead_cycle_speed: Option<usize>,
-    initial_cycle_distr: &[&Wild3InitialCycleDistribution],
+    initial_cycle_distrs: &[&Wild3InitialCycleDistribution],
 ) -> Wild3SearcherCycleDataByLead {
-    if initial_cycle_distr.is_empty() {
+    if initial_cycle_distrs.is_empty() {
         return Wild3SearcherCycleDataByLead::new_default(*post_cycle_range);
     }
 
     let data_for_lead_spd =
-        |speed| find_best_cycle_data_for_lead_spd(post_cycle_range, speed, initial_cycle_distr);
+        |speed| find_best_cycle_data_for_lead_spd(post_cycle_range, speed, initial_cycle_distrs);
 
     if egg_lead {
         let data = data_for_lead_spd(0);
@@ -131,7 +135,7 @@ pub fn calculate_cycle_data_by_lead(
         specified_lead: specified_lead_cycle_speed.map(data_for_lead_spd),
         slowest_lead: data_for_lead_spd(SLOWEST_MODULO_CYCLE_24),
         fastest_lead: data_for_lead_spd(FASTEST_MODULO_CYCLE_24),
-        ideal_lead: find_best_cycle_data_for_ideal_lead_spd(post_cycle_range, initial_cycle_distr),
+        ideal_lead: find_best_cycle_data_for_ideal_lead_spd(post_cycle_range, initial_cycle_distrs),
         common_lower_lead: data_for_lead_spd(COMMON_LEAD_RANGE.start),
         common_upper_lead: data_for_lead_spd(COMMON_LEAD_RANGE.end),
     }
@@ -148,9 +152,11 @@ fn find_best_cycle_data_for_lead_spd(
         .map(|distr| Wild3SearcherCycleData {
             lead_pid_cycle_count: lead_spd,
             initial_cycle_range: initial_range,
-            method_probability: distr.probability_for_range(&initial_range),
+            method_probability: distr.probability_for_range(&initial_range)
+                * distr.feebas_vblank_count_probability,
             playing_song: distr.playing_song,
             weather: distr.weather,
+            feebas_cycle: distr.feebas_cycle,
         });
 
     find_best_cycle_data(candidates).unwrap_or_else(Wild3SearcherCycleData::new_default)
@@ -203,9 +209,11 @@ pub fn calculate_cycle_data_for_specific_lead_spd(
     Wild3SearcherCycleData {
         lead_pid_cycle_count,
         initial_cycle_range,
-        method_probability: distr.probability_for_range(&initial_cycle_range),
+        method_probability: distr.probability_for_range(&initial_cycle_range)
+            * distr.feebas_vblank_count_probability,
         playing_song: distr.playing_song,
         weather: distr.weather,
+        feebas_cycle: distr.feebas_cycle,
     }
 }
 
@@ -250,9 +258,10 @@ fn calculate_ideal_lead_cycle_data(
         Some(Wild3SearcherCycleData {
             lead_pid_cycle_count: speed,
             initial_cycle_range: initial_range,
-            method_probability: probability,
+            method_probability: probability * distr.feebas_vblank_count_probability,
             playing_song: distr.playing_song,
             weather: distr.weather,
+            feebas_cycle: distr.feebas_cycle,
         })
     });
 
@@ -276,15 +285,6 @@ fn calculate_initial_cycle_range(post_cycle_range: &CycleRange<usize>) -> CycleR
     }
 }
 
-// Limitation: Feebas hasn't been updated with the new initial cycle calibration logic.
-pub fn get_default_min_mid_max_vblank_cycle_duration_for_feebas() -> MinMidMax {
-    MinMidMax::new(45_000, 55_000, 65_000)
-}
-
-pub fn get_default_min_mid_max_initial_cycle_for_feebas() -> MinMidMax {
-    MinMidMax::new(45_000, 55_000, 75_000)
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -300,6 +300,9 @@ mod tests {
                     probability: if index < 32 { 0.0 } else { 1.0 },
                 })
                 .collect(),
+            feebas_vblank_count: None,
+            feebas_vblank_count_probability: 1.0,
+            feebas_cycle: None,
             action: Wild3Action::SweetScentLand,
             playing_song: Wild3PlayingSong::MapSong,
             weather: Wild3Weather::Sunny,
@@ -323,11 +326,12 @@ mod tests {
         let mut second = first.clone();
         second.distribution[31].cycle = 31_500.0;
         second.weather = Wild3Weather::Rain;
+        second.feebas_cycle = Some(123);
         let mut third = second.clone();
         third.weather = Wild3Weather::Thunderstorm;
         let range = CycleAndModRange::new(216_896, 100, 500);
         let distributions = [&first, &second, &third];
-        let expected = Wild3SearcherCycleData::new(
+        let mut expected = Wild3SearcherCycleData::new(
             320,
             31_500,
             500,
@@ -335,6 +339,7 @@ mod tests {
             Wild3PlayingSong::MapSong,
             Wild3Weather::Rain,
         );
+        expected.feebas_cycle = Some(123);
 
         assert_eq!(
             find_best_cycle_data_for_lead_spd(&range, 320, &distributions),

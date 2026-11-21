@@ -23,7 +23,10 @@ import { PidPathResult, ResultSetupInfo } from "./wild3TargetSetupSearcher";
 import { GBA_FPS } from "~/utils/consts";
 import { TargetSetup } from "./wild3TargetSetupInput";
 import { Wild3PokeblockDescription } from "~/components/form/pokemon/pokeblockField";
-import { targetAdvanceAfterPaintingTitle } from "../pokemonRng/labels";
+import {
+  likelihoodLabel,
+  targetAdvanceAfterPaintingTitle,
+} from "../pokemonRng/labels";
 import { FeebasTileVisualizerButton } from "./feebasMap";
 import { Wild3UiMapNameWithAudioTooltip } from "./wild3UiMapNameWithAudioTooltip";
 
@@ -140,13 +143,30 @@ const getResultSetupInfoColumns = ({
     { title: "Player action", dataIndex: "actionName" },
     {
       title: "Fishing spot",
-      dataIndex: "feebas_cycles",
+      dataIndex: "primaryCycleData",
       show: isFishingInFeebasMap,
-      render: (feebasCycles, values) => {
-        return isFishingAction(values.action) && values.mapId === FEEBAS_MAP ? (
-          <FeebasTileVisualizerButton selectedTileCycle={feebasCycles} />
+      render: (cycleData, values) => {
+        return isFishingAction(values.action) &&
+          values.mapId === FEEBAS_MAP &&
+          cycleData?.feebas_cycle != null ? (
+          <FeebasTileVisualizerButton
+            selectedTileCycle={cycleData.feebas_cycle}
+          />
         ) : null;
       },
+    },
+    {
+      title: (
+        <span>
+          Feebas tile check
+          <br />
+          VBlanks
+        </span>
+      ),
+      key: "feebasVblankCount",
+      dataIndex: "feebas_vblank_count",
+      render: (count) => count ?? "N/A",
+      show: isFishingInFeebasMap,
     },
     {
       title: (
@@ -214,12 +234,7 @@ const getResultSetupInfoColumns = ({
 
   if (!rngManipulatedLeadPid) {
     columns.push({
-      title: (
-        <span>
-          Method <br />
-          Likelihood
-        </span>
-      ),
+      ...likelihoodLabel(),
       key: "<>Method <br />Likelihood</>",
       dataIndex: "cycle_data_by_lead",
       render: (cycle_data_by_lead, values) => {
@@ -377,6 +392,7 @@ type Props = {
   rngManipulatedLeadPid: boolean;
   tidForAceSid: AceSidConfig | null;
   setTargetSetup: (targetSetup: TargetSetup | null) => void;
+  setFeebasCycles: (feebasCycles: number | null) => void;
   setAudioInfluences: (audioInfluences: Wild3AudioInfluences) => void;
 };
 
@@ -393,7 +409,7 @@ const setupInfoToTargetSetup = (
     map: setupInfo.mapId,
     action: setupInfo.action,
     feebasState: setupInfo.feebas_state,
-    feebasCycles: setupInfo.feebas_cycles,
+    feebasVblankCount: setupInfo.feebas_vblank_count ?? null,
     roamerState: setupInfo.roamer_state,
     massOutbreakState: setupInfo.mass_outbreak_state,
     targetPaintingAdvs: {
@@ -410,6 +426,7 @@ const setupInfoToTargetSetup = (
 
 export const Wild3ResultSetupInfos = ({
   setTargetSetup,
+  setFeebasCycles,
   setAudioInfluences,
   selectedPidPathResult,
   rngManipulatedLeadPid,
@@ -450,6 +467,7 @@ export const Wild3ResultSetupInfos = ({
         ? null
         : setupInfoToTargetSetup(setupInfo, tidForAceSid);
     setTargetSetup(newTargetSetup);
+    setFeebasCycles(setupInfo?.primaryCycleData?.feebas_cycle ?? null);
 
     if (setupInfo != null) {
       setAudioInfluences(setupInfo.targetAudioInfluences);

@@ -290,3 +290,6 @@ export type Wild3GeneratorOptions = RustOption<RngTools.Wild3GeneratorOptions>;
 
 export type Static3GeneratorOptions =
   RustOption<RngTools.Static3GeneratorOptions>;
+
+export type Wild3InitialCycleDistribution =
+  RustOption<RngTools.Wild3InitialCycleDistribution>;

@@ -179,3 +179,17 @@ export const targetAdvanceLabel = (
     show,
   };
 };
+
+export const likelihoodLabel = () => ({
+  title: "Likelihood",
+  tooltip: (
+    <>
+      Likelihood that you will obtain the target Pokemon if you hit the target
+      advance. (Likelihood that the triggered{" "}
+      <Link newTab href="/gba-methods/">
+        method
+      </Link>{" "}
+      at the target advance is the right one).
+    </>
+  ),
+});

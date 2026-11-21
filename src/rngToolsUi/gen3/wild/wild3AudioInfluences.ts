@@ -1,7 +1,5 @@
 import type {
   Wild3Action,
-  Wild3MapGameData,
-  Wild3InitialCycleDistribution,
   Wild3PlayingSong,
   Wild3SearcherCycleData,
   Wild3SearcherCycleDataByLead,
@@ -11,6 +9,7 @@ import type {
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { formatProbability } from "~/utils/formatProbability";
 import { z } from "zod";
+import { getFeebasCycleDistribution } from "./data/initial_cycle/feebas_cycle_info";
 
 export const wild3Weathers = [
   "Sunny",
@@ -144,28 +143,50 @@ export const normalizeWild3AudioInfluences = (
   };
 };
 
-export const getWild3InitialCycleDistribution = (
-  map: Wild3MapGameData,
-  action: Wild3Action,
-  audioInfluences: Wild3AudioInfluences,
-): Wild3InitialCycleDistribution | undefined =>
-  map.initial_cycle_distrs.find(
-    (distribution) =>
-      distribution.action === action &&
-      distribution.weather === audioInfluences.weather &&
-      distribution.playing_song === audioInfluences.playing_song,
-  );
-
 export const getWild3InitialCycleDistributionForSetup = (
-  setup: Wild3AudioInfluences & { map: string; action: Wild3Action },
-): Wild3InitialCycleDistribution | undefined => {
+  setup: Wild3AudioInfluences & {
+    map: string;
+    action: Wild3Action;
+    feebasCycles: number | null;
+    feebasVblankCount: number | null;
+  },
+) => {
   const map = getWild3EmeraldGameData().maps_data.find(
     (map) => map.map_id === setup.map,
   );
 
-  return map == null
-    ? undefined
-    : getWild3InitialCycleDistribution(map, setup.action, setup);
+  const initial_cycle_distr =
+    setup.feebasCycles != null && setup.feebasVblankCount != null
+      ? getFeebasCycleDistribution(
+          setup.feebasCycles,
+          setup.weather,
+          setup.feebasVblankCount,
+        )
+      : map?.initial_cycle_distrs.find(
+          (distribution) =>
+            distribution.action === setup.action &&
+            distribution.weather === setup.weather &&
+            distribution.playing_song === setup.playing_song,
+          // Note: All distributions from static getWild3EmeraldGameData() have feebas_vblank_count to null.
+        );
+
+  if (initial_cycle_distr == null) {
+    return {
+      initial_cycle_distr: null,
+      initial_cycle_opts: null,
+    };
+  }
+  const initial_cycle_opts = {
+    min_max_initial_cycle: [
+      initial_cycle_distr.min,
+      initial_cycle_distr.max,
+    ] satisfies [number, number],
+  };
+
+  return {
+    initial_cycle_distr,
+    initial_cycle_opts,
+  };
 };
 
 export const getDisplayedWild3CycleData = (

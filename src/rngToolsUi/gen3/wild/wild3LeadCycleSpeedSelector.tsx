@@ -41,6 +41,7 @@ import {
 } from "./wild3AudioInfluences";
 import { toOptions } from "~/utils/options";
 import { getInitialCycleSummary } from "./data/initial_cycle_main";
+import { getFeebasTiles } from "./feebasMapData";
 
 /*
 Wild3LeadCycleSpeedSelector is used to set/calibrate leadCycleSpeed.
@@ -49,6 +50,7 @@ It is like Wild3LeadCycleSpeedInput, but displays the impact of lead cycle speed
 
 export type Props = {
   targetSetup: TargetSetup;
+  feebasCycles: number | null;
   audioInfluences: Wild3AudioInfluences;
   setAudioInfluences: (audioInfluences: Wild3AudioInfluences) => void;
   permitEnablingDebugOptions: boolean;
@@ -76,7 +78,9 @@ const getColumns = (targetSetup: TargetSetup): ResultColumn<UiResult>[] => {
     {
       title: "Initial cycle",
       tooltip:
-        "Processor cycle counter when reaching start of the Pokémon generation.",
+        targetSetup.feebasState === "OnFeebasTile"
+          ? "Processor cycle counter when reaching start of the Pokémon generation after Feebas tile check."
+          : "Processor cycle counter when reaching start of the Pokémon generation.",
       dataIndex: "initial_cycle_range",
       render: (initial_cycle_range, { display_negative_cycle_as_0 }) => {
         const range = initial_cycle_range;
@@ -113,8 +117,16 @@ const getColumns = (targetSetup: TargetSetup): ResultColumn<UiResult>[] => {
   return columns;
 };
 
+const formatInitialCycleSummary = (summary: {
+  min: number;
+  max: number;
+  median: number;
+}): string =>
+  `${formatLargeInteger(summary.min)} - ${formatLargeInteger(summary.max)} (Median: ${formatLargeInteger(summary.median)})`;
+
 export const Wild3LeadCycleSpeedSelector = ({
   targetSetup,
+  feebasCycles,
   audioInfluences,
   setAudioInfluences,
   permitEnablingDebugOptions,
@@ -136,12 +148,22 @@ export const Wild3LeadCycleSpeedSelector = ({
     targetSetup.map,
     targetSetup.action,
   );
-  const initialCycleDistribution = getWild3InitialCycleDistributionForSetup({
+  const { initial_cycle_distr } = getWild3InitialCycleDistributionForSetup({
     ...targetSetup,
     ...selectedAudio,
+    feebasCycles,
   });
+  const initialCycleMin = initial_cycle_distr?.min;
+  const initialCycleMax = initial_cycle_distr?.max;
+  const isFeebas =
+    targetSetup.feebasState === "OnFeebasTile" &&
+    feebasCycles != null &&
+    targetSetup.feebasVblankCount != null;
+  const feebasTile = isFeebas
+    ? getFeebasTiles().find((tile) => tile.feebasCycle === feebasCycles)
+    : null;
   const initialCycleSummary = getInitialCycleSummary(
-    initialCycleDistribution?.distribution ?? [],
+    initial_cycle_distr?.distribution ?? [],
   );
 
   React.useEffect(() => {
@@ -149,19 +171,18 @@ export const Wild3LeadCycleSpeedSelector = ({
   }, [leadCycleSpeedProp]);
 
   React.useEffect(() => {
-    if (initialCycleDistribution == null) {
+    if (initialCycleMin == null || initialCycleMax == null) {
       setDistributions(null);
+
       return;
     }
 
     setupToDistributions(
       targetSetup,
+      feebasCycles,
       {
         LikelihoodForLead: {
-          min_max_initial_cycle: [
-            initialCycleDistribution.min,
-            initialCycleDistribution.max,
-          ],
+          min_max_initial_cycle: [initialCycleMax, initialCycleMax],
           lead_cycle_spd: actualLeadCycleSpeed ?? 0,
         },
       },
@@ -172,8 +193,10 @@ export const Wild3LeadCycleSpeedSelector = ({
   }, [
     actualLeadCycleSpeed,
     targetSetup,
+    feebasCycles,
     audioInfluences,
-    initialCycleDistribution,
+    initialCycleMin,
+    initialCycleMax,
   ]);
 
   return (
@@ -200,6 +223,33 @@ export const Wild3LeadCycleSpeedSelector = ({
               }
             />
           )}
+          {isFeebas ? (
+            <>
+              {targetSetup.feebasVblankCount != null && feebasTile != null && (
+                <Typography.Text>
+                  {targetSetup.feebasVblankCount} required Vblanks during Feebas
+                  tile check:{" "}
+                  {formatProbability(
+                    initial_cycle_distr?.feebas_vblank_count_probability ?? 0,
+                  )}{" "}
+                  likelihood when using tile
+                  {` (${feebasTile.ingameX}, ${feebasTile.ingameY}, ID=${feebasTile.ingameTileId})`}{" "}
+                  during {audioInfluences.weather} weather
+                </Typography.Text>
+              )}
+              <Typography.Text>
+                Possible cycle after Feebas tile check:{" "}
+                {formatInitialCycleSummary(initialCycleSummary)}
+              </Typography.Text>
+            </>
+          ) : (
+            <Typography.Text>
+              Possible initial cycle (impacted by audio):{" "}
+              {formatInitialCycleSummary(initialCycleSummary)}
+            </Typography.Text>
+          )}
+        </FormSection>
+        <FormSection>
           {targetSetup.lead === "Egg" ? (
             <Typography.Text>Egg lead can't be calibrated.</Typography.Text>
           ) : (
@@ -214,14 +264,6 @@ export const Wild3LeadCycleSpeedSelector = ({
             />
           )}
         </FormSection>
-        {initialCycleSummary != null && (
-          <FormSection>
-            Possible initial cycle:{" "}
-            {formatLargeInteger(initialCycleSummary.min)} -{" "}
-            {formatLargeInteger(initialCycleSummary.max)} (Median:{" "}
-            {formatLargeInteger(initialCycleSummary.median)})
-          </FormSection>
-        )}
       </FormCard>
 
       <ResultTable<UiResult>
@@ -242,6 +284,7 @@ export const Wild3LeadCycleSpeedSelector = ({
         <Wild3CycleAtMoments
           leadCycleSpeed={actualLeadCycleSpeed}
           targetSetup={targetSetup}
+          feebasCycles={feebasCycles}
           audioInfluences={audioInfluences}
         />
       )}
@@ -251,6 +294,7 @@ export const Wild3LeadCycleSpeedSelector = ({
 
 export const Wild3LeadCycleSpeedSelectorWithBtn = ({
   targetSetup,
+  feebasCycles,
   audioInfluences,
   setAudioInfluences,
   permitEnablingDebugOptions,
@@ -268,7 +312,7 @@ export const Wild3LeadCycleSpeedSelectorWithBtn = ({
       {!displayLeadCycleSpeed && (
         <FormCard>
           <SwitchField
-            label="Display lead cycle speed calibration?"
+            label="Display advanced cycle calibration?"
             onChange={setDisplayLeadCycleSpeed}
             value={displayLeadCycleSpeed}
           />
@@ -277,6 +321,7 @@ export const Wild3LeadCycleSpeedSelectorWithBtn = ({
       {displayLeadCycleSpeed && (
         <Wild3LeadCycleSpeedSelector
           targetSetup={targetSetup}
+          feebasCycles={feebasCycles}
           audioInfluences={audioInfluences}
           setAudioInfluences={setAudioInfluences}
           permitEnablingDebugOptions={permitEnablingDebugOptions}

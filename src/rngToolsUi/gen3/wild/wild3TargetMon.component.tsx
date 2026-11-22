@@ -48,6 +48,7 @@ export const Wild3TargetMon = () => {
       />
       <Gen3PkmFilter<FormState>
         displayMaxSize={gen3SpeciesHasVariableSize(species)}
+        levelRange={getPossibleValuesForSpecies(species).levelRange}
       />
     </FormSection>
   );

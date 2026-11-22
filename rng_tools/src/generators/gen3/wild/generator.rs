@@ -364,9 +364,7 @@ fn get_encounter_if_respects_filter<'a>(
         return None;
     }
 
-    if let Some(wanted_lvl) = opts.gen3_filter.lvl
-        && lvl != wanted_lvl
-    {
+    if !opts.gen3_filter.matches_level(lvl) {
         return None;
     }
 
@@ -1513,9 +1511,7 @@ fn create_if_passes_filter(
         return None;
     }
 
-    if let Some(required_lvl) = gen_data.opts.gen3_filter.lvl
-        && required_lvl != gen_data.lvl
-    {
+    if !gen_data.opts.gen3_filter.matches_level(gen_data.lvl) {
         return None;
     }
 

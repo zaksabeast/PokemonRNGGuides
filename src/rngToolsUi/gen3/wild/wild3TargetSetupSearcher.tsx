@@ -39,6 +39,8 @@ import {
   getTargetResultColumns,
 } from "../pokemonRng/targetSetupSearcher";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
+import { getLevelRangeForSpecies } from "./wild3TargetMon";
+import { getWild3EmeraldGameData } from "./data/wild3GameData";
 
 const Validator = z
   .object({
@@ -76,7 +78,46 @@ const Validator = z
       message: "Select at least one Feebas fishing spot.",
       path: ["feebasCycles"],
     },
-  );
+  )
+  .superRefine(({ species, filter_min_lvl, filter_max_lvl }, context) => {
+    const setups =
+      getWild3EmeraldGameData().mapSetupsBySpecies.get(species) ?? [];
+    const levelRange = getLevelRangeForSpecies(species, setups);
+
+    if (
+      levelRange != null &&
+      filter_min_lvl != null &&
+      filter_min_lvl > levelRange.max
+    ) {
+      context.addIssue({
+        code: "custom",
+        path: ["filter_min_lvl"],
+        message: `Min level can't be greater than ${levelRange.max}.`,
+      });
+    }
+    if (
+      levelRange != null &&
+      filter_max_lvl != null &&
+      filter_max_lvl < levelRange.min
+    ) {
+      context.addIssue({
+        code: "custom",
+        path: ["filter_max_lvl"],
+        message: `Max level can't be smaller than ${levelRange.min}.`,
+      });
+    }
+    if (
+      filter_min_lvl != null &&
+      filter_max_lvl != null &&
+      filter_min_lvl > filter_max_lvl
+    ) {
+      context.addIssue({
+        code: "custom",
+        path: ["filter_max_lvl"],
+        message: "Max level can't be smaller than the min level.",
+      });
+    }
+  });
 
 export type FormState = z.infer<typeof Validator>;
 
@@ -178,6 +219,15 @@ const getPidPathColumns = (
       },
     },
     ...getTargetResultColumns("emerald", true, aceShiny),
+    {
+      title: "Levels",
+      dataIndex: "resultSetupInfos",
+      key: "levels",
+      render: (resultSetupInfos) =>
+        [...new Set(resultSetupInfos.map(({ lvl }) => lvl))]
+          .sort((lhs, rhs) => lhs - rhs)
+          .join(", "),
+    },
   ];
 };
 

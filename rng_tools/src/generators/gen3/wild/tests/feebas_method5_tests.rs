@@ -105,7 +105,8 @@ fn wild3_feebas_method5_vanilla_level_filter() {
     // Note: The vblank occurs right before choosing the level. Without that vblank, the level would be 26.
 
     let mut opts = options(Gen3Lead::Vanilla);
-    opts.gen3_filter.lvl = Some(20);
+    opts.gen3_filter.min_lvl = Some(20);
+    opts.gen3_filter.max_lvl = Some(20);
     let mut data = game_data();
     let mut encounter = encounter();
     encounter.species_data.species = Species::Feebas;

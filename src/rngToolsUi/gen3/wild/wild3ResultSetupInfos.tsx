@@ -137,6 +137,7 @@ const getResultSetupInfoColumns = ({
         </Wild3UiMapNameWithAudioTooltip>
       ),
     },
+    { title: "Level", dataIndex: "lvl" },
     { title: "Player action", dataIndex: "actionName" },
     {
       title: "Fishing spot",

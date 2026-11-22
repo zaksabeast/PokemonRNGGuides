@@ -708,7 +708,8 @@ fn test_search_reverse_wild3_safari_cute_charm_pokeblock_hoothoot_has_result() {
             ..Default::default()
         },
         gen3_filter: Gen3PkmFilter {
-            lvl: Some(35),
+            min_lvl: Some(35),
+            max_lvl: Some(35),
             species: Some(Species::Hoothoot),
             ..Default::default()
         },
@@ -847,7 +848,8 @@ fn test_search_reverse_wild3_feebas_on_feebas_tile() {
             ..Default::default()
         },
         gen3_filter: Gen3PkmFilter {
-            lvl: Some(23),
+            min_lvl: Some(23),
+            max_lvl: Some(23),
             species: Some(Species::Feebas),
             ..Default::default()
         },

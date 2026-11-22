@@ -477,7 +477,8 @@ fn test_search_wild3_naive_magikarp_in_feebas_map() {
                 ..Default::default()
             },
             gen3_filter: Gen3PkmFilter {
-                lvl: Some(8),
+                min_lvl: Some(8),
+                max_lvl: Some(8),
                 species: Some(Species::Magikarp),
                 ..Default::default()
             },

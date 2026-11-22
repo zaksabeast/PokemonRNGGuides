@@ -45,10 +45,11 @@ const createStatic3SearcherOptions = async (
     targetSetup.targetPaintingAdvs.after - BATTLE_VIDEO_CONFIDENCE_RANGE,
     0,
   );
+  const targetLevel = getStaticEncounterLvl(targetSetup);
 
   const minMaxIvs = await getIvRangeFromStats({
     species: targetSetup.species,
-    lvl: getStaticEncounterLvl(targetSetup),
+    lvl: targetLevel,
     nature: values.nature,
     stats: {
       hp: values.hpStat,
@@ -84,7 +85,8 @@ const createStatic3SearcherOptions = async (
     gen3_filter: gen3PkmFilterFieldsToRustInput(
       {
         ...getGen3PkmFilterInitialValues(),
-        filter_lvl: getStaticEncounterLvl(targetSetup),
+        filter_min_lvl: targetLevel,
+        filter_max_lvl: targetLevel,
       },
       targetSetup.species,
     ),

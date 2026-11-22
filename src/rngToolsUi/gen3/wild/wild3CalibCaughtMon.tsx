@@ -92,7 +92,8 @@ export const createWild3SearcherOptions = async (
     gen3_filter: gen3PkmFilterFieldsToRustInput(
       {
         ...getGen3PkmFilterInitialValues(),
-        filter_lvl: values.wildLvl,
+        filter_min_lvl: values.wildLvl,
+        filter_max_lvl: values.wildLvl,
       },
       values.wildSpecies,
     ),

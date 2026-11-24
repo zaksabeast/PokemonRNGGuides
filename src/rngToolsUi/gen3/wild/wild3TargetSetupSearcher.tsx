@@ -42,7 +42,7 @@ import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 import { getLevelRangeForSpecies } from "./wild3TargetMon";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 
-const Validator = z
+export const Validator = z
   .object({
     maps: z.array(z.string()).min(1),
     recommendedSetups: z.boolean(),

@@ -29,9 +29,16 @@ impl Gen3PidSpeedFilter {
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Gen3PkmFilter {
     pub max_size: bool,
-    pub lvl: Option<u8>,
+    pub min_lvl: Option<u8>,
+    pub max_lvl: Option<u8>,
     pub pid_speed: Gen3PidSpeedFilter,
     pub species: Option<Species>,
+}
+
+impl Gen3PkmFilter {
+    pub fn matches_level(&self, lvl: u8) -> bool {
+        self.min_lvl.is_none_or(|min| lvl >= min) && self.max_lvl.is_none_or(|max| lvl <= max)
+    }
 }
 
 pub fn passes_pid_filter(

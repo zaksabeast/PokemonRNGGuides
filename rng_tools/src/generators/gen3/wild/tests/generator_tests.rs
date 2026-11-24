@@ -555,6 +555,35 @@ fn test_generate_wild3_hustle() {
 }
 
 #[test]
+fn test_generate_wild3_level_range_filter() {
+    let mut options = Wild3GeneratorOptions {
+        methods: vec![Gen3Method::Wild1],
+        ..Default::default()
+    };
+    let mut game_data = Wild3MapGameData::default();
+    for slot in game_data.slots_by_action[Wild3Action::SweetScentLand as usize].iter_mut() {
+        slot.min_level = 77;
+        slot.max_level = 77;
+    }
+
+    let generate = |options: &Wild3GeneratorOptions| {
+        generate_wild3(Pokerng::with_advances(0, 9), options, &game_data).mon_results
+    };
+
+    options.gen3_filter.min_lvl = Some(77);
+    options.gen3_filter.max_lvl = Some(77);
+    assert_eq!(generate(&options).len(), 1);
+
+    options.gen3_filter.min_lvl = Some(78);
+    options.gen3_filter.max_lvl = None;
+    assert!(generate(&options).is_empty());
+
+    options.gen3_filter.min_lvl = None;
+    options.gen3_filter.max_lvl = Some(76);
+    assert!(generate(&options).is_empty());
+}
+
+#[test]
 fn test_generate_wild3_rock_smash() {
     let options = Wild3GeneratorOptions {
         cycle_opts: Wild3GeneratorCycleOpts::Inactive,

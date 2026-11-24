@@ -270,11 +270,7 @@ fn complete_from_pid_until_the_end(
         .gen3_filter
         .species
         .is_none_or(|species| species == gen_data_feebas.encounter.species_data.species);
-    let level_matches = gen_data_feebas
-        .opts
-        .gen3_filter
-        .lvl
-        .is_none_or(|wanted| wanted == lvl);
+    let level_matches = gen_data_feebas.opts.gen3_filter.matches_level(lvl);
     if !species_matches || !level_matches {
         return None;
     }

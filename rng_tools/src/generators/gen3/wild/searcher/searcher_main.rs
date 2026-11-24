@@ -48,7 +48,7 @@ impl Default for Wild3MapSetups {
 }
 
 impl Wild3MapSetups {
-    pub fn get_encounter_species_data(&self, species: Species) -> Option<SpeciesData> {
+    pub fn get_all_encounters_game_data(&self) -> Vec<&Wild3EncounterGameData> {
         let mut encounter_game_datas: Vec<&Wild3EncounterGameData> = vec![];
 
         encounter_game_datas.extend(
@@ -75,7 +75,11 @@ impl Wild3MapSetups {
                 .map(|roamer| &roamer.encounter_data),
         );
 
-        for encounter_game_data in encounter_game_datas {
+        encounter_game_datas
+    }
+
+    pub fn get_encounter_species_data(&self, species: Species) -> Option<SpeciesData> {
+        for encounter_game_data in self.get_all_encounters_game_data() {
             if encounter_game_data.species_data.species == species {
                 return Some(SpeciesData { species });
             }
@@ -339,6 +343,10 @@ pub struct VecWrapperForWasm {
  * */
 #[wasm_bindgen]
 pub fn search_wild3(opts: &Wild3SearcherOptions) -> Vec<VecWrapperForWasm> {
+    if !has_possible_level_encounter(opts) {
+        return vec![];
+    }
+
     let res = if does_search_wild3_reverse_support_options(opts) {
         search_wild3_reverse(opts)
     } else {
@@ -346,6 +354,27 @@ pub fn search_wild3(opts: &Wild3SearcherOptions) -> Vec<VecWrapperForWasm> {
     };
 
     split_by_pid_path(res)
+}
+
+fn has_possible_level_encounter(opts: &Wild3SearcherOptions) -> bool {
+    if opts.gen3_filter.min_lvl.is_none() && opts.gen3_filter.max_lvl.is_none() {
+        return true;
+    }
+
+    let min_lvl = opts.gen3_filter.min_lvl.unwrap_or(0);
+    let max_lvl = opts.gen3_filter.max_lvl.unwrap_or(u8::MAX);
+    let matches = |encounter: &Wild3EncounterGameData| {
+        opts.gen3_filter
+            .species
+            .is_none_or(|species| encounter.species_data.species == species)
+            && encounter.min_level <= max_lvl
+            && encounter.max_level >= min_lvl
+    };
+
+    opts.map_setups
+        .iter()
+        .flat_map(Wild3MapSetups::get_all_encounters_game_data)
+        .any(matches)
 }
 
 pub fn does_search_wild3_reverse_support_options(opts: &Wild3SearcherOptions) -> bool {

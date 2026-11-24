@@ -85,7 +85,7 @@ const PidSpeedField = () => {
 };
 
 type Gen3PkmFilterProps = {
-  displayLevel?: boolean;
+  levelRange?: { min: number; max: number } | null;
   displayMaxSize?: boolean;
   displayPidSpeed?: boolean;
 };
@@ -94,17 +94,24 @@ type Props<FormState extends GenericForm> = Gen3PkmFilterProps &
   RequireFormFields<FormState, Gen3PkmFilterFields>;
 
 export const Gen3PkmFilter = <FormState extends GenericForm>({
-  displayLevel = false,
+  levelRange = null,
   displayMaxSize = false,
   displayPidSpeed = true,
 }: Props<FormState>) => (
   <>
-    {displayLevel && (
-      <FormNumberField<Gen3PkmFilterFields>
-        name="filter_lvl"
-        label="Level"
-        numType="decimal"
-      />
+    {levelRange != null && (
+      <FieldRow>
+        <FormNumberField<Gen3PkmFilterFields>
+          name="filter_min_lvl"
+          label="Min level"
+          numType="decimal"
+        />
+        <FormNumberField<Gen3PkmFilterFields>
+          name="filter_max_lvl"
+          label="Max level"
+          numType="decimal"
+        />
+      </FieldRow>
     )}
     {displayMaxSize && (
       <FormSwitchField<Gen3PkmFilterFields>

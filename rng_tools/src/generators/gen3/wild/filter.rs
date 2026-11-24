@@ -37,8 +37,7 @@ pub struct Gen3PkmFilter {
 
 impl Gen3PkmFilter {
     pub fn matches_level(&self, lvl: u8) -> bool {
-        self.min_lvl.is_none_or(|min| lvl >= min)
-            && self.max_lvl.is_none_or(|max| lvl <= max)
+        self.min_lvl.is_none_or(|min| lvl >= min) && self.max_lvl.is_none_or(|max| lvl <= max)
     }
 }
 

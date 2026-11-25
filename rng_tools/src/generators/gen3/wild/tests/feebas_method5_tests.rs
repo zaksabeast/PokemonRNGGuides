@@ -6,6 +6,7 @@ fn options(lead: Gen3Lead) -> Wild3GeneratorOptions {
         action: Wild3Action::GoodRod,
         methods: vec![Gen3Method::Wild1, Gen3Method::Wild5],
         feebas_state: Wild3FeebasState::OnFeebasTile,
+        feebas_vblank_count: Some(0),
         lead,
         ..Default::default()
     }
@@ -57,7 +58,7 @@ fn wild3_feebas_method5_search_window() {
             pid: 1_434_552_371,
             ivs: Ivs::new(15, 13, 14, 22, 16, 10),
             method: Gen3Method::Wild5,
-            cycle_range: Some(CycleRange::new(26_433, 0, 5_447)),
+            cycle_range: Some(CycleRange::new(0, 0, 5_447)),
             used_safari_pokeblock: None,
         },
         Wild3GeneratorMonResult {
@@ -66,7 +67,7 @@ fn wild3_feebas_method5_search_window() {
             pid: 1_434_552_371,
             ivs: Ivs::new(15, 13, 14, 22, 16, 10),
             method: Gen3Method::Wild5,
-            cycle_range: Some(CycleRange::new(31_880, 0, 5_446)),
+            cycle_range: Some(CycleRange::new(5_447, 0, 5_446)),
             used_safari_pokeblock: None,
         },
         Wild3GeneratorMonResult {
@@ -75,21 +76,20 @@ fn wild3_feebas_method5_search_window() {
             pid: 2_728_376_208,
             ivs: Ivs::new(24, 26, 1, 22, 6, 5),
             method: Gen3Method::Wild5,
-            cycle_range: Some(CycleRange::new(37_326, 0, 5_446)),
+            cycle_range: Some(CycleRange::new(10_893, 0, 5_446)),
             used_safari_pokeblock: None,
         },
     ];
 
-    for (initial_cycles, generate_even_if_impossible, expected) in [
+    for (min_max_initial_cycle, generate_even_if_impossible, expected) in [
         ((45_000, 75_000), false, vec![]),
-        ((240_000, 240_000), false, expected_candidates.clone()),
+        ((270_000, 270_000), false, expected_candidates.clone()),
         ((45_000, 75_000), true, expected_candidates),
     ] {
         let mut opts = options(Gen3Lead::Egg);
         opts.methods = vec![Gen3Method::Wild5];
-        opts.feebas_cycles = 26_433;
         opts.cycle_opts = Wild3GeneratorCycleOpts::Searching {
-            min_max_initial_cycle: initial_cycles,
+            min_max_initial_cycle,
             generate_even_if_impossible,
             consider_rng_manipulated_lead_pid: false,
         };

@@ -5,7 +5,7 @@ import {
   Wild3SearcherResultMon,
   Wild3SearcherCycleData,
 } from "~/rngTools";
-import { Flex, Icon, Link, ResultColumn } from "~/components";
+import { Flex, Icon, ResultColumn } from "~/components";
 import { ToolForm, type ToolFormSubmit } from "~/components/form";
 import { formatProbability } from "~/utils/formatProbability";
 import React from "react";
@@ -39,6 +39,7 @@ import {
   getTargetResultColumns,
 } from "../pokemonRng/targetSetupSearcher";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
+import { likelihoodLabel } from "../pokemonRng/labels";
 
 const Validator = z
   .object({
@@ -139,17 +140,7 @@ const getPidPathColumns = (
         `${resultSetupInfos.length} setup${resultSetupInfos.length > 1 ? "s" : ""}`,
     },
     {
-      title: "Likelihood",
-      tooltip: (
-        <>
-          Likelihood that you will obtain the target Pokemon if you hit the
-          target advance. (Likelihood that the triggered{" "}
-          <Link newTab href="/gba-methods/">
-            method
-          </Link>{" "}
-          at the target advance is the right one).
-        </>
-      ),
+      ...likelihoodLabel(),
       dataIndex: "resultSetupInfos",
       key: "best_likelihood",
       render: (resultSetupInfos) => {
@@ -183,12 +174,14 @@ const getPidPathColumns = (
 
 type Props = {
   setTargetSetup: (targetSetup: TargetSetup | null) => void;
+  setFeebasCycles: (feebasCycles: number | null) => void;
   setLeadCycleSpeed: (leadCycleSpeed: number) => void;
   setAudioInfluences: (audioInfluences: Wild3AudioInfluences) => void;
 };
 
 export const Wild3TargetSetupSearcher = ({
   setTargetSetup: setTargetSetupProp,
+  setFeebasCycles: setFeebasCyclesProp,
   setLeadCycleSpeed: setLeadCycleSpeedProp,
   setAudioInfluences: setAudioInfluencesProp,
 }: Props) => {
@@ -208,6 +201,7 @@ export const Wild3TargetSetupSearcher = ({
   const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
     null,
   );
+  const [feebasCycles, setFeebasCycles] = React.useState<number | null>(null);
 
   const onSubmit: ToolFormSubmit<FormState> = async (values) => {
     const pidPathResults = await searchWild3Target(values);
@@ -249,6 +243,11 @@ export const Wild3TargetSetupSearcher = ({
     setLeadCycleSpeed(AVERAGE_LEAD_CYCLE_SPEED);
   };
 
+  const setFeebasCyclesBoth = (cycles: number | null) => {
+    setFeebasCycles(cycles);
+    setFeebasCyclesProp(cycles);
+  };
+
   const setLeadCycleSpeedBoth = (spd: number) => {
     setLeadCycleSpeed(spd);
     setLeadCycleSpeedProp?.(spd);
@@ -281,6 +280,7 @@ export const Wild3TargetSetupSearcher = ({
           rngManipulatedLeadPid={rngManipulatedLeadPid}
           tidForAceSid={tidForAceSid}
           setTargetSetup={setTargetSetupBoth}
+          setFeebasCycles={setFeebasCyclesBoth}
           setAudioInfluences={setAudioInfluencesBoth}
         />
       )}
@@ -288,6 +288,7 @@ export const Wild3TargetSetupSearcher = ({
       {targetSetup != null && (
         <Wild3LeadCycleSpeedSelectorWithBtn
           targetSetup={targetSetup}
+          feebasCycles={feebasCycles}
           audioInfluences={audioInfluences}
           setAudioInfluences={setAudioInfluencesBoth}
           permitEnablingDebugOptions={false}

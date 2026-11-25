@@ -22,7 +22,7 @@ import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 import type { TargetSetup } from "./wild3TargetSetupInput";
 import { doesRockSmashSetupRequireWhiteFlute } from "./searchWild3Target";
 import {
-  getWild3InitialCycleDistribution,
+  getWild3InitialCycleDistributionForSetup,
   getDefaultWild3AudioInfluences,
   type Wild3AudioInfluences,
 } from "./wild3AudioInfluences";
@@ -106,6 +106,19 @@ export const getSimplifiedInitialValues = (): FormState => ({
   leadKeys: [...simplifiedLeadKeys],
 });
 
+const VERY_COMMON_POKEMONS: Species[] = [
+  "Wailmer",
+  "Zubat",
+  "Magikarp",
+  "Tentacool",
+  "Golbat",
+  "Wingull",
+  "Shuppet",
+  "Geodude",
+  "Pelipper",
+  "Graveler",
+] as const satisfies Species[];
+
 export const buildSimplifiedSearchOptions = (
   values: FormState,
 ): Wild3SearcherOptions => ({
@@ -114,7 +127,8 @@ export const buildSimplifiedSearchOptions = (
   sid: trainerIdSchema.parse(values.sid),
   initial_advances: 1000,
   max_advances: 10_000_000,
-  max_result_count: 100,
+  // Improve the performance for very common Pokemons
+  max_result_count: VERY_COMMON_POKEMONS.includes(values.species) ? 10 : 100,
   filter: pkmFilterFieldsToRustInput({
     ...getPkmFilterInitialValues(),
     filter_shiny: "AnyShiny",
@@ -152,7 +166,6 @@ export const buildSimplifiedSearchOptions = (
   painting_opts: null,
   using_white_flute: true,
   considered_safari_pokeblocks: "None",
-  feebas_cycles: [0],
 });
 
 export type SelectedWildSetup = {
@@ -196,19 +209,21 @@ export const searchSimplifiedWild = async (
       map.map_id,
       res.action,
     );
-    const distribution = getWild3InitialCycleDistribution(
-      map,
-      res.action,
-      audioInfluences,
-    );
-    if (distribution == null) {
+    const { initial_cycle_distr } = getWild3InitialCycleDistributionForSetup({
+      map: map.map_id,
+      action: res.action,
+      ...audioInfluences,
+      feebasCycles: null,
+      feebasVblankCount: null,
+    });
+    if (initial_cycle_distr == null) {
       continue;
     }
 
     const cycleData = await rngTools.calculate_cycle_data_for_specific_lead_spd(
       res.cycle_data_by_lead.post_cycle_range,
       leadCycleSpeed,
-      distribution,
+      initial_cycle_distr,
     );
     candidates.push({
       probability: cycleData.method_probability,
@@ -222,7 +237,7 @@ export const searchSimplifiedWild = async (
         action: res.action,
         lead: res.lead,
         feebasState: res.feebas_state,
-        feebasCycles: res.feebas_cycles,
+        feebasVblankCount: null,
         roamerState: res.roamer_state,
         massOutbreakState: res.mass_outbreak_state,
         targetPaintingAdvs: { before: 0, after: res.advance },

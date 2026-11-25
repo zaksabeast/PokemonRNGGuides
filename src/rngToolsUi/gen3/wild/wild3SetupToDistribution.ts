@@ -30,6 +30,7 @@ import {
   type Wild3AudioInfluences,
   getWild3InitialCycleDistributionForSetup,
 } from "./wild3AudioInfluences";
+import { withFeebasCycleDistributionsForMapData } from "./data/wild3GameData";
 
 export type UiResult = FlattenIvs<
   Wild3SearcherResultMon & {
@@ -86,6 +87,7 @@ export type Wild3Distributions = {
 
 export const setupToDistributions = async (
   targetSetup: TargetSetup,
+  feebasCycles: number | null,
   cycle_opts: Wild3GeneratorCycleOpts,
   preferredAudioInfluences: Wild3AudioInfluences,
 ): Promise<Wild3Distributions> => {
@@ -110,7 +112,7 @@ export const setupToDistributions = async (
     roamer_state: targetSetup.roamerState,
     mass_outbreak_state: targetSetup.massOutbreakState,
     feebas_state: targetSetup.feebasState,
-    feebas_cycles: targetSetup.feebasCycles,
+    feebas_vblank_count: targetSetup.feebasVblankCount,
     cycle_opts,
     safari_pokeblock:
       canUsePokeblock && targetSetup.safariPokeblock !== null
@@ -128,11 +130,17 @@ export const setupToDistributions = async (
     targetSetup.action,
     preferredAudioInfluences,
   );
-  const distribution = getWild3InitialCycleDistributionForSetup({
-    ...targetSetup,
-    ...audioInfluences,
-  });
-  if (map_data == null || distribution == null) {
+  const { initial_cycle_opts, initial_cycle_distr } =
+    getWild3InitialCycleDistributionForSetup({
+      ...targetSetup,
+      ...audioInfluences,
+      feebasCycles,
+    });
+  if (
+    map_data == null ||
+    initial_cycle_distr == null ||
+    initial_cycle_opts == null
+  ) {
     return {
       uiResults: [],
       cycle_at_moments: [],
@@ -142,6 +150,15 @@ export const setupToDistributions = async (
       cycle_opts,
     };
   }
+
+  const forFeebas =
+    targetSetup.feebasState === "OnFeebasTile" &&
+    feebasCycles != null &&
+    targetSetup.feebasVblankCount != null;
+
+  const gameData = forFeebas
+    ? withFeebasCycleDistributionsForMapData(map_data, [initial_cycle_distr])
+    : map_data;
 
   const argsWithoutEmuLog = (leadCycleSpd: number) => ({
     leadCycleSpd,
@@ -168,7 +185,7 @@ export const setupToDistributions = async (
       targetSetup.targetPaintingAdvs.before,
       targetSetup.targetPaintingAdvs.after,
       opts,
-      map_data,
+      gameData,
       distributionArgs.leadCycleSpd,
       audioInfluences.playing_song,
       audioInfluences.weather,

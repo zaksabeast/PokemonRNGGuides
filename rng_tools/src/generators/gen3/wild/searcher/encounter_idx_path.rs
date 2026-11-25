@@ -3,9 +3,8 @@ use itertools::Itertools;
 use crate::{
     EncounterSlot, Gender, GenderRatio, Species,
     gen3::{
-        Gen3Lead, MAX_FEEBAS_VBLANK, SpeciesData, Wild3Action, Wild3EncounterGameData,
-        Wild3EncounterIndex, Wild3FeebasState, Wild3MassOutbreakState,
-        get_feebas_vblank_from_feebas_cycle,
+        Gen3Lead, SpeciesData, Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex,
+        Wild3FeebasState, Wild3MassOutbreakState,
         wild::{
             lcrng_distance,
             searcher::{
@@ -164,7 +163,6 @@ pub struct EncounterIdxPathGenerator<'a> {
     actions: Vec<Wild3Action>,
     species_data: SpeciesData,
     using_white_flute: bool,
-    pub feebas_cycles_by_vblank: [Vec<usize>; MAX_FEEBAS_VBLANK],
 }
 
 struct Wild3MapSetupsForReverse<'a> {
@@ -217,13 +215,15 @@ impl<'a> Wild3MapSetupsForReverse<'a> {
     }
 }
 
+const MAX_FEEBAS_VBLANK_COUNT: usize = 5; // The maximum vblank count according to current distributions is 3.
+
 impl<'a> EncounterIdxPathGenerator<'a> {
     pub fn new(
         leads: &[Gen3Lead],
         map_setups: &'a [Wild3MapSetups],
         species_data: SpeciesData,
         using_white_flute: bool,
-        feebas_cycles: &[usize],
+        generate_even_if_impossible: bool,
     ) -> Self {
         let actions: Vec<Wild3Action> = map_setups
             .iter()
@@ -249,20 +249,28 @@ impl<'a> EncounterIdxPathGenerator<'a> {
             arcs.push(EncounterIdxToLvlArc::SlotStaticSuccess);
         }
 
-        let mut feebas_cycles_by_vblank: [Vec<usize>; MAX_FEEBAS_VBLANK] = Default::default();
-        for cycle in feebas_cycles {
-            feebas_cycles_by_vblank[get_feebas_vblank_from_feebas_cycle(*cycle)].push(*cycle)
-        }
-
         if permit_feebas_arcs(&species_data) {
-            feebas_cycles_by_vblank
-                .iter()
-                .enumerate()
-                .for_each(|(vblank_count, list)| {
-                    if !list.is_empty() {
-                        arcs.push(EncounterIdxToLvlArc::CheckFeebasSuccess { vblank_count });
-                    }
-                });
+            if generate_even_if_impossible {
+                arcs.extend(
+                    (0..=MAX_FEEBAS_VBLANK_COUNT).map(|vblank_count| {
+                        EncounterIdxToLvlArc::CheckFeebasSuccess { vblank_count }
+                    }),
+                );
+            } else {
+                let possible_feebas_vblank_counts = map_setups
+                    .iter()
+                    .flat_map(|setup| &setup.map_data.initial_cycle_distrs)
+                    .filter(|distribution| distribution.feebas_vblank_count_probability > 0.0)
+                    .filter_map(|distribution| distribution.feebas_vblank_count)
+                    .sorted()
+                    .dedup();
+
+                arcs.extend(
+                    possible_feebas_vblank_counts.map(|vblank_count| {
+                        EncounterIdxToLvlArc::CheckFeebasSuccess { vblank_count }
+                    }),
+                );
+            }
         }
 
         let map_setups: Vec<Wild3MapSetupsForReverse<'a>> = map_setups
@@ -281,7 +289,6 @@ impl<'a> EncounterIdxPathGenerator<'a> {
             actions,
             species_data,
             using_white_flute,
-            feebas_cycles_by_vblank,
         }
     }
 

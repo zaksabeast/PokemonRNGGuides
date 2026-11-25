@@ -17,6 +17,7 @@ type Props = {
   audioInfluences?: Wild3AudioInfluences;
   setAudioInfluences?: (audioInfluences: Wild3AudioInfluences) => void;
   setTargetSetup?: (targetSetup: TargetSetup) => void;
+  setFeebasCycles?: (feebasCycles: number | null) => void;
   setLeadCycleSpeed?: (spd: number) => void;
   leadCycleSpeed: number;
   displayInstructions: boolean;
@@ -26,6 +27,7 @@ type Props = {
 
 export const Wild3TargetSetupAndLeadInput = ({
   setTargetSetup: setTargetSetupProp,
+  setFeebasCycles: setFeebasCyclesProp,
   audioInfluences: audioInfluencesProp,
   setAudioInfluences: setAudioInfluencesProp,
   setLeadCycleSpeed: setLeadCycleSpeedProp,
@@ -37,6 +39,7 @@ export const Wild3TargetSetupAndLeadInput = ({
   const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
     null,
   );
+  const [feebasCycles, setFeebasCycles] = React.useState<number | null>(null);
 
   const [localAudioInfluences, setLocalAudioInfluences] =
     React.useState<Wild3AudioInfluences>(defaultAudioInfluences);
@@ -48,12 +51,19 @@ export const Wild3TargetSetupAndLeadInput = ({
     setAudioInfluencesProp?.(audio);
   };
 
-  const setTargetSetupBoth = (targetSetup: TargetSetup | null) => {
+  const setTargetSetupBoth = (
+    targetSetup: TargetSetup | null,
+    selectedFeebasCycles: number | null = null,
+  ) => {
     if (targetSetup == null && permitEnablingDebugOptions) {
       return; // When debugging, it is useful to not reset the target setup and debugging info.
     }
 
+    const feebasCyclesToUse = targetSetup == null ? null : selectedFeebasCycles;
+
     setTargetSetup(targetSetup);
+    setFeebasCycles(feebasCyclesToUse);
+    setFeebasCyclesProp?.(feebasCyclesToUse);
     if (targetSetup != null) {
       const audio = getDefaultWild3AudioInfluences(
         targetSetup.map,
@@ -81,10 +91,11 @@ export const Wild3TargetSetupAndLeadInput = ({
       targetSetup,
       leadCycleSpeed,
       audioInfluences,
+      feebasCycles,
     ).then(({ content }) => {
       setTargetSetupResult(content);
     });
-  }, [leadCycleSpeed, targetSetup, audioInfluences]);
+  }, [leadCycleSpeed, targetSetup, audioInfluences, feebasCycles]);
 
   const setLeadCycleSpeedBoth = (spd: number) => {
     setLeadCycleSpeed(spd);
@@ -104,6 +115,7 @@ export const Wild3TargetSetupAndLeadInput = ({
           </FormCard>
           <Wild3LeadCycleSpeedSelectorWithBtn
             targetSetup={targetSetup}
+            feebasCycles={feebasCycles}
             audioInfluences={audioInfluences}
             setAudioInfluences={setAudioInfluencesBoth}
             permitEnablingDebugOptions={permitEnablingDebugOptions}

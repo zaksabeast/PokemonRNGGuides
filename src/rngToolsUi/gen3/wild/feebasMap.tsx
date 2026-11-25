@@ -130,7 +130,7 @@ export const FeebasTilesSelector = ({
       ? internalSelectedTileKeys
       : new Set(
           selectableTiles
-            .filter((tile) => selectedTiles.includes(tile.cycleCounter))
+            .filter((tile) => selectedTiles.includes(tile.feebasCycle))
             .map(getTileKey),
         );
 
@@ -155,7 +155,7 @@ export const FeebasTilesSelector = ({
         .filter((selectableTile) =>
           nextSelectedTileKeys.has(getTileKey(selectableTile)),
         )
-        .map((tile) => tile.cycleCounter),
+        .map((tile) => tile.feebasCycle),
     );
   };
 
@@ -208,7 +208,7 @@ export const FeebasTileVisualizer = ({
 }: {
   selectedTileCycle: number;
 }) => {
-  const tile = tiles.find((tile) => tile.cycleCounter === selectedTileCycle);
+  const tile = tiles.find((tile) => tile.feebasCycle === selectedTileCycle);
   if (tile == null) {
     return null;
   }
@@ -270,7 +270,7 @@ export const FeebasTileVisualizerButton = ({
   selectedTileCycle: number;
 }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const tile = tiles.find((tile) => tile.cycleCounter === selectedTileCycle);
+  const tile = tiles.find((tile) => tile.feebasCycle === selectedTileCycle);
   if (tile == null) {
     return null;
   }

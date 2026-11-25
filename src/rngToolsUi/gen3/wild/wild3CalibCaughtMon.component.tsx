@@ -140,12 +140,14 @@ export const Fields = ({
 const searchCaughtMon = async (
   values: FormState,
   targetSetup: TargetSetup,
+  feebasCycles: number | null,
   leadCycleSpeed: number,
   audioInfluences: Wild3AudioInfluences,
 ) => {
   const opts = await createWild3SearcherOptions(
     values,
     targetSetup,
+    feebasCycles,
     leadCycleSpeed,
     audioInfluences,
   );
@@ -201,6 +203,7 @@ const searchCaughtMon = async (
 
 type Props = {
   targetSetup: TargetSetup;
+  feebasCycles: number | null;
   audioInfluences: Wild3AudioInfluences;
   setLatestHitAdv?: (
     hitAdv: {
@@ -214,6 +217,7 @@ type Props = {
 
 export const Wild3CalibCaughtMon = ({
   targetSetup,
+  feebasCycles,
   audioInfluences,
   leadCycleSpeed,
   setLatestHitAdv,
@@ -228,6 +232,7 @@ export const Wild3CalibCaughtMon = ({
       await searchCaughtMon(
         values,
         targetSetup,
+        feebasCycles,
         leadCycleSpeed,
         audioInfluences,
       ),

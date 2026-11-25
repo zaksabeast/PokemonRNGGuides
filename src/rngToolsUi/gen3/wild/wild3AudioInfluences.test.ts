@@ -12,7 +12,7 @@ import {
   formatPlayingSong,
   getWild3AudioInfluenceOptions,
   normalizeWild3AudioInfluences,
-  getWild3InitialCycleDistribution,
+  getWild3InitialCycleDistributionForSetup,
   getWild3LikelihoodAudioInfluenceLabel,
   formatWild3Likelihood,
   getWild3TargetAudioInfluences,
@@ -308,33 +308,55 @@ test("weather and playing song selection preserves valid values and normalizes m
 });
 
 test("distribution selection matches all three audio influence fields", () => {
-  const map = getWild3EmeraldGameData().maps_data.find(
-    (map) => map.map_id === "MAP_ROUTE119",
-  );
-  if (map == null) {
-    throw new Error("Missing Route 119 map data");
+  const { initial_cycle_distr: distribution } =
+    getWild3InitialCycleDistributionForSetup({
+      map: "MAP_ROUTE119",
+      action: "OldRod",
+      weather: "Rain",
+      playing_song: "SurfSong",
+      feebasCycles: null,
+      feebasVblankCount: null,
+    });
+  if (distribution == null) {
+    throw new Error("Missing Route 119 Old Rod distribution");
   }
 
-  const distribution = getWild3InitialCycleDistribution(map, "OldRod", {
-    weather: "Rain",
-    playing_song: "SurfSong",
-  });
   const settings = omit(distribution, "distribution");
 
-  expect(settings).toEqual({
+  const expectedSettings = {
     action: "OldRod",
     playing_song: "SurfSong",
     weather: "Rain",
     min: 49366,
     max: 99196,
-  });
+    feebas_vblank_count: undefined,
+    feebas_vblank_count_probability: 1,
+    feebas_cycle: undefined,
+  } as const;
+
+  expect(settings).toEqual(expectedSettings);
+
+  const withoutVblankCount = getWild3InitialCycleDistributionForSetup({
+    map: "MAP_ROUTE119",
+    action: "OldRod",
+    weather: "Rain",
+    playing_song: "SurfSong",
+    feebasCycles: 651714,
+    feebasVblankCount: null,
+  }).initial_cycle_distr;
+
+  expect(omit(withoutVblankCount, "distribution")).toEqual(expectedSettings);
 
   expect(
-    getWild3InitialCycleDistribution(map, "SweetScentWater", {
+    getWild3InitialCycleDistributionForSetup({
+      map: "MAP_ROUTE119",
+      action: "SweetScentWater",
       weather: "Rain",
       playing_song: "BikeSong",
-    }),
-  ).toBeUndefined();
+      feebasCycles: null,
+      feebasVblankCount: null,
+    }).initial_cycle_distr,
+  ).toBeNull();
 });
 
 const lower: Wild3SearcherCycleData = {
@@ -343,6 +365,7 @@ const lower: Wild3SearcherCycleData = {
   method_probability: 0.25,
   playing_song: "MapSong",
   weather: "Sunny",
+  feebas_cycle: undefined,
 };
 const upper: Wild3SearcherCycleData = {
   lead_pid_cycle_count: 868,
@@ -350,6 +373,7 @@ const upper: Wild3SearcherCycleData = {
   method_probability: 0.75,
   playing_song: "BikeSong",
   weather: "Rain",
+  feebas_cycle: undefined,
 };
 
 test("selected setup audio influences normalize to the map and action", () => {

@@ -23,7 +23,7 @@ import { formatHex } from "~/utils/formatHex";
 import { Flex, PokemonName } from "~/components";
 
 import {
-  getWild3InitialCycleDistribution,
+  getWild3InitialCycleDistributionForSetup,
   normalizeWild3AudioInfluences,
   type Wild3AudioInfluences,
 } from "./wild3AudioInfluences";
@@ -62,7 +62,9 @@ const getProbabilityInfo = async (
         : `with lead cycle speed ${lead_cycle_speed}`;
 
   const showIdealInfo =
-    info.method_probability < 0.99 && lead_cycle_speed !== ideal_lead_spd;
+    info.method_probability < 0.99 &&
+    ideal_info.method_probability > 0 &&
+    lead_cycle_speed !== ideal_lead_spd;
 
   return (
     <Flex mt={10} vertical>
@@ -116,25 +118,32 @@ export const calculateTargetSetupResult = async (
   targetSetup: TargetSetup,
   lead_cycle_speed: number | null,
   audioInfluences: Wild3AudioInfluences,
+  feebasCycles: number | null,
   showProbabilityInfo = true,
 ) => {
   const map_data = emeraldWildGameData.maps_data.find(
     (map) => map.map_id === targetSetup.map,
   );
+
+  if (map_data == null) {
+    return { content: null, hasEncounter: false };
+  }
+
   const validatedAudioInfluences = normalizeWild3AudioInfluences(
     targetSetup.map,
     targetSetup.action,
     audioInfluences,
   );
-  const distribution =
-    map_data == null
-      ? undefined
-      : getWild3InitialCycleDistribution(
-          map_data,
-          targetSetup.action,
-          validatedAudioInfluences,
-        );
-  if (map_data == null || distribution == null) {
+  const { initial_cycle_opts, initial_cycle_distr } =
+    getWild3InitialCycleDistributionForSetup({
+      map: targetSetup.map,
+      action: targetSetup.action,
+      ...validatedAudioInfluences,
+      feebasCycles,
+      feebasVblankCount: targetSetup.feebasVblankCount,
+    });
+
+  if (initial_cycle_opts == null) {
     return { content: null, hasEncounter: false };
   }
 
@@ -154,19 +163,19 @@ export const calculateTargetSetupResult = async (
     roamer_state: targetSetup.roamerState,
     mass_outbreak_state: targetSetup.massOutbreakState,
     feebas_state: targetSetup.feebasState,
-    feebas_cycles: targetSetup.feebasCycles,
+    feebas_vblank_count: targetSetup.feebasVblankCount,
     cycle_opts:
       lead_cycle_speed == null
         ? {
             Searching: {
-              min_max_initial_cycle: [distribution.min, distribution.max],
+              ...initial_cycle_opts,
               generate_even_if_impossible: true,
               consider_rng_manipulated_lead_pid: true,
             },
           }
         : {
             LikelihoodForLead: {
-              min_max_initial_cycle: [distribution.min, distribution.max],
+              ...initial_cycle_opts,
               lead_cycle_spd: lead_cycle_speed,
             },
           },
@@ -190,6 +199,18 @@ export const calculateTargetSetupResult = async (
       return {
         content: (
           <div>No Pokémon encounter when using Rock Smash with that setup.</div>
+        ),
+        hasEncounter: false,
+      };
+    }
+    if (targetSetup.feebasState === "OnFeebasTile") {
+      return {
+        content: (
+          <div>
+            {targetSetup.feebasVblankCount == null
+              ? "The target Pokémon is not Feebas, but that setup results in a Feebas."
+              : "The target Pokémon is Feebas, but that setup doesn't result in a Feebas."}
+          </div>
         ),
         hasEncounter: false,
       };
@@ -223,7 +244,7 @@ export const calculateTargetSetupResult = async (
   const { ivs } = res;
 
   const probabilityInfo = showProbabilityInfo
-    ? await getProbabilityInfo(res, lead_cycle_speed, distribution)
+    ? await getProbabilityInfo(res, lead_cycle_speed, initial_cycle_distr)
     : null;
   const abilityStr = await getAbilityDisplayStr(species, res.pid);
 

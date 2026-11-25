@@ -106,6 +106,19 @@ export const getSimplifiedInitialValues = (): FormState => ({
   leadKeys: [...simplifiedLeadKeys],
 });
 
+const VERY_COMMON_POKEMONS: Species[] = [
+  "Wailmer",
+  "Zubat",
+  "Magikarp",
+  "Tentacool",
+  "Golbat",
+  "Wingull",
+  "Shuppet",
+  "Geodude",
+  "Pelipper",
+  "Graveler",
+] as const satisfies Species[];
+
 export const buildSimplifiedSearchOptions = (
   values: FormState,
 ): Wild3SearcherOptions => ({
@@ -114,7 +127,8 @@ export const buildSimplifiedSearchOptions = (
   sid: trainerIdSchema.parse(values.sid),
   initial_advances: 1000,
   max_advances: 10_000_000,
-  max_result_count: 100,
+  // Improve the performance for very common Pokemons
+  max_result_count: VERY_COMMON_POKEMONS.includes(values.species) ? 10 : 100,
   filter: pkmFilterFieldsToRustInput({
     ...getPkmFilterInitialValues(),
     filter_shiny: "AnyShiny",
@@ -223,7 +237,7 @@ export const searchSimplifiedWild = async (
         action: res.action,
         lead: res.lead,
         feebasState: res.feebas_state,
-        feebasVblankCount: 0,
+        feebasVblankCount: null,
         roamerState: res.roamer_state,
         massOutbreakState: res.mass_outbreak_state,
         targetPaintingAdvs: { before: 0, after: res.advance },

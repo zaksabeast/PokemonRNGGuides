@@ -53,7 +53,7 @@ export type Gen4Target = {
   details: Gen4TargetDetails | null;
 };
 
-type Gen4TargetInput = Pick<Gen4Target, "seedTime"> &
+export type Gen4TargetInput = Pick<Gen4Target, "seedTime"> &
   Partial<Omit<Gen4Target, "id" | "searchedFor" | "seedTime">>;
 
 const getGen4SearchKey = (setup: Gen4Setup): Gen4SearchKey => ({
@@ -101,7 +101,7 @@ export const selectGen4AdvanceAtom = atom(
       return;
     }
 
-    set(targetAtom, { ...target, ...advance, id: uniqueId() });
+    set(targetAtom, { ...target, ...advance });
   },
 );
 

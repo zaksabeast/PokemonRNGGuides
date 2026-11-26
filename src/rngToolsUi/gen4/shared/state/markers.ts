@@ -1,7 +1,11 @@
 import { atom } from "jotai";
 import { sanitizeFlips } from "../dpptCoinFlip/utils";
 import { sanitizeElmCalls } from "../hgssElmCalls/utils";
-import { gen4TargetAtom } from "./target";
+import {
+  gen4TargetAtom,
+  selectGen4TargetAtom,
+  type Gen4TargetInput,
+} from "./target";
 
 export type Gen4Markers = {
   coinFlips: string;
@@ -37,6 +41,15 @@ export const setGen4MarkersAtom = atom(
       elmCalls: sanitizeElmCalls(markers.elmCalls ?? prev.elmCalls),
       targetId: get(gen4TargetAtom)?.id ?? null,
     });
+  },
+);
+
+export const selectGen4SeedKeepingMarkersAtom = atom(
+  null,
+  (get, set, input: Gen4TargetInput) => {
+    const markers = get(gen4MarkersAtom);
+    set(selectGen4TargetAtom, input);
+    set(setGen4MarkersAtom, markers);
   },
 );
 

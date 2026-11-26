@@ -1,4 +1,4 @@
 [install]
 telemetry = false
-minimumReleaseAge = 259200  # 3 days
+minimumReleaseAge = 604800  # 7 days
 ignoreScripts = true

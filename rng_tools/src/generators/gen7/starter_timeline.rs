@@ -19,6 +19,7 @@ pub(super) const STEPS_FROM_KUKUI_A_TO_YES_NO: u32 = 93;
 pub(super) const MIN_STEPS_FROM_YES_NO_TO_YES: u32 = 230 + 300;
 
 /// The NPC stays frozen on the Yes/No screen until Yes is pressed.
+#[allow(clippy::single_range_in_vec_init)]
 const YES_NO_NPC_FROZEN_STEPS: &[RangeInclusive<u32>] = &[1..=u32::MAX];
 
 /// Steps after Yes that the NPC is frozen on. It appears on step 33 and

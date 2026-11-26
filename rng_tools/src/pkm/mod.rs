@@ -126,11 +126,7 @@ impl PkmFilter {
             return false;
         }
 
-        if !self.pass_filter_hidden_power(state.ivs()) {
-            return false;
-        }
-
-        true
+        self.pass_filter_hidden_power(state.ivs())
     }
 
     pub fn pass_filter_hidden_power(&self, ivs: &Ivs) -> bool {

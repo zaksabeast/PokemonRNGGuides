@@ -198,10 +198,8 @@ pub fn passes_iv1_filter(min_ivs: &Ivs, max_ivs: &Ivs, iv1: u16) -> bool {
     }
 
     let def = ((iv1 >> 10) & 31) as u8;
-    if def < min_ivs.def || def > max_ivs.def {
-        return false;
-    }
-    true
+
+    (min_ivs.def..=max_ivs.def).contains(&def)
 }
 
 pub fn passes_iv2_filter(min_ivs: &Ivs, max_ivs: &Ivs, iv2: u16) -> bool {
@@ -214,10 +212,8 @@ pub fn passes_iv2_filter(min_ivs: &Ivs, max_ivs: &Ivs, iv2: u16) -> bool {
         return false;
     }
     let spd = ((iv2 >> 10) & 31) as u8;
-    if spd < min_ivs.spd || spd > max_ivs.spd {
-        return false;
-    }
-    true
+
+    (min_ivs.spd..=max_ivs.spd).contains(&spd)
 }
 
 // Used by ByStep only

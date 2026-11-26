@@ -140,7 +140,9 @@ impl<'a> Block<'a> {
     }
 
     pub fn chk_u32(&self) -> u32 {
-        chk_u32(self.data.chunks_exact(4).take(0xf80 / 4).map(le_u32))
+        let (words, _) = self.data.as_chunks::<4>();
+
+        chk_u32(words.iter().take(0xf80 / 4).copied().map(u32::from_le_bytes))
     }
 
     pub fn save_time(&self) -> SaveTime {

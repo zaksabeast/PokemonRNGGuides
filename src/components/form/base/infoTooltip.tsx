@@ -2,6 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import { Icon } from "~/components/icons";
 import { styledPropGuard } from "~/utils/styled";
+import { CenteredIconButton } from "./styles";
 
 export type InfoTooltipContent = {
   title: React.ReactNode;
@@ -24,22 +25,6 @@ const IconSlot = styled(
   alignSelf: "stretch",
   width: $size,
   fontSize: $size,
-}));
-
-const CenteredIconButton = styled.button(({ theme }) => ({
-  ...theme.interactive,
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  display: "grid",
-  placeItems: "center",
-  padding: 0,
-  border: "none",
-  borderRadius: theme.shape.full,
-  background: "none",
-  color: "inherit",
-  fontSize: "inherit",
 }));
 
 const InfoButton = styled(

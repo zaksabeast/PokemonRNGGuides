@@ -94,6 +94,7 @@ export const ElmCallFilterButtons = ({
         })}
         value={elmCallFilter}
         onChange={onElmCallFilterChange}
+        onClear={() => onElmCallFilterChange("")}
       />
     </FormSection>
   );

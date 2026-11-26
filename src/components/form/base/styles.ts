@@ -1,4 +1,21 @@
 import { type CSSObject, type Theme } from "@emotion/react";
+import styled from "@emotion/styled";
+
+export const CenteredIconButton = styled.button(({ theme }) => ({
+  ...theme.interactive,
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  display: "grid",
+  placeItems: "center",
+  padding: 0,
+  border: "none",
+  borderRadius: theme.shape.full,
+  background: "none",
+  color: "inherit",
+  fontSize: "inherit",
+}));
 
 export const focusRing = (color: string) => ({
   borderColor: color,

@@ -68,6 +68,7 @@ export const CoinFlipFilterButtons = ({
         })}
         value={coinFlipFilter}
         onChange={onCoinFlipFilterChange}
+        onClear={() => onCoinFlipFilterChange("")}
       />
     </FormSection>
   );

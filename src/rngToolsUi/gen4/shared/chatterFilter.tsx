@@ -258,6 +258,7 @@ const ChatterFilterButtons = ({
         value={pitches.join("")}
         placeholder="LMH"
         onChange={(value) => setPitches(value.split("").filter(isMiniPitch))}
+        onClear={() => setPitches([])}
       />
     </FormSection>
   );

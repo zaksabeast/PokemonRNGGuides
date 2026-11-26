@@ -73,7 +73,7 @@ export const GiftTimeline = <Query, Plan>({
       <SafeAdvancesCard
         safeAdvances={safeAdvancesQuery === query ? safeAdvances : null}
         selected={selectedSafeAdvance}
-        disabled={loading}
+        loading={loading}
         canShowMore={canShowMore}
         onSelect={onSelectSafeAdvance}
         onShowMore={showMore}

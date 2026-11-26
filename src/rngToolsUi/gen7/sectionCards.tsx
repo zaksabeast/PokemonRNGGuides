@@ -1,4 +1,5 @@
 import React from "react";
+import { Spin } from "antd";
 import { match } from "ts-pattern";
 import { shinyLabels } from "~/rngTools/shiny";
 import {
@@ -209,7 +210,7 @@ export const TargetAdvanceCard = ({
 type SafeAdvancesCardProps = {
   safeAdvances: number[] | null;
   selected: number | null;
-  disabled: boolean;
+  loading: boolean;
   canShowMore: boolean;
   onSelect: (safeAdvance: number) => void;
   onShowMore: () => void;
@@ -219,7 +220,7 @@ type SafeAdvancesCardProps = {
 export const SafeAdvancesCard = ({
   safeAdvances,
   selected,
-  disabled,
+  loading,
   canShowMore,
   onSelect,
   onShowMore,
@@ -246,7 +247,7 @@ export const SafeAdvancesCard = ({
             trackerId="gen7_select_safe_advance"
             minWidth={ADVANCE_BUTTON_MIN_WIDTH}
             type={selected === safeAdvance ? "primary" : "default"}
-            disabled={disabled}
+            disabled={loading}
             onClick={() => onSelect(safeAdvance)}
           >
             {safeAdvance}
@@ -258,23 +259,25 @@ export const SafeAdvancesCard = ({
       title={t["Step one frame at a time until you land on one of these"]}
     >
       {action}
-      {safeAdvances?.length === 0 ? (
-        <Typography.Text color="TextSecondary">
-          {t["No safe advances found"]}
-        </Typography.Text>
-      ) : (
-        <Flex gap={8} wrap align="center">
-          {buttons}
-          <Button
-            trackerId="gen7_show_more_safe_advances"
-            type="link"
-            disabled={!hasResults || !canShowMore || disabled}
-            onClick={onShowMore}
-          >
-            {t["Show More"]}
-          </Button>
-        </Flex>
-      )}
+      <Spin spinning={loading}>
+        {safeAdvances?.length === 0 ? (
+          <Typography.Text color="TextSecondary">
+            {t["No safe advances found"]}
+          </Typography.Text>
+        ) : (
+          <Flex gap={8} wrap align="center">
+            {buttons}
+            <Button
+              trackerId="gen7_show_more_safe_advances"
+              type="link"
+              disabled={!hasResults || !canShowMore || loading}
+              onClick={onShowMore}
+            >
+              {t["Show More"]}
+            </Button>
+          </Flex>
+        )}
+      </Spin>
     </SectionCard>
   );
 };

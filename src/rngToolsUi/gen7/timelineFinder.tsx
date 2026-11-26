@@ -253,7 +253,7 @@ export const Gen7TimelineFinder = () => {
       <SafeAdvancesCard
         safeAdvances={safeAdvances}
         selected={selection?.safeAdvance ?? null}
-        disabled={loading}
+        loading={loading}
         canShowMore={canShowMore}
         onSelect={onSelectSafeAdvance}
         onShowMore={showMore}

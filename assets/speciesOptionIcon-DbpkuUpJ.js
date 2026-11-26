@@ -1,0 +1,1 @@
+import{i as e}from"./dist-p_bQBD1b.js";import{t}from"./jsx-runtime-Bl9_0yti.js";import{t as n}from"./pokemonIcon-DH--xA4e.js";var r=e(),i=t(),a=24,o=e=>{let t=(0,r.c)(2),{species:o}=e,s;return t[0]===o?s=t[1]:(s=(0,i.jsx)(n,{species:o,size:a}),t[0]=o,t[1]=s),s};export{o as t};

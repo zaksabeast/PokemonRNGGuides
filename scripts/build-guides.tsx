@@ -226,6 +226,8 @@ const BaseGuideSchema = z
     layout: z.enum(layouts).default("guide"),
     // Used for SEO when renaming slugs. Keep the original page/slug, hide the page, and set the new slug as canonical.
     canonical: SlugSchema.optional(),
+    // Changing this changes the file hash, which bumps lastUpdated for edits the content alone wouldn't signal.
+    manual_bump: z.number().optional(),
   })
   .transform(({ category, section, variant, ...meta }) => {
     const normalizedVariants = variant ?? [];
@@ -280,6 +282,7 @@ const TranslatedGuideSchema = z
       language: z.enum(["es", "zh", "fr", "it", "de"]),
     }),
     canonical: SlugSchema.optional(),
+    manual_bump: z.number().optional(),
   })
   .transform((meta) => ({
     ...meta,
